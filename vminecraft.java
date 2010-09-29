@@ -2,7 +2,7 @@
 import java.util.logging.Logger;
 import java.util.logging.Level;
 public class vminecraft extends Plugin {
-
+    //settings Settings;
     @Override
     public void disable() {
         //throw new UnsupportedOperationException("Not supported yet.");
@@ -15,13 +15,21 @@ public class vminecraft extends Plugin {
         //I have to include this to compile, not sure why.
     }
     static final Logger log = Logger.getLogger("Minecraft");
+
+    public void onLogin(Player player)
+    {
+        settings.getInstance().loadSettings();
+    }
+
     public boolean onChat(Player player, String message){
+        //Settings.loadSettings();
+        settings.getInstance().loadSettings();
         String playerb = player.getName(); //Used to get names from players, can't remember why I can't just use 'player'
         String temp2 = "<" + etc.getInstance().getUserColor(playerb) + player.getName()  +  Colors.White +"> "; //Inserts a name before the message
         String adminchat = Colors.LightGreen + "{" + etc.getInstance().getUserColor(playerb) + player.getName()  +  Colors.LightGreen +"}" + Colors.White + " "; //Inserts names admin chat style before the message
         String message2 = ""; //Used for greentext and FFF
         String check = temp2+message; //Calculates how long your message will be including your name in the equation, this prevents minecraft clients from crashing when a color code is inserted after a linebreak
-        if (message.startsWith("@") && (etc.getInstance().isUserInGroup(player, "mods") || etc.getInstance().isUserInGroup(player, "admins") || etc.getInstance().isUserInGroup(player, "superadmins"))) {
+        if (settings.getInstance().adminchat()&&message.startsWith("@") && (etc.getInstance().isUserInGroup(player, "mods") || etc.getInstance().isUserInGroup(player, "admins") || etc.getInstance().isUserInGroup(player, "superadmins"))) {
             for (Player p : etc.getServer().getPlayerList()) {
                 if (p != null) {
                     if (etc.getInstance().isUserInGroup(p, "mods") || (etc.getInstance().isUserInGroup(p, "admins")) || (etc.getInstance().isUserInGroup(p, "superadmins"))) {
@@ -37,23 +45,25 @@ public class vminecraft extends Plugin {
             return true;
       }
         //Greentext
-        if (message.startsWith(">")) {
+        if (settings.getInstance().greentext()&&message.startsWith(">")) {
+            id.a.log(Level.INFO, "<"+player.getName()+"> "+message);
             message = Colors.LightGreen + message;
             message2 = temp2 + message;
             other.gmsg(message2);
-            id.a.log(Level.INFO, message2);
+            
             return true;
         }
         //FFF
-        if (message.startsWith("FFF")) {
+        if (settings.getInstance().FFF()&&message.startsWith("FFF")) {
+            id.a.log(Level.INFO, "<"+player.getName()+"> "+message);
             message = Colors.Red + message;
             message2 = temp2 + message;
             other.gmsg(message2);
-            id.a.log(Level.INFO, message2);
+            
             return true;
         }
         //QuakeColors
-        if(message.length()>2 && lengthCheck(check)) {
+        if(settings.getInstance().quakeColors()&&message.length()>2 && lengthCheck(check)) {
 			String temp = "";
 			for(int x = 0; x< message.length(); x++)
 			{
@@ -66,11 +76,12 @@ public class vminecraft extends Plugin {
 					temp+=message.charAt(x);
 				}
 			}
+                        log.log(Level.INFO, "<"+player.getName()+"> "+message);
 			message = temp2 + temp + " ";
                         for (Player p : etc.getServer().getPlayerList()) {
                                 if (p != null) {
                                      other.gmsg(message);
-                                     log.log(Level.INFO, message);
+                                     
                                      return true;
                                 }
                             }                                                
@@ -82,7 +93,7 @@ public class vminecraft extends Plugin {
             return false;
         }
         //Fabulous
-        if (split[0].equalsIgnoreCase("/fabulous")) {
+        if (split[0].equalsIgnoreCase("/fabulous")&&settings.getInstance().cmdFabulous()) {
             etc.getInstance().addCommand("/fabulous", "/fabulous <message>");
                     if (split.length == 1) {return false;}
                     String temp = "";
@@ -94,6 +105,7 @@ public class vminecraft extends Plugin {
                     int counter=0;
                     if(lengthCheck(temp2))
                     {
+                           id.a.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
                     for(int x=0; x<str.length(); x++)
                     {
                             temp+=rainbow[counter]+str.charAt(x);
@@ -104,14 +116,14 @@ public class vminecraft extends Plugin {
                     }
                     str = temp+" ";
                     String message = "<" + etc.getInstance().getUserColor(player.getName()) + player.getName() + Colors.White + "> " + str;
-                            id.a.log(Level.INFO, "[F]"+str);
+                            
                             other.gmsg(message);
                     } else {
                             player.sendMessage(Colors.Rose + "Message is too long");
                     }
                 }
         //Promote
-        else if (split[0].equalsIgnoreCase("/promote")) {
+        else if (settings.getInstance().cmdPromote()&&split[0].equalsIgnoreCase("/promote")) {
                 log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
                 User user2 = etc.getInstance().getUser(split[1]);
                 if (split.length < 2) {
@@ -121,7 +133,7 @@ public class vminecraft extends Plugin {
                     player.sendMessage(Colors.Rose + "Player does not exist.");
                     return false;
                 }
-                //ea player = match(split[1]);
+                //ea player2 = id.match(split[1]);
                 User user = etc.getInstance().getUser(split[1]);
                 boolean newUser = false;
                 if (user == null) {
@@ -162,7 +174,7 @@ public class vminecraft extends Plugin {
                 }                
             }
         //Demote
-                else if (split[0].equalsIgnoreCase("/demote")) {
+                else if (settings.getInstance().cmdDemote()&&split[0].equalsIgnoreCase("/demote")) {
                     log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
                     etc.getInstance().addCommand("/demote", "/demote [user]");
                 if (split.length < 2) {
@@ -209,7 +221,7 @@ public class vminecraft extends Plugin {
                     etc.getInstance().getDataSource().modifyUser(user);
                 }
           //Whois will display info about a player
-        } else if (split[0].equalsIgnoreCase("/whois")) {
+        } else if (settings.getInstance().cmdWhoIs()&&split[0].equalsIgnoreCase("/whois")) {
             String admin ="";
             String group ="";
             String ignore ="";
@@ -245,6 +257,14 @@ public class vminecraft extends Plugin {
         }
         return true;
     }
+
+    public void onKick(Player player, String reason)
+    {
+    }
+
+
+
+
     //Calculates how long the specified String is to prevent linebreaks when using scripts that insert color codes, designed to be used with playername included
     private boolean lengthCheck(String str)
 	{
