@@ -1,0 +1,7 @@
+TODO:
+Improve logging
+Fix existing bugs in /promote and /demote
+Add toggles to all features
+Add more info if I can think of anything useful to /whois and format it more nicely with linebreaks and stuff
+Maybe include a "last online" feature for /whois
+Look into block protection

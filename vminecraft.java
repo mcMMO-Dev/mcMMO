@@ -16,7 +16,6 @@ public class vminecraft extends Plugin {
     }
     static final Logger log = Logger.getLogger("Minecraft");
 
-    @Override
     public void onLogin(Player player)
     {
         settings.getInstance().loadSettings();
@@ -26,14 +25,14 @@ public class vminecraft extends Plugin {
         //Settings.loadSettings();
         settings.getInstance().loadSettings();
         String playerb = player.getName(); //Used to get names from players, can't remember why I can't just use 'player'
-        String temp2 = "<" + player.getColor() + player.getName()  +  Colors.White +"> "; //Inserts a name before the message
-        String adminchat = Colors.LightGreen + "{" + player.getColor() + player.getName()  +  Colors.LightGreen +"}" + Colors.White + " "; //Inserts names admin chat style before the message
+        String temp2 = "<" + etc.getInstance().getUserColor(playerb) + player.getName()  +  Colors.White +"> "; //Inserts a name before the message
+        String adminchat = Colors.LightGreen + "{" + etc.getInstance().getUserColor(playerb) + player.getName()  +  Colors.LightGreen +"}" + Colors.White + " "; //Inserts names admin chat style before the message
         String message2 = ""; //Used for greentext and FFF
         String check = temp2+message; //Calculates how long your message will be including your name in the equation, this prevents minecraft clients from crashing when a color code is inserted after a linebreak
-        if (settings.getInstance().adminchat()&&message.startsWith("@") && (player.isInGroup("mods") || player.isInGroup("admins") || player.isInGroup("superadmins"))) {
+        if (settings.getInstance().adminchat()&&message.startsWith("@") && (etc.getInstance().isUserInGroup(player, "mods") || etc.getInstance().isUserInGroup(player, "admins") || etc.getInstance().isUserInGroup(player, "superadmins"))) {
             for (Player p : etc.getServer().getPlayerList()) {
                 if (p != null) {
-                    if (player.isInGroup("mods") || (player.isInGroup("admins")) || (player.isInGroup("superadmins"))) {
+                    if (etc.getInstance().isUserInGroup(p, "mods") || (etc.getInstance().isUserInGroup(p, "admins")) || (etc.getInstance().isUserInGroup(p, "superadmins"))) {
                         String blaa = "";
                         for ( int x = 1; x< message.length(); x++) {
                         blaa+=message.charAt(x);
@@ -90,7 +89,7 @@ public class vminecraft extends Plugin {
         return false;
     }
     public boolean onCommand(Player player, String[] split) {
-        if (player.canUseCommand(split[0])) {
+        if (!etc.getInstance().canUseCommand(player.getName(), split[0])) {
             return false;
         }
         //Fabulous
@@ -100,7 +99,7 @@ public class vminecraft extends Plugin {
                     String temp = "";
                     String str = "";
                     //str = paramString.substring(paramString.indexOf(" ")).trim();
-                    str = etc.combineSplit(1, split, " ");
+                    str = id.combineSplit(1, split, " ");
                     String temp2 = "<" + player.getName()  + "> "+str;
                     String[] rainbow = new String[] {Colors.Red, Colors.Rose, Colors.Yellow, Colors.Green, Colors.Blue, Colors.LightPurple, Colors.Purple};
                     int counter=0;
@@ -116,7 +115,7 @@ public class vminecraft extends Plugin {
                             if(counter==7){counter = 0; }
                     }
                     str = temp+" ";
-                    String message = "<" + player.getColor() + player.getName() + Colors.White + "> " + str;
+                    String message = "<" + etc.getInstance().getUserColor(player.getName()) + player.getName() + Colors.White + "> " + str;
                             
                             other.gmsg(message);
                     } else {
@@ -124,108 +123,105 @@ public class vminecraft extends Plugin {
                     }
                 }
         //Promote
-        else if (settings.getInstance().cmdPromote() && split[0].equalsIgnoreCase("/promote"))
-{
-	if(split.length != 2)
-	{
-		player.sendMessage(Colors.Rose + "Usage is /promote [Player]");
-	}
-
-	Player playerTarget = null;
-
-	for( Player p : etc.getServer().getPlayerList())
-	{
-		if (p.getName().equalsIgnoreCase(split[1]))
-		{
-			playerTarget = p;
-		}
-	}
-
-	if( playerTarget!=null)
-	{
-		if(playerTarget.isInGroup("admins"))
-		{
-			player.sendMessage(Colors.Rose + "You can not promote " + split[1] + " any higher.");
-		}
-		if(playerTarget.isInGroup("mods") && (player.isInGroup("superadmins")))
-		{
-			playerTarget.setGroups(ranks.Admins);
-			etc.getInstance().getDataSource().modifyPlayer(player);
-			String message = Colors.Yellow + split[1] + " was promoted to" + Colors.Rose + " Admin";
-			other.gmsg(message);
-		}
-		else if (playerTarget.isInGroup("trusted") && (player.isInGroup("admins") || player.isInGroup("superadmins")))
-		{
-			playerTarget.setGroups(ranks.Mods);
-			etc.getInstance().getDataSource().modifyPlayer(player);
-			String message = Colors.Yellow + split[1] + " was promoted to" + Colors.DarkPurple + " Mod";
-			other.gmsg(message);
-		}
-		else if (playerTarget.isInGroup("default") && (player.isInGroup("mods") || player.isInGroup("admins") || player.isInGroup("superadmins")))
-		{
-			player.setGroups(ranks.Trusted);
-            etc.getInstance().getDataSource().modifyPlayer(player);
-            String message = Colors.Yellow + split[1] + " was promoted to" + Colors.LightGreen + " Trusted";
-            other.gmsg(message);
-		}
-	}
-	else{
-		player.sendMessage(Colors.Rose + "Player not found");
-	}
-	log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
-}
+        else if (settings.getInstance().cmdPromote()&&split[0].equalsIgnoreCase("/promote")) {
+                log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
+                User user2 = etc.getInstance().getUser(split[1]);
+                if (split.length < 2) {
+                    player.sendMessage(Colors.Rose + "Usage is /promote [player]");
+                }
+                if(user2 == null) { //Currently broken
+                    player.sendMessage(Colors.Rose + "Player does not exist.");
+                    return false;
+                }
+                //ea player2 = id.match(split[1]);
+                User user = etc.getInstance().getUser(split[1]);
+                boolean newUser = false;
+                if (user == null) {
+                    player.sendMessage(Colors.Rose + "Adding new user.");
+                    newUser = true;
+                    user = new User();
+                    user.Name = split[1];
+                    user.Administrator = false;
+                    user.CanModifyWorld = true;
+                    user.IgnoreRestrictions = false;
+                    user.Commands = new String[]{""};
+                    user.Prefix = "";
+                    log.log(Level.INFO, player + " added new user ("+user+")"); //Not sure about keeping this
+                    return false;
+                }
+                if (etc.getInstance().isUserInGroup(split[1], "admins") && (etc.getInstance().isUserInGroup(player, "admins") || etc.getInstance().isUserInGroup(player, "superadmins"))) {
+                    player.sendMessage(Colors.Rose + "You cannot promote " + split[1] + " any higher.");
+                } else if (etc.getInstance().isUserInGroup(split[1], "mods") && etc.getInstance().isUserInGroup(player, "superadmins")) {
+                    user.Groups = ranks.Admins;
+                    etc.getInstance().getDataSource().modifyUser(user);
+                    String message = Colors.Yellow + split[1] + " was promoted to" + Colors.Rose + " Admin";
+                    other.gmsg(message);
+                } else if (etc.getInstance().isUserInGroup(split[1], "trusted") && etc.getInstance().isUserInGroup(player, "admins")) {
+                    user.Groups = ranks.Mods;
+                    etc.getInstance().getDataSource().modifyUser(user);
+                    String message = Colors.Yellow + split[1] + " was promoted to" + Colors.DarkPurple + " Mods";
+                    other.gmsg(message);
+                  } else if (etc.getInstance().isUserInGroup(split[1], "default") && etc.getInstance().isUserInGroup(player, "mods")) {
+                    user.Groups = ranks.Trusted;
+                    etc.getInstance().getDataSource().modifyUser(user);
+                    String message = Colors.Yellow + split[1] + " was promoted to" + Colors.LightGreen + " Trusted";
+                    other.gmsg(message);
+                } else player.sendMessage(Colors.Rose + "That didn't work");
+                  if (newUser) {
+                    etc.getInstance().getDataSource().addUser(user);
+                } else {
+                    etc.getInstance().getDataSource().modifyUser(user);
+                }                
+            }
         //Demote
-                else if (settings.getInstance().cmdPromote() && split[0].equalsIgnoreCase("/promote"))
-{
-	if(split.length != 2)
-	{
-		player.sendMessage(Colors.Rose + "Usage is /demote [Player]");
-	}
-
-	Player playerTarget = null;
-
-	for( Player p : etc.getServer().getPlayerList())
-	{
-		if (p.getName().equalsIgnoreCase(split[1]))
-		{
-			playerTarget = p;
-		}
-	}
-
-	if( playerTarget!=null)
-	{
-		if(playerTarget.isInGroup("admins") && (player.isInGroup("superadmins")))
-		{
-                    playerTarget.setGroups(ranks.Mods);
+                else if (settings.getInstance().cmdDemote()&&split[0].equalsIgnoreCase("/demote")) {
+                    log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
+                    etc.getInstance().addCommand("/demote", "/demote [user]");
+                if (split.length < 2) {
+                    player.sendMessage(Colors.Rose + "Usage is /demote [player]");
+                }
+                if(player == null) { //Currently broken
+                    player.sendMessage(Colors.Rose + "Player does not exist.");
+                    return false;
+                }
+                User user = etc.getInstance().getUser(split[1]);
+                boolean newUser = false;
+                if (user == null) {
+                    player.sendMessage(Colors.Rose + "Adding new user.");
+                    newUser = true;
+                    user = new User();
+                    user.Name = split[1];
+                    user.Administrator = false;
+                    user.CanModifyWorld = true;
+                    user.IgnoreRestrictions = false;
+                    user.Commands = new String[]{""};
+                    user.Prefix = "";
+                }
+                if (etc.getInstance().isUserInGroup(split[1], "admins")&& etc.getInstance().isUserInGroup(player, "superadmins")) {
+                    user.Groups = ranks.Mods;
+                    etc.getInstance().getDataSource().modifyUser(user);
                     String message = Colors.Yellow + split[1] + " was demoted to" + Colors.DarkPurple + " Mod";
                     other.gmsg(message);
-		}
-		if(playerTarget.isInGroup("mods") && (player.isInGroup("admins") || player.isInGroup("superadmins")))
-		{
-			playerTarget.setGroups(ranks.Trusted);
-			etc.getInstance().getDataSource().modifyPlayer(player);
-			String message = Colors.Yellow + split[1] + " was demoted to" + Colors.LightGreen + " Trusted";
-			other.gmsg(message);
-		}
-		else if (playerTarget.isInGroup("trusted") && (player.isInGroup("mods") || player.isInGroup("superadmins") || player.isInGroup("admins")))
-		{
-			playerTarget.setGroups(ranks.Def);
-			etc.getInstance().getDataSource().modifyPlayer(player);
-			String message = Colors.Yellow + split[1] + " was demoted to" + Colors.White + " Default";
-			other.gmsg(message);
-		}
-		else if (playerTarget.isInGroup("default") && (player.isInGroup("mods") || player.isInGroup("admins") || player.isInGroup("superadmins")))
-		{
-                player.sendMessage(Colors.Rose + "You can not demote " + split[1] + " any lower.");
-		}
-	}
-	else{
-		player.sendMessage(Colors.Rose + "Player not found");
-	}
-	log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
-}
+                } else if (etc.getInstance().isUserInGroup(split[1], "mods")&& etc.getInstance().isUserInGroup(player, "admins")) {
+                    user.Groups = ranks.Trusted;
+                    etc.getInstance().getDataSource().modifyUser(user);
+                    String message = Colors.Yellow + split[1] + " was demoted to" + Colors.LightGreen + " Trusted";
+                    other.gmsg(message);
+                  } else if (etc.getInstance().isUserInGroup(split[1], "trusted")&& etc.getInstance().isUserInGroup(player, "mods")) {
+                    user.Groups = ranks.Def;
+                    etc.getInstance().getDataSource().modifyUser(user);
+                    String message = Colors.Yellow + split[1] + " was demoted to" + Colors.White + " Default";
+                    other.gmsg(message);
+                } else if (etc.getInstance().isUserInGroup(split[1], "default")) {
+                    player.sendMessage(Colors.Rose + "You cannot demote " + split[1] + " any lower.");
+                } else player.sendMessage(Colors.Rose + "That didn't work");
+                  if (newUser) {
+                    etc.getInstance().getDataSource().addUser(user);
+                } else {
+                    etc.getInstance().getDataSource().modifyUser(user);
+                }
           //Whois will display info about a player
-         else if (settings.getInstance().cmdWhoIs()&&split[0].equalsIgnoreCase("/whois")) {
+        } else if (settings.getInstance().cmdWhoIs()&&split[0].equalsIgnoreCase("/whois")) {
             String admin ="";
             String group ="";
             String ignore ="";
@@ -234,23 +230,23 @@ public class vminecraft extends Plugin {
                 if (split.length < 2) {
                     player.sendMessage(Colors.Rose + "Usage is /whois [player]");
             }
-                    if (player.canIgnoreRestrictions()) {
+                    if (etc.getInstance().canIgnoreRestrictions(split[1])) {
                         ignore = "True";
                     } else {
                             ignore ="False";
                         }
-                    if (player.canIgnoreRestrictions()) {
+                    if (etc.getInstance().isAdmin(split[1])) {
                         admin = "True";
                     } else {
                         admin = "False";
             }
-                    if (player.isInGroup("superadmins")){
+                    if (etc.getInstance().isUserInGroup(split[1], "superadmins")){
                         group = "superadmins";
-            }else if(player.isInGroup("admins")){
+            }else if(etc.getInstance().isUserInGroup(split[1], "admins")){
                 group = "admins";
-                    }else if(player.isInGroup("mods")){
+                    }else if(etc.getInstance().isUserInGroup(split[1], "mods")){
                         group = "mods";
-                    }else if(player.isInGroup("trusted")){
+                    }else if(etc.getInstance().isUserInGroup(split[1], "trusted")){
                         group = "trusted";
                     }else{
                         group = "Default";
