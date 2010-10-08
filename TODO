@@ -2,6 +2,11 @@ TODO:
 Improve logging
 Fix existing bugs in /promote and /demote
 Add toggles to all features
-Add more info if I can think of anything useful to /whois and format it more nicely with linebreaks and stuff
-Maybe include a "last online" feature for /whois
-Look into block protection
+If vminecraft.properties doesn't exist make it be written
+Makes /rules use a txt file
+Refine messages when admins use commands
+/whois doesn't update when someone's group is changed
+Improve my comments on vminecraft.java
+
+Ideas:
+Mass teleport command
