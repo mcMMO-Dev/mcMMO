@@ -93,7 +93,7 @@ public class vminecraft extends Plugin {
            return false;
         }
         //Replacement for /tp
-        if(split[0].equalsIgnoreCase("/tp")) {
+        if(settings.getInstance().cmdTp() && split[0].equalsIgnoreCase("/tp")) {
             {
                 if (split.length < 2) {
                     player.sendMessage(Colors.Rose + "Correct usage is: /tp [player]");
@@ -123,7 +123,7 @@ public class vminecraft extends Plugin {
             }
         }
         //Replacement for /tphere
-        if ((split[0].equalsIgnoreCase("/tphere") || split[0].equalsIgnoreCase("/s"))) {
+        if (settings.getInstance().cmdTphere() && (split[0].equalsIgnoreCase("/tphere") || split[0].equalsIgnoreCase("/s"))) {
                 if (split.length < 2) {
                     player.sendMessage(Colors.Rose + "Correct usage is: /tphere [player]");
                     return true;
@@ -148,32 +148,32 @@ public class vminecraft extends Plugin {
                 }
         }
         //Global messages that should only parse when a command can be successful
-        if(split[0].equalsIgnoreCase("/kick")) {
+        if(settings.getInstance().globalmessages() && split[0].equalsIgnoreCase("/kick")) {
             Player playerTarget = etc.getServer().matchPlayer(split[1]);
             if (playerTarget != null && !playerTarget.hasControlOver(player)) {
             other.gmsg(player.getColor()+player.getName()+Colors.Blue+" has kicked "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
             }
         }
-        if(split[0].equalsIgnoreCase("/ban")) {
+        if(settings.getInstance().globalmessages() && split[0].equalsIgnoreCase("/ban")) {
             Player playerTarget = etc.getServer().matchPlayer(split[1]);
             if (playerTarget != null && !playerTarget.hasControlOver(player)) {
             other.gmsg(player.getColor()+player.getName()+Colors.Blue+" has banned "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
             }
         }
-        if(split[0].equalsIgnoreCase("/ipban")) {
+        if(settings.getInstance().globalmessages() && split[0].equalsIgnoreCase("/ipban")) {
             Player playerTarget = etc.getServer().matchPlayer(split[1]);
             if (playerTarget != null && !playerTarget.hasControlOver(player)) {
             other.gmsg(player.getColor()+player.getName()+Colors.Blue+" has IP banned "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
             }
         }
-        if(split[0].equalsIgnoreCase("/time")) {
+        if(settings.getInstance().globalmessages() && split[0].equalsIgnoreCase("/time")) {
             if (split.length <= 2) {
                 other.gmsg(Colors.Blue+"Time changes thanks to "+player.getColor()+player.getName());
                 return false;
             }
         }
         //Rules
-        if(split[0].equalsIgnoreCase("/rules")) {
+        if(settings.getInstance().cmdRules() && split[0].equalsIgnoreCase("/rules")) {
            for (String str : settings.getInstance().getRules()) {
            player.sendMessage(Colors.Blue+str);
             }
@@ -368,7 +368,7 @@ public class vminecraft extends Plugin {
             }
         }
         //Say
-        if (split[0].equalsIgnoreCase("/say")) {
+        if (settings.getInstance().cmdSay() && (split[0].equalsIgnoreCase("/say"))) {
                       String sayan;
                       sayan = etc.combineSplit(1, split, " ");
                       other.gmsg(Colors.Yellow+sayan);

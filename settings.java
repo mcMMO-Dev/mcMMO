@@ -17,6 +17,11 @@ public class settings {
         private boolean cmdPromote = false;
         private boolean cmdDemote = false;
         private boolean cmdWhoIs = false;
+        private boolean cmdRules = false;
+        private boolean cmdTp = false;
+        private boolean cmdTphere = false;
+        private boolean globalmessages = false;
+        private boolean cmdSay = false;
         private PropertiesFile properties;
 	String file = "vminecraft.properties";
         public String rules[] = null;
@@ -54,6 +59,46 @@ public void rules() {
                                     adminChat = true;
                                 }
                                    else adminChat = false;
+                            }
+                            if(split[0].equalsIgnoreCase("cmdTp"))
+                            {
+                                if(split[1].equalsIgnoreCase("true"))
+                                {
+                                    cmdTp = true;
+                                }
+                                   else cmdTp = false;
+                            }
+                            if(split[0].equalsIgnoreCase("cmdTphere"))
+                            {
+                                if(split[1].equalsIgnoreCase("true"))
+                                {
+                                    cmdTphere = true;
+                                }
+                                   else cmdTphere = false;
+                            }
+                            if(split[0].equalsIgnoreCase("globalmessages"))
+                            {
+                                if(split[1].equalsIgnoreCase("true"))
+                                {
+                                    globalmessages = true;
+                                }
+                                   else globalmessages = false;
+                            }
+                            if(split[0].equalsIgnoreCase("cmdSay"))
+                            {
+                                if(split[1].equalsIgnoreCase("true"))
+                                {
+                                    cmdSay = true;
+                                }
+                                   else cmdSay = false;
+                            }
+                            if(split[0].equalsIgnoreCase("cmdRules"))
+                            {
+                                if(split[1].equalsIgnoreCase("true"))
+                                {
+                                    cmdRules = true;
+                                }
+                                   else cmdRules = false;
                             }
                             if(split[0].equalsIgnoreCase("Greentext"))
                             {
@@ -128,6 +173,11 @@ public void rules() {
         public boolean cmdPromote() {return cmdPromote;}
         public boolean cmdDemote() {return cmdDemote;}
         public boolean cmdWhoIs() {return cmdWhoIs;}
+        public boolean cmdTp() {return cmdTp;}
+        public boolean cmdTphere() {return cmdTphere;}
+        public boolean cmdSay() {return cmdSay;}
+        public boolean cmdRules() {return cmdRules;}
+        public boolean globalmessages() {return globalmessages;}
 
         public static settings getInstance() {
         if (instance == null) {
