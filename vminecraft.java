@@ -28,15 +28,15 @@ public class vminecraft extends Plugin {
         String adminchat = Colors.DarkPurple + "{" + player.getColor() + player.getName()  +  Colors.DarkPurple +"}" + Colors.White + " "; //Special formatting for adminchat
         String message2 = ""; //Used for greentext and FFF
         String check = temp2+message; //Calculates how long your message will be including your name in the equation, this prevents minecraft clients from crashing when a color code is inserted after a linebreak
-        if (settings.getInstance().adminchat()&&message.startsWith("@") && (player.isInGroup("mods") || player.isInGroup("admins") || player.isInGroup("superadmins"))) {
+        if (settings.getInstance().adminchat()&&message.startsWith("@") && (player.isAdmin())) {
             for (Player p : etc.getServer().getPlayerList()) {
                                         String blaa = "";
                 if (p != null) {
-                    if (player.isInGroup("mods") || (player.isInGroup("admins")) || (player.isInGroup("superadmins"))) {
+                    if (player.isAdmin()) {
                         for ( int x = 1; x< message.length(); x++) {
                         blaa+=message.charAt(x);
                         }
-                        if (p.isInGroup("superadmins") || p.isInGroup("mods") || p.isInGroup("admins")){
+                        if (p.isAdmin()){
                         if (p != null) {
                                 p.sendMessage(adminchat+blaa);
                            }
