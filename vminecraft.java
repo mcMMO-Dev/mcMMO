@@ -174,6 +174,7 @@ public class vminecraft extends Plugin {
         }
         //Rules
         if(settings.getInstance().cmdRules() && split[0].equalsIgnoreCase("/rules")) {
+           etc.getInstance().addCommand("/rules", "Displays the rules");
            for (String str : settings.getInstance().getRules()) {
            player.sendMessage(Colors.Blue+str);
             }
@@ -181,6 +182,7 @@ public class vminecraft extends Plugin {
         }
         //Fabulous
         if(split[0].equalsIgnoreCase("/fabulous") && settings.getInstance().cmdFabulous()) {
+                    etc.getInstance().addCommand("/fabulous", "makes text SUUUPER");
                     if (split.length == 1) {return false;}
                     String temp = "";
                     String str = "";
@@ -312,12 +314,12 @@ public class vminecraft extends Plugin {
         return true;
 }
          //Whois will display info about a player
-         if (settings.getInstance().cmdWhoIs()&&split[0].equalsIgnoreCase("/whois")) {
+         if (settings.getInstance().cmdWhoIs() && split[0].equalsIgnoreCase("/whois")) {
+            etc.getInstance().addCommand("/whois", "/whois [user]");
             if (split.length < 2) {
                     player.sendMessage(Colors.Rose + "Usage is /whois [player]");
             }
             String admin ="";
-            String group ="";
             String ignore ="";
             String IP = "";
             Player playerTarget = null;
@@ -329,7 +331,7 @@ public class vminecraft extends Plugin {
 		}
 	}
         if (playerTarget != null){
-                    etc.getInstance().addCommand("/whois", "/whois [user]");
+                    
                     IP = playerTarget.getIP();
                     if (playerTarget.canIgnoreRestrictions()) {
                         ignore = "True";
@@ -341,31 +343,26 @@ public class vminecraft extends Plugin {
                     } else {
                         admin = "False";
                     }
-                    if (playerTarget.isInGroup("superadmins")){
-                        group = "superadmins";
-                    }else if(playerTarget.isInGroup("admins")){
-                        group = "admins";
-                    }else if(player.isInGroup("mods")){
-                        group = "mods";
-                    }else if(player.isInGroup("trusted")){
-                        group = "trusted";
-                    }else{
-                        group = "Default";
-                        }
+
+
                     //Displaying the information
                     player.sendMessage(Colors.Blue + "Whois results for "+split[1]+".");
                     //Group
-                    player.sendMessage(Colors.Blue + "Group: "+group);
+                    for (String group : playerTarget.getGroups()) {
+                    player.sendMessage(Colors.Blue + "Groups: "+group);
+            }
                     //Admin
                     player.sendMessage(Colors.Blue+"Admin: "+admin);
                     //IP
                     player.sendMessage(Colors.Blue+"IP: "+IP);
                     //Restrictions
                     player.sendMessage(Colors.Blue+"Can ignore restrictions: "+ignore);
-                    return true;
+
+
         } else {
                         player.sendMessage(Colors.Rose+"Player not found.");
             }
+        return true;
         }
         //Say
         if (settings.getInstance().cmdSay() && (split[0].equalsIgnoreCase("/say"))) {
