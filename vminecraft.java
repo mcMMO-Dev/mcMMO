@@ -3,16 +3,13 @@ import java.util.Locale;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 public class vminecraft extends Plugin {
-    //settings Settings;
     @Override
     public void disable() {
-        //throw new UnsupportedOperationException("Not supported yet.");
         //I have to include this to compile, not sure why.
     }
 
     @Override
     public void enable() {
-        //throw new UnsupportedOperationException("Not supported yet.");
         //I have to include this to compile, not sure why.
     }
     static final Logger log = Logger.getLogger("Minecraft");
@@ -20,15 +17,15 @@ public class vminecraft extends Plugin {
     @Override
     public void onLogin(Player player)
     {
+        settings.getInstance().rules();
         settings.getInstance().loadSettings();
     }
-
+    private String rules[];
     public boolean onChat(Player player, String message){
-        //Settings.loadSettings();
-        settings.getInstance().loadSettings();
-        String playerb = player.getName(); //Used to get names from players, can't remember why I can't just use 'player'
-        String temp2 = "<" + player.getColor() + player.getName()  +  Colors.White +"> "; //Inserts a name before the message
-        String adminchat = Colors.DarkPurple + "{" + player.getColor() + player.getName()  +  Colors.DarkPurple +"}" + Colors.White + " "; //Inserts names admin chat style before the message
+        settings.getInstance().rules();
+        settings.getInstance().loadSettings(); //So you can disable/enable things in the txt files without having to reload the server
+        String temp2 = "<" + player.getColor() + player.getName()  +  Colors.White +"> "; //Copies the formatting of id.java
+        String adminchat = Colors.DarkPurple + "{" + player.getColor() + player.getName()  +  Colors.DarkPurple +"}" + Colors.White + " "; //Special formatting for adminchat
         String message2 = ""; //Used for greentext and FFF
         String check = temp2+message; //Calculates how long your message will be including your name in the equation, this prevents minecraft clients from crashing when a color code is inserted after a linebreak
         if (settings.getInstance().adminchat()&&message.startsWith("@") && (player.isInGroup("mods") || player.isInGroup("admins") || player.isInGroup("superadmins"))) {
@@ -44,11 +41,10 @@ public class vminecraft extends Plugin {
                                 p.sendMessage(adminchat+blaa);
                            }
                         }
-                        //where logs used to be
                                                 }
                                 }       
                     }
-            log.log(Level.INFO, "@"+adminchat+message);
+            log.log(Level.INFO, "@"+temp2+message); //So you can read adminchat from the server console
             return true;
       }
         //Greentext
@@ -96,7 +92,7 @@ public class vminecraft extends Plugin {
         if(!player.canUseCommand(split[0])) {
            return false;
         }
-        //Replace id's /tp with my own so you can't tele to higher ranked players
+        //Replacement for /tp
         if(split[0].equalsIgnoreCase("/tp")) {
             {
                 if (split.length < 2) {
@@ -126,7 +122,7 @@ public class vminecraft extends Plugin {
                 }
             }
         }
-        //Same thing as my changes to /tp
+        //Replacement for /tphere
         if ((split[0].equalsIgnoreCase("/tphere") || split[0].equalsIgnoreCase("/s"))) {
                 if (split.length < 2) {
                     player.sendMessage(Colors.Rose + "Correct usage is: /tphere [player]");
@@ -151,23 +147,23 @@ public class vminecraft extends Plugin {
                     player.sendMessage(Colors.Rose + "Can't find user " + split[1] + ".");
                 }
         }
-        //Temporary fix, this will still go off if you enter anything for split[1] I need to make it so split[1] is the same name as a real player
+        //Global messages that should only parse when a command can be successful
         if(split[0].equalsIgnoreCase("/kick")) {
-            if (split[1] != null){
-            other.gmsg(player.getColor()+player.getName()+Colors.Blue+" used kick.");
-            other.gmsg(Colors.Red+split[1]+" was the target.");
+            Player playerTarget = etc.getServer().matchPlayer(split[1]);
+            if (playerTarget != null && !playerTarget.hasControlOver(player)) {
+            other.gmsg(player.getColor()+player.getName()+Colors.Blue+" has kicked "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
             }
         }
         if(split[0].equalsIgnoreCase("/ban")) {
-            if (split[1] != null){
-            other.gmsg(player.getColor()+player.getName()+Colors.Blue+" used ban.");
-            other.gmsg(Colors.Red+split[1]+" was the target.");
+            Player playerTarget = etc.getServer().matchPlayer(split[1]);
+            if (playerTarget != null && !playerTarget.hasControlOver(player)) {
+            other.gmsg(player.getColor()+player.getName()+Colors.Blue+" has banned "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
             }
         }
         if(split[0].equalsIgnoreCase("/ipban")) {
-            if (split[1] != null){
-            other.gmsg(player.getColor()+player.getName()+Colors.Blue+" used IP ban.");
-            other.gmsg(Colors.Red+split[1]+" was the target.");
+            Player playerTarget = etc.getServer().matchPlayer(split[1]);
+            if (playerTarget != null && !playerTarget.hasControlOver(player)) {
+            other.gmsg(player.getColor()+player.getName()+Colors.Blue+" has IP banned "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
             }
         }
         if(split[0].equalsIgnoreCase("/time")) {
@@ -176,16 +172,11 @@ public class vminecraft extends Plugin {
                 return false;
             }
         }
-
         //Rules
         if(split[0].equalsIgnoreCase("/rules")) {
-           etc.getInstance().addCommand("/rules", "Displays the rules");
-           player.sendMessage(Colors.Blue + "Rules");
-           player.sendMessage(Colors.Blue+"#1:No griefing");
-           player.sendMessage(Colors.Blue+"#2:Don't spam night/day changes");
-           player.sendMessage(Colors.Blue+"#3:Don't beg for items that you could easily gather");
-           player.sendMessage(Colors.Blue+"#4:Don't steal from another players chest");
-           player.sendMessage(Colors.Blue+"#5:The admins word is final");
+           for (String str : settings.getInstance().getRules()) {
+           player.sendMessage(Colors.Blue+str);
+            }
            return true;
         }
         //Fabulous
@@ -193,7 +184,6 @@ public class vminecraft extends Plugin {
                     if (split.length == 1) {return false;}
                     String temp = "";
                     String str = "";
-                    //str = paramString.substring(paramString.indexOf(" ")).trim();
                     str = etc.combineSplit(1, split, " ");
                     String temp2 = "<" + player.getName()  + "> "+str;
                     String[] rainbow = new String[] {Colors.Red, Colors.Rose, Colors.Yellow, Colors.Green, Colors.Blue, Colors.LightPurple, Colors.Purple};
@@ -321,11 +311,10 @@ public class vminecraft extends Plugin {
 	log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
         return true;
 }
-          //Whois will display info about a player
+         //Whois will display info about a player
          if (settings.getInstance().cmdWhoIs()&&split[0].equalsIgnoreCase("/whois")) {
-                             if (split.length < 2) {
+            if (split.length < 2) {
                     player.sendMessage(Colors.Rose + "Usage is /whois [player]");
-                    //This part of the code might not be working right now
             }
             String admin ="";
             String group ="";
@@ -363,44 +352,33 @@ public class vminecraft extends Plugin {
                     }else{
                         group = "Default";
                         }
-                    //Main
+                    //Displaying the information
                     player.sendMessage(Colors.Blue + "Whois results for "+split[1]+".");
-                    //Info for group
+                    //Group
                     player.sendMessage(Colors.Blue + "Group: "+group);
-                    //info for admin
+                    //Admin
                     player.sendMessage(Colors.Blue+"Admin: "+admin);
-                    //Info for IP
+                    //IP
                     player.sendMessage(Colors.Blue+"IP: "+IP);
-                    //Info on restrictions
+                    //Restrictions
                     player.sendMessage(Colors.Blue+"Can ignore restrictions: "+ignore);
                     return true;
         } else {
                         player.sendMessage(Colors.Rose+"Player not found.");
             }
-
-        } if (split[0].equalsIgnoreCase("/say")) {
+        }
+        //Say
+        if (split[0].equalsIgnoreCase("/say")) {
                       String sayan;
                       sayan = etc.combineSplit(1, split, " ");
                       other.gmsg(Colors.Yellow+sayan);
-                      //Should make a global message to all players
                   }
-         else {
+        //Should this be included?
+        else {
             return false;
-        }
+               }
+        //Needs to be included
         return true;
-    }
-
-    public void onKick(Player player, String reason)
-    {
-        //other.gmsg(Colors.Red+player.getColor()+player.getName()+Colors.Red+" was kicked.");
-    }
-    public void onIpBan(Player player, String reason)
-    {
-        //other.gmsg(Colors.Red+player.getColor()+player.getName()+Colors.Red+" was IP banned.");
-    }
-    public void onBan(Player player, String reason)
-    {
-        //other.gmsg(Colors.Red+player.getColor()+player.getName()+Colors.Red+" was banned.");
     }
 
     //Calculates how long the specified String is to prevent linebreaks when using scripts that insert color codes, designed to be used with playername included

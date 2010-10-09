@@ -1,10 +1,9 @@
-//This doesn't do anything yet, eventually you will be able to toggle features by writing true or false in vminecraft-config.txt
-//This is high up on my priority list
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.minecraft.server.MinecraftServer;
+
 public class settings {
 	private final static Object syncLock = new Object();
         protected static final Logger log = Logger.getLogger("Minecraft");
@@ -20,15 +19,27 @@ public class settings {
         private boolean cmdWhoIs = false;
         private PropertiesFile properties;
 	String file = "vminecraft.properties";
-	//Unfinished was interrupted in the middle of making this shit, where we can triggle toggles in a text file for commands
-        //example return true for greentext=true in vminecraft.properties file would disable that code
+        public String rules[] = null;
 
-
+public void rules() {
+    try{
+       rules = properties.getString("rules", "Rules@#1: No griefing").split("@");
+    }
+    catch (Exception e) {
+        log.log(Level.SEVERE, "Vminecraft: "+ e.getMessage() );
+        rules = new String[]{"Rules@#1: No griefing"};
+    }
+}
 	public  void loadSettings()
-	{
+	//Will create a file if it doesn't exist
+        {
+            if (properties == null) {
+            properties = new PropertiesFile("vminecraft.properties");
+        } else {
+            properties.load();
+        }
 		try{
-
-                        Scanner scanner = new Scanner(new File(file));
+                    Scanner scanner = new Scanner(new File(file));
                         while (scanner.hasNextLine()) {
                             String line  = scanner.nextLine();
                             if( line.startsWith("#") || line.equals(""))
@@ -103,7 +114,9 @@ public class settings {
                         }
                         scanner.close();
                 }
-                catch (Exception e) {log.log(Level.SEVERE, "Oh shi-: "+ e.getMessage() );}
+                catch (Exception e) {
+                    log.log(Level.SEVERE, "Vminecraft: "+ e.getMessage() );
+                }
 
 	}
 
@@ -123,5 +136,9 @@ public class settings {
 
         return instance;
     }
-		
+        //Will return the rules
+        public String[] getRules() {
+        return rules;
+    }
+
 }

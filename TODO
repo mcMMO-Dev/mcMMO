@@ -1,12 +1,11 @@
 TODO:
-Improve logging
 Fix existing bugs in /promote and /demote
 Add toggles to all features
-If vminecraft.properties doesn't exist make it be written
-Makes /rules use a txt file
-Refine messages when admins use commands
-/whois doesn't update when someone's group is changed
-Improve my comments on vminecraft.java
+If vminecraft.properties doesn't exist make it be written and include default settings
+Refine messages when admins use commands --Ready for testing
+Change loading to happen when the plugin loads instead of having to wait for a player to speak
+Change everything else in settings to be a string like rules instead of booleans
 
 Ideas:
 Mass teleport command
+A personal muting system for players
