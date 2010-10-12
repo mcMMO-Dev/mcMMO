@@ -83,6 +83,21 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
         if(!player.canUseCommand(split[0])) {
            return false;
         }
+        if(settings.getInstance().cmdMasstp() && split[0].equalsIgnoreCase("/masstp")) {
+            etc.getInstance().addCommand("/masstp", "Teleports those with lower permissions to you");
+            if (split.length < 2) {
+                    player.sendMessage(Colors.Rose + "Correct usage is: /masstp group");
+                    return true;
+                }
+            
+            for (Player p : etc.getServer().getPlayerList()) {
+            if (!p.hasControlOver(player)) {
+                p.teleportTo(player);
+            }
+            player.sendMessage("Summoning successful.");
+        }
+
+        }
         //Replacement for /tp
         if(settings.getInstance().cmdTp() && split[0].equalsIgnoreCase("/tp")) {
             {

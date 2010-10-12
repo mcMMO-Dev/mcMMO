@@ -9,7 +9,7 @@ public class other {
         }
         return gmsg;
     }
-    
+
     public static boolean lengthCheck(String str)
 	{
 		int length = 0;
