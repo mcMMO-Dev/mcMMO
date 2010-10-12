@@ -1,8 +1,7 @@
-import java.io.*;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.minecraft.server.MinecraftServer;
+import java.io.File;
+import java.io.FileWriter;
 
 public class settings {
 	private final static Object syncLock = new Object();
@@ -26,143 +25,39 @@ public class settings {
 	String file = "vminecraft.properties";
         public String rules[] = null;
 
-public void rules() {
-    try{
-       rules = properties.getString("rules", "Rules@#1: No griefing").split("@");
-    }
-    catch (Exception e) {
-        log.log(Level.SEVERE, "Vminecraft: "+ e.getMessage() );
-        rules = new String[]{"Rules@#1: No griefing"};
-    }
-}
-	public  void loadSettings()
-	//Will create a file if it doesn't exist
-        {
-            if (properties == null) {
-            properties = new PropertiesFile("vminecraft.properties");
-        } else {
-            properties.load();
-        }
-		try{
-                    Scanner scanner = new Scanner(new File(file));
-                        while (scanner.hasNextLine()) {
-                            String line  = scanner.nextLine();
-                            if( line.startsWith("#") || line.equals(""))
-                            {
-                                continue;
-                            }
-                            String[] split = line.split("=");
-                            if(split[0].equalsIgnoreCase("adminchat"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    adminChat = true;
-                                }
-                                   else adminChat = false;
-                            }
-                            if(split[0].equalsIgnoreCase("cmdTp"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    cmdTp = true;
-                                }
-                                   else cmdTp = false;
-                            }
-                            if(split[0].equalsIgnoreCase("cmdTphere"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    cmdTphere = true;
-                                }
-                                   else cmdTphere = false;
-                            }
-                            if(split[0].equalsIgnoreCase("globalmessages"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    globalmessages = true;
-                                }
-                                   else globalmessages = false;
-                            }
-                            if(split[0].equalsIgnoreCase("cmdSay"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    cmdSay = true;
-                                }
-                                   else cmdSay = false;
-                            }
-                            if(split[0].equalsIgnoreCase("cmdRules"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    cmdRules = true;
-                                }
-                                   else cmdRules = false;
-                            }
-                            if(split[0].equalsIgnoreCase("Greentext"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    greentext = true;
-                                }
-                                   else greentext = false;
-                            }
-                            if(split[0].equalsIgnoreCase("FFF"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    FFF = true;
-                                }
-                                   else FFF = false;
-                            }
-                            if(split[0].equalsIgnoreCase("QuakeColors"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    quakeColors = true;
-                                }
-                                   else quakeColors = false;
-                            }
-                            if(split[0].equalsIgnoreCase("cmdFabulous"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    cmdFabulous = true;
-                                }
-                                   else cmdFabulous = false;
-                            }
-                            if(split[0].equalsIgnoreCase("cmdPromote"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    cmdPromote = true;
-                                }
-                                   else cmdPromote = false;
-                            }
-                            if(split[0].equalsIgnoreCase("cmdDemote"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    cmdDemote = true;
-                                }
-                                   else cmdDemote = false;
-                            }
-                            if(split[0].equalsIgnoreCase("cmdWhoIs"))
-                            {
-                                if(split[1].equalsIgnoreCase("true"))
-                                {
-                                    cmdWhoIs = true;
-                                }
-                                   else cmdWhoIs = false;
-                            }
-                        }
-                        scanner.close();
-                }
-                catch (Exception e) {
-                    log.log(Level.SEVERE, "Vminecraft: "+ e.getMessage() );
-                }
 
+	public void loadSettings()
+        {
+
+            if(properties == null)
+            {
+                properties = new PropertiesFile("vminecraft.properties");
+            } else {
+                properties.load();
+            }
+
+            try {
+                adminChat = properties.getBoolean("adminchat",true);
+                greentext = properties.getBoolean("greentext",true);
+                FFF = properties.getBoolean("FFF",true);
+                quakeColors = properties.getBoolean("quakeColors",true);
+                cmdFabulous = properties.getBoolean("cmdFabulous",true);
+                cmdPromote = properties.getBoolean("cmdPromote",true);
+                cmdDemote = properties.getBoolean("cmdDemote",true);
+                cmdWhoIs = properties.getBoolean("cmdWhoIs",true);
+                cmdRules = properties.getBoolean("cmdRules",true);
+                cmdTp = properties.getBoolean("cmdTp",true);
+                cmdTphere = properties.getBoolean("cmdTphere",true);
+                globalmessages = properties.getBoolean("globalmessages",true);
+                cmdSay = properties.getBoolean("cmdSay",true);
+                rules = properties.getString("rules", "").split("@");
+                id.a.log(Level.INFO, "vminecraft plugin successfully loaded");
+
+            }
+            catch (Exception e)
+            {
+                log.log(Level.SEVERE, "vminecraft Error: ERROR LOADING PROPERTIES FILE");
+            }
 	}
 
         public boolean adminchat() {return adminChat;}

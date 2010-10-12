@@ -1,29 +1,18 @@
-//This is where the bulk of the plugin is
-import java.util.Locale;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-public class vminecraft extends Plugin {
-    @Override
-    public void disable() {
-        //I have to include this to compile, not sure why.
+//Vminecraft plugin by nossr50 & TrapAlice
+import java.util.logging.Level; //Need this to use LEVEL.INFO etc
+    
+    public class vminecraftListener extends PluginListener {
+
+        public void disable() {
+            id.a.log(Level.INFO, "vminecraft disabled");
     }
 
-    @Override
     public void enable() {
-        //I have to include this to compile, not sure why.
+        settings.getInstance().loadSettings(); //Load the settings files
+        id.a.log(Level.INFO, "vminecraft enabled");
     }
-    static final Logger log = Logger.getLogger("Minecraft");
 
-    @Override
-    public void onLogin(Player player)
-    {
-        settings.getInstance().rules();
-        settings.getInstance().loadSettings();
-    }
-    private String rules[];
     public boolean onChat(Player player, String message){
-        settings.getInstance().rules();
-        settings.getInstance().loadSettings(); //So you can disable/enable things in the txt files without having to reload the server
         String temp2 = "<" + player.getColor() + player.getName()  +  Colors.White +"> "; //Copies the formatting of id.java
         String adminchat = Colors.DarkPurple + "{" + player.getColor() + player.getName()  +  Colors.DarkPurple +"}" + Colors.White + " "; //Special formatting for adminchat
         String message2 = ""; //Used for greentext and FFF
@@ -42,17 +31,18 @@ public class vminecraft extends Plugin {
                            }
                         }
                                                 }
-                                }       
+                                }
                     }
-            log.log(Level.INFO, "@"+temp2+message); //So you can read adminchat from the server console
+            id.a.log(Level.INFO, "@"+temp2+message); //So you can read adminchat from the server console
             return true;
+
       }
         //Greentext
         if (settings.getInstance().greentext()&&message.startsWith(">")) {
             id.a.log(Level.INFO, "<"+player.getName()+"> "+message);
             message = Colors.LightGreen + message;
             message2 = temp2 + message;
-            other.gmsg(message2);            
+            other.gmsg(message2);
             return true;
         }
         //FFF
@@ -60,35 +50,36 @@ public class vminecraft extends Plugin {
             id.a.log(Level.INFO, "<"+player.getName()+"> "+message);
             message = Colors.Red + message;
             message2 = temp2 + message;
-            other.gmsg(message2);            
+            other.gmsg(message2);
             return true;
         }
         //QuakeColors
-        if(settings.getInstance().quakeColors()&&message.length()>2 && lengthCheck(check)) {
+        if(settings.getInstance().quakeColors()&&message.length()>2 && other.lengthCheck(check)) {
 			String temp = "";
 			for(int x = 0; x< message.length(); x++)
 			{
 				if(message.charAt(x)=='^'&&x!=message.length()-1)
 				{
-					temp+=colorChange(message.charAt(x+1));
+					temp+=other.colorChange(message.charAt(x+1));
 					x+=1;
 				}
 				else{
 					temp+=message.charAt(x);
 				}
 			}
-                        log.log(Level.INFO, "<"+player.getName()+"> "+message);
+                        id.a.log(Level.INFO, "<"+player.getName()+"> "+message);
 			message = temp2 + temp + " ";
                         for (Player p : etc.getServer().getPlayerList()) {
                                 if (p != null) {
-                                     other.gmsg(message);                                     
+                                     other.gmsg(message);
                                      return true;
                                 }
-                            }                                                
+                            }
 		}
         return false;
     }
-    public boolean onCommand(Player player, String[] split) {
+
+        public boolean onCommand(Player player, String[] split) {
         if(!player.canUseCommand(split[0])) {
            return false;
         }
@@ -113,7 +104,7 @@ public class vminecraft extends Plugin {
                 }
 
                 if (playerTarget != null) {
-                    log.log(Level.INFO, player.getName() + " teleported to " + playerTarget.getName());
+                    id.a.log(Level.INFO, player.getName() + " teleported to " + playerTarget.getName());
                     player.teleportTo(playerTarget);
                     return true;
                 } else {
@@ -128,9 +119,9 @@ public class vminecraft extends Plugin {
                     player.sendMessage(Colors.Rose + "Correct usage is: /tphere [player]");
                     return true;
                 }
-                
+
                 Player playerTarget = etc.getServer().matchPlayer(split[1]);
-                
+
                 if (!player.hasControlOver(playerTarget)) {
                     player.sendMessage(Colors.Red + "That player has higher permissions than you.");
                     return true;
@@ -141,7 +132,7 @@ public class vminecraft extends Plugin {
                 }
 
                 if (playerTarget != null) {
-                    log.log(Level.INFO, player.getName() + " teleported " + player.getName() + " to their self.");
+                    id.a.log(Level.INFO, player.getName() + " teleported " + player.getName() + " to their self.");
                     playerTarget.teleportTo(player);
                 } else {
                     player.sendMessage(Colors.Rose + "Can't find user " + split[1] + ".");
@@ -172,6 +163,11 @@ public class vminecraft extends Plugin {
                 return false;
             }
         }
+        //Should only reload vminecraft settings if the player is able to use /reload
+        if(split[0].equalsIgnoreCase("/reload") && player.canUseCommand("/reload")) {
+            settings.getInstance().loadSettings();
+            return false;
+        }
         //Rules
         if(settings.getInstance().cmdRules() && split[0].equalsIgnoreCase("/rules")) {
            etc.getInstance().addCommand("/rules", "Displays the rules");
@@ -190,9 +186,9 @@ public class vminecraft extends Plugin {
                     String temp2 = "<" + player.getName()  + "> "+str;
                     String[] rainbow = new String[] {Colors.Red, Colors.Rose, Colors.Yellow, Colors.Green, Colors.Blue, Colors.LightPurple, Colors.Purple};
                     int counter=0;
-                    if(lengthCheck(temp2))
+                    if(other.lengthCheck(temp2))
                     {
-                           id.a.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
+                    id.a.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
                     for(int x=0; x<str.length(); x++)
                     {
                             temp+=rainbow[counter]+str.charAt(x);
@@ -203,8 +199,9 @@ public class vminecraft extends Plugin {
                     }
                     str = temp+" ";
                     String message = "<" + player.getColor() + player.getName() + Colors.White + "> " + str;
-                            
+
                             other.gmsg(message);
+                            return true;
                     } else {
                             player.sendMessage(Colors.Rose + "Message is too long");
                     }
@@ -215,10 +212,11 @@ public class vminecraft extends Plugin {
 	if(split.length != 2)
 	{
 		player.sendMessage(Colors.Rose + "Usage is /promote [Player]");
+
 	}
 
 	Player playerTarget = null;
-
+        if(split.length==2){
 	for( Player p : etc.getServer().getPlayerList())
 	{
 		if (p.getName().equalsIgnoreCase(split[1]))
@@ -229,25 +227,31 @@ public class vminecraft extends Plugin {
 
 	if( playerTarget!=null)
 	{
-		if(playerTarget.isInGroup("admins"))
+            String playerTargetGroup[] = playerTarget.getGroups();
+            String playerGroup[] = player.getGroups();
+            player.sendMessage("Debug data:");
+            player.sendMessage("PlayerTarget: "+playerTargetGroup[0]);
+            player.sendMessage("Player: "+playerGroup[0]);
+		if(playerTargetGroup[0].equals("admins"))
 		{
 			player.sendMessage(Colors.Rose + "You can not promote " + split[1] + " any higher.");
 		}
-		if(playerTarget.isInGroup("mods") && (player.isInGroup("superadmins")))
+		if(playerTargetGroup[0].equals("mods") && (playerGroup[0].equals("owner")))
 		{
 			playerTarget.setGroups(ranks.Admins);
 			etc.getInstance().getDataSource().modifyPlayer(playerTarget);
 			String message = Colors.Yellow + split[1] + " was promoted to" + Colors.Rose + " Admin";
 			other.gmsg(message);
 		}
-		else if (playerTarget.isInGroup("trusted") && (player.isInGroup("admins") || player.isInGroup("superadmins")))
+		else if (playerTargetGroup[0].equals("trusted") && (playerGroup[0].equals("admins") || playerGroup[0].equals("owner")))
 		{
 			playerTarget.setGroups(ranks.Mods);
+                        playerTargetGroup[0]="Mods";
 			etc.getInstance().getDataSource().modifyPlayer(playerTarget);
 			String message = Colors.Yellow + split[1] + " was promoted to" + Colors.DarkPurple + " Mod";
 			other.gmsg(message);
 		}
-		else if (playerTarget.isInGroup("default") && (player.isInGroup("mods") || player.isInGroup("admins") || player.isInGroup("superadmins")))
+		else if (playerTargetGroup[0].equals("default") && (playerGroup[0].equals("mods") || playerGroup[0].equals("admins") || player.isInGroup("owner")))
 		{
 			playerTarget.setGroups(ranks.Trusted);
                         etc.getInstance().getDataSource().modifyPlayer(playerTarget);
@@ -259,8 +263,9 @@ public class vminecraft extends Plugin {
 	else{
 		player.sendMessage(Colors.Rose + "Player not found");
 	}
-	log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
+	id.a.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
 }
+        }
         //Demote
                 if (settings.getInstance().cmdPromote() && split[0].equalsIgnoreCase("/promote"))
 {
@@ -310,7 +315,7 @@ public class vminecraft extends Plugin {
 	else{
 		player.sendMessage(Colors.Rose + "Player not found");
 	}
-	log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
+	id.a.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
         return true;
 }
          //Whois will display info about a player
@@ -331,7 +336,7 @@ public class vminecraft extends Plugin {
 		}
 	}
         if (playerTarget != null){
-                    
+
                     IP = playerTarget.getIP();
                     if (playerTarget.canIgnoreRestrictions()) {
                         ignore = "True";
@@ -377,124 +382,8 @@ public class vminecraft extends Plugin {
         //Needs to be included
         return true;
     }
-
-    //Calculates how long the specified String is to prevent linebreaks when using scripts that insert color codes, designed to be used with playername included
-    private boolean lengthCheck(String str)
-	{
-		int length = 0;
-		for(int x = 0; x<str.length(); x++)
-		{
-			if("i;,.:|!".indexOf(str.charAt(x)) != -1)
-			{
-				length+=2;
-			}
-			else if("l'".indexOf(str.charAt(x)) != -1)
-			{
-				length+=3;
-			}
-			else if("tI[]".indexOf(str.charAt(x)) != -1)
-			{
-				length+=4;
-			}
-			else if("kf{}<>\"*()".indexOf(str.charAt(x)) != -1)
-			{
-				length+=5;
-			}
-			else if("hequcbrownxjmpsvazydgTHEQUCKBROWNFXJMPSVLAZYDG1234567890#\\/?$%-=_+&".indexOf(str.charAt(x)) != -1)
-			{
-				length+=6;
-			}
-			else if("@~".indexOf(str.charAt(x)) != -1)
-			{
-				length+=7;
-			}
-			else if(str.charAt(x)==' ')
-			{
-				length+=4;
-			}
-		}
-		if(length<=316)
-		{
-			return true;
-		} else { return false; }
-
-	}
-    //QuakeColors Part 2
-    private String colorChange(char colour)
-	{
-		String color = "";
-		switch(colour)
-		{
-			case '0':
-				color = Colors.Black;
-				break;
-			case '1':
-				color = Colors.Navy;
-				break;
-			case '2':
-				color = Colors.Green;
-				break;
-			case '3':
-				color = Colors.Blue;
-				break;
-			case '4':
-				color = Colors.Red;
-				break;
-			case '5':
-				color = Colors.Purple;
-				break;
-			case '6':
-				color = Colors.Gold;
-				break;
-			case '7':
-				color = Colors.LightGray;
-				break;
-			case '8':
-				color = Colors.Gray;
-				break;
-			case '9':
-				color = Colors.DarkPurple;
-				break;
-			case 'a':
-				color = Colors.LightGreen;
-				break;
-			case 'b':
-				color = Colors.LightBlue;
-				break;
-			case 'c':
-				color = Colors.Rose;
-				break;
-			case 'd':
-				color = Colors.LightPurple;
-				break;
-			case 'e':
-				color = Colors.Yellow;
-				break;
-			case 'f':
-				color = Colors.White;
-				break;
-			case 'A':
-				color = Colors.LightGreen;
-				break;
-			case 'B':
-				color = Colors.LightBlue;
-				break;
-			case 'C':
-				color = Colors.Rose;
-				break;
-			case 'D':
-				color = Colors.LightPurple;
-				break;
-			case 'E':
-				color = Colors.Yellow;
-				break;
-			case 'F':
-				color = Colors.White;
-				break;
-			default:
-				color = Colors.White;
-				break;
-		}
-		return color;
-	}
-}
+        //Temporary until I can figure out how to make my plugin load on startup
+        public void onLogin(Player player) {
+        settings.getInstance().loadSettings();
+        }
+    }
