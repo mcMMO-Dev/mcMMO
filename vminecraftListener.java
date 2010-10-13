@@ -17,15 +17,15 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
         String adminchat = Colors.DarkPurple + "{" + player.getColor() + player.getName()  +  Colors.DarkPurple +"}" + Colors.White + " "; //Special formatting for adminchat
         String message2 = ""; //Used for greentext and FFF
         String check = temp2+message; //Calculates how long your message will be including your name in the equation, this prevents minecraft clients from crashing when a color code is inserted after a linebreak
-        if (settings.getInstance().adminchat()&&message.startsWith("@") && (player.isAdmin())) {
+        if (settings.getInstance().adminchat()&&message.startsWith("@") && (player.isAdmin() || player.canUseCommand("/adminchat"))) {
             for (Player p : etc.getServer().getPlayerList()) {
                                         String blaa = "";
                 if (p != null) {
-                    if (player.isAdmin()) {
+                    if (player.isAdmin() || player.canUseCommand("/adminchat")) {
                         for ( int x = 1; x< message.length(); x++) {
                         blaa+=message.charAt(x);
                         }
-                        if (p.isAdmin()){
+                        if (p.isAdmin() || player.canUseCommand("/adminchat")){
                         if (p != null) {
                                 p.sendMessage(adminchat+blaa);
                            }
@@ -83,20 +83,14 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
         if(!player.canUseCommand(split[0])) {
            return false;
         }
-        if(settings.getInstance().cmdMasstp() && split[0].equalsIgnoreCase("/masstp")) {
-            etc.getInstance().addCommand("/masstp", "Teleports those with lower permissions to you");
-            if (split.length < 2) {
-                    player.sendMessage(Colors.Rose + "Correct usage is: /masstp group");
-                    return true;
-                }
-            
+        if(settings.getInstance().cmdMasstp() && split[0].equalsIgnoreCase("/masstp")) {                        
             for (Player p : etc.getServer().getPlayerList()) {
             if (!p.hasControlOver(player)) {
                 p.teleportTo(player);
             }
-            player.sendMessage("Summoning successful.");
+            
         }
-
+            player.sendMessage(Colors.Blue+"Summoning successful.");
         }
         //Replacement for /tp
         if(settings.getInstance().cmdTp() && split[0].equalsIgnoreCase("/tp")) {
@@ -184,16 +178,14 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
             return false;
         }
         //Rules
-        if(settings.getInstance().cmdRules() && split[0].equalsIgnoreCase("/rules")) {
-           etc.getInstance().addCommand("/rules", "Displays the rules");
+        if(settings.getInstance().cmdRules() && split[0].equalsIgnoreCase("/rules")) {           
            for (String str : settings.getInstance().getRules()) {
            player.sendMessage(Colors.Blue+str);
             }
            return true;
         }
         //Fabulous
-        if(split[0].equalsIgnoreCase("/fabulous") && settings.getInstance().cmdFabulous()) {
-                    etc.getInstance().addCommand("/fabulous", "makes text SUUUPER");
+        if(split[0].equalsIgnoreCase("/fabulous") && settings.getInstance().cmdFabulous()) {                    
                     if (split.length == 1) {return false;}
                     String temp = "";
                     String str = "";
@@ -222,6 +214,7 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
                     }
                     return true;
                 }
+        /*
         //Promote
         if (settings.getInstance().cmdPromote() && split[0].equalsIgnoreCase("/promote")) {
 	if(split.length != 2)
@@ -333,9 +326,10 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
 	id.a.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
         return true;
 }
+         * 
+         */
          //Whois will display info about a player
-         if (settings.getInstance().cmdWhoIs() && split[0].equalsIgnoreCase("/whois")) {
-            etc.getInstance().addCommand("/whois", "/whois [user]");
+         if (settings.getInstance().cmdWhoIs() && split[0].equalsIgnoreCase("/whois")) {            
             if (split.length < 2) {
                     player.sendMessage(Colors.Rose + "Usage is /whois [player]");
             }
@@ -396,9 +390,5 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
                }
         //Needs to be included
         return true;
-    }
-        //Temporary until I can figure out how to make my plugin load on startup
-        public void onLogin(Player player) {
-        settings.getInstance().loadSettings();
         }
     }

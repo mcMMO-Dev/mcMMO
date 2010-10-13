@@ -26,13 +26,12 @@ public class settings {
 	String file = "vminecraft.properties";
         public String rules[] = null;
 
-
 	public void loadSettings()
         {
 
             if(properties == null)
             {
-                String location = etc.getInstance().getUsersLocation();
+                String location = "vminecraft.properties";
                 properties = new PropertiesFile("vminecraft.properties");
                 FileWriter writer = null;
             try {
@@ -54,7 +53,7 @@ public class settings {
                 writer.write("globalmessages=true\r\n");
                 writer.write("FFF=true\r\n");
                 writer.write("adminchat=true\r\n");
-                writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");     
+                writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
             } catch (Exception e) {
                 log.log(Level.SEVERE, "Exception while creating " + location, e);
             } finally {

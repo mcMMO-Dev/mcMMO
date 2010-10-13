@@ -8,6 +8,11 @@ public class vminecraftPlugin extends Plugin {
 
     public void enable() {
         //If we had commands we would add them here.
+        etc.getInstance().addCommand("/masstp", "Teleports those with lower permissions to you");
+        etc.getInstance().addCommand("/rules", "Displays the rules");
+        etc.getInstance().addCommand("/fabulous", "makes text SUUUPER");
+        etc.getInstance().addCommand("/whois", "/whois [user]");
+        settings.getInstance().loadSettings(); //Hopefully this will make the plugin load right away
     }
 
     public void disable() {
