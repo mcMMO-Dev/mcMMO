@@ -21,11 +21,11 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
             for (Player p : etc.getServer().getPlayerList()) {
                                         String blaa = "";
                 if (p != null) {
-                    if (player.isAdmin() || player.canUseCommand("/adminchat")) {
+                    if (p.isAdmin() || (p.canUseCommand("/adminchat"))) {
                         for ( int x = 1; x< message.length(); x++) {
                         blaa+=message.charAt(x);
                         }
-                        if (p.isAdmin() || player.canUseCommand("/adminchat")){
+                        if (p.isAdmin() || (p.canUseCommand("/adminchat"))){
                         if (p != null) {
                                 p.sendMessage(adminchat+blaa);
                            }
