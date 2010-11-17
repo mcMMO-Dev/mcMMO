@@ -1,15 +1,16 @@
 //Vminecraft plugin by nossr50 & TrapAlice
-import java.util.logging.Level; //Need this to use LEVEL.INFO etc
+import java.util.logging.Level;
+import java.util.logging.Logger;
     
     public class vminecraftListener extends PluginListener {
-
+    protected static final Logger log = Logger.getLogger("Minecraft");
         public void disable() {
-            id.a.log(Level.INFO, "vminecraft disabled");
+            log.log(Level.INFO, "vminecraft disabled");
     }
 
     public void enable() {
         settings.getInstance().loadSettings(); //Load the settings files
-        id.a.log(Level.INFO, "vminecraft enabled");
+        log.log(Level.INFO, "vminecraft enabled");
     }
 
     public boolean onChat(Player player, String message){
@@ -33,13 +34,13 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
                                                 }
                                 }
                     }
-            id.a.log(Level.INFO, "@"+temp2+message); //So you can read adminchat from the server console
+            log.log(Level.INFO, "@"+temp2+message); //So you can read adminchat from the server console
             return true;
 
       }
         //Greentext
         if (settings.getInstance().greentext()&&message.startsWith(">")) {
-            id.a.log(Level.INFO, "<"+player.getName()+"> "+message);
+            log.log(Level.INFO, "<"+player.getName()+"> "+message);
             message = Colors.LightGreen + message;
             message2 = temp2 + message;
             other.gmsg(message2);
@@ -47,7 +48,7 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
         }
         //FFF
         if (settings.getInstance().FFF()&&message.startsWith("FFF")) {
-            id.a.log(Level.INFO, "<"+player.getName()+"> "+message);
+            log.log(Level.INFO, "<"+player.getName()+"> "+message);
             message = Colors.Red + message;
             message2 = temp2 + message;
             other.gmsg(message2);
@@ -67,7 +68,7 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
 					temp+=message.charAt(x);
 				}
 			}
-                        id.a.log(Level.INFO, "<"+player.getName()+"> "+message);
+                        log.log(Level.INFO, "<"+player.getName()+"> "+message);
 			message = temp2 + temp + " ";
                         for (Player p : etc.getServer().getPlayerList()) {
                                 if (p != null) {
@@ -113,7 +114,7 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
                 }
 
                 if (playerTarget != null) {
-                    id.a.log(Level.INFO, player.getName() + " teleported to " + playerTarget.getName());
+                    log.log(Level.INFO, player.getName() + " teleported to " + playerTarget.getName());
                     player.teleportTo(playerTarget);
                     return true;
                 } else {
@@ -141,7 +142,7 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
                 }
 
                 if (playerTarget != null) {
-                    id.a.log(Level.INFO, player.getName() + " teleported " + player.getName() + " to their self.");
+                    log.log(Level.INFO, player.getName() + " teleported " + player.getName() + " to their self.");
                     playerTarget.teleportTo(player);
                 } else {
                     player.sendMessage(Colors.Rose + "Can't find user " + split[1] + ".");
@@ -195,7 +196,7 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
                     int counter=0;
                     if(other.lengthCheck(temp2))
                     {
-                    id.a.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
+                    log.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
                     for(int x=0; x<str.length(); x++)
                     {
                             temp+=rainbow[counter]+str.charAt(x);
@@ -271,7 +272,7 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
 	else{
 		player.sendMessage(Colors.Rose + "Player not found");
 	}
-	id.a.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
+	log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
 }
         }
         //Demote
@@ -323,7 +324,7 @@ import java.util.logging.Level; //Need this to use LEVEL.INFO etc
 	else{
 		player.sendMessage(Colors.Rose + "Player not found");
 	}
-	id.a.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
+	log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
         return true;
 }
          * 

@@ -1,5 +1,4 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,8 +27,8 @@ public class settings {
 
 	public void loadSettings()
         {
-
-            if(properties == null)
+            File theDir = new File("vminecraft.properties");
+            if(!theDir.exists())
             {
                 String location = "vminecraft.properties";
                 properties = new PropertiesFile("vminecraft.properties");
@@ -68,6 +67,7 @@ public class settings {
 
 
             } else {
+                properties = new PropertiesFile("vminecraft.properties");
                 properties.load();
             }
 
@@ -87,7 +87,7 @@ public class settings {
                 globalmessages = properties.getBoolean("globalmessages",true);
                 cmdSay = properties.getBoolean("cmdSay",true);
                 rules = properties.getString("rules", "").split("@");
-                id.a.log(Level.INFO, "vminecraft plugin successfully loaded");
+                log.log(Level.INFO, "vminecraft plugin successfully loaded");
 
             }
             catch (Exception e)
