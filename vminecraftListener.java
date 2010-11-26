@@ -7,12 +7,20 @@ import java.util.logging.Logger;
         public void disable() {
             log.log(Level.INFO, "vminecraft disabled");
     }
+	private ArrayList<String> ezmodo = new ArrayList<String>(); //An array of players currently in ezmodo
 
     public void enable() {
         settings.getInstance().loadSettings(); //Load the settings files
         log.log(Level.INFO, "vminecraft enabled");
     }
-
+	public void onPlayerMove () {
+		if (ezmodo.contains(player.getName())){
+		if (player.getHealth() < 30) 
+						{
+						player.setHealth(30);
+						}
+				     }
+	}
     public boolean onChat(Player player, String message){
         String temp2 = "<" + player.getColor() + player.getName()  +  Colors.White +"> "; //Copies the formatting of id.java
         String adminchat = Colors.DarkPurple + "{" + player.getColor() + player.getName()  +  Colors.DarkPurple +"}" + Colors.White + " "; //Special formatting for adminchat
@@ -93,6 +101,21 @@ import java.util.logging.Logger;
         }
             player.sendMessage(Colors.Blue+"Summoning successful.");
         }
+		//ezmodo
+		if (split[0].equals("/ezmodo")) {
+				if (ezmodo.contains(player.getName())) {
+					player.sendMessage(Colors.Red + "ezmodo = off");
+					ezmodo.remove(ezmodo.indexOf(player.getName()));
+				} else {
+					player.sendMessage(Colors.LightBlue + "eh- maji? ezmodo!?");
+					player.sendMessage(Colors.Rose + "kimo-i");
+					player.sendMessage(Colors.LightBlue + "Easy Mode ga yurusareru no wa shougakusei made dayo ne");
+					player.sendMessage(Colors.Red + "**Laughter**");
+					ezmodo.add(player.getName());
+					player.setHealth(30);
+				}
+				return true;
+			}
         //Replacement for /tp
         if(settings.getInstance().cmdTp() && split[0].equalsIgnoreCase("/tp")) {
             {
