@@ -1,25 +1,36 @@
 //Vminecraft plugin by nossr50 & TrapAlice
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
     
     public class vminecraftListener extends PluginListener {
     protected static final Logger log = Logger.getLogger("Minecraft");
-        public void disable() {
-            log.log(Level.INFO, "vminecraft disabled");
-    }
+
 	private ArrayList<String> ezmodo = new ArrayList<String>(); //An array of players currently in ezmodo
 
-    public void enable() {
+    public void enable() throws IOException {
         settings.getInstance().loadSettings(); //Load the settings files
+        if (etc.getInstance().isHealthEnabled()){
+            etc.getInstance().addCommand("/ezmodo", "Toggle invulnerability");
+        }
         log.log(Level.INFO, "vminecraft enabled");
     }
-	public void onPlayerMove () {
-		if (ezmodo.contains(player.getName())){
-		if (player.getHealth() < 30) 
-						{
-						player.setHealth(30);
-						}
-				     }
+    public void disable() {
+            log.log(Level.INFO, "vminecraft disabled");
+            if (etc.getInstance().isHealthEnabled()) {
+                etc.getInstance().removeCommand("/ezmodo");
+            }
+    }
+
+    public boolean onHealthChange(Player player,int oldValue,int newValue){
+	if (player.getHealth() != 30 && ezmodo.contains(player.getName())) {
+            player.setHealth(30);
+        }
+ else if (settings.getInstance().globalmessages() && player.getHealth() < 1) {
+     other.gmsg(Colors.Gray + player.getName() + " is no more");
+        }
+        return false; 
 	}
     public boolean onChat(Player player, String message){
         String temp2 = "<" + player.getColor() + player.getName()  +  Colors.White +"> "; //Copies the formatting of id.java
@@ -101,11 +112,34 @@ import java.util.logging.Logger;
         }
             player.sendMessage(Colors.Blue+"Summoning successful.");
         }
-		//ezmodo
-		if (split[0].equals("/ezmodo")) {
+        //Disable using /modify to add commands (need to make a boolean settings for this)
+        if(split[0].equals("/modify") && split[2].equals("commands")) {
+            return true;
+        }
+        //ezlist
+            if(settings.getInstance().cmdEzModo() && split[0].equals("/ezlist")) {
+                player.sendMessage("Ezmodo: " + ezmodo);
+                return true;
+            }
+        //slay
+            if(settings.getInstance().cmdEzModo() && split[0].equals("/slay")) {
+                Player playerTarget = etc.getServer().matchPlayer(split[1]);
+                if (!ezmodo.contains(playerTarget.getName())) {
+                    playerTarget.setHealth(0);
+                    other.gmsg(player.getColor() + player.getName() + Colors.LightBlue + " has slain " + playerTarget.getColor() + playerTarget.getName());
+                    return true;
+                }
+            else {
+                    player.sendMessage(Colors.Rose + "That player is currently in ezmodo! Hahahaha");
+                    return true;
+                 }
+           }
+	//ezmodo
+		if (settings.getInstance().cmdEzModo() && split[0].equals("/ezmodo")) {
 				if (ezmodo.contains(player.getName())) {
 					player.sendMessage(Colors.Red + "ezmodo = off");
 					ezmodo.remove(ezmodo.indexOf(player.getName()));
+                                        return true;
 				} else {
 					player.sendMessage(Colors.LightBlue + "eh- maji? ezmodo!?");
 					player.sendMessage(Colors.Rose + "kimo-i");
@@ -113,8 +147,8 @@ import java.util.logging.Logger;
 					player.sendMessage(Colors.Red + "**Laughter**");
 					ezmodo.add(player.getName());
 					player.setHealth(30);
+                                        return true;
 				}
-				return true;
 			}
         //Replacement for /tp
         if(settings.getInstance().cmdTp() && split[0].equalsIgnoreCase("/tp")) {
@@ -198,7 +232,11 @@ import java.util.logging.Logger;
         }
         //Should only reload vminecraft settings if the player is able to use /reload
         if(split[0].equalsIgnoreCase("/reload") && player.canUseCommand("/reload")) {
-            settings.getInstance().loadSettings();
+            try {
+                settings.getInstance().loadSettings();
+            } catch (IOException ex) {
+                Logger.getLogger(vminecraftListener.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return false;
         }
         //Rules

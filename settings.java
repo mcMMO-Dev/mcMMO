@@ -21,11 +21,12 @@ public class settings {
         private boolean cmdTphere = false;
         private boolean globalmessages = false;
         private boolean cmdSay = false;
+        private boolean cmdEzModo = false;
         private PropertiesFile properties;
 	String file = "vminecraft.properties";
         public String rules[] = null;
 
-	public void loadSettings()
+	public void loadSettings() throws IOException
         {
             File theDir = new File("vminecraft.properties");
             if(!theDir.exists())
@@ -52,6 +53,7 @@ public class settings {
                 writer.write("globalmessages=true\r\n");
                 writer.write("FFF=true\r\n");
                 writer.write("adminchat=true\r\n");
+                writer.write("cmdEzModo=true\r\n");
                 writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
             } catch (Exception e) {
                 log.log(Level.SEVERE, "Exception while creating " + location, e);
@@ -86,6 +88,7 @@ public class settings {
                 cmdTphere = properties.getBoolean("cmdTphere",true);
                 globalmessages = properties.getBoolean("globalmessages",true);
                 cmdSay = properties.getBoolean("cmdSay",true);
+                cmdEzModo = properties.getBoolean("cmdEzModo",true);
                 rules = properties.getString("rules", "").split("@");
                 log.log(Level.INFO, "vminecraft plugin successfully loaded");
 
@@ -110,6 +113,7 @@ public class settings {
         public boolean cmdRules() {return cmdRules;}
         public boolean globalmessages() {return globalmessages;}
         public boolean cmdMasstp() {return cmdMasstp;}
+        public boolean cmdEzModo() {return cmdEzModo;}
 
         public static settings getInstance() {
         if (instance == null) {
