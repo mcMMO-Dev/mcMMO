@@ -29,18 +29,19 @@ public class vminecraftListener extends PluginListener {
     public boolean onChat(Player player, String message){
 
     	//Quote (Greentext)
-    	if (message.startsWith(">"))
-    		vminecraftChat.quote(player, message);
+    	if (message.startsWith("@"))
+    		return vminecraftChat.adminChat(player, message);
+    	
+    	else if (message.startsWith(">"))
+    		return vminecraftChat.quote(player, message);
         	
         //Rage (FFF)
         else if (message.startsWith("FFF"))
-        	vminecraftChat.rage(player, message);
+        	return vminecraftChat.rage(player, message);
     	
     	//Send through quakeColors otherwise
         else
-        	vminecraftChat.quakeColors(player, message);
-
-    	return false;
+        	return vminecraftChat.quakeColors(player, message);
     }
     
 	//=====================================================================

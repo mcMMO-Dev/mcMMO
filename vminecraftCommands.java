@@ -61,9 +61,13 @@ public class vminecraftCommands{
 
 				//Find the player by name
 				Player playerTarget = etc.getServer().matchPlayer(args[0]);
-
+				
+				//Target player isn't found
+				if(playerTarget == null)
+					player.sendMessage(Colors.Rose + "Can't find user "
+							+ args[0] + ".");
 				//If it's you, return witty message
-				if (player.getName().equalsIgnoreCase(args[0]))
+				else if (player.getName().equalsIgnoreCase(args[0]))
 					player.sendMessage(Colors.Rose + "You're already here!");
 					
 				//If the player is higher rank than you, inform the user
@@ -72,15 +76,12 @@ public class vminecraftCommands{
 							"That player has higher permissions than you.");
 				
 				//If the player exists transport the user to the player
-				else if (playerTarget != null) {
+				else {
 					log.log(Level.INFO, player.getName() + " teleported to " +
 							playerTarget.getName());
 					player.teleportTo(playerTarget);
 					
 				//Otherwise inform the user that the player doesn't exist
-				} else {
-					player.sendMessage(Colors.Rose + "Can't find user "
-							+ args[0] + ".");
 				}
 			}
 			return true;
@@ -133,19 +134,20 @@ public class vminecraftCommands{
 			} else {
 				//Get the player by name
 				Player playerTarget = etc.getServer().matchPlayer(args[0]);
+				
+				//If the target doesn't exist
+				if(playerTarget == null)
+					player.sendMessage(Colors.Rose + "Can't find user " + args[0] + ".");
 				//If the player has a higher rank than the user, return error
-				if (!player.hasControlOver(playerTarget)) {
+				else if (!player.hasControlOver(playerTarget)) 
 					player.sendMessage(Colors.Red + "That player has higher permissions than you.");
 				//If the user teleports themselves, mock them
-				}else if (player.getName().equalsIgnoreCase(args[0])) {
+				else if (player.getName().equalsIgnoreCase(args[0])) 
 					player.sendMessage(Colors.Rose + "Wow look at that! You teleported yourself to yourself!");
 				//If the target exists, teleport them to the user
-				}else if (playerTarget != null) {
+				 else {
 					log.log(Level.INFO, player.getName() + " teleported " + player.getName() + " to their self.");
 					playerTarget.teleportTo(player);
-				//Otherwise inform the user that the target doens't exist.
-				} else {
-					player.sendMessage(Colors.Rose + "Can't find user " + args[0] + ".");
 				}
 			}
 			return true;
@@ -186,7 +188,8 @@ public class vminecraftCommands{
 		if(vminecraftSettings.getInstance().cmdRules()) {
 			//Display them
 			for (String str : vminecraftSettings.getInstance().getRules()) {
-				player.sendMessage(Colors.Blue+str);
+				if(str != null)
+					player.sendMessage(Colors.Blue+str);
 			}
 			return true;
 		}
@@ -207,40 +210,24 @@ public class vminecraftCommands{
 		if(vminecraftSettings.getInstance().cmdFabulous()) {
 			//Make sure a message has been specified
 			if (args.length < 1) {return false;}
-			String str  = "",
-				   temp = "";
+			String str  = "";
 			//Merge the message again
-			str = etc.combineSplit(0, args, " ");
-			String playerName = "<" + player.getName()  + "> ";
-			String temp2 = playerName + str;
-			//The array of colors to use
-			String[] rainbow = new String[] {Colors.Red, Colors.Rose,
-					Colors.Yellow, Colors.Green, Colors.Blue,
-					Colors.LightPurple, Colors.Purple};
-			int counter=0;
-			//If the message isn't too long
-			if(vminecraftChat.lengthCheck(temp2))
-			{
-				//Output for server
-				log.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
-				
-				//Loop through the message applying the colors
-				for(int x=0; x<str.length(); x++)
-				{
-					temp+=rainbow[counter]+str.charAt(x);
-					
-					if(str.charAt(x)!=' ') counter++;
-					if(counter==7) counter = 0;
-				}
-				//Prepend the player name
-				String message = playerName + temp;
-				//Output the message
-				vminecraftChat.gmsg(message);
-				
-			//Otherwise the message is too long, output error to user
-			} else {
-				player.sendMessage(Colors.Rose + "Message is too long");
-			}
+			str = etc.combineSplit(0, args, " ");	
+			//Output for server
+			log.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
+			//Prepend the player name
+			String[] message = vminecraftChat.wordWrap(player, str);
+
+			//Output the first line
+			vminecraftChat.gmsg( "<" + vminecraftChat.nameColor(player) + "> "
+					+ vminecraftChat.rainbow(message[0]));
+			
+			//Get the rest of the lines and display them.
+			String[] tempOut = new String[message.length - 1];
+			System.arraycopy(message, 1, tempOut, 0, tempOut.length);
+			for(String msg: tempOut)
+				vminecraftChat.gmsg(vminecraftChat.rainbow(msg));
+
 			return true;
 		}
 		return false;
@@ -259,39 +246,40 @@ public class vminecraftCommands{
 		//If the command is enabled
 		if (vminecraftSettings.getInstance().cmdWhoIs()) {
 			//If a player is specified
-			if (args.length < 1) {
+			if (args.length < 1) 
 				player.sendMessage(Colors.Rose + "Usage is /whois [player]");
-			}
-			//Get the player by name
-			Player playerTarget = null;
-			for( Player p : etc.getServer().getPlayerList())
-			{
-				if (p.getName().equalsIgnoreCase(args[0]))
+			else {
+				//Get the player by name
+				Player playerTarget = null;
+				for( Player p : etc.getServer().getPlayerList())
 				{
-					playerTarget = p;
+					if (p.getName().equalsIgnoreCase(args[0]))
+					{
+						playerTarget = p;
+					}
 				}
-			}
-			//If the player exists
-			if (playerTarget != null){
+				//If the player exists
+				if (playerTarget != null){
 
-				//Displaying the information
-				player.sendMessage(Colors.Blue + "Whois results for " +
-						vminecraftChat.nameColor(playerTarget) + ".");
-				//Group
-				player.sendMessage(Colors.Blue + "Groups: " +
-							playerTarget.getGroups());
-				//Admin
-				player.sendMessage(Colors.Blue+"Admin: " +
-						String.valueOf(playerTarget.canIgnoreRestrictions()));
-				//IP
-				player.sendMessage(Colors.Blue+"IP: " + playerTarget.getIP());
-				//Restrictions
-				player.sendMessage(Colors.Blue+"Can ignore restrictions: " +
-						String.valueOf(playerTarget.canIgnoreRestrictions()));
+					//Displaying the information
+					player.sendMessage(Colors.Blue + "Whois results for " +
+							vminecraftChat.nameColor(playerTarget));
+					//Group
+					player.sendMessage(Colors.Blue + "Groups: " +
+								playerTarget.getGroups());
+					//Admin
+					player.sendMessage(Colors.Blue+"Admin: " +
+							String.valueOf(playerTarget.canIgnoreRestrictions()));
+					//IP
+					player.sendMessage(Colors.Blue+"IP: " + playerTarget.getIP());
+					//Restrictions
+					player.sendMessage(Colors.Blue+"Can ignore restrictions: " +
+							String.valueOf(playerTarget.canIgnoreRestrictions()));
 
-			//Give the user an error if the player doesn't exist
-			} else {
-				player.sendMessage(Colors.Rose+"Player not found.");
+				//Give the user an error if the player doesn't exist
+				} else {
+					player.sendMessage(Colors.Rose+"Player not found.");
+				}
 			}
 			return true;
 		}
@@ -315,11 +303,13 @@ public class vminecraftCommands{
 			String tempList = "";
 			for( Player p : etc.getServer().getPlayerList())
 			{
-				if(count == 0)
-					tempList += vminecraftChat.nameColor(p);
-				else
-					tempList += ", " + vminecraftChat.nameColor(p);
-				count++;
+				if(p != null){
+					if(count == 0)
+						tempList += vminecraftChat.nameColor(p);
+					else
+						tempList += ", " + vminecraftChat.nameColor(p);
+					count++;
+				}
 			}
 			//Get the max players from the config
 			PropertiesFile server = new PropertiesFile("server.properties");
@@ -329,10 +319,11 @@ public class vminecraftCommands{
 				e.printStackTrace();
 			}
 			int maxPlayers = server.getInt("max-players");
-			
 			//Output the player list
-			vminecraftChat.gmsg( Color.red + "Player List (" + count + "/" + maxPlayers +
-					"): " + tempList);
+			String[] tempOut = vminecraftChat.wordWrap(Colors.Rose + "Player List ("
+					+ count + "/" + maxPlayers +"): " + tempList);
+			for(String msg: tempOut)
+				player.sendMessage( msg );
 			
 			return true;
 		}
@@ -376,8 +367,11 @@ public class vminecraftCommands{
 		if(vminecraftSettings.getInstance().cmdEzModo()) {
 			//Get the player by name
 			Player playerTarget = etc.getServer().matchPlayer(args[0]);
+			//If the player doesn't exist don't run
+			if(playerTarget == null)
+				return false;
 			//If the player isn't invulnerable kill them
-			if (!vminecraftSettings.getInstance().isEzModo(player.getName())) {
+			if (!vminecraftSettings.getInstance().isEzModo(playerTarget.getName())) {
 				playerTarget.setHealth(0);
 				vminecraftChat.gmsg(player.getColor() + player.getName() + Colors.LightBlue + " has slain " + playerTarget.getColor() + playerTarget.getName());
 			//Otherwise output error to the user

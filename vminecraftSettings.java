@@ -105,7 +105,7 @@ public class vminecraftSettings {
 			cmdPromote = properties.getBoolean("cmdPromote",true);
 			cmdDemote = properties.getBoolean("cmdDemote",true);
 			cmdWhoIs = properties.getBoolean("cmdWhoIs",true);
-			cmdWhoIs = properties.getBoolean("cmdWho",true);
+			cmdWho = properties.getBoolean("cmdWho",true);
 			cmdRules = properties.getBoolean("cmdRules",true);
 			cmdTp = properties.getBoolean("cmdTp",true);
 			cmdMasstp = properties.getBoolean("cmdMasstp",true);
