@@ -32,6 +32,7 @@ public class vminecraftCommands{
         cl.register("/rules", "rules", "Displays the rules");
         cl.register("/fabulous", "fabulous", "makes text SUUUPER");
         cl.register("/whois", "whois", "/whois [user]");
+        cl.register("/who", "who");
         cl.register("/say", "say");
         cl.register("/slay", "slay", "Kill target player");
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
@@ -330,7 +331,7 @@ public class vminecraftCommands{
 			int maxPlayers = server.getInt("max-players");
 			
 			//Output the player list
-			vminecraftChat.gmsg( Color.red + "Players(" + count + "/" + maxPlayers +
+			vminecraftChat.gmsg( Color.red + "Player List (" + count + "/" + maxPlayers +
 					"): " + tempList);
 			
 			return true;
