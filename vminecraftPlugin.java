@@ -1,26 +1,24 @@
-
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * vminecraft Plugin
- * @author Robert, TrapAlice
- */
-//This is how we setup the listener
+//=====================================================================
+//Class:	vMinecraftPlugin
+//Use:		Starts the plugin
+//Author:	nossr50, TrapAlice, cerevisiae
+//=====================================================================
 public class vminecraftPlugin extends Plugin {
     static final vminecraftListener listener = new vminecraftListener();
-    public void enable() {
-        //If we had commands we would add them here.
-        etc.getInstance().addCommand("/masstp", "Teleports those with lower permissions to you");
-        etc.getInstance().addCommand("/rules", "Displays the rules");
-        etc.getInstance().addCommand("/fabulous", "makes text SUUUPER");
-        etc.getInstance().addCommand("/whois", "/whois [user]");
-        try {
-            settings.getInstance().loadSettings(); //Hopefully this will make the plugin load right away
-        } catch (IOException ex) {
-            Logger.getLogger(vminecraftPlugin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    protected static final Logger log = Logger.getLogger("Minecraft");
+    
+	public void enable() {
+		//Hopefully this will make the plugin load right away
+		try {
+			vminecraftSettings.getInstance().loadSettings();
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "Exception while loading settings ", e);
+		}
+		vminecraftCommands.loadCommands();
     }
 
     public void disable() {
@@ -32,7 +30,7 @@ public class vminecraftPlugin extends Plugin {
         etc.getLoader().addListener(PluginLoader.Hook.CHAT, listener, this, PluginListener.Priority.MEDIUM);
         etc.getLoader().addListener(PluginLoader.Hook.COMMAND, listener, this, PluginListener.Priority.HIGH);
         if(etc.getInstance().isHealthEnabled()){
-			etc.getLoader().addListener(PluginLoader.Hook.HEALTH_CHANGE, listener, this, PluginListener.Priority.MEDIUM);
-		}
+        	etc.getLoader().addListener(PluginLoader.Hook.HEALTH_CHANGE, listener, this, PluginListener.Priority.MEDIUM);
+        }
     }
 }
