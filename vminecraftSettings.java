@@ -12,7 +12,7 @@ public class vminecraftSettings {
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	private static volatile vminecraftSettings instance;
     //Invulnerability List
-	
+
 
 	//The feature settings
 	static boolean toggle			= true,
@@ -31,6 +31,8 @@ public class vminecraftSettings {
 				   globalmessages	= false,
 				   cmdSay			= false,
 				   cmdWho			= false,
+                                   stopFire = false,
+                                   stopTnt = false,
 				   cmdEzModo		= false;
 	
 	//An array of players currently in ezmodo
@@ -78,6 +80,8 @@ public class vminecraftSettings {
 				writer.write("cmdEzModo=true\r\n");
 				writer.write("ezModo=\r\n");
 				writer.write("ezHealth=30\r\n");
+                                writer.write("stopFire=false");
+                                writer.write("stopTnt=false");
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
@@ -117,6 +121,8 @@ public class vminecraftSettings {
 			globalmessages = properties.getBoolean("globalmessages",true);
 			cmdSay = properties.getBoolean("cmdSay",true);
 			cmdEzModo = properties.getBoolean("cmdEzModo",true);
+                        stopFire = properties.getBoolean("stopFire",true);
+                        stopTnt = properties.getBoolean("stopTNT",true);
 			rules = properties.getString("rules", "").split("@");
 			
 			String[] tempEz = properties.getString("ezModo").split(",");
@@ -159,6 +165,8 @@ public class vminecraftSettings {
 	public boolean cmdMasstp() {return cmdMasstp;}
 	public boolean cmdEzModo() {return cmdEzModo;}
 	public boolean cmdWho() {return cmdWho;}
+        public boolean stopFire() {return stopFire;}
+        public boolean stopTnt() {return stopTnt;}
 	
 	//EzModo functions
 	public boolean isEzModo(String playerName) {return ezModo.contains(playerName);}
