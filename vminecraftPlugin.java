@@ -1,5 +1,3 @@
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //=====================================================================
@@ -12,12 +10,7 @@ public class vminecraftPlugin extends Plugin {
     protected static final Logger log = Logger.getLogger("Minecraft");
     
 	public void enable() {
-		//Hopefully this will make the plugin load right away
-		try {
-			vminecraftSettings.getInstance().loadSettings();
-		} catch (IOException e) {
-			log.log(Level.SEVERE, "Exception while loading settings ", e);
-		}
+		vminecraftSettings.getInstance().loadSettings();
 		vminecraftCommands.loadCommands();
     }
 
@@ -29,6 +22,8 @@ public class vminecraftPlugin extends Plugin {
         //Here we add the hook we're going to use. In this case it's the arm swing event.
         etc.getLoader().addListener(PluginLoader.Hook.CHAT, listener, this, PluginListener.Priority.MEDIUM);
         etc.getLoader().addListener(PluginLoader.Hook.COMMAND, listener, this, PluginListener.Priority.HIGH);
+        etc.getLoader().addListener(PluginLoader.Hook.IGNITE, listener, this, PluginListener.Priority.HIGH);
+        etc.getLoader().addListener(PluginLoader.Hook.EXPLODE, listener, this, PluginListener.Priority.HIGH);
         if(etc.getInstance().isHealthEnabled()){
         	etc.getLoader().addListener(PluginLoader.Hook.HEALTH_CHANGE, listener, this, PluginListener.Priority.MEDIUM);
         }
