@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,51 +33,38 @@ public class vminecraftChat {
 	//=====================================================================
     public static String[] wordWrap(String msg){
     	//Split each word apart
-    	String[] array = msg.split(" ");
+    	String[] split = msg.split(" ");
     	//Create the output array
-    	String[] out = new String[0];
+    	int length = (int)msgLength(msg) / 316;
+    	
+    	ArrayList<String> out = new ArrayList<String>();
     	
     	//While i is less than the length of the array of words
     	int i = 0;
-    	while(i < array.length){
+    	while(i < split.length){
     		int len = 0;
     		int j = i;
+    		
     		//Loop through the words finding their length and increasing
     		//j, the end point for the sub string
-    		while(len <= 316 && j < array.length)
+    		while(len <= 316 && i < split.length)
     		{
-    			len += msgLength(array[j]) + 4;
+    			len += msgLength(split[i]) + 4;
     			if( len <= 316)
-    				j++;
+    				i++;
 
     		}
-    		String[] temp = new String[j - i];
+    		String[] temp = new String[i - j];
+    		
+			//Copy the words in the selection into a new array
+    		System.arraycopy(split, j, temp, 0, i - j);
 
-    		//If it's not the end yet
-    		if(j < array.length)
-    		{
-    			//Copy the words in the selection into a new array
-        		System.arraycopy(array, i, temp, 0, j);
-
-        		//Merge them and add them to the output array
-    			String[] tempOut = new String[out.length + 1];
-        		System.arraycopy(out, 0, tempOut, 0, out.length);
-        		tempOut[tempOut.length - 1] = etc.combineSplit(0, temp, " ");
-        		out = tempOut;
-        		
-    		}
-    		else
-    		{
-    			//Merge the rest and add them to the output array
-    			String[] tempOut = new String[out.length + 1];
-        		System.arraycopy(out, 0, tempOut, 0, out.length);
-        		tempOut[tempOut.length - 1] = etc.combineSplit(i, array, " ");
-        		out = tempOut;
-    		}
-    		//Make the old front equal to the old end
-    		i = j;
+    		//Merge them and add them to the output array
+    		out.add( etc.combineSplit(0, temp, " ") );
     	}
-    	return out;
+    	String[] tempout = new String[out.size()];
+    	out.toArray(tempout);
+    	return tempout;
     }
     
 	//=====================================================================

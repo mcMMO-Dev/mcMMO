@@ -36,8 +36,6 @@ public class vminecraftCommands{
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
         cl.register("/ezlist", "ezlist", "List invulnerable players");
         cl.registerAlias("/playerlist", "/who");
-        cl.registerAlias("/it", "/i", new String[] {"%0", "100"});
-        cl.registerAlias("/wood", "/i", new String[] {"wood"});
     }
     
     
@@ -215,7 +213,7 @@ public class vminecraftCommands{
 			String[] message = vminecraftChat.wordWrap(player, str);
 
 			//Output the first line
-			vminecraftChat.gmsg( "<" + vminecraftChat.nameColor(player) + "> "
+			vminecraftChat.gmsg( "<" + vminecraftChat.nameColor(player) + Colors.White + "> "
 					+ vminecraftChat.rainbow(message[0]));
 			
 			//Get the rest of the lines and display them.
@@ -261,8 +259,8 @@ public class vminecraftCommands{
 					player.sendMessage(Colors.Blue + "Whois results for " +
 							vminecraftChat.nameColor(playerTarget));
 					//Group
-					player.sendMessage(Colors.Blue + "Groups: " +
-								playerTarget.getGroups());
+					for(String group: playerTarget.getGroups())
+					player.sendMessage(Colors.Blue + "Groups: " + group);
 					//Admin
 					player.sendMessage(Colors.Blue+"Admin: " +
 							String.valueOf(playerTarget.canIgnoreRestrictions()));
@@ -303,7 +301,7 @@ public class vminecraftCommands{
 					if(count == 0)
 						tempList += vminecraftChat.nameColor(p);
 					else
-						tempList += ", " + vminecraftChat.nameColor(p);
+						tempList += Colors.White + ", " + vminecraftChat.nameColor(p);
 					count++;
 				}
 			}
