@@ -36,6 +36,8 @@ public class vminecraftCommands{
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
         cl.register("/ezlist", "ezlist", "List invulnerable players");
         cl.registerAlias("/playerlist", "/who");
+        cl.registerAlias("/it", "/i", new String[] {"%0", "100"});
+        cl.registerAlias("/wood", "/i", new String[] {"wood"});
     }
     
     
@@ -820,27 +822,38 @@ class commandList {
 			//=====================================================================
 			boolean call(Player player, String[] arg)
 			{
-				String[] temp = args;
-				if(args != null)
-				{
+				if(args != null) {
+					String[] temp = new String[args.length];
+					System.arraycopy(args, 0, temp, 0, args.length);
 					//Insert the arguments into the pre-set arguments
-					int lastSet = -1;
-					for(int i = 0; i < temp.length; i++)
-						if(temp[i].startsWith("%"))
-							temp[i] = arg[lastSet = Integer.parseInt(temp[i].substring(1))];
-					//Append the rest of the arguments to the argument array
-					if(lastSet + 1 < arg.length)
+					int lastSet = 0,
+						argCount = 0;
+					for(String argument : temp)
 					{
-						String[] temp2 = new String[temp.length + arg.length - lastSet];
-						System.arraycopy(temp, 0, temp2, 0, temp.length);
-						System.arraycopy(arg, lastSet + 1, temp2,
-							temp.length, arg.length - lastSet);
+						if(argument.startsWith("%"))
+						{
+							int argNum = Integer.parseInt(argument.substring(1));
+							if( argNum < arg.length )
+							{
+								temp[lastSet] = arg[argNum];
+								argCount++;
+							}
+						}
+						lastSet++;
 					}
-				}
+					//Append the rest of the arguments to the argument array
+					if(lastSet < temp.length + arg.length - argCount)
+					{
+						String[] temp2 = new String[temp.length + arg.length - argCount];
+						System.arraycopy(temp, 0, temp2, 0, temp.length);
+						System.arraycopy(arg, argCount, temp2,
+							temp.length, arg.length - argCount);
+						temp = temp2;
+					}
+					
 				//Call the referenced command
-				if(temp != null)
 					player.command(reference + " " + etc.combineSplit(0, temp, " "));
-				else
+				} else
 					player.command(reference);
 
 				/*if(temp != null)
