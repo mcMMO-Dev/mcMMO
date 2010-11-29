@@ -1,5 +1,3 @@
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //=====================================================================
@@ -12,12 +10,7 @@ public class vminecraftPlugin extends Plugin {
     protected static final Logger log = Logger.getLogger("Minecraft");
     
 	public void enable() {
-		//Hopefully this will make the plugin load right away
-		try {
-			vminecraftSettings.getInstance().loadSettings();
-		} catch (IOException e) {
-			log.log(Level.SEVERE, "Exception while loading settings ", e);
-		}
+		vminecraftSettings.getInstance().loadSettings();
 		vminecraftCommands.loadCommands();
     }
 

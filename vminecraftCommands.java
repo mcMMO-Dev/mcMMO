@@ -1,8 +1,6 @@
-import java.awt.Color;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +35,7 @@ public class vminecraftCommands{
         cl.register("/slay", "slay", "Kill target player");
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
         cl.register("/ezlist", "ezlist", "List invulnerable players");
+        cl.registerAlias("/playerlist", "/who");
     }
     
     
@@ -165,12 +164,7 @@ public class vminecraftCommands{
 	//=====================================================================
 	public static boolean reload(Player player, String[] args)
 	{
-		//Should only reload vminecraft settings if the player is able to use /reload
-		try {
-			vminecraftSettings.getInstance().loadSettings();
-		} catch (IOException e) {
-			log.log(Level.SEVERE, "Exception while loading settings", e);
-		}
+		vminecraftSettings.getInstance().loadSettings();
 		return true;
 	}
 
@@ -630,27 +624,60 @@ class commandList {
 	//=====================================================================
 	public boolean registerAlias(String name, String com, String[] args){
 		
-		//Check to make sure the alias doesn't already exist
-		for(int i = 0; i < commands.length; i++)
-			//The alias already exists
-			if(commands[i].getName().equalsIgnoreCase(name))
-				return false;
-		
 		//If the command list isn't empty
 		if(commands.length > 0)
 		{
+			//Check to make sure the command doesn't already exist
+			for(int i = 0; i < commands.length; i++)
+				if(commands[i].getName().equalsIgnoreCase(name))
+					return false;
+			
 			//Create a new temp array
-			command[] temp = new command[commands.length];
+			command[] temp = new command[commands.length + 1];
 			//Copy the old command list over
 			System.arraycopy(commands, 0, temp, 0, commands.length);
 			//Set commands to equal the new array
 			commands = temp;
+		} else {
+			commands = new command[1];
+		}
+
+		//Add the new function to the list
+		commands[commands.length - 1] = new commandRef(name, com, args);
+		
+		//exit successfully
+		return true;
+	}
+	
+	//=====================================================================
+	//Function:	register
+	//Input:	String name: The name of the command
+	//			String func: The function to be called
+	//Output:	boolean: Whether the command was input successfully or not
+	//Use:		Registers a command to the command list for checking later
+	//=====================================================================
+	public boolean registerAlias(String name, String com){
+		
+		//If the command list isn't empty
+		if(commands.length > 0)
+		{
+			//Check to make sure the command doesn't already exist
+			for(int i = 0; i < commands.length; i++)
+				if(commands[i].getName().equalsIgnoreCase(name))
+					return false;
+			
+			//Create a new temp array
+			command[] temp = new command[commands.length + 1];
+			//Copy the old command list over
+			System.arraycopy(commands, 0, temp, 0, commands.length);
+			//Set commands to equal the new array
+			commands = temp;
+		} else {
+			commands = new command[1];
 		}
 		
-		
-		
 		//Add the new function to the list
-		commands[commands.length] = new commandRef(name, com, args);
+		commands[commands.length - 1] = new commandRef(name, com);
 		
 		//exit successfully
 		return true;
@@ -668,18 +695,19 @@ class commandList {
 			return false;
 		}
 		//Search for the command
-		for(int i = 0; i < commands.length; i++)
+		for(command cmd : commands)
 		{
 			//When found
-			if(commands[i].getName().equalsIgnoreCase(name))
+			if(cmd.getName().equalsIgnoreCase(name))
 			{
 				try {
 					//Call the command and return results
-					return commands[i].call(player, arg);
+					return cmd.call(player, arg);
 				} catch (SecurityException e) {
 					log.log(Level.SEVERE, "Exception while running command", e);
 				} catch (IllegalArgumentException e) {
-					log.log(Level.SEVERE, "Exception while running command", e);
+					log.log(Level.SEVERE, "The Command Entered Doesn't Exist", e);
+					return false;
 				}
 			}
 		}
@@ -715,9 +743,7 @@ class commandList {
 			//Output:	String: The command name
 			//Use:		Returns the command name
 			//=====================================================================
-			public String getName(){
-				return commandName;
-			}
+			public String getName(){return commandName;}
 
 
 			//=====================================================================
@@ -726,25 +752,26 @@ class commandList {
 			//Output:	boolean: If the command was called successfully
 			//Use:		Attempts to call the command
 			//=====================================================================
-			public boolean call(Player player, String[] arg)
+			boolean call(Player player, String[] arg)
 			{
-				try {
-					Method m = vminecraftCommands.class.getMethod(function, Player.class, String[].class);
-					m.setAccessible(true);
-					return (Boolean) m.invoke(null, player, arg);
-
-				} catch (SecurityException e) {
-					log.log(Level.SEVERE, "Exception while running command", e);
-				} catch (NoSuchMethodException e) {
-					log.log(Level.SEVERE, "Exception while running command", e);
-				} catch (IllegalArgumentException e) {
-					log.log(Level.SEVERE, "Exception while running command", e);
-				} catch (IllegalAccessException e) {
-					log.log(Level.SEVERE, "Exception while running command", e);
-				} catch (InvocationTargetException e) {
-					log.log(Level.SEVERE, "Exception while running command", e);
-				}
-				return true;
+				
+					Method m;
+					try {
+						m = vminecraftCommands.class.getMethod(function, Player.class, String[].class);
+						m.setAccessible(true);
+						return (Boolean) m.invoke(null, player, arg);
+					} catch (SecurityException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
+					return true;
 			}
 		}
 		
@@ -754,13 +781,14 @@ class commandList {
 		//Author:	cerevisiae
 		//=====================================================================
 		private class commandRef extends command{
-			private String commandName;
 			private String reference;
 			private String[] args;
 
 			//=====================================================================
 			//Function:	command
-			//Input:	None
+			//Input:	String name: The command name
+			//			String com: The command to run
+			//			String[] arg: the arguments to apply
 			//Output:	None
 			//Use:		Initialize the command
 			//=====================================================================
@@ -771,13 +799,16 @@ class commandList {
 			}
 
 			//=====================================================================
-			//Function:	call
-			//Input:	None
-			//Output:	String: The command name
-			//Use:		Returns the command name
+			//Function:	command
+			//Input:	String name: The command name
+			//			String com: The command to run
+			//Output:	None
+			//Use:		Initialize the command
 			//=====================================================================
-			public String getName(){
-				return commandName;
+			public commandRef(String name, String com){
+				super(name, "");
+				reference = com;
+				args = null;
 			}
 
 
@@ -787,27 +818,35 @@ class commandList {
 			//Output:	boolean: If the command was called successfully
 			//Use:		Attempts to call the command
 			//=====================================================================
-			public boolean call(String[] arg)
+			boolean call(Player player, String[] arg)
 			{
-				
-				//Insert the arguments into the pre-set arguments
 				String[] temp = args;
-				int lastSet = -1;
-				for(int i = 0; i < temp.length; i++)
-					if(temp[i].startsWith("%"))
-						temp[i] = arg[lastSet = Integer.parseInt(temp[i].substring(1))];
-				
-				//Append the rest of the arguments to the argument array
-				if(lastSet + 1 < arg.length)
+				if(args != null)
 				{
-					String[] temp2 = new String[temp.length + arg.length - lastSet];
-					System.arraycopy(temp, 0, temp2, 0, temp.length);
-					System.arraycopy(arg, lastSet + 1, temp2,
-						temp.length, arg.length - lastSet);
+					//Insert the arguments into the pre-set arguments
+					int lastSet = -1;
+					for(int i = 0; i < temp.length; i++)
+						if(temp[i].startsWith("%"))
+							temp[i] = arg[lastSet = Integer.parseInt(temp[i].substring(1))];
+					//Append the rest of the arguments to the argument array
+					if(lastSet + 1 < arg.length)
+					{
+						String[] temp2 = new String[temp.length + arg.length - lastSet];
+						System.arraycopy(temp, 0, temp2, 0, temp.length);
+						System.arraycopy(arg, lastSet + 1, temp2,
+							temp.length, arg.length - lastSet);
+					}
 				}
-				
 				//Call the referenced command
-				//TODO STILL TO BE WRITTEN
+				if(temp != null)
+					player.command(reference + " " + etc.combineSplit(0, temp, " "));
+				else
+					player.command(reference);
+
+				/*if(temp != null)
+					etc.getServer().useConsoleCommand(reference + " " + etc.combineSplit(0, temp, " "), player);
+				else
+					etc.getServer().useConsoleCommand(reference, player);*/
 				return true;
 			}
 		}

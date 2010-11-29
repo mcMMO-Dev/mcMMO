@@ -48,7 +48,7 @@ public class vminecraftSettings {
 	//Output:	None
 	//Use:		Loads the settings from the properties
 	//=====================================================================
-	public void loadSettings() throws IOException
+	public void loadSettings()
 	{
 		File theDir = new File("vminecraft.properties");
 		if(!theDir.exists()){
@@ -93,7 +93,11 @@ public class vminecraftSettings {
 
 		} else {
 			properties = new PropertiesFile("vminecraft.properties");
-			properties.load();
+			try {
+				properties.load();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		try {
