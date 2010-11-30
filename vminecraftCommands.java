@@ -224,7 +224,7 @@ public class vminecraftCommands{
 				if (msg.contains(playerName))
 					vminecraftChat.gmsg( playerName
 							+ vminecraftChat.rainbow(
-									msg.substring(playerName.length() - 1)));
+									msg.substring(playerName.length())));
 				else
 					vminecraftChat.gmsg(vminecraftChat.rainbow(msg));
 			}
