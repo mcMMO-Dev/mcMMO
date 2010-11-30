@@ -272,21 +272,17 @@ public class vminecraftChat {
 	public static boolean quote(Player player, String message)
 	{
 		//Format the name
-		String playerName = "<" + nameColor(player) + Colors.White +"> ";
+		String playerName = Colors.White + "<" + nameColor(player)
+				+ Colors.White + "> ";
 		if(vminecraftSettings.getInstance().greentext()) {
 			//Log the chat
-			log.log(Level.INFO, "<"+player.getName()+"> "+message);
+			log.log(Level.INFO, "<"+player.getName()+"> " +message);
 	        
 			//Get the multi line array
-	        String[] msg = wordWrap(playerName + message);
+	        String[] msg = wordWrap(playerName + Colors.LightGreen + message);
 
-			//Output the first line
-			gmsg( playerName + Colors.LightGreen + msg[0]);
-			
-			//Get the rest of the lines and display them.
-			String[] tempOut = new String[msg.length - 1];
-			System.arraycopy(msg, 1, tempOut, 0, tempOut.length);
-			for(String str: tempOut)
+			//Output the lines
+			for(String str: msg)
 				gmsg(Colors.LightGreen + str);
 			return true;
 		}
@@ -303,20 +299,16 @@ public class vminecraftChat {
 	public static boolean rage(Player player, String message)
 	{
 		//Format the name
-		String playerName = "<" + nameColor(player) + Colors.White +"> ";
+		String playerName = Colors.White + "<"
+				+ nameColor(player) + Colors.White +"> ";
 		if (vminecraftSettings.getInstance().FFF()) {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 	        
 			//Get the multi line array
-	        String[] msg = wordWrap(playerName + message);
+	        String[] msg = wordWrap(playerName + Colors.Red +  message);
 
-			//Output the first line
-			gmsg( playerName + Colors.Red + msg[0]);
-			
-			//Get the rest of the lines and display them.
-			String[] tempOut = new String[msg.length - 1];
-			System.arraycopy(msg, 1, tempOut, 0, tempOut.length);
-			for(String str: tempOut)
+			//Output the message
+			for(String str: msg)
 				gmsg(Colors.Red + str);
 			return true;
 		}
@@ -333,7 +325,8 @@ public class vminecraftChat {
 	public static boolean quakeColors(Player player, String message)
 	{
 		//Format the name
-		String playerName = "<" + nameColor(player) + Colors.White +"> ";
+		String playerName = Colors.White + "<"
+		+ nameColor(player) + Colors.White +"> ";
 		if(vminecraftSettings.getInstance().quakeColors() && message.length()>2) {
 
 			//Log the chat
@@ -344,12 +337,8 @@ public class vminecraftChat {
 	        //Apply colors to the lines
 			applyColors(msg);
 
-			//Output the first line
-			gmsg( playerName + msg[0]);
-			//Get the rest of the lines and display them.
-			String[] tempOut = new String[msg.length - 1];
-			System.arraycopy(msg, 1, tempOut, 0, tempOut.length);
-			for(String str: tempOut)
+			//Output the message
+			for(String str: msg)
 				gmsg(str);
 
 			//Loop through the string finding the color codes and inserting them

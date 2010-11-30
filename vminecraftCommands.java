@@ -203,26 +203,33 @@ public class vminecraftCommands{
 	{
 		//If the command is enabled
 		if(vminecraftSettings.getInstance().cmdFabulous()) {
-			String playerName =  "<" + vminecraftChat.nameColor(player)
-					+ Colors.White + "> ";
+			
+			//Format the name
+			String playerName = Colors.White + "<"
+					+ nameColor(player) + Colors.White +"> ";
 			//Make sure a message has been specified
 			if (args.length < 1) {return false;}
 			String str  = " ";
+			
 			//Merge the message again
-			str = etc.combineSplit(0, args, " ");	
+			str = etc.combineSplit(0, args, " ");
+			
 			//Output for server
 			log.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
-			//Prepend the player name
+			
+			//Prepend the player name and cut into lines.
 			String[] message = vminecraftChat.wordWrap(playerName + str);
 
-			//Output the first line
-			vminecraftChat.gmsg( playerName + vminecraftChat.rainbow(message[0]));
-			
-			//Get the rest of the lines and display them.
-			String[] tempOut = new String[message.length - 1];
-			System.arraycopy(message, 1, tempOut, 0, tempOut.length);
-			for(String msg: tempOut)
-				vminecraftChat.gmsg(vminecraftChat.rainbow(msg));
+			//Output the message
+			for(String msg: message)
+			{
+				if (msg.contains(playerName))
+					vminecraftChat.gmsg(
+							vminecraftChat.rainbow(
+									msg.substring(playerName.length() - 1)));
+				else
+					vminecraftChat.gmsg(msg);
+			}
 
 			return true;
 		}
