@@ -95,9 +95,9 @@ public class vminecraftChat {
     public static String rainbow(String msg){
     	String temp = "";
     	//The array of colors to use
-		String[] rainbow = new String[] {Colors.Red, Colors.Rose,
-				Colors.Yellow, Colors.Green, Colors.Blue,
-				Colors.LightPurple, Colors.Purple};
+		String[] rainbow = new String[] {Colors.Red, Colors.Rose, Colors.Gold,
+				Colors.Yellow, Colors.LightGreen, Colors.Green, Colors.Blue,
+				Colors.Navy, Colors.DarkPurple, Colors.Purple, Colors.LightPurple};
 		int counter=0;
 		//Loop through the message applying the colors
 		for(int x=0; x<msg.length(); x++)
@@ -105,7 +105,7 @@ public class vminecraftChat {
 			temp+=rainbow[counter]+msg.charAt(x);
 			
 			if(msg.charAt(x)!=' ') counter++;
-			if(counter==7) counter = 0;
+			if(counter==rainbow.length) counter = 0;
 		}
 		return temp;
     }
@@ -217,7 +217,7 @@ public class vminecraftChat {
 		}
 		return color;
 	}
-	
+	  
 	//=====================================================================
 	//Function:	adminChat
 	//Input:	Player player: The player talking
