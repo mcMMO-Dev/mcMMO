@@ -48,44 +48,60 @@ public class vminecraftCommands{
         cl.registerAlias("/wrists", "/suicide");
     }
 
-    //Heal
+	//=====================================================================
+	//Function:	heal (/heal)
+	//Input:	Player player: The player using the command
+    //			String[] args: The arguments for the command. Should be a
+    //						   player name or blank
+	//Output:	int: Exit Code
+	//Use:		Heals yourself or a specified player.
+	//=====================================================================
     public static int heal(Player player, String[] args)
     {
         if(vminecraftSettings.getInstance().cmdHeal())
         {
-            if (args[1] == null){
-            if (player.getHealth() < 20){
-                vminecraftChat.gmsg("Your health is restored");
-                return EXIT_SUCCESS;
+        	//If a target wasn't specified, heal the user.
+            if (args == null){
+            	if (player.getHealth() < 20){
+            		vminecraftChat.gmsg("Your health is restored");
+            	}
+            //If a target was specified, try to find them and then heal them
+            //Otherwise report the error
+            } else if (args != null){
+            	Player playerTarget = etc.getServer().matchPlayer(args[0]);
+            		
+            	if (playerTarget != null){
+            		playerTarget.setHealth(20);
+            		player.sendMessage(Colors.Blue + "You have healed " + vminecraftChat.getName(playerTarget));
+            		playerTarget.sendMessage(Colors.Blue + "You have been healed by " + vminecraftChat.getName(player));
+            	}
+            	else if (playerTarget == null){
+            		vminecraftChat.gmsg(Colors.Rose + "Couldn't find that player");
+            	}
             }
-            else if (args[1] != null){
-                Player playerTarget = etc.getServer().matchPlayer(args[1]);
-                if (playerTarget != null){
-                    playerTarget.setHealth(20);
-                    vminecraftChat.gmsg(Colors.Blue + "You have healed " + playerTarget.getColor() + playerTarget.getName());
-                    vminecraftChat.gmsg(Colors.Blue + "You have been healed by " + player.getColor() + player.getName());
-                    return EXIT_SUCCESS;
-                }
-                else if (playerTarget == null){
-                    vminecraftChat.gmsg(Colors.Rose + "Couldn't find that player");
-                    return EXIT_FAIL;
-                    }
-
-                }
-            }
+    		return EXIT_SUCCESS;
         }
         return EXIT_FAIL;
-    }
-    //Suicide
+	}
+
+	//=====================================================================
+	//Function:	suicide (/suicide, /wrists)
+	//Input:	Player player: The player using the command
+    //			String[] args: Ignored
+	//Output:	int: Exit Code
+	//Use:		Kills yourself
+	//=====================================================================
     public static int suicide(Player player, String[] args)
     {
         if(vminecraftSettings.getInstance().cmdSuicide())
         {
+        	//Set your health to 0. Not much to it.
             player.setHealth(0);
             return EXIT_SUCCESS;
         }
         return EXIT_FAIL;
     }
+    
 	//=====================================================================
 	//Function:	teleport (/tp)
 	//Input:	Player player: The player using the command
@@ -247,7 +263,7 @@ public class vminecraftCommands{
 			
 			//Format the name
 			String playerName = Colors.White + "<"
-					+ vminecraftChat.nameColor(player) + Colors.White +"> ";
+					+ vminecraftChat.getName(player) + Colors.White +"> ";
 			//Make sure a message has been specified
 			if (args.length < 1) {return EXIT_FAIL;}
 			String str  = " ";
@@ -306,7 +322,7 @@ public class vminecraftCommands{
 
 					//Displaying the information
 					player.sendMessage(Colors.Blue + "Whois results for " +
-							vminecraftChat.nameColor(playerTarget));
+							vminecraftChat.getName(playerTarget));
 					//Group
 					for(String group: playerTarget.getGroups())
 					player.sendMessage(Colors.Blue + "Groups: " + group);
@@ -347,9 +363,9 @@ public class vminecraftCommands{
 			{
 				if(p != null){
 					if(count == 0)
-						tempList += vminecraftChat.nameColor(p);
+						tempList += vminecraftChat.getName(p);
 					else
-						tempList += Colors.White + ", " + vminecraftChat.nameColor(p);
+						tempList += Colors.White + ", " + vminecraftChat.getName(p);
 					count++;
 				}
 			}
@@ -413,9 +429,9 @@ public class vminecraftCommands{
 			//If the player isn't invulnerable kill them
 			if (!vminecraftSettings.getInstance().isEzModo(playerTarget.getName())) {
 				playerTarget.setHealth(0);
-				vminecraftChat.gmsg(vminecraftChat.nameColor(player)
+				vminecraftChat.gmsg(vminecraftChat.getName(player)
 						+ Colors.LightBlue + " has slain "
-						+ vminecraftChat.nameColor(playerTarget));
+						+ vminecraftChat.getName(playerTarget));
 			//Otherwise output error to the user
 			} else {
 				player.sendMessage(Colors.Rose + "That player is currently in ezmodo! Hahahaha");
