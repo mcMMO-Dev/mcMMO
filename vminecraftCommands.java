@@ -45,18 +45,18 @@ public class vminecraftCommands{
         cl.register("/modify", "modifySplit");
 
         cl.registerAlias("/playerlist", "/who");
-        cl.registerAlias("/suicide", "/wrists");
+        cl.registerAlias("/wrists", "/suicide");
     }
 
     //Heal
-    public static boolean heal(Player player, String[] args)
+    public static int heal(Player player, String[] args)
     {
-        if(vminecraftSettings.getInstance().cmdHeal)
+        if(vminecraftSettings.getInstance().cmdHeal())
         {
             if (args[1] == null){
             if (player.getHealth() < 20){
                 vminecraftChat.gmsg("Your health is restored");
-                return true;
+                return EXIT_SUCCESS;
             }
             else if (args[1] != null){
                 Player playerTarget = etc.getServer().matchPlayer(args[1]);
@@ -64,27 +64,27 @@ public class vminecraftCommands{
                     playerTarget.setHealth(20);
                     vminecraftChat.gmsg(Colors.Blue + "You have healed " + playerTarget.getColor() + playerTarget.getName());
                     vminecraftChat.gmsg(Colors.Blue + "You have been healed by " + player.getColor() + player.getName());
-                    return true;
+                    return EXIT_SUCCESS;
                 }
                 else if (playerTarget == null){
                     vminecraftChat.gmsg(Colors.Rose + "Couldn't find that player");
-                    return false;
+                    return EXIT_FAIL;
                     }
 
                 }
             }
         }
-        return false;
+        return EXIT_FAIL;
     }
     //Suicide
-    public static boolean suicide(Player player, String[] args)
+    public static int suicide(Player player, String[] args)
     {
-        if(vminecraftSettings.getInstance().cmdSuicide)
+        if(vminecraftSettings.getInstance().cmdSuicide())
         {
             player.setHealth(0);
-            return true;
+            return EXIT_SUCCESS;
         }
-        return false;
+        return EXIT_FAIL;
     }
 	//=====================================================================
 	//Function:	teleport (/tp)
