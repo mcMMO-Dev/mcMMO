@@ -71,34 +71,22 @@ public class vminecraftChat {
 		int length = 0;
 		for(int x = 0; x<str.length(); x++)
 		{
-			if("i;,.:|!".indexOf(str.charAt(x)) != -1)
-			{
+			if(str.charAt(x) == '§')
+				x++;
+			else if("i;,.:|!".indexOf(str.charAt(x)) != -1)
 				length+=2;
-			}
 			else if("l'".indexOf(str.charAt(x)) != -1)
-			{
 				length+=3;
-			}
 			else if("tI[]".indexOf(str.charAt(x)) != -1)
-			{
 				length+=4;
-			}
 			else if("kf{}<>\"*()".indexOf(str.charAt(x)) != -1)
-			{
 				length+=5;
-			}
 			else if("hequcbrownxjmpsvazydgTHEQUCKBROWNFXJMPSVLAZYDG1234567890#\\/?$%-=_+&".indexOf(str.charAt(x)) != -1)
-			{
 				length+=6;
-			}
 			else if("@~".indexOf(str.charAt(x)) != -1)
-			{
 				length+=7;
-			}
 			else if(str.charAt(x)==' ')
-			{
 				length+=4;
-			}
 		}
 		return length;
     }
@@ -128,9 +116,22 @@ public class vminecraftChat {
 	//Use:		Returns the colored name;
 	//=====================================================================
     public static String nameColor(Player player){
+    	
+    	//Get the prefix
     	String[] playerPrefix = new String[]{player.getPrefix()};
-        return applyColors(playerPrefix)[0].substring(3)
-        		+ player.getColor().substring(0,2) + player.getName();
+    	
+    	//Add the name
+    	String output = player.getName();
+    	
+    	//Add the color if there is one
+    	if(player.getColor() != null && player.getColor() != "")
+    		output = player.getColor().substring(0,2) + output;
+    	//Add the prefix if there is one
+    	if(playerPrefix[0] != null && playerPrefix[0] != "")
+    		output = applyColors(playerPrefix)[0].substring(3) + output;
+    	
+    	//Return the name
+        return output;
     }
     
 	//=====================================================================

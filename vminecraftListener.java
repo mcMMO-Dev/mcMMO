@@ -54,17 +54,18 @@ public class vminecraftListener extends PluginListener {
 	//=====================================================================
 	public boolean onCommand(Player player, String[] split) {
 
-        //Explot fix on /modify
-	    if(split[0].equals("/modify") && split[2].equals("commands")) {
-	        return false;
-	    }
-
         //Copy the arguments into their own array.
 	    String[] args = new String[split.length - 1];
         System.arraycopy(split, 1, args, 0, args.length);
 
         //Return the results of the command
-        return vminecraftCommands.cl.call(split[0], player, args);
+        int exitCode = vminecraftCommands.cl.call(split[0], player, args);
+        if(exitCode == 0)
+        	return false;
+        else if(exitCode == 1)
+        	return true;
+        else
+        	return false;
         
 	}
     

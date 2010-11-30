@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 public class vminecraftCommands{
 	//Log output
     protected static final Logger log = Logger.getLogger("Minecraft");
+    static final int EXIT_FAIL = 0,
+    		  		 EXIT_SUCCESS = 1,
+    		  		 EXIT_CONTINUE = 2;
     
     //The list of commands for vminecraft
     public static commandList cl = new commandList();
@@ -35,6 +38,7 @@ public class vminecraftCommands{
         cl.register("/slay", "slay", "Kill target player");
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
         cl.register("/ezlist", "ezlist", "List invulnerable players");
+        cl.register("/modify", "modifySplit");
         cl.registerAlias("/playerlist", "/who");
     }
     
@@ -44,11 +48,10 @@ public class vminecraftCommands{
 	//Input:	Player player: The player using the command
     //			String[] args: The arguments for the command. Should be a
     //						   player name
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Teleports the user to another player
 	//=====================================================================
-	public static boolean teleport(Player player, String[] args)
+	public static int teleport(Player player, String[] args)
 	{
 		//Get if the command is enabled
 		if(vminecraftSettings.getInstance().cmdTp())
@@ -83,20 +86,19 @@ public class vminecraftCommands{
 				//Otherwise inform the user that the player doesn't exist
 				}
 			}
-			return true;
+			return EXIT_SUCCESS;
 		}
-		return false;
+		return EXIT_FAIL;
 	}
     
 	//=====================================================================
 	//Function:	masstp (/masstp)
 	//Input:	Player player: The player using the command
     //			String[] args: Should be empty or is ignored
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Teleports all players to the user
 	//=====================================================================
-	public static boolean masstp(Player player, String[] args)
+	public static int masstp(Player player, String[] args)
 	{
 		//If the command is enabled
 		if(vminecraftSettings.getInstance().cmdMasstp()) {
@@ -109,9 +111,9 @@ public class vminecraftCommands{
 			//Inform the user that the command has executed successfully
 			player.sendMessage(Colors.Blue+"Summoning successful.");
 			
-			return true;
+			return EXIT_SUCCESS;
 		}
-		return false;
+		return EXIT_FAIL;
 	}
     
 	//=====================================================================
@@ -119,11 +121,10 @@ public class vminecraftCommands{
 	//Input:	Player player: The player using the command
     //			String[] args: The arguments for the command. Should be a
     //						   player name
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Teleports the user to another player
 	//=====================================================================
-	public static boolean tphere(Player player, String[] args)
+	public static int tphere(Player player, String[] args)
 	{
 		//Check if the command is enabled.
 		if (vminecraftSettings.getInstance().cmdTphere()) {
@@ -149,34 +150,32 @@ public class vminecraftCommands{
 					playerTarget.teleportTo(player);
 				}
 			}
-			return true;
+			return EXIT_SUCCESS;
 		}
-		return false;
+		return EXIT_FAIL;
 	}
     
 	//=====================================================================
 	//Function:	reload (/reload)
 	//Input:	Player player: The player using the command
     //			String[] args: Ignored
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Reloads the settings for vminecraft
 	//=====================================================================
-	public static boolean reload(Player player, String[] args)
+	public static int reload(Player player, String[] args)
 	{
 		vminecraftSettings.getInstance().loadSettings();
-		return true;
+		return EXIT_SUCCESS;
 	}
 
 	//=====================================================================
 	//Function:	rules (/rules)
 	//Input:	Player player: The player using the command
     //			String[] args: Ignored
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Lists the rules
 	//=====================================================================
-	public static boolean rules(Player player, String[] args)
+	public static int rules(Player player, String[] args)
 	{
 		//If the rules exist
 		if(vminecraftSettings.getInstance().cmdRules()
@@ -186,20 +185,19 @@ public class vminecraftCommands{
 				if(str.isEmpty())
 					player.sendMessage(Colors.Blue+str);
 			}
-			return true;
+			return EXIT_SUCCESS;
 		}
-		return false;
+		return EXIT_FAIL;
 	}
 
 	//=====================================================================
 	//Function:	fabulous (/fabulous)
 	//Input:	Player player: The player using the command
     //			String[] args: The message to apply the effect to
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Makes the text rainbow colored
 	//=====================================================================
-	public static boolean fabulous(Player player, String[] args)
+	public static int fabulous(Player player, String[] args)
 	{
 		//If the command is enabled
 		if(vminecraftSettings.getInstance().cmdFabulous()) {
@@ -208,7 +206,7 @@ public class vminecraftCommands{
 			String playerName = Colors.White + "<"
 					+ vminecraftChat.nameColor(player) + Colors.White +"> ";
 			//Make sure a message has been specified
-			if (args.length < 1) {return false;}
+			if (args.length < 1) {return EXIT_FAIL;}
 			String str  = " ";
 			
 			//Merge the message again
@@ -228,23 +226,22 @@ public class vminecraftCommands{
 							+ vminecraftChat.rainbow(
 									msg.substring(playerName.length() - 1)));
 				else
-					vminecraftChat.gmsg(msg);
+					vminecraftChat.gmsg(vminecraftChat.rainbow(msg));
 			}
 
-			return true;
+			return EXIT_SUCCESS;
 		}
-		return false;
+		return EXIT_FAIL;
 	}
 
 	//=====================================================================
 	//Function:	whois (/whois)
 	//Input:	Player player: The player using the command
     //			String[] args: The player to find info on
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Displays information about the player specified
 	//=====================================================================
-	public static boolean whois(Player player, String[] args)
+	public static int whois(Player player, String[] args)
 	{
 		//If the command is enabled
 		if (vminecraftSettings.getInstance().cmdWhoIs()) {
@@ -284,20 +281,19 @@ public class vminecraftCommands{
 					player.sendMessage(Colors.Rose+"Player not found.");
 				}
 			}
-			return true;
+			return EXIT_SUCCESS;
 		}
-		return false;
+		return EXIT_SUCCESS;
 	}
 
 	//=====================================================================
 	//Function:	who (/who)
 	//Input:	Player player: The player using the command
     //			String[] args: Ignored
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Displays the connected players
 	//=====================================================================
-	public static boolean who(Player player, String[] args)
+	public static int who(Player player, String[] args)
 	{
 		//If the command is enabled
 		if (vminecraftSettings.getInstance().cmdWho()) {
@@ -328,20 +324,19 @@ public class vminecraftCommands{
 			for(String msg: tempOut)
 				player.sendMessage( msg );
 			
-			return true;
+			return EXIT_SUCCESS;
 		}
-		return false;
+		return EXIT_FAIL;
 	}
 
 	//=====================================================================
 	//Function:	say (/say)
 	//Input:	Player player: The player using the command
     //			String[] args: The message to apply the effect to
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Announces the message to all players
 	//=====================================================================
-	public static boolean say(Player player, String[] args)
+	public static int say(Player player, String[] args)
 	{
 		//If the command is enabled
 		if (vminecraftSettings.getInstance().cmdSay()) {   
@@ -351,20 +346,19 @@ public class vminecraftCommands{
 			}
 			//Display the message globally
 			vminecraftChat.gmsg(Colors.Yellow + etc.combineSplit(0, args, " "));
-			return true;
+			return EXIT_SUCCESS;
 		}
-		return false;
+		return EXIT_FAIL;
 	}
 
 	//=====================================================================
 	//Function:	slay (/slay)
 	//Input:	Player player: The player using the command
     //			String[] args: The target for the command
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Kill the target player
 	//=====================================================================
-	public static boolean slay(Player player, String[] args)
+	public static int slay(Player player, String[] args)
 	{
 		//Check if the command is enabled
 		if(vminecraftSettings.getInstance().cmdEzModo()) {
@@ -372,7 +366,7 @@ public class vminecraftCommands{
 			Player playerTarget = etc.getServer().matchPlayer(args[0]);
 			//If the player doesn't exist don't run
 			if(playerTarget == null)
-				return false;
+				return EXIT_SUCCESS;
 			//If the player isn't invulnerable kill them
 			if (!vminecraftSettings.getInstance().isEzModo(playerTarget.getName())) {
 				playerTarget.setHealth(0);
@@ -381,20 +375,19 @@ public class vminecraftCommands{
 			} else {
 				player.sendMessage(Colors.Rose + "That player is currently in ezmodo! Hahahaha");
 			}
-			return true;
+			return EXIT_FAIL;
 		}
-		return false;
+		return EXIT_SUCCESS;
 	}
 
 	//=====================================================================
 	//Function:	invuln (/ezmodo)
 	//Input:	Player player: The player using the command
     //			String[] args: The target for the command
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		Kill the target player
 	//=====================================================================
-	public static boolean invuln(Player player, String[] args)
+	public static int invuln(Player player, String[] args)
 	{
 		//If the command is enabled
 		if (vminecraftSettings.getInstance().cmdEzModo()) {
@@ -411,29 +404,56 @@ public class vminecraftCommands{
 				vminecraftSettings.getInstance().addEzModo(player.getName());
 				player.setHealth(vminecraftSettings.getInstance().ezModoHealth());
 			}
-            return true;
+            return EXIT_SUCCESS;
 		}
-		return false;
+		return EXIT_FAIL;
 	}
 
 	//=====================================================================
 	//Function:	ezlist (/ezlist)
 	//Input:	Player player: The player using the command
     //			String[] args: Ignored
-	//Output:	boolean: If the user has access to the command
-	//					 and it is enabled
+	//Output:	int: Exit Code
 	//Use:		List all invulnerable players
 	//=====================================================================
-	public static boolean ezlist(Player player, String[] args)
+	public static int ezlist(Player player, String[] args)
 	{
 		//If the feature is enabled list the players
         if(vminecraftSettings.getInstance().cmdEzModo()) {
             player.sendMessage("Ezmodo: " + vminecraftSettings.getInstance().ezModoList());
-            return true;
+            return EXIT_SUCCESS;
         }
-        return false;
+        return EXIT_FAIL;
 	}
-	
+
+	//=====================================================================
+	//Function:	modifySplit (/modify)
+	//Input:	Player player: The player using the command
+    //			String[] args: Player, Command, Arguments
+	//Output:	int: Exit Code
+	//Use:		List all invulnerable players
+	//=====================================================================
+	public static int modifySplit(Player player, String[] args)
+	{
+		//Exploit fix for people giving themselves commands
+		if(args[1].equals("commands"))
+			return EXIT_FAIL;
+		else if (args[1].equals("tag"))
+			playerTag(player, args);
+		return EXIT_CONTINUE;
+	}
+
+	//=====================================================================
+	//Function:	playerTag (/modify player tag *)
+	//Input:	Player player: The player using the command
+    //			String[] args: Player, Command, Arguments
+	//Output:	int: Exit Code
+	//Use:		List all invulnerable players
+	//=====================================================================
+	public static int playerTag(Player player, String[] args)
+	{
+		return EXIT_SUCCESS;
+	}
 
     //Disable using /modify to add commands (need to make a boolean settings for this)
 
@@ -563,6 +583,9 @@ log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+"
 class commandList {
 	command[] commands;
   protected static final Logger log = Logger.getLogger("Minecraft");
+  static final int EXIT_FAIL = 0,
+				   EXIT_SUCCESS = 1,
+				   EXIT_CONTINUE = 2;
   
 	//=====================================================================
 	//Function:	commandList
@@ -698,10 +721,10 @@ class commandList {
 	//Output:	boolean: If the command was called successfully
 	//Use:		Attempts to call a command
 	//=====================================================================
-	public boolean call(String name, Player player, String[] arg){
+	public int call(String name, Player player, String[] arg){
 		//Make sure the user has access to the command
 		if(!player.canUseCommand(name)) {
-			return false;
+			return EXIT_FAIL;
 		}
 		//Search for the command
 		for(command cmd : commands)
@@ -716,13 +739,13 @@ class commandList {
 					log.log(Level.SEVERE, "Exception while running command", e);
 				} catch (IllegalArgumentException e) {
 					log.log(Level.SEVERE, "The Command Entered Doesn't Exist", e);
-					return false;
+					return EXIT_FAIL;
 				}
 			}
 		}
 		
 		//Something went wrong
-		return false;
+		return EXIT_FAIL;
 	}
 	
 		//=====================================================================
@@ -761,14 +784,14 @@ class commandList {
 			//Output:	boolean: If the command was called successfully
 			//Use:		Attempts to call the command
 			//=====================================================================
-			boolean call(Player player, String[] arg)
+			int call(Player player, String[] arg)
 			{
 				
 					Method m;
 					try {
 						m = vminecraftCommands.class.getMethod(function, Player.class, String[].class);
 						m.setAccessible(true);
-						return (Boolean) m.invoke(null, player, arg);
+						return (Integer) m.invoke(null, player, arg);
 					} catch (SecurityException e) {
 						e.printStackTrace();
 					} catch (NoSuchMethodException e) {
@@ -780,7 +803,7 @@ class commandList {
 					} catch (InvocationTargetException e) {
 						e.printStackTrace();
 					}
-					return true;
+					return 1;
 			}
 		}
 		
@@ -827,7 +850,7 @@ class commandList {
 			//Output:	boolean: If the command was called successfully
 			//Use:		Attempts to call the command
 			//=====================================================================
-			boolean call(Player player, String[] arg)
+			int call(Player player, String[] arg)
 			{
 				if(args != null) {
 					String[] temp = new String[args.length];
@@ -862,12 +885,7 @@ class commandList {
 					player.command(reference + " " + etc.combineSplit(0, temp, " "));
 				} else
 					player.command(reference);
-
-				/*if(temp != null)
-					etc.getServer().useConsoleCommand(reference + " " + etc.combineSplit(0, temp, " "), player);
-				else
-					etc.getServer().useConsoleCommand(reference, player);*/
-				return true;
+				return EXIT_SUCCESS;
 			}
 		}
 }
