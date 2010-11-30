@@ -206,7 +206,7 @@ public class vminecraftCommands{
 			
 			//Format the name
 			String playerName = Colors.White + "<"
-					+ nameColor(player) + Colors.White +"> ";
+					+ vminecraftChat.nameColor(player) + Colors.White +"> ";
 			//Make sure a message has been specified
 			if (args.length < 1) {return false;}
 			String str  = " ";
