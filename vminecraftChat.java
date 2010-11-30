@@ -128,7 +128,9 @@ public class vminecraftChat {
 	//Use:		Returns the colored name;
 	//=====================================================================
     public static String nameColor(Player player){
-        return player.getColor() + player.getName();
+    	String[] playerPrefix = new String[]{player.getPrefix()};
+        return applyColors(playerPrefix)[0].substring(3)
+        		+ player.getColor().substring(0,2) + player.getName();
     }
     
 	//=====================================================================
@@ -243,12 +245,7 @@ public class vminecraftChat {
 					if (p.isAdmin() || (p.canUseCommand("/adminchat"))) {
 
 						//Output the first line
-						p.sendMessage(adminchat + msg[0]);
-						
-						//Get the rest of the lines and display them.
-						String[] tempOut = new String[msg.length - 1];
-						System.arraycopy(msg, 1, tempOut, 0, tempOut.length);
-						for(String str: tempOut)
+						for(String str: msg)
 							p.sendMessage(str);
 					}
 				}
@@ -327,7 +324,7 @@ public class vminecraftChat {
 		//Format the name
 		String playerName = Colors.White + "<"
 		+ nameColor(player) + Colors.White +"> ";
-		if(vminecraftSettings.getInstance().quakeColors() && message.length()>2) {
+		if(vminecraftSettings.getInstance().quakeColors()) {
 
 			//Log the chat
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
