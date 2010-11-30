@@ -61,13 +61,12 @@ public class vminecraftCommands{
         if(vminecraftSettings.getInstance().cmdHeal())
         {
         	//If a target wasn't specified, heal the user.
-            if (args == null){
-            	if (player.getHealth() < 20){
-            		vminecraftChat.gmsg("Your health is restored");
-            	}
+            if (args.length < 1){
+            	player.setHealth(20);
+            	player.sendMessage("Your health is restored");
             //If a target was specified, try to find them and then heal them
             //Otherwise report the error
-            } else if (args != null){
+            } else if (args.length > 0){
             	Player playerTarget = etc.getServer().matchPlayer(args[0]);
             		
             	if (playerTarget != null){

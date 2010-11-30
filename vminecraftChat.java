@@ -225,7 +225,7 @@ public class vminecraftChat {
 				color = Colors.White;
 				break;
 			default:
-				color = Colors.White;
+				color = null;
 				break;
 		}
 		return color;
@@ -381,14 +381,24 @@ public class vminecraftChat {
 			//Loop through looking for a color code
 			for(int x = 0; x< msg.length(); x++)
 			{
+				//If the char is a ^
 				if(msg.charAt(x)=='^' && x != msg.length() - 1)
 				{
-					//Set the most recent color to the new color
-					recentColor = vminecraftChat.colorChange(msg.charAt(x+1));
-					temp += recentColor;
-					x++;
-				}
-				else{
+					//If the following character is a color code
+					if(vminecraftChat.colorChange(msg.charAt(x+1)) != null)
+					{
+						//Set the most recent color to the new color
+						recentColor = vminecraftChat.colorChange(msg.charAt(x+1));
+						//Add the color
+						temp += recentColor;
+						//Skip these chars
+						x++;
+					//Otherwise ignore it.
+					} else {
+						temp += msg.charAt(x);
+					}
+				//Insert the character
+				} else {
 					temp += msg.charAt(x);
 				}
 			}
