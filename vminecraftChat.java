@@ -34,9 +34,8 @@ public class vminecraftChat {
     public static String[] wordWrap(String msg){
     	//Split each word apart
     	String[] split = msg.split(" ");
-    	//Create the output array
-    	int length = (int)msgLength(msg) / 316;
     	
+    	//Create an arraylist for the output
     	ArrayList<String> out = new ArrayList<String>();
     	
     	//While i is less than the length of the array of words
@@ -54,76 +53,18 @@ public class vminecraftChat {
     				i++;
 
     		}
-    		String[] temp = new String[i - j];
-    		
 			//Copy the words in the selection into a new array
+    		String[] temp = new String[i - j];
     		System.arraycopy(split, j, temp, 0, i - j);
 
     		//Merge them and add them to the output array
     		out.add( etc.combineSplit(0, temp, " ") );
     	}
+    	
+    	//Convert to an array and return
     	String[] tempout = new String[out.size()];
     	out.toArray(tempout);
     	return tempout;
-    }
-    
-	//=====================================================================
-	//Function:	wordWrap
-	//Input:	Player player: To get the player name
-    //			String msg: The message to be wrapped
-	//Output:	String[]: The array of substrings 
-	//Use:		Cuts the message apart into whole words short enough to fit
-    //			on one line
-	//=====================================================================
-    public static String[] wordWrap(Player player, String msg){
-    	//Split each word apart
-    	String[] array = msg.split(" ");
-    	//Create the output array
-    	String[] out = new String[0];
-    	
-    	//While i is less than the length of the array of words
-    	int i = 0;
-    	while(i < array.length){
-    		int len = 0;
-    		if(out.length == 0)
-    			len = msgLength("<" + player.getName() + "> ");
-    		int j = i;
-    		//Loop through the words finding their length and increasing
-    		//j, the end point for the sub string
-    		while(len <= 316 && j < array.length)
-    		{
-    			len += msgLength(array[j]) + 4;
-    			if( len <= 316)
-    				j++;
-
-    		}
-    		String[] temp = new String[j - i];
-
-    		//If it's not the end yet
-    		if(j < array.length)
-    		{
-    			//Copy the words in the selection into a new array
-        		System.arraycopy(array, i, temp, 0, j);
-
-        		//Merge them and add them to the output array
-    			String[] tempOut = new String[out.length + 1];
-        		System.arraycopy(out, 0, tempOut, 0, out.length);
-        		tempOut[tempOut.length - 1] = etc.combineSplit(0, temp, " ");
-        		out = tempOut;
-        		
-    		}
-    		else
-    		{
-    			//Merge the rest and add them to the output array
-    			String[] tempOut = new String[out.length + 1];
-        		System.arraycopy(out, 0, tempOut, 0, out.length);
-        		tempOut[tempOut.length - 1] = etc.combineSplit(i, array, " ");
-        		out = tempOut;
-    		}
-    		//Make the old front equal to the old end
-    		i = j;
-    	}
-    	return out;
     }
     
     private static int msgLength(String str){
@@ -290,7 +231,7 @@ public class vminecraftChat {
 	        String adminchat = Colors.DarkPurple + "{" + nameColor(player)
 	        +  Colors.DarkPurple +"}" + Colors.White + " ";
 	        
-	        String[] msg = wordWrap(player, message.substring(1, message.length()));
+	        String[] msg = wordWrap(adminchat + message.substring(1, message.length()));
 	        
 	        //Get the player from the playerlist to send the message to.
 			for (Player p: etc.getServer().getPlayerList()) {
@@ -337,7 +278,7 @@ public class vminecraftChat {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 	        
 			//Get the multi line array
-	        String[] msg = wordWrap(player, message);
+	        String[] msg = wordWrap(playerName + message);
 
 			//Output the first line
 			gmsg( playerName + Colors.LightGreen + msg[0]);
@@ -367,7 +308,7 @@ public class vminecraftChat {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 	        
 			//Get the multi line array
-	        String[] msg = wordWrap(player, message);
+	        String[] msg = wordWrap(playerName + message);
 
 			//Output the first line
 			gmsg( playerName + Colors.Red + msg[0]);
@@ -399,7 +340,7 @@ public class vminecraftChat {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 			
 			//Get the multi line array
-	        String[] msg = wordWrap(player, message);
+	        String[] msg = wordWrap(playerName + message);
 	        //Apply colors to the lines
 			applyColors(msg);
 

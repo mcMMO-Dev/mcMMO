@@ -179,10 +179,11 @@ public class vminecraftCommands{
 	public static boolean rules(Player player, String[] args)
 	{
 		//If the rules exist
-		if(vminecraftSettings.getInstance().cmdRules()) {
+		if(vminecraftSettings.getInstance().cmdRules()
+				&& vminecraftSettings.getInstance().getRules().length != 0) {
 			//Display them
 			for (String str : vminecraftSettings.getInstance().getRules()) {
-				if(str != null)
+				if(str.isEmpty())
 					player.sendMessage(Colors.Blue+str);
 			}
 			return true;
@@ -202,19 +203,20 @@ public class vminecraftCommands{
 	{
 		//If the command is enabled
 		if(vminecraftSettings.getInstance().cmdFabulous()) {
+			String playerName =  "<" + vminecraftChat.nameColor(player)
+					+ Colors.White + "> ";
 			//Make sure a message has been specified
 			if (args.length < 1) {return false;}
-			String str  = "";
+			String str  = " ";
 			//Merge the message again
 			str = etc.combineSplit(0, args, " ");	
 			//Output for server
 			log.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
 			//Prepend the player name
-			String[] message = vminecraftChat.wordWrap(player, str);
+			String[] message = vminecraftChat.wordWrap(playerName + str);
 
 			//Output the first line
-			vminecraftChat.gmsg( "<" + vminecraftChat.nameColor(player) + Colors.White + "> "
-					+ vminecraftChat.rainbow(message[0]));
+			vminecraftChat.gmsg( playerName + vminecraftChat.rainbow(message[0]));
 			
 			//Get the rest of the lines and display them.
 			String[] tempOut = new String[message.length - 1];

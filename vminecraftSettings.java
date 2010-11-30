@@ -31,8 +31,8 @@ public class vminecraftSettings {
 				   globalmessages	= false,
 				   cmdSay			= false,
 				   cmdWho			= false,
-                                   stopFire = false,
-                                   stopTnt = false,
+				   stopFire			= false,
+				   stopTnt			= false,
 				   cmdEzModo		= false;
 	
 	//An array of players currently in ezmodo
@@ -42,7 +42,7 @@ public class vminecraftSettings {
 	
 	private PropertiesFile properties;
 	String file = "vminecraft.properties";
-	public String rules[] = null;
+	public String rules[] = new String[0];
 
 	//=====================================================================
 	//Function:	loadSettings
@@ -78,10 +78,12 @@ public class vminecraftSettings {
 				writer.write("FFF=true\r\n");
 				writer.write("adminchat=true\r\n");
 				writer.write("cmdEzModo=true\r\n");
+				writer.write("#Adding player names to this list will have them start off in ezmodo\r\n");
 				writer.write("ezModo=\r\n");
+				writer.write("#The health ezmodo people will have while in ezmodo. Don't set to 0\r\n");
 				writer.write("ezHealth=30\r\n");
-                                writer.write("stopFire=false");
-                                writer.write("stopTnt=false");
+				writer.write("stopFire=false");
+                writer.write("stopTnt=false");
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
@@ -100,7 +102,7 @@ public class vminecraftSettings {
 			try {
 				properties.load();
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.log(Level.SEVERE, "Exception while loading vminecraft.properties", e);
 			}
 		}
 
@@ -121,8 +123,8 @@ public class vminecraftSettings {
 			globalmessages = properties.getBoolean("globalmessages",true);
 			cmdSay = properties.getBoolean("cmdSay",true);
 			cmdEzModo = properties.getBoolean("cmdEzModo",true);
-                        stopFire = properties.getBoolean("stopFire",true);
-                        stopTnt = properties.getBoolean("stopTNT",true);
+			stopFire = properties.getBoolean("stopFire",true);
+			stopTnt = properties.getBoolean("stopTNT",true);
 			rules = properties.getString("rules", "").split("@");
 			
 			String[] tempEz = properties.getString("ezModo").split(",");
@@ -165,8 +167,8 @@ public class vminecraftSettings {
 	public boolean cmdMasstp() {return cmdMasstp;}
 	public boolean cmdEzModo() {return cmdEzModo;}
 	public boolean cmdWho() {return cmdWho;}
-        public boolean stopFire() {return stopFire;}
-        public boolean stopTnt() {return stopTnt;}
+	public boolean stopFire() {return stopFire;}
+	public boolean stopTnt() {return stopTnt;}
 	
 	//EzModo functions
 	public boolean isEzModo(String playerName) {return ezModo.contains(playerName);}
