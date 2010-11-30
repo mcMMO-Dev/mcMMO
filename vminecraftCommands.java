@@ -208,7 +208,7 @@ public class vminecraftCommands{
 	public static int reload(Player player, String[] args)
 	{
 		vminecraftSettings.getInstance().loadSettings();
-		return EXIT_SUCCESS;
+		return EXIT_FAIL;
 	}
 
 	//=====================================================================
