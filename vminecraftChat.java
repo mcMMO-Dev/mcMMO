@@ -71,34 +71,22 @@ public class vminecraftChat {
 		int length = 0;
 		for(int x = 0; x<str.length(); x++)
 		{
-			if("i;,.:|!".indexOf(str.charAt(x)) != -1)
-			{
+			if(str.charAt(x) == '§')
+				x++;
+			else if("i;,.:|!".indexOf(str.charAt(x)) != -1)
 				length+=2;
-			}
 			else if("l'".indexOf(str.charAt(x)) != -1)
-			{
 				length+=3;
-			}
 			else if("tI[]".indexOf(str.charAt(x)) != -1)
-			{
 				length+=4;
-			}
 			else if("kf{}<>\"*()".indexOf(str.charAt(x)) != -1)
-			{
 				length+=5;
-			}
 			else if("hequcbrownxjmpsvazydgTHEQUCKBROWNFXJMPSVLAZYDG1234567890#\\/?$%-=_+&".indexOf(str.charAt(x)) != -1)
-			{
 				length+=6;
-			}
 			else if("@~".indexOf(str.charAt(x)) != -1)
-			{
 				length+=7;
-			}
 			else if(str.charAt(x)==' ')
-			{
 				length+=4;
-			}
 		}
 		return length;
     }
@@ -107,9 +95,9 @@ public class vminecraftChat {
     public static String rainbow(String msg){
     	String temp = "";
     	//The array of colors to use
-		String[] rainbow = new String[] {Colors.Red, Colors.Rose,
-				Colors.Yellow, Colors.Green, Colors.Blue,
-				Colors.LightPurple, Colors.Purple};
+		String[] rainbow = new String[] {Colors.Red, Colors.Rose, Colors.Gold,
+				Colors.Yellow, Colors.LightGreen, Colors.Green, Colors.Blue,
+				Colors.Navy, Colors.DarkPurple, Colors.Purple, Colors.LightPurple};
 		int counter=0;
 		//Loop through the message applying the colors
 		for(int x=0; x<msg.length(); x++)
@@ -117,7 +105,7 @@ public class vminecraftChat {
 			temp+=rainbow[counter]+msg.charAt(x);
 			
 			if(msg.charAt(x)!=' ') counter++;
-			if(counter==7) counter = 0;
+			if(counter==rainbow.length) counter = 0;
 		}
 		return temp;
     }
@@ -128,7 +116,22 @@ public class vminecraftChat {
 	//Use:		Returns the colored name;
 	//=====================================================================
     public static String nameColor(Player player){
-        return player.getColor() + player.getName();
+    	
+    	//Get the prefix
+    	String[] playerPrefix = new String[]{player.getPrefix()};
+    	
+    	//Add the name
+    	String output = player.getName();
+    	
+    	//Add the color if there is one
+    	if(player.getColor() != null && player.getColor() != "")
+    		output = player.getColor().substring(0,2) + output;
+    	//Add the prefix if there is one
+    	if(playerPrefix[0] != null && playerPrefix[0] != "")
+    		output = applyColors(playerPrefix)[0].substring(3) + output;
+    	
+    	//Return the name
+        return output;
     }
     
 	//=====================================================================
@@ -214,7 +217,7 @@ public class vminecraftChat {
 		}
 		return color;
 	}
-	
+	  
 	//=====================================================================
 	//Function:	adminChat
 	//Input:	Player player: The player talking
@@ -243,12 +246,7 @@ public class vminecraftChat {
 					if (p.isAdmin() || (p.canUseCommand("/adminchat"))) {
 
 						//Output the first line
-						p.sendMessage(adminchat + msg[0]);
-						
-						//Get the rest of the lines and display them.
-						String[] tempOut = new String[msg.length - 1];
-						System.arraycopy(msg, 1, tempOut, 0, tempOut.length);
-						for(String str: tempOut)
+						for(String str: msg)
 							p.sendMessage(str);
 					}
 				}
@@ -327,7 +325,7 @@ public class vminecraftChat {
 		//Format the name
 		String playerName = Colors.White + "<"
 		+ nameColor(player) + Colors.White +"> ";
-		if(vminecraftSettings.getInstance().quakeColors() && message.length()>2) {
+		if(vminecraftSettings.getInstance().quakeColors()) {
 
 			//Log the chat
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
