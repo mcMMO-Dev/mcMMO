@@ -67,8 +67,16 @@ public class vminecraftChat {
     	return tempout;
     }
     
+	//=====================================================================
+	//Function:	msgLength
+	//Input:	String str: The string to find the length of
+	//Output:	int: The length on the screen of a string
+	//Use:		Finds the length on the screen of a string. Ignores colors.
+	//=====================================================================
     private static int msgLength(String str){
 		int length = 0;
+		//Loop through all the characters, skipping any color characters
+		//and their following color codes
 		for(int x = 0; x<str.length(); x++)
 		{
 			if(str.charAt(x) == '§')
@@ -90,8 +98,13 @@ public class vminecraftChat {
 		}
 		return length;
     }
-    
 
+	//=====================================================================
+	//Function:	rainbow
+	//Input:	String msg: The string to colorify
+	//Output:	String: The rainbowed result
+	//Use:		Rainbowifies a string;
+	//=====================================================================
     public static String rainbow(String msg){
     	String temp = "";
     	//The array of colors to use
@@ -110,12 +123,12 @@ public class vminecraftChat {
 		return temp;
     }
 	//=====================================================================
-	//Function:	nameColor
+	//Function:	getName
 	//Input:	Player player: The player to get name as color
 	//Output:	String: The name colored 
 	//Use:		Returns the colored name;
 	//=====================================================================
-    public static String nameColor(Player player){
+    public static String getName(Player player){
     	
     	//Get the prefix
     	String[] playerPrefix = new String[]{player.getPrefix()};
@@ -231,7 +244,7 @@ public class vminecraftChat {
 		if(player.isAdmin() || player.canUseCommand("/adminchat"))
 		{
 			//Special formatting for adminchat {Username}
-	        String adminchat = Colors.DarkPurple + "{" + nameColor(player)
+	        String adminchat = Colors.DarkPurple + "{" + getName(player)
 	        +  Colors.DarkPurple +"}" + Colors.White + " ";
 	        
 	        String[] msg = wordWrap(adminchat + message.substring(1, message.length()));
@@ -253,7 +266,7 @@ public class vminecraftChat {
 			}
 
 		    //So you can read adminchat from the server console
-			log.log(Level.INFO, "@" + "<" + nameColor(player)
+			log.log(Level.INFO, "@" + "<" + getName(player)
 					+  Colors.White +"> " + message); 
 			return true;
 		}
@@ -270,7 +283,7 @@ public class vminecraftChat {
 	public static boolean quote(Player player, String message)
 	{
 		//Format the name
-		String playerName = Colors.White + "<" + nameColor(player)
+		String playerName = Colors.White + "<" + getName(player)
 				+ Colors.White + "> ";
 		if(vminecraftSettings.getInstance().greentext()) {
 			//Log the chat
@@ -298,7 +311,7 @@ public class vminecraftChat {
 	{
 		//Format the name
 		String playerName = Colors.White + "<"
-				+ nameColor(player) + Colors.White +"> ";
+				+ getName(player) + Colors.White +"> ";
 		if (vminecraftSettings.getInstance().FFF()) {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 	        
@@ -324,7 +337,7 @@ public class vminecraftChat {
 	{
 		//Format the name
 		String playerName = Colors.White + "<"
-		+ nameColor(player) + Colors.White +"> ";
+		+ getName(player) + Colors.White +"> ";
 		if(vminecraftSettings.getInstance().quakeColors()) {
 
 			//Log the chat
