@@ -35,10 +35,50 @@ public class vminecraftCommands{
         cl.register("/slay", "slay", "Kill target player");
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
         cl.register("/ezlist", "ezlist", "List invulnerable players");
+        cl.register("/heal", "heal", "heal yourself or other players");
+        cl.register("/suicide", "suicide", "kill yourself... you loser");
         cl.registerAlias("/playerlist", "/who");
+        cl.registerAlias("/suicide", "/wrists");
     }
-    
-    
+
+    //Heal
+    public static boolean heal(Player player, String[] args)
+    {
+        if(vminecraftSettings.getInstance().cmdHeal)
+        {
+            if (args[1] == null){
+            if (player.getHealth() < 20){
+                vminecraftChat.gmsg("Your health is restored");
+                return true;
+            }
+            else if (args[1] != null){
+                Player playerTarget = etc.getServer().matchPlayer(args[1]);
+                if (playerTarget != null){
+                    playerTarget.setHealth(20);
+                    vminecraftChat.gmsg(Colors.Blue + "You have healed " + playerTarget.getColor() + playerTarget.getName());
+                    vminecraftChat.gmsg(Colors.Blue + "You have been healed by " + player.getColor() + player.getName());
+                    return true;
+                }
+                else if (playerTarget == null){
+                    vminecraftChat.gmsg(Colors.Rose + "Couldn't find that player");
+                    return false;
+                    }
+
+                }
+            }
+        }
+        return false;
+    }
+    //Suicide
+    public static boolean suicide(Player player, String[] args)
+    {
+        if(vminecraftSettings.getInstance().cmdSuicide)
+        {
+            player.setHealth(0);
+            return true;
+        }
+        return false;
+    }
 	//=====================================================================
 	//Function:	teleport (/tp)
 	//Input:	Player player: The player using the command

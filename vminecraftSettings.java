@@ -33,6 +33,8 @@ public class vminecraftSettings {
 				   cmdWho			= false,
 				   stopFire			= false,
 				   stopTnt			= false,
+                                   cmdHeal  = false,
+                                   cmdSuicide = false,
 				   cmdEzModo		= false;
 	//An array of players currently in ezmodo
 	static ArrayList<String> ezModo = new ArrayList<String>();
@@ -74,6 +76,7 @@ public class vminecraftSettings {
 				writer.write("cmdSay=true\r\n");
 				writer.write("cmdTp=true\r\n");
 				writer.write("cmdRules=true\r\n");
+                                writer.write("cmdSuicide=true\r\n");
 				writer.write("globalmessages=true\r\n");
 				writer.write("FFF=true\r\n");
 				writer.write("adminchat=true\r\n");
@@ -82,11 +85,11 @@ public class vminecraftSettings {
 				writer.write("ezModo=\r\n");
 				writer.write("#The health ezmodo people will have while in ezmodo. Don't set to 0\r\n");
 				writer.write("ezHealth=30\r\n");
-				writer.write("stopFire=false");
-                                writer.write("stopTnt=false");
+				writer.write("stopFire=false\r\n");
+                                writer.write("stopTnt=false\r\n");
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
-                                writer.write("#Death messages, seperate them by comma. All death messages start with the player name and a space.");
-                                writer.write("deathMessages=is no more,died horribly,went peacefully");
+                                writer.write("#Death messages, seperate them by comma. All death messages start with the player name and a space.\r\n");
+                                writer.write("deathMessages=is no more,died horribly,went peacefully\r\n");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
 			} finally {
@@ -122,6 +125,8 @@ public class vminecraftSettings {
 			cmdTp = properties.getBoolean("cmdTp",true);
 			cmdMasstp = properties.getBoolean("cmdMasstp",true);
 			cmdTphere = properties.getBoolean("cmdTphere",true);
+                        cmdSuicide = properties.getBoolean("cmdSuicide", true);
+                        cmdHeal = properties.getBoolean("cmdHeal",true);
 			globalmessages = properties.getBoolean("globalmessages",true);
 			cmdSay = properties.getBoolean("cmdSay",true);
 			cmdEzModo = properties.getBoolean("cmdEzModo",true);
@@ -171,6 +176,8 @@ public class vminecraftSettings {
 	public boolean cmdWho() {return cmdWho;}
 	public boolean stopFire() {return stopFire;}
 	public boolean stopTnt() {return stopTnt;}
+        public boolean cmdSuicide() {return cmdSuicide;}
+        public boolean cmdHeal() {return cmdHeal;}
 	
 	//EzModo methods
 	public boolean isEzModo(String playerName) {return ezModo.contains(playerName);}
