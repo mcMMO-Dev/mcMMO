@@ -272,7 +272,7 @@ public class vminecraftCommands{
 					player.sendMessage(Colors.Blue + "Groups: " + group);
 					//Admin
 					player.sendMessage(Colors.Blue+"Admin: " +
-							String.valueOf(playerTarget.canIgnoreRestrictions()));
+							String.valueOf(playerTarget.isAdmin()));
 					//IP
 					player.sendMessage(Colors.Blue+"IP: " + playerTarget.getIP());
 					//Restrictions

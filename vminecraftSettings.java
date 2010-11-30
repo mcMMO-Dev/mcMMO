@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Random;
 //=====================================================================
 //Class:	vminecraftSettings
 //Use:		Controls the settings for vminecraft
@@ -11,7 +12,6 @@ public class vminecraftSettings {
 	//private final static Object syncLock = new Object();
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	private static volatile vminecraftSettings instance;
-    //Invulnerability List
 
 
 	//The feature settings
@@ -34,7 +34,6 @@ public class vminecraftSettings {
 				   stopFire			= false,
 				   stopTnt			= false,
 				   cmdEzModo		= false;
-	
 	//An array of players currently in ezmodo
 	static ArrayList<String> ezModo = new ArrayList<String>();
 	//The max health for ezModo
@@ -43,6 +42,7 @@ public class vminecraftSettings {
 	private PropertiesFile properties;
 	String file = "vminecraft.properties";
 	public String rules[] = new String[0];
+        public static String deathMessages[] = new String[0];
 
 	//=====================================================================
 	//Function:	loadSettings
@@ -83,8 +83,10 @@ public class vminecraftSettings {
 				writer.write("#The health ezmodo people will have while in ezmodo. Don't set to 0\r\n");
 				writer.write("ezHealth=30\r\n");
 				writer.write("stopFire=false");
-                writer.write("stopTnt=false");
+                                writer.write("stopTnt=false");
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
+                                writer.write("#Death messages, seperate them by comma. All death messages start with the player name and a space.");
+                                writer.write("deathMessages=is no more,died horribly,went peacefully");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
 			} finally {
@@ -126,7 +128,7 @@ public class vminecraftSettings {
 			stopFire = properties.getBoolean("stopFire",true);
 			stopTnt = properties.getBoolean("stopTNT",true);
 			rules = properties.getString("rules", "").split("@");
-			
+                        deathMessages = properties.getString("deathmessages", "").split(",");
 			String[] tempEz = properties.getString("ezModo").split(",");
 			ezModo = new ArrayList<String>();
 			for(int i = 0; i < tempEz.length; i++)
@@ -170,13 +172,19 @@ public class vminecraftSettings {
 	public boolean stopFire() {return stopFire;}
 	public boolean stopTnt() {return stopTnt;}
 	
-	//EzModo functions
+	//EzModo methods
 	public boolean isEzModo(String playerName) {return ezModo.contains(playerName);}
 	public void removeEzModo(String playerName) {ezModo.remove(ezModo.indexOf(playerName));}
 	public void addEzModo(String playerName) {ezModo.add(playerName);}
 	public int ezModoHealth() {return ezHealth;}
 	public String ezModoList() {return ezModo.toString();}
-
+        //Random death message method
+        public static String randomDeathMsg() {
+            if (deathMessages == null) {
+                return "died";
+            }
+            return deathMessages[ (int) (Math.random() * deathMessages.length)];
+        }
 	
 	//=====================================================================
 	//Function:	getInstance

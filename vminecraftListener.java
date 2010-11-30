@@ -83,9 +83,15 @@ public class vminecraftListener extends PluginListener {
 
             }
      else if (vminecraftSettings.getInstance().globalmessages() && player.getHealth() < 1) {
-         vminecraftChat.gmsg(Colors.Gray + player.getName() + " is no more");
+         vminecraftChat.gmsg(Colors.Gray + player.getName() + " " + vminecraftSettings.randomDeathMsg());
             }
             return false; 
     	}
+    /** Not working yet, I posted the issue to hMod on github though
+    public boolean onDamage(DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
+
+        return false;
+    }
+    **/
 
 }
