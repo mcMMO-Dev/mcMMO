@@ -1,11 +1,10 @@
 Vminecraft b8 Todo
-Heal Command
 Antigriefs
 /a to toggle admin chat
 personal muting
 vminecraft version of help that summarizes the mod
 Time manipulation
-Suicide command
+
 Slap
 Toggle for the GG exploit fix
 
@@ -14,3 +13,8 @@ Code was organized
 Aliasing was added
 Playerlist is now colorful and awesome
 Random death messages
+Suicide command
+Heal Command
+Colored Prefixes
+Emotes such as ^^ ^_^ now possible
+Multi Line color fix, now we can have color on multiple lines without crashing the client
