@@ -366,18 +366,20 @@ public class vminecraftCommands{
 			Player playerTarget = etc.getServer().matchPlayer(args[0]);
 			//If the player doesn't exist don't run
 			if(playerTarget == null)
-				return EXIT_SUCCESS;
+				return EXIT_FAIL;
 			//If the player isn't invulnerable kill them
 			if (!vminecraftSettings.getInstance().isEzModo(playerTarget.getName())) {
 				playerTarget.setHealth(0);
-				vminecraftChat.gmsg(player.getColor() + player.getName() + Colors.LightBlue + " has slain " + playerTarget.getColor() + playerTarget.getName());
+				vminecraftChat.gmsg(vminecraftChat.nameColor(player)
+						+ Colors.LightBlue + " has slain "
+						+ vminecraftChat.nameColor(playerTarget));
 			//Otherwise output error to the user
 			} else {
 				player.sendMessage(Colors.Rose + "That player is currently in ezmodo! Hahahaha");
 			}
-			return EXIT_FAIL;
+			return EXIT_SUCCESS;
 		}
-		return EXIT_SUCCESS;
+		return EXIT_FAIL;
 	}
 
 	//=====================================================================
