@@ -504,22 +504,23 @@ public class vminecraftCommands{
 		//Exploit fix for people giving themselves commands
 		if(args[1].equals("commands"))
 			return EXIT_FAIL;
-		else if (args[1].equals("tag"))
-			playerTag(player, args);
 		return EXIT_CONTINUE;
 	}
 
 	//=====================================================================
-	//Function:	playerTag (/modify player tag *)
-	//Input:	Player player: The player using the command
-    //			String[] args: Player, Command, Arguments
+	//Function:	Time Reverse
+	//Input:	long time: The time to reverse to.
 	//Output:	int: Exit Code
 	//Use:		List all invulnerable players
 	//=====================================================================
-	public static int playerTag(Player player, String[] args)
+	public static int timeReverse(long tarTime)
 	{
+		long curTime = etc.getServer().getRelativeTime();
+		if(cur)
 		return EXIT_SUCCESS;
 	}
+	
+	
 
     //Disable using /modify to add commands (need to make a boolean settings for this)
 
@@ -814,144 +815,148 @@ class commandList {
 		return EXIT_FAIL;
 	}
 	
+	
+	
+	//=====================================================================
+	//Class:	command
+	//Use:		The specific command
+	//Author:	cerevisiae
+	//=====================================================================
+	private class command
+	{
+		private String commandName;
+		private String function;
+
 		//=====================================================================
-		//Class:	command
-		//Use:		The specific command
-		//Author:	cerevisiae
+		//Function:	command
+		//Input:	None
+		//Output:	None
+		//Use:		Initialize the command
 		//=====================================================================
-		private class command{
-			private String commandName;
-			private String function;
-
-			//=====================================================================
-			//Function:	command
-			//Input:	None
-			//Output:	None
-			//Use:		Initialize the command
-			//=====================================================================
-			public command(String name, String func){
-				commandName = name;
-				function = func;
-			}
-
-
-			//=====================================================================
-			//Function:	getName
-			//Input:	None
-			//Output:	String: The command name
-			//Use:		Returns the command name
-			//=====================================================================
-			public String getName(){return commandName;}
-
-
-			//=====================================================================
-			//Function:	call
-			//Input:	String[] arg: The arguments for the command
-			//Output:	boolean: If the command was called successfully
-			//Use:		Attempts to call the command
-			//=====================================================================
-			int call(Player player, String[] arg)
-			{
-				
-					Method m;
-					try {
-						m = vminecraftCommands.class.getMethod(function, Player.class, String[].class);
-						m.setAccessible(true);
-						return (Integer) m.invoke(null, player, arg);
-					} catch (SecurityException e) {
-						e.printStackTrace();
-					} catch (NoSuchMethodException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					}
-					return 1;
-			}
+		public command(String name, String func){
+			commandName = name;
+			function = func;
 		}
-		
+
+
 		//=====================================================================
-		//Class:	commandRef
-		//Use:		A command referencing another command
-		//Author:	cerevisiae
+		//Function:	getName
+		//Input:	None
+		//Output:	String: The command name
+		//Use:		Returns the command name
 		//=====================================================================
-		private class commandRef extends command{
-			private String reference;
-			private String[] args;
-
-			//=====================================================================
-			//Function:	command
-			//Input:	String name: The command name
-			//			String com: The command to run
-			//			String[] arg: the arguments to apply
-			//Output:	None
-			//Use:		Initialize the command
-			//=====================================================================
-			public commandRef(String name, String com, String[] arg){
-				super(name, "");
-				reference = com;
-				args = arg;
-			}
-
-			//=====================================================================
-			//Function:	command
-			//Input:	String name: The command name
-			//			String com: The command to run
-			//Output:	None
-			//Use:		Initialize the command
-			//=====================================================================
-			public commandRef(String name, String com){
-				super(name, "");
-				reference = com;
-				args = null;
-			}
+		public String getName(){return commandName;}
 
 
-			//=====================================================================
-			//Function:	call
-			//Input:	String[] arg: The arguments for the command
-			//Output:	boolean: If the command was called successfully
-			//Use:		Attempts to call the command
-			//=====================================================================
-			int call(Player player, String[] arg)
-			{
-				if(args != null) {
-					String[] temp = new String[args.length];
-					System.arraycopy(args, 0, temp, 0, args.length);
-					//Insert the arguments into the pre-set arguments
-					int lastSet = 0,
-						argCount = 0;
-					for(String argument : temp)
+		//=====================================================================
+		//Function:	call
+		//Input:	String[] arg: The arguments for the command
+		//Output:	boolean: If the command was called successfully
+		//Use:		Attempts to call the command
+		//=====================================================================
+		int call(Player player, String[] arg)
+		{
+			
+				Method m;
+				try {
+					m = vminecraftCommands.class.getMethod(function, Player.class, String[].class);
+					m.setAccessible(true);
+					return (Integer) m.invoke(null, player, arg);
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+				return 1;
+		}
+	}
+	
+	//=====================================================================
+	//Class:	commandRef
+	//Use:		A command referencing another command
+	//Author:	cerevisiae
+	//=====================================================================
+	private class commandRef extends command
+	{
+		private String reference;
+		private String[] args;
+
+		//=====================================================================
+		//Function:	command
+		//Input:	String name: The command name
+		//			String com: The command to run
+		//			String[] arg: the arguments to apply
+		//Output:	None
+		//Use:		Initialize the command
+		//=====================================================================
+		public commandRef(String name, String com, String[] arg){
+			super(name, "");
+			reference = com;
+			args = arg;
+		}
+
+		//=====================================================================
+		//Function:	command
+		//Input:	String name: The command name
+		//			String com: The command to run
+		//Output:	None
+		//Use:		Initialize the command
+		//=====================================================================
+		public commandRef(String name, String com){
+			super(name, "");
+			reference = com;
+			args = null;
+		}
+
+
+		//=====================================================================
+		//Function:	call
+		//Input:	String[] arg: The arguments for the command
+		//Output:	boolean: If the command was called successfully
+		//Use:		Attempts to call the command
+		//=====================================================================
+		int call(Player player, String[] arg)
+		{
+			if(args != null) {
+				String[] temp = new String[args.length];
+				System.arraycopy(args, 0, temp, 0, args.length);
+				//Insert the arguments into the pre-set arguments
+				int lastSet = 0,
+					argCount = 0;
+				for(String argument : temp)
+				{
+					if(argument.startsWith("%"))
 					{
-						if(argument.startsWith("%"))
+						int argNum = Integer.parseInt(argument.substring(1));
+						if( argNum < arg.length )
 						{
-							int argNum = Integer.parseInt(argument.substring(1));
-							if( argNum < arg.length )
-							{
-								temp[lastSet] = arg[argNum];
-								argCount++;
-							}
+							temp[lastSet] = arg[argNum];
+							argCount++;
 						}
-						lastSet++;
 					}
-					//Append the rest of the arguments to the argument array
-					if(lastSet < temp.length + arg.length - argCount)
-					{
-						String[] temp2 = new String[temp.length + arg.length - argCount];
-						System.arraycopy(temp, 0, temp2, 0, temp.length);
-						System.arraycopy(arg, argCount, temp2,
-							temp.length, arg.length - argCount);
-						temp = temp2;
-					}
-					
-				//Call the referenced command
-					player.command(reference + " " + etc.combineSplit(0, temp, " "));
-				} else
-					player.command(reference);
-				return EXIT_SUCCESS;
-			}
+					lastSet++;
+				}
+				//Append the rest of the arguments to the argument array
+				if(lastSet < temp.length + arg.length - argCount)
+				{
+					String[] temp2 = new String[temp.length + arg.length - argCount];
+					System.arraycopy(temp, 0, temp2, 0, temp.length);
+					System.arraycopy(arg, argCount, temp2,
+						temp.length, arg.length - argCount);
+					temp = temp2;
+				}
+				
+			//Call the referenced command
+				player.command(reference + " " + etc.combineSplit(0, temp, " "));
+			} else
+				player.command(reference);
+			return EXIT_SUCCESS;
 		}
+	}
 }

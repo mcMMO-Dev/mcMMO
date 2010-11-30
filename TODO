@@ -4,6 +4,11 @@ Antigriefs
 personal muting
 vminecraft version of help that summarizes the mod
 Time manipulation
+Aliasing Commands (Global Aliases and Personal Aliases)
+Recode /msg and add a /reply (/r) feature
+Quick recode of /me to use the new getName function
+
+Overload /modify(?) --We talked about potentially doing this and I think I would like to now to add in further functionality
 
 Slap
 Toggle for the GG exploit fix
