@@ -1,11 +1,16 @@
-TODO:
-Fix existing bugs in /promote and /demote
-Add toggles to all features
-If vminecraft.properties doesn't exist make it be written and include default settings
-Refine messages when admins use commands --Ready for testing
-Change loading to happen when the plugin loads instead of having to wait for a player to speak
-Change everything else in settings to be a string like rules instead of booleans
+Vminecraft b8 Todo
+Heal Command
+Antigriefs
+/a to toggle admin chat
+personal muting
+vminecraft version of help that summarizes the mod
+Time manipulation
+Suicide command
+Slap
+Toggle for the GG exploit fix
 
-Ideas:
-Mass teleport command
-A personal muting system for players
+DONE
+Code was organized
+Aliasing was added
+Playerlist is now colorful and awesome
+Random death messages
