@@ -131,7 +131,7 @@ public class vminecraftChat {
     public static String getName(Player player){
     	
     	//Get the prefix
-    	String[] playerPrefix = new String[]{player.getPrefix()};
+    	String playerPrefix = player.getPrefix();
     	
     	//Add the name
     	String output = player.getName();
@@ -140,8 +140,8 @@ public class vminecraftChat {
     	if(player.getColor() != null && player.getColor() != "")
     		output = player.getColor().substring(0,2) + output;
     	//Add the prefix if there is one
-    	if(playerPrefix[0] != null && playerPrefix[0] != "")
-    		output = applyColors(playerPrefix)[0].substring(3) + output;
+    	if(playerPrefix != null && playerPrefix != "")
+    		output = applyColors(playerPrefix).substring(3) + output;
     	
     	//Return the name
         return output;
@@ -365,46 +365,111 @@ public class vminecraftChat {
 	//Output:	String[]: The lines, but colorful
 	//Use:		Colors each line
 	//=====================================================================
-	private static String[] applyColors(String[] message)
+	public static String[] applyColors(String[] message)
 	{
-
-		//The color to start the line with
-		String recentColor = Colors.White;
-		
-		//Go through each line
-		int counter = 0;
-		for(String msg: message)
-		{	
-			//Start the line with the most recent color
-			String temp = recentColor;
+		if(message != null && message[0] != null && !message[0].equals("")){
+			//The color to start the line with
+			String recentColor = Colors.White;
 			
-			//Loop through looking for a color code
-			for(int x = 0; x< msg.length(); x++)
-			{
-				//If the char is a ^
-				if(msg.charAt(x)=='^' && x != msg.length() - 1)
+			//Go through each line
+			int counter = 0;
+			for(String msg: message)
+			{	
+				//Start the line with the most recent color
+				String temp = recentColor;
+				
+				//Loop through looking for a color code
+				for(int x = 0; x< msg.length(); x++)
 				{
-					//If the following character is a color code
-					if(vminecraftChat.colorChange(msg.charAt(x+1)) != null)
+					//If the char is a ^ or §
+					if(msg.charAt(x) == '^' || msg.charAt(x) == '§')
 					{
-						//Set the most recent color to the new color
-						recentColor = vminecraftChat.colorChange(msg.charAt(x+1));
-						//Add the color
-						temp += recentColor;
-						//Skip these chars
-						x++;
-					//Otherwise ignore it.
+						if(x != msg.length() - 1)
+						{
+							//If the following character is a color code
+							if(vminecraftChat.colorChange(msg.charAt(x+1)) != null)
+							{
+								//Set the most recent color to the new color
+								recentColor = vminecraftChat.colorChange(msg.charAt(x+1));
+								//Add the color
+								temp += recentColor;
+								//Skip these chars
+								x++;
+							//Otherwise ignore it.
+							} else {
+								temp += msg.charAt(x);
+							}
+						//Insert the character
+						}
 					} else {
 						temp += msg.charAt(x);
 					}
-				//Insert the character
-				} else {
-					temp += msg.charAt(x);
 				}
+				//Replace the message with the colorful message
+				message[counter] = temp;
+				counter++;
 			}
-			//Replace the message with the colorful message
-			message[counter] = temp;
-			counter++;
+		}
+		return message;
+	}
+
+	//=====================================================================
+	//Function:	applyColors
+	//Input:	String message: The line to be colored
+	//Output:	String: The line, but colorful
+	//Use:		Colors a line
+	//=====================================================================
+	public static String applyColors(String message)
+	{
+		return applyColors(message, Colors.White);
+	}
+
+	//=====================================================================
+	//Function:	applyColors
+	//Input:	String message: The line to be colored
+	//			String color: The color to start the line with
+	//Output:	String: The line, but colorful
+	//Use:		Colors a line
+	//=====================================================================
+	public static String applyColors(String message, String color)
+	{
+		if(message != null && !message.equals(""))
+		{
+			//The color to start the line with
+			if(color == null)
+				 color = Colors.White;
+			
+			//Start the line with the most recent color
+			String temp = color;
+			
+			//Loop through looking for a color code
+			for(int x = 0; x< message.length(); x++)
+			{
+				//If the char is a ^ or §
+				if(message.charAt(x) == '^' || message.charAt(x) == '§')
+				{
+					if(x != message.length() - 1)
+					{
+						//If the following character is a color code
+						if(vminecraftChat.colorChange(message.charAt(x+1)) != null)
+						{
+							//Set the most recent color to the new color
+							color = vminecraftChat.colorChange(message.charAt(x+1));
+							//Add the color
+							temp += color;
+							//Skip these chars
+							x++;
+						//Otherwise ignore it.
+						} else {
+							temp += message.charAt(x);
+						}
+					//Insert the character
+					} else {
+						temp += message.charAt(x);
+					}
+				}
+	
+			}
 		}
 		return message;
 	}

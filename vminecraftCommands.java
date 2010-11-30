@@ -237,11 +237,17 @@ public class vminecraftCommands{
 	{
 		//If the rules exist
 		if(vminecraftSettings.getInstance().cmdRules()
-				&& vminecraftSettings.getInstance().getRules().length != 0) {
+				&& vminecraftSettings.getInstance().getRules().length > 0) {
+			
+			//Apply QuakeCode Colors to the rules
+			String[] rules = vminecraftChat.applyColors(
+					vminecraftSettings.getInstance().getRules());
 			//Display them
-			for (String str : vminecraftSettings.getInstance().getRules()) {
-				if(str.isEmpty())
-					player.sendMessage(Colors.Blue+str);
+			for (String str : rules ) {
+				if(!str.isEmpty())
+					player.sendMessage(Colors.Blue + str);
+				else
+					player.sendMessage(Colors.Blue + "!!!The Rules Have Not Been Set!!!");
 			}
 			return EXIT_SUCCESS;
 		}

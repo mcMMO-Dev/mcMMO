@@ -124,8 +124,8 @@ public class vminecraftSettings {
 			cmdTp = properties.getBoolean("cmdTp",true);
 			cmdMasstp = properties.getBoolean("cmdMasstp",true);
 			cmdTphere = properties.getBoolean("cmdTphere",true);
-                        cmdSuicide = properties.getBoolean("cmdSuicide", true);
-                        cmdHeal = properties.getBoolean("cmdHeal",true);
+			cmdSuicide = properties.getBoolean("cmdSuicide", true);
+			cmdHeal = properties.getBoolean("cmdHeal",true);
 			globalmessages = properties.getBoolean("globalmessages",true);
 			cmdSay = properties.getBoolean("cmdSay",true);
 			cmdEzModo = properties.getBoolean("cmdEzModo",true);
@@ -171,7 +171,6 @@ public class vminecraftSettings {
 	public boolean cmdRules() {return cmdRules;}
 	public boolean globalmessages() {return globalmessages;}
 	public boolean cmdMasstp() {return cmdMasstp;}
-	public boolean cmdEzModo() {return cmdEzModo;}
 	public boolean cmdWho() {return cmdWho;}
 	public boolean stopFire() {return stopFire;}
 	public boolean stopTnt() {return stopTnt;}
@@ -179,18 +178,20 @@ public class vminecraftSettings {
         public boolean cmdHeal() {return cmdHeal;}
 	
 	//EzModo methods
+    public boolean cmdEzModo() {return cmdEzModo;}
 	public boolean isEzModo(String playerName) {return ezModo.contains(playerName);}
 	public void removeEzModo(String playerName) {ezModo.remove(ezModo.indexOf(playerName));}
 	public void addEzModo(String playerName) {ezModo.add(playerName);}
 	public int ezModoHealth() {return ezHealth;}
 	public String ezModoList() {return ezModo.toString();}
-        //Random death message method
-        public static String randomDeathMsg() {
-            if (deathMessages == null) {
-                return "died";
-            }
-            return deathMessages[ (int) (Math.random() * deathMessages.length)];
-        }
+	
+    //Random death message method
+    public static String randomDeathMsg() {
+    	if (deathMessages == null) {
+    		return "died";
+    	}
+    	return deathMessages[ (int) (Math.random() * deathMessages.length)];
+	}
 	
 	//=====================================================================
 	//Function:	getInstance
