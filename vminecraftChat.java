@@ -79,7 +79,7 @@ public class vminecraftChat {
 		//and their following color codes
 		for(int x = 0; x<str.length(); x++)
 		{
-			if(str.charAt(x) == '§')
+			if(str.charAt(x) == 'ï¿½')
 				x++;
 			else if("i;,.:|!".indexOf(str.charAt(x)) != -1)
 				length+=2;
@@ -272,6 +272,25 @@ public class vminecraftChat {
 		}
 		return false;
 	}
+        public static boolean adminChatToggle(Player player, String message){
+            if(vminecraftSettings.getInstance().isAdminToggled(player.getName())) {
+                String adminchat = Colors.DarkPurple + "{" + getName(player)
+	        +  Colors.DarkPurple +"}" + Colors.White + " ";
+                String[] msg = wordWrap(adminchat + message.substring(1, message.length()));
+                for (Player p: etc.getServer().getPlayerList()) {
+                    if (p != null) {
+                        if (p.isAdmin() || p.canUseCommand("/adminchat")) {
+                            for(String str: msg)
+                                p.sendMessage(str);
+                        }
+                    }
+                }
+                log.log(Level.INFO, "@" + "<" + getName(player)
+					+  Colors.White +"> " + message);
+                return true;
+            }
+            return false;
+        }
 
 	//=====================================================================
 	//Function:	quote
@@ -381,8 +400,8 @@ public class vminecraftChat {
 				//Loop through looking for a color code
 				for(int x = 0; x< msg.length(); x++)
 				{
-					//If the char is a ^ or §
-					if(msg.charAt(x) == '^' || msg.charAt(x) == '§')
+					//If the char is a ^ or ï¿½
+					if(msg.charAt(x) == '^' || msg.charAt(x) == 'ï¿½')
 					{
 						if(x != msg.length() - 1)
 						{
@@ -445,8 +464,8 @@ public class vminecraftChat {
 			//Loop through looking for a color code
 			for(int x = 0; x< message.length(); x++)
 			{
-				//If the char is a ^ or §
-				if(message.charAt(x) == '^' || message.charAt(x) == '§')
+				//If the char is a ^ or ï¿½
+				if(message.charAt(x) == '^' || message.charAt(x) == 'ï¿½')
 				{
 					if(x != message.length() - 1)
 					{

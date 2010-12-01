@@ -31,6 +31,8 @@ public class vminecraftListener extends PluginListener {
     	//Quote (Greentext)
     	if (message.startsWith("@"))
     		return vminecraftChat.adminChat(player, message);
+        if (vminecraftSettings.getInstance().isAdminToggled(player.getName()))
+            return vminecraftChat.adminChatToggle(player, message);
     	
     	else if (message.startsWith(">"))
     		return vminecraftChat.quote(player, message);

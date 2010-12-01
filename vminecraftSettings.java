@@ -34,9 +34,12 @@ public class vminecraftSettings {
 				   stopTnt			= false,
                                    cmdHeal  = false,
                                    cmdSuicide = false,
+                                   cmdAdminToggle = false,
 				   cmdEzModo		= false;
 	//An array of players currently in ezmodo
 	static ArrayList<String> ezModo = new ArrayList<String>();
+        //An array of players currently toggled for admin chat
+        static ArrayList<String> adminChatList = new ArrayList<String>();
 	//The max health for ezModo
 	static int ezHealth = 30;
 	
@@ -76,6 +79,7 @@ public class vminecraftSettings {
 				writer.write("cmdTp=true\r\n");
 				writer.write("cmdRules=true\r\n");
                                 writer.write("cmdSuicide=true\r\n");
+                                writer.write("cmdAdminToggle=true\r\n");
 				writer.write("globalmessages=true\r\n");
 				writer.write("FFF=true\r\n");
 				writer.write("adminchat=true\r\n");
@@ -126,6 +130,7 @@ public class vminecraftSettings {
 			cmdTphere = properties.getBoolean("cmdTphere",true);
 			cmdSuicide = properties.getBoolean("cmdSuicide", true);
 			cmdHeal = properties.getBoolean("cmdHeal",true);
+                        cmdAdminToggle = properties.getBoolean("cmdAdminToggle", true);
 			globalmessages = properties.getBoolean("globalmessages",true);
 			cmdSay = properties.getBoolean("cmdSay",true);
 			cmdEzModo = properties.getBoolean("cmdEzModo",true);
@@ -158,6 +163,7 @@ public class vminecraftSettings {
 	//Use:		Returns if the feature is enabled
 	//=====================================================================
 	public boolean adminchat() {return adminChat;}
+        public boolean adminChatToggle() {return cmdAdminToggle;}
 	public boolean greentext() {return greentext;}
 	public boolean FFF() {return FFF;}
 	public boolean quakeColors() {return quakeColors;}
@@ -180,8 +186,11 @@ public class vminecraftSettings {
 	//EzModo methods
     public boolean cmdEzModo() {return cmdEzModo;}
 	public boolean isEzModo(String playerName) {return ezModo.contains(playerName);}
+        public boolean isAdminToggled(String playerName) {return adminChatList.contains(playerName);}
 	public void removeEzModo(String playerName) {ezModo.remove(ezModo.indexOf(playerName));}
+        public void removeAdminToggled(String playerName) {adminChatList.remove(adminChatList.indexOf(playerName));}
 	public void addEzModo(String playerName) {ezModo.add(playerName);}
+        public void addAdminToggled(String playerName) {adminChatList.add(playerName);}
 	public int ezModoHealth() {return ezHealth;}
 	public String ezModoList() {return ezModo.toString();}
 	

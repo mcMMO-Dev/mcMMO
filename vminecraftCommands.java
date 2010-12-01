@@ -38,16 +38,33 @@ public class vminecraftCommands{
         cl.register("/slay", "slay", "Kill target player");
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
         cl.register("/ezlist", "ezlist", "List invulnerable players");
-
         cl.register("/heal", "heal", "heal yourself or other players");
         cl.register("/suicide", "suicide", "kill yourself... you loser");
-
+        cl.register("/a", "adminChatToggle", "toggle admin chat for every message");
         cl.register("/modify", "modifySplit");
-
         cl.registerAlias("/playerlist", "/who");
         cl.registerAlias("/wrists", "/suicide");
+        cl.registerAlias("/ci", "/clearinventory");
     }
-
+public static int adminChatToggle(Player player, String[] args)
+{
+    if(vminecraftSettings.getInstance().adminChatToggle())
+    {
+        if (vminecraftSettings.getInstance().cmdAdminToggle) {
+			//If the player is already toggled for admin chat, remove them
+			if (vminecraftSettings.getInstance().isAdminToggled(player.getName())) {
+				player.sendMessage(Colors.Red + "Admin Chat Toggle = off");
+				vminecraftSettings.getInstance().removeAdminToggled(player.getName());
+			//Otherwise include them
+			} else {
+                                player.sendMessage(Colors.Blue + "Admin Chat Toggled on");
+				vminecraftSettings.getInstance().addAdminToggled(player.getName());
+			}
+       return EXIT_SUCCESS;
+		}
+    }
+    return EXIT_FAIL;
+}
 	//=====================================================================
 	//Function:	heal (/heal)
 	//Input:	Player player: The player using the command
@@ -516,130 +533,9 @@ public class vminecraftCommands{
 	public static int timeReverse(long tarTime)
 	{
 		long curTime = etc.getServer().getRelativeTime();
-		if(cur)
+		//if(cur)
 		return EXIT_SUCCESS;
 	}
-	
-	
-
-    //Disable using /modify to add commands (need to make a boolean settings for this)
-
-    //ezlist
-//ezmodo
-	
-	
-	 /*
-    //Promote
-    if (vminecraftSettings.getInstance().cmdPromote() && split[0].equalsIgnoreCase("/promote")) {
-if(split.length != 2)
-{
-	player.sendMessage(Colors.Rose + "Usage is /promote [Player]");
-
-}
-
-Player playerTarget = null;
-    if(split.length==2){
-for( Player p : etc.getServer().getPlayerList())
-{
-	if (p.getName().equalsIgnoreCase(split[1]))
-	{
-		playerTarget = p;
-	}
-}
-
-if( playerTarget!=null)
-{
-        String playerTargetGroup[] = playerTarget.getGroups();
-        String playerGroup[] = player.getGroups();
-        player.sendMessage("Debug data:");
-        player.sendMessage("PlayerTarget: "+playerTargetGroup[0]);
-        player.sendMessage("Player: "+playerGroup[0]);
-	if(playerTargetGroup[0].equals("admins"))
-	{
-		player.sendMessage(Colors.Rose + "You can not promote " + split[1] + " any higher.");
-	}
-	if(playerTargetGroup[0].equals("mods") && (playerGroup[0].equals("owner")))
-	{
-		playerTarget.setGroups(ranks.Admins);
-		etc.getInstance().getDataSource().modifyPlayer(playerTarget);
-		String message = Colors.Yellow + split[1] + " was promoted to" + Colors.Rose + " Admin";
-		other.gmsg(message);
-	}
-	else if (playerTargetGroup[0].equals("trusted") && (playerGroup[0].equals("admins") || playerGroup[0].equals("owner")))
-	{
-		playerTarget.setGroups(ranks.Mods);
-                    playerTargetGroup[0]="Mods";
-		etc.getInstance().getDataSource().modifyPlayer(playerTarget);
-		String message = Colors.Yellow + split[1] + " was promoted to" + Colors.DarkPurple + " Mod";
-		other.gmsg(message);
-	}
-	else if (playerTargetGroup[0].equals("default") && (playerGroup[0].equals("mods") || playerGroup[0].equals("admins") || player.isInGroup("owner")))
-	{
-		playerTarget.setGroups(ranks.Trusted);
-                    etc.getInstance().getDataSource().modifyPlayer(playerTarget);
-                    String message = Colors.Yellow + split[1] + " was promoted to" + Colors.LightGreen + " Trusted";
-                    other.gmsg(message);
-	}
-            return true;
-}
-else{
-	player.sendMessage(Colors.Rose + "Player not found");
-}
-log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
-}
-    }
-    //Demote
-            if (vminecraftSettings.getInstance().cmdPromote() && split[0].equalsIgnoreCase("/promote"))
-{
-if(split.length != 2)
-{
-	player.sendMessage(Colors.Rose + "Usage is /demote [Player]");
-}
-
-Player playerTarget = null;
-
-for( Player p : etc.getServer().getPlayerList())
-{
-	if (p.getName().equalsIgnoreCase(split[1]))
-	{
-		playerTarget = p;
-	}
-}
-
-if( playerTarget!=null)
-{
-	if(playerTarget.isInGroup("admins") && (player.isInGroup("superadmins")))
-	{
-                playerTarget.setGroups(ranks.Mods);
-                etc.getInstance().getDataSource().modifyPlayer(playerTarget);
-                String message = Colors.Yellow + split[1] + " was demoted to" + Colors.DarkPurple + " Mod";
-                other.gmsg(message);
-	}
-	if(playerTarget.isInGroup("mods") && (player.isInGroup("admins") || player.isInGroup("superadmins")))
-	{
-		playerTarget.setGroups(ranks.Trusted);
-		etc.getInstance().getDataSource().modifyPlayer(playerTarget);
-		String message = Colors.Yellow + split[1] + " was demoted to" + Colors.LightGreen + " Trusted";
-		other.gmsg(message);
-	}
-	else if (playerTarget.isInGroup("trusted") && (player.isInGroup("mods") || player.isInGroup("superadmins") || player.isInGroup("admins")))
-	{
-		playerTarget.setGroups(ranks.Def);
-		etc.getInstance().getDataSource().modifyPlayer(playerTarget);
-		String message = Colors.Yellow + split[1] + " was demoted to" + Colors.White + " Default";
-		other.gmsg(message);
-	}
-	else if (playerTarget.isInGroup("default") && (player.isInGroup("mods") || player.isInGroup("admins") || player.isInGroup("superadmins")))
-	{
-            player.sendMessage(Colors.Rose + "You can not demote " + split[1] + " any lower.");
-	}
-}
-else{
-	player.sendMessage(Colors.Rose + "Player not found");
-}
-log.log(Level.INFO, "Command used by " + player + " " + split[0] +" "+split[1]+" ");
-    return true;
-}*/
 }
 
 //=====================================================================
