@@ -46,10 +46,10 @@ public class vMinecraftChat {
     		
     		//Loop through the words finding their length and increasing
     		//j, the end point for the sub string
-    		while(len <= 316 && i < split.length)
+    		while(len <= 300 && i < split.length)
     		{
     			len += msgLength(split[i]) + 4;
-    			if( len <= 316)
+    			if( len <= 300)
     				i++;
 
     		}
@@ -57,8 +57,8 @@ public class vMinecraftChat {
     		String[] temp = new String[i - j];
     		System.arraycopy(split, j, temp, 0, i - j);
 
-    		//Merge them and add them to the output array
-    		out.add( etc.combineSplit(0, temp, " ") );
+    		//Merge them and add them to the output array.
+    		out.add( applyColors(etc.combineSplit(0, temp, " ")) );
     	}
     	
     	//Convert to an array and return

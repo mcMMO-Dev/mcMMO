@@ -34,19 +34,34 @@ public class vMinecraftCommands{
         cl.register("/fabulous", "fabulous", "makes text SUUUPER");
         cl.register("/whois", "whois", "/whois [user]");
         cl.register("/who", "who");
-        cl.registerAlias("/playerlist", "/who");
         cl.register("/say", "say");
         cl.register("/slay", "slay", "Kill target player");
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
         cl.register("/ezlist", "ezlist", "List invulnerable players");
         cl.register("/heal", "heal", "heal yourself or other players");
         cl.register("/suicide", "suicide", "kill yourself... you loser");
-        cl.registerAlias("/wrists", "/suicide");
         cl.register("/a", "adminChatToggle", "toggle admin chat for every message");
-        cl.registerAlias("/admin", "/a");
         cl.register("/modify", "modifySplit");
-        cl.registerAlias("/ci", "/clearinventory");
+        cl.register("/me", "me");
+        cl.registerAlias("/playerlist", "/who");
+        cl.registerAlias("/suicide", "/wrists");
+        cl.registerAlias("/clearinventory", "/ci");
     }
+    
+    //=====================================================================
+	//Function:	me (/me)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		The player uses this to emote, but now its colorful.
+	//=====================================================================
+    public static int me(Player player, String[] args)
+    {
+        String str = etc.combineSplit(0, args, " ");
+        if (args.length < 1) {return EXIT_FAIL;}
+        vMinecraftChat.emote(player, str);
+        return EXIT_SUCCESS;
+    }
+    
 	//=====================================================================
 	//Function:	adminChatToggle (/a)
 	//Input:	Player player: The player using the command
@@ -54,7 +69,6 @@ public class vMinecraftCommands{
 	//Use:		Toggles the player into admin chat. Every message they
         //              send will be piped to admin chat.
 	//=====================================================================
-
     public static int adminChatToggle(Player player, String[] args)
 	{
 	    if(vMinecraftSettings.getInstance().adminChatToggle())
@@ -72,7 +86,6 @@ public class vMinecraftCommands{
 	    }
 	    return EXIT_FAIL;
 	}
-    
 	//=====================================================================
 	//Function:	heal (/heal)
 	//Input:	Player player: The player using the command
