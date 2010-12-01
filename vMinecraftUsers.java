@@ -44,10 +44,10 @@ public class vMinecraftUsers {
         String location = "vminecraftusers.txt";
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(location, true));
-            bw.append(player.getName()+"::::\r\n");
+            bw.append(player.getName()+"::::\r");
             bw.newLine();
             bw.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.log(Level.SEVERE, "Exception while trying to add user with BufferedWriter to " + location, e);
 		} finally {
 			try {
@@ -55,7 +55,7 @@ public class vMinecraftUsers {
 					writer.close();
 				}
 			} catch (IOException e) {
-				log.log(Level.SEVERE, "Exception while closing writer for " + location, e);
+				log.log(Level.SEVERE, "Exception while closing BufferedWriter to " + location, e);
 			}
 		}
 
