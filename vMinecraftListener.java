@@ -90,6 +90,10 @@ public class vMinecraftListener extends PluginListener {
     	}
     	return false; 
 	}
+
+    public void onLogin(Player player){
+        vMinecraftUsers.addUser(player);
+    }
     /** Not working yet, I posted the issue to hMod on github though
     public boolean onDamage(DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
 
