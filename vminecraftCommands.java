@@ -34,16 +34,17 @@ public class vMinecraftCommands{
         cl.register("/fabulous", "fabulous", "makes text SUUUPER");
         cl.register("/whois", "whois", "/whois [user]");
         cl.register("/who", "who");
+        cl.registerAlias("/playerlist", "/who");
         cl.register("/say", "say");
         cl.register("/slay", "slay", "Kill target player");
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
         cl.register("/ezlist", "ezlist", "List invulnerable players");
         cl.register("/heal", "heal", "heal yourself or other players");
         cl.register("/suicide", "suicide", "kill yourself... you loser");
-        cl.register("/a", "adminChatToggle", "toggle admin chat for every message");
-        cl.register("/modify", "modifySplit");
-        cl.registerAlias("/playerlist", "/who");
         cl.registerAlias("/wrists", "/suicide");
+        cl.register("/a", "adminChatToggle", "toggle admin chat for every message");
+        cl.registerAlias("/admin", "/a");
+        cl.register("/modify", "modifySplit");
         cl.registerAlias("/ci", "/clearinventory");
     }
 	//=====================================================================
@@ -54,23 +55,24 @@ public class vMinecraftCommands{
         //              send will be piped to admin chat.
 	//=====================================================================
 
-    public static int adminChatToggle(Player player)
-{
-    if(vMinecraftSettings.getInstance().adminChatToggle())
-    {
-		//If the player is already toggled for admin chat, remove them
-		if (vMinecraftSettings.getInstance().isAdminToggled(player.getName())) {
-                    player.sendMessage(Colors.Red + "Admin Chat Toggle = off");
-                    vMinecraftSettings.getInstance().removeAdminToggled(player.getName());
-		//Otherwise include them
-	} else {
-                player.sendMessage(Colors.Blue + "Admin Chat Toggled on");
-                vMinecraftSettings.getInstance().addAdminToggled(player.getName());
-		}
-       return EXIT_SUCCESS;		
-    }
-    return EXIT_FAIL;
-}
+    public static int adminChatToggle(Player player, String[] args)
+	{
+	    if(vMinecraftSettings.getInstance().adminChatToggle())
+	    {
+			//If the player is already toggled for admin chat, remove them
+			if (vMinecraftSettings.getInstance().isAdminToggled(player.getName())) {
+	                    player.sendMessage(Colors.Red + "Admin Chat Toggle = off");
+	                    vMinecraftSettings.getInstance().removeAdminToggled(player.getName());
+			//Otherwise include them
+		} else {
+	                player.sendMessage(Colors.Blue + "Admin Chat Toggled on");
+	                vMinecraftSettings.getInstance().addAdminToggled(player.getName());
+			}
+	       return EXIT_SUCCESS;		
+	    }
+	    return EXIT_FAIL;
+	}
+    
 	//=====================================================================
 	//Function:	heal (/heal)
 	//Input:	Player player: The player using the command
