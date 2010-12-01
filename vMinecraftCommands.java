@@ -341,14 +341,8 @@ public class vMinecraftCommands{
 				player.sendMessage(Colors.Rose + "Usage is /whois [player]");
 			else {
 				//Get the player by name
-				Player playerTarget = null;
-				for( Player p : etc.getServer().getPlayerList())
-				{
-					if (p.getName().equalsIgnoreCase(args[0]))
-					{
-						playerTarget = p;
-					}
-				}
+				Player playerTarget = etc.getServer().matchPlayer(args[0]);
+				
 				//If the player exists
 				if (playerTarget != null){
 
