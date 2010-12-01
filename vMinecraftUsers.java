@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 public class vMinecraftUsers {
     private static volatile vMinecraftUsers instance;
     protected static final Logger log = Logger.getLogger("Minecraft");
@@ -41,11 +42,13 @@ public class vMinecraftUsers {
     public static void addUser(Player player){
         FileWriter writer = null;
         String location = "vminecraftusers.txt";
+        BufferedWriter bw = new BufferedWriter(new FileWriter(location, true));
         try {
-            writer = new FileWriter(location);
-            writer.append(player.getName()+"::::");
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while trying to add user with writer to " + location, e);
+            bw.append(player.getName()+"::::\r\n");
+            bw.newLine();
+            bw.close();
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Exception while trying to add user with BufferedWriter to " + location, e);
 		} finally {
 			try {
 				if (writer != null) {
@@ -63,4 +66,7 @@ public class vMinecraftUsers {
 		}
 		return instance;
 	}
+    public static void getRow(){
+
+    }
 }
