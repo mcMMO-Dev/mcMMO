@@ -44,8 +44,8 @@ public class vMinecraftCommands{
         cl.register("/modify", "modifySplit");
         cl.register("/me", "me");
         cl.registerAlias("/playerlist", "/who");
-        cl.registerAlias("/suicide", "/wrists");
-        cl.registerAlias("/clearinventory", "/ci");
+        cl.registerAlias("/wrists", "/suicide");
+        cl.registerAlias("/ci", "/clearinventory");
     }
     
     //=====================================================================
