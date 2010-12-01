@@ -79,7 +79,7 @@ public class vMinecraftChat {
 		//and their following color codes
 		for(int x = 0; x<str.length(); x++)
 		{
-			if(str.charAt(x) == '§')
+			if(str.charAt(x) == Colors.White.charAt(0))
 				x++;
 			else if("i;,.:|!".indexOf(str.charAt(x)) != -1)
 				length+=2;
@@ -140,8 +140,8 @@ public class vMinecraftChat {
     	if(player.getColor() != null && player.getColor() != "")
     		output = player.getColor().substring(0,2) + output;
     	//Add the prefix if there is one
-    	if(playerPrefix != null && playerPrefix != "")
-    		output = applyColors(playerPrefix).substring(3) + output;
+    	if(playerPrefix != null && !playerPrefix.isEmpty())
+    		output = applyColors(playerPrefix.substring(1)) + output;
     	
     	//Return the name
         return output;
@@ -272,25 +272,26 @@ public class vMinecraftChat {
 		}
 		return false;
 	}
-        public static boolean adminChatToggle(Player player, String message){
-            if(vMinecraftSettings.getInstance().isAdminToggled(player.getName())) {
-                String adminchat = Colors.DarkPurple + "{" + getName(player)
-	        +  Colors.DarkPurple +"}" + Colors.White + " ";
-                String[] msg = wordWrap(adminchat + message.substring(1, message.length()));
-                for (Player p: etc.getServer().getPlayerList()) {
-                    if (p != null) {
-                        if (p.isAdmin() || p.canUseCommand("/adminchat")) {
-                            for(String str: msg)
-                                p.sendMessage(str);
-                        }
+	
+    public static boolean adminChatToggle(Player player, String message){
+        if(vMinecraftSettings.getInstance().isAdminToggled(player.getName())) {
+            String adminchat = Colors.DarkPurple + "{" + getName(player)
+        +  Colors.DarkPurple +"}" + Colors.White + " ";
+            String[] msg = wordWrap(adminchat + message.substring(1, message.length()));
+            for (Player p: etc.getServer().getPlayerList()) {
+                if (p != null) {
+                    if (p.isAdmin() || p.canUseCommand("/adminchat")) {
+                        for(String str: msg)
+                            p.sendMessage(str);
                     }
                 }
-                log.log(Level.INFO, "@" + "<" + getName(player)
-					+  Colors.White +"> " + message);
-                return true;
             }
-            return false;
+            log.log(Level.INFO, "@" + "<" + getName(player)
+				+  Colors.White +"> " + message);
+            return true;
         }
+        return false;
+    }
 
 	//=====================================================================
 	//Function:	quote
@@ -386,7 +387,7 @@ public class vMinecraftChat {
 	//=====================================================================
 	public static String[] applyColors(String[] message)
 	{
-		if(message != null && message[0] != null && !message[0].equals("")){
+		if(message != null && message[0] != null && !message[0].isEmpty()){
 			//The color to start the line with
 			String recentColor = Colors.White;
 			
@@ -400,8 +401,8 @@ public class vMinecraftChat {
 				//Loop through looking for a color code
 				for(int x = 0; x< msg.length(); x++)
 				{
-					//If the char is a ^ or ï¿½
-					if(msg.charAt(x) == '^' || msg.charAt(x) == '§')
+					//If the char is a ^ or §
+					if(msg.charAt(x) == '^' || msg.charAt(x) == Colors.White.charAt(0))
 					{
 						if(x != msg.length() - 1)
 						{
@@ -419,6 +420,8 @@ public class vMinecraftChat {
 								temp += msg.charAt(x);
 							}
 						//Insert the character
+						} else {
+							temp += msg.charAt(x);
 						}
 					} else {
 						temp += msg.charAt(x);
@@ -452,7 +455,7 @@ public class vMinecraftChat {
 	//=====================================================================
 	public static String applyColors(String message, String color)
 	{
-		if(message != null && !message.equals(""))
+		if(message != null && !message.isEmpty())
 		{
 			//The color to start the line with
 			if(color == null)
@@ -464,8 +467,8 @@ public class vMinecraftChat {
 			//Loop through looking for a color code
 			for(int x = 0; x< message.length(); x++)
 			{
-				//If the char is a ^ or ï¿½
-				if(message.charAt(x) == '^' || message.charAt(x) == '§')
+				//If the char is a ^ or '§'
+				if(message.charAt(x) == '^' || message.charAt(x) == Colors.White.charAt(0))
 				{
 					if(x != message.length() - 1)
 					{
@@ -486,9 +489,13 @@ public class vMinecraftChat {
 					} else {
 						temp += message.charAt(x);
 					}
+					//Insert the character
+				} else {
+					temp += message.charAt(x);
 				}
-	
+		
 			}
+			message = temp;
 		}
 		return message;
 	}

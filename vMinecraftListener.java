@@ -81,15 +81,16 @@ public class vMinecraftListener extends PluginListener {
 	//Use:		Checks for exploits and runs the commands
 	//=====================================================================
     public boolean onHealthChange(Player player,int oldValue,int newValue){
-    	if (player.getHealth() != vMinecraftSettings.getInstance().ezModoHealth() && vMinecraftSettings.getInstance().isEzModo(player.getName())) {
-                player.setHealth(vMinecraftSettings.getInstance().ezModoHealth());
+    	if (player.getHealth() != vMinecraftSettings.getInstance().ezModoHealth()
+    			&& vMinecraftSettings.getInstance().isEzModo(player.getName())) {
+    		player.setHealth(vMinecraftSettings.getInstance().ezModoHealth());
 
-            }
-     else if (vMinecraftSettings.getInstance().globalmessages() && player.getHealth() < 1) {
-         vMinecraftChat.gmsg(Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
-            }
-            return false; 
     	}
+    	else if (vMinecraftSettings.getInstance().globalmessages() && player.getHealth() < 1) {
+    		vMinecraftChat.gmsg(Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
+    	}
+    	return false; 
+	}
     /** Not working yet, I posted the issue to hMod on github though
     public boolean onDamage(DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
 
