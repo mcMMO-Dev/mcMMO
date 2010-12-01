@@ -1,7 +1,7 @@
 Vminecraft b8 Todo:
-	+ Antigriefs
+	+ Antigriefs <Nos> Working on this, waiting for hMod to fix player 			health
 	+ Allow players to nickname themselves or others
-	+ /a to toggle admin chat
+	
 	+ vminecraft Help
 		* Specialized help message for vminecraft
 			? /vhelp?
@@ -14,7 +14,6 @@ Vminecraft b8 Todo:
 	+ Recode Messaging
 		* Reply Feature
 		* Personal Muting
-	+ Quick recode of /me to use the new getName function
 	+ Different types of /slay
 		* /slay fire to burn them to death
 		* /slay drown to drown them
@@ -23,8 +22,11 @@ Vminecraft b8 Todo:
 		<Cere> We talked about potentially doing this and I think
 		I would like to now to add in further functionality and
 		further limit what features of /modify groups can access
+		<Nos> We should definitely add suffixes to /modify at least
 
 DONE
+	+ Quick recode of /me to use the new getName function
+	+ /a to toggle admin chat
 	+ Code was organized
 	+ Aliasing was added
 	+ Playerlist is now colorful and awesome
