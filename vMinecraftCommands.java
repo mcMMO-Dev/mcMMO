@@ -47,7 +47,8 @@ public class vMinecraftCommands{
         cl.registerAlias("/suicide", "/wrists");
         cl.registerAlias("/clearinventory", "/ci");
     }
-    	//=====================================================================
+    
+    //=====================================================================
 	//Function:	me (/me)
 	//Input:	Player player: The player using the command
 	//Output:	int: Exit Code
@@ -60,6 +61,7 @@ public class vMinecraftCommands{
         vMinecraftChat.emote(player, str);
         return EXIT_SUCCESS;
     }
+    
 	//=====================================================================
 	//Function:	adminChatToggle (/a)
 	//Input:	Player player: The player using the command
@@ -68,22 +70,22 @@ public class vMinecraftCommands{
         //              send will be piped to admin chat.
 	//=====================================================================
     public static int adminChatToggle(Player player, String[] args)
-{
-    if(vMinecraftSettings.getInstance().adminChatToggle())
-    {
-		//If the player is already toggled for admin chat, remove them
-		if (vMinecraftSettings.getInstance().isAdminToggled(player.getName())) {
-                    player.sendMessage(Colors.Red + "Admin Chat Toggle = off");
-                    vMinecraftSettings.getInstance().removeAdminToggled(player.getName());
-		//Otherwise include them
-	} else {
-                player.sendMessage(Colors.Blue + "Admin Chat Toggled on");
-                vMinecraftSettings.getInstance().addAdminToggled(player.getName());
-		}
-       return EXIT_SUCCESS;		
-    }
-    return EXIT_FAIL;
-}
+	{
+	    if(vMinecraftSettings.getInstance().adminChatToggle())
+	    {
+			//If the player is already toggled for admin chat, remove them
+			if (vMinecraftSettings.getInstance().isAdminToggled(player.getName())) {
+	                    player.sendMessage(Colors.Red + "Admin Chat Toggle = off");
+	                    vMinecraftSettings.getInstance().removeAdminToggled(player.getName());
+			//Otherwise include them
+		} else {
+	                player.sendMessage(Colors.Blue + "Admin Chat Toggled on");
+	                vMinecraftSettings.getInstance().addAdminToggled(player.getName());
+			}
+	       return EXIT_SUCCESS;		
+	    }
+	    return EXIT_FAIL;
+	}
 	//=====================================================================
 	//Function:	heal (/heal)
 	//Input:	Player player: The player using the command
@@ -316,18 +318,7 @@ public class vMinecraftCommands{
 			log.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
 			
 			//Prepend the player name and cut into lines.
-			String[] message = vMinecraftChat.wordWrap(playerName + str);
-
-			//Output the message
-			for(String msg: message)
-			{
-				if (msg.contains(playerName))
-					vMinecraftChat.gmsg( playerName
-							+ vMinecraftChat.rainbow(
-									msg.substring(playerName.length())));
-				else
-					vMinecraftChat.gmsg(vMinecraftChat.rainbow(msg));
-			}
+			vMinecraftChat.gmsg(playerName + vMinecraftChat.rainbow(str));
 
 			return EXIT_SUCCESS;
 		}
@@ -418,11 +409,10 @@ public class vMinecraftCommands{
 				e.printStackTrace();
 			}
 			int maxPlayers = server.getInt("max-players");
+			
 			//Output the player list
-			String[] tempOut = vMinecraftChat.wordWrap(Colors.Rose + "Player List ("
+			vMinecraftChat.sendMessage(player, Colors.Rose + "Player List ("
 					+ count + "/" + maxPlayers +"): " + tempList);
-			for(String msg: tempOut)
-				player.sendMessage( msg );
 			
 			return EXIT_SUCCESS;
 		}
