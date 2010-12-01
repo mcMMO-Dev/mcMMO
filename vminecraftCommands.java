@@ -46,22 +46,28 @@ public class vminecraftCommands{
         cl.registerAlias("/wrists", "/suicide");
         cl.registerAlias("/ci", "/clearinventory");
     }
-public static int adminChatToggle(Player player, String[] args)
+	//=====================================================================
+	//Function:	adminChatToggle (/a)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		Toggles the player into admin chat. Every message they
+        //              send will be piped to admin chat.
+	//=====================================================================
+
+    public static int adminChatToggle(Player player)
 {
     if(vminecraftSettings.getInstance().adminChatToggle())
     {
-        if (vminecraftSettings.getInstance().cmdAdminToggle) {
-			//If the player is already toggled for admin chat, remove them
-			if (vminecraftSettings.getInstance().isAdminToggled(player.getName())) {
-				player.sendMessage(Colors.Red + "Admin Chat Toggle = off");
-				vminecraftSettings.getInstance().removeAdminToggled(player.getName());
-			//Otherwise include them
-			} else {
-                                player.sendMessage(Colors.Blue + "Admin Chat Toggled on");
-				vminecraftSettings.getInstance().addAdminToggled(player.getName());
-			}
-       return EXIT_SUCCESS;
+		//If the player is already toggled for admin chat, remove them
+		if (vminecraftSettings.getInstance().isAdminToggled(player.getName())) {
+                    player.sendMessage(Colors.Red + "Admin Chat Toggle = off");
+                    vminecraftSettings.getInstance().removeAdminToggled(player.getName());
+		//Otherwise include them
+	} else {
+                player.sendMessage(Colors.Blue + "Admin Chat Toggled on");
+                vminecraftSettings.getInstance().addAdminToggled(player.getName());
 		}
+       return EXIT_SUCCESS;		
     }
     return EXIT_FAIL;
 }
