@@ -19,9 +19,21 @@ public class vMinecraftChat {
     public static void gmsg(String msg){
         for (Player p : etc.getServer().getPlayerList()) {
             if (p != null) {
-                p.sendMessage(msg);
+                sendMessage(p, msg);
             }
         }
+    }
+
+	//=====================================================================
+	//Function:	sendMessage
+	//Input:	String msg: The message to be broadcast to all players
+	//Output:	None 
+	//Use:		Outputs a message to everybody
+	//=====================================================================
+    public static void sendMessage(Player player, String msg){
+    	String[] message = applyColors(wordWrap(msg));
+    	for(String out : message)
+    		player.sendMessage(out + " ");
     }
 
 	//=====================================================================
@@ -58,7 +70,7 @@ public class vMinecraftChat {
     		System.arraycopy(split, j, temp, 0, i - j);
 
     		//Merge them and add them to the output array.
-    		out.add( applyColors(etc.combineSplit(0, temp, " ")) );
+    		out.add( etc.combineSplit(0, temp, " ") );
     	}
     	
     	//Convert to an array and return
@@ -251,20 +263,15 @@ public class vMinecraftChat {
 	        if(message.startsWith("@"))
 	        	message = message.substring(1, message.length());
 	        
-	        String[] msg = wordWrap(adminchat + message);
-	        
 	        //Get the player from the playerlist to send the message to.
 			for (Player p: etc.getServer().getPlayerList()) {
 				
 				//If p is not null
 				if (p != null) {
 					
-					//And if p is an admin or has access to adminchat
+					//And if p is an admin or has access to adminchat send message
 					if (p.isAdmin() || (p.canUseCommand("/adminchat"))) {
-
-						//Output the first line
-						for(String str: msg)
-							p.sendMessage(str);
+						sendMessage(p, adminchat + message);
 					}
 				}
 			}
@@ -292,13 +299,9 @@ public class vMinecraftChat {
 		if(vMinecraftSettings.getInstance().greentext()) {
 			//Log the chat
 			log.log(Level.INFO, "<"+player.getName()+"> " +message);
-	        
-			//Get the multi line array
-	        String[] msg = wordWrap(playerName + Colors.LightGreen + message);
 
-			//Output the lines
-			for(String str: msg)
-				gmsg(Colors.LightGreen + str);
+			//Output the message
+			gmsg(playerName + Colors.LightGreen + message);
 			return true;
 		}
 		return false;
@@ -318,13 +321,9 @@ public class vMinecraftChat {
 				+ getName(player) + Colors.White +"> ";
 		if (vMinecraftSettings.getInstance().FFF()) {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
-	        
-			//Get the multi line array
-	        String[] msg = wordWrap(playerName + Colors.Red +  message);
-
+			
 			//Output the message
-			for(String str: msg)
-				gmsg(Colors.Red + str);
+			gmsg(playerName + Colors.Red +  message);
 			return true;
 		}
 		return false;
@@ -341,20 +340,14 @@ public class vMinecraftChat {
 	{
 		//Format the name
 		String playerName = Colors.White + "<"
-		+ getName(player) + Colors.White +"> ";
+				+ getName(player) + Colors.White +"> ";
 		if(vMinecraftSettings.getInstance().quakeColors()) {
 
 			//Log the chat
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 			
-			//Get the multi line array
-	        String[] msg = wordWrap(playerName + message);
-	        //Apply colors to the lines
-			applyColors(msg);
-
 			//Output the message
-			for(String str: msg)
-				gmsg(str);
+			gmsg(playerName + message);
 
 			//Loop through the string finding the color codes and inserting them
 			return true;
@@ -370,10 +363,7 @@ public class vMinecraftChat {
 	//=====================================================================
         public static boolean emote(Player player, String message)
         {
-            String temp = message.toString();
-            String[] msg = wordWrap("* " + getName(player) + " " + Colors.White + temp);
-            for(String str: msg)
-				gmsg(str);
+			gmsg("* " + getName(player) + " " + Colors.White + message);
             return true;
         }
 
@@ -401,7 +391,7 @@ public class vMinecraftChat {
 				for(int x = 0; x< msg.length(); x++)
 				{
 					//If the char is a ^ or �
-					if(msg.charAt(x) == '^' || msg.charAt(x) == Colors.White.charAt(0))
+					if(msg.charAt(x) == '^')
 					{
 						if(x != msg.length() - 1)
 						{

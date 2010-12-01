@@ -318,18 +318,7 @@ public class vMinecraftCommands{
 			log.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
 			
 			//Prepend the player name and cut into lines.
-			String[] message = vMinecraftChat.wordWrap(playerName + str);
-
-			//Output the message
-			for(String msg: message)
-			{
-				if (msg.contains(playerName))
-					vMinecraftChat.gmsg( playerName
-							+ vMinecraftChat.rainbow(
-									msg.substring(playerName.length())));
-				else
-					vMinecraftChat.gmsg(vMinecraftChat.rainbow(msg));
-			}
+			vMinecraftChat.gmsg(playerName + vMinecraftChat.rainbow(str));
 
 			return EXIT_SUCCESS;
 		}
@@ -420,11 +409,10 @@ public class vMinecraftCommands{
 				e.printStackTrace();
 			}
 			int maxPlayers = server.getInt("max-players");
+			
 			//Output the player list
-			String[] tempOut = vMinecraftChat.wordWrap(Colors.Rose + "Player List ("
+			vMinecraftChat.sendMessage(player, Colors.Rose + "Player List ("
 					+ count + "/" + maxPlayers +"): " + tempList);
-			for(String msg: tempOut)
-				player.sendMessage( msg );
 			
 			return EXIT_SUCCESS;
 		}
