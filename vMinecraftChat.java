@@ -361,6 +361,21 @@ public class vMinecraftChat {
 		}
 		return false;
 	}
+        //=====================================================================
+	//Function:	emote
+	//Input:	Player player: The player talking
+        //          	String message: The message to apply the effect to
+	//Output:	boolean: If this feature is enabled
+	//Use:		/me but with our custom colors applied
+	//=====================================================================
+        public static boolean emote(Player player, String message)
+        {
+            String temp = message.toString();
+            String[] msg = wordWrap("* " + getName(player) + " " + Colors.White + temp);
+            for(String str: msg)
+				gmsg(str);
+            return true;
+        }
 
     
     //=====================================================================
@@ -385,7 +400,7 @@ public class vMinecraftChat {
 				//Loop through looking for a color code
 				for(int x = 0; x< msg.length(); x++)
 				{
-					//If the char is a ^ or §
+					//If the char is a ^ or ï¿½
 					if(msg.charAt(x) == '^' || msg.charAt(x) == Colors.White.charAt(0))
 					{
 						if(x != msg.length() - 1)
@@ -451,7 +466,7 @@ public class vMinecraftChat {
 			//Loop through looking for a color code
 			for(int x = 0; x< message.length(); x++)
 			{
-				//If the char is a ^ or '§'
+				//If the char is a ^ or 'ï¿½'
 				if(message.charAt(x) == '^' || message.charAt(x) == Colors.White.charAt(0))
 				{
 					if(x != message.length() - 1)
