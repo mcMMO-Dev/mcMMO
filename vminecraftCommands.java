@@ -5,18 +5,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //=====================================================================
-//Class:	vminecraftCommands
+//Class:	vMinecraftCommands
 //Use:		Encapsulates all commands added by this mod
 //Author:	nos, trapalice, cerevisiae
 //=====================================================================
-public class vminecraftCommands{
+public class vMinecraftCommands{
 	//Log output
     protected static final Logger log = Logger.getLogger("Minecraft");
     static final int EXIT_FAIL = 0,
     		  		 EXIT_SUCCESS = 1,
     		  		 EXIT_CONTINUE = 2;
     
-    //The list of commands for vminecraft
+    //The list of commands for vMinecraft
     public static commandList cl = new commandList();
 
 	//=====================================================================
@@ -56,16 +56,16 @@ public class vminecraftCommands{
 
     public static int adminChatToggle(Player player)
 {
-    if(vminecraftSettings.getInstance().adminChatToggle())
+    if(vMinecraftSettings.getInstance().adminChatToggle())
     {
 		//If the player is already toggled for admin chat, remove them
-		if (vminecraftSettings.getInstance().isAdminToggled(player.getName())) {
+		if (vMinecraftSettings.getInstance().isAdminToggled(player.getName())) {
                     player.sendMessage(Colors.Red + "Admin Chat Toggle = off");
-                    vminecraftSettings.getInstance().removeAdminToggled(player.getName());
+                    vMinecraftSettings.getInstance().removeAdminToggled(player.getName());
 		//Otherwise include them
 	} else {
                 player.sendMessage(Colors.Blue + "Admin Chat Toggled on");
-                vminecraftSettings.getInstance().addAdminToggled(player.getName());
+                vMinecraftSettings.getInstance().addAdminToggled(player.getName());
 		}
        return EXIT_SUCCESS;		
     }
@@ -81,7 +81,7 @@ public class vminecraftCommands{
 	//=====================================================================
     public static int heal(Player player, String[] args)
     {
-        if(vminecraftSettings.getInstance().cmdHeal())
+        if(vMinecraftSettings.getInstance().cmdHeal())
         {
         	//If a target wasn't specified, heal the user.
             if (args.length < 1){
@@ -94,11 +94,11 @@ public class vminecraftCommands{
             		
             	if (playerTarget != null){
             		playerTarget.setHealth(20);
-            		player.sendMessage(Colors.Blue + "You have healed " + vminecraftChat.getName(playerTarget));
-            		playerTarget.sendMessage(Colors.Blue + "You have been healed by " + vminecraftChat.getName(player));
+            		player.sendMessage(Colors.Blue + "You have healed " + vMinecraftChat.getName(playerTarget));
+            		playerTarget.sendMessage(Colors.Blue + "You have been healed by " + vMinecraftChat.getName(player));
             	}
             	else if (playerTarget == null){
-            		vminecraftChat.gmsg(Colors.Rose + "Couldn't find that player");
+            		vMinecraftChat.gmsg(Colors.Rose + "Couldn't find that player");
             	}
             }
     		return EXIT_SUCCESS;
@@ -115,7 +115,7 @@ public class vminecraftCommands{
 	//=====================================================================
     public static int suicide(Player player, String[] args)
     {
-        if(vminecraftSettings.getInstance().cmdSuicide())
+        if(vMinecraftSettings.getInstance().cmdSuicide())
         {
         	//Set your health to 0. Not much to it.
             player.setHealth(0);
@@ -135,7 +135,7 @@ public class vminecraftCommands{
 	public static int teleport(Player player, String[] args)
 	{
 		//Get if the command is enabled
-		if(vminecraftSettings.getInstance().cmdTp())
+		if(vMinecraftSettings.getInstance().cmdTp())
 		{
 			//Make sure a player has been specified and return an error if not
 			if (args.length < 1) {
@@ -182,7 +182,7 @@ public class vminecraftCommands{
 	public static int masstp(Player player, String[] args)
 	{
 		//If the command is enabled
-		if(vminecraftSettings.getInstance().cmdMasstp()) {
+		if(vMinecraftSettings.getInstance().cmdMasstp()) {
 			//Go through all players and move them to the user
 			for (Player p : etc.getServer().getPlayerList()) {
 				if (!p.hasControlOver(player)) {
@@ -208,7 +208,7 @@ public class vminecraftCommands{
 	public static int tphere(Player player, String[] args)
 	{
 		//Check if the command is enabled.
-		if (vminecraftSettings.getInstance().cmdTphere()) {
+		if (vMinecraftSettings.getInstance().cmdTphere()) {
 			//Make sure a player is specified
 			if (args.length < 1) {
 				player.sendMessage(Colors.Rose + "Correct usage is: /tphere [player]");
@@ -241,11 +241,11 @@ public class vminecraftCommands{
 	//Input:	Player player: The player using the command
     //			String[] args: Ignored
 	//Output:	int: Exit Code
-	//Use:		Reloads the settings for vminecraft
+	//Use:		Reloads the settings for vMinecraft
 	//=====================================================================
 	public static int reload(Player player, String[] args)
 	{
-		vminecraftSettings.getInstance().loadSettings();
+		vMinecraftSettings.getInstance().loadSettings();
 		return EXIT_FAIL;
 	}
 
@@ -259,12 +259,12 @@ public class vminecraftCommands{
 	public static int rules(Player player, String[] args)
 	{
 		//If the rules exist
-		if(vminecraftSettings.getInstance().cmdRules()
-				&& vminecraftSettings.getInstance().getRules().length > 0) {
+		if(vMinecraftSettings.getInstance().cmdRules()
+				&& vMinecraftSettings.getInstance().getRules().length > 0) {
 			
 			//Apply QuakeCode Colors to the rules
-			String[] rules = vminecraftChat.applyColors(
-					vminecraftSettings.getInstance().getRules());
+			String[] rules = vMinecraftChat.applyColors(
+					vMinecraftSettings.getInstance().getRules());
 			//Display them
 			for (String str : rules ) {
 				if(!str.isEmpty())
@@ -287,11 +287,11 @@ public class vminecraftCommands{
 	public static int fabulous(Player player, String[] args)
 	{
 		//If the command is enabled
-		if(vminecraftSettings.getInstance().cmdFabulous()) {
+		if(vMinecraftSettings.getInstance().cmdFabulous()) {
 			
 			//Format the name
 			String playerName = Colors.White + "<"
-					+ vminecraftChat.getName(player) + Colors.White +"> ";
+					+ vMinecraftChat.getName(player) + Colors.White +"> ";
 			//Make sure a message has been specified
 			if (args.length < 1) {return EXIT_FAIL;}
 			String str  = " ";
@@ -303,17 +303,17 @@ public class vminecraftCommands{
 			log.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
 			
 			//Prepend the player name and cut into lines.
-			String[] message = vminecraftChat.wordWrap(playerName + str);
+			String[] message = vMinecraftChat.wordWrap(playerName + str);
 
 			//Output the message
 			for(String msg: message)
 			{
 				if (msg.contains(playerName))
-					vminecraftChat.gmsg( playerName
-							+ vminecraftChat.rainbow(
+					vMinecraftChat.gmsg( playerName
+							+ vMinecraftChat.rainbow(
 									msg.substring(playerName.length())));
 				else
-					vminecraftChat.gmsg(vminecraftChat.rainbow(msg));
+					vMinecraftChat.gmsg(vMinecraftChat.rainbow(msg));
 			}
 
 			return EXIT_SUCCESS;
@@ -331,7 +331,7 @@ public class vminecraftCommands{
 	public static int whois(Player player, String[] args)
 	{
 		//If the command is enabled
-		if (vminecraftSettings.getInstance().cmdWhoIs()) {
+		if (vMinecraftSettings.getInstance().cmdWhoIs()) {
 			//If a player is specified
 			if (args.length < 1) 
 				player.sendMessage(Colors.Rose + "Usage is /whois [player]");
@@ -350,7 +350,7 @@ public class vminecraftCommands{
 
 					//Displaying the information
 					player.sendMessage(Colors.Blue + "Whois results for " +
-							vminecraftChat.getName(playerTarget));
+							vMinecraftChat.getName(playerTarget));
 					//Group
 					for(String group: playerTarget.getGroups())
 					player.sendMessage(Colors.Blue + "Groups: " + group);
@@ -383,7 +383,7 @@ public class vminecraftCommands{
 	public static int who(Player player, String[] args)
 	{
 		//If the command is enabled
-		if (vminecraftSettings.getInstance().cmdWho()) {
+		if (vMinecraftSettings.getInstance().cmdWho()) {
 			//Loop through all players counting them and adding to the list
 			int count=0;
 			String tempList = "";
@@ -391,9 +391,9 @@ public class vminecraftCommands{
 			{
 				if(p != null){
 					if(count == 0)
-						tempList += vminecraftChat.getName(p);
+						tempList += vMinecraftChat.getName(p);
 					else
-						tempList += Colors.White + ", " + vminecraftChat.getName(p);
+						tempList += Colors.White + ", " + vMinecraftChat.getName(p);
 					count++;
 				}
 			}
@@ -406,7 +406,7 @@ public class vminecraftCommands{
 			}
 			int maxPlayers = server.getInt("max-players");
 			//Output the player list
-			String[] tempOut = vminecraftChat.wordWrap(Colors.Rose + "Player List ("
+			String[] tempOut = vMinecraftChat.wordWrap(Colors.Rose + "Player List ("
 					+ count + "/" + maxPlayers +"): " + tempList);
 			for(String msg: tempOut)
 				player.sendMessage( msg );
@@ -426,13 +426,13 @@ public class vminecraftCommands{
 	public static int say(Player player, String[] args)
 	{
 		//If the command is enabled
-		if (vminecraftSettings.getInstance().cmdSay()) {   
+		if (vMinecraftSettings.getInstance().cmdSay()) {   
 			//Make sure a message is supplied or output an error
 			if (args.length < 1) {
 				player.sendMessage(Colors.Rose + "Usage is /say [message]");
 			}
 			//Display the message globally
-			vminecraftChat.gmsg(Colors.Yellow + etc.combineSplit(0, args, " "));
+			vMinecraftChat.gmsg(Colors.Yellow + etc.combineSplit(0, args, " "));
 			return EXIT_SUCCESS;
 		}
 		return EXIT_FAIL;
@@ -448,18 +448,18 @@ public class vminecraftCommands{
 	public static int slay(Player player, String[] args)
 	{
 		//Check if the command is enabled
-		if(vminecraftSettings.getInstance().cmdEzModo()) {
+		if(vMinecraftSettings.getInstance().cmdEzModo()) {
 			//Get the player by name
 			Player playerTarget = etc.getServer().matchPlayer(args[0]);
 			//If the player doesn't exist don't run
 			if(playerTarget == null)
 				return EXIT_FAIL;
 			//If the player isn't invulnerable kill them
-			if (!vminecraftSettings.getInstance().isEzModo(playerTarget.getName())) {
+			if (!vMinecraftSettings.getInstance().isEzModo(playerTarget.getName())) {
 				playerTarget.setHealth(0);
-				vminecraftChat.gmsg(vminecraftChat.getName(player)
+				vMinecraftChat.gmsg(vMinecraftChat.getName(player)
 						+ Colors.LightBlue + " has slain "
-						+ vminecraftChat.getName(playerTarget));
+						+ vMinecraftChat.getName(playerTarget));
 			//Otherwise output error to the user
 			} else {
 				player.sendMessage(Colors.Rose + "That player is currently in ezmodo! Hahahaha");
@@ -479,19 +479,19 @@ public class vminecraftCommands{
 	public static int invuln(Player player, String[] args)
 	{
 		//If the command is enabled
-		if (vminecraftSettings.getInstance().cmdEzModo()) {
+		if (vMinecraftSettings.getInstance().cmdEzModo()) {
 			//If the player is already invulnerable, turn ezmodo off.
-			if (vminecraftSettings.getInstance().isEzModo(player.getName())) {
+			if (vMinecraftSettings.getInstance().isEzModo(player.getName())) {
 				player.sendMessage(Colors.Red + "ezmodo = off");
-				vminecraftSettings.getInstance().removeEzModo(player.getName());
+				vMinecraftSettings.getInstance().removeEzModo(player.getName());
 			//Otherwise make them invulnerable
 			} else {
 				player.sendMessage(Colors.LightBlue + "eh- maji? ezmodo!?");
 				player.sendMessage(Colors.Rose + "kimo-i");
 				player.sendMessage(Colors.LightBlue + "Easy Mode ga yurusareru no wa shougakusei made dayo ne");
 				player.sendMessage(Colors.Red + "**Laughter**");
-				vminecraftSettings.getInstance().addEzModo(player.getName());
-				player.setHealth(vminecraftSettings.getInstance().ezModoHealth());
+				vMinecraftSettings.getInstance().addEzModo(player.getName());
+				player.setHealth(vMinecraftSettings.getInstance().ezModoHealth());
 			}
             return EXIT_SUCCESS;
 		}
@@ -508,8 +508,8 @@ public class vminecraftCommands{
 	public static int ezlist(Player player, String[] args)
 	{
 		//If the feature is enabled list the players
-        if(vminecraftSettings.getInstance().cmdEzModo()) {
-            player.sendMessage("Ezmodo: " + vminecraftSettings.getInstance().ezModoList());
+        if(vMinecraftSettings.getInstance().cmdEzModo()) {
+            player.sendMessage("Ezmodo: " + vMinecraftSettings.getInstance().ezModoList());
             return EXIT_SUCCESS;
         }
         return EXIT_FAIL;
@@ -761,7 +761,7 @@ class commandList {
 			
 				Method m;
 				try {
-					m = vminecraftCommands.class.getMethod(function, Player.class, String[].class);
+					m = vMinecraftCommands.class.getMethod(function, Player.class, String[].class);
 					m.setAccessible(true);
 					return (Integer) m.invoke(null, player, arg);
 				} catch (SecurityException e) {

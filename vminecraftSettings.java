@@ -7,10 +7,10 @@ import java.util.logging.Logger;
 //Use:		Controls the settings for vminecraft
 //Author:	nossr50, TrapAlice, cerevisiae
 //=====================================================================
-public class vminecraftSettings {
+public class vMinecraftSettings {
 	//private final static Object syncLock = new Object();
 	protected static final Logger log = Logger.getLogger("Minecraft");
-	private static volatile vminecraftSettings instance;
+	private static volatile vMinecraftSettings instance;
 
 
 	//The feature settings
@@ -32,9 +32,9 @@ public class vminecraftSettings {
 				   cmdWho			= false,
 				   stopFire			= false,
 				   stopTnt			= false,
-                                   cmdHeal  = false,
-                                   cmdSuicide = false,
-                                   cmdAdminToggle = false,
+				   cmdHeal  = false,
+				   cmdSuicide = false,
+				   cmdAdminToggle = false,
 				   cmdEzModo		= false;
 	//An array of players currently in ezmodo
 	static ArrayList<String> ezModo = new ArrayList<String>();
@@ -78,8 +78,8 @@ public class vminecraftSettings {
 				writer.write("cmdSay=true\r\n");
 				writer.write("cmdTp=true\r\n");
 				writer.write("cmdRules=true\r\n");
-                                writer.write("cmdSuicide=true\r\n");
-                                writer.write("cmdAdminToggle=true\r\n");
+				writer.write("cmdSuicide=true\r\n");
+				writer.write("cmdAdminToggle=true\r\n");
 				writer.write("globalmessages=true\r\n");
 				writer.write("FFF=true\r\n");
 				writer.write("adminchat=true\r\n");
@@ -89,10 +89,10 @@ public class vminecraftSettings {
 				writer.write("#The health ezmodo people will have while in ezmodo. Don't set to 0\r\n");
 				writer.write("ezHealth=30\r\n");
 				writer.write("stopFire=false\r\n");
-                                writer.write("stopTnt=false\r\n");
+				writer.write("stopTnt=false\r\n");
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
-                                writer.write("#Death messages, seperate them by comma. All death messages start with the player name and a space.\r\n");
-                                writer.write("deathMessages=is no more,died horribly,went peacefully\r\n");
+				writer.write("#Death messages, seperate them by comma. All death messages start with the player name and a space.\r\n");
+				writer.write("deathMessages=is no more,died horribly,went peacefully\r\n");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
 			} finally {
@@ -130,18 +130,19 @@ public class vminecraftSettings {
 			cmdTphere = properties.getBoolean("cmdTphere",true);
 			cmdSuicide = properties.getBoolean("cmdSuicide", true);
 			cmdHeal = properties.getBoolean("cmdHeal",true);
-                        cmdAdminToggle = properties.getBoolean("cmdAdminToggle", true);
+			cmdAdminToggle = properties.getBoolean("cmdAdminToggle", true);
 			globalmessages = properties.getBoolean("globalmessages",true);
 			cmdSay = properties.getBoolean("cmdSay",true);
 			cmdEzModo = properties.getBoolean("cmdEzModo",true);
 			stopFire = properties.getBoolean("stopFire",true);
 			stopTnt = properties.getBoolean("stopTNT",true);
 			rules = properties.getString("rules", "").split("@");
-                        deathMessages = properties.getString("deathmessages", "").split(",");
+			deathMessages = properties.getString("deathmessages", "").split(",");
+			
 			String[] tempEz = properties.getString("ezModo").split(",");
 			ezModo = new ArrayList<String>();
-			for(int i = 0; i < tempEz.length; i++)
-				ezModo.add(tempEz[i]);
+			for(String ezName : tempEz)
+				ezModo.add(ezName);
 			
 			ezHealth = properties.getInt("ezHealth");
 			
@@ -208,9 +209,9 @@ public class vminecraftSettings {
 	//Output:	vminecraftSettings: The instance of the settings
 	//Use:		Returns the instance of the settings
 	//=====================================================================
-	public static vminecraftSettings getInstance() {
+	public static vMinecraftSettings getInstance() {
 		if (instance == null) {
-			instance = new vminecraftSettings();
+			instance = new vMinecraftSettings();
 		}
 		return instance;	
 	}

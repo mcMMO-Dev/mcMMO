@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 //Use:		Encapsulates all chat commands added by this mod
 //Author:	nossr50, TrapAlice, cerevisiae
 //=====================================================================
-public class vminecraftChat {
+public class vMinecraftChat {
     protected static final Logger log = Logger.getLogger("Minecraft");
 
 	//=====================================================================
@@ -79,7 +79,7 @@ public class vminecraftChat {
 		//and their following color codes
 		for(int x = 0; x<str.length(); x++)
 		{
-			if(str.charAt(x) == 'ï¿½')
+			if(str.charAt(x) == '§')
 				x++;
 			else if("i;,.:|!".indexOf(str.charAt(x)) != -1)
 				length+=2;
@@ -273,7 +273,7 @@ public class vminecraftChat {
 		return false;
 	}
         public static boolean adminChatToggle(Player player, String message){
-            if(vminecraftSettings.getInstance().isAdminToggled(player.getName())) {
+            if(vMinecraftSettings.getInstance().isAdminToggled(player.getName())) {
                 String adminchat = Colors.DarkPurple + "{" + getName(player)
 	        +  Colors.DarkPurple +"}" + Colors.White + " ";
                 String[] msg = wordWrap(adminchat + message.substring(1, message.length()));
@@ -304,7 +304,7 @@ public class vminecraftChat {
 		//Format the name
 		String playerName = Colors.White + "<" + getName(player)
 				+ Colors.White + "> ";
-		if(vminecraftSettings.getInstance().greentext()) {
+		if(vMinecraftSettings.getInstance().greentext()) {
 			//Log the chat
 			log.log(Level.INFO, "<"+player.getName()+"> " +message);
 	        
@@ -331,7 +331,7 @@ public class vminecraftChat {
 		//Format the name
 		String playerName = Colors.White + "<"
 				+ getName(player) + Colors.White +"> ";
-		if (vminecraftSettings.getInstance().FFF()) {
+		if (vMinecraftSettings.getInstance().FFF()) {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 	        
 			//Get the multi line array
@@ -357,7 +357,7 @@ public class vminecraftChat {
 		//Format the name
 		String playerName = Colors.White + "<"
 		+ getName(player) + Colors.White +"> ";
-		if(vminecraftSettings.getInstance().quakeColors()) {
+		if(vMinecraftSettings.getInstance().quakeColors()) {
 
 			//Log the chat
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
@@ -401,15 +401,15 @@ public class vminecraftChat {
 				for(int x = 0; x< msg.length(); x++)
 				{
 					//If the char is a ^ or ï¿½
-					if(msg.charAt(x) == '^' || msg.charAt(x) == 'ï¿½')
+					if(msg.charAt(x) == '^' || msg.charAt(x) == '§')
 					{
 						if(x != msg.length() - 1)
 						{
 							//If the following character is a color code
-							if(vminecraftChat.colorChange(msg.charAt(x+1)) != null)
+							if(vMinecraftChat.colorChange(msg.charAt(x+1)) != null)
 							{
 								//Set the most recent color to the new color
-								recentColor = vminecraftChat.colorChange(msg.charAt(x+1));
+								recentColor = vMinecraftChat.colorChange(msg.charAt(x+1));
 								//Add the color
 								temp += recentColor;
 								//Skip these chars
@@ -465,15 +465,15 @@ public class vminecraftChat {
 			for(int x = 0; x< message.length(); x++)
 			{
 				//If the char is a ^ or ï¿½
-				if(message.charAt(x) == '^' || message.charAt(x) == 'ï¿½')
+				if(message.charAt(x) == '^' || message.charAt(x) == '§')
 				{
 					if(x != message.length() - 1)
 					{
 						//If the following character is a color code
-						if(vminecraftChat.colorChange(message.charAt(x+1)) != null)
+						if(vMinecraftChat.colorChange(message.charAt(x+1)) != null)
 						{
 							//Set the most recent color to the new color
-							color = vminecraftChat.colorChange(message.charAt(x+1));
+							color = vMinecraftChat.colorChange(message.charAt(x+1));
 							//Add the color
 							temp += color;
 							//Skip these chars

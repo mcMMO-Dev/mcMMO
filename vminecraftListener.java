@@ -1,21 +1,21 @@
 import java.util.logging.Level;
 import java.util.logging.Logger;
 //=====================================================================
-//Class:	vminecraftListener
+//Class:	vMinecraftListener
 //Use:		The listener to catch incoming chat and commands
 //Author:	nossr50, TrapAlice, cerevisiae
 //=====================================================================
-public class vminecraftListener extends PluginListener {
+public class vMinecraftListener extends PluginListener {
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	
 	//=====================================================================
 	//Function:	disable
 	//Input:	None
 	//Output:	None
-	//Use:		Disables vminecraft, but why would you want to do that? ;)
+	//Use:		Disables vMinecraft, but why would you want to do that? ;)
 	//=====================================================================
 	public void disable() {
-		log.log(Level.INFO, "vminecraft disabled");
+		log.log(Level.INFO, "vMinecraft disabled");
 	}
 	
 	//=====================================================================
@@ -30,20 +30,20 @@ public class vminecraftListener extends PluginListener {
 
     	//Quote (Greentext)
     	if (message.startsWith("@"))
-    		return vminecraftChat.adminChat(player, message);
-        if (vminecraftSettings.getInstance().isAdminToggled(player.getName()))
-            return vminecraftChat.adminChatToggle(player, message);
+    		return vMinecraftChat.adminChat(player, message);
+        if (vMinecraftSettings.getInstance().isAdminToggled(player.getName()))
+            return vMinecraftChat.adminChatToggle(player, message);
     	
     	else if (message.startsWith(">"))
-    		return vminecraftChat.quote(player, message);
+    		return vMinecraftChat.quote(player, message);
         	
         //Rage (FFF)
         else if (message.startsWith("FFF"))
-        	return vminecraftChat.rage(player, message);
+        	return vMinecraftChat.rage(player, message);
     	
     	//Send through quakeColors otherwise
         else
-        	return vminecraftChat.quakeColors(player, message);
+        	return vMinecraftChat.quakeColors(player, message);
     }
     
 	//=====================================================================
@@ -61,7 +61,7 @@ public class vminecraftListener extends PluginListener {
         System.arraycopy(split, 1, args, 0, args.length);
 
         //Return the results of the command
-        int exitCode = vminecraftCommands.cl.call(split[0], player, args);
+        int exitCode = vMinecraftCommands.cl.call(split[0], player, args);
         if(exitCode == 0)
         	return false;
         else if(exitCode == 1)
@@ -81,12 +81,12 @@ public class vminecraftListener extends PluginListener {
 	//Use:		Checks for exploits and runs the commands
 	//=====================================================================
     public boolean onHealthChange(Player player,int oldValue,int newValue){
-    	if (player.getHealth() != vminecraftSettings.getInstance().ezModoHealth() && vminecraftSettings.getInstance().isEzModo(player.getName())) {
-                player.setHealth(vminecraftSettings.getInstance().ezModoHealth());
+    	if (player.getHealth() != vMinecraftSettings.getInstance().ezModoHealth() && vMinecraftSettings.getInstance().isEzModo(player.getName())) {
+                player.setHealth(vMinecraftSettings.getInstance().ezModoHealth());
 
             }
-     else if (vminecraftSettings.getInstance().globalmessages() && player.getHealth() < 1) {
-         vminecraftChat.gmsg(Colors.Gray + player.getName() + " " + vminecraftSettings.randomDeathMsg());
+     else if (vMinecraftSettings.getInstance().globalmessages() && player.getHealth() < 1) {
+         vMinecraftChat.gmsg(Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
             }
             return false; 
     	}
