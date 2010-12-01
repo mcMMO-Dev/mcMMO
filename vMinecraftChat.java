@@ -247,7 +247,11 @@ public class vMinecraftChat {
 	        String adminchat = Colors.DarkPurple + "{" + getName(player)
 	        +  Colors.DarkPurple +"}" + Colors.White + " ";
 	        
-	        String[] msg = wordWrap(adminchat + message.substring(1, message.length()));
+	        //Cut off the @ prefix
+	        if(message.startsWith("@"))
+	        	message = message.substring(1, message.length());
+	        
+	        String[] msg = wordWrap(adminchat + message);
 	        
 	        //Get the player from the playerlist to send the message to.
 			for (Player p: etc.getServer().getPlayerList()) {
@@ -272,26 +276,6 @@ public class vMinecraftChat {
 		}
 		return false;
 	}
-	
-    public static boolean adminChatToggle(Player player, String message){
-        if(vMinecraftSettings.getInstance().isAdminToggled(player.getName())) {
-            String adminchat = Colors.DarkPurple + "{" + getName(player)
-        +  Colors.DarkPurple +"}" + Colors.White + " ";
-            String[] msg = wordWrap(adminchat + message.substring(1, message.length()));
-            for (Player p: etc.getServer().getPlayerList()) {
-                if (p != null) {
-                    if (p.isAdmin() || p.canUseCommand("/adminchat")) {
-                        for(String str: msg)
-                            p.sendMessage(str);
-                    }
-                }
-            }
-            log.log(Level.INFO, "@" + "<" + getName(player)
-				+  Colors.White +"> " + message);
-            return true;
-        }
-        return false;
-    }
 
 	//=====================================================================
 	//Function:	quote

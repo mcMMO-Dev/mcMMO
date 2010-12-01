@@ -29,10 +29,9 @@ public class vMinecraftListener extends PluginListener {
     public boolean onChat(Player player, String message){
 
     	//Quote (Greentext)
-    	if (message.startsWith("@"))
+    	if (message.startsWith("@") ||
+    			vMinecraftSettings.getInstance().isAdminToggled(player.getName()))
     		return vMinecraftChat.adminChat(player, message);
-        if (vMinecraftSettings.getInstance().isAdminToggled(player.getName()))
-            return vMinecraftChat.adminChatToggle(player, message);
     	
     	else if (message.startsWith(">"))
     		return vMinecraftChat.quote(player, message);
