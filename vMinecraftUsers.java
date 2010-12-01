@@ -43,10 +43,18 @@ public class vMinecraftUsers {
         String location = "vminecraftusers.txt";
         try {
             writer = new FileWriter(location);
-            writer.write(player.getName()+"::::");
+            writer.append(player.getName()+"::::");
         } catch (Exception e) {
             log.log(Level.SEVERE, "Exception while trying to add user with writer to " + location, e);
-        }
+		} finally {
+			try {
+				if (writer != null) {
+					writer.close();
+				}
+			} catch (IOException e) {
+				log.log(Level.SEVERE, "Exception while closing writer for " + location, e);
+			}
+		}
 
     }
     public static vMinecraftUsers getInstance() {
