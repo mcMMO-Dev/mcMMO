@@ -42,8 +42,8 @@ public class vMinecraftUsers {
     public static void addUser(Player player){
         FileWriter writer = null;
         String location = "vminecraftusers.txt";
-        BufferedWriter bw = new BufferedWriter(new FileWriter(location, true));
         try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(location, true));
             bw.append(player.getName()+"::::\r\n");
             bw.newLine();
             bw.close();
