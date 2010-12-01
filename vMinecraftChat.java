@@ -368,9 +368,10 @@ public class vMinecraftChat {
 	//Output:	boolean: If this feature is enabled
 	//Use:		/me but with our custom colors applied
 	//=====================================================================
-        public static boolean emote(Player player, String[] message)
+        public static boolean emote(Player player, String message)
         {
-            String[] msg = wordWrap("* " + getName(player) + Colors.White + message);
+            String temp = message.toString();
+            String[] msg = wordWrap("* " + getName(player) + " " + Colors.White + temp);
             for(String str: msg)
 				gmsg(str);
             return true;

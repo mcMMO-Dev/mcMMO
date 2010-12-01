@@ -55,7 +55,9 @@ public class vMinecraftCommands{
 	//=====================================================================
     public static int me(Player player, String[] args)
     {
-        vMinecraftChat.emote(player, args);
+        String str = etc.combineSplit(0, args, " ");
+        if (args.length < 1) {return EXIT_FAIL;}
+        vMinecraftChat.emote(player, str);
         return EXIT_SUCCESS;
     }
 	//=====================================================================
