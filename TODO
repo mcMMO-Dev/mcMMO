@@ -1,7 +1,7 @@
 Vminecraft b8 Todo:
 	+ Antigriefs
 	+ Allow players to nickname themselves or others
-	+ /a to toggle admin chat
+	
 	+ vminecraft Help
 		* Specialized help message for vminecraft
 			? /vhelp?
@@ -14,7 +14,6 @@ Vminecraft b8 Todo:
 	+ Recode Messaging
 		* Reply Feature
 		* Personal Muting
-	+ Quick recode of /me to use the new getName function
 	+ Different types of /slay
 		* /slay fire to burn them to death
 		* /slay drown to drown them
@@ -25,6 +24,8 @@ Vminecraft b8 Todo:
 		further limit what features of /modify groups can access
 
 DONE
+	+ Quick recode of /me to use the new getName function
+	+ /a to toggle admin chat
 	+ Code was organized
 	+ Aliasing was added
 	+ Playerlist is now colorful and awesome
