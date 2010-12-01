@@ -42,9 +42,21 @@ public class vMinecraftCommands{
         cl.register("/suicide", "suicide", "kill yourself... you loser");
         cl.register("/a", "adminChatToggle", "toggle admin chat for every message");
         cl.register("/modify", "modifySplit");
+        cl.register("/me", "me");
         cl.registerAlias("/playerlist", "/who");
         cl.registerAlias("/suicide", "/wrists");
         cl.registerAlias("/clearinventory", "/ci");
+    }
+    	//=====================================================================
+	//Function:	me (/me)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		The player uses this to emote, but now its colorful.
+	//=====================================================================
+    public static int me(Player player, String[] args)
+    {
+        vMinecraftChat.emote(player, args);
+        return EXIT_SUCCESS;
     }
 	//=====================================================================
 	//Function:	adminChatToggle (/a)
@@ -53,8 +65,7 @@ public class vMinecraftCommands{
 	//Use:		Toggles the player into admin chat. Every message they
         //              send will be piped to admin chat.
 	//=====================================================================
-
-    public static int adminChatToggle(Player player)
+    public static int adminChatToggle(Player player, String[] args)
 {
     if(vMinecraftSettings.getInstance().adminChatToggle())
     {
