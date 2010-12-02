@@ -70,19 +70,14 @@ public class vMinecraftChat {
         			String[] tempArray = wordCut(len, split.remove(0));
         			words.add(tempArray[0]);
         			split.add(tempArray[1]);
-        			log.log(Level.INFO, tempArray[0]);
-        			log.log(Level.INFO, tempArray[1]);
     			}
 
     			//If the word is not too long to fit
     			len += wordLength;
-    			log.log(Level.INFO, String.valueOf(len));
     			if( len < 316)
     				words.add(split.remove(0));
     		}
     		//Merge them and add them to the output array.
-			log.log(Level.INFO, etc.combineSplit(0,
-    				words.toArray(new String[out.size()]), " "));
     		out.add( etc.combineSplit(0,
     				words.toArray(new String[out.size()]), " ") );
     	}
