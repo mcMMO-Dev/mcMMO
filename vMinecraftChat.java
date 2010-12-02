@@ -132,6 +132,12 @@ public class vMinecraftChat {
 		return output;
     }
     
+	//=====================================================================
+	//Function:	charLength
+	//Input:	char x: The character to find the length of.
+	//Output:	int: The length of the character
+	//Use:		Finds the visual length of the character on the screen.
+	//=====================================================================
     private static int charLength(char x)
     {
     	if("i;,.:|!".indexOf(x) != -1)
