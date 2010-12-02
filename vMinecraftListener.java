@@ -86,7 +86,7 @@ public class vMinecraftListener extends PluginListener {
 
     	}
     	else if (vMinecraftSettings.getInstance().globalmessages() && player.getHealth() < 1) {
-    		vMinecraftChat.gmsg(Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
+    		vMinecraftChat.gmsg(player, Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
     	}
     	return false; 
 	}

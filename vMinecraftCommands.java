@@ -113,7 +113,7 @@ public class vMinecraftCommands{
             		playerTarget.sendMessage(Colors.Blue + "You have been healed by " + vMinecraftChat.getName(player));
             	}
             	else if (playerTarget == null){
-            		vMinecraftChat.gmsg(Colors.Rose + "Couldn't find that player");
+            		player.sendMessage(Colors.Rose + "Couldn't find that player");
             	}
             }
     		return EXIT_SUCCESS;
@@ -318,7 +318,7 @@ public class vMinecraftCommands{
 			log.log(Level.INFO, player.getName()+" fabulously said \""+ str+"\"");
 			
 			//Prepend the player name and cut into lines.
-			vMinecraftChat.gmsg(playerName + vMinecraftChat.rainbow(str));
+			vMinecraftChat.gmsg(player, playerName + vMinecraftChat.rainbow(str));
 
 			return EXIT_SUCCESS;
 		}
@@ -405,7 +405,7 @@ public class vMinecraftCommands{
 			int maxPlayers = server.getInt("max-players");
 			
 			//Output the player list
-			vMinecraftChat.sendMessage(player, Colors.Rose + "Player List ("
+			vMinecraftChat.sendMessage(player, player, Colors.Rose + "Player List ("
 					+ count + "/" + maxPlayers +"): " + tempList);
 			
 			return EXIT_SUCCESS;
@@ -429,7 +429,7 @@ public class vMinecraftCommands{
 				player.sendMessage(Colors.Rose + "Usage is /say [message]");
 			}
 			//Display the message globally
-			vMinecraftChat.gmsg(Colors.Yellow + etc.combineSplit(0, args, " "));
+			vMinecraftChat.gmsg(player, Colors.Yellow + etc.combineSplit(0, args, " "));
 			return EXIT_SUCCESS;
 		}
 		return EXIT_FAIL;
@@ -454,7 +454,7 @@ public class vMinecraftCommands{
 			//If the player isn't invulnerable kill them
 			if (!vMinecraftSettings.getInstance().isEzModo(playerTarget.getName())) {
 				playerTarget.setHealth(0);
-				vMinecraftChat.gmsg(vMinecraftChat.getName(player)
+				vMinecraftChat.gmsg(player, vMinecraftChat.getName(player)
 						+ Colors.LightBlue + " has slain "
 						+ vMinecraftChat.getName(playerTarget));
 			//Otherwise output error to the user

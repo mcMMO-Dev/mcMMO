@@ -26,24 +26,24 @@ public class vMinecraftAnnouncements {
 			if(split[0].equalsIgnoreCase("/kick")) {
 				Player playerTarget = etc.getServer().matchPlayer(split[1]);
 				if (playerTarget != null && !playerTarget.hasControlOver(player)) {
-					vMinecraftChat.gmsg(player.getColor()+player.getName()+Colors.Blue+" has kicked "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
+					vMinecraftChat.gmsg(player, player.getColor()+player.getName()+Colors.Blue+" has kicked "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
 				}
 			}
 			if(split[0].equalsIgnoreCase("/ban")) {
 				Player playerTarget = etc.getServer().matchPlayer(split[1]);
 				if (playerTarget != null && !playerTarget.hasControlOver(player)) {
-					vMinecraftChat.gmsg(player.getColor()+player.getName()+Colors.Blue+" has banned "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
+					vMinecraftChat.gmsg(player, player.getColor()+player.getName()+Colors.Blue+" has banned "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
 				}
 			}
 			if(split[0].equalsIgnoreCase("/ipban")) {
 				Player playerTarget = etc.getServer().matchPlayer(split[1]);
 				if (playerTarget != null && !playerTarget.hasControlOver(player)) {
-					vMinecraftChat.gmsg(player.getColor()+player.getName()+Colors.Blue+" has IP banned "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
+					vMinecraftChat.gmsg(player, player.getColor()+player.getName()+Colors.Blue+" has IP banned "+Colors.Red+playerTarget.getColor()+playerTarget.getName());
 				}
 			}
 			if(split[0].equalsIgnoreCase("/time")) {
 				if (split.length <= 2) {
-					vMinecraftChat.gmsg(Colors.Blue+"Time changes thanks to "+player.getColor()+player.getName());
+					vMinecraftChat.gmsg(player, Colors.Blue+"Time changes thanks to "+player.getColor()+player.getName());
 				}
 			}
 		}

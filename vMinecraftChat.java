@@ -16,10 +16,10 @@ public class vMinecraftChat {
 	//Output:	None 
 	//Use:		Outputs a message to everybody
 	//=====================================================================
-    public static void gmsg(String msg){
-        for (Player p : etc.getServer().getPlayerList()) {
-            if (p != null) {
-                sendMessage(p, msg);
+    public static void gmsg(Player sender, String msg){
+        for (Player receiver : etc.getServer().getPlayerList()) {
+            if (receiver != null) {
+                sendMessage(sender, receiver, msg);
             }
         }
     }
@@ -30,10 +30,10 @@ public class vMinecraftChat {
 	//Output:	None 
 	//Use:		Outputs a message to everybody
 	//=====================================================================
-    public static void sendMessage(Player player, String msg){
+    public static void sendMessage(Player sender, Player receiver, String msg){
     	String[] message = applyColors(wordWrap(msg));
     	for(String out : message)
-    		player.sendMessage(out + " ");
+    		receiver.sendMessage(out + " ");
     }
 
 	//=====================================================================
@@ -45,38 +45,49 @@ public class vMinecraftChat {
 	//=====================================================================
     public static String[] wordWrap(String msg){
     	//Split each word apart
-    	String[] split = msg.split(" ");
+    	ArrayList<String> split = new ArrayList<String>();
+    	for(String in : msg.split(" "))
+    		split.add(in);
     	
     	//Create an arraylist for the output
     	ArrayList<String> out = new ArrayList<String>();
-    	
     	//While i is less than the length of the array of words
-    	int i = 0;
-    	while(i < split.length){
+    	while(!split.isEmpty()){
     		int len = 0;
-    		int j = i;
-    		
+        	
+        	//Create an arraylist to hold individual words
+        	ArrayList<String> words = new ArrayList<String>();
+
     		//Loop through the words finding their length and increasing
     		//j, the end point for the sub string
-    		while(len <= 300 && i < split.length)
+    		while(len <= 316 && !split.isEmpty())
     		{
-    			len += msgLength(split[i]) + 4;
-    			if( len <= 300)
-    				i++;
+    			int wordLength = msgLength(split.get(0)) + 4;
+    			
+    			//If a word is too long for a line
+    			if(wordLength > 316)
+    			{
+        			String[] tempArray = wordCut(len, split.remove(0));
+        			words.add(tempArray[0]);
+        			split.add(tempArray[1]);
+        			log.log(Level.INFO, tempArray[0]);
+        			log.log(Level.INFO, tempArray[1]);
+    			}
 
+    			//If the word is not too long to fit
+    			len += wordLength;
+    			log.log(Level.INFO, String.valueOf(len));
+    			if( len < 316)
+    				words.add(split.remove(0));
     		}
-			//Copy the words in the selection into a new array
-    		String[] temp = new String[i - j];
-    		System.arraycopy(split, j, temp, 0, i - j);
-
     		//Merge them and add them to the output array.
-    		out.add( etc.combineSplit(0, temp, " ") );
+			log.log(Level.INFO, etc.combineSplit(0,
+    				words.toArray(new String[out.size()]), " "));
+    		out.add( etc.combineSplit(0,
+    				words.toArray(new String[out.size()]), " ") );
     	}
-    	
     	//Convert to an array and return
-    	String[] tempout = new String[out.size()];
-    	out.toArray(tempout);
-    	return tempout;
+    	return out.toArray(new String[out.size()]);
     }
     
 	//=====================================================================
@@ -91,24 +102,59 @@ public class vMinecraftChat {
 		//and their following color codes
 		for(int x = 0; x<str.length(); x++)
 		{
-			if(str.charAt(x) == Colors.White.charAt(0))
+			int len = charLength(str.charAt(x));
+			if( len > 0)
+				length += len;
+			else
 				x++;
-			else if("i;,.:|!".indexOf(str.charAt(x)) != -1)
-				length+=2;
-			else if("l'".indexOf(str.charAt(x)) != -1)
-				length+=3;
-			else if("tI[]".indexOf(str.charAt(x)) != -1)
-				length+=4;
-			else if("kf{}<>\"*()".indexOf(str.charAt(x)) != -1)
-				length+=5;
-			else if("hequcbrownxjmpsvazydgTHEQUCKBROWNFXJMPSVLAZYDG1234567890#\\/?$%-=_+&".indexOf(str.charAt(x)) != -1)
-				length+=6;
-			else if("@~".indexOf(str.charAt(x)) != -1)
-				length+=7;
-			else if(str.charAt(x)==' ')
-				length+=4;
 		}
 		return length;
+    }
+    
+	//=====================================================================
+	//Function:	wordCut
+	//Input:	String str: The string to find the length of
+	//Output:	String[]: The cut up word
+	//Use:		Cuts apart a word that is too long to fit on one line
+	//=====================================================================
+    private static String[] wordCut(int lengthBefore, String str){
+		int length = lengthBefore;
+		//Loop through all the characters, skipping any color characters
+		//and their following color codes
+		String[] output = new String[2];
+		int x = 0;
+		while(length < 316 && x < str.length())
+		{
+			int len = charLength(str.charAt(x));
+			if( len > 0)
+				length += len;
+			x++;
+		}
+		//Add the substring to the output after cutting it
+		output[0] = str.substring(0, x);
+		//Add the last of the string to the output.
+		output[1] = str.substring(x);
+		return output;
+    }
+    
+    private static int charLength(char x)
+    {
+    	if("i;,.:|!".indexOf(x) != -1)
+			return 2;
+		else if("l'".indexOf(x) != -1)
+			return 3;
+		else if("tI[]".indexOf(x) != -1)
+			return 4;
+		else if("kf{}<>\"*()".indexOf(x) != -1)
+			return 5;
+		else if("hequcbrownxjmpsvazydgTHEQUCKBROWNFXJMPSVLAZYDG1234567890#\\/?$%-=_+&".indexOf(x) != -1)
+			return 6;
+		else if("@~".indexOf(x) != -1)
+			return 7;
+		else if(x==' ')
+			return 4;
+		else
+			return -1;
     }
 
 	//=====================================================================
@@ -271,7 +317,7 @@ public class vMinecraftChat {
 					
 					//And if p is an admin or has access to adminchat send message
 					if (p.isAdmin() || (p.canUseCommand("/adminchat"))) {
-						sendMessage(p, adminchat + message);
+						sendMessage(player, p, adminchat + message);
 					}
 				}
 			}
@@ -301,7 +347,7 @@ public class vMinecraftChat {
 			log.log(Level.INFO, "<"+player.getName()+"> " +message);
 
 			//Output the message
-			gmsg(playerName + Colors.LightGreen + message);
+			gmsg(player, playerName + Colors.LightGreen + message);
 			return true;
 		}
 		return false;
@@ -323,7 +369,7 @@ public class vMinecraftChat {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 			
 			//Output the message
-			gmsg(playerName + Colors.Red +  message);
+			gmsg(player, playerName + Colors.Red +  message);
 			return true;
 		}
 		return false;
@@ -347,7 +393,7 @@ public class vMinecraftChat {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 			
 			//Output the message
-			gmsg(playerName + message);
+			gmsg(player, playerName + message);
 
 			//Loop through the string finding the color codes and inserting them
 			return true;
@@ -363,7 +409,7 @@ public class vMinecraftChat {
 	//=====================================================================
         public static boolean emote(Player player, String message)
         {
-			gmsg("* " + getName(player) + " " + Colors.White + message);
+			gmsg(player, "* " + getName(player) + " " + Colors.White + message);
             return true;
         }
 
@@ -391,7 +437,7 @@ public class vMinecraftChat {
 				for(int x = 0; x< msg.length(); x++)
 				{
 					//If the char is a ^ or �
-					if(msg.charAt(x) == '^')
+					if(msg.charAt(x) == '^' || msg.charAt(x) == Colors.White.charAt(0))
 					{
 						if(x != msg.length() - 1)
 						{
