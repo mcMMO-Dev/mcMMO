@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 //Author:	nos, trapalice, cerevisiae
 //=====================================================================
 public class vMinecraftCommands{
+
 	//Log output
     protected static final Logger log = Logger.getLogger("Minecraft");
     static final int EXIT_FAIL = 0,
@@ -534,6 +535,19 @@ public class vMinecraftCommands{
 	//Use:		List all invulnerable players
 	//=====================================================================
 	public static int timeReverse(long tarTime)
+	{
+		long curTime = etc.getServer().getRelativeTime();
+		//if(cur)
+		return EXIT_SUCCESS;
+	}
+
+	//=====================================================================
+	//Function:	privateMessage(/msg)
+	//Input:	long time: The time to reverse to.
+	//Output:	int: Exit Code
+	//Use:		List all invulnerable players
+	//=====================================================================
+	public static int privateMessage(Player player, String[] message)
 	{
 		long curTime = etc.getServer().getRelativeTime();
 		//if(cur)

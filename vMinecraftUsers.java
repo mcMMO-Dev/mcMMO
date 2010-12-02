@@ -70,3 +70,193 @@ public class vMinecraftUsers {
 
     }
 }
+
+//=====================================================================
+//Class:	PlayerList
+//Use:		Encapsulates the player list
+//Author:	cerevisiae
+//=====================================================================
+class PlayerList
+{
+	ArrayList<PlayerProfile> players;
+	
+	//=====================================================================
+	//Function:	PlayerList
+	//Input:	Player player: The player to create a profile object for
+	//Output:	none
+	//Use:		Initializes the ArrayList
+	//=====================================================================
+	public PlayerList() { players = new ArrayList<PlayerProfile>(); }
+
+	//=====================================================================
+	//Function:	addPlayer
+	//Input:	Player player: The player to add
+	//Output:	None
+	//Use:		Add a profile of the specified player
+	//=====================================================================
+	public void addPlayer(Player player)
+	{
+		players.add(new PlayerProfile(player));
+	}
+
+	//=====================================================================
+	//Function:	removePlayer
+	//Input:	Player player: The player to remove
+	//Output:	None
+	//Use:		Remove the profile of the specified player
+	//=====================================================================
+	public void removePlayer(Player player)
+	{
+		players.remove(findProfile(player));
+	}
+
+	//=====================================================================
+	//Function:	findProfile
+	//Input:	Player player: The player to find's profile
+	//Output:	PlayerProfile: The profile of the specified player
+	//Use:		Get the profile for the specified player
+	//=====================================================================
+	private PlayerProfile findProfile(Player player)
+	{
+		for(PlayerProfile ply : players)
+		{
+			if(ply.getPlayer().equals(player))
+				return ply;
+		}
+		return null;
+	}
+	
+	//=====================================================================
+	//Class:	PlayerProfile
+	//Use:		Encapsulates all commands for player options
+	//Author:	cerevisiae
+	//=====================================================================
+	class PlayerProfile
+	{
+		private Player playerName;
+		private String nickName;
+		private String tag;
+		private ArrayList<Player> ignoreList;
+		private commandList aliasList;
+		
+	    static final int EXIT_FAIL		= 0,
+			 			 EXIT_SUCCESS	= 1,
+			 			 EXIT_CONTINUE	= 2;
+
+		//=====================================================================
+		//Function:	PlayerProfile
+		//Input:	Player player: The player to create a profile object for
+		//Output:	none
+		//Use:		Loads settings for the player or creates them if they don't
+		//			exist.
+		//=====================================================================
+		public PlayerProfile(Player player)
+		{
+			ignoreList = new ArrayList<Player>();
+			aliasList = new commandList();
+		}
+
+		//=====================================================================
+		//Function:	getPlayer
+		//Input:	None
+		//Output:	Player: The player this profile belongs to
+		//Use:		Finds if the specified player is in the ignore list
+		//=====================================================================
+		public Player getPlayer(){return playerName;}
+
+		//=====================================================================
+		//Function:	isIgnored
+		//Input:	Player player: Checks if a player is ignored
+		//Output:	boolean: If they're ignored
+		//Use:		Finds if the specified player is in the ignore list
+		//=====================================================================
+		public boolean isIgnored(Player player){return ignoreList.contains(player);}
+
+		//=====================================================================
+		//Function:	addIgnore
+		//Input:	Player name: The player to ignore
+		//Output:	None
+		//Use:		Ignores a player.
+		//=====================================================================
+		public void addIgnore(Player name)
+		{
+			if(!ignoreList.contains(name))
+				ignoreList.add(name);
+		}
+
+		//=====================================================================
+		//Function:	removeIgnore
+		//Input:	Player name: The player to ignore
+		//Output:	None
+		//Use:		Ignores a player.
+		//=====================================================================
+		public void removeIgnore(Player name)
+		{
+			if(ignoreList.contains(name))
+				ignoreList.remove(name);
+		}
+
+		//=====================================================================
+		//Function:	addAlias
+		//Input:	String command: The command to try to call
+		//			String[] args: The arguments for the command
+		//Output:	None
+		//Use:		Adds a command
+		//=====================================================================
+		public void addAlias(String name, String callCommand)
+		{
+			aliasList.registerAlias(name, callCommand);
+		}
+
+		//=====================================================================
+		//Function:	addAlias
+		//Input:	String command: The command to try to call
+		//			String[] args: The arguments for the command
+		//Output:	None
+		//Use:		Adds a command
+		//=====================================================================
+		public void addAlias(String name, String callCommand, String[] args)
+		{
+			aliasList.registerAlias(name, callCommand, args);
+		}
+
+		//=====================================================================
+		//Function:	callAlias
+		//Input:	String command: The command to try to call
+		//			Player player: Checks if a player is ignored
+		//			String[] args: The arguments for the command
+		//Output:	int: Exit code
+		//Use:		Attempts to call a command
+		//=====================================================================
+		public int callAlias(String command, Player player, String[] args)
+		{
+			try
+			{
+				//Attemt to call the function
+				return aliasList.call(command, player, args);
+			}
+			catch (Throwable e)
+			{
+				//The function wasn't found, returns fail
+				return EXIT_FAIL;
+			}
+		}
+
+		//=====================================================================
+		//Function:	setTag
+		//Input:	String newTag: The tag to set for the player
+		//Output:	None
+		//Use:		Sets a player tag
+		//=====================================================================
+		public void setTag(String newTag){ tag = newTag; }
+
+		//=====================================================================
+		//Function:	getTag
+		//Input:	None
+		//Output:	String: The player tag
+		//Use:		Gets a player tag
+		//=====================================================================
+		public String getTag() { return tag; }
+	}
+}
+
