@@ -32,7 +32,6 @@ public class vMinecraftChat {
 	//=====================================================================
     public static void sendMessage(Player sender, Player receiver, String msg){
     	String[] message = applyColors(wordWrap(msg));
-    	if
     	for(String out : message)
     		receiver.sendMessage(out + " ");
     }

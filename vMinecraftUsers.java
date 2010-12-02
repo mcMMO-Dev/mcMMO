@@ -235,11 +235,14 @@ class PlayerList
 	        } catch (Exception e) {
 	            log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
 	        }
-            //=====================================================================
+		}
+		
+        //=====================================================================
         // Function:    save
         // Input:       none
-        // Output:      Writes current values of PlayerProfile to disk
-        // Use:         Call this function to save current values
+        // Output:      None
+        // Use:         Writes current values of PlayerProfile to disk
+		//				Call this function to save current values
         //=====================================================================
         public void save(){
             try {
