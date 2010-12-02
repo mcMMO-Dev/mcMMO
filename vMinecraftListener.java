@@ -83,7 +83,7 @@ public class vMinecraftListener extends PluginListener {
     	if (vMinecraftSettings.getInstance().isEzModo(player.getName())) {
             return oldValue > newValue;
         }
-    	else if (vMinecraftSettings.getInstance().globalmessages() && player.getHealth() < 1) {
+    	if (vMinecraftSettings.getInstance().globalmessages() && newValue < 1) {
     		vMinecraftChat.gmsg(player, Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
     	}
     	return false; 
