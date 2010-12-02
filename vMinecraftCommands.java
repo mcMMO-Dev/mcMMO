@@ -489,7 +489,6 @@ public class vMinecraftCommands{
 				player.sendMessage(Colors.LightBlue + "Easy Mode ga yurusareru no wa shougakusei made dayo ne");
 				player.sendMessage(Colors.Red + "**Laughter**");
 				vMinecraftSettings.getInstance().addEzModo(player.getName());
-				player.setHealth(vMinecraftSettings.getInstance().ezModoHealth());
 			}
             return EXIT_SUCCESS;
 		}

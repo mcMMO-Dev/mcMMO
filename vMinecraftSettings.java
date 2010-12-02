@@ -40,8 +40,7 @@ public class vMinecraftSettings {
 	static ArrayList<String> ezModo = new ArrayList<String>();
         //An array of players currently toggled for admin chat
         static ArrayList<String> adminChatList = new ArrayList<String>();
-	//The max health for ezModo
-	static int ezHealth = 30;
+
 	
 	private PropertiesFile properties;
 	String file = "vminecraft.properties";
@@ -144,7 +143,7 @@ public class vMinecraftSettings {
 			for(String ezName : tempEz)
 				ezModo.add(ezName);
 			
-			ezHealth = properties.getInt("ezHealth");
+
 			
 			log.log(Level.INFO, "vminecraft plugin successfully loaded");
 
@@ -192,7 +191,6 @@ public class vMinecraftSettings {
         public void removeAdminToggled(String playerName) {adminChatList.remove(adminChatList.indexOf(playerName));}
 	public void addEzModo(String playerName) {ezModo.add(playerName);}
         public void addAdminToggled(String playerName) {adminChatList.add(playerName);}
-	public int ezModoHealth() {return ezHealth;}
 	public String ezModoList() {return ezModo.toString();}
 	
     //Random death message method

@@ -80,11 +80,9 @@ public class vMinecraftListener extends PluginListener {
 	//Use:		Checks for exploits and runs the commands
 	//=====================================================================
     public boolean onHealthChange(Player player,int oldValue,int newValue){
-    	if (player.getHealth() != vMinecraftSettings.getInstance().ezModoHealth()
-    			&& vMinecraftSettings.getInstance().isEzModo(player.getName())) {
-    		player.setHealth(vMinecraftSettings.getInstance().ezModoHealth());
-
-    	}
+    	if (vMinecraftSettings.getInstance().isEzModo(player.getName())) {
+            return oldValue > newValue;
+        }
     	else if (vMinecraftSettings.getInstance().globalmessages() && player.getHealth() < 1) {
     		vMinecraftChat.gmsg(player, Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
     	}
