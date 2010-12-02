@@ -26,6 +26,7 @@ Vminecraft b8 Todo:
 		<Nos> We should definitely add suffixes to /modify at least
 
 DONE
+        + Fixed death messages and ezModo
 	+ Quick recode of /me to use the new getName function
 	+ /a to toggle admin chat
 	+ Code was organized
