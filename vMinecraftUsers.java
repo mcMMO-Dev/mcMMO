@@ -10,6 +10,8 @@ public class vMinecraftUsers {
     String file = "vminecraftusers.txt";
     private PropertiesFile properties;
     String location = "vminecraftusers.txt";
+    private String[] ignoreList = new String[]{""}; //For datafiles
+    private String[] aliasList = new String[]{""}; //For datafiles
     public void loadUsers(){
         File theDir = new File("vminecraftusers.txt");
 		if(!theDir.exists()){
@@ -40,7 +42,6 @@ public class vMinecraftUsers {
 			}
 		}
     }
-
         public boolean doesPlayerExist(String player) {
         try {
             Scanner scanner = new Scanner(new File(location));
@@ -60,38 +61,6 @@ public class vMinecraftUsers {
             log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
         }
         return false;
-    }
-    public Player getPlayer(String name) {
-        Player player = new Player();
-        try {
-            Scanner scanner = new Scanner(new File(location));
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if (line.startsWith("#") || line.equals("") || line.startsWith("﻿")) {
-                    continue;
-                }
-                String[] split = line.split(":");
-                if (!split[0].equalsIgnoreCase(name)) {
-                    continue;
-                }
-                if (split.length >= 2) {
-                    //player.setNickname(split[1]
-                }
-                if (split.length >= 3) {
-                    //player.setSuffix(split[2]);
-                }
-                if (split.length >= 5) {
-                    //player.setIgnoreList(split[4].split(","));
-                }
-                if (split.length >= 6) {
-                    //player.setAlias(split[5].split(","));
-                }
-            }
-            scanner.close();
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
-        }
-        return player;
     }
     public static void addUser(Player player){
         FileWriter writer = null;
@@ -192,6 +161,7 @@ class PlayerList
 		private Player playerName;
 		private String nickName;
 		private String tag;
+                private String suffix;
 		private ArrayList<Player> ignoreList;
 		private commandList aliasList;
 		
@@ -208,8 +178,41 @@ class PlayerList
 		//=====================================================================
 		public PlayerProfile(Player player)
 		{
+                        //Declare things
 			ignoreList = new ArrayList<Player>();
-			aliasList = new commandList();
+                        aliasList = new commandList();
+                        nickName = new String();
+                        tag = new String();
+                        suffix = new String();
+                        //Try to apply what we can
+                        try {
+                        Scanner scanner = new Scanner(new File(location));
+                        while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        if (line.startsWith("#") || line.equals("") || line.startsWith("﻿")) {
+                            continue;
+                        }
+                        String[] split = line.split(":");
+                        if (!split[0].equalsIgnoreCase(name)) {
+                            continue;
+                        }
+                        nickName = (split[1].split(",").toString());
+
+                        if (split.length >= 4) {
+                            tag = (split[3]);
+                        }
+                        if (split.length >= 5) {
+                            //ignoreList = (split[4]);
+                        }
+                        if (split.length >= 6) {
+                            //aliasList
+                        }
+                    }
+                    scanner.close();
+                } catch (Exception e) {
+                    log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
+                }
+
 		}
 
 		//=====================================================================
