@@ -97,7 +97,7 @@ public class vMinecraftUsers {
         FileWriter writer = null;
         String location = "vminecraftusers.txt";
         String playerName = player.getName();
-        if (vMinecraftUsers.getInstance().doesPlayerExist(playerName)){ //Check to see if the player exists before writing
+        if (!vMinecraftUsers.getInstance().doesPlayerExist(playerName)){ //Check to see if the player exists before writing
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(location, true));
             bw.append(player.getName()+":::::\r");
