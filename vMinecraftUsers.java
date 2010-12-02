@@ -10,8 +10,10 @@ public class vMinecraftUsers {
     String file = "vminecraftusers.txt";
     private PropertiesFile properties;
     String location = "vminecraftusers.txt";
-    private String[] ignoreList = new String[]{""}; //For datafiles
-    private String[] aliasList = new String[]{""}; //For datafiles
+    
+    ArrayList<PlayerList> players = new ArrayList<PlayerList>();
+    
+    
     public void loadUsers(){
         File theDir = new File("vminecraftusers.txt");
 		if(!theDir.exists()){
@@ -158,6 +160,7 @@ class PlayerList
 	//=====================================================================
 	class PlayerProfile
 	{
+	    protected final Logger log = Logger.getLogger("Minecraft");
 		private Player playerName;
 		private String nickName;
 		private String tag;
@@ -180,39 +183,58 @@ class PlayerList
 		{
                         //Declare things
 			ignoreList = new ArrayList<Player>();
-                        aliasList = new commandList();
-                        nickName = new String();
-                        tag = new String();
-                        suffix = new String();
-                        //Try to apply what we can
-                        try {
-                        Scanner scanner = new Scanner(new File(location));
-                        while (scanner.hasNextLine()) {
-                        String line = scanner.nextLine();
-                        if (line.startsWith("#") || line.equals("") || line.startsWith("﻿")) {
-                            continue;
-                        }
-                        String[] split = line.split(":");
-                        if (!split[0].equalsIgnoreCase(name)) {
-                            continue;
-                        }
-                        nickName = (split[1].split(",").toString());
-
-                        if (split.length >= 4) {
-                            tag = (split[3]);
-                        }
-                        if (split.length >= 5) {
-                            //ignoreList = (split[4]);
-                        }
-                        if (split.length >= 6) {
-                            //aliasList
-                        }
-                    }
-                    scanner.close();
-                } catch (Exception e) {
-                    log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
-                }
-
+            aliasList = new commandList();
+            nickName = new String();
+            tag = new String();
+            suffix = new String();
+            String location = "vminecraftusers.txt";
+            //Try to apply what we can
+            try {
+                Scanner scanner = new Scanner(new File(location));
+                while (scanner.hasNextLine()) {
+	                String line = scanner.nextLine();
+	                if (line.startsWith("#") || line.equals("") || line.startsWith("﻿")) {
+	                    continue;
+	                }
+	                String[] split = line.split(":");
+	                if (!split[0].equalsIgnoreCase(player.getName())) {
+	                    continue;
+	                }
+	                nickName = (split[1].split(",").toString());
+	
+	                if (split.length >= 4) {
+	                    tag = (split[3]);
+	                }
+	                
+	                //Add all the ignored people to the player's ignore list
+	                if (split.length >= 5) {
+	                	for(String name : split[4].split(","))
+	                		ignoreList.add(etc.getServer().getPlayer(name));
+	                }
+	                if (split.length >= 6) {
+	                	//Loop through all the aliases
+	                	for(String alias : split[5].split(","))
+	                	{
+	                		//Break apart the two parts of the alias
+	                		String[] parts = alias.split("@");
+	                		if(parts.length > 1)
+	                		{
+	                			//Get the arguments for the alias if there are any
+	                			String[] command = parts[1].split(" ");
+	                			String[] args = null;
+	                			if(command.length > 1)
+	                				System.arraycopy(command, 1, args, 0, command.length - 2);
+	                			
+	                			//Register the alias to the player's aliasList
+	                			aliasList.registerAlias(parts[0], command[0], args);
+	                		}
+	                	}
+	                }
+	            }
+	            scanner.close();
+	        } catch (Exception e) {
+	            log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
+	        }
 		}
 
 		//=====================================================================

@@ -32,6 +32,7 @@ public class vMinecraftChat {
 	//=====================================================================
     public static void sendMessage(Player sender, Player receiver, String msg){
     	String[] message = applyColors(wordWrap(msg));
+    	if
     	for(String out : message)
     		receiver.sendMessage(out + " ");
     }
@@ -283,6 +284,12 @@ public class vMinecraftChat {
 			case 'F':
 				color = Colors.White;
 				break;
+			case 'R':
+				color = "~";
+				break;
+			case 'r':
+				color = "~";
+				break;
 			default:
 				color = null;
 				break;
@@ -401,10 +408,11 @@ public class vMinecraftChat {
 		}
 		return false;
 	}
-        //=====================================================================
+    
+	//=====================================================================
 	//Function:	emote
 	//Input:	Player player: The player talking
-        //          	String message: The message to apply the effect to
+    //          	String message: The message to apply the effect to
 	//Output:	boolean: If this feature is enabled
 	//Use:		/me but with our custom colors applied
 	//=====================================================================
