@@ -104,7 +104,7 @@ public class vMinecraftUsers {
 //Author:	cerevisiae
 //=====================================================================
 class PlayerList
-{
+{       
 	ArrayList<PlayerProfile> players;
 	
 	//=====================================================================
@@ -234,6 +234,33 @@ class PlayerList
 	            scanner.close();
 	        } catch (Exception e) {
 	            log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
+	        }
+            //=====================================================================
+        // Function:    save
+        // Input:       none
+        // Output:      Writes current values of PlayerProfile to disk
+        // Use:         Call this function to save current values
+        //=====================================================================
+        public void save(){
+            try {
+                String location = "vminecraftusers.txt";
+                BufferedWriter bw = new BufferedWriter(new FileWriter(location, true));
+                Scanner scanner = new Scanner(new File(location));
+                while (scanner.hasNextLine()) {
+	                String line = scanner.nextLine();
+	                if (line.startsWith("#") || line.equals("") || line.startsWith("﻿")) {
+	                    continue;
+	                }
+	                String[] split = line.split(":");
+	                if (!split[0].equalsIgnoreCase(playerName.toString())) {
+	                    continue;
+	                }
+	                bw.write(playerName + ":" + nickName + ":" + suffix + ":" + tag + ":" + ignoreList + ":" + aliasList);
+	            }
+	            scanner.close();
+	        } catch (Exception e) {
+	            String location = "vminecraftusers.txt";
+                    log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
 	        }
 		}
 
