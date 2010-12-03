@@ -109,9 +109,7 @@ public class vMinecraftListener extends PluginListener {
         vMinecraftUsers.addUser(player);
     }
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
-        Player player;
-        for(Player p : etc.getServer().getPlayerList()){
-            if (p.getId() == defender.getId() && p.getHealth() < 1){
+        if(defender.isPlayer()){
         if(type == type.CREEPER_EXPLOSION){
             damagetype = 1; //Creeper
          } else if(type == type.FALL){
@@ -124,8 +122,7 @@ public class vMinecraftListener extends PluginListener {
              damagetype = 5; //Lava
          } else if (type == type.WATER){
              damagetype = 6; //Water
-         }
-            }
+         }  
         }
                 return false;
     }
