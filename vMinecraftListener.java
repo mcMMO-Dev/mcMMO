@@ -113,20 +113,34 @@ public class vMinecraftListener extends PluginListener {
          } else if (type == type.WATER){
              damagetype = 6; //Water
          }
-            }
+         //This should trigger the player death message
+         } else if (player.getHealth() < 1 && attacker.isPlayer()){
+             damagetype = 7; //Player
+         }
             if(damagetype == 1){
                 vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " was blown to bits by a creeper");
+                damagetype = 0;
             } else if (damagetype == 2) {
                     vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " fell to death!");
+                    damagetype = 0;
                 } else if (damagetype ==3){
                     vMinecraftChat.gmsg(player, player.getName() + Colors.Red + " was incinerated");
+                    damagetype = 0;
                 } else if (damagetype == 4){
                     vMinecraftChat.gmsg(player, Colors.Red + " Stop drop and roll, not scream, run, and burn " + player.getName());
+                    damagetype = 0;
                 } else if (damagetype == 5){
                     vMinecraftChat.gmsg(player, Colors.Red + player.getName() + " drowned in lava");
+                    damagetype = 0;
                 } else if (damagetype == 6){
                     vMinecraftChat.gmsg(player, Colors.Blue + player.getName() + " should've attended that swimming class");
-                } else {
+                    damagetype = 0;
+                } else if (damagetype == 7){
+                Player pAttacker = (Player)attacker;
+                vMinecraftChat.gmsg(player, pAttacker.getName() + " has murdered " + player.getName());
+                damagetype = 0;
+                } 
+                else {
     		vMinecraftChat.gmsg(player, Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
             }
         }
