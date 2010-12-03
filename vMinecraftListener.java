@@ -91,10 +91,15 @@ public class vMinecraftListener extends PluginListener {
     }
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
         if(defender.isPlayer()){
-           int damagetype = 0; //Set to 0 to begin with
-     Player player = (Player)defender;
-     if(defender.isPlayer() && player.getHealth() < 1 && !attacker.isPlayer())
-     {
+        int damagetype = 0; //Set to 0 to begin with
+        Player player = (Player)defender;
+        if (attacker.isPlayer()) {
+            Player pAttacker = (Player)attacker;
+            if(player.getHealth() < 1){
+                vMinecraftChat.gmsg(player, pAttacker.getName() + " has murdered " + player.getName());
+            }
+        }
+     if (player.getHealth() < 1 && !attacker.isPlayer()) {
          if (type == type.CREEPER_EXPLOSION) {
             damagetype = 1; //Creeper
          } else if(type == type.FALL){
@@ -108,18 +113,6 @@ public class vMinecraftListener extends PluginListener {
          } else if (type == type.WATER){
              damagetype = 6; //Water
          }
-            }
-        if (defender.isPlayer() && attacker.isPlayer()) {
-            Player pAttacker = (Player)attacker;
-            Player pDefender = (Player)defender;
-            if(pDefender.getHealth() < 1){
-                damagetype =0; //Reset damagetype to 0
-                vMinecraftChat.gmsg(player, pAttacker.getName() + " has murdered " + pDefender.getName());
-            }
-            
-        }
-     if (player.getHealth() < 1 && !attacker.isPlayer()) {
-        if (damagetype == 1){
                 vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " was blown to bits by a creeper");
             } else if (damagetype == 2) {
                     vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " fell to death!");
@@ -134,7 +127,6 @@ public class vMinecraftListener extends PluginListener {
                 } else {
     		vMinecraftChat.gmsg(player, Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
             }
-        }
         }
                 return false;
     }
