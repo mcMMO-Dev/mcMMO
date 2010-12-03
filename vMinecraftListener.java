@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 //Author:	nossr50, TrapAlice, cerevisiae
 //=====================================================================
 public class vMinecraftListener extends PluginListener {
+    public int damagetype;
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	
 	//=====================================================================
@@ -91,7 +92,6 @@ public class vMinecraftListener extends PluginListener {
     }
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
         if(defender.isPlayer()){
-        int damagetype = 0; //Set to 0 to begin with
         Player player = (Player)defender;
         if (attacker.isPlayer()) {
             Player pAttacker = (Player)attacker;
