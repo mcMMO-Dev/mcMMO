@@ -113,6 +113,8 @@ public class vMinecraftListener extends PluginListener {
          } else if (type == type.WATER){
              damagetype = 6; //Water
          }
+            }
+            if(damagetype == 1){
                 vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " was blown to bits by a creeper");
             } else if (damagetype == 2) {
                     vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " fell to death!");
