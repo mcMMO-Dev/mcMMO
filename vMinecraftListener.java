@@ -6,6 +6,9 @@ import java.util.logging.Logger;
 //Author:	nossr50, TrapAlice, cerevisiae
 //=====================================================================
 public class vMinecraftListener extends PluginListener {
+    public int bAttacker;
+    public int bDefender;
+    public int bAmount;
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	
 	//=====================================================================
@@ -91,6 +94,13 @@ public class vMinecraftListener extends PluginListener {
 
     public void onLogin(Player player){
         vMinecraftUsers.addUser(player);
+    }
+    public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
+        bAttacker = attacker.getId();
+        bDefender = defender.getId();
+        bAmount = amount;
+        log.log(Level.INFO, "Attacker ID: " + bAttacker + ", Defender ID: " + bDefender + ", Amount: " + bAmount);
+        return false;
     }
 
 }
