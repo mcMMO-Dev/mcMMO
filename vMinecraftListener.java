@@ -84,11 +84,26 @@ public class vMinecraftListener extends PluginListener {
     	if (vMinecraftSettings.getInstance().isEzModo(player.getName())) {
             return oldValue > newValue;
         }
+        //These are place holders until I make random messages for everything and also to see if these work correctly
     	if (vMinecraftSettings.getInstance().globalmessages() && newValue < 1) {
+            if (damagetype == 1){
+                vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " was blown to bits by a creeper");
+            } else if (damagetype == 2) {
+                    vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " fell to death!");
+                } else if (damagetype ==3){
+                    vMinecraftChat.gmsg(player, player.getName() + Colors.Red + " was incinerated");
+                } else if (damagetype == 4){
+                    vMinecraftChat.gmsg(player, Colors.Red + " Stop drop and roll, not scream, run, and burn " + player.getName());
+                } else if (damagetype == 5){
+                    vMinecraftChat.gmsg(player, Colors.Red + player.getName() + " drowned in lava");
+                } else if (damagetype == 6){
+                    vMinecraftChat.gmsg(player, Colors.Blue + player.getName() + " should've attended that swimming class");
+                } else {
     		vMinecraftChat.gmsg(player, Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
-    	}
-    	return false; 
+            }
 	}
+        return false;
+    }
 
     public void onLogin(Player player){
         vMinecraftUsers.addUser(player);
