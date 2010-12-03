@@ -109,7 +109,9 @@ public class vMinecraftListener extends PluginListener {
         vMinecraftUsers.addUser(player);
     }
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
-        if(defender.isPlayer()){
+        if(defender.isPlayer() && !attacker.isPlayer()){
+            Player player = (Player)defender;
+            if(player.getHealth() < 1) {
         if(type == type.CREEPER_EXPLOSION){
             damagetype = 1; //Creeper
          } else if(type == type.FALL){
@@ -122,7 +124,31 @@ public class vMinecraftListener extends PluginListener {
              damagetype = 5; //Lava
          } else if (type == type.WATER){
              damagetype = 6; //Water
-         }  
+         } else{
+            damagetype = 0;
+         }
+        if (defender.isPlayer() && attacker.isPlayer()) {
+            Player pAttacker = (Player)attacker;
+            Player pDefender = (Player)defender;
+            damagetype = 0;
+            vMinecraftChat.gmsg(player, pAttacker.getName() + " has murdered " + pDefender.getName());
+        }
+        if (damagetype == 1 && !attacker.isPlayer()){
+                vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " was blown to bits by a creeper");
+            } else if (damagetype == 2) {
+                    vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " fell to death!");
+                } else if (damagetype ==3){
+                    vMinecraftChat.gmsg(player, player.getName() + Colors.Red + " was incinerated");
+                } else if (damagetype == 4){
+                    vMinecraftChat.gmsg(player, Colors.Red + " Stop drop and roll, not scream, run, and burn " + player.getName());
+                } else if (damagetype == 5){
+                    vMinecraftChat.gmsg(player, Colors.Red + player.getName() + " drowned in lava");
+                } else if (damagetype == 6){
+                    vMinecraftChat.gmsg(player, Colors.Blue + player.getName() + " should've attended that swimming class");
+                } else {
+    		vMinecraftChat.gmsg(player, Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
+            }
+        }
         }
                 return false;
     }
