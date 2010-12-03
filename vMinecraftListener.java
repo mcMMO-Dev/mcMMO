@@ -6,9 +6,7 @@ import java.util.logging.Logger;
 //Author:	nossr50, TrapAlice, cerevisiae
 //=====================================================================
 public class vMinecraftListener extends PluginListener {
-    public int bAttacker;
-    public int bDefender;
-    public int bAmount;
+    public int damagetype;
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	
 	//=====================================================================
@@ -96,11 +94,20 @@ public class vMinecraftListener extends PluginListener {
         vMinecraftUsers.addUser(player);
     }
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
-        bAttacker = attacker.getId();
-        bDefender = defender.getId();
-        bAmount = amount;
-        log.log(Level.INFO, "Attacker ID: " + bAttacker + ", Defender ID: " + bDefender + ", Amount: " + bAmount);
-        return false;
+        if(type == type.CREEPER_EXPLOSION){
+            damagetype = 1; //Creeper
+         } else if(type == type.FALL){
+             damagetype = 2; //Fall
+         } else if(type == type.FIRE){
+             damagetype = 3; //Fire going to make it share with firetick since its similar
+         } else if (type == type.FIRE_TICK){
+             damagetype = 4; //Firetick
+         } else if (type == type.LAVA){
+             damagetype = 5; //Lava
+         } else if (type == type.WATER){
+             damagetype = 6; //Water
+         }
+                return false;
     }
 
 }
