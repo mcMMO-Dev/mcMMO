@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 //=====================================================================
 public class vMinecraftChat {
     protected static final Logger log = Logger.getLogger("Minecraft");
+    protected static final int lineLength = 312;
 
 	//=====================================================================
 	//Function:	gmsg
@@ -60,12 +61,12 @@ public class vMinecraftChat {
 
     		//Loop through the words finding their length and increasing
     		//j, the end point for the sub string
-    		while(len <= 316 && !split.isEmpty())
+    		while(len <= lineLength && !split.isEmpty())
     		{
     			int wordLength = msgLength(split.get(0)) + 4;
     			
     			//If a word is too long for a line
-    			if(wordLength > 316)
+    			if(wordLength > lineLength)
     			{
         			String[] tempArray = wordCut(len, split.remove(0));
         			words.add(tempArray[0]);
@@ -74,7 +75,7 @@ public class vMinecraftChat {
 
     			//If the word is not too long to fit
     			len += wordLength;
-    			if( len < 316)
+    			if( len < lineLength)
     				words.add(split.remove(0));
     		}
     		//Merge them and add them to the output array.
@@ -118,7 +119,7 @@ public class vMinecraftChat {
 		//and their following color codes
 		String[] output = new String[2];
 		int x = 0;
-		while(length < 316 && x < str.length())
+		while(length < lineLength && x < str.length())
 		{
 			int len = charLength(str.charAt(x));
 			if( len > 0)
@@ -140,15 +141,15 @@ public class vMinecraftChat {
 	//=====================================================================
     private static int charLength(char x)
     {
-    	if("i;,.:|!".indexOf(x) != -1)
+    	if("i.:,;|!".indexOf(x) != -1)
 			return 2;
 		else if("l'".indexOf(x) != -1)
 			return 3;
 		else if("tI[]".indexOf(x) != -1)
 			return 4;
-		else if("kf{}<>\"*()".indexOf(x) != -1)
+		else if("fk{}<>\"*()".indexOf(x) != -1)
 			return 5;
-		else if("hequcbrownxjmpsvazydgTHEQUCKBROWNFXJMPSVLAZYDG1234567890#\\/?$%-=_+&".indexOf(x) != -1)
+		else if("abcdeghjmnopqrsuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890\\/#?$%-=_+&^".indexOf(x) != -1)
 			return 6;
 		else if("@~".indexOf(x) != -1)
 			return 7;

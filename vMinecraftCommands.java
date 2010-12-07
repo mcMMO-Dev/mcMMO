@@ -48,7 +48,7 @@ public class vMinecraftCommands{
         cl.registerAlias("/wrists", "/suicide");
         cl.registerAlias("/ci", "/clearinventory");
     }
-    
+
     //=====================================================================
 	//Function:	me (/me)
 	//Input:	Player player: The player using the command
