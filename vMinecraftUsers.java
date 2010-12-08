@@ -213,15 +213,8 @@ class PlayerList
 		                		String[] parts = alias.split("@");
 		                		if(parts.length > 1)
 		                		{
-		                			//Get the arguments for the alias if there are any
-		                			String[] command = parts[1].split(" ");
-		                			String[] args = null;
-		                			if(command.length > 1)
-		                				System.arraycopy(command, 1, args,
-		                						0, command.length - 2);
-		                			
 		                			//Register the alias to the player's aliasList
-		                			aliasList.registerAlias(parts[0], command[0], args);
+		                			aliasList.registerAlias(parts[0], parts[2]);
 		                		}
 		                	}
 		                }
@@ -318,18 +311,6 @@ class PlayerList
 		public void addAlias(String name, String callCommand)
 		{
 			aliasList.registerAlias(name, callCommand);
-		}
-
-		//=====================================================================
-		//Function:	addAlias
-		//Input:	String command: The command to try to call
-		//			String[] args: The arguments for the command
-		//Output:	None
-		//Use:		Adds a command
-		//=====================================================================
-		public void addAlias(String name, String callCommand, String[] args)
-		{
-			aliasList.registerAlias(name, callCommand, args);
 		}
 
 		//=====================================================================
