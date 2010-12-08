@@ -93,7 +93,10 @@ public class vMinecraftListener extends PluginListener {
     
     public boolean onIgnite(Block block, Player player) {
         if(vMinecraftSettings.stopFire){
-            if (vMinecraftSettings.fireNoSpread.contains(block)){
+            if(block.getStatus() == 3 || block.getStatus() == 1){
+                return true;
+            }
+            if(block.getStatus() == 2 && !player.isAdmin()){
                 return true;
             }
         }

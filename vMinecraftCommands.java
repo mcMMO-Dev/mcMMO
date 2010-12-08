@@ -36,6 +36,9 @@ public class vMinecraftCommands{
     	//		  the command is used
     	//String(Optional): The help menu description
         cl.register("/tp", "teleport");
+        cl.register("/vminecraft", "vminecrafthelp");
+        cl.registerAlias("/vhelp", "/vminecraft");
+        cl.register("/colors", "colors");
         cl.register("/masstp", "masstp", "Teleports those with lower permissions to you");
         cl.register("/reload", "reload");
         cl.register("/rules", "rules", "Displays the rules");
@@ -86,7 +89,48 @@ public class vMinecraftCommands{
         cl.registerMessage("/time", "Time change thanks to %p", Colors.Blue, 1, true);
         cl.registerMessage("/tp", "%p has teleported to %0p", Colors.Blue, 1, true);
     }
-
+        //=====================================================================
+	//Function:	vminecrafthelp (/vhelp or /vminecraft)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		Displays the current status of most vMinecraft settings
+        //              and provides some useful tips.
+	//=====================================================================
+    public static int vminecrafthelp(Player player, String[] args){
+        vMinecraftChat.sendMessage(player, player, Colors.Yellow + "Chat Settings");
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Admin Chat: " + vMinecraftSettings.getInstance().adminchat());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "FFF turns red: " + vMinecraftSettings.getInstance().FFF());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Greentext After >: " + vMinecraftSettings.getInstance().greentext());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Quake Color Script: " + vMinecraftSettings.getInstance().quakeColors());
+        vMinecraftChat.sendMessage(player, player, Colors.Yellow + "Enabled Commands are TRUE, disabled are FALSE");
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /ezmodo: " + vMinecraftSettings.getInstance().cmdEzModo());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /fabulous: " + vMinecraftSettings.getInstance().cmdFabulous());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /rules: " + vMinecraftSettings.getInstance().cmdRules());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /heal: " + vMinecraftSettings.getInstance().cmdHeal());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /masstp: " + vMinecraftSettings.getInstance().cmdMasstp());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /say: " + vMinecraftSettings.getInstance().cmdSay());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /suicide: " + vMinecraftSettings.getInstance().cmdSuicide());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /whois: " + vMinecraftSettings.getInstance().cmdWhoIs());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /tp won't work on higher ranked players: " + vMinecraftSettings.getInstance().cmdTp());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /tphere won't work on higher ranked players: " + vMinecraftSettings.getInstance().cmdTphere());
+        vMinecraftChat.sendMessage(player, player, Colors.Yellow + "Other Settings");
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Command /who: " + vMinecraftSettings.getInstance().cmdWho());
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "COLORED PLAYER LIST IS DEPENDENT ON /who BEING TRUE!");
+        vMinecraftChat.sendMessage(player, player, Colors.LightPurple + "Global Messages: " + vMinecraftSettings.getInstance().globalmessages());
+        return EXIT_SUCCESS;
+    }
+    
+    //=====================================================================
+	//Function:	colors (/colors)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		Displays a list of all colors and color codes
+	//=====================================================================
+    public static int colors(Player player, String[] args){
+        vMinecraftChat.sendMessage(player, player, Colors.Black + "0" + Colors.Navy + "1" + Colors.Green+ "2" + Colors.Blue + "3" + Colors.Red + "4" + Colors.Purple + "5" + Colors.Gold + "6" + Colors.LightGray + "7" + Colors.Gray + "8" + Colors.DarkPurple + "9" + Colors.LightGreen + "a" + Colors.LightBlue + "b" + Colors.Rose + "c" + Colors.LightPurple + "d" + Colors.White + "f");
+        return EXIT_SUCCESS;
+    }
+    
     //=====================================================================
 	//Function:	me (/me)
 	//Input:	Player player: The player using the command
