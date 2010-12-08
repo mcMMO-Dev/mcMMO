@@ -1,20 +1,14 @@
 Vminecraft b8 Todo:
 	+ ^r for rainbow color code
 	+ Finish work on the flat file system
-	+ Antigriefs <Nos> Working on this, waiting for hMod to fix player health
+	+ Antigriefs <Nos> Working on this
 	+ Allow players to nickname themselves or others
-	+ vminecraft Help
-		* Specialized help message for vminecraft
-			? /vhelp?
 	+ Time manipulation <Cere> Working on this
 		* Have time changes not be instant but move the sky faster
 			to get to the time entered
 		* Loop through specific times of the day and then rewind
 			ex: Sunrise to sunset, mid-morning to noon
 	+ Aliasing Commands (Global Aliases and Personal Aliases) <Cere>
-	+ Recode Messaging
-		* Reply Feature
-		* Personal Muting
 	+ Different types of /slay
 		* /slay fire to burn them to death
 		* /slay drown to drown them
@@ -26,7 +20,7 @@ Vminecraft b8 Todo:
 		<Nos> We should definitely add suffixes to /modify at least
 
 DONE
-        + Fixed death messages and ezModo
+    + Fixed death messages and ezModo
 	+ Quick recode of /me to use the new getName function
 	+ /a to toggle admin chat
 	+ Code was organized
@@ -43,5 +37,11 @@ DONE
 		* Now we can have color on multiple lines without
 			crashing the client
 		* Also does not cut words in half
+	+ vminecraft Help
+		* Specialized help message for vminecraft
+			? /vhelp?
+	+ Recode Messaging
+		* Reply Feature
+		* Personal Muting
 
 Notes: Let's try to to finish as much of this list as possible tomorrow and push for a b8 release soon :P

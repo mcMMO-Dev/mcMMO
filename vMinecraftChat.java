@@ -20,7 +20,15 @@ public class vMinecraftChat {
     public static void gmsg(Player sender, String msg){
         for (Player receiver : etc.getServer().getPlayerList()) {
             if (receiver != null) {
-                sendMessage(sender, receiver, msg);
+            	if(vMinecraftUsers.players.findProfile(receiver) == null)
+            		return;
+            	//Check if the person has the sender ignored
+            	if(!vMinecraftUsers.players.findProfile(receiver).isIgnored(sender))
+        		{
+        	    	String[] message = applyColors(wordWrap(msg));
+        	    	for(String out : message)
+        	    		receiver.sendMessage(out);
+        		}
             }
         }
     }
@@ -32,9 +40,18 @@ public class vMinecraftChat {
 	//Use:		Outputs a message to everybody
 	//=====================================================================
     public static void sendMessage(Player sender, Player receiver, String msg){
-    	String[] message = applyColors(wordWrap(msg));
-    	for(String out : message)
-    		receiver.sendMessage(out + " ");
+    	//Check if the receiver has the sender ignored
+    	if(vMinecraftUsers.players.findProfile(receiver) == null)
+    		return;
+		if(!vMinecraftUsers.players.findProfile(receiver).isIgnored(sender))
+		{
+	    	String[] message = applyColors(wordWrap(msg));
+	    	for(String out : message)
+	    		receiver.sendMessage(out);
+	    //Tell them if they are
+		} else
+    		sendMessage(sender, sender, Colors.Rose + receiver.getName() + " has you " +
+    				"on their ignore list.");
     }
 
 	//=====================================================================

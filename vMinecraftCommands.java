@@ -37,7 +37,6 @@ public class vMinecraftCommands{
     	//String(Optional): The help menu description
         cl.register("/tp", "teleport");
         cl.register("/vminecraft", "vminecrafthelp");
-        cl.registerAlias("/vhelp", "/vminecraft");
         cl.register("/colors", "colors");
         cl.register("/masstp", "masstp", "Teleports those with lower permissions to you");
         cl.register("/reload", "reload");
@@ -56,6 +55,8 @@ public class vMinecraftCommands{
         cl.register("/me", "me");
         cl.register("/msg", "message", "Send a message to a player /msg [Player] [Message]");
         cl.register("/reply", "reply", "Reply to a player /reply [Message], Alias: /r");
+        cl.register("/ignore", "addIgnored", "Adds a user to your ignore list");
+        cl.register("/unignore", "removeIgnored", "Removes a user from your ignore list");
         
         //registerAlias
         //String: The command that this will be called by
@@ -68,6 +69,7 @@ public class vMinecraftCommands{
         //		  The %0 will be replaced with wood for this instance
         //		  and Player will be given 100 wood.
         cl.registerAlias("/playerlist", "/who");
+        cl.registerAlias("/vhelp", "/vminecraft");
         cl.registerAlias("/r", "/reply");
         cl.registerAlias("/w", "/msg");
         cl.registerAlias("/wrists", "/suicide");
@@ -127,7 +129,22 @@ public class vMinecraftCommands{
 	//Use:		Displays a list of all colors and color codes
 	//=====================================================================
     public static int colors(Player player, String[] args){
-        vMinecraftChat.sendMessage(player, player, Colors.Black + "0" + Colors.Navy + "1" + Colors.Green+ "2" + Colors.Blue + "3" + Colors.Red + "4" + Colors.Purple + "5" + Colors.Gold + "6" + Colors.LightGray + "7" + Colors.Gray + "8" + Colors.DarkPurple + "9" + Colors.LightGreen + "a" + Colors.LightBlue + "b" + Colors.Rose + "c" + Colors.LightPurple + "d" + Colors.White + "f");
+        vMinecraftChat.sendMessage(player, player,
+        		  Colors.Black			+ "0"
+        		+ Colors.Navy			+ "1"
+        		+ Colors.Green			+ "2"
+        		+ Colors.Blue			+ "3"
+        		+ Colors.Red 			+ "4"
+        		+ Colors.Purple 		+ "5"
+        		+ Colors.Gold 			+ "6"
+        		+ Colors.LightGray 		+ "7"
+        		+ Colors.Gray 			+ "8"
+        		+ Colors.DarkPurple 	+ "9"
+        		+ Colors.LightGreen 	+ "a"
+        		+ Colors.LightBlue 		+ "b"
+        		+ Colors.Rose 			+ "c"
+        		+ Colors.LightPurple	+ "d"
+        		+ Colors.White			+ "f");
         return EXIT_SUCCESS;
     }
     
@@ -223,9 +240,81 @@ public class vMinecraftCommands{
     	}
     	return EXIT_SUCCESS;
     }
-    
+
+	//=====================================================================
+	//Function:	addIgnored (/ignore)
+	//Input:	Player player: The player using the command
+    //			String[] args: The name of the player to ignore
+	//Output:	int: Exit Code
+	//Use:		Adds a player to the ignore list
+	//=====================================================================
     public static int addIgnored(Player player, String[] args)
     {
+    	//Make sure the player gave you a user to ignore
+    	if(args.length > 0)
+    	{
+    		//Find the player and make sure they exist
+        	Player ignore = etc.getServer().matchPlayer(args[0]);
+        	if(ignore != null)
+        	{
+        		//Don't let the player ignore themselves
+        		if(!ignore.getName().equalsIgnoreCase(player.getName()))
+        		{
+	        		//Attempt to ignore the player and report accordingly
+	        		if(vMinecraftUsers.players.findProfile(player).addIgnore(ignore))
+	        			vMinecraftChat.sendMessage(player, player,
+	        					Colors.Rose + ignore.getName()+ " has been successfuly " +
+	        							"ignored.");
+	        		else
+	        			vMinecraftChat.sendMessage(player, player,
+	        					Colors.Rose + "You are already ignoring " + ignore.getName());
+        		} else
+        			vMinecraftChat.sendMessage(player, player,
+        					Colors.Rose + "You cannot ignore yourself");
+        	}
+        	else
+    			vMinecraftChat.sendMessage(player, player,
+    					Colors.Rose + "The person you tried to ignore is not logged in.");
+
+    	}
+    	else
+			vMinecraftChat.sendMessage(player, player,
+					Colors.Rose + "Usage: /ignore [Player]");
+    	return EXIT_SUCCESS;
+    }
+
+	//=====================================================================
+	//Function:	removeIgnored (/unignore)
+	//Input:	Player player: The player using the command
+    //			String[] args: The name of the player to stop ignoring
+	//Output:	int: Exit Code
+	//Use:		Removes a player from the ignore list
+	//=====================================================================
+    public static int removeIgnored(Player player, String[] args)
+    {
+    	//Make sure the player gave you a user to ignore
+    	if(args.length > 0)
+    	{
+    		//Find the player and make sure they exist
+        	Player ignore = etc.getServer().matchPlayer(args[0]);
+        	if(ignore != null)
+        	{
+        		//Attempt to ignore the player and report accordingly
+        		if(vMinecraftUsers.players.findProfile(player).removeIgnore(ignore))
+        			vMinecraftChat.sendMessage(player, player,
+        					Colors.Rose + ignore.getName()+ " has been successfuly " +
+        							"unignored.");
+        		else
+        			vMinecraftChat.sendMessage(player, player,
+        					Colors.Rose + "You are not currently ignoring " + ignore.getName());
+        	}
+        	else
+    			vMinecraftChat.sendMessage(player, player,
+    					Colors.Rose + "The person you tried to unignore is not logged in.");
+    	}
+    	else
+			vMinecraftChat.sendMessage(player, player,
+					Colors.Rose + "Usage: /unignore [Player]");
     	return EXIT_SUCCESS;
     }
     

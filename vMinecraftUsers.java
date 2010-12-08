@@ -149,7 +149,7 @@ class PlayerList
 					   nickName,
 					   tag,
 					   suffix;
-		private ArrayList<Player> ignoreList;
+		private ArrayList<String> ignoreList;
 		private commandList aliasList;
 		
 	    static final int EXIT_FAIL		= 0,
@@ -170,7 +170,7 @@ class PlayerList
             nickName = new String();
             tag = new String();
             suffix = new String();
-			ignoreList = new ArrayList<Player>();
+			ignoreList = new ArrayList<String>();
             aliasList = new commandList();
             String location = "vminecraftusers.txt";
             
@@ -188,20 +188,21 @@ class PlayerList
 	                if (split.length > 0 && split[0].equalsIgnoreCase(player.getName())) {
 	                	
 		                //Get the tag from the 1st split
-		                nickName = (split[1].split(",").toString());
+		                if (split.length >= 2)
+		                	nickName = split[1];
 
 		                //Get the tag from the 2nd split
-		                suffix = split[2];
+			            if (split.length >= 3)
+			            	suffix = split[2];
 		
 		                //Get the tag from the 3rd split
-		                if (split.length >= 4) {
+		                if (split.length >= 4)
 		                    tag = (split[3]);
-		                }
 		                
 		                //Add all the ignored people to the player's ignore list
 		                if (split.length >= 5) {
 		                	for(String name : split[4].split(","))
-		                		ignoreList.add(etc.getServer().getPlayer(name));
+		                		ignoreList.add(name);
 		                }
 		                
 		                //Get the alias list, from the 5th split
@@ -226,6 +227,7 @@ class PlayerList
 	            log.log(Level.SEVERE, "Exception while reading "
 	            		+ location + " (Are you sure you formatted it correctly?)", e);
 	        }
+	        save();
 		}
 		
         //=====================================================================
@@ -249,7 +251,11 @@ class PlayerList
 	                if (!split[0].equalsIgnoreCase(playerName)) {
 	                    continue;
 	                }
-	                bw.write(playerName + ":" + nickName + ":" + suffix + ":" + tag + ":" + ignoreList + ":" + aliasList);
+	                String output =playerName + ":" + nickName + ":" + suffix + ":" + tag + ":";
+	                for(String player : ignoreList)
+	                	output += player + ",";
+	                output += ":";
+	                bw.write(output);
 	            }
 	            scanner.close();
 	        } catch (Exception e) {
@@ -275,30 +281,44 @@ class PlayerList
 		//Output:	boolean: If they're ignored
 		//Use:		Finds if the specified player is in the ignore list
 		//=====================================================================
-		public boolean isIgnored(Player player){return ignoreList.contains(player);}
+		public boolean isIgnored(Player player){
+			log.log(Level.INFO, String.valueOf(ignoreList.contains(player.getName())));
+			for(String pl : ignoreList)
+				log.log(Level.INFO, pl);
+			return ignoreList.contains(player.getName());}
 
 		//=====================================================================
 		//Function:	addIgnore
 		//Input:	Player name: The player to ignore
-		//Output:	None
+		//Output:	boolean: If the player was successfully ignored
 		//Use:		Ignores a player.
 		//=====================================================================
-		public void addIgnore(Player name)
+		public boolean addIgnore(Player name)
 		{
 			if(!ignoreList.contains(name))
-				ignoreList.add(name);
+			{
+				ignoreList.add(name.getName());
+				save();
+				return true;
+			}
+			return false;
 		}
 
 		//=====================================================================
 		//Function:	removeIgnore
-		//Input:	Player name: The player to ignore
-		//Output:	None
-		//Use:		Ignores a player.
+		//Input:	Player name: The player to unignore
+		//Output:	boolean: If the player was successfully unignored
+		//Use:		Stops ignoring a player.
 		//=====================================================================
-		public void removeIgnore(Player name)
+		public boolean removeIgnore(Player name)
 		{
-			if(ignoreList.contains(name))
-				ignoreList.remove(name);
+			if(ignoreList.contains(name.getName()))
+			{
+				ignoreList.remove(name.getName());
+				save();
+				return true;
+			}
+			return false;
 		}
 
 		//=====================================================================
@@ -311,6 +331,7 @@ class PlayerList
 		public void addAlias(String name, String callCommand)
 		{
 			aliasList.registerAlias(name, callCommand);
+			save();
 		}
 
 		//=====================================================================
