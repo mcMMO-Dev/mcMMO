@@ -90,6 +90,14 @@ public class vMinecraftListener extends PluginListener {
     public void onLogin(Player player){
         vMinecraftUsers.addUser(player);
     }
+    public boolean onIgnite(Block block, Player player) {
+        if(vMinecraftSettings.stopFire){
+            if (vMinecraftSettings.fireNoSpread.contains(block)){
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
         if(defender.isPlayer()){
         Player player = (Player)defender;
