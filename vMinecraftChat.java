@@ -61,7 +61,7 @@ public class vMinecraftChat {
 
     		//Loop through the words finding their length and increasing
     		//j, the end point for the sub string
-    		while(len <= lineLength && !split.isEmpty())
+    		while(split.get(0) != null && len <= lineLength && !split.isEmpty())
     		{
     			int wordLength = msgLength(split.get(0)) + 4;
     			
