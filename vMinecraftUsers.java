@@ -87,6 +87,7 @@ public class vMinecraftUsers {
 //=====================================================================
 class PlayerList
 {       
+    protected static final Logger log = Logger.getLogger("Minecraft");
 	ArrayList<PlayerProfile> players;
 	
 	//=====================================================================
@@ -165,6 +166,7 @@ class PlayerList
 		public PlayerProfile(Player player)
 		{
             //Declare things
+			playerName = player.getName();
             nickName = new String();
             tag = new String();
             suffix = new String();
@@ -386,8 +388,9 @@ class PlayerList
 		//=====================================================================
 		public Player getMessage()
 		{
-			
-			return etc.getServer().matchPlayer(lastMessage);
+			if(lastMessage != null)
+				return etc.getServer().matchPlayer(lastMessage);
+			return null;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +29,12 @@ public class vMinecraftCommands{
 	//=====================================================================
     public static void loadCommands(){
 		//If we had commands we would add them here.
+    	
+    	//register
+    	//String: The command that will be used
+    	//String: The name of the function that will be called when
+    	//		  the command is used
+    	//String(Optional): The help menu description
         cl.register("/tp", "teleport");
         cl.register("/masstp", "masstp", "Teleports those with lower permissions to you");
         cl.register("/reload", "reload");
@@ -40,22 +47,50 @@ public class vMinecraftCommands{
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
         cl.register("/ezlist", "ezlist", "List invulnerable players");
         cl.register("/heal", "heal", "heal yourself or other players");
-        cl.register("/suicide", "suicide", "kill yourself... you loser");
-        cl.register("/a", "adminChatToggle", "toggle admin chat for every message");
+        cl.register("/suicide", "suicide", "Kill yourself... you loser");
+        cl.register("/a", "adminChatToggle", "Toggle admin chat for every message");
         cl.register("/modify", "modifySplit");
         cl.register("/me", "me");
-        cl.register("/msg", "message");
-        cl.register("/reply", "reply");
+        cl.register("/msg", "message", "Send a message to a player /msg [Player] [Message]");
+        cl.register("/reply", "reply", "Reply to a player /reply [Message], Alias: /r");
+        
+        //registerAlias
+        //String: The command that this will be called by
+        //String: The message that will be called when the first is entered
+        //		  Can be modified with %# to have it insert a player
+        //		  argument into that position.
+        //		  EX: Aliased command is
+        //		  cl.registerAlias("/test", "/i %0 100")
+        //		  Player uses /test wood
+        //		  The %0 will be replaced with wood for this instance
+        //		  and Player will be given 100 wood.
         cl.registerAlias("/playerlist", "/who");
         cl.registerAlias("/r", "/reply");
         cl.registerAlias("/w", "/msg");
         cl.registerAlias("/wrists", "/suicide");
         cl.registerAlias("/ci", "/clearinventory");
+        
+        //registerMessage
+        //String:  The command it will run on
+        //String:  What will be displayed
+        //		   %p  is the player calling the command
+        //		   %#  is the argument number of the command.
+        //		   %#p is an argument number that will be required to be
+        //			   an online player
+        //String:  The color the message will be
+        //int:	   The number of arguments required for the message to appear
+        //boolean: If the message should only display for admins
+        cl.registerMessage("/kick", "%p has kicked %0p", Colors.Blue, 1, false);
+        cl.registerMessage("/ban", "%p has banned %0p", Colors.Blue, 1, false);
+        cl.registerMessage("/ipban", "%p has IP banned %0p", Colors.Blue, 1, false);
+        cl.registerMessage("/time", "Time change thanks to %p", Colors.Blue, 1, true);
+        cl.registerMessage("/tp", "%p has teleported to %0p", Colors.Blue, 1, true);
     }
 
     //=====================================================================
 	//Function:	me (/me)
 	//Input:	Player player: The player using the command
+    //			String[] args: Will contain the message the player sends
 	//Output:	int: Exit Code
 	//Use:		The player uses this to emote, but now its colorful.
 	//=====================================================================
@@ -70,67 +105,90 @@ public class vMinecraftCommands{
     //=====================================================================
 	//Function:	message (/msg, /w, /whisper)
 	//Input:	Player player: The player using the command
+    //			String[] args: Will contain the target player name and
+    //						   message the player sends
 	//Output:	int: Exit Code
 	//Use:		Send a message to a player
 	//=====================================================================
     public static int message(Player player, String[] args)
     {
-        String msg = etc.combineSplit(1, args, " ");
-        Player toPlayer = etc.getServer().matchPlayer(args[0]);
-        if (args.length < 1) {
-        	return EXIT_FAIL;
-        } else if (toPlayer != null) {
+        if (args.length > 1) {
+            String msg = etc.combineSplit(1, args, " ");
+            Player toPlayer = etc.getServer().matchPlayer(args[0]);
+            if (toPlayer != null && args.length > 0) {
         	//Send the message to the targeted player and the sender
 	        vMinecraftChat.sendMessage(player, toPlayer,
-	        		Colors.LightGreen + "[" + Colors.White + "From:"
-	        		+ vMinecraftChat.getName(player) + Colors.LightGreen + "] "
-	        		+ msg);
+	        		Colors.LightGreen + "[From:" + vMinecraftChat.getName(player)
+	        		+ Colors.LightGreen + "] " + msg);
 	        vMinecraftChat.sendMessage(player, player,
-	        		Colors.LightGreen + "[" + Colors.White + "To:"
-	        		+ vMinecraftChat.getName(toPlayer) + Colors.LightGreen + "] "
-	        		+ msg);
+	        		Colors.LightGreen + "[To:" + vMinecraftChat.getName(toPlayer)
+	        		+ Colors.LightGreen + "] " + msg);
             //Set the last massager for each player
             vMinecraftUsers.players.findProfile(player).setMessage(toPlayer);
             vMinecraftUsers.players.findProfile(toPlayer).setMessage(player);
+            
+            //Display the message to the log
+            log.log(Level.INFO, player.getName() + " whispered to " + toPlayer.getName()
+            		+ ": " + msg);
+            } else {
+            	vMinecraftChat.sendMessage(player, player, Colors.Rose
+            			+ "No player by the name of " + args[0] + " could be found.");
+            }
         } else {
-    		vMinecraftChat.sendMessage(player, player, Colors.Red
-    				+ "No player by the name of " + args[0] + " could be found.");
-    	}
+        	vMinecraftChat.sendMessage(player, player, Colors.Rose
+        			+ "Usage is /msg [player] [message]");
+        }
         return EXIT_SUCCESS;
     }
 
     //=====================================================================
 	//Function:	reply (/r, /reply)
 	//Input:	Player player: The player using the command
+    //			String[] args: Will contain the message the player sends
 	//Output:	int: Exit Code
 	//Use:		Send a message to a player
 	//=====================================================================
     public static int reply(Player player, String[] args)
     {
-    	Player toPlayer = vMinecraftUsers.players.findProfile(player).getMessage();
-    	if (toPlayer != null) {
-	        String msg = etc.combineSplit(1, args, " ");
-        	//Send the message to the targeted player and the sender
-	        vMinecraftChat.sendMessage(player, toPlayer,
-	        		Colors.LightGreen + "[" + Colors.White + "From:"
-	        		+ vMinecraftChat.getName(player) + Colors.LightGreen + "] " + msg);
-	        vMinecraftChat.sendMessage(player, player,
-	        		Colors.LightGreen + "[" + Colors.White + "To:"
-	        		+ vMinecraftChat.getName(toPlayer) + Colors.LightGreen + "] " + msg);
-	        
-	        //Set the last messager for each player
-	        vMinecraftUsers.players.findProfile(player).setMessage(toPlayer);
-	        vMinecraftUsers.players.findProfile(toPlayer).setMessage(player);
-    	} else {
-    		vMinecraftChat.sendMessage(player, player,
-    				Colors.Red + "That person is no longer logged in.");
+    	//If the profile exists for the player
+    	if(vMinecraftUsers.players.findProfile(player) != null )
+    	{
+        	Player toPlayer = vMinecraftUsers.players.findProfile(player).getMessage();
+        	if (toPlayer != null && args.length > 0) {
+    	        String msg = etc.combineSplit(0, args, " ");
+    	        
+            	//Send the message to the targeted player and the sender
+    	        vMinecraftChat.sendMessage(player, toPlayer,
+    	        		Colors.LightGreen + "[From:" + vMinecraftChat.getName(player)
+    	        		+ Colors.LightGreen + "] " + msg);
+    	        vMinecraftChat.sendMessage(player, player,
+    	        		Colors.LightGreen + "[To:" + vMinecraftChat.getName(toPlayer)
+    	        		+ Colors.LightGreen + "] " + msg);
+    	        
+    	        //Set the last messager for each player
+    	        vMinecraftUsers.players.findProfile(player).setMessage(toPlayer);
+    	        vMinecraftUsers.players.findProfile(toPlayer).setMessage(player);
+                
+                //Display the message to the log
+                log.log(Level.INFO, player.getName() + " whispered to " + toPlayer.getName()
+                		+ ": " + msg);
+        	} else {
+        		vMinecraftChat.sendMessage(player, player,
+        				Colors.Rose + "The person you last message has logged off");
+        	}
     	}
+    	return EXIT_SUCCESS;
+    }
+    
+    public static int addIgnored(Player player, String[] args)
+    {
     	return EXIT_SUCCESS;
     }
     
 	//=====================================================================
 	//Function:	adminChatToggle (/a)
 	//Input:	Player player: The player using the command
+    //			String[] args: Ignored
 	//Output:	int: Exit Code
 	//Use:		Toggles the player into admin chat. Every message they
         //              send will be piped to admin chat.
@@ -605,19 +663,6 @@ public class vMinecraftCommands{
 		//if(cur)
 		return EXIT_SUCCESS;
 	}
-
-	//=====================================================================
-	//Function:	privateMessage(/msg)
-	//Input:	long time: The time to reverse to.
-	//Output:	int: Exit Code
-	//Use:		List all invulnerable players
-	//=====================================================================
-	public static int privateMessage(Player player, String[] message)
-	{
-		long curTime = etc.getServer().getRelativeTime();
-		//if(cur)
-		return EXIT_SUCCESS;
-	}
 }
 
 //=====================================================================
@@ -626,11 +671,11 @@ public class vMinecraftCommands{
 //Author:	cerevisiae
 //=====================================================================
 class commandList {
-	command[] commands;
-  protected static final Logger log = Logger.getLogger("Minecraft");
-  static final int EXIT_FAIL = 0,
-				   EXIT_SUCCESS = 1,
-				   EXIT_CONTINUE = 2;
+	ArrayList<command> commands;
+	protected static final Logger log = Logger.getLogger("Minecraft");
+	static final int EXIT_FAIL = 0,
+					 EXIT_SUCCESS = 1,
+					 EXIT_CONTINUE = 2;
   
 	//=====================================================================
 	//Function:	commandList
@@ -639,7 +684,7 @@ class commandList {
 	//Use:		Initialize the array of commands
 	//=====================================================================
 	public commandList(){
-		commands = new command[0];
+		commands = new ArrayList<command>();
 	}
 
 	//=====================================================================
@@ -649,28 +694,15 @@ class commandList {
 	//Output:	boolean: Whether the command was input successfully or not
 	//Use:		Registers a command to the command list for checking later
 	//=====================================================================
-	public boolean register(String name, String func){
-		
-		//If the command list isn't empty
-		if(commands.length > 0)
-		{
-			//Check to make sure the command doesn't already exist
-			for(int i = 0; i < commands.length; i++)
-				if(commands[i].getName().equalsIgnoreCase(name))
-					return false;
-			
-			//Create a new temp array
-			command[] temp = new command[commands.length + 1];
-			//Copy the old command list over
-			System.arraycopy(commands, 0, temp, 0, commands.length);
-			//Set commands to equal the new array
-			commands = temp;
-		} else {
-			commands = new command[1];
-		}
+	public boolean register(String name, String func)
+	{
+		//Check to make sure the command doesn't already exist
+		for(command temp : commands)
+			if(temp.getName().equalsIgnoreCase(name))
+				return false;
 
 		//Add the new function to the list
-		commands[commands.length - 1] = new command(name, func);
+		commands.add(new command(name, func));
 		
 		//exit successfully
 		return true;
@@ -699,62 +731,37 @@ class commandList {
 	//Output:	boolean: Whether the command was input successfully or not
 	//Use:		Registers a command to the command list for checking later
 	//=====================================================================
-	public boolean registerAlias(String name, String com, String[] args){
-		
-		//If the command list isn't empty
-		if(commands.length > 0)
-		{
-			//Check to make sure the command doesn't already exist
-			for(int i = 0; i < commands.length; i++)
-				if(commands[i].getName().equalsIgnoreCase(name))
-					return false;
-			
-			//Create a new temp array
-			command[] temp = new command[commands.length + 1];
-			//Copy the old command list over
-			System.arraycopy(commands, 0, temp, 0, commands.length);
-			//Set commands to equal the new array
-			commands = temp;
-		} else {
-			commands = new command[1];
-		}
+	public boolean registerAlias(String name, String com)
+	{
+		//Check to make sure the command doesn't already exist
+		for(command temp : commands)
+			if(temp.getName().equalsIgnoreCase(name))
+				return false;
 
 		//Add the new function to the list
-		commands[commands.length - 1] = new commandRef(name, com, args);
+		commands.add(new commandRef(name, com));
 		
 		//exit successfully
 		return true;
 	}
 	
 	//=====================================================================
-	//Function:	register
+	//Function:	registerMessage
 	//Input:	String name: The name of the command
-	//			String func: The function to be called
+	//			String msg: The message to be displayed
+	//			boolean admin: If the message is displayed to admins only
 	//Output:	boolean: Whether the command was input successfully or not
 	//Use:		Registers a command to the command list for checking later
 	//=====================================================================
-	public boolean registerAlias(String name, String com){
-		
-		//If the command list isn't empty
-		if(commands.length > 0)
-		{
-			//Check to make sure the command doesn't already exist
-			for(int i = 0; i < commands.length; i++)
-				if(commands[i].getName().equalsIgnoreCase(name))
-					return false;
-			
-			//Create a new temp array
-			command[] temp = new command[commands.length + 1];
-			//Copy the old command list over
-			System.arraycopy(commands, 0, temp, 0, commands.length);
-			//Set commands to equal the new array
-			commands = temp;
-		} else {
-			commands = new command[1];
-		}
-		
+	public boolean registerMessage(String name, String msg, String clr, int args, boolean admin)
+	{
+		//Check to make sure the command doesn't already exist
+		for(command temp : commands)
+			if(temp.getName().equalsIgnoreCase(name))
+				return false;
+
 		//Add the new function to the list
-		commands[commands.length - 1] = new commandRef(name, com);
+		commands.add(new commandAnnounce(name, msg, clr, args, admin));
 		
 		//exit successfully
 		return true;
@@ -869,27 +876,19 @@ class commandList {
 		//Function:	command
 		//Input:	String name: The command name
 		//			String com: The command to run
-		//			String[] arg: the arguments to apply
-		//Output:	None
-		//Use:		Initialize the command
-		//=====================================================================
-		public commandRef(String name, String com, String[] arg){
-			super(name, "");
-			reference = com;
-			args = arg;
-		}
-
-		//=====================================================================
-		//Function:	command
-		//Input:	String name: The command name
-		//			String com: The command to run
 		//Output:	None
 		//Use:		Initialize the command
 		//=====================================================================
 		public commandRef(String name, String com){
 			super(name, "");
-			reference = com;
-			args = null;
+			
+			//Get the reference name
+			String[]temp = com.split(" ");
+			reference = temp[0];
+			
+			//Get the arguments
+			args = new String[temp.length - 1];
+			System.arraycopy(temp, 1, args, 0, temp.length - 1);
 		}
 
 
@@ -901,15 +900,18 @@ class commandList {
 		//=====================================================================
 		int call(Player player, String[] arg)
 		{
-			if(args != null) {
-				String[] temp = new String[args.length];
+			String[] temp = new String[0];
+			int lastSet = 0,
+			argCount = 0;
+			
+			//If there are args set with the function
+			if(args != null && args.length > 0) {
+				temp = new String[args.length];
 				System.arraycopy(args, 0, temp, 0, args.length);
 				//Insert the arguments into the pre-set arguments
-				int lastSet = 0,
-					argCount = 0;
 				for(String argument : temp)
 				{
-					if(argument.startsWith("%"))
+					if(argument.startsWith("%") && argument.length() > 1)
 					{
 						int argNum = Integer.parseInt(argument.substring(1));
 						if( argNum < arg.length )
@@ -920,6 +922,10 @@ class commandList {
 					}
 					lastSet++;
 				}
+			}
+			
+			//If there are args being input
+			if(arg.length > 0) {
 				//Append the rest of the arguments to the argument array
 				if(lastSet < temp.length + arg.length - argCount)
 				{
@@ -930,11 +936,111 @@ class commandList {
 					temp = temp2;
 				}
 				
+				log.log(Level.INFO, reference + " " + etc.combineSplit(0, temp, " "));
 			//Call the referenced command
 				player.command(reference + " " + etc.combineSplit(0, temp, " "));
 			} else
 				player.command(reference);
 			return EXIT_SUCCESS;
+		}
+	}
+	
+	//=====================================================================
+	//Class:	commandAnnounce
+	//Use:		Announces when a command is used
+	//Author:	cerevisiae
+	//=====================================================================
+	private class commandAnnounce extends command
+	{
+		private String message;
+		private boolean admin;
+		private int minArgs;
+		private String color;
+
+		//=====================================================================
+		//Function:	commandAnnounce
+		//Input:	String name: The command name
+		//			String msg: The message to announce
+		//Output:	None
+		//Use:		Initialize the command
+		//=====================================================================
+		public commandAnnounce(String name, String msg, String clr, int args, boolean admn){
+			super(name, "");
+			message = msg;
+			admin = admn;
+			minArgs = args;
+			color = clr;
+		}
+
+
+		//=====================================================================
+		//Function:	call
+		//Input:	String[] arg: The arguments for the command
+		//Output:	boolean: If the command was called successfully
+		//Use:		Attempts to call the command
+		//=====================================================================
+		int call(Player player, String[] arg)
+		{
+			//Make sure the player can use the command first
+			if(!player.canUseCommand(super.commandName))
+				return EXIT_FAIL;
+			
+			//Make sure the command is long enough to fire
+			if(minArgs < arg.length)
+				return EXIT_FAIL;
+			
+			if(vMinecraftSettings.getInstance().globalmessages())
+			{
+				//Split up the message
+				String[] temp = message.split(" ");
+				
+				//Insert the arguments into the message
+				int i = 0;
+				for(String argument : temp)
+				{
+					if(argument.startsWith("%") && argument.length() > 1)
+					{
+						char position = argument.charAt(1);
+						//Replace %p with the player name
+						if(position == 'p')
+							temp[i] = vMinecraftChat.getName(player) + color;
+						else if( Character.isDigit(position) && Character.getNumericValue(position) < arg.length )
+						{
+							//If the argument is specified to be a player insert it if the
+							//player is found or exit if they aren't
+							if(argument.length() > 2 && argument.charAt(2) == 'p')
+							{
+								Player targetName = etc.getServer().matchPlayer(arg[Character.getNumericValue(position)]);
+								if(targetName != null)
+									temp[i] = vMinecraftChat.getName(targetName) + color;
+								else
+									return EXIT_FAIL;
+							}
+							//Replace %# with the argument at position #
+							else
+								temp[i] = arg[Character.getNumericValue(position)];
+						}
+					}
+					i++;
+				}
+				message = etc.combineSplit(0, temp, " ");
+				
+				//If it's an admin message only
+				if(admin)
+				{
+					for (Player p: etc.getServer().getPlayerList()) {
+						//If p is not null
+						if (p != null) {
+							//And if p is an admin or has access to adminchat send message
+							if (p.isAdmin()) {
+								vMinecraftChat.sendMessage(player, p, color + message);
+							}
+						}
+					}
+				} else
+					vMinecraftChat.gmsg(player, message);
+			}
+			return EXIT_FAIL;
 		}
 	}
 }

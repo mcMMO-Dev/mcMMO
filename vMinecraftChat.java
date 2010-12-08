@@ -149,7 +149,7 @@ public class vMinecraftChat {
 			return 4;
 		else if("fk{}<>\"*()".indexOf(x) != -1)
 			return 5;
-		else if("abcdeghjmnopqrsuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890\\/#?$%-=_+&^".indexOf(x) != -1)
+		else if("abcdeghjmnopqrsuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890\\/#?$%-=_+&".indexOf(x) != -1)
 			return 6;
 		else if("@~".indexOf(x) != -1)
 			return 7;
@@ -311,7 +311,7 @@ public class vMinecraftChat {
 		{
 			//Special formatting for adminchat {Username}
 	        String adminchat = Colors.DarkPurple + "{" + getName(player)
-	        +  Colors.DarkPurple +"}" + Colors.White + " ";
+	        +  Colors.DarkPurple +"} ";
 	        
 	        //Cut off the @ prefix
 	        if(message.startsWith("@"))
@@ -352,7 +352,7 @@ public class vMinecraftChat {
 				+ Colors.White + "> ";
 		if(vMinecraftSettings.getInstance().greentext()) {
 			//Log the chat
-			log.log(Level.INFO, "<"+player.getName()+"> " +message);
+			log.log(Level.INFO, "<"+player.getName()+"> " + message);
 
 			//Output the message
 			gmsg(player, playerName + Colors.LightGreen + message);
