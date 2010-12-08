@@ -84,11 +84,11 @@ public class vMinecraftCommands{
 	        vMinecraftChat.sendMessage(player, toPlayer,
 	        		Colors.LightGreen + "[" + Colors.White + "From:"
 	        		+ vMinecraftChat.getName(player) + Colors.LightGreen + "] "
-	        		+ Colors.White + msg);
+	        		+ msg);
 	        vMinecraftChat.sendMessage(player, player,
 	        		Colors.LightGreen + "[" + Colors.White + "To:"
 	        		+ vMinecraftChat.getName(toPlayer) + Colors.LightGreen + "] "
-	        		+ Colors.White + msg);
+	        		+ msg);
             //Set the last massager for each player
             vMinecraftUsers.players.findProfile(player).setMessage(toPlayer);
             vMinecraftUsers.players.findProfile(toPlayer).setMessage(player);
