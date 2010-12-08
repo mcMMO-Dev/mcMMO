@@ -4,7 +4,7 @@
 //			run
 //Author:	nossr50, TrapAlice, cerevisiae
 //=====================================================================
-public class vMinecraftAnnouncements {
+public class vMinecraftAnnouncements extends vMinecraftCommands{
 
 	//=====================================================================
 	//Function:	onCommand
@@ -46,6 +46,12 @@ public class vMinecraftAnnouncements {
 					vMinecraftChat.gmsg(player, Colors.Blue+"Time changes thanks to "+player.getColor()+player.getName());
 				}
 			}
+                        if(split[0].equalsIgnoreCase("/tp")){
+                            if (player.canUseCommand("/tp")){
+                                if(etc.getServer().getPlayer(split[1]) != null)
+                                vMinecraftChat.gmsg(player, player.getName() + Colors.Blue+" has teleported to " + etc.getServer().getPlayer(split[1]).getName());
+                            }
+                        }
 		}
 	    
 		return true;
