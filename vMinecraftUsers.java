@@ -11,7 +11,7 @@ public class vMinecraftUsers {
     private PropertiesFile properties;
     String location = "vminecraftusers.txt";
     
-    ArrayList<PlayerList> players = new ArrayList<PlayerList>();
+    public static PlayerList players = new PlayerList();
     
     
     public void loadUsers(){
@@ -143,11 +143,11 @@ class PlayerList
 	//Output:	PlayerProfile: The profile of the specified player
 	//Use:		Get the profile for the specified player
 	//=====================================================================
-	private PlayerProfile findProfile(Player player)
+	public PlayerProfile findProfile(Player player)
 	{
 		for(PlayerProfile ply : players)
 		{
-			if(ply.getPlayer().equals(player))
+			if(ply.isPlayer(player))
 				return ply;
 		}
 		return null;
@@ -161,10 +161,11 @@ class PlayerList
 	class PlayerProfile
 	{
 	    protected final Logger log = Logger.getLogger("Minecraft");
-		private Player playerName;
-		private String nickName;
-		private String tag;
-                private String suffix;
+		private String playerName,
+					   lastMessage,
+					   nickName,
+					   tag,
+					   suffix;
 		private ArrayList<Player> ignoreList;
 		private commandList aliasList;
 		
@@ -181,13 +182,14 @@ class PlayerList
 		//=====================================================================
 		public PlayerProfile(Player player)
 		{
-                        //Declare things
-			ignoreList = new ArrayList<Player>();
-            aliasList = new commandList();
+            //Declare things
             nickName = new String();
             tag = new String();
             suffix = new String();
+			ignoreList = new ArrayList<Player>();
+            aliasList = new commandList();
             String location = "vminecraftusers.txt";
+            
             //Try to apply what we can
             try {
                 Scanner scanner = new Scanner(new File(location));
@@ -197,43 +199,55 @@ class PlayerList
 	                    continue;
 	                }
 	                String[] split = line.split(":");
-	                if (!split[0].equalsIgnoreCase(player.getName())) {
-	                    continue;
-	                }
-	                nickName = (split[1].split(",").toString());
-	
-	                if (split.length >= 4) {
-	                    tag = (split[3]);
-	                }
-	                
-	                //Add all the ignored people to the player's ignore list
-	                if (split.length >= 5) {
-	                	for(String name : split[4].split(","))
-	                		ignoreList.add(etc.getServer().getPlayer(name));
-	                }
-	                if (split.length >= 6) {
-	                	//Loop through all the aliases
-	                	for(String alias : split[5].split(","))
-	                	{
-	                		//Break apart the two parts of the alias
-	                		String[] parts = alias.split("@");
-	                		if(parts.length > 1)
-	                		{
-	                			//Get the arguments for the alias if there are any
-	                			String[] command = parts[1].split(" ");
-	                			String[] args = null;
-	                			if(command.length > 1)
-	                				System.arraycopy(command, 1, args, 0, command.length - 2);
-	                			
-	                			//Register the alias to the player's aliasList
-	                			aliasList.registerAlias(parts[0], command[0], args);
-	                		}
-	                	}
+	                    
+	                //If the player name is equal to the name in the list
+	                if (split.length > 0 && split[0].equalsIgnoreCase(player.getName())) {
+	                	
+		                //Get the tag from the 1st split
+		                nickName = (split[1].split(",").toString());
+
+		                //Get the tag from the 2nd split
+		                suffix = split[2];
+		
+		                //Get the tag from the 3rd split
+		                if (split.length >= 4) {
+		                    tag = (split[3]);
+		                }
+		                
+		                //Add all the ignored people to the player's ignore list
+		                if (split.length >= 5) {
+		                	for(String name : split[4].split(","))
+		                		ignoreList.add(etc.getServer().getPlayer(name));
+		                }
+		                
+		                //Get the alias list, from the 5th split
+		                if (split.length >= 6) {
+		                	//Loop through all the aliases
+		                	for(String alias : split[5].split(","))
+		                	{
+		                		//Break apart the two parts of the alias
+		                		String[] parts = alias.split("@");
+		                		if(parts.length > 1)
+		                		{
+		                			//Get the arguments for the alias if there are any
+		                			String[] command = parts[1].split(" ");
+		                			String[] args = null;
+		                			if(command.length > 1)
+		                				System.arraycopy(command, 1, args,
+		                						0, command.length - 2);
+		                			
+		                			//Register the alias to the player's aliasList
+		                			aliasList.registerAlias(parts[0], command[0], args);
+		                		}
+		                	}
+		                }
+		                break;
 	                }
 	            }
 	            scanner.close();
 	        } catch (Exception e) {
-	            log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
+	            log.log(Level.SEVERE, "Exception while reading "
+	            		+ location + " (Are you sure you formatted it correctly?)", e);
 	        }
 		}
 		
@@ -255,7 +269,7 @@ class PlayerList
 	                    continue;
 	                }
 	                String[] split = line.split(":");
-	                if (!split[0].equalsIgnoreCase(playerName.toString())) {
+	                if (!split[0].equalsIgnoreCase(playerName)) {
 	                    continue;
 	                }
 	                bw.write(playerName + ":" + nickName + ":" + suffix + ":" + tag + ":" + ignoreList + ":" + aliasList);
@@ -267,14 +281,16 @@ class PlayerList
 	        }
 		}
 
-
 		//=====================================================================
-		//Function:	getPlayer
+		//Function:	isPlayer
 		//Input:	None
 		//Output:	Player: The player this profile belongs to
-		//Use:		Finds if the specified player is in the ignore list
+		//Use:		Finds if this profile belongs to a specified player
 		//=====================================================================
-		public Player getPlayer(){return playerName;}
+		public boolean isPlayer(Player player)
+		{
+			return player.getName().equals(playerName);
+		}
 
 		//=====================================================================
 		//Function:	isIgnored
@@ -369,6 +385,28 @@ class PlayerList
 		//Use:		Gets a player tag
 		//=====================================================================
 		public String getTag() { return tag; }
+
+		//=====================================================================
+		//Function:	setMessage
+		//Input:	String newName: The name of the player they last messaged
+		//			or recieved a message from.
+		//Output:	None
+		//Use:		Sets a player tag
+		//=====================================================================
+		public void setMessage(Player newName){ lastMessage = newName.getName(); }
+
+		//=====================================================================
+		//Function:	getMessage
+		//Input:	None
+		//Output:	String: The player name
+		//Use:		Gets the name of the player they last messaged or recieved
+		//			a message from.
+		//=====================================================================
+		public Player getMessage()
+		{
+			
+			return etc.getServer().matchPlayer(lastMessage);
+		}
 	}
 }
 

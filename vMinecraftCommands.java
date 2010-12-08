@@ -44,10 +44,15 @@ public class vMinecraftCommands{
         cl.register("/a", "adminChatToggle", "toggle admin chat for every message");
         cl.register("/modify", "modifySplit");
         cl.register("/me", "me");
+        cl.register("/msg", "message");
+        cl.register("/reply", "reply");
         cl.registerAlias("/playerlist", "/who");
+        cl.registerAlias("/r", "/reply");
+        cl.registerAlias("/w", "/msg");
         cl.registerAlias("/wrists", "/suicide");
         cl.registerAlias("/ci", "/clearinventory");
     }
+
     //=====================================================================
 	//Function:	me (/me)
 	//Input:	Player player: The player using the command
@@ -60,6 +65,65 @@ public class vMinecraftCommands{
         if (args.length < 1) {return EXIT_FAIL;}
         vMinecraftChat.emote(player, str);
         return EXIT_SUCCESS;
+    }
+
+    //=====================================================================
+	//Function:	message (/msg, /w, /whisper)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		Send a message to a player
+	//=====================================================================
+    public static int message(Player player, String[] args)
+    {
+        String msg = etc.combineSplit(1, args, " ");
+        Player toPlayer = etc.getServer().matchPlayer(args[0]);
+        if (args.length < 1) {
+        	return EXIT_FAIL;
+        } else if (toPlayer != null) {
+        	//Send the message to the targeted player and the sender
+	        vMinecraftChat.sendMessage(player, toPlayer,
+	        		Colors.LightGreen + "[" + Colors.White + "From:"
+	        		+ vMinecraftChat.getName(player) + Colors.LightGreen + "]" + msg);
+	        vMinecraftChat.sendMessage(player, player,
+	        		Colors.LightGreen + "[" + Colors.White + "To:"
+	        		+ vMinecraftChat.getName(toPlayer) + Colors.LightGreen + "]" + msg);
+            //Set the last massager for each player
+            vMinecraftUsers.players.findProfile(player).setMessage(toPlayer);
+            vMinecraftUsers.players.findProfile(toPlayer).setMessage(player);
+        } else {
+    		vMinecraftChat.sendMessage(player, player, Colors.Red
+    				+ "No player by the name of " + args[0] + " could be found.");
+    	}
+        return EXIT_SUCCESS;
+    }
+
+    //=====================================================================
+	//Function:	reply (/r, /reply)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		Send a message to a player
+	//=====================================================================
+    public static int reply(Player player, String[] args)
+    {
+    	Player toPlayer = vMinecraftUsers.players.findProfile(player).getMessage();
+    	if (toPlayer != null) {
+	        String msg = etc.combineSplit(1, args, " ");
+        	//Send the message to the targeted player and the sender
+	        vMinecraftChat.sendMessage(player, toPlayer,
+	        		Colors.LightGreen + "[" + Colors.White + "From:"
+	        		+ vMinecraftChat.getName(player) + Colors.LightGreen + "] " + msg);
+	        vMinecraftChat.sendMessage(player, player,
+	        		Colors.LightGreen + "[" + Colors.White + "To:"
+	        		+ vMinecraftChat.getName(toPlayer) + Colors.LightGreen + "] " + msg);
+	        
+	        //Set the last messager for each player
+	        vMinecraftUsers.players.findProfile(player).setMessage(toPlayer);
+	        vMinecraftUsers.players.findProfile(toPlayer).setMessage(player);
+    	} else {
+    		vMinecraftChat.sendMessage(player, player,
+    				Colors.Red + "That person is no longer logged in.");
+    	}
+    	return EXIT_SUCCESS;
     }
     
 	//=====================================================================
@@ -522,7 +586,7 @@ public class vMinecraftCommands{
 	{
 		//Exploit fix for people giving themselves commands
 		if(args[1].equals("commands"))
-			return EXIT_FAIL;
+			return EXIT_SUCCESS;
 		return EXIT_CONTINUE;
 	}
 
