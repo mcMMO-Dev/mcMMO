@@ -585,8 +585,9 @@ public class vMinecraftCommands{
 	public static int modifySplit(Player player, String[] args)
 	{
 		//Exploit fix for people giving themselves commands
-		if(args[1].equals("commands"))
-			return EXIT_SUCCESS;
+		if(args[2].equals("commands")){
+			return EXIT_FAIL;
+                }
 		return EXIT_CONTINUE;
 	}
 
