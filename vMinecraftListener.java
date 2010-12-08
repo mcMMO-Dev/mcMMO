@@ -1,5 +1,6 @@
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Set;
 //=====================================================================
 //Class:	vMinecraftListener
 //Use:		The listener to catch incoming chat and commands
@@ -93,7 +94,17 @@ public class vMinecraftListener extends PluginListener {
     
     public boolean onIgnite(Block block, Player player) {
         if(vMinecraftSettings.stopFire){
-            if (vMinecraftSettings.fireNoSpread.contains(block)){
+            int x = block.getX();
+            int y = block.getY();
+            int z = block.getZ();
+            if (vMinecraftSettings.fireNoSpread.contains(etc.getServer().getBlockIdAt(x + 1, y, z))
+                    || vMinecraftSettings.fireNoSpread.contains(etc.getServer().getBlockIdAt(x - 1, y, z))
+                    || vMinecraftSettings.fireNoSpread.contains(etc.getServer().getBlockIdAt(x, y + 1, z))
+                    || vMinecraftSettings.fireNoSpread.contains(etc.getServer().getBlockIdAt(x, y - 1, z))
+                    || vMinecraftSettings.fireNoSpread.contains(etc.getServer().getBlockIdAt(x, y, z + 1))
+                    || vMinecraftSettings.fireNoSpread.contains(etc.getServer().getBlockIdAt(x, y, z - 1))
+                    || vMinecraftSettings.fireNoSpread.contains(etc.getServer().getBlockIdAt(x + 1, y + 1, z + 1))
+                    || vMinecraftSettings.fireNoSpread.contains(etc.getServer().getBlockIdAt(x - 1, y - 1, z - 1))) {
                 return true;
             }
         }

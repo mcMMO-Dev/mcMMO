@@ -20,8 +20,8 @@ public class vMinecraftAnnouncements extends vMinecraftCommands{
 			return false;
 		}
 		//Only run if the global message feature is enabled
-		if(vMinecraftSettings.getInstance().globalmessages())
-		{
+		//if(vMinecraftSettings.getInstance().globalmessages())
+		//{
 			//Global messages that should only parse when a command can be successful
 			if(split[0].equalsIgnoreCase("/kick")) {
 				Player playerTarget = etc.getServer().matchPlayer(split[1]);
@@ -52,7 +52,7 @@ public class vMinecraftAnnouncements extends vMinecraftCommands{
                                 vMinecraftChat.gmsg(player, player.getName() + Colors.Blue+" has teleported to " + etc.getServer().getPlayer(split[1]).getName());
                             }
                         }
-		}
+		//}
 	    
 		return true;
 	}

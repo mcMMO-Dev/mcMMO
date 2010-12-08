@@ -29,6 +29,7 @@ public class vMinecraftCommands{
     public static void loadCommands(){
 		//If we had commands we would add them here.
         cl.register("/tp", "teleport");
+        cl.register("/colors", "colors");
         cl.register("/masstp", "masstp", "Teleports those with lower permissions to you");
         cl.register("/reload", "reload");
         cl.register("/rules", "rules", "Displays the rules");
@@ -52,7 +53,18 @@ public class vMinecraftCommands{
         cl.registerAlias("/wrists", "/suicide");
         cl.registerAlias("/ci", "/clearinventory");
     }
-
+    
+    //=====================================================================
+	//Function:	colors (/colors)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		Displays a list of all colors and color codes
+	//=====================================================================
+    public static int colors(Player player, String[] args){
+        vMinecraftChat.sendMessage(player, player, Colors.Black + "0" + Colors.Navy + "1" + Colors.Green+ "2" + Colors.Blue + "3" + Colors.Red + "4" + Colors.Purple + "5" + Colors.Gold + "6" + Colors.LightGray + "7" + Colors.Gray + "8" + Colors.DarkPurple + "9" + Colors.LightGreen + "a" + Colors.LightBlue + "b" + Colors.Rose + "c" + Colors.LightPurple + "d" + Colors.White + "f");
+        return EXIT_SUCCESS;
+    }
+    
     //=====================================================================
 	//Function:	me (/me)
 	//Input:	Player player: The player using the command
