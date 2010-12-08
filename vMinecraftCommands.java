@@ -30,7 +30,7 @@ public class vMinecraftCommands{
 		//If we had commands we would add them here.
         cl.register("/tp", "teleport");
         cl.register("/vminecraft", "vminecrafthelp");
-        cl.register("/vhelp", "vminecrafthelp");
+        cl.registerAlias("/vhelp", "/vminecraft");
         cl.register("/colors", "colors");
         cl.register("/masstp", "masstp", "Teleports those with lower permissions to you");
         cl.register("/reload", "reload");
