@@ -40,6 +40,8 @@ public class vMinecraftSettings {
 	static ArrayList<String> ezModo = new ArrayList<String>();
         //An array of players currently toggled for admin chat
         static ArrayList<String> adminChatList = new ArrayList<String>();
+        //An array of blocks that won't catch on fire
+        static ArrayList<String> fireNoSpread = new ArrayList<String>();
 
 	
 	private PropertiesFile properties;
@@ -88,6 +90,8 @@ public class vMinecraftSettings {
 				writer.write("#The health ezmodo people will have while in ezmodo. Don't set to 0\r\n");
 				writer.write("ezHealth=30\r\n");
 				writer.write("stopFire=false\r\n");
+                                writer.write("#Flame Immune blocks will never have fire spread to them, seperate with comma. Needs stopFire to be true\r\n");
+                                writer.write("fireNoSpread=5,17,18");
 				writer.write("stopTnt=false\r\n");
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
 				writer.write("#Death messages, seperate them by comma. All death messages start with the player name and a space.\r\n");
@@ -137,7 +141,7 @@ public class vMinecraftSettings {
 			stopTnt = properties.getBoolean("stopTNT",true);
 			rules = properties.getString("rules", "").split("@");
 			deathMessages = properties.getString("deathmessages", "").split(",");
-			
+                        fireNoSpread.add(properties.getString("fireNoSpread", "").split(",").toString());
 			String[] tempEz = properties.getString("ezModo").split(",");
 			ezModo = new ArrayList<String>();
 			for(String ezName : tempEz)
