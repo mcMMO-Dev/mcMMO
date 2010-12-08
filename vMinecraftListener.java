@@ -90,6 +90,7 @@ public class vMinecraftListener extends PluginListener {
     public void onLogin(Player player){
         vMinecraftUsers.addUser(player);
     }
+    
     public boolean onIgnite(Block block, Player player) {
         if(vMinecraftSettings.stopFire){
             if (vMinecraftSettings.fireNoSpread.contains(block)){

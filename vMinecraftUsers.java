@@ -64,29 +64,11 @@ public class vMinecraftUsers {
         }
         return false;
     }
+        
     public static void addUser(Player player){
-        FileWriter writer = null;
-        String location = "vminecraftusers.txt";
-        String playerName = player.getName();
-        if (!vMinecraftUsers.getInstance().doesPlayerExist(playerName)){ //Check to see if the player exists before writing
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(location, true));
-            bw.append(player.getName()+":::::\r");
-            bw.newLine();
-            bw.close();
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while trying to add user with BufferedWriter to " + location, e);
-		} finally {
-			try {
-				if (writer != null) {
-					writer.close();
-				}
-			} catch (IOException e) {
-				log.log(Level.SEVERE, "Exception while closing BufferedWriter to " + location, e);
-			}
-		}
+    	players.addPlayer(player);
     }
-    }
+    
     public static vMinecraftUsers getInstance() {
 		if (instance == null) {
 			instance = new vMinecraftUsers();
