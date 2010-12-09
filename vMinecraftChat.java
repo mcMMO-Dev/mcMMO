@@ -65,7 +65,7 @@ public class vMinecraftChat {
     	//Split each word apart
     	ArrayList<String> split = new ArrayList<String>();
     	for(String in : msg.split(" "))
-    		split.add(in);
+			split.add(in);
     	
     	//Create an arraylist for the output
     	ArrayList<String> out = new ArrayList<String>();
@@ -86,7 +86,7 @@ public class vMinecraftChat {
     			if(wordLength > lineLength)
     			{
         			String[] tempArray = wordCut(len, split.remove(0));
-        			words.add(tempArray[0]);
+    				words.add(tempArray[0]);
         			split.add(tempArray[1]);
     			}
 
@@ -97,7 +97,7 @@ public class vMinecraftChat {
     		}
     		//Merge them and add them to the output array.
     		out.add( etc.combineSplit(0,
-    				words.toArray(new String[out.size()]), " ") );
+    				words.toArray(new String[words.size()]), " ") + " " );
     	}
     	//Convert to an array and return
     	return out.toArray(new String[out.size()]);
@@ -141,8 +141,12 @@ public class vMinecraftChat {
 			int len = charLength(str.charAt(x));
 			if( len > 0)
 				length += len;
+			else
+				x++;
 			x++;
 		}
+		if(x > str.length())
+			x = str.length();
 		//Add the substring to the output after cutting it
 		output[0] = str.substring(0, x);
 		//Add the last of the string to the output.
@@ -166,7 +170,7 @@ public class vMinecraftChat {
 			return 4;
 		else if("fk{}<>\"*()".indexOf(x) != -1)
 			return 5;
-		else if("abcdeghjmnopqrsuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890\\/#?$%-=_+&".indexOf(x) != -1)
+		else if("abcdeghjmnopqrsuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890\\/#?$%-=_+&^".indexOf(x) != -1)
 			return 6;
 		else if("@~".indexOf(x) != -1)
 			return 7;
