@@ -71,8 +71,10 @@ public class vMinecraftCommands{
         cl.registerAlias("/playerlist", "/who");
         cl.registerAlias("/vhelp", "/vminecraft");
         cl.registerAlias("/r", "/reply");
-        cl.registerAlias("/w", "/msg");
+        cl.registerAlias("/t", "/msg");
+        cl.registerAlias("/tell", "/msg");
         cl.registerAlias("/wrists", "/suicide");
+        cl.registerAlias("/kill", "/suicide");
         cl.registerAlias("/ci", "/clearinventory");
         
         //registerMessage
@@ -328,6 +330,10 @@ public class vMinecraftCommands{
 	//=====================================================================
     public static int adminChatToggle(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/a")) {
+			return EXIT_FAIL;
+		}
 	    if(vMinecraftSettings.getInstance().adminChatToggle())
 	    {
 			//If the player is already toggled for admin chat, remove them
@@ -353,6 +359,10 @@ public class vMinecraftCommands{
 	//=====================================================================
     public static int heal(Player player, String[] args)
     {
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/heal")) {
+			return EXIT_FAIL;
+		}
         if(vMinecraftSettings.getInstance().cmdHeal())
         {
         	//If a target wasn't specified, heal the user.
@@ -387,6 +397,10 @@ public class vMinecraftCommands{
 	//=====================================================================
     public static int suicide(Player player, String[] args)
     {
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/suicide")) {
+			return EXIT_FAIL;
+		}
         if(vMinecraftSettings.getInstance().cmdSuicide())
         {
         	//Set your health to 0. Not much to it.
@@ -406,6 +420,10 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int teleport(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/tp")) {
+			return EXIT_FAIL;
+		}
 		//Get if the command is enabled
 		if(vMinecraftSettings.getInstance().cmdTp())
 		{
@@ -453,6 +471,10 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int masstp(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/masstp")) {
+			return EXIT_FAIL;
+		}
 		//If the command is enabled
 		if(vMinecraftSettings.getInstance().cmdMasstp()) {
 			//Go through all players and move them to the user
@@ -479,6 +501,10 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int tphere(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/tphere")) {
+			return EXIT_FAIL;
+		}
 		//Check if the command is enabled.
 		if (vMinecraftSettings.getInstance().cmdTphere()) {
 			//Make sure a player is specified
@@ -517,6 +543,10 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int reload(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/reload")) {
+			return EXIT_FAIL;
+		}
 		vMinecraftSettings.getInstance().loadSettings();
 		return EXIT_FAIL;
 	}
@@ -591,6 +621,10 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int whois(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/whois")) {
+			return EXIT_FAIL;
+		}
 		//If the command is enabled
 		if (vMinecraftSettings.getInstance().cmdWhoIs()) {
 			//If a player is specified
@@ -679,6 +713,10 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int say(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/say")) {
+			return EXIT_FAIL;
+		}
 		//If the command is enabled
 		if (vMinecraftSettings.getInstance().cmdSay()) {   
 			//Make sure a message is supplied or output an error
@@ -701,6 +739,10 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int slay(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/slay")) {
+			return EXIT_FAIL;
+		}
 		//Check if the command is enabled
 		if(vMinecraftSettings.getInstance().cmdEzModo()) {
 			//Get the player by name
@@ -732,6 +774,10 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int invuln(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/ezmodo")) {
+			return EXIT_FAIL;
+		}
 		//If the command is enabled
 		if (vMinecraftSettings.getInstance().cmdEzModo()) {
 			//If the player is already invulnerable, turn ezmodo off.
@@ -760,6 +806,10 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int ezlist(Player player, String[] args)
 	{
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/ezmodo")) {
+			return EXIT_FAIL;
+		}
 		//If the feature is enabled list the players
         if(vMinecraftSettings.getInstance().cmdEzModo()) {
             player.sendMessage("Ezmodo: " + vMinecraftSettings.getInstance().ezModoList());
@@ -907,10 +957,6 @@ class commandList {
 	//Use:		Attempts to call a command
 	//=====================================================================
 	public int call(String name, Player player, String[] arg){
-		//Make sure the user has access to the command
-		if(!player.canUseCommand(name)) {
-			return EXIT_FAIL;
-		}
 		//Search for the command
 		for(command cmd : commands)
 		{

@@ -282,8 +282,6 @@ class PlayerList
 		//Use:		Finds if the specified player is in the ignore list
 		//=====================================================================
 		public boolean isIgnored(Player player){
-			for(String pl : ignoreList)
-				log.log(Level.INFO, pl);
 			return ignoreList.contains(player.getName());
 		}
 

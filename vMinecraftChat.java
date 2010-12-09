@@ -352,7 +352,7 @@ public class vMinecraftChat {
 			}
 
 		    //So you can read adminchat from the server console
-			log.log(Level.INFO, "@" + "<" + getName(player)
+			log.log(Level.INFO, "@" + "<" + player.getName()
 					+  Colors.White +"> " + message); 
 			return true;
 		}
