@@ -124,7 +124,16 @@ public class vMinecraftCommands{
         vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "Global Messages: " + vMinecraftSettings.getInstance().globalmessages());
         return EXIT_SUCCESS;
     }
+        //=====================================================================
+	//Function:	prefix (/prefix)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		Changes your name color and prefix
+	//=====================================================================
     public static int prefix(Player player, String[] args){
+        if(!player.canUseCommand("/prefix")){
+            return EXIT_FAIL;
+        }
         if(args.length <= 1){
             vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [name color code] <prefix>");
             vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "Example: /prefix e ^0[^a<3^0]");
