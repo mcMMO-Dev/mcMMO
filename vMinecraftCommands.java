@@ -37,12 +37,12 @@ public class vMinecraftCommands{
     	//String(Optional): The help menu description
     	
     	//Administrative
-        cl.register("/prefix", "prefix");
-        cl.register("/rprefix", "removePrefix");
-        cl.register("/nick", "nickName");
-        cl.register("/rnick", "removeNick");
-        cl.register("/suffix", "suffix");
-        cl.register("/rsuffix", "removeSuffix");
+        cl.register("/prefix", "prefix", "Set your name color and prefix");
+        cl.register("/rprefix", "removePrefix", "Remove your name color and prefix");
+        cl.register("/nick", "nickName", "Set your display name");
+        cl.register("/rnick", "removeNick", "Reset your display name to your account name");
+        cl.register("/suffix", "suffix", "Set your suffix");
+        cl.register("/rsuffix", "removeSuffix", "Remove your suffix");
         cl.register("/vminecraft", "vminecrafthelp");
         cl.register("/reload", "reload");
         cl.register("/whois", "whois", "/whois [user]");
