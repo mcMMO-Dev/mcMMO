@@ -377,7 +377,7 @@ public class vMinecraftCommands{
 	//Use:		Displays a list of all colors and color codes
 	//=====================================================================
     public static int colors(Player player, String[] args){
-        vMinecraftChat.sendMessage(player, player, Colors.Rose + "You use these color codes like in quake or MW2, ^4 would make text red, ^a would make it light green.");
+        player.sendMessage(Colors.Rose + "You use these color codes like in quake or MW2, ^4 would make text red, ^a would make it light green.");
         vMinecraftChat.sendMessage(player, player,
         		  Colors.Black			+ "0"
         		+ Colors.Navy			+ "1"
