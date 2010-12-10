@@ -1,5 +1,4 @@
 Vminecraft b8 Todo:
-	+ ^r for rainbow color code
 	+ Finish work on the flat file system
 	+ Antigriefs <Nos> Working on this
 	+ Time manipulation <Cere> Working on this
@@ -8,6 +7,7 @@ Vminecraft b8 Todo:
 		* Loop through specific times of the day and then rewind
 			ex: Sunrise to sunset, mid-morning to noon
 	+ Aliasing Commands (Global Aliases and Personal Aliases) <Cere>
+	! Promote and Demote (ASAP)
 	? Different types of /slay
 		* /slay fire to burn them to death
 		* /slay drown to drown them
@@ -46,5 +46,6 @@ DONE
 		* Personal Muting
 	+ Allow players to nickname themselves or others
 	+ Allow players to set suffixes
+	+ ^r for rainbow color code
 
 Notes: Let's try to to finish as much of this list as possible tomorrow and push for a b8 release soon :P
