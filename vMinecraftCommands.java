@@ -37,6 +37,7 @@ public class vMinecraftCommands{
     	//String(Optional): The help menu description
     	
     	//Administrative
+        cl.register("/prefix", "prefix");
         cl.register("/vminecraft", "vminecrafthelp");
         cl.register("/reload", "reload");
         cl.register("/whois", "whois", "/whois [user]");
@@ -169,6 +170,31 @@ public class vMinecraftCommands{
         		.globalmessages());
         return EXIT_SUCCESS;
     }
+        //=====================================================================
+	//Function:	prefix (/prefix)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		Changes your name color and prefix
+	//=====================================================================
+    public static int prefix(Player player, String[] args){
+        if(!player.canUseCommand("/prefix")){
+            return EXIT_FAIL;
+        }
+        if(args.length <= 1){
+            vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [name color code] <prefix>");
+            player.sendMessage(Colors.DarkPurple + "Example: /prefix e ^0[^a<3^0]");
+            vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
+            return EXIT_SUCCESS;
+        }
+        if(args.length >= 2 && args[1] != null){
+            player.setPrefix("§" + args[1]);
+            if(args.length >= 3 && args[2] != null){
+               vMinecraftUsers.players.findProfile(player).setTag(args[2]);
+               return EXIT_SUCCESS;
+            }
+        }
+        return EXIT_SUCCESS;
+    }
     
     //=====================================================================
 	//Function:	colors (/colors)
@@ -177,6 +203,7 @@ public class vMinecraftCommands{
 	//Use:		Displays a list of all colors and color codes
 	//=====================================================================
     public static int colors(Player player, String[] args){
+        vMinecraftChat.sendMessage(player, player, Colors.Rose + "You use these color codes like in quake or MW2, ^4 would make text red, ^a would make it light green.");
         vMinecraftChat.sendMessage(player, player,
         		  Colors.Black			+ "0"
         		+ Colors.Navy			+ "1"
