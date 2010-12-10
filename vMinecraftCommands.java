@@ -185,6 +185,14 @@ public class vMinecraftCommands{
     	//if the player can prefix others
         if(player.canUseCommand("/prefixother")){
             
+            //Check if there are enough arguments
+            if(args.length < 2){
+                vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [Color Code] <Tag>");
+                player.sendMessage(Colors.DarkPurple + "Example: /prefix " + player.getName() + " e ^0[^a<3^0]");
+                vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
+                return EXIT_SUCCESS;
+            }
+            
             //Check if the nickname is too long
             if(args[1].length() > 10)
             {
@@ -199,14 +207,6 @@ public class vMinecraftCommands{
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The player you specified could not be found");
-                return EXIT_SUCCESS;
-            }
-            
-            //Check if there are enough arguments
-            if(args.length < 2){
-                vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [Color Code] <Tag>");
-                player.sendMessage(Colors.DarkPurple + "Example: /prefix " + player.getName() + " e ^0[^a<3^0]");
-                vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
                 return EXIT_SUCCESS;
             }
             
@@ -231,6 +231,7 @@ public class vMinecraftCommands{
             vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
             return EXIT_SUCCESS;
         }
+        
         if(args.length >= 1 && args[0] != null){
             player.setPrefix(args[1]);
         }
