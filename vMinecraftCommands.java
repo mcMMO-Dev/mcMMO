@@ -38,8 +38,11 @@ public class vMinecraftCommands{
     	
     	//Administrative
         cl.register("/prefix", "prefix");
+        cl.register("/rprefix", "removePrefix");
         cl.register("/nick", "nickName");
+        cl.register("/rnick", "removeNick");
         cl.register("/suffix", "suffix");
+        cl.register("/rsuffix", "removeSuffix");
         cl.register("/vminecraft", "vminecrafthelp");
         cl.register("/reload", "reload");
         cl.register("/whois", "whois", "/whois [user]");
@@ -252,6 +255,50 @@ public class vMinecraftCommands{
     }
     
     //=====================================================================
+	//Function:	removeTag (/rprefix)
+	//Input:	Player player: The player using the command
+    //			String[] args: Ignored
+	//Output:	int: Exit Code
+	//Use:		Removes your prefix
+	//=====================================================================
+    public static int removeTag(Player player, String[] args){
+    	
+    	//if the player can suffix others
+        if(player.canUseCommand("/prefixother")){
+            if(args.length < 1){
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "Usage is /rprefix [Player]");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if the player exists
+            Player other = etc.getServer().matchPlayer(args[0]);
+            if(other == null)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified could not be found");
+                return EXIT_SUCCESS;
+            }
+            vMinecraftUsers.getProfile(other).setTag("");
+            
+            return EXIT_SUCCESS;
+        }
+        
+        //Check if the player can set their own prefix.
+        if(!player.canUseCommand("/prefix")){
+            return EXIT_FAIL;
+        }
+        if(args.length < 1){
+            vMinecraftChat.sendMessage(player, player, Colors.Rose
+            		+ "Usage is /rprefix");
+            return EXIT_SUCCESS;
+        }
+        vMinecraftUsers.getProfile(player).setTag("");
+        
+        return EXIT_SUCCESS;
+    }
+    
+    //=====================================================================
 	//Function:	nickName (/nick)
 	//Input:	Player player: The player using the command
     //			String[] args: The color and the prefix
@@ -272,7 +319,7 @@ public class vMinecraftCommands{
             if(vMinecraftChat.msgLength(args[1]) > 85)
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
-                		+ "The suffix you entered was too long.");
+                		+ "The nick you entered was too long.");
                 return EXIT_SUCCESS;
             }
             
@@ -298,7 +345,7 @@ public class vMinecraftCommands{
         if(vMinecraftChat.msgLength(args[1]) > 85)
         {
             vMinecraftChat.sendMessage(player, player, Colors.Rose
-            		+ "The suffix you entered was too long.");
+            		+ "The nick you entered was too long.");
             return EXIT_SUCCESS;
         }
         
@@ -313,9 +360,53 @@ public class vMinecraftCommands{
     }
     
     //=====================================================================
+	//Function:	removeNick (/rnick)
+	//Input:	Player player: The player using the command
+    //			String[] args: Ignored
+	//Output:	int: Exit Code
+	//Use:		Removes your nick
+	//=====================================================================
+    public static int removeNick(Player player, String[] args){
+    	
+    	//if the player can nick others
+        if(player.canUseCommand("/nickother")){
+            if(args.length < 1){
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "Usage is /rnick [Player]");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if the player exists
+            Player other = etc.getServer().matchPlayer(args[0]);
+            if(other == null)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified could not be found");
+                return EXIT_SUCCESS;
+            }
+            vMinecraftUsers.getProfile(other).setNick("");
+            
+            return EXIT_SUCCESS;
+        }
+        
+        //Check if the player can set their own nick.
+        if(!player.canUseCommand("/nick")){
+            return EXIT_FAIL;
+        }
+        if(args.length < 1){
+            vMinecraftChat.sendMessage(player, player, Colors.Rose
+            		+ "Usage is /rnick");
+            return EXIT_SUCCESS;
+        }
+        vMinecraftUsers.getProfile(player).setNick("");
+        
+        return EXIT_SUCCESS;
+    }
+    
+    //=====================================================================
 	//Function:	suffix (/suffix)
 	//Input:	Player player: The player using the command
-    //			String[] args: The color and the prefix
+    //			String[] args: The color and the suffix
 	//Output:	int: Exit Code
 	//Use:		Changes your suffix
 	//=====================================================================
@@ -373,13 +464,60 @@ public class vMinecraftCommands{
     }
     
     //=====================================================================
+	//Function:	removeSuffix (/rsuffix)
+	//Input:	Player player: The player using the command
+    //			String[] args: Ignored
+	//Output:	int: Exit Code
+	//Use:		Removes your suffix
+	//=====================================================================
+    public static int removeSuffix(Player player, String[] args){
+    	
+    	//if the player can suffix others
+        if(player.canUseCommand("/suffixother")){
+            if(args.length < 1){
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "Usage is /rsuffix [Player]");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if the player exists
+            Player other = etc.getServer().matchPlayer(args[0]);
+            if(other == null)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified could not be found");
+                return EXIT_SUCCESS;
+            }
+            vMinecraftUsers.getProfile(other).setSuffix("");
+            
+            return EXIT_SUCCESS;
+        }
+        
+        //Check if the player can set their own suffix.
+        if(!player.canUseCommand("/suffix")){
+            return EXIT_FAIL;
+        }
+        if(args.length < 1){
+            vMinecraftChat.sendMessage(player, player, Colors.Rose
+            		+ "Usage is /rsuffix");
+            return EXIT_SUCCESS;
+        }
+        vMinecraftUsers.getProfile(player).setSuffix("");
+        
+        return EXIT_SUCCESS;
+    }
+    
+    //=====================================================================
 	//Function:	colors (/colors)
 	//Input:	Player player: The player using the command
 	//Output:	int: Exit Code
 	//Use:		Displays a list of all colors and color codes
 	//=====================================================================
     public static int colors(Player player, String[] args){
-        player.sendMessage(Colors.Rose + "You use these color codes like in quake or MW2, ^4 would make text red, ^a would make it light green.");
+        player.sendMessage(Colors.Rose + "You use these color codes like in quake or MW2.");
+        player.sendMessage(Colors.Rose + "^4 would make text " + Colors.Red
+        		+ "red" + Colors.Rose + ", ^a would make it " + Colors.LightGreen 
+        		+ "light green" + Colors.Rose + ".");
         vMinecraftChat.sendMessage(player, player,
         		  Colors.Black			+ "0"
         		+ Colors.Navy			+ "1"
@@ -534,6 +672,13 @@ public class vMinecraftCommands{
     	{
 			vMinecraftChat.sendMessage(player, player, Colors.Rose
 					+ "The person you tried to ignore is not logged in.");
+	    	return EXIT_SUCCESS;
+    	}
+    	
+    	if(ignore.hasControlOver(player))
+    	{
+			vMinecraftChat.sendMessage(player, player, Colors.Rose
+					+ "You can't ignore someone a higher rank than you.");
 	    	return EXIT_SUCCESS;
     	}
     	

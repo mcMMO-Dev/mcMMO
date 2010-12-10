@@ -164,7 +164,9 @@ class PlayerList
 					   lastMessage,
 					   nickName,
 					   tag,
-					   suffix;
+					   suffix,
+					   defaultColor;
+		
 		private ArrayList<String> ignoreList;
 		private commandList aliasList;
 		
@@ -428,6 +430,22 @@ class PlayerList
 		//Use:		Gets a player suffix
 		//=====================================================================
 		public String getSuffix() { return suffix; }
+
+		//=====================================================================
+		//Function:	setColor
+		//Input:	String newTag: The color to set for the player
+		//Output:	None
+		//Use:		Sets a player color
+		//=====================================================================
+		public void setColor(String newColor){ defaultColor = newColor; }
+
+		//=====================================================================
+		//Function:	getColor
+		//Input:	None
+		//Output:	String: The player color
+		//Use:		Gets a player color
+		//=====================================================================
+		public String getColor() { return defaultColor; }
 
 		//=====================================================================
 		//Function:	setMessage

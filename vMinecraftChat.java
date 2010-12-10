@@ -465,11 +465,11 @@ public class vMinecraftChat {
 	//Output:	boolean: If this feature is enabled
 	//Use:		/me but with our custom colors applied
 	//=====================================================================
-        public static boolean emote(Player player, String message)
-        {
-			gmsg(player, "* " + getName(player) + " " + Colors.White + message);
-            return true;
-        }
+    public static boolean emote(Player player, String message)
+    {
+		gmsg(player, "* " + getName(player) + " " + Colors.White + message);
+        return true;
+    }
 
     
     //=====================================================================
@@ -501,7 +501,7 @@ public class vMinecraftChat {
 				{
 					//If the char is a ^ or �
 					if(taste || msg.charAt(x) == '^'
-							|| msg.charAt(x) == Colors.White.charAt(0))
+							|| msg.charAt(x) == Colors.Red.charAt(0))
 					{
 						if(x != msg.length() - 1)
 						{
