@@ -230,20 +230,23 @@ public class vMinecraftCommands{
             player.sendMessage(Colors.DarkPurple + "Example: /prefix e ^0[^a<3^0]");
             vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
             return EXIT_SUCCESS;
-        }
-        
+        }       
+        //Name color
         if(args.length >= 1 && args[0] != null){
             player.setPrefix(args[0]);
+            player.sendMessage(Colors.Rose + "Name color changed");
         }
+        //Prefix
         if(args.length >= 2 && args[1] != null){
-            //Check if the prefix is too long
-            if(vMinecraftChat.msgLength(args[1]) > 60)
-            {
-                vMinecraftChat.sendMessage(player, player, Colors.Rose
-                		+ "The prefix you entered was too long.");
-                return EXIT_SUCCESS;
-            }
-           vMinecraftUsers.players.findProfile(player).setTag(args[1]);
+        //Check if the prefix is too long        
+	        if(vMinecraftChat.msgLength(args[1]) > 60)
+	        {
+	            vMinecraftChat.sendMessage(player, player, Colors.Rose
+	            		+ "The prefix you entered was too long.");
+	            return EXIT_SUCCESS;
+	        }
+	           vMinecraftUsers.players.findProfile(player).setTag(args[1]);
+	           player.sendMessage(Colors.LightGreen + "Prefix changed");
         }
         return EXIT_SUCCESS;
     }
