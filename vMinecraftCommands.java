@@ -38,7 +38,7 @@ public class vMinecraftCommands{
     	
     	//Administrative
         cl.register("/prefix", "prefix", "Set your name color and prefix");
-        cl.register("/rprefix", "removePrefix", "Remove your name color and prefix");
+        cl.register("/rprefix", "removeTag", "Remove your name color and prefix");
         cl.register("/nick", "nickName", "Set your display name");
         cl.register("/rnick", "removeNick", "Reset your display name to your account name");
         cl.register("/suffix", "suffix", "Set your suffix");
