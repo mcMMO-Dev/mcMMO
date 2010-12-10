@@ -212,18 +212,24 @@ public class vMinecraftChat {
 	//=====================================================================
     public static String getName(Player player){
     	
-    	//Get the prefix
-    	String playerPrefix = player.getPrefix();
+    	//Add the nickname or the name if there is none
+    	String output = vMinecraftUsers.getProfile(player).getNick();
     	
-    	//Add the name
-    	String output = player.getName();
+    	if(output.isEmpty())
+    		output = player.getName();
     	
     	//Add the color if there is one
     	if(player.getColor() != null && player.getColor() != "")
     		output = player.getColor().substring(0,2) + output;
+    	
     	//Add the tag if there is one
-    	if(playerPrefix != null && !playerPrefix.isEmpty())
-    		output = applyColors(playerPrefix.substring(1)) + output;
+    	output = vMinecraftUsers.getProfile(player).getTag() + output;
+    	
+    	//Add the suffix if there is one
+    	output += vMinecraftUsers.getProfile(player).getSuffix();
+    	
+    	/*if(playerPrefix != null && !playerPrefix.isEmpty())
+    		output = applyColors(playerPrefix.substring(1)) + output;*/
     	
     	//Return the name
         return output;

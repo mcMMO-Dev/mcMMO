@@ -170,7 +170,8 @@ public class vMinecraftCommands{
         		.globalmessages());
         return EXIT_SUCCESS;
     }
-        //=====================================================================
+    
+    //=====================================================================
 	//Function:	prefix (/prefix)
 	//Input:	Player player: The player using the command
 	//Output:	int: Exit Code

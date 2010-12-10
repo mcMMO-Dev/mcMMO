@@ -398,6 +398,38 @@ class PlayerList
 		public String getTag() { return tag; }
 
 		//=====================================================================
+		//Function:	setNick
+		//Input:	String newTag: The nickname to set for the player
+		//Output:	None
+		//Use:		Sets a player nickname
+		//=====================================================================
+		public void setNick(String newNick){ nickName = newNick; }
+
+		//=====================================================================
+		//Function:	getNick
+		//Input:	None
+		//Output:	String: The player nickname
+		//Use:		Gets a player nickname
+		//=====================================================================
+		public String getNick() { return nickName; }
+
+		//=====================================================================
+		//Function:	setSuffix
+		//Input:	String newTag: The suffix to set for the player
+		//Output:	None
+		//Use:		Sets a player suffix
+		//=====================================================================
+		public void setSuffix(String newSuffix){ suffix = newSuffix; }
+
+		//=====================================================================
+		//Function:	getSuffix
+		//Input:	None
+		//Output:	String: The player suffix
+		//Use:		Gets a player suffix
+		//=====================================================================
+		public String getSuffix() { return suffix; }
+
+		//=====================================================================
 		//Function:	setMessage
 		//Input:	String newName: The name of the player they last messaged
 		//			or recieved a message from.
