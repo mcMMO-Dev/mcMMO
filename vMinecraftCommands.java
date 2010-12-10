@@ -181,21 +181,66 @@ public class vMinecraftCommands{
 	//Use:		Changes your name color and prefix
 	//=====================================================================
     public static int prefix(Player player, String[] args){
+    	
+    	//if the player can prefix others
+        if(player.canUseCommand("/prefixother")){
+            if(args.length < 2){
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "Usage is /prefix [Player] [Name]");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if the nickname is too long
+            if(args[1].length() > 20)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The prefix you entered was too long.");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if the player exists
+            Player other = etc.getServer().matchPlayer(args[0]);
+            if(other == null)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified could not be found");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if there are enough arguments
+            if(args.length < 2){
+                vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [Player] [Color Code] <Tag>");
+                player.sendMessage(Colors.DarkPurple + "Example: /prefix " + player.getName() + " e ^0[^a<3^0]");
+                vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
+                return EXIT_SUCCESS;
+            }
+            
+            if(args.length >= 2 && args[0] != null){
+                player.setPrefix(args[1]);
+            }
+            
+            if(args.length >= 3 && args[1] != null){
+               vMinecraftUsers.players.findProfile(player).setTag(args[2]);
+            }
+            return EXIT_SUCCESS;
+        }
+        //If the player can set their prefix
         if(!player.canUseCommand("/prefix")){
             return EXIT_FAIL;
         }
-        if(args.length == 0){
-            vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [name color code] <prefix>");
+        
+        //Check if there are enough arguments
+        if(args.length < 1){
+            vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [Color Code] <Tag>");
             player.sendMessage(Colors.DarkPurple + "Example: /prefix e ^0[^a<3^0]");
             vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
             return EXIT_SUCCESS;
         }
         if(args.length >= 1 && args[0] != null){
             player.setPrefix(args[1]);
-            if(args.length == 2 && args[1] != null){
-               vMinecraftUsers.players.findProfile(player).setTag(args[2]);
-               return EXIT_SUCCESS;
-            }
+        }
+        if(args.length >= 2 && args[1] != null){
+           vMinecraftUsers.players.findProfile(player).setTag(args[2]);
         }
         return EXIT_SUCCESS;
     }
@@ -205,7 +250,7 @@ public class vMinecraftCommands{
 	//Input:	Player player: The player using the command
     //			String[] args: The color and the prefix
 	//Output:	int: Exit Code
-	//Use:		Changes your name color and prefix
+	//Use:		Changes your name
 	//=====================================================================
     public static int nickName(Player player, String[] args){
     	
@@ -213,7 +258,7 @@ public class vMinecraftCommands{
         if(player.canUseCommand("/nickother")){
             if(args.length < 2){
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
-                		+ "Usage is /prefix [Player] [Name]");
+                		+ "Usage is /nick [Player] [Name]");
                 return EXIT_SUCCESS;
             }
             
@@ -253,7 +298,7 @@ public class vMinecraftCommands{
         
         if(args.length < 1){
             vMinecraftChat.sendMessage(player, player, Colors.Rose
-            		+ "Usage is /prefix [Name]");
+            		+ "Usage is /nick [Name]");
             return EXIT_SUCCESS;
         }
         vMinecraftUsers.getProfile(player).setNick(args[0]);
@@ -266,7 +311,7 @@ public class vMinecraftCommands{
 	//Input:	Player player: The player using the command
     //			String[] args: The color and the prefix
 	//Output:	int: Exit Code
-	//Use:		Changes your name color and prefix
+	//Use:		Changes your suffix
 	//=====================================================================
     public static int suffix(Player player, String[] args){
     	
