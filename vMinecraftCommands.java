@@ -184,14 +184,9 @@ public class vMinecraftCommands{
     	
     	//if the player can prefix others
         if(player.canUseCommand("/prefixother")){
-            if(args.length < 2){
-                vMinecraftChat.sendMessage(player, player, Colors.Rose
-                		+ "Usage is /prefix [Player] [Name]");
-                return EXIT_SUCCESS;
-            }
             
             //Check if the nickname is too long
-            if(args[1].length() > 20)
+            if(args[1].length() > 10)
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The prefix you entered was too long.");
@@ -209,7 +204,7 @@ public class vMinecraftCommands{
             
             //Check if there are enough arguments
             if(args.length < 2){
-                vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [Player] [Color Code] <Tag>");
+                vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [Color Code] <Tag>");
                 player.sendMessage(Colors.DarkPurple + "Example: /prefix " + player.getName() + " e ^0[^a<3^0]");
                 vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
                 return EXIT_SUCCESS;
