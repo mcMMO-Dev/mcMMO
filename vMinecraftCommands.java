@@ -215,7 +215,7 @@ public class vMinecraftCommands{
             }
             
             if(args.length >= 3 && args[1] != null){
-               vMinecraftUsers.players.findProfile(player).setTag(args[2]);
+               vMinecraftUsers.players.findProfile(other).setTag(args[2]);
             }
             return EXIT_SUCCESS;
         }
@@ -232,19 +232,18 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         
-        //Check if the prefix is too long
-        if(args[1].length() > 15)
-        {
-            vMinecraftChat.sendMessage(player, player, Colors.Rose
-            		+ "The prefix you entered was too long.");
-            return EXIT_SUCCESS;
-        }
-        
         if(args.length >= 1 && args[0] != null){
-            player.setPrefix(args[1]);
+            player.setPrefix(args[0]);
         }
         if(args.length >= 2 && args[1] != null){
-           vMinecraftUsers.players.findProfile(player).setTag(args[2]);
+            //Check if the prefix is too long
+            if(args[1].length() > 15)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The prefix you entered was too long.");
+                return EXIT_SUCCESS;
+            }
+           vMinecraftUsers.players.findProfile(player).setTag(args[1]);
         }
         return EXIT_SUCCESS;
     }
@@ -393,6 +392,7 @@ public class vMinecraftCommands{
         		+ Colors.LightBlue 		+ "b"
         		+ Colors.Rose 			+ "c"
         		+ Colors.LightPurple	+ "d"
+        		+ Colors.Yellow			+ "e"
         		+ Colors.White			+ "f");
         return EXIT_SUCCESS;
     }
