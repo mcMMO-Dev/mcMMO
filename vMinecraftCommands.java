@@ -190,7 +190,7 @@ public class vMinecraftCommands{
             
             //Check if there are enough arguments
             if(args.length < 2){
-                vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [Color Code] <Tag>");
+                vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [Player] [Color Code] <Tag>");
                 player.sendMessage(Colors.DarkPurple + "Example: /prefix " + player.getName() + " e ^0[^a<3^0]");
                 vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
                 return EXIT_SUCCESS;
@@ -215,10 +215,12 @@ public class vMinecraftCommands{
             
             if(args.length >= 2 && args[0] != null){
                 other.setPrefix(args[1]);
+                player.sendMessage(Colors.Rose + "Name color changed");
             }
             
             if(args.length >= 3 && args[1] != null){
                vMinecraftUsers.players.findProfile(other).setTag(args[2]);
+	           player.sendMessage(Colors.LightGreen + "Prefix changed");
             }
             return EXIT_SUCCESS;
         }
