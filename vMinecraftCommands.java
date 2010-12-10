@@ -214,7 +214,7 @@ public class vMinecraftCommands{
             }
             
             if(args.length >= 2 && args[0] != null){
-                player.setPrefix(args[1]);
+                other.setPrefix(args[1]);
             }
             
             if(args.length >= 3 && args[1] != null){

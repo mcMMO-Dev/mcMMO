@@ -249,6 +249,8 @@ public class vMinecraftChat {
     	//Add the suffix if there is one
     	output += vMinecraftUsers.getProfile(player).getSuffix();
     	
+    	output = Colors.White + output;
+    	
     	/*if(playerPrefix != null && !playerPrefix.isEmpty())
     		output = applyColors(playerPrefix.substring(1)) + output;*/
     	
