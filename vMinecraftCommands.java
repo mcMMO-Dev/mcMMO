@@ -134,15 +134,15 @@ public class vMinecraftCommands{
         if(!player.canUseCommand("/prefix")){
             return EXIT_FAIL;
         }
-        if(args.length <= 1){
+        if(args.length == 0){
             vMinecraftChat.sendMessage(player, player, Colors.Rose + "Usage is /prefix [name color code] <prefix>");
-            vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "Example: /prefix e ^0[^a<3^0]");
+            player.sendMessage(Colors.DarkPurple + "Example: /prefix e ^0[^a<3^0]");
             vMinecraftChat.sendMessage(player, player, Colors.DarkPurple + "This would produce a name like... " + Colors.Black + "[" + Colors.LightGreen + "<3" + Colors.Black + "]" + Colors.Yellow + player.getName());
             return EXIT_SUCCESS;
         }
-        if(args.length >= 2 && args[1] != null){
-            player.setPrefix("§" + args[1]);
-            if(args.length >= 3 && args[2] != null){
+        if(args.length >= 1 && args[0] != null){
+            player.setPrefix(args[1]);
+            if(args.length == 2 && args[1] != null){
                vMinecraftUsers.players.findProfile(player).setTag(args[2]);
                return EXIT_SUCCESS;
             }
