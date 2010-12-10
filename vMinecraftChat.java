@@ -110,7 +110,7 @@ public class vMinecraftChat {
 	//Output:	int: The length on the screen of a string
 	//Use:		Finds the length on the screen of a string. Ignores colors.
 	//=====================================================================
-    private static int msgLength(String str){
+    public static int msgLength(String str){
 		int length = 0;
 		//Loop through all the characters, skipping any color characters
 		//and their following color codes
