@@ -10,6 +10,20 @@ import java.util.logging.Logger;
 public class vMinecraftChat {
     protected static final Logger log = Logger.getLogger("Minecraft");
     protected static final int lineLength = 312;
+	//The array of colors to use
+	protected static final String[] rainbow = new String[] {
+			Colors.Red,
+			Colors.Rose,
+			Colors.Gold,
+			Colors.Yellow,
+			Colors.LightGreen,
+			Colors.Green,
+			Colors.LightBlue,
+			Colors.Blue, 
+			Colors.Navy, 
+			Colors.DarkPurple, 
+			Colors.Purple,
+			Colors.LightPurple};
 
 	//=====================================================================
 	//Function:	gmsg
@@ -18,6 +32,9 @@ public class vMinecraftChat {
 	//Use:		Outputs a message to everybody
 	//=====================================================================
     public static void gmsg(Player sender, String msg){
+    	if(sender.isMuted())
+    		sender.sendMessage(Colors.Red + "You have been muted.");
+    	
         for (Player receiver : etc.getServer().getPlayerList()) {
         	
             if (receiver == null) {return;}
@@ -41,6 +58,9 @@ public class vMinecraftChat {
 	//Use:		Outputs a message to everybody
 	//=====================================================================
     public static void sendMessage(Player sender, Player receiver, String msg){
+    	if(sender.isMuted())
+    		sender.sendMessage(Colors.Red + "You have been muted.");
+    	
     	//Check if the receiver has the sender ignored
     	if(vMinecraftUsers.getProfile(receiver) == null)
     		return;
@@ -116,11 +136,16 @@ public class vMinecraftChat {
 		//and their following color codes
 		for(int x = 0; x<str.length(); x++)
 		{
+			if(str.charAt(x) == '^' || str.charAt(x) == Colors.White.charAt(0))
+			{
+				if(colorChange(str.charAt(x + 1)) != null)
+				{
+					x++;
+					continue;
+				}
+			}
 			int len = charLength(str.charAt(x));
-			if( len > 0)
-				length += len;
-			else
-				x++;
+			length += len;
 		}
 		return length;
     }
@@ -189,15 +214,11 @@ public class vMinecraftChat {
 	//=====================================================================
     public static String rainbow(String msg){
     	String temp = "";
-    	//The array of colors to use
-		String[] rainbow = new String[] {Colors.Red, Colors.Rose, Colors.Gold,
-				Colors.Yellow, Colors.LightGreen, Colors.Green, Colors.Blue,
-				Colors.Navy, Colors.DarkPurple, Colors.Purple, Colors.LightPurple};
 		int counter=0;
 		//Loop through the message applying the colors
 		for(int x=0; x<msg.length(); x++)
 		{
-			temp+=rainbow[counter]+msg.charAt(x);
+			temp += rainbow[counter]+msg.charAt(x);
 			
 			if(msg.charAt(x)!=' ') counter++;
 			if(counter==rainbow.length) counter = 0;
@@ -465,6 +486,9 @@ public class vMinecraftChat {
 			
 			//Go through each line
 			int counter = 0;
+			int i = 0;
+			boolean taste = false;
+			
 			for(String msg: message)
 			{	
 				//Start the line with the most recent color
@@ -483,10 +507,47 @@ public class vMinecraftChat {
 							{
 								//Set the most recent color to the new color
 								recentColor = vMinecraftChat.colorChange(msg.charAt(x+1));
-								//Add the color
-								temp += recentColor;
-								//Skip these chars
-								x++;
+								
+								//If the color specified is rainbow
+								if(recentColor.equals("~") || taste)
+								{
+									//Skip the quake code for rainbow
+									if(recentColor.equals("~"))
+									{
+										x += 2;
+									}
+									
+									//Taste keeps it going with rainbow if there
+									//are more lines
+									taste = true;
+									//Loop through the message applying the colors
+									while(x < msg.length() && msg.charAt(x) != '^'
+										&& msg.charAt(x) != Colors.Red.charAt(0))
+									{
+										temp += rainbow[i] + msg.charAt(x);
+										
+										if(msg.charAt(x) != ' ') i++;
+										if(i == rainbow.length) i = 0;
+										x++;
+									}
+									
+									//If it reached another color instead of the end
+									if(x < msg.length() && msg.charAt(x) == '^'
+										|| msg.charAt(x) == Colors.Red.charAt(0) )
+									{
+										taste = false;
+										i = 0;
+										x--;
+									}
+								}
+								else
+								{
+									//Add the color
+									temp += recentColor;
+									//Skip these chars
+									x++;
+								}
+								
 							//Otherwise ignore it.
 							} else {
 								temp += msg.charAt(x);
@@ -503,71 +564,6 @@ public class vMinecraftChat {
 				message[counter] = temp;
 				counter++;
 			}
-		}
-		return message;
-	}
-
-	//=====================================================================
-	//Function:	applyColors
-	//Input:	String message: The line to be colored
-	//Output:	String: The line, but colorful
-	//Use:		Colors a line
-	//=====================================================================
-	public static String applyColors(String message)
-	{
-		return applyColors(message, Colors.White);
-	}
-
-	//=====================================================================
-	//Function:	applyColors
-	//Input:	String message: The line to be colored
-	//			String color: The color to start the line with
-	//Output:	String: The line, but colorful
-	//Use:		Colors a line
-	//=====================================================================
-	public static String applyColors(String message, String color)
-	{
-		if(message != null && !message.isEmpty())
-		{
-			//The color to start the line with
-			if(color == null)
-				 color = Colors.White;
-			
-			//Start the line with the most recent color
-			String temp = color;
-			
-			//Loop through looking for a color code
-			for(int x = 0; x< message.length(); x++)
-			{
-				//If the char is a ^ or '�'
-				if(message.charAt(x) == '^' || message.charAt(x) == Colors.White.charAt(0))
-				{
-					if(x != message.length() - 1)
-					{
-						//If the following character is a color code
-						if(vMinecraftChat.colorChange(message.charAt(x+1)) != null)
-						{
-							//Set the most recent color to the new color
-							color = vMinecraftChat.colorChange(message.charAt(x+1));
-							//Add the color
-							temp += color;
-							//Skip these chars
-							x++;
-						//Otherwise ignore it.
-						} else {
-							temp += message.charAt(x);
-						}
-					//Insert the character
-					} else {
-						temp += message.charAt(x);
-					}
-					//Insert the character
-				} else {
-					temp += message.charAt(x);
-				}
-		
-			}
-			message = temp;
 		}
 		return message;
 	}
