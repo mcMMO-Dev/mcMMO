@@ -282,6 +282,7 @@ public class vMinecraftCommands{
                 return EXIT_SUCCESS;
             }
             vMinecraftUsers.getProfile(other).setTag("");
+	        player.sendMessage(Colors.LightGreen + "Prefix removed");
             
             return EXIT_SUCCESS;
         }
@@ -296,6 +297,7 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         vMinecraftUsers.getProfile(player).setTag("");
+        player.sendMessage(Colors.LightGreen + "Prefix removed");
         
         return EXIT_SUCCESS;
     }
@@ -387,6 +389,7 @@ public class vMinecraftCommands{
                 return EXIT_SUCCESS;
             }
             vMinecraftUsers.getProfile(other).setNick("");
+            player.sendMessage(Colors.LightGreen + "Nickname removed");
             
             return EXIT_SUCCESS;
         }
@@ -401,6 +404,7 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         vMinecraftUsers.getProfile(player).setNick("");
+        player.sendMessage(Colors.LightGreen + "Nickname removed");
         
         return EXIT_SUCCESS;
     }
@@ -491,6 +495,7 @@ public class vMinecraftCommands{
                 return EXIT_SUCCESS;
             }
             vMinecraftUsers.getProfile(other).setSuffix("");
+            player.sendMessage(Colors.LightGreen + "Suffix removed");
             
             return EXIT_SUCCESS;
         }
@@ -505,6 +510,7 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         vMinecraftUsers.getProfile(player).setSuffix("");
+        player.sendMessage(Colors.LightGreen + "Suffix removed");
         
         return EXIT_SUCCESS;
     }
