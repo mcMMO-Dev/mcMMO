@@ -38,6 +38,8 @@ public class vMinecraftCommands{
     	
     	//Administrative
         cl.register("/prefix", "prefix");
+        cl.register("/nick", "nickName");
+        cl.register("/suffix", "suffix");
         cl.register("/vminecraft", "vminecrafthelp");
         cl.register("/reload", "reload");
         cl.register("/whois", "whois", "/whois [user]");
