@@ -2,14 +2,13 @@ Vminecraft b8 Todo:
 	+ ^r for rainbow color code
 	+ Finish work on the flat file system
 	+ Antigriefs <Nos> Working on this
-	+ Allow players to nickname themselves or others
 	+ Time manipulation <Cere> Working on this
 		* Have time changes not be instant but move the sky faster
 			to get to the time entered
 		* Loop through specific times of the day and then rewind
 			ex: Sunrise to sunset, mid-morning to noon
 	+ Aliasing Commands (Global Aliases and Personal Aliases) <Cere>
-	+ Different types of /slay
+	? Different types of /slay
 		* /slay fire to burn them to death
 		* /slay drown to drown them
 		* /slay boil to burn them with lava
@@ -43,5 +42,7 @@ DONE
 	+ Recode Messaging
 		* Reply Feature
 		* Personal Muting
+	+ Allow players to nickname themselves or others
+	+ Allow players to set suffixes
 
 Notes: Let's try to to finish as much of this list as possible tomorrow and push for a b8 release soon :P

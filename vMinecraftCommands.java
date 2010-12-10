@@ -174,6 +174,7 @@ public class vMinecraftCommands{
     //=====================================================================
 	//Function:	prefix (/prefix)
 	//Input:	Player player: The player using the command
+    //			String[] args: The color and the prefix
 	//Output:	int: Exit Code
 	//Use:		Changes your name color and prefix
 	//=====================================================================
@@ -194,6 +195,127 @@ public class vMinecraftCommands{
                return EXIT_SUCCESS;
             }
         }
+        return EXIT_SUCCESS;
+    }
+    
+    //=====================================================================
+	//Function:	nickName (/nick)
+	//Input:	Player player: The player using the command
+    //			String[] args: The color and the prefix
+	//Output:	int: Exit Code
+	//Use:		Changes your name color and prefix
+	//=====================================================================
+    public static int nickName(Player player, String[] args){
+    	
+    	//if the player can nickname others
+        if(player.canUseCommand("/nickother")){
+            if(args.length < 2){
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "Usage is /prefix [Player] [Name]");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if the nickname is too long
+            if(args[1].length() > 20)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The suffix you entered was too long.");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if the player exists
+            Player other = etc.getServer().matchPlayer(args[0]);
+            if(other == null)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified could not be found");
+                return EXIT_SUCCESS;
+            }
+            vMinecraftUsers.getProfile(other).setNick(args[1]);
+            
+            return EXIT_SUCCESS;
+        }
+        
+        //Make sure they can nickname themselves
+        if(!player.canUseCommand("/nick")){
+            return EXIT_FAIL;
+        }
+        
+        //Check if the nickname is too long
+        if(args[0].length() > 20)
+        {
+            vMinecraftChat.sendMessage(player, player, Colors.Rose
+            		+ "The suffix you entered was too long.");
+            return EXIT_SUCCESS;
+        }
+        
+        if(args.length < 1){
+            vMinecraftChat.sendMessage(player, player, Colors.Rose
+            		+ "Usage is /prefix [Name]");
+            return EXIT_SUCCESS;
+        }
+        vMinecraftUsers.getProfile(player).setNick(args[0]);
+        
+        return EXIT_SUCCESS;
+    }
+    
+    //=====================================================================
+	//Function:	suffix (/suffix)
+	//Input:	Player player: The player using the command
+    //			String[] args: The color and the prefix
+	//Output:	int: Exit Code
+	//Use:		Changes your name color and prefix
+	//=====================================================================
+    public static int suffix(Player player, String[] args){
+    	
+    	//if the player can suffix others
+        if(player.canUseCommand("/suffixother")){
+            if(args.length < 2){
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "Usage is /suffix [Player] [Name]");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if the suffix is too long
+            if(args[1].length() > 10)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The suffix you entered was too long.");
+                return EXIT_SUCCESS;
+            }
+            
+            //Check if the player exists
+            Player other = etc.getServer().matchPlayer(args[0]);
+            if(other == null)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified could not be found");
+                return EXIT_SUCCESS;
+            }
+            vMinecraftUsers.getProfile(other).setSuffix(args[1]);
+            
+            return EXIT_SUCCESS;
+        }
+        
+        //Check if the player can set their own suffix.
+        if(!player.canUseCommand("/suffix")){
+            return EXIT_FAIL;
+        }
+        if(args.length < 1){
+            vMinecraftChat.sendMessage(player, player, Colors.Rose
+            		+ "Usage is /suffix [Suffix]");
+            return EXIT_SUCCESS;
+        }
+        
+        //Check if the suffix is too long
+        if(args[0].length() > 10)
+        {
+            vMinecraftChat.sendMessage(player, player, Colors.Rose
+            		+ "The suffix you entered was too long.");
+            return EXIT_SUCCESS;
+        }
+        vMinecraftUsers.getProfile(player).setSuffix(args[0]);
+        
         return EXIT_SUCCESS;
     }
     
