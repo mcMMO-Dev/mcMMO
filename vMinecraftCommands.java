@@ -193,8 +193,8 @@ public class vMinecraftCommands{
                 return EXIT_SUCCESS;
             }
             
-            //Check if the nickname is too long
-            if(args[1].length() > 10)
+            //Check if the prefix is too long
+            if(args[1].length() > 15)
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The prefix you entered was too long.");
@@ -232,6 +232,14 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         
+        //Check if the prefix is too long
+        if(args[1].length() > 15)
+        {
+            vMinecraftChat.sendMessage(player, player, Colors.Rose
+            		+ "The prefix you entered was too long.");
+            return EXIT_SUCCESS;
+        }
+        
         if(args.length >= 1 && args[0] != null){
             player.setPrefix(args[1]);
         }
@@ -259,7 +267,7 @@ public class vMinecraftCommands{
             }
             
             //Check if the nickname is too long
-            if(args[1].length() > 20)
+            if(args[1].length() > 30)
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The suffix you entered was too long.");
@@ -285,7 +293,7 @@ public class vMinecraftCommands{
         }
         
         //Check if the nickname is too long
-        if(args[0].length() > 20)
+        if(args[0].length() > 30)
         {
             vMinecraftChat.sendMessage(player, player, Colors.Rose
             		+ "The suffix you entered was too long.");
@@ -320,7 +328,7 @@ public class vMinecraftCommands{
             }
             
             //Check if the suffix is too long
-            if(args[1].length() > 10)
+            if(args[1].length() > 20)
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The suffix you entered was too long.");
@@ -351,7 +359,7 @@ public class vMinecraftCommands{
         }
         
         //Check if the suffix is too long
-        if(args[0].length() > 10)
+        if(args[0].length() > 20)
         {
             vMinecraftChat.sendMessage(player, player, Colors.Rose
             		+ "The suffix you entered was too long.");
