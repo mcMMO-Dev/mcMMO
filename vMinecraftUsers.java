@@ -44,7 +44,7 @@ public class vMinecraftUsers {
 			}
 		}
     }
-        public boolean doesPlayerExist(String player) {
+    public boolean doesPlayerExist(String player) {
         try {
             Scanner scanner = new Scanner(new File(location));
             while (scanner.hasNextLine()) {
@@ -64,9 +64,25 @@ public class vMinecraftUsers {
         }
         return false;
     }
-        
+
+	//=====================================================================
+	//Function:	addUser
+	//Input:	Player player: The player to create a profile for
+	//Output:	none
+	//Use:		Creates the player profile
+	//=====================================================================
     public static void addUser(Player player){
     	players.addPlayer(player);
+    }
+
+	//=====================================================================
+	//Function:	getProfile
+	//Input:	Player player: The player to find the profile for
+	//Output:	PlayerList.PlayerProfile: The profile
+	//Use:		Gets the player profile
+	//=====================================================================
+    public static PlayerList.PlayerProfile getProfile(Player player){
+    	return players.findProfile(player);
     }
     
     public static vMinecraftUsers getInstance() {
@@ -320,6 +336,17 @@ class PlayerList
 		}
 
 		//=====================================================================
+		//Function:	removeIgnore
+		//Input:	Player name: The player to unignore
+		//Output:	boolean: If the player was successfully unignored
+		//Use:		Stops ignoring a player.
+		//=====================================================================
+		public String[] listIgnore()
+		{
+			return ignoreList.toArray(new String[ignoreList.size()]);
+		}
+
+		//=====================================================================
 		//Function:	addAlias
 		//Input:	String command: The command to try to call
 		//			String[] args: The arguments for the command
@@ -369,6 +396,38 @@ class PlayerList
 		//Use:		Gets a player tag
 		//=====================================================================
 		public String getTag() { return tag; }
+
+		//=====================================================================
+		//Function:	setNick
+		//Input:	String newTag: The nickname to set for the player
+		//Output:	None
+		//Use:		Sets a player nickname
+		//=====================================================================
+		public void setNick(String newNick){ nickName = newNick; }
+
+		//=====================================================================
+		//Function:	getNick
+		//Input:	None
+		//Output:	String: The player nickname
+		//Use:		Gets a player nickname
+		//=====================================================================
+		public String getNick() { return nickName; }
+
+		//=====================================================================
+		//Function:	setSuffix
+		//Input:	String newTag: The suffix to set for the player
+		//Output:	None
+		//Use:		Sets a player suffix
+		//=====================================================================
+		public void setSuffix(String newSuffix){ suffix = newSuffix; }
+
+		//=====================================================================
+		//Function:	getSuffix
+		//Input:	None
+		//Output:	String: The player suffix
+		//Use:		Gets a player suffix
+		//=====================================================================
+		public String getSuffix() { return suffix; }
 
 		//=====================================================================
 		//Function:	setMessage

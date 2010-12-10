@@ -19,17 +19,18 @@ public class vMinecraftChat {
 	//=====================================================================
     public static void gmsg(Player sender, String msg){
         for (Player receiver : etc.getServer().getPlayerList()) {
-            if (receiver != null) {
-            	if(vMinecraftUsers.players.findProfile(receiver) == null)
-            		return;
-            	//Check if the person has the sender ignored
-            	if(!vMinecraftUsers.players.findProfile(receiver).isIgnored(sender))
-        		{
-        	    	String[] message = applyColors(wordWrap(msg));
-        	    	for(String out : message)
-        	    		receiver.sendMessage(out);
-        		}
-            }
+        	
+            if (receiver == null) {return;}
+            
+        	if(vMinecraftUsers.getProfile(receiver) == null)
+        		return;
+        	//Check if the person has the sender ignored
+        	if(!vMinecraftUsers.getProfile(receiver).isIgnored(sender))
+    		{
+    	    	String[] message = applyColors(wordWrap(msg));
+    	    	for(String out : message)
+    	    		receiver.sendMessage(out);
+    		}
         }
     }
 
@@ -41,17 +42,17 @@ public class vMinecraftChat {
 	//=====================================================================
     public static void sendMessage(Player sender, Player receiver, String msg){
     	//Check if the receiver has the sender ignored
-    	if(vMinecraftUsers.players.findProfile(receiver) == null)
+    	if(vMinecraftUsers.getProfile(receiver) == null)
     		return;
-		if(!vMinecraftUsers.players.findProfile(receiver).isIgnored(sender))
+		if(!vMinecraftUsers.getProfile(receiver).isIgnored(sender))
 		{
 	    	String[] message = applyColors(wordWrap(msg));
 	    	for(String out : message)
 	    		receiver.sendMessage(out);
 	    //Tell them if they are
 		} else
-    		sendMessage(sender, sender, Colors.Rose + receiver.getName() + " has you " +
-    				"on their ignore list.");
+    		sendMessage(sender, sender, Colors.Rose + receiver.getName()
+    				+ " has you on their ignore list.");
     }
 
 	//=====================================================================
@@ -211,18 +212,24 @@ public class vMinecraftChat {
 	//=====================================================================
     public static String getName(Player player){
     	
-    	//Get the prefix
-    	String playerPrefix = player.getPrefix();
+    	//Add the nickname or the name if there is none
+    	String output = vMinecraftUsers.getProfile(player).getNick();
     	
-    	//Add the name
-    	String output = player.getName();
+    	if(output.isEmpty())
+    		output = player.getName();
     	
     	//Add the color if there is one
     	if(player.getColor() != null && player.getColor() != "")
     		output = player.getColor().substring(0,2) + output;
-    	//Add the prefix if there is one
-    	if(playerPrefix != null && !playerPrefix.isEmpty())
-    		output = applyColors(playerPrefix.substring(1)) + output;
+    	
+    	//Add the tag if there is one
+    	output = vMinecraftUsers.getProfile(player).getTag() + output;
+    	
+    	//Add the suffix if there is one
+    	output += vMinecraftUsers.getProfile(player).getSuffix();
+    	
+    	/*if(playerPrefix != null && !playerPrefix.isEmpty())
+    		output = applyColors(playerPrefix.substring(1)) + output;*/
     	
     	//Return the name
         return output;
