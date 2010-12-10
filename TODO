@@ -1,7 +1,6 @@
 Vminecraft b8 Todo:
 	+ ^r for rainbow color code
 	+ Finish work on the flat file system
-	+ Antigriefs <Nos> Working on this
 	+ Allow players to nickname themselves or others
 	+ Time manipulation <Cere> Working on this
 		* Have time changes not be instant but move the sky faster
@@ -22,6 +21,8 @@ Vminecraft b8 Todo:
 DONE
     + Fixed death messages and ezModo
 	+ Quick recode of /me to use the new getName function
+        + Simple Fire Antigrief
+        + /prefix
 	+ /a to toggle admin chat
 	+ Code was organized
 	+ Aliasing was added
