@@ -21,6 +21,8 @@ Vminecraft b8 Todo:
 DONE
     + Fixed death messages and ezModo
 	+ Quick recode of /me to use the new getName function
+        + Simple Fire Antigrief
+        + /prefix
 	+ /a to toggle admin chat
 	+ Code was organized
 	+ Aliasing was added
