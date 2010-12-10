@@ -396,7 +396,8 @@ public class vMinecraftCommands{
         		+ Colors.Rose 			+ "c"
         		+ Colors.LightPurple	+ "d"
         		+ Colors.Yellow			+ "e"
-        		+ Colors.White			+ "f");
+        		+ Colors.White			+ "f"
+				+ "^r"					+ "rrrrrrrrrrr");
         return EXIT_SUCCESS;
     }
     

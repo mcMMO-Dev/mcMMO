@@ -492,13 +492,16 @@ public class vMinecraftChat {
 			for(String msg: message)
 			{	
 				//Start the line with the most recent color
-				String temp = recentColor;
+				String temp = "";
+				if(!recentColor.equals("~") && recentColor != null)
+					temp += recentColor;
 				
 				//Loop through looking for a color code
 				for(int x = 0; x< msg.length(); x++)
 				{
 					//If the char is a ^ or �
-					if(msg.charAt(x) == '^' || msg.charAt(x) == Colors.White.charAt(0))
+					if(taste || msg.charAt(x) == '^'
+							|| msg.charAt(x) == Colors.White.charAt(0))
 					{
 						if(x != msg.length() - 1)
 						{
@@ -509,7 +512,7 @@ public class vMinecraftChat {
 								recentColor = vMinecraftChat.colorChange(msg.charAt(x+1));
 								
 								//If the color specified is rainbow
-								if(recentColor.equals("~") || taste)
+								if(taste || recentColor.equals("~"))
 								{
 									//Skip the quake code for rainbow
 									if(recentColor.equals("~"))
@@ -533,7 +536,8 @@ public class vMinecraftChat {
 									
 									//If it reached another color instead of the end
 									if(x < msg.length() && msg.charAt(x) == '^'
-										|| msg.charAt(x) == Colors.Red.charAt(0) )
+											|| x < msg.length()
+											&&  msg.charAt(x) == Colors.Red.charAt(0) )
 									{
 										taste = false;
 										i = 0;
