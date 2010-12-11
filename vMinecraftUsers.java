@@ -7,17 +7,16 @@ import java.util.Scanner;
 public class vMinecraftUsers {
     private static volatile vMinecraftUsers instance;
     protected static final Logger log = Logger.getLogger("Minecraft");
-    String file = "vminecraftusers.txt";
     private PropertiesFile properties;
-    String location = "vminecraftusers.txt";
+    String location = "vminecraft.users";
     
     public static PlayerList players = new PlayerList();
     
     
     public void loadUsers(){
-        File theDir = new File("vminecraftusers.txt");
+        File theDir = new File(location);
 		if(!theDir.exists()){
-			properties = new PropertiesFile("vminecraftusers.txt");
+			properties = new PropertiesFile(location);
 			FileWriter writer = null;
 			try {
 				writer = new FileWriter(location);
@@ -36,11 +35,11 @@ public class vMinecraftUsers {
 			}
 
 		} else {
-			properties = new PropertiesFile("vminecraftusers.txt");
+			properties = new PropertiesFile(location);
 			try {
 				properties.load();
 			} catch (IOException e) {
-				log.log(Level.SEVERE, "Exception while loading vminecraftusers.txt", e);
+				log.log(Level.SEVERE, "Exception while loading " + location, e);
 			}
 		}
     }
@@ -166,6 +165,8 @@ class PlayerList
 					   tag,
 					   suffix,
 					   defaultColor;
+
+        String location = "vminecraft.users";
 		
 		private ArrayList<String> ignoreList;
 		private commandList aliasList;
@@ -190,7 +191,6 @@ class PlayerList
             suffix = new String();
 			ignoreList = new ArrayList<String>();
             aliasList = new commandList();
-            String location = "vminecraftusers.txt";
             
             //Try to apply what we can
             try {
@@ -257,7 +257,6 @@ class PlayerList
         //=====================================================================
         public void save(){
             try {
-                String location = "vminecraftusers.txt";
                 BufferedWriter bw = new BufferedWriter(new FileWriter(location, true));
                 Scanner scanner = new Scanner(new File(location));
                 while (scanner.hasNextLine()) {
@@ -277,7 +276,6 @@ class PlayerList
 	            }
 	            scanner.close();
 	        } catch (Exception e) {
-	            String location = "vminecraftusers.txt";
                     log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
 	        }
 		}

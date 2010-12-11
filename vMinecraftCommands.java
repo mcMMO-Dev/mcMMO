@@ -107,7 +107,6 @@ public class vMinecraftCommands{
         cl.registerMessage("/ban", "%p has banned %0p", Colors.Blue, 1, false);
         cl.registerMessage("/ipban", "%p has IP banned %0p", Colors.Blue, 1, false);
         cl.registerMessage("/time", "Time change thanks to %p", Colors.Blue, 1, true);
-        cl.registerMessage("/tp", "%p has teleported to %0p", Colors.Blue, 1, true);
     }
     //=====================================================================
 	//Function:	vminecrafthelp (/vhelp or /vminecraft)
@@ -582,7 +581,7 @@ public class vMinecraftCommands{
         
         //Make sure the player exists
         Player toPlayer = etc.getServer().matchPlayer(args[0]);
-        if (toPlayer != null && args.length > 0) {
+        if (toPlayer == null || args.length < 1) {
         	vMinecraftChat.sendMessage(player, player, Colors.Rose
         			+ "No player by the name of " + args[0] + " could be found.");
             return EXIT_SUCCESS;
@@ -683,7 +682,7 @@ public class vMinecraftCommands{
 	    	return EXIT_SUCCESS;
     	}
     	
-    	if(ignore.hasControlOver(player))
+    	if(!player.hasControlOver(ignore))
     	{
 			vMinecraftChat.sendMessage(player, player, Colors.Rose
 					+ "You can't ignore someone a higher rank than you.");
@@ -691,7 +690,7 @@ public class vMinecraftCommands{
     	}
     	
 		//Don't let the player ignore themselves
-		if(!ignore.getName().equalsIgnoreCase(player.getName()))
+		if(ignore.getName().equalsIgnoreCase(player.getName()))
 		{		
 			vMinecraftChat.sendMessage(player, player,
 					Colors.Rose + "You cannot ignore yourself");
@@ -862,7 +861,7 @@ public class vMinecraftCommands{
 		//Make sure the user has access to the command
 		if(!player.canUseCommand("/suicide")) return EXIT_FAIL;
 		
-        if(vMinecraftSettings.getInstance().cmdSuicide()) return EXIT_FAIL;
+        if(!vMinecraftSettings.getInstance().cmdSuicide()) return EXIT_FAIL;
     
     	//Set your health to 0. Not much to it.
         player.setHealth(0);
@@ -908,6 +907,9 @@ public class vMinecraftCommands{
 		
 		//If the player exists transport the user to the player
 		else {
+			vMinecraftChat.gmsg( player, vMinecraftChat.getName(player)
+					+ Colors.LightBlue + "has teleported to"
+					+ vMinecraftChat.getName(playerTarget));
 			log.log(Level.INFO, player.getName() + " teleported to " +
 					playerTarget.getName());
 			player.teleportTo(playerTarget);

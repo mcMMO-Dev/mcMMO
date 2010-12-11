@@ -88,6 +88,7 @@ public class vMinecraftListener extends PluginListener {
     }
 
     public void onLogin(Player player){
+    	vMinecraftChat.sendMessage(player, player, Colors.Rose + "There are currently " + etc.getServer().getPlayerList().size() + " players online.");
         vMinecraftUsers.addUser(player);
     }
     
