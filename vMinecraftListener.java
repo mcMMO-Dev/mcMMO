@@ -91,6 +91,10 @@ public class vMinecraftListener extends PluginListener {
     	vMinecraftChat.sendMessage(player, player, Colors.Rose + "There are currently " + etc.getServer().getPlayerList().size() + " players online.");
         vMinecraftUsers.addUser(player);
     }
+
+    public void onDisconnect(Player player){
+        vMinecraftUsers.removeUser(player);
+    }
     
     public boolean onIgnite(Block block, Player player) {
         if(vMinecraftSettings.stopFire){

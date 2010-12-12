@@ -47,10 +47,20 @@ public class vMinecraftUsers {
 	//Function:	addUser
 	//Input:	Player player: The player to create a profile for
 	//Output:	none
-	//Use:		Creates the player profile
+	//Use:		Loads the profile for the specified player
 	//=====================================================================
     public static void addUser(Player player){
     	players.addPlayer(player);
+    }
+
+	//=====================================================================
+	//Function:	removeUser
+	//Input:	Player player: The player to stop following
+	//Output:	none
+	//Use:		Creates the player profile
+	//=====================================================================
+    public static void removeUser(Player player){
+    	players.removePlayer(player);
     }
 
 	//=====================================================================

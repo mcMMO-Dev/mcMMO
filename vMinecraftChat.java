@@ -336,10 +336,10 @@ public class vMinecraftChat {
 				color = Colors.White;
 				break;
 			case 'R':
-				color = "~";
+				color = "^r";
 				break;
 			case 'r':
-				color = "~";
+				color = "^r";
 				break;
 			default:
 				color = null;
@@ -382,8 +382,7 @@ public class vMinecraftChat {
 			}
 
 		    //So you can read adminchat from the server console
-			log.log(Level.INFO, "@" + "<" + player.getName()
-					+  Colors.White +"> " + message); 
+			log.log(Level.INFO, "@" + "<" + player.getName() + "> " + message); 
 			return true;
 		}
 		return false;
@@ -448,11 +447,12 @@ public class vMinecraftChat {
 				+ getName(player) + Colors.White +"> ";
 		if(vMinecraftSettings.getInstance().quakeColors()) {
 
+			String color = vMinecraftUsers.getProfile(player).getColor();
 			//Log the chat
-			log.log(Level.INFO, "<"+player.getName()+"> "+message);
+			log.log(Level.INFO, "<"+player.getName()+"> " + message);
 			
 			//Output the message
-			gmsg(player, playerName + message);
+			gmsg(player, playerName + color + message);
 
 			//Loop through the string finding the color codes and inserting them
 			return true;
@@ -495,7 +495,7 @@ public class vMinecraftChat {
 			{	
 				//Start the line with the most recent color
 				String temp = "";
-				if(!recentColor.equals("~") && recentColor != null)
+				if(!recentColor.equals("^r") && recentColor != null)
 					temp += recentColor;
 				
 				//Loop through looking for a color code
@@ -514,10 +514,10 @@ public class vMinecraftChat {
 								recentColor = vMinecraftChat.colorChange(msg.charAt(x+1));
 								
 								//If the color specified is rainbow
-								if(taste || recentColor.equals("~"))
+								if(taste || recentColor.equals("^r"))
 								{
 									//Skip the quake code for rainbow
-									if(recentColor.equals("~"))
+									if(recentColor.equals("^r"))
 									{
 										x += 2;
 									}

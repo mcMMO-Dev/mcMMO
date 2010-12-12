@@ -195,14 +195,6 @@ public class vMinecraftCommands{
                 return EXIT_SUCCESS;
             }
             
-            //Check if the prefix is too long
-            if(vMinecraftChat.msgLength(args[1]) > 60)
-            {
-                vMinecraftChat.sendMessage(player, player, Colors.Rose
-                		+ "The prefix you entered was too long.");
-                return EXIT_SUCCESS;
-            }
-            
             //Check if the player exists
             Player other = etc.getServer().matchPlayer(args[0]);
             if(other == null)
@@ -212,12 +204,32 @@ public class vMinecraftCommands{
                 return EXIT_SUCCESS;
             }
             
-            if(args.length >= 2 && args[0] != null){
+            //Check if they are a higher rank than the other person
+            if(other.hasControlOver(player))
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified is a higher rank than you.");
+                return EXIT_SUCCESS;
+            }
+
+            
+            //Check if the prefix is too long
+            if(vMinecraftChat.msgLength(args[1]) > 60)
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The prefix you entered was too long.");
+                return EXIT_SUCCESS;
+            }
+            if(args.length >= 2 && args[0] != null)
+            {
                 other.setPrefix(args[1]);
                 player.sendMessage(Colors.Rose + "Name color changed");
+                FlatFileSource ffs = new FlatFileSource();
+                ffs.modifyPlayer(other);
             }
             
-            if(args.length >= 3 && args[1] != null){
+            if(args.length >= 3 && args[1] != null)
+            {
                vMinecraftUsers.players.findProfile(other).setTag(args[2]);
 	           player.sendMessage(Colors.LightGreen + "Prefix changed");
             }
@@ -280,8 +292,17 @@ public class vMinecraftCommands{
                 		+ "The player you specified could not be found");
                 return EXIT_SUCCESS;
             }
+            
+            //Check if they are a higher rank than the other person
+            if(other.hasControlOver(player))
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified is a higher rank than you.");
+                return EXIT_SUCCESS;
+            }
+            
             vMinecraftUsers.getProfile(other).setTag("");
-	        player.sendMessage(Colors.LightGreen + "Prefix removed");
+	        player.sendMessage(Colors.LightGreen + "Prefix Removed");
             
             return EXIT_SUCCESS;
         }
@@ -296,7 +317,7 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         vMinecraftUsers.getProfile(player).setTag("");
-        player.sendMessage(Colors.LightGreen + "Prefix removed");
+        player.sendMessage(Colors.LightGreen + "Prefix Removed");
         
         return EXIT_SUCCESS;
     }
@@ -334,7 +355,17 @@ public class vMinecraftCommands{
                 		+ "The player you specified could not be found");
                 return EXIT_SUCCESS;
             }
+            
+            //Check if they are a higher rank than the other person
+            if(other.hasControlOver(player))
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified is a higher rank than you.");
+                return EXIT_SUCCESS;
+            }
+            
             vMinecraftUsers.getProfile(other).setNick(args[1]);
+            player.sendMessage(Colors.LightGreen + "Nickname Set");
             
             return EXIT_SUCCESS;
         }
@@ -358,6 +389,7 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         vMinecraftUsers.getProfile(player).setNick(args[0]);
+        player.sendMessage(Colors.LightGreen + "Nickname Set");
         
         return EXIT_SUCCESS;
     }
@@ -387,8 +419,17 @@ public class vMinecraftCommands{
                 		+ "The player you specified could not be found");
                 return EXIT_SUCCESS;
             }
+            
+            //Check if they are a higher rank than the other person
+            if(other.hasControlOver(player))
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified is a higher rank than you.");
+                return EXIT_SUCCESS;
+            }
+            
             vMinecraftUsers.getProfile(other).setNick("");
-            player.sendMessage(Colors.LightGreen + "Nickname removed");
+            player.sendMessage(Colors.LightGreen + "Nickname Removed");
             
             return EXIT_SUCCESS;
         }
@@ -403,7 +444,7 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         vMinecraftUsers.getProfile(player).setNick("");
-        player.sendMessage(Colors.LightGreen + "Nickname removed");
+        player.sendMessage(Colors.LightGreen + "Nickname Removed");
         
         return EXIT_SUCCESS;
     }
@@ -441,7 +482,16 @@ public class vMinecraftCommands{
                 		+ "The player you specified could not be found");
                 return EXIT_SUCCESS;
             }
+            
+            //Check if they are a higher rank than the other person
+            if(other.hasControlOver(player))
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified is a higher rank than you.");
+                return EXIT_SUCCESS;
+            }
             vMinecraftUsers.getProfile(other).setSuffix(args[1]);
+            player.sendMessage(Colors.LightGreen + "Suffix Set");
             
             return EXIT_SUCCESS;
         }
@@ -464,6 +514,7 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         vMinecraftUsers.getProfile(player).setSuffix(args[0]);
+        player.sendMessage(Colors.LightGreen + "Suffix Set");
         
         return EXIT_SUCCESS;
     }
@@ -493,8 +544,16 @@ public class vMinecraftCommands{
                 		+ "The player you specified could not be found");
                 return EXIT_SUCCESS;
             }
+            
+            //Check if they are a higher rank than the other person
+            if(other.hasControlOver(player))
+            {
+                vMinecraftChat.sendMessage(player, player, Colors.Rose
+                		+ "The player you specified is a higher rank than you.");
+                return EXIT_SUCCESS;
+            }
             vMinecraftUsers.getProfile(other).setSuffix("");
-            player.sendMessage(Colors.LightGreen + "Suffix removed");
+            player.sendMessage(Colors.LightGreen + "Suffix Removed");
             
             return EXIT_SUCCESS;
         }
@@ -509,7 +568,7 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         vMinecraftUsers.getProfile(player).setSuffix("");
-        player.sendMessage(Colors.LightGreen + "Suffix removed");
+        player.sendMessage(Colors.LightGreen + "Suffix Removed");
         
         return EXIT_SUCCESS;
     }
@@ -524,8 +583,7 @@ public class vMinecraftCommands{
     	if(args.length > 0)
     	{
     		vMinecraftUsers.getProfile(player).setColor(args[0]);
-    		vMinecraftChat.sendMessage(player, player,
-    				vMinecraftChat.colorChange(args[0].charAt(0))
+    		vMinecraftChat.sendMessage(player, player, "^" + args[0].charAt(0)
     				+ "Default chat color set.");
     	} else {
 	        player.sendMessage(Colors.Rose + "You use these color codes like in quake or MW2.");
@@ -543,13 +601,13 @@ public class vMinecraftCommands{
 	        		+ Colors.LightGray 		+ "7"
 	        		+ Colors.Gray 			+ "8"
 	        		+ Colors.DarkPurple 	+ "9"
-	        		+ Colors.LightGreen 	+ "a"
-	        		+ Colors.LightBlue 		+ "b"
-	        		+ Colors.Rose 			+ "c"
-	        		+ Colors.LightPurple	+ "d"
-	        		+ Colors.Yellow			+ "e"
-	        		+ Colors.White			+ "f"
-					+ "^r"					+ "rrrrrrrrrrr");
+	        		+ Colors.LightGreen 	+ "A"
+	        		+ Colors.LightBlue 		+ "B"
+	        		+ Colors.Rose 			+ "C"
+	        		+ Colors.LightPurple	+ "D"
+	        		+ Colors.Yellow			+ "E"
+	        		+ Colors.White			+ "F"
+					+ "^r"					+ "[R]ainbow");
     	}
         return EXIT_SUCCESS;
     }
@@ -1331,9 +1389,9 @@ public class vMinecraftCommands{
 		if(player.canUseCommand("/vranks"))
 		{
 			vMinecraftChat.sendMessage(player, player, "/promote [Player]" +
-			" - Promotes a player");
+			" - Promotes a player one rank");
 			vMinecraftChat.sendMessage(player, player, "/demote [Player]" +
-			" - Demotes a player");
+			" - Demotes a player one rank");
 		}
 		return EXIT_SUCCESS;
 	}
