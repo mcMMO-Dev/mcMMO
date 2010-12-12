@@ -11,7 +11,7 @@ public class vMinecraft extends Plugin {
     
 	public void enable() {
 		vMinecraftSettings.getInstance().loadSettings();
-                vMinecraftUsers.getInstance().loadUsers();
+        vMinecraftUsers.getInstance().loadUsers();
 		vMinecraftCommands.loadCommands();
 
     }

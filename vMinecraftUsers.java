@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Scanner;
 
 public class vMinecraftUsers {
     private static volatile vMinecraftUsers instance;
@@ -21,7 +20,7 @@ public class vMinecraftUsers {
 			try {
 				writer = new FileWriter(location);
 				writer.write("#Storage place for user information\r\n");
-                                writer.write("#username:nickname:suffix:tag:ignore,list,names:alias,commands,here\r\n");
+                writer.write("#username:nickname:suffix:tag:ignore,list,names:alias,commands,here\r\n");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
 			} finally {
@@ -42,26 +41,6 @@ public class vMinecraftUsers {
 				log.log(Level.SEVERE, "Exception while loading " + location, e);
 			}
 		}
-    }
-    public boolean doesPlayerExist(String player) {
-        try {
-            Scanner scanner = new Scanner(new File(location));
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if (line.startsWith("#") || line.equals("") || line.startsWith("﻿")) {
-                    continue;
-                }
-                String[] split = line.split(":");
-                if (!split[0].equalsIgnoreCase(player)) {
-                    continue;
-                }
-                return true;
-            }
-            scanner.close();
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
-        }
-        return false;
     }
 
 	//=====================================================================
@@ -163,8 +142,9 @@ class PlayerList
 					   lastMessage,
 					   nickName,
 					   tag,
-					   suffix,
-					   defaultColor;
+					   suffix;
+		
+		char defaultColor;
 
         String location = "vminecraft.users";
 		
@@ -186,66 +166,78 @@ class PlayerList
 		{
             //Declare things
 			playerName = player.getName();
-            nickName = new String();
             tag = new String();
+            nickName = new String();
             suffix = new String();
+            defaultColor = 'f';
 			ignoreList = new ArrayList<String>();
             aliasList = new commandList();
             
-            //Try to apply what we can
-            try {
-                Scanner scanner = new Scanner(new File(location));
-                while (scanner.hasNextLine()) {
-	                String line = scanner.nextLine();
-	                if (line.startsWith("#") || line.equals("") || line.startsWith("﻿")) {
-	                    continue;
-	                }
-	                String[] split = line.split(":");
-	                    
-	                //If the player name is equal to the name in the list
-	                if (split.length > 0 && split[0].equalsIgnoreCase(player.getName())) {
-	                	
-		                //Get the tag from the 1st split
-		                if (split.length >= 2)
-		                	nickName = split[1];
-
-		                //Get the tag from the 2nd split
-			            if (split.length >= 3)
-			            	suffix = split[2];
+            //Try to load the player and if they aren't found, append them
+            if(!load())
+            	addPlayer();
+		}
 		
-		                //Get the tag from the 3rd split
-		                if (split.length >= 4)
-		                    tag = (split[3]);
-		                
-		                //Add all the ignored people to the player's ignore list
-		                if (split.length >= 5) {
-		                	for(String name : split[4].split(","))
-		                		ignoreList.add(name);
-		                }
-		                
-		                //Get the alias list, from the 5th split
-		                if (split.length >= 6) {
-		                	//Loop through all the aliases
-		                	for(String alias : split[5].split(","))
-		                	{
-		                		//Break apart the two parts of the alias
-		                		String[] parts = alias.split("@");
-		                		if(parts.length > 1)
-		                		{
-		                			//Register the alias to the player's aliasList
-		                			aliasList.registerAlias(parts[0], parts[2]);
-		                		}
-		                	}
-		                }
-		                break;
-	                }
-	            }
-	            scanner.close();
+		public boolean load()
+		{
+            try {
+            	//Open the user file
+            	FileReader file = new FileReader(location);
+            	BufferedReader in = new BufferedReader(file);
+            	String line = "";
+            	while((line = in.readLine()) != null)
+            	{
+            		//Find if the line contains the player we want.
+            		String[] character = line.split(":");
+            		if(!character[0].equals(playerName)){continue;}
+            		
+        			//Get the tag
+        			if(character.length > 1)
+        				tag = character[1];
+        			//Get the nickname
+        			if(character.length > 2)
+        				nickName = character[2];
+        			//Get the suffix
+        			if(character.length > 3)
+        				suffix = character[3];
+        			//Get the color
+        			if(character.length > 4)
+        				defaultColor = character[4].charAt(0);
+        			//Ignore previously ignored players
+        			if(character.length > 5)
+        			{
+        				String[] ignores = character[5].split(",");
+        				if(ignores.length > 0)
+        				{
+        					for(String ignore : ignores)
+        						ignoreList.add(ignore);
+        				}
+        			}
+        			//Register the aliases
+        			if(character.length > 6)
+        			{
+        				String[] allAliases = character[6].split(",");
+        				if(allAliases.length > 0)
+        				{
+        					for(String singleAlias : allAliases)
+        					{
+        						String[] parts = singleAlias.split("@");
+        						if(parts.length > 1)
+        						{
+        							aliasList.registerAlias(parts[0], parts[1]);
+        						}
+        					}
+        				}
+        			}
+                	in.close();
+        			return true;
+            	}
+            	in.close();
 	        } catch (Exception e) {
 	            log.log(Level.SEVERE, "Exception while reading "
 	            		+ location + " (Are you sure you formatted it correctly?)", e);
 	        }
-	        save();
+	        return false;
 		}
 		
         //=====================================================================
@@ -255,30 +247,90 @@ class PlayerList
         // Use:         Writes current values of PlayerProfile to disk
 		//				Call this function to save current values
         //=====================================================================
-        public void save(){
+        public void save()
+        {
             try {
-                BufferedWriter bw = new BufferedWriter(new FileWriter(location, true));
-                Scanner scanner = new Scanner(new File(location));
-                while (scanner.hasNextLine()) {
-	                String line = scanner.nextLine();
-	                if (line.startsWith("#") || line.equals("") || line.startsWith("﻿")) {
-	                    continue;
-	                }
-	                String[] split = line.split(":");
-	                if (!split[0].equalsIgnoreCase(playerName)) {
-	                    continue;
-	                }
-	                String output =playerName + ":" + nickName + ":" + suffix + ":" + tag + ":";
-	                for(String player : ignoreList)
-	                	output += player + ",";
-	                output += ":";
-	                bw.write(output);
-	            }
-	            scanner.close();
+            	//Open the file
+            	FileReader file = new FileReader(location);
+                BufferedReader in = new BufferedReader(file);
+                StringBuilder writer = new StringBuilder();
+            	String line = "";
+            	
+            	//While not at the end of the file
+            	while((line = in.readLine()) != null)
+            	{
+            		//Read the line in and copy it to the output it's not the player
+            		//we want to edit
+            		if(!line.split(":")[0].equalsIgnoreCase(playerName))
+            		{
+                        writer.append(line).append("\r\n");
+                        
+                    //Otherwise write the new player information
+            		} else {
+            			writer.append(playerName + ":");
+            			writer.append(tag + ":");
+            			writer.append(nickName + ":");
+            			writer.append(suffix + ":");
+            			writer.append(defaultColor + ":");
+            			
+            			int i = 0;
+            			for(String ignore : ignoreList)
+            			{
+            				writer.append(ignore);
+            				if(i < ignoreList.size() - 1)
+            					writer.append(",");
+            			}
+            			writer.append(":");
+            			
+            			writer.append(aliasList.toString());
+            			writer.append("\r\n");
+            		}
+            	}
+            	in.close();
+            	
+
+            	//Write the new file
+                FileWriter out = new FileWriter(location);
+                out.write(writer.toString());
+                out.close();
+               
 	        } catch (Exception e) {
                     log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
 	        }
 		}
+        
+        public void addPlayer()
+        {
+            try {
+            	//Open the file to write the player
+            	FileWriter file = new FileWriter(location);
+                BufferedWriter out = new BufferedWriter(file);
+                
+                //Add the player to the end
+                out.append(playerName + ":");
+                out.append(tag + ":");
+                out.append(nickName + ":");
+                out.append(suffix + ":");
+                out.append(defaultColor + ":");
+    			
+    			int i = 0;
+    			for(String ignore : ignoreList)
+    			{
+    				out.append(ignore);
+    				if(i < ignoreList.size() - 1)
+    					out.append(",");
+    			}
+    			out.append(":");
+    			
+    			out.append(aliasList.toString());
+    			out.append("\r\n");
+    			
+    			out.close();
+               
+	        } catch (Exception e) {
+                    log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
+	        }
+        }
 
 		//=====================================================================
 		//Function:	isPlayer
@@ -387,7 +439,11 @@ class PlayerList
 		//Output:	None
 		//Use:		Sets a player tag
 		//=====================================================================
-		public void setTag(String newTag){ tag = newTag; }
+		public void setTag(String newTag)
+		{
+			tag = newTag;
+			save();
+		}
 
 		//=====================================================================
 		//Function:	getTag
@@ -403,7 +459,11 @@ class PlayerList
 		//Output:	None
 		//Use:		Sets a player nickname
 		//=====================================================================
-		public void setNick(String newNick){ nickName = newNick; }
+		public void setNick(String newNick)
+		{
+			nickName = newNick;
+			save();
+		}
 
 		//=====================================================================
 		//Function:	getNick
@@ -419,7 +479,11 @@ class PlayerList
 		//Output:	None
 		//Use:		Sets a player suffix
 		//=====================================================================
-		public void setSuffix(String newSuffix){ suffix = newSuffix; }
+		public void setSuffix(String newSuffix)
+		{
+			suffix = newSuffix;
+			save();
+		}
 
 		//=====================================================================
 		//Function:	getSuffix
@@ -435,7 +499,11 @@ class PlayerList
 		//Output:	None
 		//Use:		Sets a player color
 		//=====================================================================
-		public void setColor(String newColor){ defaultColor = newColor; }
+		public void setColor(String newColor)
+		{
+			defaultColor = newColor.charAt(0);
+			save();
+		}
 
 		//=====================================================================
 		//Function:	getColor
@@ -443,7 +511,7 @@ class PlayerList
 		//Output:	String: The player color
 		//Use:		Gets a player color
 		//=====================================================================
-		public String getColor() { return defaultColor; }
+		public String getColor() {return vMinecraftChat.colorChange(defaultColor);}
 
 		//=====================================================================
 		//Function:	setMessage

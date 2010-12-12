@@ -65,7 +65,7 @@ public class vMinecraftCommands{
         cl.register("/slay", "slay", "Kill target player");
 
         //Social
-        cl.register("/colors", "colors");
+        cl.register("/colors", "colors", "Set your default chat color: /colors <Color Char>");
         cl.register("/me", "me");
         cl.register("/fabulous", "fabulous", "makes text SUUUPER");
         cl.register("/msg", "message", "Send a message to a player /msg [Player] [Message]");
@@ -521,28 +521,36 @@ public class vMinecraftCommands{
 	//Use:		Displays a list of all colors and color codes
 	//=====================================================================
     public static int colors(Player player, String[] args){
-        player.sendMessage(Colors.Rose + "You use these color codes like in quake or MW2.");
-        player.sendMessage(Colors.Rose + "^4 would make text " + Colors.Red
-        		+ "red" + Colors.Rose + ", ^a would make it " + Colors.LightGreen 
-        		+ "light green" + Colors.Rose + ".");
-        vMinecraftChat.sendMessage(player, player,
-        		  Colors.Black			+ "0"
-        		+ Colors.Navy			+ "1"
-        		+ Colors.Green			+ "2"
-        		+ Colors.Blue			+ "3"
-        		+ Colors.Red 			+ "4"
-        		+ Colors.Purple 		+ "5"
-        		+ Colors.Gold 			+ "6"
-        		+ Colors.LightGray 		+ "7"
-        		+ Colors.Gray 			+ "8"
-        		+ Colors.DarkPurple 	+ "9"
-        		+ Colors.LightGreen 	+ "a"
-        		+ Colors.LightBlue 		+ "b"
-        		+ Colors.Rose 			+ "c"
-        		+ Colors.LightPurple	+ "d"
-        		+ Colors.Yellow			+ "e"
-        		+ Colors.White			+ "f"
-				+ "^r"					+ "rrrrrrrrrrr");
+    	if(args.length > 0)
+    	{
+    		vMinecraftUsers.getProfile(player).setColor(args[0]);
+    		vMinecraftChat.sendMessage(player, player,
+    				vMinecraftChat.colorChange(args[0].charAt(0))
+    				+ "Default chat color set.");
+    	} else {
+	        player.sendMessage(Colors.Rose + "You use these color codes like in quake or MW2.");
+	        player.sendMessage(Colors.Rose + "^4 would make text " + Colors.Red
+	        		+ "red" + Colors.Rose + ", ^a would make it " + Colors.LightGreen 
+	        		+ "light green" + Colors.Rose + ".");
+	        vMinecraftChat.sendMessage(player, player,
+	        		  Colors.Black			+ "0"
+	        		+ Colors.Navy			+ "1"
+	        		+ Colors.Green			+ "2"
+	        		+ Colors.Blue			+ "3"
+	        		+ Colors.Red 			+ "4"
+	        		+ Colors.Purple 		+ "5"
+	        		+ Colors.Gold 			+ "6"
+	        		+ Colors.LightGray 		+ "7"
+	        		+ Colors.Gray 			+ "8"
+	        		+ Colors.DarkPurple 	+ "9"
+	        		+ Colors.LightGreen 	+ "a"
+	        		+ Colors.LightBlue 		+ "b"
+	        		+ Colors.Rose 			+ "c"
+	        		+ Colors.LightPurple	+ "d"
+	        		+ Colors.Yellow			+ "e"
+	        		+ Colors.White			+ "f"
+					+ "^r"					+ "rrrrrrrrrrr");
+    	}
         return EXIT_SUCCESS;
     }
     
@@ -1292,22 +1300,41 @@ public class vMinecraftCommands{
 	//=====================================================================
 	public static int modify(Player player, String[] args)
 	{
-		if(player.canUseCommand("/prefix"))
+		if(player.canUseCommand("/prefixother"))
+			vMinecraftChat.sendMessage(player, player, "/prefix [Player]" +
+					" [Color] (Tag) - Set a players prefix and tag.");
+		else if(player.canUseCommand("/prefix"))
 			vMinecraftChat.sendMessage(player, player, "/prefix [Color]" +
 					" (Tag) - Set your prefix and tag.");
-		return EXIT_SUCCESS;
-	}
-
-	//=====================================================================
-	//Function:	Time Reverse
-	//Input:	long time: The time to reverse to.
-	//Output:	int: Exit Code
-	//Use:		List all invulnerable players
-	//=====================================================================
-	public static int timeReverse(long tarTime)
-	{
-		long curTime = etc.getServer().getRelativeTime();
-		//if(cur)
+		
+		if(player.canUseCommand("/nickother"))
+			vMinecraftChat.sendMessage(player, player, "/nick [Player]" +
+					" [Nickname] - Set a players nickname.");
+		else if(player.canUseCommand("/nick"))
+			vMinecraftChat.sendMessage(player, player, "/nick [Nick]" +
+					" - Set your nickname.");
+		
+		if(player.canUseCommand("/suffixother"))
+			vMinecraftChat.sendMessage(player, player, "/suffix [Player]" +
+					" [Suffix] - Set a players suffix.");
+		else if(player.canUseCommand("/suffix"))
+			vMinecraftChat.sendMessage(player, player, "/suffix [Suffix]" +
+					" - Set your suffix.");
+		
+		if(player.canUseCommand("/suffixother"))
+			vMinecraftChat.sendMessage(player, player, "/suffix [Player]" +
+					" [Suffix] - Set a players suffix.");
+		else if(player.canUseCommand("/suffix"))
+			vMinecraftChat.sendMessage(player, player, "/suffix [Suffix]" +
+					" - Set your suffix.");
+		
+		if(player.canUseCommand("/vranks"))
+		{
+			vMinecraftChat.sendMessage(player, player, "/promote [Player]" +
+			" - Promotes a player");
+			vMinecraftChat.sendMessage(player, player, "/demote [Player]" +
+			" - Demotes a player");
+		}
 		return EXIT_SUCCESS;
 	}
 }
@@ -1417,6 +1444,8 @@ class commandList {
 	//=====================================================================
 	//Function:	call
 	//Input:	String name: The name of the command to be run
+	//			Player player: The player calling the command
+	//			String[] arg: The arguments being input for the command
 	//Output:	boolean: If the command was called successfully
 	//Use:		Attempts to call a command
 	//=====================================================================
@@ -1441,6 +1470,25 @@ class commandList {
 		
 		//Something went wrong
 		return EXIT_FAIL;
+	}
+
+	//=====================================================================
+	//Function:	toString
+	//Input:	None
+	//Output:	String: A string representation of the aliases in the list
+	//Use:		Displays all the aliases in thel ist
+	//=====================================================================
+	public String toString()
+	{
+		String temp = "";
+		int i = 0;
+		for(command comm : commands)
+		{
+			temp += comm.toString();
+			if(i < commands.size() - 1)
+				temp +=",";
+		}
+		return temp;
 	}
 	
 	
@@ -1503,6 +1551,14 @@ class commandList {
 				}
 				return 1;
 		}
+
+		//=====================================================================
+		//Function:	toString
+		//Input:	None
+		//Output:	String: null
+		//Use:		Returns null
+		//=====================================================================
+		public String toString() { return null; }
 	}
 	
 	//=====================================================================
@@ -1585,6 +1641,22 @@ class commandList {
 			} else
 				player.command(reference);
 			return EXIT_SUCCESS;
+		}
+
+		//=====================================================================
+		//Function:	toString
+		//Input:	None
+		//Output:	String: A string representation of this command.
+		//			command@referencedcommand arg1 arg2 argn
+		//Use:		Returns the string representation of the alias
+		//=====================================================================
+		public String toString()
+		{
+			String temp = getName();
+			temp += '@';
+			temp += reference;
+			temp += etc.combineSplit(0, args, " ");
+			return temp;
 		}
 	}
 	
@@ -1684,5 +1756,13 @@ class commandList {
 			}
 			return EXIT_FAIL;
 		}
+
+		//=====================================================================
+		//Function:	toString
+		//Input:	None
+		//Output:	String: null
+		//Use:		Returns null
+		//=====================================================================
+		public String toString() { return null; }
 	}
 }

@@ -1,5 +1,4 @@
 Vminecraft b8 Todo:
-	+ Finish work on the flat file system
 	+ Antigriefs <Nos> Working on this
 	? Time manipulation <Cere> Working on this
 		* Have time changes not be instant but move the sky faster
@@ -47,5 +46,6 @@ DONE
 	+ Allow players to nickname themselves or others
 	+ Allow players to set suffixes
 	+ ^r for rainbow color code
+	+ Finish work on the flat file system
 
 Notes: Let's try to to finish as much of this list as possible tomorrow and push for a b8 release soon :P
