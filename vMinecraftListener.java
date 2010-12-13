@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 //=====================================================================
 public class vMinecraftListener extends PluginListener {
     public int damagetype;
+    public String deadplayer;
+    public boolean senddeath;
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	
 	//=====================================================================
@@ -84,6 +86,10 @@ public class vMinecraftListener extends PluginListener {
     	if (vMinecraftSettings.getInstance().isEzModo(player.getName())) {
             return oldValue > newValue;
         }
+        if (player.getHealth() < 1){
+            senddeath = true;
+            deadplayer = player.getName();
+        }
         return false;
     }
 
@@ -108,41 +114,26 @@ public class vMinecraftListener extends PluginListener {
         return false;
     }
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
-        if(defender.isPlayer()){
-        	try{
-        		Player player = (Player)defender;
-    	        if (attacker.isPlayer()) {
-    	            Player pAttacker = (Player)attacker;
-    	            if(player.getHealth() < 1){
-    	                vMinecraftChat.gmsg(player, pAttacker.getName() + " has murdered " + player.getName());
-    	            }
-    	        }
-    	        if (player.getHealth() < 1 && !attacker.isPlayer()) {
+
+    	        if (senddeath == true) {
     	        	if (type == type.CREEPER_EXPLOSION) {
-    	                vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " was blown to bits by a creeper");
+    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " was blown to bits by a creeper");
     	        	} else if(type == type.FALL){
-    	                vMinecraftChat.gmsg(player,player.getName() + Colors.Red + " fell to death!");
+    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " fell to death!");
     	        	} else if(type == type.FIRE){
-    	                vMinecraftChat.gmsg(player, player.getName() + Colors.Red + " was incinerated");
+    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " was incinerated");
     	        	} else if (type == type.FIRE_TICK){
-    	                vMinecraftChat.gmsg(player, Colors.Red + " Stop drop and roll, not scream, run, and burn " + player.getName());
+    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " Stop drop and roll, not scream, run, and burn " + player.getName());
     	        	} else if (type == type.LAVA){
-    	                vMinecraftChat.gmsg(player, Colors.Red + player.getName() + " drowned in lava");
+    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " drowned in lava");
     	        	} else if (type == type.WATER){
-    	                vMinecraftChat.gmsg(player, Colors.Blue + player.getName() + " should've attended that swimming class");
-    	        	}
-    	        //This should trigger the player death message
-    	        } else if (player.getHealth() < 1 && attacker.isPlayer()){
-    	            Player pAttacker = (Player)attacker;
-    	            vMinecraftChat.gmsg(player, pAttacker.getName() + " has murdered " + player.getName());
-    	            damagetype = 0;
-    	        } else
-    	    		vMinecraftChat.gmsg(player, Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
-        	} catch (Exception e) {}
-        	catch (Throwable e) {}
-        	
-        }
-	    return false;
+    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Blue + " should've attended that swimming class");
+    	        	} else {
+                            vMinecraftChat.gmsg(player, Colors.Gray + deadplayer + " " + vMinecraftSettings.randomDeathMsg());
+                        }
+                        senddeath = false;
+                }
+                return true;
     }
 
 }
