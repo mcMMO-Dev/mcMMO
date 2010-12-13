@@ -90,7 +90,7 @@ public class vMinecraftListener extends PluginListener {
             senddeath = true;
             deadplayer = player.getName();
         }
-        return false;
+        return true;
     }
 
     public void onLogin(Player player){
