@@ -1,24 +1,25 @@
-Vminecraft b8 Todo:
+vMinecraft v1 Todo:
+	! Promote and Demote (ASAP) <Cere> DIBS
 	+ Antigriefs <Nos> Working on this
-	? Time manipulation <Cere> Working on this
+	+ matchPlayer taking into account nicknames
+	+ Modify setNick to not allow players to copy other's
+	  nicknames and account names. Also disallow Notch as a nick :P
+    + Fix death messages (again :v)
+	+ Aliasing Commands (Global Aliases and Personal Aliases) <Cere>
+	+ Write a way to add and remove commands from players and groups
+		
+vMinecraft v2 Updates!
+	+ Different types of /slay
+		* /slay fire to burn them to death
+		* /slay drown to drown them
+		* /slay boil to burn them with lava
+	+ Time manipulation
 		* Have time changes not be instant but move the sky faster
 			to get to the time entered
 		* Loop through specific times of the day and then rewind
 			ex: Sunrise to sunset, mid-morning to noon
-	+ Aliasing Commands (Global Aliases and Personal Aliases) <Cere>
-	! Promote and Demote (ASAP)
-	? Different types of /slay
-		* /slay fire to burn them to death
-		* /slay drown to drown them
-		* /slay boil to burn them with lava
-	? Overload /modify
-		<Cere> We talked about potentially doing this and I think
-		I would like to now to add in further functionality and
-		further limit what features of /modify groups can access
-		<Nos> We should definitely add suffixes to /modify at least
 
 DONE
-    + Fixed death messages and ezModo
 	+ Quick recode of /me to use the new getName function
         + Simple Fire Antigrief
         + /prefix
@@ -47,5 +48,6 @@ DONE
 	+ Allow players to set suffixes
 	+ ^r for rainbow color code
 	+ Finish work on the flat file system
+	+ Disabled /modify
 
 Notes: Let's try to to finish as much of this list as possible tomorrow and push for a b8 release soon :P
