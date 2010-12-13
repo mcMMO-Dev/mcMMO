@@ -86,11 +86,31 @@ public class vMinecraftListener extends PluginListener {
     	if (vMinecraftSettings.getInstance().isEzModo(player.getName())) {
             return oldValue > newValue;
         }
-        if (player.getHealth() < 1){
+        if (player.getHealth() < 1){            
             senddeath = true;
             deadplayer = player.getName();
+            vMinecraftChat.gmsg(deadplayer + " " + Colors.Red + vMinecraftSettings.randomDeathMsg());
+            /* These messages need to be in onHealth because onDamage is only called when a player is hurt, other than
+             * that I'm a bit clueless on how we should go about trying to fix this. I'll set it to at least show random death messages for now.
+            if (type == type.CREEPER_EXPLOSION) {
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " was blown to bits by a creeper");
+    	        	} else if(type == type.FALL){
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " fell to death!");
+    	        	} else if(type == type.FIRE){
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " was incinerated");
+    	        	} else if (type == type.FIRE_TICK){
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " Stop drop and roll, not scream, run, and burn ");
+    	        	} else if (type == type.LAVA){
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " drowned in lava");
+    	        	} else if (type == type.WATER){
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " should've attended that swimming class");
+    	        	} else {
+                            vMinecraftChat.gmsg(Colors.Gray + deadplayer + " " + vMinecraftSettings.randomDeathMsg());
+                        }
+             * 
+             */
         }
-        return true;
+        return false;
     }
 
     public void onLogin(Player player){
@@ -114,26 +134,7 @@ public class vMinecraftListener extends PluginListener {
         return false;
     }
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
-
-    	        if (senddeath == true) {
-    	        	if (type == type.CREEPER_EXPLOSION) {
-    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " was blown to bits by a creeper");
-    	        	} else if(type == type.FALL){
-    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " fell to death!");
-    	        	} else if(type == type.FIRE){
-    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " was incinerated");
-    	        	} else if (type == type.FIRE_TICK){
-    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " Stop drop and roll, not scream, run, and burn ");
-    	        	} else if (type == type.LAVA){
-    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " drowned in lava");
-    	        	} else if (type == type.WATER){
-    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " should've attended that swimming class");
-    	        	} else {
-                            vMinecraftChat.gmsg(Colors.Gray + deadplayer + " " + vMinecraftSettings.randomDeathMsg());
-                        }
-                        senddeath = false;
-                }
-                return true;
+                return false;
     }
 
 }
