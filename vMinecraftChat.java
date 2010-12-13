@@ -27,12 +27,13 @@ public class vMinecraftChat {
 
 	//=====================================================================
 	//Function:	gmsg
-	//Input:	String msg: The message to be broadcast to all players
+	//Input:	Player sender: The player sending the message
+	//			String msg: The message to be broadcast to all players
 	//Output:	None 
 	//Use:		Outputs a message to everybody
 	//=====================================================================
     public static void gmsg(Player sender, String msg){
-    	if(sender.isMuted())
+    	if(sender != null && sender.isMuted())
     		sender.sendMessage(Colors.Red + "You have been muted.");
     	
         for (Player receiver : etc.getServer().getPlayerList()) {
@@ -52,13 +53,23 @@ public class vMinecraftChat {
     }
 
 	//=====================================================================
-	//Function:	sendMessage
+	//Function:	gmsg
 	//Input:	String msg: The message to be broadcast to all players
 	//Output:	None 
 	//Use:		Outputs a message to everybody
 	//=====================================================================
+    public static void gmsg(String msg){gmsg(null, msg);}
+
+	//=====================================================================
+	//Function:	sendMessage
+	//Input:	Player sender: The player sending the message
+    //			Player receiver: The player receiving the message
+    //			String msg: The message to be broadcast to all players
+	//Output:	None 
+	//Use:		Outputs a message to everybody
+	//=====================================================================
     public static void sendMessage(Player sender, Player receiver, String msg){
-    	if(sender.isMuted())
+    	if(sender != null && sender.isMuted())
     		sender.sendMessage(Colors.Red + "You have been muted.");
     	
     	//Check if the receiver has the sender ignored
@@ -73,6 +84,18 @@ public class vMinecraftChat {
 		} else
     		sendMessage(sender, sender, Colors.Rose + receiver.getName()
     				+ " has you on their ignore list.");
+    }
+
+	//=====================================================================
+	//Function:	sendMessage
+	//Input:	Player receiver: The player receiving the message
+    //			String msg: The message to be broadcast to all players
+	//Output:	None 
+	//Use:		Outputs a message to everybody
+	//=====================================================================
+    public static void sendMessage(Player receiver, String msg)
+    {
+    	sendMessage(null, receiver, msg);
     }
 
 	//=====================================================================

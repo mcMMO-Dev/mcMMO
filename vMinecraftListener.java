@@ -117,19 +117,19 @@ public class vMinecraftListener extends PluginListener {
 
     	        if (senddeath == true) {
     	        	if (type == type.CREEPER_EXPLOSION) {
-    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " was blown to bits by a creeper");
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " was blown to bits by a creeper");
     	        	} else if(type == type.FALL){
-    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " fell to death!");
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " fell to death!");
     	        	} else if(type == type.FIRE){
-    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " was incinerated");
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " was incinerated");
     	        	} else if (type == type.FIRE_TICK){
-    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " Stop drop and roll, not scream, run, and burn " + player.getName());
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " Stop drop and roll, not scream, run, and burn ");
     	        	} else if (type == type.LAVA){
-    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Red + " drowned in lava");
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " drowned in lava");
     	        	} else if (type == type.WATER){
-    	                vMinecraftChat.gmsg(player, deadplayer + Colors.Blue + " should've attended that swimming class");
+    	                vMinecraftChat.gmsg(deadplayer + Colors.Rose + " should've attended that swimming class");
     	        	} else {
-                            vMinecraftChat.gmsg(player, Colors.Gray + deadplayer + " " + vMinecraftSettings.randomDeathMsg());
+                            vMinecraftChat.gmsg(Colors.Gray + deadplayer + " " + vMinecraftSettings.randomDeathMsg());
                         }
                         senddeath = false;
                 }
