@@ -205,7 +205,7 @@ public class vMinecraftCommands{
             }
             
             //Check if they are a higher rank than the other person
-            if(other.hasControlOver(player))
+            if(player != other && other.hasControlOver(player))
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The player you specified is a higher rank than you.");
@@ -294,7 +294,7 @@ public class vMinecraftCommands{
             }
             
             //Check if they are a higher rank than the other person
-            if(other.hasControlOver(player))
+            if(player != other && other.hasControlOver(player))
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The player you specified is a higher rank than you.");
@@ -357,7 +357,7 @@ public class vMinecraftCommands{
             }
             
             //Check if they are a higher rank than the other person
-            if(other.hasControlOver(player))
+            if(player != other && other.hasControlOver(player))
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The player you specified is a higher rank than you.");
@@ -421,7 +421,7 @@ public class vMinecraftCommands{
             }
             
             //Check if they are a higher rank than the other person
-            if(other.hasControlOver(player))
+            if(player != other && other.hasControlOver(player))
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The player you specified is a higher rank than you.");
@@ -484,7 +484,7 @@ public class vMinecraftCommands{
             }
             
             //Check if they are a higher rank than the other person
-            if(other.hasControlOver(player))
+            if(player != other && other.hasControlOver(player))
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The player you specified is a higher rank than you.");
@@ -546,7 +546,7 @@ public class vMinecraftCommands{
             }
             
             //Check if they are a higher rank than the other person
-            if(other.hasControlOver(player))
+            if(player != other && other.hasControlOver(player))
             {
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "The player you specified is a higher rank than you.");
@@ -639,7 +639,7 @@ public class vMinecraftCommands{
     {
         
         //Make sure a player is specified
-        if (args.length > 1) {
+        if (args.length < 2) {
         	vMinecraftChat.sendMessage(player, player, Colors.Rose
         			+ "Usage is /msg [player] [message]");
             return EXIT_SUCCESS;
