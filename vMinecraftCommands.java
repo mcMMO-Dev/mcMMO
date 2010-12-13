@@ -185,7 +185,7 @@ public class vMinecraftCommands{
     public static int prefix(Player player, String[] args){
     	
     	//if the player can prefix others
-        if(player.canUseCommand("/prefixother")){
+        if(player.canUseCommand("/prefixother") && vMinecraftSettings.getInstance().prefix()){
             
             //Check if there are enough arguments
             if(args.length < 2){
@@ -236,7 +236,7 @@ public class vMinecraftCommands{
             return EXIT_SUCCESS;
         }
         //If the player can set their prefix
-        if(!player.canUseCommand("/prefix")){
+        if(!player.canUseCommand("/prefix")&& vMinecraftSettings.getInstance().prefix()){
             return EXIT_FAIL;
         }
         
@@ -277,7 +277,7 @@ public class vMinecraftCommands{
     public static int removeTag(Player player, String[] args){
     	
     	//if the player can suffix others
-        if(player.canUseCommand("/prefixother")){
+        if(player.canUseCommand("/prefixother")&& vMinecraftSettings.getInstance().prefix()){
             if(args.length < 1){
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "Usage is /rprefix [Player]");
@@ -308,7 +308,7 @@ public class vMinecraftCommands{
         }
         
         //Check if the player can set their own prefix.
-        if(!player.canUseCommand("/prefix")){
+        if(!player.canUseCommand("/prefix")&& vMinecraftSettings.getInstance().prefix()){
             return EXIT_FAIL;
         }
         if(args.length < 1){
@@ -332,7 +332,7 @@ public class vMinecraftCommands{
     public static int nickName(Player player, String[] args){
     	
     	//if the player can nickname others
-        if(player.canUseCommand("/nickother")){
+        if(player.canUseCommand("/nickother") && vMinecraftSettings.getInstance().nick()){
             if(args.length < 2){
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "Usage is /nick [Player] [Name]");
@@ -404,7 +404,7 @@ public class vMinecraftCommands{
     public static int removeNick(Player player, String[] args){
     	
     	//if the player can nick others
-        if(player.canUseCommand("/nickother")){
+        if(player.canUseCommand("/nickother")&& vMinecraftSettings.getInstance().nick()){
             if(args.length < 1){
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "Usage is /rnick [Player]");
@@ -435,7 +435,7 @@ public class vMinecraftCommands{
         }
         
         //Check if the player can set their own nick.
-        if(!player.canUseCommand("/nick")){
+        if(!player.canUseCommand("/nick")&& vMinecraftSettings.getInstance().nick()){
             return EXIT_FAIL;
         }
         if(args.length < 1){
@@ -459,7 +459,7 @@ public class vMinecraftCommands{
     public static int suffix(Player player, String[] args){
     	
     	//if the player can suffix others
-        if(player.canUseCommand("/suffixother")){
+        if(player.canUseCommand("/suffixother")&& vMinecraftSettings.getInstance().suffix()){
             if(args.length < 2){
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "Usage is /suffix [Player] [Name]");
@@ -497,7 +497,7 @@ public class vMinecraftCommands{
         }
         
         //Check if the player can set their own suffix.
-        if(!player.canUseCommand("/suffix")){
+        if(!player.canUseCommand("/suffix")&& vMinecraftSettings.getInstance().suffix()){
             return EXIT_FAIL;
         }
         if(args.length < 1){
@@ -529,7 +529,7 @@ public class vMinecraftCommands{
     public static int removeSuffix(Player player, String[] args){
     	
     	//if the player can suffix others
-        if(player.canUseCommand("/suffixother")){
+        if(player.canUseCommand("/suffixother")&& vMinecraftSettings.getInstance().suffix()){
             if(args.length < 1){
                 vMinecraftChat.sendMessage(player, player, Colors.Rose
                 		+ "Usage is /rsuffix [Player]");
@@ -559,7 +559,7 @@ public class vMinecraftCommands{
         }
         
         //Check if the player can set their own suffix.
-        if(!player.canUseCommand("/suffix")){
+        if(!player.canUseCommand("/suffix")&& vMinecraftSettings.getInstance().suffix()){
             return EXIT_FAIL;
         }
         if(args.length < 1){
@@ -580,7 +580,7 @@ public class vMinecraftCommands{
 	//Use:		Displays a list of all colors and color codes
 	//=====================================================================
     public static int colors(Player player, String[] args){
-    	if(args.length > 0)
+    	if(args.length > 0&& vMinecraftSettings.getInstance().colors())
     	{
     		vMinecraftUsers.getProfile(player).setColor(args[0]);
     		vMinecraftChat.sendMessage(player, player, "^" + args[0].charAt(0)
@@ -732,7 +732,7 @@ public class vMinecraftCommands{
     public static int addIgnored(Player player, String[] args)
     {
     	//Make sure the player gave you a user to ignore
-    	if(args.length < 1)
+    	if(args.length < 1 && vMinecraftSettings.getInstance().ignore())
     	{
 			vMinecraftChat.sendMessage(player, player,
 					Colors.Rose + "Usage: /ignore [Player]");
@@ -741,14 +741,14 @@ public class vMinecraftCommands{
     	
 		//Find the player and make sure they exist
     	Player ignore = etc.getServer().matchPlayer(args[0]);
-    	if(ignore == null)
+    	if(ignore == null&& vMinecraftSettings.getInstance().ignore())
     	{
 			vMinecraftChat.sendMessage(player, player, Colors.Rose
 					+ "The person you tried to ignore is not logged in.");
 	    	return EXIT_SUCCESS;
     	}
     	
-    	if(!player.hasControlOver(ignore))
+    	if(!player.hasControlOver(ignore)&& vMinecraftSettings.getInstance().ignore())
     	{
 			vMinecraftChat.sendMessage(player, player, Colors.Rose
 					+ "You can't ignore someone a higher rank than you.");
@@ -785,7 +785,7 @@ public class vMinecraftCommands{
     public static int removeIgnored(Player player, String[] args)
     {
     	//Make sure the player gave you a user to ignore
-    	if(args.length < 1)
+    	if(args.length < 1&& vMinecraftSettings.getInstance().ignore())
     	{
 			vMinecraftChat.sendMessage(player, player,
 					Colors.Rose + "Usage: /unignore [Player]");
@@ -794,7 +794,7 @@ public class vMinecraftCommands{
     	
 		//Find the player and make sure they exist
     	Player ignore = etc.getServer().matchPlayer(args[0]);
-    	if(ignore == null)
+    	if(ignore == null&& vMinecraftSettings.getInstance().ignore())
     	{
 			vMinecraftChat.sendMessage(player, player,
 					Colors.Rose + "The person you tried to unignore is not logged in.");
@@ -822,6 +822,7 @@ public class vMinecraftCommands{
 	//=====================================================================
     public static int ignoreList(Player player, String[] args)
     {
+        if (vMinecraftSettings.getInstance().ignore()){
     	//Get the ignore list
     	String[] list = vMinecraftUsers.getProfile(player).listIgnore();
     	
@@ -847,6 +848,8 @@ public class vMinecraftCommands{
     				Colors.Rose + list[i+ (page * 5)]);
     	
     	return EXIT_SUCCESS;
+        }
+        return EXIT_FAIL;
     }
     
 	//=====================================================================

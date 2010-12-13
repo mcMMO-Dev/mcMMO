@@ -19,6 +19,11 @@ public class vMinecraftSettings {
 				   greentext		= false,
 				   FFF				= false,
 				   quakeColors		= false,
+                prefix = false,
+                suffix = false,
+                ignore = false,
+                colors = false,
+                nick = false,
 				   cmdFabulous		= false,
 				   cmdPromote		= false,
 				   cmdDemote		= false,
@@ -87,7 +92,12 @@ public class vMinecraftSettings {
                                 writer.write("#Server Settings\r\n");
                                 writer.write("#Enables or Disables the following commands, give groups/users permissions to use these commands for them to work\r\n");
 				writer.write("/fabulous=true\r\n");
+                                writer.write("/prefix=true\r\n");
+                                writer.write("/suffix=true\r\n");
+                                writer.write("/ignore=true\r\n");
+                                writer.write("/colors=true\r\n");
 				writer.write("/whois=true\r\n");
+                                writer.write("/nick=true\r\n");
 				writer.write("/who=true\r\n");
 				writer.write("/promote=true\r\n");
 				writer.write("/demote=true\r\n");
@@ -132,6 +142,11 @@ public class vMinecraftSettings {
 			greentext = properties.getBoolean("QuotesAreGreen",true);
 			FFF = properties.getBoolean("FFF",true);
 			quakeColors = properties.getBoolean("ColoredChat",true);
+                        prefix = properties.getBoolean("prefix",true);
+                        suffix = properties.getBoolean("suffix",true);
+                        ignore = properties.getBoolean("ignore",true);
+                        colors = properties.getBoolean("colors",true);
+                        nick = properties.getBoolean("nick",true);
 			cmdFabulous = properties.getBoolean("/fabulous",true);
 			cmdPromote = properties.getBoolean("/promote",true);
 			cmdDemote = properties.getBoolean("/demote",true);
@@ -179,6 +194,11 @@ public class vMinecraftSettings {
 	public boolean greentext() {return greentext;}
 	public boolean FFF() {return FFF;}
 	public boolean quakeColors() {return quakeColors;}
+        public boolean prefix() {return prefix;}
+        public boolean suffix() {return suffix;}
+        public boolean ignore() {return ignore;}
+        public boolean colors() {return colors;}
+        public boolean nick() {return nick;}
 	public boolean cmdFabulous() {return cmdFabulous;}
 	public boolean cmdPromote() {return cmdPromote;}
 	public boolean cmdDemote() {return cmdDemote;}
