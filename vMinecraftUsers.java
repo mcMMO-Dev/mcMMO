@@ -313,7 +313,7 @@ class PlayerList
         {
             try {
             	//Open the file to write the player
-            	FileWriter file = new FileWriter(location);
+            	FileWriter file = new FileWriter(location, true);
                 BufferedWriter out = new BufferedWriter(file);
                 
                 //Add the player to the end
@@ -333,8 +333,7 @@ class PlayerList
     			out.append(":");
     			
     			out.append(aliasList.toString());
-    			out.append("\r\n");
-    			
+    			out.newLine();
     			out.close();
                
 	        } catch (Exception e) {
