@@ -154,6 +154,8 @@ class PlayerList
 					   tag,
 					   suffix;
 		
+		private boolean dead;
+		
 		char defaultColor;
 
         String location = "vminecraft.users";
@@ -182,6 +184,7 @@ class PlayerList
             defaultColor = 'f';
 			ignoreList = new ArrayList<String>();
             aliasList = new commandList();
+            dead = false;
             
             //Try to load the player and if they aren't found, append them
             if(!load())
@@ -544,6 +547,22 @@ class PlayerList
 				return etc.getServer().matchPlayer(lastMessage);
 			return null;
 		}
+
+		//=====================================================================
+		//Function:	isDead
+		//Input:	None
+		//Output:	boolean: If the player is dead or not
+		//Use:		Gets the player is dead or not.
+		//=====================================================================
+		public boolean isDead() {return dead;}
+
+		//=====================================================================
+		//Function:	isDead
+		//Input:	boolean isded: if the player is dead or not.
+		//Output:	None
+		//Use:		Sets if the player is dead or not
+		//=====================================================================
+		public void isDead(boolean isded){dead = isded;}
 	}
 }
 

@@ -38,17 +38,18 @@ public class vMinecraftChat {
     	
         for (Player receiver : etc.getServer().getPlayerList()) {
         	
-            if (receiver == null) {return;}
+            if (receiver == null) return;
             
-        	if(vMinecraftUsers.getProfile(receiver) == null)
-        		return;
+        	if(vMinecraftUsers.getProfile(receiver) == null) return;
+        	
         	//Check if the person has the sender ignored
-        	if(!vMinecraftUsers.getProfile(receiver).isIgnored(sender))
-    		{
-    	    	String[] message = applyColors(wordWrap(msg));
-    	    	for(String out : message)
-    	    		receiver.sendMessage(out);
-    		}
+        	if(sender != null)
+        		if(vMinecraftUsers.getProfile(receiver).isIgnored(sender))
+        			return;
+        	
+	    	String[] message = applyColors(wordWrap(msg));
+	    	for(String out : message)
+	    		receiver.sendMessage(out);
         }
     }
 
@@ -75,15 +76,19 @@ public class vMinecraftChat {
     	//Check if the receiver has the sender ignored
     	if(vMinecraftUsers.getProfile(receiver) == null)
     		return;
-		if(!vMinecraftUsers.getProfile(receiver).isIgnored(sender))
-		{
-	    	String[] message = applyColors(wordWrap(msg));
-	    	for(String out : message)
-	    		receiver.sendMessage(out);
+
+    	if(sender != null)
+    		if(vMinecraftUsers.getProfile(receiver).isIgnored(sender))
+    		{
+        		sendMessage(sender, sender, Colors.Rose + receiver.getName()
+        				+ " has you on their ignore list.");
+    			return;
+    		}
+    	
+    	String[] message = applyColors(wordWrap(msg));
+    	for(String out : message)
+    		receiver.sendMessage(out);
 	    //Tell them if they are
-		} else
-    		sendMessage(sender, sender, Colors.Rose + receiver.getName()
-    				+ " has you on their ignore list.");
     }
 
 	//=====================================================================
