@@ -51,6 +51,8 @@ public class vMinecraftCommands{
         cl.register("/modify", "modify");
         cl.register("/rules", "rules", "Displays the rules");
         cl.register("/who", "who");
+        cl.register("/promote", "promote", "Promote a player one rank");
+        cl.register("/demote", "demote", "Demote a player one rank");
 
         //Movement
         cl.register("/tp", "teleport");
@@ -1357,7 +1359,7 @@ public class vMinecraftCommands{
 	//Input:	Player player: The player using the command
     //			String[] args: Player, Command, Arguments
 	//Output:	int: Exit Code
-	//Use:		List all invulnerable players
+	//Use:		Display help for modifying features of players
 	//=====================================================================
 	public static int modify(Player player, String[] args)
 	{
@@ -1396,6 +1398,251 @@ public class vMinecraftCommands{
 			vMinecraftChat.sendMessage(player, player, "/demote [Player]" +
 			" - Demotes a player one rank");
 		}
+		return EXIT_SUCCESS;
+	}
+
+	//=====================================================================
+	//Function:	promote (/promote)
+	//Input:	Player player: The player using the command
+    //			String[] args: Player to promote
+	//Output:	int: Exit Code
+	//Use:		Attempt to promote a player one rank
+	//=====================================================================
+	public static int promote(Player player, String[] args)
+	{
+		//Check if they can promote
+		if(!player.canUseCommand("/promote")) return EXIT_FAIL;
+		
+		//Check if they specified a player
+		if(args.length < 1)
+		{
+			vMinecraftChat.sendMessage(player, Colors.Rose + "Usage: /promote [Player] (Rank)");
+			return EXIT_SUCCESS;
+		}
+		
+		//Try to find the player
+		Player target = etc.getServer().matchPlayer(args[0]);
+		if(target == null)
+		{
+			vMinecraftChat.sendMessage(player, Colors.Rose + "The player specified could not be found");
+			return EXIT_SUCCESS;
+		}
+		
+		//Get the list of ranks
+		String[] ranks = vMinecraftSettings.getInstance().getRanks();
+
+		//Find the targets current rank number
+		String[] tarGroups = target.getGroups();
+		int tarRank = 0,
+			tarPos = 0;
+		boolean leave = false;
+		for(String rank : ranks)
+		{
+			for(String group : tarGroups)
+			{
+				if(rank.equalsIgnoreCase(group))
+				{
+					leave = true;
+					break;
+				}
+				else
+					tarPos++;
+			}
+			if(leave)
+				break;
+			tarRank++;
+			tarPos = 0;
+		}
+		if(!leave)
+		{
+			tarRank = 0;
+			tarPos = 0;
+			if(tarGroups != null)
+			{
+				String[] tempGroups = new String[tarGroups.length + 1];
+				System.arraycopy(tarGroups, 0, tempGroups, 1, tarGroups.length);
+				tarGroups = tempGroups;
+			} else
+				tarGroups = new String[1];
+		}
+		
+		leave = false;
+		//Get the player's rank
+		String[] myGroups = player.getGroups();
+		int myRank = 0;
+		
+		for(String rank : ranks)
+		{
+			for(String group : myGroups)
+				if(rank.equalsIgnoreCase(group))
+				{
+					leave = true;
+					break;
+				}
+			if(leave)
+				break;
+			myRank++;
+		}
+		if(!leave)
+		{
+			myRank = 0;
+		}
+		
+		log.log(Level.INFO, myRank + " / " + tarRank);
+		//Make sure they're not promoting to their rank or higher
+		if(myRank <= tarRank + 1)
+		{
+			vMinecraftChat.sendMessage(player, Colors.Rose + "You cannot promote someone to" +
+					" your rank or higher.");
+			return EXIT_SUCCESS;
+		}
+		
+		tarGroups[tarPos] = ranks[tarRank + 1];
+		target.setGroups(tarGroups);
+
+		//Make sure the player is in the files
+        FlatFileSource ffs = new FlatFileSource();
+        if(!ffs.doesPlayerExist(target.getName()))
+        {
+			vMinecraftChat.sendMessage(player, Colors.Rose + "Adding player.");
+			ffs.addPlayer(target);
+        }
+        else
+        {
+        	ffs.modifyPlayer(target);
+        }
+        
+		vMinecraftChat.sendMessage(player, Colors.Rose + target.getName()
+				+ " has been promoted to " + ranks[tarRank + 1] + ".");
+		vMinecraftChat.sendMessage(target, Colors.Rose + "You have been promoted to "
+				+ ranks[tarRank + 1] + ".");
+		
+		return EXIT_SUCCESS;
+	}
+
+	//=====================================================================
+	//Function:	demote (/demote)
+	//Input:	Player player: The player using the command
+    //			String[] args: Player to promote
+	//Output:	int: Exit Code
+	//Use:		Attempt to promote a player one rank
+	//=====================================================================
+	public static int demote(Player player, String[] args)
+	{
+		//Check if they can demote
+		if(!player.canUseCommand("/demote")) return EXIT_FAIL;
+		
+		//Check if they specified a player
+		if(args.length < 1)
+		{
+			vMinecraftChat.sendMessage(player, Colors.Rose + "Usage: /demote [Player] (Rank)");
+			return EXIT_SUCCESS;
+		}
+		
+		//Try to find the player
+		Player target = etc.getServer().matchPlayer(args[0]);
+		if(target == null)
+		{
+			vMinecraftChat.sendMessage(player, Colors.Rose + "The player specified could not be found");
+			return EXIT_SUCCESS;
+		}
+		
+		//Get the list of ranks
+		String[] ranks = vMinecraftSettings.getInstance().getRanks();
+
+		//Find the targets current rank number
+		String[] tarGroups = target.getGroups();
+		int tarRank = 0,
+			tarPos = 0;
+		boolean leave = false;
+		for(String rank : ranks)
+		{
+			for(String group : tarGroups)
+			{
+				if(rank.equalsIgnoreCase(group))
+				{
+					leave = true;
+					break;
+				}
+				else
+					tarPos++;
+			}
+			if(leave)
+				break;
+			tarRank++;
+			tarPos = 0;
+		}
+		if(!leave)
+		{
+			tarRank = 0;
+			tarPos = 0;
+			if(tarGroups != null)
+			{
+				String[] tempGroups = new String[tarGroups.length + 1];
+				System.arraycopy(tarGroups, 0, tempGroups, 1, tarGroups.length);
+				tarGroups = tempGroups;
+			} else
+				tarGroups = new String[1];
+		}
+		
+		leave = false;
+		//Get the player's rank
+		String[] myGroups = player.getGroups();
+		int myRank = 0;
+		
+		for(String rank : ranks)
+		{
+			for(String group : myGroups)
+				if(rank.equalsIgnoreCase(group))
+				{
+					leave = true;
+					break;
+				}
+			if(leave)
+				break;
+			myRank++;
+		}
+		if(!leave)
+		{
+			myRank = 0;
+		}
+		
+		//Make sure they're not demoting to their rank or higher
+		if(myRank <= tarRank)
+		{
+			vMinecraftChat.sendMessage(player, Colors.Rose + "You cannot demote someone who is" +
+					" your rank or higher.");
+			return EXIT_SUCCESS;
+		}
+		
+		if(tarRank - 1 < 0)
+		{
+			vMinecraftChat.sendMessage(player, Colors.Rose + target.getName() + " is already the" +
+					" lowest rank.");
+			return EXIT_SUCCESS;
+			
+		}
+		
+			tarGroups[tarPos] = ranks[tarRank - 1];
+			target.setGroups(tarGroups);
+
+			//Make sure the player is in the files
+	        FlatFileSource ffs = new FlatFileSource();
+	        if(!ffs.doesPlayerExist(target.getName()))
+	        {
+				vMinecraftChat.sendMessage(player, Colors.Rose + "Adding player.");
+				ffs.addPlayer(target);
+	        }
+	        else
+	        {
+	        	ffs.modifyPlayer(target);
+	        }
+	        
+			vMinecraftChat.sendMessage(player, Colors.Rose + target.getName()
+					+ " has been demoted to " + ranks[tarRank - 1] + ".");
+			vMinecraftChat.sendMessage(target, Colors.Rose + "You have been demoted to "
+					+ ranks[tarRank - 1] + ".");
+		
 		return EXIT_SUCCESS;
 	}
 }
