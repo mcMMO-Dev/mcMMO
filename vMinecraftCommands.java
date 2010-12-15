@@ -979,7 +979,7 @@ public class vMinecraftCommands{
 		//If the player exists transport the user to the player
 		else {
 			vMinecraftChat.gmsg( player, vMinecraftChat.getName(player)
-					+ Colors.LightBlue + "has teleported to"
+					+ Colors.LightBlue + " has teleported to "
 					+ vMinecraftChat.getName(playerTarget));
 			log.log(Level.INFO, player.getName() + " teleported to " +
 					playerTarget.getName());
