@@ -1076,7 +1076,7 @@ public class vMinecraftCommands{
 		if(!player.canUseCommand("/reload")) return EXIT_FAIL;
 		
 		vMinecraftSettings.getInstance().loadSettings();
-		return EXIT_SUCCESS;
+		return EXIT_FAIL;
 	}
 
 	//=====================================================================
@@ -1476,7 +1476,6 @@ public class vMinecraftCommands{
 			for(String group : myGroups)
 				if(rank.equalsIgnoreCase(group))
 				{
-					log.log(Level.INFO, myRank + " cere");
 
 					leave = true;
 					break;
@@ -1488,7 +1487,6 @@ public class vMinecraftCommands{
 		if(!leave)
 			myRank = 0;
 		
-		log.log(Level.INFO, myRank + " / " + tarRank);
 		//Make sure they're not promoting to their rank or higher
 		if(myRank <= tarRank + 1)
 		{
