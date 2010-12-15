@@ -1,5 +1,4 @@
-vMinecraft v1 Todo:
-	! Promote and Demote (ASAP) <Cere> DIBS
+vMinecraft v1 Todo:	
 	+ matchPlayer taking into account nicknames
 	+ Modify setNick to not allow players to copy other's
 	  nicknames and account names. Also disallow Notch as a nick :P
@@ -22,6 +21,7 @@ vMinecraft v2 Updates!
 
 DONE
 	+ Quick recode of /me to use the new getName function
+        + Promote and Demote (ASAP) <Cere> DIBS
         + Simple Fire Antigrief
         + /prefix
 	+ /a to toggle admin chat
