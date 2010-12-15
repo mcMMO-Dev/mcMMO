@@ -1476,6 +1476,8 @@ public class vMinecraftCommands{
 			for(String group : myGroups)
 				if(rank.equalsIgnoreCase(group))
 				{
+					log.log(Level.INFO, myRank + " cere");
+
 					leave = true;
 					break;
 				}
@@ -1484,9 +1486,7 @@ public class vMinecraftCommands{
 			myRank++;
 		}
 		if(!leave)
-		{
 			myRank = 0;
-		}
 		
 		log.log(Level.INFO, myRank + " / " + tarRank);
 		//Make sure they're not promoting to their rank or higher
