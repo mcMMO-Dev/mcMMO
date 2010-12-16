@@ -184,7 +184,7 @@ public class vMinecraftCommands{
 	//Use:		Freezes a player in place
 	//=====================================================================
     public static int freeze(Player player, String[] args){
-        if(player.canUseCommand("/freeze")){
+        if(player.canUseCommand("/freeze") && vMinecraftSettings.getInstance().freeze()){
             if (args.length < 2){
                 vMinecraftChat.gmsg(Colors.Rose + "Usage is /freeze [Player]");
                 return EXIT_SUCCESS;
@@ -201,6 +201,7 @@ public class vMinecraftCommands{
             }
             if(vMinecraftSettings.frozenplayers.contains(other)){
                 vMinecraftSettings.getInstance().removeFrozen(other.getName());
+                vMinecraftChat.gmsg(player.getName() + Colors.Blue + " has unfrozen " + other.getName());
                 return EXIT_SUCCESS;
             }
             vMinecraftSettings.getInstance().addFrozen(other.getName());

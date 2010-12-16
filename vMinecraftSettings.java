@@ -212,6 +212,7 @@ public class vMinecraftSettings {
         public boolean ignore() {return ignore;}
         public boolean colors() {return colors;}
         public boolean nick() {return nick;}
+        public boolean freeze() {return freeze;}
 	public boolean cmdFabulous() {return cmdFabulous;}
 	public boolean cmdPromote() {return cmdPromote;}
 	public boolean cmdDemote() {return cmdDemote;}
