@@ -176,7 +176,39 @@ public class vMinecraftCommands{
         		.globalmessages());
         return EXIT_SUCCESS;
     }
-    
+    //=====================================================================
+	//Function:	prefix (/prefix)
+	//Input:	Player player: The player using the command
+        //		String[] args: The name of the player
+	//Output:	int: Exit Code
+	//Use:		Freezes a player in place
+	//=====================================================================
+    public static int freeze(Player player, String[] args){
+        if(player.canUseCommand("/freeze")){
+            if (args.length < 2){
+                vMinecraftChat.gmsg(Colors.Rose + "Usage is /freeze [Player]");
+                return EXIT_SUCCESS;
+            }
+            Player other = etc.getServer().matchPlayer(args[0]);
+            if (other == null)
+            {
+                vMinecraftChat.gmsg(Colors.Rose + "The player you specified could not be found");
+                return EXIT_SUCCESS;
+            }
+            if(player != other && other.hasControlOver(player)){
+                vMinecraftChat.gmsg(Colors.Rose + "The player you specified has a higher rank than you");
+                return EXIT_SUCCESS;
+            }
+            if(vMinecraftSettings.frozenplayers.contains(other)){
+                vMinecraftSettings.getInstance().removeFrozen(other.getName());
+                return EXIT_SUCCESS;
+            }
+            vMinecraftSettings.getInstance().addFrozen(other.getName());
+            vMinecraftChat.gmsg(player.getName() + Colors.Blue + " has frozen " + other.getName());
+            return EXIT_SUCCESS;
+        }
+        return EXIT_SUCCESS;
+    }
     //=====================================================================
 	//Function:	prefix (/prefix)
 	//Input:	Player player: The player using the command
