@@ -20,6 +20,7 @@ vMinecraft v2 Updates!
 			ex: Sunrise to sunset, mid-morning to noon
 
 DONE
+        +Added /freeze command to stop players from moving
 	+ Quick recode of /me to use the new getName function
         + Promote and Demote (ASAP) <Cere> DIBS
         + Simple Fire Antigrief
