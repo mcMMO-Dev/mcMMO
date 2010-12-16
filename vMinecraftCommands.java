@@ -55,6 +55,7 @@ public class vMinecraftCommands{
         cl.register("/demote", "demote", "Demote a player one rank");
 
         //Movement
+        cl.register("/freeze", "freeze");
         cl.register("/tp", "teleport");
         cl.register("/tphere", "tphere");
         cl.register("/masstp", "masstp", "Teleports those with lower permissions to you");
