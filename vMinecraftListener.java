@@ -18,7 +18,7 @@ public class vMinecraftListener extends PluginListener {
 		log.log(Level.INFO, "vMinecraft disabled");
 	}
          public void onPlayerMove(Player player, Location from, Location to) {
-             if(vMinecraftSettings.getInstance().isFrozen(player)){
+             if(vMinecraftSettings.getInstance().isFrozen(player.getName())){
                  player.teleportTo(from);
              }
     }

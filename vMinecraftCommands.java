@@ -200,14 +200,15 @@ public class vMinecraftCommands{
                 vMinecraftChat.gmsg(Colors.Rose + "The player you specified has a higher rank than you");
                 return EXIT_SUCCESS;
             }
-            if(vMinecraftSettings.frozenplayers.contains(other)){
+            if(vMinecraftSettings.getInstance().isFrozen(other.getName())){
                 vMinecraftSettings.getInstance().removeFrozen(other.getName());
                 vMinecraftChat.gmsg(player.getName() + Colors.Blue + " has unfrozen " + other.getName());
                 return EXIT_SUCCESS;
-            }
+            } else {
             vMinecraftSettings.getInstance().addFrozen(other.getName());
             vMinecraftChat.gmsg(player.getName() + Colors.Blue + " has frozen " + other.getName());
             return EXIT_SUCCESS;
+            }
         }
         return EXIT_SUCCESS;
     }
