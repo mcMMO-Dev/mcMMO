@@ -186,7 +186,7 @@ public class vMinecraftCommands{
 	//=====================================================================
     public static int freeze(Player player, String[] args){
         if(player.canUseCommand("/freeze") && vMinecraftSettings.getInstance().freeze()){
-            if (args.length < 2){
+            if (args.length < 1){
                 vMinecraftChat.gmsg(Colors.Rose + "Usage is /freeze [Player]");
                 return EXIT_SUCCESS;
             }

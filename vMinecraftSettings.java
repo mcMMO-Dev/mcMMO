@@ -158,7 +158,7 @@ public class vMinecraftSettings {
             ignore = properties.getBoolean("ignore",true);
             colors = properties.getBoolean("colors",true);
             nick = properties.getBoolean("nick",true);
-            freeze = properties.getBoolean("freeze",true);
+            freeze = properties.getBoolean("/freeze",true);
 			cmdFabulous = properties.getBoolean("/fabulous",true);
 			cmdPromote = properties.getBoolean("/promote",true);
 			cmdDemote = properties.getBoolean("/demote",true);
@@ -235,6 +235,7 @@ public class vMinecraftSettings {
 	//EzModo methods
     public boolean cmdEzModo() {return cmdEzModo;}
 	public boolean isEzModo(String playerName) {return ezModo.contains(playerName);}
+        public boolean isFrozen(String playerName) {return frozenplayers.contains(playerName);}
         public boolean isAdminToggled(String playerName) {return adminChatList.contains(playerName);}
 	public void removeEzModo(String playerName) {ezModo.remove(ezModo.indexOf(playerName));}
         public void removeAdminToggled(String playerName) {adminChatList.remove(adminChatList.indexOf(playerName));}
