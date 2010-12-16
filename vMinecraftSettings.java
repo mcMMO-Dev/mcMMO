@@ -158,6 +158,7 @@ public class vMinecraftSettings {
             ignore = properties.getBoolean("ignore",true);
             colors = properties.getBoolean("colors",true);
             nick = properties.getBoolean("nick",true);
+            freeze = properties.getBoolean("freeze",true);
 			cmdFabulous = properties.getBoolean("/fabulous",true);
 			cmdPromote = properties.getBoolean("/promote",true);
 			cmdDemote = properties.getBoolean("/demote",true);
