@@ -58,6 +58,7 @@ public class vMinecraftCommands{
         cl.register("/freeze", "freeze");
         cl.register("/tp", "teleport");
         cl.register("/tphere", "tphere");
+        cl.register("/tpback", "tpback");
         cl.register("/masstp", "masstp", "Teleports those with lower permissions to you");
 
         //Health
@@ -175,6 +176,17 @@ public class vMinecraftCommands{
         vMinecraftChat.sendMessage(player, player, Colors.DarkPurple 
         		+ "Global Messages: " + vMinecraftSettings.getInstance()
         		.globalmessages());
+        return EXIT_SUCCESS;
+    }
+    public static int tpback(Player player, String[] args){
+        if(player.canUseCommand("/tpback")){
+            double x = vMinecraftUsers.getProfile(player).getTpx();
+            double y = vMinecraftUsers.getProfile(player).getTpy();
+            double z = vMinecraftUsers.getProfile(player).getTpz();
+            player.teleportTo(x, y, z, 0, 0);
+            return EXIT_SUCCESS;
+            
+        }
         return EXIT_SUCCESS;
     }
     //=====================================================================
@@ -1013,6 +1025,14 @@ public class vMinecraftCommands{
 		
 		//If the player exists transport the user to the player
 		else {
+                    //Storing their previous location for tpback
+                    double x = player.getLocation().x;
+                    double y = player.getLocation().y;
+                    double z = player.getLocation().z;
+                    vMinecraftUsers.getProfile(player).setTpback(x, y, z);
+                    if(player.canUseCommand("/tpback")){
+                     player.sendMessage(Colors.DarkPurple + "Your previous location has been stored, use /tpback to return.");
+                    }
 			vMinecraftChat.gmsg( player, vMinecraftChat.getName(player)
 					+ Colors.LightBlue + " has teleported to "
 					+ vMinecraftChat.getName(playerTarget));
@@ -1094,6 +1114,14 @@ public class vMinecraftCommands{
 			log.log(Level.INFO, player.getName() + " teleported "
 					+ player.getName() + " to their self.");
 			playerTarget.teleportTo(player);
+                        double x = player.getLocation().x;
+                        double y = player.getLocation().y;
+                        double z = player.getLocation().z;
+                        vMinecraftUsers.getProfile(playerTarget).setTpback(x, y, z);
+                        if(playerTarget.canUseCommand("/tpback"))
+                        {
+                        playerTarget.sendMessage(Colors.DarkPurple + "Your previous location has been stored, use /tpback to return.");
+                        }
 		}
 		return EXIT_SUCCESS;
 	}

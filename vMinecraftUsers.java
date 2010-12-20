@@ -153,6 +153,9 @@ class PlayerList
 					   nickName,
 					   tag,
 					   suffix;
+                        private double tpx,
+                                tpy,
+                                tpz;
 		
 		private boolean dead;
 		
@@ -242,6 +245,20 @@ class PlayerList
         					}
         				}
         			}
+                                //XYZ TP Back value
+                                //Not sure if declaring a double this way will work or not
+                                if(character.length > 7)
+                                {
+                                    double tpx = new Double(character[7]).doubleValue();
+                                }
+                                if(character.length > 8)
+                                {
+                                    double tpy = new Double(character[8]).doubleValue();
+                                }
+                                if(character.length > 9)
+                                {
+                                    double tpz = new Double(character[9]).doubleValue();
+                                }
                 	in.close();
         			return true;
             	}
@@ -285,7 +302,7 @@ class PlayerList
             			writer.append(nickName + ":");
             			writer.append(suffix + ":");
             			writer.append(defaultColor + ":");
-            			
+                                           			
             			int i = 0;
             			for(String ignore : ignoreList)
             			{
@@ -294,8 +311,10 @@ class PlayerList
             					writer.append(",");
             			}
             			writer.append(":");
-            			
             			writer.append(aliasList.toString());
+                                writer.append(tpx + ":");
+                                writer.append(tpy + ":");
+                                writer.append(tpz + ":"); 
             			writer.append("\r\n");
             		}
             	}
@@ -325,6 +344,7 @@ class PlayerList
                 out.append(nickName + ":");
                 out.append(suffix + ":");
                 out.append(defaultColor + ":");
+                
     			
     			int i = 0;
     			for(String ignore : ignoreList)
@@ -334,6 +354,9 @@ class PlayerList
     					out.append(",");
     			}
     			out.append(":");
+                        out.append(tpx + ":");
+                        out.append(tpy + ":");
+                        out.append(tpz + ":");
     			
     			out.append(aliasList.toString());
     			out.newLine();
@@ -456,6 +479,40 @@ class PlayerList
 			tag = newTag;
 			save();
 		}
+                //=====================================================================
+		//Function:	setTpback
+		//Input:	None
+		//Output:	None
+		//Use:		Sets a player's tpback xyz coordinates
+		//=====================================================================
+                public void setTpback(double x, double y, double z)
+                {
+                    //Coordinates
+                    x = tpx;
+                    y = tpy;
+                    z = tpz;
+                }
+                //=====================================================================
+		//Function:	getTpbx
+		//Input:	None
+		//Output:	Double: The player's tpback x coords
+		//Use:		Gets the x value of tpback
+		//=====================================================================
+                public double getTpx() { return tpx; }
+                //=====================================================================
+		//Function:	getTpy
+		//Input:	None
+		//Output:	Double: The player's tpback x coords
+		//Use:		Gets the x value of tpback
+		//=====================================================================
+                public double getTpy() { return tpy; }
+                //=====================================================================
+		//Function:	getTpz
+		//Input:	None
+		//Output:	Double: The player's tpback x coords
+		//Use:		Gets the x value of tpback
+		//=====================================================================
+                public double getTpz() { return tpz; }
 
 		//=====================================================================
 		//Function:	getTag
