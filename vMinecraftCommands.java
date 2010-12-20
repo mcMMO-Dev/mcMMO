@@ -186,6 +186,12 @@ public class vMinecraftCommands{
             double y = Double.parseDouble(tpxyz2[1]);
             double z = Double.parseDouble(tpxyz2[2]);
             player.teleportTo(x, y, z, 0, 0);
+            String cx = Double.toString(etc.getServer().getSpawnLocation().x);
+            String cy = Double.toString(etc.getServer().getSpawnLocation().y);
+            String cz = Double.toString(etc.getServer().getSpawnLocation().z);
+            String cxyz = x + "," + y + "," + z;
+            vMinecraftUsers.getProfile(player).setTpback(cxyz);
+            player.sendMessage(Colors.Rose + "/tpback data reset to spawn");
             return EXIT_SUCCESS;
             
         }
