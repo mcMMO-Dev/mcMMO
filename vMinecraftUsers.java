@@ -475,6 +475,7 @@ class PlayerList
                 public void setTpback(String newtpback)
                 {
                     tpxyz = newtpback;
+                    save();
                 }
                 //=====================================================================
 		//Function:	getTpxyz
