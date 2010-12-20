@@ -180,9 +180,11 @@ public class vMinecraftCommands{
     }
     public static int tpback(Player player, String[] args){
         if(player.canUseCommand("/tpback")){
-            double x = vMinecraftUsers.getProfile(player).getTpx();
-            double y = vMinecraftUsers.getProfile(player).getTpy();
-            double z = vMinecraftUsers.getProfile(player).getTpz();
+            String tpxyz = vMinecraftUsers.getProfile(player).getTpxyz();
+            String tpxyz2[] = tpxyz.split(",");
+            double x = Double.parseDouble(tpxyz2[0]);
+            double y = Double.parseDouble(tpxyz2[1]);
+            double z = Double.parseDouble(tpxyz2[2]);
             player.teleportTo(x, y, z, 0, 0);
             return EXIT_SUCCESS;
             
@@ -1029,7 +1031,11 @@ public class vMinecraftCommands{
                     double x = player.getLocation().x;
                     double y = player.getLocation().y;
                     double z = player.getLocation().z;
-                    vMinecraftUsers.getProfile(player).setTpback(x, y, z);
+                    String x2 = Double.toString(x);
+                    String y2 = Double.toString(y);
+                    String z2 = Double.toString(z);
+                    String xyz = x2+","+y2+","+z2;
+                    vMinecraftUsers.getProfile(player).setTpback(xyz);
                     if(player.canUseCommand("/tpback")){
                      player.sendMessage(Colors.DarkPurple + "Your previous location has been stored, use /tpback to return.");
                     }
@@ -1117,7 +1123,11 @@ public class vMinecraftCommands{
                         double x = player.getLocation().x;
                         double y = player.getLocation().y;
                         double z = player.getLocation().z;
-                        vMinecraftUsers.getProfile(playerTarget).setTpback(x, y, z);
+                        String x2 = Double.toString(x);
+                        String y2 = Double.toString(y);
+                        String z2 = Double.toString(z);
+                        String xyz = x2+","+y2+","+z2;
+                        vMinecraftUsers.getProfile(playerTarget).setTpback(xyz);
                         if(playerTarget.canUseCommand("/tpback"))
                         {
                         playerTarget.sendMessage(Colors.DarkPurple + "Your previous location has been stored, use /tpback to return.");

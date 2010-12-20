@@ -152,10 +152,8 @@ class PlayerList
 					   lastMessage,
 					   nickName,
 					   tag,
-					   suffix;
-                        private double tpx,
-                                tpy,
-                                tpz;
+					   suffix,
+                        tpxyz;
 		
 		private boolean dead;
 		
@@ -184,6 +182,7 @@ class PlayerList
             tag = new String();
             nickName = new String();
             suffix = new String();
+            tpxyz = new String();
             defaultColor = 'f';
 			ignoreList = new ArrayList<String>();
             aliasList = new commandList();
@@ -249,15 +248,7 @@ class PlayerList
                                 //Not sure if declaring a double this way will work or not
                                 if(character.length > 7)
                                 {
-                                    double tpx = new Double(character[7]).doubleValue();
-                                }
-                                if(character.length > 8)
-                                {
-                                    double tpy = new Double(character[8]).doubleValue();
-                                }
-                                if(character.length > 9)
-                                {
-                                    double tpz = new Double(character[9]).doubleValue();
+                                    tpxyz = character[7];
                                 }
                 	in.close();
         			return true;
@@ -312,9 +303,7 @@ class PlayerList
             			}
             			writer.append(":");
             			writer.append(aliasList.toString());
-                                writer.append(tpx + ":");
-                                writer.append(tpy + ":");
-                                writer.append(tpz + ":"); 
+                                writer.append(tpxyz.toString());
             			writer.append("\r\n");
             		}
             	}
@@ -354,9 +343,7 @@ class PlayerList
     					out.append(",");
     			}
     			out.append(":");
-                        out.append(tpx + ":");
-                        out.append(tpy + ":");
-                        out.append(tpz + ":");
+                        out.append(tpxyz + ":");
     			
     			out.append(aliasList.toString());
     			out.newLine();
@@ -485,36 +472,20 @@ class PlayerList
 		//Output:	None
 		//Use:		Sets a player's tpback xyz coordinates
 		//=====================================================================
-                public void setTpback(double x, double y, double z)
+                public void setTpback(String newtpback)
                 {
-                    //Coordinates
-                    x = tpx;
-                    y = tpy;
-                    z = tpz;
+                    tpxyz = newtpback;
                 }
                 //=====================================================================
-		//Function:	getTpbx
+		//Function:	getTpxyz
 		//Input:	None
 		//Output:	Double: The player's tpback x coords
 		//Use:		Gets the x value of tpback
 		//=====================================================================
-                public double getTpx() { return tpx; }
-                //=====================================================================
-		//Function:	getTpy
-		//Input:	None
-		//Output:	Double: The player's tpback x coords
-		//Use:		Gets the x value of tpback
-		//=====================================================================
-                public double getTpy() { return tpy; }
-                //=====================================================================
-		//Function:	getTpz
-		//Input:	None
-		//Output:	Double: The player's tpback x coords
-		//Use:		Gets the x value of tpback
-		//=====================================================================
-                public double getTpz() { return tpz; }
-
-		//=====================================================================
+                public String getTpxyz() 
+                { 
+                    return tpxyz; 
+                }
 		//Function:	getTag
 		//Input:	None
 		//Output:	String: The player tag
