@@ -152,7 +152,8 @@ class PlayerList
 					   lastMessage,
 					   nickName,
 					   tag,
-					   suffix;
+					   suffix,
+                        tpxyz;
 		
 		private boolean dead;
 		
@@ -181,6 +182,7 @@ class PlayerList
             tag = new String();
             nickName = new String();
             suffix = new String();
+            tpxyz = new String();
             defaultColor = 'f';
 			ignoreList = new ArrayList<String>();
             aliasList = new commandList();
@@ -242,6 +244,12 @@ class PlayerList
         					}
         				}
         			}
+                                //XYZ TP Back value
+                                //Not sure if declaring a double this way will work or not
+                                if(character.length > 7)
+                                {
+                                    tpxyz = character[7];
+                                }
                 	in.close();
         			return true;
             	}
@@ -285,7 +293,7 @@ class PlayerList
             			writer.append(nickName + ":");
             			writer.append(suffix + ":");
             			writer.append(defaultColor + ":");
-            			
+                                           			
             			int i = 0;
             			for(String ignore : ignoreList)
             			{
@@ -294,8 +302,8 @@ class PlayerList
             					writer.append(",");
             			}
             			writer.append(":");
-            			
             			writer.append(aliasList.toString());
+                                writer.append(tpxyz.toString());
             			writer.append("\r\n");
             		}
             	}
@@ -325,6 +333,7 @@ class PlayerList
                 out.append(nickName + ":");
                 out.append(suffix + ":");
                 out.append(defaultColor + ":");
+                
     			
     			int i = 0;
     			for(String ignore : ignoreList)
@@ -334,6 +343,7 @@ class PlayerList
     					out.append(",");
     			}
     			out.append(":");
+                        out.append(tpxyz + ":");
     			
     			out.append(aliasList.toString());
     			out.newLine();
@@ -456,8 +466,27 @@ class PlayerList
 			tag = newTag;
 			save();
 		}
-
+                //=====================================================================
+		//Function:	setTpback
+		//Input:	None
+		//Output:	None
+		//Use:		Sets a player's tpback xyz coordinates
 		//=====================================================================
+                public void setTpback(String newtpback)
+                {
+                    tpxyz = newtpback;
+                    save();
+                }
+                //=====================================================================
+		//Function:	getTpxyz
+		//Input:	None
+		//Output:	Double: The player's tpback x coords
+		//Use:		Gets the x value of tpback
+		//=====================================================================
+                public String getTpxyz() 
+                { 
+                    return tpxyz; 
+                }
 		//Function:	getTag
 		//Input:	None
 		//Output:	String: The player tag

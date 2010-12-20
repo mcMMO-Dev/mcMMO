@@ -1,5 +1,4 @@
 vMinecraft v1 Todo:
-	! Promote and Demote (ASAP) <Cere> DIBS
 	+ matchPlayer taking into account nicknames and prefixes and suffixes
 	+ Add [] around player tags
 	+ Modify setNick to not allow players to copy other's
@@ -27,9 +26,16 @@ vMinecraft v2 Updates!
 			how much longer they are probated for.
 
 DONE
+        +Added /freeze command to stop players from moving
 	+ Quick recode of /me to use the new getName function
+<<<<<<< HEAD
     + Simple Fire Antigrief
     + /prefix
+=======
+        + Promote and Demote (ASAP) <Cere> DIBS
+        + Simple Fire Antigrief
+        + /prefix
+>>>>>>> 30d6b1ac5186143118978d1d49d9be4295585464
 	+ /a to toggle admin chat
 	+ Code was organized
 	+ Aliasing was added

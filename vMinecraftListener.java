@@ -17,6 +17,11 @@ public class vMinecraftListener extends PluginListener {
 	public void disable() {
 		log.log(Level.INFO, "vMinecraft disabled");
 	}
+         public void onPlayerMove(Player player, Location from, Location to) {
+             if(vMinecraftSettings.getInstance().isFrozen(player.getName())){
+                 player.teleportTo(from);
+             }
+    }
 	
 	//=====================================================================
 	//Function:	onChat
@@ -26,6 +31,7 @@ public class vMinecraftListener extends PluginListener {
 	//					 and it is enabled
 	//Use:		Checks for quote, rage, and colors
 	//=====================================================================
+        
     public boolean onChat(Player player, String message){
 
     	//Quote (Greentext)

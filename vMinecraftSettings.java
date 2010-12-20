@@ -24,6 +24,7 @@ public class vMinecraftSettings {
 				   ignore 			= false,
 				   colors 			= false,
 				   nick 			= false,
+                freeze = false,
 				   cmdFabulous		= false,
 				   cmdPromote		= false,
 				   cmdDemote		= false,
@@ -43,6 +44,8 @@ public class vMinecraftSettings {
 				   cmdEzModo		= false;
 	//An array of players currently in ezmodo
 	static ArrayList<String> ezModo = new ArrayList<String>();
+        //An array of players currently frozen
+        static ArrayList<String> frozenplayers = new ArrayList<String>();
     //An array of players currently toggled for admin chat
     static ArrayList<String> adminChatList = new ArrayList<String>();
     //An array of blocks that won't catch on fire
@@ -96,6 +99,7 @@ public class vMinecraftSettings {
                 writer.write("#Enables or Disables the following commands, give groups/users permissions to use these commands for them to work\r\n");
 				writer.write("/fabulous=true\r\n");
                 writer.write("/prefix=true\r\n");
+                writer.write("/freeze=true\r\n");
                 writer.write("/suffix=true\r\n");
                 writer.write("/ignore=true\r\n");
                 writer.write("/colors=true\r\n");
@@ -154,6 +158,7 @@ public class vMinecraftSettings {
             ignore = properties.getBoolean("ignore",true);
             colors = properties.getBoolean("colors",true);
             nick = properties.getBoolean("nick",true);
+            freeze = properties.getBoolean("/freeze",true);
 			cmdFabulous = properties.getBoolean("/fabulous",true);
 			cmdPromote = properties.getBoolean("/promote",true);
 			cmdDemote = properties.getBoolean("/demote",true);
@@ -208,6 +213,7 @@ public class vMinecraftSettings {
         public boolean ignore() {return ignore;}
         public boolean colors() {return colors;}
         public boolean nick() {return nick;}
+        public boolean freeze() {return freeze;}
 	public boolean cmdFabulous() {return cmdFabulous;}
 	public boolean cmdPromote() {return cmdPromote;}
 	public boolean cmdDemote() {return cmdDemote;}
@@ -229,11 +235,14 @@ public class vMinecraftSettings {
 	//EzModo methods
     public boolean cmdEzModo() {return cmdEzModo;}
 	public boolean isEzModo(String playerName) {return ezModo.contains(playerName);}
+        public boolean isFrozen(String playerName) {return frozenplayers.contains(playerName);}
         public boolean isAdminToggled(String playerName) {return adminChatList.contains(playerName);}
 	public void removeEzModo(String playerName) {ezModo.remove(ezModo.indexOf(playerName));}
         public void removeAdminToggled(String playerName) {adminChatList.remove(adminChatList.indexOf(playerName));}
 	public void addEzModo(String playerName) {ezModo.add(playerName);}
         public void addAdminToggled(String playerName) {adminChatList.add(playerName);}
+        public void addFrozen(String playerName) {frozenplayers.add(playerName);}
+        public void removeFrozen (String playerName) {frozenplayers.remove(frozenplayers.indexOf(playerName));}
 	public String ezModoList() {return ezModo.toString();}
 	
     //Random death message method

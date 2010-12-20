@@ -55,8 +55,10 @@ public class vMinecraftCommands{
         cl.register("/demote", "demote", "Demote a player one rank");
 
         //Movement
+        cl.register("/freeze", "freeze");
         cl.register("/tp", "teleport");
         cl.register("/tphere", "tphere");
+        cl.register("/tpback", "tpback");
         cl.register("/masstp", "masstp", "Teleports those with lower permissions to you");
 
         //Health
@@ -176,7 +178,60 @@ public class vMinecraftCommands{
         		.globalmessages());
         return EXIT_SUCCESS;
     }
-    
+    public static int tpback(Player player, String[] args){
+        if(player.canUseCommand("/tpback")){
+            String tpxyz = vMinecraftUsers.getProfile(player).getTpxyz();
+            String tpxyz2[] = tpxyz.split(",");
+            double x = Double.parseDouble(tpxyz2[0]);
+            double y = Double.parseDouble(tpxyz2[1]);
+            double z = Double.parseDouble(tpxyz2[2]);
+            player.teleportTo(x, y, z, 0, 0);
+            String cx = Double.toString(etc.getServer().getSpawnLocation().x);
+            String cy = Double.toString(etc.getServer().getSpawnLocation().y);
+            String cz = Double.toString(etc.getServer().getSpawnLocation().z);
+            String cxyz = cx + "," + cy + "," + cz;
+            vMinecraftUsers.getProfile(player).setTpback(cxyz);
+            player.sendMessage(Colors.Rose + "/tpback data reset to spawn");
+            return EXIT_SUCCESS;
+            
+        }
+        return EXIT_SUCCESS;
+    }
+    //=====================================================================
+	//Function:	prefix (/prefix)
+	//Input:	Player player: The player using the command
+        //		String[] args: The name of the player
+	//Output:	int: Exit Code
+	//Use:		Freezes a player in place
+	//=====================================================================
+    public static int freeze(Player player, String[] args){
+        if(player.canUseCommand("/freeze") && vMinecraftSettings.getInstance().freeze()){
+            if (args.length < 1){
+                vMinecraftChat.gmsg(Colors.Rose + "Usage is /freeze [Player]");
+                return EXIT_SUCCESS;
+            }
+            Player other = etc.getServer().matchPlayer(args[0]);
+            if (other == null)
+            {
+                vMinecraftChat.gmsg(Colors.Rose + "The player you specified could not be found");
+                return EXIT_SUCCESS;
+            }
+            if(player != other && other.hasControlOver(player)){
+                vMinecraftChat.gmsg(Colors.Rose + "The player you specified has a higher rank than you");
+                return EXIT_SUCCESS;
+            }
+            if(vMinecraftSettings.getInstance().isFrozen(other.getName())){
+                vMinecraftSettings.getInstance().removeFrozen(other.getName());
+                vMinecraftChat.gmsg(player.getName() + Colors.Blue + " has unfrozen " + other.getName());
+                return EXIT_SUCCESS;
+            } else {
+            vMinecraftSettings.getInstance().addFrozen(other.getName());
+            vMinecraftChat.gmsg(player.getName() + Colors.Blue + " has frozen " + other.getName());
+            return EXIT_SUCCESS;
+            }
+        }
+        return EXIT_SUCCESS;
+    }
     //=====================================================================
 	//Function:	prefix (/prefix)
 	//Input:	Player player: The player using the command
@@ -978,6 +1033,18 @@ public class vMinecraftCommands{
 		
 		//If the player exists transport the user to the player
 		else {
+                    //Storing their previous location for tpback
+                    double x = player.getLocation().x;
+                    double y = player.getLocation().y;
+                    double z = player.getLocation().z;
+                    String x2 = Double.toString(x);
+                    String y2 = Double.toString(y);
+                    String z2 = Double.toString(z);
+                    String xyz = x2+","+y2+","+z2;
+                    vMinecraftUsers.getProfile(player).setTpback(xyz);
+                    if(player.canUseCommand("/tpback")){
+                     player.sendMessage(Colors.DarkPurple + "Your previous location has been stored, use /tpback to return.");
+                    }
 			vMinecraftChat.gmsg( player, vMinecraftChat.getName(player)
 					+ Colors.LightBlue + " has teleported to "
 					+ vMinecraftChat.getName(playerTarget));
@@ -1059,6 +1126,18 @@ public class vMinecraftCommands{
 			log.log(Level.INFO, player.getName() + " teleported "
 					+ player.getName() + " to their self.");
 			playerTarget.teleportTo(player);
+                        double x = player.getLocation().x;
+                        double y = player.getLocation().y;
+                        double z = player.getLocation().z;
+                        String x2 = Double.toString(x);
+                        String y2 = Double.toString(y);
+                        String z2 = Double.toString(z);
+                        String xyz = x2+","+y2+","+z2;
+                        vMinecraftUsers.getProfile(playerTarget).setTpback(xyz);
+                        if(playerTarget.canUseCommand("/tpback"))
+                        {
+                        playerTarget.sendMessage(Colors.DarkPurple + "Your previous location has been stored, use /tpback to return.");
+                        }
 		}
 		return EXIT_SUCCESS;
 	}

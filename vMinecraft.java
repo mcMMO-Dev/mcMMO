@@ -13,7 +13,16 @@ public class vMinecraft extends Plugin {
 		vMinecraftSettings.getInstance().loadSettings();
         vMinecraftUsers.getInstance().loadUsers();
 		vMinecraftCommands.loadCommands();
-
+                /*while(true){
+                    if (etc.getServer().getTime() == 0){
+                    vMinecraftChat.gmsg(Colors.Rose + "The sun has risen, it is now safe to punch trees");
+                }
+                if (etc.getServer().getTime() == 13000){
+                    vMinecraftChat.gmsg(Colors.Rose + "What a terrible night to have a curse");
+                }
+                }
+                 * 
+                 */
     }
 
     public void disable() {
@@ -30,6 +39,7 @@ public class vMinecraft extends Plugin {
         etc.getLoader().addListener(PluginLoader.Hook.EXPLODE, listener, this, PluginListener.Priority.HIGH);
         etc.getLoader().addListener(PluginLoader.Hook.LIQUID_DESTROY, listener, this, PluginListener.Priority.MEDIUM);
         etc.getLoader().addListener(PluginLoader.Hook.HEALTH_CHANGE, listener, this, PluginListener.Priority.MEDIUM);
+        etc.getLoader().addListener(PluginLoader.Hook.PLAYER_MOVE, listener, this, PluginListener.Priority.MEDIUM);
         }
     }
 
