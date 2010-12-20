@@ -13,13 +13,16 @@ public class vMinecraft extends Plugin {
 		vMinecraftSettings.getInstance().loadSettings();
         vMinecraftUsers.getInstance().loadUsers();
 		vMinecraftCommands.loadCommands();
-                if (etc.getServer().getTime() == 0){
+                /*while(true){
+                    if (etc.getServer().getTime() == 0){
                     vMinecraftChat.gmsg(Colors.Rose + "The sun has risen, it is now safe to punch trees");
                 }
                 if (etc.getServer().getTime() == 13000){
                     vMinecraftChat.gmsg(Colors.Rose + "What a terrible night to have a curse");
                 }
-
+                }
+                 * 
+                 */
     }
 
     public void disable() {
