@@ -24,6 +24,14 @@ public class vMinecraftChat {
 			Colors.DarkPurple, 
 			Colors.Purple,
 			Colors.LightPurple};
+        protected static final String[] xmas = new String[] {
+            Colors.Red,
+            Colors.Red,
+            Colors.White,
+            Colors.White,
+            Colors.Green,
+            Colors.Green,
+        };
 
 	//=====================================================================
 	//Function:	gmsg
@@ -253,6 +261,25 @@ public class vMinecraftChat {
 		}
 		return temp;
     }
+    //=====================================================================
+	//Function:	xmas
+	//Input:	String msg: The string to colorify
+	//Output:	String: The xmas colored result
+	//Use:		Makes a string more festive
+	//=====================================================================
+    public static String xmas(String msg){
+    	String temp = "";
+		int counter=0;
+		//Loop through the message applying the colors
+		for(int x=0; x<msg.length(); x++)
+		{
+			temp += xmas[counter]+msg.charAt(x);
+			
+			if(msg.charAt(x)!=' ') counter++;
+			if(counter==xmas.length) counter = 0;
+		}
+		return temp;
+    }
 	//=====================================================================
 	//Function:	getName
 	//Input:	Player player: The player to get name as color
@@ -369,6 +396,12 @@ public class vMinecraftChat {
 			case 'r':
 				color = "^r";
 				break;
+                        case 'x':
+                            color = "^x";
+                            break;
+                        case 'X':
+                            color = "^x";
+                            break;
 			default:
 				color = null;
 				break;
@@ -574,7 +607,40 @@ public class vMinecraftChat {
 										x--;
 									}
 								}
+                                                              if(taste || recentColor.equals("^x"))
+								{
+									//Skip the quake code for xmas
+									if(recentColor.equals("^x"))
+									{
+										x += 2;
+									}
+									
+									//Taste keeps it going with xmas if there
+									//are more lines
+									taste = true;
+									//Loop through the message applying the colors
+									while(x < msg.length() && msg.charAt(x) != '^'
+										&& msg.charAt(x) != Colors.Red.charAt(0))
+									{
+										temp += xmas[i] + msg.charAt(x);
+										
+										if(msg.charAt(x) != ' ') i++;
+										if(i == xmas.length) i = 0;
+										x++;
+									}
+									
+									//If it reached another color instead of the end
+									if(x < msg.length() && msg.charAt(x) == '^'
+											|| x < msg.length()
+											&&  msg.charAt(x) == Colors.Red.charAt(0) )
+									{
+										taste = false;
+										i = 0;
+										x--;
+									}
+								}
 								else
+                                                                
 								{
 									//Add the color
 									temp += recentColor;
