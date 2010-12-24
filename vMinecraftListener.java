@@ -98,9 +98,9 @@ public class vMinecraftListener extends PluginListener {
                 player.teleportTo(home.Location);
                 //Makes sure the player has a custom home before telling them about /myspawn
                 if(etc.getServer().getSpawnLocation() != etc.getDataSource().getHome(player.getName()).Location){
-                player.sendMessage(Colors.DarkPurple + "Return here with /myspawn, the penalty for returning is the complete loss of inventory");
+                vMinecraftChat.sendMessage(player, Colors.DarkPurple + "Return here with /myspawn, the penalty for returning is the complete loss of inventory");
                 } else {
-                    player.sendMessage(Colors.DarkPurple + "Set your own spawn with /myspawn");
+                    vMinecraftChat.sendMessage(player, Colors.DarkPurple + "Set your own spawn with /myspawn");
                 }
                 }
                 vMinecraftUsers.getProfile(player).isDead(false);
