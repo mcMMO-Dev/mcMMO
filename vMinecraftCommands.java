@@ -60,6 +60,7 @@ public class vMinecraftCommands{
         cl.register("/tphere", "tphere");
         cl.register("/tpback", "tpback");
         cl.register("/masstp", "masstp", "Teleports those with lower permissions to you");
+        cl.register("/myspawn", "myspawn");
 
         //Health
         cl.register("/ezmodo", "invuln", "Toggle invulnerability");
@@ -196,6 +197,28 @@ public class vMinecraftCommands{
             
         }
         return EXIT_SUCCESS;
+    }
+    //=====================================================================
+	//Function:	myspawn (/myspawn)
+	//Input:	Player player: The player using the command
+	//Output:	int: Exit Code
+	//Use:		Returns a player to their home but with penalties
+	//=====================================================================
+    public static int myspawn(Player player, String[] args){
+        if(player.canUseCommand("/myspawn") && vMinecraftSettings.getInstance().playerspawn())
+        {
+            player.sendMessage(Colors.DarkPurple + "Returned to myspawn");
+            player.sendMessage(Colors.Red + "Penalty: Inventory Cleared");
+            player.setHealth(20);
+            Warp home = null;
+            home = etc.getDataSource().getHome(player.getName());
+            player.teleportTo(home.Location);
+            Inventory inv = player.getInventory();
+            inv.clearContents();
+            inv.update();
+            return EXIT_SUCCESS;
+        }
+        return EXIT_FAIL;
     }
     //=====================================================================
 	//Function:	prefix (/prefix)
