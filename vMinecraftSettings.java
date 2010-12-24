@@ -24,6 +24,7 @@ public class vMinecraftSettings {
 				   ignore 			= false,
 				   colors 			= false,
 				   nick 			= false,
+                playerspawn = false,
                 freeze = false,
 				   cmdFabulous		= false,
 				   cmdPromote		= false,
@@ -85,6 +86,8 @@ public class vMinecraftSettings {
                 writer.write("FFF=true\r\n");
                 writer.write("\r\n");
                 writer.write("#Admin Settings\r\n");
+                writer.write("#Enables or disables players spawning to their home location");
+                writer.write("playerspawn=true\r\n");
                 writer.write("#Enables or disables the admin only chat\r\n");
                 writer.write("adminchat=true\r\n");
                 writer.write("#Lets non admins use admin chat if they have the /adminchat command permission\r\n");
@@ -150,6 +153,7 @@ public class vMinecraftSettings {
 
 		try {
 			adminChat = properties.getBoolean("adminchat",true);
+                        playerspawn = properties.getBoolean("playerspawn",true);
 			greentext = properties.getBoolean("QuotesAreGreen",true);
 			FFF = properties.getBoolean("FFF",true);
 			quakeColors = properties.getBoolean("ColoredChat",true);
@@ -213,6 +217,7 @@ public class vMinecraftSettings {
         public boolean ignore() {return ignore;}
         public boolean colors() {return colors;}
         public boolean nick() {return nick;}
+        public boolean playerspawn() {return playerspawn;}
         public boolean freeze() {return freeze;}
 	public boolean cmdFabulous() {return cmdFabulous;}
 	public boolean cmdPromote() {return cmdPromote;}

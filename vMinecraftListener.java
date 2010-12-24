@@ -86,8 +86,14 @@ public class vMinecraftListener extends PluginListener {
 	//Use:		Checks for exploits and runs the commands
 	//=====================================================================
     public boolean onHealthChange(Player player,int oldValue,int newValue){
-        if (player.getHealth() > 1){
+        if (player.getHealth() > 1 && vMinecraftUsers.getProfile(player).isDead()){
 	        vMinecraftUsers.getProfile(player).isDead(false);
+                if(vMinecraftSettings.getInstance().playerspawn())
+                {
+                Warp home = null;
+                home = etc.getDataSource().getHome(player.getName());
+                player.teleportTo(home.Location);
+                }
         }
         return false;
     }
