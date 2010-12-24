@@ -1,5 +1,6 @@
-vMinecraft v1 Todo:	
-	+ matchPlayer taking into account nicknames
+vMinecraft v1 Todo:
+	+ matchPlayer taking into account nicknames and prefixes and suffixes
+	+ Add [] around player tags
 	+ Modify setNick to not allow players to copy other's
 	  nicknames and account names. Also disallow Notch as a nick :P
     + Fix death messages (again :v)
@@ -7,8 +8,9 @@ vMinecraft v1 Todo:
 	+ Write a way to add and remove commands from players and groups
 		
 vMinecraft v2 Updates!
-    +Add in a sort of rap sheet file for storing and retrieving information on bans and kicks.
-+ More Complex Antigriefs <Nos> Working on this... that is in the future!
+    +Add in a sort of rap sheet file for storing and retrieving
+    	information on bans and kicks.
+	+ More Complex Antigriefs <Nos> Working on this... that is in the future!
 	+ Different types of /slay
 		* /slay fire to burn them to death
 		* /slay drown to drown them
@@ -18,13 +20,17 @@ vMinecraft v2 Updates!
 			to get to the time entered
 		* Loop through specific times of the day and then rewind
 			ex: Sunrise to sunset, mid-morning to noon
+	+ Track Chest Inventory
+	+ Probations.
+		* When a player connects it will automatically kick them and inform them
+			how much longer they are probated for.
 
 DONE
-        +Added /freeze command to stop players from moving
+    +Added /freeze command to stop players from moving
 	+ Quick recode of /me to use the new getName function
-        + Promote and Demote (ASAP) <Cere> DIBS
-        + Simple Fire Antigrief
-        + /prefix
+    + Promote and Demote (ASAP) <Cere> DIBS
+    + Simple Fire Antigrief
+    + /prefix
 	+ /a to toggle admin chat
 	+ Code was organized
 	+ Aliasing was added
