@@ -86,14 +86,19 @@ public class vMinecraftListener extends PluginListener {
 	//Use:		Checks for exploits and runs the commands
 	//=====================================================================
     public boolean onHealthChange(Player player,int oldValue,int newValue){
+        //Sets a player as dead
+        if (player.getHealth() < 1){
+            vMinecraftUsers.getProfile(player).isDead(true);
+        }
         if (player.getHealth() > 1 && vMinecraftUsers.getProfile(player).isDead()){
-	        vMinecraftUsers.getProfile(player).isDead(false);
                 if(vMinecraftSettings.getInstance().playerspawn())
                 {
                 Warp home = null;
                 home = etc.getDataSource().getHome(player.getName());
                 player.teleportTo(home.Location);
                 }
+                vMinecraftUsers.getProfile(player).isDead(false);
+                vMinecraftChat.gmsg(Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
         }
         return false;
     }
@@ -120,46 +125,7 @@ public class vMinecraftListener extends PluginListener {
     }
     
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {   	
-    	Player defend = null;
-    	if(defender != null && defender.isPlayer())
-    	{
-	    	defend = defender.getPlayer();
-	    	if (vMinecraftSettings.getInstance().isEzModo(defend.getName())) {
-	            return true;
-	        }
-	    	
-	        if (defend.getHealth() > 0)
-	        	return false;
-	        if (vMinecraftUsers.getProfile(defend).isDead())
-	    		return false;
-	        
-	        vMinecraftUsers.getProfile(defend).isDead(true);
 
-	    	Player attack = null;
-	    	if(attacker != null && attacker.isPlayer())
-	    		attack = attacker.getPlayer();
-	    	if(attack != null)
-	    	{
-                    vMinecraftChat.gmsg(defend.getName() + " was slain by " + attack.getName());
-	    	}
-        	if (type == type.CREEPER_EXPLOSION) {
-                vMinecraftChat.gmsg(defend.getName() + Colors.Rose + " was blown to bits by a creeper");
-        	} else if(type == type.FALL){
-                vMinecraftChat.gmsg(defend.getName() + Colors.Rose + " fell to death!");
-        	} else if(type == type.FIRE){
-                vMinecraftChat.gmsg(defend.getName() + Colors.Rose + " was incinerated");
-        	} else if (type == type.FIRE_TICK){
-                vMinecraftChat.gmsg(defend.getName() + Colors.Rose + " Stop drop and roll, not scream, run, and burn ");
-        	} else if (type == type.LAVA){
-                vMinecraftChat.gmsg(defend.getName() + Colors.Rose + " drowned in lava");
-        	} else if (type == type.WATER){
-        		log.log(Level.INFO, "Water");
-                vMinecraftChat.gmsg(defend.getName() + Colors.Rose + " should've attended that swimming class");
-        	} else {
-                vMinecraftChat.gmsg(Colors.Gray + defend.getName() + " " + vMinecraftSettings.randomDeathMsg());
-            }
-	    		
-    	}
         return false;
     }
 }
