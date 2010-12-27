@@ -82,9 +82,9 @@ public class vMinecraftSettings {
                 writer.write("#Chat Options\r\n");
                 writer.write("#Allows the use of color codes following ^ symbol\r\n");
                 writer.write("ColoredChat=true\r\n");
-                writer.write("#Require per player permission for quakecolors");
+                writer.write("#Require per player permission for quakecolors\r\n");
                 writer.write("colorsrequirepermissions=false\r\n");
-                writer.write("#use /coloruse to give players permission if this is enabled");
+                writer.write("#use /coloruse to give players permission if this is enabled\r\n");
                 writer.write("#Text following a > will be colored green to mimic quoting of popular internet message boards\r\n");
 				writer.write("QuotesAreGreen=true\r\n");
                 writer.write("#Turns any chat message starting with FFF automagically blood red\r\n");
@@ -92,7 +92,7 @@ public class vMinecraftSettings {
                 writer.write("\r\n");
                 writer.write("#Admin Settings\r\n");
                 
-                writer.write("#Enables or disables players spawning to their home location");
+                writer.write("#Enables or disables players spawning to their home location\r\n");
                 writer.write("playerspawn=true\r\n");
                 writer.write("#Enables or disables the admin only chat\r\n");
                 writer.write("adminchat=true\r\n");
