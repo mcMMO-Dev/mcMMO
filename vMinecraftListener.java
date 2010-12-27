@@ -119,11 +119,38 @@ public class vMinecraftListener extends PluginListener {
     }
     
     public boolean onIgnite(Block block, Player player) {
-        if(vMinecraftSettings.stopFire){
-            if(block.getStatus() == 3 || block.getStatus() == 1){
+        if(vMinecraftSettings.getInstance().stopFire()){
+            //There are 3 ways fire can spread
+            //1 = lava, 2 = lighter, 3 = spread (other fire blocks)
+            //Stop lava from spreading
+            if(block.getStatus() == 1 && vMinecraftSettings.getInstance().lavaSpread()){
                 return true;
             }
-            if(block.getStatus() == 2 && !player.isAdmin()){
+            //Stop fire from spreading fire
+            if (block.getStatus() == 3 && vMinecraftSettings.getInstance().stopFire()){
+                return true;
+            }
+            //Checking to see if any of the blocks fire is trying to spread to is on the "fireblockan" list
+            if (block.getStatus() == 3){
+                int x,
+                        y,
+                        z,
+                        g;
+                x = block.getX();
+                y = block.getY();
+                z = block.getZ();
+                //Finding out the blockid of the current blocks fire is trying to spread to
+                int blockid = etc.getServer().getBlockIdAt(x, y, z);
+                //Check to see the blockid doesn't match anything on the list
+                for(x = 0; x >= vMinecraftSettings.fireblockan.size(); x++){
+                    if (vMinecraftSettings.fireblockan.get(x) == blockid){
+                        return true;
+                    }
+                }
+                
+            }
+            //Stop players without permission from being able to set fires
+            if(block.getStatus() == 2 && !player.canUseCommand("/flint")){
                 return true;
             }
         }

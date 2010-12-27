@@ -24,8 +24,10 @@ public class vMinecraftSettings {
 				   ignore 			= false,
 				   colors 			= false,
 				   nick 			= false,
-                playerspawn = false,
-                freeze = false,
+                                   playerspawn = false,
+                                   freeze = false,
+                                   lavaspread = false,
+                                   colorsrequirepermission = false,
 				   cmdFabulous		= false,
 				   cmdPromote		= false,
 				   cmdDemote		= false,
@@ -50,14 +52,14 @@ public class vMinecraftSettings {
     //An array of players currently toggled for admin chat
     static ArrayList<String> adminChatList = new ArrayList<String>();
     //An array of blocks that won't catch on fire
-        
-
+    static public ArrayList<Integer> fireblockan;   
 	
-	private PropertiesFile properties;
-	String file = "vminecraft.properties";
-	public String rules[] = new String[0];
+    private PropertiesFile properties;
+    String file = "vminecraft.properties";
+    public String rules[] = new String[0];
     public static String deathMessages[] = new String[0];
     public static String ranks[] = new String[0];
+    
 
 	//=====================================================================
 	//Function:	loadSettings
@@ -80,12 +82,16 @@ public class vMinecraftSettings {
                 writer.write("#Chat Options\r\n");
                 writer.write("#Allows the use of color codes following ^ symbol\r\n");
                 writer.write("ColoredChat=true\r\n");
+                writer.write("#Require per player permission for quakecolors");
+                writer.write("colorsrequirepermissions=false\r\n");
+                writer.write("#use /coloruse to give players permission if this is enabled");
                 writer.write("#Text following a > will be colored green to mimic quoting of popular internet message boards\r\n");
 				writer.write("QuotesAreGreen=true\r\n");
                 writer.write("#Turns any chat message starting with FFF automagically blood red\r\n");
                 writer.write("FFF=true\r\n");
                 writer.write("\r\n");
                 writer.write("#Admin Settings\r\n");
+                
                 writer.write("#Enables or disables players spawning to their home location");
                 writer.write("playerspawn=true\r\n");
                 writer.write("#Enables or disables the admin only chat\r\n");
@@ -123,6 +129,10 @@ public class vMinecraftSettings {
 				writer.write("ezModo=\r\n");
                 writer.write("#Stop fire from spreading\r\n");
 				writer.write("stopFire=false\r\n");
+                                writer.write("#Stop lava from spreading fire");
+                                writer.write("lavaspread=false");
+                                writer.write("#Blocks disabled from fire");
+                                writer.write("fireblocks=");
                 writer.write("\r\n");
                 writer.write("#Organize your player ranks from lowest to highest.\r\n");
                 writer.write("ranks=default,trusted,mods,admins,superadmins\r\n");
@@ -157,12 +167,13 @@ public class vMinecraftSettings {
 			greentext = properties.getBoolean("QuotesAreGreen",true);
 			FFF = properties.getBoolean("FFF",true);
 			quakeColors = properties.getBoolean("ColoredChat",true);
-            prefix = properties.getBoolean("prefix",true);
-            suffix = properties.getBoolean("suffix",true);
-            ignore = properties.getBoolean("ignore",true);
-            colors = properties.getBoolean("colors",true);
-            nick = properties.getBoolean("nick",true);
-            freeze = properties.getBoolean("/freeze",true);
+                        colorsrequirepermission = properties.getBoolean("colorsrequirepermission",true);
+                        prefix = properties.getBoolean("prefix",true);
+                        suffix = properties.getBoolean("suffix",true);
+                        ignore = properties.getBoolean("ignore",true);
+                        colors = properties.getBoolean("colors",true);
+                        nick = properties.getBoolean("nick",true);
+                        freeze = properties.getBoolean("/freeze",true);
 			cmdFabulous = properties.getBoolean("/fabulous",true);
 			cmdPromote = properties.getBoolean("/promote",true);
 			cmdDemote = properties.getBoolean("/demote",true);
@@ -179,9 +190,17 @@ public class vMinecraftSettings {
 			cmdSay = properties.getBoolean("/say",true);
 			cmdEzModo = properties.getBoolean("/ezmodo",true);
 			stopFire = properties.getBoolean("stopFire",true);
+                        lavaspread = properties.getBoolean("lavaspread",true);
 			rules = properties.getString("rules", "").split("@");
 			deathMessages = properties.getString("deathmessages", "").split(",");
 			String[] tempEz = properties.getString("ezModo").split(",");
+                        String[] fireblocks = properties.getString("fireblocks").split(",");
+                        fireblockan = new ArrayList<Integer>();
+                        for(int x = 0;x <= fireblocks.length; x++)
+                        {
+                            fireblockan.add(Integer.parseInt(fireblocks[x]));
+                            x++;
+                        }
 			ezModo = new ArrayList<String>();
 			for(String ezName : tempEz)
 				ezModo.add(ezName);
@@ -218,6 +237,7 @@ public class vMinecraftSettings {
         public boolean colors() {return colors;}
         public boolean nick() {return nick;}
         public boolean playerspawn() {return playerspawn;}
+        public boolean colorsreq() {return colorsrequirepermission;}
         public boolean freeze() {return freeze;}
 	public boolean cmdFabulous() {return cmdFabulous;}
 	public boolean cmdPromote() {return cmdPromote;}
@@ -231,10 +251,11 @@ public class vMinecraftSettings {
 	public boolean cmdMasstp() {return cmdMasstp;}
 	public boolean cmdWho() {return cmdWho;}
 	public boolean stopFire() {return stopFire;}
+        public boolean lavaSpread() {return lavaspread;}
 	public boolean stopTnt() {return stopTnt;}
         public boolean cmdSuicide() {return cmdSuicide;}
         public boolean cmdHeal() {return cmdHeal;}
-        
+        public ArrayList<Integer> getFireBlockIds() {return fireblockan;}
         public String[] getRanks() {return ranks;}
 	
 	//EzModo methods
