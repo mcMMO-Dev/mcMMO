@@ -459,8 +459,8 @@ public class vMinecraftChat {
 	public static boolean quote(Player player, String message)
 	{
 		//Format the name
-		String playerName = player.getColor() + "<" + getName(player)
-				+ player.getColor() + "> ";
+		String playerName = Colors.White + "<" + getName(player)
+				+ Colors.White + "> ";
 		if(vMinecraftSettings.getInstance().greentext()) {
 			//Log the chat
 			log.log(Level.INFO, "<"+player.getName()+"> " + message);
@@ -504,8 +504,8 @@ public class vMinecraftChat {
 	public static boolean quakeColors(Player player, String message)
 	{
 		//Format the name
-		String playerName = player.getColor() + "<"
-				+ getName(player) + player.getColor() +"> ";
+		String playerName = Colors.White + "<"
+				+ getName(player) + Colors.White +"> ";
 		if(vMinecraftSettings.getInstance().quakeColors()) {
 
 			String color = vMinecraftUsers.getProfile(player).getColor();
