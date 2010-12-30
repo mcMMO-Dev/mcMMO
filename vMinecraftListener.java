@@ -174,6 +174,9 @@ public class vMinecraftListener extends PluginListener {
                         return false;
                     }
                 }
+                else {
+                    return false;
+                }
             }
         }
         return false;

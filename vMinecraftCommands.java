@@ -185,9 +185,13 @@ public class vMinecraftCommands{
         return EXIT_SUCCESS;
     }
     public static int partychat(Player player, String[] args){
+        if (args.length < 1) {
+			player.sendMessage(Colors.Rose + "Usage is /p [Message]");
+			return EXIT_SUCCESS;
+		}
         if(vMinecraftUsers.getProfile(player).inParty()){
-            String message = args.toString();
-            vMinecraftChat.partyChat(player, message);
+            String str = etc.combineSplit(0, args, " ");
+            vMinecraftChat.partyChat(player, str);
             return EXIT_SUCCESS;
         } else{
         return EXIT_FAIL;

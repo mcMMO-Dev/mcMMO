@@ -454,7 +454,7 @@ public class vMinecraftChat {
                 for (Player p: etc.getServer().getPlayerList()){
                     if (p != null){
                         if (vMinecraftUsers.getProfile(p).inParty() && (vMinecraftUsers.getProfile(p).getParty().equals(vMinecraftUsers.getProfile(player).getParty()))){
-                            sendMessage(player, p, partychat + message);
+                            sendMessage(player, p, partychat + Colors.Green + message);
                         }
                     }
                 }
