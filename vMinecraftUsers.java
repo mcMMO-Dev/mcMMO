@@ -153,6 +153,7 @@ class PlayerList
 					   nickName,
 					   tag,
 					   suffix,
+                        party,
                         tpxyz;
 		
 		private boolean dead;
@@ -183,6 +184,8 @@ class PlayerList
             nickName = new String();
             suffix = new String();
             tpxyz = new String();
+            party = new String();
+            party = null;
             defaultColor = 'f';
 			ignoreList = new ArrayList<String>();
             aliasList = new commandList();
@@ -505,6 +508,27 @@ class PlayerList
 			nickName = newNick;
 			save();
 		}
+                //Store the player's party
+                public void setParty(String newParty)
+                {
+                    party = newParty;
+                    save();
+                }
+                //Retrieve the player's party
+                public String getParty() {return party;}
+                //Remove party
+                public void removeParty() {
+                    party = null;
+                    save();
+                }
+                //Retrieve whether or not the player is in a party
+                public boolean inParty() {
+                    if(party != null){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
 
 		//=====================================================================
 		//Function:	getNick

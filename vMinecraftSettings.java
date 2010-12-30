@@ -52,7 +52,8 @@ public class vMinecraftSettings {
     //An array of players currently toggled for admin chat
     static ArrayList<String> adminChatList = new ArrayList<String>();
     //An array of blocks that won't catch on fire
-    static public ArrayList<Integer> fireblockan;   
+    static public ArrayList<Integer> fireblockan;
+    
 	
     private PropertiesFile properties;
     String file = "vminecraft.properties";

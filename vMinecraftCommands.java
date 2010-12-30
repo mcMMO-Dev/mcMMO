@@ -53,6 +53,11 @@ public class vMinecraftCommands{
         cl.register("/who", "who");
         cl.register("/promote", "promote", "Promote a player one rank");
         cl.register("/demote", "demote", "Demote a player one rank");
+        
+        //Party
+        cl.register("/party", "party");
+        cl.register("/pquit", "partyquit");
+        cl.register("/p", "partychat");
 
         //Movement
         cl.register("/freeze", "freeze");
@@ -178,6 +183,39 @@ public class vMinecraftCommands{
         		+ "Global Messages: " + vMinecraftSettings.getInstance()
         		.globalmessages());
         return EXIT_SUCCESS;
+    }
+    public static int partychat(Player player, String[] args){
+        if(vMinecraftUsers.getProfile(player).inParty()){
+            String message = args.toString();
+            vMinecraftChat.partyChat(player, message);
+            return EXIT_SUCCESS;
+        } else{
+        return EXIT_FAIL;
+    }
+    }
+    public static int party(Player player, String[] args){
+        if(vMinecraftUsers.getProfile(player).inParty()){
+            player.sendMessage(Colors.Red + "You are already in a party, use /pquit to leave it");
+            return EXIT_SUCCESS;
+        }
+        if(args[0] != null) {
+            vMinecraftUsers.getProfile(player).setParty(args[0]);
+            player.sendMessage(Colors.DarkPurple + "Party set to " + args[0]);
+            return EXIT_SUCCESS;
+        } else {
+            player.sendMessage(Colors.Red + "Correct usage is /party [partyname]");
+            return EXIT_SUCCESS;
+        }
+    }
+    public static int partyquit(Player player, String[] args){
+        if(vMinecraftUsers.getProfile(player).inParty()){
+            vMinecraftUsers.getProfile(player).removeParty();
+            player.sendMessage(Colors.LightGreen + "Party successfully removed");
+            return EXIT_SUCCESS;
+        } else {
+            player.sendMessage(Colors.Red + "You are not in a party");
+            return EXIT_SUCCESS;
+        }
     }
     public static int tpback(Player player, String[] args){
         if(player.canUseCommand("/tpback")){

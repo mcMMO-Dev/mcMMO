@@ -448,6 +448,20 @@ public class vMinecraftChat {
 		}
 		return false;
 	}
+        public static boolean partyChat(Player player, String message){
+            if(vMinecraftUsers.getProfile(player).inParty()){
+                String partychat = Colors.Green + "(" + getName(player) + Colors.Green + ") ";
+                for (Player p: etc.getServer().getPlayerList()){
+                    if (p != null){
+                        if (vMinecraftUsers.getProfile(p).inParty() && (vMinecraftUsers.getProfile(p).getParty().equals(vMinecraftUsers.getProfile(player).getParty()))){
+                            sendMessage(player, p, partychat + message);
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
 
 	//=====================================================================
 	//Function:	quote

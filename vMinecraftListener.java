@@ -162,9 +162,19 @@ public class vMinecraftListener extends PluginListener {
         //Invincibility for EzModo players
         if(defender.isPlayer()){
             Player dplayer = defender.getPlayer();
-        if(vMinecraftSettings.getInstance().isEzModo(dplayer.getName())){
-            return true;
-            }        
+            if(vMinecraftSettings.getInstance().isEzModo(dplayer.getName())){
+                return true;
+            }
+            if(attacker.isPlayer()){
+                Player aplayer = attacker.getPlayer();
+                if(vMinecraftUsers.getProfile(dplayer).inParty()){
+                    if(vMinecraftParty.inSameParty(aplayer, dplayer)){
+                        return true;
+                    } else{
+                        return false;
+                    }
+                }
+            }
         }
         return false;
     }
