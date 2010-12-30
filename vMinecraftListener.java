@@ -86,10 +86,7 @@ public class vMinecraftListener extends PluginListener {
 	//Use:		Checks for exploits and runs the commands
 	//=====================================================================
     public boolean onHealthChange(Player player,int oldValue,int newValue){
-        //Invincibility for EzModo players
-        if(vMinecraftSettings.getInstance().isEzModo(player.getName())){
-            return false;
-        }
+        
         //Sets a player as dead
         if (player.getHealth() < 1){
             vMinecraftUsers.getProfile(player).isDead(true);
@@ -161,8 +158,14 @@ public class vMinecraftListener extends PluginListener {
         return false;
     }
     
-    public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {   	
-
+    public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
+        //Invincibility for EzModo players
+        if(defender.isPlayer()){
+            Player dplayer = defender.getPlayer();
+        if(vMinecraftSettings.getInstance().isEzModo(dplayer.getName())){
+            return true;
+            }        
+        }
         return false;
     }
 }
