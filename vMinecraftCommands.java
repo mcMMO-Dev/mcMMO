@@ -48,7 +48,7 @@ public class vMinecraftCommands{
         cl.register("/whois", "whois", "/whois [user]");
         cl.register("/say", "say");
         cl.register("/a", "adminChatToggle", "Toggle admin chat for every message");
-        cl.register("/modify", "modify");
+        //cl.register("/modify", "modify");
         cl.register("/rules", "rules", "Displays the rules");
         cl.register("/who", "who");
         cl.register("/promote", "promote", "Promote a player one rank");
@@ -1505,6 +1505,7 @@ public class vMinecraftCommands{
 	//Output:	int: Exit Code
 	//Use:		Display help for modifying features of players
 	//=====================================================================
+        /*
 	public static int modify(Player player, String[] args)
 	{
 		if(player.canUseCommand("/prefixother"))
@@ -1545,6 +1546,8 @@ public class vMinecraftCommands{
 		return EXIT_SUCCESS;
 	}
 
+         * 
+         */
 	//=====================================================================
 	//Function:	promote (/promote)
 	//Input:	Player player: The player using the command
