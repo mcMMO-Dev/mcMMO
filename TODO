@@ -1,6 +1,8 @@
 vMinecraft v1 Todo:
         + Brackets with group prefix colors in chat
         + Add permission toggle for using colors
+        + Guilds
+        + Party Leaders
         + Ability to ban the use of certain colors as default chat/prefix color/suffix color
         + More complex fire antigrief
 	+ matchPlayer taking into account nicknames and prefixes and suffixes
@@ -8,7 +10,7 @@ vMinecraft v1 Todo:
 	+ Modify setNick to not allow players to copy other's
         + Fix ^^ in chat causing error message
 	  nicknames and account names. Also disallow Notch as a nick :P
-    + Make death messages accurately report damage type
+        + Make death messages accurately report damage type
 	+ Aliasing Commands (Global Aliases and Personal Aliases) <Cere>
 	+ Write a way to add and remove commands from players and groups
 		
@@ -31,6 +33,8 @@ vMinecraft v2 Updates!
 			how much longer they are probated for.
 
 DONE
+    +Party system
+    +Party Chat
     +Fix death messages
     +Added /freeze command to stop players from moving
 	+ Quick recode of /me to use the new getName function
