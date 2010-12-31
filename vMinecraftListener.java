@@ -96,6 +96,7 @@ public class vMinecraftListener extends PluginListener {
                 {
                 Warp home = null;
                 home = etc.getDataSource().getHome(player.getName());
+                if(home.Location != null)
                 player.teleportTo(home.Location);
                 //Makes sure the player has a custom home before telling them about /myspawn
                 if(etc.getServer().getSpawnLocation() != etc.getDataSource().getHome(player.getName()).Location){

@@ -195,9 +195,10 @@ public class vMinecraftSettings {
 			String[] tempEz = properties.getString("ezModo").split(",");
                         String[] fireblocks = properties.getString("fireblocks").split(",");
                         fireblockan = new ArrayList<Integer>();
-                        for(int x = 0;x < fireblocks.length; x++)
+                         for(String str : fireblocks)
                         {
-                            fireblockan.add(Integer.parseInt(fireblocks[x]));
+                        if(!str.isEmpty())
+                            fireblockan.add(Integer.parseInt(str));
                         }
 			ezModo = new ArrayList<String>();
                         ezModo.addAll(Arrays.asList(tempEz));

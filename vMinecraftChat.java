@@ -565,6 +565,7 @@ public class vMinecraftChat {
 			int counter = 0;
 			int i = 0;
 			boolean taste = false;
+                        boolean xmasparty = false;
 			
 			for(String msg: message)
 			{	
@@ -621,7 +622,7 @@ public class vMinecraftChat {
 										x--;
 									}
 								}
-                                                              if(taste || recentColor.equals("^x"))
+                                                              if(xmasparty || recentColor.equals("^x"))
 								{
 									//Skip the quake code for xmas
 									if(recentColor.equals("^x"))
@@ -631,7 +632,7 @@ public class vMinecraftChat {
 									
 									//Taste keeps it going with xmas if there
 									//are more lines
-									taste = true;
+									xmasparty = true;
 									//Loop through the message applying the colors
 									while(x < msg.length() && msg.charAt(x) != '^'
 										&& msg.charAt(x) != Colors.Red.charAt(0))
@@ -648,7 +649,7 @@ public class vMinecraftChat {
 											|| x < msg.length()
 											&&  msg.charAt(x) == Colors.Red.charAt(0) )
 									{
-										taste = false;
+										xmasparty = false;
 										i = 0;
 										x--;
 									}
