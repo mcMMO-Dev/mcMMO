@@ -95,9 +95,10 @@ public class vMinecraftListener extends PluginListener {
                 if(vMinecraftSettings.getInstance().playerspawn())
                 {
                 Warp home = null;
+                if (etc.getDataSource().getHome(player.getName()) != null){
                 home = etc.getDataSource().getHome(player.getName());
-                if(home.Location != null)
                 player.teleportTo(home.Location);
+                }
                 //Makes sure the player has a custom home before telling them about /myspawn
                 if(etc.getServer().getSpawnLocation() != etc.getDataSource().getHome(player.getName()).Location){
                 vMinecraftChat.sendMessage(player, Colors.DarkPurple + "Return here with /myspawn, the penalty for returning is the complete loss of inventory");
