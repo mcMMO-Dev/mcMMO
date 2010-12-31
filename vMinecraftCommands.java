@@ -48,7 +48,6 @@ public class vMinecraftCommands{
         cl.register("/whois", "whois", "/whois [user]");
         cl.register("/say", "say");
         cl.register("/a", "adminChatToggle", "Toggle admin chat for every message");
-        //cl.register("/modify", "modify");
         cl.register("/rules", "rules", "Displays the rules");
         cl.register("/who", "who");
         cl.register("/promote", "promote", "Promote a player one rank");

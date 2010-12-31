@@ -167,7 +167,7 @@ public class vMinecraftListener extends PluginListener {
             if(vMinecraftSettings.getInstance().isEzModo(dplayer.getName())){
                 return true;
             }
-            if(attacker.isPlayer()){
+            if(attacker != null && attacker.isPlayer()){
                 Player aplayer = attacker.getPlayer();
                 if(vMinecraftUsers.getProfile(dplayer).inParty()){
                     if(vMinecraftParty.inSameParty(aplayer, dplayer)){
