@@ -134,7 +134,7 @@ public class vMinecraftSettings {
                                 writer.write("fireblocks=");
                                 writer.write("\r\n");
                                 writer.write("#Organize your player ranks from lowest to highest.\r\n");
-                                writer.write("ranks=default,trusted,mods,admins,superadmins\r\n");
+                                writer.write("ranks=\r\n");
 				writer.write("#Write the rules to be shown when /rules is used here, it works just like the MOTD does\r\n");
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
 				writer.write("#The Random Death messages, seperate them by comma. All death messages start with the player name and a space.\r\n");
@@ -198,7 +198,6 @@ public class vMinecraftSettings {
                         for(int x = 0;x < fireblocks.length; x++)
                         {
                             fireblockan.add(Integer.parseInt(fireblocks[x]));
-                            x++;
                         }
 			ezModo = new ArrayList<String>();
                         ezModo.addAll(Arrays.asList(tempEz));
@@ -207,7 +206,7 @@ public class vMinecraftSettings {
 		}
 		catch (Exception e)
 		{
-			log.log(Level.SEVERE, "vminecraft Error: ERROR LOADING PROPERTIES FILE");
+			log.log(Level.SEVERE, "vminecraft Error: ERROR LOADING PROPERTIES FILE {0}", e);
 		}
 	}
 
