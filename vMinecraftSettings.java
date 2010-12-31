@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 //=====================================================================
@@ -40,7 +41,6 @@ public class vMinecraftSettings {
 				   cmdSay			= false,
 				   cmdWho			= false,
 				   stopFire			= false,
-				   stopTnt			= false,
 				   cmdHeal  		= false,
 				   cmdSuicide		= false,
 				   cmdAdminToggle	= false,
@@ -49,10 +49,10 @@ public class vMinecraftSettings {
 	static ArrayList<String> ezModo = new ArrayList<String>();
         //An array of players currently frozen
         static ArrayList<String> frozenplayers = new ArrayList<String>();
-    //An array of players currently toggled for admin chat
-    static ArrayList<String> adminChatList = new ArrayList<String>();
-    //An array of blocks that won't catch on fire
-    static public ArrayList<Integer> fireblockan;
+        //An array of players currently toggled for admin chat
+        static ArrayList<String> adminChatList = new ArrayList<String>();
+        //An array of blocks that won't catch on fire
+        static public ArrayList<Integer> fireblockan;
     
 	
     private PropertiesFile properties;
@@ -80,41 +80,40 @@ public class vMinecraftSettings {
 				writer.write("#This plugin is modular\r\n");
 				writer.write("#Turn any features you don't want to false and they won't be running\r\n");
 				writer.write("#If you edit this file and save it, then use /reload it will reload the settings\r\n");
-                writer.write("#Chat Options\r\n");
-                writer.write("#Allows the use of color codes following ^ symbol\r\n");
-                writer.write("ColoredChat=true\r\n");
-                writer.write("#Require per player permission for quakecolors\r\n");
-                writer.write("colorsrequirepermissions=false\r\n");
-                writer.write("#use /coloruse to give players permission if this is enabled\r\n");
-                writer.write("#Text following a > will be colored green to mimic quoting of popular internet message boards\r\n");
+                                writer.write("#Chat Options\r\n");
+                                writer.write("#Allows the use of color codes following ^ symbol\r\n");
+                                writer.write("ColoredChat=true\r\n");
+                                writer.write("#Require per player permission for quakecolors\r\n");
+                                writer.write("colorsrequirepermissions=false\r\n");
+                                writer.write("#use /coloruse to give players permission if this is enabled\r\n");
+                                writer.write("#Text following a > will be colored green to mimic quoting of popular internet message boards\r\n");
 				writer.write("QuotesAreGreen=true\r\n");
-                writer.write("#Turns any chat message starting with FFF automagically blood red\r\n");
-                writer.write("FFF=true\r\n");
-                writer.write("\r\n");
-                writer.write("#Admin Settings\r\n");
-                
-                writer.write("#Enables or disables players spawning to their home location\r\n");
-                writer.write("playerspawn=true\r\n");
-                writer.write("#Enables or disables the admin only chat\r\n");
-                writer.write("adminchat=true\r\n");
-                writer.write("#Lets non admins use admin chat if they have the /adminchat command permission\r\n");
-                writer.write("/adminchat=true\r\n");
-                writer.write("#Enables overriding of regular /tp and /tphere to make it so you can only teleport to players with lower permissions, and only bring players of lower permissions to you\r\n");
-                writer.write("/tp=true\r\n");
-                writer.write("/tphere=true\r\n");
-                writer.write("#Mass Tp uses the same concept, anyone with this command only brings those with lower permissions to themselves\r\n");
-                writer.write("/masstp=true\r\n");
-                writer.write("\r\n");
-                writer.write("#Server Settings\r\n");
-                writer.write("#Enables or Disables the following commands, give groups/users permissions to use these commands for them to work\r\n");
+                                writer.write("#Turns any chat message starting with FFF automagically blood red\r\n");
+                                writer.write("FFF=true\r\n");
+                                writer.write("\r\n");
+                                writer.write("#Admin Settings\r\n");
+                                writer.write("#Enables or disables players spawning to their home location\r\n");
+                                writer.write("playerspawn=true\r\n");
+                                writer.write("#Enables or disables the admin only chat\r\n");
+                                writer.write("adminchat=true\r\n");
+                                writer.write("#Lets non admins use admin chat if they have the /adminchat command permission\r\n");
+                                writer.write("/adminchat=true\r\n");
+                                writer.write("#Enables overriding of regular /tp and /tphere to make it so you can only teleport to players with lower permissions, and only bring players of lower permissions to you\r\n");
+                                writer.write("/tp=true\r\n");
+                                writer.write("/tphere=true\r\n");
+                                writer.write("#Mass Tp uses the same concept, anyone with this command only brings those with lower permissions to themselves\r\n");
+                                writer.write("/masstp=true\r\n");
+                                writer.write("\r\n");
+                                writer.write("#Server Settings\r\n");
+                                writer.write("#Enables or Disables the following commands, give groups/users permissions to use these commands for them to work\r\n");
 				writer.write("/fabulous=true\r\n");
-                writer.write("/prefix=true\r\n");
-                writer.write("/freeze=true\r\n");
-                writer.write("/suffix=true\r\n");
-                writer.write("/ignore=true\r\n");
-                writer.write("/colors=true\r\n");
+                                writer.write("/prefix=true\r\n");
+                                writer.write("/freeze=true\r\n");
+                                writer.write("/suffix=true\r\n");
+                                writer.write("/ignore=true\r\n");
+                                writer.write("/colors=true\r\n");
 				writer.write("/whois=true\r\n");
-                writer.write("/nick=true\r\n");
+                                writer.write("/nick=true\r\n");
 				writer.write("/who=true\r\n");
 				writer.write("/promote=true\r\n");
 				writer.write("/demote=true\r\n");
@@ -122,21 +121,20 @@ public class vMinecraftSettings {
 				writer.write("/rules=true\r\n");
 				writer.write("/suicide=true\r\n");
 				writer.write("/ezmodo=true\r\n");
-                writer.write("#Global Messages\r\n");
-                writer.write("#Enable or Disable sending announcements about sensitive commands to the entire server\r\n");
-                writer.write("globalmessages=true\r\n");
-                writer.write("\r\n");
+                                writer.write("#Global Messages\r\n");
+                                writer.write("#Enable or Disable sending announcements about sensitive commands to the entire server\r\n");
+                                writer.write("globalmessages=true\r\n");
 				writer.write("#Adding player names to this list will have them start off in ezmodo\r\n");
 				writer.write("ezModo=\r\n");
-                writer.write("#Stop fire from spreading\r\n");
+                                writer.write("#Stop fire from spreading\r\n");
 				writer.write("stopFire=false\r\n");
                                 writer.write("#Stop lava from spreading fire");
                                 writer.write("lavaspread=false");
                                 writer.write("#Blocks disabled from fire");
                                 writer.write("fireblocks=");
-                writer.write("\r\n");
-                writer.write("#Organize your player ranks from lowest to highest.\r\n");
-                writer.write("ranks=default,trusted,mods,admins,superadmins\r\n");
+                                writer.write("\r\n");
+                                writer.write("#Organize your player ranks from lowest to highest.\r\n");
+                                writer.write("ranks=default,trusted,mods,admins,superadmins\r\n");
 				writer.write("#Write the rules to be shown when /rules is used here, it works just like the MOTD does\r\n");
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
 				writer.write("#The Random Death messages, seperate them by comma. All death messages start with the player name and a space.\r\n");
@@ -197,21 +195,15 @@ public class vMinecraftSettings {
 			String[] tempEz = properties.getString("ezModo").split(",");
                         String[] fireblocks = properties.getString("fireblocks").split(",");
                         fireblockan = new ArrayList<Integer>();
-                        for(int x = 0;x <= fireblocks.length; x++)
+                        for(int x = 0;x < fireblocks.length; x++)
                         {
                             fireblockan.add(Integer.parseInt(fireblocks[x]));
                             x++;
                         }
 			ezModo = new ArrayList<String>();
-			for(String ezName : tempEz)
-				ezModo.add(ezName);
-			
+                        ezModo.addAll(Arrays.asList(tempEz));
 			ranks = properties.getString("ranks").split(",");
-			
-
-			
 			log.log(Level.INFO, "vminecraft plugin successfully loaded");
-
 		}
 		catch (Exception e)
 		{
@@ -253,7 +245,6 @@ public class vMinecraftSettings {
 	public boolean cmdWho() {return cmdWho;}
 	public boolean stopFire() {return stopFire;}
         public boolean lavaSpread() {return lavaspread;}
-	public boolean stopTnt() {return stopTnt;}
         public boolean cmdSuicide() {return cmdSuicide;}
         public boolean cmdHeal() {return cmdHeal;}
         public ArrayList<Integer> getFireBlockIds() {return fireblockan;}

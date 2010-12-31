@@ -120,6 +120,7 @@ public class vMinecraftListener extends PluginListener {
     }
     
     public boolean onIgnite(Block block, Player player) {
+        
         if(vMinecraftSettings.getInstance().stopFire()){
             //There are 3 ways fire can spread
             //1 = lava, 2 = lighter, 3 = spread (other fire blocks)
