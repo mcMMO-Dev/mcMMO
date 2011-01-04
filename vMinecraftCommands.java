@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.List;
 
 //=====================================================================
 //Class:	vMinecraftCommands
@@ -11,6 +13,7 @@ import java.util.logging.Logger;
 //Author:	nos, trapalice, cerevisiae
 //=====================================================================
 public class vMinecraftCommands{
+private static HashMap<String, Player> hidden = new HashMap<String, Player>();
 
 	//Log output
     protected static final Logger log = Logger.getLogger("Minecraft");
@@ -52,6 +55,8 @@ public class vMinecraftCommands{
         cl.register("/who", "who");
         cl.register("/promote", "promote", "Promote a player one rank");
         cl.register("/demote", "demote", "Demote a player one rank");
+        cl.register("/hide", "hide", "Turn invisible");
+        cl.register("/silent", "silent", "Turn off global messages for yourself");
         
         //Party
         cl.register("/party", "party");
@@ -182,6 +187,105 @@ public class vMinecraftCommands{
         		+ "Global Messages: " + vMinecraftSettings.getInstance()
         		.globalmessages());
         return EXIT_SUCCESS;
+    }
+    public void onDisconnect(Player player){
+        if(hidden.containsKey(player.getName()))
+        hidden.remove(player.getName());
+        if(vMinecraftSettings.getInstance().isEzModo(player.getName()))
+        vMinecraftSettings.getInstance().removeEzModo(player.getName());
+    }
+
+    public void run()
+    {
+        for (Player InvisiblePlayer : hidden.values())
+        {
+        for (Player p : etc.getServer().getPlayerList())
+            {
+            if (vMinecraftParty.getDistance(InvisiblePlayer, p) <= vMinecraftSettings.range && p.getUser() != InvisiblePlayer.getUser())
+                {
+                p.getUser().a.b(new dv(InvisiblePlayer.getUser().g));
+                }
+            }
+        }
+        }
+    public static int hide(Player player, String[] args){
+        if (player.canUseCommand("/hide")){
+            if(hidden.get(player.getName()) != null) {
+                hidden.remove(player.getName());
+                player.sendMessage(Colors.DarkPurple + "You are no longer invisible");    
+                hidden.remove(player.getName());
+                updateInvisibleForAll();
+                List<Player> playerList = etc.getServer().getPlayerList();
+                for (Player p : playerList)
+                {
+                    if (vMinecraftParty.getDistance(player, p) < vMinecraftSettings.range && p.getUser() != player.getUser())
+                    {
+                    p.getUser().a.b(new d(player.getUser()));
+                    }
+                }
+                log.log(Level.INFO, "{0} reappeared.", player.getName());
+                player.sendMessage(Colors.Rose + "You have reappeared!");
+                return EXIT_SUCCESS;
+            }
+            hidden.put(player.getName(), player);
+            player.sendMessage(Colors.DarkPurple + "You are now invisible");
+            for (Player p : etc.getServer().getPlayerList())
+                {
+                    if (vMinecraftParty.getDistance(player, p) <= vMinecraftSettings.range && p.getUser() != player.getUser())
+                    {
+                    p.getUser().a.b(new dv(player.getUser().g));
+                    }
+                }
+            return EXIT_SUCCESS;
+        }
+        return EXIT_FAIL;
+    }
+    public void reappear(Player player)
+{
+if (hidden.get(player.getName()) != null)
+{
+hidden.remove(player.getName());
+// make someone really disappear if there's any doubt, should remove
+// cloning
+updateInvisibleForAll();
+List<Player> playerList = etc.getServer().getPlayerList();
+for (Player p : playerList)
+{
+if (vMinecraftParty.getDistance(player, p) < vMinecraftSettings.range && p.getUser() != player.getUser())
+{
+// new d (player.getUser() )
+// new Packet20NamedEntitySpawn player EntityPlayerMP )
+p.getUser().a.b(new d(player.getUser()));
+}
+}
+log.log(    Level.INFO, "{0} reappeared.", player.getName());
+player.sendMessage(Colors.Rose + "You have reappeared!");
+}
+}
+    public void reappearAll()
+    {
+    log.info("Everyone is going reappear.");
+    for (Player InvisiblePlayer : hidden.values())
+    {
+    reappear(InvisiblePlayer);
+    }
+    hidden.clear();
+    }
+    
+    public static void updateInvisibleForAll()
+    {
+    List<Player> playerList = etc.getServer().getPlayerList();
+    for (Player InvisiblePlayer : hidden.values())
+    {
+    for (Player p : playerList)
+    {
+    if (vMinecraftParty.getDistance(InvisiblePlayer, p) <= vMinecraftSettings.range && p.getUser() != InvisiblePlayer.getUser())
+    {
+    p.getUser().a.b(new dv(InvisiblePlayer.getUser().g));
+    // players.add(p);
+    }
+    }
+    }
     }
     public static int partychat(Player player, String[] args){
         if (args.length < 1) {

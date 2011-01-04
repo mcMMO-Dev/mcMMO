@@ -12,6 +12,7 @@ public class vMinecraftSettings {
 	//private final static Object syncLock = new Object();
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	private static volatile vMinecraftSettings instance;    
+        static int range;
 
 
 	//The feature settings
@@ -139,6 +140,7 @@ public class vMinecraftSettings {
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
 				writer.write("#The Random Death messages, seperate them by comma. All death messages start with the player name and a space.\r\n");
 				writer.write("deathMessages=is no more,died horribly,went peacefully\r\n");
+                                writer.write("hiddendistance=1024");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
 			} finally {
@@ -203,6 +205,7 @@ public class vMinecraftSettings {
 			ezModo = new ArrayList<String>();
                         ezModo.addAll(Arrays.asList(tempEz));
 			ranks = properties.getString("ranks").split(",");
+                        range = properties.getInt("hiddendistance",1024);
 			log.log(Level.INFO, "vminecraft plugin successfully loaded");
 		}
 		catch (Exception e)
