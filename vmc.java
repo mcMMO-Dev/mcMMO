@@ -33,6 +33,5 @@ public class vmc {
                     p.getUser().a.b(new d(player.getUser()));
                     }
                 }
-    }
-    
+    }    
 }

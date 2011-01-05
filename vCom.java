@@ -123,10 +123,13 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
         //String:  The color the message will be
         //int:	   The number of arguments required for the message to appear
         //boolean: If the message should only display for admins
-        cl.registerMessage("/kick", "%p has kicked %0p", Colors.Blue, 1, false);
-        cl.registerMessage("/ban", "%p has banned %0p", Colors.Blue, 1, false);
-        cl.registerMessage("/ipban", "%p has IP banned %0p", Colors.Blue, 1, false);
-        cl.registerMessage("/time", "Time change thanks to %p", Colors.Blue, 1, true);
+        cl.registerMessage("/kick", "%p has kicked %0p", Colors.DarkPurple, 1, false);
+        cl.registerMessage("/ban", "%p has banned %0p", Colors.DarkPurple, 1, false);
+        cl.registerMessage("/ipban", "%p has IP banned %0p", Colors.DarkPurple, 1, false);
+        cl.registerMessage("/time", "Time change thanks to %p", Colors.DarkPurple, 1, true);
+        cl.registerMessage("/hide", "%p has turned invisible", Colors.DarkPurple, 0, true);
+        cl.registerMessage("/slay", "%p has slain %0p", Colors.DarkPurple, 1, false);
+        cl.registerMessage("/heal", "%p has healed %0p", Colors.DarkPurple, 1, false);
     }
     //=====================================================================
 	//Function:	vminecrafthelp (/vhelp or /vminecraft)
@@ -1111,7 +1114,6 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
     				+ "Couldn't find that player");
     		return EXIT_SUCCESS;
     	}
-    	
 		playerTarget.setHealth(20);
 		player.sendMessage(Colors.Blue + "You have healed " 
 				+ vChat.getName(playerTarget));
@@ -1526,11 +1528,6 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
 		}
 		
 		playerTarget.setHealth(0);
-                if(!vUsers.getProfile(player).isSilent()){
-		vChat.gmsg(player, vChat.getName(player)
-				+ Colors.LightBlue + " has slain "
-				+ vChat.getName(playerTarget));
-                }
 		//Otherwise output error to the user
 		
 		return EXIT_SUCCESS;
@@ -2281,12 +2278,12 @@ class commandList {
 						//If p is not null
 						if (p != null) {
 							//And if p is an admin or has access to adminchat send message
-							if (p.isAdmin()) {
+							if (p.isAdmin() && !vUsers.getProfile(player).isSilent()) {
 								vChat.sendMessage(player, p, color + message);
 							}
 						}
 					}
-				} else
+				} else if(!vUsers.getProfile(player).isSilent())
 					vChat.gmsg(player, message);
 			}
 			return EXIT_FAIL;
