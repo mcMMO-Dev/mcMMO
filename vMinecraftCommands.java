@@ -208,6 +208,15 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
             }
         }
         }
+    public static int silent(Player player, String[] args){
+        if(player.canUseCommand("/silent")){
+        vMinecraftUsers.getProfile(player).setSilent();
+        player.sendMessage(Colors.DarkPurple + "You are now silent");
+        return EXIT_SUCCESS;
+        }
+    return EXIT_FAIL;
+    }
+    //Will make a player disappear or reappear
     public static int hide(Player player, String[] args){
         if (player.canUseCommand("/hide")){
             if(hidden.get(player.getName()) != null) {
@@ -215,63 +224,19 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
                 player.sendMessage(Colors.DarkPurple + "You are no longer invisible");    
                 hidden.remove(player.getName());
                 updateInvisibleForAll();
-                List<Player> playerList = etc.getServer().getPlayerList();
-                for (Player p : playerList)
-                {
-                    if (vMinecraftParty.getDistance(player, p) < vMinecraftSettings.range && p.getUser() != player.getUser())
-                    {
-                    p.getUser().a.b(new d(player.getUser()));
-                    }
-                }
-                log.log(Level.INFO, "{0} reappeared.", player.getName());
+                vMinecraftParty.sendNotInvisible(player);
+                log.log(Level.INFO, player.getName() + " reappeared");
                 player.sendMessage(Colors.Rose + "You have reappeared!");
                 return EXIT_SUCCESS;
             }
             hidden.put(player.getName(), player);
             player.sendMessage(Colors.DarkPurple + "You are now invisible");
-            for (Player p : etc.getServer().getPlayerList())
-                {
-                    if (vMinecraftParty.getDistance(player, p) <= vMinecraftSettings.range && p.getUser() != player.getUser())
-                    {
-                    p.getUser().a.b(new dv(player.getUser().g));
-                    }
-                }
+            vMinecraftParty.sendInvisible(player);
+            log.log(Level.INFO, player.getName() + " went invisible");
             return EXIT_SUCCESS;
         }
         return EXIT_FAIL;
     }
-    public void reappear(Player player)
-{
-if (hidden.get(player.getName()) != null)
-{
-hidden.remove(player.getName());
-// make someone really disappear if there's any doubt, should remove
-// cloning
-updateInvisibleForAll();
-List<Player> playerList = etc.getServer().getPlayerList();
-for (Player p : playerList)
-{
-if (vMinecraftParty.getDistance(player, p) < vMinecraftSettings.range && p.getUser() != player.getUser())
-{
-// new d (player.getUser() )
-// new Packet20NamedEntitySpawn player EntityPlayerMP )
-p.getUser().a.b(new d(player.getUser()));
-}
-}
-log.log(    Level.INFO, "{0} reappeared.", player.getName());
-player.sendMessage(Colors.Rose + "You have reappeared!");
-}
-}
-    public void reappearAll()
-    {
-    log.info("Everyone is going reappear.");
-    for (Player InvisiblePlayer : hidden.values())
-    {
-    reappear(InvisiblePlayer);
-    }
-    hidden.clear();
-    }
-    
     public static void updateInvisibleForAll()
     {
     List<Player> playerList = etc.getServer().getPlayerList();
@@ -282,7 +247,6 @@ player.sendMessage(Colors.Rose + "You have reappeared!");
     if (vMinecraftParty.getDistance(InvisiblePlayer, p) <= vMinecraftSettings.range && p.getUser() != InvisiblePlayer.getUser())
     {
     p.getUser().a.b(new dv(InvisiblePlayer.getUser().g));
-    // players.add(p);
     }
     }
     }
@@ -339,7 +303,6 @@ player.sendMessage(Colors.Rose + "You have reappeared!");
             vMinecraftUsers.getProfile(player).setTpback(cxyz);
             player.sendMessage(Colors.Rose + "/tpback data reset to spawn");
             return EXIT_SUCCESS;
-            
         }
         return EXIT_SUCCESS;
     }
@@ -1213,11 +1176,14 @@ player.sendMessage(Colors.Rose + "You have reappeared!");
                     if(player.canUseCommand("/tpback")){
                      player.sendMessage(Colors.DarkPurple + "Your previous location has been stored, use /tpback to return.");
                     }
+                    if(!vMinecraftUsers.getProfile(player).isSilent()){
 			vMinecraftChat.gmsg( player, vMinecraftChat.getName(player)
 					+ Colors.LightBlue + " has teleported to "
 					+ vMinecraftChat.getName(playerTarget));
+                    }
 			log.log(Level.INFO, player.getName() + " teleported to " +
 					playerTarget.getName());
+                    
 			player.teleportTo(playerTarget);
 			
 		}
@@ -1543,9 +1509,11 @@ player.sendMessage(Colors.Rose + "You have reappeared!");
 		}
 		
 		playerTarget.setHealth(0);
+                if(!vMinecraftUsers.getProfile(player).isSilent()){
 		vMinecraftChat.gmsg(player, vMinecraftChat.getName(player)
 				+ Colors.LightBlue + " has slain "
 				+ vMinecraftChat.getName(playerTarget));
+                }
 		//Otherwise output error to the user
 		
 		return EXIT_SUCCESS;

@@ -21,6 +21,7 @@ public class vMinecraftListener extends PluginListener {
              if(vMinecraftSettings.getInstance().isFrozen(player.getName())){
                  player.teleportTo(from);
              }
+             vMinecraftCommands.updateInvisibleForAll();
     }
 	
 	//=====================================================================
@@ -105,6 +106,7 @@ public class vMinecraftListener extends PluginListener {
                 player.sendMessage(Colors.DarkPurple + "Set your own spawn with /sethome");
                 }
                 vMinecraftUsers.getProfile(player).isDead(false);
+                if(!vMinecraftUsers.getProfile(player).isSilent())
                 vMinecraftChat.gmsg(Colors.Gray + player.getName() + " " + vMinecraftSettings.randomDeathMsg());
         }
         return false;

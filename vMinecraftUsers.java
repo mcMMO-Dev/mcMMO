@@ -156,7 +156,8 @@ class PlayerList
                         party,
                         tpxyz;
 		
-		private boolean dead;
+		private boolean dead,
+                        silent;
 		
 		char defaultColor;
 
@@ -508,6 +509,21 @@ class PlayerList
 			nickName = newNick;
 			save();
 		}
+                
+                public void setSilent(){
+                    silent = true;
+                }
+                public void disableSilent(){
+                    silent = false;
+                }
+                public boolean isSilent(){
+                    if(silent == true){
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
                 //Store the player's party
                 public void setParty(String newParty)
                 {
