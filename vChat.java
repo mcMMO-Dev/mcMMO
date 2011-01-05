@@ -92,7 +92,6 @@ public class vChat {
         				+ " has you on their ignore list.");
     			return;
     		}
-    	
     	String[] message = applyColors(wordWrap(msg));
     	for(String out : message)
     		receiver.sendMessage(out);
@@ -172,12 +171,12 @@ public class vChat {
 		//and their following color codes
 		for(int x = 0; x<str.length(); x++)
 		{
-			if(str.charAt(x) == '^' || str.charAt(x) == Colors.White.charAt(0))
+			if((x+1 <= str.length()) && (str.charAt(x) == '^' || str.charAt(x) == Colors.White.charAt(0)))
 			{
-				if(colorChange(str.charAt(x + 1)) != null)
+                                if(colorChange(str.charAt(x + 1)) != null)
 				{
 					x++;
-					continue;
+                                        continue;
 				}
 			}
 			int len = charLength(str.charAt(x));
@@ -321,7 +320,7 @@ public class vChat {
 	//=====================================================================
 	public static String colorChange(char colour)
 	{
-		String color = "";
+		String color;
 		switch(colour)
 		{
 			case '0':
@@ -344,7 +343,7 @@ public class vChat {
 				break;
 			case '6':
 				color = Colors.Gold;
-					break;
+				break;
 			case '7':
 				color = Colors.LightGray;
 				break;
@@ -402,11 +401,11 @@ public class vChat {
                         case 'X':
                             color = "^x";
                             break;
-			default:
-				color = null;
-				break;
+                        default:
+                            color = null;
+                            break;
 		}
-		return color;
+                return color;
 	}
 	  
 	//=====================================================================
