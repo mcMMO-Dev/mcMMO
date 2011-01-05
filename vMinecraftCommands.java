@@ -1267,7 +1267,7 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
 		//If the target exists, teleport them to the user
 		else {
 			log.log(Level.INFO, player.getName() + " teleported "
-					+ player.getName() + " to their self.");
+					+ playerTarget.getName() + " to their self.");
 			playerTarget.teleportTo(player);
                         double x = player.getLocation().x;
                         double y = player.getLocation().y;
@@ -1279,8 +1279,8 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
                         vMinecraftUsers.getProfile(playerTarget).setTpback(xyz);
                         if(playerTarget.canUseCommand("/tpback"))
                         {
-                        player.sendMessage(Colors.DarkPurple + "Your previous location has been stored");
-                        player.sendMessage(Colors.DarkPurple + "Use /tpback to return");
+                        playerTarget.sendMessage(Colors.DarkPurple + "Your previous location has been stored");
+                        playerTarget.sendMessage(Colors.DarkPurple + "Use /tpback to return");
                         }
 		}
 		return EXIT_SUCCESS;
