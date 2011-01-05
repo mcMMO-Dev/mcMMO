@@ -6,13 +6,13 @@ import java.util.logging.Logger;
 //Author:	nossr50, TrapAlice, cerevisiae
 //=====================================================================
 public class vMinecraft extends Plugin {
-    static final vMinecraftListener listener = new vMinecraftListener();
+    static final vListener listener = new vListener();
     protected static final Logger log = Logger.getLogger("Minecraft");
     
 	public void enable() {
-		vMinecraftSettings.getInstance().loadSettings();
-        vMinecraftUsers.getInstance().loadUsers();
-		vMinecraftCommands.loadCommands();
+		vConfig.getInstance().loadSettings();
+        vUsers.getInstance().loadUsers();
+		vCom.loadCommands();
     }
 
     public void disable() {
