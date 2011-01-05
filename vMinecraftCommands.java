@@ -210,9 +210,17 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
         }
     public static int silent(Player player, String[] args){
         if(player.canUseCommand("/silent")){
-        vMinecraftUsers.getProfile(player).setSilent();
-        player.sendMessage(Colors.DarkPurple + "You are now silent");
-        return EXIT_SUCCESS;
+        if(!vMinecraftUsers.getProfile(player).isSilent()){
+            vMinecraftUsers.getProfile(player).setSilent();
+            player.sendMessage(Colors.DarkPurple + "You are now silent... shh");
+            return EXIT_SUCCESS;
+        }
+        if(vMinecraftUsers.getProfile(player).isSilent()){
+            vMinecraftUsers.getProfile(player).disableSilent();
+            player.sendMessage(Colors.DarkPurple + "You are no longer silent");
+            return EXIT_SUCCESS;
+        }
+        return EXIT_FAIL;
         }
     return EXIT_FAIL;
     }
@@ -1174,7 +1182,8 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
                     String xyz = x2+","+y2+","+z2;
                     vMinecraftUsers.getProfile(player).setTpback(xyz);
                     if(player.canUseCommand("/tpback")){
-                     player.sendMessage(Colors.DarkPurple + "Your previous location has been stored, use /tpback to return.");
+                     player.sendMessage(Colors.DarkPurple + "Your previous location has been stored");
+                     player.sendMessage(Colors.DarkPurple + "Use /tpback to return");
                     }
                     if(!vMinecraftUsers.getProfile(player).isSilent()){
 			vMinecraftChat.gmsg( player, vMinecraftChat.getName(player)
@@ -1270,7 +1279,8 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
                         vMinecraftUsers.getProfile(playerTarget).setTpback(xyz);
                         if(playerTarget.canUseCommand("/tpback"))
                         {
-                        playerTarget.sendMessage(Colors.DarkPurple + "Your previous location has been stored, use /tpback to return.");
+                        player.sendMessage(Colors.DarkPurple + "Your previous location has been stored");
+                        player.sendMessage(Colors.DarkPurple + "Use /tpback to return");
                         }
 		}
 		return EXIT_SUCCESS;

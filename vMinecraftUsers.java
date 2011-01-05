@@ -517,12 +517,7 @@ class PlayerList
                     silent = false;
                 }
                 public boolean isSilent(){
-                    if(silent == true){
-                        return true;
-                    }
-                    else {
-                        return false;
-                    }
+                    return silent;
                 }
                 //Store the player's party
                 public void setParty(String newParty)
