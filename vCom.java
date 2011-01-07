@@ -1719,41 +1719,84 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
 		if(!leave)
 			myRank = 0;
 		
-		//Make sure they're not promoting to their rank or higher
-		if(myRank <= tarRank + 1)
-		{
+		//Make sure they're not promoting to their rank or higher but only if they can't use /spromote
+		if(!player.canUseCommand("/spromote") &&
+                        myRank <= tarRank + 1){
 			vChat.sendMessage(player, Colors.Rose + "You cannot promote someone to" +
 					" your rank or higher.");
 			return EXIT_SUCCESS;
 		}
-		
+                //If a rank is specified
+                if (args.length == 2)
+                {
+                    //Assign designated rank to a variable
+                    String[] newgroup = new String[1];
+                    newgroup[0] = args[1];
+                    //Reset some variables for reuse
+                    leave = false;
+                    tarRank = 0;
+                    //Find what rank newgroup is if any
+                    for(String rank : ranks)
+                    {
+			for(String group : newgroup)
+				if(rank.equalsIgnoreCase(group))
+				{
+
+					leave = true;
+					break;
+				}
+			if(leave)
+			break;
+			tarRank++;
+                    }
+                    if(!leave)
+			tarRank = 0;
+                    
+                    //Make sure you're not promoting someone to above your rank (only if you can't use /spromote)
+                    if(!player.canUseCommand("/spromote") &&
+                        myRank <= tarRank + 1){
+                        vChat.sendMessage(player, Colors.Rose + "You cannot promote someone to" +
+					" your rank or higher.");
+			return EXIT_SUCCESS;
+                    }
+                    target.setGroups(newgroup);
+                }
+		if(args.length < 2)
+                {
 		tarGroups[tarPos] = ranks[tarRank + 1];
 		target.setGroups(tarGroups);
-
+                }
 		//Make sure the player is in the files
-        FlatFileSource ffs = new FlatFileSource();
-        if(!ffs.doesPlayerExist(target.getName()))
-        {
-			vChat.sendMessage(player, Colors.Rose + "Adding player.");
-			ffs.addPlayer(target);
-        }
-        else
-        {
-        	ffs.modifyPlayer(target);
-        }
-        
+                FlatFileSource ffs = new FlatFileSource();
+                if(!ffs.doesPlayerExist(target.getName()))
+                {
+                    vChat.sendMessage(player, Colors.Rose + "Adding player.");
+                    ffs.addPlayer(target);
+                }
+                else
+                {
+                    ffs.modifyPlayer(target);
+                }
+                //Check what kind of promotion happened before sending off any message
+                if(args.length == 1){
 		vChat.sendMessage(player, Colors.Rose + target.getName()
 				+ " has been promoted to " + ranks[tarRank + 1] + ".");
 		vChat.sendMessage(target, Colors.Rose + "You have been promoted to "
 				+ ranks[tarRank + 1] + ".");
-		
+                if(!vUsers.getProfile(player).isSilent())
+                vChat.gmsg(Colors.DarkPurple + player.getName() + " has promoted " + target.getName() + " to " + ranks[tarRank + 1]);
+                }
+                if(args.length == 2){
+                    if(!vUsers.getProfile(player).isSilent())
+                    vChat.gmsg(Colors.DarkPurple + player.getName() + " has promoted " + target.getName() + " to " + args[1]);
+                }
 		return EXIT_SUCCESS;
 	}
 
 	//=====================================================================
 	//Function:	demote (/demote)
 	//Input:	Player player: The player using the command
-    //			String[] args: Player to promote
+        //		String[] args: Player to promote
 	//Output:	int: Exit Code
 	//Use:		Attempt to promote a player one rank
 	//=====================================================================
@@ -1872,6 +1915,8 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
 					+ " has been demoted to " + ranks[tarRank - 1] + ".");
 			vChat.sendMessage(target, Colors.Rose + "You have been demoted to "
 					+ ranks[tarRank - 1] + ".");
+                        if(!vUsers.getProfile(player).isSilent())
+                        vChat.gmsg(Colors.DarkPurple + player.getName() + " has demoted " + target.getName() + " to " + ranks[tarRank - 1]);
 		
 		return EXIT_SUCCESS;
 	}
