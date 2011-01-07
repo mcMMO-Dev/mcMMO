@@ -18,6 +18,7 @@ public class vConfig {
 	//The feature settings
 	static boolean toggle			= true,
 				   adminChat		= false,
+                                   partyChat = false,
 				   greentext		= false,
 				   FFF				= false,
 				   quakeColors		= false,
@@ -52,6 +53,8 @@ public class vConfig {
         static ArrayList<String> frozenplayers = new ArrayList<String>();
         //An array of players currently toggled for admin chat
         static ArrayList<String> adminChatList = new ArrayList<String>();
+        //An array of player currently toggled for party chat
+        static ArrayList<String> partyChatList = new ArrayList<String>();
         //An array of blocks that won't catch on fire
         static public ArrayList<Integer> fireblockan;
     
@@ -140,6 +143,8 @@ public class vConfig {
 				writer.write("rules=Rules@#1: No griefing@#2: No griefing\r\n");
 				writer.write("#The Random Death messages, seperate them by comma. All death messages start with the player name and a space.\r\n");
 				writer.write("deathMessages=is no more,died horribly,went peacefully\r\n");
+                                writer.write("#Enable whether or not players can toggle party chat");
+                                writer.write("partychat=true");
                                 writer.write("hiddendistance=1024");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
@@ -164,6 +169,7 @@ public class vConfig {
 
 		try {
 			adminChat = properties.getBoolean("adminchat",true);
+                        partyChat = properties.getBoolean("partychat",true);
                         playerspawn = properties.getBoolean("playerspawn",true);
 			greentext = properties.getBoolean("QuotesAreGreen",true);
 			FFF = properties.getBoolean("FFF",true);
@@ -223,6 +229,7 @@ public class vConfig {
 	//Use:		Returns if the feature is enabled
 	//=====================================================================
 	public boolean adminchat() {return adminChat;}
+        public boolean partyChat() {return partyChat;}
         public boolean adminChatToggle() {return cmdAdminToggle;}
 	public boolean greentext() {return greentext;}
 	public boolean FFF() {return FFF;}
@@ -258,9 +265,12 @@ public class vConfig {
 	public boolean isEzModo(String playerName) {return ezModo.contains(playerName);}
         public boolean isFrozen(String playerName) {return frozenplayers.contains(playerName);}
         public boolean isAdminToggled(String playerName) {return adminChatList.contains(playerName);}
+        public boolean isPartyToggled(String playerName) {return partyChatList.contains(playerName);}
 	public void removeEzModo(String playerName) {ezModo.remove(ezModo.indexOf(playerName));}
+        public void removePartyToggled(String playerName) {partyChatList.remove(partyChatList.indexOf(playerName));}
         public void removeAdminToggled(String playerName) {adminChatList.remove(adminChatList.indexOf(playerName));}
 	public void addEzModo(String playerName) {ezModo.add(playerName);}
+        public void addPartyToggled(String playerName) {partyChatList.add(playerName);}
         public void addAdminToggled(String playerName) {adminChatList.add(playerName);}
         public void addFrozen(String playerName) {frozenplayers.add(playerName);}
         public void removeFrozen (String playerName) {frozenplayers.remove(frozenplayers.indexOf(playerName));}

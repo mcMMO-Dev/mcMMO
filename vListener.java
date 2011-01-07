@@ -35,18 +35,19 @@ public class vListener extends PluginListener {
         
     public boolean onChat(Player player, String message){
 
-    	//Quote (Greentext)
     	if (message.startsWith("@") ||
     			vConfig.getInstance().isAdminToggled(player.getName()))
     		return vChat.adminChat(player, message);
-    	
+        //PartyChat
+        if((message.startsWith("!")) ||
+                vConfig.getInstance().isPartyToggled(player.getName()))
+                return vChat.partyChat(player, message);
+        //Quote (Greentext)     
     	else if (message.startsWith(">"))
-    		return vChat.quote(player, message);
-        	
+    		return vChat.quote(player, message);	
         //Rage (FFF)
         else if (message.startsWith("FFF"))
         	return vChat.rage(player, message);
-    	
     	//Send through quakeColors otherwise
         else
         	return vChat.quakeColors(player, message);
@@ -163,16 +164,22 @@ public class vListener extends PluginListener {
     
     public boolean onDamage(PluginLoader.DamageType type, BaseEntity attacker, BaseEntity defender, int amount) {
         //Invincibility for EzModo players
+        //This also checks if the defender is a player
         if(defender.isPlayer()){
             Player dplayer = defender.getPlayer();
             if(vConfig.getInstance().isEzModo(dplayer.getName())){
                 return true;
             }
+            //So far we've checked if the defender is a player, next we check if the attacker is one
             if(attacker != null && attacker.isPlayer()){
+                //If the attacker is not null and is a player we assign the attacker to a new player variable
                 Player aplayer = attacker.getPlayer();
+                //Then we preceed to check if they are in the same party, the code for this is stored elsewhere
                 if(vUsers.getProfile(dplayer).inParty()){
+                    //If they are in the same party we tell onDamage to return true stopping the damage code from executing
                     if(vmc.inSameParty(aplayer, dplayer)){
                         return true;
+                        //if they aren't we tell it to return false, making the damage happen
                     } else{
                         return false;
                     }

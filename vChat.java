@@ -294,7 +294,7 @@ public class vChat {
     		output = player.getName();
     	
     	//Add the color if there is one
-    	if(player.getColor() != null && player.getColor() != "")
+    	if(player.getColor() != null && !"".equals(player.getColor()))
     		output = player.getColor().substring(0,2) + output;
     	
     	//Add the tag if there is one
@@ -448,6 +448,10 @@ public class vChat {
 		return false;
 	}
         public static boolean partyChat(Player player, String message){
+            if(vConfig.getInstance().partyChat()){
+             //Cut off the ! prefix
+	        if(message.startsWith("!"))
+	        	message = message.substring(1, message.length());
             if(vUsers.getProfile(player).inParty()){
                 String partychat = Colors.Green + "(" + getName(player) + Colors.Green + ") ";
                 for (Player p: etc.getServer().getPlayerList()){
@@ -459,7 +463,9 @@ public class vChat {
                 }
                 return true;
             }
+            }
             return false;
+            
         }
 
 	//=====================================================================

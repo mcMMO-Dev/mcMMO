@@ -67,7 +67,7 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
         //Party
         cl.register("/party", "party");
         cl.register("/pquit", "partyquit");
-        cl.register("/p", "partychat");
+        cl.register("/p", "partyChatToggle", "Toggles party chat on or off");
 
         //Movement
         cl.register("/freeze", "freeze");
@@ -267,19 +267,6 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
     p.getUser().a.b(new dv(InvisiblePlayer.getUser().g));
     }
     }
-    }
-    }
-    public static int partychat(Player player, String[] args){
-        if (args.length < 1) {
-			player.sendMessage(Colors.Rose + "Usage is /p [Message]");
-			return EXIT_SUCCESS;
-		}
-        if(vUsers.getProfile(player).inParty()){
-            String str = etc.combineSplit(0, args, " ");
-            vChat.partyChat(player, str);
-            return EXIT_SUCCESS;
-        } else{
-        return EXIT_FAIL;
     }
     }
     public static int party(Player player, String[] args){
@@ -1057,7 +1044,29 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
         }
         return EXIT_FAIL;
     }
-    
+    //Party chat toggle
+     public static int partyChatToggle(Player player, String[] args)
+	{       
+                //Check if party chat is even enabled befor executing anymore code
+                if(!vConfig.getInstance().partyChat()) return EXIT_FAIL;
+                //Check if the player is admin toggled, and if so remove them from that array
+                if(vConfig.getInstance().isAdminToggled(player.getName())){
+                    vConfig.getInstance().removeAdminToggled(player.getName());
+                }
+		//Make sure the user has access to the command
+		if(!player.canUseCommand("/p")) return EXIT_FAIL;
+	    
+		//If the player is already toggled for admin chat, remove them
+		if (vConfig.getInstance().isPartyToggled(null)) {
+			player.sendMessage(Colors.Red + "Party Chat Toggle = off");
+			vConfig.getInstance().removeAdminToggled(player.getName());
+		//Otherwise include them
+		} else {
+			player.sendMessage(Colors.Blue + "Party Chat Toggled on");
+			vConfig.getInstance().addAdminToggled(player.getName());
+		}
+		return EXIT_SUCCESS;
+	}
 	//=====================================================================
 	//Function:	adminChatToggle (/a)
 	//Input:	Player player: The player using the command
@@ -1068,6 +1077,10 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
 	//=====================================================================
     public static int adminChatToggle(Player player, String[] args)
 	{
+                //Check if the player is party toggled, and if so remove them from that array
+                if(vConfig.getInstance().isPartyToggled(player.getName())){
+                    vConfig.getInstance().removePartyToggled(player.getName());
+                }
 		//Make sure the user has access to the command
 		if(!player.canUseCommand("/a")) return EXIT_FAIL;
 		
