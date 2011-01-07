@@ -1053,11 +1053,9 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
                 if(vConfig.getInstance().isAdminToggled(player.getName())){
                     vConfig.getInstance().removeAdminToggled(player.getName());
                 }
-		//Make sure the user has access to the command
-		if(!player.canUseCommand("/p")) return EXIT_FAIL;
 	    
 		//If the player is already toggled for party chat, remove them
-		if (vConfig.getInstance().isPartyToggled(null)) {
+		if (vConfig.getInstance().isPartyToggled(player.getName())) {
 			player.sendMessage(Colors.Red + "Party Chat Toggle = off");
 			vConfig.getInstance().removePartyToggled(player.getName());
 		//Otherwise include them

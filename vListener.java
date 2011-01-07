@@ -36,8 +36,8 @@ public class vListener extends PluginListener {
     public boolean onChat(Player player, String message){
 
     	if (message.startsWith("@") ||
-    			vConfig.getInstance().isAdminToggled(player.getName()))
-    		return vChat.adminChat(player, message);
+            vConfig.getInstance().isAdminToggled(player.getName()))
+            return vChat.adminChat(player, message);
         //PartyChat
         if((message.startsWith("!")) ||
                 vConfig.getInstance().isPartyToggled(player.getName()))
