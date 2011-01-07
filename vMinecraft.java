@@ -10,9 +10,10 @@ public class vMinecraft extends Plugin {
     protected static final Logger log = Logger.getLogger("Minecraft");
     
 	public void enable() {
-		vConfig.getInstance().loadSettings();
+	vConfig.getInstance().loadSettings();
         vUsers.getInstance().loadUsers();
-		vCom.loadCommands();
+	vCom.loadCommands();
+        vUpdatr.getInstance().createUpdatrFile();
     }
 
     public void disable() {
