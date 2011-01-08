@@ -7,6 +7,25 @@ import java.util.logging.Logger;
 //=====================================================================
 public class vListener extends PluginListener {
 	protected static final Logger log = Logger.getLogger("Minecraft");
+    //On console stuff    
+    public boolean onConsoleCommand(String[] split) {
+    String args = etc.combineSplit(1, split, ""); 
+    //Return true if you don't want the server command to be parsed by the server.
+    String server = Colors.LightGreen + "[Server] " + Colors.DarkPurple;
+    if(split[0].equalsIgnoreCase("stop")){
+        vChat.gmsg(server + "Rebooting the server");
+        return false;
+    }
+    //Make say nicer
+    if(split[0].equalsIgnoreCase("say"))
+    {
+        //Send out the message
+        vChat.gmsg(server + args);
+        return true;
+    }
+        log.log(Level.INFO, split.toString());
+        return false;
+    }
 	
 	//=====================================================================
 	//Function:	disable
@@ -139,8 +158,7 @@ public class vListener extends PluginListener {
             if (block.getStatus() == 3){
                 int x,
                         y,
-                        z,
-                        g;
+                        z;
                 x = block.getX();
                 y = block.getY();
                 z = block.getZ();
