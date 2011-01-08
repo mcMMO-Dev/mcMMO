@@ -20,8 +20,10 @@ public class vMinecraft extends Plugin {
         //And remove the commands here.
     }
 
+    @Override
     public void initialize() {
         //Here we add the hook we're going to use. In this case it's the arm swing event.
+        etc.getLoader().addListener(PluginLoader.Hook.SERVERCOMMAND, listener, this, PluginListener.Priority.HIGH);
         etc.getLoader().addListener(PluginLoader.Hook.CHAT, listener, this, PluginListener.Priority.MEDIUM);
         etc.getLoader().addListener(PluginLoader.Hook.LOGIN, listener, this, PluginListener.Priority.MEDIUM);
         etc.getLoader().addListener(PluginLoader.Hook.COMMAND, listener, this, PluginListener.Priority.HIGH);
