@@ -14,13 +14,13 @@ public class vListener extends PluginListener {
     {
         if(split.length > 1){
         String args = " " + etc.combineSplit(1, split, " ");
-        vChat.gmsg(server + args);
+        vChat.gmsg(server + " " + args);
         return true;
         }
         return false;
     }
     if(split[0].equalsIgnoreCase("stop"))
-        vChat.gmsg(server + "shutting down the server");
+        vChat.gmsg(server + " shutting down the server");
         return false;
     }
 	
@@ -192,7 +192,7 @@ public class vListener extends PluginListener {
                 //Then we preceed to check if they are in the same party, the code for this is stored elsewhere
                 if(vUsers.getProfile(dplayer).inParty()){
                     //If they are in the same party we tell onDamage to return true stopping the damage code from executing
-                    if(vmc.inSameParty(aplayer, dplayer)){
+                    if(aplayer != null && vmc.inSameParty(aplayer, dplayer)){
                         return true;
                         //if they aren't we tell it to return false, making the damage happen
                     } else{

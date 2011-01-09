@@ -18,6 +18,7 @@ public class vConfig {
 	//The feature settings
 	static boolean toggle			= true,
 				   adminChat		= false,
+                groupcoloredbrackets = false,
                                    partyChat = false,
 				   greentext		= false,
 				   FFF				= false,
@@ -81,10 +82,12 @@ public class vConfig {
 			FileWriter writer = null;
 			try {
 				writer = new FileWriter(location);
-				writer.write("#This plugin is modular\r\n");
+				writer.append("#This plugin is modular\r\n");
 				writer.write("#Turn any features you don't want to false and they won't be running\r\n");
 				writer.write("#If you edit this file and save it, then use /reload it will reload the settings\r\n");
                                 writer.write("#Chat Options\r\n");
+                                writer.write("#Group prefix colors apply to player brackets\r\n");
+                                writer.write("groupcoloredbrackets=true\r\n");
                                 writer.write("#Allows the use of color codes following ^ symbol\r\n");
                                 writer.write("ColoredChat=true\r\n");
                                 writer.write("#Require per player permission for quakecolors\r\n");
@@ -168,6 +171,7 @@ public class vConfig {
 		}
 
 		try {
+                        groupcoloredbrackets = properties.getBoolean("groupcoloredbrackets",true);
 			adminChat = properties.getBoolean("adminchat",true);
                         partyChat = properties.getBoolean("partychat",true);
                         playerspawn = properties.getBoolean("playerspawn",true);
@@ -229,6 +233,7 @@ public class vConfig {
 	//Use:		Returns if the feature is enabled
 	//=====================================================================
 	public boolean adminchat() {return adminChat;}
+        public boolean groupcoloredbrackets(){return groupcoloredbrackets;}
         public boolean partyChat() {return partyChat;}
         public boolean adminChatToggle() {return cmdAdminToggle;}
 	public boolean greentext() {return greentext;}

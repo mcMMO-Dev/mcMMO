@@ -478,8 +478,8 @@ public class vChat {
 	public static boolean quote(Player player, String message)
 	{
 		//Format the name
-		String playerName = Colors.White + "<" + getName(player)
-				+ Colors.White + "> ";
+		String playerName = vmc.getInstance().getGroupPrefix(player) + "<" + getName(player)
+				+ vmc.getInstance().getGroupPrefix(player) + "> ";
 		if(vConfig.getInstance().greentext()) {
 			//Log the chat
 			log.log(Level.INFO, "<"+player.getName()+"> " + message);
@@ -501,8 +501,8 @@ public class vChat {
 	public static boolean rage(Player player, String message)
 	{
 		//Format the name
-		String playerName = Colors.White + "<"
-				+ getName(player) + Colors.White +"> ";
+		String playerName = vmc.getInstance().getGroupPrefix(player) + "<"
+				+ getName(player) + vmc.getInstance().getGroupPrefix(player) +"> ";
 		if (vConfig.getInstance().FFF()) {
 			log.log(Level.INFO, "<"+player.getName()+"> "+message);
 			
@@ -523,8 +523,8 @@ public class vChat {
 	public static boolean quakeColors(Player player, String message)
 	{
 		//Format the name
-		String playerName = Colors.White + "<"
-				+ getName(player) + Colors.White +"> ";
+		String playerName = vmc.getInstance().getGroupPrefix(player) + "<"
+				+ getName(player) + vmc.getInstance().getGroupPrefix(player) +"> ";
 		if(vConfig.getInstance().quakeColors()) {
 
 			String color = vUsers.getProfile(player).getColor();

@@ -1,5 +1,4 @@
 vMinecraft v1 Todo:
-        + Brackets with group prefix colors in chat
         + Add permission toggle for using colors
         + Guilds
         + Party Leaders
@@ -33,10 +32,11 @@ vMinecraft v2 Updates!
 			how much longer they are probated for.
 
 DONE
-    +Party system
-    +Party Chat
-    +Fix death messages
-    +Added /freeze command to stop players from moving
+    + Brackets with group prefix colors in chat
+    + Party system
+    + Party Chat
+    + Fix death messages
+    + Added /freeze command to stop players from moving
 	+ Quick recode of /me to use the new getName function
     + Promote and Demote (ASAP) <Cere> DIBS
     + Simple Fire Antigrief

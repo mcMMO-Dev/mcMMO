@@ -260,13 +260,15 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
     List<Player> playerList = etc.getServer().getPlayerList();
     for (Player InvisiblePlayer : hidden.values())
     {
-    for (Player p : playerList)
-    {
-    if (vmc.getDistance(InvisiblePlayer, p) <= vConfig.range && p.getUser() != InvisiblePlayer.getUser())
-    {
-    p.getUser().a.b(new dv(InvisiblePlayer.getUser().g));
-    }
-    }
+        for (Player p : playerList)
+        {   
+            if(p != null){
+            if (vmc.getDistance(InvisiblePlayer, p) <= vConfig.range && p.getUser() != InvisiblePlayer.getUser())
+            {
+            p.getUser().a.b(new dv(InvisiblePlayer.getUser().g));
+            }
+        }
+        }
     }
     }
     public static int party(Player player, String[] args){
