@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class vmc {
@@ -45,7 +44,7 @@ String location = "groups.txt";
         String groups[] = player.getGroups();
         String groupline[] = null;
         String prefix = Colors.White;
-        if(vConfig.getInstance().groupcoloredbrackets()){
+        if(vConfig.getInstance().groupcoloredbrackets() && groups[0].toString().length() > 0){
         //Read the file
         properties = new PropertiesFile(location);
 			try {
@@ -54,10 +53,9 @@ String location = "groups.txt";
 				log.log(Level.SEVERE, "Exception while loading " + location, e);
 			}
                         //Grab the line with the same group as the player
-                        if(!groups[0].isEmpty())
                         groupline = properties.getString(groups[0]).split(":");
                         //Check if the prefix is null or not
-                        if(groupline[0] != null)
+                        if(!groupline[0].isEmpty())
                         {
                         //vChat.colorChange(groupline[0].charAt(0));
                         prefix = groupline[0];

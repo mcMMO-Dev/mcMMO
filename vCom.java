@@ -335,13 +335,6 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
         }
         return EXIT_FAIL;
     }
-    //=====================================================================
-	//Function:	prefix (/prefix)
-	//Input:	Player player: The player using the command
-        //		String[] args: The name of the player
-	//Output:	int: Exit Code
-	//Use:		Freezes a player in place
-	//=====================================================================
     public static int freeze(Player player, String[] args){
         if(player.canUseCommand("/freeze") && vConfig.getInstance().freeze()){
             if (args.length < 1){
@@ -406,7 +399,6 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
                 		+ "The player you specified is a higher rank than you.");
                 return EXIT_SUCCESS;
             }
-
             
             //Check if the prefix is too long
             if(vChat.msgLength(args[1]) > 60)
@@ -425,8 +417,10 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
             
             if(args.length >= 3 && args[1] != null)
             {
-               vUsers.players.findProfile(other).setTag(args[2]);
+               String tagbag = etc.combineSplit(2, args, "");
+               vUsers.players.findProfile(other).setTag(tagbag);
 	           player.sendMessage(Colors.LightGreen + "Prefix changed");
+                   log.log(Level.INFO, player + " changed their prefix to " + tagbag);
             }
             return EXIT_SUCCESS;
         }

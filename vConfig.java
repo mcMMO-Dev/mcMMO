@@ -18,7 +18,7 @@ public class vConfig {
 	//The feature settings
 	static boolean toggle			= true,
 				   adminChat		= false,
-                groupcoloredbrackets = false,
+                                    groupcoloredbrackets = false,
                                    partyChat = false,
 				   greentext		= false,
 				   FFF				= false,
