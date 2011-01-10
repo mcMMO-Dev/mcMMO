@@ -78,6 +78,8 @@ String location = "groups.txt";
         String groupline[] = null;
         String prefix = Colors.White;
         int x = 0;
+        if(groups.length == 0 || groups == null)
+        return prefix;
         if(vConfig.getInstance().groupcoloredbrackets()){
         //Read the file
         properties = new PropertiesFile(location);
@@ -91,7 +93,7 @@ String location = "groups.txt";
                             if(herp != null)
                             x++;
                         }
-                        if(x != 0)
+                        if(x > 0)
                         groupline = properties.getString(groups[0]).split(":");
                         //Check if the prefix is null or not
                         if(!groupline[0].isEmpty() && groupline != null)
