@@ -272,24 +272,22 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
     }
     }
     public static int party(Player player, String[] args){
-        if(vUsers.getProfile(player).inParty() && args.length > 1){
+        if(!vUsers.getProfile(player).inParty() && args.length == 0){
+            player.sendMessage(Colors.Red + "Correct usage is /party [partyname]");
+            return EXIT_SUCCESS;
+        }
+        if((vUsers.getProfile(player).inParty()) && (args.length > 0)){
             player.sendMessage(Colors.Red + "You are already in a party, use /pquit to leave it");
             return EXIT_SUCCESS;
         }
         if(vUsers.getProfile(player).inParty()){
-            int x = 0;
-            String partymembers[] = null;
-            for(Player p : etc.getServer().getPlayerList()){
-                if(vmc.inSameParty(player, p)){
-                partymembers[x] = p.getName();
-                x++;
-                }
-            }
-            player.sendMessage(Colors.Green + "Party Members: " + partymembers);
+            player.sendMessage(Colors.Green + "Party Members: " + vmc.getInstance().getPartyMembers(player));
+            return EXIT_SUCCESS;
         }
         if(args[0] != null) {
             vUsers.getProfile(player).setParty(args[0]);
             player.sendMessage(Colors.DarkPurple + "Party set to " + args[0]);
+            vmc.informPartyMembers(player);
             return EXIT_SUCCESS;
         } else {
             player.sendMessage(Colors.Red + "Correct usage is /party [partyname]");
@@ -298,6 +296,7 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
     }
     public static int partyquit(Player player, String[] args){
         if(vUsers.getProfile(player).inParty()){
+            vmc.informPartyMembersQuit(player);
             vUsers.getProfile(player).removeParty();
             player.sendMessage(Colors.LightGreen + "Party successfully removed");
             return EXIT_SUCCESS;

@@ -1,5 +1,6 @@
 import java.io.*;
 import java.lang.String;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class vmc {
@@ -41,6 +42,37 @@ String location = "groups.txt";
                     }
                 }
     }
+    public String[] getPartyMembers(Player player){
+        int x = 0;
+        String partyarray[] = null;
+         ArrayList<String> partymembers = new ArrayList<String>();
+        for(Player p : etc.getServer().getPlayerList()){
+                if(vmc.inSameParty(player, p) && p != null){
+                partymembers.add(p.getName());
+                x++;
+                }
+            }
+        partymembers.toArray(partyarray);
+        return partyarray;
+    }
+    public static void informPartyMembers(Player player){
+        int x = 0;
+        for(Player p : etc.getServer().getPlayerList()){
+                if(vmc.inSameParty(player, p) && !p.getName().equals(player.getName())){
+                p.sendMessage(vUsers.getProfile(player).getTag() + player.getName() + Colors.Green + " has joined your party");
+                x++;
+                }
+            }
+    }
+    public static void informPartyMembersQuit(Player player){
+        int x = 0;
+        for(Player p : etc.getServer().getPlayerList()){
+                if(vmc.inSameParty(player, p) && !p.getName().equals(player.getName())){
+                p.sendMessage(vUsers.getProfile(player).getTag() + player.getName() + Colors.Green + " has left your party");
+                x++;
+                }
+            }
+    }
     public String getGroupPrefix(Player player){
         String groups[] = player.getGroups();
         String groupline[] = null;
@@ -56,12 +88,13 @@ String location = "groups.txt";
 			}
                         //Grab the line with the same group as the player
                         for(String herp : groups){
+                            if(herp != null)
                             x++;
                         }
-                        if(x > 0)
+                        if(x != 0)
                         groupline = properties.getString(groups[0]).split(":");
                         //Check if the prefix is null or not
-                        if(!groupline[0].isEmpty())
+                        if(!groupline[0].isEmpty() && groupline != null)
                         {
                         //vChat.colorChange(groupline[0].charAt(0));
                         prefix = groupline[0];
