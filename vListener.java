@@ -15,12 +15,14 @@ public class vListener extends PluginListener {
         if(split.length > 1){
         String args = " " + etc.combineSplit(1, split, " ");
         vChat.gmsg(server + " " + args);
+        log.log(Level.INFO, "[Server] " + args);
         return true;
         }
         return false;
     }
     if(split[0].equalsIgnoreCase("stop"))
         vChat.gmsg(server + " shutting down the server");
+        log.log(Level.INFO, "[Server] " + "shutting down the server");
         return false;
     }
 	

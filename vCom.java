@@ -272,9 +272,20 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
     }
     }
     public static int party(Player player, String[] args){
-        if(vUsers.getProfile(player).inParty()){
+        if(vUsers.getProfile(player).inParty() && args.length > 1){
             player.sendMessage(Colors.Red + "You are already in a party, use /pquit to leave it");
             return EXIT_SUCCESS;
+        }
+        if(vUsers.getProfile(player).inParty()){
+            int x = 0;
+            String partymembers[] = null;
+            for(Player p : etc.getServer().getPlayerList()){
+                if(vmc.inSameParty(player, p)){
+                partymembers[x] = p.getName();
+                x++;
+                }
+            }
+            player.sendMessage(Colors.Green + "Party Members: " + partymembers);
         }
         if(args[0] != null) {
             vUsers.getProfile(player).setParty(args[0]);
@@ -338,25 +349,27 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
     public static int freeze(Player player, String[] args){
         if(player.canUseCommand("/freeze") && vConfig.getInstance().freeze()){
             if (args.length < 1){
-                vChat.gmsg(Colors.Rose + "Usage is /freeze [Player]");
+                player.sendMessage(Colors.Rose + "Usage is /freeze [Player]");
                 return EXIT_SUCCESS;
             }
             Player other = etc.getServer().matchPlayer(args[0]);
             if (other == null)
             {
-                vChat.gmsg(Colors.Rose + "The player you specified could not be found");
+                player.sendMessage(Colors.Rose + "The player you specified could not be found");
                 return EXIT_SUCCESS;
             }
             if(player != other && other.hasControlOver(player)){
-                vChat.gmsg(Colors.Rose + "The player you specified has a higher rank than you");
+                player.sendMessage(Colors.Rose + "The player you specified has a higher rank than you");
                 return EXIT_SUCCESS;
             }
             if(vConfig.getInstance().isFrozen(other.getName())){
                 vConfig.getInstance().removeFrozen(other.getName());
+                if(!vUsers.getProfile(player).isSilent())
                 vChat.gmsg(player.getName() + Colors.Blue + " has unfrozen " + other.getName());
                 return EXIT_SUCCESS;
             } else {
             vConfig.getInstance().addFrozen(other.getName());
+            if(!vUsers.getProfile(player).isSilent())
             vChat.gmsg(player.getName() + Colors.Blue + " has frozen " + other.getName());
             return EXIT_SUCCESS;
             }
@@ -1234,6 +1247,19 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
 		for (Player p : etc.getServer().getPlayerList()) {
 			if (!p.hasControlOver(player)) {
 				p.teleportTo(player);
+                                double x = player.getLocation().x;
+                        double y = player.getLocation().y;
+                        double z = player.getLocation().z;
+                        String x2 = Double.toString(x);
+                        String y2 = Double.toString(y);
+                        String z2 = Double.toString(z);
+                        String xyz = x2+","+y2+","+z2;
+                        vUsers.getProfile(p).setTpback(xyz);
+                        if(p.canUseCommand("/tpback"))
+                        {
+                        p.sendMessage(Colors.DarkPurple + "Your previous location has been stored");
+                        p.sendMessage(Colors.DarkPurple + "Use /tpback to return");
+                        }
 			}
 		}
 		//Inform the user that the command has executed successfully
@@ -1313,7 +1339,6 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
 	{
 		//Make sure the user has access to the command
 		if(!player.canUseCommand("/reload")) return EXIT_FAIL;
-		
 		vConfig.getInstance().loadSettings();
 		return EXIT_FAIL;
 	}
