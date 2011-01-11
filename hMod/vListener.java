@@ -20,9 +20,10 @@ public class vListener extends PluginListener {
         }
         return false;
     }
-    if(split[0].equalsIgnoreCase("stop"))
+    if(split[0].equalsIgnoreCase("stop")){
         vChat.gmsg(server + " shutting down the server");
         log.log(Level.INFO, "[Server] " + "shutting down the server");
+    }
         return false;
     }
 	
