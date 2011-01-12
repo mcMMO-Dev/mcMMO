@@ -429,10 +429,9 @@ private static HashMap<String, Player> hidden = new HashMap<String, Player>();
             
             if(args.length >= 3 && args[1] != null)
             {
-               String tagbag = etc.combineSplit(2, args, "");
-               vUsers.players.findProfile(other).setTag(tagbag);
+               vUsers.players.findProfile(other).setTag(args[2]);
 	           player.sendMessage(Colors.LightGreen + "Prefix changed");
-                   log.log(Level.INFO, player + " changed their prefix to " + tagbag);
+                   log.log(Level.INFO, player + " changed their prefix to " + args[2]);
             }
             return EXIT_SUCCESS;
         }
