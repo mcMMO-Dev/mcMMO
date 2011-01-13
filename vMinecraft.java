@@ -1,21 +1,32 @@
+package vMinecraft;
+
 import java.io.File;
-import java.util.HashMap;
-//Needed for using Color
-import org.bukkit.Color;
-import org.bukkit.Player;
+import java.util.logging.Logger;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.Server;
-import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.PluginManager;
 public class vMinecraft extends JavaPlugin {
+
 private vPlayerListener playerListener;
 private vBlockListener blockListener;
+public static Logger log;
+public final static String name = "vMinecraft";
+public final static String version = "1.0";
+
+//We need this public/super stuff, not sure why
+public vMinecraft(PluginLoader pluginLoader, Server instance, File plugin, PluginDescriptionFile desc, ClassLoader cLoader) {
+super(pluginLoader, instance, desc, plugin, cLoader);
+// TODO Auto-generated constructor stub
+}
+private vMinecraft plugin;
 
     public void onEnable() {
-        // TODO: Place any custom enable code here including the registration of any events
+        //Register events
+        registerEvents();
 
         // Register our events
         PluginManager pm = getServer().getPluginManager();

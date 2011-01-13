@@ -1,3 +1,5 @@
+package vMinecraft;
+
 import org.bukkit.*;
 import org.bukkit.event.player.*;
 public class vPlayerListener extends PlayerListener {
@@ -6,4 +8,5 @@ public class vPlayerListener extends PlayerListener {
     public vPlayerListener(vMinecraft plugin) {
         this.plugin = plugin;
     }
+    
 }
