@@ -1,0 +1,9 @@
+Bukkit TODO
+-Create Groups Plugin for the Groups system
+-Split vMinecraft hMod into smaller plugins for bukkit
+	-vChat for chat features (noss)
+	-vAdmin for the new admin mod and admin features
+	-vGuilds for the guild and party system (noss)
+	-vGroups for the groups system (Cere)
+-Finish up the hMod planned features
+-Include updatr support with the new plugins
