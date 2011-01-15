@@ -9,7 +9,7 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 
 /**
- * vPlayerSpawn block listener
+ * vStopFire block listener
  * @author nossr50
  */
 public class vBlockListener extends BlockListener {
@@ -26,5 +26,4 @@ public class vBlockListener extends BlockListener {
     	if(!cause.equals("FLINT_AND_STEEL"))
     		event.setCancelled(true);
     }
-    //put all Block related code here
 }

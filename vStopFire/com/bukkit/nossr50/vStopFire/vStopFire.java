@@ -24,9 +24,6 @@ public class vStopFire extends JavaPlugin {
 
     public vStopFire(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
         super(pluginLoader, instance, desc, folder, plugin, cLoader);
-        
-
-        // NOTE: Event registration should be done in onEnable not here as all events are unregistered when a plugin is disabled
     }
 
    
@@ -37,12 +34,7 @@ public class vStopFire extends JavaPlugin {
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
     }
     public void onDisable() {
-        // TODO: Place any custom disable code here
-
-        // NOTE: All registered events are automatically unregistered when a plugin is disabled
-
-        // EXAMPLE: Custom code, here we just output some info so we can check all is well
-        System.out.println("Goodbye world!");
+        System.out.println("vStopFire disabled!");
     }
     public boolean isDebugging(final Player player) {
         if (debugees.containsKey(player)) {
