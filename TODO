@@ -10,8 +10,19 @@ Bukkit TODO
 
 vChat TODO
 High Priority
--Rewrite wordWrap() (cere?)
+    -Rewrite wordWrap() (cere?)
+    -Rainbow (Possibly xmas as well) crashing clients when entering the second line. My guess is it is a color code being inserted at the end.
+
+Medium Priority
+    -Ignore
+    -Default Chat Color
+    -Settings file
+    -Chat channels
+    -Nicknames
+    -Suffix
+    -Prefix
+
 Low Priority
--Fix bug where xmas/rainbow don't continue on the second line
--Fix bug where ^x & ^r are inserted to the end of the message when using xmas/rainbow
--Rainbow (Possibly xmas as well) crashing clients when entering the second line. My guess is it is a color code being inserted at the end.
+    -Fix bug where xmas/rainbow don't continue on the second line
+    -Fix bug where ^x & ^r are inserted to the end of the message when using xmas/rainbow
+    
