@@ -32,7 +32,8 @@ public class vPlayerListener extends PlayerListener {
     //Message to be sent when a player joins
     public void onPlayerJoin(PlayerEvent event) {
         Player player = event.getPlayer();
-        player.sendMessage(ChatColor.GREEN + "There are " + playerCount() + " players online");
+        //English Version
+        player.sendMessage(ChatColor.GREEN + "There are " + playerCount() + " players online.");
         }
     //Message to be sent when a player uses /list
     public void onPlayerCommand(PlayerChatEvent event) {
@@ -44,12 +45,14 @@ public class vPlayerListener extends PlayerListener {
         	int x = 0;
             for(Player p : plugin.getServer().getOnlinePlayers())
             {
+            	if(p != null && x+1 == playerCount()){
+            		tempList+= p.getName();
+            		x++;
+            	}
             	if(p != null && x < playerCount()){
             		tempList+= p.getName() +", ";
             		x++;
             	}
-            	if(x >= playerCount())
-            		tempList+= p.getName();
             }
             //Output the player list
             player.sendMessage(ChatColor.RED + "Player List ("+ChatColor.WHITE + tempList +ChatColor.RED+")");
