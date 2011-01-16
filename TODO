@@ -1,10 +1,28 @@
 Bukkit TODO
 -Create Groups Plugin for the Groups system
 -Split vMinecraft hMod into smaller plugins for bukkit
-	-vChat for chat features (noss)
 	-vAdmin for the new admin mod and admin features
 	-vGuilds for the guild and party system (noss)
 	-vGroups for the groups system (Cere)
 -Finish up the hMod planned features
 -Include updatr support with the new plugins
 -Port as many of vMinecrafts features as possible
+
+vChat TODO
+High Priority
+    -Rewrite wordWrap() (cere?)
+    -Rainbow (Possibly xmas as well) crashing clients when entering the second line. My guess is it is a color code being inserted at the end.
+
+Medium Priority
+    -Ignore
+    -Default Chat Color
+    -Settings file
+    -Chat channels
+    -Nicknames
+    -Suffix
+    -Prefix
+
+Low Priority
+    -Fix bug where xmas/rainbow don't continue on the second line
+    -Fix bug where ^x & ^r are inserted to the end of the message when using xmas/rainbow
+    
