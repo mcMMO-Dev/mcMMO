@@ -24,6 +24,10 @@ public class vPlayerListener extends PlayerListener {
     public vPlayerListener(vChat instance) {
         plugin = instance;
     }
+    public void onPlayerJoin(PlayerEvent event) {
+    	Player player = event.getPlayer();
+    	vUsers.addUser(player);
+    }
     //Special Color Codes
     protected static final String[] rainbow = new String[] {
     	ChatColor.DARK_RED.toString(),
@@ -56,7 +60,7 @@ public class vPlayerListener extends PlayerListener {
     	Player[] players = plugin.getServer().getOnlinePlayers();
     	//Quotes
     	if(split[0].startsWith(">"))
-    		quote(player, message);	
+    		quote(player, message, players);	
     	else{
     		quakeColors(player, message, players);
     	}
@@ -121,91 +125,87 @@ public class vPlayerListener extends PlayerListener {
     //=====================================================================
         public static void gmsg(String msg){gmsg(null, msg, null);}
         public static void gmsg(Player player, String msg){gmsg(player, msg, null);}
-  	//=====================================================================
-  	//Function:	wordWrap
-  	//Input:	String msg: The message to be wrapped
-  	//Output:	String[]: The array of substrings 
-  	//Use:		Cuts the message apart into whole words short enough to fit
-      //			on one line
-  	//=====================================================================
-      public static String[] wordWrap(String msg){
+      //=====================================================================
+      //Function: wordWrap
+      //Input: String msg: The message to be wrapped
+      //Output: String[]: The array of substrings
+      //Use: Cuts the message apart into whole words short enough to fit
+          // on one line
+      //=====================================================================
+          public static String[] wordWrap(String msg){
+           //Split each word apart
+           ArrayList<String> split = new ArrayList<String>();
+           for(String in : msg.split(" "))
+           split.add(in);
+          
+           //Create an arraylist for the output
+           ArrayList<String> out = new ArrayList<String>();
+           //While i is less than the length of the array of words
+           while(!split.isEmpty()){
+           int len = 0;
+              
+           //Create an arraylist to hold individual words
+           ArrayList<String> words = new ArrayList<String>();
 
-      	//Create an arraylist for the output
-      	ArrayList<String> out = new ArrayList<String>();
-      	//Constructs the line that will be added to the output
-      	StringBuffer line = new StringBuffer();
-      	//The current length of the line
-  		int curLength = 0;
-  		//The most recent color in a line
-  		String color = ChatColor.WHITE.toString();
-  		//The number of words on this line
-  		int wordLength = 0;
-  		
-      	for(int i = 0; i < msg.length(); i++)
-      	{
-      		
-      		//If the next char would be a color, don't count it as length
-      		//but add it to the output line
-      		if(msg.charAt(i) == ChatColor.DARK_RED.toString().charAt(0))
+           //Loop through the words finding their length and increasing
+           //j, the end point for the sub string
+           while(!split.isEmpty() && split.get(0) != null && len <= lineLength)
+           {
+           int wordLength = msgLength(split.get(0)) + 4;
+          
+           //If a word is too long for a line
+           if(wordLength > lineLength)
+           {
+               String[] tempArray = wordCut(len, split.remove(0));
+               words.add(tempArray[0]);
+               split.add(tempArray[1]);
+           }
+
+           //If the word is not too long to fit
+           len += wordLength;
+           if( len < lineLength)
+           words.add(split.remove(0));
+           }
+           //Merge them and add them to the output array.
+           out.add(combineSplit(words.toArray(new String[words.size()]), " ") + " " );
+           }
+           //Convert to an array and return
+           return out.toArray(new String[out.size()]);
+          }
+          
+          //CombineSplit
+          public static String combineSplit(String[] array, String merge) {
+        	    String out = "";
+        	    for(String word : array)
+        	        out += word + merge;
+        	    return out;
+        	}
+
+      	//=====================================================================
+      	//Function:	msgLength
+      	//Input:	String str: The string to find the length of
+      	//Output:	int: The length on the screen of a string
+      	//Use:		Finds the length on the screen of a string. Ignores colors.
+      	//=====================================================================
+          public static int msgLength(String str){
+      		int length = 0;
+      		//Loop through all the characters, skipping any color characters
+      		//and their following color codes
+      		for(int x = 0; x<str.length(); x++)
       		{
-  				line.append(msg.charAt(i));
-  				line.append(msg.charAt(i+1));
-  				
-  				//Increment skipping these chars
-  				i+=2;
-      		}
-      		
-      		//Add the length of the current character
-      		curLength += charLength(msg.charAt(i));
-      		
-      		//If it would be a space, increment the wordLength
-      		if(msg.charAt(i) == ' ')
-      			wordLength++;
-      		
-      		//If the character would make the line too long
-      		if(curLength > lineLength)
-      		{
-      			//Go back one to avoid making it too long
-      			i--;
-      			
-      			//Go back to the place we would split the line
-      			//If there is more than one word
-      			if(wordLength > 0)
-  	    			while(lineSplit.indexOf(msg.charAt(i)) == -1)
-  	    			{
-  	    				i--;
-  	    				line.deleteCharAt(line.length() - 1);
-  	    			}
-      			//Add the line to the output
-      			out.add(line.toString());
-      			
-  				//Make sure you have the most recent color
-      			for(int j = i; j > 0; j--)
+      			if((x+1 <= str.length()) && (str.charAt(x) == '^' || str.charAt(x) == ChatColor.WHITE.toString().charAt(0)))
       			{
-      				if(msg.charAt(j) == ChatColor.DARK_RED.toString().charAt(0))
+                                      if(colorChange(str.charAt(x + 1)) != null)
       				{
-      					color = msg.substring(j, j+1);
-      					break;
+      					x++;
+                                              continue;
       				}
       			}
-      			
-      			//Create a new line
-      			line = new StringBuffer();
-      			curLength = 0;
+      			int len = charLength(str.charAt(x));
+      			length += len;
       		}
-      		//If the line isn't long enough yet
-      		else
-      		{
-      			//Add the character to the line
-      			line.append(msg.charAt(i));
-      		}
-      	}
-      	//Add the final line
-  		out.add(line.toString());
-  		
-  		//Return the output as an array
-      	return out.toArray(new String[out.size()]);
-      }    
+      		return length;
+          }
   //=====================================================================
   //Function: colorChange
   //Input: char colour: The color code to find the color for
@@ -392,14 +392,14 @@ public class vPlayerListener extends PlayerListener {
     //Output: boolean: If this feature is enabled
     //Use: Displays a message as a quote
     //=====================================================================
-    public void quote(Player player, String message)
+    public void quote(Player player, String message, Player[] players)
     {
     //Format the name
     String playerName = ChatColor.WHITE + "<" + player.getName() + "> ";
     //Log the chat
     log.log(Level.INFO, "<"+player.getName()+"> " + message);
     //Output the message
-    gmsg(player, playerName + ChatColor.GREEN + message);
+    gmsg(player, playerName + ChatColor.GREEN + message, players);
     }
     
     //=====================================================================
@@ -424,7 +424,7 @@ public class vPlayerListener extends PlayerListener {
 			{	
 				//Start the line with the most recent color
 				String temp = "";
-				if(!recentColor.equals("^r") && recentColor != null)
+				if(!recentColor.equals("^r") && !recentColor.equals("^x") && recentColor != null)
 					temp += recentColor;
 				
 				//Loop through looking for a color code
@@ -459,7 +459,6 @@ public class vPlayerListener extends PlayerListener {
 										&& msg.charAt(x) != ChatColor.DARK_RED.toString().charAt(0))
 									{
 										temp += rainbow[i] + msg.charAt(x);
-										
 										if(msg.charAt(x) != ' ') i++;
 										if(i == rainbow.length) i = 0;
 										x++;
@@ -467,15 +466,15 @@ public class vPlayerListener extends PlayerListener {
 									
 									//If it reached another color instead of the end
 									if(x < msg.length() && msg.charAt(x) == '^'
-											|| x < msg.length()
-											&&  msg.charAt(x) == ChatColor.DARK_RED.toString().charAt(0) )
+											/* Not sure what this check is for
+											 * || x < msg.length() &&  msg.charAt(x) == ChatColor.DARK_RED.toString().charAt(0)*/)
 									{
 										taste = false;
 										i = 0;
 										x--;
 									}
 								}
-                                                              if(xmasparty || recentColor.equals("^x"))
+                                if(xmasparty || recentColor.equals("^x"))
 								{
 									//Skip the quake code for xmas
 									if(recentColor.equals("^x"))
@@ -483,7 +482,7 @@ public class vPlayerListener extends PlayerListener {
 										x += 2;
 									}
 									
-									//Taste keeps it going with xmas if there
+									//xmasparty keeps it going with xmas if there
 									//are more lines
 									xmasparty = true;
 									//Loop through the message applying the colors
