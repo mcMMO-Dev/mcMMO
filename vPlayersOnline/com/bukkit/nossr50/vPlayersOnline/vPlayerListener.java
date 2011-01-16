@@ -36,20 +36,24 @@ public class vPlayerListener extends PlayerListener {
         }
     //Message to be sent when a player uses /list
     public void onPlayerCommand(PlayerChatEvent event) {
-    	log.log(Level.INFO, event.getMessage() + "|" + event.getPlayer().getName());
     	String[] split = event.getMessage().split(" ");
         Player player = event.getPlayer();
         if(split[0].equalsIgnoreCase("/list") || split[0].equalsIgnoreCase("/who")){
         	event.setCancelled(true);
         	String tempList = "";
+        	int x = 0;
             for(Player p : plugin.getServer().getOnlinePlayers())
             {
-            	if(p != null){
-            		tempList+= p.getName();
+            	if(p != null && x < playerCount()){
+            		tempList+= p.getName() +", ";
+            		x++;
             	}
+            	if(x >= playerCount())
+            		tempList+= p.getName();
             }
             //Output the player list
-            player.sendMessage(ChatColor.RED + "Player List (" + tempList +")");
+            player.sendMessage(ChatColor.RED + "Player List ("+ChatColor.WHITE + tempList +ChatColor.RED+")");
+            player.sendMessage(ChatColor.RED + "Total Players: " + ChatColor.GREEN + playerCount());
         }
     }
 }
