@@ -25,27 +25,60 @@ public class mcPlayerListener extends PlayerListener {
     	player.sendMessage("Set your spawn with "+ChatColor.YELLOW+"/setmyspawn"+ChatColor.WHITE+", Travel to it with /myspawn");
     	player.sendMessage(ChatColor.RED+"WARNING: "+ChatColor.DARK_GRAY+ "Using /myspawn will clear your inventory!"); 
     }
+    //Check if string is a player
+    public boolean isPlayer(String playerName){
+    	for(Player herp : plugin.getServer().getOnlinePlayers()){
+    		if(herp.getName().toLowerCase().equals(playerName.toLowerCase())){
+    			return true;
+    		}
+    	}
+    		return false;
+    }
+    public int partyCount(Player player){
+    	Player players[] = plugin.getServer().getOnlinePlayers();
+        int x = 0;
+        for(Player hurrdurr: players){
+        	if(mcUsers.getProfile(player).getParty().equals(mcUsers.getProfile(hurrdurr).getParty()))
+        	x++;
+        }
+        return x;
+    }
+    public Player getPlayer(String playerName){
+    	for(Player herp : plugin.getServer().getOnlinePlayers()){
+    		if(herp.getName().toLowerCase().equals(playerName.toLowerCase())){
+    			return herp;
+    		}
+    	}
+    	return null;
+    }
     public void onPlayerCommand(PlayerChatEvent event) {
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
     	//mcMMO command
-    	if(split[0].equalsIgnoreCase("/whereis")){
-    		if(!player.isOp())
-    			return;
-    		if(split.length == 1){
-    			player.sendMessage("Usage is /whereis [player]");
+    	if(player.isOp() && split[0].equalsIgnoreCase("/whois")){
+    		if(split.length < 2){
+    			player.sendMessage(ChatColor.RED + "Proper usage is /whois <playername>");
     			return;
     		}
-    		for(Player derp : plugin.getServer().getOnlinePlayers()){
-				if(derp.getName().toLowerCase().equals(split[2].toLowerCase())){
-					Location loc = derp.getLocation();
-					player.sendMessage("Player  " + derp.getName() + " Coordinates");
-					player.sendMessage("X: " + String(loc.getX()));
-					player.sendMessage("Y: " + String(loc.getY()));
-					player.sendMessage("Z: " + String(loc.getZ()));
-				}
-			}
+    		//if split[1] is a player
+    		if(isPlayer(split[1])){
+    		Player target = getPlayer(split[1]);
+    		double x,y,z;
+    		x = target.getLocation().getX();
+    		y = target.getLocation().getY();
+    		z = target.getLocation().getZ();
+    		player.sendMessage(ChatColor.GREEN + "~~WHOIS RESULTS~~");
+    		player.sendMessage(target.getName());
+    		player.sendMessage("Health: "+target.getHealth()+ChatColor.GRAY+" (20 is full health)");
+    		player.sendMessage("OP: " + target.isOp());
+    		player.sendMessage(ChatColor.GREEN+"~~mcMMO stats~~");
+    		player.sendMessage("Gathering Skill: "+mcUsers.getProfile(target).getgather());
+    		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
+    		player.sendMessage("X: "+x);
+    		player.sendMessage("Y: "+y);
+    		player.sendMessage("Z: "+z);
+    		}
     	}
     	if(split[0].equalsIgnoreCase("/setmyspawn")){
     		double x = player.getLocation().getX();
@@ -68,9 +101,27 @@ public class mcPlayerListener extends PlayerListener {
     	//Party command
     	if(split[0].equalsIgnoreCase("/party")){
     		event.setCancelled(true);
-    		if(split.length == 1){
+    		if(split.length == 1 && !mcUsers.getProfile(player).inParty()){
     			player.sendMessage("Proper usage is /party <name> or 'q' to quit");
     			return;
+    		}
+    		if(split.length == 1 && mcUsers.getProfile(player).inParty()){
+            	String tempList = "";
+            	int x = 0;
+                for(Player p : plugin.getServer().getOnlinePlayers())
+                {
+                	if(mcUsers.getProfile(player).getParty().equals(mcUsers.getProfile(p).getParty())){
+	                	if(p != null && x+1 >= partyCount(player)){
+	                		tempList+= p.getName();
+	                		x++;
+	                	}
+	                	if(p != null && x < partyCount(player)){
+	                		tempList+= p.getName() +", ";
+	                		x++;
+	                	}
+                	}
+                }
+                player.sendMessage(ChatColor.GREEN + "Party Members ("+ChatColor.WHITE+tempList+ChatColor.GREEN+")");
     		}
     		if(split[1].equals("q") && mcUsers.getProfile(player).inParty()){
     			mcUsers.getProfile(player).removeParty();

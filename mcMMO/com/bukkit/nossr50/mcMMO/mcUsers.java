@@ -12,7 +12,7 @@ import org.bukkit.entity.*;
 public class mcUsers {
     private static volatile mcUsers instance;
     protected static final Logger log = Logger.getLogger("Minecraft");
-    String location = "mcMMO.users";
+    String location = "mcmmo.users";
     public static PlayerList players = new PlayerList();
     private Properties properties = new Properties();
     
@@ -158,7 +158,7 @@ class PlayerList
 		private boolean dead;
 		char defaultColor;
 
-        String location = "mcMMO.users";
+        String location = "mcmmo.users";
 		
 		
 		//=====================================================================
