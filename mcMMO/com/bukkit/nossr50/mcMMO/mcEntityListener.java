@@ -25,9 +25,6 @@ public class mcEntityListener extends EntityListener {
     		//If defender is player
     		if(x instanceof Player){
     			Player defender = (Player)x;
-    			if(mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty()))
-    				event.setCancelled(true);
-
     			if(mcUsers.getProfile(defender).isDead())
     				return;
     			if((defender.getHealth() - event.getDamage()) <= 0){
@@ -36,6 +33,9 @@ public class mcEntityListener extends EntityListener {
     					mcUsers.getProfile(defender).setDead(true);
     				}
     			}
+    			//Moving this below the death message for now, seems to have issues when the defender is not in a party
+    			if((mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty())&& mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty()))
+    				event.setCancelled(true);
     		}
     	}
     }
@@ -44,10 +44,6 @@ public class mcEntityListener extends EntityListener {
     	Entity x = event.getEntity();
     	if(x instanceof Player){
     		Player player = (Player)x;
-    		if(mcUsers.getProfile(player).isDead()){
-    			mcUsers.getProfile(player).setDead(false);
-    			return;
-    		}
     		if((player.getHealth() - event.getDamage()) <= 0){
     		Location deathLoc = player.getLocation();
     		ItemStack[] items = player.getInventory().getContents();
@@ -61,6 +57,10 @@ public class mcEntityListener extends EntityListener {
     		}
     		player.setHealth(20);
 			player.teleportTo(mcUsers.getProfile(player).getMySpawn(player));
+			if(mcUsers.getProfile(player).isDead()){
+    			mcUsers.getProfile(player).setDead(false);
+    			return;
+    		}
 			for(Player derp : plugin.getServer().getOnlinePlayers()){
 				derp.sendMessage(ChatColor.GRAY+player.getName() + " has died.");
 			}
