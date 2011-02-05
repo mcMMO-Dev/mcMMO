@@ -17,11 +17,13 @@ public class mcPlayerListener extends PlayerListener {
     public void onPlayerJoin(PlayerEvent event) {
     	Player player = event.getPlayer();
     	mcUsers.addUser(player);
-    	player.sendMessage(ChatColor.GREEN+"Welcome to /v/ - Minecraft");
-    	player.sendMessage(ChatColor.GREEN+"Steam Group: vminecraft");
+    	player.sendMessage(ChatColor.DARK_RED+"Welcome to /v/ - Minecraft");
+    	player.sendMessage(ChatColor.DARK_RED+"Steam Group: vminecraft");
     	player.sendMessage(ChatColor.AQUA + "This server is running mcMMO type /stats for your information");
-    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/party "+ChatColor.WHITE+"to create/join parties.");
-    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/p"+ChatColor.WHITE+" to toggle party chat");
+    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/party "+ChatColor.GREEN+"to create/join parties and");
+    	player.sendMessage(ChatColor.GREEN+"to check who is in your current party.");
+    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/p"+ChatColor.GREEN+" to toggle party chat");
+    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/ptp "+ChatColor.GREEN+"to teleport to party members");
     	player.sendMessage("Set your spawn with "+ChatColor.YELLOW+"/setmyspawn"+ChatColor.WHITE+", Travel to it with /myspawn");
     	player.sendMessage(ChatColor.RED+"WARNING: "+ChatColor.DARK_GRAY+ "Using /myspawn will clear your inventory!"); 
     }
@@ -56,6 +58,18 @@ public class mcPlayerListener extends PlayerListener {
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
     	//mcMMO command
+    	if(mcUsers.getProfile(player).inParty() && split[0].equalsIgnoreCase("/ptp")){
+    		if(split.length < 2){
+    			player.sendMessage(ChatColor.RED+"Usage is /ptp <playername>");
+    			return;
+    		}
+    		if(isPlayer(split[1])){
+        	Player target = getPlayer(split[1]);
+        	player.teleportTo(target);
+        	player.sendMessage(ChatColor.GREEN+"You have teleport to "+target.getName());
+        	target.sendMessage(ChatColor.GREEN+player.getName() + " has teleported to you.");
+    	}
+    	}
     	if(player.isOp() && split[0].equalsIgnoreCase("/whois")){
     		if(split.length < 2){
     			player.sendMessage(ChatColor.RED + "Proper usage is /whois <playername>");
@@ -124,8 +138,9 @@ public class mcPlayerListener extends PlayerListener {
                 player.sendMessage(ChatColor.GREEN + "Party Members ("+ChatColor.WHITE+tempList+ChatColor.GREEN+")");
     		}
     		if(split[1].equals("q") && mcUsers.getProfile(player).inParty()){
-    			mcUsers.getProfile(player).removeParty();
     			informPartyMembersQuit(player);
+    			mcUsers.getProfile(player).removeParty();
+    			player.sendMessage(ChatColor.RED + "You have left that party");
     			return;
     		}
     		mcUsers.getProfile(player).setParty(split[1]);

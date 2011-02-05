@@ -199,9 +199,10 @@ class PlayerList
         			//Get gather
         			if(character.length > 1)
         				gather = character[1];
-        			if(character.length > 2){
+        			if(character.length > 2)
         				myspawn = character[2];
-        			}
+        			if(character.length > 3)
+        				party = character[3];
                 	in.close();
         			return true;
             	}
@@ -243,6 +244,7 @@ class PlayerList
             			writer.append(playerName + ":");
             			writer.append(gather + ":");
             			writer.append(myspawn + ":");
+            			writer.append(party+":");
             			writer.append("\r\n");                   			
             		}
             	}
@@ -266,6 +268,7 @@ class PlayerList
                 out.append(playerName + ":");
                 out.append(gather + ":");
                 out.append(myspawn+":");
+                out.append(party+":");
                 //Add more in the same format as the line above
                 
     			out.newLine();

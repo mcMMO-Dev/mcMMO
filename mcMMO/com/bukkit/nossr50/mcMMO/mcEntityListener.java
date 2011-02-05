@@ -28,6 +28,12 @@ public class mcEntityListener extends EntityListener {
     			if(mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty())){
     				event.setCancelled(true);
     			}
+    			if((defender.getHealth() - event.getDamage()) <= 0){
+    				for(Player derp : plugin.getServer().getOnlinePlayers()){
+    					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName());
+    					mcUsers.getProfile(defender).setDead(true);
+    				}
+    			}
     		}
     	}
     }
@@ -52,6 +58,18 @@ public class mcEntityListener extends EntityListener {
 			for(Player derp : plugin.getServer().getOnlinePlayers()){
 				derp.sendMessage(ChatColor.GRAY+player.getName() + " has died.");
 			}
+    		}
+    	}
+    }
+    public void onEntityDeath(EntityDeathEvent event) {
+    	Entity x = event.getEntity();
+    	if(x instanceof Player){
+    		Player player = (Player)x;
+    		if(mcUsers.getProfile(player).isDead()){
+    			return;
+    		}
+    		for(Player derp : plugin.getServer().getOnlinePlayers()){
+    			derp.sendMessage(ChatColor.GRAY+player.getName()+" has died.");
     		}
     	}
     }
