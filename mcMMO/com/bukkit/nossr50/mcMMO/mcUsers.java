@@ -154,7 +154,7 @@ class PlayerList
 	class PlayerProfile
 	{
 	    protected final Logger log = Logger.getLogger("Minecraft");
-		private String playerName, gather, party, myspawn;
+		private String playerName, gather, wgather, woodcutting, mining, party, myspawn;
 		private boolean dead;
 		char defaultColor;
 
@@ -174,7 +174,14 @@ class PlayerList
 			playerName = player.getName();
             party = new String();
             myspawn = new String();
+            mining = new String();
+            //mining = "0";
+            wgather = new String();
+            //wgather = "0";
+            woodcutting = new String();
+            //woodcutting = "0";
             gather = new String();
+            //gather = "0";
             party = null;
             dead = false;
             
@@ -196,13 +203,22 @@ class PlayerList
             		String[] character = line.split(":");
             		if(!character[0].equals(playerName)){continue;}
             		
-        			//Get gather
+        			//Get Mining
         			if(character.length > 1)
-        				gather = character[1];
+        				mining = character[1];
+        			//Myspawn
         			if(character.length > 2)
         				myspawn = character[2];
+        			//Party
         			if(character.length > 3)
         				party = character[3];
+        			//Mining Gather
+        			if(character.length > 4)
+        				gather = character[4];
+        			if(character.length > 5)
+        				woodcutting = character[5];
+        			if(character.length > 6)
+        				wgather = character[6];
                 	in.close();
         			return true;
             	}
@@ -242,9 +258,12 @@ class PlayerList
                     //Otherwise write the new player information
             		} else {
             			writer.append(playerName + ":");
-            			writer.append(gather + ":");
+            			writer.append(mining + ":");
             			writer.append(myspawn + ":");
             			writer.append(party+":");
+            			writer.append(gather+":");
+            			writer.append(woodcutting+":");
+            			writer.append(wgather+":");
             			writer.append("\r\n");                   			
             		}
             	}
@@ -266,9 +285,12 @@ class PlayerList
                 
                 //Add the player to the end
                 out.append(playerName + ":");
-                out.append(gather + ":");
+                out.append(0 + ":");
                 out.append(myspawn+":");
                 out.append(party+":");
+                out.append(0+":");
+                out.append(0+":");
+                out.append(0+":");
                 //Add more in the same format as the line above
                 
     			out.newLine();
@@ -288,29 +310,129 @@ class PlayerList
 		{
 			return player.getName().equals(playerName);
 		}
+		public void skillUpMining(int newmining){
+			int x = 0;
+			if(mining != null){
+			if(isInt(mining)){
+			x = Integer.parseInt(mining);
+			}else {
+				mining = "0";
+				x = Integer.parseInt(mining);
+			}
+			}
+			x += newmining;
+			mining = Integer.toString(x);
+			save();
+		}
+		public void skillUpWoodcutting(int newskill){
+			int x = 0;
+			if(woodcutting != null){
+			if(isInt(woodcutting)){
+			x = Integer.parseInt(woodcutting);
+			}else {
+				woodcutting = "0";
+				x = Integer.parseInt(woodcutting);
+			}
+			}
+			x += newskill;
+			woodcutting = Integer.toString(x);
+			save();
+		}
+		public String getMining(){
+			return mining;
+		}
+		public int getMiningInt(){
+			if(isInt(mining)){
+				int x = Integer.parseInt(mining);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public int getWoodCuttingint(){
+			if(isInt(woodcutting)){
+				int x = Integer.parseInt(woodcutting);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public String getWoodCutting(){
+			return woodcutting;
+		}
 		
+		public void addwgather(int newgather)
+		{
+			int x = 0;
+			if(isInt(wgather)){
+			x = Integer.parseInt(wgather);
+			}
+			x += newgather;
+			wgather = String.valueOf(x);
+			save();
+		}
+		public void removewgather(int newgather){
+			int x = 0;
+			if(isInt(wgather)){
+			x = Integer.parseInt(wgather);
+			}
+			x -= newgather;
+			wgather = String.valueOf(x);
+			save();
+		}
 		public void addgather(int newgather)
 		{
 			int x = 0;
 			if(isInt(gather)){
 			x = Integer.parseInt(gather);
+			} else {
+				x = 0;
 			}
 			x += newgather;
+			gather = String.valueOf(x);
+			save();
+		}
+		public void removegather(int newgather){
+			int x = 0;
+			if(isInt(gather)){
+			x = Integer.parseInt(gather);
+			}
+			x -= newgather;
 			gather = String.valueOf(x);
 			save();
 		}
 
 		public boolean isInt(String string){
 			try {
-			    int x = Integer.parseInt(gather);
-			    return true;
+			    int x = Integer.parseInt(string);
 			}
 			catch(NumberFormatException nFE) {
 			    return false;
 			}
+			return true;
 		}
 		//Returns player gather
 		public String getgather() { return gather; }
+		public String getwgather() { return wgather; }
+		
+		public int getwgatheramt() {
+			if(isInt(wgather)){
+			return Integer.parseInt(getwgather());
+			} else {
+				wgather = "0";
+				save();
+				return 0;
+			}
+		}
+		public int getgatheramt() {
+			if(isInt(gather)){
+			return Integer.parseInt(getgather());
+			} else {
+				gather = "0";
+				save();
+				return 0;
+			}
+		}
                 
                 //Store the player's party
                 public void setParty(String newParty)

@@ -20,8 +20,7 @@ public class mcPlayerListener extends PlayerListener {
     	player.sendMessage(ChatColor.DARK_RED+"Welcome to /v/ - Minecraft");
     	player.sendMessage(ChatColor.DARK_RED+"Steam Group: vminecraft");
     	player.sendMessage(ChatColor.AQUA + "This server is running mcMMO type /stats for your information");
-    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/party "+ChatColor.GREEN+"to create/join parties and");
-    	player.sendMessage(ChatColor.GREEN+"to check who is in your current party.");
+    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/party "+ChatColor.GREEN+"to create/join parties");
     	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/p"+ChatColor.GREEN+" to toggle party chat");
     	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/ptp "+ChatColor.GREEN+"to teleport to party members");
     	player.sendMessage("Set your spawn with "+ChatColor.YELLOW+"/setmyspawn"+ChatColor.WHITE+", Travel to it with /myspawn");
@@ -65,9 +64,11 @@ public class mcPlayerListener extends PlayerListener {
     		}
     		if(isPlayer(split[1])){
         	Player target = getPlayer(split[1]);
+        	if(mcUsers.getProfile(player).getParty().equals(mcUsers.getProfile(target).getParty())){
         	player.teleportTo(target);
-        	player.sendMessage(ChatColor.GREEN+"You have teleport to "+target.getName());
+        	player.sendMessage(ChatColor.GREEN+"You have teleported to "+target.getName());
         	target.sendMessage(ChatColor.GREEN+player.getName() + " has teleported to you.");
+        	}
     	}
     	}
     	if(player.isOp() && split[0].equalsIgnoreCase("/whois")){
@@ -87,7 +88,8 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Health: "+target.getHealth()+ChatColor.GRAY+" (20 is full health)");
     		player.sendMessage("OP: " + target.isOp());
     		player.sendMessage(ChatColor.GREEN+"~~mcMMO stats~~");
-    		player.sendMessage("Gathering Skill: "+mcUsers.getProfile(target).getgather());
+    		player.sendMessage("Mining Skill: "+mcUsers.getProfile(target).getMining());
+    		player.sendMessage("Woodcutting Skill: "+mcUsers.getProfile(target).getWoodCutting());
     		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
     		player.sendMessage("X: "+x);
     		player.sendMessage("Y: "+y);
@@ -108,9 +110,9 @@ public class mcPlayerListener extends PlayerListener {
     	if(split[0].equalsIgnoreCase("/stats")){
     		event.setCancelled(true);
     		player.sendMessage(ChatColor.DARK_GREEN + "mcMMO stats");
-    		player.sendMessage(ChatColor.DARK_GREEN + "Gathering Skill: " + mcUsers.getProfile(player).getgather());
-    		player.sendMessage(ChatColor.GRAY + "Increases as you gather materials from the world");
-    		player.sendMessage(ChatColor.GRAY + "Effect: Increases chance to gather more than one of a rare material");
+    		player.sendMessage(ChatColor.DARK_GREEN + "Mining Skill: " + mcUsers.getProfile(player).getMining());
+    		player.sendMessage(ChatColor.DARK_GREEN+"Woodcutting Skill: "+mcUsers.getProfile(player).getWoodCutting());
+    		player.sendMessage(ChatColor.GRAY + "Increases depending on the material you mine");
     	}
     	//Party command
     	if(split[0].equalsIgnoreCase("/party")){
@@ -168,10 +170,14 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     	if(split[0].equalsIgnoreCase("/myspawn")){
+    		if(mcUsers.getProfile(player).getMySpawn(player) != null){
     		player.getInventory().clear();
     		player.setHealth(20);
     		player.teleportTo(mcUsers.getProfile(player).getMySpawn(player));
     		player.sendMessage("Inventory cleared & health restored");
+    		}else{
+    			player.sendMessage(ChatColor.RED+"Configure your myspawn first with /setmyspawn");
+    		}
     	}
     	if(split[0].equalsIgnoreCase("/spawn")){
     		if(spawn != null){

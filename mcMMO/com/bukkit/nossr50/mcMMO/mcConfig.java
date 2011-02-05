@@ -2,10 +2,16 @@ package com.bukkit.nossr50.mcMMO;
 
 import java.util.ArrayList;
 
+import org.bukkit.block.Block;
+
 public class mcConfig {
 	private static volatile mcConfig instance;    
     static ArrayList<String> adminChatList = new ArrayList<String>();
+    static ArrayList<Block> blockWatchList = new ArrayList<Block>();
     static ArrayList<String> partyChatList = new ArrayList<String>();
+    public boolean isBlockWatched(Block block) {return blockWatchList.contains(block);}
+    public void removeBlockWatch(Block block) {blockWatchList.remove(blockWatchList.indexOf(block));}
+    public void addBlockWatch(Block block) {blockWatchList.add(block);}
 	public boolean isAdminToggled(String playerName) {return adminChatList.contains(playerName);}
     public boolean isPartyToggled(String playerName) {return partyChatList.contains(playerName);}
     public void removePartyToggled(String playerName) {partyChatList.remove(partyChatList.indexOf(playerName));}

@@ -36,6 +36,8 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Monitor, this);
         pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_ENTITY, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.BLOCK_FLOW, blockListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Normal, this);
         //Displays a message when plugin is loaded
         PluginDescriptionFile pdfFile = this.getDescription();
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
