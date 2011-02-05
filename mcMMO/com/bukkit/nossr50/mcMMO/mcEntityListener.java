@@ -28,6 +28,8 @@ public class mcEntityListener extends EntityListener {
     			if(mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty())){
     				event.setCancelled(true);
     			}
+    			if(mcUsers.getProfile(defender).isDead())
+    				return;
     			if((defender.getHealth() - event.getDamage()) <= 0){
     				for(Player derp : plugin.getServer().getOnlinePlayers()){
     					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName());
@@ -42,6 +44,10 @@ public class mcEntityListener extends EntityListener {
     	Entity x = event.getEntity();
     	if(x instanceof Player){
     		Player player = (Player)x;
+    		if(mcUsers.getProfile(player).isDead()){
+    			mcUsers.getProfile(player).setDead(false);
+    			return;
+    		}
     		if((player.getHealth() - event.getDamage()) <= 0){
     		Location deathLoc = player.getLocation();
     		ItemStack[] items = player.getInventory().getContents();
