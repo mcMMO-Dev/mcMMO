@@ -57,6 +57,10 @@ public class mcPlayerListener extends PlayerListener {
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
     	//mcMMO command
+    	if(split[0].equalsIgnoreCase("/give")){
+    		player.sendMessage("Disabled Bitches");
+    		event.setCancelled(true);
+    	}
     	if(mcUsers.getProfile(player).inParty() && split[0].equalsIgnoreCase("/ptp")){
     		if(split.length < 2){
     			player.sendMessage(ChatColor.RED+"Usage is /ptp <playername>");
@@ -85,6 +89,8 @@ public class mcPlayerListener extends PlayerListener {
     		z = target.getLocation().getZ();
     		player.sendMessage(ChatColor.GREEN + "~~WHOIS RESULTS~~");
     		player.sendMessage(target.getName());
+    		if(mcUsers.getProfile(target).inParty())
+    		player.sendMessage("Party: "+mcUsers.getProfile(target).getParty());
     		player.sendMessage("Health: "+target.getHealth()+ChatColor.GRAY+" (20 is full health)");
     		player.sendMessage("OP: " + target.isOp());
     		player.sendMessage(ChatColor.GREEN+"~~mcMMO stats~~");
@@ -137,6 +143,7 @@ public class mcPlayerListener extends PlayerListener {
 	                	}
                 	}
                 }
+                player.sendMessage(ChatColor.GREEN+"You are in party \""+mcUsers.getProfile(player).getParty()+"\"");
                 player.sendMessage(ChatColor.GREEN + "Party Members ("+ChatColor.WHITE+tempList+ChatColor.GREEN+")");
     		}
     		if(split[1].equals("q") && mcUsers.getProfile(player).inParty()){

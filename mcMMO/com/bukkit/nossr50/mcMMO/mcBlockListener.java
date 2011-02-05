@@ -42,7 +42,7 @@ public class mcBlockListener extends BlockListener {
 			}
 		}
 			if(block.getTypeId() == 21){
-				mat = Material.getMaterial(331);
+				mat = Material.getMaterial(351);
 				item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
 				block.getWorld().dropItemNaturally(loc, item);
 				block.getWorld().dropItemNaturally(loc, item);
@@ -66,7 +66,6 @@ public class mcBlockListener extends BlockListener {
 			}
     }
     public void blockProcCheck(Block block, Player player){
-    	Location loc = block.getLocation();
     	if(mcUsers.getProfile(player).getMiningInt() > 3000){
     		blockProcSimulate(block);
 			return;
