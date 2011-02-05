@@ -25,9 +25,9 @@ public class mcEntityListener extends EntityListener {
     		//If defender is player
     		if(x instanceof Player){
     			Player defender = (Player)x;
-    			if(mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty())){
+    			if(mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty()))
     				event.setCancelled(true);
-    			}
+
     			if(mcUsers.getProfile(defender).isDead())
     				return;
     			if((defender.getHealth() - event.getDamage()) <= 0){
