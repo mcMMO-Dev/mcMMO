@@ -2,7 +2,11 @@ package com.bukkit.nossr50.mcMMO;
 
 import java.util.ArrayList;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class mcConfig {
 	private static volatile mcConfig instance;    
@@ -37,5 +41,50 @@ public class mcConfig {
     	} else {
     		addPartyToggled(playerName);
     	}
+    }
+    public void woodProcChecks(Player player, Block block, Location loc){
+    	if(mcUsers.getProfile(player).getWoodCuttingint() > 1000){
+			Material mat = Material.getMaterial(block.getTypeId());
+			byte damage = 0;
+			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			block.getWorld().dropItemNaturally(loc, item);
+			return;
+	}
+	if(mcUsers.getProfile(player).getWoodCuttingint() > 750){
+		if((Math.random() * 10) > 2){
+			Material mat = Material.getMaterial(block.getTypeId());
+			byte damage = 0;
+			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			block.getWorld().dropItemNaturally(loc, item);
+			return;
+		}
+	}
+	if(mcUsers.getProfile(player).getWoodCuttingint() > 300){
+		if((Math.random() * 10) > 4){
+			Material mat = Material.getMaterial(block.getTypeId());
+			byte damage = 0;
+			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			block.getWorld().dropItemNaturally(loc, item);
+			return;
+		}
+	}
+	if(mcUsers.getProfile(player).getWoodCuttingint() > 100){
+		if((Math.random() * 10) > 6){
+			Material mat = Material.getMaterial(block.getTypeId());
+			byte damage = 0;
+			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			block.getWorld().dropItemNaturally(loc, item);
+			return;
+		}
+	}
+	if(mcUsers.getProfile(player).getWoodCuttingint() > 10){
+		if((Math.random() * 10) > 8){
+			Material mat = Material.getMaterial(block.getTypeId());
+			byte damage = 0;
+			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			block.getWorld().dropItemNaturally(loc, item);
+			return;
+		}
+	}
     }
 }
