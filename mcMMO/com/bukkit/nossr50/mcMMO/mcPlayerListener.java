@@ -2,10 +2,14 @@ package com.bukkit.nossr50.mcMMO;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerItemEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.inventory.ItemStack;
 
 public class mcPlayerListener extends PlayerListener {
 	public Location spawn = null;
@@ -17,13 +21,7 @@ public class mcPlayerListener extends PlayerListener {
     public void onPlayerJoin(PlayerEvent event) {
     	Player player = event.getPlayer();
     	mcUsers.addUser(player);
-    	player.sendMessage(ChatColor.DARK_RED+"Welcome to /v/ - Minecraft");
-    	player.sendMessage(ChatColor.DARK_RED+"Steam Group: vminecraft");
-    	player.sendMessage(ChatColor.AQUA + "This server is running mcMMO type /stats for your information");
-    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/party "+ChatColor.GREEN+"to create/join parties");
-    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/p"+ChatColor.GREEN+" to toggle party chat");
-    	player.sendMessage(ChatColor.GREEN + "Use "+ChatColor.YELLOW+"/ptp "+ChatColor.GREEN+"to teleport to party members");
-    	player.sendMessage("Set your spawn with "+ChatColor.YELLOW+"/setmyspawn"+ChatColor.WHITE+", Travel to it with /myspawn");
+    	player.sendMessage(ChatColor.BLUE + "This server is running mcMMO type "+ChatColor.YELLOW+"/mcmmo "+ChatColor.BLUE+ "for help.");
     	player.sendMessage(ChatColor.RED+"WARNING: "+ChatColor.DARK_GRAY+ "Using /myspawn will clear your inventory!"); 
     }
     //Check if string is a player
@@ -44,6 +42,7 @@ public class mcPlayerListener extends PlayerListener {
         }
         return x;
     }
+    
     public Player getPlayer(String playerName){
     	for(Player herp : plugin.getServer().getOnlinePlayers()){
     		if(herp.getName().toLowerCase().equals(playerName.toLowerCase())){
@@ -52,14 +51,211 @@ public class mcPlayerListener extends PlayerListener {
     	}
     	return null;
     }
+    
+    // IS TOOLS FUNCTION
+    public boolean isTools(ItemStack is){
+    	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || //IRON
+    			is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279) //DIAMOND 
+    	{
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+    public boolean isIronTools(ItemStack is){
+    	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267)
+    	{
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+    public boolean isDiamondTools(ItemStack is){
+    	if(is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279)
+    	{
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    public void removeIron(Player player){
+    	ItemStack[] inventory = player.getInventory().getContents();
+    	for(ItemStack x : inventory){
+    		if(x.getTypeId() == 265){
+    			if(x.getAmount() == 1){
+    				x.setTypeId(0);
+    				x.setAmount(0);
+    				player.getInventory().setContents(inventory);
+    			} else{
+    			x.setAmount(x.getAmount() - 1);
+    			player.getInventory().setContents(inventory);
+    			}
+    		}
+    	}
+    }
+    public void removeDiamond(Player player){
+    	ItemStack[] inventory = player.getInventory().getContents();
+    	for(ItemStack x : inventory){
+    		if(x.getTypeId() == 264){
+    			if(x.getAmount() == 1){
+    				x.setTypeId(0);
+    				x.setAmount(0);
+    				player.getInventory().setContents(inventory);
+    			} else{
+    			x.setAmount(x.getAmount() - 1);
+    			player.getInventory().setContents(inventory);
+    			}
+    		}
+    	}
+    }
+    public boolean hasDiamond(Player player){
+    	ItemStack[] inventory = player.getInventory().getContents();
+    	for(ItemStack x : inventory){
+    		if(x.getTypeId() == 264){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    public boolean hasIron(Player player){
+    	ItemStack[] inventory = player.getInventory().getContents();
+    	for(ItemStack x : inventory){
+    		if(x.getTypeId() == 265){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    //This determines how much we repair
+    public short getRepairAmount(ItemStack is, short durability, Player player){
+    	//IRON SHOVEL
+    	if(is.getTypeId() == 256){
+    		return 0; //full repair
+    	}
+    	//DIAMOND SHOVEL
+    	if(is.getTypeId() == 277){
+    		return 0; //full repair
+    	}
+    	//IRON TOOLS
+    	if(is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267){
+    		if(durability < 84){
+    			return 0;
+    		}else {
+    			if(mcUsers.getProfile(player).getRepairInt() > 750){
+    				if(Math.random() * 10 > 2){
+    					player.sendMessage(ChatColor.GRAY + "That took no effort.");
+    					return 0;
+    				}
+    			} else if (mcUsers.getProfile(player).getRepairInt() > 450){
+    				if(Math.random() * 10 > 4){
+    					player.sendMessage(ChatColor.GRAY + "That felt really easy.");
+    					return 0;
+    				}
+    			} else if (mcUsers.getProfile(player).getRepairInt() > 150){
+    				if(Math.random() * 10 > 6){
+    					player.sendMessage(ChatColor.GRAY + "That felt pretty easy.");
+    					return 0;
+    				}
+    			} else if (mcUsers.getProfile(player).getRepairInt() > 50){
+    				if(Math.random() * 10 > 8){
+    					player.sendMessage(ChatColor.GRAY + "That felt easy.");
+    					return 0;
+    				}
+    			} 
+    			return (short) (durability-84);
+    		}
+    	//DIAMOND TOOLS
+    	} else if(is.getTypeId() == 276 || is.getTypeId() == 278 || is.getTypeId() == 279){
+    		if(durability < 509){
+    			return 0;
+    		} else {
+    			if(mcUsers.getProfile(player).getRepairInt() > 750){
+    				if(Math.random() * 10 > 2){
+    					player.sendMessage(ChatColor.GRAY + "That took no effort.");
+    					return 0;
+    				}
+    			} else if (mcUsers.getProfile(player).getRepairInt() > 450){
+    				if(Math.random() * 10 > 4){
+    					player.sendMessage(ChatColor.GRAY + "That was simple.");
+    					return 0;
+    				}
+    			} else if (mcUsers.getProfile(player).getRepairInt() > 150){
+    				if(Math.random() * 10 > 6){
+    					player.sendMessage(ChatColor.GRAY + "That felt pretty easy.");
+    					return 0;
+    				}
+    			} else if (mcUsers.getProfile(player).getRepairInt() > 50){
+    				if(Math.random() * 10 > 8){
+    					player.sendMessage(ChatColor.GRAY + "That felt easy.");
+    					return 0;
+    				}
+    			}
+    			return (short) (durability-509);
+    		}
+    	} else { 
+    		return durability;
+    	}
+    }
+    
+    public void onPlayerItem(PlayerItemEvent event) {
+    	Block block = event.getBlockClicked();
+    	Player player = event.getPlayer();
+    	ItemStack is = player.getItemInHand();
+    	if(block != null && block.getTypeId() == 42){
+    	short durability = is.getDurability();
+    	if(isTools(is) && player.isOp() && block.getTypeId() == 42){
+    		if(isIronTools(is) && hasIron(player)){ //Check if its iron and the player has iron
+    			is.setDurability(getRepairAmount(is, durability, player));
+    			removeIron(player);
+    			mcUsers.getProfile(player).skillUpRepair(1);
+    			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+    		} else if (isDiamondTools(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() > 50){ //Check if its diamond and the player has diamonds
+    			is.setDurability(getRepairAmount(is, durability, player));
+    			removeDiamond(player);
+    			mcUsers.getProfile(player).skillUpRepair(1);
+    			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+    		} else if (isDiamondTools(is) && mcUsers.getProfile(player).getRepairInt() < 50){
+    			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
+    		} else if (isDiamondTools(is) && !hasDiamond(player) || isIronTools(is) && !hasIron(player)){
+    			if(!hasDiamond(player))
+    				player.sendMessage(ChatColor.DARK_RED+"You need more"+ChatColor.BLUE+ "Diamonds");
+    			if(!hasIron(player))
+    				player.sendMessage(ChatColor.DARK_RED+"You need more"+ChatColor.GRAY+ "Iron");
+    		}
+    	}
+    	}
+    }
     public void onPlayerCommand(PlayerChatEvent event) {
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
     	//mcMMO command
-    	if(split[0].equalsIgnoreCase("/give")){
-    		player.sendMessage("Disabled Bitches");
-    		event.setCancelled(true);
+    	if(split[0].equalsIgnoreCase("/mcmmo")){
+    		player.sendMessage(ChatColor.GRAY+"mcMMO is an RPG inspired plugin");
+    		player.sendMessage(ChatColor.GRAY+"You can gain skills in several professions by");
+    		player.sendMessage(ChatColor.GRAY+"doing things related to that profession.");
+    		player.sendMessage(ChatColor.GRAY+"Mining for example will increase your mining XP.");
+    		player.sendMessage(ChatColor.GRAY+"Wood Cutting will increase Wood Cutting, etc...");
+    		player.sendMessage(ChatColor.GRAY+"Repairing is simple in mcMMO");
+    		player.sendMessage(ChatColor.GRAY+"Say you want to repair an iron shovel");
+    		player.sendMessage(ChatColor.GRAY+"start by making an anvil by combining 9 iron ingots");
+    		player.sendMessage(ChatColor.GRAY+"on a workbench. Place the anvil and while holding the shovel");
+    		player.sendMessage(ChatColor.GRAY+"right click the anvil interact with it, If you have spare iron ingots");
+    		player.sendMessage(ChatColor.GRAY+"in your inventory the item will be repaired.");
+    		player.sendMessage(ChatColor.GRAY+"You cannot hurt other party members");
+    		player.sendMessage(ChatColor.BLUE+"Set your own spawn with "+ChatColor.RED+"/myspawn");
+    		player.sendMessage(ChatColor.GREEN+"Based on your skills you will get "+ChatColor.DARK_RED+"random procs "+ChatColor.GREEN+ "when");
+    		player.sendMessage(ChatColor.GREEN+"using your profession, like "+ChatColor.DARK_RED+"double drops "+ChatColor.GREEN+"or "+ChatColor.DARK_RED+"better repairs");
+    		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with /mcc");
+    	}
+    	if(split[0].equalsIgnoreCase("/mcc")){
+    		player.sendMessage(ChatColor.GRAY+"mcMMO has a party system included");
+    		player.sendMessage(ChatColor.GRAY+"Commands are /party <name> - to join a party");
+    		player.sendMessage(ChatColor.GRAY+"/ptp <name> - party teleport");
+    		player.sendMessage(ChatColor.GRAY+"/p - toggles party chat");
     	}
     	if(mcUsers.getProfile(player).inParty() && split[0].equalsIgnoreCase("/ptp")){
     		if(split.length < 2){
@@ -95,6 +291,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("OP: " + target.isOp());
     		player.sendMessage(ChatColor.GREEN+"~~mcMMO stats~~");
     		player.sendMessage("Mining Skill: "+mcUsers.getProfile(target).getMining());
+    		player.sendMessage("Repair Skill: "+mcUsers.getProfile(target).getRepair());
     		player.sendMessage("Woodcutting Skill: "+mcUsers.getProfile(target).getWoodCutting());
     		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
     		player.sendMessage("X: "+x);
@@ -117,7 +314,8 @@ public class mcPlayerListener extends PlayerListener {
     		event.setCancelled(true);
     		player.sendMessage(ChatColor.DARK_GREEN + "mcMMO stats");
     		player.sendMessage(ChatColor.DARK_GREEN + "Mining Skill: " + mcUsers.getProfile(player).getMining());
-    		player.sendMessage(ChatColor.DARK_GREEN+"Woodcutting Skill: "+mcUsers.getProfile(player).getWoodCutting());
+    		player.sendMessage(ChatColor.DARK_GREEN + "Repair Skill: " + mcUsers.getProfile(player).getRepair());
+    		player.sendMessage(ChatColor.DARK_GREEN + "Woodcutting Skill: "+mcUsers.getProfile(player).getWoodCutting());
     		player.sendMessage(ChatColor.GRAY + "Increases depending on the material you mine");
     	}
     	//Party command
@@ -146,7 +344,7 @@ public class mcPlayerListener extends PlayerListener {
                 player.sendMessage(ChatColor.GREEN+"You are in party \""+mcUsers.getProfile(player).getParty()+"\"");
                 player.sendMessage(ChatColor.GREEN + "Party Members ("+ChatColor.WHITE+tempList+ChatColor.GREEN+")");
     		}
-    		if(split[1].equals("q") && mcUsers.getProfile(player).inParty()){
+    		if(split.length > 1 && split[1].equals("q") && mcUsers.getProfile(player).inParty()){
     			informPartyMembersQuit(player);
     			mcUsers.getProfile(player).removeParty();
     			player.sendMessage(ChatColor.RED + "You have left that party");
@@ -189,16 +387,12 @@ public class mcPlayerListener extends PlayerListener {
     	if(split[0].equalsIgnoreCase("/spawn")){
     		if(spawn != null){
     			player.teleportTo(spawn);
-    			player.sendMessage("Welcome to spawn, home of the dumbfucks");
+    			player.sendMessage("Welcome to spawn, home of the feeble.");
     			return;
     		}
     		player.sendMessage("Spawn isn't configured. Have an OP set it with /setspawn");
     	}
     }
-    private String String(double x) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	public void onPlayerChat(PlayerChatEvent event) {
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");

@@ -154,7 +154,7 @@ class PlayerList
 	class PlayerProfile
 	{
 	    protected final Logger log = Logger.getLogger("Minecraft");
-		private String playerName, gather, wgather, woodcutting, mining, party, myspawn;
+		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn;
 		private boolean dead;
 		char defaultColor;
 
@@ -175,6 +175,7 @@ class PlayerList
             party = new String();
             myspawn = new String();
             mining = new String();
+            repair = new String();
             //mining = "0";
             wgather = new String();
             //wgather = "0";
@@ -219,6 +220,8 @@ class PlayerList
         				woodcutting = character[5];
         			if(character.length > 6)
         				wgather = character[6];
+        			if(character.length > 7)
+        				repair = character[7];
                 	in.close();
         			return true;
             	}
@@ -264,6 +267,7 @@ class PlayerList
             			writer.append(gather+":");
             			writer.append(woodcutting+":");
             			writer.append(wgather+":");
+            			writer.append(repair+":");
             			writer.append("\r\n");                   			
             		}
             	}
@@ -285,12 +289,13 @@ class PlayerList
                 
                 //Add the player to the end
                 out.append(playerName + ":");
-                out.append(0 + ":");
+                out.append(0 + ":"); //mining
                 out.append(myspawn+":");
                 out.append(party+":");
-                out.append(0+":");
-                out.append(0+":");
-                out.append(0+":");
+                out.append(0+":"); //gather
+                out.append(0+":"); //woodcutting
+                out.append(0+":"); //wgather
+                out.append(0+":"); //repair
                 //Add more in the same format as the line above
                 
     			out.newLine();
@@ -309,6 +314,20 @@ class PlayerList
 		public boolean isPlayer(Player player)
 		{
 			return player.getName().equals(playerName);
+		}
+		public void skillUpRepair(int newskill){
+			int x = 0;
+			if(repair != null){
+			if(isInt(repair)){
+			x = Integer.parseInt(repair);
+			}else {
+				repair = "0";
+				x = Integer.parseInt(repair);
+			}
+			}
+			x += newskill;
+			repair = Integer.toString(x);
+			save();
 		}
 		public void skillUpMining(int newmining){
 			int x = 0;
@@ -338,12 +357,23 @@ class PlayerList
 			woodcutting = Integer.toString(x);
 			save();
 		}
+		public String getRepair(){
+			return repair;
+		}
 		public String getMining(){
 			return mining;
 		}
 		public int getMiningInt(){
 			if(isInt(mining)){
 				int x = Integer.parseInt(mining);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public int getRepairInt(){
+			if(isInt(repair)){
+				int x = Integer.parseInt(repair);
 				return x;
 			} else{
 				return 0;

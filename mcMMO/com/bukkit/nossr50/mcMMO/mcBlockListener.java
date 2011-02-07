@@ -21,6 +21,8 @@ public class mcBlockListener extends BlockListener {
     public void onBlockPlace(BlockPlaceEvent event) {
     	Block block = event.getBlock();
     	mcConfig.getInstance().addBlockWatch(block);
+    	if(block.getTypeId() == 42)
+    		event.getPlayer().sendMessage(ChatColor.DARK_RED+"You have placed an anvil, anvils can repair tools and armor.");
     }
     public void blockProcSimulate(Block block){
     	Location loc = block.getLocation();
