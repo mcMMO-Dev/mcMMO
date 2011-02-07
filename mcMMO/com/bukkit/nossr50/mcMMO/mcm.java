@@ -95,69 +95,40 @@ public class mcm {
     //This determines how much we repair
     public short getArmorRepairAmount(ItemStack is, Player player){
     		short durability = is.getDurability();
-    		if(is.getTypeId() == 306){
-        		if(durability < 27 || checkPlayerProcRepair(player)){
-        			return 0;
-        		} else {
-        			return (short) (durability-27);
-        		}
-			}
-    		if(is.getTypeId() == 310) {
-	    		if(durability < 55 || checkPlayerProcRepair(player)){
-	    			return 0;
-	    		} else {
-	    			return (short) (durability-55);
-	    		}
-			}
-    		if(is.getTypeId() == 307){
-	    		if(durability < 24 || checkPlayerProcRepair(player)){
-	    			return 0;
-	    		} else {
-	    			return (short) (durability-24);
-	    		}
-			}
-    		if(is.getTypeId() == 311){
-	    		if(durability < 48 || checkPlayerProcRepair(player)){
-	    			return 0;
-	    		} else {
-	    			return (short) (durability-48);
-	    		}
-			} 
-    		if(is.getTypeId() == 308){
-	    		if(durability < 27 || checkPlayerProcRepair(player)){
-	    			return 0;
-	    		} else {
-	    			return (short) (durability-27);
-	    		}
-			}
-    		if(is.getTypeId() == 312){
-	    		if(durability < 53 || checkPlayerProcRepair(player)){
-	    			return 0;
-	    		} else {
-	    			return (short) (durability-53);
-	    		}
-			}
-    		if(is.getTypeId() == 309){
-    			player.sendMessage("CURRENT DURABILITY: "+durability);
-    			player.sendMessage("#1 FIRED CORRECTLY");
-	    		if(durability < 40 || checkPlayerProcRepair(player)){
-	    			player.sendMessage("#2 FIRED CORRECTLY");
-	    			return 0;
-	    		} else {
-	    			player.sendMessage("#3 FIRED CORRECTLY");
-					return (short) (durability - 40);
-	    		}
-			}
-    		if(is.getTypeId() == 313){
-	    		if(durability < 80 || checkPlayerProcRepair(player)){
-	    			return 0;
-	    		} else {
-	    			return (short) (durability-80);
-	    		}
-			} else {
-				player.sendMessage("#4 FIRED CORRECTLY");
-				return durability;
-    	}
+    		player.sendMessage("BEFORE DURABILITY: "+durability);
+    		switch(is.getTypeId())
+    		{
+    		case 306:
+    		durability -= 27;
+    		break;
+    		case 310:
+	    	durability -= 55;
+	    	break;
+    		case 307:
+	    	durability -= 24;
+	    	break;
+    		case 311:
+	    	durability -= 48;
+	    	break;
+    		case 308:
+	    	durability -= 27;
+	    	break;
+    		case 312:
+	    	durability -= 53;
+	    	break;
+    		case 309:
+	    	durability -= 40;
+	    	break;
+    		case 313:
+	    	durability -= 80;
+	    	break;
+    		}
+			if(durability < 0)
+			durability = 0;
+			if(checkPlayerProcRepair(player))
+	    	durability = 0;
+			player.sendMessage("AFTER DURABILITY: "+durability);
+			return durability;
     }
     public short getToolRepairAmount(ItemStack is, short durability, Player player){
     	//IRON SHOVEL
