@@ -54,7 +54,6 @@ public class mcBlockListener extends BlockListener {
         Block blockTo = event.getToBlock();
         
         boolean isWater = blockFrom.getTypeId() == 8 || blockFrom.getTypeId() == 9;
-        boolean isLava = blockFrom.getTypeId() == 10 || blockFrom.getTypeId() == 11;
 
             int ox = blockTo.getX();
             int oy = blockTo.getY();

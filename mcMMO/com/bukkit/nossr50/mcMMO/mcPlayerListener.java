@@ -41,14 +41,27 @@ public class mcPlayerListener extends PlayerListener {
     	ItemStack is = player.getItemInHand();
     	if(block != null && block.getTypeId() == 42){
     	short durability = is.getDurability();
-    	if(mcm.getInstance().isTools(is) && player.isOp() && block.getTypeId() == 42){
+    		if(mcm.getInstance().isArmor(is) && block.getTypeId() == 42){
+    			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player)){
+    			mcm.getInstance().removeDiamond(player);
+    			is.setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
+    			mcUsers.getProfile(player).skillUpRepair(1);
+    			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+    			} else if (mcm.getInstance().isIronArmor(is) && mcm.getInstance().hasIron(player)){
+    			mcm.getInstance().removeIron(player);
+        		is.setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
+        		mcUsers.getProfile(player).skillUpRepair(1);
+        		player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");	
+    			}
+    		}
+    		if(mcm.getInstance().isTools(is) && block.getTypeId() == 42){
     		if(mcm.getInstance().isIronTools(is) && mcm.getInstance().hasIron(player)){
-    			is.setDurability(mcm.getInstance().getRepairAmount(is, durability, player));
+    			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
     			mcm.getInstance().removeIron(player);
     			mcUsers.getProfile(player).skillUpRepair(1);
     			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
     		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() > 50){ //Check if its diamond and the player has diamonds
-    			is.setDurability(mcm.getInstance().getRepairAmount(is, durability, player));
+    			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
     			mcm.getInstance().removeDiamond(player);
     			mcUsers.getProfile(player).skillUpRepair(1);
     			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");

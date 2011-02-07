@@ -67,9 +67,99 @@ public class mcm {
     	}
     	return null;
     }
+    public boolean checkPlayerProcRepair(Player player){
+			if(mcUsers.getProfile(player).getRepairInt() >= 750){
+				if(Math.random() * 10 > 2){
+					player.sendMessage(ChatColor.GRAY + "That took no effort.");
+					return true;
+				}
+			} else if (mcUsers.getProfile(player).getRepairInt() >= 450 && mcUsers.getProfile(player).getRepairInt() < 750){
+				if(Math.random() * 10 > 4){
+					player.sendMessage(ChatColor.GRAY + "That felt really easy.");
+					return true;
+				}
+			} else if (mcUsers.getProfile(player).getRepairInt() >= 150 && mcUsers.getProfile(player).getRepairInt() < 450){
+				if(Math.random() * 10 > 6){
+					player.sendMessage(ChatColor.GRAY + "That felt pretty easy.");
+					return true;
+				}
+			} else if (mcUsers.getProfile(player).getRepairInt() >= 50  && mcUsers.getProfile(player).getRepairInt() < 150){
+				if(Math.random() * 10 > 8){
+					player.sendMessage(ChatColor.GRAY + "That felt easy.");
+					return true;
+				}
+			}
+			return false;
+    }
     
     //This determines how much we repair
-    public short getRepairAmount(ItemStack is, short durability, Player player){
+    public short getArmorRepairAmount(ItemStack is, Player player){
+    		short durability = is.getDurability();
+    		if(is.getTypeId() == 306){
+        		if(durability < 27 || checkPlayerProcRepair(player)){
+        			return 0;
+        		} else {
+        			return (short) (durability-27);
+        		}
+			}
+    		if(is.getTypeId() == 310) {
+	    		if(durability < 55 || checkPlayerProcRepair(player)){
+	    			return 0;
+	    		} else {
+	    			return (short) (durability-55);
+	    		}
+			}
+    		if(is.getTypeId() == 307){
+	    		if(durability < 24 || checkPlayerProcRepair(player)){
+	    			return 0;
+	    		} else {
+	    			return (short) (durability-24);
+	    		}
+			}
+    		if(is.getTypeId() == 311){
+	    		if(durability < 48 || checkPlayerProcRepair(player)){
+	    			return 0;
+	    		} else {
+	    			return (short) (durability-48);
+	    		}
+			} 
+    		if(is.getTypeId() == 308){
+	    		if(durability < 27 || checkPlayerProcRepair(player)){
+	    			return 0;
+	    		} else {
+	    			return (short) (durability-27);
+	    		}
+			}
+    		if(is.getTypeId() == 312){
+	    		if(durability < 53 || checkPlayerProcRepair(player)){
+	    			return 0;
+	    		} else {
+	    			return (short) (durability-53);
+	    		}
+			}
+    		if(is.getTypeId() == 309){
+    			player.sendMessage("CURRENT DURABILITY: "+durability);
+    			player.sendMessage("#1 FIRED CORRECTLY");
+	    		if(durability < 40 || checkPlayerProcRepair(player)){
+	    			player.sendMessage("#2 FIRED CORRECTLY");
+	    			return 0;
+	    		} else {
+	    			player.sendMessage("#3 FIRED CORRECTLY");
+					return (short) (durability - 40);
+	    		}
+			}
+    		if(is.getTypeId() == 313){
+	    		if(durability < 80 || checkPlayerProcRepair(player)){
+	    			return 0;
+	    		} else {
+	    			return (short) (durability-80);
+	    		}
+			} else {
+				player.sendMessage("#4 FIRED CORRECTLY");
+				return durability;
+    	}
+    }
+    public short getToolRepairAmount(ItemStack is, short durability, Player player){
     	//IRON SHOVEL
     	if(is.getTypeId() == 256){
     		return 0; //full repair
@@ -83,27 +173,8 @@ public class mcm {
     		if(durability < 84){
     			return 0;
     		}else {
-    			if(mcUsers.getProfile(player).getRepairInt() > 750){
-    				if(Math.random() * 10 > 2){
-    					player.sendMessage(ChatColor.GRAY + "That took no effort.");
-    					return 0;
-    				}
-    			} else if (mcUsers.getProfile(player).getRepairInt() > 450){
-    				if(Math.random() * 10 > 4){
-    					player.sendMessage(ChatColor.GRAY + "That felt really easy.");
-    					return 0;
-    				}
-    			} else if (mcUsers.getProfile(player).getRepairInt() > 150){
-    				if(Math.random() * 10 > 6){
-    					player.sendMessage(ChatColor.GRAY + "That felt pretty easy.");
-    					return 0;
-    				}
-    			} else if (mcUsers.getProfile(player).getRepairInt() > 50){
-    				if(Math.random() * 10 > 8){
-    					player.sendMessage(ChatColor.GRAY + "That felt easy.");
-    					return 0;
-    				}
-    			} 
+    			if(checkPlayerProcRepair(player))
+    				return 0; 
     			return (short) (durability-84);
     		}
     	//DIAMOND TOOLS
@@ -111,27 +182,8 @@ public class mcm {
     		if(durability < 509){
     			return 0;
     		} else {
-    			if(mcUsers.getProfile(player).getRepairInt() > 750){
-    				if(Math.random() * 10 > 2){
-    					player.sendMessage(ChatColor.GRAY + "That took no effort.");
-    					return 0;
-    				}
-    			} else if (mcUsers.getProfile(player).getRepairInt() > 450){
-    				if(Math.random() * 10 > 4){
-    					player.sendMessage(ChatColor.GRAY + "That was simple.");
-    					return 0;
-    				}
-    			} else if (mcUsers.getProfile(player).getRepairInt() > 150){
-    				if(Math.random() * 10 > 6){
-    					player.sendMessage(ChatColor.GRAY + "That felt pretty easy.");
-    					return 0;
-    				}
-    			} else if (mcUsers.getProfile(player).getRepairInt() > 50){
-    				if(Math.random() * 10 > 8){
-    					player.sendMessage(ChatColor.GRAY + "That felt easy.");
-    					return 0;
-    				}
-    			}
+    			if(checkPlayerProcRepair(player))
+    			return 0;
     			return (short) (durability-509);
     		}
     	} else { 
@@ -309,6 +361,30 @@ public class mcm {
 		}
     }
     // IS TOOLS FUNCTION
+    public boolean isArmor(ItemStack is){
+    	if(is.getTypeId() == 306 || is.getTypeId() == 307 ||is.getTypeId() == 308 ||is.getTypeId() == 309 ||
+    			is.getTypeId() == 310 ||is.getTypeId() == 311 ||is.getTypeId() == 312 ||is.getTypeId() == 313){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    public boolean isIronArmor(ItemStack is){
+    	if(is.getTypeId() == 306 || is.getTypeId() == 307 || is.getTypeId() == 308 || is.getTypeId() == 309)
+    	{
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    public boolean isDiamondArmor(ItemStack is){
+    	if(is.getTypeId() == 310 || is.getTypeId() == 311 || is.getTypeId() == 312 || is.getTypeId() == 313)
+    	{
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
     public boolean isTools(ItemStack is){
     	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || //IRON
     			is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279) //DIAMOND 

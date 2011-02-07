@@ -40,6 +40,11 @@ public class mcc {
     		player.sendMessage(ChatColor.GRAY+"/party q - to quit a party");
     		player.sendMessage(ChatColor.GRAY+"/ptp <name> - party teleport");
     		player.sendMessage(ChatColor.GRAY+"/p - toggles party chat");
+    		player.sendMessage(ChatColor.GRAY+"/setmyspawn - set your own spawn location");
+    		player.sendMessage(ChatColor.GRAY+"/myspawn - travel to myspawn, clears inventory");
+    		player.sendMessage(ChatColor.GRAY+"/setspawn - Server ops can designate a 'spawn'");
+    		player.sendMessage(ChatColor.GRAY+"/spawn - Travel to the op designated spawn");
+    		player.sendMessage(ChatColor.GRAY+"/whois - view detailed info about a player (req op)");
     	}
     	if(mcUsers.getProfile(player).inParty() && split[0].equalsIgnoreCase("/ptp")){
     		if(split.length < 2){
