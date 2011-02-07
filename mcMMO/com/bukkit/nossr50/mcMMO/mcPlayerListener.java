@@ -44,14 +44,18 @@ public class mcPlayerListener extends PlayerListener {
     		if(mcm.getInstance().isArmor(is) && block.getTypeId() == 42){
     			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player)){
     			mcm.getInstance().removeDiamond(player);
-    			is.setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
+    			player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
     			mcUsers.getProfile(player).skillUpRepair(1);
     			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
     			} else if (mcm.getInstance().isIronArmor(is) && mcm.getInstance().hasIron(player)){
+    			player.sendMessage(ChatColor.DARK_RED+"Changing the durability of iron armor is currently bugged.");
+    			player.sendMessage(ChatColor.YELLOW+"I'm looking into this issue. -mcMMO Author");
+    			/*
     			mcm.getInstance().removeIron(player);
         		is.setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
         		mcUsers.getProfile(player).skillUpRepair(1);
         		player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");	
+        		*/
     			}
     		}
     		if(mcm.getInstance().isTools(is) && block.getTypeId() == 42){
@@ -69,10 +73,13 @@ public class mcPlayerListener extends PlayerListener {
     			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
     		} else if (mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player) || mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player)){
     			if(!mcm.getInstance().hasDiamond(player))
-    				player.sendMessage(ChatColor.DARK_RED+"You need more"+ChatColor.BLUE+ "Diamonds");
+    				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
     			if(!mcm.getInstance().hasIron(player))
-    				player.sendMessage(ChatColor.DARK_RED+"You need more"+ChatColor.GRAY+ "Iron");
-    		}
+    				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
+    		} else if (mcm.getInstance().isDiamondArmor(is) && !mcm.getInstance().hasDiamond(player)){
+    			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
+    		} else if (mcm.getInstance().isIronArmor(is) && !mcm.getInstance().hasIron(player))
+    			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
     	}
     	}
     }

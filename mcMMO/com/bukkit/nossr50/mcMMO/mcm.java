@@ -95,7 +95,6 @@ public class mcm {
     //This determines how much we repair
     public short getArmorRepairAmount(ItemStack is, Player player){
     		short durability = is.getDurability();
-    		player.sendMessage("BEFORE DURABILITY: "+durability);
     		switch(is.getTypeId())
     		{
     		case 306:
@@ -127,7 +126,6 @@ public class mcm {
 			durability = 0;
 			if(checkPlayerProcRepair(player))
 	    	durability = 0;
-			player.sendMessage("AFTER DURABILITY: "+durability);
 			return durability;
     }
     public short getToolRepairAmount(ItemStack is, short durability, Player player){
