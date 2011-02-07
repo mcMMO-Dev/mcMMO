@@ -120,7 +120,5 @@ public class mcPlayerListener extends PlayerListener {
     			derp.sendMessage(z+event.getMessage());
     		}
     	}
-    	event.setCancelled(true);
-    	
     	}
 }
