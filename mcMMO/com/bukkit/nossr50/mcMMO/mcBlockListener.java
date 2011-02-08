@@ -42,6 +42,8 @@ public class mcBlockListener extends BlockListener {
     		if(block.getTypeId() == 17){
     			mcm.getInstance().woodCuttingProcCheck(player, block, loc);
     		}
+    		mcm.getInstance().herbalismProcCheck(block, player);
+    		mcm.getInstance().excavationProcCheck(block, player);
     	}
     }
     

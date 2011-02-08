@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerItemEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class mcPlayerListener extends PlayerListener {
@@ -16,6 +17,13 @@ public class mcPlayerListener extends PlayerListener {
 
     public mcPlayerListener(mcMMO instance) {
     	plugin = instance;
+    }
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+    	Player player = event.getPlayer();
+    	if(mcUsers.getProfile(player).getMySpawn(player) != null);
+    	event.setRespawnLocation(mcUsers.getProfile(player).getMySpawn(player));
+    	if(spawn != null)
+    	event.setRespawnLocation(spawn);
     }
     public Player[] getPlayersOnline() {
     		return plugin.getServer().getOnlinePlayers();
@@ -74,6 +82,32 @@ public class mcPlayerListener extends PlayerListener {
     	Block block = event.getBlockClicked();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
+    	if(is.getTypeId() == 297){
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 50){
+    			player.setHealth(player.getHealth() + 2);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 150 && mcUsers.getProfile(player).getHerbalismInt() < 250){
+    			player.setHealth(player.getHealth() + 4);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 250 && mcUsers.getProfile(player).getHerbalismInt() < 400){
+    			player.setHealth(player.getHealth() + 5);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 400 && mcUsers.getProfile(player).getHerbalismInt() < 750){
+    			player.setHealth(player.getHealth() + 6);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 750){
+    			player.setHealth(player.getHealth() + 8);
+    		}
+    	}
+    	if(is.getTypeId() == 297){
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 50){
+    			player.setHealth(player.getHealth() + 1);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 150 && mcUsers.getProfile(player).getHerbalismInt() < 250){
+    			player.setHealth(player.getHealth() + 2);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 250 && mcUsers.getProfile(player).getHerbalismInt() < 400){
+    			player.setHealth(player.getHealth() + 3);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 400 && mcUsers.getProfile(player).getHerbalismInt() < 750){
+    			player.setHealth(player.getHealth() + 4);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 750){
+    			player.setHealth(player.getHealth() + 6);
+    		}
+    	}
     	if(block != null && block.getTypeId() == 42 && player.getItemInHand().getDurability() <= 0){
     		player.sendMessage(ChatColor.YELLOW+"That is at full durability.");
     		return;
@@ -231,7 +265,6 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.DARK_GREEN + "Unarmed Skill: " + mcUsers.getProfile(player).getUnarmed());
     		player.sendMessage(ChatColor.DARK_GREEN + "Herbalism Skill: " + mcUsers.getProfile(player).getHerbalism());
     		player.sendMessage(ChatColor.DARK_GREEN + "Excavation Skill: " + mcUsers.getProfile(player).getExcavation());
-    		player.sendMessage(ChatColor.GRAY + "Increases depending on the material you mine");
     	}
     	//Party command
     	if(split[0].equalsIgnoreCase("/party")){

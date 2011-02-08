@@ -223,6 +223,100 @@ public class mcm {
     		mcm.getInstance().blockProcCheck(block, player);
     		}
     }
+    public void herbalismProcCheck(Block block, Player player){
+    	int type = block.getTypeId();
+    	if(type == 39 || type == 40){
+    			mcUsers.getProfile(player).skillUpHerbalism(3);
+    			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 3. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
+    		}
+    	if(type == 37 || type == 38){
+    		if(Math.random() * 10 > 8){
+    			mcUsers.getProfile(player).skillUpHerbalism(1);
+    			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 1. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
+    		}
+    	}
+    	if(type == 59){
+    		mcUsers.getProfile(player).skillUpHerbalism(1);
+    		player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 1. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
+    	}
+    }
+    public void excavationProcCheck(Block block, Player player){
+    	int type = block.getTypeId();
+    	Location loc = block.getLocation();
+    	ItemStack is = null;
+    	Material mat = null;
+    	//DIRT OR GRAVEL
+    	if(type == 3 || type == 13 || type == 2){
+    		if(Math.random() * 10 > 9){
+    			mcUsers.getProfile(player).skillUpExcavation(1);
+    			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by 1. Total ("+mcUsers.getProfile(player).getExcavationInt()+")");
+    			
+    		}
+    		if(mcUsers.getProfile(player).getExcavationInt() > 750){
+    			if(Math.random() * 2000 > 1999){
+    				mat = Material.getMaterial(354);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+    			}
+    		}
+    		if(mcUsers.getProfile(player).getExcavationInt() > 500 && type == 3){
+    			if(Math.random() * 1000 > 999){
+    				mat = Material.getMaterial(2256);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+    			}
+    			if(Math.random() * 1000 > 999){
+    				mat = Material.getMaterial(2257);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+    			}
+    			if(Math.random() * 500 > 499){
+        				mat = Material.getMaterial(264);
+        				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+        				loc.getWorld().dropItemNaturally(loc, is);
+    			}
+    		}
+    	}
+    	if(type == 12){
+    		if(Math.random() * 10 > 9){
+    			mcUsers.getProfile(player).skillUpExcavation(1);
+    			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by 1. Total ("+mcUsers.getProfile(player).getExcavationInt()+")");
+    			
+    		}
+    		if(mcUsers.getProfile(player).getExcavationInt() > 50 && Math.random() * 100 > 95){
+				mat = Material.getMaterial(348);
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				loc.getWorld().dropItemNaturally(loc, is);
+    		}
+    		if(mcUsers.getProfile(player).getExcavationInt() > 500 && Math.random() * 500 > 499){
+				mat = Material.getMaterial(264);
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				loc.getWorld().dropItemNaturally(loc, is);
+    		}
+    		if(mcUsers.getProfile(player).getExcavationInt() > 125){
+    			if(Math.random() * 2000 > 1999){
+    				mat = Material.getMaterial(263);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+    			}
+    		}
+    	}
+    	
+    	if((type == 2 || type == 3) && mcUsers.getProfile(player).getExcavationInt() > 25){
+    		if(Math.random() * 10 > 7){
+    			mat = Material.getMaterial(348);
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				loc.getWorld().dropItemNaturally(loc, is);
+    		}
+    	}
+    	if(type == 13 && mcUsers.getProfile(player).getExcavationInt() > 75){
+    		if(Math.random() * 10 > 7){
+    			mat = Material.getMaterial(289);
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				loc.getWorld().dropItemNaturally(loc, is);
+    		}
+    	}
+    }
     public void woodCuttingProcCheck(Player player, Block block, Location loc){
     	if(mcUsers.getProfile(player).getWoodCuttingint() > 1000){
 			Material mat = Material.getMaterial(block.getTypeId());
