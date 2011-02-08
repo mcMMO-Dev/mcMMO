@@ -1,8 +1,13 @@
 package com.bukkit.nossr50.mcMMO;
-
+import com.nijikokun.bukkit.Permissions.Permissions;
+import com.nijiko.Messaging;
+import com.nijiko.permissions.PermissionHandler;
+import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.event.player.*;
 import org.bukkit.Server;
 import org.bukkit.event.Event.Priority;
@@ -15,11 +20,13 @@ import org.bukkit.entity.Player;
 
 
 public class mcMMO extends JavaPlugin {
+    public static final Logger log = Logger.getLogger("Minecraft");
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
     private final mcBlockListener blockListener = new mcBlockListener(this);
     private final mcEntityListener entityListener = new mcEntityListener(this);
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     private final String name = "mcMMO";
+    public static PermissionHandler Permissions = null;
 
     public mcMMO(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
         super(pluginLoader, instance, desc, folder, plugin, cLoader);
@@ -43,6 +50,19 @@ public class mcMMO extends JavaPlugin {
         PluginDescriptionFile pdfFile = this.getDescription();
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
     }
+    public void setupPermissions() {
+    	Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
+
+
+    	if(this.Permissions == null) {
+    	    if(test != null) {
+    		this.Permissions = ((Permissions)test).getHandler();
+    	    } else {
+    		log.info(Messaging.bracketize(name) + " Permission system not enabled. Disabling plugin.");
+    		this.getServer().getPluginManager().disablePlugin(this);
+    	    }
+    	}
+        }
     public void onDisable() {
         System.out.println("mcMMO disabled.");
     }

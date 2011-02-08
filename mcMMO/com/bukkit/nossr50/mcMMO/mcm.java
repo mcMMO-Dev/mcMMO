@@ -15,57 +15,12 @@ public class mcm {
     	}
     	return instance;
     	}
-	
-	public boolean isPlayer(String playerName){
-    	for(Player herp :  mcPlayerListener.getInstance().getPlayersOnline()){
-    		if(herp.getName().toLowerCase().equals(playerName.toLowerCase())){
-    			return true;
-    		}
-    	}
-    		return false;
-    }
-    public int partyCount(Player player){
-    	Player players[] =  mcPlayerListener.getInstance().getPlayersOnline();
-        int x = 0;
-        for(Player hurrdurr: players){
-        	if(mcUsers.getProfile(player).getParty().equals(mcUsers.getProfile(hurrdurr).getParty()))
-        	x++;
-        }
-        return x;
-    }
-    public static void informPartyMembers(Player player){
-        int x = 0;
-        for(Player p :  mcPlayerListener.getInstance().getPlayersOnline()){
-                if(inSameParty(player, p) && !p.getName().equals(player.getName())){
-                p.sendMessage(player.getName() + ChatColor.GREEN + " has joined your party");
-                x++;
-                }
-            }
-    }
-    public static void informPartyMembersQuit(Player player){
-        int x = 0;
-        for(Player p :  mcPlayerListener.getInstance().getPlayersOnline()){
-                if(inSameParty(player, p) && !p.getName().equals(player.getName())){
-                p.sendMessage(player.getName() + ChatColor.GREEN + " has left your party");
-                x++;
-                }
-            }
-    }
-    public static boolean inSameParty(Player playera, Player playerb){
+    public boolean inSameParty(Player playera, Player playerb){
         if(mcUsers.getProfile(playera).getParty().equals(mcUsers.getProfile(playerb).getParty())){
             return true;
         } else {
             return false;
         }
-    }
-    
-    public Player getPlayer(String playerName){
-    	for(Player herp :  mcPlayerListener.getInstance().getPlayersOnline()){
-    		if(herp.getName().toLowerCase().equals(playerName.toLowerCase())){
-    			return herp;
-    		}
-    	}
-    	return null;
     }
     public boolean checkPlayerProcRepair(Player player){
 			if(mcUsers.getProfile(player).getRepairInt() >= 750){
