@@ -42,9 +42,9 @@ public class mcBlockListener extends BlockListener {
     		if(block.getTypeId() == 17){
     			mcm.getInstance().woodCuttingProcCheck(player, block, loc);
     		}
-    		mcm.getInstance().herbalismProcCheck(block, player);
     		mcm.getInstance().excavationProcCheck(block, player);
     	}
+    		mcm.getInstance().herbalismProcCheck(block, player); //You place the blocks so we wont check if they are being watched
     }
     
     

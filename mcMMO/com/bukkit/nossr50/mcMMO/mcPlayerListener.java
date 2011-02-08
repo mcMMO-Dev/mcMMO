@@ -108,7 +108,7 @@ public class mcPlayerListener extends PlayerListener {
     			player.setHealth(player.getHealth() + 6);
     		}
     	}
-    	if(block != null && block.getTypeId() == 42 && player.getItemInHand().getDurability() <= 0){
+    	if(block != null && block.getTypeId() == 42 && player.getItemInHand().getDurability() <= 0 && (mcm.getInstance().isTools(is)) || mcm.getInstance().isArmor(is)){
     		player.sendMessage(ChatColor.YELLOW+"That is at full durability.");
     		return;
     	}
@@ -163,6 +163,60 @@ public class mcPlayerListener extends PlayerListener {
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
+    	if(split[0].equalsIgnoreCase("/woodcutting")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~WOODCUTTING INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Chop down trees.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Double Drops start to happen at 10 woodcutting skill");
+			player.sendMessage(ChatColor.GRAY+"it gets more frequent from there.");
+    	}
+    	if(split[0].equalsIgnoreCase("/mining")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~MINING INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Mining ore and stone,");
+			player.sendMessage(ChatColor.DARK_GRAY+"the xp rate depends entirely upon the rarity of what you're harvesting.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Double Drops start to happen at 25 Mining skill,");
+			player.sendMessage(ChatColor.GRAY+"and the chance for it increases with skill.");
+    	}
+    	if(split[0].equalsIgnoreCase("/repair")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~REPAIR INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Repairing tools and armor.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"High skill levels make a proc to fully repair items happen more often.");
+			player.sendMessage(ChatColor.GREEN+"~~USE~~");
+			player.sendMessage(ChatColor.GRAY+"Approach an Anvil (Iron Block) with the item you wish ");
+			player.sendMessage(ChatColor.GRAY+"to repair in hand, right click to consume resources of the");
+			player.sendMessage(ChatColor.GRAY+"same type to repair it. This does not work for stone/wood/gold");
+    	}
+    	if(split[0].equalsIgnoreCase("/unarmed")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~UNARMED INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Punching monsters and players.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Damage scales with unarmed skill. The first damage increase happens");
+			player.sendMessage(ChatColor.DARK_GRAY+" at 50 skill. At very high skill levels, you will gain a proc");
+			player.sendMessage(ChatColor.DARK_GRAY+"to disarm opponents on hit");
+    	}
+    	if(split[0].equalsIgnoreCase("/herbalism")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~HERBALISM INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Farming and picking herbs.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Increases healing effects of bread and stew.");
+			player.sendMessage(ChatColor.GRAY+"Allows for chance to receive double drops based on skill");
+    	}
+    	if(split[0].equalsIgnoreCase("/excavation")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~EXCAVATION INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Digging.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"You will find treasures while digging based on your excavation,");
+			player.sendMessage(ChatColor.GRAY+"and at high levels the rewards are quite nice. The item you get");
+			player.sendMessage(ChatColor.GRAY+"depend on the block you're digging. They all give diffrent stuff.");
+    	}
 		if(split[0].equalsIgnoreCase("/mcmmo")){
 			event.setCancelled(true);
     		player.sendMessage(ChatColor.GRAY+"mcMMO is an RPG inspired plugin");
@@ -195,6 +249,12 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.GRAY+"/setspawn - Server ops can designate a 'spawn'");
     		player.sendMessage(ChatColor.GRAY+"/spawn - Travel to the op designated spawn");
     		player.sendMessage(ChatColor.GRAY+"/whois - view detailed info about a player (req op)");
+    		player.sendMessage(ChatColor.GRAY+"/woodcutting - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/mining - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/repair - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/unarmed - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/herbalist - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/excavation - displays info about the skill");
     	}
     	if(mcUsers.getProfile(player).inParty() && split[0].equalsIgnoreCase("/ptp")){
     		event.setCancelled(true);

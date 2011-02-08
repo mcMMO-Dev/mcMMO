@@ -47,8 +47,10 @@ public class mcEntityListener extends EntityListener {
 				}
     			//XP
 				if(attacker.getItemInHand().getTypeId() == 0 && Math.random() * 10 > 8){
+					if(defender.getHealth() != 0){
 					mcUsers.getProfile(attacker).skillUpUnarmed(1);
 					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+					}
 				}
     		}
     		if(x instanceof Animals){
@@ -76,7 +78,7 @@ public class mcEntityListener extends EntityListener {
     			Player defender = (Player)x;
     			if(attacker.getItemInHand().getTypeId() == 0){
     				//DMG MODIFIER
-    				if((mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty())&& !mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty())) {
+    				if((mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty())&& !mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty()) && !mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty())) {
     				if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
     					defender.setHealth(calculateDamage(defender, 1));
     				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
@@ -96,11 +98,12 @@ public class mcEntityListener extends EntityListener {
     				}
     				if(mcUsers.getProfile(defender).isDead())
         				return;
-    				}
     				//XP
     				if(attacker.getItemInHand().getTypeId() == 0 && Math.random() * 10 > 9){
-    					mcUsers.getProfile(attacker).skillUpUnarmed(1);
-    					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+    					if(defender.getHealth() != 0){
+    						mcUsers.getProfile(attacker).skillUpUnarmed(1);
+    						attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+    						}
     				}
     				//PROC
     				if(simulateUnarmedProc(attacker)){
@@ -116,6 +119,7 @@ public class mcEntityListener extends EntityListener {
         					mcUsers.getProfile(defender).setDead(true);
         				}
         			}
+    				}
     				return;
     			}
     			if(mcUsers.getProfile(defender).isDead())

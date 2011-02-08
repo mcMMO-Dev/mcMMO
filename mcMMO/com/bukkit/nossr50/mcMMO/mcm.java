@@ -93,7 +93,7 @@ public class mcm {
     		return 0; //full repair
     	}
     	//IRON TOOLS
-    	if(is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267){
+    	if(is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || is.getTypeId() == 292){
     		if(durability < 84){
     			return 0;
     		}else {
@@ -102,7 +102,7 @@ public class mcm {
     			return (short) (durability-84);
     		}
     	//DIAMOND TOOLS
-    	} else if(is.getTypeId() == 276 || is.getTypeId() == 278 || is.getTypeId() == 279){
+    	} else if(is.getTypeId() == 276 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293){
     		if(durability < 509){
     			return 0;
     		} else {
@@ -225,6 +225,9 @@ public class mcm {
     }
     public void herbalismProcCheck(Block block, Player player){
     	int type = block.getTypeId();
+    	Location loc = block.getLocation();
+    	ItemStack is = null;
+    	Material mat = null;
     	if(type == 39 || type == 40){
     			mcUsers.getProfile(player).skillUpHerbalism(3);
     			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 3. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
@@ -238,6 +241,34 @@ public class mcm {
     	if(type == 59){
     		mcUsers.getProfile(player).skillUpHerbalism(1);
     		player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 1. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
+    		if(Math.random() * 10 > 8){
+    		mat = Material.getMaterial(59);
+			is = new ItemStack(mat, 1, (byte)0, (byte)0);
+			loc.getWorld().dropItemNaturally(loc, is);
+    		}
+    		}
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 350 ){
+    			if(Math.random() * 10 > 6){
+    	    		mat = Material.getMaterial(59);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+    	    		}
+    		}
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 500 ){
+    			if(Math.random() * 10 > 4){
+    	    		mat = Material.getMaterial(59);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+    	    		}
+    		}
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 750 ){
+    			if(Math.random() * 10 > 2){
+    	    		mat = Material.getMaterial(59);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+    	    		}
+    		}
     	}
     }
     public void excavationProcCheck(Block block, Player player){
@@ -404,8 +435,8 @@ public class mcm {
     	}
     }
     public boolean isTools(ItemStack is){
-    	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || //IRON
-    			is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279) //DIAMOND 
+    	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || is.getTypeId() == 292 ||//IRON
+    			is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293) //DIAMOND 
     	{
     		return true;
     	} else {
@@ -414,7 +445,7 @@ public class mcm {
     }
     
     public boolean isIronTools(ItemStack is){
-    	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267)
+    	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || is.getTypeId() == 292)
     	{
     		return true;
     	} else {
@@ -423,7 +454,7 @@ public class mcm {
     }
     
     public boolean isDiamondTools(ItemStack is){
-    	if(is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279)
+    	if(is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293)
     	{
     		return true;
     	} else {

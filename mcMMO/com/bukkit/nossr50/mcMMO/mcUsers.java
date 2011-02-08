@@ -231,6 +231,8 @@ class PlayerList
         				herbalism = character[9];
         			if(character.length > 10)
         				repair = character[10];
+        			if(character.length > 11)
+        				excavation = character[11];
                 	in.close();
         			return true;
             	}
