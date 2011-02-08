@@ -74,6 +74,10 @@ public class mcPlayerListener extends PlayerListener {
     	Block block = event.getBlockClicked();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
+    	if(block != null && block.getTypeId() == 42 && player.getItemInHand().getDurability() <= 0){
+    		player.sendMessage(ChatColor.YELLOW+"That is at full durability.");
+    		return;
+    	}
     	if(block != null && block.getTypeId() == 42){
     	short durability = is.getDurability();
     		if(mcm.getInstance().isArmor(is) && block.getTypeId() == 42){
@@ -126,6 +130,7 @@ public class mcPlayerListener extends PlayerListener {
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
 		if(split[0].equalsIgnoreCase("/mcmmo")){
+			event.setCancelled(true);
     		player.sendMessage(ChatColor.GRAY+"mcMMO is an RPG inspired plugin");
     		player.sendMessage(ChatColor.GRAY+"You can gain skills in several professions by");
     		player.sendMessage(ChatColor.GRAY+"doing things related to that profession.");
@@ -144,6 +149,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with /mcc");
     	}
     	if(split[0].equalsIgnoreCase("/mcc")){
+    		event.setCancelled(true);
     		player.sendMessage(ChatColor.GRAY+"mcMMO has a party system included");
     		player.sendMessage(ChatColor.GREEN+"~~Commands~~");
     		player.sendMessage(ChatColor.GRAY+"/party <name> - to join a party");
@@ -157,6 +163,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.GRAY+"/whois - view detailed info about a player (req op)");
     	}
     	if(mcUsers.getProfile(player).inParty() && split[0].equalsIgnoreCase("/ptp")){
+    		event.setCancelled(true);
     		if(split.length < 2){
     			player.sendMessage(ChatColor.RED+"Usage is /ptp <playername>");
     			return;
@@ -171,6 +178,7 @@ public class mcPlayerListener extends PlayerListener {
     	}
     	}
     	if(player.isOp() && split[0].equalsIgnoreCase("/whois")){
+    		event.setCancelled(true);
     		if(split.length < 2){
     			player.sendMessage(ChatColor.RED + "Proper usage is /whois <playername>");
     			return;
@@ -192,6 +200,9 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Mining Skill: "+mcUsers.getProfile(target).getMining());
     		player.sendMessage("Repair Skill: "+mcUsers.getProfile(target).getRepair());
     		player.sendMessage("Woodcutting Skill: "+mcUsers.getProfile(target).getWoodCutting());
+    		player.sendMessage("Unarmed Skill: "+mcUsers.getProfile(target).getUnarmed());
+    		player.sendMessage("Herbalism Skill: "+mcUsers.getProfile(target).getHerbalism());
+    		player.sendMessage("Excavation Skill: "+mcUsers.getProfile(target).getWoodCutting());
     		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
     		player.sendMessage("X: "+x);
     		player.sendMessage("Y: "+y);
@@ -199,6 +210,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     	if(split[0].equalsIgnoreCase("/setmyspawn")){
+    		event.setCancelled(true);
     		double x = player.getLocation().getX();
     		double y = player.getLocation().getY();
     		double z = player.getLocation().getZ();
@@ -206,18 +218,24 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.DARK_AQUA + "Myspawn has been set to your current location.");
     	}
     	if(player.isOp() && split[0].equalsIgnoreCase("/setspawn")){
+    		event.setCancelled(true);
     		spawn = player.getLocation();
     		player.sendMessage("Spawn set to current location");
     	}
     	if(split[0].equalsIgnoreCase("/stats")){
+    		event.setCancelled(true);
     		player.sendMessage(ChatColor.DARK_GREEN + "mcMMO stats");
     		player.sendMessage(ChatColor.DARK_GREEN + "Mining Skill: " + mcUsers.getProfile(player).getMining());
     		player.sendMessage(ChatColor.DARK_GREEN + "Repair Skill: " + mcUsers.getProfile(player).getRepair());
     		player.sendMessage(ChatColor.DARK_GREEN + "Woodcutting Skill: "+mcUsers.getProfile(player).getWoodCutting());
+    		player.sendMessage(ChatColor.DARK_GREEN + "Unarmed Skill: " + mcUsers.getProfile(player).getUnarmed());
+    		player.sendMessage(ChatColor.DARK_GREEN + "Herbalism Skill: " + mcUsers.getProfile(player).getHerbalism());
+    		player.sendMessage(ChatColor.DARK_GREEN + "Excavation Skill: " + mcUsers.getProfile(player).getExcavation());
     		player.sendMessage(ChatColor.GRAY + "Increases depending on the material you mine");
     	}
     	//Party command
     	if(split[0].equalsIgnoreCase("/party")){
+    		event.setCancelled(true);
     		if(split.length == 1 && !mcUsers.getProfile(player).inParty()){
     			player.sendMessage("Proper usage is /party <name> or 'q' to quit");
     			return;
@@ -254,6 +272,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     	if(split[0].equalsIgnoreCase("/p")){
+    		event.setCancelled(true);
     		if(mcConfig.getInstance().isAdminToggled(player.getName()))
     		mcConfig.getInstance().toggleAdminChat(playerName);
     		mcConfig.getInstance().togglePartyChat(playerName);
@@ -264,6 +283,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     	if(split[0].equalsIgnoreCase("/a") && player.isOp()){
+    		event.setCancelled(true);
     		if(mcConfig.getInstance().isPartyToggled(player.getName()))
     		mcConfig.getInstance().togglePartyChat(playerName);
     		mcConfig.getInstance().toggleAdminChat(playerName);
@@ -274,6 +294,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     	if(split[0].equalsIgnoreCase("/myspawn")){
+    		event.setCancelled(true);
     		if(mcUsers.getProfile(player).getMySpawn(player) != null){
     		player.getInventory().clear();
     		player.setHealth(20);
@@ -284,6 +305,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     	if(split[0].equalsIgnoreCase("/spawn")){
+    		event.setCancelled(true);
     		if(spawn != null){
     			player.teleportTo(spawn);
     			player.sendMessage("Welcome to spawn, home of the feeble.");

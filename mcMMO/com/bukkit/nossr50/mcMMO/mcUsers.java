@@ -154,7 +154,7 @@ class PlayerList
 	class PlayerProfile
 	{
 	    protected final Logger log = Logger.getLogger("Minecraft");
-		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn;
+		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, unarmed, herbalism, excavation;
 		private boolean dead;
 		char defaultColor;
 
@@ -176,6 +176,9 @@ class PlayerList
             myspawn = new String();
             mining = new String();
             repair = new String();
+            unarmed = new String();
+            herbalism = new String();
+            excavation = new String();
             //mining = "0";
             wgather = new String();
             //wgather = "0";
@@ -222,6 +225,12 @@ class PlayerList
         				wgather = character[6];
         			if(character.length > 7)
         				repair = character[7];
+        			if(character.length > 8)
+        				unarmed = character[8];
+        			if(character.length > 9)
+        				herbalism = character[9];
+        			if(character.length > 10)
+        				repair = character[10];
                 	in.close();
         			return true;
             	}
@@ -268,6 +277,9 @@ class PlayerList
             			writer.append(woodcutting+":");
             			writer.append(wgather+":");
             			writer.append(repair+":");
+            			writer.append(unarmed+":");
+            			writer.append(herbalism+":");
+            			writer.append(excavation+":");
             			writer.append("\r\n");                   			
             		}
             	}
@@ -296,6 +308,9 @@ class PlayerList
                 out.append(0+":"); //woodcutting
                 out.append(0+":"); //wgather
                 out.append(0+":"); //repair
+                out.append(0+":"); //unarmed
+                out.append(0+":"); //herbalism
+                out.append(0+":"); //excavation
                 //Add more in the same format as the line above
                 
     			out.newLine();
@@ -343,6 +358,48 @@ class PlayerList
 			mining = Integer.toString(x);
 			save();
 		}
+		public void skillUpUnarmed(int newskill){
+			int x = 0;
+			if(unarmed != null){
+			if(isInt(unarmed)){
+			x = Integer.parseInt(unarmed);
+			}else {
+				unarmed = "0";
+				x = Integer.parseInt(unarmed);
+			}
+			}
+			x += newskill;
+			unarmed = Integer.toString(x);
+			save();
+		}
+		public void skillUpHerbalism(int newskill){
+			int x = 0;
+			if(herbalism != null){
+			if(isInt(herbalism)){
+			x = Integer.parseInt(herbalism);
+			}else {
+				herbalism = "0";
+				x = Integer.parseInt(herbalism);
+			}
+			}
+			x += newskill;
+			herbalism = Integer.toString(x);
+			save();
+		}
+		public void skillUpExcavation(int newskill){
+			int x = 0;
+			if(excavation != null){
+			if(isInt(excavation)){
+			x = Integer.parseInt(excavation);
+			}else {
+				excavation = "0";
+				x = Integer.parseInt(excavation);
+			}
+			}
+			x += newskill;
+			excavation = Integer.toString(x);
+			save();
+		}
 		public void skillUpWoodcutting(int newskill){
 			int x = 0;
 			if(woodcutting != null){
@@ -363,9 +420,42 @@ class PlayerList
 		public String getMining(){
 			return mining;
 		}
+		public String getUnarmed(){
+			return unarmed;
+		}
+		public String getHerbalism(){
+			return herbalism;
+		}
+		public String getExcavation(){
+			return excavation;
+		}
 		public int getMiningInt(){
 			if(isInt(mining)){
 				int x = Integer.parseInt(mining);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public int getUnarmedInt(){
+			if(isInt(unarmed)){
+				int x = Integer.parseInt(unarmed);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public int getHerbalismInt(){
+			if(isInt(herbalism)){
+				int x = Integer.parseInt(herbalism);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public int getExcavationInt(){
+			if(isInt(excavation)){
+				int x = Integer.parseInt(excavation);
 				return x;
 			} else{
 				return 0;
