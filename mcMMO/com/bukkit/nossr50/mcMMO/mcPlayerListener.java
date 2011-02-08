@@ -140,7 +140,7 @@ public class mcPlayerListener extends PlayerListener {
     			mcm.getInstance().removeIron(player);
     			mcUsers.getProfile(player).skillUpRepair(1);
     			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
-    		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() > 50){ //Check if its diamond and the player has diamonds
+    		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){ //Check if its diamond and the player has diamonds
     			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
     			mcm.getInstance().removeDiamond(player);
     			mcUsers.getProfile(player).skillUpRepair(1);
@@ -196,9 +196,9 @@ public class mcPlayerListener extends PlayerListener {
 			player.sendMessage(ChatColor.GREEN+"~~UNARMED INFO~~");
 			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Punching monsters and players.");
 			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"Damage scales with unarmed skill. The first damage increase happens");
-			player.sendMessage(ChatColor.DARK_GRAY+" at 50 skill. At very high skill levels, you will gain a proc");
-			player.sendMessage(ChatColor.DARK_GRAY+"to disarm opponents on hit");
+			player.sendMessage(ChatColor.GRAY+"Damage scales with unarmed skill. The first damage increase");
+			player.sendMessage(ChatColor.DARK_GRAY+"happens at 50 skill. At very high skill levels, you will");
+			player.sendMessage(ChatColor.DARK_GRAY+"gain a proc to disarm opponents on hit");
     	}
     	if(split[0].equalsIgnoreCase("/herbalism")){
 			event.setCancelled(true);
@@ -214,8 +214,9 @@ public class mcPlayerListener extends PlayerListener {
 			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Digging.");
 			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
 			player.sendMessage(ChatColor.GRAY+"You will find treasures while digging based on your excavation,");
-			player.sendMessage(ChatColor.GRAY+"and at high levels the rewards are quite nice. The item you get");
-			player.sendMessage(ChatColor.GRAY+"depend on the block you're digging. They all give diffrent stuff.");
+			player.sendMessage(ChatColor.GRAY+"and at high levels the rewards are quite nice. The items you get");
+			player.sendMessage(ChatColor.GRAY+"depend on the block you're digging.");
+			player.sendMessage(ChatColor.GRAY+"Different blocks give diffrent stuff.");
     	}
 		if(split[0].equalsIgnoreCase("/mcmmo")){
 			event.setCancelled(true);

@@ -37,7 +37,6 @@ public class mcUsers {
 			try {
 				writer = new FileWriter(location);
 				writer.write("#Storage place for user information\r\n");
-                writer.write("#username:nickname:suffix:tag:ignore,list,names:alias,commands,here\r\n");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
 			} finally {
@@ -230,9 +229,7 @@ class PlayerList
         			if(character.length > 9)
         				herbalism = character[9];
         			if(character.length > 10)
-        				repair = character[10];
-        			if(character.length > 11)
-        				excavation = character[11];
+        				excavation = character[10];
                 	in.close();
         			return true;
             	}

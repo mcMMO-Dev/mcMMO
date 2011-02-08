@@ -276,7 +276,15 @@ public class mcm {
     	Location loc = block.getLocation();
     	ItemStack is = null;
     	Material mat = null;
-    	//DIRT OR GRAVEL
+    	if(type == 2 && mcUsers.getProfile(player).getExcavationInt() > 250){
+    		//CHANCE TO GET APPLES
+    		if(Math.random() * 100 > 99){
+    			mat = Material.getMaterial(260);
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				loc.getWorld().dropItemNaturally(loc, is);
+    		}
+    	}
+    	//DIRT SAND OR GRAVEL
     	if(type == 3 || type == 13 || type == 2){
     		if(Math.random() * 10 > 9){
     			mcUsers.getProfile(player).skillUpExcavation(1);
@@ -284,23 +292,27 @@ public class mcm {
     			
     		}
     		if(mcUsers.getProfile(player).getExcavationInt() > 750){
+    			//CHANCE TO GET CAKE
     			if(Math.random() * 2000 > 1999){
     				mat = Material.getMaterial(354);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
     			}
     		}
-    		if(mcUsers.getProfile(player).getExcavationInt() > 500 && type == 3){
+    		if(mcUsers.getProfile(player).getExcavationInt() > 500){
+    			//CHANCE TO GET MUSIC
     			if(Math.random() * 1000 > 999){
     				mat = Material.getMaterial(2256);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
     			}
+    			//CHANCE TO GET MUSIC
     			if(Math.random() * 1000 > 999){
     				mat = Material.getMaterial(2257);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
     			}
+    			//CHANCE TO GET DIAMOND
     			if(Math.random() * 500 > 499){
         				mat = Material.getMaterial(264);
         				is = new ItemStack(mat, 1, (byte)0, (byte)0);
@@ -308,22 +320,26 @@ public class mcm {
     			}
     		}
     	}
+    	//SAND
     	if(type == 12){
     		if(Math.random() * 10 > 9){
     			mcUsers.getProfile(player).skillUpExcavation(1);
     			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by 1. Total ("+mcUsers.getProfile(player).getExcavationInt()+")");
     			
     		}
+    		//CHANCE TO GET GLOWSTONE
     		if(mcUsers.getProfile(player).getExcavationInt() > 50 && Math.random() * 100 > 95){
 				mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
+    		//CHANCE TO GET DIAMOND
     		if(mcUsers.getProfile(player).getExcavationInt() > 500 && Math.random() * 500 > 499){
 				mat = Material.getMaterial(264);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
+    		//CHANCE TO GET COAL
     		if(mcUsers.getProfile(player).getExcavationInt() > 125){
     			if(Math.random() * 2000 > 1999){
     				mat = Material.getMaterial(263);
@@ -332,20 +348,32 @@ public class mcm {
     			}
     		}
     	}
-    	
+    	//GRASS OR DIRT
     	if((type == 2 || type == 3) && mcUsers.getProfile(player).getExcavationInt() > 25){
+    		//CHANCE TO GET GLOWSTONE
     		if(Math.random() * 10 > 7){
     			mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
     	}
-    	if(type == 13 && mcUsers.getProfile(player).getExcavationInt() > 75){
+    	//GRAVEL
+    	if(type == 13){
+    		//CHANCE TO GET SULPHUR
+    		if(mcUsers.getProfile(player).getExcavationInt() > 75){
     		if(Math.random() * 10 > 7){
     			mat = Material.getMaterial(289);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
+    		}
+    		if(mcUsers.getProfile(player).getExcavationInt() > 175){
+        		if(Math.random() * 10 > 6){
+        			mat = Material.getMaterial(352);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+        		}
+        		}
     	}
     }
     public void woodCuttingProcCheck(Player player, Block block, Location loc){
