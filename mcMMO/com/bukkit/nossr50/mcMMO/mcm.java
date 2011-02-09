@@ -308,6 +308,7 @@ public class mcm {
     	Location loc = block.getLocation();
     	ItemStack is = null;
     	Material mat = null;
+    	if(!mcConfig.getInstance().isBlockWatched(block)){
     	if(type == 39 || type == 40){
     			mcUsers.getProfile(player).skillUpHerbalism(3);
     			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 3. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
@@ -318,37 +319,28 @@ public class mcm {
     			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 1. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
     		}
     	}
-    	if(type == 59){
+    	if(type == 59 && block.getData() == (byte) 0x7){
+    		mat = Material.getMaterial(296);
+			is = new ItemStack(mat, 1, (byte)0, (byte)0);
     		mcUsers.getProfile(player).skillUpHerbalism(1);
     		player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 1. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
-    		if(Math.random() * 10 > 8){
-    		mat = Material.getMaterial(59);
-			is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    		if(Math.random() * 10 > 8)
 			loc.getWorld().dropItemNaturally(loc, is);
     		}
-    		}
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 350 ){
-    			if(Math.random() * 10 > 6){
-    	    		mat = Material.getMaterial(59);
-    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    			if(Math.random() * 10 > 6)
     				loc.getWorld().dropItemNaturally(loc, is);
-    	    		}
     		}
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 500 ){
-    			if(Math.random() * 10 > 4){
-    	    		mat = Material.getMaterial(59);
-    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    			if(Math.random() * 10 > 4)
     				loc.getWorld().dropItemNaturally(loc, is);
-    	    		}
     		}
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 750 ){
-    			if(Math.random() * 10 > 2){
-    	    		mat = Material.getMaterial(59);
-    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    			if(Math.random() * 10 > 2)
     				loc.getWorld().dropItemNaturally(loc, is);
-    	    		}
     		}
+    	}
     	}
     }
     public void excavationProcCheck(Block block, Player player){
@@ -457,45 +449,38 @@ public class mcm {
     	}
     }
     public void woodCuttingProcCheck(Player player, Block block, Location loc){
+    	byte type = block.getData();
+    	Material mat = Material.getMaterial(block.getTypeId());
+    	byte damage = 0;
     	if(mcUsers.getProfile(player).getWoodCuttingint() > 1000){
-			Material mat = Material.getMaterial(block.getTypeId());
-			byte damage = 0;
-			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			ItemStack item = new ItemStack(mat, 1, type, damage);
 			block.getWorld().dropItemNaturally(loc, item);
 			return;
 	}
 	if(mcUsers.getProfile(player).getWoodCuttingint() > 750){
 		if((Math.random() * 10) > 2){
-			Material mat = Material.getMaterial(block.getTypeId());
-			byte damage = 0;
-			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			ItemStack item = new ItemStack(mat, 1, type, damage);
 			block.getWorld().dropItemNaturally(loc, item);
 			return;
 		}
 	}
 	if(mcUsers.getProfile(player).getWoodCuttingint() > 300){
 		if((Math.random() * 10) > 4){
-			Material mat = Material.getMaterial(block.getTypeId());
-			byte damage = 0;
-			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			ItemStack item = new ItemStack(mat, 1, type, damage);
 			block.getWorld().dropItemNaturally(loc, item);
 			return;
 		}
 	}
 	if(mcUsers.getProfile(player).getWoodCuttingint() > 100){
 		if((Math.random() * 10) > 6){
-			Material mat = Material.getMaterial(block.getTypeId());
-			byte damage = 0;
-			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			ItemStack item = new ItemStack(mat, 1, type, damage);
 			block.getWorld().dropItemNaturally(loc, item);
 			return;
 		}
 	}
 	if(mcUsers.getProfile(player).getWoodCuttingint() > 10){
 		if((Math.random() * 10) > 8){
-			Material mat = Material.getMaterial(block.getTypeId());
-			byte damage = 0;
-			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+			ItemStack item = new ItemStack(mat, 1, type, damage);
 			block.getWorld().dropItemNaturally(loc, item);
 			return;
 		}
@@ -581,6 +566,7 @@ public class mcm {
     			x.setAmount(x.getAmount() - 1);
     			player.getInventory().setContents(inventory);
     			}
+    			return;
     		}
     	}
     }

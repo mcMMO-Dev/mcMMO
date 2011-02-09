@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerItemEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -73,7 +74,7 @@ public class mcPlayerListener extends PlayerListener {
     public void onPlayerJoin(PlayerEvent event) {
     	Player player = event.getPlayer();
     	mcUsers.addUser(player);
-    	player.sendMessage(ChatColor.BLUE + "This server is running mcMMO type "+ChatColor.YELLOW+"/mcmmo "+ChatColor.BLUE+ "for help.");
+    	player.sendMessage(ChatColor.BLUE + "This server is running mcMMO "+plugin.getDescription().getVersion()+" type "+ChatColor.YELLOW+"/mcmmo "+ChatColor.BLUE+ "for help.");
     	player.sendMessage(ChatColor.RED+"WARNING: "+ChatColor.DARK_GRAY+ "Using /myspawn will clear your inventory!"); 
     }
     //Check if string is a player
@@ -108,12 +109,9 @@ public class mcPlayerListener extends PlayerListener {
     			player.setHealth(player.getHealth() + 6);
     		}
     	}
-    	if(block != null && block.getTypeId() == 42 && player.getItemInHand().getDurability() <= 0 && (mcm.getInstance().isTools(is)) || mcm.getInstance().isArmor(is)){
-    		player.sendMessage(ChatColor.YELLOW+"That is at full durability.");
-    		return;
-    	}
     	if(block != null && block.getTypeId() == 42){
     	short durability = is.getDurability();
+    	if(player.getItemInHand().getDurability() > 0){
     		if(mcm.getInstance().isArmor(is) && block.getTypeId() == 42){
     			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player)){
     			mcm.getInstance().removeDiamond(player);
@@ -121,16 +119,17 @@ public class mcPlayerListener extends PlayerListener {
     			mcUsers.getProfile(player).skillUpRepair(1);
     			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
     			} else if (mcm.getInstance().isIronArmor(is) && mcm.getInstance().hasIron(player)){
-    			player.sendMessage(ChatColor.DARK_RED+"Changing the durability of iron armor is currently bugged.");
-    			player.sendMessage(ChatColor.YELLOW+"I'm looking into this issue. -mcMMO Author");
-    			/*
+    			//player.sendMessage(ChatColor.DARK_RED+"Changing the durability of iron armor is currently bugged.");
+    			//player.sendMessage(ChatColor.YELLOW+"I'm looking into this issue. -mcMMO Author");
     			mcm.getInstance().removeIron(player);
-        		is.setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
+        		player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
         		mcUsers.getProfile(player).skillUpRepair(1);
         		player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");	
-        		*/
     			}
     		}
+    	} else {
+    		player.sendMessage("That is at full durability.");
+    	}
     		/*
     		 * TOOLS
     		 */
@@ -408,6 +407,13 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Spawn isn't configured. Have an OP set it with /setspawn");
     	}
     }
+    public void onItemHeldChange(PlayerItemHeldEvent event) {
+    	Player player = event.getPlayer();
+    }
+	private Block getBlockAt(int x, int y, int z) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	public void onPlayerChat(PlayerChatEvent event) {
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");

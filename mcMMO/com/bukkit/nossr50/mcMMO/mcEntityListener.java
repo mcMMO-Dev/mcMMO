@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -105,6 +106,12 @@ public class mcEntityListener extends EntityListener {
     					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
     			}
     			}
+    			if(x instanceof Creeper && Math.random() * 10 > 7){
+        				if(defender.getHealth() != 0){
+        					mcUsers.getProfile(attacker).skillUpUnarmed(2);
+        					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 2. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+        		}
+    			}
     			if(defender.getHealth() <= 0)
     				mcm.getInstance().simulateNaturalDrops(defender);
     			}
@@ -196,7 +203,7 @@ public class mcEntityListener extends EntityListener {
     			}
     			if(mcUsers.getProfile(defender).isDead())
     				return;
-    			if((defender.getHealth() - event.getDamage()) <= 0){
+    			if((defender.getHealth() - event.getDamage()) <= 0 && defender.getHealth() != 0){
     				for(Player derp : plugin.getServer().getOnlinePlayers()){
     					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName());
     					mcUsers.getProfile(defender).setDead(true);
@@ -207,7 +214,7 @@ public class mcEntityListener extends EntityListener {
     				event.setCancelled(true);
     		}
     	}
-    }
+    	}
     public boolean simulateUnarmedProc(Player player){
     	if(mcUsers.getProfile(player).getUnarmedInt() >= 750){
     		if(Math.random() * 10 > 4){
