@@ -8,6 +8,10 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Spider;
+import org.bukkit.entity.Squid;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -25,9 +29,46 @@ public class mcEntityListener extends EntityListener {
     	Entity y = event.getDamager(); //Attacker
     	//If attacker is player...
     	if(y instanceof Player){
+    		int type = ((Player) y).getItemInHand().getTypeId();
     		Player attacker = (Player)y;
+    		if(x instanceof Squid){
+    			if(type == 0){
+        			Squid defender = (Squid)event.getEntity();
+        			if(defender.getHealth() <= 0)
+        				return;
+        			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
+    					defender.setHealth(calculateDamage(defender, 1));
+    				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
+    					defender.setHealth(calculateDamage(defender, 2));
+    				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 200 && mcUsers.getProfile(attacker).getUnarmedInt() < 325){
+    					defender.setHealth(calculateDamage(defender, 3));
+    				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 325 && mcUsers.getProfile(attacker).getUnarmedInt() < 475){
+    					defender.setHealth(calculateDamage(defender, 4));
+    				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 475 && mcUsers.getProfile(attacker).getUnarmedInt() < 600){
+    					defender.setHealth(calculateDamage(defender, 5));
+    				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 600 && mcUsers.getProfile(attacker).getUnarmedInt() < 775){
+    					defender.setHealth(calculateDamage(defender, 6));
+    				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 775 && mcUsers.getProfile(attacker).getUnarmedInt() < 950){
+    					defender.setHealth(calculateDamage(defender, 7));
+    				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
+    					defender.setHealth(calculateDamage(defender, 8));
+    				}
+        			//XP
+    				if(attacker.getItemInHand().getTypeId() == 0 && Math.random() * 10 > 8){
+    					if(defender.getHealth() != 0){
+    					mcUsers.getProfile(attacker).skillUpUnarmed(1);
+    					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+    					}
+    				}
+    				if(defender.getHealth() <= 0)
+    				mcm.getInstance().simulateNaturalDrops(defender);
+        			}
+    		}
     		if(x instanceof Monster){
+    			if(type == 0){
     			Monster defender = (Monster)event.getEntity();
+    			if(defender.getHealth() <= 0)
+    				return;
     			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
 					defender.setHealth(calculateDamage(defender, 1));
 				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
@@ -46,15 +87,33 @@ public class mcEntityListener extends EntityListener {
 					defender.setHealth(calculateDamage(defender, 8));
 				}
     			//XP
-				if(attacker.getItemInHand().getTypeId() == 0 && Math.random() * 10 > 8){
-					if(defender.getHealth() != 0){
-					mcUsers.getProfile(attacker).skillUpUnarmed(1);
-					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
-					}
-				}
+    			if(x instanceof Skeleton && Math.random() * 10 > 8){
+    				if(defender.getHealth() != 0){
+    					mcUsers.getProfile(attacker).skillUpUnarmed(1);
+    					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+    			}
+    			}
+    			if(x instanceof Spider&& Math.random() * 10 > 7){
+    				if(defender.getHealth() != 0){
+    					mcUsers.getProfile(attacker).skillUpUnarmed(1);
+    					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+    			}
+    			}
+    			if(x instanceof Zombie && Math.random() * 100 > 95){
+    				if(defender.getHealth() != 0){
+    					mcUsers.getProfile(attacker).skillUpUnarmed(1);
+    					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+    			}
+    			}
+    			if(defender.getHealth() <= 0)
+    				mcm.getInstance().simulateNaturalDrops(defender);
+    			}
     		}
     		if(x instanceof Animals){
+    			if(type == 0){
     			Animals defender = (Animals)event.getEntity();
+    			if(defender.getHealth() <= 0)
+    				return;
     			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
 					defender.setHealth(calculateDamage(defender, 1));
 				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
@@ -72,6 +131,10 @@ public class mcEntityListener extends EntityListener {
 				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
 					defender.setHealth(calculateDamage(defender, 8));
 				}
+    			if(defender.getHealth() <= 0){
+    				mcm.getInstance().simulateNaturalDrops(defender);
+    			}
+    			}
     		}
     		//If defender is player
     		if(x instanceof Player){
@@ -109,11 +172,20 @@ public class mcEntityListener extends EntityListener {
     				if(simulateUnarmedProc(attacker)){
     					attacker.sendMessage(ChatColor.DARK_RED+"You have hit with great force.");
     					Location loc = defender.getLocation();
+    					if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0){
     					ItemStack item = defender.getItemInHand();
+    					if(item != null){
     					loc.getWorld().dropItemNaturally(loc, item);
     					item.setTypeId(0);
+    					item.setAmount(0);
+    					}
+    					}
     				}
     				if(defender.getHealth() <= 0){
+    					for(ItemStack i : defender.getInventory().getContents()){
+    						if(i != null && i.getTypeId() != 0)
+    						defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), i);
+    					}
         				for(Player derp : plugin.getServer().getOnlinePlayers()){
         					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName());
         					mcUsers.getProfile(defender).setDead(true);
@@ -150,6 +222,15 @@ public class mcEntityListener extends EntityListener {
     }
     public int calculateDamage(Player player, int dmg){
     	int health = player.getHealth();
+    	if(health - dmg <0){
+    		return 0;
+    	} else {
+    		health-= dmg;
+    		return health;
+    	}
+    }
+    public int calculateDamage(Squid squid, int dmg){
+    	int health = squid.getHealth();
     	if(health - dmg <0){
     		return 0;
     	} else {

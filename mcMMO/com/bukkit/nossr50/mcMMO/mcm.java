@@ -4,7 +4,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Cow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Spider;
+import org.bukkit.entity.Squid;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 
 public class mcm {
@@ -21,6 +28,79 @@ public class mcm {
         } else {
             return false;
         }
+    }
+    public void simulateNaturalDrops(Entity entity){
+    	Location loc = entity.getLocation();
+    	if(entity instanceof Pig){
+    		if(Math.random() * 3 > 2){
+    			if(Math.random() * 2 > 1){
+    				dropItem(loc, 319); //BACON
+    			}
+    			dropItem(loc, 319);
+    		}
+    	}
+    	if(entity instanceof Spider){
+    		if(Math.random() * 3 > 2){
+    			if(Math.random() * 2 > 1){
+    				dropItem(loc, 287); //SILK
+    			}
+    			dropItem(loc, 287);
+    		}
+    	}
+    	if(entity instanceof Skeleton){
+    		if(Math.random() * 3 > 2){
+    			if(Math.random() * 2 > 1){
+    				dropItem(loc, 262); //ARROWS
+    			}
+    			dropItem(loc, 262);
+    		}
+    		if(Math.random() * 3 > 2){
+    			if(Math.random() * 2 > 1){
+    				dropItem(loc, 352); //BONES
+    			}
+    			dropItem(loc, 352);
+    		}
+    	}
+    	if(entity instanceof Zombie){
+    		if(Math.random() * 3 > 2){
+    			if(Math.random() * 2 > 1){
+    				dropItem(loc, 288); //FEATHERS
+    			}
+    			dropItem(loc, 288);
+    		}
+    	}
+    	if(entity instanceof Cow){
+    		if(Math.random() * 3 > 2){
+    			if(Math.random() * 2 > 1){
+    				dropItem(loc, 334); //LEATHER
+    			}
+    			if(Math.random() * 2 > 1){
+    				dropItem(loc, 334);
+    			}
+    			dropItem(loc, 334);
+    		}
+    	}
+    	if(entity instanceof Squid){
+    		if(Math.random() * 3 > 2){
+    			if(Math.random() * 2 > 1){
+    				dropItem(loc, 351); //INK SACS
+    			}
+    			if(Math.random() * 2 > 1){
+    				dropItem(loc, 351);
+    			}
+    			dropItem(loc, 351);
+    		}
+    	}
+    	
+    	
+    }
+    public void dropItem(Location loc, int id){
+    	if(loc != null){
+    	Material mat = Material.getMaterial(id);
+		byte damage = 0;
+		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+		loc.getWorld().dropItemNaturally(loc, item);
+    	}
     }
     public boolean checkPlayerProcRepair(Player player){
 			if(mcUsers.getProfile(player).getRepairInt() >= 750){
@@ -299,19 +379,16 @@ public class mcm {
     				loc.getWorld().dropItemNaturally(loc, is);
     			}
     		}
-    		if(mcUsers.getProfile(player).getExcavationInt() > 500){
+    		if(mcUsers.getProfile(player).getExcavationInt() > 150){
     			//CHANCE TO GET MUSIC
     			if(Math.random() * 1000 > 999){
     				mat = Material.getMaterial(2256);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
     			}
-    			//CHANCE TO GET MUSIC
-    			if(Math.random() * 1000 > 999){
-    				mat = Material.getMaterial(2257);
-    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    				loc.getWorld().dropItemNaturally(loc, is);
-    			}
+    			
+    		}
+    		if(mcUsers.getProfile(player).getExcavationInt() > 350){
     			//CHANCE TO GET DIAMOND
     			if(Math.random() * 500 > 499){
         				mat = Material.getMaterial(264);
@@ -319,14 +396,17 @@ public class mcm {
         				loc.getWorld().dropItemNaturally(loc, is);
     			}
     		}
+    		if(mcUsers.getProfile(player).getExcavationInt() > 250){
+    			//CHANCE TO GET MUSIC
+    			if(Math.random() * 1000 > 999){
+    				mat = Material.getMaterial(2257);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+    			}
+    		}
     	}
     	//SAND
     	if(type == 12){
-    		if(Math.random() * 10 > 9){
-    			mcUsers.getProfile(player).skillUpExcavation(1);
-    			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by 1. Total ("+mcUsers.getProfile(player).getExcavationInt()+")");
-    			
-    		}
     		//CHANCE TO GET GLOWSTONE
     		if(mcUsers.getProfile(player).getExcavationInt() > 50 && Math.random() * 100 > 95){
 				mat = Material.getMaterial(348);

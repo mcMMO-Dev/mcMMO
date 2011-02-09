@@ -29,6 +29,7 @@ public class mcBlockListener extends BlockListener {
     		//STARTED(0), DIGGING(1), BROKEN(3), STOPPED(2);
     		Player player = event.getPlayer();
     		Block block = event.getBlock();
+    		int type = block.getTypeId();
     		Location loc = block.getLocation();
     		int dmg = event.getDamageLevel().getLevel();
     		//Smooth Stone
@@ -44,6 +45,7 @@ public class mcBlockListener extends BlockListener {
     		}
     		mcm.getInstance().excavationProcCheck(block, player);
     	}
+    		if(mcConfig.getInstance().isBlockWatched(block) && !(type == 39 || type == 40 || type == 37 || type == 38));
     		mcm.getInstance().herbalismProcCheck(block, player); //You place the blocks so we wont check if they are being watched
     }
     
