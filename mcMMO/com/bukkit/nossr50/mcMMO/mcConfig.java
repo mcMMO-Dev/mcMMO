@@ -1,7 +1,7 @@
 package com.bukkit.nossr50.mcMMO;
 
 import java.util.ArrayList;
-
+import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,7 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class mcConfig {
-	private static volatile mcConfig instance;    
+	private static volatile mcConfig instance;
+    String location = "mcmmo.properties";
+    protected static final Logger log = Logger.getLogger("Minecraft");
     static ArrayList<String> adminChatList = new ArrayList<String>();
     static ArrayList<Block> blockWatchList = new ArrayList<Block>();
     static ArrayList<String> partyChatList = new ArrayList<String>();

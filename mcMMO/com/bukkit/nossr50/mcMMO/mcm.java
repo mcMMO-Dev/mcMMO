@@ -358,7 +358,7 @@ public class mcm {
     	}
     	//DIRT SAND OR GRAVEL
     	if(type == 3 || type == 13 || type == 2){
-    		if(Math.random() * 10 > 9){
+    		if(Math.random() * 100 > 95){
     			mcUsers.getProfile(player).skillUpExcavation(1);
     			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by 1. Total ("+mcUsers.getProfile(player).getExcavationInt()+")");
     			
@@ -411,14 +411,6 @@ public class mcm {
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
-    		//CHANCE TO GET COAL
-    		if(mcUsers.getProfile(player).getExcavationInt() > 125){
-    			if(Math.random() * 2000 > 1999){
-    				mat = Material.getMaterial(263);
-    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    				loc.getWorld().dropItemNaturally(loc, is);
-    			}
-    		}
     	}
     	//GRASS OR DIRT
     	if((type == 2 || type == 3) && mcUsers.getProfile(player).getExcavationInt() > 25){
@@ -446,6 +438,14 @@ public class mcm {
     				loc.getWorld().dropItemNaturally(loc, is);
         		}
         		}
+    		//CHANCE TO GET COAL
+    		if(mcUsers.getProfile(player).getExcavationInt() > 125){
+    			if(Math.random() * 100 > 99){
+    				mat = Material.getMaterial(263);
+    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    				loc.getWorld().dropItemNaturally(loc, is);
+    			}
+    		}
     	}
     }
     public void woodCuttingProcCheck(Player player, Block block, Location loc){

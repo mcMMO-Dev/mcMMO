@@ -88,13 +88,13 @@ public class mcEntityListener extends EntityListener {
 					defender.setHealth(calculateDamage(defender, 8));
 				}
     			//XP
-    			if(x instanceof Skeleton && Math.random() * 10 > 8){
+    			if(x instanceof Skeleton && Math.random() * 100 > 95){
     				if(defender.getHealth() != 0){
     					mcUsers.getProfile(attacker).skillUpUnarmed(1);
     					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
     			}
     			}
-    			if(x instanceof Spider&& Math.random() * 10 > 7){
+    			if(x instanceof Spider&& Math.random() * 10 > 9){
     				if(defender.getHealth() != 0){
     					mcUsers.getProfile(attacker).skillUpUnarmed(1);
     					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
@@ -106,7 +106,7 @@ public class mcEntityListener extends EntityListener {
     					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
     			}
     			}
-    			if(x instanceof Creeper && Math.random() * 10 > 7){
+    			if(x instanceof Creeper && Math.random() * 100 > 90){
         				if(defender.getHealth() != 0){
         					mcUsers.getProfile(attacker).skillUpUnarmed(2);
         					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 2. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
