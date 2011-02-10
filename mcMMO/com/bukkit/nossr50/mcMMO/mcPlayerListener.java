@@ -78,7 +78,6 @@ public class mcPlayerListener extends PlayerListener {
     	mcUsers.addUser(player);
     	if(mcPermissions.getInstance().motd(player)){
     	player.sendMessage(ChatColor.BLUE + "This server is running mcMMO "+plugin.getDescription().getVersion()+" type "+ChatColor.YELLOW+"/mcmmo "+ChatColor.BLUE+ "for help.");
-    	player.sendMessage(ChatColor.RED+"WARNING: "+ChatColor.DARK_GRAY+ "Using /myspawn will clear your inventory!");
     	}
     }
     //Check if string is a player
@@ -232,7 +231,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.GRAY+"Say you want to repair an iron shovel");
     		player.sendMessage(ChatColor.GRAY+"start by making an anvil by combining 9 iron ingots");
     		player.sendMessage(ChatColor.GRAY+"on a workbench. Place the anvil and while holding the shovel");
-    		player.sendMessage(ChatColor.GRAY+"right click the anvil interact with it, If you have spare");
+    		player.sendMessage(ChatColor.GRAY+"right click the anvil to interact with it, If you have spare");
     		player.sendMessage(ChatColor.GRAY+"iron ingots in your inventory the item will be repaired.");
     		player.sendMessage(ChatColor.GRAY+"You cannot hurt other party members");
     		player.sendMessage(ChatColor.BLUE+"Set your own spawn with "+ChatColor.RED+"/myspawn");
@@ -250,8 +249,6 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.GRAY+"/p - toggles party chat");
     		player.sendMessage(ChatColor.GRAY+"/setmyspawn - set your own spawn location");
     		player.sendMessage(ChatColor.GRAY+"/myspawn - travel to myspawn, clears inventory");
-    		player.sendMessage(ChatColor.GRAY+"/setspawn - Server ops can designate a 'spawn'");
-    		player.sendMessage(ChatColor.GRAY+"/spawn - Travel to the op designated spawn");
     		player.sendMessage(ChatColor.GRAY+"/whois - view detailed info about a player (req op)");
     		player.sendMessage(ChatColor.GRAY+"/woodcutting - displays info about the skill");
     		player.sendMessage(ChatColor.GRAY+"/mining - displays info about the skill");
