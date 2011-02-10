@@ -582,6 +582,7 @@ public class mcm {
     			x.setAmount(x.getAmount() - 1);
     			player.getInventory().setContents(inventory);
     			}
+    			return;
     		}
     	}
     }

@@ -86,35 +86,40 @@ public class mcPlayerListener extends PlayerListener {
     	Block block = event.getBlockClicked();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
+    	//BREAD
     	if(is.getTypeId() == 297){
-    		if(mcUsers.getProfile(player).getHerbalismInt() >= 50){
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
     			player.setHealth(player.getHealth() + 2);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 150 && mcUsers.getProfile(player).getHerbalismInt() < 250){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 150){
     			player.setHealth(player.getHealth() + 4);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 250 && mcUsers.getProfile(player).getHerbalismInt() < 400){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 250){
     			player.setHealth(player.getHealth() + 5);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 400 && mcUsers.getProfile(player).getHerbalismInt() < 750){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 400){
     			player.setHealth(player.getHealth() + 6);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 750){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 750){
     			player.setHealth(player.getHealth() + 8);
     		}
     	}
-    	if(is.getTypeId() == 297){
-    		if(mcUsers.getProfile(player).getHerbalismInt() >= 50){
+    	//STEW
+    	if(is.getTypeId() == 282){
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
     			player.setHealth(player.getHealth() + 1);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 150 && mcUsers.getProfile(player).getHerbalismInt() < 250){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 150){
     			player.setHealth(player.getHealth() + 2);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 250 && mcUsers.getProfile(player).getHerbalismInt() < 400){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 250){
     			player.setHealth(player.getHealth() + 3);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 400 && mcUsers.getProfile(player).getHerbalismInt() < 750){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 400){
     			player.setHealth(player.getHealth() + 4);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() > 750){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 750){
     			player.setHealth(player.getHealth() + 6);
     		}
     	}
     	if(block != null && block.getTypeId() == 42){
     	short durability = is.getDurability();
     	if(player.getItemInHand().getDurability() > 0){
+    		/*
+    		 * ARMOR
+    		 */
     		if(mcm.getInstance().isArmor(is) && block.getTypeId() == 42){
     			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player)){
     			mcm.getInstance().removeDiamond(player);
@@ -122,42 +127,40 @@ public class mcPlayerListener extends PlayerListener {
     			mcUsers.getProfile(player).skillUpRepair(1);
     			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
     			} else if (mcm.getInstance().isIronArmor(is) && mcm.getInstance().hasIron(player)){
-    			//player.sendMessage(ChatColor.DARK_RED+"Changing the durability of iron armor is currently bugged.");
-    			//player.sendMessage(ChatColor.YELLOW+"I'm looking into this issue. -mcMMO Author");
     			mcm.getInstance().removeIron(player);
         		player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
         		mcUsers.getProfile(player).skillUpRepair(1);
         		player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");	
     			}
     		}
-    	} else {
-    		player.sendMessage("That is at full durability.");
-    	}
     		/*
     		 * TOOLS
     		 */
     		if(mcm.getInstance().isTools(is) && block.getTypeId() == 42){
-    		if(mcm.getInstance().isIronTools(is) && mcm.getInstance().hasIron(player)){
-    			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
-    			mcm.getInstance().removeIron(player);
-    			mcUsers.getProfile(player).skillUpRepair(1);
-    			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
-    		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){ //Check if its diamond and the player has diamonds
-    			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
-    			mcm.getInstance().removeDiamond(player);
-    			mcUsers.getProfile(player).skillUpRepair(1);
-    			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
-    		} else if (mcm.getInstance().isDiamondTools(is) && mcUsers.getProfile(player).getRepairInt() < 50){
-    			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
-    		} else if (mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player) || mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player)){
-    			if(mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player))
-    				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
-    			if(mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player))
-    				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
-    		} else if (mcm.getInstance().isDiamondArmor(is) && !mcm.getInstance().hasDiamond(player)){
-    			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
-    		} else if (mcm.getInstance().isIronArmor(is) && !mcm.getInstance().hasIron(player))
-    			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
+        		if(mcm.getInstance().isIronTools(is) && mcm.getInstance().hasIron(player)){
+        			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
+        			mcm.getInstance().removeIron(player);
+        			mcUsers.getProfile(player).skillUpRepair(1);
+        			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+        		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){ //Check if its diamond and the player has diamonds
+        			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
+        			mcm.getInstance().removeDiamond(player);
+        			mcUsers.getProfile(player).skillUpRepair(1);
+        			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+        		} else if (mcm.getInstance().isDiamondTools(is) && mcUsers.getProfile(player).getRepairInt() < 50){
+        			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
+        		} else if (mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player) || mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player)){
+        			if(mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player))
+        				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
+        			if(mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player))
+        				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
+        		} else if (mcm.getInstance().isDiamondArmor(is) && !mcm.getInstance().hasDiamond(player)){
+        			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
+        		} else if (mcm.getInstance().isIronArmor(is) && !mcm.getInstance().hasIron(player))
+        			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
+        	}
+    	} else {
+    		player.sendMessage("That is at full durability.");
     	}
     	}
     }
