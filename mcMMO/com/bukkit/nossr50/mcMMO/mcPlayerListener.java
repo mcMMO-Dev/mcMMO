@@ -147,23 +147,29 @@ public class mcPlayerListener extends PlayerListener {
         			mcm.getInstance().removeDiamond(player);
         			mcUsers.getProfile(player).skillUpRepair(1);
         			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
-        		} else if (mcm.getInstance().isDiamondTools(is) && mcUsers.getProfile(player).getRepairInt() < 50){
-        			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
-        		} else if (mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player) || mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player)){
-        			if(mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player))
-        				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
-        			if(mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player))
-        				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
-        		} else if (mcm.getInstance().isDiamondArmor(is) && !mcm.getInstance().hasDiamond(player)){
-        			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
-        		} else if (mcm.getInstance().isIronArmor(is) && !mcm.getInstance().hasIron(player))
-        			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
-        	}
+        		} else {
+        			needMoreVespeneGas(is, player);
+        		}
+    		}
+    		
     	} else {
     		player.sendMessage("That is at full durability.");
     	}
-    	}
-    }
+    	} //end if block is iron block bracket
+    } //end onPlayerItem bracket
+    public void needMoreVespeneGas(ItemStack is, Player player){
+    	if (mcm.getInstance().isDiamondTools(is) && mcUsers.getProfile(player).getRepairInt() < 50){
+			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
+		} else if (mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player) || mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player)){
+			if(mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player))
+			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
+			if(mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player))
+			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
+		} else if (mcm.getInstance().isDiamondArmor(is) && !mcm.getInstance().hasDiamond(player)){
+			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
+		} else if (mcm.getInstance().isIronArmor(is) && !mcm.getInstance().hasIron(player))
+			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
+		}
     public void onPlayerCommand(PlayerChatEvent event) {
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");
