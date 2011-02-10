@@ -90,13 +90,13 @@ public class mcPlayerListener extends PlayerListener {
     	if(is.getTypeId() == 297){
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
     			player.setHealth(player.getHealth() + 2);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 150){
-    			player.setHealth(player.getHealth() + 4);
     		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 250){
-    			player.setHealth(player.getHealth() + 5);
+    			player.setHealth(player.getHealth() + 4);
     		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 400){
+    			player.setHealth(player.getHealth() + 5);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() < 750){
     			player.setHealth(player.getHealth() + 6);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 750){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 750){
     			player.setHealth(player.getHealth() + 8);
     		}
     	}
@@ -104,13 +104,13 @@ public class mcPlayerListener extends PlayerListener {
     	if(is.getTypeId() == 282){
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
     			player.setHealth(player.getHealth() + 1);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 150){
-    			player.setHealth(player.getHealth() + 2);
     		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 250){
-    			player.setHealth(player.getHealth() + 3);
+    			player.setHealth(player.getHealth() + 2);
     		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 400){
+    			player.setHealth(player.getHealth() + 3);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() < 750){
     			player.setHealth(player.getHealth() + 4);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 750){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 750){
     			player.setHealth(player.getHealth() + 6);
     		}
     	}
