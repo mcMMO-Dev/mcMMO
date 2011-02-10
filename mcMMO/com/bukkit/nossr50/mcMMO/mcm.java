@@ -357,7 +357,7 @@ public class mcm {
     		}
     	}
     	//DIRT SAND OR GRAVEL
-    	if(type == 3 || type == 13 || type == 2){
+    	if(type == 3 || type == 13 || type == 2 || type == 12){
     		if(Math.random() * 100 > 95){
     			mcUsers.getProfile(player).skillUpExcavation(1);
     			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by 1. Total ("+mcUsers.getProfile(player).getExcavationInt()+")");
