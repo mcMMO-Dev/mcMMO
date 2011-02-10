@@ -131,6 +131,8 @@ public class mcPlayerListener extends PlayerListener {
         		player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
         		mcUsers.getProfile(player).skillUpRepair(1);
         		player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");	
+    			} else {
+    				needMoreVespeneGas(is, player);
     			}
     		}
     		/*
