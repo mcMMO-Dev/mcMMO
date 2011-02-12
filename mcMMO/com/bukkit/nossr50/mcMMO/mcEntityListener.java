@@ -37,7 +37,7 @@ public class mcEntityListener extends EntityListener {
     	if(block != null && block.getTypeId() == 81){
     		if(mcUsers.getProfile(player).isDead())
     			return;
-    		if(player.getHealth() - event.getDamage() >= 0){
+    		if(player.getHealth() - event.getDamage() <= 0){
     			mcUsers.getProfile(player).setDead(true);
     			for(Player bidoof : plugin.getServer().getOnlinePlayers()){
     				bidoof.sendMessage(ChatColor.GRAY+player.getName()+" has been"+ChatColor.DARK_GREEN+" cactus tickled "+ChatColor.GRAY+"to death.");
@@ -83,7 +83,7 @@ public class mcEntityListener extends EntityListener {
 					}
 				}
 				if(mcUsers.getProfile(defender).getSwordsInt() >= 450 && mcUsers.getProfile(defender).getSwordsInt() < 775){
-					if(Math.random() * 10 > 4){
+					if(Math.random() * 10 > 5){
 						event.setCancelled(true);
 						defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
 						defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
@@ -96,7 +96,7 @@ public class mcEntityListener extends EntityListener {
 					}
 				}
 				if(mcUsers.getProfile(defender).getSwordsInt() >= 775){
-					if(Math.random() * 10 > 6){
+					if(Math.random() * 10 > 4){
 						event.setCancelled(true);
 						defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
 						defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
@@ -142,6 +142,12 @@ public class mcEntityListener extends EntityListener {
     				}
     			}
     		}
+    		if(defender.getHealth() <= 0){
+				for(ItemStack i : defender.getInventory().getContents()){
+					if(i != null && i.getTypeId() != 0)
+					defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), i);
+				}
+			}
     	}
     	if(y instanceof Player){
     		int type = ((Player) y).getItemInHand().getTypeId();
@@ -189,7 +195,6 @@ public class mcEntityListener extends EntityListener {
         			}
     		}
     		if(x instanceof Monster){
-    			if(type == 0){
     			Monster defender = (Monster)event.getEntity();
     			if(isSwords(attacker.getItemInHand()) && defender.getHealth() > 0){
     				if(Math.random() * 10 > 9){
@@ -197,6 +202,7 @@ public class mcEntityListener extends EntityListener {
     					attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(attacker).getSwords()+")");
     				}
     			}
+    			if(type == 0){
     			if(defender.getHealth() <= 0)
     				return;
     			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
@@ -574,6 +580,8 @@ public class mcEntityListener extends EntityListener {
     				player.sendMessage("**ROLLED... LIKE A BOSS**");
     				return;
     			}
+    		if(player.getHealth() - event.getDamage() <= 0)
+    			return;
     		if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z))){
     		if(event.getDamage() >= 2 && event.getDamage() < 6){
     		mcUsers.getProfile(player).skillUpAcrobatics(1);
