@@ -137,7 +137,7 @@ public class mcEntityListener extends EntityListener {
     				if(y instanceof Zombie){
     					mcUsers.getProfile(defender).setDead(true);
     					for(Player derp : plugin.getServer().getOnlinePlayers()){
-        					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.DARK_BLUE+"Zombie"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
+        					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.DARK_AQUA+"Zombie"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
         				}
     				}
     			}
@@ -447,7 +447,7 @@ public class mcEntityListener extends EntityListener {
     		 * Defender is Animals	
     		 */
     		if(x instanceof Animals){
-    			Monster defender = (Monster)x;
+    			Animals defender = (Animals)x;
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 150)
     				defender.setHealth(defender.getHealth() - 1);
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 150 && mcUsers.getProfile(attacker).getArcheryInt() < 375)
@@ -465,7 +465,7 @@ public class mcEntityListener extends EntityListener {
     		 * Defender is Squid
     		 */
     		if(x instanceof Squid){
-    			Monster defender = (Monster)x;
+    			Squid defender = (Squid)x;
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 150)
     				defender.setHealth(defender.getHealth() - 1);
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 150 && mcUsers.getProfile(attacker).getArcheryInt() < 375)

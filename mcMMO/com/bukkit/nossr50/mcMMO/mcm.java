@@ -338,8 +338,10 @@ public class mcm {
     	if(type == 59 && block.getData() == (byte) 0x7){
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
+			if(Math.random() * 100 > 80){
     		mcUsers.getProfile(player).skillUpHerbalism(1);
     		player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 1. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
+			}
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
     		if(Math.random() * 10 > 8)
 			loc.getWorld().dropItemNaturally(loc, is);
