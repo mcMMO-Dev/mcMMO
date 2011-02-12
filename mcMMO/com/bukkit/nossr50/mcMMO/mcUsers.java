@@ -153,7 +153,8 @@ class PlayerList
 	class PlayerProfile
 	{
 	    protected final Logger log = Logger.getLogger("Minecraft");
-		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, unarmed, herbalism, excavation;
+		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, unarmed, herbalism, excavation,
+		archery, swords, axes, acrobatics;
 		private boolean dead;
 		char defaultColor;
 
@@ -178,6 +179,10 @@ class PlayerList
             unarmed = new String();
             herbalism = new String();
             excavation = new String();
+            archery = new String();
+            swords = new String();
+            axes = new String();
+            acrobatics = new String();
             //mining = "0";
             wgather = new String();
             //wgather = "0";
@@ -230,6 +235,14 @@ class PlayerList
         				herbalism = character[9];
         			if(character.length > 10)
         				excavation = character[10];
+        			if(character.length > 11)
+        				archery = character[11];
+        			if(character.length > 12)
+        				swords = character[12];
+        			if(character.length > 13)
+        				axes = character[13];
+        			if(character.length > 14)
+        				acrobatics = character[14];
                 	in.close();
         			return true;
             	}
@@ -279,6 +292,10 @@ class PlayerList
             			writer.append(unarmed+":");
             			writer.append(herbalism+":");
             			writer.append(excavation+":");
+            			writer.append(archery+":");
+            			writer.append(swords+":");
+            			writer.append(axes+":");
+            			writer.append(acrobatics+":");
             			writer.append("\r\n");                   			
             		}
             	}
@@ -310,6 +327,10 @@ class PlayerList
                 out.append(0+":"); //unarmed
                 out.append(0+":"); //herbalism
                 out.append(0+":"); //excavation
+                out.append(0+":"); //archery
+                out.append(0+":"); //swords
+                out.append(0+":"); //axes
+                out.append(0+":"); //acrobatics
                 //Add more in the same format as the line above
                 
     			out.newLine();
@@ -328,6 +349,62 @@ class PlayerList
 		public boolean isPlayer(Player player)
 		{
 			return player.getName().equals(playerName);
+		}
+		public void skillUpAxes(int newskill){
+			int x = 0;
+			if(axes != null){
+			if(isInt(axes)){
+			x = Integer.parseInt(axes);
+			}else {
+				axes = "0";
+				x = Integer.parseInt(axes);
+			}
+			}
+			x += newskill;
+			axes = Integer.toString(x);
+			save();
+		}
+		public void skillUpAcrobatics(int newskill){
+			int x = 0;
+			if(acrobatics != null){
+			if(isInt(acrobatics)){
+			x = Integer.parseInt(acrobatics);
+			}else {
+				acrobatics = "0";
+				x = Integer.parseInt(acrobatics);
+			}
+			}
+			x += newskill;
+			acrobatics = Integer.toString(x);
+			save();
+		}
+		public void skillUpSwords(int newskill){
+			int x = 0;
+			if(swords != null){
+			if(isInt(swords)){
+			x = Integer.parseInt(swords);
+			}else {
+				swords = "0";
+				x = Integer.parseInt(swords);
+			}
+			}
+			x += newskill;
+			swords = Integer.toString(x);
+			save();
+		}
+		public void skillUpArchery(int newskill){
+			int x = 0;
+			if(archery != null){
+			if(isInt(archery)){
+			x = Integer.parseInt(archery);
+			}else {
+				archery = "0";
+				x = Integer.parseInt(archery);
+			}
+			}
+			x += newskill;
+			archery = Integer.toString(x);
+			save();
 		}
 		public void skillUpRepair(int newskill){
 			int x = 0;
@@ -428,6 +505,18 @@ class PlayerList
 		public String getExcavation(){
 			return excavation;
 		}
+		public String getArchery(){
+			return archery;
+		}
+		public String getSwords(){
+			return swords;
+		}
+		public String getAxes(){
+			return axes;
+		}
+		public String getAcrobatics(){
+			return acrobatics;
+		}
 		public int getMiningInt(){
 			if(isInt(mining)){
 				int x = Integer.parseInt(mining);
@@ -439,6 +528,38 @@ class PlayerList
 		public int getUnarmedInt(){
 			if(isInt(unarmed)){
 				int x = Integer.parseInt(unarmed);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public int getArcheryInt(){
+			if(isInt(archery)){
+				int x = Integer.parseInt(archery);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public int getSwordsInt(){
+			if(isInt(swords)){
+				int x = Integer.parseInt(swords);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public int getAxesInt(){
+			if(isInt(axes)){
+				int x = Integer.parseInt(axes);
+				return x;
+			} else{
+				return 0;
+			}
+		}
+		public int getAcrobaticsInt(){
+			if(isInt(acrobatics)){
+				int x = Integer.parseInt(acrobatics);
 				return x;
 			} else{
 				return 0;
@@ -530,6 +651,15 @@ class PlayerList
 			}
 			return true;
 		}
+		public boolean isDouble(String string){
+			try {
+			    Double x = Double.valueOf(string);
+			}
+			catch(NumberFormatException nFE) {
+			    return false;
+			}
+			return true;
+		}
 		//Returns player gather
 		public String getgather() { return gather; }
 		public String getwgather() { return wgather; }
@@ -603,9 +733,13 @@ class PlayerList
                 }
                 public Location getMySpawn(Player player){
                 	Location loc = player.getLocation();
+                	if(isDouble(getX()) && isDouble(getY()) && isDouble(getX())){
             		loc.setX(Double.parseDouble(mcUsers.getProfile(player).getX()));
             		loc.setY(Double.parseDouble(mcUsers.getProfile(player).getY()));
             		loc.setZ(Double.parseDouble(mcUsers.getProfile(player).getZ()));
+                	} else {
+                		return null;
+                	}
             		loc.setYaw(0);
             		loc.setPitch(0);
             		return loc;

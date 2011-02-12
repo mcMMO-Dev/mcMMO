@@ -29,6 +29,22 @@ public class mcm {
             return false;
         }
     }
+    public boolean hasArrows(Player player){
+    	for(ItemStack x : player.getInventory().getContents()){
+    		if (x.getTypeId() == 262){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    public void addArrows(Player player){
+    	for(ItemStack x : player.getInventory().getContents()){
+    		if (x.getTypeId() == 262){
+    			x.setAmount(x.getAmount() + 1);
+    			return;
+    		}
+    	}
+    }
     public void simulateNaturalDrops(Entity entity){
     	Location loc = entity.getLocation();
     	if(entity instanceof Pig){
@@ -332,11 +348,11 @@ public class mcm {
     			if(Math.random() * 10 > 6)
     				loc.getWorld().dropItemNaturally(loc, is);
     		}
-    		if(mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 500 ){
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 350 && mcUsers.getProfile(player).getHerbalismInt() < 500 ){
     			if(Math.random() * 10 > 4)
     				loc.getWorld().dropItemNaturally(loc, is);
     		}
-    		if(mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 750 ){
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 500 && mcUsers.getProfile(player).getHerbalismInt() < 750 ){
     			if(Math.random() * 10 > 2)
     				loc.getWorld().dropItemNaturally(loc, is);
     		}

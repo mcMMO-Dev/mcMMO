@@ -24,7 +24,7 @@ public class mcPlayerListener extends PlayerListener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
     	Player player = event.getPlayer();
     	if(mcPermissions.getInstance().mySpawn(player)){
-    	if(mcUsers.getProfile(player).getMySpawn(player) != null);
+    	if(mcUsers.getProfile(player).getMySpawn(player) != null)
     	event.setRespawnLocation(mcUsers.getProfile(player).getMySpawn(player));
     	}
     }
@@ -89,13 +89,19 @@ public class mcPlayerListener extends PlayerListener {
     	//BREAD
     	if(is.getTypeId() == 297){
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
+    			player.setHealth(player.getHealth() + 1);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 250){
     			player.setHealth(player.getHealth() + 2);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 250){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 250 && mcUsers.getProfile(player).getHerbalismInt() < 350){
+    			player.setHealth(player.getHealth() + 3);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 350 && mcUsers.getProfile(player).getHerbalismInt() < 450){
     			player.setHealth(player.getHealth() + 4);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 400){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 450 && mcUsers.getProfile(player).getHerbalismInt() < 550){
     			player.setHealth(player.getHealth() + 5);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() < 750){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 550 && mcUsers.getProfile(player).getHerbalismInt() < 650){
     			player.setHealth(player.getHealth() + 6);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 650 && mcUsers.getProfile(player).getHerbalismInt() < 750){
+    			player.setHealth(player.getHealth() + 7);
     		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 750){
     			player.setHealth(player.getHealth() + 8);
     		}
@@ -104,14 +110,20 @@ public class mcPlayerListener extends PlayerListener {
     	if(is.getTypeId() == 282){
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
     			player.setHealth(player.getHealth() + 1);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 250){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 250){
     			player.setHealth(player.getHealth() + 2);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() <= 400){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 250 && mcUsers.getProfile(player).getHerbalismInt() < 350){
     			player.setHealth(player.getHealth() + 3);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() < 750){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 350 && mcUsers.getProfile(player).getHerbalismInt() < 450){
     			player.setHealth(player.getHealth() + 4);
-    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 750){
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 450 && mcUsers.getProfile(player).getHerbalismInt() < 550){
+    			player.setHealth(player.getHealth() + 5);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 550 && mcUsers.getProfile(player).getHerbalismInt() < 650){
     			player.setHealth(player.getHealth() + 6);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 650 && mcUsers.getProfile(player).getHerbalismInt() < 750){
+    			player.setHealth(player.getHealth() + 7);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 750){
+    			player.setHealth(player.getHealth() + 8);
     		}
     	}
     	if(block != null && block.getTypeId() == 42){
@@ -160,7 +172,7 @@ public class mcPlayerListener extends PlayerListener {
     	} //end if block is iron block bracket
     } //end onPlayerItem bracket
     public void needMoreVespeneGas(ItemStack is, Player player){
-    	if (mcm.getInstance().isDiamondTools(is) && mcUsers.getProfile(player).getRepairInt() < 50){
+    	if ((mcm.getInstance().isDiamondTools(is) || mcm.getInstance().isDiamondArmor(is) ) && mcUsers.getProfile(player).getRepairInt() < 50){
 			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
 		} else if (mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player) || mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player)){
 			if(mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player))
@@ -312,7 +324,11 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Woodcutting Skill: "+mcUsers.getProfile(target).getWoodCutting());
     		player.sendMessage("Unarmed Skill: "+mcUsers.getProfile(target).getUnarmed());
     		player.sendMessage("Herbalism Skill: "+mcUsers.getProfile(target).getHerbalism());
-    		player.sendMessage("Excavation Skill: "+mcUsers.getProfile(target).getWoodCutting());
+    		player.sendMessage("Excavation Skill: "+mcUsers.getProfile(target).getExcavation());
+    		player.sendMessage("Archery Skill: "+mcUsers.getProfile(target).getArchery());
+    		player.sendMessage("Swords Skill: "+mcUsers.getProfile(target).getSwords());
+    		player.sendMessage("Axes Skill: "+mcUsers.getProfile(target).getAxes());
+    		player.sendMessage("Acrobatics Skill: "+mcUsers.getProfile(target).getAcrobatics());
     		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
     		player.sendMessage("X: "+x);
     		player.sendMessage("Y: "+y);
@@ -340,6 +356,10 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.DARK_GREEN + "Unarmed Skill: " + mcUsers.getProfile(player).getUnarmed());
     		player.sendMessage(ChatColor.DARK_GREEN + "Herbalism Skill: " + mcUsers.getProfile(player).getHerbalism());
     		player.sendMessage(ChatColor.DARK_GREEN + "Excavation Skill: " + mcUsers.getProfile(player).getExcavation());
+    		player.sendMessage(ChatColor.DARK_GREEN + "Archery Skill: " + mcUsers.getProfile(player).getArchery());
+    		player.sendMessage(ChatColor.DARK_GREEN + "Swords Skill: " + mcUsers.getProfile(player).getSwords());
+    		player.sendMessage(ChatColor.DARK_GREEN + "Axes Skill: " + mcUsers.getProfile(player).getAxes());
+    		player.sendMessage(ChatColor.DARK_GREEN + "Acrobatics Skill: " + mcUsers.getProfile(player).getAcrobatics());
     	}
     	//Party command
     	if(split[0].equalsIgnoreCase("/party")){
