@@ -4,17 +4,26 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Cow;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Spider;
 import org.bukkit.entity.Squid;
 import org.bukkit.entity.Zombie;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 public class mcm {
+	/*
+	 * I'm storing my functions/methods in here in an unorganized manner. Spheal with it.
+	 */
 	private static volatile mcm instance;
 	public static mcm getInstance() {
     	if (instance == null) {
@@ -318,6 +327,576 @@ public class mcm {
     		mcUsers.getProfile(player).addgather(50);
     		mcm.getInstance().blockProcCheck(block, player);
     		}
+    }
+    public void breadCheck(Player player, ItemStack is){
+    	if(is.getTypeId() == 297){
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
+    			player.setHealth(player.getHealth() + 1);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 250){
+    			player.setHealth(player.getHealth() + 2);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 250 && mcUsers.getProfile(player).getHerbalismInt() < 350){
+    			player.setHealth(player.getHealth() + 3);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 350 && mcUsers.getProfile(player).getHerbalismInt() < 450){
+    			player.setHealth(player.getHealth() + 4);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 450 && mcUsers.getProfile(player).getHerbalismInt() < 550){
+    			player.setHealth(player.getHealth() + 5);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 550 && mcUsers.getProfile(player).getHerbalismInt() < 650){
+    			player.setHealth(player.getHealth() + 6);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 650 && mcUsers.getProfile(player).getHerbalismInt() < 750){
+    			player.setHealth(player.getHealth() + 7);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 750){
+    			player.setHealth(player.getHealth() + 8);
+    		}
+    	}
+    }
+    public void stewCheck(Player player, ItemStack is){
+    	if(is.getTypeId() == 282){
+    		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
+    			player.setHealth(player.getHealth() + 1);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 150 && mcUsers.getProfile(player).getHerbalismInt() < 250){
+    			player.setHealth(player.getHealth() + 2);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 250 && mcUsers.getProfile(player).getHerbalismInt() < 350){
+    			player.setHealth(player.getHealth() + 3);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 350 && mcUsers.getProfile(player).getHerbalismInt() < 450){
+    			player.setHealth(player.getHealth() + 4);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 450 && mcUsers.getProfile(player).getHerbalismInt() < 550){
+    			player.setHealth(player.getHealth() + 5);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 550 && mcUsers.getProfile(player).getHerbalismInt() < 650){
+    			player.setHealth(player.getHealth() + 6);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 650 && mcUsers.getProfile(player).getHerbalismInt() < 750){
+    			player.setHealth(player.getHealth() + 7);
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 750){
+    			player.setHealth(player.getHealth() + 8);
+    		}
+    	}
+    }
+    public void needMoreVespeneGas(ItemStack is, Player player){
+    	if ((mcm.getInstance().isDiamondTools(is) || mcm.getInstance().isDiamondArmor(is) ) && mcUsers.getProfile(player).getRepairInt() < 50){
+			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
+		} else if (mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player) || mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player)){
+			if(mcm.getInstance().isDiamondTools(is) && !mcm.getInstance().hasDiamond(player))
+			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
+			if(mcm.getInstance().isIronTools(is) && !mcm.getInstance().hasIron(player))
+			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
+		} else if (mcm.getInstance().isDiamondArmor(is) && !mcm.getInstance().hasDiamond(player)){
+			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
+		} else if (mcm.getInstance().isIronArmor(is) && !mcm.getInstance().hasIron(player))
+			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
+		}
+    public boolean isSwords(ItemStack is){
+    	if(is.getTypeId() == 268 || is.getTypeId() == 267 || is.getTypeId() == 271 || is.getTypeId() == 283 || is.getTypeId() == 276){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    public boolean simulateUnarmedProc(Player player){
+    	if(mcUsers.getProfile(player).getUnarmedInt() >= 750){
+    		if(Math.random() * 10 > 4){
+    			return true;
+    		}
+    	}if(mcUsers.getProfile(player).getUnarmedInt() >= 350 && mcUsers.getProfile(player).getUnarmedInt() < 750){
+    		if(Math.random() * 10 > 4){
+    			return true;
+    		}
+    	}
+    		return false;
+    }
+    public void playerVersusPlayerChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, Plugin plugin){
+    	if(x instanceof Player){
+			Player defender = (Player)x;
+			if(attacker.getItemInHand().getTypeId() == 0){
+				//DMG MODIFIER
+				if((mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty())&& !mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty()) && !mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty())) {
+				if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
+					defender.setHealth(calculateDamage(defender, 1));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
+					defender.setHealth(calculateDamage(defender, 2));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 200 && mcUsers.getProfile(attacker).getUnarmedInt() < 325){
+					defender.setHealth(calculateDamage(defender, 3));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 325 && mcUsers.getProfile(attacker).getUnarmedInt() < 475){
+					defender.setHealth(calculateDamage(defender, 4));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 475 && mcUsers.getProfile(attacker).getUnarmedInt() < 600){
+					defender.setHealth(calculateDamage(defender, 5));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 600 && mcUsers.getProfile(attacker).getUnarmedInt() < 775){
+					defender.setHealth(calculateDamage(defender, 6));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 775 && mcUsers.getProfile(attacker).getUnarmedInt() < 950){
+					defender.setHealth(calculateDamage(defender, 7));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
+					defender.setHealth(calculateDamage(defender, 8));
+				}
+				if(mcUsers.getProfile(defender).isDead())
+    				return;
+				//XP
+				if(attacker.getItemInHand().getTypeId() == 0 && Math.random() * 10 > 9){
+					if(defender.getHealth() != 0){
+						mcUsers.getProfile(attacker).skillUpUnarmed(1);
+						attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+						}
+				}
+				//PROC
+				if(simulateUnarmedProc(attacker)){
+					attacker.sendMessage(ChatColor.DARK_RED+"You have hit with great force.");
+					Location loc = defender.getLocation();
+					if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0){
+					ItemStack item = defender.getItemInHand();
+					if(item != null){
+					loc.getWorld().dropItemNaturally(loc, item);
+					item.setTypeId(0);
+					item.setAmount(0);
+					}
+					}
+				}
+				/*
+				 * Make the defender drop items on death
+				 */
+				if(defender.getHealth() <= 0){
+					for(ItemStack i : defender.getInventory().getContents()){
+						if(i != null && i.getTypeId() != 0)
+						defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), i);
+					}
+    				for(Player derp : plugin.getServer().getOnlinePlayers()){
+    					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName());
+    					mcUsers.getProfile(defender).setDead(true);
+    				}
+    			}
+				}
+				return;
+			}
+			if(mcUsers.getProfile(defender).isDead())
+				return;
+			if((defender.getHealth() - event.getDamage()) <= 0 && defender.getHealth() != 0){
+				for(Player derp : plugin.getServer().getOnlinePlayers()){
+					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName());
+					mcUsers.getProfile(defender).setDead(true);
+				}
+			}
+			//Moving this below the death message for now, seems to have issues when the defender is not in a party
+			if((mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty())&& mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty()))
+				event.setCancelled(true);
+		}
+    }
+    public void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
+    	if(x instanceof Squid){
+			Squid defender = (Squid)event.getEntity();
+			if(isSwords(attacker.getItemInHand()) && defender.getHealth() > 0){
+				if(Math.random() * 10 > 9){
+					mcUsers.getProfile(attacker).skillUpSwords(1);
+					attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(attacker).getSwords()+")");
+				}
+			}
+			/*
+			 * UNARMED VS SQUID
+			 */
+			if(type == 0){
+    			if(defender.getHealth() <= 0)
+    				return;
+    			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
+					defender.setHealth(calculateDamage(defender, 1));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
+					defender.setHealth(calculateDamage(defender, 2));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 200 && mcUsers.getProfile(attacker).getUnarmedInt() < 325){
+					defender.setHealth(calculateDamage(defender, 3));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 325 && mcUsers.getProfile(attacker).getUnarmedInt() < 475){
+					defender.setHealth(calculateDamage(defender, 4));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 475 && mcUsers.getProfile(attacker).getUnarmedInt() < 600){
+					defender.setHealth(calculateDamage(defender, 5));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 600 && mcUsers.getProfile(attacker).getUnarmedInt() < 775){
+					defender.setHealth(calculateDamage(defender, 6));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 775 && mcUsers.getProfile(attacker).getUnarmedInt() < 950){
+					defender.setHealth(calculateDamage(defender, 7));
+				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
+					defender.setHealth(calculateDamage(defender, 8));
+				}
+    			//XP
+				if(attacker.getItemInHand().getTypeId() == 0 && Math.random() * 10 > 8){
+					if(defender.getHealth() != 0){
+					mcUsers.getProfile(attacker).skillUpUnarmed(1);
+					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+					}
+				}
+				if(defender.getHealth() <= 0)
+				mcm.getInstance().simulateNaturalDrops(defender);
+    			}
+		}
+    }
+    public void playerVersusAnimalsChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, int type){
+    	if(x instanceof Animals){
+			if(type == 0){
+			Animals defender = (Animals)event.getEntity();
+			if(defender.getHealth() <= 0)
+				return;
+			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
+				defender.setHealth(calculateDamage(defender, 1));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
+				defender.setHealth(calculateDamage(defender, 2));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 200 && mcUsers.getProfile(attacker).getUnarmedInt() < 325){
+				defender.setHealth(calculateDamage(defender, 3));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 325 && mcUsers.getProfile(attacker).getUnarmedInt() < 475){
+				defender.setHealth(calculateDamage(defender, 4));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 475 && mcUsers.getProfile(attacker).getUnarmedInt() < 600){
+				defender.setHealth(calculateDamage(defender, 5));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 600 && mcUsers.getProfile(attacker).getUnarmedInt() < 775){
+				defender.setHealth(calculateDamage(defender, 6));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 775 && mcUsers.getProfile(attacker).getUnarmedInt() < 950){
+				defender.setHealth(calculateDamage(defender, 7));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
+				defender.setHealth(calculateDamage(defender, 8));
+			}
+			if(defender.getHealth() <= 0){
+				mcm.getInstance().simulateNaturalDrops(defender);
+			}
+			}
+		}
+    }
+    public void playerDeathByMonsterMessageCheck(Entity y, Player defender, Plugin plugin){
+    	if(y instanceof Monster){
+			if(mcUsers.getProfile(defender).isDead())
+				return;
+			if(defender.getHealth() <= 0){
+				mcm.getInstance().simulateNaturalDrops(defender);
+				if(y instanceof Creeper){
+					mcUsers.getProfile(defender).setDead(true);
+					for(Player derp : plugin.getServer().getOnlinePlayers()){
+    					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.DARK_GREEN+"Creeper"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
+    				}
+				}
+				if(y instanceof Skeleton){
+					mcUsers.getProfile(defender).setDead(true);
+					for(Player derp : plugin.getServer().getOnlinePlayers()){
+    					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.WHITE+"Skeleton"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
+    				}
+				}
+				if(y instanceof Spider){
+					mcUsers.getProfile(defender).setDead(true);
+					for(Player derp : plugin.getServer().getOnlinePlayers()){
+    					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.DARK_PURPLE+"Spider"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
+    				}
+				}
+				if(y instanceof Zombie){
+					mcUsers.getProfile(defender).setDead(true);
+					for(Player derp : plugin.getServer().getOnlinePlayers()){
+    					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.DARK_AQUA+"Zombie"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
+    				}
+				}
+			}
+		}
+    }
+    public void playerVersusMonsterChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
+    	if(x instanceof Monster){
+			Monster defender = (Monster)event.getEntity();
+			if(isSwords(attacker.getItemInHand()) && defender.getHealth() > 0){
+				if(Math.random() * 10 > 9){
+					mcUsers.getProfile(attacker).skillUpSwords(1);
+					attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(attacker).getSwords()+")");
+				}
+			}
+			if(type == 0){
+			if(defender.getHealth() <= 0)
+				return;
+			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
+				defender.setHealth(calculateDamage(defender, 1));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
+				defender.setHealth(calculateDamage(defender, 2));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 200 && mcUsers.getProfile(attacker).getUnarmedInt() < 325){
+				defender.setHealth(calculateDamage(defender, 3));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 325 && mcUsers.getProfile(attacker).getUnarmedInt() < 475){
+				defender.setHealth(calculateDamage(defender, 4));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 475 && mcUsers.getProfile(attacker).getUnarmedInt() < 600){
+				defender.setHealth(calculateDamage(defender, 5));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 600 && mcUsers.getProfile(attacker).getUnarmedInt() < 775){
+				defender.setHealth(calculateDamage(defender, 6));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 775 && mcUsers.getProfile(attacker).getUnarmedInt() < 950){
+				defender.setHealth(calculateDamage(defender, 7));
+			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
+				defender.setHealth(calculateDamage(defender, 8));
+			}
+			//XP
+			if(x instanceof Skeleton && Math.random() * 100 > 95){
+				if(defender.getHealth() != 0){
+					mcUsers.getProfile(attacker).skillUpUnarmed(1);
+					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+			}
+			}
+			if(x instanceof Spider&& Math.random() * 10 > 9){
+				if(defender.getHealth() != 0){
+					mcUsers.getProfile(attacker).skillUpUnarmed(1);
+					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+			}
+			}
+			if(x instanceof Zombie && Math.random() * 100 > 95){
+				if(defender.getHealth() != 0){
+					mcUsers.getProfile(attacker).skillUpUnarmed(1);
+					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+			}
+			}
+			if(x instanceof Creeper && Math.random() * 100 > 90){
+    				if(defender.getHealth() != 0){
+    					mcUsers.getProfile(attacker).skillUpUnarmed(2);
+    					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 2. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+    		}
+			}
+			if(defender.getHealth() <= 0)
+				mcm.getInstance().simulateNaturalDrops(defender);
+			}
+		}
+    }
+    public int calculateDamage(Player player, int dmg){
+    	int health = player.getHealth();
+    	if(health - dmg <0){
+    		return 0;
+    	} else {
+    		health-= dmg;
+    		return health;
+    	}
+    }
+    public int calculateDamage(Squid squid, int dmg){
+    	int health = squid.getHealth();
+    	if(health - dmg <0){
+    		return 0;
+    	} else {
+    		health-= dmg;
+    		return health;
+    	}
+    }
+    public int calculateDamage(Monster monster, int dmg){
+    	int health = monster.getHealth();
+    	if(health - dmg <0){
+    		return 0;
+    	} else {
+    		health-= dmg;
+    		return health;
+    	}
+    }
+    public int calculateDamage(Animals animal, int dmg){
+    	int health = animal.getHealth();
+    	if(health - dmg <0){
+    		return 0;
+    	} else {
+    		health-= dmg;
+    		return health;
+    	}
+    }
+    public void parryCheck(Player defender, EntityDamageByEntityEvent event, Entity y){
+    	if(isSwords(defender.getItemInHand())){
+			if(mcUsers.getProfile(defender).getSwordsInt() >= 50 && mcUsers.getProfile(defender).getSwordsInt() < 250){
+				if(Math.random() * 10 > 8){
+					event.setCancelled(true);
+					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
+					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
+					mcUsers.getProfile(defender).skillUpSwords(1);
+					defender.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(defender).getSwords()+")");
+					if(y instanceof Player){
+						Player attacker = (Player)y;
+						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
+					}
+				}
+			}
+			if(mcUsers.getProfile(defender).getSwordsInt() >= 250 && mcUsers.getProfile(defender).getSwordsInt() < 450){
+				if(Math.random() * 10 > 6){
+					event.setCancelled(true);
+					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
+					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
+					mcUsers.getProfile(defender).skillUpSwords(1);
+					defender.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(defender).getSwords()+")");
+					if(y instanceof Player){
+						Player attacker = (Player)y;
+						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
+					}
+				}
+			}
+			if(mcUsers.getProfile(defender).getSwordsInt() >= 450 && mcUsers.getProfile(defender).getSwordsInt() < 775){
+				if(Math.random() * 10 > 5){
+					event.setCancelled(true);
+					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
+					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
+					mcUsers.getProfile(defender).skillUpSwords(1);
+					defender.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(defender).getSwords()+")");
+					if(y instanceof Player){
+						Player attacker = (Player)y;
+						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
+					}
+				}
+			}
+			if(mcUsers.getProfile(defender).getSwordsInt() >= 775){
+				if(Math.random() * 10 > 4){
+					event.setCancelled(true);
+					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
+					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
+					if(y instanceof Player){
+						Player attacker = (Player)y;
+						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
+					}
+				}
+			}
+		}
+    }
+    public void mcmmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
+    	if(split[0].equalsIgnoreCase("/woodcutting")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~WOODCUTTING INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Chop down trees.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Double Drops start to happen at 10 woodcutting skill");
+			player.sendMessage(ChatColor.GRAY+"and it gets more frequent from there.");
+    	}
+    	if(split[0].equalsIgnoreCase("/archery")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~ARCHERY INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Shooting monsters.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Damage scales with Archery skill");
+			player.sendMessage(ChatColor.GRAY+"Chance to daze player opponents with high skill lvl");
+    	}
+    	if(split[0].equalsIgnoreCase("/swords")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~SWORDS INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Slicing up monsters");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Parrying. It negates damage.");
+			player.sendMessage(ChatColor.GRAY+"Chance to parry scales with skill.");
+    	}
+    	if(split[0].equalsIgnoreCase("/acrobatics")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~ACROBATICS INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Spraining ankles.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Rolling. Negates fall damage.");
+			player.sendMessage(ChatColor.GRAY+"Chance to roll scales with skill.");
+    	}
+    	if(split[0].equalsIgnoreCase("/mining")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~MINING INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Mining ore and stone,");
+			player.sendMessage(ChatColor.DARK_GRAY+"the xp rate depends entirely upon the rarity of what you're harvesting.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Double Drops start to happen at 25 Mining skill,");
+			player.sendMessage(ChatColor.GRAY+"and the chance for it increases with skill.");
+    	}
+    	if(split[0].equalsIgnoreCase("/repair")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~REPAIR INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Repairing tools and armor.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"High skill levels make a proc to fully repair items happen more often.");
+			player.sendMessage(ChatColor.GREEN+"~~USE~~");
+			player.sendMessage(ChatColor.GRAY+"Approach an Anvil (Iron Block) with the item you wish ");
+			player.sendMessage(ChatColor.GRAY+"to repair in hand, right click to consume resources of the");
+			player.sendMessage(ChatColor.GRAY+"same type to repair it. This does not work for stone/wood/gold");
+    	}
+    	if(split[0].equalsIgnoreCase("/unarmed")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~UNARMED INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Punching monsters and players.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Damage scales with unarmed skill. The first damage increase");
+			player.sendMessage(ChatColor.DARK_GRAY+"happens at 50 skill. At very high skill levels, you will");
+			player.sendMessage(ChatColor.DARK_GRAY+"gain a proc to disarm player opponents on hit");
+    	}
+    	if(split[0].equalsIgnoreCase("/herbalism")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~HERBALISM INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Farming and picking herbs.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Increases healing effects of bread and stew.");
+			player.sendMessage(ChatColor.GRAY+"Allows for chance to receive double drops based on skill");
+    	}
+    	if(split[0].equalsIgnoreCase("/excavation")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~EXCAVATION INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Digging.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"You will find treasures while digging based on your excavation,");
+			player.sendMessage(ChatColor.GRAY+"and at high levels the rewards are quite nice. The items you get");
+			player.sendMessage(ChatColor.GRAY+"depend on the block you're digging.");
+			player.sendMessage(ChatColor.GRAY+"Different blocks give diffrent stuff.");
+    	}
+		if(split[0].equalsIgnoreCase("/mcmmo")){
+			event.setCancelled(true);
+    		player.sendMessage(ChatColor.GRAY+"mcMMO is an RPG inspired plugin");
+    		player.sendMessage(ChatColor.GRAY+"You can gain skills in several professions by");
+    		player.sendMessage(ChatColor.GRAY+"doing things related to that profession.");
+    		player.sendMessage(ChatColor.GRAY+"Mining for example will increase your mining XP.");
+    		player.sendMessage(ChatColor.GRAY+"Wood Cutting will increase Wood Cutting, etc...");
+    		player.sendMessage(ChatColor.GRAY+"Repairing is simple in mcMMO");
+    		player.sendMessage(ChatColor.GRAY+"Say you want to repair an iron shovel");
+    		player.sendMessage(ChatColor.GRAY+"start by making an anvil by combining 9 iron ingots");
+    		player.sendMessage(ChatColor.GRAY+"on a workbench. Place the anvil and while holding the shovel");
+    		player.sendMessage(ChatColor.GRAY+"right click the anvil to interact with it, If you have spare");
+    		player.sendMessage(ChatColor.GRAY+"iron ingots in your inventory the item will be repaired.");
+    		player.sendMessage(ChatColor.GRAY+"You cannot hurt other party members");
+    		player.sendMessage(ChatColor.BLUE+"Set your own spawn with "+ChatColor.RED+"/myspawn");
+    		player.sendMessage(ChatColor.GREEN+"Based on your skills you will get "+ChatColor.DARK_RED+"random procs "+ChatColor.GREEN+ "when");
+    		player.sendMessage(ChatColor.GREEN+"using your profession, like "+ChatColor.DARK_RED+"double drops "+ChatColor.GREEN+"or "+ChatColor.DARK_RED+"better repairs");
+    		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with /mcc");
+    	}
+    	if(split[0].equalsIgnoreCase("/mcc")){
+    		event.setCancelled(true);
+    		player.sendMessage(ChatColor.GRAY+"mcMMO has a party system included");
+    		player.sendMessage(ChatColor.GREEN+"~~Commands~~");
+    		player.sendMessage(ChatColor.GRAY+"/party <name> - to join a party");
+    		player.sendMessage(ChatColor.GRAY+"/party q - to quit a party");
+    		player.sendMessage(ChatColor.GRAY+"/ptp <name> - party teleport");
+    		player.sendMessage(ChatColor.GRAY+"/p - toggles party chat");
+    		player.sendMessage(ChatColor.GRAY+"/setmyspawn - set your own spawn location");
+    		player.sendMessage(ChatColor.GRAY+"/myspawn - travel to myspawn, clears inventory");
+    		player.sendMessage(ChatColor.GRAY+"/whois - view detailed info about a player (req op)");
+    		player.sendMessage(ChatColor.GRAY+"/woodcutting - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/mining - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/repair - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/unarmed - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/herbalism - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/excavation - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/archery - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/swords - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/acrobatics - displays info about the skill");
+    	}
+    }
+    public void repairCheck(Player player, ItemStack is, Block block){
+    	if(block != null && block.getTypeId() == 42){
+        	short durability = is.getDurability();
+        	if(player.getItemInHand().getDurability() > 0){
+        		/*
+        		 * ARMOR
+        		 */
+        		if(mcm.getInstance().isArmor(is) && block.getTypeId() == 42){
+        			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player)){
+        			mcm.getInstance().removeDiamond(player);
+        			player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
+        			mcUsers.getProfile(player).skillUpRepair(1);
+        			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+        			} else if (mcm.getInstance().isIronArmor(is) && mcm.getInstance().hasIron(player)){
+        			mcm.getInstance().removeIron(player);
+            		player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
+            		mcUsers.getProfile(player).skillUpRepair(1);
+            		player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");	
+        			} else {
+        				needMoreVespeneGas(is, player);
+        			}
+        		}
+        		/*
+        		 * TOOLS
+        		 */
+        		if(mcm.getInstance().isTools(is) && block.getTypeId() == 42){
+            		if(mcm.getInstance().isIronTools(is) && mcm.getInstance().hasIron(player)){
+            			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
+            			mcm.getInstance().removeIron(player);
+            			mcUsers.getProfile(player).skillUpRepair(1);
+            			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+            		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){ //Check if its diamond and the player has diamonds
+            			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
+            			mcm.getInstance().removeDiamond(player);
+            			mcUsers.getProfile(player).skillUpRepair(1);
+            			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+            		} else {
+            			needMoreVespeneGas(is, player);
+            		}
+        		}
+        		
+        	} else {
+        		player.sendMessage("That is at full durability.");
+        	}
+        	} //end if block is iron block bracket
     }
     public void herbalismProcCheck(Block block, Player player){
     	int type = block.getTypeId();
