@@ -1,5 +1,8 @@
 package com.bukkit.nossr50.mcMMO;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -15,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class mcPlayerListener extends PlayerListener {
+	protected static final Logger log = Logger.getLogger("Minecraft");
 	public Location spawn = null;
     private mcMMO plugin;
 
@@ -196,6 +200,30 @@ public class mcPlayerListener extends PlayerListener {
 			player.sendMessage(ChatColor.GRAY+"Double Drops start to happen at 10 woodcutting skill");
 			player.sendMessage(ChatColor.GRAY+"and it gets more frequent from there.");
     	}
+    	if(split[0].equalsIgnoreCase("/archery")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~ARCHERY INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Shooting monsters.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Damage scales with Archery skill");
+			player.sendMessage(ChatColor.GRAY+"Chance to daze player opponents with high skill lvl");
+    	}
+    	if(split[0].equalsIgnoreCase("/swords")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~SWORDS INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Slicing up monsters");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Parrying. It negates damage.");
+			player.sendMessage(ChatColor.GRAY+"Chance to parry scales with skill.");
+    	}
+    	if(split[0].equalsIgnoreCase("/acrobatics")){
+			event.setCancelled(true);
+			player.sendMessage(ChatColor.GREEN+"~~ACROBATICS INFO~~");
+			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Spraining ankles.");
+			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
+			player.sendMessage(ChatColor.GRAY+"Rolling. Negates fall damage.");
+			player.sendMessage(ChatColor.GRAY+"Chance to roll scales with skill.");
+    	}
     	if(split[0].equalsIgnoreCase("/mining")){
 			event.setCancelled(true);
 			player.sendMessage(ChatColor.GREEN+"~~MINING INFO~~");
@@ -279,6 +307,9 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.GRAY+"/unarmed - displays info about the skill");
     		player.sendMessage(ChatColor.GRAY+"/herbalism - displays info about the skill");
     		player.sendMessage(ChatColor.GRAY+"/excavation - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/archery - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/swords - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/acrobatics - displays info about the skill");
     	}
     	if(mcUsers.getProfile(player).inParty() && split[0].equalsIgnoreCase("/ptp")){
     		event.setCancelled(true);
@@ -327,7 +358,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Excavation Skill: "+mcUsers.getProfile(target).getExcavation());
     		player.sendMessage("Archery Skill: "+mcUsers.getProfile(target).getArchery());
     		player.sendMessage("Swords Skill: "+mcUsers.getProfile(target).getSwords());
-    		player.sendMessage("Axes Skill: "+mcUsers.getProfile(target).getAxes());
+    		//player.sendMessage("Axes Skill: "+mcUsers.getProfile(target).getAxes());
     		player.sendMessage("Acrobatics Skill: "+mcUsers.getProfile(target).getAcrobatics());
     		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
     		player.sendMessage("X: "+x);
@@ -358,7 +389,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.DARK_GREEN + "Excavation Skill: " + mcUsers.getProfile(player).getExcavation());
     		player.sendMessage(ChatColor.DARK_GREEN + "Archery Skill: " + mcUsers.getProfile(player).getArchery());
     		player.sendMessage(ChatColor.DARK_GREEN + "Swords Skill: " + mcUsers.getProfile(player).getSwords());
-    		player.sendMessage(ChatColor.DARK_GREEN + "Axes Skill: " + mcUsers.getProfile(player).getAxes());
+    		//player.sendMessage(ChatColor.DARK_GREEN + "Axes Skill: " + mcUsers.getProfile(player).getAxes());
     		player.sendMessage(ChatColor.DARK_GREEN + "Acrobatics Skill: " + mcUsers.getProfile(player).getAcrobatics());
     	}
     	//Party command
@@ -452,10 +483,6 @@ public class mcPlayerListener extends PlayerListener {
     public void onItemHeldChange(PlayerItemHeldEvent event) {
     	Player player = event.getPlayer();
     }
-	private Block getBlockAt(int x, int y, int z) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	public void onPlayerChat(PlayerChatEvent event) {
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");
@@ -463,6 +490,7 @@ public class mcPlayerListener extends PlayerListener {
     	String y = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getName() + ChatColor.AQUA + "} ";
     	if(mcConfig.getInstance().isPartyToggled(player.getName())){
     		event.setCancelled(true);
+    		log.log(Level.INFO, "[P]("+mcUsers.getProfile(player).getParty()+")"+"<"+player.getName()+"> "+event.getMessage());
     		for(Player herp : plugin.getServer().getOnlinePlayers()){
     			if(mcUsers.getProfile(herp).inParty()){
     			if(mcm.getInstance().inSameParty(herp, player)){
@@ -473,6 +501,7 @@ public class mcPlayerListener extends PlayerListener {
     		return;
     	}
     	if((player.isOp() || mcPermissions.getInstance().adminChat(player)) && mcConfig.getInstance().isAdminToggled(player.getName())){
+    		log.log(Level.INFO, "[A]"+"<"+player.getName()+"> "+event.getMessage());
     		event.setCancelled(true);
     		for(Player herp : plugin.getServer().getOnlinePlayers()){
     			if(herp.isOp()){

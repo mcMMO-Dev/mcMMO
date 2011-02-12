@@ -584,10 +584,11 @@ public class mcEntityListener extends EntityListener {
     			player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by 2. Total ("+mcUsers.getProfile(player).getAcrobatics()+")");
     		}
     		if(event.getDamage() >= 19){
-        		mcUsers.getProfile(player).skillUpAcrobatics(6);
-    			player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by 6. Total ("+mcUsers.getProfile(player).getAcrobatics()+")");
+        		mcUsers.getProfile(player).skillUpAcrobatics(3);
+    			player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by 3. Total ("+mcUsers.getProfile(player).getAcrobatics()+")");
     		}
     		}
+    		mcConfig.getInstance().addBlockWatch(loc.getWorld().getBlockAt(xx, y, z));
     		if(player.getHealth() - event.getDamage() <= 0){
     			if(mcUsers.getProfile(player).isDead())
         			return;
@@ -596,7 +597,6 @@ public class mcEntityListener extends EntityListener {
     				bidoof.sendMessage(ChatColor.GRAY+player.getName()+" has "+ChatColor.DARK_RED+"fallen "+ChatColor.GRAY+"to death.");
     			}
     		}
-    		mcConfig.getInstance().addBlockWatch(loc.getWorld().getBlockAt(xx, y, z));
     		}
     	if(type == DamageCause.DROWNING){
     		if(mcUsers.getProfile(player).isDead())
@@ -618,6 +618,16 @@ public class mcEntityListener extends EntityListener {
     			}
     		}
     	}
+    	if(type == DamageCause.LAVA){
+    		if(mcUsers.getProfile(player).isDead())
+    			return;
+    		if(player.getHealth() - event.getDamage() <= 0){
+    			mcUsers.getProfile(player).setDead(true);
+    			for(Player slipslap : plugin.getServer().getOnlinePlayers()){
+    				slipslap.sendMessage(ChatColor.GRAY+player.getName()+" has "+ChatColor.RED+"melted "+ChatColor.GRAY+".");
+    			}
+    		}
+    	}
     	}
     }
     public void onEntityDeath(EntityDeathEvent event) {
@@ -625,10 +635,11 @@ public class mcEntityListener extends EntityListener {
     	if(x instanceof Player){
     		Player player = (Player)x;
     		if(mcUsers.getProfile(player).isDead()){
-    			return;
+    			 mcUsers.getProfile(player).setDead(false);
+    			 return;
     		}
     		for(Player derp : plugin.getServer().getOnlinePlayers()){
-    			derp.sendMessage(ChatColor.GRAY+player.getName()+" has died.");
+    		derp.sendMessage(ChatColor.GRAY+player.getName()+" has died.");
     		}
     	}
     }
