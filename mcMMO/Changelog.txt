@@ -1,0 +1,106 @@
+Changelog:
+#Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.5.8
+
+    Fixed bug where players inventories would dupe during combat
+    
+Version 0.5.7
+
+    Fixed monsters instant killing players
+    Misc fixes
+Version 0.5.4
+
+    Changed herbalism skill gain from wheat to be WAAAAY slower
+
+Version 0.5.3
+
+    Players will now correctly drop their inventories when killed by a monster
+
+Version 0.5.2
+
+    Fixed MAJOR bug preventing swords skill from gaining through combat
+
+Version 0.5
+
+    Archery Added
+    Swords Added
+    Acrobatics Added
+    Logging for Party/Admin chat added
+    Fixed whois to show correct values for Excavation
+    Made death messages much much more specific
+
+Version 0.4.4
+
+    Fixed being able to repair full durability iron tools
+    Fixed herbalism benefits not behaving properly
+    Fixed removing 1 diamond from every stack of diamond when repairing diamond
+
+Version 0.4.2
+
+    Removed myspawn from the motd
+
+Version 0.4.1
+
+    Fixed /mcc showing incorrect command for herbalism
+    Changed unarmed skillrate to be much slower than before
+    Modified a few skill descriptions
+    Added permission for /whois
+    Players can now use admin chat without being op as long as they have the correct permission (requires Permissions)
+
+Version 0.4
+
+    Permissions support
+    Removed OPs having different names than normal players
+    Removed /setspawn & /spawn
+    Slowed down excavation skill rate
+    Fixed excavation coal drop being too rare
+
+Version 0.3.4
+
+    Creepers now give double xp for unarmed
+    Iron armor can now be repaired!
+    Fixed bug stopping items from being repaired
+
+Version 0.3.3
+
+    Yet another herbalism skill gain tweak
+
+Version 0.3.2
+
+    Changed excavation loot tables to be more rewarding
+    Changed sand to give normal excavation xp instead of double xp
+    Fixed herbalism skill exploit
+    Mobs killed with unarmed now drop loot properly
+    Unarmed xp rate depends on mob (zombies lowest fyi)
+    Huge player crashing bug fix on disarm!
+
+Version 0.3.1
+
+    Fixed excavation not saving properly
+    Fixed repair using excavation values
+
+Version 0.3
+
+    Unarmed skill
+    Herbalism skill
+    Excavation skill
+    Many bugfixes (thanks for reporting them!)
+    /<skillname> - Detailed information about skills in game
+
+Version 0.2.1
+
+    Misc bugfixes
+
+Version 0.2
+
+    Repair ability added
+    Repair skill added
+    Iron Armor repair temporarily disabled
+    Anvils (Iron Block) added
+    /mcmmo & /mcc added
+    Misc changes to existing commands
+    Misc bug fixes
+
+Version 0.1
+
+    Releasing my awesome plugin

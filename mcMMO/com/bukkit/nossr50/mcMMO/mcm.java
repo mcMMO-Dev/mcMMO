@@ -451,10 +451,6 @@ public class mcm {
 				 * Make the defender drop items on death
 				 */
 				if(defender.getHealth() <= 0){
-					for(ItemStack i : defender.getInventory().getContents()){
-						if(i != null && i.getTypeId() != 0)
-						defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), i);
-					}
     				for(Player derp : plugin.getServer().getOnlinePlayers()){
     					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName());
     					mcUsers.getProfile(defender).setDead(true);
@@ -838,6 +834,7 @@ public class mcm {
     		player.sendMessage(ChatColor.GRAY+"/party q - to quit a party");
     		player.sendMessage(ChatColor.GRAY+"/ptp <name> - party teleport");
     		player.sendMessage(ChatColor.GRAY+"/p - toggles party chat");
+    		player.sendMessage(ChatColor.GREEN+"/stats"+ChatColor.GRAY+" - Check current skill levels");
     		player.sendMessage(ChatColor.GRAY+"/setmyspawn - set your own spawn location");
     		player.sendMessage(ChatColor.GRAY+"/myspawn - travel to myspawn, clears inventory");
     		player.sendMessage(ChatColor.GRAY+"/whois - view detailed info about a player (req op)");

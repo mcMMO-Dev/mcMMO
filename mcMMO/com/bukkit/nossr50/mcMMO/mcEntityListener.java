@@ -66,12 +66,6 @@ public class mcEntityListener extends EntityListener {
     		 * CHECKS IF THE PLAYER DIES, IF SO DROP HIS SHIT BECAUSE OF THE DAMAGE MODIFIERS
     		 * MIGHT BE A BIT BUGGY, IT SEEMS TO WORK RIGHT NOW AT LEAST...
     		 */
-    		if(defender.getHealth() - event.getDamage() <= 0){
-				for(ItemStack i : defender.getInventory().getContents()){
-					if(i != null && i.getTypeId() != 0)
-					defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), i);
-				}
-			}
     	}
     	/*
     	 * IF ATTACKER IS PLAYER
@@ -211,10 +205,6 @@ public class mcEntityListener extends EntityListener {
     					if(mcUsers.getProfile(defender).isDead())
             				return;
     					if(defender.getHealth() <= 0){
-        					for(ItemStack i : defender.getInventory().getContents()){
-        						if(i != null && i.getTypeId() != 0)
-        						defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), i);
-        					}
             				for(Player derp : plugin.getServer().getOnlinePlayers()){
             					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName() + " with an arrow.");
             					mcUsers.getProfile(defender).setDead(true);
@@ -339,6 +329,10 @@ public class mcEntityListener extends EntityListener {
     	Entity x = event.getEntity();
     	if(x instanceof Player){
     		Player player = (Player)x;
+				for(ItemStack i : player.getInventory().getContents()){
+					if(i != null && i.getTypeId() != 0)
+					player.getLocation().getWorld().dropItemNaturally(player.getLocation(), i);
+				}
     		if(mcUsers.getProfile(player).isDead()){
     			 mcUsers.getProfile(player).setDead(false);
     			 return;
