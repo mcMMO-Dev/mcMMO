@@ -1,5 +1,21 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.5.15
+	Fixed stone swords not being recognized as swords
+	Fixed /a not working if you were an op but did not have permissions
+	
+Version 0.5.14
+	Added permissions for skills
+
+Version 0.5.13
+
+	Removed skillgain from succesful parries
+	Repair now refreshed the inventory
+	
+Version 0.5.12
+
+	Fixed being able to hurt party members with the bow and arrow
+	
 Version 0.5.11
 
 	Added /mmoedit command

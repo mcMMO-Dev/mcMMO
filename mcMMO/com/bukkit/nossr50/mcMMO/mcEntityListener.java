@@ -110,6 +110,7 @@ public class mcEntityListener extends EntityListener {
     	 */
     	if(y instanceof Player){
     		Player attacker = (Player)y;
+    		if(mcPermissions.getInstance().archery(attacker)){
     		/*
     		 * Defender is Monster
     		 */
@@ -177,6 +178,12 @@ public class mcEntityListener extends EntityListener {
     			/*
     			 * Stuff for the daze proc
     			 */
+    	    		if(mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
+    					if(mcm.getInstance().inSameParty(defender, attacker)){
+    						event.setCancelled(true);
+    						return;
+    					}
+    	    		}
     				Location loc = defender.getLocation();
     				if(Math.random() * 10 > 5){
 					loc.setPitch(90);
@@ -214,9 +221,9 @@ public class mcEntityListener extends EntityListener {
     					if(mcUsers.getProfile(defender).isDead())
             				return;
     					if(defender.getHealth() <= 0){
+    						mcUsers.getProfile(defender).setDead(true);
             				for(Player derp : plugin.getServer().getOnlinePlayers()){
             					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName() + " with an arrow.");
-            					mcUsers.getProfile(defender).setDead(true);
             				}
             			}
     				}
@@ -231,7 +238,7 @@ public class mcEntityListener extends EntityListener {
     				}
     			}
     		}
-    	
+    	}
     	}
     public void onEntityDamage(EntityDamageEvent event) {
     	Entity x = event.getEntity();
@@ -243,42 +250,52 @@ public class mcEntityListener extends EntityListener {
     	int y = loc.getBlockY();
     	int z = loc.getBlockZ();
     	if(type == DamageCause.FALL){
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 50 && mcUsers.getProfile(player).getAcrobaticsInt() < 250 ){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 50 
+    				&& mcUsers.getProfile(player).getAcrobaticsInt() < 250
+    				&& mcPermissions.getInstance().acrobatics(player)){
     			if(Math.random() * 10 > 8){
     				event.setCancelled(true);
     				player.sendMessage("**ROLLED**");
     				return;
     			}
     		}
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 250 && mcUsers.getProfile(player).getAcrobaticsInt() < 450 ){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 250 
+    				&& mcUsers.getProfile(player).getAcrobaticsInt() < 450 
+    				&& mcPermissions.getInstance().acrobatics(player)){
     			if(Math.random() * 10 > 6){
     				event.setCancelled(true);
     				player.sendMessage("**ROLLED**");
     				return;
     			}
     		}
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 450 && mcUsers.getProfile(player).getAcrobaticsInt() < 750 ){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 450 
+    				&& mcUsers.getProfile(player).getAcrobaticsInt() < 750 
+    				&& mcPermissions.getInstance().acrobatics(player)){
     			if(Math.random() * 10 > 4){
     				event.setCancelled(true);
     				player.sendMessage("**ROLLED**");
     				return;
     			}
     		}
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 750 && mcUsers.getProfile(player).getAcrobaticsInt() < 950 ){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 750 
+    				&& mcUsers.getProfile(player).getAcrobaticsInt() < 950 
+    				&& mcPermissions.getInstance().acrobatics(player)){
     			if(Math.random() * 10 > 2){
     				event.setCancelled(true);
     				player.sendMessage("**BARREL ROLLED**");
     				return;
     			}
     		}
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 950){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 950
+    				&& mcPermissions.getInstance().acrobatics(player)){
     				event.setCancelled(true);
     				player.sendMessage("**ROLLED... LIKE A BOSS**");
     				return;
     			}
     		if(player.getHealth() - event.getDamage() <= 0)
     			return;
-    		if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z))){
+    		if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z)) 
+    				&& mcPermissions.getInstance().acrobatics(player)){
     		if(event.getDamage() >= 2 && event.getDamage() < 6){
     		mcUsers.getProfile(player).skillUpAcrobatics(1);
     		player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by 1. Total ("+mcUsers.getProfile(player).getAcrobatics()+")");

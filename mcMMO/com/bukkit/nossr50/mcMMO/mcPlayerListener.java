@@ -90,12 +90,16 @@ public class mcPlayerListener extends PlayerListener {
     	Block block = event.getBlockClicked();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
+    	if(mcPermissions.getInstance().herbalism(player)){
     	//BREADCHECK, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
     	mcm.getInstance().breadCheck(player, is);
     	//STEW, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
     	mcm.getInstance().stewCheck(player, is);
+    	}
+    	if(mcPermissions.getInstance().repair(player)){
     	//REPAIRCHECK, CHECKS TO MAKE SURE PLAYER IS RIGHT CLICKING AN ANVIL, PLAYER HAS ENOUGH RESOURCES, AND THE ITEM IS NOT AT FULL DURABILITY.
     	mcm.getInstance().repairCheck(player, is, block);
+    	}
     }
   
     public void onPlayerCommand(PlayerChatEvent event) {
@@ -277,7 +281,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     	if(split[0].equalsIgnoreCase("/a") && (player.isOp() || mcPermissions.getInstance().adminChat(player))){
-    		if(!mcPermissions.getInstance().adminChat(player)){
+    		if(!mcPermissions.getInstance().adminChat(player) && !player.isOp()){
     			player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +" Insufficient permissions.");
     			return;
     		}
@@ -327,7 +331,8 @@ public class mcPlayerListener extends PlayerListener {
     		}
     		return;
     	}
-    	if((player.isOp() || mcPermissions.getInstance().adminChat(player)) && mcConfig.getInstance().isAdminToggled(player.getName())){
+    	if((player.isOp() || mcPermissions.getInstance().adminChat(player)) 
+    			&& mcConfig.getInstance().isAdminToggled(player.getName())){
     		log.log(Level.INFO, "[A]"+"<"+player.getName()+"> "+event.getMessage());
     		event.setCancelled(true);
     		for(Player herp : plugin.getServer().getOnlinePlayers()){

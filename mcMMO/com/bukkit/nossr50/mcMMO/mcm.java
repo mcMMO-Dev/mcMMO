@@ -421,7 +421,7 @@ public class mcm {
 			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
 		}
     public boolean isSwords(ItemStack is){
-    	if(is.getTypeId() == 268 || is.getTypeId() == 267 || is.getTypeId() == 271 || is.getTypeId() == 283 || is.getTypeId() == 276){
+    	if(is.getTypeId() == 268 || is.getTypeId() == 267 || is.getTypeId() == 272 || is.getTypeId() == 283 || is.getTypeId() == 276){
     		return true;
     	} else {
     		return false;
@@ -525,7 +525,7 @@ public class mcm {
     public void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
     	if(x instanceof Squid){
 			Squid defender = (Squid)event.getEntity();
-			if(isSwords(attacker.getItemInHand()) && defender.getHealth() > 0){
+			if(isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
 				if(Math.random() * 10 > 9){
 					mcUsers.getProfile(attacker).skillUpSwords(1);
 					attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(attacker).getSwords()+")");
@@ -534,7 +534,7 @@ public class mcm {
 			/*
 			 * UNARMED VS SQUID
 			 */
-			if(type == 0){
+			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
     			if(defender.getHealth() <= 0)
     				return;
     			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
@@ -568,7 +568,7 @@ public class mcm {
     }
     public void playerVersusAnimalsChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, int type){
     	if(x instanceof Animals){
-			if(type == 0){
+			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
 			Animals defender = (Animals)event.getEntity();
 			if(defender.getHealth() <= 0)
 				return;
@@ -631,13 +631,15 @@ public class mcm {
     public void playerVersusMonsterChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
     	if(x instanceof Monster){
 			Monster defender = (Monster)event.getEntity();
-			if(isSwords(attacker.getItemInHand()) && defender.getHealth() > 0){
+			if(isSwords(attacker.getItemInHand()) 
+					&& defender.getHealth() > 0 
+					&& mcPermissions.getInstance().swords(attacker)){
 				if(Math.random() * 10 > 9){
 					mcUsers.getProfile(attacker).skillUpSwords(1);
 					attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(attacker).getSwords()+")");
 				}
 			}
-			if(type == 0){
+			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
 			if(defender.getHealth() <= 0)
 				return;
 			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
@@ -724,14 +726,14 @@ public class mcm {
     	}
     }
     public void parryCheck(Player defender, EntityDamageByEntityEvent event, Entity y){
-    	if(isSwords(defender.getItemInHand())){
+    	if(isSwords(defender.getItemInHand()) 
+    			&& event.getDamage() > 0 
+    			&& mcPermissions.getInstance().swords(defender)){
 			if(mcUsers.getProfile(defender).getSwordsInt() >= 50 && mcUsers.getProfile(defender).getSwordsInt() < 250){
-				if(Math.random() * 10 > 8){
+				if(Math.random() * 100 > 95){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
 					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
-					mcUsers.getProfile(defender).skillUpSwords(1);
-					defender.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(defender).getSwords()+")");
 					if(y instanceof Player){
 						Player attacker = (Player)y;
 						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
@@ -740,12 +742,10 @@ public class mcm {
 				}
 			}
 			if(mcUsers.getProfile(defender).getSwordsInt() >= 250 && mcUsers.getProfile(defender).getSwordsInt() < 450){
-				if(Math.random() * 10 > 6){
+				if(Math.random() * 100 > 90){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
 					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
-					mcUsers.getProfile(defender).skillUpSwords(1);
-					defender.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(defender).getSwords()+")");
 					if(y instanceof Player){
 						Player attacker = (Player)y;
 						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
@@ -754,12 +754,10 @@ public class mcm {
 				}
 			}
 			if(mcUsers.getProfile(defender).getSwordsInt() >= 450 && mcUsers.getProfile(defender).getSwordsInt() < 775){
-				if(Math.random() * 10 > 5){
+				if(Math.random() * 100 > 85){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
 					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
-					mcUsers.getProfile(defender).skillUpSwords(1);
-					defender.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(defender).getSwords()+")");
 					if(y instanceof Player){
 						Player attacker = (Player)y;
 						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
@@ -768,7 +766,7 @@ public class mcm {
 				}
 			}
 			if(mcUsers.getProfile(defender).getSwordsInt() >= 775){
-				if(Math.random() * 10 > 4){
+				if(Math.random() * 100 > 80){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
 					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
@@ -913,7 +911,9 @@ public class mcm {
     	}
     }
     public void repairCheck(Player player, ItemStack is, Block block){
-    	if(block != null && block.getTypeId() == 42){
+    	if(block != null 
+    			&& block.getTypeId() == 42 
+    			&& mcPermissions.getInstance().repair(player)){
         	short durability = is.getDurability();
         	if(player.getItemInHand().getDurability() > 0){
         		/*
@@ -956,6 +956,7 @@ public class mcm {
         	} else {
         		player.sendMessage("That is at full durability.");
         	}
+        	player.updateInventory();
         	} //end if block is iron block bracket
     }
     public void herbalismProcCheck(Block block, Player player){

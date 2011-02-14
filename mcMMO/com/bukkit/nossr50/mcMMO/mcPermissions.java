@@ -98,4 +98,67 @@ public class mcPermissions {
     	}
     	return instance;
     	}
+    public boolean mining(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.mining");
+        } else {
+            return true;
+        }
+    }
+    public boolean woodcutting(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.woodcutting");
+        } else {
+            return true;
+        }
+    }
+    public boolean repair(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.repair");
+        } else {
+            return true;
+        }
+    }
+    public boolean unarmed(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.unarmed");
+        } else {
+            return true;
+        }
+    }
+    public boolean archery(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.archery");
+        } else {
+            return true;
+        }
+    }
+    public boolean herbalism(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.herbalism");
+        } else {
+            return true;
+        }
+    }
+    public boolean excavation(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.excavation");
+        } else {
+            return true;
+        }
+    }
+    public boolean swords(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.swords");
+        } else {
+            return true;
+        }
+    }
+    public boolean acrobatics(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.acrobatics");
+        } else {
+            return true;
+        }
+    }
 }
