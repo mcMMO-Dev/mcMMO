@@ -37,12 +37,14 @@ public class mcEntityListener extends EntityListener {
     	if(block != null && block.getTypeId() == 81){
     		if(mcUsers.getProfile(player).isDead())
     			return;
+    		/*
     		if(player.getHealth() - event.getDamage() <= 0){
     			mcUsers.getProfile(player).setDead(true);
     			for(Player bidoof : plugin.getServer().getOnlinePlayers()){
     				bidoof.sendMessage(ChatColor.GRAY+player.getName()+" has been"+ChatColor.DARK_GREEN+" cactus tickled "+ChatColor.GRAY+"to death.");
     			}
     		}
+    		*/
     	}
     	}
     	}
@@ -66,6 +68,7 @@ public class mcEntityListener extends EntityListener {
     		 * CHECKS IF THE PLAYER DIES, IF SO DROP HIS SHIT BECAUSE OF THE DAMAGE MODIFIERS
     		 * MIGHT BE A BIT BUGGY, IT SEEMS TO WORK RIGHT NOW AT LEAST...
     		 */
+
     	}
     	/*
     	 * IF ATTACKER IS PLAYER
@@ -112,16 +115,16 @@ public class mcEntityListener extends EntityListener {
     		 */
     		if(x instanceof Monster){
     			Monster defender = (Monster)x;
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 150)
-    				defender.setHealth(defender.getHealth() - 1);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 150 && mcUsers.getProfile(attacker).getArcheryInt() < 375)
-    				defender.setHealth(defender.getHealth() - 2);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 375 && mcUsers.getProfile(attacker).getArcheryInt() < 525)
-    				defender.setHealth(defender.getHealth() - 3);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 525 && mcUsers.getProfile(attacker).getArcheryInt() < 800)
-    				defender.setHealth(defender.getHealth() - 4);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 800 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
-    				defender.setHealth(defender.getHealth() - 6);
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 1));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 2));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 3));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 4));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 5));
     			if(defender.getHealth() <= 0)
     				mcm.getInstance().simulateNaturalDrops(defender);
     			//XP
@@ -135,16 +138,16 @@ public class mcEntityListener extends EntityListener {
     		 */
     		if(x instanceof Animals){
     			Animals defender = (Animals)x;
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 150)
-    				defender.setHealth(defender.getHealth() - 1);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 150 && mcUsers.getProfile(attacker).getArcheryInt() < 375)
-    				defender.setHealth(defender.getHealth() - 2);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 375 && mcUsers.getProfile(attacker).getArcheryInt() < 525)
-    				defender.setHealth(defender.getHealth() - 3);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 525 && mcUsers.getProfile(attacker).getArcheryInt() < 800)
-    				defender.setHealth(defender.getHealth() - 4);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 800 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
-    				defender.setHealth(defender.getHealth() - 6);
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 1));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 2));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 3));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 4));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 5));
     			if(defender.getHealth() <= 0)
     				mcm.getInstance().simulateNaturalDrops(defender);
     			}
@@ -153,16 +156,16 @@ public class mcEntityListener extends EntityListener {
     		 */
     		if(x instanceof Squid){
     			Squid defender = (Squid)x;
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 150)
-    				defender.setHealth(defender.getHealth() - 1);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 150 && mcUsers.getProfile(attacker).getArcheryInt() < 375)
-    				defender.setHealth(defender.getHealth() - 2);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 375 && mcUsers.getProfile(attacker).getArcheryInt() < 525)
-    				defender.setHealth(defender.getHealth() - 3);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 525 && mcUsers.getProfile(attacker).getArcheryInt() < 800)
-    				defender.setHealth(defender.getHealth() - 4);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 800 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
-    				defender.setHealth(defender.getHealth() - 6);
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 1));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 2));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 3));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 4));
+    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 5));
     			if(defender.getHealth() <= 0)
     				mcm.getInstance().simulateNaturalDrops(defender);
     			}
@@ -171,36 +174,42 @@ public class mcEntityListener extends EntityListener {
     		 */
     		if(x instanceof Player){
     			Player defender = (Player)x;
+    			/*
+    			 * Stuff for the daze proc
+    			 */
     				Location loc = defender.getLocation();
     				if(Math.random() * 10 > 5){
 					loc.setPitch(90);
 					} else {
 						loc.setPitch(-90);
 					}
-					if(mcUsers.getProfile(attacker).getArcheryInt() >= 200 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
+    				/*
+    				 * Check the proc
+    				 */
+					if(mcUsers.getProfile(attacker).getArcheryInt() >= 300 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
     				if(Math.random() * 10 > 7){
     					defender.teleportTo(loc);
     					defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
     					attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
     				}
 					}
-					if(mcUsers.getProfile(attacker).getArcheryInt() >= 400){
+					if(mcUsers.getProfile(attacker).getArcheryInt() >= 600){
 	    				if(Math.random() * 10 > 4){
 	    					defender.teleportTo(loc);
 	    					defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
 	    					attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
 	    				}
 						}
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 150)
-    				defender.setHealth(defender.getHealth() - 1);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 150 && mcUsers.getProfile(attacker).getArcheryInt() < 375)
-    				defender.setHealth(defender.getHealth() - 2);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 375 && mcUsers.getProfile(attacker).getArcheryInt() < 525)
-    				defender.setHealth(defender.getHealth() - 3);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 525 && mcUsers.getProfile(attacker).getArcheryInt() < 800)
-    				defender.setHealth(defender.getHealth() - 4);
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 800 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
-    				defender.setHealth(defender.getHealth() - 6);
+					if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
+	    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 1));
+	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
+	    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 2));
+	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
+	    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 3));
+	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
+	    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 4));
+	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+	    				defender.setHealth(mcm.getInstance().calculateDamage(defender, 5));
     				if(defender.getHealth() >= 0){
     					if(mcUsers.getProfile(defender).isDead())
             				return;
@@ -216,7 +225,7 @@ public class mcEntityListener extends EntityListener {
     				return;
     			if(defender.getHealth() - event.getDamage() <= 0){
     				for(Player derp : plugin.getServer().getOnlinePlayers()){
-    					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName() + " with an arrow.");
+    					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName() + " with the bow and arrow.");
     					mcUsers.getProfile(defender).setDead(true);
     				}
     				}
@@ -234,35 +243,35 @@ public class mcEntityListener extends EntityListener {
     	int y = loc.getBlockY();
     	int z = loc.getBlockZ();
     	if(type == DamageCause.FALL){
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 50 && mcUsers.getProfile(player).getAcrobaticsInt() < 150 ){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 50 && mcUsers.getProfile(player).getAcrobaticsInt() < 250 ){
     			if(Math.random() * 10 > 8){
     				event.setCancelled(true);
     				player.sendMessage("**ROLLED**");
     				return;
     			}
     		}
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 150 && mcUsers.getProfile(player).getAcrobaticsInt() < 250 ){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 250 && mcUsers.getProfile(player).getAcrobaticsInt() < 450 ){
     			if(Math.random() * 10 > 6){
     				event.setCancelled(true);
     				player.sendMessage("**ROLLED**");
     				return;
     			}
     		}
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 250 && mcUsers.getProfile(player).getAcrobaticsInt() < 350 ){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 450 && mcUsers.getProfile(player).getAcrobaticsInt() < 750 ){
     			if(Math.random() * 10 > 4){
     				event.setCancelled(true);
     				player.sendMessage("**ROLLED**");
     				return;
     			}
     		}
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 350 && mcUsers.getProfile(player).getAcrobaticsInt() < 450 ){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 750 && mcUsers.getProfile(player).getAcrobaticsInt() < 950 ){
     			if(Math.random() * 10 > 2){
     				event.setCancelled(true);
     				player.sendMessage("**BARREL ROLLED**");
     				return;
     			}
     		}
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 450){
+    		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 950){
     				event.setCancelled(true);
     				player.sendMessage("**ROLLED... LIKE A BOSS**");
     				return;
@@ -303,6 +312,7 @@ public class mcEntityListener extends EntityListener {
     			}
     		}
     	}
+    	/*
     	if(type == DamageCause.FIRE || type == DamageCause.FIRE_TICK){
     		if(mcUsers.getProfile(player).isDead())
     			return;
@@ -313,6 +323,7 @@ public class mcEntityListener extends EntityListener {
     			}
     		}
     	}
+    	*/
     	if(type == DamageCause.LAVA){
     		if(mcUsers.getProfile(player).isDead())
     			return;
@@ -329,10 +340,6 @@ public class mcEntityListener extends EntityListener {
     	Entity x = event.getEntity();
     	if(x instanceof Player){
     		Player player = (Player)x;
-				for(ItemStack i : player.getInventory().getContents()){
-					if(i != null && i.getTypeId() != 0)
-					player.getLocation().getWorld().dropItemNaturally(player.getLocation(), i);
-				}
     		if(mcUsers.getProfile(player).isDead()){
     			 mcUsers.getProfile(player).setDead(false);
     			 return;

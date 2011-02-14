@@ -54,6 +54,43 @@ public class mcm {
     		}
     	}
     }
+    public boolean isSkill(String skillname){
+			if(skillname.equals("mining")){
+				return true;
+			}
+			else if(skillname.equals("woodcutting")){
+				return true;
+			}
+			else if(skillname.equals("repair")){
+				return true;
+			}
+			else if(skillname.equals("herbalism")){
+				return true;
+			}
+			else if(skillname.equals("acrobatics")){
+				return true;
+			}
+			else if(skillname.equals("swords")){
+				return true;
+			}
+			else if(skillname.equals("archery")){
+				return true;
+			}
+			else if(skillname.equals("unarmed")){
+				 return true;
+			} else {
+				return false;
+			}
+    }
+    public boolean isInt(String string){
+		try {
+		    int x = Integer.parseInt(string);
+		}
+		catch(NumberFormatException nFE) {
+		    return false;
+		}
+		return true;
+	}
     public void simulateNaturalDrops(Entity entity){
     	Location loc = entity.getLocation();
     	if(entity instanceof Pig){
@@ -404,10 +441,15 @@ public class mcm {
     }
     public void playerVersusPlayerChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, Plugin plugin){
     	if(x instanceof Player){
-			Player defender = (Player)x;
+    		Player defender = (Player)x;
+    		if(mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
+				if(inSameParty(defender, attacker)){
+					event.setCancelled(true);
+					return;
+				}
+    		}
 			if(attacker.getItemInHand().getTypeId() == 0){
 				//DMG MODIFIER
-				if((mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty())&& !mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty()) && !mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty())) {
 				if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
 					defender.setHealth(calculateDamage(defender, 1));
 				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
@@ -436,27 +478,35 @@ public class mcm {
 				}
 				//PROC
 				if(simulateUnarmedProc(attacker)){
-					attacker.sendMessage(ChatColor.DARK_RED+"You have hit with great force.");
 					Location loc = defender.getLocation();
 					if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0){
+					attacker.sendMessage(ChatColor.DARK_RED+"You have hit with great force.");
+					defender.sendMessage(ChatColor.DARK_RED+"You have been disarmed!");
 					ItemStack item = defender.getItemInHand();
 					if(item != null){
 					loc.getWorld().dropItemNaturally(loc, item);
-					item.setTypeId(0);
-					item.setAmount(0);
+					Material mat;
+					mat = Material.getMaterial(0);
+					ItemStack itemx = null;
+					defender.setItemInHand(itemx);
 					}
 					}
 				}
 				/*
 				 * Make the defender drop items on death
 				 */
-				if(defender.getHealth() <= 0){
+				if(defender.getHealth()<= 0 && !mcUsers.getProfile(defender).isDead()){
+					mcUsers.getProfile(defender).setDead(true);
+					event.setCancelled(true); //SEE IF THIS HELPS
+					for(ItemStack herp : defender.getInventory().getContents()){
+						if(herp != null && herp.getTypeId() != 0)
+						defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), herp);
+					}
     				for(Player derp : plugin.getServer().getOnlinePlayers()){
     					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"slain "+ChatColor.GRAY+defender.getName());
     					mcUsers.getProfile(defender).setDead(true);
     				}
     			}
-				}
 				return;
 			}
 			if(mcUsers.getProfile(defender).isDead())
@@ -686,6 +736,7 @@ public class mcm {
 						Player attacker = (Player)y;
 						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
 					}
+					return;
 				}
 			}
 			if(mcUsers.getProfile(defender).getSwordsInt() >= 250 && mcUsers.getProfile(defender).getSwordsInt() < 450){
@@ -699,6 +750,7 @@ public class mcm {
 						Player attacker = (Player)y;
 						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
 					}
+					return;
 				}
 			}
 			if(mcUsers.getProfile(defender).getSwordsInt() >= 450 && mcUsers.getProfile(defender).getSwordsInt() < 775){
@@ -712,6 +764,7 @@ public class mcm {
 						Player attacker = (Player)y;
 						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
 					}
+					return;
 				}
 			}
 			if(mcUsers.getProfile(defender).getSwordsInt() >= 775){
@@ -723,6 +776,7 @@ public class mcm {
 						Player attacker = (Player)y;
 						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
 					}
+					return;
 				}
 			}
 		}
@@ -830,23 +884,32 @@ public class mcm {
     		event.setCancelled(true);
     		player.sendMessage(ChatColor.GRAY+"mcMMO has a party system included");
     		player.sendMessage(ChatColor.GREEN+"~~Commands~~");
+    		if(mcPermissions.getInstance().party(player)){
     		player.sendMessage(ChatColor.GRAY+"/party <name> - to join a party");
     		player.sendMessage(ChatColor.GRAY+"/party q - to quit a party");
+    		}
+    		if(mcPermissions.getInstance().partyTeleport(player))
     		player.sendMessage(ChatColor.GRAY+"/ptp <name> - party teleport");
+    		if(mcPermissions.getInstance().partyChat(player))
     		player.sendMessage(ChatColor.GRAY+"/p - toggles party chat");
     		player.sendMessage(ChatColor.GREEN+"/stats"+ChatColor.GRAY+" - Check current skill levels");
-    		player.sendMessage(ChatColor.GRAY+"/setmyspawn - set your own spawn location");
+    		if(mcPermissions.getInstance().setMySpawn(player))
+    		player.sendMessage(ChatColor.GRAY+"/setmyspawn - Skill info");
+    		if(mcPermissions.getInstance().mySpawn(player))
     		player.sendMessage(ChatColor.GRAY+"/myspawn - travel to myspawn, clears inventory");
+    		if(mcPermissions.getInstance().whois(player) || player.isOp())
     		player.sendMessage(ChatColor.GRAY+"/whois - view detailed info about a player (req op)");
-    		player.sendMessage(ChatColor.GRAY+"/woodcutting - displays info about the skill");
-    		player.sendMessage(ChatColor.GRAY+"/mining - displays info about the skill");
-    		player.sendMessage(ChatColor.GRAY+"/repair - displays info about the skill");
-    		player.sendMessage(ChatColor.GRAY+"/unarmed - displays info about the skill");
-    		player.sendMessage(ChatColor.GRAY+"/herbalism - displays info about the skill");
-    		player.sendMessage(ChatColor.GRAY+"/excavation - displays info about the skill");
-    		player.sendMessage(ChatColor.GRAY+"/archery - displays info about the skill");
-    		player.sendMessage(ChatColor.GRAY+"/swords - displays info about the skill");
-    		player.sendMessage(ChatColor.GRAY+"/acrobatics - displays info about the skill");
+    		player.sendMessage(ChatColor.GRAY+"/woodcutting - Skill info");
+    		player.sendMessage(ChatColor.GRAY+"/mining - Skill info");
+    		player.sendMessage(ChatColor.GRAY+"/repair - Skill info");
+    		player.sendMessage(ChatColor.GRAY+"/unarmed - Skill info");
+    		player.sendMessage(ChatColor.GRAY+"/herbalism - Skill info");
+    		player.sendMessage(ChatColor.GRAY+"/excavation - Skill info");
+    		player.sendMessage(ChatColor.GRAY+"/archery - Skill info");
+    		player.sendMessage(ChatColor.GRAY+"/swords - Skill info");
+    		player.sendMessage(ChatColor.GRAY+"/acrobatics - Skill info");
+    		if(mcPermissions.getInstance().mmoedit(player))
+    		player.sendMessage(ChatColor.GRAY+"/mmoedit - Modify mcMMO skills of players/yourself");
     	}
     }
     public void repairCheck(Player player, ItemStack is, Block block){

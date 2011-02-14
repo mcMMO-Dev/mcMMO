@@ -104,6 +104,28 @@ public class mcPlayerListener extends PlayerListener {
     	String playerName = player.getName();
     	//Check if the command is an mcMMO related help command
     	mcm.getInstance().mcmmoHelpCheck(split, player, event);
+    	if(mcPermissions.getInstance().mmoedit(player) && split[0].equalsIgnoreCase("/mmoedit")){
+    		if(split.length < 3){
+    			player.sendMessage(ChatColor.RED+"Usage is /mmoedit playername skillname newvalue");
+    			return;
+    		}
+    		if(split.length == 4){
+    			if(isPlayer(split[1]) && mcm.getInstance().isInt(split[3]) && mcm.getInstance().isSkill(split[2])){
+    				int newvalue = Integer.valueOf(split[3]);
+    				mcUsers.getProfile(getPlayer(split[1])).modifyskill(newvalue, split[2]);
+    				player.sendMessage(ChatColor.RED+split[2]+" has been modified.");
+    			}
+    		}
+    		else if(split.length == 3){
+    			if(mcm.getInstance().isInt(split[2]) && mcm.getInstance().isSkill(split[1])){
+    				int newvalue = Integer.valueOf(split[2]);
+    				mcUsers.getProfile(player).modifyskill(newvalue, split[1]);
+    				player.sendMessage(ChatColor.RED+split[1]+" has been modified.");
+    			}
+    		} else {
+    			player.sendMessage(ChatColor.RED+"Usage is /mmoedit playername skillname newvalue");
+    		}
+    	}
     	if(mcUsers.getProfile(player).inParty() && split[0].equalsIgnoreCase("/ptp")){
     		event.setCancelled(true);
     		if(!mcPermissions.getInstance().partyTeleport(player)){
@@ -160,7 +182,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     	if(split[0].equalsIgnoreCase("/setmyspawn")){
-    		if(!mcPermissions.getInstance().mySpawn(player)){
+    		if(!mcPermissions.getInstance().setMySpawn(player)){
     			player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +" Insufficient permissions.");
     			return;
     		}
@@ -173,17 +195,29 @@ public class mcPlayerListener extends PlayerListener {
     	}
     	if(split[0].equalsIgnoreCase("/stats")){
     		event.setCancelled(true);
-    		player.sendMessage(ChatColor.DARK_GREEN + "mcMMO stats");
-    		player.sendMessage(ChatColor.DARK_GREEN + "Mining Skill: " + mcUsers.getProfile(player).getMining());
-    		player.sendMessage(ChatColor.DARK_GREEN + "Repair Skill: " + mcUsers.getProfile(player).getRepair());
-    		player.sendMessage(ChatColor.DARK_GREEN + "Woodcutting Skill: "+mcUsers.getProfile(player).getWoodCutting());
-    		player.sendMessage(ChatColor.DARK_GREEN + "Unarmed Skill: " + mcUsers.getProfile(player).getUnarmed());
-    		player.sendMessage(ChatColor.DARK_GREEN + "Herbalism Skill: " + mcUsers.getProfile(player).getHerbalism());
-    		player.sendMessage(ChatColor.DARK_GREEN + "Excavation Skill: " + mcUsers.getProfile(player).getExcavation());
-    		player.sendMessage(ChatColor.DARK_GREEN + "Archery Skill: " + mcUsers.getProfile(player).getArchery());
-    		player.sendMessage(ChatColor.DARK_GREEN + "Swords Skill: " + mcUsers.getProfile(player).getSwords());
-    		//player.sendMessage(ChatColor.DARK_GREEN + "Axes Skill: " + mcUsers.getProfile(player).getAxes());
-    		player.sendMessage(ChatColor.DARK_GREEN + "Acrobatics Skill: " + mcUsers.getProfile(player).getAcrobatics());
+    		player.sendMessage(ChatColor.DARK_RED + "mcMMO stats");
+    		player.sendMessage(ChatColor.YELLOW + "Mining Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getMining());
+    		player.sendMessage(ChatColor.YELLOW + "Repair Skill: "+ ChatColor.GREEN + mcUsers.getProfile(player).getRepair());
+    		player.sendMessage(ChatColor.YELLOW + "Woodcutting Skill: "+ ChatColor.GREEN + mcUsers.getProfile(player).getWoodCutting());
+    		player.sendMessage(ChatColor.YELLOW + "Unarmed Skill: "+ ChatColor.GREEN + mcUsers.getProfile(player).getUnarmed());
+    		player.sendMessage(ChatColor.YELLOW + "Herbalism Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(player).getHerbalism());
+    		player.sendMessage(ChatColor.YELLOW + "Excavation Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(player).getExcavation());
+    		player.sendMessage(ChatColor.YELLOW + "Archery Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(player).getArchery());
+    		player.sendMessage(ChatColor.YELLOW + "Swords Skill: " + ChatColor.GREEN +  mcUsers.getProfile(player).getSwords());
+    		//player.sendMessage(ChatColor.YELLOW+ "Axes Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAxes());
+    		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAcrobatics());
+    		player.sendMessage(ChatColor.DARK_RED+"TOTAL SKILL: "+ChatColor.GREEN+
+    				(mcUsers.getProfile(player).getAcrobaticsInt()+
+    				mcUsers.getProfile(player).getArcheryInt()+
+    				mcUsers.getProfile(player).getAxesInt()+
+    				mcUsers.getProfile(player).getExcavationInt()+
+    				mcUsers.getProfile(player).getHerbalismInt()+
+    				mcUsers.getProfile(player).getMiningInt()+
+    				mcUsers.getProfile(player).getRepairInt()+
+    				mcUsers.getProfile(player).getSwordsInt()+
+    				mcUsers.getProfile(player).getUnarmedInt()+
+    				mcUsers.getProfile(player).getWoodCuttingint())
+    				);
     	}
     	//Party command
     	if(split[0].equalsIgnoreCase("/party")){

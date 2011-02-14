@@ -1,5 +1,24 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.5.11
+
+	Added /mmoedit command
+	Fixed bug preventing player versus player damage
+	Fixed bug preventing damage from scaling with unarmed & bows
+	Fixed disarm proc making the opponent dupe his/her items
+	Added mcmmo.tools.mmoedit permission
+	Added mcmmo.commands.setmyspawn permission
+	Added totalskill to /stats
+	Changed the look of /stats
+	
+Version 0.5.10
+
+    Fixed trying to set health to an invalid value
+
+Version 0.5.9
+
+    Fixed duping inventories on death
+
 Version 0.5.8
 
     Fixed bug where players inventories would dupe during combat

@@ -491,31 +491,67 @@ class PlayerList
 			save();
 		}
 		public String getRepair(){
+			if(repair != null && !repair.equals("") && !repair.equals("null")){
 			return repair;
+			} else {
+				return "0";
+			}
 		}
 		public String getMining(){
-			return mining;
+			if(mining != null && !mining.equals("") && !mining.equals("null")){
+				return mining;
+				} else {
+					return "0";
+				}
 		}
 		public String getUnarmed(){
-			return unarmed;
+			if(unarmed != null && !unarmed.equals("") && !unarmed.equals("null")){
+				return unarmed;
+				} else {
+					return "0";
+				}
 		}
 		public String getHerbalism(){
-			return herbalism;
+			if(herbalism != null && !herbalism.equals("") && !herbalism.equals("null")){
+				return herbalism;
+				} else {
+					return "0";
+				}
 		}
 		public String getExcavation(){
-			return excavation;
+			if(excavation != null && !excavation.equals("") && !excavation.equals("null")){
+				return excavation;
+				} else {
+					return "0";
+				}
 		}
 		public String getArchery(){
-			return archery;
+			if(archery != null && !archery.equals("") && !archery.equals("null")){
+				return archery;
+				} else {
+					return "0";
+				}
 		}
 		public String getSwords(){
-			return swords;
+			if(swords != null && !swords.equals("") && !swords.equals("null")){
+				return swords;
+				} else {
+					return "0";
+				}
 		}
 		public String getAxes(){
-			return axes;
+			if(axes != null && !axes.equals("") && !axes.equals("null")){
+				return axes;
+				} else {
+					return "0";
+				}
 		}
 		public String getAcrobatics(){
-			return acrobatics;
+			if(acrobatics != null && !acrobatics.equals("") && !acrobatics.equals("null")){
+				return acrobatics;
+				} else {
+					return "0";
+				}
 		}
 		public int getMiningInt(){
 			if(isInt(mining)){
@@ -598,7 +634,11 @@ class PlayerList
 			}
 		}
 		public String getWoodCutting(){
-			return woodcutting;
+			if(woodcutting != null && !woodcutting.equals("") && !woodcutting.equals("null")){
+				return woodcutting;
+				} else {
+					return "0";
+				}
 		}
 		
 		public void addwgather(int newgather)
@@ -673,6 +713,36 @@ class PlayerList
 				return 0;
 			}
 		}
+		public void modifyskill(int newvalue, String skillname){
+			if(skillname.equals("mining")){
+				 mining = String.valueOf(newvalue);
+			}
+			if(skillname.equals("woodcutting")){
+				 woodcutting = String.valueOf(newvalue);
+			}
+			if(skillname.equals("repair")){
+				 repair = String.valueOf(newvalue);
+			}
+			if(skillname.equals("herbalism")){
+				 herbalism = String.valueOf(newvalue);
+			}
+			if(skillname.equals("acrobatics")){
+				 acrobatics = String.valueOf(newvalue);
+			}
+			if(skillname.equals("swords")){
+				 swords = String.valueOf(newvalue);
+			}
+			if(skillname.equals("archery")){
+				 archery = String.valueOf(newvalue);
+			}
+			if(skillname.equals("unarmed")){
+				 unarmed = String.valueOf(newvalue);
+			}
+			if(skillname.equals("excavation")){
+				 excavation = String.valueOf(newvalue);
+			}
+			save();
+		}
 		public int getgatheramt() {
 			if(isInt(gather)){
 			return Integer.parseInt(getgather());
@@ -698,7 +768,7 @@ class PlayerList
                 }
                 //Retrieve whether or not the player is in a party
                 public boolean inParty() {
-                    if(party != null){
+                    if(party != null && !party.equals("") && !party.equals("null")){
                         return true;
                     } else {
                         return false;

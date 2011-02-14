@@ -29,6 +29,13 @@ public class mcPermissions {
     private boolean permission(Player player, String string) {
         return permissionsPlugin.Security.permission(player, string);  
     }
+    public boolean mmoedit(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.tools.mmoedit");
+        } else {
+            return true;
+        }
+    }
     public boolean motd(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.motd");
@@ -39,6 +46,13 @@ public class mcPermissions {
     public boolean mySpawn(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.commands.myspawn");
+        } else {
+            return true;
+        }
+    }
+    public boolean setMySpawn(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.commands.setmyspawn");
         } else {
             return true;
         }
