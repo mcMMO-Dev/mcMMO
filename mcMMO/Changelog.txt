@@ -1,5 +1,16 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.5.17
+
+	Changed namespaces to fit bukkits new standard
+	Adjusted excavation proc rates
+	Modified excavation loot tables
+	Added Party Invite System
+
+Version 0.5.16
+
+	Fixed unarmed not checking for permissions when hitting players
+
 Version 0.5.15
 	Fixed stone swords not being recognized as swords
 	Fixed /a not working if you were an op but did not have permissions
