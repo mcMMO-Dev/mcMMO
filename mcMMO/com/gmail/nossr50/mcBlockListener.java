@@ -19,7 +19,13 @@ public class mcBlockListener extends BlockListener {
         this.plugin = plugin;
     }
     public void onBlockPlace(BlockPlaceEvent event) {
-    	Block block = event.getBlock();
+    	Block block;
+    	if (event.getBlockReplacedState().getTypeId() == 78) {
+    		block = event.getBlockAgainst();
+    		}
+    		else {
+    		block = event.getBlock();
+    		}
     	int x = block.getX();
     	int y = block.getY();
     	int z = block.getZ();
