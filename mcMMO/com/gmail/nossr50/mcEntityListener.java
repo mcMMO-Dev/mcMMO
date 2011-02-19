@@ -29,25 +29,6 @@ public class mcEntityListener extends EntityListener {
     public mcEntityListener(final mcMMO plugin) {
         this.plugin = plugin;
     }
-    public void onEntityDamageByBlock(EntityDamageByBlockEvent event) {
-    	Block block = event.getDamager();
-    	Entity x = event.getEntity();
-    	if(x instanceof Player){
-    	Player player = (Player)x;
-    	if(block != null && block.getTypeId() == 81){
-    		if(mcUsers.getProfile(player).isDead())
-    			return;
-    		/*
-    		if(player.getHealth() - event.getDamage() <= 0){
-    			mcUsers.getProfile(player).setDead(true);
-    			for(Player bidoof : plugin.getServer().getOnlinePlayers()){
-    				bidoof.sendMessage(ChatColor.GRAY+player.getName()+" has been"+ChatColor.DARK_GREEN+" cactus tickled "+ChatColor.GRAY+"to death.");
-    			}
-    		}
-    		*/
-    	}
-    	}
-    	}
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
     	Entity x = event.getEntity(); //Defender
     	Entity y = event.getDamager(); //Attacker
@@ -110,7 +91,11 @@ public class mcEntityListener extends EntityListener {
     	 */
     	if(y instanceof Player){
     		Player attacker = (Player)y;
-    		if(mcPermissions.getInstance().archery(attacker)){
+    		/*
+    		 * DEBUG MESSAGE
+    		 */
+    		//attacker.sendMessage(event.getProjectile().toString());
+    		if(event.getProjectile().toString().equals("CraftArrow") && mcPermissions.getInstance().archery(attacker)){
     		/*
     		 * Defender is Monster
     		 */
@@ -174,6 +159,10 @@ public class mcEntityListener extends EntityListener {
     		 * Attacker is Player
     		 */
     		if(x instanceof Player){
+    			if(mcLoadProperties.pvp == false){
+    				event.setCancelled(true);
+    				return;
+    			}
     			Player defender = (Player)x;
     			/*
     			 * Stuff for the daze proc

@@ -31,6 +31,7 @@ public class mcPlayerListener extends PlayerListener {
     	if(mcUsers.getProfile(player).getMySpawn(player) != null)
     	event.setRespawnLocation(mcUsers.getProfile(player).getMySpawn(player));
     	}
+    	//HELLO CODE PEAKERS!
     }
     public Player[] getPlayersOnline() {
     		return plugin.getServer().getOnlinePlayers();
@@ -177,7 +178,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Excavation Skill: "+mcUsers.getProfile(target).getExcavation());
     		player.sendMessage("Archery Skill: "+mcUsers.getProfile(target).getArchery());
     		player.sendMessage("Swords Skill: "+mcUsers.getProfile(target).getSwords());
-    		//player.sendMessage("Axes Skill: "+mcUsers.getProfile(target).getAxes());
+    		player.sendMessage("Axes Skill: "+mcUsers.getProfile(target).getAxes());
     		player.sendMessage("Acrobatics Skill: "+mcUsers.getProfile(target).getAcrobatics());
     		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
     		player.sendMessage("X: "+x);
@@ -208,7 +209,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.YELLOW + "Excavation Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(player).getExcavation());
     		player.sendMessage(ChatColor.YELLOW + "Archery Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(player).getArchery());
     		player.sendMessage(ChatColor.YELLOW + "Swords Skill: " + ChatColor.GREEN +  mcUsers.getProfile(player).getSwords());
-    		//player.sendMessage(ChatColor.YELLOW+ "Axes Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAxes());
+    		player.sendMessage(ChatColor.YELLOW+ "Axes Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAxes());
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAcrobatics());
     		player.sendMessage(ChatColor.DARK_RED+"TOTAL SKILL: "+ChatColor.GREEN+
     				(mcUsers.getProfile(player).getAcrobaticsInt()+
@@ -341,9 +342,6 @@ public class mcPlayerListener extends PlayerListener {
     			player.sendMessage(ChatColor.RED+"Configure your myspawn first with /setmyspawn");
     		}
     	}
-    }
-    public void onItemHeldChange(PlayerItemHeldEvent event) {
-    	Player player = event.getPlayer();
     }
 	public void onPlayerChat(PlayerChatEvent event) {
     	Player player = event.getPlayer();

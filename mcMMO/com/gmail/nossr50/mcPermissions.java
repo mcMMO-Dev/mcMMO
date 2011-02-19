@@ -154,6 +154,13 @@ public class mcPermissions {
             return true;
         }
     }
+    public boolean axes(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.axes");
+        } else {
+            return true;
+        }
+    }
     public boolean acrobatics(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.skills.acrobatics");

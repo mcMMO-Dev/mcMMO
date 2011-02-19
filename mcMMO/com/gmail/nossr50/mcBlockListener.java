@@ -58,14 +58,14 @@ public class mcBlockListener extends BlockListener {
     		 */
     		if(block.getTypeId() == 17 
     				&& mcPermissions.getInstance().woodcutting(player)){
-    		mcUsers.getProfile(player).addwgather(1);    		
-    			mcm.getInstance().woodCuttingProcCheck(player, block, loc);
+    				mcUsers.getProfile(player).addwgather(1);    		
+    				mcm.getInstance().woodCuttingProcCheck(player, block, loc);
     		}
     		mcm.getInstance().simulateSkillUp(player);
     		/*
     		 * EXCAVATION
     		 */
-    		if(mcPermissions.getInstance().excavation(player))
+    		if(mcPermissions.getInstance().excavation(player) && block != null && player != null)
     		mcm.getInstance().excavationProcCheck(block, player);
     		/*
     		 * HERBALISM
