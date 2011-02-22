@@ -1,7 +1,7 @@
 package com.gmail.nossr50;
 
 public class mcLoadProperties {
-	public static Boolean pvp, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal;
+	public static Boolean pvp, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String mcmmo, mcc, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept;
 	
 	public static void loadMain(){
@@ -9,7 +9,14 @@ public class mcLoadProperties {
     	mcProperties properties = new mcProperties(propertiesFile);
     	properties.load();
     	
-    	
+    	/*
+    	 * TOGGLE CLAY
+    	 */
+    	clay = properties.getBoolean("clay", true);
+    	/*
+    	 * ANVIL MESSAGES
+    	 */
+    	anvilmessages = properties.getBoolean("anvilmessages", true);
     	/*
     	 * EXCAVATION LOOT TOGGLES
     	 */

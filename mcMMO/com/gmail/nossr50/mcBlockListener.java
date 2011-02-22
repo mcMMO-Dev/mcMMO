@@ -32,7 +32,7 @@ public class mcBlockListener extends BlockListener {
     	String xyz = x+","+y+","+z;
     	mcConfig.getInstance().addBlockWatch(block);
     	mcConfig.getInstance().addCoordsWatch(xyz);
-    	if(block.getTypeId() == 42)
+    	if(block.getTypeId() == 42 && mcLoadProperties.anvilmessages)
     		event.getPlayer().sendMessage(ChatColor.DARK_RED+"You have placed an anvil, anvils can repair tools and armor.");
     }
     //put all Block related code here
@@ -102,12 +102,12 @@ public class mcBlockListener extends BlockListener {
             for (int cx = -radius; cx <= radius; cx++) {
                 for (int cy = -radius; cy <= radius; cy++) {
                     for (int cz = -radius; cz <= radius; cz++) {
-                        Block dirt = world.getBlockAt(ox + cx, oy + cy, oz + cz);
-                        //If block is dirt
+                        Block block = world.getBlockAt(ox + cx, oy + cy, oz + cz);
+                        //If block is block
                         if (isWater == true &&
-                        		dirt.getTypeId() == 13) {
+                        		block.getTypeId() == 13 && mcLoadProperties.clay) {
                         	//Change
-                        	dirt.setTypeId(82);
+                        	block.setTypeId(82);
                             return;
                         }
                     }

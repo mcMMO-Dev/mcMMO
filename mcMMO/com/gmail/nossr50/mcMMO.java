@@ -67,6 +67,8 @@ public class mcMMO extends JavaPlugin {
 					writer.append("mcmmo=mcmmo");
 					writer.append("mcc=mcc");
 					writer.append("stats=stats");
+					writer.append("clay=true");
+					writer.append("anvilmessages=true");
 					writer.append("#Appreciate the plugin? Send me a donation via paypal nossr50@gmail.com\r\n");
 				} catch (Exception e) {
 					log.log(Level.SEVERE, "Exception while creating " + Properties, e);
