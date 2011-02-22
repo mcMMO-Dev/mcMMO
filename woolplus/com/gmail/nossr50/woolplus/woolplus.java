@@ -1,4 +1,4 @@
-package com.bukkit.nossr50.vStopFire;
+package com.gmail.nossr50.woolplus;
 
 import java.io.File;
 import org.bukkit.Server;
@@ -9,21 +9,21 @@ import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * vStopFire for Bukkit
+ * Wool Plus for Bukkit
  *
  * @author nossr50
  */
-public class vStopFire extends JavaPlugin {
-    private final vPlayerListener playerListener = new vPlayerListener(this);
-    private final vBlockListener blockListener = new vBlockListener(this);
-    private final String name = "vStopFire";
+public class woolplus extends JavaPlugin {
+    private final wPlayerListener playerListener = new wPlayerListener(this);
+    private final wBlockListener blockListener = new wBlockListener(this);
+    private final String name = "Wool Plus";
 
     public void onEnable() {
-    	getServer().getPluginManager().registerEvent(Event.Type.BLOCK_IGNITE, blockListener, Priority.Normal, this);
+    	getServer().getPluginManager().registerEvent(Event.Type.PLAYER_ITEM, playerListener, Priority.Normal, this);
         PluginDescriptionFile pdfFile = this.getDescription();
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
     }
     public void onDisable() {
-        System.out.println("vStopFire disabled!");
+        System.out.println("Wool Plus disabled!");
     }
 }

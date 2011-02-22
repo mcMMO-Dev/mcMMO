@@ -154,7 +154,7 @@ class PlayerList
 	{
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, unarmed, herbalism, excavation,
-		archery, swords, axes, invite, acrobatics;
+		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
 		private boolean dead;
 		char defaultColor;
 
@@ -176,13 +176,21 @@ class PlayerList
             myspawn = new String();
             mining = new String();
             repair = new String();
+            repairgather = new String();
             unarmed = new String();
+            unarmedgather = new String();
             herbalism = new String();
+            herbalismgather = new String();
             excavation = new String();
+            excavationgather = new String();
             archery = new String();
+            archerygather = new String();
             swords = new String();
+            swordsgather = new String();
             axes = new String();
+            axesgather = new String();
             acrobatics = new String();
+            acrobaticsgather = new String();
             invite = new String();
             //mining = "0";
             wgather = new String();
@@ -750,6 +758,9 @@ class PlayerList
 			}
 			if(skillname.equals("excavation")){
 				 excavation = String.valueOf(newvalue);
+			}
+			if(skillname.equals("axes")){
+				axes = String.valueOf(newvalue);
 			}
 			save();
 		}

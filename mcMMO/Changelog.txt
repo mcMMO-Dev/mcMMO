@@ -1,5 +1,14 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.6.2
+	Axes now do critical strikes against farm animals
+	Removed the "Stupidly Long Constructor"
+	Now compatible with the latest CB builds
+Version 0.6.1
+	Customizable command names
+	Axes can now be modified with /mmoedit
+	Party members are now correctly informed when you leave the party
+	Fixed incorrect commands in /mcc
 Version 0.5.17
 
 	Changed namespaces to fit bukkits new standard

@@ -34,10 +34,12 @@ public class mcMMO extends JavaPlugin {
     public static PermissionHandler PermissionsHandler = null;
     private Permissions permissions;
 
+    /*
     public mcMMO(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
         super(pluginLoader, instance, desc, folder, plugin, cLoader);
     }
-
+    */
+    //herp
     public void onEnable() {
     	//Make the directory if it does not exist
     	new File(maindirectory).mkdir();
@@ -62,6 +64,9 @@ public class mcMMO extends JavaPlugin {
 					writer.append("bones=true");
 					writer.append("sulphur=true");
 					writer.append("coal=true");
+					writer.append("mcmmo=mcmmo");
+					writer.append("mcc=mcc");
+					writer.append("stats=stats");
 					writer.append("#Appreciate the plugin? Send me a donation via paypal nossr50@gmail.com\r\n");
 				} catch (Exception e) {
 					log.log(Level.SEVERE, "Exception while creating " + Properties, e);
@@ -89,15 +94,12 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_COMMAND, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Monitor, this);
-        pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_ENTITY, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_FLOW, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_ITEM, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_PROJECTILE, entityListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.ENTITY_DAMAGEDBY_BLOCK, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DAMAGED, entityListener, Priority.Normal, this);
         //Displays a message when plugin is loaded
         PluginDescriptionFile pdfFile = this.getDescription();
