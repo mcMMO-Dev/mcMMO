@@ -133,8 +133,16 @@ public class mcm {
     				mcm.getInstance().simulateNaturalDrops(defender);
     			//XP
     			if(Math.random() * 10 > 7){
-    				mcUsers.getProfile(attacker).skillUpArchery(1);
-    				attacker.sendMessage(ChatColor.YELLOW+"Archery skill increased by 1. Total ("+mcUsers.getProfile(attacker).getArchery()+")");
+    				mcUsers.getProfile(attacker).addArcheryGather(1);
+    				if(mcUsers.getProfile(attacker).getArcheryGatherInt() >= (mcUsers.getProfile(attacker).getArcheryInt() + 5) * mcLoadProperties.xpmodifier){
+						int skillups = 0;
+						while(mcUsers.getProfile(attacker).getArcheryGatherInt() >= (mcUsers.getProfile(attacker).getArcheryInt() +5) * mcLoadProperties.xpmodifier){
+							skillups++;
+							mcUsers.getProfile(attacker).removeArcheryGather((mcUsers.getProfile(attacker).getArcheryInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).skillUpArchery(1);
+						}
+						attacker.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getArchery()+")");	
+					}
     			}
     			}
     		/*
@@ -298,24 +306,22 @@ public class mcm {
 			return;
 		if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z)) 
 				&& mcPermissions.getInstance().acrobatics(player)){
-		if(event.getDamage() >= 2 && event.getDamage() < 6){
-		mcUsers.getProfile(player).skillUpAcrobatics(1);
-		player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by 1. Total ("+mcUsers.getProfile(player).getAcrobatics()+")");
-		}
-		if(event.getDamage() >= 6 && event.getDamage() < 19){
-    		mcUsers.getProfile(player).skillUpAcrobatics(2);
-			player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by 2. Total ("+mcUsers.getProfile(player).getAcrobatics()+")");
-		}
-		if(event.getDamage() >= 19){
-    		mcUsers.getProfile(player).skillUpAcrobatics(3);
-			player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by 3. Total ("+mcUsers.getProfile(player).getAcrobatics()+")");
-		}
+		mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage());
+		if(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= (mcUsers.getProfile(player).getAcrobaticsInt() + 5) * mcLoadProperties.xpmodifier){
+			int skillups = 0;
+			while(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= (mcUsers.getProfile(player).getAcrobaticsInt() +5) * mcLoadProperties.xpmodifier){
+				skillups++;
+				mcUsers.getProfile(player).removeAcrobaticsGather((mcUsers.getProfile(player).getAcrobaticsInt() + 5) * mcLoadProperties.xpmodifier);
+				mcUsers.getProfile(player).skillUpAcrobatics(1);
+			}
+			player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getAcrobatics()+")");	
 		}
 		mcConfig.getInstance().addBlockWatch(loc.getWorld().getBlockAt(xx, y, z));
 		if(player.getHealth() - event.getDamage() <= 0){
 			if(mcUsers.getProfile(player).isDead())
     			return;
 			mcUsers.getProfile(player).setDead(true);
+		}
 		}
     }
     public void simulateNaturalDrops(Entity entity){
@@ -558,38 +564,47 @@ public class mcm {
 	}
     public void miningBlockCheck(Player player, Block block){
     	if(block.getTypeId() == 1){
-    		mcUsers.getProfile(player).addgather(1);
+    		mcUsers.getProfile(player).addMiningGather(1);
     		mcm.getInstance().blockProcCheck(block, player);
     		}
     		//COAL
     		if(block.getTypeId() == 16){
-    		mcUsers.getProfile(player).addgather(3);
+    		mcUsers.getProfile(player).addMiningGather(3);
     		mcm.getInstance().blockProcCheck(block, player);
     		}
     		//GOLD
     		if(block.getTypeId() == 14){
-    		mcUsers.getProfile(player).addgather(20);
+    		mcUsers.getProfile(player).addMiningGather(50);
     		mcm.getInstance().blockProcCheck(block, player);
     		}
     		//DIAMOND
     		if(block.getTypeId() == 56){
-    		mcUsers.getProfile(player).addgather(50);
+    		mcUsers.getProfile(player).addMiningGather(50);
     		mcm.getInstance().blockProcCheck(block, player);
     		}
     		//IRON
     		if(block.getTypeId() == 15){
-    		mcUsers.getProfile(player).addgather(10);
+    		mcUsers.getProfile(player).addMiningGather(10);
     		mcm.getInstance().blockProcCheck(block, player);
     		}
     		//REDSTONE
     		if(block.getTypeId() == 73 || block.getTypeId() == 74){
-    		mcUsers.getProfile(player).addgather(15);
+    		mcUsers.getProfile(player).addMiningGather(10);
     		mcm.getInstance().blockProcCheck(block, player);
     		}
     		//LAPUS
     		if(block.getTypeId() == 21){
-    		mcUsers.getProfile(player).addgather(50);
+    		mcUsers.getProfile(player).addMiningGather(20);
     		mcm.getInstance().blockProcCheck(block, player);
+    		}
+    		if(mcUsers.getProfile(player).getMiningGatherInt() >= (mcUsers.getProfile(player).getMiningInt() + 5) * mcLoadProperties.xpmodifier){
+    			int skillups = 0;
+    			while(mcUsers.getProfile(player).getMiningGatherInt() >= (mcUsers.getProfile(player).getMiningInt() +5) * mcLoadProperties.xpmodifier){
+    				skillups++;
+    				mcUsers.getProfile(player).removeMiningGather((mcUsers.getProfile(player).getMiningInt() + 5) * mcLoadProperties.xpmodifier);
+    				mcUsers.getProfile(player).skillUpMining(1);
+    			}
+    			player.sendMessage(ChatColor.YELLOW+"Mining skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getMining()+")");	
     		}
     }
     public void breadCheck(Player player, ItemStack is){
@@ -772,18 +787,30 @@ public class mcm {
     	if(x instanceof Squid){
 			Squid defender = (Squid)event.getEntity();
 			if(isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
-				if(Math.random() * 10 > 9){
-					mcUsers.getProfile(attacker).skillUpSwords(1);
-					attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(attacker).getSwords()+")");
-				}
+					mcUsers.getProfile(attacker).addSwordsGather(1);
+					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() + 5) * mcLoadProperties.xpmodifier){
+						int skillups = 0;
+						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() +5) * mcLoadProperties.xpmodifier){
+							skillups++;
+							mcUsers.getProfile(attacker).removeSwordsGather((mcUsers.getProfile(attacker).getSwordsInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).skillUpSwords(1);
+						}
+						attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
+					}
 			}
 			if(isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
-				if(Math.random() * 10 > 9){
-					mcUsers.getProfile(attacker).skillUpAxes(1);
-					attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by 1. Total ("+mcUsers.getProfile(attacker).getAxes()+")");
-				}
+					mcUsers.getProfile(attacker).addAxesGather(1);
+					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() + 5) * mcLoadProperties.xpmodifier){
+						int skillups = 0;
+						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() +5) * mcLoadProperties.xpmodifier){
+							skillups++;
+							mcUsers.getProfile(attacker).removeAxesGather((mcUsers.getProfile(attacker).getAxesInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).skillUpAxes(1);
+						}
+						attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
+					}
 			}
 			if(isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
 				if(defender.getHealth() <= 0)
@@ -820,8 +847,16 @@ public class mcm {
     			//XP
 				if(attacker.getItemInHand().getTypeId() == 0 && Math.random() * 10 > 8){
 					if(defender.getHealth() != 0){
-					mcUsers.getProfile(attacker).skillUpUnarmed(1);
-					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
+					mcUsers.getProfile(attacker).addUnarmedGather(1);
+					if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier){
+						int skillups = 0;
+						while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() +5) * mcLoadProperties.xpmodifier){
+							skillups++;
+							mcUsers.getProfile(attacker).removeUnarmedGather((mcUsers.getProfile(attacker).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).skillUpUnarmed(1);
+						}
+						attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
+					}
 					}
 				}
 				if(defender.getHealth() <= 0)
@@ -910,18 +945,30 @@ public class mcm {
 			if(isSwords(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().swords(attacker)){
-				if(Math.random() * 10 > 9){
-					mcUsers.getProfile(attacker).skillUpSwords(1);
-					attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by 1. Total ("+mcUsers.getProfile(attacker).getSwords()+")");
+					mcUsers.getProfile(attacker).addSwordsGather(1);
+					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() + 5) * mcLoadProperties.xpmodifier){
+						int skillups = 0;
+						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() +5) * mcLoadProperties.xpmodifier){
+							skillups++;
+							mcUsers.getProfile(attacker).removeSwordsGather((mcUsers.getProfile(attacker).getSwordsInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).skillUpSwords(1);
+						}
+						attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
+					}
 				}
-			}
 			if(isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
-				if(Math.random() * 10 > 9){
-					mcUsers.getProfile(attacker).skillUpAxes(1);
-					attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by 1. Total ("+mcUsers.getProfile(attacker).getAxes()+")");
-				}
+					mcUsers.getProfile(attacker).addAxesGather(1);
+					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() + 5) * mcLoadProperties.xpmodifier){
+						int skillups = 0;
+						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() +5) * mcLoadProperties.xpmodifier){
+							skillups++;
+							mcUsers.getProfile(attacker).removeAxesGather((mcUsers.getProfile(attacker).getAxesInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).skillUpAxes(1);
+						}
+						attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
+					}
 			}
 			/*
 			 * AXE DAMAGE SCALING && LOOT CHECKS
@@ -956,29 +1003,15 @@ public class mcm {
 				defender.setHealth(calculateDamage(defender, 8));
 			}
 			//XP
-			if(x instanceof Skeleton && Math.random() * 100 > 95){
-				if(defender.getHealth() != 0){
+			mcUsers.getProfile(attacker).addUnarmedGather(1);
+			if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier){
+				int skillups = 0;
+				while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() +5) * mcLoadProperties.xpmodifier){
+					skillups++;
+					mcUsers.getProfile(attacker).removeUnarmedGather((mcUsers.getProfile(attacker).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier);
 					mcUsers.getProfile(attacker).skillUpUnarmed(1);
-					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
-			}
-			}
-			if(x instanceof Spider&& Math.random() * 10 > 9){
-				if(defender.getHealth() != 0){
-					mcUsers.getProfile(attacker).skillUpUnarmed(1);
-					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
-			}
-			}
-			if(x instanceof Zombie && Math.random() * 100 > 95){
-				if(defender.getHealth() != 0){
-					mcUsers.getProfile(attacker).skillUpUnarmed(1);
-					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 1. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
-			}
-			}
-			if(x instanceof Creeper && Math.random() * 100 > 90){
-    				if(defender.getHealth() != 0){
-    					mcUsers.getProfile(attacker).skillUpUnarmed(2);
-    					attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by 2. Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");
-    		}
+				}
+				attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
 			}
 			if(defender.getHealth() <= 0)
 				mcm.getInstance().simulateNaturalDrops(defender);
@@ -1421,13 +1454,14 @@ public class mcm {
         			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player)){
         			mcm.getInstance().removeDiamond(player);
         			player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
-        			mcUsers.getProfile(player).skillUpRepair(1);
-        			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+        			mcUsers.getProfile(player).addRepairGather(20);
         			} else if (mcm.getInstance().isIronArmor(is) && mcm.getInstance().hasIron(player)){
         			mcm.getInstance().removeIron(player);
             		player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
-            		mcUsers.getProfile(player).skillUpRepair(1);
-            		player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");	
+            		/*
+            		 * DISTRIBUTE REPAIR XP
+            		 */
+            		mcUsers.getProfile(player).addRepairGather(5);	
         			} else {
         				needMoreVespeneGas(is, player);
         			}
@@ -1439,13 +1473,11 @@ public class mcm {
             		if(mcm.getInstance().isIronTools(is) && mcm.getInstance().hasIron(player)){
             			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
             			mcm.getInstance().removeIron(player);
-            			mcUsers.getProfile(player).skillUpRepair(1);
-            			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+            			mcUsers.getProfile(player).addRepairGather(5);
             		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){ //Check if its diamond and the player has diamonds
             			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
             			mcm.getInstance().removeDiamond(player);
-            			mcUsers.getProfile(player).skillUpRepair(1);
-            			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by 1. Total ("+mcUsers.getProfile(player).getRepair()+")");
+            			mcUsers.getProfile(player).addRepairGather(20);
             		} else {
             			needMoreVespeneGas(is, player);
             		}
@@ -1455,7 +1487,19 @@ public class mcm {
         		player.sendMessage("That is at full durability.");
         	}
         	player.updateInventory();
-        	} //end if block is iron block bracket
+        	/*
+        	 * GIVE SKILL IF THERE IS ENOUGH XP
+        	 */
+        	if(mcUsers.getProfile(player).getRepairGatherInt() >= (mcUsers.getProfile(player).getRepairInt() + 5) * mcLoadProperties.xpmodifier){
+    			int skillups = 0;
+    			while(mcUsers.getProfile(player).getRepairGatherInt() >= (mcUsers.getProfile(player).getRepairInt() +5) * mcLoadProperties.xpmodifier){
+    				skillups++;
+    				mcUsers.getProfile(player).removeRepairGather((mcUsers.getProfile(player).getRepairInt() + 5) * mcLoadProperties.xpmodifier);
+    				mcUsers.getProfile(player).skillUpRepair(1);
+    			}
+    			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getRepair()+")");	
+    		}
+        	}
     }
     public void herbalismProcCheck(Block block, Player player){
     	int type = block.getTypeId();
@@ -1464,21 +1508,18 @@ public class mcm {
     	Material mat = null;
     	if(!mcConfig.getInstance().isBlockWatched(block)){
     	if(type == 39 || type == 40){
-    			mcUsers.getProfile(player).skillUpHerbalism(3);
-    			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 3. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
+    			mcUsers.getProfile(player).addHerbalismGather(20);
     		}
     	if(type == 37 || type == 38){
     		if(Math.random() * 10 > 8){
-    			mcUsers.getProfile(player).skillUpHerbalism(1);
-    			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 1. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
+    			mcUsers.getProfile(player).addHerbalismGather(2);
     		}
     	}
     	if(type == 59 && block.getData() == (byte) 0x7){
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
 			if(Math.random() * 100 > 80){
-    		mcUsers.getProfile(player).skillUpHerbalism(1);
-    		player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by 1. Total ("+mcUsers.getProfile(player).getHerbalismInt()+")");
+    		mcUsers.getProfile(player).addHerbalismGather(3);
 			}
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
     		if(Math.random() * 10 > 8)
@@ -1497,6 +1538,15 @@ public class mcm {
     				loc.getWorld().dropItemNaturally(loc, is);
     		}
     	}
+    	if(mcUsers.getProfile(player).getHerbalismGatherInt() >= (mcUsers.getProfile(player).getHerbalismInt() + 5) * mcLoadProperties.xpmodifier){
+			int skillups = 0;
+			while(mcUsers.getProfile(player).getHerbalismGatherInt() >= (mcUsers.getProfile(player).getHerbalismInt() +5) * mcLoadProperties.xpmodifier){
+				skillups++;
+				mcUsers.getProfile(player).removeHerbalismGather((mcUsers.getProfile(player).getHerbalismInt() + 5) * mcLoadProperties.xpmodifier);
+				mcUsers.getProfile(player).skillUpHerbalism(1);
+			}
+			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getHerbalism()+")");	
+		}
     	}
     }
     public void excavationProcCheck(Block block, Player player){
@@ -1520,11 +1570,7 @@ public class mcm {
     	}
     	//DIRT SAND OR GRAVEL
     	if(type == 3 || type == 13 || type == 2 || type == 12){
-    		if(Math.random() * 100 > 95){
-    			mcUsers.getProfile(player).skillUpExcavation(1);
-    			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by 1. Total ("+mcUsers.getProfile(player).getExcavationInt()+")");
-    			
-    		}
+    			mcUsers.getProfile(player).addExcavationGather(1);
     		if(mcUsers.getProfile(player).getExcavationInt() > 750){
     			//CHANCE TO GET CAKE
     			if(mcLoadProperties.cake == true && Math.random() * 2000 > 1999){
@@ -1613,71 +1659,54 @@ public class mcm {
     				loc.getWorld().dropItemNaturally(loc, is);
         		}
         		}
-    		//CHANCE TO GET COAL
-    		/*
-    		if(mcLoadProperties.coal == true && mcUsers.getProfile(player).getExcavationInt() > 125){
-    			if(Math.random() * 100 > 99){
-    				mat = Material.getMaterial(263);
-    				is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    				loc.getWorld().dropItemNaturally(loc, is);
-    			}
-    		}
-    		*/
     	}
+    	if(mcUsers.getProfile(player).getExcavationGatherInt() >= (mcUsers.getProfile(player).getExcavationInt() + 5) * mcLoadProperties.xpmodifier){
+			int skillups = 0;
+			while(mcUsers.getProfile(player).getExcavationGatherInt() >= (mcUsers.getProfile(player).getExcavationInt() +5) * mcLoadProperties.xpmodifier){
+				skillups++;
+				mcUsers.getProfile(player).removeExcavationGather((mcUsers.getProfile(player).getExcavationInt() + 5) * mcLoadProperties.xpmodifier);
+				mcUsers.getProfile(player).skillUpExcavation(1);
+			}
+			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getExcavation()+")");	
+		}
     }
     public void woodCuttingProcCheck(Player player, Block block, Location loc){
     	byte type = block.getData();
     	Material mat = Material.getMaterial(block.getTypeId());
     	byte damage = 0;
-    	if(mcUsers.getProfile(player).getWoodCuttingint() > 1000){
+    	if(mcUsers.getProfile(player).getWoodCuttingInt() > 1000){
 			ItemStack item = new ItemStack(mat, 1, type, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
 			return;
 	}
-	if(mcUsers.getProfile(player).getWoodCuttingint() > 750){
+	if(mcUsers.getProfile(player).getWoodCuttingInt() > 750){
 		if((Math.random() * 10) > 2){
 			ItemStack item = new ItemStack(mat, 1, type, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
 			return;
 		}
 	}
-	if(mcUsers.getProfile(player).getWoodCuttingint() > 300){
+	if(mcUsers.getProfile(player).getWoodCuttingInt() > 300){
 		if((Math.random() * 10) > 4){
 			ItemStack item = new ItemStack(mat, 1, type, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
 			return;
 		}
 	}
-	if(mcUsers.getProfile(player).getWoodCuttingint() > 100){
+	if(mcUsers.getProfile(player).getWoodCuttingInt() > 100){
 		if((Math.random() * 10) > 6){
 			ItemStack item = new ItemStack(mat, 1, type, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
 			return;
 		}
 	}
-	if(mcUsers.getProfile(player).getWoodCuttingint() > 10){
+	if(mcUsers.getProfile(player).getWoodCuttingInt() > 10){
 		if((Math.random() * 10) > 8){
 			ItemStack item = new ItemStack(mat, 1, type, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
 			return;
 		}
 	}
-    }
-    public void simulateSkillUp(Player player){
-    	if(mcUsers.getProfile(player).getwgatheramt() > 10){
-			while(mcUsers.getProfile(player).getwgatheramt() > 10){
-			mcUsers.getProfile(player).removewgather(10);
-			mcUsers.getProfile(player).skillUpWoodcutting(1);
-			player.sendMessage(ChatColor.YELLOW+"Wood Cutting skill increased by 1. Total ("+mcUsers.getProfile(player).getWoodCutting()+")");
-			}
-		}
-		if(mcUsers.getProfile(player).getgatheramt() > 50){
-			while(mcUsers.getProfile(player).getgatheramt() > 50){
-			mcUsers.getProfile(player).removegather(50);
-			mcUsers.getProfile(player).skillUpMining(1);
-			player.sendMessage(ChatColor.YELLOW+"Mining skill increased by 1. Total ("+mcUsers.getProfile(player).getMining()+")");
-			}
-		}
     }
     // IS TOOLS FUNCTION
     public boolean isArmor(ItemStack is){

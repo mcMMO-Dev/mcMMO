@@ -58,10 +58,10 @@ public class mcBlockListener extends BlockListener {
     		 */
     		if(block.getTypeId() == 17 
     				&& mcPermissions.getInstance().woodcutting(player)){
-    				mcUsers.getProfile(player).addwgather(1);    		
+    				mcUsers.getProfile(player).addWoodcuttingGather(1);    		
     				mcm.getInstance().woodCuttingProcCheck(player, block, loc);
+    				mcUsers.getProfile(player).addWoodcuttingGather(3);
     		}
-    		mcm.getInstance().simulateSkillUp(player);
     		/*
     		 * EXCAVATION
     		 */
@@ -78,6 +78,15 @@ public class mcBlockListener extends BlockListener {
     		 */
     		mcConfig.getInstance().addCoordsWatch(xyz);
     		mcConfig.getInstance().addBlockWatch(block);
+    		if(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= (mcUsers.getProfile(player).getWoodCuttingInt() + 5) * mcLoadProperties.xpmodifier){
+    			int skillups = 0;
+    			while(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= (mcUsers.getProfile(player).getWoodCuttingInt() +5) * mcLoadProperties.xpmodifier){
+    				skillups++;
+    				mcUsers.getProfile(player).removeWoodCuttingGather((mcUsers.getProfile(player).getWoodCuttingInt() + 5) * mcLoadProperties.xpmodifier);
+    				mcUsers.getProfile(player).skillUpWoodCutting(1);
+    			}
+    			player.sendMessage(ChatColor.YELLOW+"WoodCutting skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getWoodCutting()+")");	
+    		}
     		}
     }
     

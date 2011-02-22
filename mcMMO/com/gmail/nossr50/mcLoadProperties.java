@@ -3,12 +3,17 @@ package com.gmail.nossr50;
 public class mcLoadProperties {
 	public static Boolean pvp, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String mcmmo, mcc, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept;
+	public static int xpmodifier;
 	
 	public static void loadMain(){
     	String propertiesFile = mcMMO.maindirectory + "mcmmo.properties";
     	mcProperties properties = new mcProperties(propertiesFile);
     	properties.load();
     	
+    	/*
+    	 * EXPERIENCE RATE MODIFIER
+    	 */
+    	xpmodifier = properties.getInteger("xpmodifier", 2);
     	/*
     	 * TOGGLE CLAY
     	 */

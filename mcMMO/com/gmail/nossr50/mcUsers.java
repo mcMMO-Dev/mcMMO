@@ -252,6 +252,22 @@ class PlayerList
         				axes = character[13];
         			if(character.length > 14)
         				acrobatics = character[14];
+        			if(character.length > 15)
+        				repairgather = character[15];
+        			if(character.length > 16)
+        				unarmedgather = character[16];
+        			if(character.length > 17)
+        				herbalismgather = character[17];
+        			if(character.length > 18)
+        				excavationgather = character[18];
+        			if(character.length > 19)
+        				archerygather = character[19];
+        			if(character.length > 20)
+        				swordsgather = character[20];
+        			if(character.length > 21)
+        				axesgather = character[21];
+        			if(character.length > 22)
+        				acrobaticsgather = character[22];
                 	in.close();
         			return true;
             	}
@@ -305,6 +321,14 @@ class PlayerList
             			writer.append(swords+":");
             			writer.append(axes+":");
             			writer.append(acrobatics+":");
+            			writer.append(repairgather+":");
+            			writer.append(unarmedgather+":");
+            			writer.append(herbalismgather+":");
+            			writer.append(excavationgather+":");
+            			writer.append(archerygather+":");
+            			writer.append(swordsgather+":");
+            			writer.append(axesgather+":");
+            			writer.append(acrobaticsgather+":");
             			writer.append("\r\n");                   			
             		}
             	}
@@ -340,6 +364,14 @@ class PlayerList
                 out.append(0+":"); //swords
                 out.append(0+":"); //axes
                 out.append(0+":"); //acrobatics
+                out.append(0+":"); //repairgather
+                out.append(0+":"); //unarmedgather
+                out.append(0+":"); //herbalismgather
+                out.append(0+":"); //excavationgather
+                out.append(0+":"); //archerygather
+                out.append(0+":"); //swordsgather
+                out.append(0+":"); //axesgather
+                out.append(0+":"); //acrobaticsgather
                 //Add more in the same format as the line above
                 
     			out.newLine();
@@ -485,7 +517,7 @@ class PlayerList
 			excavation = Integer.toString(x);
 			save();
 		}
-		public void skillUpWoodcutting(int newskill){
+		public void skillUpWoodCutting(int newskill){
 			int x = 0;
 			if(woodcutting != null){
 			if(isInt(woodcutting)){
@@ -634,7 +666,7 @@ class PlayerList
 				return 0;
 			}
 		}
-		public int getWoodCuttingint(){
+		public int getWoodCuttingInt(){
 			if(isInt(woodcutting)){
 				int x = Integer.parseInt(woodcutting);
 				return x;
@@ -649,8 +681,114 @@ class PlayerList
 					return "0";
 				}
 		}
-		
-		public void addwgather(int newgather)
+		/*
+		 * EXPERIENCE STUFF
+		 */
+		public void clearRepairGather(){
+			repairgather = "0";
+		}
+		public void clearUnarmedGather(){
+			unarmedgather = "0";
+		}
+		public void clearHerbalismGather(){
+			herbalismgather = "0";
+		}
+		public void clearExcavationGather(){
+			excavationgather = "0";
+		}
+		public void clearArcheryGather(){
+			archerygather = "0";
+		}
+		public void clearSwordsGather(){
+			swordsgather = "0";
+		}
+		public void clearAxesGather(){
+			axesgather = "0";
+		}
+		public void clearAcrobaticsGather(){
+			acrobaticsgather = "0";
+		}
+		public void addAcrobaticsGather(int newgather)
+		{
+			int x = 0;
+			if(isInt(acrobaticsgather)){
+			x = Integer.parseInt(acrobaticsgather);
+			}
+			x += newgather;
+			acrobaticsgather = String.valueOf(x);
+			save();
+		}
+		public void addAxesGather(int newgather)
+		{
+			int x = 0;
+			if(isInt(axesgather)){
+			x = Integer.parseInt(axesgather);
+			}
+			x += newgather;
+			axesgather = String.valueOf(x);
+			save();
+		}
+		public void addSwordsGather(int newgather)
+		{
+			int x = 0;
+			if(isInt(swordsgather)){
+			x = Integer.parseInt(swordsgather);
+			}
+			x += newgather;
+			swordsgather = String.valueOf(x);
+			save();
+		}
+		public void addArcheryGather(int newgather)
+		{
+			int x = 0;
+			if(isInt(archerygather)){
+			x = Integer.parseInt(archerygather);
+			}
+			x += newgather;
+			archerygather = String.valueOf(x);
+			save();
+		}
+		public void addExcavationGather(int newgather)
+		{
+			int x = 0;
+			if(isInt(excavationgather)){
+			x = Integer.parseInt(excavationgather);
+			}
+			x += newgather;
+			excavationgather = String.valueOf(x);
+			save();
+		}
+		public void addHerbalismGather(int newgather)
+		{
+			int x = 0;
+			if(isInt(herbalismgather)){
+			x = Integer.parseInt(herbalismgather);
+			}
+			x += newgather;
+			herbalismgather = String.valueOf(x);
+			save();
+		}
+		public void addRepairGather(int newgather)
+		{
+			int x = 0;
+			if(isInt(repairgather)){
+			x = Integer.parseInt(repairgather);
+			}
+			x += newgather;
+			repairgather = String.valueOf(x);
+			save();
+		}
+		public void addUnarmedGather(int newgather)
+		{
+			int x = 0;
+			if(isInt(unarmedgather)){
+			x = Integer.parseInt(unarmedgather);
+			}
+			x += newgather;
+			unarmedgather = String.valueOf(x);
+			save();
+		}
+		public void addWoodcuttingGather(int newgather)
 		{
 			int x = 0;
 			if(isInt(wgather)){
@@ -660,7 +798,7 @@ class PlayerList
 			wgather = String.valueOf(x);
 			save();
 		}
-		public void removewgather(int newgather){
+		public void removeWoodCuttingGather(int newgather){
 			int x = 0;
 			if(isInt(wgather)){
 			x = Integer.parseInt(wgather);
@@ -669,7 +807,7 @@ class PlayerList
 			wgather = String.valueOf(x);
 			save();
 		}
-		public void addgather(int newgather)
+		public void addMiningGather(int newgather)
 		{
 			int x = 0;
 			if(isInt(gather)){
@@ -681,13 +819,85 @@ class PlayerList
 			gather = String.valueOf(x);
 			save();
 		}
-		public void removegather(int newgather){
+		public void removeMiningGather(int newgather){
 			int x = 0;
 			if(isInt(gather)){
 			x = Integer.parseInt(gather);
 			}
 			x -= newgather;
 			gather = String.valueOf(x);
+			save();
+		}
+		public void removeRepairGather(int newgather){
+			int x = 0;
+			if(isInt(repairgather)){
+			x = Integer.parseInt(repairgather);
+			}
+			x -= newgather;
+			repairgather = String.valueOf(x);
+			save();
+		}
+		public void removeUnarmedGather(int newgather){
+			int x = 0;
+			if(isInt(unarmedgather)){
+			x = Integer.parseInt(unarmedgather);
+			}
+			x -= newgather;
+			unarmedgather = String.valueOf(x);
+			save();
+		}
+		public void removeHerbalismGather(int newgather){
+			int x = 0;
+			if(isInt(herbalismgather)){
+			x = Integer.parseInt(herbalismgather);
+			}
+			x -= newgather;
+			herbalismgather = String.valueOf(x);
+			save();
+		}
+		public void removeExcavationGather(int newgather){
+			int x = 0;
+			if(isInt(excavationgather)){
+			x = Integer.parseInt(excavationgather);
+			}
+			x -= newgather;
+			excavationgather = String.valueOf(x);
+			save();
+		}
+		public void removeArcheryGather(int newgather){
+			int x = 0;
+			if(isInt(archerygather)){
+			x = Integer.parseInt(archerygather);
+			}
+			x -= newgather;
+			archerygather = String.valueOf(x);
+			save();
+		}
+		public void removeSwordsGather(int newgather){
+			int x = 0;
+			if(isInt(swordsgather)){
+			x = Integer.parseInt(swordsgather);
+			}
+			x -= newgather;
+			swordsgather = String.valueOf(x);
+			save();
+		}
+		public void removeAxesGather(int newgather){
+			int x = 0;
+			if(isInt(axesgather)){
+			x = Integer.parseInt(axesgather);
+			}
+			x -= newgather;
+			axesgather = String.valueOf(x);
+			save();
+		}
+		public void removeAcrobaticsGather(int newgather){
+			int x = 0;
+			if(isInt(acrobaticsgather)){
+			x = Integer.parseInt(acrobaticsgather);
+			}
+			x -= newgather;
+			acrobaticsgather = String.valueOf(x);
 			save();
 		}
 
@@ -718,15 +928,155 @@ class PlayerList
 			invite = invitename;
 		}
 		//Returns player gather
-		public String getgather() { return gather; }
+		public String getMiningGather(){
+			if(gather != null && !gather.equals("") && !gather.equals("null")){
+				return gather;
+				} else {
+					return "0";
+				}
+		}
 		public String getInvite() { return invite; }
-		public String getwgather() { return wgather; }
+		public String getWoodCuttingGather(){
+			if(wgather != null && !wgather.equals("") && !wgather.equals("null")){
+				return wgather;
+				} else {
+					return "0";
+				}
+		}
+		public String getRepairGather(){
+			if(repairgather != null && !repairgather.equals("") && !repairgather.equals("null")){
+				return repairgather;
+				} else {
+					return "0";
+				}
+		}
+		public String getHerbalismGather(){
+			if(herbalismgather != null && !herbalismgather.equals("") && !herbalismgather.equals("null")){
+				return herbalismgather;
+				} else {
+					return "0";
+				}
+		}
+		public String getExcavationGather(){
+			if(excavationgather != null && !excavationgather.equals("") && !excavationgather.equals("null")){
+				return excavationgather;
+				} else {
+					return "0";
+				}
+		}
+		public String getArcheryGather(){
+			if(archerygather != null && !archerygather.equals("") && !archerygather.equals("null")){
+				return archerygather;
+				} else {
+					return "0";
+				}
+		}
+		public String getSwordsGather(){
+			if(swordsgather != null && !swordsgather.equals("") && !swordsgather.equals("null")){
+				return swordsgather;
+				} else {
+					return "0";
+				}
+		}
+		public String getAxesGather(){
+			if(axesgather != null && !axesgather.equals("") && !axesgather.equals("null")){
+				return axesgather;
+				} else {
+					return "0";
+				}
+		}
+		public String getAcrobaticsGather(){
+			if(acrobaticsgather != null && !acrobaticsgather.equals("") && !acrobaticsgather.equals("null")){
+				return acrobaticsgather;
+				} else {
+					return "0";
+				}
+		}
+		public String getUnarmedGather(){
+			if(unarmedgather != null && !unarmedgather.equals("") && !unarmedgather.equals("null")){
+				return unarmedgather;
+				} else {
+					return "0";
+				}
+		}
 		
-		public int getwgatheramt() {
+		public int getWoodCuttingGatherInt() {
 			if(isInt(wgather)){
-			return Integer.parseInt(getwgather());
+			return Integer.parseInt(wgather);
 			} else {
 				wgather = "0";
+				save();
+				return 0;
+			}
+		}
+		public int getRepairGatherInt() {
+			if(isInt(repairgather)){
+			return Integer.parseInt(repairgather);
+			} else {
+				repairgather = "0";
+				save();
+				return 0;
+			}
+		}
+		public int getUnarmedGatherInt() {
+			if(isInt(unarmedgather)){
+			return Integer.parseInt(unarmedgather);
+			} else {
+				unarmedgather = "0";
+				save();
+				return 0;
+			}
+		}
+		public int getHerbalismGatherInt() {
+			if(isInt(herbalismgather)){
+			return Integer.parseInt(herbalismgather);
+			} else {
+				herbalismgather = "0";
+				save();
+				return 0;
+			}
+		}
+		public int getExcavationGatherInt() {
+			if(isInt(excavationgather)){
+			return Integer.parseInt(excavationgather);
+			} else {
+				excavationgather = "0";
+				save();
+				return 0;
+			}
+		}
+		public int getArcheryGatherInt() {
+			if(isInt(archerygather)){
+			return Integer.parseInt(archerygather);
+			} else {
+				archerygather = "0";
+				save();
+				return 0;
+			}
+		}
+		public int getSwordsGatherInt() {
+			if(isInt(swordsgather)){
+			return Integer.parseInt(swordsgather);
+			} else {
+				swordsgather = "0";
+				save();
+				return 0;
+			}
+		}
+		public int getAxesGatherInt() {
+			if(isInt(axesgather)){
+			return Integer.parseInt(axesgather);
+			} else {
+				axesgather = "0";
+				save();
+				return 0;
+			}
+		}
+		public int getAcrobaticsGatherInt() {
+			if(isInt(acrobaticsgather)){
+			return Integer.parseInt(acrobaticsgather);
+			} else {
+				acrobaticsgather = "0";
 				save();
 				return 0;
 			}
@@ -764,9 +1114,9 @@ class PlayerList
 			}
 			save();
 		}
-		public int getgatheramt() {
+		public int getMiningGatherInt() {
 			if(isInt(gather)){
-			return Integer.parseInt(getgather());
+			return Integer.parseInt(gather);
 			} else {
 				gather = "0";
 				save();
