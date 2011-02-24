@@ -11,7 +11,7 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 public class mcPermissions {
 	//Thanks to myWarp source code for helping me figure this shit out!
 	private static Permissions permissionsPlugin;
-    private static boolean permissionsEnabled = false;
+    public static boolean permissionsEnabled = false;
     private static volatile mcPermissions instance;
 
     public static void initialize(Server server) {

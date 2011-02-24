@@ -574,7 +574,7 @@ public class mcm {
     		}
     		//GOLD
     		if(block.getTypeId() == 14){
-    		mcUsers.getProfile(player).addMiningGather(50);
+    		mcUsers.getProfile(player).addMiningGather(20);
     		mcm.getInstance().blockProcCheck(block, player);
     		}
     		//DIAMOND
@@ -1421,8 +1421,10 @@ public class mcm {
     		player.sendMessage(ChatColor.GREEN+"/"+mcLoadProperties.stats+ChatColor.GRAY+" - Check current skill levels");
     		if(mcPermissions.getInstance().setMySpawn(player))
     		player.sendMessage(ChatColor.GRAY+"/"+mcLoadProperties.setmyspawn+" - Sets your spawn");
-    		if(mcPermissions.getInstance().mySpawn(player))
+    		if(mcPermissions.getInstance().mySpawn(player)){
     		player.sendMessage(ChatColor.GRAY+"/"+mcLoadProperties.myspawn+" - travel to myspawn, clears inventory");
+    		player.sendMessage(ChatColor.GREEN+"/"+mcLoadProperties.clearmyspawn+" - resets your myspawn to default spawn location");
+    		}
     		if(mcPermissions.getInstance().whois(player) || player.isOp())
     		player.sendMessage(ChatColor.GRAY+"/"+mcLoadProperties.whois+" - view detailed info about a player (req op)");
     		player.sendMessage(ChatColor.GRAY+"/woodcutting - Skill info");
@@ -1570,7 +1572,7 @@ public class mcm {
     	}
     	//DIRT SAND OR GRAVEL
     	if(type == 3 || type == 13 || type == 2 || type == 12){
-    			mcUsers.getProfile(player).addExcavationGather(1);
+    			mcUsers.getProfile(player).addExcavationGather(2);
     		if(mcUsers.getProfile(player).getExcavationInt() > 750){
     			//CHANCE TO GET CAKE
     			if(mcLoadProperties.cake == true && Math.random() * 2000 > 1999){
@@ -1660,11 +1662,11 @@ public class mcm {
         		}
         		}
     	}
-    	if(mcUsers.getProfile(player).getExcavationGatherInt() >= (mcUsers.getProfile(player).getExcavationInt() + 5) * mcLoadProperties.xpmodifier){
+    	if(mcUsers.getProfile(player).getExcavationGatherInt() >= (mcUsers.getProfile(player).getExcavationInt() + 3) * mcLoadProperties.xpmodifier){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getExcavationGatherInt() >= (mcUsers.getProfile(player).getExcavationInt() +5) * mcLoadProperties.xpmodifier){
+			while(mcUsers.getProfile(player).getExcavationGatherInt() >= (mcUsers.getProfile(player).getExcavationInt() +3) * mcLoadProperties.xpmodifier){
 				skillups++;
-				mcUsers.getProfile(player).removeExcavationGather((mcUsers.getProfile(player).getExcavationInt() + 5) * mcLoadProperties.xpmodifier);
+				mcUsers.getProfile(player).removeExcavationGather((mcUsers.getProfile(player).getExcavationInt() + 3) * mcLoadProperties.xpmodifier);
 				mcUsers.getProfile(player).skillUpExcavation(1);
 			}
 			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getExcavation()+")");	

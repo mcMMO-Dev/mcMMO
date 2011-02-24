@@ -112,7 +112,19 @@ public class mcPlayerListener extends PlayerListener {
     	/*
     	 * MMOEDIT COMMAND
     	 */
-    	if(mcPermissions.getInstance().mmoedit(player) && split[0].equalsIgnoreCase("/"+mcLoadProperties.mmoedit)){
+    	if(mcPermissions.getInstance().mySpawn(player) && split[0].equalsIgnoreCase("/"+mcLoadProperties.clearmyspawn)){
+    		event.setCancelled(true);
+    		double x = player.getWorld().getSpawnLocation().getX();
+    		double y = player.getWorld().getSpawnLocation().getY();
+    		double z = player.getWorld().getSpawnLocation().getZ();
+    		mcUsers.getProfile(player).setMySpawn(x, y, z);
+    		player.sendMessage(ChatColor.DARK_AQUA+"Myspawn is now cleared.");
+    	}
+    	if(mcPermissions.permissionsEnabled && split[0].equalsIgnoreCase("/"+mcLoadProperties.mmoedit)){
+    		if(!mcPermissions.getInstance().mmoedit(player)){
+    			player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +" Insufficient permissions.");
+    			return;
+    		}
     		if(split.length < 3){
     			player.sendMessage(ChatColor.RED+"Usage is /"+mcLoadProperties.mmoedit+" playername skillname newvalue");
     			return;
@@ -193,7 +205,7 @@ public class mcPlayerListener extends PlayerListener {
     				+"/"+(mcUsers.getProfile(target).getHerbalismInt() + 5) * mcLoadProperties.xpmodifier+")");
     		player.sendMessage(ChatColor.YELLOW + "Excavation Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(target).getExcavation()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getExcavationGather()
-    				+"/"+(mcUsers.getProfile(target).getExcavationInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+(mcUsers.getProfile(target).getExcavationInt() + 3) * mcLoadProperties.xpmodifier+")");
     		player.sendMessage(ChatColor.YELLOW + "Archery Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getArchery()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getArcheryGather()
     				+"/"+(mcUsers.getProfile(target).getArcheryInt() + 5) * mcLoadProperties.xpmodifier+")");

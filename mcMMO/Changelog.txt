@@ -1,5 +1,14 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.7.4
+	Work around for a bukkit bug that broke my onBlockDamage event
+	Added /clearmyspawn
+Version 0.7.3
+	Fixed to work with build 424 of CB
+	Lowered the XP of gold due to it not being that rare anymore
+Version 0.7.2
+	Fixed security flaw where players could access /mmoedit if the server was not running permissions
+	Reduced XP gain of woodcutting a bit
 Version 0.7
 	Completely rewrote the XP system
 	Added an XP skillrate modifier to the settings file

@@ -207,6 +207,23 @@ class PlayerList
             	addPlayer();
 		}
 		
+		public void scoreBoard()
+		{
+            try {
+            	//Open the user file
+            	FileReader file = new FileReader(location);
+            	BufferedReader in = new BufferedReader(file);
+            	String line = "";
+            	while((line = in.readLine()) != null)
+            	{
+            		
+            	}
+            	in.close();
+	        } catch (Exception e) {
+	            log.log(Level.SEVERE, "Exception while reading "
+	            		+ location + " (Are you sure you formatted it correctly?)", e);
+	        }
+		}
 		public boolean load()
 		{
             try {

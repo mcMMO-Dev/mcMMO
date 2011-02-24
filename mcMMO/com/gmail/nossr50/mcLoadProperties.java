@@ -2,7 +2,7 @@ package com.gmail.nossr50;
 
 public class mcLoadProperties {
 	public static Boolean pvp, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
-	public static String mcmmo, mcc, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept;
+	public static String mcmmo, mcc, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
 	public static int xpmodifier;
 	
 	public static void loadMain(){
@@ -50,6 +50,7 @@ public class mcLoadProperties {
     	whois = properties.getString("whois", "whois");
     	invite = properties.getString("invite", "invite");
     	accept = properties.getString("accept", "accept");
+    	clearmyspawn = properties.getString("clearmyspawn", "clearmyspawn");
     	properties.save("==McMMO Configuration==\r\nYou can turn off excavation loot tables by turning the option to false\r\nYou can customize mcMMOs command names by modifying them here as well\r\nThis is an early version of the configuration file, eventually you'll be able to customize messages from mcMMO and XP gains");
     	//herp derp
     }

@@ -39,6 +39,7 @@ public class mcBlockListener extends BlockListener {
     public void onBlockDamage(BlockDamageEvent event) {
     		//STARTED(0), DIGGING(1), BROKEN(3), STOPPED(2);
     		Player player = event.getPlayer();
+    		//player.sendMessage("mcMMO DEBUG: EVENT-OK DMG LEVEL ("+event.getDamageLevel().getLevel()+")");
     		Block block = event.getBlock();
     		int x = block.getX();
         	int y = block.getY();
@@ -50,17 +51,16 @@ public class mcBlockListener extends BlockListener {
     		/*
     		 * MINING
     		 */
-    		if(dmg == 3 && !mcConfig.getInstance().isBlockWatched(block) && !mcConfig.getInstance().isCoordsWatched(xyz)){
+    		if(dmg == 2 && !mcConfig.getInstance().isBlockWatched(block) && !mcConfig.getInstance().isCoordsWatched(xyz)){
     		if(mcPermissions.getInstance().mining(player))
     		mcm.getInstance().miningBlockCheck(player, block);
     		/*
     		 * WOOD CUTTING
     		 */
     		if(block.getTypeId() == 17 
-    				&& mcPermissions.getInstance().woodcutting(player)){
-    				mcUsers.getProfile(player).addWoodcuttingGather(1);    		
+    				&& mcPermissions.getInstance().woodcutting(player)){    		
     				mcm.getInstance().woodCuttingProcCheck(player, block, loc);
-    				mcUsers.getProfile(player).addWoodcuttingGather(3);
+    				mcUsers.getProfile(player).addWoodcuttingGather(2);
     		}
     		/*
     		 * EXCAVATION
