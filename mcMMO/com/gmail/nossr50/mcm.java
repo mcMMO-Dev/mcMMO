@@ -11,6 +11,7 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Pig;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Spider;
@@ -132,8 +133,16 @@ public class mcm {
     			if(defender.getHealth() <= 0)
     				mcm.getInstance().simulateNaturalDrops(defender);
     			//XP
-    			if(Math.random() * 10 > 7){
-    				mcUsers.getProfile(attacker).addArcheryGather(1);
+    				if(x instanceof Creeper)
+					mcUsers.getProfile(attacker).addArcheryGather(10);
+					if(x instanceof Spider)
+						mcUsers.getProfile(attacker).addArcheryGather(7);
+					if(x instanceof Skeleton)
+						mcUsers.getProfile(attacker).addArcheryGather(5);
+					if(x instanceof Zombie)
+						mcUsers.getProfile(attacker).addArcheryGather(3);
+					if(x instanceof PigZombie)
+						mcUsers.getProfile(attacker).addArcheryGather(7);
     				if(mcUsers.getProfile(attacker).getArcheryGatherInt() >= (mcUsers.getProfile(attacker).getArcheryInt() + 5) * mcLoadProperties.xpmodifier){
 						int skillups = 0;
 						while(mcUsers.getProfile(attacker).getArcheryGatherInt() >= (mcUsers.getProfile(attacker).getArcheryInt() +5) * mcLoadProperties.xpmodifier){
@@ -143,7 +152,6 @@ public class mcm {
 						}
 						attacker.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getArchery()+")");	
 					}
-    			}
     			}
     		/*
     		 * Defender is Animals	
@@ -945,7 +953,16 @@ public class mcm {
 			if(isSwords(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().swords(attacker)){
-					mcUsers.getProfile(attacker).addSwordsGather(1);
+					if(x instanceof Creeper)
+					mcUsers.getProfile(attacker).addSwordsGather(10);
+					if(x instanceof Spider)
+					mcUsers.getProfile(attacker).addSwordsGather(7);
+					if(x instanceof Skeleton)
+					mcUsers.getProfile(attacker).addSwordsGather(5);
+					if(x instanceof Zombie)
+					mcUsers.getProfile(attacker).addSwordsGather(3);
+					if(x instanceof PigZombie)
+					mcUsers.getProfile(attacker).addSwordsGather(7);
 					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() + 5) * mcLoadProperties.xpmodifier){
 						int skillups = 0;
 						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() +5) * mcLoadProperties.xpmodifier){
@@ -959,7 +976,17 @@ public class mcm {
 			if(isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
-					mcUsers.getProfile(attacker).addAxesGather(1);
+				    mcUsers.getProfile(attacker).addAxesGather(1);
+					if(x instanceof Creeper)
+					mcUsers.getProfile(attacker).addAxesGather(10);
+					if(x instanceof Spider)
+						mcUsers.getProfile(attacker).addAxesGather(7);
+					if(x instanceof Skeleton)
+						mcUsers.getProfile(attacker).addAxesGather(5);
+					if(x instanceof Zombie)
+						mcUsers.getProfile(attacker).addAxesGather(3);
+					if(x instanceof PigZombie)
+						mcUsers.getProfile(attacker).addAxesGather(7);
 					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() + 5) * mcLoadProperties.xpmodifier){
 						int skillups = 0;
 						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() +5) * mcLoadProperties.xpmodifier){
@@ -1003,7 +1030,16 @@ public class mcm {
 				defender.setHealth(calculateDamage(defender, 8));
 			}
 			//XP
-			mcUsers.getProfile(attacker).addUnarmedGather(1);
+			if(x instanceof Creeper)
+				mcUsers.getProfile(attacker).addUnarmedGather(20);
+			if(x instanceof Spider)
+				mcUsers.getProfile(attacker).addUnarmedGather(15);
+			if(x instanceof Skeleton)
+				mcUsers.getProfile(attacker).addUnarmedGather(10);
+			if(x instanceof Zombie)
+				mcUsers.getProfile(attacker).addUnarmedGather(5);
+			if(x instanceof PigZombie)
+				mcUsers.getProfile(attacker).addUnarmedGather(15);
 			if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier){
 				int skillups = 0;
 				while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() +5) * mcLoadProperties.xpmodifier){
@@ -1453,11 +1489,17 @@ public class mcm {
         		 * ARMOR
         		 */
         		if(mcm.getInstance().isArmor(is) && block.getTypeId() == 42){
-        			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player)){
+        			/*
+        			 * DIAMOND ARMOR
+        			 */
+        			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){
         			mcm.getInstance().removeDiamond(player);
         			player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
         			mcUsers.getProfile(player).addRepairGather(20);
         			} else if (mcm.getInstance().isIronArmor(is) && mcm.getInstance().hasIron(player)){
+        			/*
+        			 * IRON ARMOR
+        			 */
         			mcm.getInstance().removeIron(player);
             		player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
             		/*
@@ -1472,11 +1514,17 @@ public class mcm {
         		 * TOOLS
         		 */
         		if(mcm.getInstance().isTools(is) && block.getTypeId() == 42){
+        			/*
+        			 * IRON TOOLS
+        			 */
             		if(mcm.getInstance().isIronTools(is) && mcm.getInstance().hasIron(player)){
             			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
             			mcm.getInstance().removeIron(player);
             			mcUsers.getProfile(player).addRepairGather(5);
             		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){ //Check if its diamond and the player has diamonds
+            			/*
+            			 * DIAMOND TOOLS
+            			 */
             			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
             			mcm.getInstance().removeDiamond(player);
             			mcUsers.getProfile(player).addRepairGather(20);
@@ -1512,7 +1560,7 @@ public class mcm {
     	if(type == 59 && block.getData() == (byte) 0x7){
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    		mcUsers.getProfile(player).addHerbalismGather(3);
+    		mcUsers.getProfile(player).addHerbalismGather(5);
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
     		if(Math.random() * 10 > 8)
 			loc.getWorld().dropItemNaturally(loc, is);
@@ -1536,10 +1584,10 @@ public class mcm {
     	if(!mcConfig.getInstance().isBlockWatched(block)){
     		//player.sendMessage("DEBUG CODE 2");
     	if(type == 39 || type == 40){
-    			mcUsers.getProfile(player).addHerbalismGather(20);
+    			mcUsers.getProfile(player).addHerbalismGather(10);
     		}
     	if(type == 37 || type == 38){
-    			mcUsers.getProfile(player).addHerbalismGather(2);
+    			mcUsers.getProfile(player).addHerbalismGather(3);
     	}
     	}
     	if(mcUsers.getProfile(player).getHerbalismGatherInt() >= (mcUsers.getProfile(player).getHerbalismInt() + 5) * mcLoadProperties.xpmodifier){
@@ -1560,12 +1608,14 @@ public class mcm {
     	if(type == 2 && mcUsers.getProfile(player).getExcavationInt() > 250){
     		//CHANCE TO GET EGGS
     		if(mcLoadProperties.eggs == true && Math.random() * 100 > 99){
+    			mcUsers.getProfile(player).addExcavationGather(10);
 				mat = Material.getMaterial(344);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
     		//CHANCE TO GET APPLES
     		if(mcLoadProperties.apples == true && Math.random() * 100 > 99){
+    			mcUsers.getProfile(player).addExcavationGather(10);
     			mat = Material.getMaterial(260);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
@@ -1573,10 +1623,11 @@ public class mcm {
     	}
     	//DIRT SAND OR GRAVEL
     	if(type == 3 || type == 13 || type == 2 || type == 12){
-    			mcUsers.getProfile(player).addExcavationGather(2);
+    			mcUsers.getProfile(player).addExcavationGather(3);
     		if(mcUsers.getProfile(player).getExcavationInt() > 750){
     			//CHANCE TO GET CAKE
     			if(mcLoadProperties.cake == true && Math.random() * 2000 > 1999){
+    				mcUsers.getProfile(player).addExcavationGather(300);
     				mat = Material.getMaterial(354);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
@@ -1585,6 +1636,7 @@ public class mcm {
     		if(mcUsers.getProfile(player).getExcavationInt() > 150){
     			//CHANCE TO GET MUSIC
     			if(mcLoadProperties.music == true && Math.random() * 2000 > 1999){
+    				mcUsers.getProfile(player).addExcavationGather(300);
     				mat = Material.getMaterial(2256);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
@@ -1594,6 +1646,7 @@ public class mcm {
     		if(mcUsers.getProfile(player).getExcavationInt() > 350){
     			//CHANCE TO GET DIAMOND
     			if(mcLoadProperties.diamond == true && Math.random() * 500 > 499){
+    				mcUsers.getProfile(player).addExcavationGather(100);
         				mat = Material.getMaterial(264);
         				is = new ItemStack(mat, 1, (byte)0, (byte)0);
         				loc.getWorld().dropItemNaturally(loc, is);
@@ -1602,6 +1655,7 @@ public class mcm {
     		if(mcUsers.getProfile(player).getExcavationInt() > 250){
     			//CHANCE TO GET MUSIC
     			if(mcLoadProperties.music == true && Math.random() * 2000 > 1999){
+    				mcUsers.getProfile(player).addExcavationGather(300);
     				mat = Material.getMaterial(2257);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
@@ -1612,18 +1666,21 @@ public class mcm {
     	if(type == 12){
     		//CHANCE TO GET GLOWSTONE
     		if(mcLoadProperties.glowstone == true && mcUsers.getProfile(player).getExcavationInt() > 50 && Math.random() * 100 > 95){
+    			mcUsers.getProfile(player).addExcavationGather(3);
 				mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
     		//CHANCE TO GET SLOWSAND
     		if(mcLoadProperties.slowsand == true && mcUsers.getProfile(player).getExcavationInt() > 650 && Math.random() * 200 > 199){
+    			mcUsers.getProfile(player).addExcavationGather(5);
 				mat = Material.getMaterial(88);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
     		//CHANCE TO GET DIAMOND
     		if(mcLoadProperties.diamond == true && mcUsers.getProfile(player).getExcavationInt() > 500 && Math.random() * 500 > 499){
+    			mcUsers.getProfile(player).addExcavationGather(100);
 				mat = Material.getMaterial(264);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
@@ -1633,6 +1690,7 @@ public class mcm {
     	if((type == 2 || type == 3) && mcUsers.getProfile(player).getExcavationInt() > 25){
     		//CHANCE TO GET GLOWSTONE
     		if(mcLoadProperties.glowstone == true && Math.random() * 100 > 95){
+    			mcUsers.getProfile(player).addExcavationGather(5);
     			mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
@@ -1642,6 +1700,7 @@ public class mcm {
     	if(type == 13){
     		//CHANCE TO GET NETHERRACK
     		if(mcLoadProperties.netherrack == true && mcUsers.getProfile(player).getExcavationInt() > 850 && Math.random() * 200 > 199){
+    			mcUsers.getProfile(player).addExcavationGather(3);
 				mat = Material.getMaterial(87);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
@@ -1649,6 +1708,7 @@ public class mcm {
     		//CHANCE TO GET SULPHUR
     		if(mcLoadProperties.sulphur == true && mcUsers.getProfile(player).getExcavationInt() > 75){
     		if(Math.random() * 10 > 9){
+    			mcUsers.getProfile(player).addExcavationGather(3);
     			mat = Material.getMaterial(289);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
@@ -1657,6 +1717,7 @@ public class mcm {
     		//CHANCE TO GET BONES
     		if(mcLoadProperties.bones == true && mcUsers.getProfile(player).getExcavationInt() > 175){
         		if(Math.random() * 10 > 6){
+        			mcUsers.getProfile(player).addExcavationGather(3);
         			mat = Material.getMaterial(352);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);

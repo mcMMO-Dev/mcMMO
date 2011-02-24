@@ -153,9 +153,10 @@ class PlayerList
 	class PlayerProfile
 	{
 	    protected final Logger log = Logger.getLogger("Minecraft");
-		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, unarmed, herbalism, excavation,
+		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
 		private boolean dead;
+		Player thisplayer;
 		char defaultColor;
 
         String location = "mcmmo.users";
@@ -172,8 +173,10 @@ class PlayerList
 		{
             //Declare things
 			playerName = player.getName();
+			thisplayer = player;
             party = new String();
             myspawn = new String();
+            myspawnworld = new String();
             mining = new String();
             repair = new String();
             repairgather = new String();
@@ -285,6 +288,8 @@ class PlayerList
         				axesgather = character[21];
         			if(character.length > 22)
         				acrobaticsgather = character[22];
+        			if(character.length > 23)
+        				myspawnworld = character[23];
                 	in.close();
         			return true;
             	}
@@ -346,6 +351,7 @@ class PlayerList
             			writer.append(swordsgather+":");
             			writer.append(axesgather+":");
             			writer.append(acrobaticsgather+":");
+            			writer.append(myspawnworld+":");
             			writer.append("\r\n");                   			
             		}
             	}
@@ -389,6 +395,7 @@ class PlayerList
                 out.append(0+":"); //swordsgather
                 out.append(0+":"); //axesgather
                 out.append(0+":"); //acrobaticsgather
+                out.append(thisplayer.getWorld().getName());
                 //Add more in the same format as the line above
                 
     			out.newLine();
@@ -1170,9 +1177,13 @@ class PlayerList
                         return false;
                     }
                 }
+                public String getMySpawnWorld(){
+                	return myspawnworld;
+                }
                 //Save a users spawn location
-                public void setMySpawn(double x, double y, double z){
+                public void setMySpawn(double x, double y, double z, String myspawnworldlocation){
             		myspawn = x+","+y+","+z;
+            		myspawnworld = myspawnworldlocation;
             		save();
             	}
                 public String getX(){
@@ -1198,7 +1209,7 @@ class PlayerList
                 	return dead;
                 }
                 public Location getMySpawn(Player player){
-                	Location loc = player.getLocation();
+                	Location loc = player.getWorld().getSpawnLocation();
                 	if(isDouble(getX()) && isDouble(getY()) && isDouble(getX())){
             		loc.setX(Double.parseDouble(mcUsers.getProfile(player).getX()));
             		loc.setY(Double.parseDouble(mcUsers.getProfile(player).getY()));

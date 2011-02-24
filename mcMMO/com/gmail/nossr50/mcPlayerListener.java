@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -12,6 +14,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerItemEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.plugin.*;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,11 +30,14 @@ public class mcPlayerListener extends PlayerListener {
     }
     public void onPlayerRespawn(PlayerRespawnEvent event) {
     	Player player = event.getPlayer();
-    	if(mcPermissions.getInstance().mySpawn(player)){
-    	if(mcUsers.getProfile(player).getMySpawn(player) != null)
-    	event.setRespawnLocation(mcUsers.getProfile(player).getMySpawn(player));
-    	}
-    	//HELLO CODE PEAKERS!
+			Location mySpawn = mcUsers.getProfile(player).getMySpawn(player);
+			if(mcUsers.getProfile(player).getMySpawnWorld() != null && !mcUsers.getProfile(player).getMySpawnWorld().equals("")){
+			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld()));
+			}
+			if(mcPermissions.getInstance().mySpawn(player)){
+		    	if(mcUsers.getProfile(player).getMySpawn(player) != null)
+		    	event.setRespawnLocation(mySpawn);
+			}
     }
     public Player[] getPlayersOnline() {
     		return plugin.getServer().getOnlinePlayers();
@@ -114,10 +120,11 @@ public class mcPlayerListener extends PlayerListener {
     	 */
     	if(mcPermissions.getInstance().mySpawn(player) && split[0].equalsIgnoreCase("/"+mcLoadProperties.clearmyspawn)){
     		event.setCancelled(true);
-    		double x = player.getWorld().getSpawnLocation().getX();
-    		double y = player.getWorld().getSpawnLocation().getY();
-    		double z = player.getWorld().getSpawnLocation().getZ();
-    		mcUsers.getProfile(player).setMySpawn(x, y, z);
+    		double x = plugin.getServer().getWorlds().get(0).getSpawnLocation().getX();
+    		double y = plugin.getServer().getWorlds().get(0).getSpawnLocation().getY();
+    		double z = plugin.getServer().getWorlds().get(0).getSpawnLocation().getZ();
+    		String worldname = plugin.getServer().getWorlds().get(0).getName();
+    		mcUsers.getProfile(player).setMySpawn(x, y, z, worldname);
     		player.sendMessage(ChatColor.DARK_AQUA+"Myspawn is now cleared.");
     	}
     	if(mcPermissions.permissionsEnabled && split[0].equalsIgnoreCase("/"+mcLoadProperties.mmoedit)){
@@ -248,7 +255,8 @@ public class mcPlayerListener extends PlayerListener {
     		double x = player.getLocation().getX();
     		double y = player.getLocation().getY();
     		double z = player.getLocation().getZ();
-    		mcUsers.getProfile(player).setMySpawn(x, y, z);
+    		String myspawnworld = player.getWorld().getName();
+    		mcUsers.getProfile(player).setMySpawn(x, y, z, myspawnworld);
     		player.sendMessage(ChatColor.DARK_AQUA + "Myspawn has been set to your current location.");
     	}
     	/*
@@ -405,6 +413,9 @@ public class mcPlayerListener extends PlayerListener {
     			player.sendMessage(ChatColor.AQUA + "Admin chat toggled " + ChatColor.RED + "Off");
     		}
     	}
+    	/*
+    	 * MYSPAWN
+    	 */
     	if(split[0].equalsIgnoreCase("/"+mcLoadProperties.myspawn)){
     		if(!mcPermissions.getInstance().mySpawn(player)){
     			player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +" Insufficient permissions.");
@@ -414,7 +425,20 @@ public class mcPlayerListener extends PlayerListener {
     		if(mcUsers.getProfile(player).getMySpawn(player) != null){
     		player.getInventory().clear();
     		player.setHealth(20);
-    		player.teleportTo(mcUsers.getProfile(player).getMySpawn(player));
+    		Location mySpawn = mcUsers.getProfile(player).getMySpawn(player);
+    		//player.sendMessage("mcMMO DEBUG CODE 1");
+    		if(mcUsers.getProfile(player).getMySpawnWorld() != null && !mcUsers.getProfile(player).getMySpawnWorld().equals("")){
+    			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld()));
+    			//player.sendMessage("mcMMO DEBUG CODE 2");
+    			} else {
+    				//player.sendMessage("mcMMO DEBUG CODE 5");
+    				mySpawn.setWorld(plugin.getServer().getWorlds().get(0));
+    		}
+    		//player.sendMessage("mcMMO DEBUG CODE 3");
+    		player.teleportTo(mySpawn);
+    		player.teleportTo(mySpawn);
+    		//Two lines of teleporting to prevent a bug when players try teleporting from one world to another bringing them to that worlds spawn at first.
+    		//player.sendMessage("mcMMO DEBUG CODE 4");
     		player.sendMessage("Inventory cleared & health restored");
     		}else{
     			player.sendMessage(ChatColor.RED+"Configure your myspawn first with /setmyspawn");

@@ -1,5 +1,13 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.7.8
+	Massive tweaks to XP gain for Archery, Swords, Axes, Unarmed
+Version 0.7.7
+	Minor tweak to how players are added to the flat file
+	Fixed some nullpointer exceptions when players die
+Version 0.7.6
+	Fixed being able to repair diamond armor with below 50 skill
+	Myspawn now supports multiple worlds, clearing myspawn will set it to the first world created by the server
 Version 0.7.5
 	Removed random checks for herbalism XP
 	Herbalism is now called properly (This should fix gaining no xp or double drops)
