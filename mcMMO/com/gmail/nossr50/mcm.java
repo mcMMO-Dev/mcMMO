@@ -1508,21 +1508,11 @@ public class mcm {
     	Location loc = block.getLocation();
     	ItemStack is = null;
     	Material mat = null;
-    	if(!mcConfig.getInstance().isBlockWatched(block)){
-    	if(type == 39 || type == 40){
-    			mcUsers.getProfile(player).addHerbalismGather(20);
-    		}
-    	if(type == 37 || type == 38){
-    		if(Math.random() * 10 > 8){
-    			mcUsers.getProfile(player).addHerbalismGather(2);
-    		}
-    	}
+    	//player.sendMessage("mcMMO DEBUG: Data ("+block.getData()+")"+" TYPEID ("+block.getTypeId()+")");
     	if(type == 59 && block.getData() == (byte) 0x7){
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-			if(Math.random() * 100 > 80){
     		mcUsers.getProfile(player).addHerbalismGather(3);
-			}
     		if(mcUsers.getProfile(player).getHerbalismInt() >= 50 && mcUsers.getProfile(player).getHerbalismInt() < 150){
     		if(Math.random() * 10 > 8)
 			loc.getWorld().dropItemNaturally(loc, is);
@@ -1540,6 +1530,18 @@ public class mcm {
     				loc.getWorld().dropItemNaturally(loc, is);
     		}
     	}
+    	/*
+    	 * We need to check not-wheat stuff for if it was placed by the player or not
+    	 */
+    	if(!mcConfig.getInstance().isBlockWatched(block)){
+    		//player.sendMessage("DEBUG CODE 2");
+    	if(type == 39 || type == 40){
+    			mcUsers.getProfile(player).addHerbalismGather(20);
+    		}
+    	if(type == 37 || type == 38){
+    			mcUsers.getProfile(player).addHerbalismGather(2);
+    	}
+    	}
     	if(mcUsers.getProfile(player).getHerbalismGatherInt() >= (mcUsers.getProfile(player).getHerbalismInt() + 5) * mcLoadProperties.xpmodifier){
 			int skillups = 0;
 			while(mcUsers.getProfile(player).getHerbalismGatherInt() >= (mcUsers.getProfile(player).getHerbalismInt() +5) * mcLoadProperties.xpmodifier){
@@ -1549,7 +1551,6 @@ public class mcm {
 			}
 			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getHerbalism()+")");	
 		}
-    	}
     }
     public void excavationProcCheck(Block block, Player player){
     	int type = block.getTypeId();

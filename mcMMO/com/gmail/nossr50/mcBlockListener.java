@@ -49,6 +49,13 @@ public class mcBlockListener extends BlockListener {
     		Location loc = block.getLocation();
     		int dmg = event.getDamageLevel().getLevel();
     		/*
+    		 * HERBALISM
+    		 */
+    		if(dmg == 3){
+        		if(mcPermissions.getInstance().herbalism(player))
+        		mcm.getInstance().herbalismProcCheck(block, player);
+    		}
+    		/*
     		 * MINING
     		 */
     		if(dmg == 2 && !mcConfig.getInstance().isBlockWatched(block) && !mcConfig.getInstance().isCoordsWatched(xyz)){
@@ -57,8 +64,7 @@ public class mcBlockListener extends BlockListener {
     		/*
     		 * WOOD CUTTING
     		 */
-    		if(block.getTypeId() == 17 
-    				&& mcPermissions.getInstance().woodcutting(player)){    		
+    		if(block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){    		
     				mcm.getInstance().woodCuttingProcCheck(player, block, loc);
     				mcUsers.getProfile(player).addWoodcuttingGather(2);
     		}
@@ -67,12 +73,6 @@ public class mcBlockListener extends BlockListener {
     		 */
     		if(mcPermissions.getInstance().excavation(player) && block != null && player != null)
     		mcm.getInstance().excavationProcCheck(block, player);
-    		/*
-    		 * HERBALISM
-    		 */
-    		if(!(type == 39 || type == 40 || type == 37 || type == 38) 
-    				&& mcPermissions.getInstance().herbalism(player));
-    		mcm.getInstance().herbalismProcCheck(block, player); //You place the blocks so we wont check if they are being watched
     		/*
     		 * EXPLOIT COUNTERMEASURES
     		 */
