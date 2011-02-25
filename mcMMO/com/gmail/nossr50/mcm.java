@@ -102,6 +102,15 @@ public class mcm {
 		}
 		return true;
 	}
+    public void arrowRetrievalCheck(Entity entity){
+    	if(mcConfig.getInstance().isTracked(entity)){
+    		Integer x = 0;
+    		while(x < mcConfig.getInstance().getArrowCount(entity)){
+    		mcDropItem(entity.getLocation(), 262);
+    		x++;
+    		}
+    	}
+    }
     public void archeryCheck(EntityDamageByProjectileEvent event){
     	Entity y = event.getDamager();
     	Entity x = event.getEntity();
@@ -110,16 +119,59 @@ public class mcm {
     	 */
     	if(y instanceof Player){
     		Player attacker = (Player)y;
-    		/*
-    		 * DEBUG MESSAGE
-    		 */
-    		//attacker.sendMessage(event.getProjectile().toString());
     		if(event.getProjectile().toString().equals("CraftArrow") && mcPermissions.getInstance().archery(attacker)){
+    			if(!mcConfig.getInstance().isTracked(x) && event.getDamage() > 0){
+    				mcConfig.getInstance().addArrowTrack(x, 0);
+    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 200){
+    					if(Math.random() * 10 > 8){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    					}
+    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 200 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
+    					if(Math.random() * 10 > 6){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    					}
+    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 400 && mcUsers.getProfile(attacker).getArcheryInt() < 600){
+    					if(Math.random() * 10 > 4){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    					}
+    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 600 && mcUsers.getProfile(attacker).getArcheryInt() < 800){
+    					if(Math.random() * 10 > 2){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    					}
+    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 800){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    				}
+    			} else {
+    				if(event.getDamage() > 0){
+    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 200){
+    					if(Math.random() * 10 > 8){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    					}
+    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 200 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
+    					if(Math.random() * 10 > 6){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    					}
+    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 400 && mcUsers.getProfile(attacker).getArcheryInt() < 600){
+    					if(Math.random() * 10 > 4){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    					}
+    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 600 && mcUsers.getProfile(attacker).getArcheryInt() < 800){
+    					if(Math.random() * 10 > 2){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    					}
+    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 800){
+    						mcConfig.getInstance().addArrowCount(x, 1);
+    				}
+    				}
+    			}
     		/*
     		 * Defender is Monster
     		 */
     		if(x instanceof Monster){
     			Monster defender = (Monster)x;
+    			/*
+    			 * TRACK ARROWS USED AGAINST THE ENTITY
+    			 */
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
     				defender.setHealth(mcm.getInstance().calculateDamage(defender, 1));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
@@ -130,8 +182,9 @@ public class mcm {
     				defender.setHealth(mcm.getInstance().calculateDamage(defender, 4));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
     				defender.setHealth(mcm.getInstance().calculateDamage(defender, 5));
-    			if(defender.getHealth() <= 0)
-    				mcm.getInstance().simulateNaturalDrops(defender);
+    			if(defender.getHealth() <= 0){
+    				simulateNaturalDrops(defender);
+    			}
     			//XP
     				if(x instanceof Creeper)
 					mcUsers.getProfile(attacker).addArcheryGather(10);
@@ -394,8 +447,7 @@ public class mcm {
     			mcDropItem(loc, 351);
     		}
     	}
-    	
-    	
+    	arrowRetrievalCheck(entity);
     }
     public void mcDropItem(Location loc, int id){
     	if(loc != null){
@@ -696,6 +748,31 @@ public class mcm {
     	}
     		return false;
     }
+    public void bleedCheck(Player attacker, Entity x){
+    	if(mcm.getInstance().isSwords(attacker.getItemInHand()) && !mcConfig.getInstance().isBleedTracked(x)){
+			if(mcUsers.getProfile(attacker).getSwordsInt() >= 50 && mcUsers.getProfile(attacker).getSwordsInt() < 200){
+				if(Math.random() * 10 > 8){
+					mcConfig.getInstance().addBleedTrack(x, 4);
+					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
+				}
+			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 200 && mcUsers.getProfile(attacker).getSwordsInt() < 600){
+				if(Math.random() * 10 > 6){
+					mcConfig.getInstance().addBleedTrack(x, 4);
+					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
+				}
+			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 600 && mcUsers.getProfile(attacker).getSwordsInt() < 900){
+				if(Math.random() * 10 > 4){
+					mcConfig.getInstance().addBleedTrack(x, 6);
+					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
+				}
+			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 900){
+				if(Math.random() * 100 > 75){
+					mcConfig.getInstance().addBleedTrack(x, 6);
+					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
+				}
+			}
+		}
+    }
     public void playerVersusPlayerChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, Plugin plugin){
     	if(x instanceof Player){
     		if(mcLoadProperties.pvp == false){
@@ -709,10 +786,14 @@ public class mcm {
 					return;
 				}
     		}
+    		mcUsers.getProfile(defender).setRecentlyHurt(60);
     		/*
     		 * AXE CRITICAL CHECK
     		 */
     		axeCriticalCheckPlayer(attacker, event, x, plugin);
+    		if(!mcConfig.getInstance().isBleedTracked(x)){
+    			bleedCheck(attacker, x);
+    		}
 			if(mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0){
 				//DMG MODIFIER
 				if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
@@ -793,6 +874,9 @@ public class mcm {
     }
     public void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
     	if(x instanceof Squid){
+    		if(!mcConfig.getInstance().isBleedTracked(x)){
+    			bleedCheck(attacker, x);
+    		}
 			Squid defender = (Squid)event.getEntity();
 			if(isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
 					mcUsers.getProfile(attacker).addSwordsGather(10);
@@ -872,6 +956,9 @@ public class mcm {
     }
     public void playerVersusAnimalsChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, int type){
     	if(x instanceof Animals){
+    		if(!mcConfig.getInstance().isBleedTracked(x)){
+    			bleedCheck(attacker, x);
+    		}
 			Animals defender = (Animals)event.getEntity();
     		if(isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
 				if(defender.getHealth() <= 0)
@@ -908,45 +995,15 @@ public class mcm {
 			}
 		}
     }
-    public void playerDeathByMonsterMessageCheck(Entity y, Player defender, Plugin plugin){
-    	if(y instanceof Monster){
-			if(mcUsers.getProfile(defender).isDead())
-				return;
-			if(defender.getHealth() <= 0){
-				mcm.getInstance().simulateNaturalDrops(defender);
-				if(y instanceof Creeper){
-					mcUsers.getProfile(defender).setDead(true);
-					for(Player derp : plugin.getServer().getOnlinePlayers()){
-    					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.DARK_GREEN+"Creeper"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
-    				}
-				}
-				if(y instanceof Skeleton){
-					mcUsers.getProfile(defender).setDead(true);
-					for(Player derp : plugin.getServer().getOnlinePlayers()){
-    					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.WHITE+"Skeleton"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
-    				}
-				}
-				if(y instanceof Spider){
-					mcUsers.getProfile(defender).setDead(true);
-					for(Player derp : plugin.getServer().getOnlinePlayers()){
-    					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.DARK_PURPLE+"Spider"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
-    				}
-				}
-				if(y instanceof Zombie){
-					mcUsers.getProfile(defender).setDead(true);
-					for(Player derp : plugin.getServer().getOnlinePlayers()){
-    					derp.sendMessage(ChatColor.GRAY + "A "+ChatColor.DARK_AQUA+"Zombie"+ChatColor.GRAY+" has killed "+ChatColor.DARK_RED+defender.getName());
-    				}
-				}
-			}
-		}
-    }
     public void playerVersusMonsterChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
     	if(x instanceof Monster){
     		/*
     		 * AXE PROC CHECKS
     		 */
     		axeCriticalCheckMonster(attacker, event, x);
+    		if(!mcConfig.getInstance().isBleedTracked(x)){
+    			bleedCheck(attacker, x);
+    		}
 			Monster defender = (Monster)event.getEntity();
 			if(isSwords(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
@@ -1004,8 +1061,9 @@ public class mcm {
 				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
 					defender.setHealth(calculateDamage(defender, (4 - axeNerf(attacker.getItemInHand().getTypeId()))));
 				}
-				if(defender.getHealth() <= 0)
-					mcm.getInstance().simulateNaturalDrops(defender);
+				if(defender.getHealth() <= 0 || defender.getHealth() - event.getDamage() <= 0){
+    				simulateNaturalDrops(defender);
+    			}
 			}
 			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
 			if(defender.getHealth() <= 0)
@@ -1047,8 +1105,9 @@ public class mcm {
 				}
 				attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
 			}
-			if(defender.getHealth() <= 0)
-				mcm.getInstance().simulateNaturalDrops(defender);
+			if(defender.getHealth() <= 0 || defender.getHealth() - event.getDamage() <= 0){
+				simulateNaturalDrops(defender);
+			}
 			}
 		}
     }
@@ -1108,7 +1167,7 @@ public class mcm {
     					Animals animal = (Animals)x;
     					animal.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1118,7 +1177,7 @@ public class mcm {
     					Animals animal = (Animals)x;
     					animal.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1128,7 +1187,7 @@ public class mcm {
     					Animals animal = (Animals)x;
     					animal.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1138,7 +1197,7 @@ public class mcm {
     					Animals animal = (Animals)x;
     					animal.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1148,7 +1207,7 @@ public class mcm {
     					Animals animal = (Animals)x;
     					animal.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1162,7 +1221,7 @@ public class mcm {
     					Monster monster = (Monster)x;
     					monster.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1172,7 +1231,7 @@ public class mcm {
     					Monster monster = (Monster)x;
     					monster.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1182,7 +1241,7 @@ public class mcm {
     					Monster monster = (Monster)x;
     					monster.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1192,7 +1251,7 @@ public class mcm {
     					Monster monster = (Monster)x;
     					monster.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1202,7 +1261,7 @@ public class mcm {
     					Monster monster = (Monster)x;
     					monster.setHealth(0);
     					simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				}
     			}
     		}
@@ -1215,7 +1274,7 @@ public class mcm {
     				if(x instanceof Player){
     					Player player = (Player)x;
     					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     				}
     			}
@@ -1225,7 +1284,7 @@ public class mcm {
     				if(x instanceof Player){
     					Player player = (Player)x;
     					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     				}
     			}
@@ -1235,7 +1294,7 @@ public class mcm {
     				if(x instanceof Player){
     					Player player = (Player)x;
     					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     				}
     			}
@@ -1245,7 +1304,7 @@ public class mcm {
     				if(x instanceof Player){
     					Player player = (Player)x;
     					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     				}
     			}
@@ -1255,7 +1314,7 @@ public class mcm {
     				if(x instanceof Player){
     					Player player = (Player)x;
     					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRTICIAL HIT!");
+    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     				}
     			}
@@ -1334,90 +1393,81 @@ public class mcm {
     public void mcmmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
     	if(split[0].equalsIgnoreCase("/woodcutting")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~WOODCUTTING INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Chop down trees.");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"Double Drops start to happen at 10 woodcutting skill");
-			player.sendMessage(ChatColor.GRAY+"and it gets more frequent from there.");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"WOODCUTTING"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Chopping down trees");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.GREEN+"Double the normal loot");
     	}
     	if(split[0].equalsIgnoreCase("/archery")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~ARCHERY INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Shooting monsters.");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"Damage scales with Archery skill");
-			player.sendMessage(ChatColor.GRAY+"Chance to daze player opponents with high skill lvl");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"ARCHERY"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Daze (Monsters): "+ChatColor.GREEN+"Enemies lose interest for 1 second");
+			player.sendMessage(ChatColor.DARK_AQUA+"Daze (Players): "+ChatColor.GREEN+"Disorients foes");
+			player.sendMessage(ChatColor.DARK_AQUA+"Damage+: "+ChatColor.GREEN+"Modifies Damage");
     	}
     	if(split[0].equalsIgnoreCase("/axes")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~AXES INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Hacking up Monsters.");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"Damage with Axes changes after 500 skill");
-			player.sendMessage(ChatColor.GRAY+"Chance to do critical hits scales with skill");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"AXES"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Critical Strikes (Monster): "+ChatColor.GREEN+"Instant kill");
+			player.sendMessage(ChatColor.DARK_AQUA+"Critical Strikes (Players): "+ChatColor.GREEN+"Double Damage");
+			player.sendMessage(ChatColor.DARK_AQUA+"Axe Mastery (500 SKILL): "+ChatColor.GREEN+"Modifies Damage");
     	}
     	if(split[0].equalsIgnoreCase("/swords")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~SWORDS INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Slicing up monsters");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"Parrying. It negates damage.");
-			player.sendMessage(ChatColor.GRAY+"Chance to parry scales with skill.");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"SWORDS"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Parrying: "+ChatColor.GREEN+"Negates Damage");
+			player.sendMessage(ChatColor.DARK_AQUA+"Bleed: "+ChatColor.GREEN+"Apply a 2 second bleed DoT to enemies");
     	}
     	if(split[0].equalsIgnoreCase("/acrobatics")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~ACROBATICS INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Spraining ankles.");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"Rolling. Negates fall damage.");
-			player.sendMessage(ChatColor.GRAY+"Chance to roll scales with skill.");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"ACROBATICS"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Falling");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Roll: "+ChatColor.GREEN+"Negates Damage");
     	}
     	if(split[0].equalsIgnoreCase("/mining")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~MINING INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Mining ore and stone,");
-			player.sendMessage(ChatColor.DARK_GRAY+"the xp rate depends entirely upon the rarity of what you're harvesting.");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"Double Drops start to happen at 25 Mining skill,");
-			player.sendMessage(ChatColor.GRAY+"and the chance for it increases with skill.");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"MINING"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Mining Stone & Ore");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.GREEN+"Double the normal loot");
     	}
     	if(split[0].equalsIgnoreCase("/repair")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~REPAIR INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Repairing tools and armor.");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"High skill levels make a proc to fully repair items happen more often.");
-			player.sendMessage(ChatColor.GREEN+"~~USE~~");
-			player.sendMessage(ChatColor.GRAY+"Approach an Anvil (Iron Block) with the item you wish ");
-			player.sendMessage(ChatColor.GRAY+"to repair in hand, right click to consume resources of the");
-			player.sendMessage(ChatColor.GRAY+"same type to repair it. This does not work for stone/wood/gold");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"REPAIR"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Repairing");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Repair: "+ChatColor.GREEN+"Repair Iron Tools & Armor");
+			player.sendMessage(ChatColor.DARK_AQUA+"Diamond Repair (50+ SKILL): "+ChatColor.GREEN+"Repair Diamond Tools & Armor");
     	}
     	if(split[0].equalsIgnoreCase("/unarmed")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~UNARMED INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Punching monsters and players.");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"Damage scales with unarmed skill. The first damage increase");
-			player.sendMessage(ChatColor.DARK_GRAY+"happens at 50 skill. At very high skill levels, you will");
-			player.sendMessage(ChatColor.DARK_GRAY+"gain a proc to disarm player opponents on hit");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"UNARMED"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Disarm (Players): "+ChatColor.GREEN+"Drops the foes item held in hand");
+			player.sendMessage(ChatColor.DARK_AQUA+"Damage+: "+ChatColor.GREEN+"Modifies Damage");
     	}
     	if(split[0].equalsIgnoreCase("/herbalism")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~HERBALISM INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Farming and picking herbs.");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"Increases healing effects of bread and stew.");
-			player.sendMessage(ChatColor.GRAY+"Allows for chance to receive double drops based on skill");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"HERBALISM"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Harvesting Herbs");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Food+: "+ChatColor.GREEN+"Modifies health received from bread/stew");
+			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops (Wheat): "+ChatColor.GREEN+"Double the normal loot");
     	}
     	if(split[0].equalsIgnoreCase("/excavation")){
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.GREEN+"~~EXCAVATION INFO~~");
-			player.sendMessage(ChatColor.GREEN+"Gaining Skill: "+ChatColor.DARK_GRAY+"Digging.");
-			player.sendMessage(ChatColor.GREEN+"~~EFFECTS~~");
-			player.sendMessage(ChatColor.GRAY+"You will find treasures while digging based on your excavation,");
-			player.sendMessage(ChatColor.GRAY+"and at high levels the rewards are quite nice. The items you get");
-			player.sendMessage(ChatColor.GRAY+"depend on the block you're digging.");
-			player.sendMessage(ChatColor.GRAY+"Different blocks give diffrent stuff.");
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"ARCHERY"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Digging and finding treasures");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Treasure Hunter: "+ChatColor.GREEN+"Ability to dig for treasure");
     	}
 		if(split[0].equalsIgnoreCase("/"+mcLoadProperties.mcmmo)){
 			event.setCancelled(true);
@@ -1481,25 +1531,20 @@ public class mcm {
     	if(block != null 
     			&& block.getTypeId() == 42 
     			&& mcPermissions.getInstance().repair(player)){
-    		player.sendMessage("DEBUG CODE 0");
         	short durability = is.getDurability();
         	if(player.getItemInHand().getDurability() > 0){
-        		//player.sendMessage("DEBUG CODE 1");
         		/*
         		 * ARMOR
         		 */
         		if(mcm.getInstance().isArmor(is) && block.getTypeId() == 42){
-        			//player.sendMessage("DEBUG CODE 2");
         			/*
         			 * DIAMOND ARMOR
         			 */
         			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){
-        				//player.sendMessage("DEBUG CODE 3");	
         			mcm.getInstance().removeDiamond(player);
         			player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
         			mcUsers.getProfile(player).addRepairGather(50);
         			} else if (mcm.getInstance().isIronArmor(is) && mcm.getInstance().hasIron(player)){
-        				//player.sendMessage("DEBUG CODE 3");
         			/*
         			 * IRON ARMOR
         			 */
@@ -1517,17 +1562,14 @@ public class mcm {
         		 * TOOLS
         		 */
         		if(mcm.getInstance().isTools(is) && block.getTypeId() == 42){
-        			//player.sendMessage("DEBUG CODE 4");
         			/*
         			 * IRON TOOLS
         			 */
             		if(mcm.getInstance().isIronTools(is) && mcm.getInstance().hasIron(player)){
-            			//player.sendMessage("DEBUG CODE 5");
             			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
             			mcm.getInstance().removeIron(player);
             			mcUsers.getProfile(player).addRepairGather(20);
             		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){ //Check if its diamond and the player has diamonds
-            			//player.sendMessage("DEBUG CODE 5");
             			/*
             			 * DIAMOND TOOLS
             			 */

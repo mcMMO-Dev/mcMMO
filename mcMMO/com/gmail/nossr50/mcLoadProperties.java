@@ -1,7 +1,7 @@
 package com.gmail.nossr50;
 
 public class mcLoadProperties {
-	public static Boolean pvp, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	public static Boolean pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String mcmmo, mcc, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
 	public static int xpmodifier;
 	
@@ -25,6 +25,7 @@ public class mcLoadProperties {
     	/*
     	 * EXCAVATION LOOT TOGGLES
     	 */
+    	myspawnclearsinventory = properties.getBoolean("myspawnclearsinventory", true);
     	glowstone = properties.getBoolean("glowstone", true);
     	pvp = properties.getBoolean("pvp", true);
     	eggs = properties.getBoolean("eggs", true);

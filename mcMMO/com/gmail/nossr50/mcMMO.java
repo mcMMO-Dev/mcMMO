@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.event.player.*;
@@ -33,6 +34,7 @@ public class mcMMO extends JavaPlugin {
     private final String name = "mcMMO";
     public static PermissionHandler PermissionsHandler = null;
     private Permissions permissions;
+    private Timer mcMMO_Timer = new Timer(true);
 
     /*
     public mcMMO(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
@@ -41,6 +43,7 @@ public class mcMMO extends JavaPlugin {
     */
     //herp
     public void onEnable() {
+    	mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(1000));
     	//Make the directory if it does not exist
     	new File(maindirectory).mkdir();
     	//Make the file if it does not exist

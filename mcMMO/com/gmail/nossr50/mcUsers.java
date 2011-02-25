@@ -156,6 +156,7 @@ class PlayerList
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
 		private boolean dead;
+		private int recentlyhurt = 0;
 		Player thisplayer;
 		char defaultColor;
 
@@ -414,6 +415,17 @@ class PlayerList
 		public boolean isPlayer(Player player)
 		{
 			return player.getName().equals(playerName);
+		}
+		public void decreaseLastHurt(){
+			if(recentlyhurt >= 1){
+				recentlyhurt--;
+			}
+		}
+		public Integer getRecentlyHurt(){
+			return recentlyhurt;
+		}
+		public void setRecentlyHurt(Integer newvalue){
+			recentlyhurt = newvalue;
 		}
 		public void skillUpAxes(int newskill){
 			int x = 0;
@@ -1171,6 +1183,11 @@ class PlayerList
 			} else {
 				return 0;
 			}
+		}
+		public int getPowerLevel(){
+			int x = 0;
+			x+=getMiningInt()+getRepairInt()+getWoodCuttingInt()+getUnarmedInt()+getHerbalismInt()+getExcavationInt()+getArcheryInt()+getSwordsInt()+getAxesInt()+getAcrobaticsInt();
+			return x;
 		}
 		public int getMiningGatherInt() {
 			if(isInt(gather)){

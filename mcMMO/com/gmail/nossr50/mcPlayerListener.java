@@ -423,6 +423,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     		event.setCancelled(true);
     		if(mcUsers.getProfile(player).getMySpawn(player) != null){
+    		if(mcLoadProperties.myspawnclearsinventory)
     		player.getInventory().clear();
     		player.setHealth(20);
     		Location mySpawn = mcUsers.getProfile(player).getMySpawn(player);
