@@ -197,34 +197,34 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.GREEN+"~~mcMMO stats~~");
     		player.sendMessage(ChatColor.YELLOW + "Mining Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getMining()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getMiningGather()
-    				+"/"+(mcUsers.getProfile(target).getMiningInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("mining")+")");
     		player.sendMessage(ChatColor.YELLOW + "Repair Skill: "+ ChatColor.GREEN + mcUsers.getProfile(target).getRepair()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getRepairGather()
-    				+"/"+(mcUsers.getProfile(target).getRepairInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("repair")+")");
     		player.sendMessage(ChatColor.YELLOW + "Woodcutting Skill: "+ ChatColor.GREEN + mcUsers.getProfile(target).getWoodCutting()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getWoodCuttingGather()
-    				+"/"+(mcUsers.getProfile(target).getWoodCuttingInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("woodcutting")+")");
     		player.sendMessage(ChatColor.YELLOW + "Unarmed Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getUnarmed()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getUnarmedGather()
-    				+"/"+(mcUsers.getProfile(target).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("unarmed")+")");
     		player.sendMessage(ChatColor.YELLOW + "Herbalism Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(target).getHerbalism()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getHerbalismGather()
-    				+"/"+(mcUsers.getProfile(target).getHerbalismInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("herbalism")+")");
     		player.sendMessage(ChatColor.YELLOW + "Excavation Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(target).getExcavation()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getExcavationGather()
-    				+"/"+(mcUsers.getProfile(target).getExcavationInt() + 3) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("excavation")+")");
     		player.sendMessage(ChatColor.YELLOW + "Archery Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getArchery()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getArcheryGather()
-    				+"/"+(mcUsers.getProfile(target).getArcheryInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("archery")+")");
     		player.sendMessage(ChatColor.YELLOW + "Swords Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getSwords()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getSwordsGather()
-    				+"/"+(mcUsers.getProfile(target).getSwordsInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("swords")+")");
     		player.sendMessage(ChatColor.YELLOW + "Axes Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getAxes()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getAxesGather()
-    				+"/"+(mcUsers.getProfile(target).getAxesInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("axes")+")");
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getAcrobatics()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getAcrobaticsGather()
-    				+"/"+(mcUsers.getProfile(target).getAcrobaticsInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(target).getXpToLevel("acrobatics")+")");
     		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+
     				(mcUsers.getProfile(target).getAcrobaticsInt()+
     				mcUsers.getProfile(target).getArcheryInt()+
@@ -267,34 +267,34 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.DARK_RED + "mcMMO stats");
     		player.sendMessage(ChatColor.YELLOW + "Mining Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getMining()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getMiningGather()
-    				+"/"+(mcUsers.getProfile(player).getMiningInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("mining")+")");
     		player.sendMessage(ChatColor.YELLOW + "Repair Skill: "+ ChatColor.GREEN + mcUsers.getProfile(player).getRepair()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getRepairGather()
-    				+"/"+(mcUsers.getProfile(player).getRepairInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("repair")+")");
     		player.sendMessage(ChatColor.YELLOW + "Woodcutting Skill: "+ ChatColor.GREEN + mcUsers.getProfile(player).getWoodCutting()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getWoodCuttingGather()
-    				+"/"+(mcUsers.getProfile(player).getWoodCuttingInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("woodcutting")+")");
     		player.sendMessage(ChatColor.YELLOW + "Unarmed Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getUnarmed()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getUnarmedGather()
-    				+"/"+(mcUsers.getProfile(player).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("unarmed")+")");
     		player.sendMessage(ChatColor.YELLOW + "Herbalism Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(player).getHerbalism()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getHerbalismGather()
-    				+"/"+(mcUsers.getProfile(player).getHerbalismInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("herbalism")+")");
     		player.sendMessage(ChatColor.YELLOW + "Excavation Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(player).getExcavation()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getExcavationGather()
-    				+"/"+(mcUsers.getProfile(player).getExcavationInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("excavation")+")");
     		player.sendMessage(ChatColor.YELLOW + "Archery Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getArchery()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getArcheryGather()
-    				+"/"+(mcUsers.getProfile(player).getArcheryInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("archery")+")");
     		player.sendMessage(ChatColor.YELLOW + "Swords Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getSwords()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getSwordsGather()
-    				+"/"+(mcUsers.getProfile(player).getSwordsInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("swords")+")");
     		player.sendMessage(ChatColor.YELLOW + "Axes Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAxes()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getAxesGather()
-    				+"/"+(mcUsers.getProfile(player).getAxesInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("axes")+")");
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAcrobatics()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getAcrobaticsGather()
-    				+"/"+(mcUsers.getProfile(player).getAcrobaticsInt() + 5) * mcLoadProperties.xpmodifier+")");
+    				+"/"+mcUsers.getProfile(player).getXpToLevel("acrobatics")+")");
     		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+
     				(mcUsers.getProfile(player).getAcrobaticsInt()+
     				mcUsers.getProfile(player).getArcheryInt()+

@@ -1,5 +1,9 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.7.9
+	XP Curve now follows a new formula
+	Acrobatics XP gains changed
+	Compiled against permissions 2.1
 Version 0.7.8
 	Massive tweaks to XP gain for Archery, Swords, Axes, Unarmed
 Version 0.7.7

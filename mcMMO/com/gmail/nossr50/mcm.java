@@ -143,11 +143,11 @@ public class mcm {
 						mcUsers.getProfile(attacker).addArcheryGather(3);
 					if(x instanceof PigZombie)
 						mcUsers.getProfile(attacker).addArcheryGather(7);
-    				if(mcUsers.getProfile(attacker).getArcheryGatherInt() >= (mcUsers.getProfile(attacker).getArcheryInt() + 5) * mcLoadProperties.xpmodifier){
+    				if(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
 						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getArcheryGatherInt() >= (mcUsers.getProfile(attacker).getArcheryInt() +5) * mcLoadProperties.xpmodifier){
+						while(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
 							skillups++;
-							mcUsers.getProfile(attacker).removeArcheryGather((mcUsers.getProfile(attacker).getArcheryInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).removeArcheryGather(mcUsers.getProfile(attacker).getXpToLevel("archery"));
 							mcUsers.getProfile(attacker).skillUpArchery(1);
 						}
 						attacker.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getArchery()+")");	
@@ -314,12 +314,12 @@ public class mcm {
 			return;
 		if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z)) 
 				&& mcPermissions.getInstance().acrobatics(player)){
-		mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage());
-		if(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= (mcUsers.getProfile(player).getAcrobaticsInt() + 5) * mcLoadProperties.xpmodifier){
+		mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 3);
+		if(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("acrobatics")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= (mcUsers.getProfile(player).getAcrobaticsInt() +5) * mcLoadProperties.xpmodifier){
+			while(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("acrobatics")){
 				skillups++;
-				mcUsers.getProfile(player).removeAcrobaticsGather((mcUsers.getProfile(player).getAcrobaticsInt() + 5) * mcLoadProperties.xpmodifier);
+				mcUsers.getProfile(player).removeAcrobaticsGather(mcUsers.getProfile(player).getXpToLevel("acrobatics"));
 				mcUsers.getProfile(player).skillUpAcrobatics(1);
 			}
 			player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getAcrobatics()+")");	
@@ -605,11 +605,11 @@ public class mcm {
     		mcUsers.getProfile(player).addMiningGather(20);
     		mcm.getInstance().blockProcCheck(block, player);
     		}
-    		if(mcUsers.getProfile(player).getMiningGatherInt() >= (mcUsers.getProfile(player).getMiningInt() + 5) * mcLoadProperties.xpmodifier){
+    		if(mcUsers.getProfile(player).getMiningGatherInt() >= mcUsers.getProfile(player).getXpToLevel("mining")){
     			int skillups = 0;
-    			while(mcUsers.getProfile(player).getMiningGatherInt() >= (mcUsers.getProfile(player).getMiningInt() +5) * mcLoadProperties.xpmodifier){
+    			while(mcUsers.getProfile(player).getMiningGatherInt() >= mcUsers.getProfile(player).getXpToLevel("mining")){
     				skillups++;
-    				mcUsers.getProfile(player).removeMiningGather((mcUsers.getProfile(player).getMiningInt() + 5) * mcLoadProperties.xpmodifier);
+    				mcUsers.getProfile(player).removeMiningGather(mcUsers.getProfile(player).getXpToLevel("mining"));
     				mcUsers.getProfile(player).skillUpMining(1);
     			}
     			player.sendMessage(ChatColor.YELLOW+"Mining skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getMining()+")");	
@@ -795,12 +795,12 @@ public class mcm {
     	if(x instanceof Squid){
 			Squid defender = (Squid)event.getEntity();
 			if(isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
-					mcUsers.getProfile(attacker).addSwordsGather(1);
-					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() + 5) * mcLoadProperties.xpmodifier){
+					mcUsers.getProfile(attacker).addSwordsGather(10);
+					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
 						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() +5) * mcLoadProperties.xpmodifier){
+						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
 							skillups++;
-							mcUsers.getProfile(attacker).removeSwordsGather((mcUsers.getProfile(attacker).getSwordsInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).removeSwordsGather(mcUsers.getProfile(attacker).getXpToLevel("swords"));
 							mcUsers.getProfile(attacker).skillUpSwords(1);
 						}
 						attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
@@ -809,12 +809,12 @@ public class mcm {
 			if(isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
-					mcUsers.getProfile(attacker).addAxesGather(1);
-					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() + 5) * mcLoadProperties.xpmodifier){
+					mcUsers.getProfile(attacker).addAxesGather(10);
+					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
 						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() +5) * mcLoadProperties.xpmodifier){
+						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
 							skillups++;
-							mcUsers.getProfile(attacker).removeAxesGather((mcUsers.getProfile(attacker).getAxesInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).removeAxesGather(mcUsers.getProfile(attacker).getXpToLevel("axes"));
 							mcUsers.getProfile(attacker).skillUpAxes(1);
 						}
 						attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
@@ -853,20 +853,18 @@ public class mcm {
 					defender.setHealth(calculateDamage(defender, 8));
 				}
     			//XP
-				if(attacker.getItemInHand().getTypeId() == 0 && Math.random() * 10 > 8){
 					if(defender.getHealth() != 0){
-					mcUsers.getProfile(attacker).addUnarmedGather(1);
-					if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier){
+					mcUsers.getProfile(attacker).addUnarmedGather(10);
+					if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
 						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() +5) * mcLoadProperties.xpmodifier){
+						while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
 							skillups++;
-							mcUsers.getProfile(attacker).removeUnarmedGather((mcUsers.getProfile(attacker).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).removeUnarmedGather(mcUsers.getProfile(attacker).getXpToLevel("unarmed"));
 							mcUsers.getProfile(attacker).skillUpUnarmed(1);
 						}
 						attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
 					}
 					}
-				}
 				if(defender.getHealth() <= 0)
 				mcm.getInstance().simulateNaturalDrops(defender);
     			}
@@ -963,11 +961,11 @@ public class mcm {
 					mcUsers.getProfile(attacker).addSwordsGather(3);
 					if(x instanceof PigZombie)
 					mcUsers.getProfile(attacker).addSwordsGather(7);
-					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() + 5) * mcLoadProperties.xpmodifier){
+					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
 						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= (mcUsers.getProfile(attacker).getSwordsInt() +5) * mcLoadProperties.xpmodifier){
+						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
 							skillups++;
-							mcUsers.getProfile(attacker).removeSwordsGather((mcUsers.getProfile(attacker).getSwordsInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).removeSwordsGather(mcUsers.getProfile(attacker).getXpToLevel("swords"));
 							mcUsers.getProfile(attacker).skillUpSwords(1);
 						}
 						attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
@@ -987,11 +985,11 @@ public class mcm {
 						mcUsers.getProfile(attacker).addAxesGather(3);
 					if(x instanceof PigZombie)
 						mcUsers.getProfile(attacker).addAxesGather(7);
-					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() + 5) * mcLoadProperties.xpmodifier){
+					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
 						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= (mcUsers.getProfile(attacker).getAxesInt() +5) * mcLoadProperties.xpmodifier){
+						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
 							skillups++;
-							mcUsers.getProfile(attacker).removeAxesGather((mcUsers.getProfile(attacker).getAxesInt() + 5) * mcLoadProperties.xpmodifier);
+							mcUsers.getProfile(attacker).removeAxesGather(mcUsers.getProfile(attacker).getXpToLevel("axes"));
 							mcUsers.getProfile(attacker).skillUpAxes(1);
 						}
 						attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
@@ -1040,11 +1038,11 @@ public class mcm {
 				mcUsers.getProfile(attacker).addUnarmedGather(5);
 			if(x instanceof PigZombie)
 				mcUsers.getProfile(attacker).addUnarmedGather(15);
-			if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier){
+			if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
 				int skillups = 0;
-				while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= (mcUsers.getProfile(attacker).getUnarmedInt() +5) * mcLoadProperties.xpmodifier){
+				while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
 					skillups++;
-					mcUsers.getProfile(attacker).removeUnarmedGather((mcUsers.getProfile(attacker).getUnarmedInt() + 5) * mcLoadProperties.xpmodifier);
+					mcUsers.getProfile(attacker).removeUnarmedGather(mcUsers.getProfile(attacker).getXpToLevel("unarmed"));
 					mcUsers.getProfile(attacker).skillUpUnarmed(1);
 				}
 				attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
@@ -1483,20 +1481,25 @@ public class mcm {
     	if(block != null 
     			&& block.getTypeId() == 42 
     			&& mcPermissions.getInstance().repair(player)){
+    		player.sendMessage("DEBUG CODE 0");
         	short durability = is.getDurability();
         	if(player.getItemInHand().getDurability() > 0){
+        		//player.sendMessage("DEBUG CODE 1");
         		/*
         		 * ARMOR
         		 */
         		if(mcm.getInstance().isArmor(is) && block.getTypeId() == 42){
+        			//player.sendMessage("DEBUG CODE 2");
         			/*
         			 * DIAMOND ARMOR
         			 */
         			if(mcm.getInstance().isDiamondArmor(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){
+        				//player.sendMessage("DEBUG CODE 3");	
         			mcm.getInstance().removeDiamond(player);
         			player.getItemInHand().setDurability(mcm.getInstance().getArmorRepairAmount(is, player));
-        			mcUsers.getProfile(player).addRepairGather(20);
+        			mcUsers.getProfile(player).addRepairGather(50);
         			} else if (mcm.getInstance().isIronArmor(is) && mcm.getInstance().hasIron(player)){
+        				//player.sendMessage("DEBUG CODE 3");
         			/*
         			 * IRON ARMOR
         			 */
@@ -1505,7 +1508,7 @@ public class mcm {
             		/*
             		 * DISTRIBUTE REPAIR XP
             		 */
-            		mcUsers.getProfile(player).addRepairGather(5);	
+            		mcUsers.getProfile(player).addRepairGather(20);	
         			} else {
         				needMoreVespeneGas(is, player);
         			}
@@ -1514,20 +1517,23 @@ public class mcm {
         		 * TOOLS
         		 */
         		if(mcm.getInstance().isTools(is) && block.getTypeId() == 42){
+        			//player.sendMessage("DEBUG CODE 4");
         			/*
         			 * IRON TOOLS
         			 */
             		if(mcm.getInstance().isIronTools(is) && mcm.getInstance().hasIron(player)){
+            			//player.sendMessage("DEBUG CODE 5");
             			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
             			mcm.getInstance().removeIron(player);
-            			mcUsers.getProfile(player).addRepairGather(5);
+            			mcUsers.getProfile(player).addRepairGather(20);
             		} else if (mcm.getInstance().isDiamondTools(is) && mcm.getInstance().hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){ //Check if its diamond and the player has diamonds
+            			//player.sendMessage("DEBUG CODE 5");
             			/*
             			 * DIAMOND TOOLS
             			 */
             			is.setDurability(mcm.getInstance().getToolRepairAmount(is, durability, player));
             			mcm.getInstance().removeDiamond(player);
-            			mcUsers.getProfile(player).addRepairGather(20);
+            			mcUsers.getProfile(player).addRepairGather(50);
             		} else {
             			needMoreVespeneGas(is, player);
             		}
@@ -1540,11 +1546,11 @@ public class mcm {
         	/*
         	 * GIVE SKILL IF THERE IS ENOUGH XP
         	 */
-        	if(mcUsers.getProfile(player).getRepairGatherInt() >= (mcUsers.getProfile(player).getRepairInt() + 5) * mcLoadProperties.xpmodifier){
+        	if(mcUsers.getProfile(player).getRepairGatherInt() >= mcUsers.getProfile(player).getXpToLevel("repair")){
     			int skillups = 0;
-    			while(mcUsers.getProfile(player).getRepairGatherInt() >= (mcUsers.getProfile(player).getRepairInt() +5) * mcLoadProperties.xpmodifier){
+    			while(mcUsers.getProfile(player).getRepairGatherInt() >= mcUsers.getProfile(player).getXpToLevel("repair")){
     				skillups++;
-    				mcUsers.getProfile(player).removeRepairGather((mcUsers.getProfile(player).getRepairInt() + 5) * mcLoadProperties.xpmodifier);
+    				mcUsers.getProfile(player).removeRepairGather(mcUsers.getProfile(player).getXpToLevel("repair"));
     				mcUsers.getProfile(player).skillUpRepair(1);
     			}
     			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getRepair()+")");	
@@ -1724,11 +1730,11 @@ public class mcm {
         		}
         		}
     	}
-    	if(mcUsers.getProfile(player).getExcavationGatherInt() >= (mcUsers.getProfile(player).getExcavationInt() + 3) * mcLoadProperties.xpmodifier){
+    	if(mcUsers.getProfile(player).getExcavationGatherInt() >= mcUsers.getProfile(player).getXpToLevel("excavation")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getExcavationGatherInt() >= (mcUsers.getProfile(player).getExcavationInt() +3) * mcLoadProperties.xpmodifier){
+			while(mcUsers.getProfile(player).getExcavationGatherInt() >= mcUsers.getProfile(player).getXpToLevel("excavation")){
 				skillups++;
-				mcUsers.getProfile(player).removeExcavationGather((mcUsers.getProfile(player).getExcavationInt() + 3) * mcLoadProperties.xpmodifier);
+				mcUsers.getProfile(player).removeExcavationGather(mcUsers.getProfile(player).getXpToLevel("excavation"));
 				mcUsers.getProfile(player).skillUpExcavation(1);
 			}
 			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getExcavation()+")");	

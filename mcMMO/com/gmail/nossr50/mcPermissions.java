@@ -26,6 +26,7 @@ public class mcPermissions {
             log.log(Level.SEVERE, "[mcMMO] Permissions isn't loaded, there are no restrictions.");
         }
     }
+  
     private boolean permission(Player player, String string) {
         return permissionsPlugin.Security.permission(player, string);  
     }

@@ -1138,6 +1138,40 @@ class PlayerList
 			}
 			save();
 		}
+		public Integer getXpToLevel(String skillname){
+			if(skillname.equals("mining")){
+				return (getMiningInt() + 50) * mcLoadProperties.xpmodifier;
+			}
+			if(skillname.equals("woodcutting")){
+				return (getWoodCuttingInt() + 50) * mcLoadProperties.xpmodifier;
+			}
+			if(skillname.equals("repair")){
+				return (getRepairInt() + 50) * mcLoadProperties.xpmodifier;
+			}
+			if(skillname.equals("herbalism")){
+				return (getHerbalismInt() + 50) * mcLoadProperties.xpmodifier;
+			}
+			if(skillname.equals("acrobatics")){
+				return (getAcrobaticsInt() + 50) * mcLoadProperties.xpmodifier;
+			}
+			if(skillname.equals("swords")){
+				return (getSwordsInt() + 50) * mcLoadProperties.xpmodifier;
+			}
+			if(skillname.equals("archery")){
+				return (getArcheryInt() + 50) * mcLoadProperties.xpmodifier;
+			}
+			if(skillname.equals("unarmed")){
+				return (getUnarmedInt() + 50) * mcLoadProperties.xpmodifier;
+			}
+			if(skillname.equals("excavation")){
+				return (getExcavationInt() + 50) * mcLoadProperties.xpmodifier;
+			}
+			if(skillname.equals("axes")){
+				return (getAxesInt() + 50) * mcLoadProperties.xpmodifier;
+			} else {
+				return 0;
+			}
+		}
 		public int getMiningGatherInt() {
 			if(isInt(gather)){
 			return Integer.parseInt(gather);
