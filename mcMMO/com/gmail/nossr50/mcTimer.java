@@ -18,6 +18,8 @@ public class mcTimer extends TimerTask{
 	public void run() {
 		if(thecount == 5 || thecount == 10 || thecount == 15 || thecount == 20){
 			for(Player player : plugin.getServer().getOnlinePlayers()){
+				//Add the user to the file so we don't create null exception error
+				mcUsers.addUser(player);
 		    	if(player != null &&
 		    			player.getHealth() > 0 && player.getHealth() < 20 
 		    			&& mcUsers.getProfile(player).getPowerLevel() >= 1000 

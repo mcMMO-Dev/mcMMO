@@ -974,7 +974,7 @@ public class mcm {
 					return;
 				}
     		}
-    		mcUsers.getProfile(defender).setRecentlyHurt(60);
+    		mcUsers.getProfile(defender).setRecentlyHurt(30);
     		/*
     		 * AXE CRITICAL CHECK
     		 */

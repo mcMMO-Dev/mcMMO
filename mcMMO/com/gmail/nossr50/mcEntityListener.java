@@ -82,7 +82,7 @@ public class mcEntityListener extends EntityListener {
         	if(e instanceof Player){
         		Player defender = (Player)e;
         		if(f instanceof Monster){
-        			mcUsers.getProfile(defender).setRecentlyHurt(60);
+        			mcUsers.getProfile(defender).setRecentlyHurt(30);
         		}
         		/*
         		 * PARRYING CHECK, CHECK TO SEE IF ITS A SUCCESSFUL PARRY OR NOT
