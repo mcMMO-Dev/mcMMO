@@ -753,21 +753,37 @@ public class mcm {
 			if(mcUsers.getProfile(attacker).getSwordsInt() >= 50 && mcUsers.getProfile(attacker).getSwordsInt() < 200){
 				if(Math.random() * 10 > 8){
 					mcConfig.getInstance().addBleedTrack(x, 4);
+					if(x instanceof Player){
+						Player target = (Player)x;
+						mcUsers.getProfile(target).setBleedTicks(4);
+					}
 					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
 				}
 			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 200 && mcUsers.getProfile(attacker).getSwordsInt() < 600){
 				if(Math.random() * 10 > 6){
 					mcConfig.getInstance().addBleedTrack(x, 4);
+					if(x instanceof Player){
+						Player target = (Player)x;
+						mcUsers.getProfile(target).setBleedTicks(4);
+					}
 					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
 				}
 			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 600 && mcUsers.getProfile(attacker).getSwordsInt() < 900){
 				if(Math.random() * 10 > 4){
 					mcConfig.getInstance().addBleedTrack(x, 6);
+					if(x instanceof Player){
+						Player target = (Player)x;
+						mcUsers.getProfile(target).setBleedTicks(6);
+					}
 					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
 				}
 			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 900){
 				if(Math.random() * 100 > 75){
 					mcConfig.getInstance().addBleedTrack(x, 6);
+					if(x instanceof Player){
+						Player target = (Player)x;
+						mcUsers.getProfile(target).setBleedTicks(6);
+					}
 					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
 				}
 			}

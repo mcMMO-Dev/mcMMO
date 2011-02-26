@@ -45,24 +45,15 @@ public class mcTimer extends TimerTask{
 	public void run() {
 		for(World world : plugin.getServer().getWorlds()){
 			for(Entity entity : world.getEntities()){
-				if(entity == null || getHealth(entity) <= 0)
+				if(entity == null)
 					return;
-				if(mcConfig.getInstance().getBleedCount(entity) < 1)
+				/*
+				if(!mcConfig.getInstance().isBleedTracked(entity))
 					return;
-				if(mcConfig.getInstance().isBleedTracked(entity)){
-					if(entity instanceof Player){
-						Player player = (Player)entity;
-						if(player.getHealth() >= 1){
-						player.setHealth(calculateMinusHealth(player.getHealth(), 1));
-						player.sendMessage(ChatColor.RED+"**BLEED**");
-						if(player.getHealth() <= 0){
-							for(ItemStack items : player.getInventory().getContents()){
-								if(items.getTypeId() != 0)
-								player.getLocation().getWorld().dropItemNaturally(player.getLocation(), items);
-							}
-						}
-					}
-					}
+				*/
+				if(getHealth(entity) <= 0)
+					return;
+				/*
 					if(entity instanceof Animals){
 						Animals animals = (Animals)entity;
 						if(animals.getHealth() >= 1){
@@ -77,22 +68,28 @@ public class mcTimer extends TimerTask{
 						if(monster.getHealth() >= 1){
 						monster.setHealth(calculateMinusHealth(monster.getHealth(), 1));
 						if(monster.getHealth() <= 0){
-							mcm.getInstance().simulateNaturalDrops(entity);
+						mcm.getInstance().simulateNaturalDrops(entity);
 						}
 						}
 					}
-				}
-			}
-		}
-		for(World world : plugin.getServer().getWorlds()){
-			for(Entity entity : world.getEntities()){
-				if(mcConfig.getInstance().isBleedTracked(entity)){
-					if(mcConfig.getInstance().getBleedCount(entity) >= 2){
-						mcConfig.getInstance().removeBleedCount(entity, 1);
-					} else if(mcConfig.getInstance().getBleedCount(entity) == 1){
-						mcConfig.getInstance().removeBleedTrack(entity);
+					*/
+					if(entity instanceof Player){
+						Player player = (Player)entity;
+						if(player.getHealth() >= 1 && mcUsers.getProfile(player).getBleedTicks() >= 1){
+						player.setHealth(calculateMinusHealth(player.getHealth(), 1));
+						player.sendMessage(ChatColor.RED+"**BLEED**");
+						if(player.getHealth() <= 0){
+							mcUsers.getProfile(player).setBleedTicks(0);
+							for(ItemStack items : player.getInventory().getContents()){
+								if(items.getTypeId() != 0)
+								player.getLocation().getWorld().dropItemNaturally(player.getLocation(), items);
+							}
+						}
+						if(mcUsers.getProfile(player).getBleedTicks() >= 1){
+							mcUsers.getProfile(player).setBleedTicks(mcUsers.getProfile(player).getBleedTicks() - 1);
+						}
 					}
-				}
+					}
 			}
 		}
 		if(thecount == 10 || thecount == 20 || thecount == 30 || thecount == 40){

@@ -156,7 +156,7 @@ class PlayerList
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
 		private boolean dead;
-		private int recentlyhurt = 0;
+		private int recentlyhurt = 0, bleedticks = 0;
 		Player thisplayer;
 		char defaultColor;
 
@@ -420,6 +420,17 @@ class PlayerList
 			if(recentlyhurt >= 1){
 				recentlyhurt--;
 			}
+		}
+		public void decreaseBleedTicks(){
+			if(bleedticks >= 1){
+				bleedticks--;
+			}
+		}
+		public Integer getBleedTicks(){
+			return bleedticks;
+		}
+		public void setBleedTicks(Integer newvalue){
+			bleedticks = newvalue;
 		}
 		public Integer getRecentlyHurt(){
 			return recentlyhurt;
