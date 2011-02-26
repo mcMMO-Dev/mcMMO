@@ -1163,34 +1163,34 @@ class PlayerList
 		}
 		public Integer getXpToLevel(String skillname){
 			if(skillname.equals("mining")){
-				return (getMiningInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getMiningInt() + 50) * mcLoadProperties.miningxpmodifier) * mcLoadProperties.globalxpmodifier;
 			}
 			if(skillname.equals("woodcutting")){
-				return (getWoodCuttingInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getWoodCuttingInt() + 50) * mcLoadProperties.woodcuttingxpmodifier) * mcLoadProperties.globalxpmodifier;
 			}
 			if(skillname.equals("repair")){
-				return (getRepairInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getRepairInt() + 50) * mcLoadProperties.repairxpmodifier) * mcLoadProperties.globalxpmodifier;
 			}
 			if(skillname.equals("herbalism")){
-				return (getHerbalismInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getHerbalismInt() + 50) * mcLoadProperties.herbalismxpmodifier) * mcLoadProperties.globalxpmodifier;
 			}
 			if(skillname.equals("acrobatics")){
-				return (getAcrobaticsInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getAcrobaticsInt() + 50) * mcLoadProperties.acrobaticsxpmodifier) * mcLoadProperties.globalxpmodifier;
 			}
 			if(skillname.equals("swords")){
-				return (getSwordsInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getSwordsInt() + 50) * mcLoadProperties.swordsxpmodifier) * mcLoadProperties.globalxpmodifier;
 			}
 			if(skillname.equals("archery")){
-				return (getArcheryInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getArcheryInt() + 50) * mcLoadProperties.archeryxpmodifier) * mcLoadProperties.globalxpmodifier;
 			}
 			if(skillname.equals("unarmed")){
-				return (getUnarmedInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getUnarmedInt() + 50) * mcLoadProperties.unarmedxpmodifier) * mcLoadProperties.globalxpmodifier;
 			}
 			if(skillname.equals("excavation")){
-				return (getExcavationInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getExcavationInt() + 50) * mcLoadProperties.excavationxpmodifier) * mcLoadProperties.globalxpmodifier;
 			}
 			if(skillname.equals("axes")){
-				return (getAxesInt() + 50) * mcLoadProperties.xpmodifier;
+				return ((getAxesInt() + 50) * mcLoadProperties.axesxpmodifier) * mcLoadProperties.globalxpmodifier;
 			} else {
 				return 0;
 			}

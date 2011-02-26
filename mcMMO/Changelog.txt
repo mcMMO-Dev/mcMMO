@@ -1,5 +1,18 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.8.3
+	Modified the timer intervals (from 1 second to 2)
+	All skills now have an individual modifier (Set by default to 2)
+	There is now a global XP modifier (Set by default to 1)
+	Herbalism now correctly follows its skill curve
+	Unarmed no longer gives experience for harming other players
+	Players can no longer exploit mob spawners for experience
+Version 0.8.2
+	Fixed Concurrent Modification Exception
+	Fixed some incorrect skill descriptions
+	First tier of HP Regeneration is now available from the start
+	Fixed bleed proc rate for very high skill levels
+	Changed regeneration permissions to 'mcmmo.regeneration'
 Version 0.8
 	Archery skill now lets players recover arrows from downed foes
 	Health regenerates based on power level

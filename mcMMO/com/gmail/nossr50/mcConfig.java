@@ -21,25 +21,24 @@ public class mcConfig {
     static ArrayList<Block> blockWatchList = new ArrayList<Block>();
     static ArrayList<String> partyChatList = new ArrayList<String>();
     HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
-    HashMap<Entity, Integer> bleedTracker = new HashMap<Entity, Integer>();
+    static ArrayList<Entity> bleedTracker = new ArrayList<Entity>();
+    static ArrayList<Entity> mobSpawnTracker = new ArrayList<Entity>();
     public boolean isBlockWatched(Block block) {return blockWatchList.contains(block);}
     public boolean isCoordsWatched(String xyz) {return coordsWatchList.contains(xyz);}
     public void removeBlockWatch(Block block) {blockWatchList.remove(blockWatchList.indexOf(block));}
     public void removeCoordsWatch(String xyz) {coordsWatchList.remove(coordsWatchList.indexOf(xyz));}
     public void addBlockWatch(Block block) {blockWatchList.add(block);}
     public void addCoordsWatch(String xyz) {coordsWatchList.add(xyz);}
+    public void addBleedTrack(Entity entity) {bleedTracker.add(entity);}
+    public void addMobSpawnTrack(Entity entity) {mobSpawnTracker.add(entity);}
+    public ArrayList<Entity> getBleedTracked() {return bleedTracker;}
     public void addArrowTrack(Entity entity, Integer arrowcount) {arrowTracker.put(entity, arrowcount);}
-    public void addBleedTrack(Entity entity, Integer duration) {bleedTracker.put(entity, duration);}
     public Integer getArrowCount(Entity entity) {return arrowTracker.get(entity);}
-    public Integer getBleedCount(Entity entity) {return bleedTracker.get(entity);}
     public void removeBleedTrack(Entity entity){
     	bleedTracker.remove(entity);
     }
     public void setBleedCount(Entity entity, Integer newvalue){
-    	bleedTracker.put(entity, newvalue);
-    }
-    public void removeBleedCount(Entity entity, Integer newvalue) {
-    	bleedTracker.put(entity, bleedTracker.get(entity) - newvalue);
+    	bleedTracker.add(entity);
     }
     public void addArrowCount(Entity entity, Integer newvalue) {
     	arrowTracker.put(entity, arrowTracker.get(entity) + newvalue);
@@ -51,8 +50,15 @@ public class mcConfig {
     		return false;
     	}
     }
+    public boolean isMobSpawnTracked(Entity entity) {
+    	if(mobSpawnTracker.contains(entity)){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
     public boolean isBleedTracked(Entity entity) {
-    	if(bleedTracker.containsKey(entity)){
+    	if(bleedTracker.contains(entity)){
     		return true;
     	} else {
     		return false;

@@ -8,12 +8,15 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.MobType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Spider;
 import org.bukkit.entity.Squid;
 import org.bukkit.entity.Zombie;
+import org.bukkit.event.Event;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
@@ -34,6 +37,13 @@ public class mcEntityListener extends EntityListener {
     		return true;
     	} else {
     		return false;
+    	}
+    }
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+    	Location loc = event.getLocation();
+    	Entity spawnee = event.getEntity();
+    	if(mcm.getInstance().isBlockAround(loc, 5, 52)){
+    		mcConfig.getInstance().addMobSpawnTrack(spawnee);
     	}
     }
     public void onEntityDamage(EntityDamageEvent event) {
@@ -106,6 +116,7 @@ public class mcEntityListener extends EntityListener {
         		/*
         		 * Player versus Player checks, these checks make sure players are not in the same party, etc. They also check for any procs from skills and handle damage modifiers.
         		 */
+        		if(mcm.getInstance().isPvpEnabled())
         		mcm.getInstance().playerVersusPlayerChecks(e, attacker, eventb, plugin);
         		/*
         		 * Player versus Animals checks, these checks handle any skill modifiers or procs

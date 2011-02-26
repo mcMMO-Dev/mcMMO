@@ -39,7 +39,7 @@ public class mcPermissions {
     }
     public boolean regeneration(Player player){
     	if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.regeneration");
+            return permission(player, "mcmmo.regeneration");
         } else {
             return true;
         }

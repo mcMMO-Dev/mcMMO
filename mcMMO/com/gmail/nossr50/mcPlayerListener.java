@@ -32,6 +32,7 @@ public class mcPlayerListener extends PlayerListener {
     	Player player = event.getPlayer();
 			Location mySpawn = mcUsers.getProfile(player).getMySpawn(player);
 			if(mcUsers.getProfile(player).getMySpawnWorld() != null && !mcUsers.getProfile(player).getMySpawnWorld().equals("")){
+			if(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld()) != null)
 			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld()));
 			}
 			if(mcPermissions.getInstance().mySpawn(player)){
