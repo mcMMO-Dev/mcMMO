@@ -81,7 +81,7 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Monitor, this);
-        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.High, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_FLOW, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Normal, this);
@@ -106,6 +106,20 @@ public class mcMMO extends JavaPlugin {
     	    }
     	}
         }
+    public boolean isPartyChatToggled(Player player){
+    	if(mcConfig.getInstance().isPartyToggled(player.getName())){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    public boolean isAdminChatToggled(Player player){
+    	if(mcConfig.getInstance().isAdminToggled(player.getName())){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
     
     public Permissions getPermissions() {
     	return permissions;

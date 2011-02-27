@@ -110,7 +110,7 @@ public class mcm {
 		for(Player x : plugin.getServer().getOnlinePlayers()){
 		if(x != null && damaged != null){
 		CraftPlayer cp = (CraftPlayer)x;
-		if(x.getEntityId() != damaged.getEntityId())
+		if(cp != null && x != null && damaged != null && x.getEntityId() != damaged.getEntityId())
 		cp.getHandle().a.b(new Packet38EntityStatus(damaged.getEntityId(), (byte)2));
 		}
 		}
