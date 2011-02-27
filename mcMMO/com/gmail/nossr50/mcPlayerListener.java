@@ -113,7 +113,7 @@ public class mcPlayerListener extends PlayerListener {
     	mcm.getInstance().repairCheck(player, is, block);
     	}
     }
-    public void onPlayerCommandPreproccesss(PlayerChatEvent event){
+    public void onPlayerCommandPreprocess(PlayerChatEvent event){
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
