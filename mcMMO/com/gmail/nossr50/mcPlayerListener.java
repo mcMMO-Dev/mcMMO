@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerItemEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.*;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -85,9 +86,12 @@ public class mcPlayerListener extends PlayerListener {
                 }
             }
     }
-    public void onPlayerJoin(PlayerEvent event) {
+    public void onPlayerLogin(PlayerLoginEvent event) {
     	Player player = event.getPlayer();
     	mcUsers.addUser(player);
+    }
+    public void onPlayerJoin(PlayerEvent event) {
+    	Player player = event.getPlayer();
     	if(mcPermissions.getInstance().motd(player)){
     	player.sendMessage(ChatColor.BLUE + "This server is running mcMMO "+plugin.getDescription().getVersion()+" type /"+ChatColor.YELLOW+mcLoadProperties.mcmmo+ChatColor.BLUE+ " for help.");
     	}
@@ -109,8 +113,7 @@ public class mcPlayerListener extends PlayerListener {
     	mcm.getInstance().repairCheck(player, is, block);
     	}
     }
-  
-    public void onPlayerCommand(PlayerChatEvent event) {
+    public void onPlayerCommandPreprocess(PlayerChatEvent event) {
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
@@ -448,8 +451,7 @@ public class mcPlayerListener extends PlayerListener {
     	}
     }
 	public void onPlayerChat(PlayerChatEvent event) {
-    	Player player = event.getPlayer();
-    	String[] split = event.getMessage().split(" ");
+		Player player = event.getPlayer();
     	String x = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getName() + ChatColor.GREEN + ") ";
     	String y = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getName() + ChatColor.AQUA + "} ";
     	if(mcConfig.getInstance().isPartyToggled(player.getName())){

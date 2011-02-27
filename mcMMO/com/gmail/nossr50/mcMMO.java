@@ -30,6 +30,7 @@ public class mcMMO extends JavaPlugin {
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
     private final mcBlockListener blockListener = new mcBlockListener(this);
     private final mcEntityListener entityListener = new mcEntityListener(this);
+    private final mcServerListener serverListener = new mcServerListener(this);
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     private final String name = "mcMMO";
     public static PermissionHandler PermissionsHandler = null;
@@ -53,27 +54,6 @@ public class mcMMO extends JavaPlugin {
 				FileWriter writer = null;
 				try {
 					writer = new FileWriter(Properties);
-					writer.append("#Turn this setting to false to disable pvp interactions completely");
-					writer.append("pvp=true");
-					writer.append("#Excavation Loot Toggles");
-					writer.append("eggs=true");
-					writer.append("apples=true");
-					writer.append("cake=true");
-					writer.append("music=true");
-					writer.append("diamond=true");
-					writer.append("glowstone=true");
-					writer.append("slowsand=true");
-					writer.append("netherrack=true");
-					writer.append("bones=true");
-					writer.append("sulphur=true");
-					writer.append("coal=true");
-					writer.append("mcmmo=mcmmo");
-					writer.append("mcc=mcc");
-					writer.append("stats=stats");
-					writer.append("clay=true");
-					writer.append("anvilmessages=true");
-					writer.append("xpmodifier=2");
-					writer.append("#Appreciate the plugin? Send me a donation via paypal nossr50@gmail.com\r\n");
 				} catch (Exception e) {
 					log.log(Level.SEVERE, "Exception while creating " + Properties, e);
 				} finally {
@@ -91,15 +71,17 @@ public class mcMMO extends JavaPlugin {
 			}
     	}
     	//Load the file
+    	//sup
     	mcLoadProperties.loadMain();
     	mcUsers.getInstance().loadUsers();
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_DROP_ITEM, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_COMMAND, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Monitor, this);
+        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_FLOW, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Normal, this);
