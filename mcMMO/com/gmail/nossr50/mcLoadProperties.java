@@ -2,7 +2,7 @@ package com.gmail.nossr50;
 
 public class mcLoadProperties {
 	public static Boolean pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
-	public static String mcmmo, mcc, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
+	public static String mcmmo, mcc, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
 	public static int globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public static void loadMain(){
@@ -52,6 +52,7 @@ public class mcLoadProperties {
     	 */
     	mcmmo = properties.getString("/mcmmo", "mcmmo");
     	mcc = properties.getString("/mcc", "mcc");
+    	mcgod = properties.getString("/mcgod", "mcgod");
     	stats = properties.getString("/stats", "stats");
     	mmoedit = properties.getString("/mmoedit", "mmoedit");
     	ptp = properties.getString("/ptp", "ptp");

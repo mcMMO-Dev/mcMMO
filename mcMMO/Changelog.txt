@@ -1,5 +1,31 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.8.11
+	Performance improvements
+	Memory leak fixed
+	NPE error with MySpawn really fixed
+Version 0.8.9
+	Fixed NPE for My Spawn
+	Fixed NPE for onBlockDamage
+	Bleed proc now correctly checks for Swords permissions
+Version 0.8.8
+	Gold can now be repaired
+	Tweaked Mining XP gains
+	Reorganized code
+	Added /mcgod godmode command
+	Fixed the pvp toggle in the settings file
+Version 0.8.7
+	Removed packet-sending stuff wasn't working anyways
+	Fixed another NPE with the TimerTask
+	Skills now only show up in /stats if you have permissions for them
+Version 0.8.6
+	Added a null check in bleed simulation to prevent a NPE
+Version 0.8.5
+	Players are now added to files when they connect (to fix a NPE)
+	onPlayerCommand stuff moved into onPlayerCommandPreprocess
+Version 0.8.4
+	Fixed another nullpointer error for TimerTask
+	Fixed bug making regeneration take twice as long to kick in after combat
 Version 0.8.3
 	Modified the timer intervals (from 1 second to 2)
 	All skills now have an individual modifier (Set by default to 2)

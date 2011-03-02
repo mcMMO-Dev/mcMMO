@@ -37,6 +37,13 @@ public class mcPermissions {
             return true;
         }
     }
+    public boolean mcgod(Player player) {
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.tools.mcgod");
+        } else {
+            return true;
+        }
+    }
     public boolean regeneration(Player player){
     	if (permissionsEnabled) {
             return permission(player, "mcmmo.regeneration");

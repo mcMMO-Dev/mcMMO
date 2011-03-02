@@ -5,21 +5,15 @@ import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerItemEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.plugin.*;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class mcPlayerListener extends PlayerListener {
 	protected static final Logger log = Logger.getLogger("Minecraft");
@@ -30,16 +24,15 @@ public class mcPlayerListener extends PlayerListener {
     	plugin = instance;
     }
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-    	Player player = event.getPlayer();
+    		Player player = event.getPlayer();
+    		if(player != null){
 			Location mySpawn = mcUsers.getProfile(player).getMySpawn(player);
-			if(mcUsers.getProfile(player).getMySpawnWorld() != null && !mcUsers.getProfile(player).getMySpawnWorld().equals("")){
-			if(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld()) != null)
-			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld()));
-			}
-			if(mcPermissions.getInstance().mySpawn(player)){
-		    	if(mcUsers.getProfile(player).getMySpawn(player) != null)
+			if(mcUsers.getProfile(player).getMySpawnWorld(plugin) != null && !mcUsers.getProfile(player).getMySpawnWorld(plugin).equals("") && plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld(plugin)) != null)
+			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld(plugin)));
+			if(mcPermissions.getInstance().mySpawn(player) && mySpawn != null){
 		    	event.setRespawnLocation(mySpawn);
 			}
+    		}
     }
     public Player[] getPlayersOnline() {
     		return plugin.getServer().getOnlinePlayers();
@@ -60,32 +53,6 @@ public class mcPlayerListener extends PlayerListener {
     	}
     	return null;
     }
-    public int partyCount(Player player){
-        int x = 0;
-        for(Player hurrdurr: getPlayersOnline()){
-        	if(mcUsers.getProfile(player).getParty().equals(mcUsers.getProfile(hurrdurr).getParty()))
-        	x++;
-        }
-        return x;
-    }
-    public void informPartyMembers(Player player){
-        int x = 0;
-        for(Player p :  getPlayersOnline()){
-                if(mcm.getInstance().inSameParty(player, p) && !p.getName().equals(player.getName())){
-                p.sendMessage(player.getName() + ChatColor.GREEN + " has joined your party");
-                x++;
-                }
-            }
-    }
-    public void informPartyMembersQuit(Player player){
-        int x = 0;
-        for(Player p : getPlayersOnline()){
-                if(mcm.getInstance().inSameParty(player, p) && !p.getName().equals(player.getName())){
-                p.sendMessage(player.getName() + ChatColor.GREEN + " has left your party");
-                x++;
-                }
-            }
-    }
     public void onPlayerLogin(PlayerLoginEvent event) {
     	Player player = event.getPlayer();
     	mcUsers.addUser(player);
@@ -104,13 +71,13 @@ public class mcPlayerListener extends PlayerListener {
     	ItemStack is = player.getItemInHand();
     	if(mcPermissions.getInstance().herbalism(player)){
     	//BREADCHECK, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
-    	mcm.getInstance().breadCheck(player, is);
+    	mcHerbalism.getInstance().breadCheck(player, is);
     	//STEW, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
-    	mcm.getInstance().stewCheck(player, is);
+    	mcHerbalism.getInstance().stewCheck(player, is);
     	}
     	if(mcPermissions.getInstance().repair(player)){
     	//REPAIRCHECK, CHECKS TO MAKE SURE PLAYER IS RIGHT CLICKING AN ANVIL, PLAYER HAS ENOUGH RESOURCES, AND THE ITEM IS NOT AT FULL DURABILITY.
-    	mcm.getInstance().repairCheck(player, is, block);
+    	mcRepair.getInstance().repairCheck(player, is, block);
     	}
     }
     public void onPlayerCommandPreprocess(PlayerChatEvent event){
@@ -120,8 +87,22 @@ public class mcPlayerListener extends PlayerListener {
     	//Check if the command is an mcMMO related help command
     	mcm.getInstance().mcmmoHelpCheck(split, player, event);
     	/*
-    	 * MMOEDIT COMMAND
+    	 * GODMODE COMMAND
     	 */
+    	if(mcPermissions.permissionsEnabled && split[0].equalsIgnoreCase("/"+mcLoadProperties.mcgod)){
+    		event.setCancelled(true);
+    		if(!mcPermissions.getInstance().mcgod(player)){
+    			player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +" Insufficient permissions.");
+    			return;
+    		}
+    		if(mcConfig.getInstance().isGodModeToggled(playerName)){
+    			player.sendMessage(ChatColor.YELLOW+"mcMMO Godmode Disabled");
+    			mcConfig.getInstance().toggleGodMode(playerName);
+    		} else {
+    			player.sendMessage(ChatColor.YELLOW+"mcMMO Godmode Enabled");
+    			mcConfig.getInstance().toggleGodMode(playerName);
+    		}
+    	}
     	if(mcPermissions.getInstance().mySpawn(player) && split[0].equalsIgnoreCase("/"+mcLoadProperties.clearmyspawn)){
     		event.setCancelled(true);
     		double x = plugin.getServer().getWorlds().get(0).getSpawnLocation().getX();
@@ -141,14 +122,14 @@ public class mcPlayerListener extends PlayerListener {
     			return;
     		}
     		if(split.length == 4){
-    			if(isPlayer(split[1]) && mcm.getInstance().isInt(split[3]) && mcm.getInstance().isSkill(split[2])){
+    			if(isPlayer(split[1]) && mcm.getInstance().isInt(split[3]) && mcSkills.getInstance().isSkill(split[2])){
     				int newvalue = Integer.valueOf(split[3]);
     				mcUsers.getProfile(getPlayer(split[1])).modifyskill(newvalue, split[2]);
     				player.sendMessage(ChatColor.RED+split[2]+" has been modified.");
     			}
     		}
     		else if(split.length == 3){
-    			if(mcm.getInstance().isInt(split[2]) && mcm.getInstance().isSkill(split[1])){
+    			if(mcm.getInstance().isInt(split[2]) && mcSkills.getInstance().isSkill(split[1])){
     				int newvalue = Integer.valueOf(split[2]);
     				mcUsers.getProfile(player).modifyskill(newvalue, split[1]);
     				player.sendMessage(ChatColor.RED+split[1]+" has been modified.");
@@ -198,34 +179,44 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Party: "+mcUsers.getProfile(target).getParty());
     		player.sendMessage("Health: "+target.getHealth()+ChatColor.GRAY+" (20 is full health)");
     		player.sendMessage("OP: " + target.isOp());
-    		player.sendMessage(ChatColor.GREEN+"~~mcMMO stats~~");
+    		player.sendMessage(ChatColor.GREEN+"mcMMO Stats for "+ChatColor.YELLOW+target.getName());
+    		if(mcPermissions.getInstance().mining(target))
     		player.sendMessage(ChatColor.YELLOW + "Mining Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getMining()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getMiningGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("mining")+")");
+    		if(mcPermissions.getInstance().repair(target))
     		player.sendMessage(ChatColor.YELLOW + "Repair Skill: "+ ChatColor.GREEN + mcUsers.getProfile(target).getRepair()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getRepairGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("repair")+")");
+    		if(mcPermissions.getInstance().woodcutting(target))
     		player.sendMessage(ChatColor.YELLOW + "Woodcutting Skill: "+ ChatColor.GREEN + mcUsers.getProfile(target).getWoodCutting()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getWoodCuttingGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("woodcutting")+")");
+    		if(mcPermissions.getInstance().unarmed(target))
     		player.sendMessage(ChatColor.YELLOW + "Unarmed Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getUnarmed()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getUnarmedGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("unarmed")+")");
+    		if(mcPermissions.getInstance().herbalism(target))
     		player.sendMessage(ChatColor.YELLOW + "Herbalism Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(target).getHerbalism()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getHerbalismGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("herbalism")+")");
+    		if(mcPermissions.getInstance().excavation(target))
     		player.sendMessage(ChatColor.YELLOW + "Excavation Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(target).getExcavation()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getExcavationGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("excavation")+")");
+    		if(mcPermissions.getInstance().archery(target))
     		player.sendMessage(ChatColor.YELLOW + "Archery Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getArchery()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getArcheryGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("archery")+")");
+    		if(mcPermissions.getInstance().swords(target))
     		player.sendMessage(ChatColor.YELLOW + "Swords Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getSwords()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getSwordsGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("swords")+")");
+    		if(mcPermissions.getInstance().axes(target))
     		player.sendMessage(ChatColor.YELLOW + "Axes Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getAxes()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getAxesGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("axes")+")");
+    		if(mcPermissions.getInstance().acrobatics(target))
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getAcrobatics()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getAcrobaticsGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("acrobatics")+")");
@@ -268,34 +259,46 @@ public class mcPlayerListener extends PlayerListener {
     	 */
     	if(split[0].equalsIgnoreCase("/"+mcLoadProperties.stats)){
     		event.setCancelled(true);
-    		player.sendMessage(ChatColor.DARK_RED + "mcMMO stats");
+    		player.sendMessage(ChatColor.GREEN + "Your mcMMO Stats");
+    		if(mcPermissions.getInstance().permissionsEnabled)
+    		player.sendMessage(ChatColor.DARK_GRAY+"If you don't have access to a skill it will not be shown here.");
+    		if(mcPermissions.getInstance().mining(player))
     		player.sendMessage(ChatColor.YELLOW + "Mining Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getMining()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getMiningGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("mining")+")");
+    		if(mcPermissions.getInstance().repair(player))
     		player.sendMessage(ChatColor.YELLOW + "Repair Skill: "+ ChatColor.GREEN + mcUsers.getProfile(player).getRepair()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getRepairGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("repair")+")");
+    		if(mcPermissions.getInstance().woodcutting(player))
     		player.sendMessage(ChatColor.YELLOW + "Woodcutting Skill: "+ ChatColor.GREEN + mcUsers.getProfile(player).getWoodCutting()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getWoodCuttingGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("woodcutting")+")");
+    		if(mcPermissions.getInstance().unarmed(player))
     		player.sendMessage(ChatColor.YELLOW + "Unarmed Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getUnarmed()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getUnarmedGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("unarmed")+")");
+    		if(mcPermissions.getInstance().herbalism(player))
     		player.sendMessage(ChatColor.YELLOW + "Herbalism Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(player).getHerbalism()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getHerbalismGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("herbalism")+")");
+    		if(mcPermissions.getInstance().excavation(player))
     		player.sendMessage(ChatColor.YELLOW + "Excavation Skill: "+ ChatColor.GREEN +  mcUsers.getProfile(player).getExcavation()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getExcavationGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("excavation")+")");
+    		if(mcPermissions.getInstance().archery(player))
     		player.sendMessage(ChatColor.YELLOW + "Archery Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getArchery()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getArcheryGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("archery")+")");
+    		if(mcPermissions.getInstance().swords(player))
     		player.sendMessage(ChatColor.YELLOW + "Swords Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getSwords()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getSwordsGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("swords")+")");
+    		if(mcPermissions.getInstance().axes(player))
     		player.sendMessage(ChatColor.YELLOW + "Axes Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAxes()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getAxesGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("axes")+")");
+    		if(mcPermissions.getInstance().acrobatics(player))
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAcrobatics()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getAcrobaticsGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("acrobatics")+")");
@@ -334,10 +337,10 @@ public class mcPlayerListener extends PlayerListener {
     	if(mcPermissions.getInstance().party(player) && split[0].equalsIgnoreCase("/"+mcLoadProperties.accept)){
     		if(mcUsers.getProfile(player).hasPartyInvite()){
     			if(mcUsers.getProfile(player).inParty()){
-    				informPartyMembersQuit(player);
+    				mcParty.getInstance().informPartyMembersQuit(player, getPlayersOnline());
     			}
     			mcUsers.getProfile(player).acceptInvite();
-    			informPartyMembers(player);
+    			mcParty.getInstance().informPartyMembers(player, getPlayersOnline());
     			player.sendMessage(ChatColor.GREEN+"Invite accepted. You have joined party ("+mcUsers.getProfile(player).getParty()+")");
     		} else {
     			player.sendMessage(ChatColor.RED+"You have no invites at this time");
@@ -360,11 +363,11 @@ public class mcPlayerListener extends PlayerListener {
                 for(Player p : plugin.getServer().getOnlinePlayers())
                 {
                 	if(mcUsers.getProfile(player).getParty().equals(mcUsers.getProfile(p).getParty())){
-	                	if(p != null && x+1 >= partyCount(player)){
+	                	if(p != null && x+1 >= mcParty.getInstance().partyCount(player, getPlayersOnline())){
 	                		tempList+= p.getName();
 	                		x++;
 	                	}
-	                	if(p != null && x < partyCount(player)){
+	                	if(p != null && x < mcParty.getInstance().partyCount(player, getPlayersOnline())){
 	                		tempList+= p.getName() +", ";
 	                		x++;
 	                	}
@@ -374,18 +377,18 @@ public class mcPlayerListener extends PlayerListener {
                 player.sendMessage(ChatColor.GREEN + "Party Members ("+ChatColor.WHITE+tempList+ChatColor.GREEN+")");
     		}
     		if(split.length > 1 && split[1].equals("q") && mcUsers.getProfile(player).inParty()){
-    			informPartyMembersQuit(player);
+    			mcParty.getInstance().informPartyMembersQuit(player, getPlayersOnline());
     			mcUsers.getProfile(player).removeParty();
     			player.sendMessage(ChatColor.RED + "You have left that party");
     			return;
     		}
     		if(split.length >= 2){
-    		if(mcUsers.getProfile(player).inParty())
-    		informPartyMembersQuit(player);
-    		mcUsers.getProfile(player).setParty(split[1]);
-    		player.sendMessage("Joined Party: " + split[1]);
-    		informPartyMembers(player);
-    		}
+	    		if(mcUsers.getProfile(player).inParty())
+	    			mcParty.getInstance().informPartyMembersQuit(player, getPlayersOnline());
+		    	mcUsers.getProfile(player).setParty(split[1]);
+		    	player.sendMessage("Joined Party: " + split[1]);
+		    	mcParty.getInstance().informPartyMembers(player, getPlayersOnline());
+	    		}
     	}
     	if(split[0].equalsIgnoreCase("/p")){
     		if(!mcPermissions.getInstance().party(player)){
@@ -432,8 +435,8 @@ public class mcPlayerListener extends PlayerListener {
     		player.setHealth(20);
     		Location mySpawn = mcUsers.getProfile(player).getMySpawn(player);
     		//player.sendMessage("mcMMO DEBUG CODE 1");
-    		if(mcUsers.getProfile(player).getMySpawnWorld() != null && !mcUsers.getProfile(player).getMySpawnWorld().equals("")){
-    			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld()));
+    		if(mcUsers.getProfile(player).getMySpawnWorld(plugin) != null && !mcUsers.getProfile(player).getMySpawnWorld(plugin).equals("")){
+    			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld(plugin)));
     			//player.sendMessage("mcMMO DEBUG CODE 2");
     			} else {
     				//player.sendMessage("mcMMO DEBUG CODE 5");
@@ -459,7 +462,7 @@ public class mcPlayerListener extends PlayerListener {
     		log.log(Level.INFO, "[P]("+mcUsers.getProfile(player).getParty()+")"+"<"+player.getName()+"> "+event.getMessage());
     		for(Player herp : plugin.getServer().getOnlinePlayers()){
     			if(mcUsers.getProfile(herp).inParty()){
-    			if(mcm.getInstance().inSameParty(herp, player)){
+    			if(mcParty.getInstance().inSameParty(herp, player)){
     				herp.sendMessage(x+event.getMessage());
     			}
     			}

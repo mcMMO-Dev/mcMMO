@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Location;
 import org.bukkit.entity.*;
+import org.bukkit.plugin.Plugin;
 
 public class mcUsers {
     private static volatile mcUsers instance;
@@ -1239,8 +1240,12 @@ class PlayerList
                         return false;
                     }
                 }
-                public String getMySpawnWorld(){
-                	return myspawnworld;
+                public String getMySpawnWorld(Plugin plugin){
+                	 if(myspawnworld != null && !myspawnworld.equals("") && !myspawnworld.equals("null")){
+                		 return myspawnworld;
+                	 } else {
+                		 return plugin.getServer().getWorlds().get(0).toString();
+                	 }
                 }
                 //Save a users spawn location
                 public void setMySpawn(double x, double y, double z, String myspawnworldlocation){

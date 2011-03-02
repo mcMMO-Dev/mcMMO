@@ -1,12 +1,7 @@
 package com.gmail.nossr50;
-import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 
-import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.entity.*;
-import org.bukkit.inventory.ItemStack;
 
 public class mcTimer extends TimerTask{
 	private final mcMMO plugin;
@@ -16,8 +11,9 @@ public class mcTimer extends TimerTask{
         this.plugin = plugin;
     }
 	public void run() {
+		Player[] playerlist = plugin.getServer().getOnlinePlayers();
 		if(thecount == 5 || thecount == 10 || thecount == 15 || thecount == 20){
-			for(Player player : plugin.getServer().getOnlinePlayers()){
+			for(Player player : playerlist){
 		    	if(player != null &&
 		    			player.getHealth() > 0 && player.getHealth() < 20 
 		    			&& mcUsers.getProfile(player).getPowerLevel() >= 1000 
@@ -28,7 +24,7 @@ public class mcTimer extends TimerTask{
 		    }
 		}
 		if(thecount == 10 || thecount == 20){
-		for(Player player : plugin.getServer().getOnlinePlayers()){
+		for(Player player : playerlist){
     		if(player != null &&
     				player.getHealth() > 0 && player.getHealth() < 20 
     				&& mcUsers.getProfile(player).getPowerLevel() >= 500 
@@ -40,7 +36,7 @@ public class mcTimer extends TimerTask{
     	}
 		}
 		if(thecount == 20){
-			for(Player player : plugin.getServer().getOnlinePlayers()){
+			for(Player player : playerlist){
 	    		if(player != null &&
 	    				player.getHealth() > 0 && player.getHealth() < 20  
 	    				&& mcUsers.getProfile(player).getPowerLevel() < 500  
@@ -50,8 +46,8 @@ public class mcTimer extends TimerTask{
 	    		}
 	    	}
 		}
-		for(Player player : plugin.getServer().getOnlinePlayers()){
-			if(player != null){
+		for(Player player : playerlist){
+			if(player != null && mcUsers.getProfile(player).getRecentlyHurt() >= 1){
 				mcUsers.getProfile(player).decreaseLastHurt();
 			}
 		}
@@ -63,6 +59,6 @@ public class mcTimer extends TimerTask{
 		} else {
 		thecount = 1;
 		}
-		mcm.getInstance().bleedSimulate(plugin);
+		mcCombat.getInstance().bleedSimulate();
 	}
 }

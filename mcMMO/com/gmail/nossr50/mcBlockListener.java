@@ -2,7 +2,6 @@ package com.gmail.nossr50;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -10,7 +9,6 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class mcBlockListener extends BlockListener {
     private final mcMMO plugin;
@@ -30,8 +28,8 @@ public class mcBlockListener extends BlockListener {
     	int y = block.getY();
     	int z = block.getZ();
     	String xyz = x+","+y+","+z;
+    	if(mcm.getInstance().shouldBeWatched(block))
     	mcConfig.getInstance().addBlockWatch(block);
-    	mcConfig.getInstance().addCoordsWatch(xyz);
     	if(block.getTypeId() == 42 && mcLoadProperties.anvilmessages)
     		event.getPlayer().sendMessage(ChatColor.DARK_RED+"You have placed an anvil, anvils can repair tools and armor.");
     }
@@ -45,7 +43,6 @@ public class mcBlockListener extends BlockListener {
         	int y = block.getY();
         	int z = block.getZ();
         	String xyz = x+","+y+","+z;
-    		int type = block.getTypeId();
     		Location loc = block.getLocation();
     		int dmg = event.getDamageLevel().getLevel();
     		/*
@@ -53,32 +50,31 @@ public class mcBlockListener extends BlockListener {
     		 */
     		if(dmg == 3){
         		if(mcPermissions.getInstance().herbalism(player))
-        		mcm.getInstance().herbalismProcCheck(block, player);
+        		mcHerbalism.getInstance().herbalismProcCheck(block, player);
     		}
     		/*
     		 * MINING
     		 */
-    		if(dmg == 2 && !mcConfig.getInstance().isBlockWatched(block) && !mcConfig.getInstance().isCoordsWatched(xyz)){
+    		if(player != null && dmg == 2 && !mcConfig.getInstance().isBlockWatched(block)){
     		if(mcPermissions.getInstance().mining(player))
-    		mcm.getInstance().miningBlockCheck(player, block);
+    		mcMining.getInstance().miningBlockCheck(player, block);
     		/*
     		 * WOOD CUTTING
     		 */
-    		if(block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){    		
-    				mcm.getInstance().woodCuttingProcCheck(player, block, loc);
+    		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){    		
+    				mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
     				mcUsers.getProfile(player).addWoodcuttingGather(7);
     		}
     		/*
     		 * EXCAVATION
     		 */
     		if(mcPermissions.getInstance().excavation(player) && block != null && player != null)
-    		mcm.getInstance().excavationProcCheck(block, player);
+    		mcExcavation.getInstance().excavationProcCheck(block, player);
     		/*
     		 * EXPLOIT COUNTERMEASURES
     		 */
-    		mcConfig.getInstance().addCoordsWatch(xyz);
     		mcConfig.getInstance().addBlockWatch(block);
-    		if(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= mcUsers.getProfile(player).getXpToLevel("woodcutting")){
+    		if(player != null && mcUsers.getProfile(player).getWoodCuttingGatherInt() >= mcUsers.getProfile(player).getXpToLevel("woodcutting")){
     			int skillups = 0;
     			while(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= mcUsers.getProfile(player).getXpToLevel("woodcutting")){
     				skillups++;

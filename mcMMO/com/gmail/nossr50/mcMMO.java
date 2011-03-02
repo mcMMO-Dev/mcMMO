@@ -2,22 +2,16 @@ package com.gmail.nossr50;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijiko.Messaging;
 import com.nijiko.permissions.PermissionHandler;
-import com.nijiko.permissions.Control;
-import com.nijikokun.bukkit.Permissions.Permissions;
 import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bukkit.event.player.*;
-import org.bukkit.Server;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.entity.Player;
@@ -30,8 +24,7 @@ public class mcMMO extends JavaPlugin {
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
     private final mcBlockListener blockListener = new mcBlockListener(this);
     private final mcEntityListener entityListener = new mcEntityListener(this);
-    private final mcServerListener serverListener = new mcServerListener(this);
-    private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
+    //private final mcServerListener serverListener = new mcServerListener(this);
     private final String name = "mcMMO";
     public static PermissionHandler PermissionsHandler = null;
     private Permissions permissions;
@@ -71,7 +64,6 @@ public class mcMMO extends JavaPlugin {
 			}
     	}
     	//Load the file
-    	//sup
     	mcLoadProperties.loadMain();
     	mcUsers.getInstance().loadUsers();
         PluginManager pm = getServer().getPluginManager();
@@ -120,7 +112,6 @@ public class mcMMO extends JavaPlugin {
     		return false;
     	}
     }
-    
     public Permissions getPermissions() {
     	return permissions;
     	}
