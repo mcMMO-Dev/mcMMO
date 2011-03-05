@@ -69,9 +69,9 @@ public class mcEntityListener extends EntityListener {
         	 */
         	if(e instanceof Player){
         		Player defender = (Player)e;
-        		if(mcConfig.getInstance().isGodModeToggled(defender.getName()))
+        		if(defender != null && mcConfig.getInstance().isGodModeToggled(defender.getName()))
         			event.setCancelled(true);
-        		if(f instanceof Monster){
+        		if(f instanceof Monster && defender != null){
         			mcUsers.getProfile(defender).setRecentlyHurt(30);
         		}
         		/*

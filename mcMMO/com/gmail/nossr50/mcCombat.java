@@ -102,10 +102,6 @@ public class mcCombat {
 					defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), herp);
 				}
 			}
-			if(mcUsers.getProfile(defender).isDead())
-				return;
-			if((mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty())&& mcUsers.getProfile(defender).getParty().equals(mcUsers.getProfile(attacker).getParty()))
-				event.setCancelled(true);
 		}
     }
     public void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
@@ -146,8 +142,9 @@ public class mcCombat {
 				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
 					defender.setHealth(calculateDamage(defender, (4 - axeNerf(attacker.getItemInHand().getTypeId()))));
 				}
-				if(defender.getHealth() <= 0)
+				if(defender.getHealth() <= 0){
 					mcm.getInstance().simulateNaturalDrops(defender);
+				}
 			}
 			/*
 			 * UNARMED VS SQUID
@@ -185,8 +182,9 @@ public class mcCombat {
 						attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
 					}
 					}
-				if(defender.getHealth() <= 0)
+				if(defender.getHealth() <= 0){
 				mcm.getInstance().simulateNaturalDrops(defender);
+				}
     			}
 		}
     }
@@ -202,8 +200,9 @@ public class mcCombat {
 				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
 					defender.setHealth(calculateDamage(defender, (4 - axeNerf(attacker.getItemInHand().getTypeId()))));
 				}
-				if(defender.getHealth() <= 0)
+				if(defender.getHealth() <= 0){
 					mcm.getInstance().simulateNaturalDrops(defender);
+				}
 			}
 			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
 			if(defender.getHealth() <= 0)

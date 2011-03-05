@@ -24,15 +24,15 @@ public class mcPlayerListener extends PlayerListener {
     	plugin = instance;
     }
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-    		Player player = event.getPlayer();
-    		if(player != null){
+    	Player player = event.getPlayer();
+    	if(player != null){
 			Location mySpawn = mcUsers.getProfile(player).getMySpawn(player);
-			if(mcUsers.getProfile(player).getMySpawnWorld(plugin) != null && !mcUsers.getProfile(player).getMySpawnWorld(plugin).equals("") && plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld(plugin)) != null)
-			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld(plugin)));
+			if(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld(plugin)) != null)
+				mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld(plugin)));
 			if(mcPermissions.getInstance().mySpawn(player) && mySpawn != null){
 		    	event.setRespawnLocation(mySpawn);
 			}
-    		}
+    	}
     }
     public Player[] getPlayersOnline() {
     		return plugin.getServer().getOnlinePlayers();
@@ -75,7 +75,7 @@ public class mcPlayerListener extends PlayerListener {
     	//STEW, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
     	mcHerbalism.getInstance().stewCheck(player, is);
     	}
-    	if(mcPermissions.getInstance().repair(player)){
+    	if(block != null && player != null && mcPermissions.getInstance().repair(player) && block.getTypeId() == 42){
     	//REPAIRCHECK, CHECKS TO MAKE SURE PLAYER IS RIGHT CLICKING AN ANVIL, PLAYER HAS ENOUGH RESOURCES, AND THE ITEM IS NOT AT FULL DURABILITY.
     	mcRepair.getInstance().repairCheck(player, is, block);
     	}
@@ -147,6 +147,9 @@ public class mcPlayerListener extends PlayerListener {
     		if(split.length < 2){
     			player.sendMessage(ChatColor.RED+"Usage is /"+mcLoadProperties.ptp+" <playername>");
     			return;
+    		}
+    		if(!isPlayer(split[1])){
+    			player.sendMessage("That is not a valid player");
     		}
     		if(isPlayer(split[1])){
         	Player target = getPlayer(split[1]);
