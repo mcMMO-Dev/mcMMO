@@ -36,6 +36,9 @@ public class mcCombat {
     			return;
     		}
     		Player defender = (Player)x;
+    		//This may help compatability with NPC mods
+    		if(mcUsers.getProfile(defender) == null)
+    			mcUsers.addUser(defender);
     		if(mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
 				if(mcParty.getInstance().inSameParty(defender, attacker)){
 					event.setCancelled(true);
@@ -833,10 +836,10 @@ public class mcCombat {
     	}
     }
     public void parryCheck(Player defender, EntityDamageByEntityEvent event, Entity y){
-    	if(mcm.getInstance().isSwords(defender.getItemInHand()) 
+    	if(defender != null && mcm.getInstance().isSwords(defender.getItemInHand()) 
     			&& event.getDamage() > 0 
     			&& mcPermissions.getInstance().swords(defender)){
-			if(mcUsers.getProfile(defender).getSwordsInt() >= 50 && mcUsers.getProfile(defender).getSwordsInt() < 250){
+			if(defender != null && mcUsers.getProfile(defender).getSwordsInt() >= 50 && mcUsers.getProfile(defender).getSwordsInt() < 250){
 				if(Math.random() * 100 > 95){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
@@ -848,7 +851,7 @@ public class mcCombat {
 					return;
 				}
 			}
-			if(mcUsers.getProfile(defender).getSwordsInt() >= 250 && mcUsers.getProfile(defender).getSwordsInt() < 450){
+			if(defender != null && mcUsers.getProfile(defender).getSwordsInt() >= 250 && mcUsers.getProfile(defender).getSwordsInt() < 450){
 				if(Math.random() * 100 > 90){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
@@ -860,7 +863,7 @@ public class mcCombat {
 					return;
 				}
 			}
-			if(mcUsers.getProfile(defender).getSwordsInt() >= 450 && mcUsers.getProfile(defender).getSwordsInt() < 775){
+			if(defender != null && mcUsers.getProfile(defender).getSwordsInt() >= 450 && mcUsers.getProfile(defender).getSwordsInt() < 775){
 				if(Math.random() * 100 > 85){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
@@ -872,7 +875,7 @@ public class mcCombat {
 					return;
 				}
 			}
-			if(mcUsers.getProfile(defender).getSwordsInt() >= 775){
+			if(defender != null && mcUsers.getProfile(defender).getSwordsInt() >= 775){
 				if(Math.random() * 100 > 80){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");

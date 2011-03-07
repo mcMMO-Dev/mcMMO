@@ -321,6 +321,7 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/"+mcLoadProperties.mcc)){
     		event.setCancelled(true);
     		player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mcMMO Commands"+ChatColor.RED+"[]---");
+    		player.sendMessage("/"+mcLoadProperties.stats+ChatColor.RED+" - View your mcMMO stats");
     		if(mcPermissions.getInstance().party(player)){
     			player.sendMessage(ChatColor.GREEN+"--PARTY COMMANDS--");
     			player.sendMessage("/"+mcLoadProperties.party+" [party name] "+ChatColor.RED+"- Create/Join designated party");
@@ -346,7 +347,7 @@ public class mcm {
     		if(mcPermissions.getInstance().whois(player))
     			player.sendMessage("/"+mcLoadProperties.whois+" [playername] "+ChatColor.RED+"- View detailed player info");
     		if(mcPermissions.getInstance().mmoedit(player)){
-    			player.sendMessage("/"+mcLoadProperties.mmoedit+" [skill] [newvalue] "+ChatColor.RED+"Modify the designated skill value");
+    			//player.sendMessage("/"+mcLoadProperties.mmoedit+" [skill] [newvalue] "+ChatColor.RED+"Modify the designated skill value");
     			player.sendMessage("/"+mcLoadProperties.mmoedit+" [playername] [skill] [newvalue] "+ChatColor.RED+"- Modify target");
     		}
     		if(mcPermissions.getInstance().mcgod(player))
