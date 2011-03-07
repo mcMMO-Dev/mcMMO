@@ -56,4 +56,12 @@ public class mcWoodCutting {
 		}
 	}
     }
+    public void treeFeller(Block block){
+    	Location loc = block.getLocation();
+    	int radius = 1;
+    	int typeid = 17;
+    	if(mcm.getInstance().isBlockAround(loc, radius, typeid)){
+    		
+    	}
+    }
 }

@@ -14,7 +14,7 @@ public class mcAcrobatics {
     	return instance;
     	}
 	public void acrobaticsCheck(Player player, EntityDamageEvent event, Location loc, int xx, int y, int z){
-    	if(mcUsers.getProfile(player).getAcrobaticsInt() >= 50 
+    	if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 50 
 				&& mcUsers.getProfile(player).getAcrobaticsInt() < 250
 				&& mcPermissions.getInstance().acrobatics(player)){
 			if(Math.random() * 10 > 8){
@@ -23,7 +23,7 @@ public class mcAcrobatics {
 				return;
 			}
 		}
-		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 250 
+		if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 250 
 				&& mcUsers.getProfile(player).getAcrobaticsInt() < 450 
 				&& mcPermissions.getInstance().acrobatics(player)){
 			if(Math.random() * 10 > 6){
@@ -32,7 +32,7 @@ public class mcAcrobatics {
 				return;
 			}
 		}
-		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 450 
+		if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 450 
 				&& mcUsers.getProfile(player).getAcrobaticsInt() < 750 
 				&& mcPermissions.getInstance().acrobatics(player)){
 			if(Math.random() * 10 > 4){
@@ -41,7 +41,7 @@ public class mcAcrobatics {
 				return;
 			}
 		}
-		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 750 
+		if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 750 
 				&& mcUsers.getProfile(player).getAcrobaticsInt() < 950 
 				&& mcPermissions.getInstance().acrobatics(player)){
 			if(Math.random() * 10 > 2){
@@ -50,18 +50,18 @@ public class mcAcrobatics {
 				return;
 			}
 		}
-		if(mcUsers.getProfile(player).getAcrobaticsInt() >= 950
+		if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 950
 				&& mcPermissions.getInstance().acrobatics(player)){
 				event.setCancelled(true);
 				player.sendMessage("**ROLLED... LIKE A BOSS**");
 				return;
 			}
-		if(player.getHealth() - event.getDamage() <= 0)
+		if(player != null && player.getHealth() - event.getDamage() <= 0)
 			return;
 		if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z)) 
 				&& mcPermissions.getInstance().acrobatics(player)){
 		mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 3);
-		if(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("acrobatics")){
+		if(player != null && mcUsers.getProfile(player).getAcrobaticsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("acrobatics")){
 			int skillups = 0;
 			while(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("acrobatics")){
 				skillups++;

@@ -126,7 +126,7 @@ public class mcMining {
     		mcUsers.getProfile(player).addMiningGather(40);
     		blockProcCheck(block, player);
     		}
-    		if(mcUsers.getProfile(player).getMiningGatherInt() >= mcUsers.getProfile(player).getXpToLevel("mining")){
+    		if(player != null && mcUsers.getProfile(player).getMiningGatherInt() >= mcUsers.getProfile(player).getXpToLevel("mining")){
     			int skillups = 0;
     			while(mcUsers.getProfile(player).getMiningGatherInt() >= mcUsers.getProfile(player).getXpToLevel("mining")){
     				skillups++;

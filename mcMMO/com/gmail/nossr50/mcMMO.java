@@ -32,7 +32,7 @@ public class mcMMO extends JavaPlugin {
     
     //herp
     public void onEnable() {
-    	//mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(2000));
+    	mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(2000));
     	//Make the directory if it does not exist
     	new File(maindirectory).mkdir();
     	//Make the file if it does not exist
@@ -70,7 +70,7 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_FLOW, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_ITEM, playerListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_ITEM, playerListener, Priority.Monitor, this);
         pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DAMAGED, entityListener, Priority.Normal, this);

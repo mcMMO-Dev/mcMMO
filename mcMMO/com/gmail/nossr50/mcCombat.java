@@ -42,6 +42,7 @@ public class mcCombat {
 					return;
 				}
     		}
+    		if(defender != null)
     		mcUsers.getProfile(defender).setRecentlyHurt(30);
     		/*
     		 * AXE CRITICAL CHECK
@@ -51,7 +52,7 @@ public class mcCombat {
     			bleedCheck(attacker, x);
     		}
     		int healthbefore = defender.getHealth();
-			if(mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0){
+			if(defender != null && mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0){
 				//DMG MODIFIER
 				if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
 					defender.setHealth(calculateDamage(defender, 1));

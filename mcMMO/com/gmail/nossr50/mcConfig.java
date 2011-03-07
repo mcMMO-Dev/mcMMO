@@ -11,14 +11,18 @@ public class mcConfig {
     protected static final Logger log = Logger.getLogger("Minecraft");
     static ArrayList<String> adminChatList = new ArrayList<String>();
     static ArrayList<Block> blockWatchList = new ArrayList<Block>();
+    static ArrayList<Block> treeFeller = new ArrayList<Block>();
     static ArrayList<String> partyChatList = new ArrayList<String>();
     static ArrayList<String> godModeList = new ArrayList<String>();
     HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     static ArrayList<Entity> bleedTracker = new ArrayList<Entity>();
     static ArrayList<Entity> mobSpawnTracker = new ArrayList<Entity>();
     public boolean isBlockWatched(Block block) {return blockWatchList.contains(block);}
+    public ArrayList<Block> getTreeFeller() {return treeFeller;}
     public void removeBlockWatch(Block block) {blockWatchList.remove(blockWatchList.indexOf(block));}
     public void addBlockWatch(Block block) {blockWatchList.add(block);}
+    public void removeTreeFeller(Block block) {treeFeller.remove(treeFeller.indexOf(block));}
+    public void addTreeFeller(Block block) {treeFeller.add(block);}
     public void addBleedTrack(Entity entity) {bleedTracker.add(entity);}
     public void addMobSpawnTrack(Entity entity) {mobSpawnTracker.add(entity);}
     public ArrayList<Entity> getBleedTracked() {return bleedTracker;}

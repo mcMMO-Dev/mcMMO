@@ -311,10 +311,10 @@ public class mcm {
     		player.sendMessage(ChatColor.GRAY+"right click the anvil to interact with it, If you have spare");
     		player.sendMessage(ChatColor.GRAY+"iron ingots in your inventory the item will be repaired.");
     		player.sendMessage(ChatColor.GRAY+"You cannot hurt other party members");
-    		player.sendMessage(ChatColor.BLUE+"Set your own spawn with "+ChatColor.RED+"/myspawn");
+    		player.sendMessage(ChatColor.BLUE+"Set your own spawn with "+ChatColor.RED+"/"+mcLoadProperties.setmyspawn);
     		player.sendMessage(ChatColor.GREEN+"Based on your skills you will get "+ChatColor.DARK_RED+"random procs "+ChatColor.GREEN+ "when");
     		player.sendMessage(ChatColor.GREEN+"using your profession, like "+ChatColor.DARK_RED+"double drops "+ChatColor.GREEN+"or "+ChatColor.DARK_RED+"better repairs");
-    		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with /mcc");
+    		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with /"+mcLoadProperties.mcc);
     		player.sendMessage(ChatColor.GREEN+"Appreciate the mod? ");
     		player.sendMessage(ChatColor.GREEN+"You can donate via paypal to"+ChatColor.DARK_RED+" nossr50@gmail.com");
     	}
@@ -336,12 +336,13 @@ public class mcm {
 	    		player.sendMessage(ChatColor.GREEN+"--MYSPAWN COMMANDS--");
 	    		player.sendMessage("/"+mcLoadProperties.myspawn+" "+ChatColor.RED+"- Teleports you to your MySpawn");
 	    		player.sendMessage("/"+mcLoadProperties.clearmyspawn+" "+ChatColor.RED+"- Clears your MySpawn");
-    		}
-    		if(mcPermissions.getInstance().adminChat(player)){
-    			player.sendMessage(ChatColor.GREEN+"--ADMIN COMMANDS--");
-    			player.sendMessage("/a "+ChatColor.RED+"- Toggle admin chat");
+	    		if(mcPermissions.getInstance().setMySpawn(player))
+	    			player.sendMessage("/"+mcLoadProperties.setmyspawn+" "+ChatColor.RED+"- Set your MySpawn");
     		}
     		player.sendMessage(ChatColor.GREEN+"--OTHER COMMANDS--");
+    		if(mcPermissions.getInstance().adminChat(player)){
+    			player.sendMessage("/a "+ChatColor.RED+"- Toggle admin chat");
+    		}
     		if(mcPermissions.getInstance().whois(player))
     			player.sendMessage("/"+mcLoadProperties.whois+" [playername] "+ChatColor.RED+"- View detailed player info");
     		if(mcPermissions.getInstance().mmoedit(player)){

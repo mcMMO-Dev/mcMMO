@@ -57,6 +57,6 @@ public class mcTimer extends TimerTask{
 		} else {
 		thecount = 1;
 		}
-		mcCombat.getInstance().bleedSimulate();
+		//mcCombat.getInstance().bleedSimulate();
 	}
 }

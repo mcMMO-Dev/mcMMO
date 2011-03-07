@@ -18,27 +18,21 @@ public class mcRepair {
     	return instance;
     }
 	public void repairCheck(Player player, ItemStack is, Block block){
-		player.sendMessage("mcMMO Debug: The block is an Anvil.");
     	if(block != null
     			&& mcPermissions.getInstance().repair(player)){
-    		player.sendMessage("mcMMO Debug: The block is not null and the player has access to repair.");
         	if(player.getItemInHand().getDurability() > 0){
-        		player.sendMessage("mcMMO Debug: The item is not at full durability.");
         		/*
         		 * ARMOR
         		 */
         		if(isArmor(is)){
-        			player.sendMessage("mcMMO Debug: The item is armor.");
         			/*
         			 * DIAMOND ARMOR
         			 */
         			if(isDiamondArmor(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){
-        				player.sendMessage("mcMMO Debug: CODE 1");
 	        			removeDiamond(player);
 	        			player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
 	        			mcUsers.getProfile(player).addRepairGather(75);
         			} else if (isIronArmor(is) && hasIron(player)){
-        				player.sendMessage("mcMMO Debug: CODE 2");
         			/*
         			 * IRON ARMOR
         			 */
@@ -47,7 +41,6 @@ public class mcRepair {
 	            		mcUsers.getProfile(player).addRepairGather(20);
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasGold(player)){
-        				player.sendMessage("mcMMO Debug: CODE 3");
         				removeGold(player);
         				player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
         				mcUsers.getProfile(player).addRepairGather(50);
@@ -63,7 +56,6 @@ public class mcRepair {
         			 * IRON TOOLS
         			 */
             		if(isIronTools(is) && hasIron(player)){
-            			player.sendMessage("mcMMO Debug: CODE 4");
             			is.setDurability(getToolRepairAmount(is, player));
             			removeIron(player);
             			mcUsers.getProfile(player).addRepairGather(20);
@@ -71,17 +63,14 @@ public class mcRepair {
             			/*
             			 * DIAMOND TOOLS
             			 */
-            			player.sendMessage("mcMMO Debug: CODE 5");
             			is.setDurability(getToolRepairAmount(is, player));
             			removeDiamond(player);
             			mcUsers.getProfile(player).addRepairGather(75);
             		} else if(isGoldTools(is) && hasGold(player)){
-            			player.sendMessage("mcMMO Debug: CODE 6");
             			is.setDurability(getToolRepairAmount(is, player));
             			removeGold(player);
             			mcUsers.getProfile(player).addRepairGather(50);
             		} else {
-            			player.sendMessage("mcMMO Debug: CODE 7");
             			needMoreVespeneGas(is, player);
             		}
         		}
