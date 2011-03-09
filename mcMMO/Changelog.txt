@@ -1,5 +1,8 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.8.13
+	Enemies no longer look like they have frozen when they die
+	Item duping fix
 Version 0.8.11
 	Performance improvements
 	Memory leak fixed
