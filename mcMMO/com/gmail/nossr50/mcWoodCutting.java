@@ -22,39 +22,13 @@ public class mcWoodCutting {
     	byte type = block.getData();
     	Material mat = Material.getMaterial(block.getTypeId());
     	byte damage = 0;
-    	if(mcUsers.getProfile(player).getWoodCuttingInt() > 1000){
+    	if(player != null){
+    		if(Math.random() * 1000 <= mcUsers.getProfile(player).getWoodCuttingInt()){
 			ItemStack item = new ItemStack(mat, 1, type, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
 			return;
+    		}
     	}
-    	if(mcUsers.getProfile(player).getWoodCuttingInt() > 750){
-			if((Math.random() * 10) > 2){
-				ItemStack item = new ItemStack(mat, 1, type, damage);
-				loc.getWorld().dropItemNaturally(loc, item);
-				return;
-			}
-    	}
-	if(mcUsers.getProfile(player).getWoodCuttingInt() > 300){
-		if((Math.random() * 10) > 4){
-			ItemStack item = new ItemStack(mat, 1, type, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-			return;
-		}
-	}
-	if(mcUsers.getProfile(player).getWoodCuttingInt() > 100){
-		if((Math.random() * 10) > 6){
-			ItemStack item = new ItemStack(mat, 1, type, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-			return;
-		}
-	}
-	if(mcUsers.getProfile(player).getWoodCuttingInt() > 10){
-		if((Math.random() * 10) > 8){
-			ItemStack item = new ItemStack(mat, 1, type, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-			return;
-		}
-	}
     }
     public void treeFeller(Block block){
     	Location loc = block.getLocation();

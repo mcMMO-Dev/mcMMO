@@ -14,53 +14,18 @@ public class mcAcrobatics {
     	return instance;
     	}
 	public void acrobaticsCheck(Player player, EntityDamageEvent event, Location loc, int xx, int y, int z){
-    	if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 50 
-				&& mcUsers.getProfile(player).getAcrobaticsInt() < 250
-				&& mcPermissions.getInstance().acrobatics(player)){
-			if(Math.random() * 10 > 8){
+    	if(player != null){
+			if(Math.random() * 1000 <= mcUsers.getProfile(player).getAcrobaticsInt()){
 				event.setCancelled(true);
 				player.sendMessage("**ROLLED**");
 				return;
 			}
 		}
-		if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 250 
-				&& mcUsers.getProfile(player).getAcrobaticsInt() < 450 
-				&& mcPermissions.getInstance().acrobatics(player)){
-			if(Math.random() * 10 > 6){
-				event.setCancelled(true);
-				player.sendMessage("**ROLLED**");
-				return;
-			}
-		}
-		if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 450 
-				&& mcUsers.getProfile(player).getAcrobaticsInt() < 750 
-				&& mcPermissions.getInstance().acrobatics(player)){
-			if(Math.random() * 10 > 4){
-				event.setCancelled(true);
-				player.sendMessage("**ROLLED**");
-				return;
-			}
-		}
-		if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 750 
-				&& mcUsers.getProfile(player).getAcrobaticsInt() < 950 
-				&& mcPermissions.getInstance().acrobatics(player)){
-			if(Math.random() * 10 > 2){
-				event.setCancelled(true);
-				player.sendMessage("**BARREL ROLLED**");
-				return;
-			}
-		}
-		if(player != null && mcUsers.getProfile(player).getAcrobaticsInt() >= 950
-				&& mcPermissions.getInstance().acrobatics(player)){
-				event.setCancelled(true);
-				player.sendMessage("**ROLLED... LIKE A BOSS**");
-				return;
-			}
 		if(player != null && player.getHealth() - event.getDamage() <= 0)
 			return;
 		if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z)) 
 				&& mcPermissions.getInstance().acrobatics(player)){
-		mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 3);
+		mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 8);
 		if(player != null && mcUsers.getProfile(player).getAcrobaticsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("acrobatics")){
 			int skillups = 0;
 			while(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("acrobatics")){

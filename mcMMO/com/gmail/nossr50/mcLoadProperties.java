@@ -3,13 +3,14 @@ package com.gmail.nossr50;
 public class mcLoadProperties {
 	public static Boolean pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String mcmmo, mcc, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
-	public static int globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
+	public static int repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public static void loadMain(){
     	String propertiesFile = mcMMO.maindirectory + "mcmmo.properties";
     	mcProperties properties = new mcProperties(propertiesFile);
     	properties.load();
     	
+    	repairdiamondlevel = properties.getInteger("repairdiamondlevel", 50);
     	/*
     	 * EXPERIENCE RATE MODIFIER
     	 */

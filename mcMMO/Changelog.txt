@@ -1,5 +1,16 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.8.14
+	Mining, Woodcutting, Herbalism, and Acrobatics proc rates now are based on your skill level directly rather than tiers you unlock via skill levels
+	Archery's ability to retrieve arrows from corpses now is based on your skill level directly rather than tiers you unlock via skill levels
+	Mining, Woodcutting, Herbalism, Archery, and Acrobatics now show their proc % relative to your skill if you type /<skillname>
+	You can now adjust what level is required to repair diamond in the configuration file
+	Changed mining XP rates to be a tad higher for some things
+	You can now get XP from sandstone
+	XP rates increased for gathering glowstone with excavation
+	XP rates increased a bit for excavation
+	Skill info is now a bit more detailed for certain skills
+	Added info about arrow retrieval to /archery
 Version 0.8.13
 	Enemies no longer look like they have frozen when they die
 	Item duping fix

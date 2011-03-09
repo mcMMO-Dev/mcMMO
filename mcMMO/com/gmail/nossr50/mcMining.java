@@ -62,43 +62,21 @@ public class mcMining {
 			}
     }
     public void blockProcCheck(Block block, Player player){
-    	if(mcUsers.getProfile(player).getMiningInt() > 2000){
-    		blockProcSimulate(block);
-			return;
-    	}
-    	if(mcUsers.getProfile(player).getMiningInt() > 1250){
-    		if((Math.random() * 10) > 2){
-    		blockProcSimulate(block);
-    		return;
-    		}
-    	}
-    	if(mcUsers.getProfile(player).getMiningInt() > 750){
-    		if((Math.random() * 10) > 4){
-    		blockProcSimulate(block);
-			return;
-    		}
-    	}
-    	if(mcUsers.getProfile(player).getMiningInt() > 150){
-    		if((Math.random() * 10) > 6){
-    		blockProcSimulate(block);
-			return;
-    		}
-    	}
-    	if(mcUsers.getProfile(player).getMiningInt() > 25){
-    		if((Math.random() * 10) > 8){
+    	if(player != null){
+    		if(Math.random() * 1000 >= mcUsers.getProfile(player).getMiningInt()){
     		blockProcSimulate(block);
 			return;
     		}
     	}		
 	}
     public void miningBlockCheck(Player player, Block block){
-    	if(block.getTypeId() == 1){
-    		mcUsers.getProfile(player).addMiningGather(1);
+    	if(block.getTypeId() == 1 || block.getTypeId() == 24){
+    		mcUsers.getProfile(player).addMiningGather(3);
     		blockProcCheck(block, player);
     		}
     		//COAL
     		if(block.getTypeId() == 16){
-    		mcUsers.getProfile(player).addMiningGather(5);
+    		mcUsers.getProfile(player).addMiningGather(10);
     		blockProcCheck(block, player);
     		}
     		//GOLD
@@ -113,7 +91,7 @@ public class mcMining {
     		}
     		//IRON
     		if(block.getTypeId() == 15){
-    		mcUsers.getProfile(player).addMiningGather(20);
+    		mcUsers.getProfile(player).addMiningGather(25);
     		blockProcCheck(block, player);
     		}
     		//REDSTONE

@@ -220,19 +220,28 @@ public class mcm {
     public void mcmmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
     	if(split[0].equalsIgnoreCase("/woodcutting")){
 			event.setCancelled(true);
+			float skillvalue = (float)mcUsers.getProfile(player).getWoodCuttingInt();
+    		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"WOODCUTTING"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Chopping down trees");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.GREEN+"Double the normal loot");
+			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.YELLOW+ChatColor.GREEN+"Double the normal loot");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/archery")){
 			event.setCancelled(true);
+			float skillvalue = (float)mcUsers.getProfile(player).getArcheryInt();
+    		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"ARCHERY"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			//player.sendMessage(ChatColor.DARK_AQUA+"Daze (Monsters): "+ChatColor.GREEN+"Enemies lose interest for 1 second");
 			player.sendMessage(ChatColor.DARK_AQUA+"Daze (Players): "+ChatColor.GREEN+"Disorients foes");
 			player.sendMessage(ChatColor.DARK_AQUA+"Damage+: "+ChatColor.GREEN+"Modifies Damage");
+			player.sendMessage(ChatColor.DARK_AQUA+"Arrow Retrieval: "+ChatColor.GREEN+"Chance to retrieve arrows from corpses");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Chance to Retrieve Arrows: "+ChatColor.YELLOW+percentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/axes")){
 			event.setCancelled(true);
@@ -253,25 +262,37 @@ public class mcm {
     	}
     	if(split[0].equalsIgnoreCase("/acrobatics")){
 			event.setCancelled(true);
+			float skillvalue = (float)mcUsers.getProfile(player).getAcrobaticsInt();
+    		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"ACROBATICS"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Falling");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.DARK_AQUA+"Roll: "+ChatColor.GREEN+"Negates Damage");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Roll Chance: "+ChatColor.YELLOW+percentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/mining")){
+    		float skillvalue = (float)mcUsers.getProfile(player).getMiningInt();
+    		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			event.setCancelled(true);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"MINING"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Mining Stone & Ore");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.GREEN+"Double the normal loot");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/repair")){
+    		float skillvalue = (float)mcUsers.getProfile(player).getRepairInt();
+    		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			event.setCancelled(true);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"REPAIR"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Repairing");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.DARK_AQUA+"Repair: "+ChatColor.GREEN+"Repair Iron Tools & Armor");
 			player.sendMessage(ChatColor.DARK_AQUA+"Diamond Repair (50+ SKILL): "+ChatColor.GREEN+"Repair Diamond Tools & Armor");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Super Repair Chance: "+ChatColor.YELLOW+percentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/unarmed")){
 			event.setCancelled(true);
@@ -283,11 +304,15 @@ public class mcm {
     	}
     	if(split[0].equalsIgnoreCase("/herbalism")){
 			event.setCancelled(true);
+			float skillvalue = (float)mcUsers.getProfile(player).getHerbalismInt();
+    		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"HERBALISM"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Harvesting Herbs");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.DARK_AQUA+"Food+: "+ChatColor.GREEN+"Modifies health received from bread/stew");
 			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops (Wheat): "+ChatColor.GREEN+"Double the normal loot");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+percentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/excavation")){
 

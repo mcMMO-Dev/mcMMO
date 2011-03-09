@@ -43,7 +43,7 @@ public class mcExcavation {
     	}
     	//DIRT SAND OR GRAVEL
     	if(type == 3 || type == 13 || type == 2 || type == 12){
-    			mcUsers.getProfile(player).addExcavationGather(3);
+    			mcUsers.getProfile(player).addExcavationGather(4);
     		if(mcUsers.getProfile(player).getExcavationInt() > 750){
     			//CHANCE TO GET CAKE
     			if(mcLoadProperties.cake == true && Math.random() * 2000 > 1999){
@@ -86,14 +86,14 @@ public class mcExcavation {
     	if(type == 12){
     		//CHANCE TO GET GLOWSTONE
     		if(mcLoadProperties.glowstone == true && mcUsers.getProfile(player).getExcavationInt() > 50 && Math.random() * 100 > 95){
-    			mcUsers.getProfile(player).addExcavationGather(3);
+    			mcUsers.getProfile(player).addExcavationGather(8);
 				mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
     		//CHANCE TO GET SLOWSAND
     		if(mcLoadProperties.slowsand == true && mcUsers.getProfile(player).getExcavationInt() > 650 && Math.random() * 200 > 199){
-    			mcUsers.getProfile(player).addExcavationGather(5);
+    			mcUsers.getProfile(player).addExcavationGather(8);
 				mat = Material.getMaterial(88);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
@@ -110,7 +110,7 @@ public class mcExcavation {
     	if((type == 2 || type == 3) && mcUsers.getProfile(player).getExcavationInt() > 25){
     		//CHANCE TO GET GLOWSTONE
     		if(mcLoadProperties.glowstone == true && Math.random() * 100 > 95){
-    			mcUsers.getProfile(player).addExcavationGather(5);
+    			mcUsers.getProfile(player).addExcavationGather(8);
     			mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);

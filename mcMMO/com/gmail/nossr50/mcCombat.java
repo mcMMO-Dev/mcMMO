@@ -335,46 +335,18 @@ public class mcCombat {
     		if(event.getProjectile().toString().equals("CraftArrow") && mcPermissions.getInstance().archery(attacker)){
     			if(!mcConfig.getInstance().isTracked(x) && event.getDamage() > 0){
     				mcConfig.getInstance().addArrowTrack(x, 0);
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 200){
-    					if(Math.random() * 10 > 8){
+    				if(attacker != null){
+    					if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getArcheryInt()){
     						mcConfig.getInstance().addArrowCount(x, 1);
     					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 200 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
-    					if(Math.random() * 10 > 6){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 400 && mcUsers.getProfile(attacker).getArcheryInt() < 600){
-    					if(Math.random() * 10 > 4){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 600 && mcUsers.getProfile(attacker).getArcheryInt() < 800){
-    					if(Math.random() * 10 > 2){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 800){
-    						mcConfig.getInstance().addArrowCount(x, 1);
     				}
     			} else {
     				if(event.getDamage() > 0){
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 200){
-    					if(Math.random() * 10 > 8){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 200 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
-    					if(Math.random() * 10 > 6){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 400 && mcUsers.getProfile(attacker).getArcheryInt() < 600){
-    					if(Math.random() * 10 > 4){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 600 && mcUsers.getProfile(attacker).getArcheryInt() < 800){
-    					if(Math.random() * 10 > 2){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 800){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    				}
+    					if(attacker != null){
+        					if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getArcheryInt()){
+        						mcConfig.getInstance().addArrowCount(x, 1);
+        					}
+        				}
     				}
     			}
     		/*

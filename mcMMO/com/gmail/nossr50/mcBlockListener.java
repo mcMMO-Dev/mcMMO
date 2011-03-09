@@ -65,7 +65,6 @@ public class mcBlockListener extends BlockListener {
     				mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
     				mcUsers.getProfile(player).addWoodcuttingGather(7);
     				if(mcPermissions.getInstance().woodcuttingability(player)){
-    					
     				}
     		}
     		/*
