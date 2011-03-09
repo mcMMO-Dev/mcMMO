@@ -63,7 +63,7 @@ public class mcMining {
     }
     public void blockProcCheck(Block block, Player player){
     	if(player != null){
-    		if(Math.random() * 1000 >= mcUsers.getProfile(player).getMiningInt()){
+    		if(Math.random() * 1000 <= mcUsers.getProfile(player).getMiningInt()){
     		blockProcSimulate(block);
 			return;
     		}
