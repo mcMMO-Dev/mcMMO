@@ -69,6 +69,20 @@ public class mcPlayerListener extends PlayerListener {
     	Block block = event.getBlockClicked();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
+    	if(mcPermissions.getInstance().woodcuttingability(player) && mcm.getInstance().isAxes(is)){
+    		if(block != null){
+    		if(!mcm.getInstance().abilityBlockCheck(block))
+    			return;
+    		}
+    		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() == 0){
+    			player.sendMessage(ChatColor.GRAY+"You feel great strength enter you");
+    			mcUsers.getProfile(player).setTreeFellerTicks(8);
+    			mcUsers.getProfile(player).setTreeFellerMode(true);
+    		}
+    		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() >= 1){
+    			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+    		}
+    	}
     	if(mcPermissions.getInstance().herbalism(player)){
     	//BREADCHECK, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
     	mcHerbalism.getInstance().breadCheck(player, is);

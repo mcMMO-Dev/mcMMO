@@ -32,6 +32,9 @@ public class mcConfig {
     public void removeBleedTrack(Entity entity){
     	bleedTracker.remove(entity);
     }
+    public void clearTreeFeller(){
+    	treeFeller.clear();
+    }
     public void setBleedCount(Entity entity, Integer newvalue){
     	bleedTracker.add(entity);
     }

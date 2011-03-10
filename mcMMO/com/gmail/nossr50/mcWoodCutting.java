@@ -34,8 +34,12 @@ public class mcWoodCutting {
     		}
     	}
     }
-    public void treeFeller(Block block){
+    public void treeFeller(Block block, Player player){
     	int radius = 1;
+    	if(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= 500)
+    		radius++;
+    	if(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= 950)
+    		radius++;
         ArrayList<Block> blocklist = new ArrayList<Block>();
         ArrayList<Block> toAdd = new ArrayList<Block>();
         if(block != null)

@@ -1,5 +1,7 @@
 package com.gmail.nossr50;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -69,29 +71,34 @@ public class mcBlockListener extends BlockListener {
     				/*
     				 * IF PLAYER IS USING TREEFELLER
     				 */
-    				/*
-    				if(mcPermissions.getInstance().woodcuttingability(player)){
-    					player.sendMessage(ChatColor.RED+"TIIIIIIIIIIIMBER");
-    					mcWoodCutting.getInstance().treeFeller(block);
+    				if(mcPermissions.getInstance().woodcuttingability(player) && mcUsers.getProfile(player).getTreeFellerMode() && block.getTypeId() == 17){
+    					mcWoodCutting.getInstance().treeFeller(block, player);
     					for(Block blockx : mcConfig.getInstance().getTreeFeller()){
     						if(blockx != null){
     							Material mat = Material.getMaterial(blockx.getTypeId());
     							byte damage = 0;
     							ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
     							blockx.setTypeId(0);
-    							if(item.getTypeId() == 17)
+    							if(item.getTypeId() == 17){
     							blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
+    							mcWoodCutting.getInstance().woodCuttingProcCheck(player, blockx, blockx.getLocation());
+    							mcUsers.getProfile(player).addWoodcuttingGather(7);
+    							}
     							if(item.getTypeId() == 18){
     								mat = Material.getMaterial(6);
     								item = new ItemStack(mat, 1, (byte)0, damage);
-    								if(Math.random() * 10 > 6)
+    								if(Math.random() * 10 > 8)
     								blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
     							}
     						}
-    						//mcConfig.getInstance().removeTreeFeller(blockx);
     					}
+    					/*
+    					 * NOTE TO SELF
+    					 * I NEED TO REMOVE TREE FELL BLOCKS FROM BEING WATCHED AFTER THIS CODE IS EXECUTED
+    					 * OR ELSE IT COULD BE A MEMORY LEAK SITUATION
+    					 */
+    					mcConfig.getInstance().clearTreeFeller();
     				}
-    				*/
     		}
     		/*
     		 * EXCAVATION

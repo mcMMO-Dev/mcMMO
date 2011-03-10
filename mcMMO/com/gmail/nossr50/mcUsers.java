@@ -156,8 +156,8 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead;
-		private int recentlyhurt = 0, bleedticks = 0;
+		private boolean dead, treefellermode;
+		private int recentlyhurt = 0, bleedticks = 0, treefellerticks = 0, treefellercooldown = 0;
 		Player thisplayer;
 		char defaultColor;
 
@@ -206,7 +206,7 @@ class PlayerList
             //gather = "0";
             party = null;
             dead = false;
-            
+            treefellermode = false;
             //Try to load the player and if they aren't found, append them
             if(!load())
             	addPlayer();
@@ -432,6 +432,34 @@ class PlayerList
 		}
 		public void setBleedTicks(Integer newvalue){
 			bleedticks = newvalue;
+		}
+		public boolean getTreeFellerMode(){
+			return treefellermode;
+		}
+		public void setTreeFellerMode(Boolean bool){
+			treefellermode = bool;
+		}
+		public Integer getTreeFellerTicks(){
+			return treefellerticks;
+		}
+		public void setTreeFellerTicks(Integer newvalue){
+			treefellerticks = newvalue;
+		}
+		public void decreaseTreeFellerTicks(){
+			if(treefellerticks >= 1){
+				treefellerticks--;
+			}
+		}
+		public void setTreeFellerCooldown(Integer newvalue){
+			treefellercooldown = newvalue;
+		}
+		public int getTreeFellerCooldown(){
+			return treefellercooldown;
+		}
+		public void decreaseTreeFellerCooldown(){
+			if(treefellercooldown >= 1){
+				treefellercooldown--;
+			}
 		}
 		public Integer getRecentlyHurt(){
 			return recentlyhurt;

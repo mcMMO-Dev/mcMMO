@@ -35,6 +35,14 @@ public class mcm {
     return Math.sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)
     + Math.pow(loca.getZ() - locb.getZ(), 2));
     }
+	public boolean abilityBlockCheck(Block block){
+		int i = block.getTypeId();
+		if(i == 58 || i == 61 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
+			return false;
+		} else {
+			return true;
+		}
+	}
 	public boolean isBlockAround(Location loc, Integer radius, Integer typeid){
 		Block blockx = loc.getBlock();
     	int ox = blockx.getX();
