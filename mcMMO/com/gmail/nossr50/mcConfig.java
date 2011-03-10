@@ -18,6 +18,7 @@ public class mcConfig {
     static ArrayList<Entity> bleedTracker = new ArrayList<Entity>();
     static ArrayList<Entity> mobSpawnTracker = new ArrayList<Entity>();
     public boolean isBlockWatched(Block block) {return blockWatchList.contains(block);}
+    public boolean isTreeFellerWatched(Block block) {return treeFeller.contains(block);}
     public ArrayList<Block> getTreeFeller() {return treeFeller;}
     public void removeBlockWatch(Block block) {blockWatchList.remove(blockWatchList.indexOf(block));}
     public void addBlockWatch(Block block) {blockWatchList.add(block);}

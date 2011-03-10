@@ -124,6 +124,7 @@ public class mcEntityListener extends EntityListener {
     }
     public void onEntityDeath(EntityDeathEvent event) {
     	Entity x = event.getEntity();
+		mcSkills.getInstance().arrowRetrievalCheck(x);
     	if(x instanceof Player){
     		Player player = (Player)x;
     		if(mcUsers.getProfile(player).isDead()){

@@ -2,6 +2,7 @@ package com.gmail.nossr50;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class mcBlockListener extends BlockListener {
     private final mcMMO plugin;
@@ -64,8 +66,32 @@ public class mcBlockListener extends BlockListener {
     		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){    		
     				mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
     				mcUsers.getProfile(player).addWoodcuttingGather(7);
+    				/*
+    				 * IF PLAYER IS USING TREEFELLER
+    				 */
+    				/*
     				if(mcPermissions.getInstance().woodcuttingability(player)){
+    					player.sendMessage(ChatColor.RED+"TIIIIIIIIIIIMBER");
+    					mcWoodCutting.getInstance().treeFeller(block);
+    					for(Block blockx : mcConfig.getInstance().getTreeFeller()){
+    						if(blockx != null){
+    							Material mat = Material.getMaterial(blockx.getTypeId());
+    							byte damage = 0;
+    							ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+    							blockx.setTypeId(0);
+    							if(item.getTypeId() == 17)
+    							blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
+    							if(item.getTypeId() == 18){
+    								mat = Material.getMaterial(6);
+    								item = new ItemStack(mat, 1, (byte)0, damage);
+    								if(Math.random() * 10 > 6)
+    								blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
+    							}
+    						}
+    						//mcConfig.getInstance().removeTreeFeller(blockx);
+    					}
     				}
+    				*/
     		}
     		/*
     		 * EXCAVATION

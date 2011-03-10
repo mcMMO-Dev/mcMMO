@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 
 
 public class mcMMO extends JavaPlugin {
-	static String maindirectory = "mcMMO/";
+	static String maindirectory = "plugins/mcMMO/";
 	static File Properties = new File(maindirectory + "mcmmo.properties");
     public static final Logger log = Logger.getLogger("Minecraft");
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
@@ -32,7 +32,7 @@ public class mcMMO extends JavaPlugin {
     
     //herp
     public void onEnable() {
-    	//mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(2000));
+    	mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(2000));
     	//Make the directory if it does not exist
     	new File(maindirectory).mkdir();
     	//Make the file if it does not exist
@@ -61,6 +61,9 @@ public class mcMMO extends JavaPlugin {
     	//Load the file
     	mcLoadProperties.loadMain();
     	mcUsers.getInstance().loadUsers();
+    	for(Player player : getServer().getOnlinePlayers()){
+         	mcUsers.addUser(player);
+        }
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);

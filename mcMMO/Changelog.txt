@@ -1,5 +1,10 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.8.16
+	Moved configuration file to /plugins/mcMMO
+	Arrows now have a chance to Ignite enemiesw
+	Fixed arrows not being retrievable from corpses
+	Added info about ignition to /archery
 Version 0.8.14
 	Mining, Woodcutting, Herbalism, and Acrobatics proc rates now are based on your skill level directly rather than tiers you unlock via skill levels
 	Archery's ability to retrieve arrows from corpses now is based on your skill level directly rather than tiers you unlock via skill levels
