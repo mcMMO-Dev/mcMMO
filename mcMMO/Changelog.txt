@@ -1,5 +1,11 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.8.17
+	mcmmo.users moved to plugins/mcMMO/
+	Snowballs and Eggs will no longer trigger Ignition
+	Loot tables for excavation adjusted
+	Mining benefits now require the player to be holding a mining pick
+	Woodcutting benefits now require the player to be holding an axe
 Version 0.8.16
 	Moved configuration file to /plugins/mcMMO
 	Arrows now have a chance to Ignite enemiesw

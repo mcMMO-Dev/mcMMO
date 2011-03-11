@@ -69,6 +69,7 @@ public class mcPlayerListener extends PlayerListener {
     	Block block = event.getBlockClicked();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
+    	/*
     	if(mcPermissions.getInstance().woodcuttingability(player) && mcm.getInstance().isAxes(is)){
     		if(block != null){
     		if(!mcm.getInstance().abilityBlockCheck(block))
@@ -83,6 +84,7 @@ public class mcPlayerListener extends PlayerListener {
     			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
     		}
     	}
+    	*/
     	if(mcPermissions.getInstance().herbalism(player)){
     	//BREADCHECK, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
     	mcHerbalism.getInstance().breadCheck(player, is);

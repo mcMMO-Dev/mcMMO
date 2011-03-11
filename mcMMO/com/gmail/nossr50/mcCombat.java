@@ -332,19 +332,6 @@ public class mcCombat {
     	 */
     	if(y instanceof Player){
     		Player attacker = (Player)y;
-    		if(Math.random() * 1500 <= mcUsers.getProfile(attacker).getArcheryInt()){
-    			if(x instanceof Player){
-    				Player Defender = (Player)x;
-    				if(!mcParty.getInstance().inSameParty(attacker, Defender)){
-    					event.getEntity().setFireTicks(120);
-    					attacker.sendMessage(ChatColor.RED+"**IGNITION**");
-    					Defender.sendMessage(ChatColor.DARK_RED+"You were struck by a burning arrow!");
-    				}
-    			} else {
-    			event.getEntity().setFireTicks(160);
-    			attacker.sendMessage(ChatColor.RED+"**IGNITION**");
-    			}
-    		}
     		if(event.getProjectile().toString().equals("CraftArrow") && mcPermissions.getInstance().archery(attacker)){
     			if(!mcConfig.getInstance().isTracked(x) && event.getDamage() > 0){
     				mcConfig.getInstance().addArrowTrack(x, 0);
@@ -362,6 +349,19 @@ public class mcCombat {
         				}
     				}
     			}
+    			if(event.getDamage() > 0 && Math.random() * 1500 <= mcUsers.getProfile(attacker).getArcheryInt()){
+        			if(x instanceof Player){
+        				Player Defender = (Player)x;
+        				if(!mcParty.getInstance().inSameParty(attacker, Defender)){
+        					event.getEntity().setFireTicks(120);
+        					attacker.sendMessage(ChatColor.RED+"**IGNITION**");
+        					Defender.sendMessage(ChatColor.DARK_RED+"You were struck by a burning arrow!");
+        				}
+        			} else {
+        			event.getEntity().setFireTicks(160);
+        			attacker.sendMessage(ChatColor.RED+"**IGNITION**");
+        			}
+        		}
     		/*
     		 * Defender is Monster
     		 */

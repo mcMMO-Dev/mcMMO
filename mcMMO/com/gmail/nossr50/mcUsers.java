@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin;
 public class mcUsers {
     private static volatile mcUsers instance;
     protected static final Logger log = Logger.getLogger("Minecraft");
-    String location = "mcmmo.users";
+    String location = "plugins/mcMMO/mcmmo.users";
     public static PlayerList players = new PlayerList();
     private Properties properties = new Properties();
     
@@ -161,7 +161,7 @@ class PlayerList
 		Player thisplayer;
 		char defaultColor;
 
-        String location = "mcmmo.users";
+        String location = "plugins/mcMMO/mcmmo.users";
 		
 		
 		//=====================================================================

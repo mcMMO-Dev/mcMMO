@@ -224,7 +224,13 @@ public class mcm {
     		return false;
     	}
     }
-    
+    public boolean isMiningPick(ItemStack is){
+    	if(is.getTypeId() == 270 || is.getTypeId() == 274 || is.getTypeId() == 285 || is.getTypeId() == 257 || is.getTypeId() == 278){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
     public void mcmmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
     	if(split[0].equalsIgnoreCase("/woodcutting")){
 			event.setCancelled(true);

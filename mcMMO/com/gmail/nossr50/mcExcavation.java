@@ -53,8 +53,17 @@ public class mcExcavation {
     				loc.getWorld().dropItemNaturally(loc, is);
     			}
     		}
-    		if(mcUsers.getProfile(player).getExcavationInt() > 150){
-    			//CHANCE TO GET MUSIC
+    		if(mcUsers.getProfile(player).getExcavationInt() > 350){
+    			//CHANCE TO GET DIAMOND
+    			if(mcLoadProperties.diamond == true && Math.random() * 750 > 749){
+    				mcUsers.getProfile(player).addExcavationGather(100);
+        				mat = Material.getMaterial(264);
+        				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+        				loc.getWorld().dropItemNaturally(loc, is);
+    			}
+    		}
+    		if(mcUsers.getProfile(player).getExcavationInt() > 250){
+    			//CHANCE TO GET YELLOW MUSIC
     			if(mcLoadProperties.music == true && Math.random() * 2000 > 1999){
     				mcUsers.getProfile(player).addExcavationGather(300);
     				mat = Material.getMaterial(2256);
@@ -64,16 +73,7 @@ public class mcExcavation {
     			
     		}
     		if(mcUsers.getProfile(player).getExcavationInt() > 350){
-    			//CHANCE TO GET DIAMOND
-    			if(mcLoadProperties.diamond == true && Math.random() * 500 > 499){
-    				mcUsers.getProfile(player).addExcavationGather(100);
-        				mat = Material.getMaterial(264);
-        				is = new ItemStack(mat, 1, (byte)0, (byte)0);
-        				loc.getWorld().dropItemNaturally(loc, is);
-    			}
-    		}
-    		if(mcUsers.getProfile(player).getExcavationInt() > 250){
-    			//CHANCE TO GET MUSIC
+    			//CHANCE TO GET GREEN MUSIC
     			if(mcLoadProperties.music == true && Math.random() * 2000 > 1999){
     				mcUsers.getProfile(player).addExcavationGather(300);
     				mat = Material.getMaterial(2257);
@@ -136,7 +136,7 @@ public class mcExcavation {
     		}
     		//CHANCE TO GET BONES
     		if(mcLoadProperties.bones == true && mcUsers.getProfile(player).getExcavationInt() > 175){
-        		if(Math.random() * 10 > 6){
+        		if(Math.random() * 10 > 9){
         			mcUsers.getProfile(player).addExcavationGather(3);
         			mat = Material.getMaterial(352);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
