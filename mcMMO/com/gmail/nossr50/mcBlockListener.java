@@ -54,14 +54,27 @@ public class mcBlockListener extends BlockListener {
     		 * MINING
     		 */
     		if(player != null && dmg == 2 && !mcConfig.getInstance().isBlockWatched(block)){
-	    		if(mcm.getInstance().isMiningPick(inhand) && mcPermissions.getInstance().mining(player))
+	    		if(mcPermissions.getInstance().mining(player)){
+	    			if(mcLoadProperties.miningrequirespickaxe){
+	    				if(mcm.getInstance().isMiningPick(inhand))
 		    			mcMining.getInstance().miningBlockCheck(player, block);
+	    			} else {
+	    				mcMining.getInstance().miningBlockCheck(player, block);
+	    			}
+	    		}
 	    		/*
 	    		 * WOOD CUTTING
 	    		 */
-	    		if(player != null && mcm.getInstance().isAxes(inhand) && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){
-	    				mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
-	    				mcUsers.getProfile(player).addWoodcuttingGather(7);
+	    		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){
+	    				if(mcLoadProperties.woodcuttingrequiresaxe){
+	    					if(mcm.getInstance().isAxes(inhand)){
+	    						mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
+	    						mcUsers.getProfile(player).addWoodcuttingGather(7);
+	    					}
+	    				} else {
+	    					mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
+    						mcUsers.getProfile(player).addWoodcuttingGather(7);	
+	    				}
 	    				/*
 	    				 * IF PLAYER IS USING TREEFELLER
 	    				 */

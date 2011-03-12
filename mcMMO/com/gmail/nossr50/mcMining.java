@@ -25,7 +25,7 @@ public class mcMining {
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
 		if(block.getTypeId() != 73 && block.getTypeId() != 74 && block.getTypeId() != 56 && block.getTypeId() != 21 && block.getTypeId() != 1 && block.getTypeId() != 16)
-		loc.getWorld().dropItemNaturally(loc, item);
+			loc.getWorld().dropItemNaturally(loc, item);
 		if(block.getTypeId() == 73 || block.getTypeId() == 74){
 			mat = Material.getMaterial(331);
 			item = new ItemStack(mat, 1, (byte)0, damage);

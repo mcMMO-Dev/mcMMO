@@ -92,6 +92,47 @@ public class mcCombat {
 					}
 				}
 			}
+			/*
+    		 * PVP XP
+    		 */
+    		if(attacker != null && defender != null && mcLoadProperties.pvpxp && !mcParty.getInstance().inSameParty(attacker, defender)){
+    			if(mcm.getInstance().isAxes(attacker.getItemInHand()))
+    				mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    			if(mcm.getInstance().isSwords(attacker.getItemInHand()))
+    				mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    			if(attacker.getItemInHand().getTypeId() == 0)
+    				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    		}
+    		/*
+    		 * CHECK FOR LEVEL UPS
+    		 */
+    		if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
+				int skillups = 0;
+				while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
+					skillups++;
+					mcUsers.getProfile(attacker).removeSwordsGather(mcUsers.getProfile(attacker).getXpToLevel("swords"));
+					mcUsers.getProfile(attacker).skillUpSwords(1);
+				}
+				attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
+			}
+    		if(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
+				int skillups = 0;
+				while(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
+					skillups++;
+					mcUsers.getProfile(attacker).removeAxesGather(mcUsers.getProfile(attacker).getXpToLevel("axes"));
+					mcUsers.getProfile(attacker).skillUpAxes(1);
+				}
+				attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
+			}
+    		if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
+				int skillups = 0;
+				while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
+					skillups++;
+					mcUsers.getProfile(attacker).removeUnarmedGather(mcUsers.getProfile(attacker).getXpToLevel("unarmed"));
+					mcUsers.getProfile(attacker).skillUpUnarmed(1);
+				}
+				attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
+			}
 		}
     }
     public void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
@@ -393,15 +434,6 @@ public class mcCombat {
 					if(x instanceof PigZombie)
 						mcUsers.getProfile(attacker).addArcheryGather(7);
     			}
-    				if(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeArcheryGather(mcUsers.getProfile(attacker).getXpToLevel("archery"));
-							mcUsers.getProfile(attacker).skillUpArchery(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getArchery()+")");	
-					}
     			}
     		/*
     		 * Defender is Animals	
@@ -455,6 +487,12 @@ public class mcCombat {
     						return;
     					}
     	    		}
+    	    		/*
+    	    		 * PVP XP
+    	    		 */
+    	    		if(mcLoadProperties.pvpxp && !mcParty.getInstance().inSameParty(attacker, defender)){
+    	    			mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    	    		}
     				Location loc = defender.getLocation();
     				if(Math.random() * 10 > 5){
 					loc.setPitch(90);
@@ -490,6 +528,15 @@ public class mcCombat {
 	    				event.setDamage(calculateDamage(event, 5));
     			}
     		}
+    		if(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
+				int skillups = 0;
+				while(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
+					skillups++;
+					mcUsers.getProfile(attacker).removeArcheryGather(mcUsers.getProfile(attacker).getXpToLevel("archery"));
+					mcUsers.getProfile(attacker).skillUpArchery(1);
+				}
+				attacker.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getArchery()+")");	
+			}
     	}
     }
 	public boolean simulateUnarmedProc(Player player){

@@ -1,5 +1,14 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.8.19
+	Fixed being able to excavate placed blocks
+	Added toggle option to mining requiring a pickaxe
+	Added toggle option to woodcutting requiring an axe
+	PVP interactions now reward XP based on the damage caused (this is effected by skills)
+	PVP XP gain can be disabled in the configuration file
+	PVP XP has a modifier, increase the modifier for higher XP rewards from PVP combat
+Version 0.8.18
+	Fixed sandstone not being watched for exploitation
 Version 0.8.17
 	mcmmo.users moved to plugins/mcMMO/
 	Snowballs and Eggs will no longer trigger Ignition

@@ -94,7 +94,7 @@ public class mcm {
 	}
 	public boolean shouldBeWatched(Block block){
 		int id = block.getTypeId();
-		if(id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40){
+		if(id == 2 || id == 3 || id == 12 || id == 13 || id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40 || id == 24){
 			return true;
 		} else {
 			return false;
