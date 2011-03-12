@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockRightClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class mcBlockListener extends BlockListener {
@@ -33,6 +34,14 @@ public class mcBlockListener extends BlockListener {
     	mcConfig.getInstance().addBlockWatch(block);
     	if(block.getTypeId() == 42 && mcLoadProperties.anvilmessages)
     		event.getPlayer().sendMessage(ChatColor.DARK_RED+"You have placed an anvil, anvils can repair tools and armor.");
+    }
+    public void onBlockRightClick(BlockRightClickEvent event) {
+    	Block block = event.getBlock();
+    	Player player = event.getPlayer();
+    	ItemStack is = player.getItemInHand();
+    	if(block != null && player != null && mcPermissions.getInstance().repair(player) && block.getTypeId() == 42){
+        	mcRepair.getInstance().repairCheck(player, is, block);
+        	}
     }
     //put all Block related code here
     public void onBlockDamage(BlockDamageEvent event) {

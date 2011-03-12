@@ -757,21 +757,6 @@ public class mcCombat {
     				}
     			}
     		}
-    		if(x instanceof Player){
-    		Player defender = (Player)x;
-    		if(defender.getHealth()<= 0 && !mcUsers.getProfile(defender).isDead()){
-				mcUsers.getProfile(defender).setDead(true);
-				event.setCancelled(true); //SEE IF THIS HELPS
-				for(ItemStack herp : defender.getInventory().getContents()){
-					if(herp != null && herp.getTypeId() != 0)
-					defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), herp);
-				}
-				for(Player derp : plugin.getServer().getOnlinePlayers()){
-					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"chopped "+ChatColor.GRAY+defender.getName() + " to death.");
-					mcUsers.getProfile(defender).setDead(true);
-				}
-			}
-    	}
     	}
     }
     public void parryCheck(Player defender, EntityDamageByEntityEvent event, Entity y){

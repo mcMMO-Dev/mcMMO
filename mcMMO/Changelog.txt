@@ -1,5 +1,9 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.8.21
+	Fixed bug where axe criticals would dupe items
+Version 0.8.20
+	99.99% sure I fixed anvils that suddenly stop working
 Version 0.8.19
 	Fixed being able to excavate placed blocks
 	Added toggle option to mining requiring a pickaxe

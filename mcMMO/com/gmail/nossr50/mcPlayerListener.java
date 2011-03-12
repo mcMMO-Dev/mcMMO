@@ -91,10 +91,6 @@ public class mcPlayerListener extends PlayerListener {
     	//STEW, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
     	mcHerbalism.getInstance().stewCheck(player, is);
     	}
-    	if(block != null && player != null && mcPermissions.getInstance().repair(player) && block.getTypeId() == 42){
-    	//REPAIRCHECK, CHECKS TO MAKE SURE PLAYER IS RIGHT CLICKING AN ANVIL, PLAYER HAS ENOUGH RESOURCES, AND THE ITEM IS NOT AT FULL DURABILITY.
-    	mcRepair.getInstance().repairCheck(player, is, block);
-    	}
     }
     public void onPlayerCommandPreprocess(PlayerChatEvent event){
     	Player player = event.getPlayer();
