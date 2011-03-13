@@ -27,6 +27,7 @@ public class mcConfig {
     public void addTreeFeller(Block block) {treeFeller.add(block);}
     public void addBleedTrack(Entity entity) {bleedTracker.add(entity);}
     public void addMobSpawnTrack(Entity entity) {mobSpawnTracker.add(entity);}
+    public void removeMobSpawnTrack(Entity entity) {mobSpawnTracker.remove(entity);}
     public ArrayList<Entity> getBleedTracked() {return bleedTracker;}
     public void addArrowTrack(Entity entity, Integer arrowcount) {arrowTracker.put(entity, arrowcount);}
     public Integer getArrowCount(Entity entity) {return arrowTracker.get(entity);}

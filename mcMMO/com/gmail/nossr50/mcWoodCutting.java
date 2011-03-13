@@ -87,6 +87,7 @@ public class mcWoodCutting {
         	if(!mcConfig.getInstance().isTreeFellerWatched(x))
         		mcConfig.getInstance().addTreeFeller(x);
         }
+        toAdd.clear();
     }
     public void addBlocksToTreeFelling(ArrayList<Block> blocklist, ArrayList<Block> toAdd, Integer radius){
     	int u = 0;

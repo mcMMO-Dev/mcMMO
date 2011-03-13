@@ -33,6 +33,16 @@ public class mcSkills {
     		}
     	}
     }
+    public void decreaseCooldowns(Player player){
+    	mcUsers.getProfile(player).decreaseTreeFellerCooldown();
+		if(mcUsers.getProfile(player).getTreeFellerCooldown() == 0){
+			player.sendMessage(ChatColor.GREEN+"Your Tree Felling ability is refreshed!");
+		}
+		mcUsers.getProfile(player).decreaseSuperBreakerCooldown();
+		if(mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
+			player.sendMessage(ChatColor.GREEN+"Your Super Breaker ability is refreshed!");
+		}
+    }
     public void XpCheck(Player player){
     	/*
     	 * ACROBATICS

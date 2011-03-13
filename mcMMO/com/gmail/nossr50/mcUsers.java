@@ -433,6 +433,13 @@ class PlayerList
 		public void setBleedTicks(Integer newvalue){
 			bleedticks = newvalue;
 		}
+		public Boolean hasCooldowns(){
+			if((treefellercooldown + superbreakercooldown) >= 1){
+				return true;
+			} else {
+				return false;
+			}
+		}
 		/*
 		 * TREE FELLER STUFF
 		 */

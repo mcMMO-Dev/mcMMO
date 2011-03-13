@@ -584,33 +584,29 @@ public class mcCombat {
     	    if(x instanceof Animals){
     	    	Animals animals = (Animals)x;
     	    	if(animals.getHealth() >= 1){
-    	    		animals.setHealth(mcm.getInstance().calculateMinusHealth(animals.getHealth(), 2));
+    	    		animals.damage(1);
     	    	}
     	    	if(animals.getHealth() <= 0){
-    	    		mcm.getInstance().simulateNaturalDrops(x);
+    	    		animals.damage(1);
     	    	}
     	    }
     	    if(x instanceof Monster){
     	    	Monster monster = (Monster)x;
     	    	if(monster.getHealth() >= 1){
-    	    		monster.setHealth(mcm.getInstance().calculateMinusHealth(monster.getHealth(), 2));
+    	    		monster.damage(1);
     	    	}
     	    	if(monster.getHealth() <= 0){
-    	    		mcm.getInstance().simulateNaturalDrops(x);
+    	    		monster.damage(1);
     	    	}
     	    }
     	    
     	    if(x instanceof Player){
     	    	Player player = (Player)x;
     	    	if(player.getHealth() >= 1 && mcUsers.getProfile(player).getBleedTicks() >= 1){
-    	    		player.setHealth(mcm.getInstance().calculateMinusHealth(player.getHealth(), 1));
+    	    		player.damage(1);
     	    		player.sendMessage(ChatColor.RED+"**BLEED**");
     	    		if(player.getHealth() <= 0){
-    	    			mcUsers.getProfile(player).setBleedTicks(0);
-    	    			for(ItemStack items : player.getInventory().getContents()){
-    	    				if(items.getTypeId() != 0)
-    	    					player.getLocation().getWorld().dropItemNaturally(player.getLocation(), items);
-    	    			}
+    	    			mcUsers.getProfile(player).setBleedTicks(0);	
     	    		}
     	    		if(mcUsers.getProfile(player).getBleedTicks() >= 1){
     	    			mcUsers.getProfile(player).setBleedTicks(mcUsers.getProfile(player).getBleedTicks() - 1);
@@ -618,7 +614,7 @@ public class mcCombat {
     	    	}
     	    }
         }
-        }
+    }
 	
 	
 }
