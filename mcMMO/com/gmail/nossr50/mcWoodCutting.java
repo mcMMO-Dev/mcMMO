@@ -2,6 +2,7 @@ package com.gmail.nossr50;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -34,6 +35,35 @@ public class mcWoodCutting {
     		}
     	}
     }
+    public void treeFellerCheck(Player player, Block block){
+    	if(mcm.getInstance().isAxes(player.getItemInHand())){
+    		if(block != null){
+        		if(!mcm.getInstance().abilityBlockCheck(block))
+        			return;
+        	}
+    		
+    		int treefellticks = 8;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 100)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 250)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 500)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 750)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 1000)
+    			treefellticks++;
+
+    		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() == 0){
+    			player.sendMessage(ChatColor.GREEN+"**TREE FELLING ACTIVATED**");
+    			mcUsers.getProfile(player).setTreeFellerTicks(treefellticks);
+    			mcUsers.getProfile(player).setTreeFellerMode(true);
+    		}
+    		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() >= 1){
+    			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+    		}
+    	}
+    }
     public void treeFeller(Block block, Player player){
     	int radius = 1;
     	if(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= 500)
@@ -43,7 +73,7 @@ public class mcWoodCutting {
         ArrayList<Block> blocklist = new ArrayList<Block>();
         ArrayList<Block> toAdd = new ArrayList<Block>();
         if(block != null)
-        blocklist.add(block);
+        	blocklist.add(block);
         while(isdone == false){
         	addBlocksToTreeFelling(blocklist, toAdd, radius);
         }
@@ -55,7 +85,7 @@ public class mcWoodCutting {
          */
         for(Block x : toAdd){
         	if(!mcConfig.getInstance().isTreeFellerWatched(x))
-        	mcConfig.getInstance().addTreeFeller(x);
+        		mcConfig.getInstance().addTreeFeller(x);
         }
     }
     public void addBlocksToTreeFelling(ArrayList<Block> blocklist, ArrayList<Block> toAdd, Integer radius){
@@ -69,6 +99,7 @@ public class mcWoodCutting {
     		int vx = x.getX();
             int vy = x.getY();
             int vz = x.getZ();
+            
             /*
              * Run through the blocks around the broken block to see if they qualify to be 'felled'
              */

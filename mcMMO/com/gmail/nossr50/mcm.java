@@ -245,6 +245,17 @@ public class mcm {
     	}
     	if(split[0].equalsIgnoreCase("/archery")){
 			event.setCancelled(true);
+			Integer rank = 0;
+			if(mcUsers.getProfile(player).getArcheryInt() >= 50)
+    			rank++;
+    		if(mcUsers.getProfile(player).getArcheryInt() >= 250)
+    			rank++;
+    		if(mcUsers.getProfile(player).getArcheryInt() >= 575)
+    			rank++;
+    		if(mcUsers.getProfile(player).getArcheryInt() >= 725)
+    			rank++;
+    		if(mcUsers.getProfile(player).getArcheryInt() >= 1000)
+    			rank++;
 			float skillvalue = (float)mcUsers.getProfile(player).getArcheryInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		String percentagefire = String.valueOf((skillvalue / 1500) * 100);
@@ -258,23 +269,58 @@ public class mcm {
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Chance to Retrieve Arrows: "+ChatColor.YELLOW+percentage+"%");
 			player.sendMessage(ChatColor.RED+"Chance for Ignition: "+ChatColor.YELLOW+percentagefire+"%");
+			player.sendMessage(ChatColor.RED+"Damage+ (Rank"+rank+"): Bonus "+rank+" damage");
     	}
     	if(split[0].equalsIgnoreCase("/axes")){
 			event.setCancelled(true);
+			String percentage;
+			float skillvalue = (float)mcUsers.getProfile(player).getAxesInt();
+			if(mcUsers.getProfile(player).getAxesInt() < 750){
+				percentage = String.valueOf((skillvalue / 1000) * 100);
+			} else {
+				percentage = "75";
+			}
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"AXES"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Critical Strikes (Monster): "+ChatColor.GREEN+"Instant kill");
-			player.sendMessage(ChatColor.DARK_AQUA+"Critical Strikes (Players): "+ChatColor.GREEN+"Double Damage");
+			player.sendMessage(ChatColor.DARK_AQUA+"Critical Strikes: "+ChatColor.GREEN+"Double Damage");
 			player.sendMessage(ChatColor.DARK_AQUA+"Axe Mastery (500 SKILL): "+ChatColor.GREEN+"Modifies Damage");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Chance to crtically strike: "+ChatColor.YELLOW+percentage+"%");
+			if(mcUsers.getProfile(player).getAxesInt() < 500){
+				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 500+ SKILL (AXEMASTERY)");
+			} else {
+				player.sendMessage(ChatColor.GREEN+"Axe Mastery - Bonus 4 damage");
+			}
     	}
     	if(split[0].equalsIgnoreCase("/swords")){
 			event.setCancelled(true);
+			String percentage, parrypercentage = null;
+			float skillvalue = (float)mcUsers.getProfile(player).getSwordsInt();
+			if(mcUsers.getProfile(player).getSwordsInt() < 750){
+				percentage = String.valueOf((skillvalue / 1000) * 100);
+			} else {
+				percentage = "75";
+			}
+			if(mcUsers.getProfile(player).getSwordsInt() >= 775){
+				parrypercentage = "20";
+			} else if (mcUsers.getProfile(player).getSwordsInt() >= 445){
+				parrypercentage = "15";
+			} else if (mcUsers.getProfile(player).getSwordsInt() >= 250){
+				parrypercentage = "10";
+			} else if (mcUsers.getProfile(player).getSwordsInt() >= 25){
+				parrypercentage = "5";
+			} else {
+				parrypercentage = "0";
+			}
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"SWORDS"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.DARK_AQUA+"Parrying: "+ChatColor.GREEN+"Negates Damage");
 			player.sendMessage(ChatColor.DARK_AQUA+"Bleed: "+ChatColor.GREEN+"Apply a 2 second bleed DoT to enemies");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Bleed Chance: "+ChatColor.YELLOW+percentage+"%");
+			player.sendMessage(ChatColor.RED+"Parry Chance:"+ChatColor.YELLOW+parrypercentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/acrobatics")){
 			event.setCancelled(true);
@@ -290,13 +336,26 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/mining")){
     		float skillvalue = (float)mcUsers.getProfile(player).getMiningInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
+    		int miningticks = 8;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 100)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 250)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 500)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 750)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 1000)
+    			miningticks++;
 			event.setCancelled(true);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"MINING"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Mining Stone & Ore");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Super Breaker (ABILITY): "+ChatColor.GREEN+"Fast mining");
 			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.GREEN+"Double the normal loot");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
+			player.sendMessage(ChatColor.RED+"Super Breaker Length: "+ChatColor.YELLOW+(miningticks * 2)+"s");
     	}
     	if(split[0].equalsIgnoreCase("/repair")){
     		float skillvalue = (float)mcUsers.getProfile(player).getRepairInt();
@@ -306,20 +365,75 @@ public class mcm {
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Repairing");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.DARK_AQUA+"Repair: "+ChatColor.GREEN+"Repair Iron Tools & Armor");
+			player.sendMessage(ChatColor.DARK_AQUA+"Super Repair: "+ChatColor.GREEN+"Fully Repair an item");
 			player.sendMessage(ChatColor.DARK_AQUA+"Diamond Repair ("+mcLoadProperties.repairdiamondlevel+"+ SKILL): "+ChatColor.GREEN+"Repair Diamond Tools & Armor");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Super Repair Chance: "+ChatColor.YELLOW+percentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/unarmed")){
 			event.setCancelled(true);
+			int rank = 0;
+			String percentage, arrowpercentage;
+			float skillvalue = (float)mcUsers.getProfile(player).getUnarmedInt();
+			
+			if(mcUsers.getProfile(player).getUnarmedInt() < 750){
+				percentage = String.valueOf((skillvalue / 1000) * 100);
+			} else {
+				percentage = "75";
+			}
+			
+			if(mcUsers.getProfile(player).getUnarmedInt() < 1000){
+				percentage = String.valueOf(((skillvalue / 1000) * 100) / 2);
+			} else {
+				percentage = "50";
+			}
+			
+			if(mcUsers.getProfile(player).getUnarmedInt() >= 50)
+				rank++;
+			if(mcUsers.getProfile(player).getUnarmedInt() >= 100)
+				rank++;
+			if(mcUsers.getProfile(player).getUnarmedInt() >= 200)
+				rank++;
+			if(mcUsers.getProfile(player).getUnarmedInt() >= 325)
+				rank++;
+			if(mcUsers.getProfile(player).getUnarmedInt() >= 475)
+				rank++;
+			if(mcUsers.getProfile(player).getUnarmedInt() >= 600)
+				rank++;
+			if(mcUsers.getProfile(player).getUnarmedInt() >= 775)
+				rank++;
+			if(mcUsers.getProfile(player).getUnarmedInt() >= 950)
+				rank++;
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"UNARMED"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.DARK_AQUA+"Disarm (Players): "+ChatColor.GREEN+"Drops the foes item held in hand");
 			player.sendMessage(ChatColor.DARK_AQUA+"Damage+: "+ChatColor.GREEN+"Modifies Damage");
+			player.sendMessage(ChatColor.DARK_AQUA+"Arrow Deflect: "+ChatColor.GREEN+"Deflect arrows");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Disarm Chance: "+ChatColor.YELLOW+percentage+"%");
+			player.sendMessage(ChatColor.RED+"Damage+ (Rank"+rank+"): Bonus "+rank+" damage");
     	}
     	if(split[0].equalsIgnoreCase("/herbalism")){
 			event.setCancelled(true);
+			int rank = 0;
+			if(mcUsers.getProfile(player).getHerbalismInt() >= 50){
+    			rank++;
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 150){
+    			rank++;
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 250){
+    			rank++;
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 350){
+    			rank++;
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 450){
+    			rank++;
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 550){
+    			rank++;
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 650){
+    			rank++;
+    		} else if (mcUsers.getProfile(player).getHerbalismInt() >= 750){
+    			rank++;
+    		}
 			float skillvalue = (float)mcUsers.getProfile(player).getHerbalismInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"HERBALISM"+ChatColor.RED+"[]-----");
@@ -329,9 +443,9 @@ public class mcm {
 			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops (Wheat): "+ChatColor.GREEN+"Double the normal loot");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+percentage+"%");
+			player.sendMessage(ChatColor.RED+"Food+ (Rank"+rank+"): Bonus "+rank+" healing");
     	}
     	if(split[0].equalsIgnoreCase("/excavation")){
-
 			event.setCancelled(true);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"EXCAVATION"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Digging and finding treasures");

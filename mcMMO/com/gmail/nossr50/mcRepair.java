@@ -82,15 +82,7 @@ public class mcRepair {
         	/*
         	 * GIVE SKILL IF THERE IS ENOUGH XP
         	 */
-        	if(mcUsers.getProfile(player).getRepairGatherInt() >= mcUsers.getProfile(player).getXpToLevel("repair")){
-    			int skillups = 0;
-    			while(mcUsers.getProfile(player).getRepairGatherInt() >= mcUsers.getProfile(player).getXpToLevel("repair")){
-    				skillups++;
-    				mcUsers.getProfile(player).removeRepairGather(mcUsers.getProfile(player).getXpToLevel("repair"));
-    				mcUsers.getProfile(player).skillUpRepair(1);
-    			}
-    			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getRepair()+")");	
-    		}
+        	mcSkills.getInstance().XpCheck(player);
         	}
     }
 	public boolean isArmor(ItemStack is){

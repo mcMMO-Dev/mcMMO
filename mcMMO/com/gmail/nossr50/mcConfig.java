@@ -15,6 +15,7 @@ public class mcConfig {
     static ArrayList<String> partyChatList = new ArrayList<String>();
     static ArrayList<String> godModeList = new ArrayList<String>();
     HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
+    //HashMap<Entity, Player, String[]> xptracker = new HashMap<Entity, Player, String[]>(); 
     static ArrayList<Entity> bleedTracker = new ArrayList<Entity>();
     static ArrayList<Entity> mobSpawnTracker = new ArrayList<Entity>();
     public boolean isBlockWatched(Block block) {return blockWatchList.contains(block);}

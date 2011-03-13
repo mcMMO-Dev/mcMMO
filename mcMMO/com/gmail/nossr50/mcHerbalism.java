@@ -38,22 +38,28 @@ public class mcHerbalism {
     	 * We need to check not-wheat stuff for if it was placed by the player or not
     	 */
     	if(!mcConfig.getInstance().isBlockWatched(block)){
-    	if(type == 39 || type == 40){
-    			mcUsers.getProfile(player).addHerbalismGather(10);
-    		}
-    	if(type == 37 || type == 38){
-    			mcUsers.getProfile(player).addHerbalismGather(3);
+	    	if(type == 39 || type == 40){
+	    		mat = Material.getMaterial(block.getTypeId());
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+	    		if(player != null){
+		    		if(Math.random() * 1000 <= mcUsers.getProfile(player).getHerbalismInt()){
+		    			loc.getWorld().dropItemNaturally(loc, is);
+		    		}
+	    		}
+	    		mcUsers.getProfile(player).addHerbalismGather(10);
+	    	}
+	    	if(type == 37 || type == 38){
+	    		mat = Material.getMaterial(296);
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+	    		if(player != null){
+		    		if(Math.random() * 1000 <= mcUsers.getProfile(player).getHerbalismInt()){
+		    			loc.getWorld().dropItemNaturally(loc, is);
+		    		}
+	    		}
+	    		mcUsers.getProfile(player).addHerbalismGather(3);
+	    	}
     	}
-    	}
-    	if(mcUsers.getProfile(player).getHerbalismGatherInt() >= mcUsers.getProfile(player).getXpToLevel("herbalism")){
-			int skillups = 0;
-			while(mcUsers.getProfile(player).getHerbalismGatherInt() >= mcUsers.getProfile(player).getXpToLevel("herbalism")){
-				skillups++;
-				mcUsers.getProfile(player).removeHerbalismGather(mcUsers.getProfile(player).getXpToLevel("herbalism"));
-				mcUsers.getProfile(player).skillUpHerbalism(1);
-			}
-			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getHerbalism()+")");	
-		}
+    	mcSkills.getInstance().XpCheck(player);
     }
 	public void breadCheck(Player player, ItemStack is){
     	if(is.getTypeId() == 297){

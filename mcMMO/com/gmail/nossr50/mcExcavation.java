@@ -127,12 +127,12 @@ public class mcExcavation {
     		}
     		//CHANCE TO GET SULPHUR
     		if(mcLoadProperties.sulphur == true && mcUsers.getProfile(player).getExcavationInt() > 75){
-    		if(Math.random() * 10 > 9){
-    			mcUsers.getProfile(player).addExcavationGather(3);
-    			mat = Material.getMaterial(289);
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
-				loc.getWorld().dropItemNaturally(loc, is);
-    		}
+	    		if(Math.random() * 10 > 9){
+	    			mcUsers.getProfile(player).addExcavationGather(3);
+	    			mat = Material.getMaterial(289);
+					is = new ItemStack(mat, 1, (byte)0, (byte)0);
+					loc.getWorld().dropItemNaturally(loc, is);
+	    		}
     		}
     		//CHANCE TO GET BONES
     		if(mcLoadProperties.bones == true && mcUsers.getProfile(player).getExcavationInt() > 175){
@@ -142,16 +142,8 @@ public class mcExcavation {
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
         		}
-        		}
+        	}
     	}
-    	if(mcUsers.getProfile(player).getExcavationGatherInt() >= mcUsers.getProfile(player).getXpToLevel("excavation")){
-			int skillups = 0;
-			while(mcUsers.getProfile(player).getExcavationGatherInt() >= mcUsers.getProfile(player).getXpToLevel("excavation")){
-				skillups++;
-				mcUsers.getProfile(player).removeExcavationGather(mcUsers.getProfile(player).getXpToLevel("excavation"));
-				mcUsers.getProfile(player).skillUpExcavation(1);
-			}
-			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getExcavation()+")");	
-		}
+    	mcSkills.getInstance().XpCheck(player);
     }
 }

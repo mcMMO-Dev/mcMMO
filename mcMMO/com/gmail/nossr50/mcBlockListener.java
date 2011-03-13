@@ -45,98 +45,101 @@ public class mcBlockListener extends BlockListener {
     }
     //put all Block related code here
     public void onBlockDamage(BlockDamageEvent event) {
-    		//STARTED(0), DIGGING(1), BROKEN(3), STOPPED(2);
-    		Player player = event.getPlayer();
-    		ItemStack inhand = player.getItemInHand();
-    		//player.sendMessage("mcMMO DEBUG: EVENT-OK DMG LEVEL ("+event.getDamageLevel().getLevel()+")");
-    		Block block = event.getBlock();
-    		Location loc = block.getLocation();
-    		int dmg = event.getDamageLevel().getLevel();
-    		/*
-    		 * HERBALISM
-    		 */
-    		if(dmg == 3){
-        		if(mcPermissions.getInstance().herbalism(player))
-        		mcHerbalism.getInstance().herbalismProcCheck(block, player);
+    	//STARTED(0), DIGGING(1), BROKEN(3), STOPPED(2);
+    	Player player = event.getPlayer();
+    	ItemStack inhand = player.getItemInHand();
+    	//player.sendMessage("mcMMO DEBUG: EVENT-OK DMG LEVEL ("+event.getDamageLevel().getLevel()+")");
+    	Block block = event.getBlock();
+    	Location loc = block.getLocation();
+    	int dmg = event.getDamageLevel().getLevel();
+    	
+    	/*
+    	 * SUPER BREAKER CHECKS
+    	 */
+    	if(mcUsers.getProfile(player).getSuperBreakerMode() && dmg == 0 && mcMining.getInstance().canBeSuperBroken(block)){
+    		if(mcLoadProperties.miningrequirespickaxe){
+    			if(mcm.getInstance().isMiningPick(inhand))
+    				mcMining.getInstance().SuperBreakerBlockCheck(player, block);
+    		} else {
+    			mcMining.getInstance().SuperBreakerBlockCheck(player, block);
     		}
+    	}
+    	
+    	/*
+    	 * HERBALISM
+    	 */
+    	if(dmg == 3){
+        	if(mcPermissions.getInstance().herbalism(player))
+       		mcHerbalism.getInstance().herbalismProcCheck(block, player);
+    	}
+    	if(player != null && dmg == 2 && !mcConfig.getInstance().isBlockWatched(block)){
     		/*
-    		 * MINING
-    		 */
-    		if(player != null && dmg == 2 && !mcConfig.getInstance().isBlockWatched(block)){
-	    		if(mcPermissions.getInstance().mining(player)){
-	    			if(mcLoadProperties.miningrequirespickaxe){
-	    				if(mcm.getInstance().isMiningPick(inhand))
-		    			mcMining.getInstance().miningBlockCheck(player, block);
-	    			} else {
-	    				mcMining.getInstance().miningBlockCheck(player, block);
-	    			}
+        	 * MINING
+        	 */
+	    	if(mcPermissions.getInstance().mining(player)){
+	    		if(mcLoadProperties.miningrequirespickaxe){
+	    			if(mcm.getInstance().isMiningPick(inhand))
+		    		mcMining.getInstance().miningBlockCheck(player, block);
+	    		} else {
+	    			mcMining.getInstance().miningBlockCheck(player, block);
 	    		}
-	    		/*
-	    		 * WOOD CUTTING
-	    		 */
-	    		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){
-	    				if(mcLoadProperties.woodcuttingrequiresaxe){
-	    					if(mcm.getInstance().isAxes(inhand)){
-	    						mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
-	    						mcUsers.getProfile(player).addWoodcuttingGather(7);
-	    					}
-	    				} else {
+	    	}
+	    	/*
+	   		 * WOOD CUTTING
+	   		 */
+	   		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){
+	   				if(mcLoadProperties.woodcuttingrequiresaxe){
+    					if(mcm.getInstance().isAxes(inhand)){
 	    					mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
-    						mcUsers.getProfile(player).addWoodcuttingGather(7);	
+	    					mcUsers.getProfile(player).addWoodcuttingGather(7);
 	    				}
-	    				/*
-	    				 * IF PLAYER IS USING TREEFELLER
-	    				 */
-	    				if(mcPermissions.getInstance().woodcuttingability(player) && mcUsers.getProfile(player).getTreeFellerMode() && block.getTypeId() == 17){
-	    					mcWoodCutting.getInstance().treeFeller(block, player);
-	    					for(Block blockx : mcConfig.getInstance().getTreeFeller()){
-	    						if(blockx != null){
-	    							Material mat = Material.getMaterial(blockx.getTypeId());
-	    							byte damage = 0;
-	    							ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-	    							blockx.setTypeId(0);
-	    							if(item.getTypeId() == 17){
+	    			} else {
+	    				mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
+    					mcUsers.getProfile(player).addWoodcuttingGather(7);	
+	   				}
+	    			mcSkills.getInstance().XpCheck(player);
+	    			/*
+	    			 * IF PLAYER IS USING TREEFELLER
+	   				 */
+	   				if(mcPermissions.getInstance().woodcuttingability(player) && mcUsers.getProfile(player).getTreeFellerMode() && block.getTypeId() == 17){
+	    				mcWoodCutting.getInstance().treeFeller(block, player);
+	    				for(Block blockx : mcConfig.getInstance().getTreeFeller()){
+	    					if(blockx != null){
+	    						Material mat = Material.getMaterial(17);
+	    						byte damage = 0;
+	    						ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+	    						blockx.setType(Material.AIR);
+	    						
+	    						if(item.getTypeId() == 17){
 	    							blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
 	    							mcWoodCutting.getInstance().woodCuttingProcCheck(player, blockx, blockx.getLocation());
 	    							mcUsers.getProfile(player).addWoodcuttingGather(7);
-	    							}
-	    							if(item.getTypeId() == 18){
-	    								mat = Material.getMaterial(6);
-	    								item = new ItemStack(mat, 1, (byte)0, damage);
-	    								if(Math.random() * 10 > 8)
+	    						}
+	    						
+	    						if(item.getTypeId() == 18){
+	    							mat = Material.getMaterial(6);
+	    							item = new ItemStack(mat, 1, (byte)0, damage);
+	    							if(Math.random() * 10 > 8)
 	    								blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
-	    							}
 	    						}
 	    					}
+	    				}
 	    					/*
 	    					 * NOTE TO SELF
 	    					 * I NEED TO REMOVE TREE FELL BLOCKS FROM BEING WATCHED AFTER THIS CODE IS EXECUTED
 	    					 * OR ELSE IT COULD BE A MEMORY LEAK SITUATION
 	    					 */
 	    					mcConfig.getInstance().clearTreeFeller();
-	    				}
-	    		}
+	    			}
+	    	}
 	    		/*
 	    		 * EXCAVATION
 	    		 */
 	    		if(mcPermissions.getInstance().excavation(player) && block != null && player != null)
 	    		mcExcavation.getInstance().excavationProcCheck(block, player);
-	    		/*
-	    		 * EXPLOIT COUNTERMEASURES
-	    		 */
-	    		mcConfig.getInstance().addBlockWatch(block);
-	    		if(player != null && mcUsers.getProfile(player).getWoodCuttingGatherInt() >= mcUsers.getProfile(player).getXpToLevel("woodcutting")){
-	    			int skillups = 0;
-	    			while(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= mcUsers.getProfile(player).getXpToLevel("woodcutting")){
-	    				skillups++;
-	    				mcUsers.getProfile(player).removeWoodCuttingGather(mcUsers.getProfile(player).getXpToLevel("woodcutting"));
-	    				mcUsers.getProfile(player).skillUpWoodCutting(1);
-	    			}
-	    			player.sendMessage(ChatColor.YELLOW+"WoodCutting skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getWoodCutting()+")");	
-	    		}
+	    		
     		}
     }
-    
     
     public void onBlockFlow(BlockFromToEvent event) {
     	//Code borrowed from WorldGuard by sk89q

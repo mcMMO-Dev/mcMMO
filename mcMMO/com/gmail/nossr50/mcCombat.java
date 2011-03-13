@@ -40,7 +40,7 @@ public class mcCombat {
     		//This may help compatability with NPC mods
     		if(mcUsers.getProfile(defender) == null)
     			mcUsers.addUser(defender);
-    		if(mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
+    		if(attacker != null && defender != null && mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
 				if(mcParty.getInstance().inSameParty(defender, attacker)){
 					event.setCancelled(true);
 					return;
@@ -51,11 +51,10 @@ public class mcCombat {
     		/*
     		 * AXE CRITICAL CHECK
     		 */
-    		axeCriticalCheckPlayer(attacker, event, x, plugin);
+    		axeCriticalCheck(attacker, event, x);
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
     		}
-    		int healthbefore = defender.getHealth();
 			if(defender != null && mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0){
 				//DMG MODIFIER
 				if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
@@ -106,33 +105,7 @@ public class mcCombat {
     		/*
     		 * CHECK FOR LEVEL UPS
     		 */
-    		if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-				int skillups = 0;
-				while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-					skillups++;
-					mcUsers.getProfile(attacker).removeSwordsGather(mcUsers.getProfile(attacker).getXpToLevel("swords"));
-					mcUsers.getProfile(attacker).skillUpSwords(1);
-				}
-				attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
-			}
-    		if(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-				int skillups = 0;
-				while(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-					skillups++;
-					mcUsers.getProfile(attacker).removeAxesGather(mcUsers.getProfile(attacker).getXpToLevel("axes"));
-					mcUsers.getProfile(attacker).skillUpAxes(1);
-				}
-				attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
-			}
-    		if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-				int skillups = 0;
-				while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-					skillups++;
-					mcUsers.getProfile(attacker).removeUnarmedGather(mcUsers.getProfile(attacker).getXpToLevel("unarmed"));
-					mcUsers.getProfile(attacker).skillUpUnarmed(1);
-				}
-				attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
-			}
+    		mcSkills.getInstance().XpCheck(attacker);
 		}
     }
     public void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
@@ -143,35 +116,17 @@ public class mcCombat {
 			Squid defender = (Squid)event.getEntity();
 			if(mcm.getInstance().isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
 					mcUsers.getProfile(attacker).addSwordsGather(10);
-					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeSwordsGather(mcUsers.getProfile(attacker).getXpToLevel("swords"));
-							mcUsers.getProfile(attacker).skillUpSwords(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
-					}
 			}
+			mcSkills.getInstance().XpCheck(attacker);
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
 					mcUsers.getProfile(attacker).addAxesGather(10);
-					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeAxesGather(mcUsers.getProfile(attacker).getXpToLevel("axes"));
-							mcUsers.getProfile(attacker).skillUpAxes(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
-					}
+					mcSkills.getInstance().XpCheck(attacker);
 			}
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-				if(defender.getHealth() <= 0)
-					return;
 				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
-					event.setDamage(calculateDamage(event, (4 - axeNerf(attacker.getItemInHand().getTypeId()))));
+					event.setDamage(calculateDamage(event, 4));
 				}
 			}
 			/*
@@ -200,15 +155,7 @@ public class mcCombat {
     			//XP
 					if(defender.getHealth() != 0){
 					mcUsers.getProfile(attacker).addUnarmedGather(10);
-					if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeUnarmedGather(mcUsers.getProfile(attacker).getXpToLevel("unarmed"));
-							mcUsers.getProfile(attacker).skillUpUnarmed(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
-					}
+					mcSkills.getInstance().XpCheck(attacker);
 					}
     			}
 		}
@@ -223,12 +170,10 @@ public class mcCombat {
 				if(defender.getHealth() <= 0)
 					return;
 				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
-					event.setDamage(calculateDamage(event, (4 - axeNerf(attacker.getItemInHand().getTypeId()))));
+					event.setDamage(calculateDamage(event, 4));
 				}
 			}
 			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
-			if(defender.getHealth() <= 0)
-				return;
 			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
 				event.setDamage(calculateDamage(event, 1));
 			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
@@ -254,7 +199,7 @@ public class mcCombat {
     		/*
     		 * AXE PROC CHECKS
     		 */
-    		axeCriticalCheckMonster(attacker, event, x);
+    		axeCriticalCheck(attacker, event, x);
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
     		}
@@ -274,15 +219,7 @@ public class mcCombat {
 					if(x instanceof PigZombie)
 					mcUsers.getProfile(attacker).addSwordsGather(7);
 					}
-					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeSwordsGather(mcUsers.getProfile(attacker).getXpToLevel("swords"));
-							mcUsers.getProfile(attacker).skillUpSwords(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
-					}
+					mcSkills.getInstance().XpCheck(attacker);
 				}
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
@@ -300,24 +237,14 @@ public class mcCombat {
 					if(x instanceof PigZombie)
 						mcUsers.getProfile(attacker).addAxesGather(7);
 					}
-					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeAxesGather(mcUsers.getProfile(attacker).getXpToLevel("axes"));
-							mcUsers.getProfile(attacker).skillUpAxes(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
-					}
+					mcSkills.getInstance().XpCheck(attacker);
 			}
 			/*
 			 * AXE DAMAGE SCALING && LOOT CHECKS
 			 */
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-				if(defender.getHealth() <= 0)
-					return;
 				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
-					event.setDamage(calculateDamage(event, (4 - axeNerf(attacker.getItemInHand().getTypeId()))));
+					event.setDamage(calculateDamage(event, 4));
 				}
 			}
 			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
@@ -353,23 +280,31 @@ public class mcCombat {
 			if(x instanceof PigZombie)
 				mcUsers.getProfile(attacker).addUnarmedGather(15);
 			}
-			if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-				int skillups = 0;
-				while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-					skillups++;
-					mcUsers.getProfile(attacker).removeUnarmedGather(mcUsers.getProfile(attacker).getXpToLevel("unarmed"));
-					mcUsers.getProfile(attacker).skillUpUnarmed(1);
-				}
-				attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
-			}
+			mcSkills.getInstance().XpCheck(attacker);
 			}
 		}
     }
 	public void archeryCheck(EntityDamageByProjectileEvent event){
     	Entity y = event.getDamager();
     	Entity x = event.getEntity();
+    	if(x instanceof Player){
+    		Player defender = (Player)x;
+    		if(mcPermissions.getInstance().unarmed(defender) && defender.getItemInHand().getTypeId() == 0){
+	    		if(mcUsers.getProfile(defender).getUnarmedInt() >= 1000){
+	    			if(Math.random() * 1000 >= 500){
+	    				event.setCancelled(true);
+	    				defender.sendMessage(ChatColor.WHITE+"**ARROW DEFLECT**");
+	    				return;
+	    			}
+	    		} else if(Math.random() * 1000 <= (mcUsers.getProfile(defender).getUnarmedInt() / 2)){
+	    			event.setCancelled(true);
+	    			defender.sendMessage(ChatColor.WHITE+"**ARROW DEFLECT**");
+	    			return;
+	    		}
+    		}
+    	}
     	/*
-    	 * Defender is player
+    	 * If attacker is player
     	 */
     	if(y instanceof Player){
     		Player attacker = (Player)y;
@@ -407,7 +342,6 @@ public class mcCombat {
     		 * Defender is Monster
     		 */
     		if(x instanceof Monster){
-    			Monster defender = (Monster)x;
     			/*
     			 * TRACK ARROWS USED AGAINST THE ENTITY
     			 */
@@ -457,7 +391,6 @@ public class mcCombat {
     		 */
     		if(x instanceof Squid){
     			Squid defender = (Squid)x;
-    			int healthbefore = defender.getHealth();
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
     				event.setDamage(calculateDamage(event, 1));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
@@ -528,24 +461,16 @@ public class mcCombat {
 	    				event.setDamage(calculateDamage(event, 5));
     			}
     		}
-    		if(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
-				int skillups = 0;
-				while(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
-					skillups++;
-					mcUsers.getProfile(attacker).removeArcheryGather(mcUsers.getProfile(attacker).getXpToLevel("archery"));
-					mcUsers.getProfile(attacker).skillUpArchery(1);
-				}
-				attacker.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getArchery()+")");	
-			}
+    		mcSkills.getInstance().XpCheck(attacker);
     	}
     }
 	public boolean simulateUnarmedProc(Player player){
     	if(mcUsers.getProfile(player).getUnarmedInt() >= 750){
-    		if(Math.random() * 10 > 4){
+    		if(Math.random() * 1000 >= 750){
     			return true;
     		}
-    	}if(mcUsers.getProfile(player).getUnarmedInt() >= 350 && mcUsers.getProfile(player).getUnarmedInt() < 750){
-    		if(Math.random() * 10 > 4){
+    	} else {
+    		if(Math.random() * 1000 <= mcUsers.getProfile(player).getUnarmedInt()){
     			return true;
     		}
     	}
@@ -553,26 +478,8 @@ public class mcCombat {
     }
     public void bleedCheck(Player attacker, Entity x){
     	if(mcPermissions.getInstance().swords(attacker) && mcm.getInstance().isSwords(attacker.getItemInHand()) && !mcConfig.getInstance().isBleedTracked(x)){
-			if(mcUsers.getProfile(attacker).getSwordsInt() >= 50 && mcUsers.getProfile(attacker).getSwordsInt() < 200){
-				if(Math.random() * 10 > 8){
-					mcConfig.getInstance().addBleedTrack(x);
-					if(x instanceof Player){
-						Player target = (Player)x;
-						mcUsers.getProfile(target).setBleedTicks(4);
-					}
-					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
-				}
-			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 200 && mcUsers.getProfile(attacker).getSwordsInt() < 600){
-				if(Math.random() * 10 > 6){
-					mcConfig.getInstance().addBleedTrack(x);
-					if(x instanceof Player){
-						Player target = (Player)x;
-						mcUsers.getProfile(target).setBleedTicks(4);
-					}
-					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
-				}
-			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 600 && mcUsers.getProfile(attacker).getSwordsInt() < 900){
-				if(Math.random() * 10 > 4){
+			if(mcUsers.getProfile(attacker).getSwordsInt() >= 750){
+				if(Math.random() * 1000 >= 750){
 					mcConfig.getInstance().addBleedTrack(x);
 					if(x instanceof Player){
 						Player target = (Player)x;
@@ -580,181 +487,36 @@ public class mcCombat {
 					}
 					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
 				}
-			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 900){
-				if(Math.random() * 100 > 25){
-					mcConfig.getInstance().addBleedTrack(x);
-					if(x instanceof Player){
-						Player target = (Player)x;
-						mcUsers.getProfile(target).setBleedTicks(6);
-					}
-					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
+			} else if (Math.random() * 1000 <= mcUsers.getProfile(attacker).getSwordsInt()){
+				mcConfig.getInstance().addBleedTrack(x);
+				if(x instanceof Player){
+					Player target = (Player)x;
+					mcUsers.getProfile(target).setBleedTicks(4);
 				}
+				attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
 			}
 		}
-    }
-    public int axeNerf(int type){
-    	//GOLD OR WOOD
-    	if(type == 271 || type == 286){
-    		return 3;
-    	} else if (type == 258){
-    		return 1;
-    	} else if (type == 275){
-    		return 1;
-    	} else {
-    		return 0;
-    	}
     }
     public int calculateDamage(EntityDamageEvent event, int dmg){
     	return event.getDamage() + dmg;
     }
-    public void axeCriticalCheckAnimals(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    public void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Entity x){
     	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 50 && mcUsers.getProfile(attacker).getAxesInt() < 250){
-    			if(Math.random() * 100 > 95){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					event.setDamage(event.getDamage() + animal.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 250 && mcUsers.getProfile(attacker).getAxesInt() < 500){
-    			if(Math.random() * 10 > 9){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					event.setDamage(event.getDamage() + animal.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 500 && mcUsers.getProfile(attacker).getAxesInt() < 750){
-    			if(Math.random() * 10 > 8){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					event.setDamage(event.getDamage() + animal.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 750 && mcUsers.getProfile(attacker).getAxesInt() < 1000){
-    			if(Math.random() * 10 > 7){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					event.setDamage(event.getDamage() + animal.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 1000){
-    			if(Math.random() * 10 > 6){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					event.setDamage(event.getDamage() + animal.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    	}
-    }
-    public void axeCriticalCheckMonster(Player attacker, EntityDamageByEntityEvent event, Entity x){
-    	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 50 && mcUsers.getProfile(attacker).getAxesInt() < 250){
-    			if(Math.random() * 100 > 95){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					event.setDamage(event.getDamage() + monster.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 250 && mcUsers.getProfile(attacker).getAxesInt() < 500){
-    			if(Math.random() * 10 > 9){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					event.setDamage(event.getDamage() + monster.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 500 && mcUsers.getProfile(attacker).getAxesInt() < 750){
-    			if(Math.random() * 10 > 8){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					event.setDamage(event.getDamage() + monster.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 750 && mcUsers.getProfile(attacker).getAxesInt() < 1000){
-    			if(Math.random() * 10 > 7){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					event.setDamage(event.getDamage() + monster.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 1000){
-    			if(Math.random() * 10 > 6){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					event.setDamage(event.getDamage() + monster.getHealth() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    	}
-    }
-    public void axeCriticalCheckPlayer(Player attacker, EntityDamageByEntityEvent event, Entity x, Plugin plugin){
-    	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 50 && mcUsers.getProfile(attacker).getAxesInt() < 250){
-    			if(Math.random() * 100 > 95){
+    		if(mcUsers.getProfile(attacker).getAxesInt() >= 750){
+    			if(Math.random() * 1000 >= 750){
+    				event.setDamage(event.getDamage() * 2);
+    				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				if(x instanceof Player){
     					Player player = (Player)x;
-    					event.setDamage(event.getDamage() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     				}
     			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 250 && mcUsers.getProfile(attacker).getAxesInt() < 500){
-    			if(Math.random() * 10 > 9){
-    				if(x instanceof Player){
-    					Player player = (Player)x;
-    					event.setDamage(event.getDamage() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 500 && mcUsers.getProfile(attacker).getAxesInt() < 750){
-    			if(Math.random() * 10 > 8){
-    				if(x instanceof Player){
-    					Player player = (Player)x;
-    					event.setDamage(event.getDamage() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 750 && mcUsers.getProfile(attacker).getAxesInt() < 1000){
-    			if(Math.random() * 10 > 7){
-    				if(x instanceof Player){
-    					Player player = (Player)x;
-    					event.setDamage(event.getDamage() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 1000){
-    			if(Math.random() * 10 > 6){
-    				if(x instanceof Player){
-    					Player player = (Player)x;
-    					event.setDamage(event.getDamage() * 2);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    				}
+    		} else if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getAxesInt()){
+    			if(x instanceof Player){
+    				Player player = (Player)x;
+    				event.setDamage(event.getDamage() * 2);
+    				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
+    				player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     			}
     		}
     	}

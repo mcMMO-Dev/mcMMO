@@ -70,26 +70,20 @@ public class mcPlayerListener extends PlayerListener {
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
     	/*
-    	if(mcPermissions.getInstance().woodcuttingability(player) && mcm.getInstance().isAxes(is)){
-    		if(block != null){
-    		if(!mcm.getInstance().abilityBlockCheck(block))
-    			return;
-    		}
-    		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() == 0){
-    			player.sendMessage(ChatColor.GRAY+"You feel great strength enter you");
-    			mcUsers.getProfile(player).setTreeFellerTicks(8);
-    			mcUsers.getProfile(player).setTreeFellerMode(true);
-    		}
-    		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() >= 1){
-    			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
-    		}
+    	 * ABILITY ACTIVATION CHECKS
+    	 */
+    	if(mcPermissions.getInstance().woodcuttingability(player)){
+    		mcWoodCutting.getInstance().treeFellerCheck(player, block);
     	}
-    	*/
+    	if(mcPermissions.getInstance().miningability(player)){
+    		mcMining.getInstance().superBreakerCheck(player, block);
+    	}
+    	
     	if(mcPermissions.getInstance().herbalism(player)){
-    	//BREADCHECK, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
-    	mcHerbalism.getInstance().breadCheck(player, is);
-    	//STEW, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
-    	mcHerbalism.getInstance().stewCheck(player, is);
+    		//BREADCHECK, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
+    		mcHerbalism.getInstance().breadCheck(player, is);
+    		//STEW, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
+    		mcHerbalism.getInstance().stewCheck(player, is);
     	}
     }
     public void onPlayerCommandPreprocess(PlayerChatEvent event){

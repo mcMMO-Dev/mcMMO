@@ -37,6 +37,13 @@ public class mcPermissions {
             return true;
         }
     }
+    public boolean miningability(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.mining");
+        } else {
+            return true;
+        }
+    }
     public boolean woodcuttingability(Player player) {
     	if (permissionsEnabled) {
             return permission(player, "mcmmo.ability.woodcutting");

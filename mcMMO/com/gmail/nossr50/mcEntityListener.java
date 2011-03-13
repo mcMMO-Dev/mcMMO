@@ -53,14 +53,14 @@ public class mcEntityListener extends EntityListener {
     	/*
     	 * ARCHERY CHECKS
     	 */
-    	if(event instanceof EntityDamageByProjectileEvent){
+    	if(event instanceof EntityDamageByProjectileEvent && event.getDamage() >= 1){
     		EntityDamageByProjectileEvent c = (EntityDamageByProjectileEvent)event;
     		mcCombat.getInstance().archeryCheck(c);
     	}
     	/*
     	 * Entity Damage by Entity checks
     	 */
-    	if(event instanceof EntityDamageByEntityEvent){
+    	if(event instanceof EntityDamageByEntityEvent && event.getDamage() >= 1){
     		EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent)event;
     		Entity e = eventb.getEntity(); //Defender
         	Entity f = eventb.getDamager(); //Attacker

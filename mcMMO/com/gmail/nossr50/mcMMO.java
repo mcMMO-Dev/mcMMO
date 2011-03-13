@@ -32,7 +32,7 @@ public class mcMMO extends JavaPlugin {
     
     //herp
     public void onEnable() {
-    	//mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(2000));
+    	mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(2000));
     	//Make the directory if it does not exist
     	new File(maindirectory).mkdir();
     	//Make the file if it does not exist

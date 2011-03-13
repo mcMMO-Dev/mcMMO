@@ -156,8 +156,8 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead, treefellermode;
-		private int recentlyhurt = 0, bleedticks = 0, treefellerticks = 0, treefellercooldown = 0;
+		private boolean dead, treefellermode, superbreakermode;
+		private int recentlyhurt = 0, bleedticks = 0, superbreakerticks = 0, superbreakercooldown = 0, treefellerticks = 0, treefellercooldown = 0;
 		Player thisplayer;
 		char defaultColor;
 
@@ -433,6 +433,9 @@ class PlayerList
 		public void setBleedTicks(Integer newvalue){
 			bleedticks = newvalue;
 		}
+		/*
+		 * TREE FELLER STUFF
+		 */
 		public boolean getTreeFellerMode(){
 			return treefellermode;
 		}
@@ -461,6 +464,38 @@ class PlayerList
 				treefellercooldown--;
 			}
 		}
+		/*
+		 * MINING
+		 */
+		public boolean getSuperBreakerMode(){
+			return superbreakermode;
+		}
+		public void setSuperBreakerMode(Boolean bool){
+			superbreakermode = bool;
+		}
+		public Integer getSuperBreakerTicks(){
+			return superbreakerticks;
+		}
+		public void setSuperBreakerTicks(Integer newvalue){
+			superbreakerticks = newvalue;
+		}
+		public void decreaseSuperBreakerTicks(){
+			if(superbreakerticks >= 1){
+				superbreakerticks--;
+			}
+		}
+		public void setSuperBreakerCooldown(Integer newvalue){
+			superbreakercooldown = newvalue;
+		}
+		public int getSuperBreakerCooldown(){
+			return superbreakercooldown;
+		}
+		public void decreaseSuperBreakerCooldown(){
+			if(superbreakercooldown >= 1){
+				superbreakercooldown--;
+			}
+		}
+		
 		public Integer getRecentlyHurt(){
 			return recentlyhurt;
 		}
@@ -1158,34 +1193,34 @@ class PlayerList
 			}
 		}
 		public void modifyskill(int newvalue, String skillname){
-			if(skillname.equals("mining")){
+			if(skillname.toLowerCase().equals("mining")){
 				 mining = String.valueOf(newvalue);
 			}
-			if(skillname.equals("woodcutting")){
+			if(skillname.toLowerCase().equals("woodcutting")){
 				 woodcutting = String.valueOf(newvalue);
 			}
-			if(skillname.equals("repair")){
+			if(skillname.toLowerCase().equals("repair")){
 				 repair = String.valueOf(newvalue);
 			}
-			if(skillname.equals("herbalism")){
+			if(skillname.toLowerCase().equals("herbalism")){
 				 herbalism = String.valueOf(newvalue);
 			}
-			if(skillname.equals("acrobatics")){
+			if(skillname.toLowerCase().equals("acrobatics")){
 				 acrobatics = String.valueOf(newvalue);
 			}
-			if(skillname.equals("swords")){
+			if(skillname.toLowerCase().equals("swords")){
 				 swords = String.valueOf(newvalue);
 			}
-			if(skillname.equals("archery")){
+			if(skillname.toLowerCase().equals("archery")){
 				 archery = String.valueOf(newvalue);
 			}
-			if(skillname.equals("unarmed")){
+			if(skillname.toLowerCase().equals("unarmed")){
 				 unarmed = String.valueOf(newvalue);
 			}
-			if(skillname.equals("excavation")){
+			if(skillname.toLowerCase().equals("excavation")){
 				 excavation = String.valueOf(newvalue);
 			}
-			if(skillname.equals("axes")){
+			if(skillname.toLowerCase().equals("axes")){
 				axes = String.valueOf(newvalue);
 			}
 			save();

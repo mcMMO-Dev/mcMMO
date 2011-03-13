@@ -62,10 +62,14 @@ public class mcTimer extends TimerTask{
 		}
 		mcCombat.getInstance().bleedSimulate();
 		*/
+		
 		/*
-		 * TREE FELLER INTERACTIONS
+		 * COOLDOWN INTERACTIONS
 		 */
 		for(Player player : playerlist){
+			/*
+			 * WOODCUTTING ABILITY
+			 */
 			if(mcPermissions.getInstance().woodcuttingability(player)){
 				//Monitor the length of TreeFeller mode
 				if(mcUsers.getProfile(player).getTreeFellerMode()){
@@ -81,6 +85,27 @@ public class mcTimer extends TimerTask{
 					mcUsers.getProfile(player).decreaseTreeFellerCooldown();
 					if(mcUsers.getProfile(player).getTreeFellerCooldown() == 0){
 						player.sendMessage(ChatColor.GREEN+"Your Tree Felling ability is refreshed!");
+					}
+				}
+			}
+			/*
+			 * MINING ABILITY
+			 */
+			if(mcPermissions.getInstance().miningability(player)){
+				//Monitor the length of SuperBreaker mode
+				if(mcUsers.getProfile(player).getSuperBreakerMode()){
+					mcUsers.getProfile(player).decreaseSuperBreakerTicks();
+					if(mcUsers.getProfile(player).getSuperBreakerTicks() <= 0){
+						mcUsers.getProfile(player).setSuperBreakerMode(false);
+						mcUsers.getProfile(player).setSuperBreakerCooldown(120);
+						player.sendMessage(ChatColor.GRAY+"**You feel strength leaving you**");
+					}
+				}
+				//Monitor the cooldown
+				if(!mcUsers.getProfile(player).getSuperBreakerMode() && mcUsers.getProfile(player).getSuperBreakerCooldown() >= 1){
+					mcUsers.getProfile(player).decreaseSuperBreakerCooldown();
+					if(mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
+						player.sendMessage(ChatColor.GREEN+"Your Super Breaker ability is refreshed!");
 					}
 				}
 			}

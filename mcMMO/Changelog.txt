@@ -1,5 +1,16 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9
+	/<skillname> now shows much more information to the player regarding their stats
+	Unarmed disarm is now based directly on your skill level
+	Axe crits is now based directly on your skill level
+	Herbalism now applies double drops to herbs
+	/mmoedit is no longer case sensitive
+	
+Version 0.8.22
+	Fixed bug where Axes did less damage than normal
+	Acrobatic rolls now give XP
+	Acrobatics XP increased for non-rolls
 Version 0.8.21
 	Fixed bug where axe criticals would dupe items
 Version 0.8.20
