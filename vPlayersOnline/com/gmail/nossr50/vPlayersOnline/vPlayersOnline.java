@@ -1,16 +1,16 @@
 package com.gmail.nossr50.vPlayersOnline;
 
 import java.io.File;
-import java.util.HashMap;
-import org.bukkit.event.player.*;
-import org.bukkit.Server;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.entity.Player;
 
 /**
  * vPlayersOnline for Bukkit
@@ -18,20 +18,31 @@ import org.bukkit.entity.Player;
  * @author nossr50
  */
 public class vPlayersOnline extends JavaPlugin {
-    private final vPlayerListener playerListener = new vPlayerListener(this);
-    private final String name = "vPlayersOnline";
+    private PluginDescriptionFile pdfFile;
+
+    private vPlayerListener playerListener;
+
+    public void onLoad() {
+
+    }
 
     public void onEnable() {
+        pdfFile = this.getDescription();
+        Config.name = pdfFile.getName();
+
+        Properties config = Config.loadConfig();
+        playerListener = new vPlayerListener(this, config);
+
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_DROP_ITEM, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_COMMAND, playerListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
+
         //Displays a message when plugin is loaded
-        PluginDescriptionFile pdfFile = this.getDescription();
-        System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+        System.out.println(Config.name + " version " + pdfFile.getVersion() + " is enabled!");
     }
     public void onDisable() {
-        System.out.println("vPlayersOnline disabled.");
+        System.out.println(Config.name + " disabled.");
     }
 }
