@@ -153,6 +153,7 @@ public class mcMining {
     	}
     }
     public void SuperBreakerBlockCheck(Player player, Block block){
+    	player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability() + 1));
     	Location loc = block.getLocation();
     	Material mat = Material.getMaterial(block.getTypeId());
 		byte damage = 0;

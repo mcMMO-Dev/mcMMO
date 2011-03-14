@@ -156,9 +156,9 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead, treeFellerMode, superbreakermode, serratedStrikesMode, axePreparationMode;
+		private boolean dead, treeFellerMode, superbreakermode, serratedStrikesMode, axePreparationMode, skullSplitterMode;
 		private int recentlyhurt = 0, bleedticks = 0, superbreakerticks = 0, superbreakercooldown = 0, 
-		serratedStrikesTicks = 0, serratedStrikesCooldown = 0, treeFellerTicks = 0, treeFellerCooldown = 0,
+		serratedStrikesTicks = 0, skullSplitterTicks = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0, treeFellerTicks = 0, treeFellerCooldown = 0,
 		axePreparationTicks = 0;
 		Player thisplayer;
 		char defaultColor;
@@ -460,6 +460,37 @@ class PlayerList
 		public void decreaseAxePreparationTicks(){
 			if(axePreparationTicks >= 1){
 				axePreparationTicks--;
+			}
+		}
+		/*
+		 * SKULL SPLITTER
+		 */
+		public boolean getSkullSplitterMode(){
+			return skullSplitterMode;
+		}
+		public void setSkullSplitterMode(Boolean bool){
+			skullSplitterMode = bool;
+		}
+		public Integer getSkullSplitterTicks(){
+			return skullSplitterTicks;
+		}
+		public void setSkullSplitterTicks(Integer newvalue){
+			skullSplitterTicks = newvalue;
+		}
+		public void decreaseSkullSplitterTicks(){
+			if(skullSplitterTicks >= 1){
+				skullSplitterTicks--;
+			}
+		}
+		public void setSkullSplitterCooldown(Integer newvalue){
+			skullSplitterCooldown = newvalue;
+		}
+		public int getSkullSplitterCooldown(){
+			return skullSplitterCooldown;
+		}
+		public void decreaseSkullSplitterCooldown(){
+			if(skullSplitterCooldown >= 1){
+				skullSplitterCooldown--;
 			}
 		}
 		/*

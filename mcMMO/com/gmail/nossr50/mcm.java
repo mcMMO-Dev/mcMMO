@@ -30,7 +30,7 @@ public class mcm {
     	}
     	return instance;
     	}
-	public static double getDistance(Location loca, Location locb)
+	public double getDistance(Location loca, Location locb)
     {
 	return Math.sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)
     + Math.pow(loca.getZ() - locb.getZ(), 2));
@@ -137,70 +137,6 @@ public class mcm {
 		}
 		return true;
 	}
-    public void simulateNaturalDrops(Entity entity){
-    	Location loc = entity.getLocation();
-    	if(entity instanceof Pig){
-    		if(Math.random() * 3 > 2){
-    			if(Math.random() * 2 > 1){
-    				mcDropItem(loc, 319); //BACON
-    			}
-    			mcDropItem(loc, 319);
-    		}
-    	}
-    	if(entity instanceof Spider){
-    		if(Math.random() * 3 > 2){
-    			if(Math.random() * 2 > 1){
-    				mcDropItem(loc, 287); //SILK
-    			}
-    			mcDropItem(loc, 287);
-    		}
-    	}
-    	if(entity instanceof Skeleton){
-    		if(Math.random() * 3 > 2){
-    			if(Math.random() * 2 > 1){
-    				mcDropItem(loc, 262); //ARROWS
-    			}
-    			mcDropItem(loc, 262);
-    		}
-    		if(Math.random() * 3 > 2){
-    			if(Math.random() * 2 > 1){
-    				mcDropItem(loc, 352); //BONES
-    			}
-    			mcDropItem(loc, 352);
-    		}
-    	}
-    	if(entity instanceof Zombie){
-    		if(Math.random() * 3 > 2){
-    			if(Math.random() * 2 > 1){
-    				mcDropItem(loc, 288); //FEATHERS
-    			}
-    			mcDropItem(loc, 288);
-    		}
-    	}
-    	if(entity instanceof Cow){
-    		if(Math.random() * 3 > 2){
-    			if(Math.random() * 2 > 1){
-    				mcDropItem(loc, 334); //LEATHER
-    			}
-    			if(Math.random() * 2 > 1){
-    				mcDropItem(loc, 334);
-    			}
-    			mcDropItem(loc, 334);
-    		}
-    	}
-    	if(entity instanceof Squid){
-    		if(Math.random() * 3 > 2){
-    			if(Math.random() * 2 > 1){
-    				mcDropItem(loc, 351); //INK SACS
-    			}
-    			if(Math.random() * 2 > 1){
-    				mcDropItem(loc, 351);
-    			}
-    			mcDropItem(loc, 351);
-    		}
-    	}
-    	mcSkills.getInstance().arrowRetrievalCheck(entity);
-    }
     public void mcDropItem(Location loc, int id){
     	if(loc != null){
     	Material mat = Material.getMaterial(id);
@@ -256,6 +192,7 @@ public class mcm {
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"WOODCUTTING"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Chopping down trees");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Tree Feller (ABILITY): "+ChatColor.GREEN+"Make trees explode");
 			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.YELLOW+ChatColor.GREEN+"Double the normal loot");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
@@ -298,9 +235,27 @@ public class mcm {
 			} else {
 				percentage = "75";
 			}
+			int ticks = 3;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 50)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 150)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 250)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 350)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 450)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 550)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 650)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 750)
+    			ticks++;
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"AXES"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Skull Splitter (ABILITY): "+ChatColor.GREEN+"Deal AoE Damage");
 			player.sendMessage(ChatColor.DARK_AQUA+"Critical Strikes: "+ChatColor.GREEN+"Double Damage");
 			player.sendMessage(ChatColor.DARK_AQUA+"Axe Mastery (500 SKILL): "+ChatColor.GREEN+"Modifies Damage");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
@@ -310,6 +265,7 @@ public class mcm {
 			} else {
 				player.sendMessage(ChatColor.GREEN+"Axe Mastery - Bonus 4 damage");
 			}
+			player.sendMessage(ChatColor.RED+"Skull Splitter Length: "+ChatColor.YELLOW+(ticks * 2)+"s");
     	}
     	if(split[0].equalsIgnoreCase("/swords")){
 			event.setCancelled(true);

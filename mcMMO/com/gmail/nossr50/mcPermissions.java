@@ -37,6 +37,13 @@ public class mcPermissions {
             return true;
         }
     }
+    public boolean unarmedAbility(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.unarmed");
+        } else {
+            return true;
+        }
+    }
     public boolean chimaeraWing(Player player){
     	if (permissionsEnabled) {
             return permission(player, "mcmmo.item.chimaerawing");

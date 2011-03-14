@@ -46,8 +46,6 @@ public class mcCombat {
 					return;
 				}
     		}
-    		if(defender != null)
-    		mcUsers.getProfile(defender).setRecentlyHurt(30);
     		/*
     		 * AXE CRITICAL CHECK
     		 */
@@ -497,6 +495,29 @@ public class mcCombat {
     }
     public int calculateDamage(EntityDamageEvent event, int dmg){
     	return event.getDamage() + dmg;
+    }
+    public void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    	for(Entity derp : x.getWorld().getEntities()){
+    		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 5){
+    			if(derp instanceof Player){
+    				Player target = (Player)derp;
+    				if(mcParty.getInstance().inSameParty(attacker, target))
+    					continue;
+    				if(!target.getName().equals(attacker.getName())){
+    					target.damage(event.getDamage() / 2);
+    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
+    				}
+    			}
+    			if(derp instanceof Monster){
+    				Monster target = (Monster)derp;
+    				target.damage(event.getDamage() / 2);
+    			}
+    			if(derp instanceof Animals){
+    				Animals target = (Animals)derp;
+    				target.damage(event.getDamage() / 2);
+    			}
+    		}
+    	}
     }
     public void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Entity x){
     	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){

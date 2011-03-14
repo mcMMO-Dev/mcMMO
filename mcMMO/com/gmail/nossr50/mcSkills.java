@@ -53,6 +53,12 @@ public class mcSkills {
 				player.sendMessage(ChatColor.GREEN+"Your Serrated Strikes ability is refreshed!");
 			}
     	}
+    	if(mcUsers.getProfile(player).getSkullSplitterCooldown() >= 1){
+    		mcUsers.getProfile(player).decreaseSkullSplitterCooldown();
+			if(mcUsers.getProfile(player).getSkullSplitterCooldown() == 0){
+				player.sendMessage(ChatColor.GREEN+"Your Skull Splitter ability is refreshed!");
+			}
+    	}
     }
     public void axeActivationCheck(Player player, Block block){
     	if(mcPermissions.getInstance().axes(player) && mcPermissions.getInstance().woodcutting(player)){
@@ -65,13 +71,51 @@ public class mcSkills {
     		mcWoodCutting.getInstance().treeFellerCheck(player, block);
     	} else if (mcPermissions.getInstance().axes(player)){
     		/*
-    		 * PUT CODE RELATED TO ACTIVATING THE AXE MODE HERE
+    		 * 
     		 */
     	}
     }
     public void abilityActivationCheck(Player player, Block block){
     	if(mcPermissions.getInstance().miningability(player)){
     		mcMining.getInstance().superBreakerCheck(player, block);
+    	}
+    	axeActivationCheck(player, block);
+    }
+    public void skullSplitterCheck(Player player){
+    	if(mcm.getInstance().isAxes(player.getItemInHand())){
+    		/*
+    		 * CHECK FOR AXE PREP MODE
+    		 */
+    		if(mcUsers.getProfile(player).getAxePreparationMode()){
+    			mcUsers.getProfile(player).setAxePreparationMode(false);
+    			mcUsers.getProfile(player).setAxePreparationTicks(0);
+    		}
+    		int ticks = 3;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 50)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 150)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 250)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 350)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 450)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 550)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 650)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getAxesInt() >= 750)
+    			ticks++;
+
+    		if(!mcUsers.getProfile(player).getSkullSplitterMode() && mcUsers.getProfile(player).getSkullSplitterCooldown() == 0){
+    			player.sendMessage(ChatColor.GREEN+"**SKULL SPLITTER ACTIVATED**");
+    			mcUsers.getProfile(player).setSkullSplitterTicks(ticks);
+    			mcUsers.getProfile(player).setSkullSplitterMode(true);
+    		}
+    		if(!mcUsers.getProfile(player).getSkullSplitterMode() && mcUsers.getProfile(player).getSkullSplitterCooldown() >= 1){
+    			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+    		}
     	}
     }
     public void monitorSkills(Player player){
@@ -85,6 +129,20 @@ public class mcSkills {
 				if(mcUsers.getProfile(player).getAxePreparationTicks() <= 0){
 					mcUsers.getProfile(player).setAxePreparationMode(false);
 					player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR AXE**");
+				}
+			}
+		}
+    	/*
+    	 * AXES ABILITY
+    	 */
+    	if(mcPermissions.getInstance().axesAbility(player)){
+			//Monitor the length of TreeFeller mode
+			if(mcUsers.getProfile(player).getSkullSplitterMode()){
+				mcUsers.getProfile(player).decreaseSkullSplitterTicks();
+				if(mcUsers.getProfile(player).getSkullSplitterTicks() <= 0){
+					mcUsers.getProfile(player).setSkullSplitterMode(false);
+					mcUsers.getProfile(player).setSkullSplitterCooldown(120);
+					player.sendMessage(ChatColor.GRAY+"**You feel strength leaving you**");
 				}
 			}
 		}

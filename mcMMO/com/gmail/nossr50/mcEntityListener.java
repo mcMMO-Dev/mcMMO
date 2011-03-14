@@ -70,6 +70,11 @@ public class mcEntityListener extends EntityListener {
     		Entity e = eventb.getEntity(); //Defender
         	Entity f = eventb.getDamager(); //Attacker
         	/*
+        	 * CHECK FOR PVP INTERACTIONS
+        	 */
+        	if(f instanceof Player && e instanceof Player && !mcLoadProperties.pvp)
+        		event.setCancelled(true);
+        	/*
         	 * IF DEFENDER IS PLAYER
         	 */
         	if(e instanceof Player){
@@ -88,6 +93,8 @@ public class mcEntityListener extends EntityListener {
         		//((Player) f).sendMessage("DEBUG: EntityDamageByEntity cast correctly!");
         		int typeid = ((Player) f).getItemInHand().getTypeId();
         		Player attacker = (Player)f;
+        		if(mcUsers.getProfile(attacker).getAxePreparationMode())
+        			mcSkills.getInstance().skullSplitterCheck(attacker);
         		/*
         		 * Player versus Monster checks, this handles all skill damage modifiers and any procs.
         		 */
@@ -105,12 +112,13 @@ public class mcEntityListener extends EntityListener {
         		 * Player versus Animals checks, these checks handle any skill modifiers or procs
         		 */
         		mcCombat.getInstance().playerVersusAnimalsChecks(e, attacker, eventb, typeid);
+        		/*
+        		 * This will do AOE damage from the axes ability
+        		 */
+        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSkullSplitterMode())
+            		mcCombat.getInstance().applyAoeDamage(attacker, eventb, x);
         	}
-        	/*
-        	 * CHECK FOR PVP INTERACTIONS
-        	 */
-        	if(f instanceof Player && e instanceof Player && !mcLoadProperties.pvp)
-        		event.setCancelled(true);
+        	
         	if(e instanceof Monster || e instanceof Animals){
         		if(e instanceof Monster){
         			Monster monster = (Monster)e;
