@@ -1,6 +1,7 @@
 package com.gmail.nossr50;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -34,13 +35,86 @@ public class mcSkills {
     	}
     }
     public void decreaseCooldowns(Player player){
-    	mcUsers.getProfile(player).decreaseTreeFellerCooldown();
-		if(mcUsers.getProfile(player).getTreeFellerCooldown() == 0){
-			player.sendMessage(ChatColor.GREEN+"Your Tree Felling ability is refreshed!");
+    	if(mcUsers.getProfile(player).getTreeFellerCooldown() >= 1){
+    		mcUsers.getProfile(player).decreaseTreeFellerCooldown();
+    		if(mcUsers.getProfile(player).getTreeFellerCooldown() == 0){
+    			player.sendMessage(ChatColor.GREEN+"Your Tree Felling ability is refreshed!");
+    		}
+    	}
+    	if(mcUsers.getProfile(player).getSuperBreakerCooldown() >= 1){
+    		mcUsers.getProfile(player).decreaseSuperBreakerCooldown();
+			if(mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
+				player.sendMessage(ChatColor.GREEN+"Your Super Breaker ability is refreshed!");
+			}
+    	}
+    	if(mcUsers.getProfile(player).getSerratedStrikesCooldown() >= 1){
+    		mcUsers.getProfile(player).decreaseSerratedStrikesCooldown();
+			if(mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
+				player.sendMessage(ChatColor.GREEN+"Your Serrated Strikes ability is refreshed!");
+			}
+    	}
+    }
+    public void axeActivationCheck(Player player, Block block){
+    	if(mcPermissions.getInstance().axes(player) && mcPermissions.getInstance().woodcutting(player)){
+    		if(!mcUsers.getProfile(player).getAxePreparationMode() && mcm.getInstance().isAxes(player.getItemInHand())){
+    			player.sendMessage(ChatColor.GREEN+"**YOU READY YOUR AXE**");
+    			mcUsers.getProfile(player).setAxePreparationTicks(2);
+    			mcUsers.getProfile(player).setAxePreparationMode(true);
+    		}
+    	} else if(mcPermissions.getInstance().woodcutting(player)){
+    		mcWoodCutting.getInstance().treeFellerCheck(player, block);
+    	} else if (mcPermissions.getInstance().axes(player)){
+    		/*
+    		 * PUT CODE RELATED TO ACTIVATING THE AXE MODE HERE
+    		 */
+    	}
+    }
+    public void abilityActivationCheck(Player player, Block block){
+    	if(mcPermissions.getInstance().miningability(player)){
+    		mcMining.getInstance().superBreakerCheck(player, block);
+    	}
+    }
+    public void monitorSkills(Player player){
+    	/*
+    	 * AXE PREPARATION MODE
+    	 */
+    	if(mcPermissions.getInstance().woodcuttingability(player) && mcPermissions.getInstance().axes(player)){
+			//Monitor the length of TreeFeller mode
+			if(mcUsers.getProfile(player).getAxePreparationMode()){
+				mcUsers.getProfile(player).decreaseAxePreparationTicks();
+				if(mcUsers.getProfile(player).getAxePreparationTicks() <= 0){
+					mcUsers.getProfile(player).setAxePreparationMode(false);
+					player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR AXE**");
+				}
+			}
 		}
-		mcUsers.getProfile(player).decreaseSuperBreakerCooldown();
-		if(mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
-			player.sendMessage(ChatColor.GREEN+"Your Super Breaker ability is refreshed!");
+    	/*
+		 * WOODCUTTING ABILITY
+		 */
+		if(mcPermissions.getInstance().woodcuttingability(player)){
+			//Monitor the length of TreeFeller mode
+			if(mcUsers.getProfile(player).getTreeFellerMode()){
+				mcUsers.getProfile(player).decreaseTreeFellerTicks();
+				if(mcUsers.getProfile(player).getTreeFellerTicks() <= 0){
+					mcUsers.getProfile(player).setTreeFellerMode(false);
+					mcUsers.getProfile(player).setTreeFellerCooldown(120);
+					player.sendMessage(ChatColor.GRAY+"**You feel strength leaving you**");
+				}
+			}
+		}
+		/*
+		 * MINING ABILITY
+		 */
+		if(mcPermissions.getInstance().miningability(player)){
+			//Monitor the length of SuperBreaker mode
+			if(mcUsers.getProfile(player).getSuperBreakerMode()){
+				mcUsers.getProfile(player).decreaseSuperBreakerTicks();
+				if(mcUsers.getProfile(player).getSuperBreakerTicks() <= 0){
+					mcUsers.getProfile(player).setSuperBreakerMode(false);
+					mcUsers.getProfile(player).setSuperBreakerCooldown(120);
+					player.sendMessage(ChatColor.GRAY+"**You feel strength leaving you**");
+				}
+			}
 		}
     }
     public void XpCheck(Player player){

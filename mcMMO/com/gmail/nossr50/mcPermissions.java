@@ -37,9 +37,30 @@ public class mcPermissions {
             return true;
         }
     }
+    public boolean chimaeraWing(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.item.chimaerawing");
+        } else {
+            return true;
+        }
+    }
     public boolean miningability(Player player){
     	if (permissionsEnabled) {
             return permission(player, "mcmmo.ability.mining");
+        } else {
+            return true;
+        }
+    }
+    public boolean axesAbility(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.axes");
+        } else {
+            return true;
+        }
+    }
+    public boolean swordsability(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.swords");
         } else {
             return true;
         }

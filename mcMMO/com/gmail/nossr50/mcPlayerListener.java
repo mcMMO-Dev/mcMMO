@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -72,17 +73,16 @@ public class mcPlayerListener extends PlayerListener {
     	/*
     	 * ABILITY ACTIVATION CHECKS
     	 */
-    	if(mcPermissions.getInstance().woodcuttingability(player)){
-    		mcWoodCutting.getInstance().treeFellerCheck(player, block);
-    	}
-    	if(mcPermissions.getInstance().miningability(player)){
-    		mcMining.getInstance().superBreakerCheck(player, block);
-    	}
-    	
+    	mcSkills.getInstance().abilityActivationCheck(player, block);
+    	/*
+    	 * ITEM INTERACTIONS
+    	 */
+    	mcItem.getInstance().itemChecks(player);
+    	/*
+    	 * HERBALISM MODIFIERS
+    	 */
     	if(mcPermissions.getInstance().herbalism(player)){
-    		//BREADCHECK, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
     		mcHerbalism.getInstance().breadCheck(player, is);
-    		//STEW, CHECKS HERBALISM SKILL FOR BREAD HP MODIFIERS
     		mcHerbalism.getInstance().stewCheck(player, is);
     	}
     }
@@ -92,6 +92,9 @@ public class mcPlayerListener extends PlayerListener {
     	String playerName = player.getName();
     	//Check if the command is an mcMMO related help command
     	mcm.getInstance().mcmmoHelpCheck(split, player, event);
+    	if(split[0].equalsIgnoreCase("/"+mcLoadProperties.mcitem)){
+    		
+    	}
     	/*
     	 * GODMODE COMMAND
     	 */

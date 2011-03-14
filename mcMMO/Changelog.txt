@@ -1,11 +1,27 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
 Version 0.9
-	/<skillname> now shows much more information to the player regarding their stats
-	Unarmed disarm is now based directly on your skill level
-	Axe crits is now based directly on your skill level
-	Herbalism now applies double drops to herbs
-	/mmoedit is no longer case sensitive
+--NEW CONTENT--
+Woodcutting now has the "Tree Feller" Ability
+Mining now has the "Super Breaker" Ability
+Unarmed now has the "Deflect Arrows" passive skill
+Chimaera Wing Item Added
+
+--CHANGES--
+Herbalism now applies double drops to herbs
+/<skillname> now shows much more information to the player regarding their stats
+Axes skill Critical Strikes are now based directly on your skill level
+Swords skill Bleed is now based directly on your skill level
+Unarmed disarm is now based directly on your skill level
+Acrobatics now gives XP when you roll
+
+--BUGFIXES--
+/mmoedit is no longer case sensitive
+More NPE errors fixed
+
+--PLUGIN COMPATABILITY FIXES--
+If combat interactions are cancelled by other plugins mcMMO should ignore the event
+If block damage interactions are cancelled by other plugins mcMMO should ignore the event
 	
 Version 0.8.22
 	Fixed bug where Axes did less damage than normal

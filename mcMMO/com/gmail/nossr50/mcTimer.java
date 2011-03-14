@@ -47,33 +47,9 @@ public class mcTimer extends TimerTask{
 				}
 			}
 			/*
-			 * WOODCUTTING ABILITY
+			 * MONITOR SKILLS
 			 */
-			if(mcPermissions.getInstance().woodcuttingability(player)){
-				//Monitor the length of TreeFeller mode
-				if(mcUsers.getProfile(player).getTreeFellerMode()){
-					mcUsers.getProfile(player).decreaseTreeFellerTicks();
-					if(mcUsers.getProfile(player).getTreeFellerTicks() <= 0){
-						mcUsers.getProfile(player).setTreeFellerMode(false);
-						mcUsers.getProfile(player).setTreeFellerCooldown(120);
-						player.sendMessage(ChatColor.GRAY+"**You feel strength leaving you**");
-					}
-				}
-			}
-			/*
-			 * MINING ABILITY
-			 */
-			if(mcPermissions.getInstance().miningability(player)){
-				//Monitor the length of SuperBreaker mode
-				if(mcUsers.getProfile(player).getSuperBreakerMode()){
-					mcUsers.getProfile(player).decreaseSuperBreakerTicks();
-					if(mcUsers.getProfile(player).getSuperBreakerTicks() <= 0){
-						mcUsers.getProfile(player).setSuperBreakerMode(false);
-						mcUsers.getProfile(player).setSuperBreakerCooldown(120);
-						player.sendMessage(ChatColor.GRAY+"**You feel strength leaving you**");
-					}
-				}
-			}
+			mcSkills.getInstance().monitorSkills(player);
 			/*
 			 * COOLDOWN MONITORING
 			 */

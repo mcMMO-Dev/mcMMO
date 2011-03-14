@@ -2,14 +2,15 @@ package com.gmail.nossr50;
 
 public class mcLoadProperties {
 	public static Boolean pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
-	public static String mcmmo, mcc, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
-	public static int pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
+	public static String mcmmo, mcc, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
+	public static int feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public static void loadMain(){
     	String propertiesFile = mcMMO.maindirectory + "mcmmo.properties";
     	mcProperties properties = new mcProperties(propertiesFile);
     	properties.load();
     	
+    	feathersConsumedByChimaeraWing = properties.getInteger("feathersConsumedByChimaeraWing", 10);
     	pvpxp = properties.getBoolean("pvpGivesXP", true);
     	pvpxprewardmodifier = properties.getInteger("pvpXpRewardModifier", 1);
     	miningrequirespickaxe = properties.getBoolean("miningRequiresPickaxe", true);
@@ -55,6 +56,7 @@ public class mcLoadProperties {
     	/*
     	 * CUSTOM COMMANDS
     	 */
+    	mcitem = properties.getString("/mcitem", "mcitem");
     	mcmmo = properties.getString("/mcmmo", "mcmmo");
     	mcc = properties.getString("/mcc", "mcc");
     	mcgod = properties.getString("/mcgod", "mcgod");

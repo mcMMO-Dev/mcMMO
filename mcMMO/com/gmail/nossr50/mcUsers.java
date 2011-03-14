@@ -156,8 +156,10 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead, treefellermode, superbreakermode;
-		private int recentlyhurt = 0, bleedticks = 0, superbreakerticks = 0, superbreakercooldown = 0, treefellerticks = 0, treefellercooldown = 0;
+		private boolean dead, treeFellerMode, superbreakermode, serratedStrikesMode, axePreparationMode;
+		private int recentlyhurt = 0, bleedticks = 0, superbreakerticks = 0, superbreakercooldown = 0, 
+		serratedStrikesTicks = 0, serratedStrikesCooldown = 0, treeFellerTicks = 0, treeFellerCooldown = 0,
+		axePreparationTicks = 0;
 		Player thisplayer;
 		char defaultColor;
 
@@ -206,7 +208,7 @@ class PlayerList
             //gather = "0";
             party = null;
             dead = false;
-            treefellermode = false;
+            treeFellerMode = false;
             //Try to load the player and if they aren't found, append them
             if(!load())
             	addPlayer();
@@ -434,41 +436,92 @@ class PlayerList
 			bleedticks = newvalue;
 		}
 		public Boolean hasCooldowns(){
-			if((treefellercooldown + superbreakercooldown) >= 1){
+			if((treeFellerCooldown + superbreakercooldown) >= 1){
 				return true;
 			} else {
 				return false;
 			}
 		}
 		/*
+		 * AXE PREPARATION
+		 */
+		public boolean getAxePreparationMode(){
+			return axePreparationMode;
+		}
+		public void setAxePreparationMode(Boolean bool){
+			axePreparationMode = bool;
+		}
+		public Integer getAxePreparationTicks(){
+			return axePreparationTicks;
+		}
+		public void setAxePreparationTicks(Integer newvalue){
+			axePreparationTicks = newvalue;
+		}
+		public void decreaseAxePreparationTicks(){
+			if(axePreparationTicks >= 1){
+				axePreparationTicks--;
+			}
+		}
+		/*
+		 * SERRATED STRIKES
+		 */
+		public boolean getSerratedStrikesMode(){
+			return serratedStrikesMode;
+		}
+		public void setSerratedStrikesMode(Boolean bool){
+			serratedStrikesMode = bool;
+		}
+		public Integer getSerratedStrikesTicks(){
+			return serratedStrikesTicks;
+		}
+		public void setSerratedStrikesTicks(Integer newvalue){
+			serratedStrikesTicks = newvalue;
+		}
+		public void decreaseSerratedStrikesTicks(){
+			if(serratedStrikesTicks >= 1){
+				serratedStrikesTicks--;
+			}
+		}
+		public void setSerratedStrikesCooldown(Integer newvalue){
+			serratedStrikesCooldown = newvalue;
+		}
+		public int getSerratedStrikesCooldown(){
+			return serratedStrikesCooldown;
+		}
+		public void decreaseSerratedStrikesCooldown(){
+			if(serratedStrikesCooldown >= 1){
+				serratedStrikesCooldown--;
+			}
+		}
+		/*
 		 * TREE FELLER STUFF
 		 */
 		public boolean getTreeFellerMode(){
-			return treefellermode;
+			return treeFellerMode;
 		}
 		public void setTreeFellerMode(Boolean bool){
-			treefellermode = bool;
+			treeFellerMode = bool;
 		}
 		public Integer getTreeFellerTicks(){
-			return treefellerticks;
+			return treeFellerTicks;
 		}
 		public void setTreeFellerTicks(Integer newvalue){
-			treefellerticks = newvalue;
+			treeFellerTicks = newvalue;
 		}
 		public void decreaseTreeFellerTicks(){
-			if(treefellerticks >= 1){
-				treefellerticks--;
+			if(treeFellerTicks >= 1){
+				treeFellerTicks--;
 			}
 		}
 		public void setTreeFellerCooldown(Integer newvalue){
-			treefellercooldown = newvalue;
+			treeFellerCooldown = newvalue;
 		}
 		public int getTreeFellerCooldown(){
-			return treefellercooldown;
+			return treeFellerCooldown;
 		}
 		public void decreaseTreeFellerCooldown(){
-			if(treefellercooldown >= 1){
-				treefellercooldown--;
+			if(treeFellerCooldown >= 1){
+				treeFellerCooldown--;
 			}
 		}
 		/*

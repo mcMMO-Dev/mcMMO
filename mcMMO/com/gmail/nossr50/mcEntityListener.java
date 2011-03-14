@@ -50,6 +50,7 @@ public class mcEntityListener extends EntityListener {
     		mcAcrobatics.getInstance().acrobaticsCheck(player, event, loc, xx, y, z);
     		}
     	}
+    	
     	/*
     	 * ARCHERY CHECKS
     	 */
@@ -57,10 +58,14 @@ public class mcEntityListener extends EntityListener {
     		EntityDamageByProjectileEvent c = (EntityDamageByProjectileEvent)event;
     		mcCombat.getInstance().archeryCheck(c);
     	}
+    	
     	/*
     	 * Entity Damage by Entity checks
     	 */
     	if(event instanceof EntityDamageByEntityEvent && event.getDamage() >= 1){
+    		if(event.isCancelled()){
+    			return;
+    		}
     		EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent)event;
     		Entity e = eventb.getEntity(); //Defender
         	Entity f = eventb.getDamager(); //Attacker
@@ -71,9 +76,6 @@ public class mcEntityListener extends EntityListener {
         		Player defender = (Player)e;
         		if(defender != null && mcConfig.getInstance().isGodModeToggled(defender.getName()))
         			event.setCancelled(true);
-        		if(f instanceof Monster && defender != null){
-        			mcUsers.getProfile(defender).setRecentlyHurt(30);
-        		}
         		/*
         		 * PARRYING CHECK, CHECK TO SEE IF ITS A SUCCESSFUL PARRY OR NOT
         		 */
@@ -104,6 +106,9 @@ public class mcEntityListener extends EntityListener {
         		 */
         		mcCombat.getInstance().playerVersusAnimalsChecks(e, attacker, eventb, typeid);
         	}
+        	/*
+        	 * CHECK FOR PVP INTERACTIONS
+        	 */
         	if(f instanceof Player && e instanceof Player && !mcLoadProperties.pvp)
         		event.setCancelled(true);
         	if(e instanceof Monster || e instanceof Animals){
@@ -120,6 +125,14 @@ public class mcEntityListener extends EntityListener {
         			}
         		}
         	}
+    	}
+    	
+    	/*
+    	 * Check to see if the defender took damage so we can apply recently hurt
+    	 */
+    	if(x instanceof Player && !event.isCancelled()){
+    		Player herpderp = (Player)x;
+    		mcUsers.getProfile(herpderp).setRecentlyHurt(30);
     	}
     }
     public void onEntityDeath(EntityDeathEvent event) {

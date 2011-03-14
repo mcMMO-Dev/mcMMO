@@ -374,7 +374,6 @@ public class mcCombat {
     		 */
     		if(x instanceof Animals){
     			Animals defender = (Animals)x;
-    			int healthbefore = defender.getHealth();
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
     				event.setDamage(calculateDamage(event, 1));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
@@ -390,7 +389,6 @@ public class mcCombat {
     		 * Defender is Squid
     		 */
     		if(x instanceof Squid){
-    			Squid defender = (Squid)x;
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
     				event.setDamage(calculateDamage(event, 1));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)

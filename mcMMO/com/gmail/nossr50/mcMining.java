@@ -26,16 +26,22 @@ public class mcMining {
 		    		return;
 	    	}
 	    	
-	    	int miningticks = 8;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 100)
+	    	int miningticks = 3;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 50)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 150)
     			miningticks++;
     		if(mcUsers.getProfile(player).getMiningInt() >= 250)
     			miningticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 500)
+    		if(mcUsers.getProfile(player).getMiningInt() >= 350)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 450)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 550)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 650)
     			miningticks++;
     		if(mcUsers.getProfile(player).getMiningInt() >= 750)
-    			miningticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 1000)
     			miningticks++;
     		
 	    	if(!mcUsers.getProfile(player).getSuperBreakerMode() && mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){

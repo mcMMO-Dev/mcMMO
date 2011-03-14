@@ -39,12 +39,14 @@ public class mcBlockListener extends BlockListener {
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
-    	if(block != null && player != null && mcPermissions.getInstance().repair(player) && block.getTypeId() == 42){
-        	mcRepair.getInstance().repairCheck(player, is, block);
+    	if(block != null && player != null && mcPermissions.getInstance().repair(player) && event.getBlock().getTypeId() == 42){
+        	mcRepair.getInstance().repairCheck(player, is, event.getBlock());
         	}
     }
     //put all Block related code here
     public void onBlockDamage(BlockDamageEvent event) {
+    	if(event.isCancelled())
+    		return;
     	//STARTED(0), DIGGING(1), BROKEN(3), STOPPED(2);
     	Player player = event.getPlayer();
     	ItemStack inhand = player.getItemInHand();
@@ -87,6 +89,10 @@ public class mcBlockListener extends BlockListener {
 	    	/*
 	   		 * WOOD CUTTING
 	   		 */
+	    	
+	    	//Check for axe prep
+	    	if(mcUsers.getProfile(player).getAxePreparationMode())
+	    		mcWoodCutting.getInstance().treeFellerCheck(player, block);
 	   		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){
 	   				if(mcLoadProperties.woodcuttingrequiresaxe){
     					if(mcm.getInstance().isAxes(inhand)){
@@ -105,23 +111,21 @@ public class mcBlockListener extends BlockListener {
 	    				mcWoodCutting.getInstance().treeFeller(block, player);
 	    				for(Block blockx : mcConfig.getInstance().getTreeFeller()){
 	    					if(blockx != null){
-	    						Material mat = Material.getMaterial(17);
+	    						Material mat = Material.getMaterial(block.getTypeId());
 	    						byte damage = 0;
 	    						ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-	    						blockx.setType(Material.AIR);
-	    						
-	    						if(item.getTypeId() == 17){
+	    						if(blockx.getTypeId() == 17){
 	    							blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
 	    							mcWoodCutting.getInstance().woodCuttingProcCheck(player, blockx, blockx.getLocation());
 	    							mcUsers.getProfile(player).addWoodcuttingGather(7);
 	    						}
-	    						
-	    						if(item.getTypeId() == 18){
+	    						if(blockx.getTypeId() == 18){
 	    							mat = Material.getMaterial(6);
 	    							item = new ItemStack(mat, 1, (byte)0, damage);
 	    							if(Math.random() * 10 > 8)
 	    								blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
 	    						}
+	    						blockx.setType(Material.AIR);
 	    					}
 	    				}
 	    					/*
@@ -132,12 +136,11 @@ public class mcBlockListener extends BlockListener {
 	    					mcConfig.getInstance().clearTreeFeller();
 	    			}
 	    	}
-	    		/*
-	    		 * EXCAVATION
-	    		 */
-	    		if(mcPermissions.getInstance().excavation(player) && block != null && player != null)
+	    	/*
+	    	 * EXCAVATION
+	    	 */
+	    	if(mcPermissions.getInstance().excavation(player) && block != null && player != null)
 	    		mcExcavation.getInstance().excavationProcCheck(block, player);
-	    		
     		}
     }
     

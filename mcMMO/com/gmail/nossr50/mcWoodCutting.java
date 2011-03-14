@@ -41,17 +41,29 @@ public class mcWoodCutting {
         		if(!mcm.getInstance().abilityBlockCheck(block))
         			return;
         	}
-    		
-    		int treefellticks = 8;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 100)
+    		/*
+    		 * CHECK FOR AXE PREP MODE
+    		 */
+    		if(mcUsers.getProfile(player).getAxePreparationMode()){
+    			mcUsers.getProfile(player).setAxePreparationMode(false);
+    			mcUsers.getProfile(player).setAxePreparationTicks(0);
+    		}
+    		int treefellticks = 3;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 50)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 150)
     			treefellticks++;
     		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 250)
     			treefellticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 500)
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 350)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 450)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 550)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 650)
     			treefellticks++;
     		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 750)
-    			treefellticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 1000)
     			treefellticks++;
 
     		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() == 0){

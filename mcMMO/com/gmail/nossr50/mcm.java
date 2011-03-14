@@ -32,7 +32,7 @@ public class mcm {
     	}
 	public static double getDistance(Location loca, Location locb)
     {
-    return Math.sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)
+	return Math.sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)
     + Math.pow(loca.getZ() - locb.getZ(), 2));
     }
 	public boolean abilityBlockCheck(Block block){
@@ -235,6 +235,23 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/woodcutting")){
 			event.setCancelled(true);
 			float skillvalue = (float)mcUsers.getProfile(player).getWoodCuttingInt();
+			int treefellticks = 3;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 50)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 150)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 250)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 350)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 450)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 550)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 650)
+    			treefellticks++;
+    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 750)
+    			treefellticks++;
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"WOODCUTTING"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Chopping down trees");
@@ -242,6 +259,7 @@ public class mcm {
 			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.YELLOW+ChatColor.GREEN+"Double the normal loot");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
+			player.sendMessage(ChatColor.RED+"Tree Feller Length: "+ChatColor.YELLOW+(treefellticks * 2)+"s");
     	}
     	if(split[0].equalsIgnoreCase("/archery")){
 			event.setCancelled(true);
@@ -336,16 +354,22 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/mining")){
     		float skillvalue = (float)mcUsers.getProfile(player).getMiningInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
-    		int miningticks = 8;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 100)
+    		int miningticks = 3;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 50)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 150)
     			miningticks++;
     		if(mcUsers.getProfile(player).getMiningInt() >= 250)
     			miningticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 500)
+    		if(mcUsers.getProfile(player).getMiningInt() >= 350)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 450)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 550)
+    			miningticks++;
+    		if(mcUsers.getProfile(player).getMiningInt() >= 650)
     			miningticks++;
     		if(mcUsers.getProfile(player).getMiningInt() >= 750)
-    			miningticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 1000)
     			miningticks++;
 			event.setCancelled(true);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"MINING"+ChatColor.RED+"[]-----");
@@ -383,9 +407,9 @@ public class mcm {
 			}
 			
 			if(mcUsers.getProfile(player).getUnarmedInt() < 1000){
-				percentage = String.valueOf(((skillvalue / 1000) * 100) / 2);
+				arrowpercentage = String.valueOf(((skillvalue / 1000) * 100) / 2);
 			} else {
-				percentage = "50";
+				arrowpercentage = "50";
 			}
 			
 			if(mcUsers.getProfile(player).getUnarmedInt() >= 50)
@@ -411,6 +435,7 @@ public class mcm {
 			player.sendMessage(ChatColor.DARK_AQUA+"Damage+: "+ChatColor.GREEN+"Modifies Damage");
 			player.sendMessage(ChatColor.DARK_AQUA+"Arrow Deflect: "+ChatColor.GREEN+"Deflect arrows");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Arrow Deflect Chance: "+ChatColor.YELLOW+arrowpercentage+"%");
 			player.sendMessage(ChatColor.RED+"Disarm Chance: "+ChatColor.YELLOW+percentage+"%");
 			player.sendMessage(ChatColor.RED+"Damage+ (Rank"+rank+"): Bonus "+rank+" damage");
     	}
