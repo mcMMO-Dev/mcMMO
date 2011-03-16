@@ -4,18 +4,23 @@ Version 0.9
 --NEW CONTENT--
 Woodcutting now has the "Tree Feller" Ability
 Mining now has the "Super Breaker" Ability
+Axes now has the "Skull Splitter" Ability
+Excavation now has the "Giga Drill Breaker" Ability
+Added /mcrefresh tool for refreshing cooldowns
 Unarmed now has the "Deflect Arrows" passive skill
 Chimaera Wing Item Added
 
 --CHANGES--
+Woodcutting will drop the appropriate log on double drop procs
 Herbalism now applies double drops to herbs
 /<skillname> now shows much more information to the player regarding their stats
 Axes skill Critical Strikes are now based directly on your skill level
-Swords skill Bleed is now based directly on your skill level
-Unarmed disarm is now based directly on your skill level
+Swords skill Bleed chance is now based directly on your skill level
+Unarmed disarm chance is now based directly on your skill level
 Acrobatics now gives XP when you roll
 
 --BUGFIXES--
+Capped skills now have the correct proc chance
 /mmoedit is no longer case sensitive
 More NPE errors fixed
 

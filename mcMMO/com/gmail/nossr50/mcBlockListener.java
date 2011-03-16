@@ -1,7 +1,5 @@
 package com.gmail.nossr50;
 
-import java.util.ArrayList;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -55,6 +53,21 @@ public class mcBlockListener extends BlockListener {
     	Location loc = block.getLocation();
     	int dmg = event.getDamageLevel().getLevel();
     	
+    	/*
+    	 * GIGA DRILL BREAKER CHECKS
+    	 */
+    	if(mcUsers.getProfile(player).getGigaDrillBreakerMode() && dmg == 0 && mcExcavation.getInstance().canBeGigaDrillBroken(block) && mcm.getInstance().isShovel(inhand)){
+    		mcExcavation.getInstance().excavationProcCheck(block, player);
+    		mcExcavation.getInstance().excavationProcCheck(block, player);
+    		mcExcavation.getInstance().excavationProcCheck(block, player);
+    		Material mat = Material.getMaterial(block.getTypeId());
+    		if(block.getTypeId() == 2)
+    			mat = Material.DIRT;
+			byte type = block.getData();
+			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
+			block.setType(Material.AIR);
+			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+    	}
     	/*
     	 * SUPER BREAKER CHECKS
     	 */
@@ -112,8 +125,10 @@ public class mcBlockListener extends BlockListener {
 	    				for(Block blockx : mcConfig.getInstance().getTreeFeller()){
 	    					if(blockx != null){
 	    						Material mat = Material.getMaterial(block.getTypeId());
-	    						byte damage = 0;
-	    						ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+	    						byte type = 0;
+	    						if(block.getTypeId() == 17)
+	    							type = block.getData();
+	    						ItemStack item = new ItemStack(mat, 1, (byte)0, type);
 	    						if(blockx.getTypeId() == 17){
 	    							blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
 	    							mcWoodCutting.getInstance().woodCuttingProcCheck(player, blockx, blockx.getLocation());
@@ -121,7 +136,7 @@ public class mcBlockListener extends BlockListener {
 	    						}
 	    						if(blockx.getTypeId() == 18){
 	    							mat = Material.getMaterial(6);
-	    							item = new ItemStack(mat, 1, (byte)0, damage);
+	    							item = new ItemStack(mat, 1, (byte)0, type);
 	    							if(Math.random() * 10 > 8)
 	    								blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
 	    						}

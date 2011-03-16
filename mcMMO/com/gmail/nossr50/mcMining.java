@@ -26,7 +26,7 @@ public class mcMining {
 		    		return;
 	    	}
 	    	
-	    	int miningticks = 3;
+	    	int miningticks = 2;
     		if(mcUsers.getProfile(player).getMiningInt() >= 50)
     			miningticks++;
     		if(mcUsers.getProfile(player).getMiningInt() >= 150)

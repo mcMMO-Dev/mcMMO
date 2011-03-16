@@ -2,7 +2,7 @@ package com.gmail.nossr50;
 
 public class mcLoadProperties {
 	public static Boolean pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
-	public static String mcmmo, mcc, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
+	public static String mcmmo, mcc, mcrefresh, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
 	public static int feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public static void loadMain(){
@@ -53,9 +53,11 @@ public class mcLoadProperties {
     	sulphur = properties.getBoolean("canexcavatesulphur", true);
     	netherrack = properties.getBoolean("canexcavatenetherrack", true);
     	bones = properties.getBoolean("canexcavatebones", true);
+    	
     	/*
     	 * CUSTOM COMMANDS
     	 */
+    	mcrefresh = properties.getString("/mcrefresh", "mcrefresh");
     	mcitem = properties.getString("/mcitem", "mcitem");
     	mcmmo = properties.getString("/mcmmo", "mcmmo");
     	mcc = properties.getString("/mcc", "mcc");

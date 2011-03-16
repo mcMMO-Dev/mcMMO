@@ -153,6 +153,13 @@ public class mcm {
     		return false;
     	}
     }
+    public boolean isShovel(ItemStack is){
+    	if(is.getTypeId() == 269 || is.getTypeId() == 273 || is.getTypeId() == 277 || is.getTypeId() == 284 || is.getTypeId() == 256){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
     public boolean isAxes(ItemStack is){
     	if(is.getTypeId() == 271 || is.getTypeId() == 258 || is.getTypeId() == 286 || is.getTypeId() == 279 || is.getTypeId() == 275){
     		return true;
@@ -171,7 +178,7 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/woodcutting")){
 			event.setCancelled(true);
 			float skillvalue = (float)mcUsers.getProfile(player).getWoodCuttingInt();
-			int treefellticks = 3;
+			int treefellticks = 2;
     		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 50)
     			treefellticks++;
     		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 150)
@@ -235,7 +242,7 @@ public class mcm {
 			} else {
 				percentage = "75";
 			}
-			int ticks = 3;
+			int ticks = 2;
     		if(mcUsers.getProfile(player).getAxesInt() >= 50)
     			ticks++;
     		if(mcUsers.getProfile(player).getAxesInt() >= 150)
@@ -310,7 +317,7 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/mining")){
     		float skillvalue = (float)mcUsers.getProfile(player).getMiningInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
-    		int miningticks = 3;
+    		int miningticks = 2;
     		if(mcUsers.getProfile(player).getMiningInt() >= 50)
     			miningticks++;
     		if(mcUsers.getProfile(player).getMiningInt() >= 150)
@@ -428,10 +435,29 @@ public class mcm {
     	}
     	if(split[0].equalsIgnoreCase("/excavation")){
 			event.setCancelled(true);
+			int ticks = 2;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 50)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 150)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 250)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 350)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 450)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 550)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 650)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 750)
+    			ticks++;
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"EXCAVATION"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Digging and finding treasures");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Giga Drill Breaker (ABILITY): "+ChatColor.GREEN+"3x Drop Rate, 3x EXP, +Speed");
 			player.sendMessage(ChatColor.DARK_AQUA+"Treasure Hunter: "+ChatColor.GREEN+"Ability to dig for treasure");
+			player.sendMessage(ChatColor.RED+"Giga Drill Breaker Length: "+ChatColor.YELLOW+(ticks * 2)+"s");
     	}
 		if(split[0].equalsIgnoreCase("/"+mcLoadProperties.mcmmo)){
 			event.setCancelled(true);

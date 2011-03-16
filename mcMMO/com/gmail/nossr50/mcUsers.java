@@ -156,8 +156,8 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead, treeFellerMode, superbreakermode, serratedStrikesMode, axePreparationMode, skullSplitterMode;
-		private int recentlyhurt = 0, bleedticks = 0, superbreakerticks = 0, superbreakercooldown = 0, 
+		private boolean dead, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, axePreparationMode, skullSplitterMode;
+		private int recentlyhurt = 0, bleedticks = 0, gigaDrillBreaker = 0, gigaDrillBreakerCooldown = 0, gigaDrillBreakerTicks = 0, superBreakerTicks = 0, superBreakerCooldown = 0, 
 		serratedStrikesTicks = 0, skullSplitterTicks = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0, treeFellerTicks = 0, treeFellerCooldown = 0,
 		axePreparationTicks = 0;
 		Player thisplayer;
@@ -436,7 +436,7 @@ class PlayerList
 			bleedticks = newvalue;
 		}
 		public Boolean hasCooldowns(){
-			if((treeFellerCooldown + superbreakercooldown) >= 1){
+			if((treeFellerCooldown + superBreakerCooldown) >= 1){
 				return true;
 			} else {
 				return false;
@@ -525,6 +525,37 @@ class PlayerList
 			}
 		}
 		/*
+		 * GIGA DRILL BREAKER
+		 */
+		public boolean getGigaDrillBreakerMode(){
+			return gigaDrillBreakerMode;
+		}
+		public void setGigaDrillBreakerMode(Boolean bool){
+			gigaDrillBreakerMode = bool;
+		}
+		public Integer getGigaDrillBreakerTicks(){
+			return gigaDrillBreakerTicks;
+		}
+		public void setGigaDrillBreakerTicks(Integer newvalue){
+			gigaDrillBreakerTicks = newvalue;
+		}
+		public void decreaseGigaDrillBreakerTicks(){
+			if(gigaDrillBreakerTicks >= 1){
+				gigaDrillBreakerTicks--;
+			}
+		}
+		public void setGigaDrillBreakerCooldown(Integer newvalue){
+			gigaDrillBreakerCooldown = newvalue;
+		}
+		public int getGigaDrillBreakerCooldown(){
+			return gigaDrillBreakerCooldown;
+		}
+		public void decreaseGigaDrillBreakerCooldown(){
+			if(gigaDrillBreakerCooldown >= 1){
+				gigaDrillBreakerCooldown--;
+			}
+		}
+		/*
 		 * TREE FELLER STUFF
 		 */
 		public boolean getTreeFellerMode(){
@@ -559,31 +590,31 @@ class PlayerList
 		 * MINING
 		 */
 		public boolean getSuperBreakerMode(){
-			return superbreakermode;
+			return superBreakerMode;
 		}
 		public void setSuperBreakerMode(Boolean bool){
-			superbreakermode = bool;
+			superBreakerMode = bool;
 		}
 		public Integer getSuperBreakerTicks(){
-			return superbreakerticks;
+			return superBreakerTicks;
 		}
 		public void setSuperBreakerTicks(Integer newvalue){
-			superbreakerticks = newvalue;
+			superBreakerTicks = newvalue;
 		}
 		public void decreaseSuperBreakerTicks(){
-			if(superbreakerticks >= 1){
-				superbreakerticks--;
+			if(superBreakerTicks >= 1){
+				superBreakerTicks--;
 			}
 		}
 		public void setSuperBreakerCooldown(Integer newvalue){
-			superbreakercooldown = newvalue;
+			superBreakerCooldown = newvalue;
 		}
 		public int getSuperBreakerCooldown(){
-			return superbreakercooldown;
+			return superBreakerCooldown;
 		}
 		public void decreaseSuperBreakerCooldown(){
-			if(superbreakercooldown >= 1){
-				superbreakercooldown--;
+			if(superBreakerCooldown >= 1){
+				superBreakerCooldown--;
 			}
 		}
 		

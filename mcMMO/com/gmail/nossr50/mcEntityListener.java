@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 public class mcEntityListener extends EntityListener {
 	private final mcMMO plugin;

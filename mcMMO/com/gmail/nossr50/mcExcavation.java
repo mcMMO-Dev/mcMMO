@@ -19,7 +19,50 @@ public class mcExcavation {
     	}
     	return instance;
     	}
-	
+	public void gigaDrillBreakerActivationCheck(Player player, Block block){
+		if(mcm.getInstance().isShovel(player.getItemInHand())){
+	    	if(block != null){
+		    	if(!mcm.getInstance().abilityBlockCheck(block))
+		    		return;
+	    	}
+	    	
+	    	int ticks = 2;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 50)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 150)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 250)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 350)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 450)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 550)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 650)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getExcavationInt() >= 750)
+    			ticks++;
+    		
+	    	if(!mcUsers.getProfile(player).getGigaDrillBreakerMode() && mcUsers.getProfile(player).getGigaDrillBreakerCooldown() == 0){
+	    		player.sendMessage(ChatColor.GREEN+"**GIGA DRILL BREAKER ACTIVATED**");
+	    		mcUsers.getProfile(player).setGigaDrillBreakerTicks(ticks);
+	    		mcUsers.getProfile(player).setGigaDrillBreakerMode(true);
+	    	}
+	    	
+	    	if(!mcUsers.getProfile(player).getGigaDrillBreakerMode() && mcUsers.getProfile(player).getGigaDrillBreakerCooldown() >= 1){
+	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+	    	}
+	    }
+	}
+	public boolean canBeGigaDrillBroken(Block block){
+		int i = block.getTypeId();
+		if(i == 2||i == 3||i == 12||i == 13){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	public void excavationProcCheck(Block block, Player player){
     	int type = block.getTypeId();
     	Location loc = block.getLocation();

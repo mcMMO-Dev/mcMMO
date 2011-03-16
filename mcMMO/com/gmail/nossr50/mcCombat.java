@@ -289,7 +289,7 @@ public class mcCombat {
     		Player defender = (Player)x;
     		if(mcPermissions.getInstance().unarmed(defender) && defender.getItemInHand().getTypeId() == 0){
 	    		if(mcUsers.getProfile(defender).getUnarmedInt() >= 1000){
-	    			if(Math.random() * 1000 >= 500){
+	    			if(Math.random() * 1000 <= 500){
 	    				event.setCancelled(true);
 	    				defender.sendMessage(ChatColor.WHITE+"**ARROW DEFLECT**");
 	    				return;
@@ -462,7 +462,7 @@ public class mcCombat {
     }
 	public boolean simulateUnarmedProc(Player player){
     	if(mcUsers.getProfile(player).getUnarmedInt() >= 750){
-    		if(Math.random() * 1000 >= 750){
+    		if(Math.random() * 1000 <= 750){
     			return true;
     		}
     	} else {
@@ -522,7 +522,7 @@ public class mcCombat {
     public void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Entity x){
     	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
     		if(mcUsers.getProfile(attacker).getAxesInt() >= 750){
-    			if(Math.random() * 1000 >= 750){
+    			if(Math.random() * 1000 <= 750){
     				event.setDamage(event.getDamage() * 2);
     				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				if(x instanceof Player){

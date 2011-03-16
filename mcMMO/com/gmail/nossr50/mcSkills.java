@@ -38,25 +38,31 @@ public class mcSkills {
     	if(mcUsers.getProfile(player).getTreeFellerCooldown() >= 1){
     		mcUsers.getProfile(player).decreaseTreeFellerCooldown();
     		if(mcUsers.getProfile(player).getTreeFellerCooldown() == 0){
-    			player.sendMessage(ChatColor.GREEN+"Your Tree Felling ability is refreshed!");
+    			player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Tree Feller "+ChatColor.GREEN+"ability is refreshed!");
     		}
     	}
     	if(mcUsers.getProfile(player).getSuperBreakerCooldown() >= 1){
     		mcUsers.getProfile(player).decreaseSuperBreakerCooldown();
 			if(mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
-				player.sendMessage(ChatColor.GREEN+"Your Super Breaker ability is refreshed!");
+				player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Super Breaker "+ChatColor.GREEN+"ability is refreshed!");
 			}
     	}
     	if(mcUsers.getProfile(player).getSerratedStrikesCooldown() >= 1){
     		mcUsers.getProfile(player).decreaseSerratedStrikesCooldown();
 			if(mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
-				player.sendMessage(ChatColor.GREEN+"Your Serrated Strikes ability is refreshed!");
+				player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Serrated Strikes "+ChatColor.GREEN+"ability is refreshed!");
 			}
     	}
     	if(mcUsers.getProfile(player).getSkullSplitterCooldown() >= 1){
     		mcUsers.getProfile(player).decreaseSkullSplitterCooldown();
 			if(mcUsers.getProfile(player).getSkullSplitterCooldown() == 0){
-				player.sendMessage(ChatColor.GREEN+"Your Skull Splitter ability is refreshed!");
+				player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Skull Splitter "+ChatColor.GREEN+"ability is refreshed!");
+			}
+    	}
+    	if(mcUsers.getProfile(player).getGigaDrillBreakerCooldown() >= 1){
+    		mcUsers.getProfile(player).decreaseGigaDrillBreakerCooldown();
+			if(mcUsers.getProfile(player).getGigaDrillBreakerCooldown() == 0){
+				player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Giga Drill Breaker "+ChatColor.GREEN+"ability is refreshed!");
 			}
     	}
     }
@@ -79,6 +85,9 @@ public class mcSkills {
     	if(mcPermissions.getInstance().miningability(player)){
     		mcMining.getInstance().superBreakerCheck(player, block);
     	}
+    	if(mcPermissions.getInstance().excavationAbility(player)){
+    		mcExcavation.getInstance().gigaDrillBreakerActivationCheck(player, block);
+    	}
     	axeActivationCheck(player, block);
     }
     public void skullSplitterCheck(Player player){
@@ -90,7 +99,7 @@ public class mcSkills {
     			mcUsers.getProfile(player).setAxePreparationMode(false);
     			mcUsers.getProfile(player).setAxePreparationTicks(0);
     		}
-    		int ticks = 3;
+    		int ticks = 2;
     		if(mcUsers.getProfile(player).getAxesInt() >= 50)
     			ticks++;
     		if(mcUsers.getProfile(player).getAxesInt() >= 150)
@@ -136,7 +145,7 @@ public class mcSkills {
     	 * AXES ABILITY
     	 */
     	if(mcPermissions.getInstance().axesAbility(player)){
-			//Monitor the length of TreeFeller mode
+			//Monitor the length of Skull Splitter mode
 			if(mcUsers.getProfile(player).getSkullSplitterMode()){
 				mcUsers.getProfile(player).decreaseSkullSplitterTicks();
 				if(mcUsers.getProfile(player).getSkullSplitterTicks() <= 0){
@@ -171,6 +180,20 @@ public class mcSkills {
 					mcUsers.getProfile(player).setSuperBreakerMode(false);
 					mcUsers.getProfile(player).setSuperBreakerCooldown(120);
 					player.sendMessage(ChatColor.GRAY+"**You feel strength leaving you**");
+				}
+			}
+		}
+		/*
+		 * EXCAVATION ABILITY
+		 */
+		if(mcPermissions.getInstance().excavationAbility(player)){
+			//Monitor the length of Giga Drill Breaker mode
+			if(mcUsers.getProfile(player).getGigaDrillBreakerMode()){
+				mcUsers.getProfile(player).decreaseGigaDrillBreakerTicks();
+				if(mcUsers.getProfile(player).getGigaDrillBreakerTicks() <= 0){
+					mcUsers.getProfile(player).setGigaDrillBreakerMode(false);
+					mcUsers.getProfile(player).setGigaDrillBreakerCooldown(120);
+					player.sendMessage(ChatColor.GRAY+"**You feel spiral energy leaving you**");
 				}
 			}
 		}

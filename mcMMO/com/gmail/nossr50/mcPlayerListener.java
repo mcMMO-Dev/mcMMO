@@ -92,6 +92,48 @@ public class mcPlayerListener extends PlayerListener {
     	String playerName = player.getName();
     	//Check if the command is an mcMMO related help command
     	mcm.getInstance().mcmmoHelpCheck(split, player, event);
+		if(mcPermissions.permissionsEnabled && split[0].equalsIgnoreCase("/"+mcLoadProperties.mcrefresh)){
+			event.setCancelled(true);
+    		if(!mcPermissions.getInstance().mcrefresh(player)){
+    			player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +" Insufficient permissions.");
+    			return;
+    		}
+    		if(split.length >= 2 && isPlayer(split[1])){
+    			player.sendMessage("You have refreshed "+split[1]+"'s cooldowns!");
+    			player = getPlayer(split[1]);
+    		}
+			/*
+			 * AXE PREPARATION MODE
+			 */
+    		mcUsers.getProfile(player).setAxePreparationMode(false);
+    		mcUsers.getProfile(player).setAxePreparationTicks(0);
+    		/*
+    		 * GIGA DRILL BREAKER
+    		 */
+    		mcUsers.getProfile(player).setGigaDrillBreakerCooldown(0);
+    		mcUsers.getProfile(player).setGigaDrillBreakerMode(false);
+    		mcUsers.getProfile(player).setGigaDrillBreakerTicks(0);
+    		/*
+    		 * SERRATED STRIKE
+    		 */
+    		mcUsers.getProfile(player).setSerratedStrikesCooldown(0);
+    		mcUsers.getProfile(player).setSerratedStrikesMode(false);
+    		mcUsers.getProfile(player).setSerratedStrikesTicks(0);
+    		/*
+    		 * SUPER BREAKER
+    		 */
+    		mcUsers.getProfile(player).setSuperBreakerCooldown(0);
+    		mcUsers.getProfile(player).setSuperBreakerMode(false);
+    		mcUsers.getProfile(player).setSuperBreakerTicks(0);
+    		/*
+    		 * TREE FELLER
+    		 */
+    		mcUsers.getProfile(player).setTreeFellerCooldown(0);
+    		mcUsers.getProfile(player).setTreeFellerMode(false);
+    		mcUsers.getProfile(player).setTreeFellerTicks(0);
+    		
+    		player.sendMessage(ChatColor.GREEN+"**ABILITIES REFRESHED!**");
+    	}
     	if(split[0].equalsIgnoreCase("/"+mcLoadProperties.mcitem)){
     		
     	}

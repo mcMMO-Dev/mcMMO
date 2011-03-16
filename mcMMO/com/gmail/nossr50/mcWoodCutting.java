@@ -26,10 +26,9 @@ public class mcWoodCutting {
     public void woodCuttingProcCheck(Player player, Block block, Location loc){
     	byte type = block.getData();
     	Material mat = Material.getMaterial(block.getTypeId());
-    	byte damage = 0;
     	if(player != null){
     		if(Math.random() * 1000 <= mcUsers.getProfile(player).getWoodCuttingInt()){
-			ItemStack item = new ItemStack(mat, 1, type, damage);
+			ItemStack item = new ItemStack(mat, 1, (short) 0, type);
 			loc.getWorld().dropItemNaturally(loc, item);
 			return;
     		}
@@ -48,7 +47,7 @@ public class mcWoodCutting {
     			mcUsers.getProfile(player).setAxePreparationMode(false);
     			mcUsers.getProfile(player).setAxePreparationTicks(0);
     		}
-    		int treefellticks = 3;
+    		int treefellticks = 2;
     		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 50)
     			treefellticks++;
     		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 150)

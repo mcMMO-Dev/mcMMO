@@ -30,9 +30,23 @@ public class mcPermissions {
     private boolean permission(Player player, String string) {
         return permissionsPlugin.Security.permission(player, string);  
     }
+    public boolean mcrefresh(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.tools.mcrefresh");
+        } else {
+            return true;
+        }
+    }
     public boolean mmoedit(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.tools.mmoedit");
+        } else {
+            return true;
+        }
+    }
+    public boolean excavationAbility(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.excavation");
         } else {
             return true;
         }
