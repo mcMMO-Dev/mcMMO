@@ -3,10 +3,12 @@ Changelog:
 Version 0.9
 --NEW CONTENT--
 Woodcutting now has the "Tree Feller" Ability
+Unarmed now has the "Berserk" Ability
+Swords now has the "Serrated Strikes" Ability
 Mining now has the "Super Breaker" Ability
 Axes now has the "Skull Splitter" Ability
 Excavation now has the "Giga Drill Breaker" Ability
-Added /mcrefresh tool for refreshing cooldowns
+Added /mcrefresh <playername> - tool for refreshing cooldowns
 Unarmed now has the "Deflect Arrows" passive skill
 Chimaera Wing Item Added
 

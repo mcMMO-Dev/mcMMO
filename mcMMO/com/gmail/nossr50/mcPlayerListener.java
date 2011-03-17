@@ -61,7 +61,7 @@ public class mcPlayerListener extends PlayerListener {
     public void onPlayerJoin(PlayerEvent event) {
     	Player player = event.getPlayer();
     	if(mcPermissions.getInstance().motd(player)){
-    	player.sendMessage(ChatColor.BLUE + "This server is running mcMMO "+plugin.getDescription().getVersion()+" type /"+ChatColor.YELLOW+mcLoadProperties.mcmmo+ChatColor.BLUE+ " for help.");
+    		player.sendMessage(ChatColor.BLUE + "This server is running mcMMO "+plugin.getDescription().getVersion()+" type /"+ChatColor.YELLOW+mcLoadProperties.mcmmo+ChatColor.BLUE+ " for help.");
     	}
     }
     //Check if string is a player
@@ -131,6 +131,12 @@ public class mcPlayerListener extends PlayerListener {
     		mcUsers.getProfile(player).setTreeFellerCooldown(0);
     		mcUsers.getProfile(player).setTreeFellerMode(false);
     		mcUsers.getProfile(player).setTreeFellerTicks(0);
+    		/*
+    		 * BERSERK
+    		 */
+    		mcUsers.getProfile(player).setBerserkCooldown(0);
+    		mcUsers.getProfile(player).setBerserkMode(false);
+    		mcUsers.getProfile(player).setBerserkTicks(0);
     		
     		player.sendMessage(ChatColor.GREEN+"**ABILITIES REFRESHED!**");
     	}
@@ -300,13 +306,17 @@ public class mcPlayerListener extends PlayerListener {
     			player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +" Insufficient permissions.");
     			return;
     		}
+    		if((mcPermissions.getInstance().setMySpawnOther(player) || player.isOp()) && split.length >= 2 && isPlayer(split[1])){
+    			player.sendMessage("You have set "+split[1]+"'s spawn!");
+    			player = getPlayer(split[1]);
+    		}
     		event.setCancelled(true);
     		double x = player.getLocation().getX();
     		double y = player.getLocation().getY();
     		double z = player.getLocation().getZ();
     		String myspawnworld = player.getWorld().getName();
     		mcUsers.getProfile(player).setMySpawn(x, y, z, myspawnworld);
-    		player.sendMessage(ChatColor.DARK_AQUA + "Myspawn has been set to your current location.");
+    		player.sendMessage(ChatColor.DARK_AQUA + "Myspawn has been set.");
     	}
     	/*
     	 * STATS COMMAND

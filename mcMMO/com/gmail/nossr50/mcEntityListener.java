@@ -97,6 +97,11 @@ public class mcEntityListener extends EntityListener {
         		if(mcUsers.getProfile(attacker).getAxePreparationMode())
         			mcSkills.getInstance().skullSplitterCheck(attacker);
         		/*
+        		 * BERSERK DAMAGE MODIFIER
+        		 */
+        		if(mcUsers.getProfile(attacker).getBerserkMode())
+        			event.setDamage(event.getDamage() + (event.getDamage() / 2));
+        		/*
         		 * Player versus Monster checks, this handles all skill damage modifiers and any procs.
         		 */
         		mcCombat.getInstance().playerVersusMonsterChecks(eventb, attacker, e, typeid);
@@ -117,6 +122,8 @@ public class mcEntityListener extends EntityListener {
         		 * This will do AOE damage from the axes ability
         		 */
         		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSkullSplitterMode())
+            		mcCombat.getInstance().applyAoeDamage(attacker, eventb, x);
+        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSerratedStrikesMode())
             		mcCombat.getInstance().applyAoeDamage(attacker, eventb, x);
         	}
         	

@@ -49,8 +49,14 @@ public class mcSkills {
     	}
     	if(mcUsers.getProfile(player).getSerratedStrikesCooldown() >= 1){
     		mcUsers.getProfile(player).decreaseSerratedStrikesCooldown();
-			if(mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
+			if(mcUsers.getProfile(player).getSerratedStrikesCooldown() == 0){
 				player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Serrated Strikes "+ChatColor.GREEN+"ability is refreshed!");
+			}
+    	}
+    	if(mcUsers.getProfile(player).getBerserkCooldown() >= 1){
+    		mcUsers.getProfile(player).decreaseBerserkCooldown();
+			if(mcUsers.getProfile(player).getBerserkCooldown() == 0){
+				player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Berserk "+ChatColor.GREEN+"ability is refreshed!");
 			}
     	}
     	if(mcUsers.getProfile(player).getSkullSplitterCooldown() >= 1){
@@ -82,14 +88,92 @@ public class mcSkills {
     	}
     }
     public void abilityActivationCheck(Player player, Block block){
-    	if(mcPermissions.getInstance().miningability(player)){
+    	if(mcPermissions.getInstance().miningAbility(player)){
     		mcMining.getInstance().superBreakerCheck(player, block);
     	}
     	if(mcPermissions.getInstance().excavationAbility(player)){
     		mcExcavation.getInstance().gigaDrillBreakerActivationCheck(player, block);
     	}
+    	if(mcPermissions.getInstance().unarmed(player)){
+    		berserkActivationCheck(player, block);
+    	}
+    	if(mcPermissions.getInstance().swords(player)){
+    		serratedStrikesActivationCheck(player, block);
+    	}
     	axeActivationCheck(player, block);
     }
+    public void serratedStrikesActivationCheck(Player player, Block block){
+		if(mcm.getInstance().isSwords(player.getItemInHand())){
+	    	if(block != null){
+		    	if(!mcm.getInstance().abilityBlockCheck(block))
+		    		return;
+	    	}
+	    	
+	    	int ticks = 2;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 50)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 150)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 250)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 350)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 450)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 550)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 650)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 750)
+    			ticks++;
+    		
+	    	if(!mcUsers.getProfile(player).getSerratedStrikesMode() && mcUsers.getProfile(player).getSerratedStrikesCooldown() == 0){
+	    		player.sendMessage(ChatColor.GREEN+"**SERRATED STRIKES ACTIVATED**");
+	    		mcUsers.getProfile(player).setSerratedStrikesTicks(ticks);
+	    		mcUsers.getProfile(player).setSerratedStrikesMode(true);
+	    	}
+	    	
+	    	if(!mcUsers.getProfile(player).getGigaDrillBreakerMode() && mcUsers.getProfile(player).getGigaDrillBreakerCooldown() >= 1){
+	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+	    	}
+	    }
+	}
+    public void berserkActivationCheck(Player player, Block block){
+		if(player.getItemInHand().getTypeId() == 0){
+	    	if(block != null){
+		    	if(!mcm.getInstance().abilityBlockCheck(block))
+		    		return;
+	    	}
+	    	
+	    	int ticks = 2;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 50)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 150)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 250)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 350)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 450)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 550)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 650)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 750)
+    			ticks++;
+    		
+	    	if(!mcUsers.getProfile(player).getBerserkMode() && mcUsers.getProfile(player).getBerserkCooldown() == 0){
+	    		player.sendMessage(ChatColor.GREEN+"**BERSERK ACTIVATED**");
+	    		mcUsers.getProfile(player).setBerserkTicks(ticks);
+	    		mcUsers.getProfile(player).setBerserkMode(true);
+	    	}
+	    	
+	    	if(!mcUsers.getProfile(player).getGigaDrillBreakerMode() && mcUsers.getProfile(player).getGigaDrillBreakerCooldown() >= 1){
+	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+	    	}
+	    }
+	}
     public void skullSplitterCheck(Player player){
     	if(mcm.getInstance().isAxes(player.getItemInHand())){
     		/*
@@ -131,7 +215,7 @@ public class mcSkills {
     	/*
     	 * AXE PREPARATION MODE
     	 */
-    	if(mcPermissions.getInstance().woodcuttingability(player) && mcPermissions.getInstance().axes(player)){
+    	if(mcPermissions.getInstance().woodCuttingAbility(player) && mcPermissions.getInstance().axes(player)){
 			//Monitor the length of TreeFeller mode
 			if(mcUsers.getProfile(player).getAxePreparationMode()){
 				mcUsers.getProfile(player).decreaseAxePreparationTicks();
@@ -158,7 +242,7 @@ public class mcSkills {
     	/*
 		 * WOODCUTTING ABILITY
 		 */
-		if(mcPermissions.getInstance().woodcuttingability(player)){
+		if(mcPermissions.getInstance().woodCuttingAbility(player)){
 			//Monitor the length of TreeFeller mode
 			if(mcUsers.getProfile(player).getTreeFellerMode()){
 				mcUsers.getProfile(player).decreaseTreeFellerTicks();
@@ -172,7 +256,7 @@ public class mcSkills {
 		/*
 		 * MINING ABILITY
 		 */
-		if(mcPermissions.getInstance().miningability(player)){
+		if(mcPermissions.getInstance().miningAbility(player)){
 			//Monitor the length of SuperBreaker mode
 			if(mcUsers.getProfile(player).getSuperBreakerMode()){
 				mcUsers.getProfile(player).decreaseSuperBreakerTicks();

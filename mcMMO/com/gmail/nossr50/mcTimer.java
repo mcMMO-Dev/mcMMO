@@ -53,8 +53,7 @@ public class mcTimer extends TimerTask{
 			/*
 			 * COOLDOWN MONITORING
 			 */
-			if(mcUsers.getProfile(player).hasCooldowns())
-				mcSkills.getInstance().decreaseCooldowns(player);
+			mcSkills.getInstance().decreaseCooldowns(player);
 		}
 		if(thecount < 20){
 			thecount++;

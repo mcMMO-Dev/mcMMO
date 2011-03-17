@@ -294,14 +294,34 @@ public class mcm {
 			} else {
 				parrypercentage = "0";
 			}
+			int ticks = 2;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 50)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 150)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 250)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 350)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 450)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 550)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 650)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getSwordsInt() >= 750)
+    			ticks++;
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"SWORDS"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Serrated Strikes (ABILITY): "+ChatColor.GREEN+"25% DMG AoE, Bleed+ AoE");
+			player.sendMessage(ChatColor.DARK_GRAY+"Serrated Strikes Bleed+: "+ChatColor.GREEN+"Enemies Bleed Longer");
 			player.sendMessage(ChatColor.DARK_AQUA+"Parrying: "+ChatColor.GREEN+"Negates Damage");
 			player.sendMessage(ChatColor.DARK_AQUA+"Bleed: "+ChatColor.GREEN+"Apply a 2 second bleed DoT to enemies");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Bleed Chance: "+ChatColor.YELLOW+percentage+"%");
 			player.sendMessage(ChatColor.RED+"Parry Chance:"+ChatColor.YELLOW+parrypercentage+"%");
+			player.sendMessage(ChatColor.RED+"Serrated Strikes Length: "+ChatColor.YELLOW+(ticks * 2)+"s");
     	}
     	if(split[0].equalsIgnoreCase("/acrobatics")){
 			event.setCancelled(true);
@@ -391,9 +411,29 @@ public class mcm {
 				rank++;
 			if(mcUsers.getProfile(player).getUnarmedInt() >= 950)
 				rank++;
+			
+			int ticks = 2;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 50)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 150)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 250)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 350)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 450)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 550)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 650)
+    			ticks++;
+    		if(mcUsers.getProfile(player).getUnarmedInt() >= 750)
+    			ticks++;
+    		
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"UNARMED"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Berserk (ABILITY): "+ChatColor.GREEN+"+50% DMG, Breaks weak materials");
 			player.sendMessage(ChatColor.DARK_AQUA+"Disarm (Players): "+ChatColor.GREEN+"Drops the foes item held in hand");
 			player.sendMessage(ChatColor.DARK_AQUA+"Damage+: "+ChatColor.GREEN+"Modifies Damage");
 			player.sendMessage(ChatColor.DARK_AQUA+"Arrow Deflect: "+ChatColor.GREEN+"Deflect arrows");
@@ -401,6 +441,7 @@ public class mcm {
 			player.sendMessage(ChatColor.RED+"Arrow Deflect Chance: "+ChatColor.YELLOW+arrowpercentage+"%");
 			player.sendMessage(ChatColor.RED+"Disarm Chance: "+ChatColor.YELLOW+percentage+"%");
 			player.sendMessage(ChatColor.RED+"Damage+ (Rank"+rank+"): Bonus "+rank+" damage");
+			player.sendMessage(ChatColor.RED+"Berserk Length: "+ChatColor.YELLOW+(ticks * 2)+"s");
     	}
     	if(split[0].equalsIgnoreCase("/herbalism")){
 			event.setCancelled(true);
@@ -457,6 +498,7 @@ public class mcm {
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.DARK_AQUA+"Giga Drill Breaker (ABILITY): "+ChatColor.GREEN+"3x Drop Rate, 3x EXP, +Speed");
 			player.sendMessage(ChatColor.DARK_AQUA+"Treasure Hunter: "+ChatColor.GREEN+"Ability to dig for treasure");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Giga Drill Breaker Length: "+ChatColor.YELLOW+(ticks * 2)+"s");
     	}
 		if(split[0].equalsIgnoreCase("/"+mcLoadProperties.mcmmo)){

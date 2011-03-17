@@ -156,8 +156,8 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, axePreparationMode, skullSplitterMode;
-		private int recentlyhurt = 0, bleedticks = 0, gigaDrillBreaker = 0, gigaDrillBreakerCooldown = 0, gigaDrillBreakerTicks = 0, superBreakerTicks = 0, superBreakerCooldown = 0, 
+		private boolean dead, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, axePreparationMode, skullSplitterMode, berserkMode;
+		private int recentlyhurt = 0, bleedticks = 0, gigaDrillBreakerCooldown = 0, gigaDrillBreakerTicks = 0, berserkTicks = 0, berserkCooldown = 0, superBreakerTicks = 0, superBreakerCooldown = 0, 
 		serratedStrikesTicks = 0, skullSplitterTicks = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0, treeFellerTicks = 0, treeFellerCooldown = 0,
 		axePreparationTicks = 0;
 		Player thisplayer;
@@ -460,6 +460,37 @@ class PlayerList
 		public void decreaseAxePreparationTicks(){
 			if(axePreparationTicks >= 1){
 				axePreparationTicks--;
+			}
+		}
+		/*
+		 * BERSERK MODE
+		 */
+		public boolean getBerserkMode(){
+			return berserkMode;
+		}
+		public void setBerserkMode(Boolean bool){
+			berserkMode = bool;
+		}
+		public Integer getBerserkTicks(){
+			return berserkTicks;
+		}
+		public void setBerserkTicks(Integer newvalue){
+			berserkTicks = newvalue;
+		}
+		public void decreaseBerserkTicks(){
+			if(berserkTicks >= 1){
+				berserkTicks--;
+			}
+		}
+		public void setBerserkCooldown(Integer newvalue){
+			berserkCooldown = newvalue;
+		}
+		public int getBerserkCooldown(){
+			return berserkCooldown;
+		}
+		public void decreaseBerserkCooldown(){
+			if(berserkCooldown >= 1){
+				berserkCooldown--;
 			}
 		}
 		/*

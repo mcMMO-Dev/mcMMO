@@ -69,6 +69,19 @@ public class mcBlockListener extends BlockListener {
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
     	}
     	/*
+    	 * BERSERK MODE CHECKS
+    	 */
+    	if(mcUsers.getProfile(player).getBerserkMode() && player.getItemInHand().getTypeId() == 0 && dmg == 0 && mcExcavation.getInstance().canBeGigaDrillBroken(block)){
+    		Material mat = Material.getMaterial(block.getTypeId());
+    		if(block.getTypeId() == 2)
+    			mat = Material.DIRT;
+			byte type = block.getData();
+			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
+			block.setType(Material.AIR);
+			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+    	}
+    	
+    	/*
     	 * SUPER BREAKER CHECKS
     	 */
     	if(mcUsers.getProfile(player).getSuperBreakerMode() && dmg == 0 && mcMining.getInstance().canBeSuperBroken(block)){
@@ -120,7 +133,7 @@ public class mcBlockListener extends BlockListener {
 	    			/*
 	    			 * IF PLAYER IS USING TREEFELLER
 	   				 */
-	   				if(mcPermissions.getInstance().woodcuttingability(player) && mcUsers.getProfile(player).getTreeFellerMode() && block.getTypeId() == 17){
+	   				if(mcPermissions.getInstance().woodCuttingAbility(player) && mcUsers.getProfile(player).getTreeFellerMode() && block.getTypeId() == 17){
 	    				mcWoodCutting.getInstance().treeFeller(block, player);
 	    				for(Block blockx : mcConfig.getInstance().getTreeFeller()){
 	    					if(blockx != null){
