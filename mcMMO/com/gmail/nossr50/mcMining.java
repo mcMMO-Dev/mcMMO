@@ -50,9 +50,6 @@ public class mcMining {
 	    		mcUsers.getProfile(player).setSuperBreakerMode(true);
 	    	}
 	    	
-	    	if(!mcUsers.getProfile(player).getSuperBreakerMode() && mcUsers.getProfile(player).getSuperBreakerCooldown() >= 1){
-	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
-	    	}
 	    }
 	}
 	public void blockProcSimulate(Block block){

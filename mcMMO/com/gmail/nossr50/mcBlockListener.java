@@ -37,8 +37,8 @@ public class mcBlockListener extends BlockListener {
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
-    	if(mcPermissions.getInstance().unarmed(player)){
-    		mcSkills.getInstance().berserkActivationCheck(player, block);
+    	if(mcPermissions.getInstance().unarmed(player) && player.getItemInHand().getTypeId() == 0 && mcm.getInstance().abilityBlockCheck(block)){
+    		mcSkills.getInstance().abilityActivationCheck(player, block);
     	}
     	if(block != null && player != null && mcPermissions.getInstance().repair(player) && event.getBlock().getTypeId() == 42){
         	mcRepair.getInstance().repairCheck(player, is, event.getBlock());
@@ -55,7 +55,17 @@ public class mcBlockListener extends BlockListener {
     	Block block = event.getBlock();
     	Location loc = block.getLocation();
     	int dmg = event.getDamageLevel().getLevel();
-    	
+    	/*
+    	 * ABILITY PREPARATION CHECKS
+    	 */
+    	if(mcUsers.getProfile(player).getAxePreparationMode() && block.getTypeId() == 17)
+    		mcWoodCutting.getInstance().treeFellerCheck(player, block);
+    	if(mcUsers.getProfile(player).getPickaxePreparationMode())
+    		mcMining.getInstance().superBreakerCheck(player, block);
+    	if(mcUsers.getProfile(player).getShovelPreparationMode() && mcExcavation.getInstance().canBeGigaDrillBroken(block))
+    		mcExcavation.getInstance().gigaDrillBreakerActivationCheck(player, block);
+    	if(mcUsers.getProfile(player).getFistsPreparationMode() && mcExcavation.getInstance().canBeGigaDrillBroken(block))
+    		mcSkills.getInstance().berserkActivationCheck(player);
     	/*
     	 * GIGA DRILL BREAKER CHECKS
     	 */
@@ -119,9 +129,6 @@ public class mcBlockListener extends BlockListener {
 	   		 * WOOD CUTTING
 	   		 */
 	    	
-	    	//Check for axe prep
-	    	if(mcUsers.getProfile(player).getAxePreparationMode())
-	    		mcWoodCutting.getInstance().treeFellerCheck(player, block);
 	   		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){
 	   				if(mcLoadProperties.woodcuttingrequiresaxe){
     					if(mcm.getInstance().isAxes(inhand)){

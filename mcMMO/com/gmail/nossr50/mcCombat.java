@@ -498,7 +498,7 @@ public class mcCombat {
     }
     public void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Entity x){
     	for(Entity derp : x.getWorld().getEntities()){
-    		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 7){
+    		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 5){
     			if(derp instanceof Player){
     				Player target = (Player)derp;
     				if(mcParty.getInstance().inSameParty(attacker, target))
@@ -521,14 +521,14 @@ public class mcCombat {
     }
     public void applySerratedStrikes(Player attacker, EntityDamageByEntityEvent event, Entity x){
     	for(Entity derp : x.getWorld().getEntities()){
-    		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 7){
+    		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 5){
     			if(derp instanceof Player){
     				Player target = (Player)derp;
     				if(mcParty.getInstance().inSameParty(attacker, target))
     					continue;
     				if(!target.getName().equals(attacker.getName())){
     					target.damage(event.getDamage() / 4);
-    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strike!");
+    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
     					if(!mcConfig.getInstance().isBleedTracked(derp)){
         					mcConfig.getInstance().addBleedTrack(x);
         					mcUsers.getProfile(target).setBleedTicks(12);
@@ -554,20 +554,20 @@ public class mcCombat {
     	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
     		if(mcUsers.getProfile(attacker).getAxesInt() >= 750){
     			if(Math.random() * 1000 <= 750){
-    				event.setDamage(event.getDamage() * 2);
-    				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				if(x instanceof Player){
     					Player player = (Player)x;
     					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     				}
+    				event.setDamage(event.getDamage() * 2);
+    				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     			}
     		} else if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getAxesInt()){
     			if(x instanceof Player){
     				Player player = (Player)x;
-    				event.setDamage(event.getDamage() * 2);
-    				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     				player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     			}
+    			event.setDamage(event.getDamage() * 2);
+				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     		}
     	}
     }

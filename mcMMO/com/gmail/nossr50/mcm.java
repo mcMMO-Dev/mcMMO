@@ -37,7 +37,7 @@ public class mcm {
     }
 	public boolean abilityBlockCheck(Block block){
 		int i = block.getTypeId();
-		if(i == 58 || i == 61 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
+		if(i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
 			return false;
 		} else {
 			return true;

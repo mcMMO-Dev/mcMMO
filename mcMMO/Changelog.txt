@@ -13,6 +13,7 @@ Unarmed now has the "Deflect Arrows" passive skill
 Chimaera Wing Item Added
 
 --CHANGES--
+HP Regen & Bleed are back
 Woodcutting will drop the appropriate log on double drop procs
 Herbalism now applies double drops to herbs
 /<skillname> now shows much more information to the player regarding their stats
@@ -22,9 +23,13 @@ Unarmed disarm chance is now based directly on your skill level
 Acrobatics now gives XP when you roll
 
 --BUGFIXES--
+Memory Leak Fixed
+Axes not doing critical strikes
+Gold Armor repair
 Capped skills now have the correct proc chance
 /mmoedit is no longer case sensitive
 More NPE errors fixed
+Many bugs I forgot to write down
 
 --PLUGIN COMPATABILITY FIXES--
 If combat interactions are cancelled by other plugins mcMMO should ignore the event

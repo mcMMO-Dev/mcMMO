@@ -288,29 +288,41 @@ public class mcRepair {
     		switch(is.getTypeId())
     		{
     		case 306:
-    		durability -= 27;
-    		break;
+    			durability -= 27;
+    			break;
     		case 310:
-	    	durability -= 55;
-	    	break;
+    			durability -= 55;
+	    		break;
     		case 307:
-	    	durability -= 24;
-	    	break;
+    			durability -= 24;
+	    		break;
     		case 311:
-	    	durability -= 48;
-	    	break;
+    			durability -= 48;
+	    		break;
     		case 308:
-	    	durability -= 27;
-	    	break;
+    			durability -= 27;
+	    		break;
     		case 312:
-	    	durability -= 53;
-	    	break;
+    			durability -= 53;
+	    		break;
     		case 309:
-	    	durability -= 40;
-	    	break;
+    			durability -= 40;
+	    		break;
     		case 313:
-	    	durability -= 80;
-	    	break;
+    			durability -= 80;
+	    		break;
+    		case 314:
+        		durability -= 13;
+        		break;
+    		case 315:
+        		durability -= 12;
+        		break;
+    		case 316:
+        		durability -= 14;
+        		break;
+    		case 317:
+        		durability -= 20;
+        		break;
     		}
 			if(durability < 0)
 			durability = 0;

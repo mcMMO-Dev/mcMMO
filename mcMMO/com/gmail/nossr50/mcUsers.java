@@ -156,10 +156,10 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, axePreparationMode, skullSplitterMode, berserkMode;
+		private boolean dead, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
 		private int recentlyhurt = 0, bleedticks = 0, gigaDrillBreakerCooldown = 0, gigaDrillBreakerTicks = 0, berserkTicks = 0, berserkCooldown = 0, superBreakerTicks = 0, superBreakerCooldown = 0, 
 		serratedStrikesTicks = 0, skullSplitterTicks = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0, treeFellerTicks = 0, treeFellerCooldown = 0,
-		axePreparationTicks = 0;
+		axePreparationTicks = 0, pickaxePreparationTicks = 0, fistsPreparationTicks = 0, shovelPreparationTicks = 0, swordsPreparationTicks = 0;
 		Player thisplayer;
 		char defaultColor;
 
@@ -443,6 +443,66 @@ class PlayerList
 			}
 		}
 		/*
+		 * SWORDS PREPARATION
+		 */
+		public boolean getSwordsPreparationMode(){
+			return swordsPreparationMode;
+		}
+		public void setSwordsPreparationMode(Boolean bool){
+			swordsPreparationMode = bool;
+		}
+		public Integer getSwordsPreparationTicks(){
+			return swordsPreparationTicks;
+		}
+		public void setSwordsPreparationTicks(Integer newvalue){
+			swordsPreparationTicks = newvalue;
+		}
+		public void decreaseSwordsPreparationTicks(){
+			if(swordsPreparationTicks >= 1){
+				swordsPreparationTicks--;
+			}
+		}
+		/*
+		 * SHOVEL PREPARATION
+		 */
+		public boolean getShovelPreparationMode(){
+			return shovelPreparationMode;
+		}
+		public void setShovelPreparationMode(Boolean bool){
+			shovelPreparationMode = bool;
+		}
+		public Integer getShovelPreparationTicks(){
+			return shovelPreparationTicks;
+		}
+		public void setShovelPreparationTicks(Integer newvalue){
+			shovelPreparationTicks = newvalue;
+		}
+		public void decreaseShovelPreparationTicks(){
+			if(shovelPreparationTicks >= 1){
+				shovelPreparationTicks--;
+			}
+		}
+		/*
+		 * FISTS PREPARATION
+		 */
+		public boolean getFistsPreparationMode(){
+			return fistsPreparationMode;
+		}
+		public void setFistsPreparationMode(Boolean bool){
+			fistsPreparationMode = bool;
+		}
+		public Integer getFistsPreparationTicks(){
+			return fistsPreparationTicks;
+		}
+		public void setFistsPreparationTicks(Integer newvalue){
+			fistsPreparationTicks = newvalue;
+		}
+		public void decreaseFistsPreparationTicks(){
+			if(fistsPreparationTicks >= 1){
+				fistsPreparationTicks--;
+			}
+		}
+		/*
 		 * AXE PREPARATION
 		 */
 		public boolean getAxePreparationMode(){
@@ -460,6 +520,26 @@ class PlayerList
 		public void decreaseAxePreparationTicks(){
 			if(axePreparationTicks >= 1){
 				axePreparationTicks--;
+			}
+		}
+		/*
+		 * PICKAXE PREPARATION
+		 */
+		public boolean getPickaxePreparationMode(){
+			return pickaxePreparationMode;
+		}
+		public void setPickaxePreparationMode(Boolean bool){
+			pickaxePreparationMode = bool;
+		}
+		public Integer getPickaxePreparationTicks(){
+			return pickaxePreparationTicks;
+		}
+		public void setPickaxePreparationTicks(Integer newvalue){
+			pickaxePreparationTicks = newvalue;
+		}
+		public void decreasePickaxePreparationTicks(){
+			if(pickaxePreparationTicks >= 1){
+				pickaxePreparationTicks--;
 			}
 		}
 		/*

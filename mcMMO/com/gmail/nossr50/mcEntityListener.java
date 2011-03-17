@@ -96,6 +96,10 @@ public class mcEntityListener extends EntityListener {
         		Player attacker = (Player)f;
         		if(mcUsers.getProfile(attacker).getAxePreparationMode())
         			mcSkills.getInstance().skullSplitterCheck(attacker);
+        		if(mcUsers.getProfile(attacker).getSwordsPreparationMode())
+        			mcSkills.getInstance().serratedStrikesActivationCheck(attacker);
+        		if(mcUsers.getProfile(attacker).getFistsPreparationMode())
+        			mcSkills.getInstance().berserkActivationCheck(attacker);
         		/*
         		 * BERSERK DAMAGE MODIFIER
         		 */

@@ -50,9 +50,6 @@ public class mcExcavation {
 	    		mcUsers.getProfile(player).setGigaDrillBreakerMode(true);
 	    	}
 	    	
-	    	if(!mcUsers.getProfile(player).getGigaDrillBreakerMode() && mcUsers.getProfile(player).getGigaDrillBreakerCooldown() >= 1){
-	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
-	    	}
 	    }
 	}
 	public boolean canBeGigaDrillBroken(Block block){
