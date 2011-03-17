@@ -37,6 +37,9 @@ public class mcBlockListener extends BlockListener {
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
+    	if(mcPermissions.getInstance().unarmed(player)){
+    		mcSkills.getInstance().berserkActivationCheck(player, block);
+    	}
     	if(block != null && player != null && mcPermissions.getInstance().repair(player) && event.getBlock().getTypeId() == 42){
         	mcRepair.getInstance().repairCheck(player, is, event.getBlock());
         	}

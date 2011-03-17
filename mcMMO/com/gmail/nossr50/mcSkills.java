@@ -94,9 +94,6 @@ public class mcSkills {
     	if(mcPermissions.getInstance().excavationAbility(player)){
     		mcExcavation.getInstance().gigaDrillBreakerActivationCheck(player, block);
     	}
-    	if(mcPermissions.getInstance().unarmed(player)){
-    		berserkActivationCheck(player, block);
-    	}
     	if(mcPermissions.getInstance().swords(player)){
     		serratedStrikesActivationCheck(player, block);
     	}
@@ -243,7 +240,6 @@ public class mcSkills {
 		 * WOODCUTTING ABILITY
 		 */
 		if(mcPermissions.getInstance().woodCuttingAbility(player)){
-			//Monitor the length of TreeFeller mode
 			if(mcUsers.getProfile(player).getTreeFellerMode()){
 				mcUsers.getProfile(player).decreaseTreeFellerTicks();
 				if(mcUsers.getProfile(player).getTreeFellerTicks() <= 0){
@@ -257,7 +253,6 @@ public class mcSkills {
 		 * MINING ABILITY
 		 */
 		if(mcPermissions.getInstance().miningAbility(player)){
-			//Monitor the length of SuperBreaker mode
 			if(mcUsers.getProfile(player).getSuperBreakerMode()){
 				mcUsers.getProfile(player).decreaseSuperBreakerTicks();
 				if(mcUsers.getProfile(player).getSuperBreakerTicks() <= 0){
@@ -271,12 +266,37 @@ public class mcSkills {
 		 * EXCAVATION ABILITY
 		 */
 		if(mcPermissions.getInstance().excavationAbility(player)){
-			//Monitor the length of Giga Drill Breaker mode
 			if(mcUsers.getProfile(player).getGigaDrillBreakerMode()){
 				mcUsers.getProfile(player).decreaseGigaDrillBreakerTicks();
 				if(mcUsers.getProfile(player).getGigaDrillBreakerTicks() <= 0){
 					mcUsers.getProfile(player).setGigaDrillBreakerMode(false);
 					mcUsers.getProfile(player).setGigaDrillBreakerCooldown(120);
+					player.sendMessage(ChatColor.GRAY+"**You feel spiral energy leaving you**");
+				}
+			}
+		}
+		/*
+		 * SWORDS ABILITY
+		 */
+		if(mcPermissions.getInstance().swordsAbility(player)){
+			if(mcUsers.getProfile(player).getSerratedStrikesMode()){
+				mcUsers.getProfile(player).decreaseSerratedStrikesTicks();
+				if(mcUsers.getProfile(player).getSerratedStrikesTicks() <= 0){
+					mcUsers.getProfile(player).setSerratedStrikesMode(false);
+					mcUsers.getProfile(player).setSerratedStrikesCooldown(120);
+					player.sendMessage(ChatColor.GRAY+"**You feel spiral energy leaving you**");
+				}
+			}
+		}
+		/*
+		 * UNARMED ABILITY
+		 */
+		if(mcPermissions.getInstance().unarmedAbility(player)){
+			if(mcUsers.getProfile(player).getBerserkMode()){
+				mcUsers.getProfile(player).decreaseBerserkTicks();
+				if(mcUsers.getProfile(player).getBerserkTicks() <= 0){
+					mcUsers.getProfile(player).setBerserkMode(false);
+					mcUsers.getProfile(player).setBerserkCooldown(120);
 					player.sendMessage(ChatColor.GRAY+"**You feel spiral energy leaving you**");
 				}
 			}

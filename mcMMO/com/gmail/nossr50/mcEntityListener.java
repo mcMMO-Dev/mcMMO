@@ -121,9 +121,9 @@ public class mcEntityListener extends EntityListener {
         		/*
         		 * This will do AOE damage from the axes ability
         		 */
-        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSkullSplitterMode())
+        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSkullSplitterMode() && mcm.getInstance().isAxes(attacker.getItemInHand()))
             		mcCombat.getInstance().applyAoeDamage(attacker, eventb, x);
-        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSerratedStrikesMode())
+        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSerratedStrikesMode() && mcm.getInstance().isSwords(attacker.getItemInHand()))
             		mcCombat.getInstance().applyAoeDamage(attacker, eventb, x);
         	}
         	
