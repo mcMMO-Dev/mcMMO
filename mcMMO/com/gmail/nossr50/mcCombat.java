@@ -287,14 +287,16 @@ public class mcCombat {
     	Entity x = event.getEntity();
     	if(x instanceof Player){
     		Player defender = (Player)x;
+    		if(mcUsers.getProfile(defender) == null)
+    			mcUsers.addUser(defender);
     		if(mcPermissions.getInstance().unarmed(defender) && defender.getItemInHand().getTypeId() == 0){
-	    		if(mcUsers.getProfile(defender).getUnarmedInt() >= 1000){
+	    		if(defender != null && mcUsers.getProfile(defender).getUnarmedInt() >= 1000){
 	    			if(Math.random() * 1000 <= 500){
 	    				event.setCancelled(true);
 	    				defender.sendMessage(ChatColor.WHITE+"**ARROW DEFLECT**");
 	    				return;
 	    			}
-	    		} else if(Math.random() * 1000 <= (mcUsers.getProfile(defender).getUnarmedInt() / 2)){
+	    		} else if(defender != null && Math.random() * 1000 <= (mcUsers.getProfile(defender).getUnarmedInt() / 2)){
 	    			event.setCancelled(true);
 	    			defender.sendMessage(ChatColor.WHITE+"**ARROW DEFLECT**");
 	    			return;

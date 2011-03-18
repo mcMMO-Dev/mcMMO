@@ -156,7 +156,7 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
+		private boolean dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
 		private int recentlyhurt = 0, bleedticks = 0, gigaDrillBreakerCooldown = 0, gigaDrillBreakerTicks = 0, berserkTicks = 0, berserkCooldown = 0, superBreakerTicks = 0, superBreakerCooldown = 0, 
 		serratedStrikesTicks = 0, skullSplitterTicks = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0, treeFellerTicks = 0, treeFellerCooldown = 0,
 		axePreparationTicks = 0, pickaxePreparationTicks = 0, fistsPreparationTicks = 0, shovelPreparationTicks = 0, swordsPreparationTicks = 0;
@@ -418,6 +418,16 @@ class PlayerList
 		public boolean isPlayer(Player player)
 		{
 			return player.getName().equals(playerName);
+		}
+		public boolean getAbilityUse(){
+			return abilityuse;
+		}
+		public void toggleAbilityUse(){
+			if(abilityuse == false){
+				abilityuse = true;
+			} else {
+				abilityuse = false;
+			}
 		}
 		public void decreaseLastHurt(){
 			if(recentlyhurt >= 1){

@@ -1,5 +1,12 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.1
+Fixed "Unknown console command" errors with CB 556
+Added /mcability command to toggle being able to trigger abilities with right click
+Added some more nullchecks for people reporting NPE errors
+Compatibility with NPC mods improved (Mainly for archery!)
+Other plugins can now call inSameParty() from mcMMO to increase compatibility
+
 Version 0.9
 --NEW CONTENT--
 Woodcutting now has the "Tree Feller" Ability

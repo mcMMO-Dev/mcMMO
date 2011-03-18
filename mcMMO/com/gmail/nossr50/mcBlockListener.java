@@ -22,7 +22,7 @@ public class mcBlockListener extends BlockListener {
     public void onBlockPlace(BlockPlaceEvent event) {
     	Block block;
     	Player player = event.getPlayer();
-    	if (event.getBlockReplacedState().getTypeId() == 78) {
+    	if (event.getBlock() != null && event.getBlockReplacedState() != null && event.getBlockReplacedState().getTypeId() == 78) {
     		block = event.getBlockAgainst();
     		}
     		else {

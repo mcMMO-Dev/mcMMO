@@ -73,6 +73,8 @@ public class mcSkills {
     	}
     }
     public void abilityActivationCheck(Player player, Block block){
+    	if(!mcUsers.getProfile(player).getAbilityUse())
+    		return;
     	if(mcPermissions.getInstance().miningAbility(player) && mcm.getInstance().isMiningPick(player.getItemInHand()) && !mcUsers.getProfile(player).getPickaxePreparationMode()){
     		if(!mcUsers.getProfile(player).getSuperBreakerMode() && mcUsers.getProfile(player).getSuperBreakerCooldown() >= 1){
 	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");

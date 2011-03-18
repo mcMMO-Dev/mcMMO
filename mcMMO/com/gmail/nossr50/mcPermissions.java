@@ -114,6 +114,13 @@ public class mcPermissions {
             return true;
         }
     }
+    public boolean mcAbility(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.commands.ability");
+        } else {
+            return true;
+        }
+    }
     public boolean mySpawn(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.commands.myspawn");
