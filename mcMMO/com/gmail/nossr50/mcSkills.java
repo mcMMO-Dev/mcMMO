@@ -112,10 +112,7 @@ public class mcSkills {
 			mcUsers.getProfile(player).setFistsPreparationMode(true);
     	}
     	if((mcPermissions.getInstance().axes(player) || mcPermissions.getInstance().woodcutting(player)) && !mcUsers.getProfile(player).getAxePreparationMode()){
-    		if(!mcUsers.getProfile(player).getAxePreparationMode() && mcm.getInstance().isAxes(player.getItemInHand())){
-        		if(!mcUsers.getProfile(player).getSkullSplitterMode() && mcUsers.getProfile(player).getSkullSplitterCooldown() >= 1){
-        			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
-        		}
+    		if(mcm.getInstance().isAxes(player.getItemInHand())){
     			player.sendMessage(ChatColor.GREEN+"**YOU READY YOUR AXE**");
     			mcUsers.getProfile(player).setAxePreparationTicks(2);
     			mcUsers.getProfile(player).setAxePreparationMode(true);
@@ -124,7 +121,10 @@ public class mcSkills {
     }
     public void serratedStrikesActivationCheck(Player player){
 		if(mcm.getInstance().isSwords(player.getItemInHand())){
-	    	
+			if(mcUsers.getProfile(player).getSwordsPreparationMode()){
+    			mcUsers.getProfile(player).setSwordsPreparationMode(false);
+    			mcUsers.getProfile(player).setSwordsPreparationTicks(0);
+    		}
 	    	int ticks = 2;
     		if(mcUsers.getProfile(player).getSwordsInt() >= 50)
     			ticks++;
@@ -153,7 +153,10 @@ public class mcSkills {
 	}
     public void berserkActivationCheck(Player player){
 		if(player.getItemInHand().getTypeId() == 0){
-	    	
+			if(mcUsers.getProfile(player).getFistsPreparationMode()){
+    			mcUsers.getProfile(player).setFistsPreparationMode(false);
+    			mcUsers.getProfile(player).setFistsPreparationTicks(0);
+    		}
 	    	int ticks = 2;
     		if(mcUsers.getProfile(player).getUnarmedInt() >= 50)
     			ticks++;

@@ -25,7 +25,10 @@ public class mcExcavation {
 		    	if(!mcm.getInstance().abilityBlockCheck(block))
 		    		return;
 	    	}
-	    	
+	    	if(mcUsers.getProfile(player).getShovelPreparationMode()){
+    			mcUsers.getProfile(player).setShovelPreparationMode(false);
+    			mcUsers.getProfile(player).setShovelPreparationTicks(0);
+    		}
 	    	int ticks = 2;
     		if(mcUsers.getProfile(player).getExcavationInt() >= 50)
     			ticks++;

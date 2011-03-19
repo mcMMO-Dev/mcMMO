@@ -30,7 +30,6 @@ public class mcMMO extends JavaPlugin {
     private Permissions permissions;
     private Timer mcMMO_Timer = new Timer(true);
     
-    //herp
     public void onEnable() {
     	mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(2000));
     	//Make the directory if it does not exist
@@ -67,16 +66,16 @@ public class mcMMO extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Low, this);
-        pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Monitor, this);
-        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.High, this);
+        pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Highest, this);
+        pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Low, this);
+        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_FLOW, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_ITEM, playerListener, Priority.Monitor, this);
         pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.ENTITY_DAMAGED, entityListener, Priority.Low, this);
+        pm.registerEvent(Event.Type.ENTITY_DAMAGED, entityListener, Priority.Highest, this);
         pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, blockListener, Priority.Normal, this);
         //pm.registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Priority.Normal, this);
         //Displays a message when plugin is loaded

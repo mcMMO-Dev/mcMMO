@@ -1,5 +1,9 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.2
+Changed priority of some of the mcMMO listeners
+Now when certain abilities are activated it shouldn't say "You lower your x"
+
 Version 0.9.1
 Fixed "Unknown console command" errors with CB 556
 Added /mcability command to toggle being able to trigger abilities with right click
