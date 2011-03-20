@@ -26,7 +26,7 @@ public class mcItem {
 	public void chimaerawing(Player player){
 		ItemStack is = player.getItemInHand();
 		Block block = player.getLocation().getBlock();
-		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == 288){
+		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == 288 && mcm.getInstance().abilityBlockCheck(block)){
     		if(mcUsers.getProfile(player).getRecentlyHurt() == 0 && is.getAmount() >= mcLoadProperties.feathersConsumedByChimaeraWing){
     			Block derp = player.getLocation().getBlock();
     			int y = derp.getY();

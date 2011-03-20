@@ -73,7 +73,12 @@ public class mcPlayerListener extends PlayerListener {
     	/*
     	 * ABILITY ACTIVATION CHECKS
     	 */
-    	mcSkills.getInstance().abilityActivationCheck(player, block);
+    	if(block != null){
+    		if(mcm.getInstance().abilityBlockCheck(block))
+    			mcSkills.getInstance().abilityActivationCheck(player, block);
+    	} else {
+    		mcSkills.getInstance().abilityActivationCheck(player, block);
+    	}
     	/*
     	 * ITEM INTERACTIONS
     	 */

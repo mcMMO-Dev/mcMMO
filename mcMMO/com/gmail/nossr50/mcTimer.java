@@ -16,6 +16,17 @@ public class mcTimer extends TimerTask{
 	public void run() {
 		Player[] playerlist = plugin.getServer().getOnlinePlayers();
 		for(Player player : playerlist){
+			if(mcUsers.getProfile(player) == null)
+	    		mcUsers.addUser(player);
+			/*
+			 * MONITOR SKILLS
+			 */
+			mcSkills.getInstance().monitorSkills(player);
+			/*
+			 * COOLDOWN MONITORING
+			 */
+			mcSkills.getInstance().decreaseCooldowns(player);
+			
 			if(mcPermissions.getInstance().regeneration(player)){
 				if(thecount == 5 || thecount == 10 || thecount == 15 || thecount == 20){
 				    if(player != null &&
@@ -46,14 +57,6 @@ public class mcTimer extends TimerTask{
 					mcUsers.getProfile(player).decreaseLastHurt();
 				}
 			}
-			/*
-			 * MONITOR SKILLS
-			 */
-			mcSkills.getInstance().monitorSkills(player);
-			/*
-			 * COOLDOWN MONITORING
-			 */
-			mcSkills.getInstance().decreaseCooldowns(player);
 		}
 		if(thecount < 20){
 			thecount++;

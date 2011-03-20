@@ -37,7 +37,7 @@ public class mcBlockListener extends BlockListener {
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
     	ItemStack is = player.getItemInHand();
-    	if(mcPermissions.getInstance().unarmed(player) && player.getItemInHand().getTypeId() == 0 && mcm.getInstance().abilityBlockCheck(block)){
+    	if(mcPermissions.getInstance().unarmed(player) && player.getItemInHand().getTypeId() == 0 && mcm.getInstance().abilityBlockCheck(block) && mcUsers.getProfile(player).getAbilityUse()){
     		mcSkills.getInstance().abilityActivationCheck(player, block);
     	}
     	if(block != null && player != null && mcPermissions.getInstance().repair(player) && event.getBlock().getTypeId() == 42){
@@ -70,15 +70,19 @@ public class mcBlockListener extends BlockListener {
     	 * GIGA DRILL BREAKER CHECKS
     	 */
     	if(mcUsers.getProfile(player).getGigaDrillBreakerMode() && dmg == 0 && mcExcavation.getInstance().canBeGigaDrillBroken(block) && mcm.getInstance().isShovel(inhand)){
-    		mcExcavation.getInstance().excavationProcCheck(block, player);
-    		mcExcavation.getInstance().excavationProcCheck(block, player);
-    		mcExcavation.getInstance().excavationProcCheck(block, player);
+    		if(mcm.getInstance().getTier(player) >= 2)
+    			mcExcavation.getInstance().excavationProcCheck(block, player);
+    		if(mcm.getInstance().getTier(player) >= 3)
+    			mcExcavation.getInstance().excavationProcCheck(block, player);
+    		if(mcm.getInstance().getTier(player) >= 4)
+    			mcExcavation.getInstance().excavationProcCheck(block, player);
     		Material mat = Material.getMaterial(block.getTypeId());
     		if(block.getTypeId() == 2)
     			mat = Material.DIRT;
 			byte type = block.getData();
 			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
 			block.setType(Material.AIR);
+			mcm.getInstance().damageTool(player, (short) 15);
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
     	}
     	/*
@@ -166,6 +170,7 @@ public class mcBlockListener extends BlockListener {
 	    						blockx.setType(Material.AIR);
 	    					}
 	    				}
+	    					mcm.getInstance().damageTool(player, (short) 15);
 	    					/*
 	    					 * NOTE TO SELF
 	    					 * I NEED TO REMOVE TREE FELL BLOCKS FROM BEING WATCHED AFTER THIS CODE IS EXECUTED

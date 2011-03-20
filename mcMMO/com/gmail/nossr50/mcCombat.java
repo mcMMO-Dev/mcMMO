@@ -499,55 +499,65 @@ public class mcCombat {
     	return event.getDamage() + dmg;
     }
     public void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    	int targets = 0;
+    	targets = mcm.getInstance().getTier(attacker);
     	for(Entity derp : x.getWorld().getEntities()){
     		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 5){
     			if(derp instanceof Player){
     				Player target = (Player)derp;
     				if(mcParty.getInstance().inSameParty(attacker, target))
     					continue;
-    				if(!target.getName().equals(attacker.getName())){
+    				if(!target.getName().equals(attacker.getName()) && targets >= 1){
     					target.damage(event.getDamage() / 2);
     					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
+    					targets--;
     				}
     			}
-    			if(derp instanceof Monster){
+    			if(derp instanceof Monster  && targets >= 1){
     				Monster target = (Monster)derp;
     				target.damage(event.getDamage() / 2);
+    				targets--;
     			}
-    			if(derp instanceof Animals){
+    			if(derp instanceof Animals  && targets >= 1){
     				Animals target = (Animals)derp;
     				target.damage(event.getDamage() / 2);
+    				targets--;
     			}
     		}
     	}
     }
     public void applySerratedStrikes(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    	int targets = 0;
+    	targets = mcm.getInstance().getTier(attacker);
     	for(Entity derp : x.getWorld().getEntities()){
     		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 5){
     			if(derp instanceof Player){
     				Player target = (Player)derp;
     				if(mcParty.getInstance().inSameParty(attacker, target))
     					continue;
-    				if(!target.getName().equals(attacker.getName())){
+    				if(!target.getName().equals(attacker.getName()) && targets >= 1){
     					target.damage(event.getDamage() / 4);
     					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
     					if(!mcConfig.getInstance().isBleedTracked(derp)){
         					mcConfig.getInstance().addBleedTrack(x);
         					mcUsers.getProfile(target).setBleedTicks(12);
     					}
+    					targets--;
     				}
     			}
-    			if(derp instanceof Monster){
+    			if(derp instanceof Monster && targets >= 1){
     				if(!mcConfig.getInstance().isBleedTracked(derp))
     					mcConfig.getInstance().addBleedTrack(x);
     				Monster target = (Monster)derp;
     				target.damage(event.getDamage() / 4);
+    				targets--;
     			}
-    			if(derp instanceof Animals){
+    			if(derp instanceof Animals && targets >= 1){
     				if(!mcConfig.getInstance().isBleedTracked(derp))
     					mcConfig.getInstance().addBleedTrack(x);
     				Animals target = (Animals)derp;
     				target.damage(event.getDamage() / 4);
+    				targets--;
     			}
     		}
     	}

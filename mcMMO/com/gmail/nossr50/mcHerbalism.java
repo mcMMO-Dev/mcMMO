@@ -49,7 +49,7 @@ public class mcHerbalism {
 	    		mcUsers.getProfile(player).addHerbalismGather(10);
 	    	}
 	    	if(type == 37 || type == 38){
-	    		mat = Material.getMaterial(296);
+	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
 		    		if(Math.random() * 1000 <= mcUsers.getProfile(player).getHerbalismInt()){

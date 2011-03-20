@@ -30,6 +30,56 @@ public class mcm {
     	}
     	return instance;
     	}
+	public void damageTool(Player player, short damage){
+		if(player.getItemInHand().getTypeId() == 0)
+			return;
+		player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability() + damage));
+		if(player.getItemInHand().getDurability() >= getMaxDurability(mcm.getInstance().getTier(player), player.getItemInHand())){
+			ItemStack[] inventory = player.getInventory().getContents();
+	    	for(ItemStack x : inventory){
+	    		if(x.getTypeId() == player.getItemInHand().getTypeId() && x.getDurability() == player.getItemInHand().getDurability()){
+	    			x.setTypeId(0);
+	    			x.setAmount(0);
+	    			player.getInventory().setContents(inventory);
+	    			return;
+	    		}
+	    	}
+		}
+	}
+	public Integer getTier(Player player){
+		int i = player.getItemInHand().getTypeId();
+		if(i == 268 || i == 269 || i == 270 || i == 271 || i == 290){
+			return 1; //WOOD
+		} else if (i == 272 || i == 273 || i == 274 || i == 275 || i == 291){
+			return 2; //STONE
+		} else if (i == 256 || i == 257 || i == 258 || i == 267 || i == 292){
+			return 3; //IRON
+		} else if (i == 283 || i == 284 || i == 285 || i == 286 || i == 294){
+			return 1; //GOLD
+		} else if (i == 276 || i == 277 || i == 278 || i == 279 || i == 293){
+			return 4; //DIAMOND
+		} else {
+			return 1; //UNRECOGNIZED
+		}
+	}
+	public Integer getMaxDurability(Integer tier, ItemStack item){
+		int id = item.getTypeId();
+		if(tier == 1){
+			if((id == 276 || id == 277 || id == 278 || id == 279 || id == 293)){
+				return 33;
+			} else {
+				return 60;
+			}
+		} else if (tier == 2){
+			return 132;
+		} else if (tier == 3){
+			return 251;
+		} else if (tier == 4){
+			return 1562;
+		} else {
+			return 0;
+		}
+	}
 	public double getDistance(Location loca, Location locb)
     {
 	return Math.sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)
@@ -37,7 +87,7 @@ public class mcm {
     }
 	public boolean abilityBlockCheck(Block block){
 		int i = block.getTypeId();
-		if(i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
+		if(i == 68 || i == 355 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
 			return false;
 		} else {
 			return true;
@@ -503,23 +553,24 @@ public class mcm {
     	}
 		if(split[0].equalsIgnoreCase("/"+mcLoadProperties.mcmmo)){
 			event.setCancelled(true);
-    		player.sendMessage(ChatColor.GRAY+"mcMMO is an RPG inspired plugin");
-    		player.sendMessage(ChatColor.GRAY+"You can gain skills in several professions by");
-    		player.sendMessage(ChatColor.GRAY+"doing things related to that profession.");
-    		player.sendMessage(ChatColor.GRAY+"Mining for example will increase your mining XP.");
-    		player.sendMessage(ChatColor.GRAY+"Wood Cutting will increase Wood Cutting, etc...");
-    		player.sendMessage(ChatColor.GRAY+"Repairing is simple in mcMMO");
-    		player.sendMessage(ChatColor.GRAY+"Say you want to repair an iron shovel");
-    		player.sendMessage(ChatColor.GRAY+"start by making an anvil by combining 9 iron ingots");
-    		player.sendMessage(ChatColor.GRAY+"on a workbench. Place the anvil and while holding the shovel");
-    		player.sendMessage(ChatColor.GRAY+"right click the anvil to interact with it, If you have spare");
-    		player.sendMessage(ChatColor.GRAY+"iron ingots in your inventory the item will be repaired.");
-    		player.sendMessage(ChatColor.GRAY+"You cannot hurt other party members");
-    		player.sendMessage(ChatColor.BLUE+"Set your own spawn with "+ChatColor.RED+"/"+mcLoadProperties.setmyspawn);
-    		player.sendMessage(ChatColor.GREEN+"Based on your skills you will get "+ChatColor.DARK_RED+"random procs "+ChatColor.GREEN+ "when");
-    		player.sendMessage(ChatColor.GREEN+"using your profession, like "+ChatColor.DARK_RED+"double drops "+ChatColor.GREEN+"or "+ChatColor.DARK_RED+"better repairs");
-    		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with /"+mcLoadProperties.mcc);
-    		player.sendMessage(ChatColor.GREEN+"Appreciate the mod? ");
+    		player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"mcMMO"+ChatColor.RED+"[]-----");
+    		player.sendMessage(ChatColor.YELLOW+"mcMMO is an RPG server mod for minecraft.");
+    		player.sendMessage(ChatColor.YELLOW+"There are many skills added by mcMMO to minecraft.");
+    		player.sendMessage(ChatColor.YELLOW+"They can do anything from giving a chance");
+    		player.sendMessage(ChatColor.YELLOW+"for double drops to letting you break materials instantly.");
+    		player.sendMessage(ChatColor.YELLOW+"For example, by harvesting logs from trees you will gain");
+    		player.sendMessage(ChatColor.YELLOW+"Woodcutting xp and once you have enough xp you will gain");
+    		player.sendMessage(ChatColor.YELLOW+"a skill level in Woodcutting. By raising this skill you will");
+    		player.sendMessage(ChatColor.YELLOW+"be able to receive benefits like "+ChatColor.RED+"double drops");
+    		player.sendMessage(ChatColor.YELLOW+"and increase the effects of the "+ChatColor.RED+"\"Tree Felling\""+ChatColor.YELLOW+" ability.");
+    		player.sendMessage(ChatColor.YELLOW+"mcMMO has abilities related to the skill, skills normally");
+    		player.sendMessage(ChatColor.YELLOW+"provide passive bonuses but they also have activated");
+    		player.sendMessage(ChatColor.YELLOW+"abilities too. Each ability is activated by holding");
+    		player.sendMessage(ChatColor.YELLOW+"the appropriate tool and "+ChatColor.RED+"right clicking.");
+    		player.sendMessage(ChatColor.YELLOW+"For example, if you hold a Mining Pick and right click");
+    		player.sendMessage(ChatColor.YELLOW+"you will ready your Pickaxe, attack mining materials");
+    		player.sendMessage(ChatColor.YELLOW+"and then "+ChatColor.RED+"Super Breaker "+ChatColor.YELLOW+"will activate.");
+    		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with "+ChatColor.DARK_AQUA+"/"+mcLoadProperties.mcc);
     		player.sendMessage(ChatColor.GREEN+"You can donate via paypal to"+ChatColor.DARK_RED+" nossr50@gmail.com");
     	}
     	if(split[0].equalsIgnoreCase("/"+mcLoadProperties.mcc)){
