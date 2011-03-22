@@ -77,7 +77,8 @@ public class mcSkills {
     		return;
     	if(mcPermissions.getInstance().miningAbility(player) && mcm.getInstance().isMiningPick(player.getItemInHand()) && !mcUsers.getProfile(player).getPickaxePreparationMode()){
     		if(!mcUsers.getProfile(player).getSuperBreakerMode() && mcUsers.getProfile(player).getSuperBreakerCooldown() >= 1){
-	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."+ChatColor.YELLOW+" ("
+	    				+(mcUsers.getProfile(player).getSuperBreakerCooldown() * 2)+"s)");
 	    		return;
 	    	}
     		player.sendMessage(ChatColor.GREEN+"**YOU READY YOUR PICKAXE**");
@@ -86,7 +87,8 @@ public class mcSkills {
     	}
     	if(mcPermissions.getInstance().excavationAbility(player) && mcm.getInstance().isShovel(player.getItemInHand()) && !mcUsers.getProfile(player).getShovelPreparationMode()){
     		if(!mcUsers.getProfile(player).getGigaDrillBreakerMode() && mcUsers.getProfile(player).getGigaDrillBreakerCooldown() >= 1){
-	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
+	    				+ChatColor.YELLOW+" ("+(mcUsers.getProfile(player).getGigaDrillBreakerCooldown() * 2)+"s)");
 	    		return;
 	    	}
     		player.sendMessage(ChatColor.GREEN+"**YOU READY YOUR SHOVEL**");
@@ -95,7 +97,8 @@ public class mcSkills {
     	}
     	if(mcPermissions.getInstance().swordsAbility(player) && mcm.getInstance().isSwords(player.getItemInHand()) && !mcUsers.getProfile(player).getSwordsPreparationMode()){
     		if(!mcUsers.getProfile(player).getSerratedStrikesMode() && mcUsers.getProfile(player).getSerratedStrikesCooldown() >= 1){
-	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
+	    				+ChatColor.YELLOW+" ("+(mcUsers.getProfile(player).getSerratedStrikesCooldown() * 2)+"s)");
 	    		return;
 	    	}
     		player.sendMessage(ChatColor.GREEN+"**YOU READY YOUR SWORD**");
@@ -104,7 +107,8 @@ public class mcSkills {
     	}
     	if(mcPermissions.getInstance().unarmedAbility(player) && player.getItemInHand().getTypeId() == 0 && !mcUsers.getProfile(player).getFistsPreparationMode()){
 	    	if(!mcUsers.getProfile(player).getBerserkMode() && mcUsers.getProfile(player).getBerserkCooldown() >= 1){
-	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
+	    				+ChatColor.YELLOW+" ("+(mcUsers.getProfile(player).getBerserkCooldown() * 2)+"s)");
 	    		return;
 	    	}
     		player.sendMessage(ChatColor.GREEN+"**YOU READY YOUR FISTS**");
@@ -214,6 +218,10 @@ public class mcSkills {
     			player.sendMessage(ChatColor.GREEN+"**SKULL SPLITTER ACTIVATED**");
     			mcUsers.getProfile(player).setSkullSplitterTicks(ticks);
     			mcUsers.getProfile(player).setSkullSplitterMode(true);
+    		}
+    		if(!mcUsers.getProfile(player).getSkullSplitterMode() && mcUsers.getProfile(player).getSkullSplitterCooldown() >= 1){
+    			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
+    					+ChatColor.YELLOW+" ("+(mcUsers.getProfile(player).getSkullSplitterCooldown() * 2)+"s)");
     		}
     	}
     }

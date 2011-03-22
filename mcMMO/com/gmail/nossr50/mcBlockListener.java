@@ -12,6 +12,9 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRightClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class mcBlockListener extends BlockListener {
     private final mcMMO plugin;
@@ -55,6 +58,7 @@ public class mcBlockListener extends BlockListener {
     	Block block = event.getBlock();
     	Location loc = block.getLocation();
     	int dmg = event.getDamageLevel().getLevel();
+    	
     	/*
     	 * ABILITY PREPARATION CHECKS
     	 */
@@ -82,7 +86,8 @@ public class mcBlockListener extends BlockListener {
 			byte type = block.getData();
 			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
 			block.setType(Material.AIR);
-			mcm.getInstance().damageTool(player, (short) 15);
+			if(mcLoadProperties.toolsLoseDurabilityFromAbilities)
+	    		mcm.getInstance().damageTool(player, (short) mcLoadProperties.abilityDurabilityLoss);
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
     	}
     	/*
@@ -170,7 +175,8 @@ public class mcBlockListener extends BlockListener {
 	    						blockx.setType(Material.AIR);
 	    					}
 	    				}
-	    					mcm.getInstance().damageTool(player, (short) 15);
+	    				if(mcLoadProperties.toolsLoseDurabilityFromAbilities)
+	    		    		mcm.getInstance().damageTool(player, (short) mcLoadProperties.abilityDurabilityLoss);
 	    					/*
 	    					 * NOTE TO SELF
 	    					 * I NEED TO REMOVE TREE FELL BLOCKS FROM BEING WATCHED AFTER THIS CODE IS EXECUTED

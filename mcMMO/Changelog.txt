@@ -1,5 +1,17 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.6
+Timer checks for player being null before adding them to the mcUsers system
+Cooldowns will now show how much time is remaining when trying to use their respective abilities
+SkullSpliiter will now correctly inform the player when they are too tired to use it
+Acrobatics will no longer give XP if the event was cancelled by another plugin
+Version 0.9.5
+Super Breaker now gives a chance for Triple Drops based on mining skill
+Ability durability loss down from 15 to 2
+Ability durability loss is now toggle-able
+Ability durability loss can be adjusted in the configuration file
+Mining Picks are no longer lowered after activating Super Breaker
+
 Version 0.9.4
 Flowers won't drop wheat anymore
 Signs won't trigger ability readiness anymore

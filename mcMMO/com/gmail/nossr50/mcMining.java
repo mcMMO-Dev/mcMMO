@@ -25,6 +25,10 @@ public class mcMining {
 		    	if(!mcm.getInstance().abilityBlockCheck(block))
 		    		return;
 	    	}
+	    	if(mcUsers.getProfile(player).getPickaxePreparationMode()){
+    			mcUsers.getProfile(player).setPickaxePreparationMode(false);
+    			mcUsers.getProfile(player).setPickaxePreparationTicks(0);
+    		}
 	    	int miningticks = 2;
     		if(mcUsers.getProfile(player).getMiningInt() >= 50)
     			miningticks++;
@@ -164,7 +168,8 @@ public class mcMining {
     	}
     }
     public void SuperBreakerBlockCheck(Player player, Block block){
-    	mcm.getInstance().damageTool(player, (short) 15);
+    	if(mcLoadProperties.toolsLoseDurabilityFromAbilities)
+    		mcm.getInstance().damageTool(player, (short) mcLoadProperties.abilityDurabilityLoss);
     	Location loc = block.getLocation();
     	Material mat = Material.getMaterial(block.getTypeId());
 		byte damage = 0;
@@ -172,6 +177,7 @@ public class mcMining {
     	if(block.getTypeId() == 1 || block.getTypeId() == 24){
     		if(!mcConfig.getInstance().isBlockWatched(block)){
     			mcUsers.getProfile(player).addMiningGather(3);
+    			blockProcCheck(block, player);
     			blockProcCheck(block, player);
     		}
     		if(block.getTypeId() == 1){
@@ -188,6 +194,7 @@ public class mcMining {
     		if(!mcConfig.getInstance().isBlockWatched(block)){
     			mcUsers.getProfile(player).addMiningGather(3);
     			blockProcCheck(block, player);
+    			blockProcCheck(block, player);
     		}
     		mat = Material.getMaterial(87);
 			item = new ItemStack(mat, 1, (byte)0, damage);
@@ -198,6 +205,7 @@ public class mcMining {
     	if(block.getTypeId() == 89){
     		if(!mcConfig.getInstance().isBlockWatched(block)){
     			mcUsers.getProfile(player).addMiningGather(3);
+    			blockProcCheck(block, player);
     			blockProcCheck(block, player);
     		}
     		mat = Material.getMaterial(348);
@@ -210,6 +218,7 @@ public class mcMining {
     		if(!mcConfig.getInstance().isBlockWatched(block)){
         		mcUsers.getProfile(player).addMiningGather(10);
         		blockProcCheck(block, player);
+        		blockProcCheck(block, player);
         		}
     		mat = Material.getMaterial(263);
 			item = new ItemStack(mat, 1, (byte)0, damage);
@@ -221,6 +230,7 @@ public class mcMining {
     		if(!mcConfig.getInstance().isBlockWatched(block)){
         		mcUsers.getProfile(player).addMiningGather(35);
         		blockProcCheck(block, player);
+        		blockProcCheck(block, player);
         		}
     		block.setType(Material.AIR);
     	}
@@ -228,6 +238,7 @@ public class mcMining {
     	if(block.getTypeId() == 56 && mcm.getInstance().getTier(player) >= 3){
     		if(!mcConfig.getInstance().isBlockWatched(block)){
         		mcUsers.getProfile(player).addMiningGather(75);
+        		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
     		mat = Material.getMaterial(264);
@@ -240,6 +251,7 @@ public class mcMining {
     		if(!mcConfig.getInstance().isBlockWatched(block)){
         		mcUsers.getProfile(player).addMiningGather(25);
         		blockProcCheck(block, player);
+        		blockProcCheck(block, player);
         	}
     		block.setType(Material.AIR);
     	}
@@ -247,6 +259,7 @@ public class mcMining {
     	if((block.getTypeId() == 73 || block.getTypeId() == 74) && mcm.getInstance().getTier(player) >= 4){
     		if(!mcConfig.getInstance().isBlockWatched(block)){
         		mcUsers.getProfile(player).addMiningGather(15);
+        		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
     		mat = Material.getMaterial(331);
@@ -263,6 +276,7 @@ public class mcMining {
     	if(block.getTypeId() == 21 && mcm.getInstance().getTier(player) >= 3){
     		if(!mcConfig.getInstance().isBlockWatched(block)){
         		mcUsers.getProfile(player).addMiningGather(40);
+        		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
     		mat = Material.getMaterial(351);

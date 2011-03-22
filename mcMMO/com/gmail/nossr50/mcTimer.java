@@ -16,7 +16,7 @@ public class mcTimer extends TimerTask{
 	public void run() {
 		Player[] playerlist = plugin.getServer().getOnlinePlayers();
 		for(Player player : playerlist){
-			if(mcUsers.getProfile(player) == null)
+			if(player != null && mcUsers.getProfile(player) == null)
 	    		mcUsers.addUser(player);
 			/*
 			 * MONITOR SKILLS

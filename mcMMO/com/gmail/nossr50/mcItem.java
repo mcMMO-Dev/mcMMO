@@ -1,5 +1,6 @@
 package com.gmail.nossr50;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -64,7 +65,8 @@ public class mcItem {
     			}
     			player.sendMessage("**CHIMAERA WING**");
     		} else if (mcUsers.getProfile(player).getRecentlyHurt() >= 1 && is.getAmount() >= 10) {
-    			player.sendMessage("You were injured recently and must wait to use this.");
+    			player.sendMessage("You were injured recently and must wait to use this."
+    					+ChatColor.YELLOW+" ("+(mcUsers.getProfile(player).getRecentlyHurt() * 2)+"s)");
     		} else if (is.getTypeId() == 288 && is.getAmount() <= 9){
     			player.sendMessage("You need more of that to use it");
     		}

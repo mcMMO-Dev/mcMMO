@@ -71,7 +71,8 @@ public class mcWoodCutting {
     			mcUsers.getProfile(player).setTreeFellerMode(true);
     		}
     		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() >= 1){
-    			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again.");
+    			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
+    					+ChatColor.YELLOW+" ("+(mcUsers.getProfile(player).getTreeFellerCooldown() * 2)+"s)");
     		}
     	}
     }

@@ -15,12 +15,13 @@ public class mcAcrobatics {
 	public void acrobaticsCheck(Player player, EntityDamageEvent event, Location loc, int xx, int y, int z){
     	if(player != null){
 			if(Math.random() * 1000 <= mcUsers.getProfile(player).getAcrobaticsInt()){
-				event.setCancelled(true);
 				player.sendMessage("**ROLLED**");
 				if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z)) 
 						&& mcPermissions.getInstance().acrobatics(player)){
-				mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 8);
-				mcSkills.getInstance().XpCheck(player);
+					if(!event.isCancelled())
+						mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 8);
+					mcSkills.getInstance().XpCheck(player);
+					event.setCancelled(true);
 				}
 				return;
 			}
@@ -29,14 +30,16 @@ public class mcAcrobatics {
 			return;
 		if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z)) 
 				&& mcPermissions.getInstance().acrobatics(player)){
-		mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 12);
-		mcSkills.getInstance().XpCheck(player);
-		mcConfig.getInstance().addBlockWatch(loc.getWorld().getBlockAt(xx, y, z));
-		if(player.getHealth() - event.getDamage() <= 0){
-			if(mcUsers.getProfile(player).isDead())
-    			return;
-			mcUsers.getProfile(player).setDead(true);
-		}
+			if(!event.isCancelled())
+				mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 8);
+			mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 12);
+			mcSkills.getInstance().XpCheck(player);
+			mcConfig.getInstance().addBlockWatch(loc.getWorld().getBlockAt(xx, y, z));
+			if(player.getHealth() - event.getDamage() <= 0){
+				if(mcUsers.getProfile(player).isDead())
+	    			return;
+				mcUsers.getProfile(player).setDead(true);
+			}
 		}
     }
 	
