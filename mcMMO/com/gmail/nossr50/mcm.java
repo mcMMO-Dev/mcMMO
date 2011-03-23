@@ -271,6 +271,12 @@ public class mcm {
 			float skillvalue = (float)mcUsers.getProfile(player).getArcheryInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		String percentagefire = String.valueOf((skillvalue / 1500) * 100);
+    		String percentagedaze;
+			if(mcUsers.getProfile(player).getArcheryInt() < 1000){
+				percentagedaze = String.valueOf((skillvalue / 2000) * 100);
+			} else {
+				percentagedaze = "50";
+			}
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"ARCHERY"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
@@ -279,6 +285,7 @@ public class mcm {
 			player.sendMessage(ChatColor.DARK_AQUA+"Damage+: "+ChatColor.GREEN+"Modifies Damage");
 			player.sendMessage(ChatColor.DARK_AQUA+"Arrow Retrieval: "+ChatColor.GREEN+"Chance to retrieve arrows from corpses");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Chance to Daze: "+ChatColor.YELLOW+percentagedaze+"%");
 			player.sendMessage(ChatColor.RED+"Chance to Retrieve Arrows: "+ChatColor.YELLOW+percentage+"%");
 			player.sendMessage(ChatColor.RED+"Chance for Ignition: "+ChatColor.YELLOW+percentagefire+"%");
 			player.sendMessage(ChatColor.RED+"Damage+ (Rank"+rank+"): Bonus "+rank+" damage");

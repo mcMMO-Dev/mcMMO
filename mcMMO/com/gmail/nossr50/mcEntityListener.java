@@ -1,6 +1,9 @@
 package com.gmail.nossr50;
 
+import net.minecraft.server.EntityLiving;
+
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
@@ -36,6 +39,9 @@ public class mcEntityListener extends EntityListener {
     	}
     }
     public void onEntityDamage(EntityDamageEvent event) {
+    	CraftEntity cEntity = (CraftEntity)event.getEntity();
+    	EntityLiving entity = (EntityLiving)cEntity.getHandle();
+    	if(entity.noDamageTicks < entity.maxNoDamageTicks/2.0F){	
     	Entity x = event.getEntity();
     	DamageCause type = event.getCause();
     	/*
@@ -153,6 +159,7 @@ public class mcEntityListener extends EntityListener {
     	if(x instanceof Player && !event.isCancelled()){
     		Player herpderp = (Player)x;
     		mcUsers.getProfile(herpderp).setRecentlyHurt(30);
+    	}
     	}
     }
     public void onEntityDeath(EntityDeathEvent event) {

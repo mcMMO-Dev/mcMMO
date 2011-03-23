@@ -1,5 +1,13 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.7
+Procs/XP Gain will no longer happen when the Entity is immune to damage (Thanks EdwardHand!)
+Axes critical damage versus players reduced to 150% damage from 200% damage
+Fixed bug where Daze might not proc
+Changed archery Daze to follow smooth transition
+Added archery Daze chance info to /archery
+Cooldown lengths are now customizable, they are in seconds and multiplied by 2 by mcMMO
+
 Version 0.9.6
 Timer checks for player being null before adding them to the mcUsers system
 Cooldowns will now show how much time is remaining when trying to use their respective abilities

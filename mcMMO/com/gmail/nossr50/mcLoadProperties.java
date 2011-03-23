@@ -3,13 +3,25 @@ package com.gmail.nossr50;
 public class mcLoadProperties {
 	public static Boolean toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String mcability, mcmmo, mcc, mcrefresh, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
-	public static int abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
+	public static int superBreakerCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public static void loadMain(){
     	String propertiesFile = mcMMO.maindirectory + "mcmmo.properties";
     	mcProperties properties = new mcProperties(propertiesFile);
     	properties.load();
     	
+    	/*
+    	 * COOLDOWN CONTROL
+    	 */
+    	superBreakerCooldown = properties.getInteger("superBreakerCooldown", 120);
+    	gigaDrillBreakerCooldown = properties.getInteger("gigaDrillBreakerCooldown", 120);
+    	treeFellerCooldown = properties.getInteger("treeFellerCooldown", 120);
+    	berserkCooldown = properties.getInteger("berserkCooldown", 120);
+    	serratedStrikeCooldown = properties.getInteger("serratedStrikeCooldown", 120);
+    	skullSplitterCooldown = properties.getInteger("skullSplitterCooldown", 120);
+    	/*
+    	 * OTHER
+    	 */
     	toolsLoseDurabilityFromAbilities = properties.getBoolean("toolsLoseDurabilityFromAbilities", true);
     	abilityDurabilityLoss = properties.getInteger("abilityDurabilityLoss", 2);
     	feathersConsumedByChimaeraWing = properties.getInteger("feathersConsumedByChimaeraWing", 10);

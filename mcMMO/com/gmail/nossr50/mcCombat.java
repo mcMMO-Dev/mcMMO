@@ -424,29 +424,27 @@ public class mcCombat {
     	    		if(mcLoadProperties.pvpxp && !mcParty.getInstance().inSameParty(attacker, defender)){
     	    			mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     	    		}
-    				Location loc = defender.getLocation();
+    				/*
+    				 * DAZE PROC
+    				 */
+    	    		Location loc = defender.getLocation();
     				if(Math.random() * 10 > 5){
 					loc.setPitch(90);
 					} else {
 						loc.setPitch(-90);
 					}
-    				/*
-    				 * Check the proc
-    				 */
-					if(mcUsers.getProfile(attacker).getArcheryInt() >= 300 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
-    				if(Math.random() * 10 > 7){
-    					defender.teleportTo(loc);
-    					defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
-    					attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
-    				}
-					}
-					if(mcUsers.getProfile(attacker).getArcheryInt() >= 600){
-	    				if(Math.random() * 10 > 4){
-	    					defender.teleportTo(loc);
-	    					defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
-	    					attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
-	    				}
-						}
+    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000){
+    	    			if(Math.random() * 1000 <= 500){
+    	    				defender.teleportTo(loc);
+    	    				defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
+    	    				attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
+    	    			}
+    	    		} else if(Math.random() * 2000 <= mcUsers.getProfile(attacker).getArcheryInt()){
+    	    			defender.teleportTo(loc);
+	    				defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
+	    				attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
+    	    		}
+    				
 					if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
 	    				event.setDamage(calculateDamage(event, 1));
 	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
@@ -570,7 +568,11 @@ public class mcCombat {
     					Player player = (Player)x;
     					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     				}
-    				event.setDamage(event.getDamage() * 2);
+    				if(x instanceof Player){
+        				event.setDamage(event.getDamage() * 2 - event.getDamage() / 2);
+        			} else {
+        				event.setDamage(event.getDamage() * 2);
+        			}
     				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     			}
     		} else if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getAxesInt()){
@@ -578,7 +580,11 @@ public class mcCombat {
     				Player player = (Player)x;
     				player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     			}
-    			event.setDamage(event.getDamage() * 2);
+    			if(x instanceof Player){
+    				event.setDamage(event.getDamage() * 2 - event.getDamage() / 2);
+    			} else {
+    				event.setDamage(event.getDamage() * 2);
+    			}
 				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     		}
     	}

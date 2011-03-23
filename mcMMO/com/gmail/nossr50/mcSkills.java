@@ -275,7 +275,7 @@ public class mcSkills {
 				mcUsers.getProfile(player).decreaseSkullSplitterTicks();
 				if(mcUsers.getProfile(player).getSkullSplitterTicks() <= 0){
 					mcUsers.getProfile(player).setSkullSplitterMode(false);
-					mcUsers.getProfile(player).setSkullSplitterCooldown(120);
+					mcUsers.getProfile(player).setSkullSplitterCooldown(mcLoadProperties.skullSplitterCooldown);
 					player.sendMessage(ChatColor.RED+"**Skull Splitter has worn off**");
 				}
 			}
@@ -288,7 +288,7 @@ public class mcSkills {
 				mcUsers.getProfile(player).decreaseTreeFellerTicks();
 				if(mcUsers.getProfile(player).getTreeFellerTicks() <= 0){
 					mcUsers.getProfile(player).setTreeFellerMode(false);
-					mcUsers.getProfile(player).setTreeFellerCooldown(120);
+					mcUsers.getProfile(player).setTreeFellerCooldown(mcLoadProperties.treeFellerCooldown);
 					player.sendMessage(ChatColor.RED+"**Tree Feller has worn off**");
 				}
 			}
@@ -301,7 +301,7 @@ public class mcSkills {
 				mcUsers.getProfile(player).decreaseSuperBreakerTicks();
 				if(mcUsers.getProfile(player).getSuperBreakerTicks() <= 0){
 					mcUsers.getProfile(player).setSuperBreakerMode(false);
-					mcUsers.getProfile(player).setSuperBreakerCooldown(120);
+					mcUsers.getProfile(player).setSuperBreakerCooldown(mcLoadProperties.superBreakerCooldown);
 					player.sendMessage(ChatColor.RED+"**Super Breaker has worn off**");
 				}
 			}
@@ -314,7 +314,7 @@ public class mcSkills {
 				mcUsers.getProfile(player).decreaseGigaDrillBreakerTicks();
 				if(mcUsers.getProfile(player).getGigaDrillBreakerTicks() <= 0){
 					mcUsers.getProfile(player).setGigaDrillBreakerMode(false);
-					mcUsers.getProfile(player).setGigaDrillBreakerCooldown(120);
+					mcUsers.getProfile(player).setGigaDrillBreakerCooldown(mcLoadProperties.gigaDrillBreakerCooldown);
 					player.sendMessage(ChatColor.RED+"**You feel spiral energy leaving you**");
 				}
 			}
@@ -327,7 +327,7 @@ public class mcSkills {
 				mcUsers.getProfile(player).decreaseSerratedStrikesTicks();
 				if(mcUsers.getProfile(player).getSerratedStrikesTicks() <= 0){
 					mcUsers.getProfile(player).setSerratedStrikesMode(false);
-					mcUsers.getProfile(player).setSerratedStrikesCooldown(120);
+					mcUsers.getProfile(player).setSerratedStrikesCooldown(mcLoadProperties.serratedStrikeCooldown);
 					player.sendMessage(ChatColor.RED+"**Serrated Strikes has worn off**");
 				}
 			}
@@ -340,7 +340,7 @@ public class mcSkills {
 				mcUsers.getProfile(player).decreaseBerserkTicks();
 				if(mcUsers.getProfile(player).getBerserkTicks() <= 0){
 					mcUsers.getProfile(player).setBerserkMode(false);
-					mcUsers.getProfile(player).setBerserkCooldown(120);
+					mcUsers.getProfile(player).setBerserkCooldown(mcLoadProperties.berserkCooldown);
 					player.sendMessage(ChatColor.RED+"**Berserk has worn off**");
 				}
 			}
