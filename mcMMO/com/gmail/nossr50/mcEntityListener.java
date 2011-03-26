@@ -39,9 +39,14 @@ public class mcEntityListener extends EntityListener {
     	}
     }
     public void onEntityDamage(EntityDamageEvent event) {
+    	/*
+    	 * CHECK FOR INVULNERABILITY
+    	 */
+    	if(event.getEntity() instanceof CraftEntity){
     	CraftEntity cEntity = (CraftEntity)event.getEntity();
-    	EntityLiving entity = (EntityLiving)cEntity.getHandle();
-    	if(entity.noDamageTicks < entity.maxNoDamageTicks/2.0F){	
+    	if(cEntity.getHandle() instanceof EntityLiving){
+    	EntityLiving entityliving = (EntityLiving)cEntity.getHandle();
+    	if(entityliving.noDamageTicks < entityliving.maxNoDamageTicks/2.0F){
     	Entity x = event.getEntity();
     	DamageCause type = event.getCause();
     	/*
@@ -159,6 +164,8 @@ public class mcEntityListener extends EntityListener {
     	if(x instanceof Player && !event.isCancelled()){
     		Player herpderp = (Player)x;
     		mcUsers.getProfile(herpderp).setRecentlyHurt(30);
+    	}
+    	}
     	}
     	}
     }

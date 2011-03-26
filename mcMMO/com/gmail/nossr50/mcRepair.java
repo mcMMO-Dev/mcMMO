@@ -31,19 +31,19 @@ public class mcRepair {
         			if(isDiamondArmor(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= mcLoadProperties.repairdiamondlevel){
 	        			removeDiamond(player);
 	        			player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-	        			mcUsers.getProfile(player).addRepairGather(75);
+	        			mcUsers.getProfile(player).addRepairGather(75 * mcLoadProperties.xpGainMultiplier);
         			} else if (isIronArmor(is) && hasIron(player)){
         			/*
         			 * IRON ARMOR
         			 */
 	        			removeIron(player);
 	            		player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-	            		mcUsers.getProfile(player).addRepairGather(20);
+	            		mcUsers.getProfile(player).addRepairGather(20 * mcLoadProperties.xpGainMultiplier);
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasGold(player)){
         				removeGold(player);
         				player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-        				mcUsers.getProfile(player).addRepairGather(50);
+        				mcUsers.getProfile(player).addRepairGather(50 * mcLoadProperties.xpGainMultiplier);
         			} else {
         				needMoreVespeneGas(is, player);
         			}
@@ -58,18 +58,18 @@ public class mcRepair {
             		if(isIronTools(is) && hasIron(player)){
             			is.setDurability(getToolRepairAmount(is, player));
             			removeIron(player);
-            			mcUsers.getProfile(player).addRepairGather(20);
+            			mcUsers.getProfile(player).addRepairGather(20 * mcLoadProperties.xpGainMultiplier);
             		} else if (isDiamondTools(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= mcLoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
             			/*
             			 * DIAMOND TOOLS
             			 */
             			is.setDurability(getToolRepairAmount(is, player));
             			removeDiamond(player);
-            			mcUsers.getProfile(player).addRepairGather(75);
+            			mcUsers.getProfile(player).addRepairGather(75 * mcLoadProperties.xpGainMultiplier);
             		} else if(isGoldTools(is) && hasGold(player)){
             			is.setDurability(getToolRepairAmount(is, player));
             			removeGold(player);
-            			mcUsers.getProfile(player).addRepairGather(50);
+            			mcUsers.getProfile(player).addRepairGather(50 * mcLoadProperties.xpGainMultiplier);
             		} else {
             			needMoreVespeneGas(is, player);
             		}
@@ -325,9 +325,9 @@ public class mcRepair {
         		break;
     		}
 			if(durability < 0)
-			durability = 0;
+				durability = 0;
 			if(checkPlayerProcRepair(player))
-	    	durability = 0;
+				durability = 0;
 			return durability;
     }
     public void needMoreVespeneGas(ItemStack is, Player player){

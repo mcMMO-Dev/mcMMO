@@ -603,6 +603,8 @@ public class mcm {
 	    			player.sendMessage("/"+mcLoadProperties.setmyspawn+" "+ChatColor.RED+"- Set your MySpawn");
     		}
     		player.sendMessage(ChatColor.GREEN+"--OTHER COMMANDS--");
+    		if(mcPermissions.getInstance().mcAbility(player))
+    			player.sendMessage("/"+mcLoadProperties.mcability+ChatColor.RED+" - Toggle ability activation with right click");
     		if(mcPermissions.getInstance().adminChat(player)){
     			player.sendMessage("/a "+ChatColor.RED+"- Toggle admin chat");
     		}

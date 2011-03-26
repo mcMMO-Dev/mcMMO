@@ -92,7 +92,9 @@ public class mcCombat {
 			/*
     		 * PVP XP
     		 */
-    		if(attacker != null && defender != null && mcLoadProperties.pvpxp && !mcParty.getInstance().inSameParty(attacker, defender)){
+    		if(attacker != null && defender != null && mcLoadProperties.pvpxp){
+    			if(mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty() && mcParty.getInstance().inSameParty(attacker, defender))
+    				return;
     			if(mcm.getInstance().isAxes(attacker.getItemInHand()))
     				mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     			if(mcm.getInstance().isSwords(attacker.getItemInHand()))
@@ -113,13 +115,13 @@ public class mcCombat {
     		}
 			Squid defender = (Squid)event.getEntity();
 			if(mcm.getInstance().isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
-					mcUsers.getProfile(attacker).addSwordsGather(10);
+					mcUsers.getProfile(attacker).addSwordsGather(10 * mcLoadProperties.xpGainMultiplier);
 			}
 			mcSkills.getInstance().XpCheck(attacker);
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
-					mcUsers.getProfile(attacker).addAxesGather(10);
+					mcUsers.getProfile(attacker).addAxesGather(10 * mcLoadProperties.xpGainMultiplier);
 					mcSkills.getInstance().XpCheck(attacker);
 			}
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
@@ -152,7 +154,7 @@ public class mcCombat {
 				}
     			//XP
 					if(defender.getHealth() != 0){
-					mcUsers.getProfile(attacker).addUnarmedGather(10);
+					mcUsers.getProfile(attacker).addUnarmedGather(10 * mcLoadProperties.xpGainMultiplier);
 					mcSkills.getInstance().XpCheck(attacker);
 					}
     			}
@@ -207,15 +209,15 @@ public class mcCombat {
 					&& mcPermissions.getInstance().swords(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 					if(x instanceof Creeper)
-					mcUsers.getProfile(attacker).addSwordsGather(10);
+					mcUsers.getProfile(attacker).addSwordsGather(10 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-					mcUsers.getProfile(attacker).addSwordsGather(7);
+					mcUsers.getProfile(attacker).addSwordsGather(7 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-					mcUsers.getProfile(attacker).addSwordsGather(5);
+					mcUsers.getProfile(attacker).addSwordsGather(5 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-					mcUsers.getProfile(attacker).addSwordsGather(3);
+					mcUsers.getProfile(attacker).addSwordsGather(3 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-					mcUsers.getProfile(attacker).addSwordsGather(7);
+					mcUsers.getProfile(attacker).addSwordsGather(7 * mcLoadProperties.xpGainMultiplier);
 					}
 					mcSkills.getInstance().XpCheck(attacker);
 				}
@@ -223,17 +225,16 @@ public class mcCombat {
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
-				    mcUsers.getProfile(attacker).addAxesGather(1);
 					if(x instanceof Creeper)
-					mcUsers.getProfile(attacker).addAxesGather(10);
+					mcUsers.getProfile(attacker).addAxesGather(10 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						mcUsers.getProfile(attacker).addAxesGather(7);
+						mcUsers.getProfile(attacker).addAxesGather(7 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						mcUsers.getProfile(attacker).addAxesGather(5);
+						mcUsers.getProfile(attacker).addAxesGather(5 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						mcUsers.getProfile(attacker).addAxesGather(3);
+						mcUsers.getProfile(attacker).addAxesGather(3 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						mcUsers.getProfile(attacker).addAxesGather(7);
+						mcUsers.getProfile(attacker).addAxesGather(7 * mcLoadProperties.xpGainMultiplier);
 					}
 					mcSkills.getInstance().XpCheck(attacker);
 			}
@@ -268,15 +269,15 @@ public class mcCombat {
 			//XP
 			if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 			if(x instanceof Creeper)
-				mcUsers.getProfile(attacker).addUnarmedGather(20);
+				mcUsers.getProfile(attacker).addUnarmedGather(10 * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Spider)
-				mcUsers.getProfile(attacker).addUnarmedGather(15);
+				mcUsers.getProfile(attacker).addUnarmedGather(7 * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Skeleton)
-				mcUsers.getProfile(attacker).addUnarmedGather(10);
+				mcUsers.getProfile(attacker).addUnarmedGather(5 * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Zombie)
-				mcUsers.getProfile(attacker).addUnarmedGather(5);
+				mcUsers.getProfile(attacker).addUnarmedGather(3 * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof PigZombie)
-				mcUsers.getProfile(attacker).addUnarmedGather(15);
+				mcUsers.getProfile(attacker).addUnarmedGather(7 * mcLoadProperties.xpGainMultiplier);
 			}
 			mcSkills.getInstance().XpCheck(attacker);
 			}
@@ -358,22 +359,21 @@ public class mcCombat {
     			//XP
     			if(!mcConfig.getInstance().isMobSpawnTracked(x)){
     				if(x instanceof Creeper)
-					mcUsers.getProfile(attacker).addArcheryGather(10);
+					mcUsers.getProfile(attacker).addArcheryGather(10 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						mcUsers.getProfile(attacker).addArcheryGather(7);
+						mcUsers.getProfile(attacker).addArcheryGather(7 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						mcUsers.getProfile(attacker).addArcheryGather(5);
+						mcUsers.getProfile(attacker).addArcheryGather(5 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						mcUsers.getProfile(attacker).addArcheryGather(3);
+						mcUsers.getProfile(attacker).addArcheryGather(3 * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						mcUsers.getProfile(attacker).addArcheryGather(7);
+						mcUsers.getProfile(attacker).addArcheryGather(7 * mcLoadProperties.xpGainMultiplier);
     			}
     			}
     		/*
     		 * Defender is Animals	
     		 */
     		if(x instanceof Animals){
-    			Animals defender = (Animals)x;
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
     				event.setDamage(calculateDamage(event, 1));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)

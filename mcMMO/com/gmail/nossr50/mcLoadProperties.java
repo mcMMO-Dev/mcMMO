@@ -1,9 +1,9 @@
 package com.gmail.nossr50;
 
 public class mcLoadProperties {
-	public static Boolean toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	public static Boolean mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String mcability, mcmmo, mcc, mcrefresh, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
-	public static int superBreakerCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
+	public static int xpGainMultiplier, superBreakerCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public static void loadMain(){
     	String propertiesFile = mcMMO.maindirectory + "mcmmo.properties";
@@ -22,6 +22,8 @@ public class mcLoadProperties {
     	/*
     	 * OTHER
     	 */
+    	myspawnclearsinventory = properties.getBoolean("mySpawnClearsInventory", true);
+    	xpGainMultiplier = properties.getInteger("xpGainMultiplier", 1);
     	toolsLoseDurabilityFromAbilities = properties.getBoolean("toolsLoseDurabilityFromAbilities", true);
     	abilityDurabilityLoss = properties.getInteger("abilityDurabilityLoss", 2);
     	feathersConsumedByChimaeraWing = properties.getInteger("feathersConsumedByChimaeraWing", 10);
@@ -29,44 +31,44 @@ public class mcLoadProperties {
     	pvpxprewardmodifier = properties.getInteger("pvpXpRewardModifier", 1);
     	miningrequirespickaxe = properties.getBoolean("miningRequiresPickaxe", true);
     	woodcuttingrequiresaxe = properties.getBoolean("woodcuttingRequiresAxe", true);
-    	repairdiamondlevel = properties.getInteger("repairdiamondlevel", 50);
+    	repairdiamondlevel = properties.getInteger("repairDiamondLevel", 50);
     	/*
     	 * EXPERIENCE RATE MODIFIER
     	 */
-    	globalxpmodifier = properties.getInteger("globalxpmodifier", 1);
-    	miningxpmodifier = properties.getInteger("miningxpmodifier", 2);
-    	repairxpmodifier = properties.getInteger("repairxpmodifier", 2);
-    	woodcuttingxpmodifier = properties.getInteger("woodcuttingxpmodifier", 2);
-    	unarmedxpmodifier = properties.getInteger("unarmedxpmodifier", 2);
-    	herbalismxpmodifier = properties.getInteger("herbalismxpmodifier", 2);
-    	excavationxpmodifier = properties.getInteger("excavationxpmodifier", 2);
-    	archeryxpmodifier = properties.getInteger("archeryxpmodifier", 2);
-    	swordsxpmodifier = properties.getInteger("swordsxpmodifier", 2);
-    	axesxpmodifier = properties.getInteger("axesxpmodifier", 2);
-    	acrobaticsxpmodifier = properties.getInteger("acrobaticsxpmodifier", 2);
+    	globalxpmodifier = properties.getInteger("globalXpModifier", 1);
+    	miningxpmodifier = properties.getInteger("miningXpModifier", 2);
+    	repairxpmodifier = properties.getInteger("repairXpModifier", 2);
+    	woodcuttingxpmodifier = properties.getInteger("woodcuttingXpModifier", 2);
+    	unarmedxpmodifier = properties.getInteger("unarmedXpModifier", 2);
+    	herbalismxpmodifier = properties.getInteger("herbalismXpModifier", 2);
+    	excavationxpmodifier = properties.getInteger("excavationXpModifier", 2);
+    	archeryxpmodifier = properties.getInteger("archeryXpModifier", 2);
+    	swordsxpmodifier = properties.getInteger("swordsXpModifier", 2);
+    	axesxpmodifier = properties.getInteger("axesXpModifier", 2);
+    	acrobaticsxpmodifier = properties.getInteger("acrobaticsXpModifier", 2);
     	/*
     	 * TOGGLE CLAY
     	 */
-    	clay = properties.getBoolean("graveltoclay", true);
+    	clay = properties.getBoolean("gravelToClay", true);
     	/*
     	 * ANVIL MESSAGES
     	 */
-    	anvilmessages = properties.getBoolean("anvilmessages", true);
+    	anvilmessages = properties.getBoolean("anvilMessages", true);
     	/*
     	 * EXCAVATION LOOT TOGGLES
     	 */
-    	myspawnclearsinventory = properties.getBoolean("myspawnclearsinventory", true);
-    	glowstone = properties.getBoolean("canexcavateglowstone", true);
+    	mushrooms = properties.getBoolean("canExcavateMushrooms", true);
+    	glowstone = properties.getBoolean("canExcavateGlowstone", true);
     	pvp = properties.getBoolean("pvp", true);
-    	eggs = properties.getBoolean("canexcavateeggs", true);
-    	apples = properties.getBoolean("canexcavateapples", true);
-    	cake = properties.getBoolean("canexcavatecake", true);
-    	music = properties.getBoolean("canexcavatemusic", true);
-    	diamond = properties.getBoolean("canexcavatediamond", true);
-    	slowsand = properties.getBoolean("canexcavateslowsand", true);
-    	sulphur = properties.getBoolean("canexcavatesulphur", true);
-    	netherrack = properties.getBoolean("canexcavatenetherrack", true);
-    	bones = properties.getBoolean("canexcavatebones", true);
+    	eggs = properties.getBoolean("canExcavateEggs", true);
+    	apples = properties.getBoolean("canExcavateApples", true);
+    	cake = properties.getBoolean("canExcavateCake", true);
+    	music = properties.getBoolean("canExcavateMusic", true);
+    	diamond = properties.getBoolean("canExcavateDiamond", true);
+    	slowsand = properties.getBoolean("canExcavateSlowSand", true);
+    	sulphur = properties.getBoolean("canExcavateSulphur", true);
+    	netherrack = properties.getBoolean("canExcavateNetherrack", true);
+    	bones = properties.getBoolean("canExcavateBones", true);
     	
     	/*
     	 * CUSTOM COMMANDS

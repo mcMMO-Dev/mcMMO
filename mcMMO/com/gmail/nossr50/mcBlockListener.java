@@ -15,8 +15,6 @@ import org.bukkit.event.block.BlockRightClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
 public class mcBlockListener extends BlockListener {
     private final mcMMO plugin;
 
@@ -143,11 +141,11 @@ public class mcBlockListener extends BlockListener {
 	   				if(mcLoadProperties.woodcuttingrequiresaxe){
     					if(mcm.getInstance().isAxes(inhand)){
 	    					mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
-	    					mcUsers.getProfile(player).addWoodcuttingGather(7);
+	    					mcUsers.getProfile(player).addWoodcuttingGather(7 * mcLoadProperties.xpGainMultiplier);
 	    				}
 	    			} else {
 	    				mcWoodCutting.getInstance().woodCuttingProcCheck(player, block, loc);
-    					mcUsers.getProfile(player).addWoodcuttingGather(7);	
+    					mcUsers.getProfile(player).addWoodcuttingGather(7 * mcLoadProperties.xpGainMultiplier);	
 	   				}
 	    			mcSkills.getInstance().XpCheck(player);
 	    			/*

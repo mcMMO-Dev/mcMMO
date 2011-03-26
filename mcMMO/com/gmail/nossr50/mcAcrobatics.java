@@ -19,7 +19,7 @@ public class mcAcrobatics {
 				if(!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z)) 
 						&& mcPermissions.getInstance().acrobatics(player)){
 					if(!event.isCancelled())
-						mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 8);
+						mcUsers.getProfile(player).addAcrobaticsGather((event.getDamage() * 8) * mcLoadProperties.xpGainMultiplier);
 					mcSkills.getInstance().XpCheck(player);
 					event.setCancelled(true);
 				}
@@ -32,7 +32,7 @@ public class mcAcrobatics {
 				&& mcPermissions.getInstance().acrobatics(player)){
 			if(!event.isCancelled())
 				mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 8);
-			mcUsers.getProfile(player).addAcrobaticsGather(event.getDamage() * 12);
+			mcUsers.getProfile(player).addAcrobaticsGather((event.getDamage() * 12) * mcLoadProperties.xpGainMultiplier);
 			mcSkills.getInstance().XpCheck(player);
 			mcConfig.getInstance().addBlockWatch(loc.getWorld().getBlockAt(xx, y, z));
 			if(player.getHealth() - event.getDamage() <= 0){

@@ -341,7 +341,7 @@ public class mcPlayerListener extends PlayerListener {
     		event.setCancelled(true);
     		player.sendMessage(ChatColor.GREEN + "Your mcMMO Stats");
     		if(mcPermissions.getInstance().permissionsEnabled)
-    		player.sendMessage(ChatColor.DARK_GRAY+"If you don't have access to a skill it will not be shown here.");
+    			player.sendMessage(ChatColor.DARK_GRAY+"If you don't have access to a skill it will not be shown here.");
     		if(mcPermissions.getInstance().mining(player))
     		player.sendMessage(ChatColor.YELLOW + "Mining Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getMining()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getMiningGather()
@@ -410,7 +410,7 @@ public class mcPlayerListener extends PlayerListener {
     			Player target = getPlayer(split[1]);
     			mcUsers.getProfile(target).modifyInvite(mcUsers.getProfile(player).getParty());
     			player.sendMessage(ChatColor.GREEN+"Invite sent successfully");
-    			target.sendMessage(ChatColor.RED+"ALERT: "+ChatColor.GREEN+"You have received a party invite for "+mcUsers.getProfile(target).getInvite());
+    			target.sendMessage(ChatColor.RED+"ALERT: "+ChatColor.GREEN+"You have received a party invite for "+mcUsers.getProfile(target).getInvite()+" from "+player.getName());
     			target.sendMessage(ChatColor.YELLOW+"Type "+ChatColor.GREEN+"/"+mcLoadProperties.accept+ChatColor.YELLOW+" to accept the invite");
     		}
     	}

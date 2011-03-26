@@ -31,6 +31,11 @@ public class mcConfig {
     public ArrayList<Entity> getBleedTracked() {return bleedTracker;}
     public void addArrowTrack(Entity entity, Integer arrowcount) {arrowTracker.put(entity, arrowcount);}
     public Integer getArrowCount(Entity entity) {return arrowTracker.get(entity);}
+    public void removeArrowTracked(Entity entity){
+    	if(arrowTracker.containsKey(entity)){
+    		arrowTracker.remove(entity);
+    	}
+    }
     public void removeBleedTrack(Entity entity){
     	bleedTracker.remove(entity);
     }

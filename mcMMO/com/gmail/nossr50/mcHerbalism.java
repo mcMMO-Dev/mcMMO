@@ -27,7 +27,7 @@ public class mcHerbalism {
     	if(type == 59 && block.getData() == (byte) 0x7){
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    		mcUsers.getProfile(player).addHerbalismGather(5);
+    		mcUsers.getProfile(player).addHerbalismGather(5 * mcLoadProperties.xpGainMultiplier);
     		if(player != null){
 	    		if(Math.random() * 1000 <= mcUsers.getProfile(player).getHerbalismInt()){
 	    			loc.getWorld().dropItemNaturally(loc, is);
@@ -38,6 +38,7 @@ public class mcHerbalism {
     	 * We need to check not-wheat stuff for if it was placed by the player or not
     	 */
     	if(!mcConfig.getInstance().isBlockWatched(block)){
+    		//Mushroom
 	    	if(type == 39 || type == 40){
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
@@ -46,8 +47,9 @@ public class mcHerbalism {
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		mcUsers.getProfile(player).addHerbalismGather(10);
+	    		mcUsers.getProfile(player).addHerbalismGather(40 * mcLoadProperties.xpGainMultiplier);
 	    	}
+	    	//Flower
 	    	if(type == 37 || type == 38){
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
@@ -56,7 +58,7 @@ public class mcHerbalism {
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		mcUsers.getProfile(player).addHerbalismGather(3);
+	    		mcUsers.getProfile(player).addHerbalismGather(10 * mcLoadProperties.xpGainMultiplier);
 	    	}
     	}
     	mcSkills.getInstance().XpCheck(player);

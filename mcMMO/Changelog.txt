@@ -1,5 +1,27 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+
+Version 0.9.10
+Party invites now show who they are from
+Mushrooms added to Dirt/Grass excavation loot tables, drops with 500+ skill
+mcMMO configuration files property setting names have been changed for readability
+Fixed bug where Gold and Iron wouldn't drop anything during Super Breaker
+Added /mcability info to /mcc
+Potentially fixed NPE error when checking players for being in same party for PVP XP
+Removed sand specific diamond drop from sand excavation loot table, Diamonds can still drop globally for sand
+Added a global XP gain multiplier, increase it to increase XP gained
+Reduced PVE XP for Unarmed, now identical to Axes/Swords
+Changed Chat priority in mcMMO to be higher, this should help plugin conflicts
+Mushroom XP raised to 40 from 10
+Flower XP raised to 10 from 3
+
+Version 0.9.9
+Fixed problem where entities never got removed from the arrow retrieval list of entities
+
+Version 0.9.8
+EntityLiving shouldn't be cast to entities that are not an instance of EntityLiving
+Added a null check in the timer for players being null before proceeding
+
 Version 0.9.7
 Procs/XP Gain will no longer happen when the Entity is immune to damage (Thanks EdwardHand!)
 Axes critical damage versus players reduced to 150% damage from 200% damage

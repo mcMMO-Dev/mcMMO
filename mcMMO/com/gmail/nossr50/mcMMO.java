@@ -67,7 +67,7 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Low, this);
+        pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Highest, this);
         pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_FLOW, blockListener, Priority.Normal, this);

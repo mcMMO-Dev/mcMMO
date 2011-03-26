@@ -511,5 +511,6 @@ public class mcSkills {
     		x++;
     		}
     	}
+    	mcConfig.getInstance().removeArrowTracked(entity);
     }
 }
