@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 
 
 public class mcMMO extends JavaPlugin {
-	static String maindirectory = "plugins/mcMMO/";
+	static String maindirectory = "mcMMO/";
 	static File Properties = new File(maindirectory + "mcmmo.properties");
     public static final Logger log = Logger.getLogger("Minecraft");
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
@@ -30,8 +30,9 @@ public class mcMMO extends JavaPlugin {
     private Permissions permissions;
     private Timer mcMMO_Timer = new Timer(true);
     
+    //herp
     public void onEnable() {
-    	mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(2000));
+    	//mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(2000));
     	//Make the directory if it does not exist
     	new File(maindirectory).mkdir();
     	//Make the file if it does not exist
@@ -60,23 +61,19 @@ public class mcMMO extends JavaPlugin {
     	//Load the file
     	mcLoadProperties.loadMain();
     	mcUsers.getInstance().loadUsers();
-    	for(Player player : getServer().getOnlinePlayers()){
-         	mcUsers.addUser(player);
-        }
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Lowest, this);
-        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Monitor, this);
+        pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.High, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_FLOW, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_ITEM, playerListener, Priority.Monitor, this);
         pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.ENTITY_DAMAGED, entityListener, Priority.Highest, this);
-        pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, blockListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.ENTITY_DAMAGED, entityListener, Priority.Normal, this);
         //pm.registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Priority.Normal, this);
         //Displays a message when plugin is loaded
         PluginDescriptionFile pdfFile = this.getDescription();
@@ -97,17 +94,6 @@ public class mcMMO extends JavaPlugin {
     public boolean isPartyChatToggled(Player player){
     	if(mcConfig.getInstance().isPartyToggled(player.getName())){
     		return true;
-    	} else {
-    		return false;
-    	}
-    }
-    public boolean inSameParty(Player playera, Player playerb){
-    	if(mcUsers.getProfile(playera).inParty() && mcUsers.getProfile(playerb).inParty()){
-	        if(mcUsers.getProfile(playera).getParty().equals(mcUsers.getProfile(playerb).getParty())){
-	            return true;
-	        } else {
-	            return false;
-	        }
     	} else {
     		return false;
     	}

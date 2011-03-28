@@ -15,11 +15,9 @@ public class mcConfig {
     static ArrayList<String> partyChatList = new ArrayList<String>();
     static ArrayList<String> godModeList = new ArrayList<String>();
     HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
-    //HashMap<Entity, Player, String[]> xptracker = new HashMap<Entity, Player, String[]>(); 
     static ArrayList<Entity> bleedTracker = new ArrayList<Entity>();
     static ArrayList<Entity> mobSpawnTracker = new ArrayList<Entity>();
     public boolean isBlockWatched(Block block) {return blockWatchList.contains(block);}
-    public boolean isTreeFellerWatched(Block block) {return treeFeller.contains(block);}
     public ArrayList<Block> getTreeFeller() {return treeFeller;}
     public void removeBlockWatch(Block block) {blockWatchList.remove(blockWatchList.indexOf(block));}
     public void addBlockWatch(Block block) {blockWatchList.add(block);}
@@ -27,20 +25,11 @@ public class mcConfig {
     public void addTreeFeller(Block block) {treeFeller.add(block);}
     public void addBleedTrack(Entity entity) {bleedTracker.add(entity);}
     public void addMobSpawnTrack(Entity entity) {mobSpawnTracker.add(entity);}
-    public void removeMobSpawnTrack(Entity entity) {mobSpawnTracker.remove(entity);}
     public ArrayList<Entity> getBleedTracked() {return bleedTracker;}
     public void addArrowTrack(Entity entity, Integer arrowcount) {arrowTracker.put(entity, arrowcount);}
     public Integer getArrowCount(Entity entity) {return arrowTracker.get(entity);}
-    public void removeArrowTracked(Entity entity){
-    	if(arrowTracker.containsKey(entity)){
-    		arrowTracker.remove(entity);
-    	}
-    }
     public void removeBleedTrack(Entity entity){
     	bleedTracker.remove(entity);
-    }
-    public void clearTreeFeller(){
-    	treeFeller.clear();
     }
     public void setBleedCount(Entity entity, Integer newvalue){
     	bleedTracker.add(entity);

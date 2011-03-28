@@ -1,9 +1,6 @@
 package com.gmail.nossr50;
 
-import net.minecraft.server.EntityLiving;
-
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
@@ -16,7 +13,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
 public class mcEntityListener extends EntityListener {
 	private final mcMMO plugin;
@@ -39,14 +35,6 @@ public class mcEntityListener extends EntityListener {
     	}
     }
     public void onEntityDamage(EntityDamageEvent event) {
-    	/*
-    	 * CHECK FOR INVULNERABILITY
-    	 */
-    	if(event.getEntity() instanceof CraftEntity){
-    	CraftEntity cEntity = (CraftEntity)event.getEntity();
-    	if(cEntity.getHandle() instanceof EntityLiving){
-    	EntityLiving entityliving = (EntityLiving)cEntity.getHandle();
-    	if(entityliving.noDamageTicks < entityliving.maxNoDamageTicks/2.0F){
     	Entity x = event.getEntity();
     	DamageCause type = event.getCause();
     	/*
@@ -62,30 +50,20 @@ public class mcEntityListener extends EntityListener {
     		mcAcrobatics.getInstance().acrobaticsCheck(player, event, loc, xx, y, z);
     		}
     	}
-    	
     	/*
     	 * ARCHERY CHECKS
     	 */
-    	if(event instanceof EntityDamageByProjectileEvent && event.getDamage() >= 1){
+    	if(event instanceof EntityDamageByProjectileEvent){
     		EntityDamageByProjectileEvent c = (EntityDamageByProjectileEvent)event;
     		mcCombat.getInstance().archeryCheck(c);
     	}
-    	
     	/*
     	 * Entity Damage by Entity checks
     	 */
-    	if(event instanceof EntityDamageByEntityEvent && event.getDamage() >= 1){
-    		if(event.isCancelled()){
-    			return;
-    		}
+    	if(event instanceof EntityDamageByEntityEvent){
     		EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent)event;
     		Entity e = eventb.getEntity(); //Defender
         	Entity f = eventb.getDamager(); //Attacker
-        	/*
-        	 * CHECK FOR PVP INTERACTIONS
-        	 */
-        	if(f instanceof Player && e instanceof Player && !mcLoadProperties.pvp)
-        		event.setCancelled(true);
         	/*
         	 * IF DEFENDER IS PLAYER
         	 */
@@ -93,6 +71,9 @@ public class mcEntityListener extends EntityListener {
         		Player defender = (Player)e;
         		if(defender != null && mcConfig.getInstance().isGodModeToggled(defender.getName()))
         			event.setCancelled(true);
+        		if(f instanceof Monster && defender != null){
+        			mcUsers.getProfile(defender).setRecentlyHurt(30);
+        		}
         		/*
         		 * PARRYING CHECK, CHECK TO SEE IF ITS A SUCCESSFUL PARRY OR NOT
         		 */
@@ -105,17 +86,6 @@ public class mcEntityListener extends EntityListener {
         		//((Player) f).sendMessage("DEBUG: EntityDamageByEntity cast correctly!");
         		int typeid = ((Player) f).getItemInHand().getTypeId();
         		Player attacker = (Player)f;
-        		if(mcUsers.getProfile(attacker).getAxePreparationMode())
-        			mcSkills.getInstance().skullSplitterCheck(attacker);
-        		if(mcUsers.getProfile(attacker).getSwordsPreparationMode())
-        			mcSkills.getInstance().serratedStrikesActivationCheck(attacker);
-        		if(mcUsers.getProfile(attacker).getFistsPreparationMode())
-        			mcSkills.getInstance().berserkActivationCheck(attacker);
-        		/*
-        		 * BERSERK DAMAGE MODIFIER
-        		 */
-        		if(mcUsers.getProfile(attacker).getBerserkMode())
-        			event.setDamage(event.getDamage() + (event.getDamage() / 2));
         		/*
         		 * Player versus Monster checks, this handles all skill damage modifiers and any procs.
         		 */
@@ -133,15 +103,9 @@ public class mcEntityListener extends EntityListener {
         		 * Player versus Animals checks, these checks handle any skill modifiers or procs
         		 */
         		mcCombat.getInstance().playerVersusAnimalsChecks(e, attacker, eventb, typeid);
-        		/*
-        		 * This will do AOE damage from the axes ability
-        		 */
-        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSkullSplitterMode() && mcm.getInstance().isAxes(attacker.getItemInHand()))
-            		mcCombat.getInstance().applyAoeDamage(attacker, eventb, x);
-        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSerratedStrikesMode() && mcm.getInstance().isSwords(attacker.getItemInHand()))
-            		mcCombat.getInstance().applyAoeDamage(attacker, eventb, x);
         	}
-        	
+        	if(f instanceof Player && e instanceof Player && !mcLoadProperties.pvp)
+        		event.setCancelled(true);
         	if(e instanceof Monster || e instanceof Animals){
         		if(e instanceof Monster){
         			Monster monster = (Monster)e;
@@ -157,24 +121,9 @@ public class mcEntityListener extends EntityListener {
         		}
         	}
     	}
-    	
-    	/*
-    	 * Check to see if the defender took damage so we can apply recently hurt
-    	 */
-    	if(x instanceof Player && !event.isCancelled()){
-    		Player herpderp = (Player)x;
-    		mcUsers.getProfile(herpderp).setRecentlyHurt(30);
-    	}
-    	}
-    	}
-    	}
     }
     public void onEntityDeath(EntityDeathEvent event) {
     	Entity x = event.getEntity();
-		mcSkills.getInstance().arrowRetrievalCheck(x);
-		if(mcConfig.getInstance().isMobSpawnTracked(x)){
-			mcConfig.getInstance().removeMobSpawnTrack(x);
-		}
     	if(x instanceof Player){
     		Player player = (Player)x;
     		if(mcUsers.getProfile(player).isDead()){

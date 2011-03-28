@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin;
 public class mcUsers {
     private static volatile mcUsers instance;
     protected static final Logger log = Logger.getLogger("Minecraft");
-    String location = "plugins/mcMMO/mcmmo.users";
+    String location = "mcmmo.users";
     public static PlayerList players = new PlayerList();
     private Properties properties = new Properties();
     
@@ -156,14 +156,12 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
-		private int recentlyhurt = 0, bleedticks = 0, gigaDrillBreakerCooldown = 0, gigaDrillBreakerTicks = 0, berserkTicks = 0, berserkCooldown = 0, superBreakerTicks = 0, superBreakerCooldown = 0, 
-		serratedStrikesTicks = 0, skullSplitterTicks = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0, treeFellerTicks = 0, treeFellerCooldown = 0,
-		axePreparationTicks = 0, pickaxePreparationTicks = 0, fistsPreparationTicks = 0, shovelPreparationTicks = 0, swordsPreparationTicks = 0;
+		private boolean dead;
+		private int recentlyhurt = 0, bleedticks = 0;
 		Player thisplayer;
 		char defaultColor;
 
-        String location = "plugins/mcMMO/mcmmo.users";
+        String location = "mcmmo.users";
 		
 		
 		//=====================================================================
@@ -208,7 +206,7 @@ class PlayerList
             //gather = "0";
             party = null;
             dead = false;
-            treeFellerMode = false;
+            
             //Try to load the player and if they aren't found, append them
             if(!load())
             	addPlayer();
@@ -419,16 +417,6 @@ class PlayerList
 		{
 			return player.getName().equals(playerName);
 		}
-		public boolean getAbilityUse(){
-			return abilityuse;
-		}
-		public void toggleAbilityUse(){
-			if(abilityuse == false){
-				abilityuse = true;
-			} else {
-				abilityuse = false;
-			}
-		}
 		public void decreaseLastHurt(){
 			if(recentlyhurt >= 1){
 				recentlyhurt--;
@@ -445,300 +433,6 @@ class PlayerList
 		public void setBleedTicks(Integer newvalue){
 			bleedticks = newvalue;
 		}
-		public Boolean hasCooldowns(){
-			if((treeFellerCooldown + superBreakerCooldown) >= 1){
-				return true;
-			} else {
-				return false;
-			}
-		}
-		/*
-		 * SWORDS PREPARATION
-		 */
-		public boolean getSwordsPreparationMode(){
-			return swordsPreparationMode;
-		}
-		public void setSwordsPreparationMode(Boolean bool){
-			swordsPreparationMode = bool;
-		}
-		public Integer getSwordsPreparationTicks(){
-			return swordsPreparationTicks;
-		}
-		public void setSwordsPreparationTicks(Integer newvalue){
-			swordsPreparationTicks = newvalue;
-		}
-		public void decreaseSwordsPreparationTicks(){
-			if(swordsPreparationTicks >= 1){
-				swordsPreparationTicks--;
-			}
-		}
-		/*
-		 * SHOVEL PREPARATION
-		 */
-		public boolean getShovelPreparationMode(){
-			return shovelPreparationMode;
-		}
-		public void setShovelPreparationMode(Boolean bool){
-			shovelPreparationMode = bool;
-		}
-		public Integer getShovelPreparationTicks(){
-			return shovelPreparationTicks;
-		}
-		public void setShovelPreparationTicks(Integer newvalue){
-			shovelPreparationTicks = newvalue;
-		}
-		public void decreaseShovelPreparationTicks(){
-			if(shovelPreparationTicks >= 1){
-				shovelPreparationTicks--;
-			}
-		}
-		/*
-		 * FISTS PREPARATION
-		 */
-		public boolean getFistsPreparationMode(){
-			return fistsPreparationMode;
-		}
-		public void setFistsPreparationMode(Boolean bool){
-			fistsPreparationMode = bool;
-		}
-		public Integer getFistsPreparationTicks(){
-			return fistsPreparationTicks;
-		}
-		public void setFistsPreparationTicks(Integer newvalue){
-			fistsPreparationTicks = newvalue;
-		}
-		public void decreaseFistsPreparationTicks(){
-			if(fistsPreparationTicks >= 1){
-				fistsPreparationTicks--;
-			}
-		}
-		/*
-		 * AXE PREPARATION
-		 */
-		public boolean getAxePreparationMode(){
-			return axePreparationMode;
-		}
-		public void setAxePreparationMode(Boolean bool){
-			axePreparationMode = bool;
-		}
-		public Integer getAxePreparationTicks(){
-			return axePreparationTicks;
-		}
-		public void setAxePreparationTicks(Integer newvalue){
-			axePreparationTicks = newvalue;
-		}
-		public void decreaseAxePreparationTicks(){
-			if(axePreparationTicks >= 1){
-				axePreparationTicks--;
-			}
-		}
-		/*
-		 * PICKAXE PREPARATION
-		 */
-		public boolean getPickaxePreparationMode(){
-			return pickaxePreparationMode;
-		}
-		public void setPickaxePreparationMode(Boolean bool){
-			pickaxePreparationMode = bool;
-		}
-		public Integer getPickaxePreparationTicks(){
-			return pickaxePreparationTicks;
-		}
-		public void setPickaxePreparationTicks(Integer newvalue){
-			pickaxePreparationTicks = newvalue;
-		}
-		public void decreasePickaxePreparationTicks(){
-			if(pickaxePreparationTicks >= 1){
-				pickaxePreparationTicks--;
-			}
-		}
-		/*
-		 * BERSERK MODE
-		 */
-		public boolean getBerserkMode(){
-			return berserkMode;
-		}
-		public void setBerserkMode(Boolean bool){
-			berserkMode = bool;
-		}
-		public Integer getBerserkTicks(){
-			return berserkTicks;
-		}
-		public void setBerserkTicks(Integer newvalue){
-			berserkTicks = newvalue;
-		}
-		public void decreaseBerserkTicks(){
-			if(berserkTicks >= 1){
-				berserkTicks--;
-			}
-		}
-		public void setBerserkCooldown(Integer newvalue){
-			berserkCooldown = newvalue;
-		}
-		public int getBerserkCooldown(){
-			return berserkCooldown;
-		}
-		public void decreaseBerserkCooldown(){
-			if(berserkCooldown >= 1){
-				berserkCooldown--;
-			}
-		}
-		/*
-		 * SKULL SPLITTER
-		 */
-		public boolean getSkullSplitterMode(){
-			return skullSplitterMode;
-		}
-		public void setSkullSplitterMode(Boolean bool){
-			skullSplitterMode = bool;
-		}
-		public Integer getSkullSplitterTicks(){
-			return skullSplitterTicks;
-		}
-		public void setSkullSplitterTicks(Integer newvalue){
-			skullSplitterTicks = newvalue;
-		}
-		public void decreaseSkullSplitterTicks(){
-			if(skullSplitterTicks >= 1){
-				skullSplitterTicks--;
-			}
-		}
-		public void setSkullSplitterCooldown(Integer newvalue){
-			skullSplitterCooldown = newvalue;
-		}
-		public int getSkullSplitterCooldown(){
-			return skullSplitterCooldown;
-		}
-		public void decreaseSkullSplitterCooldown(){
-			if(skullSplitterCooldown >= 1){
-				skullSplitterCooldown--;
-			}
-		}
-		/*
-		 * SERRATED STRIKES
-		 */
-		public boolean getSerratedStrikesMode(){
-			return serratedStrikesMode;
-		}
-		public void setSerratedStrikesMode(Boolean bool){
-			serratedStrikesMode = bool;
-		}
-		public Integer getSerratedStrikesTicks(){
-			return serratedStrikesTicks;
-		}
-		public void setSerratedStrikesTicks(Integer newvalue){
-			serratedStrikesTicks = newvalue;
-		}
-		public void decreaseSerratedStrikesTicks(){
-			if(serratedStrikesTicks >= 1){
-				serratedStrikesTicks--;
-			}
-		}
-		public void setSerratedStrikesCooldown(Integer newvalue){
-			serratedStrikesCooldown = newvalue;
-		}
-		public int getSerratedStrikesCooldown(){
-			return serratedStrikesCooldown;
-		}
-		public void decreaseSerratedStrikesCooldown(){
-			if(serratedStrikesCooldown >= 1){
-				serratedStrikesCooldown--;
-			}
-		}
-		/*
-		 * GIGA DRILL BREAKER
-		 */
-		public boolean getGigaDrillBreakerMode(){
-			return gigaDrillBreakerMode;
-		}
-		public void setGigaDrillBreakerMode(Boolean bool){
-			gigaDrillBreakerMode = bool;
-		}
-		public Integer getGigaDrillBreakerTicks(){
-			return gigaDrillBreakerTicks;
-		}
-		public void setGigaDrillBreakerTicks(Integer newvalue){
-			gigaDrillBreakerTicks = newvalue;
-		}
-		public void decreaseGigaDrillBreakerTicks(){
-			if(gigaDrillBreakerTicks >= 1){
-				gigaDrillBreakerTicks--;
-			}
-		}
-		public void setGigaDrillBreakerCooldown(Integer newvalue){
-			gigaDrillBreakerCooldown = newvalue;
-		}
-		public int getGigaDrillBreakerCooldown(){
-			return gigaDrillBreakerCooldown;
-		}
-		public void decreaseGigaDrillBreakerCooldown(){
-			if(gigaDrillBreakerCooldown >= 1){
-				gigaDrillBreakerCooldown--;
-			}
-		}
-		/*
-		 * TREE FELLER STUFF
-		 */
-		public boolean getTreeFellerMode(){
-			return treeFellerMode;
-		}
-		public void setTreeFellerMode(Boolean bool){
-			treeFellerMode = bool;
-		}
-		public Integer getTreeFellerTicks(){
-			return treeFellerTicks;
-		}
-		public void setTreeFellerTicks(Integer newvalue){
-			treeFellerTicks = newvalue;
-		}
-		public void decreaseTreeFellerTicks(){
-			if(treeFellerTicks >= 1){
-				treeFellerTicks--;
-			}
-		}
-		public void setTreeFellerCooldown(Integer newvalue){
-			treeFellerCooldown = newvalue;
-		}
-		public int getTreeFellerCooldown(){
-			return treeFellerCooldown;
-		}
-		public void decreaseTreeFellerCooldown(){
-			if(treeFellerCooldown >= 1){
-				treeFellerCooldown--;
-			}
-		}
-		/*
-		 * MINING
-		 */
-		public boolean getSuperBreakerMode(){
-			return superBreakerMode;
-		}
-		public void setSuperBreakerMode(Boolean bool){
-			superBreakerMode = bool;
-		}
-		public Integer getSuperBreakerTicks(){
-			return superBreakerTicks;
-		}
-		public void setSuperBreakerTicks(Integer newvalue){
-			superBreakerTicks = newvalue;
-		}
-		public void decreaseSuperBreakerTicks(){
-			if(superBreakerTicks >= 1){
-				superBreakerTicks--;
-			}
-		}
-		public void setSuperBreakerCooldown(Integer newvalue){
-			superBreakerCooldown = newvalue;
-		}
-		public int getSuperBreakerCooldown(){
-			return superBreakerCooldown;
-		}
-		public void decreaseSuperBreakerCooldown(){
-			if(superBreakerCooldown >= 1){
-				superBreakerCooldown--;
-			}
-		}
-		
 		public Integer getRecentlyHurt(){
 			return recentlyhurt;
 		}
@@ -1436,34 +1130,34 @@ class PlayerList
 			}
 		}
 		public void modifyskill(int newvalue, String skillname){
-			if(skillname.toLowerCase().equals("mining")){
+			if(skillname.equals("mining")){
 				 mining = String.valueOf(newvalue);
 			}
-			if(skillname.toLowerCase().equals("woodcutting")){
+			if(skillname.equals("woodcutting")){
 				 woodcutting = String.valueOf(newvalue);
 			}
-			if(skillname.toLowerCase().equals("repair")){
+			if(skillname.equals("repair")){
 				 repair = String.valueOf(newvalue);
 			}
-			if(skillname.toLowerCase().equals("herbalism")){
+			if(skillname.equals("herbalism")){
 				 herbalism = String.valueOf(newvalue);
 			}
-			if(skillname.toLowerCase().equals("acrobatics")){
+			if(skillname.equals("acrobatics")){
 				 acrobatics = String.valueOf(newvalue);
 			}
-			if(skillname.toLowerCase().equals("swords")){
+			if(skillname.equals("swords")){
 				 swords = String.valueOf(newvalue);
 			}
-			if(skillname.toLowerCase().equals("archery")){
+			if(skillname.equals("archery")){
 				 archery = String.valueOf(newvalue);
 			}
-			if(skillname.toLowerCase().equals("unarmed")){
+			if(skillname.equals("unarmed")){
 				 unarmed = String.valueOf(newvalue);
 			}
-			if(skillname.toLowerCase().equals("excavation")){
+			if(skillname.equals("excavation")){
 				 excavation = String.valueOf(newvalue);
 			}
-			if(skillname.toLowerCase().equals("axes")){
+			if(skillname.equals("axes")){
 				axes = String.valueOf(newvalue);
 			}
 			save();
