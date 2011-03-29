@@ -30,6 +30,13 @@ public class mcPermissions {
     private boolean permission(Player player, String string) {
         return permissionsPlugin.Security.permission(player, string);  
     }
+    public boolean mcrefresh(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.tools.mcrefresh");
+        } else {
+            return true;
+        }
+    }
     public boolean mmoedit(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.tools.mmoedit");
@@ -37,7 +44,49 @@ public class mcPermissions {
             return true;
         }
     }
-    public boolean woodcuttingability(Player player) {
+    public boolean excavationAbility(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.excavation");
+        } else {
+            return true;
+        }
+    }
+    public boolean unarmedAbility(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.unarmed");
+        } else {
+            return true;
+        }
+    }
+    public boolean chimaeraWing(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.item.chimaerawing");
+        } else {
+            return true;
+        }
+    }
+    public boolean miningAbility(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.mining");
+        } else {
+            return true;
+        }
+    }
+    public boolean axesAbility(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.axes");
+        } else {
+            return true;
+        }
+    }
+    public boolean swordsAbility(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.swords");
+        } else {
+            return true;
+        }
+    }
+    public boolean woodCuttingAbility(Player player) {
     	if (permissionsEnabled) {
             return permission(player, "mcmmo.ability.woodcutting");
         } else {
@@ -65,6 +114,13 @@ public class mcPermissions {
             return true;
         }
     }
+    public boolean mcAbility(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.commands.ability");
+        } else {
+            return true;
+        }
+    }
     public boolean mySpawn(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.commands.myspawn");
@@ -75,6 +131,13 @@ public class mcPermissions {
     public boolean setMySpawn(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.commands.setmyspawn");
+        } else {
+            return true;
+        }
+    }
+    public boolean setMySpawnOther(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.commands.setmyspawnother");
         } else {
             return true;
         }
