@@ -1,5 +1,194 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.15
+AoE Abilities will only hit wolves attacking you
+Added "all" parameter to /mmoedit & /addxp
+After giving XP to a player it will now check for level ups in skills
+
+Version 0.9.14
+mcMMO checks for abilities being active before sending the fake block break event
+
+Version 0.9.13
+Fixed excavation ignoring the xpGainMultiplier
+Now compatible with CB 600+
+Fixed bug where Dodge acted maxed out no matter your skill level
+
+Version 0.9.12
+mcMMO now fakes a block break event for abilities to maximize plugin compatibility
+/herbalism will return the correct values now
+New /addxp command
+
+Version 0.9.11
+PVE Combat Skills experience is now based on damage dealt
+The Timer will no longer break from Bleed Simulation
+Tree feller no longer "damages" saplings
+Bleed+ (Serrated Strikes) lasts 5 ticks down from 12
+Bleed/Bleed+ now do 2 damage instead of 1
+Power Level is now based on permissions
+Counter Attack added to swords
+Parry is now based directly on Swords skill level
+Parry maximum proc chance raised to 30% from 20%
+Serrated Strikes now properly applies Bleed+ to targets
+Players who parry can no longer be disarmed
+Acrobatics now has a Dodge passive skill reducing damage
+Repair skill now effects how much durability is restored
+Super repair now doubles the repair amount on proc
+Unarmed now starts with a bonus to damage to encourage use
+Unarmed now has two steps to damage scaling, Appentice, and Mastery
+Unarmed disarm now caps at 25% for 1000 skill
+Fixed problem where Archery skill procs would ignore other plugins
+Ignition changed to 25% chance
+Ignition length will be based on archery skill level
+/myspawn now has a warning about the inventory loss penalty in /mcc
+mcMMO Timer now runs in 1 second intervals rather than 2
+
+Version 0.9.10
+Party invites now show who they are from
+Mushrooms added to Dirt/Grass excavation loot tables, drops with 500+ skill
+mcMMO configuration files property setting names have been changed for readability
+Fixed bug where Gold and Iron wouldn't drop anything during Super Breaker
+Added /mcability info to /mcc
+Potentially fixed NPE error when checking players for being in same party for PVP XP
+Removed sand specific diamond drop from sand excavation loot table, Diamonds can still drop globally for sand
+Added a global XP gain multiplier, increase it to increase XP gained
+Reduced PVE XP for Unarmed, now identical to Axes/Swords
+Changed Chat priority in mcMMO to be higher, this should help plugin conflicts
+Mushroom XP raised to 40 from 10
+Flower XP raised to 10 from 3
+
+Version 0.9.9
+Fixed problem where entities never got removed from the arrow retrieval list of entities
+
+Version 0.9.8
+EntityLiving shouldn't be cast to entities that are not an instance of EntityLiving
+Added a null check in the timer for players being null before proceeding
+
+Version 0.9.7
+Procs/XP Gain will no longer happen when the Entity is immune to damage (Thanks EdwardHand!)
+Axes critical damage versus players reduced to 150% damage from 200% damage
+Fixed bug where Daze might not proc
+Changed archery Daze to follow smooth transition
+Added archery Daze chance info to /archery
+Cooldown lengths are now customizable, they are in seconds and multiplied by 2 by mcMMO
+
+Version 0.9.6
+Timer checks for player being null before adding them to the mcUsers system
+Cooldowns will now show how much time is remaining when trying to use their respective abilities
+SkullSpliiter will now correctly inform the player when they are too tired to use it
+Acrobatics will no longer give XP if the event was cancelled by another plugin
+Version 0.9.5
+Super Breaker now gives a chance for Triple Drops based on mining skill
+Ability durability loss down from 15 to 2
+Ability durability loss is now toggle-able
+Ability durability loss can be adjusted in the configuration file
+Mining Picks are no longer lowered after activating Super Breaker
+
+Version 0.9.4
+Flowers won't drop wheat anymore
+Signs won't trigger ability readiness anymore
+Version 0.9.3
+Bug stopping abilities from never wearing of may have been fixed
+Changed color of "X Ability has worn off" to RED from GRAY
+Super Breaker, Giga Drill Breaker, and Tree Feller now damage the tool significantly during use
+Netherrack and Glowstone now give Mining XP
+Netherrack and Glowstone are now effected by Super Breaker
+Abilities will no longer be readied when you right click signs or beds
+Chimaera Wings won't activate on blocks you can interact with and signs
+Abilities now adjust their effects depending on tool quality
+Superbreaker won't break things that tool couldn't normally break
+Giga Drill Breaker will only give triple xp and triple drops for diamond tools, with a reduced effect for lesser tools
+Skull Splitter now has a limit of opponents nearby it will strike based on your tool quality
+Serrated Strikes now has a limit of opponents nearby it will strike based on your tool quality
+Modified /mcmmo description to be a little bit more relevant.
+
+Version 0.9.2
+Changed priority of some of the mcMMO listeners
+Now when certain abilities are activated it shouldn't say "You lower your x"
+
+Version 0.9.1
+Fixed "Unknown console command" errors with CB 556
+Added /mcability command to toggle being able to trigger abilities with right click
+Added some more nullchecks for people reporting NPE errors
+Compatibility with NPC mods improved (Mainly for archery!)
+Other plugins can now call inSameParty() from mcMMO to increase compatibility
+
+Version 0.9
+--NEW CONTENT--
+Woodcutting now has the "Tree Feller" Ability
+Unarmed now has the "Berserk" Ability
+Swords now has the "Serrated Strikes" Ability
+Mining now has the "Super Breaker" Ability
+Axes now has the "Skull Splitter" Ability
+Excavation now has the "Giga Drill Breaker" Ability
+Added /mcrefresh <playername> - tool for refreshing cooldowns
+Unarmed now has the "Deflect Arrows" passive skill
+Chimaera Wing Item Added
+
+--CHANGES--
+HP Regen & Bleed are back
+Woodcutting will drop the appropriate log on double drop procs
+Herbalism now applies double drops to herbs
+/<skillname> now shows much more information to the player regarding their stats
+Axes skill Critical Strikes are now based directly on your skill level
+Swords skill Bleed chance is now based directly on your skill level
+Unarmed disarm chance is now based directly on your skill level
+Acrobatics now gives XP when you roll
+
+--BUGFIXES--
+Memory Leak Fixed
+Axes not doing critical strikes
+Gold Armor repair
+Capped skills now have the correct proc chance
+/mmoedit is no longer case sensitive
+More NPE errors fixed
+Many bugs I forgot to write down
+
+--PLUGIN COMPATABILITY FIXES--
+If combat interactions are cancelled by other plugins mcMMO should ignore the event
+If block damage interactions are cancelled by other plugins mcMMO should ignore the event
+	
+Version 0.8.22
+	Fixed bug where Axes did less damage than normal
+	Acrobatic rolls now give XP
+	Acrobatics XP increased for non-rolls
+Version 0.8.21
+	Fixed bug where axe criticals would dupe items
+Version 0.8.20
+	99.99% sure I fixed anvils that suddenly stop working
+Version 0.8.19
+	Fixed being able to excavate placed blocks
+	Added toggle option to mining requiring a pickaxe
+	Added toggle option to woodcutting requiring an axe
+	PVP interactions now reward XP based on the damage caused (this is effected by skills)
+	PVP XP gain can be disabled in the configuration file
+	PVP XP has a modifier, increase the modifier for higher XP rewards from PVP combat
+Version 0.8.18
+	Fixed sandstone not being watched for exploitation
+Version 0.8.17
+	mcmmo.users moved to plugins/mcMMO/
+	Snowballs and Eggs will no longer trigger Ignition
+	Loot tables for excavation adjusted
+	Mining benefits now require the player to be holding a mining pick
+	Woodcutting benefits now require the player to be holding an axe
+Version 0.8.16
+	Moved configuration file to /plugins/mcMMO
+	Arrows now have a chance to Ignite enemiesw
+	Fixed arrows not being retrievable from corpses
+	Added info about ignition to /archery
+Version 0.8.14
+	Mining, Woodcutting, Herbalism, and Acrobatics proc rates now are based on your skill level directly rather than tiers you unlock via skill levels
+	Archery's ability to retrieve arrows from corpses now is based on your skill level directly rather than tiers you unlock via skill levels
+	Mining, Woodcutting, Herbalism, Archery, and Acrobatics now show their proc % relative to your skill if you type /<skillname>
+	You can now adjust what level is required to repair diamond in the configuration file
+	Changed mining XP rates to be a tad higher for some things
+	You can now get XP from sandstone
+	XP rates increased for gathering glowstone with excavation
+	XP rates increased a bit for excavation
+	Skill info is now a bit more detailed for certain skills
+	Added info about arrow retrieval to /archery
+Version 0.8.13
+	Enemies no longer look like they have frozen when they die
+	Item duping fix
 Version 0.8.11
 	Performance improvements
 	Memory leak fixed

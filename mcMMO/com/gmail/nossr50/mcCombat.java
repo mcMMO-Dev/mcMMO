@@ -11,11 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Spider;
 import org.bukkit.entity.Squid;
+import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 public class mcCombat {
 	private static mcMMO plugin;
@@ -36,76 +37,67 @@ public class mcCombat {
     			return;
     		}
     		Player defender = (Player)x;
-    		//This may help compatability with NPC mods
+    		/*
+    		 * COMPATABILITY CHECKS (Stuff that wouldn't happen normally in MC basically...)
+    		 */
     		if(mcUsers.getProfile(defender) == null)
     			mcUsers.addUser(defender);
-    		if(mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
+    		if(attacker != null && defender != null && mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
 				if(mcParty.getInstance().inSameParty(defender, attacker)){
 					event.setCancelled(true);
 					return;
 				}
     		}
-    		if(defender != null)
-    		mcUsers.getProfile(defender).setRecentlyHurt(30);
     		/*
     		 * AXE CRITICAL CHECK
     		 */
-    		axeCriticalCheckPlayer(attacker, event, x, plugin);
+    		axeCriticalCheck(attacker, event, x);
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
     		}
-    		int healthbefore = defender.getHealth();
 			if(defender != null && mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0){
-				//DMG MODIFIER
-				if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
-					defender.setHealth(calculateDamage(defender, 1));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
-					defender.setHealth(calculateDamage(defender, 2));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 200 && mcUsers.getProfile(attacker).getUnarmedInt() < 325){
-					defender.setHealth(calculateDamage(defender, 3));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 325 && mcUsers.getProfile(attacker).getUnarmedInt() < 475){
-					defender.setHealth(calculateDamage(defender, 4));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 475 && mcUsers.getProfile(attacker).getUnarmedInt() < 600){
-					defender.setHealth(calculateDamage(defender, 5));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 600 && mcUsers.getProfile(attacker).getUnarmedInt() < 775){
-					defender.setHealth(calculateDamage(defender, 6));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 775 && mcUsers.getProfile(attacker).getUnarmedInt() < 950){
-					defender.setHealth(calculateDamage(defender, 7));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
-					defender.setHealth(calculateDamage(defender, 8));
+				
+				//Bonus just for having unarmed
+				if(mcUsers.getProfile(attacker).getUnarmedInt() < 250){
+					event.setDamage(calculateDamage(event, 2));
+				} else if (mcUsers.getProfile(attacker).getUnarmedInt() < 500 && mcUsers.getProfile(attacker).getUnarmedInt() >= 250){
+					event.setDamage(calculateDamage(event, 3));
+				} else {
+					event.setDamage(calculateDamage(event, 4));
 				}
-				if(mcUsers.getProfile(defender).isDead())
-    				return;
+				
 				//PROC
 				if(simulateUnarmedProc(attacker)){
 					Location loc = defender.getLocation();
 					if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0){
-					attacker.sendMessage(ChatColor.DARK_RED+"You have hit with great force.");
-					defender.sendMessage(ChatColor.DARK_RED+"You have been disarmed!");
-					ItemStack item = defender.getItemInHand();
+						attacker.sendMessage(ChatColor.DARK_RED+"You have hit with great force.");
+						defender.sendMessage(ChatColor.DARK_RED+"You have been disarmed!");
+						ItemStack item = defender.getItemInHand();
 					if(item != null){
-					loc.getWorld().dropItemNaturally(loc, item);
-					ItemStack itemx = null;
-					defender.setItemInHand(itemx);
-					}
+						loc.getWorld().dropItemNaturally(loc, item);
+						ItemStack itemx = null;
+						defender.setItemInHand(itemx);
+						}
 					}
 				}
 			}
 			/*
-			 * Make the defender drop items on death
-			 */
-			if(defender.getHealth()<= 0 && !mcUsers.getProfile(defender).isDead()){
-				mcUsers.getProfile(defender).setDead(true);
-				event.setCancelled(true); //SEE IF THIS HELPS
-				//If it only would've died from mcMMO damage modifiers
-    			if(defender.getHealth() <= 0 && healthbefore - event.getDamage() >= 1){
-    				mcm.getInstance().simulateNaturalDrops(defender);
-    			}
-				for(ItemStack herp : defender.getInventory().getContents()){
-					if(herp != null && herp.getTypeId() != 0)
-					defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), herp);
-				}
-			}
+    		 * PVP XP
+    		 */
+    		if(attacker != null && defender != null && mcLoadProperties.pvpxp){
+    			if(mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty() && mcParty.getInstance().inSameParty(attacker, defender))
+    				return;
+    			if(mcm.getInstance().isAxes(attacker.getItemInHand()))
+    				mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    			if(mcm.getInstance().isSwords(attacker.getItemInHand()))
+    				mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    			if(attacker.getItemInHand().getTypeId() == 0)
+    				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    		}
+    		/*
+    		 * CHECK FOR LEVEL UPS
+    		 */
+    		mcSkills.getInstance().XpCheck(attacker);
 		}
     }
     public void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
@@ -115,39 +107,18 @@ public class mcCombat {
     		}
 			Squid defender = (Squid)event.getEntity();
 			if(mcm.getInstance().isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
-					mcUsers.getProfile(attacker).addSwordsGather(10);
-					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeSwordsGather(mcUsers.getProfile(attacker).getXpToLevel("swords"));
-							mcUsers.getProfile(attacker).skillUpSwords(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
-					}
+					mcUsers.getProfile(attacker).addSwordsGather(10 * mcLoadProperties.xpGainMultiplier);
 			}
+			mcSkills.getInstance().XpCheck(attacker);
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
-					mcUsers.getProfile(attacker).addAxesGather(10);
-					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeAxesGather(mcUsers.getProfile(attacker).getXpToLevel("axes"));
-							mcUsers.getProfile(attacker).skillUpAxes(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
-					}
+					mcUsers.getProfile(attacker).addAxesGather(10 * mcLoadProperties.xpGainMultiplier);
+					mcSkills.getInstance().XpCheck(attacker);
 			}
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-				if(defender.getHealth() <= 0)
-					return;
 				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
-					defender.setHealth(calculateDamage(defender, (4 - axeNerf(attacker.getItemInHand().getTypeId()))));
-				}
-				if(defender.getHealth() <= 0){
-					mcm.getInstance().simulateNaturalDrops(defender);
+					event.setDamage(calculateDamage(event, 4));
 				}
 			}
 			/*
@@ -156,39 +127,21 @@ public class mcCombat {
 			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
     			if(defender.getHealth() <= 0)
     				return;
-    			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
-					defender.setHealth(calculateDamage(defender, 1));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
-					defender.setHealth(calculateDamage(defender, 2));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 200 && mcUsers.getProfile(attacker).getUnarmedInt() < 325){
-					defender.setHealth(calculateDamage(defender, 3));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 325 && mcUsers.getProfile(attacker).getUnarmedInt() < 475){
-					defender.setHealth(calculateDamage(defender, 4));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 475 && mcUsers.getProfile(attacker).getUnarmedInt() < 600){
-					defender.setHealth(calculateDamage(defender, 5));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 600 && mcUsers.getProfile(attacker).getUnarmedInt() < 775){
-					defender.setHealth(calculateDamage(defender, 6));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 775 && mcUsers.getProfile(attacker).getUnarmedInt() < 950){
-					defender.setHealth(calculateDamage(defender, 7));
-				} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
-					defender.setHealth(calculateDamage(defender, 8));
+    			
+    			//Bonus just for having unarmed
+				if(mcUsers.getProfile(attacker).getUnarmedInt() < 250){
+					event.setDamage(calculateDamage(event, 2));
+				} else if (mcUsers.getProfile(attacker).getUnarmedInt() < 500 && mcUsers.getProfile(attacker).getUnarmedInt() >= 250){
+					event.setDamage(calculateDamage(event, 3));
+				} else {
+					event.setDamage(calculateDamage(event, 4));
 				}
+    			
     			//XP
 					if(defender.getHealth() != 0){
-					mcUsers.getProfile(attacker).addUnarmedGather(10);
-					if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeUnarmedGather(mcUsers.getProfile(attacker).getXpToLevel("unarmed"));
-							mcUsers.getProfile(attacker).skillUpUnarmed(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
+					mcUsers.getProfile(attacker).addUnarmedGather(10 * mcLoadProperties.xpGainMultiplier);
+					mcSkills.getInstance().XpCheck(attacker);
 					}
-					}
-				if(defender.getHealth() <= 0){
-				mcm.getInstance().simulateNaturalDrops(defender);
-				}
     			}
 		}
     }
@@ -202,35 +155,18 @@ public class mcCombat {
 				if(defender.getHealth() <= 0)
 					return;
 				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
-					defender.setHealth(calculateDamage(defender, (4 - axeNerf(attacker.getItemInHand().getTypeId()))));
-				}
-				if(defender.getHealth() <= 0){
-					mcm.getInstance().simulateNaturalDrops(defender);
+					event.setDamage(calculateDamage(event, 4));
 				}
 			}
 			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
-			if(defender.getHealth() <= 0)
-				return;
-			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
-				defender.setHealth(calculateDamage(defender, 1));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
-				defender.setHealth(calculateDamage(defender, 2));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 200 && mcUsers.getProfile(attacker).getUnarmedInt() < 325){
-				defender.setHealth(calculateDamage(defender, 3));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 325 && mcUsers.getProfile(attacker).getUnarmedInt() < 475){
-				defender.setHealth(calculateDamage(defender, 4));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 475 && mcUsers.getProfile(attacker).getUnarmedInt() < 600){
-				defender.setHealth(calculateDamage(defender, 5));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 600 && mcUsers.getProfile(attacker).getUnarmedInt() < 775){
-				defender.setHealth(calculateDamage(defender, 6));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 775 && mcUsers.getProfile(attacker).getUnarmedInt() < 950){
-				defender.setHealth(calculateDamage(defender, 7));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
-				defender.setHealth(calculateDamage(defender, 8));
-			}
-			if(defender.getHealth() <= 0){
-				mcm.getInstance().simulateNaturalDrops(defender);
-			}
+				//Bonus just for having unarmed
+				if(mcUsers.getProfile(attacker).getUnarmedInt() < 250){
+					event.setDamage(calculateDamage(event, 2));
+				} else if (mcUsers.getProfile(attacker).getUnarmedInt() < 500 && mcUsers.getProfile(attacker).getUnarmedInt() >= 250){
+					event.setDamage(calculateDamage(event, 3));
+				} else {
+					event.setDamage(calculateDamage(event, 4));
+				}
 			}
 		}
     }
@@ -239,7 +175,7 @@ public class mcCombat {
     		/*
     		 * AXE PROC CHECKS
     		 */
-    		axeCriticalCheckMonster(attacker, event, x);
+    		axeCriticalCheck(attacker, event, x);
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
     		}
@@ -249,253 +185,205 @@ public class mcCombat {
 					&& mcPermissions.getInstance().swords(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 					if(x instanceof Creeper)
-					mcUsers.getProfile(attacker).addSwordsGather(10);
+						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-					mcUsers.getProfile(attacker).addSwordsGather(7);
+						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-					mcUsers.getProfile(attacker).addSwordsGather(5);
+						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-					mcUsers.getProfile(attacker).addSwordsGather(3);
+						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-					mcUsers.getProfile(attacker).addSwordsGather(7);
+						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					}
-					if(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getSwordsGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("swords")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeSwordsGather(mcUsers.getProfile(attacker).getXpToLevel("swords"));
-							mcUsers.getProfile(attacker).skillUpSwords(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getSwords()+")");	
-					}
+					mcSkills.getInstance().XpCheck(attacker);
 				}
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
-				    mcUsers.getProfile(attacker).addAxesGather(1);
 					if(x instanceof Creeper)
-					mcUsers.getProfile(attacker).addAxesGather(10);
+					mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						mcUsers.getProfile(attacker).addAxesGather(7);
+						mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						mcUsers.getProfile(attacker).addAxesGather(5);
+						mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						mcUsers.getProfile(attacker).addAxesGather(3);
+						mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						mcUsers.getProfile(attacker).addAxesGather(7);
+						mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					}
-					if(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getAxesGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("axes")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeAxesGather(mcUsers.getProfile(attacker).getXpToLevel("axes"));
-							mcUsers.getProfile(attacker).skillUpAxes(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getAxes()+")");	
-					}
+					mcSkills.getInstance().XpCheck(attacker);
 			}
 			/*
 			 * AXE DAMAGE SCALING && LOOT CHECKS
 			 */
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-				if(defender.getHealth() <= 0)
-					return;
 				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
-					defender.setHealth(calculateDamage(defender, (4 - axeNerf(attacker.getItemInHand().getTypeId()))));
+					event.setDamage(calculateDamage(event, 4));
 				}
-				if(defender.getHealth() <= 0 || defender.getHealth() - event.getDamage() <= 0){
-    				mcm.getInstance().simulateNaturalDrops(defender);
-    			}
 			}
 			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
 			if(defender.getHealth() <= 0)
 				return;
-			if(mcUsers.getProfile(attacker).getUnarmedInt() >= 50 && mcUsers.getProfile(attacker).getUnarmedInt() < 100){
-				defender.setHealth(calculateDamage(defender, 1));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 100 && mcUsers.getProfile(attacker).getUnarmedInt() < 200){
-				defender.setHealth(calculateDamage(defender, 2));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 200 && mcUsers.getProfile(attacker).getUnarmedInt() < 325){
-				defender.setHealth(calculateDamage(defender, 3));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 325 && mcUsers.getProfile(attacker).getUnarmedInt() < 475){
-				defender.setHealth(calculateDamage(defender, 4));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 475 && mcUsers.getProfile(attacker).getUnarmedInt() < 600){
-				defender.setHealth(calculateDamage(defender, 5));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 600 && mcUsers.getProfile(attacker).getUnarmedInt() < 775){
-				defender.setHealth(calculateDamage(defender, 6));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 775 && mcUsers.getProfile(attacker).getUnarmedInt() < 950){
-				defender.setHealth(calculateDamage(defender, 7));
-			} else if(mcUsers.getProfile(attacker).getUnarmedInt() >= 950){
-				defender.setHealth(calculateDamage(defender, 8));
+			
+			//Bonus just for having unarmed
+			if(mcUsers.getProfile(attacker).getUnarmedInt() < 250){
+				event.setDamage(calculateDamage(event, 2));
+			} else if (mcUsers.getProfile(attacker).getUnarmedInt() < 500 && mcUsers.getProfile(attacker).getUnarmedInt() >= 250){
+				event.setDamage(calculateDamage(event, 3));
+			} else {
+				event.setDamage(calculateDamage(event, 4));
 			}
+			
 			//XP
 			if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 			if(x instanceof Creeper)
-				mcUsers.getProfile(attacker).addUnarmedGather(20);
+				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Spider)
-				mcUsers.getProfile(attacker).addUnarmedGather(15);
+				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Skeleton)
-				mcUsers.getProfile(attacker).addUnarmedGather(10);
+				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Zombie)
-				mcUsers.getProfile(attacker).addUnarmedGather(5);
+				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof PigZombie)
-				mcUsers.getProfile(attacker).addUnarmedGather(15);
+				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 			}
-			if(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-				int skillups = 0;
-				while(mcUsers.getProfile(attacker).getUnarmedGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("unarmed")){
-					skillups++;
-					mcUsers.getProfile(attacker).removeUnarmedGather(mcUsers.getProfile(attacker).getXpToLevel("unarmed"));
-					mcUsers.getProfile(attacker).skillUpUnarmed(1);
-				}
-				attacker.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getUnarmed()+")");	
-			}
-			if(defender.getHealth() <= 0 || defender.getHealth() - event.getDamage() <= 0){
-				mcm.getInstance().simulateNaturalDrops(defender);
-			}
+			mcSkills.getInstance().XpCheck(attacker);
 			}
 		}
     }
 	public void archeryCheck(EntityDamageByProjectileEvent event){
     	Entity y = event.getDamager();
     	Entity x = event.getEntity();
+    	if(event.getProjectile().toString().equals("CraftArrow") && x instanceof Player){
+    		Player defender = (Player)x;
+    		if(mcUsers.getProfile(defender) == null)
+    			mcUsers.addUser(defender);
+    		if(mcPermissions.getInstance().unarmed(defender) && defender.getItemInHand().getTypeId() == 0){
+	    		if(defender != null && mcUsers.getProfile(defender).getUnarmedInt() >= 1000){
+	    			if(Math.random() * 1000 <= 500){
+	    				event.setCancelled(true);
+	    				defender.sendMessage(ChatColor.WHITE+"**ARROW DEFLECT**");
+	    				return;
+	    			}
+	    		} else if(defender != null && Math.random() * 1000 <= (mcUsers.getProfile(defender).getUnarmedInt() / 2)){
+	    			event.setCancelled(true);
+	    			defender.sendMessage(ChatColor.WHITE+"**ARROW DEFLECT**");
+	    			return;
+	    		}
+    		}
+    	}
     	/*
-    	 * Defender is player
+    	 * If attacker is player
     	 */
     	if(y instanceof Player){
     		Player attacker = (Player)y;
     		if(event.getProjectile().toString().equals("CraftArrow") && mcPermissions.getInstance().archery(attacker)){
     			if(!mcConfig.getInstance().isTracked(x) && event.getDamage() > 0){
     				mcConfig.getInstance().addArrowTrack(x, 0);
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 200){
-    					if(Math.random() * 10 > 8){
+    				if(attacker != null){
+    					if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getArcheryInt()){
     						mcConfig.getInstance().addArrowCount(x, 1);
     					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 200 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
-    					if(Math.random() * 10 > 6){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 400 && mcUsers.getProfile(attacker).getArcheryInt() < 600){
-    					if(Math.random() * 10 > 4){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 600 && mcUsers.getProfile(attacker).getArcheryInt() < 800){
-    					if(Math.random() * 10 > 2){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 800){
-    						mcConfig.getInstance().addArrowCount(x, 1);
     				}
     			} else {
     				if(event.getDamage() > 0){
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 200){
-    					if(Math.random() * 10 > 8){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 200 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
-    					if(Math.random() * 10 > 6){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 400 && mcUsers.getProfile(attacker).getArcheryInt() < 600){
-    					if(Math.random() * 10 > 4){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 600 && mcUsers.getProfile(attacker).getArcheryInt() < 800){
-    					if(Math.random() * 10 > 2){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    					}
-    				} else if(mcUsers.getProfile(attacker).getArcheryInt() >= 800){
-    						mcConfig.getInstance().addArrowCount(x, 1);
-    				}
+    					if(attacker != null){
+        					if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getArcheryInt()){
+        						mcConfig.getInstance().addArrowCount(x, 1);
+        					}
+        				}
     				}
     			}
+    			/*
+    			 * IGNITION
+    			 */
+    			if(Math.random() * 100 >= 75){
+    				
+    				int ignition = 20;
+    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 200)
+    					ignition+=20;
+    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 400)
+    					ignition+=20;
+    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 600)
+    					ignition+=20;
+    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 800)
+    					ignition+=20;
+    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+    					ignition+=20;
+    				
+        			if(x instanceof Player){
+        				Player Defender = (Player)x;
+        				if(!mcParty.getInstance().inSameParty(attacker, Defender)){
+        					event.getEntity().setFireTicks(ignition);
+        					attacker.sendMessage(ChatColor.RED+"**IGNITION**");
+        					Defender.sendMessage(ChatColor.DARK_RED+"You were struck by a burning arrow!");
+        				}
+        			} else {
+        			event.getEntity().setFireTicks(ignition);
+        			attacker.sendMessage(ChatColor.RED+"**IGNITION**");
+        			}
+        		}
     		/*
     		 * Defender is Monster
     		 */
     		if(x instanceof Monster){
-    			Monster defender = (Monster)x;
     			/*
     			 * TRACK ARROWS USED AGAINST THE ENTITY
     			 */
-    			int healthbefore = defender.getHealth();
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
-    				defender.setHealth(calculateDamage(defender, 1));
+    				event.setDamage(calculateDamage(event, 1));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
-    				defender.setHealth(calculateDamage(defender, 2));
+    				event.setDamage(calculateDamage(event, 2));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
-    				defender.setHealth(calculateDamage(defender, 3));
+    				event.setDamage(calculateDamage(event, 3));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
-    				defender.setHealth(calculateDamage(defender, 4));
+    				event.setDamage(calculateDamage(event, 4));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
-    				defender.setHealth(calculateDamage(defender, 5));
-    			//If it only would've died from mcMMO damage modifiers
-    			if(defender.getHealth() <= 0 && healthbefore - event.getDamage() >= 1){
-    				mcm.getInstance().simulateNaturalDrops(defender);
-    			}
+    				event.setDamage(calculateDamage(event, 5));
     			//XP
     			if(!mcConfig.getInstance().isMobSpawnTracked(x)){
     				if(x instanceof Creeper)
-					mcUsers.getProfile(attacker).addArcheryGather(10);
+					mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						mcUsers.getProfile(attacker).addArcheryGather(7);
+						mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						mcUsers.getProfile(attacker).addArcheryGather(5);
+						mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						mcUsers.getProfile(attacker).addArcheryGather(3);
+						mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						mcUsers.getProfile(attacker).addArcheryGather(7);
+						mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
     			}
-    				if(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
-						int skillups = 0;
-						while(mcUsers.getProfile(attacker).getArcheryGatherInt() >= mcUsers.getProfile(attacker).getXpToLevel("archery")){
-							skillups++;
-							mcUsers.getProfile(attacker).removeArcheryGather(mcUsers.getProfile(attacker).getXpToLevel("archery"));
-							mcUsers.getProfile(attacker).skillUpArchery(1);
-						}
-						attacker.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(attacker).getArchery()+")");	
-					}
     			}
     		/*
     		 * Defender is Animals	
     		 */
     		if(x instanceof Animals){
-    			Animals defender = (Animals)x;
-    			int healthbefore = defender.getHealth();
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
-    				defender.setHealth(calculateDamage(defender, 1));
+    				event.setDamage(calculateDamage(event, 1));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
-    				defender.setHealth(calculateDamage(defender, 2));
+    				event.setDamage(calculateDamage(event, 2));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
-    				defender.setHealth(calculateDamage(defender, 3));
+    				event.setDamage(calculateDamage(event, 3));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
-    				defender.setHealth(calculateDamage(defender, 4));
+    				event.setDamage(calculateDamage(event, 4));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
-    				defender.setHealth(calculateDamage(defender, 5));
-    			//If it only would've died from mcMMO damage modifiers
-    			if(defender.getHealth() <= 0 && healthbefore - event.getDamage() >= 1){
-    				mcm.getInstance().simulateNaturalDrops(defender);
-    			}
+    				event.setDamage(calculateDamage(event, 5));
     		}
     		/*
     		 * Defender is Squid
     		 */
     		if(x instanceof Squid){
-    			Squid defender = (Squid)x;
-    			int healthbefore = defender.getHealth();
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
-    				defender.setHealth(calculateDamage(defender, 1));
+    				event.setDamage(calculateDamage(event, 1));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
-    				defender.setHealth(calculateDamage(defender, 2));
+    				event.setDamage(calculateDamage(event, 2));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
-    				defender.setHealth(calculateDamage(defender, 3));
+    				event.setDamage(calculateDamage(event, 3));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
-    				defender.setHealth(calculateDamage(defender, 4));
+    				event.setDamage(calculateDamage(event, 4));
     			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
-    				defender.setHealth(calculateDamage(defender, 5));
-    			//If it only would've died from mcMMO damage modifiers
-    			if(defender.getHealth() <= 0 && healthbefore - event.getDamage() >= 1){
-    				mcm.getInstance().simulateNaturalDrops(defender);
-    			}
+    				event.setDamage(calculateDamage(event, 5));
     		}
     		/*
     		 * Attacker is Player
@@ -515,344 +403,211 @@ public class mcCombat {
     						return;
     					}
     	    		}
-    				Location loc = defender.getLocation();
+    	    		/*
+    	    		 * PVP XP
+    	    		 */
+    	    		if(mcLoadProperties.pvpxp && !mcParty.getInstance().inSameParty(attacker, defender)){
+    	    			mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    	    		}
+    				/*
+    				 * DAZE PROC
+    				 */
+    	    		Location loc = defender.getLocation();
     				if(Math.random() * 10 > 5){
 					loc.setPitch(90);
 					} else {
 						loc.setPitch(-90);
 					}
-    				/*
-    				 * Check the proc
-    				 */
-					if(mcUsers.getProfile(attacker).getArcheryInt() >= 300 && mcUsers.getProfile(attacker).getArcheryInt() < 400){
-    				if(Math.random() * 10 > 7){
-    					defender.teleportTo(loc);
-    					defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
-    					attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
-    				}
-					}
-					if(mcUsers.getProfile(attacker).getArcheryInt() >= 600){
-	    				if(Math.random() * 10 > 4){
-	    					defender.teleportTo(loc);
-	    					defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
-	    					attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
-	    				}
-						}
-					int healthbefore = defender.getHealth();
+    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000){
+    	    			if(Math.random() * 1000 <= 500){
+    	    				defender.teleportTo(loc);
+    	    				defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
+    	    				attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
+    	    			}
+    	    		} else if(Math.random() * 2000 <= mcUsers.getProfile(attacker).getArcheryInt()){
+    	    			defender.teleportTo(loc);
+	    				defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
+	    				attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
+    	    		}
+    				
 					if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
-	    				defender.setHealth(calculateDamage(defender, 1));
+	    				event.setDamage(calculateDamage(event, 1));
 	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
-	    				defender.setHealth(calculateDamage(defender, 2));
+	    				event.setDamage(calculateDamage(event, 2));
 	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
-	    				defender.setHealth(calculateDamage(defender, 3));
+	    				event.setDamage(calculateDamage(event, 3));
 	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
-	    				defender.setHealth(calculateDamage(defender, 4));
+	    				event.setDamage(calculateDamage(event, 4));
 	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
-	    				defender.setHealth(calculateDamage(defender, 5));
-	    			//If it only would've died from mcMMO damage modifiers
-	    			if(defender.getHealth() <= 0 && healthbefore - event.getDamage() >= 1){
-	    				mcm.getInstance().simulateNaturalDrops(defender);
-	    			}
+	    				event.setDamage(calculateDamage(event, 5));
     			}
     		}
+    		mcSkills.getInstance().XpCheck(attacker);
     	}
     }
 	public boolean simulateUnarmedProc(Player player){
-    	if(mcUsers.getProfile(player).getUnarmedInt() >= 750){
-    		if(Math.random() * 10 > 4){
+    	if(mcUsers.getProfile(player).getUnarmedInt() >= 1000){
+    		if(Math.random() * 4000 <= 1000){
     			return true;
     		}
-    	}if(mcUsers.getProfile(player).getUnarmedInt() >= 350 && mcUsers.getProfile(player).getUnarmedInt() < 750){
-    		if(Math.random() * 10 > 4){
+    	} else {
+    		if(Math.random() * 4000 <= mcUsers.getProfile(player).getUnarmedInt()){
     			return true;
     		}
     	}
     		return false;
     }
     public void bleedCheck(Player attacker, Entity x){
-    	if(mcPermissions.getInstance().swords(attacker) && mcm.getInstance().isSwords(attacker.getItemInHand()) && !mcConfig.getInstance().isBleedTracked(x)){
-			if(mcUsers.getProfile(attacker).getSwordsInt() >= 50 && mcUsers.getProfile(attacker).getSwordsInt() < 200){
-				if(Math.random() * 10 > 8){
-					mcConfig.getInstance().addBleedTrack(x);
+    	if(mcPermissions.getInstance().swords(attacker) && mcm.getInstance().isSwords(attacker.getItemInHand())){
+			if(mcUsers.getProfile(attacker).getSwordsInt() >= 750){
+				if(Math.random() * 1000 >= 750){
+					if(!(x instanceof Player))
+						mcConfig.getInstance().addToBleedQue(x);
 					if(x instanceof Player){
 						Player target = (Player)x;
-						mcUsers.getProfile(target).setBleedTicks(4);
+						mcUsers.getProfile(target).addBleedTicks(3);
 					}
-					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
+					attacker.sendMessage(ChatColor.GREEN+"**ENEMY BLEEDING**");
 				}
-			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 200 && mcUsers.getProfile(attacker).getSwordsInt() < 600){
-				if(Math.random() * 10 > 6){
-					mcConfig.getInstance().addBleedTrack(x);
-					if(x instanceof Player){
-						Player target = (Player)x;
-						mcUsers.getProfile(target).setBleedTicks(4);
-					}
-					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
+			} else if (Math.random() * 1000 <= mcUsers.getProfile(attacker).getSwordsInt()){
+				if(!(x instanceof Player))
+					mcConfig.getInstance().addToBleedQue(x);
+				if(x instanceof Player){
+					Player target = (Player)x;
+					mcUsers.getProfile(target).addBleedTicks(2);
 				}
-			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 600 && mcUsers.getProfile(attacker).getSwordsInt() < 900){
-				if(Math.random() * 10 > 4){
-					mcConfig.getInstance().addBleedTrack(x);
-					if(x instanceof Player){
-						Player target = (Player)x;
-						mcUsers.getProfile(target).setBleedTicks(6);
-					}
-					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
-				}
-			} else if(mcUsers.getProfile(attacker).getSwordsInt() >= 900){
-				if(Math.random() * 100 > 25){
-					mcConfig.getInstance().addBleedTrack(x);
-					if(x instanceof Player){
-						Player target = (Player)x;
-						mcUsers.getProfile(target).setBleedTicks(6);
-					}
-					attacker.sendMessage(ChatColor.RED+"**Your target is bleeding**");
-				}
+				attacker.sendMessage(ChatColor.GREEN+"**ENEMY BLEEDING**");
 			}
 		}
     }
-    public int axeNerf(int type){
-    	//GOLD OR WOOD
-    	if(type == 271 || type == 286){
-    		return 3;
-    	} else if (type == 258){
-    		return 1;
-    	} else if (type == 275){
-    		return 1;
-    	} else {
-    		return 0;
+    public int calculateDamage(EntityDamageEvent event, int dmg){
+    	return event.getDamage() + dmg;
+    }
+    public void dealDamage(Entity target, int dmg){
+    	if(target instanceof Player){
+    		((Player) target).damage(dmg);
+    	}
+    	if(target instanceof Animals){
+    		((Animals) target).damage(dmg);
+    	}
+    	if(target instanceof Monster){
+    		((Monster) target).damage(dmg);
     	}
     }
-    public int calculateDamage(Player player, int dmg){
-    	int health = player.getHealth();
-    	if(health - dmg <0){
-    		return 0;
-    	} else {
-    		health-= dmg;
-    		return health;
+    public void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    	int targets = 0;
+    	targets = mcm.getInstance().getTier(attacker);
+    	for(Entity derp : x.getWorld().getEntities()){
+    		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 5){
+    			if(derp instanceof Player){
+    				Player target = (Player)derp;
+    				if(mcParty.getInstance().inSameParty(attacker, target))
+    					continue;
+    				if(!target.getName().equals(attacker.getName()) && targets >= 1){
+    					target.damage(event.getDamage() / 2);
+    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
+    					targets--;
+    				}
+    			}
+    			if(derp instanceof Monster  && targets >= 1){
+    				Monster target = (Monster)derp;
+    				target.damage(event.getDamage() / 2);
+    				targets--;
+    			}
+    			if(derp instanceof Animals  && targets >= 1){
+    				if(derp instanceof Wolf){
+    					if(((Wolf) derp).isAngry() && ((Wolf) derp).getTarget() != attacker){
+    						continue;
+    					}
+    				}
+    					
+    				Animals target = (Animals)derp;
+    				target.damage(event.getDamage() / 2);
+    				targets--;
+    			}
+    		}
     	}
     }
-    public int calculateDamage(Squid squid, int dmg){
-    	int health = squid.getHealth();
-    	if(health - dmg <0){
-    		return 0;
-    	} else {
-    		health-= dmg;
-    		return health;
+    public void applySerratedStrikes(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    	int targets = 0;
+    	targets = mcm.getInstance().getTier(attacker);
+    	for(Entity derp : x.getWorld().getEntities()){
+    		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 5){
+    			if(derp instanceof Player){
+    				Player target = (Player)derp;
+    				if(mcParty.getInstance().inSameParty(attacker, target))
+    					continue;
+    				if(!target.getName().equals(attacker.getName()) && targets >= 1){
+    					target.damage(event.getDamage() / 4);
+    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
+        				mcUsers.getProfile(target).addBleedTicks(5);
+    					targets--;
+    				}
+    			}
+    			if(derp instanceof Monster && targets >= 1){
+    				if(!mcConfig.getInstance().isBleedTracked(derp))
+    					mcConfig.getInstance().addToBleedQue(x);
+    				Monster target = (Monster)derp;
+    				target.damage(event.getDamage() / 4);
+    				targets--;
+    			}
+    			if(derp instanceof Animals && targets >= 1){
+    				if(derp instanceof Wolf)
+    					continue;
+    				if(!mcConfig.getInstance().isBleedTracked(derp))
+    					mcConfig.getInstance().addToBleedQue(x);
+    				Animals target = (Animals)derp;
+    				target.damage(event.getDamage() / 4);
+    				targets--;
+    			}
+    		}
+    		//attacker.sendMessage(ChatColor.GREEN+"**SERRATED STRIKES HIT "+(mcm.getInstance().getTier(attacker)-targets)+" FOES**");
     	}
     }
-    public int calculateDamage(Monster monster, int dmg){
-    	int health = monster.getHealth();
-    	if(health - dmg <0){
-    		return 0;
-    	} else {
-    		health-= dmg;
-    		return health;
-    	}
-    }
-    public int calculateDamage(Animals animal, int dmg){
-    	int health = animal.getHealth();
-    	if(health - dmg <0){
-    		return 0;
-    	} else {
-    		health-= dmg;
-    		return health;
-    	}
-    }
-    public void axeCriticalCheckAnimals(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    public void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Entity x){
     	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 50 && mcUsers.getProfile(attacker).getAxesInt() < 250){
-    			if(Math.random() * 100 > 95){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					animal.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 250 && mcUsers.getProfile(attacker).getAxesInt() < 500){
-    			if(Math.random() * 10 > 9){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					animal.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 500 && mcUsers.getProfile(attacker).getAxesInt() < 750){
-    			if(Math.random() * 10 > 8){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					animal.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 750 && mcUsers.getProfile(attacker).getAxesInt() < 1000){
-    			if(Math.random() * 10 > 7){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					animal.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 1000){
-    			if(Math.random() * 10 > 6){
-    				if(x instanceof Animals){
-    					Animals animal = (Animals)x;
-    					animal.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    	}
-    }
-    public void axeCriticalCheckMonster(Player attacker, EntityDamageByEntityEvent event, Entity x){
-    	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 50 && mcUsers.getProfile(attacker).getAxesInt() < 250){
-    			if(Math.random() * 100 > 95){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					monster.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 250 && mcUsers.getProfile(attacker).getAxesInt() < 500){
-    			if(Math.random() * 10 > 9){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					monster.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 500 && mcUsers.getProfile(attacker).getAxesInt() < 750){
-    			if(Math.random() * 10 > 8){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					monster.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 750 && mcUsers.getProfile(attacker).getAxesInt() < 1000){
-    			if(Math.random() * 10 > 7){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					monster.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 1000){
-    			if(Math.random() * 10 > 6){
-    				if(x instanceof Monster){
-    					Monster monster = (Monster)x;
-    					monster.setHealth(0);
-    					mcm.getInstance().simulateNaturalDrops(x);
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    				}
-    			}
-    		}
-    	}
-    }
-    public void axeCriticalCheckPlayer(Player attacker, EntityDamageByEntityEvent event, Entity x, Plugin plugin){
-    	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 50 && mcUsers.getProfile(attacker).getAxesInt() < 250){
-    			if(Math.random() * 100 > 95){
+    		if(mcUsers.getProfile(attacker).getAxesInt() >= 750){
+    			if(Math.random() * 1000 <= 750){
     				if(x instanceof Player){
     					Player player = (Player)x;
-    					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     				}
-    			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 250 && mcUsers.getProfile(attacker).getAxesInt() < 500){
-    			if(Math.random() * 10 > 9){
     				if(x instanceof Player){
-    					Player player = (Player)x;
-    					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    				}
+        				event.setDamage(event.getDamage() * 2 - event.getDamage() / 2);
+        			} else {
+        				event.setDamage(event.getDamage() * 2);
+        			}
+    				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 500 && mcUsers.getProfile(attacker).getAxesInt() < 750){
-    			if(Math.random() * 10 > 8){
-    				if(x instanceof Player){
-    					Player player = (Player)x;
-    					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    				}
+    		} else if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getAxesInt()){
+    			if(x instanceof Player){
+    				Player player = (Player)x;
+    				player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
     			}
-    		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 750 && mcUsers.getProfile(attacker).getAxesInt() < 1000){
-    			if(Math.random() * 10 > 7){
-    				if(x instanceof Player){
-    					Player player = (Player)x;
-    					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    				}
+    			if(x instanceof Player){
+    				event.setDamage(event.getDamage() * 2 - event.getDamage() / 2);
+    			} else {
+    				event.setDamage(event.getDamage() * 2);
     			}
+				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     		}
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 1000){
-    			if(Math.random() * 10 > 6){
-    				if(x instanceof Player){
-    					Player player = (Player)x;
-    					player.setHealth(calculateDamage(player, (player.getHealth() - event.getDamage())));
-    					attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    				}
-    			}
-    		}
-    		if(x instanceof Player){
-    		Player defender = (Player)x;
-    		if(defender.getHealth()<= 0 && !mcUsers.getProfile(defender).isDead()){
-				mcUsers.getProfile(defender).setDead(true);
-				event.setCancelled(true); //SEE IF THIS HELPS
-				for(ItemStack herp : defender.getInventory().getContents()){
-					if(herp != null && herp.getTypeId() != 0)
-					defender.getLocation().getWorld().dropItemNaturally(defender.getLocation(), herp);
-				}
-				for(Player derp : plugin.getServer().getOnlinePlayers()){
-					derp.sendMessage(ChatColor.GRAY+attacker.getName() + " has " +ChatColor.DARK_RED+"chopped "+ChatColor.GRAY+defender.getName() + " to death.");
-					mcUsers.getProfile(defender).setDead(true);
-				}
-			}
-    	}
     	}
     }
     public void parryCheck(Player defender, EntityDamageByEntityEvent event, Entity y){
     	if(defender != null && mcm.getInstance().isSwords(defender.getItemInHand()) 
-    			&& event.getDamage() > 0 
     			&& mcPermissions.getInstance().swords(defender)){
-			if(defender != null && mcUsers.getProfile(defender).getSwordsInt() >= 50 && mcUsers.getProfile(defender).getSwordsInt() < 250){
-				if(Math.random() * 100 > 95){
+			if(mcUsers.getProfile(defender).getSwordsInt() >= 900){
+				if(Math.random() * 3000 <= 900){
 					event.setCancelled(true);
-					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
+					defender.sendMessage(ChatColor.GREEN+"**PARRIED**");
 					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
 					if(y instanceof Player){
 						Player attacker = (Player)y;
-						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
+						attacker.sendMessage(ChatColor.GREEN+"**PARRIED**");
 					}
-					return;
 				}
-			}
-			if(defender != null && mcUsers.getProfile(defender).getSwordsInt() >= 250 && mcUsers.getProfile(defender).getSwordsInt() < 450){
-				if(Math.random() * 100 > 90){
+			} else {
+				if(Math.random() * 3000 <= mcUsers.getProfile(defender).getSwordsInt()){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
 					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
@@ -860,79 +615,65 @@ public class mcCombat {
 						Player attacker = (Player)y;
 						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
 					}
-					return;
-				}
-			}
-			if(defender != null && mcUsers.getProfile(defender).getSwordsInt() >= 450 && mcUsers.getProfile(defender).getSwordsInt() < 775){
-				if(Math.random() * 100 > 85){
-					event.setCancelled(true);
-					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
-					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
-					if(y instanceof Player){
-						Player attacker = (Player)y;
-						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
-					}
-					return;
-				}
-			}
-			if(defender != null && mcUsers.getProfile(defender).getSwordsInt() >= 775){
-				if(Math.random() * 100 > 80){
-					event.setCancelled(true);
-					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
-					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
-					if(y instanceof Player){
-						Player attacker = (Player)y;
-						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
-					}
-					return;
 				}
 			}
 		}
     }
     public void bleedSimulate(){
+    	
+    	//Add items from Que list to BleedTrack list
+    	for(Entity x : mcConfig.getInstance().getBleedQue()){
+    		mcConfig.getInstance().addBleedTrack(x);
+    	}
+    	//Clear list
+    	mcConfig.getInstance().clearBleedQue();
+    	
+    	//Cleanup any dead entities from the list
+    	for(Entity x : mcConfig.getInstance().getBleedRemovalQue()){
+    		mcConfig.getInstance().removeBleedTrack(x);
+    	}
+    	
+    	//Clear bleed removal list
+    	mcConfig.getInstance().clearBleedRemovalQue();
+    	
+    	//Bleed monsters/animals
         for(Entity x : mcConfig.getInstance().getBleedTracked()){
-        	if(x == null)
+        	if(x == null){
         		continue;
-        	if(mcm.getInstance().getHealth(x) <= 0)
+        	}
+        	
+        	if(mcm.getInstance().getHealth(x) <= 0){
         		continue;
+        	}
+        	
     	    if(x instanceof Animals){
-    	    	Animals animals = (Animals)x;
-    	    	if(animals.getHealth() >= 1){
-    	    		animals.setHealth(mcm.getInstance().calculateMinusHealth(animals.getHealth(), 2));
-    	    	}
-    	    	if(animals.getHealth() <= 0){
-    	    		mcm.getInstance().simulateNaturalDrops(x);
-    	    	}
-    	    }
-    	    if(x instanceof Monster){
-    	    	Monster monster = (Monster)x;
-    	    	if(monster.getHealth() >= 1){
-    	    		monster.setHealth(mcm.getInstance().calculateMinusHealth(monster.getHealth(), 2));
-    	    	}
-    	    	if(monster.getHealth() <= 0){
-    	    		mcm.getInstance().simulateNaturalDrops(x);
-    	    	}
+    	    	((Animals) x).damage(2);
     	    }
     	    
+    	    if(x instanceof Monster){
+    	    	((Monster) x).damage(2);
+    	    }
+    	    
+    	    /* - Lets try something else...
     	    if(x instanceof Player){
     	    	Player player = (Player)x;
-    	    	if(player.getHealth() >= 1 && mcUsers.getProfile(player).getBleedTicks() >= 1){
-    	    		player.setHealth(mcm.getInstance().calculateMinusHealth(player.getHealth(), 1));
+    	    	if(player.getHealth() >= 1){
+    	    		player.damage(1);
     	    		player.sendMessage(ChatColor.RED+"**BLEED**");
     	    		if(player.getHealth() <= 0){
     	    			mcUsers.getProfile(player).setBleedTicks(0);
-    	    			for(ItemStack items : player.getInventory().getContents()){
-    	    				if(items.getTypeId() != 0)
-    	    					player.getLocation().getWorld().dropItemNaturally(player.getLocation(), items);
-    	    			}
     	    		}
     	    		if(mcUsers.getProfile(player).getBleedTicks() >= 1){
     	    			mcUsers.getProfile(player).setBleedTicks(mcUsers.getProfile(player).getBleedTicks() - 1);
+    	    			if(mcUsers.getProfile(player).getBleedTicks() <= 0)
+    	    				mcConfig.getInstance().addToBleedRemovalQue(x); //Add for removal if bleedticks are 0
     	    		}
     	    	}
     	    }
+    	    */
         }
-        }
+        
+    }
 	
 	
 }

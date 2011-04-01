@@ -17,7 +17,73 @@ public class mcConfig {
     HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     static ArrayList<Entity> bleedTracker = new ArrayList<Entity>();
     static ArrayList<Entity> mobSpawnTracker = new ArrayList<Entity>();
+    
+    /*
+     * The Bleed Que Stuff
+     */
+    public Entity[] bleedQue = new Entity[20];
+    public int bleedQuePos = 0;
+    
+    public void addToBleedQue(Entity entity){
+    	//Assign entity to empty position
+    	bleedQue[bleedQuePos] = entity;
+    	//Move position up by 1 increment
+    	bleedQuePos++;
+    	
+    	//Check if array is full
+    	if(bleedQuePos >= bleedQue.length){
+    		//Create new temporary array
+    		Entity[] temp = new Entity[bleedQue.length*2];
+    		//Copy data from bleedQue to temporary array
+    		System.arraycopy(bleedQue, 0, temp, 0, bleedQue.length);
+    		//Point bleedQue to new array
+    		bleedQue = temp;
+    	}
+    }
+    
+    public Entity[] getBleedQue(){return bleedQue;}
+    
+    public void clearBleedQue(){
+    	bleedQue = new Entity[bleedQue.length];
+    	setBleedQuePos(0);
+    }
+    public void setBleedQuePos(int x){bleedQuePos = x;}
+    
+    /*
+     * The Bleed Removal Que Stuff
+     */
+    
+    public Entity[] bleedRemovalQue = new Entity[20];
+    public int bleedRemovalQuePos = 0;
+    
+    public void addToBleedRemovalQue(Entity entity){
+    	//Assign entity to empty position
+    	bleedRemovalQue[bleedRemovalQuePos] = entity;
+    	//Move position up by 1 increment
+    	bleedRemovalQuePos++;
+    	
+    	//Check if array is full
+    	if(bleedRemovalQuePos >= bleedRemovalQue.length){
+    		//Create new temporary array
+    		Entity[] temp = new Entity[bleedRemovalQue.length*2];
+    		//Copy data from bleedRemovalQue to temporary array
+    		System.arraycopy(bleedRemovalQue, 0, temp, 0, bleedRemovalQue.length);
+    		//Point bleedRemovalQue to new array
+    		bleedRemovalQue = temp;
+    	}
+    }
+    
+    public Entity[] getBleedRemovalQue(){return bleedRemovalQue;}
+    
+    public void clearBleedRemovalQue(){
+    	bleedQue = new Entity[bleedRemovalQue.length];
+    	setBleedQuePos(0);
+    }
+    public void setBleedRemovalQuePos(int x){bleedRemovalQuePos = x;}
+    
+    
     public boolean isBlockWatched(Block block) {return blockWatchList.contains(block);}
+    public boolean isTreeFellerWatched(Block block) {return treeFeller.contains(block);}
     public ArrayList<Block> getTreeFeller() {return treeFeller;}
     public void removeBlockWatch(Block block) {blockWatchList.remove(blockWatchList.indexOf(block));}
     public void addBlockWatch(Block block) {blockWatchList.add(block);}
@@ -25,11 +91,20 @@ public class mcConfig {
     public void addTreeFeller(Block block) {treeFeller.add(block);}
     public void addBleedTrack(Entity entity) {bleedTracker.add(entity);}
     public void addMobSpawnTrack(Entity entity) {mobSpawnTracker.add(entity);}
+    public void removeMobSpawnTrack(Entity entity) {mobSpawnTracker.remove(entity);}
     public ArrayList<Entity> getBleedTracked() {return bleedTracker;}
     public void addArrowTrack(Entity entity, Integer arrowcount) {arrowTracker.put(entity, arrowcount);}
     public Integer getArrowCount(Entity entity) {return arrowTracker.get(entity);}
+    public void removeArrowTracked(Entity entity){
+    	if(arrowTracker.containsKey(entity)){
+    		arrowTracker.remove(entity);
+    	}
+    }
     public void removeBleedTrack(Entity entity){
     	bleedTracker.remove(entity);
+    }
+    public void clearTreeFeller(){
+    	treeFeller.clear();
     }
     public void setBleedCount(Entity entity, Integer newvalue){
     	bleedTracker.add(entity);
