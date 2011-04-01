@@ -28,22 +28,22 @@ public class mcRepair {
         			/*
         			 * DIAMOND ARMOR
         			 */
-        			if(isDiamondArmor(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= mcLoadProperties.repairdiamondlevel){
+        			if(isDiamondArmor(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){
 	        			removeDiamond(player);
 	        			player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-	        			mcUsers.getProfile(player).addRepairGather(75 * mcLoadProperties.xpGainMultiplier);
+	        			mcUsers.getProfile(player).addRepairGather(75);
         			} else if (isIronArmor(is) && hasIron(player)){
         			/*
         			 * IRON ARMOR
         			 */
 	        			removeIron(player);
 	            		player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-	            		mcUsers.getProfile(player).addRepairGather(20 * mcLoadProperties.xpGainMultiplier);
+	            		mcUsers.getProfile(player).addRepairGather(20);
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasGold(player)){
         				removeGold(player);
         				player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-        				mcUsers.getProfile(player).addRepairGather(50 * mcLoadProperties.xpGainMultiplier);
+        				mcUsers.getProfile(player).addRepairGather(50);
         			} else {
         				needMoreVespeneGas(is, player);
         			}
@@ -58,18 +58,18 @@ public class mcRepair {
             		if(isIronTools(is) && hasIron(player)){
             			is.setDurability(getToolRepairAmount(is, player));
             			removeIron(player);
-            			mcUsers.getProfile(player).addRepairGather(20 * mcLoadProperties.xpGainMultiplier);
-            		} else if (isDiamondTools(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= mcLoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
+            			mcUsers.getProfile(player).addRepairGather(20);
+            		} else if (isDiamondTools(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= 50){ //Check if its diamond and the player has diamonds
             			/*
             			 * DIAMOND TOOLS
             			 */
             			is.setDurability(getToolRepairAmount(is, player));
             			removeDiamond(player);
-            			mcUsers.getProfile(player).addRepairGather(75 * mcLoadProperties.xpGainMultiplier);
+            			mcUsers.getProfile(player).addRepairGather(75);
             		} else if(isGoldTools(is) && hasGold(player)){
             			is.setDurability(getToolRepairAmount(is, player));
             			removeGold(player);
-            			mcUsers.getProfile(player).addRepairGather(50 * mcLoadProperties.xpGainMultiplier);
+            			mcUsers.getProfile(player).addRepairGather(50);
             		} else {
             			needMoreVespeneGas(is, player);
             		}
@@ -82,7 +82,15 @@ public class mcRepair {
         	/*
         	 * GIVE SKILL IF THERE IS ENOUGH XP
         	 */
-        	mcSkills.getInstance().XpCheck(player);
+        	if(mcUsers.getProfile(player).getRepairGatherInt() >= mcUsers.getProfile(player).getXpToLevel("repair")){
+    			int skillups = 0;
+    			while(mcUsers.getProfile(player).getRepairGatherInt() >= mcUsers.getProfile(player).getXpToLevel("repair")){
+    				skillups++;
+    				mcUsers.getProfile(player).removeRepairGather(mcUsers.getProfile(player).getXpToLevel("repair"));
+    				mcUsers.getProfile(player).skillUpRepair(1);
+    			}
+    			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getRepair()+")");	
+    		}
         	}
     }
 	public boolean isArmor(ItemStack is){
@@ -226,138 +234,100 @@ public class mcRepair {
     	}
     	return false;
     }
-    public short repairCalculate(Player player, short durability, short ramt){
-    	float bonus = (mcUsers.getProfile(player).getRepairInt() / 500);
-    	bonus = (ramt * bonus);
-    	ramt = ramt+=bonus;
-    	if(checkPlayerProcRepair(player)){
-    		ramt = (short) (ramt * 2);
-    	}
-    	durability-=ramt;
-    	if(durability < 0){
-    		durability = 0;
-    	}
-    	return durability;
-    }
     public short getToolRepairAmount(ItemStack is, Player player){
     	short durability = is.getDurability();
-    	short ramt = 0;
     	switch(is.getTypeId())
 		{
-    	//GOLD SHOVEL
     	case 284:
-    		ramt = 33;
+    		durability = 0;
     		break;
-    	//IRON SHOVEL
     	case 256:
-    		ramt = 251;
+    		durability = 0;
     		break;
-    	//DIAMOND SHOVEL
     	case 277:
-    		ramt = 1562;
+    		durability = 0;
     		break;
-    	//IRON PICK
     	case 257:
-    		ramt = 84;
+    		durability -= 84;
     		break;
-    	//IRON AXE
     	case 258:
-    		ramt = 84;
+    		durability -= 84;
     		break;
-    	//IRON SWORD
     	case 267:
-    		ramt = 126;
+    		durability -= 84;
     		break;
-    	//IRON HOE
     	case 292:
-    		ramt = 126;
+    		durability -= 84;
     		break;
-    	//DIAMOND SWORD
     	case 276:
-    		ramt = 781;
+    		durability -= 509;
     		break;
-    	//DIAMOND PICK
     	case 278:
-    		ramt = 521;
+    		durability -= 509;
     		break;
-    	//DIAMOND AXE
     	case 279:
-    		ramt = 521;
+    		durability -= 509;
     		break;
-    	//DIAMOND HOE
     	case 293:
-    		ramt = 781;
+    		durability -= 509;
     		break;
-    	//GOLD SWORD
     	case 283:
-    		ramt = 17;
+    		durability -= 13;
     		break;
-    	//GOLD PICK
     	case 285:
-    		ramt = 11;
+    		durability -= 13;
     		break;
-    	//GOLD AXE
     	case 286:
-    		ramt = 11;
+    		durability -= 13;
     		break;
-    	//GOLD HOE
     	case 294:
-    		ramt = 17;
+    		durability -= 13;
     		break;
 		}
-		return repairCalculate(player, durability, ramt);
+    	if(durability < 0)
+			durability = 0;
+		if(checkPlayerProcRepair(player))
+	    	durability = 0;
+		return durability;
     }
     //This determines how much we repair
     public short getArmorRepairAmount(ItemStack is, Player player){
     		short durability = is.getDurability();
-    		short ramt = 0;
     		switch(is.getTypeId())
     		{
     		case 306:
-    			ramt = 27;
-    			break;
+    		durability -= 27;
+    		break;
     		case 310:
-    			ramt = 55;
-	    		break;
+	    	durability -= 55;
+	    	break;
     		case 307:
-    			ramt = 24;
-	    		break;
+	    	durability -= 24;
+	    	break;
     		case 311:
-    			ramt = 48;
-	    		break;
+	    	durability -= 48;
+	    	break;
     		case 308:
-    			ramt = 27;
-	    		break;
+	    	durability -= 27;
+	    	break;
     		case 312:
-    			ramt = 53;
-	    		break;
+	    	durability -= 53;
+	    	break;
     		case 309:
-    			ramt = 40;
-	    		break;
+	    	durability -= 40;
+	    	break;
     		case 313:
-    			ramt = 80;
-	    		break;
-    		case 314:
-        		ramt = 13;
-        		break;
-    		case 315:
-        		ramt = 12;
-        		break;
-    		case 316:
-        		ramt = 14;
-        		break;
-    		case 317:
-        		ramt = 20;
-        		break;
+	    	durability -= 80;
+	    	break;
     		}
 			if(durability < 0)
-				durability = 0;
+			durability = 0;
 			if(checkPlayerProcRepair(player))
-				durability = 0;
-			return repairCalculate(player, durability, ramt);
+	    	durability = 0;
+			return durability;
     }
     public void needMoreVespeneGas(ItemStack is, Player player){
-    	if ((isDiamondTools(is) || isDiamondArmor(is)) && mcUsers.getProfile(player).getRepairInt() < mcLoadProperties.repairdiamondlevel){
+    	if ((isDiamondTools(is) || isDiamondArmor(is)) && mcUsers.getProfile(player).getRepairInt() < 50){
 			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
 		} else if (isDiamondTools(is) && !hasDiamond(player) || isIronTools(is) && !hasIron(player) || isGoldTools(is) && !hasGold(player)){
 			if(isDiamondTools(is) && !hasDiamond(player))
@@ -375,12 +345,27 @@ public class mcRepair {
 			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GOLD+"Gold");
 		}
     public boolean checkPlayerProcRepair(Player player){
-		if(player != null){
-			if(Math.random() * 1000 <= mcUsers.getProfile(player).getRepairInt()){
+		if(mcUsers.getProfile(player).getRepairInt() >= 750){
+			if(Math.random() * 10 > 2){
+				player.sendMessage(ChatColor.GRAY + "That took no effort.");
+				return true;
+			}
+		} else if (mcUsers.getProfile(player).getRepairInt() >= 450 && mcUsers.getProfile(player).getRepairInt() < 750){
+			if(Math.random() * 10 > 4){
+				player.sendMessage(ChatColor.GRAY + "That felt really easy.");
+				return true;
+			}
+		} else if (mcUsers.getProfile(player).getRepairInt() >= 150 && mcUsers.getProfile(player).getRepairInt() < 450){
+			if(Math.random() * 10 > 6){
+				player.sendMessage(ChatColor.GRAY + "That felt pretty easy.");
+				return true;
+			}
+		} else if (mcUsers.getProfile(player).getRepairInt() >= 50  && mcUsers.getProfile(player).getRepairInt() < 150){
+			if(Math.random() * 10 > 8){
 				player.sendMessage(ChatColor.GRAY + "That felt easy.");
 				return true;
 			}
 		}
 		return false;
-    }
+}
 }

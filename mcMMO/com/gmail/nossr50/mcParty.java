@@ -16,19 +16,11 @@ public class mcParty {
     	return instance;
     	}
     public boolean inSameParty(Player playera, Player playerb){
-    	if(mcUsers.getProfile(playera) == null || mcUsers.getProfile(playerb) == null){
-    		mcUsers.addUser(playera);
-    		mcUsers.addUser(playerb);
-    	}
-    	if(mcUsers.getProfile(playera).inParty() && mcUsers.getProfile(playerb).inParty()){
-	        if(mcUsers.getProfile(playera).getParty().equals(mcUsers.getProfile(playerb).getParty())){
-	            return true;
-	        } else {
-	            return false;
-	        }
-    	} else {
-    		return false;
-    	}
+        if(mcUsers.getProfile(playera).getParty().equals(mcUsers.getProfile(playerb).getParty())){
+            return true;
+        } else {
+            return false;
+        }
     }
 	public int partyCount(Player player, Player[] players){
         int x = 0;
