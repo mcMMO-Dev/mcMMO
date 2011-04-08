@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.Plugin;
 
+
 public class mcUsers {
     private static volatile mcUsers instance;
     protected static final Logger log = Logger.getLogger("Minecraft");
@@ -1503,6 +1504,7 @@ class PlayerList
 				axesgather = String.valueOf(Integer.valueOf(axesgather)+newvalue);
 			}
 			save();
+			mcSkills.getInstance().XpCheck(thisplayer);
 		}
 		public void modifyskill(int newvalue, String skillname){
 			if(skillname.toLowerCase().equals("mining")){

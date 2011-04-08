@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
 public class mcm {
 	/*
 	 * I'm storing my functions/methods in here in an unorganized manner. Spheal with it.
@@ -159,7 +160,7 @@ public class mcm {
 	}
 	public boolean shouldBeWatched(Block block){
 		int id = block.getTypeId();
-		if(id == 42 || id == 87 || id == 89 || id == 2 || id == 3 || id == 12 || id == 13 || id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40 || id == 24){
+		if(id == 17 || id == 42 || id == 87 || id == 89 || id == 2 || id == 3 || id == 12 || id == 13 || id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40 || id == 24){
 			return true;
 		} else {
 			return false;

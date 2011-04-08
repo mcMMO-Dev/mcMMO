@@ -1,4 +1,5 @@
 package com.gmail.nossr50;
+
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijiko.Messaging;
 import com.nijiko.permissions.PermissionHandler;
@@ -24,7 +25,6 @@ public class mcMMO extends JavaPlugin {
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
     private final mcBlockListener blockListener = new mcBlockListener(this);
     private final mcEntityListener entityListener = new mcEntityListener(this);
-    //private final mcServerListener serverListener = new mcServerListener(this);
     private final String name = "mcMMO";
     public static PermissionHandler PermissionsHandler = null;
     private Permissions permissions;
@@ -32,9 +32,8 @@ public class mcMMO extends JavaPlugin {
     
     public void onEnable() {
     	mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(1000));
-    	//Make the directory if it does not exist
     	new File(maindirectory).mkdir();
-    	//Make the file if it does not exist
+
     	if(!Properties.exists()){
 	    	try {
 				Properties.createNewFile();
@@ -78,8 +77,6 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
         
-        //pm.registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Priority.Normal, this);
-        //Displays a message when plugin is loaded
         PluginDescriptionFile pdfFile = this.getDescription();
         mcPermissions.initialize(getServer());
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
@@ -94,7 +91,7 @@ public class mcMMO extends JavaPlugin {
     		this.getServer().getPluginManager().disablePlugin(this);
     	    }
     	}
-        }
+    }
     public boolean isPartyChatToggled(Player player){
     	if(mcConfig.getInstance().isPartyToggled(player.getName())){
     		return true;
@@ -112,6 +109,12 @@ public class mcMMO extends JavaPlugin {
     	} else {
     		return false;
     	}
+    }
+    public void addXp(Player player, String skillname, Integer newvalue){
+    	mcUsers.getProfile(player).addXpToSkill(newvalue, skillname);
+    }
+    public void modifySkill(Player player, String skillname, Integer newvalue){
+    	mcUsers.getProfile(player).modifyskill(newvalue, skillname);
     }
     public boolean isAdminChatToggled(Player player){
     	if(mcConfig.getInstance().isAdminToggled(player.getName())){

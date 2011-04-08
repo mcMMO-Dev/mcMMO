@@ -1,7 +1,14 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.16
+Logs placed by the player won't grant XP/Double Drops anymore
+Added more functions plugin authors can call
+Acrobatics roll has a damage threshold of 20, going above this means a failed Roll
+
+
 Version 0.9.15
-AoE Abilities will only hit wolves attacking you
+Acrobatics will now behave properly
+AoE Abilities ignore wolves (temp fix)
 Added "all" parameter to /mmoedit & /addxp
 After giving XP to a player it will now check for level ups in skills
 

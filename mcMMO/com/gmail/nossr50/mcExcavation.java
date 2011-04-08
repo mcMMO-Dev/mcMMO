@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+
 public class mcExcavation {
 	private static mcMMO plugin;
 	public mcExcavation(mcMMO instance) {

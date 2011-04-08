@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
+
 public class mcCombat {
 	private static mcMMO plugin;
 	public mcCombat(mcMMO instance) {
@@ -514,13 +515,10 @@ public class mcCombat {
     				target.damage(event.getDamage() / 2);
     				targets--;
     			}
-    			if(derp instanceof Animals  && targets >= 1){
-    				if(derp instanceof Wolf){
-    					if(((Wolf) derp).isAngry() && ((Wolf) derp).getTarget() != attacker){
-    						continue;
-    					}
-    				}
-    					
+    			if(derp instanceof Wolf){
+					continue;
+				}
+    			if(derp instanceof Animals  && targets >= 1){					
     				Animals target = (Animals)derp;
     				target.damage(event.getDamage() / 2);
     				targets--;
@@ -551,9 +549,10 @@ public class mcCombat {
     				target.damage(event.getDamage() / 4);
     				targets--;
     			}
+    			if(derp instanceof Wolf){
+					continue;
+				}
     			if(derp instanceof Animals && targets >= 1){
-    				if(derp instanceof Wolf)
-    					continue;
     				if(!mcConfig.getInstance().isBleedTracked(derp))
     					mcConfig.getInstance().addToBleedQue(x);
     				Animals target = (Animals)derp;

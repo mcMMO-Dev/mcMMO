@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
+
 public class mcPlayerListener extends PlayerListener {
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	public Location spawn = null;
@@ -241,7 +242,6 @@ public class mcPlayerListener extends PlayerListener {
     				mcUsers.getProfile(getPlayer(split[1])).addXpToSkill(newvalue, split[2]);
     				getPlayer(split[1]).sendMessage(ChatColor.GREEN+"Experience granted!");
     				player.sendMessage(ChatColor.RED+split[2]+" has been modified.");
-    				mcSkills.getInstance().XpCheck(getPlayer(split[1]));
     			}
     		}
     		else if(split.length == 3){
@@ -249,7 +249,6 @@ public class mcPlayerListener extends PlayerListener {
     				int newvalue = Integer.valueOf(split[2]);
     				mcUsers.getProfile(player).addXpToSkill(newvalue, split[1]);
     				player.sendMessage(ChatColor.RED+split[1]+" has been modified.");
-    				mcSkills.getInstance().XpCheck(player);
     			}
     		} else {
     			player.sendMessage(ChatColor.RED+"Usage is /"+mcLoadProperties.addxp+" playername skillname xp");

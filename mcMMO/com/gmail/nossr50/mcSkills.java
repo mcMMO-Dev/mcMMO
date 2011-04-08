@@ -6,6 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+
 public class mcSkills {
 	private static mcMMO plugin;
 	public mcSkills(mcMMO instance) {

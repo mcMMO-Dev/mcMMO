@@ -3,6 +3,7 @@ package com.gmail.nossr50;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+
 public class mcParty {
 	private static mcMMO plugin;
 	public mcParty(mcMMO instance) {
