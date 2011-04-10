@@ -59,13 +59,12 @@ public class mcCombat {
 			if(defender != null && mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0){
 				
 				//Bonus just for having unarmed
-				if(mcUsers.getProfile(attacker).getUnarmedInt() < 250){
-					event.setDamage(calculateDamage(event, 2));
-				} else if (mcUsers.getProfile(attacker).getUnarmedInt() < 500 && mcUsers.getProfile(attacker).getUnarmedInt() >= 250){
-					event.setDamage(calculateDamage(event, 3));
-				} else {
-					event.setDamage(calculateDamage(event, 4));
-				}
+				int bonus = 2;
+				if (mcUsers.getProfile(attacker).getUnarmedInt() >= 250)
+					bonus++;
+				if (mcUsers.getProfile(attacker).getUnarmedInt() >= 500)
+					bonus++;
+				event.setDamage(calculateDamage(event, bonus));
 				
 				//PROC
 				if(simulateUnarmedProc(attacker)){
@@ -130,13 +129,12 @@ public class mcCombat {
     				return;
     			
     			//Bonus just for having unarmed
-				if(mcUsers.getProfile(attacker).getUnarmedInt() < 250){
-					event.setDamage(calculateDamage(event, 2));
-				} else if (mcUsers.getProfile(attacker).getUnarmedInt() < 500 && mcUsers.getProfile(attacker).getUnarmedInt() >= 250){
-					event.setDamage(calculateDamage(event, 3));
-				} else {
-					event.setDamage(calculateDamage(event, 4));
-				}
+    			int bonus = 2;
+    			if (mcUsers.getProfile(attacker).getUnarmedInt() >= 250)
+    				bonus++;
+    			if (mcUsers.getProfile(attacker).getUnarmedInt() >= 500)
+    				bonus++;
+    			event.setDamage(calculateDamage(event, bonus));
     			
     			//XP
 					if(defender.getHealth() != 0){
@@ -161,13 +159,12 @@ public class mcCombat {
 			}
 			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
 				//Bonus just for having unarmed
-				if(mcUsers.getProfile(attacker).getUnarmedInt() < 250){
-					event.setDamage(calculateDamage(event, 2));
-				} else if (mcUsers.getProfile(attacker).getUnarmedInt() < 500 && mcUsers.getProfile(attacker).getUnarmedInt() >= 250){
-					event.setDamage(calculateDamage(event, 3));
-				} else {
-					event.setDamage(calculateDamage(event, 4));
-				}
+				int bonus = 2;
+				if (mcUsers.getProfile(attacker).getUnarmedInt() >= 250)
+					bonus++;
+				if (mcUsers.getProfile(attacker).getUnarmedInt() >= 500)
+					bonus++;
+				event.setDamage(calculateDamage(event, bonus));
 			}
 		}
     }
@@ -228,13 +225,12 @@ public class mcCombat {
 				return;
 			
 			//Bonus just for having unarmed
-			if(mcUsers.getProfile(attacker).getUnarmedInt() < 250){
-				event.setDamage(calculateDamage(event, 2));
-			} else if (mcUsers.getProfile(attacker).getUnarmedInt() < 500 && mcUsers.getProfile(attacker).getUnarmedInt() >= 250){
-				event.setDamage(calculateDamage(event, 3));
-			} else {
-				event.setDamage(calculateDamage(event, 4));
-			}
+			int bonus = 2;
+			if (mcUsers.getProfile(attacker).getUnarmedInt() >= 250)
+				bonus++;
+			if (mcUsers.getProfile(attacker).getUnarmedInt() >= 500)
+				bonus++;
+			event.setDamage(calculateDamage(event, bonus));
 			
 			//XP
 			if(!mcConfig.getInstance().isMobSpawnTracked(x)){

@@ -28,7 +28,7 @@ public class mcTimer extends TimerTask{
 			/*
 			 * COOLDOWN MONITORING
 			 */
-			mcSkills.getInstance().decreaseCooldowns(player);
+			mcSkills.getInstance().watchCooldowns(player);
 			
 			/*
 			 * PLAYER BLEED MONITORING
@@ -38,12 +38,11 @@ public class mcTimer extends TimerTask{
         		mcUsers.getProfile(player).decreaseBleedTicks();
         	}
 			
-			if(mcPermissions.getInstance().regeneration(player)){
+			if(mcPermissions.getInstance().regeneration(player) && System.currentTimeMillis() >= mcUsers.getProfile(player).getRecentlyHurt() + 60000){
 				if(thecount == 10 || thecount == 20 || thecount == 30 || thecount == 40){
 				    if(player != null &&
 				    	player.getHealth() > 0 && player.getHealth() < 20 
-				    	&& mcUsers.getProfile(player).getPowerLevel(player) >= 1000 
-				    	&& mcUsers.getProfile(player).getRecentlyHurt() == 0){
+				    	&& mcUsers.getProfile(player).getPowerLevel(player) >= 1000){
 				    	player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
 				    }
 				}
@@ -51,21 +50,16 @@ public class mcTimer extends TimerTask{
 			   		if(player != null &&
 			   			player.getHealth() > 0 && player.getHealth() < 20 
 			    		&& mcUsers.getProfile(player).getPowerLevel(player) >= 500 
-			    		&& mcUsers.getProfile(player).getPowerLevel(player) < 1000  
-			    		&& mcUsers.getProfile(player).getRecentlyHurt() == 0){
+			    		&& mcUsers.getProfile(player).getPowerLevel(player) < 1000){
 			    		player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
 			    	}
 				}
 				if(thecount == 40){
 			    	if(player != null &&
 			    		player.getHealth() > 0 && player.getHealth() < 20  
-			    		&& mcUsers.getProfile(player).getPowerLevel(player) < 500  
-			    		&& mcUsers.getProfile(player).getRecentlyHurt() == 0){
+			    		&& mcUsers.getProfile(player).getPowerLevel(player) < 500){
 			    		player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
 			    	}
-				}
-				if(player != null && mcUsers.getProfile(player).getRecentlyHurt() >= 1){
-					mcUsers.getProfile(player).decreaseLastHurt();
 				}
 			}
 		}

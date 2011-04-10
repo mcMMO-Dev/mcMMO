@@ -28,7 +28,6 @@ public class mcExcavation {
 	    	}
 	    	if(mcUsers.getProfile(player).getShovelPreparationMode()){
     			mcUsers.getProfile(player).setShovelPreparationMode(false);
-    			mcUsers.getProfile(player).setShovelPreparationTicks(0);
     		}
 	    	int ticks = 2;
     		if(mcUsers.getProfile(player).getExcavationInt() >= 50)
@@ -50,7 +49,8 @@ public class mcExcavation {
     		
 	    	if(!mcUsers.getProfile(player).getGigaDrillBreakerMode() && mcUsers.getProfile(player).getGigaDrillBreakerCooldown() == 0){
 	    		player.sendMessage(ChatColor.GREEN+"**GIGA DRILL BREAKER ACTIVATED**");
-	    		mcUsers.getProfile(player).setGigaDrillBreakerTicks(ticks * 2);
+	    		mcUsers.getProfile(player).setGigaDrillBreakerTicks(ticks * 1000);
+	    		mcUsers.getProfile(player).setGigaDrillBreakerActivatedTimeStamp(System.currentTimeMillis());
 	    		mcUsers.getProfile(player).setGigaDrillBreakerMode(true);
 	    	}
 	    	
@@ -69,7 +69,7 @@ public class mcExcavation {
     	Location loc = block.getLocation();
     	ItemStack is = null;
     	Material mat = null;
-    	if(mcConfig.getInstance().isBlockWatched(block)){
+    	if(block.getData() == 5){
     		return;
     	}
     	if(type == 2){

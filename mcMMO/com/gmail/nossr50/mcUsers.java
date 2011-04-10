@@ -157,10 +157,14 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
-		private int recentlyhurt = 0, bleedticks = 0, gigaDrillBreakerCooldown = 0, gigaDrillBreakerTicks = 0, berserkTicks = 0, berserkCooldown = 0, superBreakerTicks = 0, superBreakerCooldown = 0, 
-		serratedStrikesTicks = 0, skullSplitterTicks = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0, treeFellerTicks = 0, treeFellerCooldown = 0,
-		axePreparationTicks = 0, pickaxePreparationTicks = 0, fistsPreparationTicks = 0, shovelPreparationTicks = 0, swordsPreparationTicks = 0;
+		private boolean berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
+		private long gigaDrillBreakerCooldown = 0, berserkCooldown = 0, superBreakerCooldown = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0,
+		treeFellerCooldown = 0, recentlyHurt = 0, archeryShotATS = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
+		superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
+		skullSplitterATS = 0, skullSplitterDATS = 0, axePreparationATS = 0, pickaxePreparationATS = 0, fistsPreparationATS = 0, shovelPreparationATS = 0, swordsPreparationATS = 0;
+		private int berserkTicks = 0, bleedticks = 0, gigaDrillBreakerTicks = 0, superBreakerTicks = 0, serratedStrikesTicks = 0, skullSplitterTicks = 0, treeFellerTicks = 0;
+		//ATS = (Time of) Activation Time Stamp
+		//DATS = (Time of) Deactivation Time Stamp
 		Player thisplayer;
 		char defaultColor;
 
@@ -430,11 +434,6 @@ class PlayerList
 				abilityuse = false;
 			}
 		}
-		public void decreaseLastHurt(){
-			if(recentlyhurt >= 1){
-				recentlyhurt--;
-			}
-		}
 		public void decreaseBleedTicks(){
 			if(bleedticks >= 1){
 				bleedticks--;
@@ -457,6 +456,12 @@ class PlayerList
 			}
 		}
 		/*
+		 * ARCHERY NERF STUFF
+		 */
+		public long getArcheryShotATS() {return archeryShotATS;}
+		public void setArcheryShotATS(long newvalue) {archeryShotATS = newvalue;}
+		
+		/*
 		 * SWORDS PREPARATION
 		 */
 		public boolean getSwordsPreparationMode(){
@@ -465,16 +470,11 @@ class PlayerList
 		public void setSwordsPreparationMode(Boolean bool){
 			swordsPreparationMode = bool;
 		}
-		public Integer getSwordsPreparationTicks(){
-			return swordsPreparationTicks;
+		public long getSwordsPreparationATS(){
+			return swordsPreparationATS;
 		}
-		public void setSwordsPreparationTicks(Integer newvalue){
-			swordsPreparationTicks = newvalue;
-		}
-		public void decreaseSwordsPreparationTicks(){
-			if(swordsPreparationTicks >= 1){
-				swordsPreparationTicks--;
-			}
+		public void setSwordsPreparationATS(long newvalue){
+			swordsPreparationATS = newvalue;
 		}
 		/*
 		 * SHOVEL PREPARATION
@@ -485,16 +485,11 @@ class PlayerList
 		public void setShovelPreparationMode(Boolean bool){
 			shovelPreparationMode = bool;
 		}
-		public Integer getShovelPreparationTicks(){
-			return shovelPreparationTicks;
+		public long getShovelPreparationATS(){
+			return shovelPreparationATS;
 		}
-		public void setShovelPreparationTicks(Integer newvalue){
-			shovelPreparationTicks = newvalue;
-		}
-		public void decreaseShovelPreparationTicks(){
-			if(shovelPreparationTicks >= 1){
-				shovelPreparationTicks--;
-			}
+		public void setShovelPreparationATS(long newvalue){
+			shovelPreparationATS = newvalue;
 		}
 		/*
 		 * FISTS PREPARATION
@@ -505,16 +500,11 @@ class PlayerList
 		public void setFistsPreparationMode(Boolean bool){
 			fistsPreparationMode = bool;
 		}
-		public Integer getFistsPreparationTicks(){
-			return fistsPreparationTicks;
+		public long getFistsPreparationATS(){
+			return fistsPreparationATS;
 		}
-		public void setFistsPreparationTicks(Integer newvalue){
-			fistsPreparationTicks = newvalue;
-		}
-		public void decreaseFistsPreparationTicks(){
-			if(fistsPreparationTicks >= 1){
-				fistsPreparationTicks--;
-			}
+		public void setFistsPreparationATS(long newvalue){
+			fistsPreparationATS = newvalue;
 		}
 		/*
 		 * AXE PREPARATION
@@ -525,16 +515,11 @@ class PlayerList
 		public void setAxePreparationMode(Boolean bool){
 			axePreparationMode = bool;
 		}
-		public Integer getAxePreparationTicks(){
-			return axePreparationTicks;
+		public long getAxePreparationATS(){
+			return axePreparationATS;
 		}
-		public void setAxePreparationTicks(Integer newvalue){
-			axePreparationTicks = newvalue;
-		}
-		public void decreaseAxePreparationTicks(){
-			if(axePreparationTicks >= 1){
-				axePreparationTicks--;
-			}
+		public void setAxePreparationATS(long newvalue){
+			axePreparationATS = newvalue;
 		}
 		/*
 		 * PICKAXE PREPARATION
@@ -545,209 +530,192 @@ class PlayerList
 		public void setPickaxePreparationMode(Boolean bool){
 			pickaxePreparationMode = bool;
 		}
-		public Integer getPickaxePreparationTicks(){
-			return pickaxePreparationTicks;
+		public long getPickaxePreparationATS(){
+			return pickaxePreparationATS;
 		}
-		public void setPickaxePreparationTicks(Integer newvalue){
-			pickaxePreparationTicks = newvalue;
-		}
-		public void decreasePickaxePreparationTicks(){
-			if(pickaxePreparationTicks >= 1){
-				pickaxePreparationTicks--;
-			}
+		public void setPickaxePreparationATS(long newvalue){
+			pickaxePreparationATS = newvalue;
 		}
 		/*
 		 * BERSERK MODE
 		 */
+		public boolean getBerserkInformed() {return berserkInformed;}
+		public void setBerserkInformed(Boolean bool){
+			berserkInformed = bool;
+		}
 		public boolean getBerserkMode(){
 			return berserkMode;
 		}
 		public void setBerserkMode(Boolean bool){
 			berserkMode = bool;
 		}
-		public Integer getBerserkTicks(){
-			return berserkTicks;
+		public long getBerserkActivatedTimeStamp() {return berserkATS;}
+		public void setBerserkActivatedTimeStamp(Long newvalue){
+			berserkATS = newvalue;
 		}
-		public void setBerserkTicks(Integer newvalue){
-			berserkTicks = newvalue;
+		public long getBerserkDeactivatedTimeStamp() {return berserkDATS;}
+		public void setBerserkDeactivatedTimeStamp(Long newvalue){
+			berserkDATS = newvalue;
 		}
-		public void decreaseBerserkTicks(){
-			if(berserkTicks >= 1){
-				berserkTicks--;
-			}
-		}
-		public void setBerserkCooldown(Integer newvalue){
+		public void setBerserkCooldown(Long newvalue){
 			berserkCooldown = newvalue;
 		}
-		public int getBerserkCooldown(){
+		public long getBerserkCooldown(){
 			return berserkCooldown;
 		}
-		public void decreaseBerserkCooldown(){
-			if(berserkCooldown >= 1){
-				berserkCooldown--;
-			}
-		}
+		public void setBerserkTicks(Integer newvalue){berserkTicks = newvalue;}
+		public int getBerserkTicks(){return berserkTicks;}
 		/*
 		 * SKULL SPLITTER
 		 */
+		public boolean getSkullSplitterInformed() {return skullSplitterInformed;}
+		public void setSkullSplitterInformed(Boolean bool){
+			skullSplitterInformed = bool;
+		}
 		public boolean getSkullSplitterMode(){
 			return skullSplitterMode;
 		}
 		public void setSkullSplitterMode(Boolean bool){
 			skullSplitterMode = bool;
 		}
-		public Integer getSkullSplitterTicks(){
-			return skullSplitterTicks;
+		public long getSkullSplitterActivatedTimeStamp() {return skullSplitterATS;}
+		public void setSkullSplitterActivatedTimeStamp(Long newvalue){
+			skullSplitterATS = newvalue;
 		}
-		public void setSkullSplitterTicks(Integer newvalue){
-			skullSplitterTicks = newvalue;
+		public long getSkullSplitterDeactivatedTimeStamp() {return skullSplitterDATS;}
+		public void setSkullSplitterDeactivatedTimeStamp(Long newvalue){
+			skullSplitterDATS = newvalue;
 		}
-		public void decreaseSkullSplitterTicks(){
-			if(skullSplitterTicks >= 1){
-				skullSplitterTicks--;
-			}
-		}
-		public void setSkullSplitterCooldown(Integer newvalue){
+		public void setSkullSplitterCooldown(Long newvalue){
 			skullSplitterCooldown = newvalue;
 		}
-		public int getSkullSplitterCooldown(){
+		public long getSkullSplitterCooldown(){
 			return skullSplitterCooldown;
 		}
-		public void decreaseSkullSplitterCooldown(){
-			if(skullSplitterCooldown >= 1){
-				skullSplitterCooldown--;
-			}
-		}
+		public void setSkullSplitterTicks(Integer newvalue){skullSplitterTicks = newvalue;}
+		public int getSkullSplitterTicks(){return skullSplitterTicks;}
 		/*
 		 * SERRATED STRIKES
 		 */
+		public boolean getSerratedStrikesInformed() {return serratedStrikesInformed;}
+		public void setSerratedStrikesInformed(Boolean bool){
+			serratedStrikesInformed = bool;
+		}
 		public boolean getSerratedStrikesMode(){
 			return serratedStrikesMode;
 		}
 		public void setSerratedStrikesMode(Boolean bool){
 			serratedStrikesMode = bool;
 		}
-		public Integer getSerratedStrikesTicks(){
-			return serratedStrikesTicks;
+		public long getSerratedStrikesActivatedTimeStamp() {return serratedStrikesATS;}
+		public void setSerratedStrikesActivatedTimeStamp(Long newvalue){
+			serratedStrikesATS = newvalue;
 		}
-		public void setSerratedStrikesTicks(Integer newvalue){
-			serratedStrikesTicks = newvalue;
+		public long getSerratedStrikesDeactivatedTimeStamp() {return serratedStrikesDATS;}
+		public void setSerratedStrikesDeactivatedTimeStamp(Long newvalue){
+			serratedStrikesDATS = newvalue;
 		}
-		public void decreaseSerratedStrikesTicks(){
-			if(serratedStrikesTicks >= 1){
-				serratedStrikesTicks--;
-			}
-		}
-		public void setSerratedStrikesCooldown(Integer newvalue){
+		public void setSerratedStrikesCooldown(Long newvalue){
 			serratedStrikesCooldown = newvalue;
 		}
-		public int getSerratedStrikesCooldown(){
+		public long getSerratedStrikesCooldown(){
 			return serratedStrikesCooldown;
 		}
-		public void decreaseSerratedStrikesCooldown(){
-			if(serratedStrikesCooldown >= 1){
-				serratedStrikesCooldown--;
-			}
-		}
+		public void setSerratedStrikesTicks(Integer newvalue){serratedStrikesTicks = newvalue;}
+		public int getSerratedStrikesTicks(){return serratedStrikesTicks;}
 		/*
 		 * GIGA DRILL BREAKER
 		 */
+		public boolean getGigaDrillBreakerInformed() {return gigaDrillBreakerInformed;}
+		public void setGigaDrillBreakerInformed(Boolean bool){
+			gigaDrillBreakerInformed = bool;
+		}
 		public boolean getGigaDrillBreakerMode(){
 			return gigaDrillBreakerMode;
 		}
 		public void setGigaDrillBreakerMode(Boolean bool){
 			gigaDrillBreakerMode = bool;
 		}
-		public Integer getGigaDrillBreakerTicks(){
-			return gigaDrillBreakerTicks;
+		public long getGigaDrillBreakerActivatedTimeStamp() {return gigaDrillBreakerATS;}
+		public void setGigaDrillBreakerActivatedTimeStamp(Long newvalue){
+			gigaDrillBreakerATS = newvalue;
 		}
-		public void setGigaDrillBreakerTicks(Integer newvalue){
-			gigaDrillBreakerTicks = newvalue;
+		public long getGigaDrillBreakerDeactivatedTimeStamp() {return gigaDrillBreakerDATS;}
+		public void setGigaDrillBreakerDeactivatedTimeStamp(Long newvalue){
+			gigaDrillBreakerDATS = newvalue;
 		}
-		public void decreaseGigaDrillBreakerTicks(){
-			if(gigaDrillBreakerTicks >= 1){
-				gigaDrillBreakerTicks--;
-			}
-		}
-		public void setGigaDrillBreakerCooldown(Integer newvalue){
+		public void setGigaDrillBreakerCooldown(Long newvalue){
 			gigaDrillBreakerCooldown = newvalue;
 		}
-		public int getGigaDrillBreakerCooldown(){
+		public long getGigaDrillBreakerCooldown(){
 			return gigaDrillBreakerCooldown;
 		}
-		public void decreaseGigaDrillBreakerCooldown(){
-			if(gigaDrillBreakerCooldown >= 1){
-				gigaDrillBreakerCooldown--;
-			}
-		}
+		public void setGigaDrillBreakerTicks(Integer newvalue){gigaDrillBreakerTicks = newvalue;}
+		public int getGigaDrillBreakerTicks(){return gigaDrillBreakerTicks;}
 		/*
 		 * TREE FELLER STUFF
 		 */
+		public boolean getTreeFellerInformed() {return treeFellerInformed;}
+		public void setTreeFellerInformed(Boolean bool){
+			treeFellerInformed = bool;
+		}
 		public boolean getTreeFellerMode(){
 			return treeFellerMode;
 		}
 		public void setTreeFellerMode(Boolean bool){
 			treeFellerMode = bool;
 		}
-		public Integer getTreeFellerTicks(){
-			return treeFellerTicks;
+		public long getTreeFellerActivatedTimeStamp() {return treeFellerATS;}
+		public void setTreeFellerActivatedTimeStamp(Long newvalue){
+			treeFellerATS = newvalue;
 		}
-		public void setTreeFellerTicks(Integer newvalue){
-			treeFellerTicks = newvalue;
+		public long getTreeFellerDeactivatedTimeStamp() {return treeFellerDATS;}
+		public void setTreeFellerDeactivatedTimeStamp(Long newvalue){
+			treeFellerDATS = newvalue;
 		}
-		public void decreaseTreeFellerTicks(){
-			if(treeFellerTicks >= 1){
-				treeFellerTicks--;
-			}
-		}
-		public void setTreeFellerCooldown(Integer newvalue){
+		public void setTreeFellerCooldown(Long newvalue){
 			treeFellerCooldown = newvalue;
 		}
-		public int getTreeFellerCooldown(){
+		public long getTreeFellerCooldown(){
 			return treeFellerCooldown;
 		}
-		public void decreaseTreeFellerCooldown(){
-			if(treeFellerCooldown >= 1){
-				treeFellerCooldown--;
-			}
-		}
+		public void setTreeFellerTicks(Integer newvalue){treeFellerTicks = newvalue;}
+		public int getTreeFellerTicks(){return treeFellerTicks;}
 		/*
 		 * MINING
 		 */
+		public boolean getSuperBreakerInformed() {return superBreakerInformed;}
+		public void setSuperBreakerInformed(Boolean bool){
+			superBreakerInformed = bool;
+		}
 		public boolean getSuperBreakerMode(){
 			return superBreakerMode;
 		}
 		public void setSuperBreakerMode(Boolean bool){
 			superBreakerMode = bool;
 		}
-		public Integer getSuperBreakerTicks(){
-			return superBreakerTicks;
+		public long getSuperBreakerActivatedTimeStamp() {return superBreakerATS;}
+		public void setSuperBreakerActivatedTimeStamp(Long newvalue){
+			superBreakerATS = newvalue;
 		}
-		public void setSuperBreakerTicks(Integer newvalue){
-			superBreakerTicks = newvalue;
+		public long getSuperBreakerDeactivatedTimeStamp() {return superBreakerDATS;}
+		public void setSuperBreakerDeactivatedTimeStamp(Long newvalue){
+			superBreakerDATS = newvalue;
 		}
-		public void decreaseSuperBreakerTicks(){
-			if(superBreakerTicks >= 1){
-				superBreakerTicks--;
-			}
-		}
-		public void setSuperBreakerCooldown(Integer newvalue){
+		public void setSuperBreakerCooldown(Long newvalue){
 			superBreakerCooldown = newvalue;
 		}
-		public int getSuperBreakerCooldown(){
+		public long getSuperBreakerCooldown(){
 			return superBreakerCooldown;
 		}
-		public void decreaseSuperBreakerCooldown(){
-			if(superBreakerCooldown >= 1){
-				superBreakerCooldown--;
-			}
-		}
+		public void setSuperBreakerTicks(Integer newvalue){superBreakerTicks = newvalue;}
+		public int getSuperBreakerTicks(){return superBreakerTicks;}
 		
-		public Integer getRecentlyHurt(){
-			return recentlyhurt;
+		public long getRecentlyHurt(){
+			return recentlyHurt;
 		}
-		public void setRecentlyHurt(Integer newvalue){
-			recentlyhurt = newvalue;
+		public void setRecentlyHurt(long newvalue){
+			recentlyHurt = newvalue;
 		}
 		public void skillUpAxes(int newskill){
 			int x = 0;

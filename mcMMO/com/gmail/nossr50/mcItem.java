@@ -34,7 +34,7 @@ public class mcItem {
     			int y = derp.getY();
     			ItemStack[] inventory = player.getInventory().getContents();
     	    	for(ItemStack x : inventory){
-    	    		if(x.getTypeId() == 288){
+    	    		if(x != null && x.getTypeId() == 288){
     	    			if(x.getAmount() >= mcLoadProperties.feathersConsumedByChimaeraWing + 1){
     	    				x.setAmount(x.getAmount() - mcLoadProperties.feathersConsumedByChimaeraWing);
     	    				player.getInventory().setContents(inventory);

@@ -9,6 +9,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.PlayerList.PlayerProfile;
+
 
 public class mcWoodCutting {
 	int w = 0;
@@ -35,6 +37,7 @@ public class mcWoodCutting {
     	}
     }
     public void treeFellerCheck(Player player, Block block){
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(mcm.getInstance().isAxes(player.getItemInHand())){
     		if(block != null){
         		if(!mcm.getInstance().abilityBlockCheck(block))
@@ -43,36 +46,36 @@ public class mcWoodCutting {
     		/*
     		 * CHECK FOR AXE PREP MODE
     		 */
-    		if(mcUsers.getProfile(player).getAxePreparationMode()){
-    			mcUsers.getProfile(player).setAxePreparationMode(false);
-    			mcUsers.getProfile(player).setAxePreparationTicks(0);
+    		if(PP.getAxePreparationMode()){
+    			PP.setAxePreparationMode(false);
     		}
     		int ticks = 2;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 50)
+    		if(PP.getWoodCuttingInt() >= 50)
     			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 150)
+    		if(PP.getWoodCuttingInt() >= 150)
     			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 250)
+    		if(PP.getWoodCuttingInt() >= 250)
     			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 350)
+    		if(PP.getWoodCuttingInt() >= 350)
     			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 450)
+    		if(PP.getWoodCuttingInt() >= 450)
     			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 550)
+    		if(PP.getWoodCuttingInt() >= 550)
     			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 650)
+    		if(PP.getWoodCuttingInt() >= 650)
     			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 750)
+    		if(PP.getWoodCuttingInt() >= 750)
     			ticks++;
 
-    		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() == 0){
+    		if(!PP.getTreeFellerMode() && PP.getTreeFellerCooldown() == 0){
     			player.sendMessage(ChatColor.GREEN+"**TREE FELLING ACTIVATED**");
-    			mcUsers.getProfile(player).setTreeFellerTicks(ticks * 2);
-    			mcUsers.getProfile(player).setTreeFellerMode(true);
+    			PP.setTreeFellerTicks(ticks * 1000);
+    			PP.setTreeFellerActivatedTimeStamp(System.currentTimeMillis());
+    			PP.setTreeFellerMode(true);
     		}
-    		if(!mcUsers.getProfile(player).getTreeFellerMode() && mcUsers.getProfile(player).getTreeFellerCooldown() >= 1){
+    		if(!PP.getTreeFellerMode() && !mcSkills.getInstance().cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)){
     			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
-    					+ChatColor.YELLOW+" ("+mcUsers.getProfile(player).getTreeFellerCooldown()+"s)");
+    					+ChatColor.YELLOW+" ("+mcSkills.getInstance().calculateTimeLeft(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)+"s)");
     		}
     	}
     }

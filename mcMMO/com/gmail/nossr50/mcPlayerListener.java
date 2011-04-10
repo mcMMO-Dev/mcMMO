@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerEvent;
@@ -72,6 +73,19 @@ public class mcPlayerListener extends PlayerListener {
     	Player player = event.getPlayer();
     	Action action = event.getAction();
     	Block block = event.getClickedBlock();
+    	//Archery Nerf
+    	if(player.getItemInHand().getTypeId() == 261 && mcLoadProperties.archeryFireRateLimit){
+    		if(System.currentTimeMillis() < mcUsers.getProfile(player).getArcheryShotATS() + 1000){
+    			/*
+    			if(mcm.getInstance().hasArrows(player))
+    				mcm.getInstance().addArrows(player);
+    			*/
+    			player.updateInventory();
+    			event.setCancelled(true);
+    		} else {
+    			mcUsers.getProfile(player).setArcheryShotATS(System.currentTimeMillis());
+    		}
+    	}
     	/*
     	 * Ability checks
     	 */
@@ -103,6 +117,14 @@ public class mcPlayerListener extends PlayerListener {
         	mcItem.getInstance().itemChecks(player);
     	}
     }
+    public void onPlayerBedEnter(PlayerBedEnterEvent event) {
+    	Player player = event.getPlayer();
+    	Location loc = player.getLocation();
+    	if(mcPermissions.getInstance().setMySpawn(player)){
+    		mcUsers.getProfile(player).setMySpawn(loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName());
+    	}
+    	player.sendMessage(ChatColor.DARK_AQUA + "Myspawn has been set to your current location.");
+    }
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
     	Player player = event.getPlayer();
     	String[] split = event.getMessage().split(" ");
@@ -130,40 +152,37 @@ public class mcPlayerListener extends PlayerListener {
     			player = getPlayer(split[1]);
     		}
 			/*
-			 * AXE PREPARATION MODE
+			 * PREP MODES
 			 */
     		mcUsers.getProfile(player).setAxePreparationMode(false);
-    		mcUsers.getProfile(player).setAxePreparationTicks(0);
+    		mcUsers.getProfile(player).setFistsPreparationMode(false);
+    		mcUsers.getProfile(player).setSwordsPreparationMode(false);
+    		mcUsers.getProfile(player).setPickaxePreparationMode(false);
     		/*
     		 * GIGA DRILL BREAKER
     		 */
-    		mcUsers.getProfile(player).setGigaDrillBreakerCooldown(0);
     		mcUsers.getProfile(player).setGigaDrillBreakerMode(false);
-    		mcUsers.getProfile(player).setGigaDrillBreakerTicks(0);
+    		mcUsers.getProfile(player).setGigaDrillBreakerActivatedTimeStamp((long) 0);
     		/*
     		 * SERRATED STRIKE
     		 */
-    		mcUsers.getProfile(player).setSerratedStrikesCooldown(0);
     		mcUsers.getProfile(player).setSerratedStrikesMode(false);
-    		mcUsers.getProfile(player).setSerratedStrikesTicks(0);
+    		mcUsers.getProfile(player).setSerratedStrikesActivatedTimeStamp((long) 0);
     		/*
     		 * SUPER BREAKER
     		 */
-    		mcUsers.getProfile(player).setSuperBreakerCooldown(0);
     		mcUsers.getProfile(player).setSuperBreakerMode(false);
-    		mcUsers.getProfile(player).setSuperBreakerTicks(0);
+    		mcUsers.getProfile(player).setSuperBreakerActivatedTimeStamp((long) 0);
     		/*
     		 * TREE FELLER
     		 */
-    		mcUsers.getProfile(player).setTreeFellerCooldown(0);
     		mcUsers.getProfile(player).setTreeFellerMode(false);
-    		mcUsers.getProfile(player).setTreeFellerTicks(0);
+    		mcUsers.getProfile(player).setTreeFellerActivatedTimeStamp((long) 0);
     		/*
     		 * BERSERK
     		 */
-    		mcUsers.getProfile(player).setBerserkCooldown(0);
     		mcUsers.getProfile(player).setBerserkMode(false);
-    		mcUsers.getProfile(player).setBerserkTicks(0);
+    		mcUsers.getProfile(player).setBerserkActivatedTimeStamp((long)0);
     		
     		player.sendMessage(ChatColor.GREEN+"**ABILITIES REFRESHED!**");
     	}
@@ -359,26 +378,6 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     	/*
-    	 * SETMYSPAWN COMMAND
-    	 */
-    	if(split[0].equalsIgnoreCase("/"+mcLoadProperties.setmyspawn)){
-    		event.setCancelled(true);
-    		if(!mcPermissions.getInstance().setMySpawn(player)){
-    			player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +" Insufficient permissions.");
-    			return;
-    		}
-    		if((mcPermissions.getInstance().setMySpawnOther(player) || player.isOp()) && split.length >= 2 && isPlayer(split[1])){
-    			player.sendMessage("You have set "+split[1]+"'s spawn!");
-    			player = getPlayer(split[1]);
-    		}
-    		double x = player.getLocation().getX();
-    		double y = player.getLocation().getY();
-    		double z = player.getLocation().getZ();
-    		String myspawnworld = player.getWorld().getName();
-    		mcUsers.getProfile(player).setMySpawn(x, y, z, myspawnworld);
-    		player.sendMessage(ChatColor.DARK_AQUA + "Myspawn has been set.");
-    	}
-    	/*
     	 * STATS COMMAND
     	 */
     	if(split[0].equalsIgnoreCase("/"+mcLoadProperties.stats)){
@@ -538,7 +537,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     		event.setCancelled(true);
     		if(mcConfig.getInstance().isPartyToggled(player.getName()))
-    		mcConfig.getInstance().togglePartyChat(playerName);
+    			mcConfig.getInstance().togglePartyChat(playerName);
     		mcConfig.getInstance().toggleAdminChat(playerName);
     		if(mcConfig.getInstance().isAdminToggled(playerName)){
     			player.sendMessage(ChatColor.AQUA + "Admin chat toggled " + ChatColor.GREEN + "On");
@@ -556,24 +555,24 @@ public class mcPlayerListener extends PlayerListener {
     			return;
     		}
     		if(mcUsers.getProfile(player).getMySpawn(player) != null){
-    		if(mcLoadProperties.myspawnclearsinventory)
-    		player.getInventory().clear();
-    		player.setHealth(20);
-    		Location mySpawn = mcUsers.getProfile(player).getMySpawn(player);
-    		//player.sendMessage("mcMMO DEBUG CODE 1");
-    		if(mcUsers.getProfile(player).getMySpawnWorld(plugin) != null && !mcUsers.getProfile(player).getMySpawnWorld(plugin).equals("")){
-    			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld(plugin)));
-    			//player.sendMessage("mcMMO DEBUG CODE 2");
-    			} else {
-    				//player.sendMessage("mcMMO DEBUG CODE 5");
-    				mySpawn.setWorld(plugin.getServer().getWorlds().get(0));
-    		}
-    		//player.sendMessage("mcMMO DEBUG CODE 3");
-    		player.teleportTo(mySpawn);
-    		player.teleportTo(mySpawn);
-    		//Two lines of teleporting to prevent a bug when players try teleporting from one world to another bringing them to that worlds spawn at first.
-    		//player.sendMessage("mcMMO DEBUG CODE 4");
-    		player.sendMessage("Inventory cleared & health restored");
+	    		if(mcLoadProperties.myspawnclearsinventory)
+	    			player.getInventory().clear();
+	    		player.setHealth(20);
+	    		Location mySpawn = mcUsers.getProfile(player).getMySpawn(player);
+	    		//player.sendMessage("mcMMO DEBUG CODE 1");
+	    		if(mcUsers.getProfile(player).getMySpawnWorld(plugin) != null && !mcUsers.getProfile(player).getMySpawnWorld(plugin).equals("")){
+	    			mySpawn.setWorld(plugin.getServer().getWorld(mcUsers.getProfile(player).getMySpawnWorld(plugin)));
+	    			//player.sendMessage("mcMMO DEBUG CODE 2");
+	    			} else {
+	    				//player.sendMessage("mcMMO DEBUG CODE 5");
+	    				mySpawn.setWorld(plugin.getServer().getWorlds().get(0));
+	    		}
+	    		//player.sendMessage("mcMMO DEBUG CODE 3");
+	    		player.teleportTo(mySpawn); //It's done twice because teleporting from one world to another is weird
+	    		player.teleportTo(mySpawn);
+	    		//Two lines of teleporting to prevent a bug when players try teleporting from one world to another bringing them to that worlds spawn at first.
+	    		//player.sendMessage("mcMMO DEBUG CODE 4");
+	    		player.sendMessage("Inventory cleared & health restored");
     		}else{
     			player.sendMessage(ChatColor.RED+"Configure your myspawn first with /setmyspawn");
     		}
@@ -595,12 +594,11 @@ public class mcPlayerListener extends PlayerListener {
     		}
     		return;
     	}
-    	if((player.isOp() || mcPermissions.getInstance().adminChat(player)) 
-    			&& mcConfig.getInstance().isAdminToggled(player.getName())){
+    	if((player.isOp() || mcPermissions.getInstance().adminChat(player)) && mcConfig.getInstance().isAdminToggled(player.getName())){
     		log.log(Level.INFO, "[A]"+"<"+player.getName()+"> "+event.getMessage());
     		event.setCancelled(true);
     		for(Player herp : plugin.getServer().getOnlinePlayers()){
-    			if(herp.isOp()){
+    			if((herp.isOp() || mcPermissions.getInstance().adminChat(herp))){
     				herp.sendMessage(y+event.getMessage());
     			}
     		}

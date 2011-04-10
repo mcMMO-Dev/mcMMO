@@ -30,6 +30,7 @@ public class mcm {
     	return instance;
     }
 	
+	
 	public boolean blockBreakSimulate(Block block, Player player, Plugin plugin){
 
     	FakeBlockBreakEvent event = new FakeBlockBreakEvent(block, player);
@@ -53,7 +54,7 @@ public class mcm {
 		if(player.getItemInHand().getDurability() >= getMaxDurability(mcm.getInstance().getTier(player), player.getItemInHand())){
 			ItemStack[] inventory = player.getInventory().getContents();
 	    	for(ItemStack x : inventory){
-	    		if(x.getTypeId() == player.getItemInHand().getTypeId() && x.getDurability() == player.getItemInHand().getDurability()){
+	    		if(x != null && x.getTypeId() == player.getItemInHand().getTypeId() && x.getDurability() == player.getItemInHand().getDurability()){
 	    			x.setTypeId(0);
 	    			x.setAmount(0);
 	    			player.getInventory().setContents(inventory);
@@ -61,6 +62,25 @@ public class mcm {
 	    		}
 	    	}
 		}
+	}
+	public boolean hasArrows(Player player){
+		for(ItemStack x : player.getInventory().getContents()){
+			if(x.getTypeId() == 262)
+				return true;
+		}
+		return false;
+	}
+	public void addArrows(Player player){
+		ItemStack[] inventory = player.getInventory().getContents();
+    	for(ItemStack x : inventory){
+    		if(x != null && x.getTypeId() == 262){
+    			if(x.getAmount() >= 1 && x.getAmount() < 64){
+    				x.setAmount(x.getAmount() + 1);
+    				player.getInventory().setContents(inventory);
+    			}
+    			return;
+    		}
+    	}
 	}
 	public Integer getTier(Player player){
 		int i = player.getItemInHand().getTypeId();
@@ -103,7 +123,7 @@ public class mcm {
     }
 	public boolean abilityBlockCheck(Block block){
 		int i = block.getTypeId();
-		if(i == 68 || i == 355 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
+		if(i == 68 || i == 355 || i == 26 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
 			return false;
 		} else {
 			return true;
@@ -219,6 +239,14 @@ public class mcm {
     		return false;
     	}
     }
+    public boolean isHoe(ItemStack is){
+    	int id = is.getTypeId();
+    	if(id == 290 || id == 291 || id == 292 || id == 293 || id == 294){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
     public boolean isShovel(ItemStack is){
     	if(is.getTypeId() == 269 || is.getTypeId() == 273 || is.getTypeId() == 277 || is.getTypeId() == 284 || is.getTypeId() == 256){
     		return true;
@@ -235,6 +263,14 @@ public class mcm {
     }
     public boolean isMiningPick(ItemStack is){
     	if(is.getTypeId() == 270 || is.getTypeId() == 274 || is.getTypeId() == 285 || is.getTypeId() == 257 || is.getTypeId() == 278){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    public boolean isGold(ItemStack is){
+    	int i = is.getTypeId();
+    	if(i == 283 || i == 284 || i == 285 || i == 286 || i == 294 || i == 314 || i == 315 || i == 316 || i == 317){
     		return true;
     	} else {
     		return false;
@@ -426,6 +462,7 @@ public class mcm {
 			String dodgepercentage;
 			float skillvalue = (float)mcUsers.getProfile(player).getAcrobaticsInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
+    		String gracepercentage = String.valueOf(((skillvalue / 1000) * 100) * 2);
     		if(mcUsers.getProfile(player).getAcrobaticsInt() <= 800){
     			dodgepercentage = String.valueOf((skillvalue / 4000 * 100));
     		} else {
@@ -434,10 +471,12 @@ public class mcm {
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"ACROBATICS"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Falling");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Roll: "+ChatColor.GREEN+"Negates Damage");
+			player.sendMessage(ChatColor.DARK_AQUA+"Roll: "+ChatColor.GREEN+"Reduces or Negates damage");
+			player.sendMessage(ChatColor.DARK_AQUA+"Graceful Roll: "+ChatColor.GREEN+"Twice as effective as Roll");
 			player.sendMessage(ChatColor.DARK_AQUA+"Dodge: "+ChatColor.GREEN+"Reduce damage by half");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Roll Chance: "+ChatColor.YELLOW+percentage+"%");
+			player.sendMessage(ChatColor.RED+"Graceful Roll Chance: "+ChatColor.YELLOW+gracepercentage+"%");
 			player.sendMessage(ChatColor.RED+"Dodge Chance: "+ChatColor.YELLOW+dodgepercentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/mining")){
@@ -539,6 +578,7 @@ public class mcm {
 				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 250+ SKILL (UNARMED APPRENTICE)");
 			} else if(mcUsers.getProfile(player).getUnarmedInt() >= 250 && mcUsers.getProfile(player).getUnarmedInt() < 500){
 				player.sendMessage(ChatColor.RED+"Unarmed Apprentice: "+ChatColor.YELLOW+"Damage Upgrade");
+				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 500+ SKILL (UNARMED MASTERY)");
 			} else {
 				player.sendMessage(ChatColor.RED+"Unarmed Mastery: "+ChatColor.YELLOW+"Large Damage Upgrade");
 			}
@@ -643,8 +683,6 @@ public class mcm {
 	    		player.sendMessage(ChatColor.GREEN+"--MYSPAWN COMMANDS--");
 	    		player.sendMessage("/"+mcLoadProperties.myspawn+" "+ChatColor.RED+"- Clears inventory & teleports to myspawn");
 	    		player.sendMessage("/"+mcLoadProperties.clearmyspawn+" "+ChatColor.RED+"- Clears your MySpawn");
-	    		if(mcPermissions.getInstance().setMySpawn(player))
-	    			player.sendMessage("/"+mcLoadProperties.setmyspawn+" "+ChatColor.RED+"- Set your MySpawn");
     		}
     		player.sendMessage(ChatColor.GREEN+"--OTHER COMMANDS--");
     		if(mcPermissions.getInstance().mcAbility(player))

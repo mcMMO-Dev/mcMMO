@@ -1,5 +1,30 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.18
+Added failsafe to prevent abilities from going on forever, abilities will check if they should've expired when being used in case the Timer fails
+Archery Spam has been nerf'd, you can only fire once per second now (Toggle-able in config file)
+Fixed bug when just having the Admin Chat permission wouldn't allow you to see Admin Chat
+Fixed bug where Axes ability could be used without permission
+Abilities are monitored with Timestamps rather than a Timer monitored tick rate
+When players were last hurt is now monitored with Timestamps rather than a Timer monitored tick rate
+Made Anti XP-Exploits more Robust
+Repair XP is now based on durability restored
+Acrobatics rolling will now reduce damage if you go over the damage threshold
+Acrobatics rolling damage threshold lowered to 10 from 20
+Added Graceful Roll to Acrobatics, hold Shift when falling to do a Graceful Roll
+mcMMO now checks for the blockBreak and EntityDamage events being canceled before proceeding
+Dodge notification shortened
+Dodge won't negate damage completely anymore
+Added 3 more functions for plugin authors to call, getPartyName(Player player), inParty(Player player), and getParties()
+
+Version 0.9.17
+Players now set their MySpawn by entering a bed, it requires the setmyspawn permission node
+/setmyspawn has been removed
+Compatible with CB 670
+Fixed errors related to Repair
+Abilities will no longer trigger from Bed interactions
+/unarmed will now tell the player when they will receive unarmed master (if they have apprentice)
+
 Version 0.9.16
 Logs placed by the player won't grant XP/Double Drops anymore
 Added more functions plugin authors can call

@@ -10,6 +10,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
@@ -42,6 +43,8 @@ public class mcEntityListener extends EntityListener {
     	}
     }
     public void onEntityDamage(EntityDamageEvent event) {
+    	if(event.isCancelled())
+    		return;
     	/*
     	 * CHECK FOR INVULNERABILITY
     	 */
@@ -145,10 +148,20 @@ public class mcEntityListener extends EntityListener {
         		 * This will do AOE damage from the axes ability
         		 */
         		
-        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSkullSplitterMode() && mcm.getInstance().isAxes(attacker.getItemInHand()))
-            		mcCombat.getInstance().applyAoeDamage(attacker, eventb, x);
-        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSerratedStrikesMode() && mcm.getInstance().isSwords(attacker.getItemInHand()))
-            		mcCombat.getInstance().applySerratedStrikes(attacker, eventb, x);
+        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSkullSplitterMode() && mcm.getInstance().isAxes(attacker.getItemInHand())){
+        			/*
+        			* Check if the Timer is doing its job
+        			*/
+            		mcSkills.getInstance().monitorSkills(attacker);
+        			mcCombat.getInstance().applyAoeDamage(attacker, eventb, x);
+        		}
+        		if(!event.isCancelled() && mcUsers.getProfile(attacker).getSerratedStrikesMode() && mcm.getInstance().isSwords(attacker.getItemInHand())){
+        			/*
+        			* Check if the Timer is doing its job
+        			*/
+            		mcSkills.getInstance().monitorSkills(attacker);
+        			mcCombat.getInstance().applySerratedStrikes(attacker, eventb, x);
+        		}
         	}
         	/*
         	 * DODGE / COUNTERATTACK CHECKS
@@ -196,16 +209,22 @@ public class mcEntityListener extends EntityListener {
 	    		if(mcPermissions.getInstance().acrobatics(defender)){
 	    			if(mcUsers.getProfile(defender).getAcrobaticsInt() <= 800){
 			    		if(Math.random() * 4000 <= mcUsers.getProfile(defender).getAcrobaticsInt()){
-			    			defender.sendMessage(ChatColor.RED+"**DODGE - DAMAGE REDUCED**");
+			    			defender.sendMessage(ChatColor.GREEN+"**DODGE**");
 			    			mcUsers.getProfile(defender).addAcrobaticsGather(event.getDamage() * 12);
 			    			mcSkills.getInstance().XpCheck(defender);
 			    			event.setDamage(event.getDamage() / 2);
+			    			//Needs to do minimal damage
+			    			if(event.getDamage() <= 0)
+			    				event.setDamage(1);
 			    		}
 	    			} else if(Math.random() * 4000 <= 800) {
-		    			defender.sendMessage(ChatColor.RED+"**DODGE - DAMAGE REDUCED**");
+		    			defender.sendMessage(ChatColor.GREEN+"**DODGE**");
 		    			mcUsers.getProfile(defender).addAcrobaticsGather(event.getDamage() * 12);
 		    			mcSkills.getInstance().XpCheck(defender);
 		    			event.setDamage(event.getDamage() / 2);
+		    			//Needs to do minimal damage
+		    			if(event.getDamage() <= 0)
+		    				event.setDamage(1);
 		    		}
 	    		}
         	}
@@ -216,7 +235,7 @@ public class mcEntityListener extends EntityListener {
     	 */
     	if(x instanceof Player && !event.isCancelled()){
     		Player herpderp = (Player)x;
-    		mcUsers.getProfile(herpderp).setRecentlyHurt(30);
+    		mcUsers.getProfile(herpderp).setRecentlyHurt(System.currentTimeMillis());
     	}
     	}
     	}

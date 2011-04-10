@@ -20,6 +20,7 @@ public class mcMining {
     	}
     	return instance;
     	}
+	
 	public void superBreakerCheck(Player player, Block block){
 	    if(mcm.getInstance().isMiningPick(player.getItemInHand())){
 	    	if(block != null){
@@ -28,7 +29,6 @@ public class mcMining {
 	    	}
 	    	if(mcUsers.getProfile(player).getPickaxePreparationMode()){
     			mcUsers.getProfile(player).setPickaxePreparationMode(false);
-    			mcUsers.getProfile(player).setPickaxePreparationTicks(0);
     		}
 	    	int ticks = 2;
     		if(mcUsers.getProfile(player).getMiningInt() >= 50)
@@ -50,7 +50,8 @@ public class mcMining {
     		
 	    	if(!mcUsers.getProfile(player).getSuperBreakerMode() && mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
 	    		player.sendMessage(ChatColor.GREEN+"**SUPER BREAKER ACTIVATED**");
-	    		mcUsers.getProfile(player).setSuperBreakerTicks(ticks * 2);
+	    		mcUsers.getProfile(player).setSuperBreakerTicks(ticks * 1000);
+	    		mcUsers.getProfile(player).setSuperBreakerActivatedTimeStamp(System.currentTimeMillis());
 	    		mcUsers.getProfile(player).setSuperBreakerMode(true);
 	    	}
 	    	

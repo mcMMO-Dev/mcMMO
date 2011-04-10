@@ -19,6 +19,9 @@ public class mcRepair {
     	return instance;
     }
 	public void repairCheck(Player player, ItemStack is, Block block){
+		short durabilityBefore = is.getDurability();
+		short durabilityAfter = 0;
+		short dif = 0;
     	if(block != null
     			&& mcPermissions.getInstance().repair(player)){
         	if(player.getItemInHand().getDurability() > 0){
@@ -32,19 +35,26 @@ public class mcRepair {
         			if(isDiamondArmor(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= mcLoadProperties.repairdiamondlevel){
 	        			removeDiamond(player);
 	        			player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-	        			mcUsers.getProfile(player).addRepairGather(75 * mcLoadProperties.xpGainMultiplier);
+	        			durabilityAfter = is.getDurability();
+	        			dif = (short) (durabilityBefore - durabilityAfter);
+	        			mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
         			} else if (isIronArmor(is) && hasIron(player)){
         			/*
         			 * IRON ARMOR
         			 */
 	        			removeIron(player);
 	            		player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-	            		mcUsers.getProfile(player).addRepairGather(20 * mcLoadProperties.xpGainMultiplier);
+	            		durabilityAfter = is.getDurability();
+	            		dif = (short) (durabilityBefore - durabilityAfter);
+	            		mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasGold(player)){
         				removeGold(player);
         				player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-        				mcUsers.getProfile(player).addRepairGather(50 * mcLoadProperties.xpGainMultiplier);
+        				durabilityAfter = is.getDurability();
+	            		dif = (short) (durabilityBefore - durabilityAfter);
+	            		dif = (short) (dif * 4); //Boost XP of Gold to around Iron
+        				mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
         			} else {
         				needMoreVespeneGas(is, player);
         			}
@@ -59,18 +69,43 @@ public class mcRepair {
             		if(isIronTools(is) && hasIron(player)){
             			is.setDurability(getToolRepairAmount(is, player));
             			removeIron(player);
-            			mcUsers.getProfile(player).addRepairGather(20 * mcLoadProperties.xpGainMultiplier);
+            			durabilityAfter = is.getDurability();
+	            		dif = (short) (durabilityBefore - durabilityAfter);
+	            		if(mcm.getInstance().isShovel(is))
+	        				dif = (short) (dif / 3);
+	        			if(mcm.getInstance().isSwords(is))
+	        				dif = (short) (dif / 2);
+	        			if(mcm.getInstance().isHoe(is))
+	        				dif = (short) (dif / 2);
+            			mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
             		} else if (isDiamondTools(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= mcLoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
             			/*
             			 * DIAMOND TOOLS
             			 */
             			is.setDurability(getToolRepairAmount(is, player));
             			removeDiamond(player);
-            			mcUsers.getProfile(player).addRepairGather(75 * mcLoadProperties.xpGainMultiplier);
+            			durabilityAfter = is.getDurability();
+	            		dif = (short) (durabilityBefore - durabilityAfter);
+	            		if(mcm.getInstance().isShovel(is))
+	        				dif = (short) (dif / 3);
+	        			if(mcm.getInstance().isSwords(is))
+	        				dif = (short) (dif / 2);
+	        			if(mcm.getInstance().isHoe(is))
+	        				dif = (short) (dif / 2);
+            			mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
             		} else if(isGoldTools(is) && hasGold(player)){
             			is.setDurability(getToolRepairAmount(is, player));
             			removeGold(player);
-            			mcUsers.getProfile(player).addRepairGather(50 * mcLoadProperties.xpGainMultiplier);
+            			durabilityAfter = is.getDurability();
+	            		dif = (short) (durabilityBefore - durabilityAfter);
+	            		dif = (short) (dif * 7.6); //Boost XP for Gold to that of around Iron
+	            		if(mcm.getInstance().isShovel(is))
+	        				dif = (short) (dif / 3);
+	        			if(mcm.getInstance().isSwords(is))
+	        				dif = (short) (dif / 2);
+	        			if(mcm.getInstance().isHoe(is))
+	        				dif = (short) (dif / 2);
+            			mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
             		} else {
             			needMoreVespeneGas(is, player);
             		}
@@ -155,7 +190,7 @@ public class mcRepair {
     public void removeIron(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
-    		if(x.getTypeId() == 265){
+    		if(x != null && x.getTypeId() == 265){
     			if(x.getAmount() == 1){
     				x.setTypeId(0);
     				x.setAmount(0);
@@ -171,7 +206,7 @@ public class mcRepair {
     public void removeGold(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
-    		if(x.getTypeId() == 266){
+    		if(x != null && x.getTypeId() == 266){
     			if(x.getAmount() == 1){
     				x.setTypeId(0);
     				x.setAmount(0);
@@ -187,7 +222,7 @@ public class mcRepair {
     public void removeDiamond(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
-    		if(x.getTypeId() == 264){
+    		if(x != null && x.getTypeId() == 264){
     			if(x.getAmount() == 1){
     				x.setTypeId(0);
     				x.setAmount(0);
@@ -203,7 +238,7 @@ public class mcRepair {
     public boolean hasGold(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
-    		if(x.getTypeId() == 266){
+    		if(x != null && x.getTypeId() == 266){
     			return true;
     		}
     	}
@@ -212,7 +247,7 @@ public class mcRepair {
     public boolean hasDiamond(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
-    		if(x.getTypeId() == 264){
+    		if(x != null && x.getTypeId() == 264){
     			return true;
     		}
     	}
@@ -221,7 +256,7 @@ public class mcRepair {
     public boolean hasIron(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
-    		if(x.getTypeId() == 265){
+    		if(x != null && x.getTypeId() == 265){
     			return true;
     		}
     	}

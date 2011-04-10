@@ -4,9 +4,13 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijiko.Messaging;
 import com.nijiko.permissions.PermissionHandler;
 import org.bukkit.plugin.Plugin;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,6 +67,7 @@ public class mcMMO extends JavaPlugin {
          	mcUsers.addUser(player);
         }
         PluginManager pm = getServer().getPluginManager();
+        pm.registerEvent(Event.Type.PLAYER_BED_ENTER, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
@@ -115,6 +120,37 @@ public class mcMMO extends JavaPlugin {
     }
     public void modifySkill(Player player, String skillname, Integer newvalue){
     	mcUsers.getProfile(player).modifyskill(newvalue, skillname);
+    }
+    public ArrayList<String> getParties(){
+    	String location = "plugins/mcMMO/mcmmo.users";
+		ArrayList<String> parties = new ArrayList<String>();
+		try {
+        	//Open the users file
+        	FileReader file = new FileReader(location);
+        	BufferedReader in = new BufferedReader(file);
+        	String line = "";
+        	while((line = in.readLine()) != null)
+        	{
+        		String[] character = line.split(":");
+        		String theparty = null;
+    			//Party
+    			if(character.length > 3)
+    				theparty = character[3];
+    			if(!parties.contains(theparty))
+    				parties.add(theparty);
+        	}
+        	in.close();
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Exception while reading "
+            		+ location + " (Are you sure you formatted it correctly?)", e);
+        }
+        return parties;
+	}
+    public static String getPartyName(Player player){
+    	return mcUsers.getProfile(player).getParty();
+    }
+    public static boolean inParty(Player player){
+    	return mcUsers.getProfile(player).inParty();
     }
     public boolean isAdminChatToggled(Player player){
     	if(mcConfig.getInstance().isAdminToggled(player.getName())){
