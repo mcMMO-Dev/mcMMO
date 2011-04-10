@@ -42,22 +42,22 @@ public class mcTimer extends TimerTask{
 				if(thecount == 10 || thecount == 20 || thecount == 30 || thecount == 40){
 				    if(player != null &&
 				    	player.getHealth() > 0 && player.getHealth() < 20 
-				    	&& mcUsers.getProfile(player).getPowerLevel(player) >= 1000){
+				    	&& mcUsers.getProfile(player).getPowerLevel() >= 1000){
 				    	player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
 				    }
 				}
 				if(thecount == 20 || thecount == 40){
 			   		if(player != null &&
 			   			player.getHealth() > 0 && player.getHealth() < 20 
-			    		&& mcUsers.getProfile(player).getPowerLevel(player) >= 500 
-			    		&& mcUsers.getProfile(player).getPowerLevel(player) < 1000){
+			    		&& mcUsers.getProfile(player).getPowerLevel() >= 500 
+			    		&& mcUsers.getProfile(player).getPowerLevel() < 1000){
 			    		player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
 			    	}
 				}
 				if(thecount == 40){
 			    	if(player != null &&
 			    		player.getHealth() > 0 && player.getHealth() < 20  
-			    		&& mcUsers.getProfile(player).getPowerLevel(player) < 500){
+			    		&& mcUsers.getProfile(player).getPowerLevel() < 500){
 			    		player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
 			    	}
 				}

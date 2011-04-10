@@ -359,18 +359,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + mcUsers.getProfile(target).getAcrobatics()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(target).getAcrobaticsGather()
     				+"/"+mcUsers.getProfile(target).getXpToLevel("acrobatics")+")");
-    		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+
-    				(mcUsers.getProfile(target).getAcrobaticsInt()+
-    				mcUsers.getProfile(target).getArcheryInt()+
-    				mcUsers.getProfile(target).getAxesInt()+
-    				mcUsers.getProfile(target).getExcavationInt()+
-    				mcUsers.getProfile(target).getHerbalismInt()+
-    				mcUsers.getProfile(target).getMiningInt()+
-    				mcUsers.getProfile(target).getRepairInt()+
-    				mcUsers.getProfile(target).getSwordsInt()+
-    				mcUsers.getProfile(target).getUnarmedInt()+
-    				mcUsers.getProfile(target).getWoodCuttingInt())
-    				);
+    		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+(mcUsers.getProfile(target).getPowerLevel()));
     		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
     		player.sendMessage("X: "+x);
     		player.sendMessage("Y: "+y);
@@ -425,18 +414,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + mcUsers.getProfile(player).getAcrobatics()+ChatColor.DARK_AQUA 
     				+ " XP("+mcUsers.getProfile(player).getAcrobaticsGather()
     				+"/"+mcUsers.getProfile(player).getXpToLevel("acrobatics")+")");
-    		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+
-    				(mcUsers.getProfile(player).getAcrobaticsInt()+
-    				mcUsers.getProfile(player).getArcheryInt()+
-    				mcUsers.getProfile(player).getAxesInt()+
-    				mcUsers.getProfile(player).getExcavationInt()+
-    				mcUsers.getProfile(player).getHerbalismInt()+
-    				mcUsers.getProfile(player).getMiningInt()+
-    				mcUsers.getProfile(player).getRepairInt()+
-    				mcUsers.getProfile(player).getSwordsInt()+
-    				mcUsers.getProfile(player).getUnarmedInt()+
-    				mcUsers.getProfile(player).getWoodCuttingInt())
-    				);
+    		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+(mcUsers.getProfile(player).getPowerLevel()));
     	}
     	//Invite Command
     	if(mcPermissions.getInstance().party(player) && split[0].equalsIgnoreCase("/"+mcLoadProperties.invite)){
@@ -572,8 +550,11 @@ public class mcPlayerListener extends PlayerListener {
 	    		player.teleportTo(mySpawn);
 	    		//Two lines of teleporting to prevent a bug when players try teleporting from one world to another bringing them to that worlds spawn at first.
 	    		//player.sendMessage("mcMMO DEBUG CODE 4");
-	    		player.sendMessage("Inventory cleared & health restored");
-    		}else{
+	    		if(mcLoadProperties.myspawnclearsinventory)
+	    			player.sendMessage("Traveled to your MySpawn, Inventory cleared & health restored");
+	    		else
+	    			player.sendMessage("Traveled to your MySpawn, Health has been restored.");
+    		} else {
     			player.sendMessage(ChatColor.RED+"Configure your myspawn first with /setmyspawn");
     		}
     	}

@@ -222,7 +222,7 @@ public class mcSkills {
     		if(PP.getAxesInt() >= 750)
     			ticks++;
 
-    		if(!PP.getSkullSplitterMode() && PP.getSkullSplitterCooldown() == 0){
+    		if(!PP.getSkullSplitterMode() && cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), mcLoadProperties.skullSplitterCooldown)){
     			player.sendMessage(ChatColor.GREEN+"**SKULL SPLITTER ACTIVATED**");
     			PP.setSkullSplitterTicks(ticks * 1000);
     			PP.setSkullSplitterActivatedTimeStamp(System.currentTimeMillis());
@@ -259,7 +259,7 @@ public class mcSkills {
 		}
 		if(PP.getShovelPreparationMode() && System.currentTimeMillis() - PP.getShovelPreparationATS() >= 4000){
 			PP.setShovelPreparationMode(false);
-			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR AXE**");
+			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR SHOVEL**");
 		}
     	/*
     	 * AXES ABILITY

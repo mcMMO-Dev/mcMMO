@@ -1553,27 +1553,27 @@ class PlayerList
 				return 0;
 			}
 		}
-		public int getPowerLevel(Player player){
+		public int getPowerLevel(){
 			int x = 0;
-			if(mcPermissions.getInstance().mining(player))
+			if(mcPermissions.getInstance().mining(thisplayer))
 				x+=getMiningInt();
-			if(mcPermissions.getInstance().woodcutting(player))
+			if(mcPermissions.getInstance().woodcutting(thisplayer))
 				x+=getWoodCuttingInt();
-			if(mcPermissions.getInstance().unarmed(player))
+			if(mcPermissions.getInstance().unarmed(thisplayer))
 				x+=getUnarmedInt();
-			if(mcPermissions.getInstance().herbalism(player))
+			if(mcPermissions.getInstance().herbalism(thisplayer))
 				x+=getHerbalismInt();
-			if(mcPermissions.getInstance().excavation(player))
+			if(mcPermissions.getInstance().excavation(thisplayer))
 				x+=getExcavationInt();
-			if(mcPermissions.getInstance().archery(player))
+			if(mcPermissions.getInstance().archery(thisplayer))
 				x+=getArcheryInt();
-			if(mcPermissions.getInstance().swords(player))
+			if(mcPermissions.getInstance().swords(thisplayer))
 				x+=getSwordsInt();
-			if(mcPermissions.getInstance().axes(player))
+			if(mcPermissions.getInstance().axes(thisplayer))
 				x+=getAxesInt();
-			if(mcPermissions.getInstance().acrobatics(player))
+			if(mcPermissions.getInstance().acrobatics(thisplayer))
 				x+=getAcrobaticsInt();
-			if(mcPermissions.getInstance().repair(player))
+			if(mcPermissions.getInstance().repair(thisplayer))
 				x+=getRepairInt();
 			return x;
 		}

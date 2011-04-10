@@ -67,7 +67,7 @@ public class mcWoodCutting {
     		if(PP.getWoodCuttingInt() >= 750)
     			ticks++;
 
-    		if(!PP.getTreeFellerMode() && PP.getTreeFellerCooldown() == 0){
+    		if(!PP.getTreeFellerMode() && mcSkills.getInstance().cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)){
     			player.sendMessage(ChatColor.GREEN+"**TREE FELLING ACTIVATED**");
     			PP.setTreeFellerTicks(ticks * 1000);
     			PP.setTreeFellerActivatedTimeStamp(System.currentTimeMillis());

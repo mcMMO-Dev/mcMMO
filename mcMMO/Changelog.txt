@@ -1,5 +1,12 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.20
+Fixed Tree Feller not checking if their cooldown was refreshed and always activating
+/stats and /whois will now show the powerlevel based on permissions
+Shovels will no longer say you've lowered your axe
+/myspawn will no longer say your inventory has been cleared if the server settings disable this feature
+
+
 Version 0.9.19
 Fixed Anti-Exploit XP stuff not working
 
