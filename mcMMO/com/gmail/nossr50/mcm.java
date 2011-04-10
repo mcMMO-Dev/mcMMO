@@ -281,23 +281,11 @@ public class mcm {
 			event.setCancelled(true);
 			float skillvalue = (float)mcUsers.getProfile(player).getWoodCuttingInt();
 			int ticks = 2;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 50)
+			int x = mcUsers.getProfile(player).getWoodCuttingInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getWoodCuttingInt() >= 750)
-    			ticks++;
-    		ticks = ticks * 2;
+    		}
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"WOODCUTTING"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Chopping down trees");
@@ -365,23 +353,12 @@ public class mcm {
 				percentage = "75";
 			}
 			int ticks = 2;
-    		if(mcUsers.getProfile(player).getAxesInt() >= 50)
+			int x = mcUsers.getProfile(player).getAxesInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getAxesInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getAxesInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getAxesInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getAxesInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getAxesInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getAxesInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getAxesInt() >= 750)
-    			ticks++;
-    		ticks = ticks * 2;
+    		}
+    		
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"AXES"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
@@ -423,23 +400,12 @@ public class mcm {
 			}
 			
 			int ticks = 2;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 50)
+			int x = mcUsers.getProfile(player).getSwordsInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 750)
-    			ticks++;
-    		ticks = ticks * 2;
+    		}
+    		
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"SWORDS"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
@@ -483,23 +449,11 @@ public class mcm {
     		float skillvalue = (float)mcUsers.getProfile(player).getMiningInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		int ticks = 2;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 50)
+    		int x = mcUsers.getProfile(player).getMiningInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 750)
-    			ticks++;
-    		ticks = ticks * 2;
+    		}
 			event.setCancelled(true);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"MINING"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Mining Stone & Ore");
@@ -545,23 +499,11 @@ public class mcm {
 			
 			
 			int ticks = 2;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 50)
+			int x = mcUsers.getProfile(player).getUnarmedInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 750)
-    			ticks++;
-    		ticks = ticks * 2;
+    		}
     		
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"UNARMED"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
@@ -617,23 +559,11 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/excavation")){
 			event.setCancelled(true);
 			int ticks = 2;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 50)
+			int x = mcUsers.getProfile(player).getExcavationInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 750)
-    			ticks++;
-    		ticks = ticks * 2;
+    		}
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"EXCAVATION"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Digging and finding treasures");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");

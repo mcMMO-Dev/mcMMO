@@ -110,11 +110,14 @@ public class mcPlayerListener extends PlayerListener {
         		mcHerbalism.getInstance().stewCheck(player, player.getItemInHand());
         	}
     	}
-    	if(action == Action.RIGHT_CLICK_AIR || action == action.RIGHT_CLICK_BLOCK){
-    		/*
-        	 * ITEM INTERACTIONS
-        	 */
+    	/*
+    	 * ITEM CHECKS
+    	 */
+    	if(action == Action.RIGHT_CLICK_AIR)
         	mcItem.getInstance().itemChecks(player);
+    	if(action == Action.RIGHT_CLICK_BLOCK){
+    		if(mcm.getInstance().abilityBlockCheck(event.getClickedBlock()))
+    			mcItem.getInstance().itemChecks(player);
     	}
     }
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
@@ -162,27 +165,27 @@ public class mcPlayerListener extends PlayerListener {
     		 * GIGA DRILL BREAKER
     		 */
     		mcUsers.getProfile(player).setGigaDrillBreakerMode(false);
-    		mcUsers.getProfile(player).setGigaDrillBreakerActivatedTimeStamp((long) 0);
+    		mcUsers.getProfile(player).setGigaDrillBreakerDeactivatedTimeStamp((long) 0);
     		/*
     		 * SERRATED STRIKE
     		 */
     		mcUsers.getProfile(player).setSerratedStrikesMode(false);
-    		mcUsers.getProfile(player).setSerratedStrikesActivatedTimeStamp((long) 0);
+    		mcUsers.getProfile(player).setSerratedStrikesDeactivatedTimeStamp((long) 0);
     		/*
     		 * SUPER BREAKER
     		 */
     		mcUsers.getProfile(player).setSuperBreakerMode(false);
-    		mcUsers.getProfile(player).setSuperBreakerActivatedTimeStamp((long) 0);
+    		mcUsers.getProfile(player).setSuperBreakerDeactivatedTimeStamp((long) 0);
     		/*
     		 * TREE FELLER
     		 */
     		mcUsers.getProfile(player).setTreeFellerMode(false);
-    		mcUsers.getProfile(player).setTreeFellerActivatedTimeStamp((long) 0);
+    		mcUsers.getProfile(player).setTreeFellerDeactivatedTimeStamp((long) 0);
     		/*
     		 * BERSERK
     		 */
     		mcUsers.getProfile(player).setBerserkMode(false);
-    		mcUsers.getProfile(player).setBerserkActivatedTimeStamp((long)0);
+    		mcUsers.getProfile(player).setBerserkDeactivatedTimeStamp((long)0);
     		
     		player.sendMessage(ChatColor.GREEN+"**ABILITIES REFRESHED!**");
     	}

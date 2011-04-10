@@ -138,26 +138,15 @@ public class mcSkills {
     			mcUsers.getProfile(player).setSwordsPreparationMode(false);
     		}
 	    	int ticks = 2;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 50)
+	    	int x = mcUsers.getProfile(player).getSwordsInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getSwordsInt() >= 750)
-    			ticks++;
+    		}
     		
 	    	if(!mcUsers.getProfile(player).getSerratedStrikesMode() && mcUsers.getProfile(player).getSerratedStrikesCooldown() == 0){
 	    		player.sendMessage(ChatColor.GREEN+"**SERRATED STRIKES ACTIVATED**");
-	    		mcUsers.getProfile(player).setSerratedStrikesTicks(ticks * 1000);
+	    		mcUsers.getProfile(player).setSerratedStrikesTicks((ticks * 2) * 1000);
 	    		mcUsers.getProfile(player).setSerratedStrikesActivatedTimeStamp(System.currentTimeMillis());
 	    		mcUsers.getProfile(player).setSerratedStrikesMode(true);
 	    	}
@@ -170,22 +159,11 @@ public class mcSkills {
     			mcUsers.getProfile(player).setFistsPreparationMode(false);
     		}
 	    	int ticks = 2;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 50)
+	    	int x = mcUsers.getProfile(player).getUnarmedInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getUnarmedInt() >= 750)
-    			ticks++;
+    		}
     		
 	    	if(!mcUsers.getProfile(player).getBerserkMode() && cooldownOver(player, mcUsers.getProfile(player).getBerserkDeactivatedTimeStamp(), mcLoadProperties.berserkCooldown)){
 	    		player.sendMessage(ChatColor.GREEN+"**BERSERK ACTIVATED**");
@@ -205,22 +183,11 @@ public class mcSkills {
     			PP.setAxePreparationMode(false);
     		}
     		int ticks = 2;
-    		if(PP.getAxesInt() >= 50)
+    		int x = mcUsers.getProfile(player).getAxesInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(PP.getAxesInt() >= 150)
-    			ticks++;
-    		if(PP.getAxesInt() >= 250)
-    			ticks++;
-    		if(PP.getAxesInt() >= 350)
-    			ticks++;
-    		if(PP.getAxesInt() >= 450)
-    			ticks++;
-    		if(PP.getAxesInt() >= 550)
-    			ticks++;
-    		if(PP.getAxesInt() >= 650)
-    			ticks++;
-    		if(PP.getAxesInt() >= 750)
-    			ticks++;
+    		}
 
     		if(!PP.getSkullSplitterMode() && cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), mcLoadProperties.skullSplitterCooldown)){
     			player.sendMessage(ChatColor.GREEN+"**SKULL SPLITTER ACTIVATED**");

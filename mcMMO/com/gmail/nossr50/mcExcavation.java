@@ -30,22 +30,11 @@ public class mcExcavation {
     			mcUsers.getProfile(player).setShovelPreparationMode(false);
     		}
 	    	int ticks = 2;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 50)
+	    	int x = mcUsers.getProfile(player).getExcavationInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getExcavationInt() >= 750)
-    			ticks++;
+    		}
     		
 	    	if(!mcUsers.getProfile(player).getGigaDrillBreakerMode() && mcUsers.getProfile(player).getGigaDrillBreakerCooldown() == 0){
 	    		player.sendMessage(ChatColor.GREEN+"**GIGA DRILL BREAKER ACTIVATED**");

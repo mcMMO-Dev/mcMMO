@@ -50,22 +50,11 @@ public class mcWoodCutting {
     			PP.setAxePreparationMode(false);
     		}
     		int ticks = 2;
-    		if(PP.getWoodCuttingInt() >= 50)
+    		int x = mcUsers.getProfile(player).getWoodCuttingInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(PP.getWoodCuttingInt() >= 150)
-    			ticks++;
-    		if(PP.getWoodCuttingInt() >= 250)
-    			ticks++;
-    		if(PP.getWoodCuttingInt() >= 350)
-    			ticks++;
-    		if(PP.getWoodCuttingInt() >= 450)
-    			ticks++;
-    		if(PP.getWoodCuttingInt() >= 550)
-    			ticks++;
-    		if(PP.getWoodCuttingInt() >= 650)
-    			ticks++;
-    		if(PP.getWoodCuttingInt() >= 750)
-    			ticks++;
+    		}
 
     		if(!PP.getTreeFellerMode() && mcSkills.getInstance().cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)){
     			player.sendMessage(ChatColor.GREEN+"**TREE FELLING ACTIVATED**");

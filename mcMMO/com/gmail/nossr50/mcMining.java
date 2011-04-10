@@ -31,22 +31,11 @@ public class mcMining {
     			mcUsers.getProfile(player).setPickaxePreparationMode(false);
     		}
 	    	int ticks = 2;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 50)
+	    	int x = mcUsers.getProfile(player).getMiningInt();
+    		while(x >= 50){
+    			x-=50;
     			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 150)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 250)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 350)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 450)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 550)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 650)
-    			ticks++;
-    		if(mcUsers.getProfile(player).getMiningInt() >= 750)
-    			ticks++;
+    		}
     		
 	    	if(!mcUsers.getProfile(player).getSuperBreakerMode() && mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
 	    		player.sendMessage(ChatColor.GREEN+"**SUPER BREAKER ACTIVATED**");

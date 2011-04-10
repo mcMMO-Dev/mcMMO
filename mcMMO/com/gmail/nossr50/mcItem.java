@@ -28,7 +28,7 @@ public class mcItem {
 	public void chimaerawing(Player player){
 		ItemStack is = player.getItemInHand();
 		Block block = player.getLocation().getBlock();
-		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == 288 && mcm.getInstance().abilityBlockCheck(block)){
+		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == 288){
     		if(mcUsers.getProfile(player).getRecentlyHurt() == 0 && is.getAmount() >= mcLoadProperties.feathersConsumedByChimaeraWing){
     			Block derp = player.getLocation().getBlock();
     			int y = derp.getY();
@@ -67,7 +67,7 @@ public class mcItem {
     			player.sendMessage("**CHIMAERA WING**");
     		} else if (mcUsers.getProfile(player).getRecentlyHurt() >= 1 && is.getAmount() >= 10) {
     			player.sendMessage("You were injured recently and must wait to use this."
-    					+ChatColor.YELLOW+" ("+(mcUsers.getProfile(player).getRecentlyHurt() * 2)+"s)");
+    					+ChatColor.YELLOW+" ("+mcSkills.getInstance().calculateTimeLeft(player, mcUsers.getProfile(player).getRecentlyHurt(), 60)+"s)");
     		} else if (is.getTypeId() == 288 && is.getAmount() <= 9){
     			player.sendMessage("You need more of that to use it");
     		}

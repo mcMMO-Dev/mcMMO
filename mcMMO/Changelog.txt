@@ -1,5 +1,11 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.21
+/mcrefresh fixed to work properly with the new ability monitoring system
+Ability lengths are now based on your skill level directly rather than a tiered system
+Chimaera Wings won't trigger on things they shouldn't (Doors, Chests, ETC)
+Chimaera Wings will properly tell you how long you have to wait to use it if you've been recently hurt
+
 Version 0.9.20
 Fixed Tree Feller not checking if their cooldown was refreshed and always activating
 /stats and /whois will now show the powerlevel based on permissions
