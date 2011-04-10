@@ -127,12 +127,12 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * EXCAVATION
     	 */
-    	if(mcPermissions.getInstance().excavation(player) && block != null && player != null)
+    	if(mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
     		mcExcavation.getInstance().excavationProcCheck(block, player);
     	/*
     	 * HERBALISM
     	 */
-    	if(mcPermissions.getInstance().herbalism(player))
+    	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
        		mcHerbalism.getInstance().herbalismProcCheck(block, player);
     	//Change the byte back when broken
     	if(block.getData() == 5)

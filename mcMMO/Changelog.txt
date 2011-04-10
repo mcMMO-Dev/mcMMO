@@ -1,5 +1,8 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.19
+Fixed Anti-Exploit XP stuff not working
+
 Version 0.9.18
 Added failsafe to prevent abilities from going on forever, abilities will check if they should've expired when being used in case the Timer fails
 Archery Spam has been nerf'd, you can only fire once per second now (Toggle-able in config file)

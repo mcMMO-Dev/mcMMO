@@ -69,7 +69,7 @@ public class mcExcavation {
     	Location loc = block.getLocation();
     	ItemStack is = null;
     	Material mat = null;
-    	if(block.getData() == 5){
+    	if(block.getData() == (byte) 5){
     		return;
     	}
     	if(type == 2){
