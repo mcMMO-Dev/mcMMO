@@ -1,5 +1,8 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+Version 0.9.22
+Fixed bug where chimaera wing was unusable after being hurt even after the cooldown
+
 Version 0.9.21
 /mcrefresh fixed to work properly with the new ability monitoring system
 Ability lengths are now based on your skill level directly rather than a tiered system
