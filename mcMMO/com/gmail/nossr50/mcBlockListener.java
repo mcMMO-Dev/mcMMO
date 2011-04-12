@@ -43,14 +43,27 @@ public class mcBlockListener extends BlockListener {
     
     public void onBlockBreak(BlockBreakEvent event) {
     	Player player = event.getPlayer();
-    	PlayerProfile PP = mcUsers.getProfile(player);
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	Block block = event.getBlock();
     	ItemStack inhand = player.getItemInHand();
     	if(event.isCancelled())
     		return;
     	if (event instanceof FakeBlockBreakEvent) 
     		return;
+    	/*
+		* Check if the Timer is doing its job
+		*/
+   		mcSkills.getInstance().monitorSkills(player);
     	
+   		/*
+   		 * HERBALISM
+   		 */
+   		if(mcPermissions.getInstance().herbalismAbility(player)&& PP.getGreenTerraMode() && block.getTypeId() == 59 && block.getData() == (byte) 0x07){
+   			mcHerbalism.getInstance().greenTerraCheck(player, block, plugin);
+   			mcHerbalism.getInstance().greenTerraWheat(player, block, event);
+   		}
+   		
+   		
     	/*
     	 * MINING
     	 */
@@ -89,11 +102,7 @@ public class mcBlockListener extends BlockListener {
    					&& PP.getTreeFellerMode() 
    					&& block.getTypeId() == 17
    					&& mcm.getInstance().blockBreakSimulate(block, player, plugin)){
-   				/*
-   				* Check if the Timer is doing its job
-   				*/
-   	    		mcSkills.getInstance().monitorSkills(player);
-   	    		
+   				
     			mcWoodCutting.getInstance().treeFeller(block, player);
     			for(Block blockx : mcConfig.getInstance().getTreeFeller()){
     				if(blockx != null){
@@ -132,8 +141,11 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * HERBALISM
     	 */
-    	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
-       		mcHerbalism.getInstance().herbalismProcCheck(block, player);
+    	if(mcPermissions.getInstance().herbalism(player) && mcHerbalism.getInstance().canBeGreenTerra(block)){
+    		mcHerbalism.getInstance().greenTerraCheck(player, block, plugin);
+    		if(block.getData() != (byte) 5)
+    			mcHerbalism.getInstance().herbalismProcCheck(block, player, event);
+    	}
     	//Change the byte back when broken
     	if(block.getData() == 5)
     		block.setData((byte) 0);
@@ -142,20 +154,33 @@ public class mcBlockListener extends BlockListener {
     	if(event.isCancelled())
     		return;
     	Player player = event.getPlayer();
-    	PlayerProfile PP = mcUsers.getProfile(player);
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	ItemStack inhand = player.getItemInHand();
     	Block block = event.getBlock();
     	/*
+		* Check if the Timer is doing its job
+		*/
+   		mcSkills.getInstance().monitorSkills(player);
+    	/*
     	 * ABILITY PREPARATION CHECKS
     	 */
+   		if(PP.getHoePreparationMode() && mcHerbalism.getInstance().canBeGreenTerra(block))
+    		mcHerbalism.getInstance().greenTerraCheck(player, block, plugin);
     	if(PP.getAxePreparationMode() && block.getTypeId() == 17)
-    		mcWoodCutting.getInstance().treeFellerCheck(player, block);
+    		mcWoodCutting.getInstance().treeFellerCheck(player, block, plugin);
     	if(PP.getPickaxePreparationMode())
-    		mcMining.getInstance().superBreakerCheck(player, block);
+    		mcMining.getInstance().superBreakerCheck(player, block, plugin);
     	if(PP.getShovelPreparationMode() && mcExcavation.getInstance().canBeGigaDrillBroken(block))
-    		mcExcavation.getInstance().gigaDrillBreakerActivationCheck(player, block);
+    		mcExcavation.getInstance().gigaDrillBreakerActivationCheck(player, block, plugin);
     	if(PP.getFistsPreparationMode() && mcExcavation.getInstance().canBeGigaDrillBroken(block))
-    		mcSkills.getInstance().berserkActivationCheck(player);
+    		mcSkills.getInstance().berserkActivationCheck(player, plugin);
+    	/*
+    	 * GREEN TERRA STUFF
+    	 */
+    	if(PP.getGreenTerraMode() && mcPermissions.getInstance().herbalismAbility(player) && PP.getGreenTerraMode()){
+   			mcHerbalism.getInstance().greenTerra(player, block);
+   		}
+    	
     	/*
     	 * GIGA DRILL BREAKER CHECKS
     	 */
@@ -163,10 +188,6 @@ public class mcBlockListener extends BlockListener {
     			&& mcm.getInstance().blockBreakSimulate(block, player, plugin) 
     			&& mcExcavation.getInstance().canBeGigaDrillBroken(block) 
     			&& mcm.getInstance().isShovel(inhand)){
-    		/*
-			* Check if the Timer is doing its job
-			*/
-    		mcSkills.getInstance().monitorSkills(player);
     		
     		if(mcm.getInstance().getTier(player) >= 2)
     			mcExcavation.getInstance().excavationProcCheck(block, player);
@@ -191,10 +212,6 @@ public class mcBlockListener extends BlockListener {
     		&& mcm.getInstance().blockBreakSimulate(block, player, plugin) 
     		&& player.getItemInHand().getTypeId() == 0 
     		&& mcExcavation.getInstance().canBeGigaDrillBroken(block)){
-    		/*
-			* Check if the Timer is doing its job
-			*/
-    		mcSkills.getInstance().monitorSkills(player);
 		   	Material mat = Material.getMaterial(block.getTypeId());
 		   	if(block.getTypeId() == 2)
 		   		mat = Material.DIRT;
@@ -210,10 +227,6 @@ public class mcBlockListener extends BlockListener {
     	if(PP.getSuperBreakerMode() 
     			&& mcMining.getInstance().canBeSuperBroken(block)
     			&& mcm.getInstance().blockBreakSimulate(block, player, plugin)){
-    		/*
-			* Check if the Timer is doing its job
-			*/
-    		mcSkills.getInstance().monitorSkills(player);
     		
     		if(mcLoadProperties.miningrequirespickaxe){
     			if(mcm.getInstance().isMiningPick(inhand))

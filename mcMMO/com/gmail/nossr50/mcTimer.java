@@ -5,6 +5,8 @@ import java.util.TimerTask;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 
+import com.gmail.nossr50.PlayerList.PlayerProfile;
+
 
 public class mcTimer extends TimerTask{
 	private final mcMMO plugin;
@@ -17,9 +19,10 @@ public class mcTimer extends TimerTask{
 	public void run() {
 		Player[] playerlist = plugin.getServer().getOnlinePlayers();
 		for(Player player : playerlist){
+			PlayerProfile PP = mcUsers.getProfile(player.getName());
 			if(player == null)
 				continue;
-			if(mcUsers.getProfile(player) == null)
+			if(PP == null)
 	    		mcUsers.addUser(player);
 			/*
 			 * MONITOR SKILLS
@@ -33,31 +36,31 @@ public class mcTimer extends TimerTask{
 			/*
 			 * PLAYER BLEED MONITORING
 			 */
-			if(thecount % 2 == 0 && player != null && mcUsers.getProfile(player).getBleedTicks() >= 1){
+			if(thecount % 2 == 0 && player != null && PP.getBleedTicks() >= 1){
         		player.damage(2);
-        		mcUsers.getProfile(player).decreaseBleedTicks();
+        		PP.decreaseBleedTicks();
         	}
 			
-			if(mcPermissions.getInstance().regeneration(player) && System.currentTimeMillis() >= mcUsers.getProfile(player).getRecentlyHurt() + 60000){
+			if(mcPermissions.getInstance().regeneration(player) && System.currentTimeMillis() >= PP.getRecentlyHurt() + 60000){
 				if(thecount == 10 || thecount == 20 || thecount == 30 || thecount == 40){
 				    if(player != null &&
 				    	player.getHealth() > 0 && player.getHealth() < 20 
-				    	&& mcUsers.getProfile(player).getPowerLevel() >= 1000){
+				    	&& mcm.getInstance().getPowerLevel(player) >= 1000){
 				    	player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
 				    }
 				}
 				if(thecount == 20 || thecount == 40){
 			   		if(player != null &&
 			   			player.getHealth() > 0 && player.getHealth() < 20 
-			    		&& mcUsers.getProfile(player).getPowerLevel() >= 500 
-			    		&& mcUsers.getProfile(player).getPowerLevel() < 1000){
+			    		&& mcm.getInstance().getPowerLevel(player) >= 500 
+			    		&& mcm.getInstance().getPowerLevel(player) < 1000){
 			    		player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
 			    	}
 				}
 				if(thecount == 40){
 			    	if(player != null &&
 			    		player.getHealth() > 0 && player.getHealth() < 20  
-			    		&& mcUsers.getProfile(player).getPowerLevel() < 500){
+			    		&& mcm.getInstance().getPowerLevel(player) < 500){
 			    		player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
 			    	}
 				}

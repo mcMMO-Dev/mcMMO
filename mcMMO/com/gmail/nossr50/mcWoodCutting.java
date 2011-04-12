@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.PlayerList.PlayerProfile;
 
@@ -27,17 +28,18 @@ public class mcWoodCutting {
     	return instance;
     	}
     public void woodCuttingProcCheck(Player player, Block block){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	byte type = block.getData();
     	Material mat = Material.getMaterial(block.getTypeId());
     	if(player != null){
-    		if(Math.random() * 1000 <= mcUsers.getProfile(player).getWoodCuttingInt()){
+    		if(Math.random() * 1000 <= PP.getWoodCuttingInt()){
     			ItemStack item = new ItemStack(mat, 1, (short) 0, type);
     			block.getWorld().dropItemNaturally(block.getLocation(), item);
     		}
     	}
     }
-    public void treeFellerCheck(Player player, Block block){
-    	PlayerProfile PP = mcUsers.getProfile(player);
+    public void treeFellerCheck(Player player, Block block, Plugin pluginx){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(mcm.getInstance().isAxes(player.getItemInHand())){
     		if(block != null){
         		if(!mcm.getInstance().abilityBlockCheck(block))
@@ -50,7 +52,7 @@ public class mcWoodCutting {
     			PP.setAxePreparationMode(false);
     		}
     		int ticks = 2;
-    		int x = mcUsers.getProfile(player).getWoodCuttingInt();
+    		int x = PP.getWoodCuttingInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -58,6 +60,10 @@ public class mcWoodCutting {
 
     		if(!PP.getTreeFellerMode() && mcSkills.getInstance().cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)){
     			player.sendMessage(ChatColor.GREEN+"**TREE FELLING ACTIVATED**");
+    			for(Player y : pluginx.getServer().getOnlinePlayers()){
+	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Tree Feller!");
+	    		}
     			PP.setTreeFellerTicks(ticks * 1000);
     			PP.setTreeFellerActivatedTimeStamp(System.currentTimeMillis());
     			PP.setTreeFellerMode(true);
@@ -69,10 +75,11 @@ public class mcWoodCutting {
     	}
     }
     public void treeFeller(Block block, Player player){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	int radius = 1;
-    	if(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= 500)
+    	if(PP.getWoodCuttingGatherInt() >= 500)
     		radius++;
-    	if(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= 950)
+    	if(PP.getWoodCuttingGatherInt() >= 950)
     		radius++;
         ArrayList<Block> blocklist = new ArrayList<Block>();
         ArrayList<Block> toAdd = new ArrayList<Block>();

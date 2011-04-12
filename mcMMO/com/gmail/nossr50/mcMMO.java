@@ -1,5 +1,6 @@
 package com.gmail.nossr50;
 
+import com.gmail.nossr50.PlayerList.PlayerProfile;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijiko.Messaging;
 import com.nijiko.permissions.PermissionHandler;
@@ -67,7 +68,6 @@ public class mcMMO extends JavaPlugin {
          	mcUsers.addUser(player);
         }
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvent(Event.Type.PLAYER_BED_ENTER, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
@@ -105,8 +105,8 @@ public class mcMMO extends JavaPlugin {
     	}
     }
     public boolean inSameParty(Player playera, Player playerb){
-    	if(mcUsers.getProfile(playera).inParty() && mcUsers.getProfile(playerb).inParty()){
-	        if(mcUsers.getProfile(playera).getParty().equals(mcUsers.getProfile(playerb).getParty())){
+    	if(mcUsers.getProfile(playera.getName()).inParty() && mcUsers.getProfile(playerb.getName()).inParty()){
+	        if(mcUsers.getProfile(playera.getName()).getParty().equals(mcUsers.getProfile(playerb.getName()).getParty())){
 	            return true;
 	        } else {
 	            return false;
@@ -116,10 +116,12 @@ public class mcMMO extends JavaPlugin {
     	}
     }
     public void addXp(Player player, String skillname, Integer newvalue){
-    	mcUsers.getProfile(player).addXpToSkill(newvalue, skillname);
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PP.addXpToSkill(newvalue, skillname);
     }
     public void modifySkill(Player player, String skillname, Integer newvalue){
-    	mcUsers.getProfile(player).modifyskill(newvalue, skillname);
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PP.modifyskill(newvalue, skillname);
     }
     public ArrayList<String> getParties(){
     	String location = "plugins/mcMMO/mcmmo.users";
@@ -147,10 +149,12 @@ public class mcMMO extends JavaPlugin {
         return parties;
 	}
     public static String getPartyName(Player player){
-    	return mcUsers.getProfile(player).getParty();
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	return PP.getParty();
     }
     public static boolean inParty(Player player){
-    	return mcUsers.getProfile(player).inParty();
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	return PP.inParty();
     }
     public boolean isAdminChatToggled(Player player){
     	if(mcConfig.getInstance().isAdminToggled(player.getName())){

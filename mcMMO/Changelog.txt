@@ -1,5 +1,35 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+
+Version 0.9.25
+Fixed issue with anti-exploits and Herbalism
+MySpawn works like a hearthstone now, no inv pentality, 1hr cooldown
+Added Green Terra Ability to Herbalism
+Added Green Thumb ability to Herbalism
+Fixed Repair not working for Iron Tools
+Fixed bug where Axes Ability checked for Unarmed Ability Permission
+Added Cocoa Beans to Excavation XP/Loot Tables, Found in Grass/Dirt
+Using Super Breaker on Obsidian significantly damages it compared to other materials
+Added Obsidian to Mining XP Table/Super Breaker
+Added Pumpkins/Reeds/Cactus to Herbalism XP Tables/Double Drops
+Corrected "mcMMMO" to "mcMMO" in MOTD
+
+Version 0.9.24
+PLAYER_BED_ENTER removed due to its unusual issues
+Added info about the Wiki to the motd
+/mcrefresh will reset if you were recently hurt (Chimaera Wing/HP Regen)
+Fixed Armor Repair not adding XP
+Boosted Repair XP of Armor to match Tools
+Repairing Armor won't trigger Super Repair twice anymore
+Setting your MySpawn now just requires right clicking a bed (still requires the setmyspawn permission node)
+
+Version 0.9.23
+Players will now announce ability usage within a short distance to nearby players
+Chimaera Wing now takes the world into account
+Acrobatics won't give XP on death, and will fail if you would've died after the damage reduction
+Added yet another check to see if a Player is not in the Users system for NPC mod compatibility
+
+
 Version 0.9.22
 Fixed bug where chimaera wing was unusable after being hurt even after the cooldown
 

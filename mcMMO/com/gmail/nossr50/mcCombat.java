@@ -18,6 +18,8 @@ import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.PlayerList.PlayerProfile;
+
 
 public class mcCombat {
 	private static mcMMO plugin;
@@ -37,13 +39,16 @@ public class mcCombat {
     			event.setCancelled(true);
     			return;
     		}
+    		PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     		Player defender = (Player)x;
+    		PlayerProfile PPd = mcUsers.getProfile(defender.getName());
+    		
     		/*
     		 * COMPATABILITY CHECKS (Stuff that wouldn't happen normally in MC basically...)
     		 */
-    		if(mcUsers.getProfile(defender) == null)
+    		if(mcUsers.getProfile(defender.getName()) == null)
     			mcUsers.addUser(defender);
-    		if(attacker != null && defender != null && mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
+    		if(attacker != null && defender != null && mcUsers.getProfile(attacker.getName()).inParty() && mcUsers.getProfile(defender.getName()).inParty()){
 				if(mcParty.getInstance().inSameParty(defender, attacker)){
 					event.setCancelled(true);
 					return;
@@ -60,9 +65,9 @@ public class mcCombat {
 				
 				//Bonus just for having unarmed
 				int bonus = 2;
-				if (mcUsers.getProfile(attacker).getUnarmedInt() >= 250)
+				if (PPa.getUnarmedInt() >= 250)
 					bonus++;
-				if (mcUsers.getProfile(attacker).getUnarmedInt() >= 500)
+				if (PPa.getUnarmedInt() >= 500)
 					bonus++;
 				event.setDamage(calculateDamage(event, bonus));
 				
@@ -85,14 +90,14 @@ public class mcCombat {
     		 * PVP XP
     		 */
     		if(attacker != null && defender != null && mcLoadProperties.pvpxp){
-    			if(mcUsers.getProfile(defender).inParty() && mcUsers.getProfile(attacker).inParty() && mcParty.getInstance().inSameParty(attacker, defender))
+    			if(PPd.inParty() && PPa.inParty() && mcParty.getInstance().inSameParty(attacker, defender))
     				return;
     			if(mcm.getInstance().isAxes(attacker.getItemInHand()))
-    				mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    				PPa.addAxesGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     			if(mcm.getInstance().isSwords(attacker.getItemInHand()))
-    				mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    				PPa.addSwordsGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     			if(attacker.getItemInHand().getTypeId() == 0)
-    				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    				PPa.addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     		}
     		/*
     		 * CHECK FOR LEVEL UPS
@@ -101,23 +106,24 @@ public class mcCombat {
 		}
     }
     public void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
+    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     	if(x instanceof Squid){
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
     		}
 			Squid defender = (Squid)event.getEntity();
 			if(mcm.getInstance().isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
-					mcUsers.getProfile(attacker).addSwordsGather(10 * mcLoadProperties.xpGainMultiplier);
+					PPa.addSwordsGather(10 * mcLoadProperties.xpGainMultiplier);
 			}
 			mcSkills.getInstance().XpCheck(attacker);
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
-					mcUsers.getProfile(attacker).addAxesGather(10 * mcLoadProperties.xpGainMultiplier);
+					PPa.addAxesGather(10 * mcLoadProperties.xpGainMultiplier);
 					mcSkills.getInstance().XpCheck(attacker);
 			}
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
+				if(PPa.getAxesInt() >= 500){
 					event.setDamage(calculateDamage(event, 4));
 				}
 			}
@@ -130,21 +136,22 @@ public class mcCombat {
     			
     			//Bonus just for having unarmed
     			int bonus = 2;
-    			if (mcUsers.getProfile(attacker).getUnarmedInt() >= 250)
+    			if (PPa.getUnarmedInt() >= 250)
     				bonus++;
-    			if (mcUsers.getProfile(attacker).getUnarmedInt() >= 500)
+    			if (PPa.getUnarmedInt() >= 500)
     				bonus++;
     			event.setDamage(calculateDamage(event, bonus));
     			
     			//XP
 					if(defender.getHealth() != 0){
-					mcUsers.getProfile(attacker).addUnarmedGather(10 * mcLoadProperties.xpGainMultiplier);
+					PPa.addUnarmedGather(10 * mcLoadProperties.xpGainMultiplier);
 					mcSkills.getInstance().XpCheck(attacker);
 					}
     			}
 		}
     }
     public void playerVersusAnimalsChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, int type){
+    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     	if(x instanceof Animals){
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
@@ -153,22 +160,23 @@ public class mcCombat {
     		if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
 				if(defender.getHealth() <= 0)
 					return;
-				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
+				if(PPa.getAxesInt() >= 500){
 					event.setDamage(calculateDamage(event, 4));
 				}
 			}
 			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
 				//Bonus just for having unarmed
 				int bonus = 2;
-				if (mcUsers.getProfile(attacker).getUnarmedInt() >= 250)
+				if (PPa.getUnarmedInt() >= 250)
 					bonus++;
-				if (mcUsers.getProfile(attacker).getUnarmedInt() >= 500)
+				if (PPa.getUnarmedInt() >= 500)
 					bonus++;
 				event.setDamage(calculateDamage(event, bonus));
 			}
 		}
     }
     public void playerVersusMonsterChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
+    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     	if(x instanceof Monster){
     		/*
     		 * AXE PROC CHECKS
@@ -183,15 +191,15 @@ public class mcCombat {
 					&& mcPermissions.getInstance().swords(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 					if(x instanceof Creeper)
-						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						mcUsers.getProfile(attacker).addSwordsGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					}
 					mcSkills.getInstance().XpCheck(attacker);
 				}
@@ -200,15 +208,15 @@ public class mcCombat {
 					&& mcPermissions.getInstance().axes(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 					if(x instanceof Creeper)
-					mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
+					PPa.addAxesGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addAxesGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addAxesGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addAxesGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						mcUsers.getProfile(attacker).addAxesGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addAxesGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					}
 					mcSkills.getInstance().XpCheck(attacker);
 			}
@@ -216,7 +224,7 @@ public class mcCombat {
 			 * AXE DAMAGE SCALING && LOOT CHECKS
 			 */
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-				if(mcUsers.getProfile(attacker).getAxesInt() >= 500){
+				if(PPa.getAxesInt() >= 500){
 					event.setDamage(calculateDamage(event, 4));
 				}
 			}
@@ -226,24 +234,24 @@ public class mcCombat {
 			
 			//Bonus just for having unarmed
 			int bonus = 2;
-			if (mcUsers.getProfile(attacker).getUnarmedInt() >= 250)
+			if (PPa.getUnarmedInt() >= 250)
 				bonus++;
-			if (mcUsers.getProfile(attacker).getUnarmedInt() >= 500)
+			if (PPa.getUnarmedInt() >= 500)
 				bonus++;
 			event.setDamage(calculateDamage(event, bonus));
 			
 			//XP
 			if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 			if(x instanceof Creeper)
-				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Spider)
-				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Skeleton)
-				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Zombie)
-				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof PigZombie)
-				mcUsers.getProfile(attacker).addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 			}
 			mcSkills.getInstance().XpCheck(attacker);
 			}
@@ -254,16 +262,17 @@ public class mcCombat {
     	Entity x = event.getEntity();
     	if(event.getProjectile().toString().equals("CraftArrow") && x instanceof Player){
     		Player defender = (Player)x;
-    		if(mcUsers.getProfile(defender) == null)
+    		PlayerProfile PPd = mcUsers.getProfile(defender.getName());
+    		if(PPd == null)
     			mcUsers.addUser(defender);
     		if(mcPermissions.getInstance().unarmed(defender) && defender.getItemInHand().getTypeId() == 0){
-	    		if(defender != null && mcUsers.getProfile(defender).getUnarmedInt() >= 1000){
+	    		if(defender != null && PPd.getUnarmedInt() >= 1000){
 	    			if(Math.random() * 1000 <= 500){
 	    				event.setCancelled(true);
 	    				defender.sendMessage(ChatColor.WHITE+"**ARROW DEFLECT**");
 	    				return;
 	    			}
-	    		} else if(defender != null && Math.random() * 1000 <= (mcUsers.getProfile(defender).getUnarmedInt() / 2)){
+	    		} else if(defender != null && Math.random() * 1000 <= (PPd.getUnarmedInt() / 2)){
 	    			event.setCancelled(true);
 	    			defender.sendMessage(ChatColor.WHITE+"**ARROW DEFLECT**");
 	    			return;
@@ -275,18 +284,19 @@ public class mcCombat {
     	 */
     	if(y instanceof Player){
     		Player attacker = (Player)y;
+    		PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     		if(event.getProjectile().toString().equals("CraftArrow") && mcPermissions.getInstance().archery(attacker)){
     			if(!mcConfig.getInstance().isTracked(x) && event.getDamage() > 0){
     				mcConfig.getInstance().addArrowTrack(x, 0);
     				if(attacker != null){
-    					if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getArcheryInt()){
+    					if(Math.random() * 1000 <= PPa.getArcheryInt()){
     						mcConfig.getInstance().addArrowCount(x, 1);
     					}
     				}
     			} else {
     				if(event.getDamage() > 0){
     					if(attacker != null){
-        					if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getArcheryInt()){
+        					if(Math.random() * 1000 <= PPa.getArcheryInt()){
         						mcConfig.getInstance().addArrowCount(x, 1);
         					}
         				}
@@ -297,16 +307,16 @@ public class mcCombat {
     			 */
     			if(Math.random() * 100 >= 75){
     				
-    				int ignition = 20;
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 200)
+    				int ignition = 20;	
+    				if(PPa.getArcheryInt() >= 200)
     					ignition+=20;
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 400)
+    				if(PPa.getArcheryInt() >= 400)
     					ignition+=20;
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 600)
+    				if(PPa.getArcheryInt() >= 600)
     					ignition+=20;
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 800)
+    				if(PPa.getArcheryInt() >= 800)
     					ignition+=20;
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+    				if(PPa.getArcheryInt() >= 1000)
     					ignition+=20;
     				
         			if(x instanceof Player){
@@ -328,58 +338,58 @@ public class mcCombat {
     			/*
     			 * TRACK ARROWS USED AGAINST THE ENTITY
     			 */
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
+    			if(PPa.getArcheryInt() >= 50 && PPa.getArcheryInt() < 250)
     				event.setDamage(calculateDamage(event, 1));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
+    			if(PPa.getArcheryInt() >= 250 && PPa.getArcheryInt() < 575)
     				event.setDamage(calculateDamage(event, 2));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
+    			if(PPa.getArcheryInt() >= 575 && PPa.getArcheryInt() < 725)
     				event.setDamage(calculateDamage(event, 3));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
+    			if(PPa.getArcheryInt() >= 725 && PPa.getArcheryInt() < 1000)
     				event.setDamage(calculateDamage(event, 4));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+    			if(PPa.getArcheryInt() >= 1000)
     				event.setDamage(calculateDamage(event, 5));
     			//XP
     			if(!mcConfig.getInstance().isMobSpawnTracked(x)){
     				if(x instanceof Creeper)
-					mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
+					PPa.addArcheryGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addArcheryGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addArcheryGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addArcheryGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addArcheryGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
     			}
-    			}
+    		}
     		/*
     		 * Defender is Animals	
     		 */
     		if(x instanceof Animals){
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
+    			if(PPa.getArcheryInt() >= 50 && PPa.getArcheryInt() < 250)
     				event.setDamage(calculateDamage(event, 1));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
+    			if(PPa.getArcheryInt() >= 250 && PPa.getArcheryInt() < 575)
     				event.setDamage(calculateDamage(event, 2));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
+    			if(PPa.getArcheryInt() >= 575 && PPa.getArcheryInt() < 725)
     				event.setDamage(calculateDamage(event, 3));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
+    			if(PPa.getArcheryInt() >= 725 && PPa.getArcheryInt() < 1000)
     				event.setDamage(calculateDamage(event, 4));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+    			if(PPa.getArcheryInt() >= 1000)
     				event.setDamage(calculateDamage(event, 5));
     		}
     		/*
     		 * Defender is Squid
     		 */
     		if(x instanceof Squid){
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
+    			if(PPa.getArcheryInt() >= 50 && PPa.getArcheryInt() < 250)
     				event.setDamage(calculateDamage(event, 1));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
+    			if(PPa.getArcheryInt() >= 250 && PPa.getArcheryInt() < 575)
     				event.setDamage(calculateDamage(event, 2));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
+    			if(PPa.getArcheryInt() >= 575 && PPa.getArcheryInt() < 725)
     				event.setDamage(calculateDamage(event, 3));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
+    			if(PPa.getArcheryInt() >= 725 && PPa.getArcheryInt() < 1000)
     				event.setDamage(calculateDamage(event, 4));
-    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+    			if(PPa.getArcheryInt() >= 1000)
     				event.setDamage(calculateDamage(event, 5));
     		}
     		/*
@@ -391,10 +401,11 @@ public class mcCombat {
     				return;
     			}
     			Player defender = (Player)x;
+    			PlayerProfile PPd = mcUsers.getProfile(defender.getName());
     			/*
     			 * Stuff for the daze proc
     			 */
-    	    		if(mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
+    	    		if(PPa.inParty() && PPd.inParty()){
     					if(mcParty.getInstance().inSameParty(defender, attacker)){
     						event.setCancelled(true);
     						return;
@@ -404,7 +415,7 @@ public class mcCombat {
     	    		 * PVP XP
     	    		 */
     	    		if(mcLoadProperties.pvpxp && !mcParty.getInstance().inSameParty(attacker, defender)){
-    	    			mcUsers.getProfile(attacker).addArcheryGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    	    			PPa.addArcheryGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     	    		}
     				/*
     				 * DAZE PROC
@@ -415,27 +426,27 @@ public class mcCombat {
 					} else {
 						loc.setPitch(-90);
 					}
-    				if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000){
+    				if(PPa.getArcheryInt() >= 1000){
     	    			if(Math.random() * 1000 <= 500){
     	    				defender.teleportTo(loc);
     	    				defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
     	    				attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
     	    			}
-    	    		} else if(Math.random() * 2000 <= mcUsers.getProfile(attacker).getArcheryInt()){
+    	    		} else if(Math.random() * 2000 <= PPa.getArcheryInt()){
     	    			defender.teleportTo(loc);
 	    				defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
 	    				attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
     	    		}
     				
-					if(mcUsers.getProfile(attacker).getArcheryInt() >= 50 && mcUsers.getProfile(attacker).getArcheryInt() < 250)
+					if(PPa.getArcheryInt() >= 50 && PPa.getArcheryInt() < 250)
 	    				event.setDamage(calculateDamage(event, 1));
-	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 250 && mcUsers.getProfile(attacker).getArcheryInt() < 575)
+	    			if(PPa.getArcheryInt() >= 250 && PPa.getArcheryInt() < 575)
 	    				event.setDamage(calculateDamage(event, 2));
-	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 575 && mcUsers.getProfile(attacker).getArcheryInt() < 725)
+	    			if(PPa.getArcheryInt() >= 575 && PPa.getArcheryInt() < 725)
 	    				event.setDamage(calculateDamage(event, 3));
-	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 725 && mcUsers.getProfile(attacker).getArcheryInt() < 1000)
+	    			if(PPa.getArcheryInt() >= 725 && PPa.getArcheryInt() < 1000)
 	    				event.setDamage(calculateDamage(event, 4));
-	    			if(mcUsers.getProfile(attacker).getArcheryInt() >= 1000)
+	    			if(PPa.getArcheryInt() >= 1000)
 	    				event.setDamage(calculateDamage(event, 5));
     			}
     		}
@@ -443,35 +454,37 @@ public class mcCombat {
     	}
     }
 	public boolean simulateUnarmedProc(Player player){
-    	if(mcUsers.getProfile(player).getUnarmedInt() >= 1000){
+		PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	if(PP.getUnarmedInt() >= 1000){
     		if(Math.random() * 4000 <= 1000){
     			return true;
     		}
     	} else {
-    		if(Math.random() * 4000 <= mcUsers.getProfile(player).getUnarmedInt()){
+    		if(Math.random() * 4000 <= PP.getUnarmedInt()){
     			return true;
     		}
     	}
     		return false;
     }
     public void bleedCheck(Player attacker, Entity x){
+    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     	if(mcPermissions.getInstance().swords(attacker) && mcm.getInstance().isSwords(attacker.getItemInHand())){
-			if(mcUsers.getProfile(attacker).getSwordsInt() >= 750){
+			if(PPa.getSwordsInt() >= 750){
 				if(Math.random() * 1000 >= 750){
 					if(!(x instanceof Player))
 						mcConfig.getInstance().addToBleedQue(x);
 					if(x instanceof Player){
 						Player target = (Player)x;
-						mcUsers.getProfile(target).addBleedTicks(3);
+						mcUsers.getProfile(target.getName()).addBleedTicks(3);
 					}
 					attacker.sendMessage(ChatColor.GREEN+"**ENEMY BLEEDING**");
 				}
-			} else if (Math.random() * 1000 <= mcUsers.getProfile(attacker).getSwordsInt()){
+			} else if (Math.random() * 1000 <= PPa.getSwordsInt()){
 				if(!(x instanceof Player))
 					mcConfig.getInstance().addToBleedQue(x);
 				if(x instanceof Player){
 					Player target = (Player)x;
-					mcUsers.getProfile(target).addBleedTicks(2);
+					mcUsers.getProfile(target.getName()).addBleedTicks(2);
 				}
 				attacker.sendMessage(ChatColor.GREEN+"**ENEMY BLEEDING**");
 			}
@@ -534,7 +547,7 @@ public class mcCombat {
     				if(!target.getName().equals(attacker.getName()) && targets >= 1){
     					target.damage(event.getDamage() / 4);
     					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
-        				mcUsers.getProfile(target).addBleedTicks(5);
+        				mcUsers.getProfile(target.getName()).addBleedTicks(5);
     					targets--;
     				}
     			}
@@ -560,8 +573,9 @@ public class mcCombat {
     	}
     }
     public void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(mcUsers.getProfile(attacker).getAxesInt() >= 750){
+    		if(PPa.getAxesInt() >= 750){
     			if(Math.random() * 1000 <= 750){
     				if(x instanceof Player){
     					Player player = (Player)x;
@@ -574,7 +588,7 @@ public class mcCombat {
         			}
     				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     			}
-    		} else if(Math.random() * 1000 <= mcUsers.getProfile(attacker).getAxesInt()){
+    		} else if(Math.random() * 1000 <= PPa.getAxesInt()){
     			if(x instanceof Player){
     				Player player = (Player)x;
     				player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
@@ -589,9 +603,10 @@ public class mcCombat {
     	}
     }
     public void parryCheck(Player defender, EntityDamageByEntityEvent event, Entity y){
+    	PlayerProfile PPd = mcUsers.getProfile(defender.getName());
     	if(defender != null && mcm.getInstance().isSwords(defender.getItemInHand()) 
     			&& mcPermissions.getInstance().swords(defender)){
-			if(mcUsers.getProfile(defender).getSwordsInt() >= 900){
+			if(PPd.getSwordsInt() >= 900){
 				if(Math.random() * 3000 <= 900){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.GREEN+"**PARRIED**");
@@ -602,7 +617,7 @@ public class mcCombat {
 					}
 				}
 			} else {
-				if(Math.random() * 3000 <= mcUsers.getProfile(defender).getSwordsInt()){
+				if(Math.random() * 3000 <= PPd.getSwordsInt()){
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
 					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));

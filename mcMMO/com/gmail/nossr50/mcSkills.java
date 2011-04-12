@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.PlayerList.PlayerProfile;
 
@@ -55,36 +56,54 @@ public class mcSkills {
     	return x;
     }
     public void watchCooldowns(Player player){
-    	if(!mcUsers.getProfile(player).getTreeFellerInformed() && System.currentTimeMillis() - mcUsers.getProfile(player).getTreeFellerDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
-			mcUsers.getProfile(player).setTreeFellerInformed(true);
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	if(!PP.getGreenTerraInformed() && System.currentTimeMillis() - PP.getGreenTerraDeactivatedTimeStamp() >= (mcLoadProperties.greenTerraCooldown * 1000)){
+			PP.setGreenTerraInformed(true);
+    		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Green Terra "+ChatColor.GREEN+"ability is refreshed!");
+    	}
+    	if(!PP.getTreeFellerInformed() && System.currentTimeMillis() - PP.getTreeFellerDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
+			PP.setTreeFellerInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Tree Feller "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!mcUsers.getProfile(player).getSuperBreakerInformed() && System.currentTimeMillis() - mcUsers.getProfile(player).getSuperBreakerDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
-			mcUsers.getProfile(player).setSuperBreakerInformed(true);
+    	if(!PP.getSuperBreakerInformed() && System.currentTimeMillis() - PP.getSuperBreakerDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
+			PP.setSuperBreakerInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Super Breaker "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!mcUsers.getProfile(player).getSerratedStrikesInformed() && System.currentTimeMillis() - mcUsers.getProfile(player).getSerratedStrikesDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
-			mcUsers.getProfile(player).setSerratedStrikesInformed(true);
+    	if(!PP.getSerratedStrikesInformed() && System.currentTimeMillis() - PP.getSerratedStrikesDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
+			PP.setSerratedStrikesInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Serrated Strikes "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!mcUsers.getProfile(player).getBerserkInformed() && System.currentTimeMillis() - mcUsers.getProfile(player).getBerserkDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
-			mcUsers.getProfile(player).setBerserkInformed(true);
+    	if(!PP.getBerserkInformed() && System.currentTimeMillis() - PP.getBerserkDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
+			PP.setBerserkInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Berserk "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!mcUsers.getProfile(player).getSkullSplitterInformed() && System.currentTimeMillis() - mcUsers.getProfile(player).getSkullSplitterDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
-			mcUsers.getProfile(player).setSkullSplitterInformed(true);
+    	if(!PP.getSkullSplitterInformed() && System.currentTimeMillis() - PP.getSkullSplitterDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
+			PP.setSkullSplitterInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Skull Splitter "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!mcUsers.getProfile(player).getGigaDrillBreakerInformed() && System.currentTimeMillis() - mcUsers.getProfile(player).getGigaDrillBreakerDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
-			mcUsers.getProfile(player).setGigaDrillBreakerInformed(true);
+    	if(!PP.getGigaDrillBreakerInformed() && System.currentTimeMillis() - PP.getGigaDrillBreakerDeactivatedTimeStamp() >= (mcLoadProperties.berserkCooldown * 1000)){
+			PP.setGigaDrillBreakerInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Giga Drill Breaker "+ChatColor.GREEN+"ability is refreshed!");
     	}
     }
+    public void hoeReadinessCheck(Player player){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	if(mcPermissions.getInstance().herbalismAbility(player) && mcm.getInstance().isHoe(player.getItemInHand()) && !PP.getHoePreparationMode()){
+    		if(!PP.getGreenTerraMode() && !cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), mcLoadProperties.greenTerraCooldown)){
+	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
+	    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getGreenTerraDeactivatedTimeStamp(), mcLoadProperties.greenTerraCooldown)+"s)");
+	    		return;
+	    	}
+    		player.sendMessage(ChatColor.GREEN+"**YOU READY YOUR HOE**");
+			PP.setHoePreparationATS(System.currentTimeMillis());
+			PP.setHoePreparationMode(true);
+    	}
+    }
     public void abilityActivationCheck(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player);
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(!PP.getAbilityUse())
     		return;
-    	if(mcPermissions.getInstance().miningAbility(player) && mcm.getInstance().isMiningPick(player.getItemInHand()) && !mcUsers.getProfile(player).getPickaxePreparationMode()){
+    	if(mcPermissions.getInstance().miningAbility(player) && mcm.getInstance().isMiningPick(player.getItemInHand()) && !PP.getPickaxePreparationMode()){
     		if(!PP.getSuperBreakerMode() && !cooldownOver(player, PP.getSuperBreakerDeactivatedTimeStamp(), mcLoadProperties.superBreakerCooldown)){
 	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
 	    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getSuperBreakerDeactivatedTimeStamp(), mcLoadProperties.superBreakerCooldown)+"s)");
@@ -132,49 +151,59 @@ public class mcSkills {
     		}
     	}
     }
-    public void serratedStrikesActivationCheck(Player player){
+    public void serratedStrikesActivationCheck(Player player, Plugin pluginx){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
 		if(mcm.getInstance().isSwords(player.getItemInHand())){
-			if(mcUsers.getProfile(player).getSwordsPreparationMode()){
-    			mcUsers.getProfile(player).setSwordsPreparationMode(false);
+			if(PP.getSwordsPreparationMode()){
+    			PP.setSwordsPreparationMode(false);
     		}
 	    	int ticks = 2;
-	    	int x = mcUsers.getProfile(player).getSwordsInt();
+	    	int x = PP.getSwordsInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
     		
-	    	if(!mcUsers.getProfile(player).getSerratedStrikesMode() && mcUsers.getProfile(player).getSerratedStrikesCooldown() == 0){
+	    	if(!PP.getSerratedStrikesMode() && PP.getSerratedStrikesCooldown() == 0){
 	    		player.sendMessage(ChatColor.GREEN+"**SERRATED STRIKES ACTIVATED**");
-	    		mcUsers.getProfile(player).setSerratedStrikesTicks((ticks * 2) * 1000);
-	    		mcUsers.getProfile(player).setSerratedStrikesActivatedTimeStamp(System.currentTimeMillis());
-	    		mcUsers.getProfile(player).setSerratedStrikesMode(true);
+	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
+	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Serrated Strikes!");
+	    		}
+	    		PP.setSerratedStrikesTicks((ticks * 2) * 1000);
+	    		PP.setSerratedStrikesActivatedTimeStamp(System.currentTimeMillis());
+	    		PP.setSerratedStrikesMode(true);
 	    	}
 	    	
 	    }
 	}
-    public void berserkActivationCheck(Player player){
+    public void berserkActivationCheck(Player player, Plugin pluginx){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
 		if(player.getItemInHand().getTypeId() == 0){
-			if(mcUsers.getProfile(player).getFistsPreparationMode()){
-    			mcUsers.getProfile(player).setFistsPreparationMode(false);
+			if(PP.getFistsPreparationMode()){
+    			PP.setFistsPreparationMode(false);
     		}
 	    	int ticks = 2;
-	    	int x = mcUsers.getProfile(player).getUnarmedInt();
+	    	int x = PP.getUnarmedInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
     		
-	    	if(!mcUsers.getProfile(player).getBerserkMode() && cooldownOver(player, mcUsers.getProfile(player).getBerserkDeactivatedTimeStamp(), mcLoadProperties.berserkCooldown)){
+	    	if(!PP.getBerserkMode() && cooldownOver(player, PP.getBerserkDeactivatedTimeStamp(), mcLoadProperties.berserkCooldown)){
 	    		player.sendMessage(ChatColor.GREEN+"**BERSERK ACTIVATED**");
-	    		mcUsers.getProfile(player).setBerserkTicks(ticks * 1000);
-	    		mcUsers.getProfile(player).setBerserkActivatedTimeStamp(System.currentTimeMillis());
-	    		mcUsers.getProfile(player).setBerserkMode(true);
+	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
+	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Berserk!");
+	    		}
+	    		PP.setBerserkTicks(ticks * 1000);
+	    		PP.setBerserkActivatedTimeStamp(System.currentTimeMillis());
+	    		PP.setBerserkMode(true);
 	    	}
 	    }
 	}
-    public void skullSplitterCheck(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player);
+    public void skullSplitterCheck(Player player, Plugin pluginx){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(mcm.getInstance().isAxes(player.getItemInHand()) && mcPermissions.getInstance().axesAbility(player)){
     		/*
     		 * CHECK FOR AXE PREP MODE
@@ -183,7 +212,7 @@ public class mcSkills {
     			PP.setAxePreparationMode(false);
     		}
     		int ticks = 2;
-    		int x = mcUsers.getProfile(player).getAxesInt();
+    		int x = PP.getAxesInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -191,6 +220,10 @@ public class mcSkills {
 
     		if(!PP.getSkullSplitterMode() && cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), mcLoadProperties.skullSplitterCooldown)){
     			player.sendMessage(ChatColor.GREEN+"**SKULL SPLITTER ACTIVATED**");
+    			for(Player y : pluginx.getServer().getOnlinePlayers()){
+	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Skull Splitter!");
+	    		}
     			PP.setSkullSplitterTicks(ticks * 1000);
     			PP.setSkullSplitterActivatedTimeStamp(System.currentTimeMillis());
     			PP.setSkullSplitterMode(true);
@@ -202,12 +235,13 @@ public class mcSkills {
     	}
     }
     public void monitorSkills(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player);
-    	/*
-    	 * AXE PREPARATION MODE
-    	 */
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(PP == null)
     		mcUsers.addUser(player);
+    	if(PP.getHoePreparationMode() && System.currentTimeMillis() - PP.getHoePreparationATS() >= 4000){
+			PP.setHoePreparationMode(false);
+			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR HOE**");
+    	}
 		if(PP.getAxePreparationMode() && System.currentTimeMillis() - PP.getAxePreparationATS() >= 4000){
 				PP.setAxePreparationMode(false);
 				player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR AXE**");
@@ -228,17 +262,26 @@ public class mcSkills {
 			PP.setShovelPreparationMode(false);
 			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR SHOVEL**");
 		}
+		/*
+		 * HERBALISM ABILITY
+		 */
+		if(mcPermissions.getInstance().herbalismAbility(player)){
+    		if(PP.getGreenTerraMode() && PP.getGreenTerraActivatedTimeStamp() + PP.getGreenTerraTicks() <= System.currentTimeMillis()){
+    				PP.setGreenTerraMode(false);
+    				PP.setGreenTerraInformed(false);
+    				player.sendMessage(ChatColor.RED+"**Green Terra has worn off**");
+    				PP.setGreenTerraDeactivatedTimeStamp(System.currentTimeMillis());
+    		}
+		}
     	/*
     	 * AXES ABILITY
     	 */
     	if(mcPermissions.getInstance().axesAbility(player)){
-    		if(mcPermissions.getInstance().unarmedAbility(player)){
-    			if(PP.getSkullSplitterMode() && PP.getSkullSplitterActivatedTimeStamp() + PP.getSkullSplitterTicks() <= System.currentTimeMillis()){
-    					PP.setSkullSplitterMode(false);
-    					PP.setSkullSplitterInformed(false);
-    					player.sendMessage(ChatColor.RED+"**Skull Splitter has worn off**");
-    					PP.setSkullSplitterDeactivatedTimeStamp(System.currentTimeMillis());
-    			}
+    		if(PP.getSkullSplitterMode() && PP.getSkullSplitterActivatedTimeStamp() + PP.getSkullSplitterTicks() <= System.currentTimeMillis()){
+    				PP.setSkullSplitterMode(false);
+    				PP.setSkullSplitterInformed(false);
+    				player.sendMessage(ChatColor.RED+"**Skull Splitter has worn off**");
+    				PP.setSkullSplitterDeactivatedTimeStamp(System.currentTimeMillis());
     		}
 		}
     	/*
@@ -298,125 +341,136 @@ public class mcSkills {
 		}
     }
     public void XpCheck(Player player){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	/*
     	 * ACROBATICS
     	 */
-    	if(player != null && mcUsers.getProfile(player).getAcrobaticsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("acrobatics")){
+    	if(player != null && PP.getAcrobaticsGatherInt() >= PP.getXpToLevel("acrobatics")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getAcrobaticsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("acrobatics")){
+			while(PP.getAcrobaticsGatherInt() >= PP.getXpToLevel("acrobatics")){
 				skillups++;
-				mcUsers.getProfile(player).removeAcrobaticsGather(mcUsers.getProfile(player).getXpToLevel("acrobatics"));
-				mcUsers.getProfile(player).skillUpAcrobatics(1);
+				PP.removeAcrobaticsGather(PP.getXpToLevel("acrobatics"));
+				PP.skillUpAcrobatics(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getAcrobatics()+")");	
+			if(player != null && PP.getAcrobatics() != null)
+				player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by "+skillups+"."+" Total ("+PP.getAcrobatics()+")");	
 		}
     	/*
     	 * ARCHERY
     	 */
-    	if(mcUsers.getProfile(player).getArcheryGatherInt() >= mcUsers.getProfile(player).getXpToLevel("archery")){
+    	if(PP.getArcheryGatherInt() >= PP.getXpToLevel("archery")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getArcheryGatherInt() >= mcUsers.getProfile(player).getXpToLevel("archery")){
+			while(PP.getArcheryGatherInt() >= PP.getXpToLevel("archery")){
 				skillups++;
-				mcUsers.getProfile(player).removeArcheryGather(mcUsers.getProfile(player).getXpToLevel("archery"));
-				mcUsers.getProfile(player).skillUpArchery(1);
+				PP.removeArcheryGather(PP.getXpToLevel("archery"));
+				PP.skillUpArchery(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getArchery()+")");	
+			if(player != null && PP.getArchery() != null)
+				player.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+PP.getArchery()+")");	
 		}
     	/*
     	 * SWORDS
     	 */
-    	if(mcUsers.getProfile(player).getSwordsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("swords")){
+    	if(PP.getSwordsGatherInt() >= PP.getXpToLevel("swords")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getSwordsGatherInt() >= mcUsers.getProfile(player).getXpToLevel("swords")){
+			while(PP.getSwordsGatherInt() >= PP.getXpToLevel("swords")){
 				skillups++;
-				mcUsers.getProfile(player).removeSwordsGather(mcUsers.getProfile(player).getXpToLevel("swords"));
-				mcUsers.getProfile(player).skillUpSwords(1);
+				PP.removeSwordsGather(PP.getXpToLevel("swords"));
+				PP.skillUpSwords(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getSwords()+")");	
+			if(player != null && PP.getSwords() != null)
+				player.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+PP.getSwords()+")");	
 		}
     	/*
     	 * AXES
     	 */
-		if(mcUsers.getProfile(player).getAxesGatherInt() >= mcUsers.getProfile(player).getXpToLevel("axes")){
+		if(PP.getAxesGatherInt() >= PP.getXpToLevel("axes")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getAxesGatherInt() >= mcUsers.getProfile(player).getXpToLevel("axes")){
+			while(PP.getAxesGatherInt() >= PP.getXpToLevel("axes")){
 				skillups++;
-				mcUsers.getProfile(player).removeAxesGather(mcUsers.getProfile(player).getXpToLevel("axes"));
-				mcUsers.getProfile(player).skillUpAxes(1);
+				PP.removeAxesGather(PP.getXpToLevel("axes"));
+				PP.skillUpAxes(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getAxes()+")");	
+			if(player != null && PP.getAxes() != null)
+				player.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+PP.getAxes()+")");	
 		}
 		/*
 		 * UNARMED
 		 */
-		if(mcUsers.getProfile(player).getUnarmedGatherInt() >= mcUsers.getProfile(player).getXpToLevel("unarmed")){
+		if(PP.getUnarmedGatherInt() >= PP.getXpToLevel("unarmed")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getUnarmedGatherInt() >= mcUsers.getProfile(player).getXpToLevel("unarmed")){
+			while(PP.getUnarmedGatherInt() >= PP.getXpToLevel("unarmed")){
 				skillups++;
-				mcUsers.getProfile(player).removeUnarmedGather(mcUsers.getProfile(player).getXpToLevel("unarmed"));
-				mcUsers.getProfile(player).skillUpUnarmed(1);
+				PP.removeUnarmedGather(PP.getXpToLevel("unarmed"));
+				PP.skillUpUnarmed(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getUnarmed()+")");	
+			if(player != null && PP.getUnarmed() != null)
+				player.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+PP.getUnarmed()+")");	
 		}
 		/*
 		 * HERBALISM
 		 */
-		if(mcUsers.getProfile(player).getHerbalismGatherInt() >= mcUsers.getProfile(player).getXpToLevel("herbalism")){
+		if(PP.getHerbalismGatherInt() >= PP.getXpToLevel("herbalism")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getHerbalismGatherInt() >= mcUsers.getProfile(player).getXpToLevel("herbalism")){
+			while(PP.getHerbalismGatherInt() >= PP.getXpToLevel("herbalism")){
 				skillups++;
-				mcUsers.getProfile(player).removeHerbalismGather(mcUsers.getProfile(player).getXpToLevel("herbalism"));
-				mcUsers.getProfile(player).skillUpHerbalism(1);
+				PP.removeHerbalismGather(PP.getXpToLevel("herbalism"));
+				PP.skillUpHerbalism(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getHerbalism()+")");	
+			if(player != null && PP.getHerbalism() != null)
+				player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by "+skillups+"."+" Total ("+PP.getHerbalism()+")");	
 		}
 		/*
 		 * MINING
 		 */
-		if(player != null && mcUsers.getProfile(player).getMiningGatherInt() >= mcUsers.getProfile(player).getXpToLevel("mining")){
+		if(player != null && PP.getMiningGatherInt() >= PP.getXpToLevel("mining")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getMiningGatherInt() >= mcUsers.getProfile(player).getXpToLevel("mining")){
+			while(PP.getMiningGatherInt() >= PP.getXpToLevel("mining")){
 				skillups++;
-				mcUsers.getProfile(player).removeMiningGather(mcUsers.getProfile(player).getXpToLevel("mining"));
-				mcUsers.getProfile(player).skillUpMining(1);
+				PP.removeMiningGather(PP.getXpToLevel("mining"));
+				PP.skillUpMining(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"Mining skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getMining()+")");	
+			if(player != null && PP.getMining() != null)
+				player.sendMessage(ChatColor.YELLOW+"Mining skill increased by "+skillups+"."+" Total ("+PP.getMining()+")");	
 		}
 		/*
 		 * WOODCUTTING
 		 */
-		if(player != null && mcUsers.getProfile(player).getWoodCuttingGatherInt() >= mcUsers.getProfile(player).getXpToLevel("woodcutting")){
+		if(player != null && PP.getWoodCuttingGatherInt() >= PP.getXpToLevel("woodcutting")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getWoodCuttingGatherInt() >= mcUsers.getProfile(player).getXpToLevel("woodcutting")){
+			while(PP.getWoodCuttingGatherInt() >= PP.getXpToLevel("woodcutting")){
 				skillups++;
-				mcUsers.getProfile(player).removeWoodCuttingGather(mcUsers.getProfile(player).getXpToLevel("woodcutting"));
-				mcUsers.getProfile(player).skillUpWoodCutting(1);
+				PP.removeWoodCuttingGather(PP.getXpToLevel("woodcutting"));
+				PP.skillUpWoodCutting(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"WoodCutting skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getWoodCutting()+")");	
+			if(player != null && PP.getWoodCutting() != null)
+				player.sendMessage(ChatColor.YELLOW+"WoodCutting skill increased by "+skillups+"."+" Total ("+PP.getWoodCutting()+")");	
 		}
 		/*
 		 * REPAIR
 		 */
-		if(mcUsers.getProfile(player).getRepairGatherInt() >= mcUsers.getProfile(player).getXpToLevel("repair")){
+		if(PP.getRepairGatherInt() >= PP.getXpToLevel("repair")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getRepairGatherInt() >= mcUsers.getProfile(player).getXpToLevel("repair")){
+			while(PP.getRepairGatherInt() >= PP.getXpToLevel("repair")){
 				skillups++;
-				mcUsers.getProfile(player).removeRepairGather(mcUsers.getProfile(player).getXpToLevel("repair"));
-				mcUsers.getProfile(player).skillUpRepair(1);
+				PP.removeRepairGather(PP.getXpToLevel("repair"));
+				PP.skillUpRepair(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"Repair skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getRepair()+")");	
+			if(player != null && PP.getRepair() != null)
+				player.sendMessage(ChatColor.YELLOW+"Repair skill increased by "+skillups+"."+" Total ("+PP.getRepair()+")");	
 		}
 		/*
 		 * EXCAVATION
 		 */
-		if(mcUsers.getProfile(player).getExcavationGatherInt() >= mcUsers.getProfile(player).getXpToLevel("excavation")){
+		if(PP.getExcavationGatherInt() >= PP.getXpToLevel("excavation")){
 			int skillups = 0;
-			while(mcUsers.getProfile(player).getExcavationGatherInt() >= mcUsers.getProfile(player).getXpToLevel("excavation")){
+			while(PP.getExcavationGatherInt() >= PP.getXpToLevel("excavation")){
 				skillups++;
-				mcUsers.getProfile(player).removeExcavationGather(mcUsers.getProfile(player).getXpToLevel("excavation"));
-				mcUsers.getProfile(player).skillUpExcavation(1);
+				PP.removeExcavationGather(PP.getXpToLevel("excavation"));
+				PP.skillUpExcavation(1);
 			}
-			player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+skillups+"."+" Total ("+mcUsers.getProfile(player).getExcavation()+")");	
+			if(player != null && PP.getExcavation() != null)
+				player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+skillups+"."+" Total ("+PP.getExcavation()+")");	
 		}
     }
     public boolean isSkill(String skillname){

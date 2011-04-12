@@ -44,6 +44,13 @@ public class mcPermissions {
             return true;
         }
     }
+    public boolean herbalismAbility(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.ability.herbalism");
+        } else {
+            return true;
+        }
+    }
     public boolean excavationAbility(Player player){
     	if (permissionsEnabled) {
             return permission(player, "mcmmo.ability.excavation");
@@ -131,13 +138,6 @@ public class mcPermissions {
     public boolean setMySpawn(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.commands.setmyspawn");
-        } else {
-            return true;
-        }
-    }
-    public boolean setMySpawnOther(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.commands.setmyspawnother");
         } else {
             return true;
         }

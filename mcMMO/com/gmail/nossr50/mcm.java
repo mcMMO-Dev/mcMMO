@@ -14,11 +14,14 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.nossr50.PlayerList.PlayerProfile;
+
 public class mcm {
 	/*
 	 * I'm storing my functions/methods in here in an unorganized manner. Spheal with it.
 	 */
 	private static mcMMO plugin;
+	private static mcMMO pluginx;
 	public mcm(mcMMO instance) {
     	plugin = instance;
     }
@@ -30,7 +33,31 @@ public class mcm {
     	return instance;
     }
 	
-	
+	public int getPowerLevel(Player player){
+		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		int x = 0;
+		if(mcPermissions.getInstance().mining(player))
+			x+=PP.getMiningInt();
+		if(mcPermissions.getInstance().woodcutting(player))
+			x+=PP.getWoodCuttingInt();
+		if(mcPermissions.getInstance().unarmed(player))
+			x+=PP.getUnarmedInt();
+		if(mcPermissions.getInstance().herbalism(player))
+			x+=PP.getHerbalismInt();
+		if(mcPermissions.getInstance().excavation(player))
+			x+=PP.getExcavationInt();
+		if(mcPermissions.getInstance().archery(player))
+			x+=PP.getArcheryInt();
+		if(mcPermissions.getInstance().swords(player))
+			x+=PP.getSwordsInt();
+		if(mcPermissions.getInstance().axes(player))
+			x+=PP.getAxesInt();
+		if(mcPermissions.getInstance().acrobatics(player))
+			x+=PP.getAcrobaticsInt();
+		if(mcPermissions.getInstance().repair(player))
+			x+=PP.getRepairInt();
+		return x;
+	}
 	public boolean blockBreakSimulate(Block block, Player player, Plugin plugin){
 
     	FakeBlockBreakEvent event = new FakeBlockBreakEvent(block, player);
@@ -180,7 +207,7 @@ public class mcm {
 	}
 	public boolean shouldBeWatched(Block block){
 		int id = block.getTypeId();
-		if(id == 17 || id == 42 || id == 87 || id == 89 || id == 2 || id == 3 || id == 12 || id == 13 || id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40 || id == 24){
+		if(id == 49 || id == 81 || id == 83 || id == 86 || id == 91 || id == 1 || id == 17 || id == 42 || id == 87 || id == 89 || id == 2 || id == 3 || id == 12 || id == 13 || id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40 || id == 24){
 			return true;
 		} else {
 			return false;
@@ -277,11 +304,12 @@ public class mcm {
     	}
     }
     public void mcmmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(split[0].equalsIgnoreCase("/woodcutting")){
 			event.setCancelled(true);
-			float skillvalue = (float)mcUsers.getProfile(player).getWoodCuttingInt();
+			float skillvalue = (float)PP.getWoodCuttingInt();
 			int ticks = 2;
-			int x = mcUsers.getProfile(player).getWoodCuttingInt();
+			int x = PP.getWoodCuttingInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -299,33 +327,33 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/archery")){
 			event.setCancelled(true);
 			Integer rank = 0;
-			if(mcUsers.getProfile(player).getArcheryInt() >= 50)
+			if(PP.getArcheryInt() >= 50)
     			rank++;
-    		if(mcUsers.getProfile(player).getArcheryInt() >= 250)
+    		if(PP.getArcheryInt() >= 250)
     			rank++;
-    		if(mcUsers.getProfile(player).getArcheryInt() >= 575)
+    		if(PP.getArcheryInt() >= 575)
     			rank++;
-    		if(mcUsers.getProfile(player).getArcheryInt() >= 725)
+    		if(PP.getArcheryInt() >= 725)
     			rank++;
-    		if(mcUsers.getProfile(player).getArcheryInt() >= 1000)
+    		if(PP.getArcheryInt() >= 1000)
     			rank++;
-			float skillvalue = (float)mcUsers.getProfile(player).getArcheryInt();
+			float skillvalue = (float)PP.getArcheryInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		
     		int ignition = 20;
-			if(mcUsers.getProfile(player).getArcheryInt() >= 200)
+			if(PP.getArcheryInt() >= 200)
 				ignition+=20;
-			if(mcUsers.getProfile(player).getArcheryInt() >= 400)
+			if(PP.getArcheryInt() >= 400)
 				ignition+=20;
-			if(mcUsers.getProfile(player).getArcheryInt() >= 600)
+			if(PP.getArcheryInt() >= 600)
 				ignition+=20;
-			if(mcUsers.getProfile(player).getArcheryInt() >= 800)
+			if(PP.getArcheryInt() >= 800)
 				ignition+=20;
-			if(mcUsers.getProfile(player).getArcheryInt() >= 1000)
+			if(PP.getArcheryInt() >= 1000)
 				ignition+=20;
 			
     		String percentagedaze;
-			if(mcUsers.getProfile(player).getArcheryInt() < 1000){
+			if(PP.getArcheryInt() < 1000){
 				percentagedaze = String.valueOf((skillvalue / 2000) * 100);
 			} else {
 				percentagedaze = "50";
@@ -346,14 +374,14 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/axes")){
 			event.setCancelled(true);
 			String percentage;
-			float skillvalue = (float)mcUsers.getProfile(player).getAxesInt();
-			if(mcUsers.getProfile(player).getAxesInt() < 750){
+			float skillvalue = (float)PP.getAxesInt();
+			if(PP.getAxesInt() < 750){
 				percentage = String.valueOf((skillvalue / 1000) * 100);
 			} else {
 				percentage = "75";
 			}
 			int ticks = 2;
-			int x = mcUsers.getProfile(player).getAxesInt();
+			int x = PP.getAxesInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -367,7 +395,7 @@ public class mcm {
 			player.sendMessage(ChatColor.DARK_AQUA+"Axe Mastery (500 SKILL): "+ChatColor.GREEN+"Modifies Damage");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Chance to crtically strike: "+ChatColor.YELLOW+percentage+"%");
-			if(mcUsers.getProfile(player).getAxesInt() < 500){
+			if(PP.getAxesInt() < 500){
 				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 500+ SKILL (AXEMASTERY)");
 			} else {
 				player.sendMessage(ChatColor.RED+"Axe Mastery:"+ChatColor.YELLOW+" Bonus 4 damage");
@@ -378,8 +406,8 @@ public class mcm {
 			event.setCancelled(true);
 			int bleedrank = 2;
 			String percentage, parrypercentage = null, counterattackpercentage;
-			float skillvalue = (float)mcUsers.getProfile(player).getSwordsInt();
-			if(mcUsers.getProfile(player).getSwordsInt() < 750){
+			float skillvalue = (float)PP.getSwordsInt();
+			if(PP.getSwordsInt() < 750){
 				percentage = String.valueOf((skillvalue / 1000) * 100);
 			} else {
 				percentage = "75";
@@ -387,20 +415,20 @@ public class mcm {
 			if(skillvalue >= 750)
 				bleedrank+=1;
 			
-			if(mcUsers.getProfile(player).getSwordsInt() <= 900){
+			if(PP.getSwordsInt() <= 900){
 				parrypercentage = String.valueOf((skillvalue / 3000) * 100);
 			} else {
 				parrypercentage = "30";
 			}
 			
-			if(mcUsers.getProfile(player).getSwordsInt() <= 600){
+			if(PP.getSwordsInt() <= 600){
 				counterattackpercentage = String.valueOf((skillvalue / 2000) * 100);
 			} else {
 				counterattackpercentage = "30";
 			}
 			
 			int ticks = 2;
-			int x = mcUsers.getProfile(player).getSwordsInt();
+			int x = PP.getSwordsInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -426,10 +454,10 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/acrobatics")){
 			event.setCancelled(true);
 			String dodgepercentage;
-			float skillvalue = (float)mcUsers.getProfile(player).getAcrobaticsInt();
+			float skillvalue = (float)PP.getAcrobaticsInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		String gracepercentage = String.valueOf(((skillvalue / 1000) * 100) * 2);
-    		if(mcUsers.getProfile(player).getAcrobaticsInt() <= 800){
+    		if(PP.getAcrobaticsInt() <= 800){
     			dodgepercentage = String.valueOf((skillvalue / 4000 * 100));
     		} else {
     			dodgepercentage = "20";
@@ -446,10 +474,10 @@ public class mcm {
 			player.sendMessage(ChatColor.RED+"Dodge Chance: "+ChatColor.YELLOW+dodgepercentage+"%");
     	}
     	if(split[0].equalsIgnoreCase("/mining")){
-    		float skillvalue = (float)mcUsers.getProfile(player).getMiningInt();
+    		float skillvalue = (float)PP.getMiningInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		int ticks = 2;
-    		int x = mcUsers.getProfile(player).getMiningInt();
+    		int x = PP.getMiningInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -465,7 +493,7 @@ public class mcm {
 			player.sendMessage(ChatColor.RED+"Super Breaker Length: "+ChatColor.YELLOW+ticks+"s");
     	}
     	if(split[0].equalsIgnoreCase("/repair")){
-    		float skillvalue = (float)mcUsers.getProfile(player).getRepairInt();
+    		float skillvalue = (float)PP.getRepairInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		String repairmastery = String.valueOf((skillvalue / 500) * 100);
 			event.setCancelled(true);
@@ -483,15 +511,15 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/unarmed")){
 			event.setCancelled(true);
 			String percentage, arrowpercentage;
-			float skillvalue = (float)mcUsers.getProfile(player).getUnarmedInt();
+			float skillvalue = (float)PP.getUnarmedInt();
 			
-			if(mcUsers.getProfile(player).getUnarmedInt() < 1000){
+			if(PP.getUnarmedInt() < 1000){
 				percentage = String.valueOf((skillvalue / 4000) * 100);
 			} else {
 				percentage = "25";
 			}
 			
-			if(mcUsers.getProfile(player).getUnarmedInt() < 1000){
+			if(PP.getUnarmedInt() < 1000){
 				arrowpercentage = String.valueOf(((skillvalue / 1000) * 100) / 2);
 			} else {
 				arrowpercentage = "50";
@@ -499,7 +527,7 @@ public class mcm {
 			
 			
 			int ticks = 2;
-			int x = mcUsers.getProfile(player).getUnarmedInt();
+			int x = PP.getUnarmedInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -516,9 +544,9 @@ public class mcm {
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Arrow Deflect Chance: "+ChatColor.YELLOW+arrowpercentage+"%");
 			player.sendMessage(ChatColor.RED+"Disarm Chance: "+ChatColor.YELLOW+percentage+"%");
-			if(mcUsers.getProfile(player).getUnarmedInt() < 250){
+			if(PP.getUnarmedInt() < 250){
 				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 250+ SKILL (UNARMED APPRENTICE)");
-			} else if(mcUsers.getProfile(player).getUnarmedInt() >= 250 && mcUsers.getProfile(player).getUnarmedInt() < 500){
+			} else if(PP.getUnarmedInt() >= 250 && PP.getUnarmedInt() < 500){
 				player.sendMessage(ChatColor.RED+"Unarmed Apprentice: "+ChatColor.YELLOW+"Damage Upgrade");
 				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 500+ SKILL (UNARMED MASTERY)");
 			} else {
@@ -529,37 +557,59 @@ public class mcm {
     	if(split[0].equalsIgnoreCase("/herbalism")){
 			event.setCancelled(true);
 			int rank = 0;
-			if(mcUsers.getProfile(player).getHerbalismInt() >= 50)
+			if(PP.getHerbalismInt() >= 50)
     			rank++;
-    		if (mcUsers.getProfile(player).getHerbalismInt() >= 150)
+    		if (PP.getHerbalismInt() >= 150)
     			rank++;
-    		if (mcUsers.getProfile(player).getHerbalismInt() >= 250)
+    		if (PP.getHerbalismInt() >= 250)
     			rank++;
-    		if (mcUsers.getProfile(player).getHerbalismInt() >= 350)
+    		if (PP.getHerbalismInt() >= 350)
     			rank++;
-    		if (mcUsers.getProfile(player).getHerbalismInt() >= 450)
+    		if (PP.getHerbalismInt() >= 450)
     			rank++;
-    		if (mcUsers.getProfile(player).getHerbalismInt() >= 550)
+    		if (PP.getHerbalismInt() >= 550)
     			rank++;
-    		if (mcUsers.getProfile(player).getHerbalismInt() >= 650)
+    		if (PP.getHerbalismInt() >= 650)
     			rank++;
-    		if (mcUsers.getProfile(player).getHerbalismInt() >= 750)
+    		if (PP.getHerbalismInt() >= 750)
     			rank++;
-			float skillvalue = (float)mcUsers.getProfile(player).getHerbalismInt();
+    		int bonus = 0;
+    		if(PP.getHerbalismInt() >= 200)
+    			bonus++;
+    		if(PP.getHerbalismInt() >= 400)
+    			bonus++;
+    		if(PP.getHerbalismInt() >= 600)
+    			bonus++;
+    		
+    		int ticks = 2;
+			int x = PP.getHerbalismInt();
+    		while(x >= 50){
+    			x-=50;
+    			ticks++;
+    		}
+    		
+			float skillvalue = (float)PP.getHerbalismInt();
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
+    		String gpercentage = String.valueOf((skillvalue / 1500) * 100);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"HERBALISM"+ChatColor.RED+"[]-----");
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Harvesting Herbs");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Green Terra (ABILITY): "+ChatColor.GREEN+"Spread the Terra, 3x Drops");
+			player.sendMessage(ChatColor.DARK_AQUA+"Green Thumb (Wheat): "+ChatColor.GREEN+"Auto-Plants wheat when harvesting");
+			player.sendMessage(ChatColor.DARK_AQUA+"Green Thumb (Cobble): "+ChatColor.GREEN+"Cobblestone -> Mossy w/ Seeds");
 			player.sendMessage(ChatColor.DARK_AQUA+"Food+: "+ChatColor.GREEN+"Modifies health received from bread/stew");
-			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops (Wheat): "+ChatColor.GREEN+"Double the normal loot");
+			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops (All Herbs): "+ChatColor.GREEN+"Double the normal loot");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.RED+"Green Terra Length: "+ChatColor.YELLOW+ticks+"s");
+			player.sendMessage(ChatColor.RED+"Green Thumb Chance: "+gpercentage+"%");
+			player.sendMessage(ChatColor.RED+"Green Thumb Stage: Wheat grows in stage "+bonus);
 			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+percentage+"%");
 			player.sendMessage(ChatColor.RED+"Food+ (Rank"+rank+"): Bonus "+rank+" healing");
     	}
     	if(split[0].equalsIgnoreCase("/excavation")){
 			event.setCancelled(true);
 			int ticks = 2;
-			int x = mcUsers.getProfile(player).getExcavationInt();
+			int x = PP.getExcavationInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;

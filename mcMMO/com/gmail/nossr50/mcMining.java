@@ -6,6 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+
+import com.gmail.nossr50.PlayerList.PlayerProfile;
 
 
 public class mcMining {
@@ -21,27 +24,32 @@ public class mcMining {
     	return instance;
     	}
 	
-	public void superBreakerCheck(Player player, Block block){
+	public void superBreakerCheck(Player player, Block block, Plugin pluginx){
+		PlayerProfile PP = mcUsers.getProfile(player.getName());
 	    if(mcm.getInstance().isMiningPick(player.getItemInHand())){
 	    	if(block != null){
 		    	if(!mcm.getInstance().abilityBlockCheck(block))
 		    		return;
 	    	}
-	    	if(mcUsers.getProfile(player).getPickaxePreparationMode()){
-    			mcUsers.getProfile(player).setPickaxePreparationMode(false);
+	    	if(PP.getPickaxePreparationMode()){
+    			PP.setPickaxePreparationMode(false);
     		}
 	    	int ticks = 2;
-	    	int x = mcUsers.getProfile(player).getMiningInt();
+	    	int x = PP.getMiningInt();
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
     		
-	    	if(!mcUsers.getProfile(player).getSuperBreakerMode() && mcUsers.getProfile(player).getSuperBreakerCooldown() == 0){
+	    	if(!PP.getSuperBreakerMode() && PP.getSuperBreakerCooldown() == 0){
 	    		player.sendMessage(ChatColor.GREEN+"**SUPER BREAKER ACTIVATED**");
-	    		mcUsers.getProfile(player).setSuperBreakerTicks(ticks * 1000);
-	    		mcUsers.getProfile(player).setSuperBreakerActivatedTimeStamp(System.currentTimeMillis());
-	    		mcUsers.getProfile(player).setSuperBreakerMode(true);
+	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
+	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Super Breaker!");
+	    		}
+	    		PP.setSuperBreakerTicks(ticks * 1000);
+	    		PP.setSuperBreakerActivatedTimeStamp(System.currentTimeMillis());
+	    		PP.setSuperBreakerMode(true);
 	    	}
 	    	
 	    }
@@ -93,19 +101,26 @@ public class mcMining {
 		}
     }
     public void blockProcCheck(Block block, Player player){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(player != null){
-    		if(Math.random() * 1000 <= mcUsers.getProfile(player).getMiningInt()){
+    		if(Math.random() * 1000 <= PP.getMiningInt()){
     		blockProcSimulate(block);
 			return;
     		}
     	}		
 	}
     public void miningBlockCheck(Player player, Block block){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(mcConfig.getInstance().isBlockWatched(block) || block.getData() == (byte) 5)
     		return;
     	int xp = 0;
     	if(block.getTypeId() == 1 || block.getTypeId() == 24){
     		xp += 3;
+    		blockProcCheck(block, player);
+    	}
+    	//OBSIDIAN
+    	if(block.getTypeId() == 49){
+    		xp += 15;
     		blockProcCheck(block, player);
     	}
     	//NETHERRACK
@@ -148,7 +163,7 @@ public class mcMining {
     		xp += 40;
     		blockProcCheck(block, player);
     	}
-    	mcUsers.getProfile(player).addMiningGather(xp * mcLoadProperties.xpGainMultiplier);
+    	PP.addMiningGather(xp * mcLoadProperties.xpGainMultiplier);
     	mcSkills.getInstance().XpCheck(player);
     }
     /*
@@ -156,13 +171,14 @@ public class mcMining {
      */
     public Boolean canBeSuperBroken(Block block){
     	int t = block.getTypeId();
-    	if(t == 87 || t == 89 || t == 73 || t == 74 || t == 56 || t == 21 || t == 1 || t == 16 || t == 14 || t == 15){
+    	if(t == 49 || t == 87 || t == 89 || t == 73 || t == 74 || t == 56 || t == 21 || t == 1 || t == 16 || t == 14 || t == 15){
     		return true;
     	} else {
     		return false;
     	}
     }
     public void SuperBreakerBlockCheck(Player player, Block block){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(mcLoadProperties.toolsLoseDurabilityFromAbilities)
     		mcm.getInstance().damageTool(player, (short) mcLoadProperties.abilityDurabilityLoss);
     	Location loc = block.getLocation();
@@ -232,6 +248,20 @@ public class mcMining {
 			loc.getWorld().dropItemNaturally(loc, item);
     		block.setType(Material.AIR);
     	}
+    	//OBSIDIAN
+    	if(block.getTypeId() == 49 && mcm.getInstance().getTier(player) >= 4){
+    		if(mcLoadProperties.toolsLoseDurabilityFromAbilities)
+        		mcm.getInstance().damageTool(player, (short) 104);
+    		if(!mcConfig.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
+    			xp += 15;
+        		blockProcCheck(block, player);
+        		blockProcCheck(block, player);
+        	}
+    		mat = Material.getMaterial(49);
+			item = new ItemStack(mat, 1, (byte)0, damage);
+			loc.getWorld().dropItemNaturally(loc, item);
+    		block.setType(Material.AIR);
+    	}
     	//DIAMOND
     	if(block.getTypeId() == 56 && mcm.getInstance().getTier(player) >= 3){
     		if(!mcConfig.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
@@ -288,7 +318,7 @@ public class mcMining {
     		block.setType(Material.AIR);
     	}
     	if(block.getData() != (byte) 5)
-    		mcUsers.getProfile(player).addMiningGather(xp * mcLoadProperties.xpGainMultiplier);
+    		PP.addMiningGather(xp * mcLoadProperties.xpGainMultiplier);
     	mcSkills.getInstance().XpCheck(player);
     }
 }

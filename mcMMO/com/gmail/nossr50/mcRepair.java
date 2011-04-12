@@ -5,6 +5,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.PlayerList.PlayerProfile;
+
 
 public class mcRepair {
 	private static mcMMO plugin;
@@ -19,12 +21,13 @@ public class mcRepair {
     	return instance;
     }
 	public void repairCheck(Player player, ItemStack is, Block block){
-		short durabilityBefore = is.getDurability();
+		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		short durabilityBefore = player.getItemInHand().getDurability();
 		short durabilityAfter = 0;
 		short dif = 0;
     	if(block != null
     			&& mcPermissions.getInstance().repair(player)){
-        	if(player.getItemInHand().getDurability() > 0){
+        	if(player.getItemInHand().getDurability() > 0 && player.getItemInHand().getAmount() < 2){
         		/*
         		 * ARMOR
         		 */
@@ -32,29 +35,32 @@ public class mcRepair {
         			/*
         			 * DIAMOND ARMOR
         			 */
-        			if(isDiamondArmor(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= mcLoadProperties.repairdiamondlevel){
+        			if(isDiamondArmor(is) && hasDiamond(player) && PP.getRepairInt() >= mcLoadProperties.repairdiamondlevel){
 	        			removeDiamond(player);
 	        			player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-	        			durabilityAfter = is.getDurability();
+	        			durabilityAfter = player.getItemInHand().getDurability();
+	        			player.sendMessage(String.valueOf(durabilityBefore - durabilityAfter));
 	        			dif = (short) (durabilityBefore - durabilityAfter);
-	        			mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+	        			dif = (short) (dif * 6); //Boost XP
+	        			PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
         			} else if (isIronArmor(is) && hasIron(player)){
         			/*
         			 * IRON ARMOR
         			 */
 	        			removeIron(player);
 	            		player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-	            		durabilityAfter = is.getDurability();
+	            		durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+	            		dif = (short) (dif * 2); //Boost XP
+	            		PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasGold(player)){
         				removeGold(player);
         				player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
-        				durabilityAfter = is.getDurability();
+        				durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 4); //Boost XP of Gold to around Iron
-        				mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+        				PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
         			} else {
         				needMoreVespeneGas(is, player);
         			}
@@ -67,9 +73,12 @@ public class mcRepair {
         			 * IRON TOOLS
         			 */
             		if(isIronTools(is) && hasIron(player)){
-            			is.setDurability(getToolRepairAmount(is, player));
             			removeIron(player);
-            			durabilityAfter = is.getDurability();
+            			/*
+            			 * Repair Durability and calculate dif
+            			 */
+            			player.getItemInHand().setDurability(getToolRepairAmount(is, player));
+            			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(mcm.getInstance().isShovel(is))
 	        				dif = (short) (dif / 3);
@@ -77,14 +86,14 @@ public class mcRepair {
 	        				dif = (short) (dif / 2);
 	        			if(mcm.getInstance().isHoe(is))
 	        				dif = (short) (dif / 2);
-            			mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
-            		} else if (isDiamondTools(is) && hasDiamond(player) && mcUsers.getProfile(player).getRepairInt() >= mcLoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
+            			PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+            		} else if (isDiamondTools(is) && hasDiamond(player) && PP.getRepairInt() >= mcLoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
             			/*
             			 * DIAMOND TOOLS
             			 */
-            			is.setDurability(getToolRepairAmount(is, player));
+            			player.getItemInHand().setDurability(getToolRepairAmount(is, player));
             			removeDiamond(player);
-            			durabilityAfter = is.getDurability();
+            			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(mcm.getInstance().isShovel(is))
 	        				dif = (short) (dif / 3);
@@ -92,11 +101,11 @@ public class mcRepair {
 	        				dif = (short) (dif / 2);
 	        			if(mcm.getInstance().isHoe(is))
 	        				dif = (short) (dif / 2);
-            			mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+            			PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
             		} else if(isGoldTools(is) && hasGold(player)){
-            			is.setDurability(getToolRepairAmount(is, player));
+            			player.getItemInHand().setDurability(getToolRepairAmount(is, player));
             			removeGold(player);
-            			durabilityAfter = is.getDurability();
+            			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 7.6); //Boost XP for Gold to that of around Iron
 	            		if(mcm.getInstance().isShovel(is))
@@ -105,7 +114,7 @@ public class mcRepair {
 	        				dif = (short) (dif / 2);
 	        			if(mcm.getInstance().isHoe(is))
 	        				dif = (short) (dif / 2);
-            			mcUsers.getProfile(player).addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+            			PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
             		} else {
             			needMoreVespeneGas(is, player);
             		}
@@ -263,7 +272,8 @@ public class mcRepair {
     	return false;
     }
     public short repairCalculate(Player player, short durability, short ramt){
-    	float bonus = (mcUsers.getProfile(player).getRepairInt() / 500);
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	float bonus = (PP.getRepairInt() / 500);
     	bonus = (ramt * bonus);
     	ramt = ramt+=bonus;
     	if(checkPlayerProcRepair(player)){
@@ -388,12 +398,11 @@ public class mcRepair {
     		}
 			if(durability < 0)
 				durability = 0;
-			if(checkPlayerProcRepair(player))
-				durability = 0;
 			return repairCalculate(player, durability, ramt);
     }
     public void needMoreVespeneGas(ItemStack is, Player player){
-    	if ((isDiamondTools(is) || isDiamondArmor(is)) && mcUsers.getProfile(player).getRepairInt() < mcLoadProperties.repairdiamondlevel){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	if ((isDiamondTools(is) || isDiamondArmor(is)) && PP.getRepairInt() < mcLoadProperties.repairdiamondlevel){
 			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
 		} else if (isDiamondTools(is) && !hasDiamond(player) || isIronTools(is) && !hasIron(player) || isGoldTools(is) && !hasGold(player)){
 			if(isDiamondTools(is) && !hasDiamond(player))
@@ -407,12 +416,15 @@ public class mcRepair {
 			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
 		} else if (isIronArmor(is) && !hasIron(player)){
 			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
-		} else if (isGoldArmor(is) && !hasGold(player))
+		} else if (isGoldArmor(is) && !hasGold(player)){
 			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GOLD+"Gold");
-		}
+		} else if (is.getAmount() > 1)
+			player.sendMessage(ChatColor.DARK_RED+"You can't repair stacked items");
+    	}
     public boolean checkPlayerProcRepair(Player player){
+    	PlayerProfile PP = mcUsers.getProfile(player.getName());
 		if(player != null){
-			if(Math.random() * 1000 <= mcUsers.getProfile(player).getRepairInt()){
+			if(Math.random() * 1000 <= PP.getRepairInt()){
 				player.sendMessage(ChatColor.GRAY + "That felt easy.");
 				return true;
 			}

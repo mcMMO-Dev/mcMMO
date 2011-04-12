@@ -1,9 +1,9 @@
 package com.gmail.nossr50;
 
 public class mcLoadProperties {
-	public static Boolean archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	public static Boolean cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String addxp, mcability, mcmmo, mcc, mcrefresh, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
-	public static int xpGainMultiplier, superBreakerCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
+	public static int xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public static void loadMain(){
     	String propertiesFile = mcMMO.maindirectory + "mcmmo.properties";
@@ -13,6 +13,7 @@ public class mcLoadProperties {
     	/*
     	 * COOLDOWN CONTROL
     	 */
+    	greenTerraCooldown = properties.getInteger("greenTerraCooldown", 240);
     	superBreakerCooldown = properties.getInteger("superBreakerCooldown", 240);
     	gigaDrillBreakerCooldown = properties.getInteger("gigaDrillBreakerCooldown", 240);
     	treeFellerCooldown = properties.getInteger("treeFellerCooldown", 240);
@@ -58,6 +59,7 @@ public class mcLoadProperties {
     	/*
     	 * EXCAVATION LOOT TOGGLES
     	 */
+    	cocoabeans = properties.getBoolean("canExcavateCocoaBeans", true);
     	mushrooms = properties.getBoolean("canExcavateMushrooms", true);
     	glowstone = properties.getBoolean("canExcavateGlowstone", true);
     	pvp = properties.getBoolean("pvp", true);

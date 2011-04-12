@@ -1,10 +1,14 @@
 package com.gmail.nossr50;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+
+import com.gmail.nossr50.PlayerList.PlayerProfile;
 
 
 public class mcItem {
@@ -19,17 +23,18 @@ public class mcItem {
     	}
     	return instance;
     	}
-	public void itemChecks(Player player){
+	public void itemChecks(Player player, Plugin pluginx){
 		ItemStack inhand = player.getItemInHand();
 		if(inhand.getTypeId() == 288){
-			chimaerawing(player);
+			chimaerawing(player, pluginx);
 		}
 	}
-	public void chimaerawing(Player player){
+	public void chimaerawing(Player player, Plugin pluginx){
+		PlayerProfile PP = mcUsers.getProfile(player.getName());
 		ItemStack is = player.getItemInHand();
 		Block block = player.getLocation().getBlock();
 		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == 288){
-    		if(mcSkills.getInstance().cooldownOver(player, mcUsers.getProfile(player).getRecentlyHurt(), 60) && is.getAmount() >= mcLoadProperties.feathersConsumedByChimaeraWing){
+    		if(mcSkills.getInstance().cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= mcLoadProperties.feathersConsumedByChimaeraWing){
     			Block derp = player.getLocation().getBlock();
     			int y = derp.getY();
     			ItemStack[] inventory = player.getInventory().getContents();
@@ -59,15 +64,21 @@ public class mcItem {
     					}
     				}
     			}
-    			if(mcUsers.getProfile(player).getMySpawn(player) != null){
-    				player.teleportTo(mcUsers.getProfile(player).getMySpawn(player));
+    			if(PP.getMySpawn(player) != null){
+    				Location mySpawn = PP.getMySpawn(player);
+    				if(mySpawn != null && pluginx.getServer().getWorld(PP.getMySpawnWorld(pluginx)) != null)
+    					mySpawn.setWorld(pluginx.getServer().getWorld(PP.getMySpawnWorld(pluginx)));
+    				if(mySpawn != null){
+	    				player.teleportTo(mySpawn);//Do it twice to prevent weird stuff
+	    				player.teleportTo(mySpawn);
+    				}
     			} else {
     				player.teleportTo(player.getWorld().getSpawnLocation());
     			}
     			player.sendMessage("**CHIMAERA WING**");
-    		} else if (!mcSkills.getInstance().cooldownOver(player, mcUsers.getProfile(player).getRecentlyHurt(), 60) && is.getAmount() >= 10) {
+    		} else if (!mcSkills.getInstance().cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= 10) {
     			player.sendMessage("You were injured recently and must wait to use this."
-    					+ChatColor.YELLOW+" ("+mcSkills.getInstance().calculateTimeLeft(player, mcUsers.getProfile(player).getRecentlyHurt(), 60)+"s)");
+    					+ChatColor.YELLOW+" ("+mcSkills.getInstance().calculateTimeLeft(player, PP.getRecentlyHurt(), 60)+"s)");
     		} else if (is.getTypeId() == 288 && is.getAmount() <= 9){
     			player.sendMessage("You need more of that to use it");
     		}

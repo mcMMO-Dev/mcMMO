@@ -77,8 +77,8 @@ public class mcUsers {
 	//Output:	none
 	//Use:		Creates the player profile
 	//=====================================================================
-    public static void removeUser(Player player){
-    	players.removePlayer(player);
+    public static void removeUser(String playername){
+    	players.removePlayer(playername);
     }
 
 	//=====================================================================
@@ -87,8 +87,8 @@ public class mcUsers {
 	//Output:	PlayerList.PlayerProfile: The profile
 	//Use:		Gets the player profile
 	//=====================================================================
-    public static PlayerList.PlayerProfile getProfile(Player player){
-    	return players.findProfile(player);
+    public static PlayerList.PlayerProfile getProfile(String playername){
+    	return players.findProfile(playername);
     }
     
     public static mcUsers getInstance() {
@@ -131,9 +131,9 @@ class PlayerList
 	//Output:	None
 	//Use:		Remove the profile of the specified player
 	//=====================================================================
-	public void removePlayer(Player player)
+	public void removePlayer(String playername)
 	{
-		players.remove(findProfile(player));
+		players.remove(findProfile(playername));
 	}
 
 	//=====================================================================
@@ -142,11 +142,11 @@ class PlayerList
 	//Output:	PlayerProfile: The profile of the specified player
 	//Use:		Get the profile for the specified player
 	//=====================================================================
-	public PlayerProfile findProfile(Player player)
+	public PlayerProfile findProfile(String playername)
 	{
 		for(PlayerProfile ply : players)
 		{
-			if(ply.isPlayer(player))
+			if(ply.isPlayer(playername))
 				return ply;
 		}
 		return null;
@@ -157,12 +157,12 @@ class PlayerList
 	    protected final Logger log = Logger.getLogger("Minecraft");
 		private String playerName, gather, wgather, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
 		archery, swords, axes, invite, acrobatics, repairgather, unarmedgather, herbalismgather, excavationgather, archerygather, swordsgather, axesgather, acrobaticsgather;
-		private boolean berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
+		private boolean greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, hoePreparationMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
 		private long gigaDrillBreakerCooldown = 0, berserkCooldown = 0, superBreakerCooldown = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0,
-		treeFellerCooldown = 0, recentlyHurt = 0, archeryShotATS = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
-		superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
-		skullSplitterATS = 0, skullSplitterDATS = 0, axePreparationATS = 0, pickaxePreparationATS = 0, fistsPreparationATS = 0, shovelPreparationATS = 0, swordsPreparationATS = 0;
-		private int berserkTicks = 0, bleedticks = 0, gigaDrillBreakerTicks = 0, superBreakerTicks = 0, serratedStrikesTicks = 0, skullSplitterTicks = 0, treeFellerTicks = 0;
+		greenTerraCooldown = 0, treeFellerCooldown = 0, recentlyHurt = 0, archeryShotATS = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
+		mySpawnATS = 0, greenTerraATS = 0, greenTerraDATS = 0, superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
+		skullSplitterATS = 0, skullSplitterDATS = 0, hoePreparationATS = 0, axePreparationATS = 0, pickaxePreparationATS = 0, fistsPreparationATS = 0, shovelPreparationATS = 0, swordsPreparationATS = 0;
+		private int berserkTicks = 0, bleedticks = 0, greenTerraTicks = 0, gigaDrillBreakerTicks = 0, superBreakerTicks = 0, serratedStrikesTicks = 0, skullSplitterTicks = 0, treeFellerTicks = 0;
 		//ATS = (Time of) Activation Time Stamp
 		//DATS = (Time of) Deactivation Time Stamp
 		Player thisplayer;
@@ -420,10 +420,12 @@ class PlayerList
 		//Output:	Player: The player this profile belongs to
 		//Use:		Finds if this profile belongs to a specified player
 		//=====================================================================
-		public boolean isPlayer(Player player)
+		public boolean isPlayer(String player)
 		{
-			return player.getName().equals(playerName);
+			return player.equals(playerName);
 		}
+		public boolean getPartyChatOnlyToggle(){return partyChatOnly;}
+		public void togglePartyChatOnly(){partyChatOnly = !partyChatOnly;}
 		public boolean getAbilityUse(){
 			return abilityuse;
 		}
@@ -433,6 +435,12 @@ class PlayerList
 			} else {
 				abilityuse = false;
 			}
+		}
+		public long getMySpawnATS(){
+			return mySpawnATS;
+		}
+		public void setMySpawnATS(long newvalue){
+			mySpawnATS = newvalue;
 		}
 		public void decreaseBleedTicks(){
 			if(bleedticks >= 1){
@@ -460,6 +468,22 @@ class PlayerList
 		 */
 		public long getArcheryShotATS() {return archeryShotATS;}
 		public void setArcheryShotATS(long newvalue) {archeryShotATS = newvalue;}
+		
+		/*
+		 * HOE PREPARATION
+		 */
+		public boolean getHoePreparationMode(){
+			return hoePreparationMode;
+		}
+		public void setHoePreparationMode(Boolean bool){
+			hoePreparationMode = bool;
+		}
+		public long getHoePreparationATS(){
+			return hoePreparationATS;
+		}
+		public void setHoePreparationATS(long newvalue){
+			hoePreparationATS = newvalue;
+		}
 		
 		/*
 		 * SWORDS PREPARATION
@@ -536,6 +560,35 @@ class PlayerList
 		public void setPickaxePreparationATS(long newvalue){
 			pickaxePreparationATS = newvalue;
 		}
+		/*
+		 * GREEN TERRA MODE
+		 */
+		public boolean getGreenTerraInformed() {return greenTerraInformed;}
+		public void setGreenTerraInformed(Boolean bool){
+			greenTerraInformed = bool;
+		}
+		public boolean getGreenTerraMode(){
+			return greenTerraMode;
+		}
+		public void setGreenTerraMode(Boolean bool){
+			greenTerraMode = bool;
+		}
+		public long getGreenTerraActivatedTimeStamp() {return greenTerraATS;}
+		public void setGreenTerraActivatedTimeStamp(Long newvalue){
+			greenTerraATS = newvalue;
+		}
+		public long getGreenTerraDeactivatedTimeStamp() {return greenTerraDATS;}
+		public void setGreenTerraDeactivatedTimeStamp(Long newvalue){
+			greenTerraDATS = newvalue;
+		}
+		public void setGreenTerraCooldown(Long newvalue){
+			greenTerraCooldown = newvalue;
+		}
+		public long getGreenTerraCooldown(){
+			return greenTerraCooldown;
+		}
+		public void setGreenTerraTicks(Integer newvalue){greenTerraTicks = newvalue;}
+		public int getGreenTerraTicks(){return greenTerraTicks;}
 		/*
 		 * BERSERK MODE
 		 */
@@ -1472,7 +1525,9 @@ class PlayerList
 				axesgather = String.valueOf(Integer.valueOf(axesgather)+newvalue);
 			}
 			save();
+			if(isPlayer(playerName)){
 			mcSkills.getInstance().XpCheck(thisplayer);
+			}
 		}
 		public void modifyskill(int newvalue, String skillname){
 			if(skillname.toLowerCase().equals("mining")){
@@ -1553,30 +1608,6 @@ class PlayerList
 				return 0;
 			}
 		}
-		public int getPowerLevel(){
-			int x = 0;
-			if(mcPermissions.getInstance().mining(thisplayer))
-				x+=getMiningInt();
-			if(mcPermissions.getInstance().woodcutting(thisplayer))
-				x+=getWoodCuttingInt();
-			if(mcPermissions.getInstance().unarmed(thisplayer))
-				x+=getUnarmedInt();
-			if(mcPermissions.getInstance().herbalism(thisplayer))
-				x+=getHerbalismInt();
-			if(mcPermissions.getInstance().excavation(thisplayer))
-				x+=getExcavationInt();
-			if(mcPermissions.getInstance().archery(thisplayer))
-				x+=getArcheryInt();
-			if(mcPermissions.getInstance().swords(thisplayer))
-				x+=getSwordsInt();
-			if(mcPermissions.getInstance().axes(thisplayer))
-				x+=getAxesInt();
-			if(mcPermissions.getInstance().acrobatics(thisplayer))
-				x+=getAcrobaticsInt();
-			if(mcPermissions.getInstance().repair(thisplayer))
-				x+=getRepairInt();
-			return x;
-		}
 		public int getMiningGatherInt() {
 			if(isInt(gather)){
 			return Integer.parseInt(gather);
@@ -1654,9 +1685,9 @@ class PlayerList
                 public Location getMySpawn(Player player){
                 	Location loc = player.getWorld().getSpawnLocation();
                 	if(isDouble(getX()) && isDouble(getY()) && isDouble(getX())){
-            		loc.setX(Double.parseDouble(mcUsers.getProfile(player).getX()));
-            		loc.setY(Double.parseDouble(mcUsers.getProfile(player).getY()));
-            		loc.setZ(Double.parseDouble(mcUsers.getProfile(player).getZ()));
+            		loc.setX(Double.parseDouble(mcUsers.getProfile(player.getName()).getX()));
+            		loc.setY(Double.parseDouble(mcUsers.getProfile(player.getName()).getY()));
+            		loc.setZ(Double.parseDouble(mcUsers.getProfile(player.getName()).getZ()));
                 	} else {
                 		return null;
                 	}
