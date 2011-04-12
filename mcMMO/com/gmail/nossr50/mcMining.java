@@ -41,7 +41,7 @@ public class mcMining {
     			ticks++;
     		}
     		
-	    	if(!PP.getSuperBreakerMode() && PP.getSuperBreakerCooldown() == 0){
+	    	if(!PP.getSuperBreakerMode() && mcSkills.getInstance().cooldownOver(player, PP.getSuperBreakerDeactivatedTimeStamp(), mcLoadProperties.superBreakerCooldown)){
 	    		player.sendMessage(ChatColor.GREEN+"**SUPER BREAKER ACTIVATED**");
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
 	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)

@@ -109,7 +109,7 @@ public class mcPlayerListener extends PlayerListener {
         	
         	if(mcm.getInstance().abilityBlockCheck(block))
 	    	{
-        		if(block != null && mcm.getInstance().isHoe(player.getItemInHand()) && block.getTypeId() != 3){
+        		if(block != null && mcm.getInstance().isHoe(player.getItemInHand()) && block.getTypeId() != 3 && block.getTypeId() != 2 && block.getTypeId() != 60){
         			mcSkills.getInstance().hoeReadinessCheck(player);
         		}
 	    		mcSkills.getInstance().abilityActivationCheck(player);

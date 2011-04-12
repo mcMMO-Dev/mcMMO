@@ -26,26 +26,30 @@ public class mcHerbalism {
     	return instance;
     	}
 	public void greenTerraWheat(Player player, Block block, BlockBreakEvent event){
-		event.setCancelled(true);
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
-		Material mat = Material.getMaterial(296);
-		Location loc = block.getLocation();
-		ItemStack is = new ItemStack(mat, 1, (byte)0, (byte)0);
-		PP.addHerbalismGather(5 * mcLoadProperties.xpGainMultiplier);
-    	loc.getWorld().dropItemNaturally(loc, is);
-    	herbalismProcCheck(block, player, event);
-    	herbalismProcCheck(block, player, event);
-		block.setData((byte) 0x03);
+		if(block.getType() == Material.WHEAT && block.getData() == (byte) 0x07){
+			event.setCancelled(true);
+			PlayerProfile PP = mcUsers.getProfile(player.getName());
+			Material mat = Material.getMaterial(296);
+			Location loc = block.getLocation();
+			ItemStack is = new ItemStack(mat, 1, (byte)0, (byte)0);
+			PP.addHerbalismGather(5 * mcLoadProperties.xpGainMultiplier);
+	    	loc.getWorld().dropItemNaturally(loc, is);
+	    	herbalismProcCheck(block, player, event);
+	    	herbalismProcCheck(block, player, event);
+			block.setData((byte) 0x03);
+		}
 	}
 	public void greenTerra(Player player, Block block){
-		if(!hasSeeds(player) && block.getType() != Material.WHEAT)
-			player.sendMessage("You need more seeds to spread Green Terra");
-		if(hasSeeds(player) && block.getType() != Material.WHEAT){
-		removeSeeds(player);	
-		if(block.getType() == Material.DIRT)
-			block.setType(Material.GRASS);
-		if(block.getType() == Material.COBBLESTONE)
-			block.setType(Material.MOSSY_COBBLESTONE);
+		if(block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT){
+			if(!hasSeeds(player))
+				player.sendMessage("You need more seeds to spread Green Terra");
+			if(hasSeeds(player) && block.getType() != Material.WHEAT){
+				removeSeeds(player);	
+			if(block.getType() == Material.DIRT)
+				block.setType(Material.GRASS);
+			if(block.getType() == Material.COBBLESTONE)
+				block.setType(Material.MOSSY_COBBLESTONE);
+			}
 		}
 	}
 	public Boolean canBeGreenTerra(Block block){
@@ -98,7 +102,7 @@ public class mcHerbalism {
     			ticks++;
     		}
     		
-	    	if(!PP.getGreenTerraMode() && PP.getGreenTerraCooldown() == 0){
+	    	if(!PP.getGreenTerraMode() && mcSkills.getInstance().cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), mcLoadProperties.greenTerraCooldown)){
 	    		player.sendMessage(ChatColor.GREEN+"**GREEN TERRA ACTIVATED**");
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
 	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
@@ -172,8 +176,7 @@ public class mcHerbalism {
 	    	}
     		//Sugar Canes
 	    	if(type == 83){
-	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				is = new ItemStack(Material.SUGAR_CANE, 1, (byte)0, (byte)0);
 	    		if(player != null){
 		    		if(Math.random() * 1000 <= PP.getHerbalismInt()){
 		    			loc.getWorld().dropItemNaturally(loc, is);

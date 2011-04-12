@@ -58,8 +58,12 @@ public class mcBlockListener extends BlockListener {
    		/*
    		 * HERBALISM
    		 */
-   		if(mcPermissions.getInstance().herbalismAbility(player)&& PP.getGreenTerraMode() && block.getTypeId() == 59 && block.getData() == (byte) 0x07){
+   		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07){
    			mcHerbalism.getInstance().greenTerraCheck(player, block, plugin);
+   		}
+   		//Wheat && Triple drops
+   		if(PP.getGreenTerraMode() && mcHerbalism.getInstance().canBeGreenTerra(block)){
+   			mcHerbalism.getInstance().herbalismProcCheck(block, player, event);
    			mcHerbalism.getInstance().greenTerraWheat(player, block, event);
    		}
    		
@@ -141,11 +145,12 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * HERBALISM
     	 */
-    	if(mcPermissions.getInstance().herbalism(player) && mcHerbalism.getInstance().canBeGreenTerra(block)){
+    	if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalism(player) && mcHerbalism.getInstance().canBeGreenTerra(block)){
     		mcHerbalism.getInstance().greenTerraCheck(player, block, plugin);
-    		if(block.getData() != (byte) 5)
-    			mcHerbalism.getInstance().herbalismProcCheck(block, player, event);
     	}
+    	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
+			mcHerbalism.getInstance().herbalismProcCheck(block, player, event);
+    	
     	//Change the byte back when broken
     	if(block.getData() == 5)
     		block.setData((byte) 0);
