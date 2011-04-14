@@ -256,23 +256,23 @@ public class mcBlockListener extends BlockListener {
             int oy = blockTo.getY();
             int oz = blockTo.getZ();
 
-            if(blockTo.getTypeId() == 9 || blockTo.getTypeId() == 8){
+            if(blockTo.getTypeId() == 9 || blockTo.getTypeId() == 8)
             	return;
-            }
-
-            for (int cx = -radius; cx <= radius; cx++) {
-                for (int cy = -radius; cy <= radius; cy++) {
-                    for (int cz = -radius; cz <= radius; cz++) {
-                        Block block = world.getBlockAt(ox + cx, oy + cy, oz + cz);
-                        //If block is block
-                        if (isWater == true &&
-                        		block.getTypeId() == 13 && mcLoadProperties.clay) {
-                        	//Change
-                        	block.setTypeId(82);
-                            return;
-                        }
-                    }
-                }
+            
+            if(mcLoadProperties.clay){
+	            for (int cx = -radius; cx <= radius; cx++) {
+	                for (int cy = -radius; cy <= radius; cy++) {
+	                    for (int cz = -radius; cz <= radius; cz++) {
+	                        Block block = world.getBlockAt(ox + cx, oy + cy, oz + cz);
+	                        //If block is block
+	                        if (isWater == true){
+	                        	//Change
+	                        	block.setType(Material.CLAY);
+	                            return;
+	                        }
+	                    }
+	                }
+	            }
             }
     }
 }

@@ -138,7 +138,7 @@ public class mcHerbalism {
     		if(Math.random() * 1500 <= PP.getHerbalismInt()){
     			event.setCancelled(true);
     			loc.getWorld().dropItemNaturally(loc, is);
-    			//block.setType(Material.WHEAT); //Change broken block to wheat
+    			
     			block.setData((byte) 0x1); //Change it to first stage
     			
     			//Setup the bonuses
