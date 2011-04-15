@@ -116,13 +116,18 @@ public class mcPlayerListener extends PlayerListener {
 	    	}
         	
         	//GREEN THUMB
-        	if(block != null && block.getType() == Material.COBBLESTONE && player.getItemInHand().getType() == Material.SEEDS){
+        	if(block != null && (block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT) && player.getItemInHand().getType() == Material.SEEDS){
         		boolean pass = false;
         		if(mcHerbalism.getInstance().hasSeeds(player)){
         			mcHerbalism.getInstance().removeSeeds(player);
-	        		if(Math.random() * 1500 <= PP.getHerbalismInt()){
+	        		if(block.getType() == Material.COBBLESTONE && Math.random() * 1500 <= PP.getHerbalismInt()){
 	        			player.sendMessage(ChatColor.GREEN+"**GREEN THUMB**");
 	        			block.setType(Material.MOSSY_COBBLESTONE);
+	        			pass = true;
+	        		}
+	        		if(block.getType() == Material.DIRT && Math.random() * 1500 <= PP.getHerbalismInt()){
+	        			player.sendMessage(ChatColor.GREEN+"**GREEN THUMB**");
+	        			block.setType(Material.GRASS);
 	        			pass = true;
 	        		}
 	        		if(pass == false)
@@ -368,45 +373,49 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Health: "+target.getHealth()+ChatColor.GRAY+" (20 is full health)");
     		player.sendMessage("OP: " + target.isOp());
     		player.sendMessage(ChatColor.GREEN+"mcMMO Stats for "+ChatColor.YELLOW+target.getName());
+    		if(mcPermissions.getInstance().taming(target))
+        		player.sendMessage(ChatColor.YELLOW + "Taming Skill: " + ChatColor.GREEN + PPt.getTaming()+ChatColor.DARK_AQUA 
+        				+ " XP("+PPt.getTamingXP()
+        				+"/"+PPt.getXpToLevel("taming")+")");
     		if(mcPermissions.getInstance().mining(target))
     		player.sendMessage(ChatColor.YELLOW + "Mining Skill: " + ChatColor.GREEN + PPt.getMining()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getMiningGather()
+    				+ " XP("+PPt.getMiningXP()
     				+"/"+PPt.getXpToLevel("mining")+")");
     		if(mcPermissions.getInstance().repair(target))
     		player.sendMessage(ChatColor.YELLOW + "Repair Skill: "+ ChatColor.GREEN + PPt.getRepair()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getRepairGather()
+    				+ " XP("+PPt.getRepairXP()
     				+"/"+PPt.getXpToLevel("repair")+")");
     		if(mcPermissions.getInstance().woodcutting(target))
     		player.sendMessage(ChatColor.YELLOW + "Woodcutting Skill: "+ ChatColor.GREEN + PPt.getWoodCutting()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getWoodCuttingGather()
+    				+ " XP("+PPt.getWoodCuttingXP()
     				+"/"+PPt.getXpToLevel("woodcutting")+")");
     		if(mcPermissions.getInstance().unarmed(target))
     		player.sendMessage(ChatColor.YELLOW + "Unarmed Skill: " + ChatColor.GREEN + PPt.getUnarmed()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getUnarmedGather()
+    				+ " XP("+PPt.getUnarmedXP()
     				+"/"+PPt.getXpToLevel("unarmed")+")");
     		if(mcPermissions.getInstance().herbalism(target))
     		player.sendMessage(ChatColor.YELLOW + "Herbalism Skill: "+ ChatColor.GREEN +  PPt.getHerbalism()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getHerbalismGather()
+    				+ " XP("+PPt.getHerbalismXP()
     				+"/"+PPt.getXpToLevel("herbalism")+")");
     		if(mcPermissions.getInstance().excavation(target))
     		player.sendMessage(ChatColor.YELLOW + "Excavation Skill: "+ ChatColor.GREEN +  PPt.getExcavation()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getExcavationGather()
+    				+ " XP("+PPt.getExcavationXP()
     				+"/"+PPt.getXpToLevel("excavation")+")");
     		if(mcPermissions.getInstance().archery(target))
     		player.sendMessage(ChatColor.YELLOW + "Archery Skill: " + ChatColor.GREEN + PPt.getArchery()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getArcheryGather()
+    				+ " XP("+PPt.getArcheryXP()
     				+"/"+PPt.getXpToLevel("archery")+")");
     		if(mcPermissions.getInstance().swords(target))
     		player.sendMessage(ChatColor.YELLOW + "Swords Skill: " + ChatColor.GREEN + PPt.getSwords()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getSwordsGather()
+    				+ " XP("+PPt.getSwordsXP()
     				+"/"+PPt.getXpToLevel("swords")+")");
     		if(mcPermissions.getInstance().axes(target))
     		player.sendMessage(ChatColor.YELLOW + "Axes Skill: " + ChatColor.GREEN + PPt.getAxes()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getAxesGather()
+    				+ " XP("+PPt.getAxesXP()
     				+"/"+PPt.getXpToLevel("axes")+")");
     		if(mcPermissions.getInstance().acrobatics(target))
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + PPt.getAcrobatics()+ChatColor.DARK_AQUA 
-    				+ " XP("+PPt.getAcrobaticsGather()
+    				+ " XP("+PPt.getAcrobaticsXP()
     				+"/"+PPt.getXpToLevel("acrobatics")+")");
     		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+(mcm.getInstance().getPowerLevel(target)));
     		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
@@ -423,45 +432,50 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.GREEN + "Your mcMMO Stats");
     		if(mcPermissions.getInstance().permissionsEnabled)
     			player.sendMessage(ChatColor.DARK_GRAY+"If you don't have access to a skill it will not be shown here.");
+    		
+    		if(mcPermissions.getInstance().taming(player))
+        		player.sendMessage(ChatColor.YELLOW + "Taming Skill: " + ChatColor.GREEN + PP.getTaming()+ChatColor.DARK_AQUA 
+        				+ " XP("+PP.getTamingXP()
+        				+"/"+PP.getXpToLevel("taming")+")");
     		if(mcPermissions.getInstance().mining(player))
     		player.sendMessage(ChatColor.YELLOW + "Mining Skill: " + ChatColor.GREEN + PP.getMining()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getMiningGather()
+    				+ " XP("+PP.getMiningXP()
     				+"/"+PP.getXpToLevel("mining")+")");
     		if(mcPermissions.getInstance().repair(player))
     		player.sendMessage(ChatColor.YELLOW + "Repair Skill: "+ ChatColor.GREEN + PP.getRepair()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getRepairGather()
+    				+ " XP("+PP.getRepairXP()
     				+"/"+PP.getXpToLevel("repair")+")");
     		if(mcPermissions.getInstance().woodcutting(player))
     		player.sendMessage(ChatColor.YELLOW + "Woodcutting Skill: "+ ChatColor.GREEN + PP.getWoodCutting()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getWoodCuttingGather()
+    				+ " XP("+PP.getWoodCuttingXP()
     				+"/"+PP.getXpToLevel("woodcutting")+")");
     		if(mcPermissions.getInstance().unarmed(player))
     		player.sendMessage(ChatColor.YELLOW + "Unarmed Skill: " + ChatColor.GREEN + PP.getUnarmed()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getUnarmedGather()
+    				+ " XP("+PP.getUnarmedXP()
     				+"/"+PP.getXpToLevel("unarmed")+")");
     		if(mcPermissions.getInstance().herbalism(player))
     		player.sendMessage(ChatColor.YELLOW + "Herbalism Skill: "+ ChatColor.GREEN +  PP.getHerbalism()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getHerbalismGather()
+    				+ " XP("+PP.getHerbalismXP()
     				+"/"+PP.getXpToLevel("herbalism")+")");
     		if(mcPermissions.getInstance().excavation(player))
     		player.sendMessage(ChatColor.YELLOW + "Excavation Skill: "+ ChatColor.GREEN +  PP.getExcavation()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getExcavationGather()
+    				+ " XP("+PP.getExcavationXP()
     				+"/"+PP.getXpToLevel("excavation")+")");
     		if(mcPermissions.getInstance().archery(player))
     		player.sendMessage(ChatColor.YELLOW + "Archery Skill: " + ChatColor.GREEN + PP.getArchery()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getArcheryGather()
+    				+ " XP("+PP.getArcheryXP()
     				+"/"+PP.getXpToLevel("archery")+")");
     		if(mcPermissions.getInstance().swords(player))
     		player.sendMessage(ChatColor.YELLOW + "Swords Skill: " + ChatColor.GREEN + PP.getSwords()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getSwordsGather()
+    				+ " XP("+PP.getSwordsXP()
     				+"/"+PP.getXpToLevel("swords")+")");
     		if(mcPermissions.getInstance().axes(player))
     		player.sendMessage(ChatColor.YELLOW + "Axes Skill: " + ChatColor.GREEN + PP.getAxes()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getAxesGather()
+    				+ " XP("+PP.getAxesXP()
     				+"/"+PP.getXpToLevel("axes")+")");
     		if(mcPermissions.getInstance().acrobatics(player))
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + PP.getAcrobatics()+ChatColor.DARK_AQUA 
-    				+ " XP("+PP.getAcrobaticsGather()
+    				+ " XP("+PP.getAcrobaticsXP()
     				+"/"+PP.getXpToLevel("acrobatics")+")");
     		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+(mcm.getInstance().getPowerLevel(player)));
     	}

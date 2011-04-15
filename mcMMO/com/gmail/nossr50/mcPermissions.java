@@ -183,6 +183,13 @@ public class mcPermissions {
     	}
     	return instance;
     	}
+    public boolean taming(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.taming");
+        } else {
+            return true;
+        }
+    }
     public boolean mining(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.skills.mining");

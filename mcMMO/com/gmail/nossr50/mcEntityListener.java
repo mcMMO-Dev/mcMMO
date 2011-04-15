@@ -8,6 +8,7 @@ import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
@@ -70,9 +71,9 @@ public class mcEntityListener extends EntityListener {
     	 * Entity Damage by Entity checks
     	 */
     	if(event instanceof EntityDamageByEntityEvent && event.getDamage() >= 1){
-    		if(event.isCancelled()){
+    		if(event.isCancelled())
     			return;
-    		}
+    		
     		EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent)event;
     		Entity e = eventb.getEntity(); //Defender
         	Entity f = eventb.getDamager(); //Attacker
@@ -209,7 +210,7 @@ public class mcEntityListener extends EntityListener {
 	    			if(PPd.getAcrobaticsInt() <= 800){
 			    		if(Math.random() * 4000 <= PPd.getAcrobaticsInt()){
 			    			defender.sendMessage(ChatColor.GREEN+"**DODGE**");
-			    			PPd.addAcrobaticsGather(event.getDamage() * 12);
+			    			PPd.addAcrobaticsXP(event.getDamage() * 12);
 			    			mcSkills.getInstance().XpCheck(defender);
 			    			event.setDamage(event.getDamage() / 2);
 			    			//Needs to do minimal damage
@@ -218,7 +219,7 @@ public class mcEntityListener extends EntityListener {
 			    		}
 	    			} else if(Math.random() * 4000 <= 800) {
 		    			defender.sendMessage(ChatColor.GREEN+"**DODGE**");
-		    			PPd.addAcrobaticsGather(event.getDamage() * 12);
+		    			PPd.addAcrobaticsXP(event.getDamage() * 12);
 		    			mcSkills.getInstance().XpCheck(defender);
 		    			event.setDamage(event.getDamage() / 2);
 		    			//Needs to do minimal damage
@@ -227,7 +228,20 @@ public class mcEntityListener extends EntityListener {
 		    		}
 	    		}
         	}
+        	/*
+        	 * TAMING STUFF
+        	 */
+        	if(f instanceof Wolf){
+        		Wolf theWolf = (Wolf)f;
+        		if(mcTaming.getInstance().hasOwner(theWolf, plugin)){
+        			Player wolfMaster = mcTaming.getInstance().getOwner(theWolf, plugin);
+        			if(!event.isCancelled()){
+        				mcUsers.getProfile(wolfMaster.getName()).addXpToSkill(event.getDamage(), "Taming");
+        			}
+        		}
+        	}
     	}
+    	
     	
     	/*
     	 * Check to see if the defender took damage so we can apply recently hurt

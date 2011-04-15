@@ -88,13 +88,13 @@ public class mcBlockListener extends BlockListener {
 				if(mcm.getInstance().isAxes(inhand)){
 					if(!mcConfig.getInstance().isBlockWatched(block)){
 	    				mcWoodCutting.getInstance().woodCuttingProcCheck(player, block);
-	    				PP.addWoodcuttingGather(7 * mcLoadProperties.xpGainMultiplier);
+	    				PP.addWoodcuttingXP(7 * mcLoadProperties.xpGainMultiplier);
 					}
     			}
     		} else {
     			if(block.getData() != 5){
 	    			mcWoodCutting.getInstance().woodCuttingProcCheck(player, block);
-					PP.addWoodcuttingGather(7 * mcLoadProperties.xpGainMultiplier);	
+					PP.addWoodcuttingXP(7 * mcLoadProperties.xpGainMultiplier);	
     			}
    			}
     		mcSkills.getInstance().XpCheck(player);
@@ -120,7 +120,7 @@ public class mcBlockListener extends BlockListener {
     						//XP WOODCUTTING
     						if(!mcConfig.getInstance().isBlockWatched(block)){
 	    						mcWoodCutting.getInstance().woodCuttingProcCheck(player, blockx);
-	    						PP.addWoodcuttingGather(7);
+	    						PP.addWoodcuttingXP(7);
     						}
     					}
     					if(blockx.getTypeId() == 18){
@@ -265,7 +265,7 @@ public class mcBlockListener extends BlockListener {
 	                    for (int cz = -radius; cz <= radius; cz++) {
 	                        Block block = world.getBlockAt(ox + cx, oy + cy, oz + cz);
 	                        //If block is block
-	                        if (isWater == true){
+	                        if (isWater == true && block.getType() == Material.GRAVEL){
 	                        	//Change
 	                        	block.setType(Material.CLAY);
 	                            return;

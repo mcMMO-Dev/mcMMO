@@ -32,7 +32,7 @@ public class mcHerbalism {
 			Material mat = Material.getMaterial(296);
 			Location loc = block.getLocation();
 			ItemStack is = new ItemStack(mat, 1, (byte)0, (byte)0);
-			PP.addHerbalismGather(5 * mcLoadProperties.xpGainMultiplier);
+			PP.addHerbalismXP(5 * mcLoadProperties.xpGainMultiplier);
 	    	loc.getWorld().dropItemNaturally(loc, is);
 	    	herbalismProcCheck(block, player, event);
 	    	herbalismProcCheck(block, player, event);
@@ -128,7 +128,7 @@ public class mcHerbalism {
     	if(type == 59 && block.getData() == (byte) 0x7){
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    		PP.addHerbalismGather(5 * mcLoadProperties.xpGainMultiplier);
+    		PP.addHerbalismXP(5 * mcLoadProperties.xpGainMultiplier);
     		if(player != null){
 	    		if(Math.random() * 1000 <= PP.getHerbalismInt()){
 	    			loc.getWorld().dropItemNaturally(loc, is);
@@ -172,7 +172,7 @@ public class mcHerbalism {
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismGather(3 * mcLoadProperties.xpGainMultiplier);
+	    		PP.addHerbalismXP(3 * mcLoadProperties.xpGainMultiplier);
 	    	}
     		//Sugar Canes
 	    	if(type == 83){
@@ -182,7 +182,7 @@ public class mcHerbalism {
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismGather(3 * mcLoadProperties.xpGainMultiplier);
+	    		PP.addHerbalismXP(3 * mcLoadProperties.xpGainMultiplier);
 	    	}
     		//Pumpkins
 	    	if(type == 91 || type == 86){
@@ -193,7 +193,7 @@ public class mcHerbalism {
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismGather(55 * mcLoadProperties.xpGainMultiplier);
+	    		PP.addHerbalismXP(55 * mcLoadProperties.xpGainMultiplier);
 	    	}
     		//Mushroom
 	    	if(type == 39 || type == 40){
@@ -204,7 +204,7 @@ public class mcHerbalism {
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismGather(40 * mcLoadProperties.xpGainMultiplier);
+	    		PP.addHerbalismXP(40 * mcLoadProperties.xpGainMultiplier);
 	    	}
 	    	//Flower
 	    	if(type == 37 || type == 38){
@@ -215,7 +215,7 @@ public class mcHerbalism {
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismGather(10 * mcLoadProperties.xpGainMultiplier);
+	    		PP.addHerbalismXP(10 * mcLoadProperties.xpGainMultiplier);
 	    	}
     	}
     	mcSkills.getInstance().XpCheck(player);

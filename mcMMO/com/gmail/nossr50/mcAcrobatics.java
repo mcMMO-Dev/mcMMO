@@ -22,7 +22,7 @@ public class mcAcrobatics {
     		int acrovar = PP.getAcrobaticsInt();
     		if(player.isSneaking())
     			acrovar = acrovar * 2;
-			if(Math.random() * 1000 <= acrovar){
+			if(Math.random() * 1000 <= acrovar && !event.isCancelled()){
 				int threshold = 7;
 				if(player.isSneaking())
 					threshold = 14;
@@ -34,7 +34,7 @@ public class mcAcrobatics {
 				 */
 				if(player.getHealth() - newDamage >= 1){
 					if(!event.isCancelled())
-						PP.addAcrobaticsGather((event.getDamage() * 8) * mcLoadProperties.xpGainMultiplier);
+						PP.addAcrobaticsXP((event.getDamage() * 8) * mcLoadProperties.xpGainMultiplier);
 					mcSkills.getInstance().XpCheck(player);
 					event.setDamage(newDamage);
 					if(event.getDamage() <= 0)
@@ -45,9 +45,11 @@ public class mcAcrobatics {
 						player.sendMessage("**ROLL**");
 					}
 				}
-			} else if (!mcConfig.getInstance().isBlockWatched(loc.getWorld().getBlockAt(xx, y, z)) && !event.isCancelled()){
-				PP.addAcrobaticsGather((event.getDamage() * 12) * mcLoadProperties.xpGainMultiplier);
-				mcSkills.getInstance().XpCheck(player);
+			} else if (!event.isCancelled()){
+				if(player.getHealth() - event.getDamage() >= 1){
+					PP.addAcrobaticsXP((event.getDamage() * 12) * mcLoadProperties.xpGainMultiplier);
+					mcSkills.getInstance().XpCheck(player);
+				}
 			}
     	}
     }

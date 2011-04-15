@@ -42,7 +42,7 @@ public class mcRepair {
 	        			player.sendMessage(String.valueOf(durabilityBefore - durabilityAfter));
 	        			dif = (short) (durabilityBefore - durabilityAfter);
 	        			dif = (short) (dif * 6); //Boost XP
-	        			PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+	        			PP.addRepairXP(dif * mcLoadProperties.xpGainMultiplier);
         			} else if (isIronArmor(is) && hasIron(player)){
         			/*
         			 * IRON ARMOR
@@ -52,7 +52,7 @@ public class mcRepair {
 	            		durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 2); //Boost XP
-	            		PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+	            		PP.addRepairXP(dif * mcLoadProperties.xpGainMultiplier);
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasGold(player)){
         				removeGold(player);
@@ -60,7 +60,7 @@ public class mcRepair {
         				durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 4); //Boost XP of Gold to around Iron
-        				PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+        				PP.addRepairXP(dif * mcLoadProperties.xpGainMultiplier);
         			} else {
         				needMoreVespeneGas(is, player);
         			}
@@ -86,7 +86,7 @@ public class mcRepair {
 	        				dif = (short) (dif / 2);
 	        			if(mcm.getInstance().isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+            			PP.addRepairXP(dif * mcLoadProperties.xpGainMultiplier);
             		} else if (isDiamondTools(is) && hasDiamond(player) && PP.getRepairInt() >= mcLoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
             			/*
             			 * DIAMOND TOOLS
@@ -101,7 +101,7 @@ public class mcRepair {
 	        				dif = (short) (dif / 2);
 	        			if(mcm.getInstance().isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+            			PP.addRepairXP(dif * mcLoadProperties.xpGainMultiplier);
             		} else if(isGoldTools(is) && hasGold(player)){
             			player.getItemInHand().setDurability(getToolRepairAmount(is, player));
             			removeGold(player);
@@ -114,7 +114,7 @@ public class mcRepair {
 	        				dif = (short) (dif / 2);
 	        			if(mcm.getInstance().isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addRepairGather(dif * mcLoadProperties.xpGainMultiplier);
+            			PP.addRepairXP(dif * mcLoadProperties.xpGainMultiplier);
             		} else {
             			needMoreVespeneGas(is, player);
             		}

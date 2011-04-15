@@ -93,11 +93,11 @@ public class mcCombat {
     			if(PPd.inParty() && PPa.inParty() && mcParty.getInstance().inSameParty(attacker, defender))
     				return;
     			if(mcm.getInstance().isAxes(attacker.getItemInHand()))
-    				PPa.addAxesGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    				PPa.addAxesXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     			if(mcm.getInstance().isSwords(attacker.getItemInHand()))
-    				PPa.addSwordsGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    				PPa.addSwordsXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     			if(attacker.getItemInHand().getTypeId() == 0)
-    				PPa.addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    				PPa.addUnarmedXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     		}
     		/*
     		 * CHECK FOR LEVEL UPS
@@ -113,13 +113,13 @@ public class mcCombat {
     		}
 			Squid defender = (Squid)event.getEntity();
 			if(mcm.getInstance().isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
-					PPa.addSwordsGather(10 * mcLoadProperties.xpGainMultiplier);
+					PPa.addSwordsXP(10 * mcLoadProperties.xpGainMultiplier);
 			}
 			mcSkills.getInstance().XpCheck(attacker);
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
-					PPa.addAxesGather(10 * mcLoadProperties.xpGainMultiplier);
+					PPa.addAxesXP(10 * mcLoadProperties.xpGainMultiplier);
 					mcSkills.getInstance().XpCheck(attacker);
 			}
 			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
@@ -144,7 +144,7 @@ public class mcCombat {
     			
     			//XP
 					if(defender.getHealth() != 0){
-					PPa.addUnarmedGather(10 * mcLoadProperties.xpGainMultiplier);
+					PPa.addUnarmedXP(10 * mcLoadProperties.xpGainMultiplier);
 					mcSkills.getInstance().XpCheck(attacker);
 					}
     			}
@@ -191,15 +191,15 @@ public class mcCombat {
 					&& mcPermissions.getInstance().swords(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 					if(x instanceof Creeper)
-						PPa.addSwordsGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsXP((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						PPa.addSwordsGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						PPa.addSwordsGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsXP((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						PPa.addSwordsGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsXP((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						PPa.addSwordsGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addSwordsXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					}
 					mcSkills.getInstance().XpCheck(attacker);
 				}
@@ -208,15 +208,15 @@ public class mcCombat {
 					&& mcPermissions.getInstance().axes(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 					if(x instanceof Creeper)
-					PPa.addAxesGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
+					PPa.addAxesXP((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						PPa.addAxesGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addAxesXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						PPa.addAxesGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addAxesXP((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						PPa.addAxesGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addAxesXP((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						PPa.addAxesGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addAxesXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					}
 					mcSkills.getInstance().XpCheck(attacker);
 			}
@@ -243,15 +243,15 @@ public class mcCombat {
 			//XP
 			if(!mcConfig.getInstance().isMobSpawnTracked(x)){
 			if(x instanceof Creeper)
-				PPa.addUnarmedGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedXP((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Spider)
-				PPa.addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Skeleton)
-				PPa.addUnarmedGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedXP((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof Zombie)
-				PPa.addUnarmedGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedXP((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 			if(x instanceof PigZombie)
-				PPa.addUnarmedGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+				PPa.addUnarmedXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 			}
 			mcSkills.getInstance().XpCheck(attacker);
 			}
@@ -351,15 +351,15 @@ public class mcCombat {
     			//XP
     			if(!mcConfig.getInstance().isMobSpawnTracked(x)){
     				if(x instanceof Creeper)
-					PPa.addArcheryGather((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
+					PPa.addArcheryXP((event.getDamage() * 4) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Spider)
-						PPa.addArcheryGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addArcheryXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Skeleton)
-						PPa.addArcheryGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addArcheryXP((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof Zombie)
-						PPa.addArcheryGather((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
+						PPa.addArcheryXP((event.getDamage() * 2) * mcLoadProperties.xpGainMultiplier);
 					if(x instanceof PigZombie)
-						PPa.addArcheryGather((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
+						PPa.addArcheryXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
     			}
     		}
     		/*
@@ -415,7 +415,7 @@ public class mcCombat {
     	    		 * PVP XP
     	    		 */
     	    		if(mcLoadProperties.pvpxp && !mcParty.getInstance().inSameParty(attacker, defender)){
-    	    			PPa.addArcheryGather((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    	    			PPa.addArcheryXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
     	    		}
     				/*
     				 * DAZE PROC

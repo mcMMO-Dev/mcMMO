@@ -343,13 +343,26 @@ public class mcSkills {
     public void XpCheck(Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	/*
+    	 * TAMING
+    	 */
+    	if(player != null && PP.getTamingXPInt() >= PP.getXpToLevel("taming")){
+			int skillups = 0;
+			while(PP.getTamingXPInt() >= PP.getXpToLevel("taming")){
+				skillups++;
+				PP.removeTamingXP(PP.getXpToLevel("taming"));
+				PP.skillUpTaming(1);
+			}
+			if(player != null && PP.getTaming() != null)
+				player.sendMessage(ChatColor.YELLOW+"Taming skill increased by "+skillups+"."+" Total ("+PP.getTaming()+")");	
+		}
+    	/*
     	 * ACROBATICS
     	 */
-    	if(player != null && PP.getAcrobaticsGatherInt() >= PP.getXpToLevel("acrobatics")){
+    	if(player != null && PP.getAcrobaticsXPInt() >= PP.getXpToLevel("acrobatics")){
 			int skillups = 0;
-			while(PP.getAcrobaticsGatherInt() >= PP.getXpToLevel("acrobatics")){
+			while(PP.getAcrobaticsXPInt() >= PP.getXpToLevel("acrobatics")){
 				skillups++;
-				PP.removeAcrobaticsGather(PP.getXpToLevel("acrobatics"));
+				PP.removeAcrobaticsXP(PP.getXpToLevel("acrobatics"));
 				PP.skillUpAcrobatics(1);
 			}
 			if(player != null && PP.getAcrobatics() != null)
@@ -358,11 +371,11 @@ public class mcSkills {
     	/*
     	 * ARCHERY
     	 */
-    	if(PP.getArcheryGatherInt() >= PP.getXpToLevel("archery")){
+    	if(PP.getArcheryXPInt() >= PP.getXpToLevel("archery")){
 			int skillups = 0;
-			while(PP.getArcheryGatherInt() >= PP.getXpToLevel("archery")){
+			while(PP.getArcheryXPInt() >= PP.getXpToLevel("archery")){
 				skillups++;
-				PP.removeArcheryGather(PP.getXpToLevel("archery"));
+				PP.removeArcheryXP(PP.getXpToLevel("archery"));
 				PP.skillUpArchery(1);
 			}
 			if(player != null && PP.getArchery() != null)
@@ -371,11 +384,11 @@ public class mcSkills {
     	/*
     	 * SWORDS
     	 */
-    	if(PP.getSwordsGatherInt() >= PP.getXpToLevel("swords")){
+    	if(PP.getSwordsXPInt() >= PP.getXpToLevel("swords")){
 			int skillups = 0;
-			while(PP.getSwordsGatherInt() >= PP.getXpToLevel("swords")){
+			while(PP.getSwordsXPInt() >= PP.getXpToLevel("swords")){
 				skillups++;
-				PP.removeSwordsGather(PP.getXpToLevel("swords"));
+				PP.removeSwordsXP(PP.getXpToLevel("swords"));
 				PP.skillUpSwords(1);
 			}
 			if(player != null && PP.getSwords() != null)
@@ -384,11 +397,11 @@ public class mcSkills {
     	/*
     	 * AXES
     	 */
-		if(PP.getAxesGatherInt() >= PP.getXpToLevel("axes")){
+		if(PP.getAxesXPInt() >= PP.getXpToLevel("axes")){
 			int skillups = 0;
-			while(PP.getAxesGatherInt() >= PP.getXpToLevel("axes")){
+			while(PP.getAxesXPInt() >= PP.getXpToLevel("axes")){
 				skillups++;
-				PP.removeAxesGather(PP.getXpToLevel("axes"));
+				PP.removeAxesXP(PP.getXpToLevel("axes"));
 				PP.skillUpAxes(1);
 			}
 			if(player != null && PP.getAxes() != null)
@@ -397,11 +410,11 @@ public class mcSkills {
 		/*
 		 * UNARMED
 		 */
-		if(PP.getUnarmedGatherInt() >= PP.getXpToLevel("unarmed")){
+		if(PP.getUnarmedXPInt() >= PP.getXpToLevel("unarmed")){
 			int skillups = 0;
-			while(PP.getUnarmedGatherInt() >= PP.getXpToLevel("unarmed")){
+			while(PP.getUnarmedXPInt() >= PP.getXpToLevel("unarmed")){
 				skillups++;
-				PP.removeUnarmedGather(PP.getXpToLevel("unarmed"));
+				PP.removeUnarmedXP(PP.getXpToLevel("unarmed"));
 				PP.skillUpUnarmed(1);
 			}
 			if(player != null && PP.getUnarmed() != null)
@@ -410,11 +423,11 @@ public class mcSkills {
 		/*
 		 * HERBALISM
 		 */
-		if(PP.getHerbalismGatherInt() >= PP.getXpToLevel("herbalism")){
+		if(PP.getHerbalismXPInt() >= PP.getXpToLevel("herbalism")){
 			int skillups = 0;
-			while(PP.getHerbalismGatherInt() >= PP.getXpToLevel("herbalism")){
+			while(PP.getHerbalismXPInt() >= PP.getXpToLevel("herbalism")){
 				skillups++;
-				PP.removeHerbalismGather(PP.getXpToLevel("herbalism"));
+				PP.removeHerbalismXP(PP.getXpToLevel("herbalism"));
 				PP.skillUpHerbalism(1);
 			}
 			if(player != null && PP.getHerbalism() != null)
@@ -423,11 +436,11 @@ public class mcSkills {
 		/*
 		 * MINING
 		 */
-		if(player != null && PP.getMiningGatherInt() >= PP.getXpToLevel("mining")){
+		if(player != null && PP.getMiningXPInt() >= PP.getXpToLevel("mining")){
 			int skillups = 0;
-			while(PP.getMiningGatherInt() >= PP.getXpToLevel("mining")){
+			while(PP.getMiningXPInt() >= PP.getXpToLevel("mining")){
 				skillups++;
-				PP.removeMiningGather(PP.getXpToLevel("mining"));
+				PP.removeMiningXP(PP.getXpToLevel("mining"));
 				PP.skillUpMining(1);
 			}
 			if(player != null && PP.getMining() != null)
@@ -436,11 +449,11 @@ public class mcSkills {
 		/*
 		 * WOODCUTTING
 		 */
-		if(player != null && PP.getWoodCuttingGatherInt() >= PP.getXpToLevel("woodcutting")){
+		if(player != null && PP.getWoodCuttingXPInt() >= PP.getXpToLevel("woodcutting")){
 			int skillups = 0;
-			while(PP.getWoodCuttingGatherInt() >= PP.getXpToLevel("woodcutting")){
+			while(PP.getWoodCuttingXPInt() >= PP.getXpToLevel("woodcutting")){
 				skillups++;
-				PP.removeWoodCuttingGather(PP.getXpToLevel("woodcutting"));
+				PP.removeWoodCuttingXP(PP.getXpToLevel("woodcutting"));
 				PP.skillUpWoodCutting(1);
 			}
 			if(player != null && PP.getWoodCutting() != null)
@@ -449,11 +462,11 @@ public class mcSkills {
 		/*
 		 * REPAIR
 		 */
-		if(PP.getRepairGatherInt() >= PP.getXpToLevel("repair")){
+		if(PP.getRepairXPInt() >= PP.getXpToLevel("repair")){
 			int skillups = 0;
-			while(PP.getRepairGatherInt() >= PP.getXpToLevel("repair")){
+			while(PP.getRepairXPInt() >= PP.getXpToLevel("repair")){
 				skillups++;
-				PP.removeRepairGather(PP.getXpToLevel("repair"));
+				PP.removeRepairXP(PP.getXpToLevel("repair"));
 				PP.skillUpRepair(1);
 			}
 			if(player != null && PP.getRepair() != null)
@@ -462,11 +475,11 @@ public class mcSkills {
 		/*
 		 * EXCAVATION
 		 */
-		if(PP.getExcavationGatherInt() >= PP.getXpToLevel("excavation")){
+		if(PP.getExcavationXPInt() >= PP.getXpToLevel("excavation")){
 			int skillups = 0;
-			while(PP.getExcavationGatherInt() >= PP.getXpToLevel("excavation")){
+			while(PP.getExcavationXPInt() >= PP.getXpToLevel("excavation")){
 				skillups++;
-				PP.removeExcavationGather(PP.getXpToLevel("excavation"));
+				PP.removeExcavationXP(PP.getXpToLevel("excavation"));
 				PP.skillUpExcavation(1);
 			}
 			if(player != null && PP.getExcavation() != null)
@@ -478,6 +491,9 @@ public class mcSkills {
     	if(skillname.equals("all")){
     		return true;
     	}
+    	if(skillname.equals("taming")){
+			return true;
+		}
 		if(skillname.equals("mining")){
 			return true;
 		}

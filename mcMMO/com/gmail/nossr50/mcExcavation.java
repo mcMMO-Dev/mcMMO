@@ -74,14 +74,14 @@ public class mcExcavation {
     		if(PP.getExcavationInt() > 250){
 	    		//CHANCE TO GET EGGS
 	    		if(mcLoadProperties.eggs == true && Math.random() * 100 > 99){
-	    			PP.addExcavationGather(10 * mcLoadProperties.xpGainMultiplier);
+	    			PP.addExcavationXP(10 * mcLoadProperties.xpGainMultiplier);
 					mat = Material.getMaterial(344);
 					is = new ItemStack(mat, 1, (byte)0, (byte)0);
 					loc.getWorld().dropItemNaturally(loc, is);
 	    		}
 	    		//CHANCE TO GET APPLES
 	    		if(mcLoadProperties.apples == true && Math.random() * 100 > 99){
-	    			PP.addExcavationGather(10 * mcLoadProperties.xpGainMultiplier);
+	    			PP.addExcavationXP(10 * mcLoadProperties.xpGainMultiplier);
 	    			mat = Material.getMaterial(260);
 					is = new ItemStack(mat, 1, (byte)0, (byte)0);
 					loc.getWorld().dropItemNaturally(loc, is);
@@ -90,11 +90,11 @@ public class mcExcavation {
     	}
     	//DIRT SAND OR GRAVEL
     	if(type == 3 || type == 13 || type == 2 || type == 12){
-    			PP.addExcavationGather(4 * mcLoadProperties.xpGainMultiplier);
+    			PP.addExcavationXP(4 * mcLoadProperties.xpGainMultiplier);
     		if(PP.getExcavationInt() > 750){
     			//CHANCE TO GET CAKE
     			if(mcLoadProperties.cake == true && Math.random() * 2000 > 1999){
-    				PP.addExcavationGather(300 * mcLoadProperties.xpGainMultiplier);
+    				PP.addExcavationXP(300 * mcLoadProperties.xpGainMultiplier);
     				mat = Material.getMaterial(354);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
@@ -103,7 +103,7 @@ public class mcExcavation {
     		if(PP.getExcavationInt() > 350){
     			//CHANCE TO GET DIAMOND
     			if(mcLoadProperties.diamond == true && Math.random() * 750 > 749){
-    				PP.addExcavationGather(100 * mcLoadProperties.xpGainMultiplier);
+    				PP.addExcavationXP(100 * mcLoadProperties.xpGainMultiplier);
         				mat = Material.getMaterial(264);
         				is = new ItemStack(mat, 1, (byte)0, (byte)0);
         				loc.getWorld().dropItemNaturally(loc, is);
@@ -112,7 +112,7 @@ public class mcExcavation {
     		if(PP.getExcavationInt() > 250){
     			//CHANCE TO GET YELLOW MUSIC
     			if(mcLoadProperties.music == true && Math.random() * 2000 > 1999){
-    				PP.addExcavationGather(300 * mcLoadProperties.xpGainMultiplier);
+    				PP.addExcavationXP(300 * mcLoadProperties.xpGainMultiplier);
     				mat = Material.getMaterial(2256);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
@@ -122,7 +122,7 @@ public class mcExcavation {
     		if(PP.getExcavationInt() > 350){
     			//CHANCE TO GET GREEN MUSIC
     			if(mcLoadProperties.music == true && Math.random() * 2000 > 1999){
-    				PP.addExcavationGather(300 * mcLoadProperties.xpGainMultiplier);
+    				PP.addExcavationXP(300 * mcLoadProperties.xpGainMultiplier);
     				mat = Material.getMaterial(2257);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);
@@ -133,14 +133,14 @@ public class mcExcavation {
     	if(type == 12){
     		//CHANCE TO GET GLOWSTONE
     		if(mcLoadProperties.glowstone == true && PP.getExcavationInt() > 50 && Math.random() * 100 > 95){
-    			PP.addExcavationGather(8 * mcLoadProperties.xpGainMultiplier);
+    			PP.addExcavationXP(8 * mcLoadProperties.xpGainMultiplier);
 				mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
     		//CHANCE TO GET SLOWSAND
     		if(mcLoadProperties.slowsand == true && PP.getExcavationInt() > 650 && Math.random() * 200 > 199){
-    			PP.addExcavationGather(8 * mcLoadProperties.xpGainMultiplier);
+    			PP.addExcavationXP(8 * mcLoadProperties.xpGainMultiplier);
 				mat = Material.getMaterial(88);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
@@ -151,7 +151,7 @@ public class mcExcavation {
     		if(PP.getExcavationInt() > 50){
     			//CHANCE FOR COCOA BEANS
     			if(mcLoadProperties.eggs == true && Math.random() * 75 > 74){
-	    			PP.addExcavationGather(10 * mcLoadProperties.xpGainMultiplier);
+	    			PP.addExcavationXP(10 * mcLoadProperties.xpGainMultiplier);
 					mat = Material.getMaterial(351);
 					is = new ItemStack(mat, 1, (byte)0, (byte)0);
 					is.setDurability((byte) 3); //COCOA
@@ -160,7 +160,7 @@ public class mcExcavation {
     		}
     		//CHANCE FOR SHROOMS
     		if(mcLoadProperties.mushrooms == true && PP.getExcavationInt() > 500 && Math.random() * 200 > 199){
-    			PP.addExcavationGather(8 * mcLoadProperties.xpGainMultiplier);
+    			PP.addExcavationXP(8 * mcLoadProperties.xpGainMultiplier);
     			if(Math.random() * 10 > 5){
     				mat = Material.getMaterial(39);
     			} else {
@@ -171,7 +171,7 @@ public class mcExcavation {
     		}
     		//CHANCE TO GET GLOWSTONE
     		if(mcLoadProperties.glowstone == true && PP.getExcavationInt() > 25 && Math.random() * 100 > 95){
-    			PP.addExcavationGather(8 * mcLoadProperties.xpGainMultiplier);
+    			PP.addExcavationXP(8 * mcLoadProperties.xpGainMultiplier);
     			mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
@@ -181,7 +181,7 @@ public class mcExcavation {
     	if(type == 13){
     		//CHANCE TO GET NETHERRACK
     		if(mcLoadProperties.netherrack == true && PP.getExcavationInt() > 850 && Math.random() * 200 > 199){
-    			PP.addExcavationGather(3 * mcLoadProperties.xpGainMultiplier);
+    			PP.addExcavationXP(3 * mcLoadProperties.xpGainMultiplier);
 				mat = Material.getMaterial(87);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
@@ -189,7 +189,7 @@ public class mcExcavation {
     		//CHANCE TO GET SULPHUR
     		if(mcLoadProperties.sulphur == true && PP.getExcavationInt() > 75){
 	    		if(Math.random() * 10 > 9){
-	    			PP.addExcavationGather(3 * mcLoadProperties.xpGainMultiplier);
+	    			PP.addExcavationXP(3 * mcLoadProperties.xpGainMultiplier);
 	    			mat = Material.getMaterial(289);
 					is = new ItemStack(mat, 1, (byte)0, (byte)0);
 					loc.getWorld().dropItemNaturally(loc, is);
@@ -198,7 +198,7 @@ public class mcExcavation {
     		//CHANCE TO GET BONES
     		if(mcLoadProperties.bones == true && PP.getExcavationInt() > 175){
         		if(Math.random() * 10 > 9){
-        			PP.addExcavationGather(3 * mcLoadProperties.xpGainMultiplier);
+        			PP.addExcavationXP(3 * mcLoadProperties.xpGainMultiplier);
         			mat = Material.getMaterial(352);
     				is = new ItemStack(mat, 1, (byte)0, (byte)0);
     				loc.getWorld().dropItemNaturally(loc, is);

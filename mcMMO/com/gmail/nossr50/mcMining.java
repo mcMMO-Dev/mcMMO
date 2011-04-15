@@ -163,7 +163,7 @@ public class mcMining {
     		xp += 40;
     		blockProcCheck(block, player);
     	}
-    	PP.addMiningGather(xp * mcLoadProperties.xpGainMultiplier);
+    	PP.addMiningXP(xp * mcLoadProperties.xpGainMultiplier);
     	mcSkills.getInstance().XpCheck(player);
     }
     /*
@@ -318,7 +318,7 @@ public class mcMining {
     		block.setType(Material.AIR);
     	}
     	if(block.getData() != (byte) 5)
-    		PP.addMiningGather(xp * mcLoadProperties.xpGainMultiplier);
+    		PP.addMiningXP(xp * mcLoadProperties.xpGainMultiplier);
     	mcSkills.getInstance().XpCheck(player);
     }
 }

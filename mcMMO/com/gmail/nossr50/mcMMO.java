@@ -118,6 +118,7 @@ public class mcMMO extends JavaPlugin {
     public void addXp(Player player, String skillname, Integer newvalue){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	PP.addXpToSkill(newvalue, skillname);
+    	mcSkills.getInstance().XpCheck(player);
     }
     public void modifySkill(Player player, String skillname, Integer newvalue){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
