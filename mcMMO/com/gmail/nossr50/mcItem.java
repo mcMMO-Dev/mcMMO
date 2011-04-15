@@ -12,29 +12,19 @@ import com.gmail.nossr50.PlayerList.PlayerProfile;
 
 
 public class mcItem {
-	private static mcMMO plugin;
-	public mcItem(mcMMO instance) {
-    	plugin = instance;
-    }
-	private static volatile mcItem instance;
-	public static mcItem getInstance() {
-    	if (instance == null) {
-    		instance = new mcItem(plugin);
-    	}
-    	return instance;
-    	}
-	public void itemChecks(Player player, Plugin pluginx){
+	
+	public static void itemChecks(Player player, Plugin plugin){
 		ItemStack inhand = player.getItemInHand();
 		if(inhand.getTypeId() == 288){
-			chimaerawing(player, pluginx);
+			chimaerawing(player, plugin);
 		}
 	}
-	public void chimaerawing(Player player, Plugin pluginx){
+	public static void chimaerawing(Player player, Plugin plugin){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
 		ItemStack is = player.getItemInHand();
 		Block block = player.getLocation().getBlock();
 		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == 288){
-    		if(mcSkills.getInstance().cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= mcLoadProperties.feathersConsumedByChimaeraWing){
+    		if(mcSkills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= mcLoadProperties.feathersConsumedByChimaeraWing){
     			Block derp = player.getLocation().getBlock();
     			int y = derp.getY();
     			ItemStack[] inventory = player.getInventory().getContents();
@@ -66,8 +56,8 @@ public class mcItem {
     			}
     			if(PP.getMySpawn(player) != null){
     				Location mySpawn = PP.getMySpawn(player);
-    				if(mySpawn != null && pluginx.getServer().getWorld(PP.getMySpawnWorld(pluginx)) != null)
-    					mySpawn.setWorld(pluginx.getServer().getWorld(PP.getMySpawnWorld(pluginx)));
+    				if(mySpawn != null && plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)) != null)
+    					mySpawn.setWorld(plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)));
     				if(mySpawn != null){
 	    				player.teleportTo(mySpawn);//Do it twice to prevent weird stuff
 	    				player.teleportTo(mySpawn);
@@ -76,9 +66,9 @@ public class mcItem {
     				player.teleportTo(player.getWorld().getSpawnLocation());
     			}
     			player.sendMessage("**CHIMAERA WING**");
-    		} else if (!mcSkills.getInstance().cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= 10) {
+    		} else if (!mcSkills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= 10) {
     			player.sendMessage("You were injured recently and must wait to use this."
-    					+ChatColor.YELLOW+" ("+mcSkills.getInstance().calculateTimeLeft(player, PP.getRecentlyHurt(), 60)+"s)");
+    					+ChatColor.YELLOW+" ("+mcSkills.calculateTimeLeft(player, PP.getRecentlyHurt(), 60)+"s)");
     		} else if (is.getTypeId() == 288 && is.getAmount() <= 9){
     			player.sendMessage("You need more of that to use it");
     		}

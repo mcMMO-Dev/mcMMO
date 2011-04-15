@@ -27,11 +27,11 @@ public class mcTimer extends TimerTask{
 			/*
 			 * MONITOR SKILLS
 			 */
-			mcSkills.getInstance().monitorSkills(player);
+			mcSkills.monitorSkills(player);
 			/*
 			 * COOLDOWN MONITORING
 			 */
-			mcSkills.getInstance().watchCooldowns(player);
+			mcSkills.watchCooldowns(player);
 			
 			/*
 			 * PLAYER BLEED MONITORING
@@ -45,23 +45,23 @@ public class mcTimer extends TimerTask{
 				if(thecount == 10 || thecount == 20 || thecount == 30 || thecount == 40){
 				    if(player != null &&
 				    	player.getHealth() > 0 && player.getHealth() < 20 
-				    	&& mcm.getInstance().getPowerLevel(player) >= 1000){
-				    	player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
+				    	&& mcm.getPowerLevel(player) >= 1000){
+				    	player.setHealth(mcm.calculateHealth(player.getHealth(), 1));
 				    }
 				}
 				if(thecount == 20 || thecount == 40){
 			   		if(player != null &&
 			   			player.getHealth() > 0 && player.getHealth() < 20 
-			    		&& mcm.getInstance().getPowerLevel(player) >= 500 
-			    		&& mcm.getInstance().getPowerLevel(player) < 1000){
-			    		player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
+			    		&& mcm.getPowerLevel(player) >= 500 
+			    		&& mcm.getPowerLevel(player) < 1000){
+			    		player.setHealth(mcm.calculateHealth(player.getHealth(), 1));
 			    	}
 				}
 				if(thecount == 40){
 			    	if(player != null &&
 			    		player.getHealth() > 0 && player.getHealth() < 20  
-			    		&& mcm.getInstance().getPowerLevel(player) < 500){
-			    		player.setHealth(mcm.getInstance().calculateHealth(player.getHealth(), 1));
+			    		&& mcm.getPowerLevel(player) < 500){
+			    		player.setHealth(mcm.calculateHealth(player.getHealth(), 1));
 			    	}
 				}
 			}
@@ -71,7 +71,7 @@ public class mcTimer extends TimerTask{
 		 * NON-PLAYER BLEED MONITORING
 		 */
 		if(thecount % 2 == 0)
-			mcCombat.getInstance().bleedSimulate();
+			mcCombat.bleedSimulate();
 		
 		if(thecount < 40){
 			thecount++;

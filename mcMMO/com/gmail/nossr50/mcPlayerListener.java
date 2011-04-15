@@ -29,10 +29,12 @@ public class mcPlayerListener extends PlayerListener {
     public mcPlayerListener(mcMMO instance) {
     	plugin = instance;
     }
+    
     public void onPlayerRespawn(PlayerRespawnEvent event) {
     	Player player = event.getPlayer();
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(player != null){
+    		PP.setRespawnATS(System.currentTimeMillis());
 			Location mySpawn = PP.getMySpawn(player);
 			if(mySpawn != null && plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)) != null)
 				mySpawn.setWorld(plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)));
@@ -80,8 +82,8 @@ public class mcPlayerListener extends PlayerListener {
     	if(player.getItemInHand().getTypeId() == 261 && mcLoadProperties.archeryFireRateLimit){
     		if(System.currentTimeMillis() < PP.getArcheryShotATS() + 1000){
     			/*
-    			if(mcm.getInstance().hasArrows(player))
-    				mcm.getInstance().addArrows(player);
+    			if(mcm.hasArrows(player))
+    				mcm.addArrows(player);
     			*/
     			player.updateInventory();
     			event.setCancelled(true);
@@ -104,22 +106,22 @@ public class mcPlayerListener extends PlayerListener {
     			}
     		}
         	if(block != null && player != null && mcPermissions.getInstance().repair(player) && event.getClickedBlock().getTypeId() == 42){
-            	mcRepair.getInstance().repairCheck(player, is, event.getClickedBlock());
+            	mcRepair.repairCheck(player, is, event.getClickedBlock());
             }
         	
-        	if(mcm.getInstance().abilityBlockCheck(block))
+        	if(mcm.abilityBlockCheck(block))
 	    	{
-        		if(block != null && mcm.getInstance().isHoe(player.getItemInHand()) && block.getTypeId() != 3 && block.getTypeId() != 2 && block.getTypeId() != 60){
-        			mcSkills.getInstance().hoeReadinessCheck(player);
+        		if(block != null && mcm.isHoe(player.getItemInHand()) && block.getTypeId() != 3 && block.getTypeId() != 2 && block.getTypeId() != 60){
+        			mcSkills.hoeReadinessCheck(player);
         		}
-	    		mcSkills.getInstance().abilityActivationCheck(player);
+	    		mcSkills.abilityActivationCheck(player);
 	    	}
         	
         	//GREEN THUMB
         	if(block != null && (block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT) && player.getItemInHand().getType() == Material.SEEDS){
         		boolean pass = false;
-        		if(mcHerbalism.getInstance().hasSeeds(player)){
-        			mcHerbalism.getInstance().removeSeeds(player);
+        		if(mcHerbalism.hasSeeds(player)){
+        			mcHerbalism.removeSeeds(player);
 	        		if(block.getType() == Material.COBBLESTONE && Math.random() * 1500 <= PP.getHerbalismInt()){
 	        			player.sendMessage(ChatColor.GREEN+"**GREEN THUMB**");
 	        			block.setType(Material.MOSSY_COBBLESTONE);
@@ -137,25 +139,25 @@ public class mcPlayerListener extends PlayerListener {
         	}
     	}
     	if(action == Action.RIGHT_CLICK_AIR){
-    		mcSkills.getInstance().hoeReadinessCheck(player);
-		    mcSkills.getInstance().abilityActivationCheck(player);
+    		mcSkills.hoeReadinessCheck(player);
+		    mcSkills.abilityActivationCheck(player);
 		    
 		    /*
         	 * HERBALISM MODIFIERS
         	 */
         	if(mcPermissions.getInstance().herbalism(player)){
-        		mcHerbalism.getInstance().breadCheck(player, player.getItemInHand());
-        		mcHerbalism.getInstance().stewCheck(player, player.getItemInHand());
+        		mcHerbalism.breadCheck(player, player.getItemInHand());
+        		mcHerbalism.stewCheck(player, player.getItemInHand());
         	}
     	}
     	/*
     	 * ITEM CHECKS
     	 */
     	if(action == Action.RIGHT_CLICK_AIR)
-        	mcItem.getInstance().itemChecks(player, plugin);
+        	mcItem.itemChecks(player, plugin);
     	if(action == Action.RIGHT_CLICK_BLOCK){
-    		if(mcm.getInstance().abilityBlockCheck(event.getClickedBlock()))
-    			mcItem.getInstance().itemChecks(player, plugin);
+    		if(mcm.abilityBlockCheck(event.getClickedBlock()))
+    			mcItem.itemChecks(player, plugin);
     	}
     }
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
@@ -164,7 +166,7 @@ public class mcPlayerListener extends PlayerListener {
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
     	//Check if the command is an mcMMO related help command
-    	mcm.getInstance().mcmmoHelpCheck(split, player, event);
+    	mcm.mcmmoHelpCheck(split, player, event);
     	if(mcPermissions.permissionsEnabled && split[0].equalsIgnoreCase("/"+mcLoadProperties.mcability)){
     		event.setCancelled(true);
     		if(PP.getAbilityUse()){
@@ -175,6 +177,102 @@ public class mcPlayerListener extends PlayerListener {
     			PP.toggleAbilityUse();
     		}
     	}
+    	/*
+    	 * LEADER BOARD COMMAND
+    	 */
+    	
+    	if(split[0].equalsIgnoreCase("/"+mcLoadProperties.mctop)){
+    		event.setCancelled(true);
+    		//Format: /mctop <skillname> <pagenumber>
+
+    		/*
+    		 * POWER LEVEL INFO RETRIEVAL
+    		 */
+    		if(split.length == 1){
+    			int p = 1;
+    			String[] info = mcLeaderboard.retrieveInfo("powerlevel", p);
+    			player.sendMessage(ChatColor.YELLOW+"--mcMMO"+ChatColor.BLUE+" Power Level "+ChatColor.YELLOW+"Leaderboard--");
+    			int n = 1 * p; //Position
+    			for(String x : info){
+    				if(x != null){
+    					String digit = String.valueOf(n);
+    					if(n < 10)
+    						digit ="0"+String.valueOf(n);
+	    				String[] splitx = x.split(":");
+	    				//Format: 1. Playername - skill value
+	    				player.sendMessage(digit+". "+ChatColor.GREEN+splitx[1]+" - "+ChatColor.WHITE+splitx[0]);
+	    				n++;
+    				}
+    			}
+    		}
+    		if(split.length >= 2 && mcLeaderboard.isInt(split[1])){
+    			int p = 1;
+    			//Grab page value if specified
+    			if(split.length >= 2){
+    				if(mcLeaderboard.isInt(split[1])){
+    					p = Integer.valueOf(split[1]);
+    				}
+    			}
+    			int pt = p;
+    			if(p > 1){
+    				pt -= 1;
+    				pt += (pt * 10);
+    				pt = 10;
+    			}
+    			String[] info = mcLeaderboard.retrieveInfo("powerlevel", p);
+    			player.sendMessage("--mcMMO Power Level Leaderboard--");
+    			int n = 1 * pt; //Position
+    			for(String x : info){
+    				if(x != null){
+    					String digit = String.valueOf(n);
+    					if(n < 10)
+    						digit ="0"+String.valueOf(n);
+	    				String[] splitx = x.split(":");
+	    				//Format: 1. Playername - skill value
+	    				player.sendMessage(digit+". "+ChatColor.GREEN+splitx[1]+" - "+ChatColor.WHITE+splitx[0]);
+	    				n++;
+    				}
+    			}
+    		}
+    		/*
+    		 * SKILL SPECIFIED INFO RETRIEVAL
+    		 */
+    		if(split.length >= 2 && mcSkills.isSkill(split[1])){
+    			int p = 1;
+    			//Grab page value if specified
+    			if(split.length >= 3){
+    				if(mcLeaderboard.isInt(split[2])){
+    					p = Integer.valueOf(split[2]);
+    				}
+    			}
+    			int pt = p;
+    			if(p > 1){
+    				pt -= 1;
+    				pt += (pt * 10);
+    				pt = 10;
+    			}
+    			String firstLetter = split[1].substring(0,1);  // Get first letter
+    	        String remainder   = split[1].substring(1);    // Get remainder of word.
+    	        String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
+    	        
+    			String[] info = mcLeaderboard.retrieveInfo(split[1].toLowerCase(), p);
+    			player.sendMessage(ChatColor.YELLOW+"--mcMMO "+ChatColor.BLUE+capitalized+ChatColor.YELLOW+" Leaderboard--");
+    			int n = 1 * pt; //Position
+    			for(String x : info){
+    				if(x != null){
+    					String digit = String.valueOf(n);
+    					if(n < 10)
+    						digit ="0"+String.valueOf(n);
+	    				String[] splitx = x.split(":");
+	    				//Format: 1. Playername - skill value
+	    				player.sendMessage(digit+". "+ChatColor.GREEN+splitx[1]+" - "+ChatColor.WHITE+splitx[0]);
+	    				n++;
+    				}
+    			}
+    		}
+    	}
+    	
+    	
     	/*
     	if(split[0].equalsIgnoreCase("/mutechat")){
     		event.setCancelled(true);
@@ -278,14 +376,14 @@ public class mcPlayerListener extends PlayerListener {
     			return;
     		}
     		if(split.length == 4){
-    			if(isPlayer(split[1]) && mcm.getInstance().isInt(split[3]) && mcSkills.getInstance().isSkill(split[2])){
+    			if(isPlayer(split[1]) && mcm.isInt(split[3]) && mcSkills.isSkill(split[2])){
     				int newvalue = Integer.valueOf(split[3]);
     				mcUsers.getProfile(getPlayer(split[1]).getName()).modifyskill(newvalue, split[2]);
     				player.sendMessage(ChatColor.RED+split[2]+" has been modified.");
     			}
     		}
     		else if(split.length == 3){
-    			if(mcm.getInstance().isInt(split[2]) && mcSkills.getInstance().isSkill(split[1])){
+    			if(mcm.isInt(split[2]) && mcSkills.isSkill(split[1])){
     				int newvalue = Integer.valueOf(split[2]);
     				PP.modifyskill(newvalue, split[1]);
     				player.sendMessage(ChatColor.RED+split[1]+" has been modified.");
@@ -308,7 +406,7 @@ public class mcPlayerListener extends PlayerListener {
     			return;
     		}
     		if(split.length == 4){
-    			if(isPlayer(split[1]) && mcm.getInstance().isInt(split[3]) && mcSkills.getInstance().isSkill(split[2])){
+    			if(isPlayer(split[1]) && mcm.isInt(split[3]) && mcSkills.isSkill(split[2])){
     				int newvalue = Integer.valueOf(split[3]);
     				mcUsers.getProfile(getPlayer(split[1]).getName()).addXpToSkill(newvalue, split[2]);
     				getPlayer(split[1]).sendMessage(ChatColor.GREEN+"Experience granted!");
@@ -316,7 +414,7 @@ public class mcPlayerListener extends PlayerListener {
     			}
     		}
     		else if(split.length == 3){
-    			if(mcm.getInstance().isInt(split[2]) && mcSkills.getInstance().isSkill(split[1])){
+    			if(mcm.isInt(split[2]) && mcSkills.isSkill(split[1])){
     				int newvalue = Integer.valueOf(split[2]);
     				PP.addXpToSkill(newvalue, split[1]);
     				player.sendMessage(ChatColor.RED+split[1]+" has been modified.");
@@ -417,7 +515,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + PPt.getAcrobatics()+ChatColor.DARK_AQUA 
     				+ " XP("+PPt.getAcrobaticsXP()
     				+"/"+PPt.getXpToLevel("acrobatics")+")");
-    		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+(mcm.getInstance().getPowerLevel(target)));
+    		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+(mcm.getPowerLevel(target)));
     		player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~");
     		player.sendMessage("X: "+x);
     		player.sendMessage("Y: "+y);
@@ -477,7 +575,7 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage(ChatColor.YELLOW + "Acrobatics Skill: " + ChatColor.GREEN + PP.getAcrobatics()+ChatColor.DARK_AQUA 
     				+ " XP("+PP.getAcrobaticsXP()
     				+"/"+PP.getXpToLevel("acrobatics")+")");
-    		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+(mcm.getInstance().getPowerLevel(player)));
+    		player.sendMessage(ChatColor.DARK_RED+"POWER LEVEL: "+ChatColor.GREEN+(mcm.getPowerLevel(player)));
     	}
     	//Invite Command
     	if(mcPermissions.getInstance().party(player) && split[0].equalsIgnoreCase("/"+mcLoadProperties.invite)){

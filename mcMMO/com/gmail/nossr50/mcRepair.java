@@ -14,19 +14,14 @@ public class mcRepair {
     	plugin = instance;
     }
 	private static volatile mcRepair instance;
-	public static mcRepair getInstance() {
-    	if (instance == null) {
-    		instance = new mcRepair(plugin);
-    	}
-    	return instance;
-    }
-	public void repairCheck(Player player, ItemStack is, Block block){
+	
+	public static void repairCheck(Player player, ItemStack is, Block block){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
 		short durabilityBefore = player.getItemInHand().getDurability();
 		short durabilityAfter = 0;
 		short dif = 0;
     	if(block != null
-    			&& mcPermissions.getInstance().repair(player)){
+    			&& mcPermissions.repair(player)){
         	if(player.getItemInHand().getDurability() > 0 && player.getItemInHand().getAmount() < 2){
         		/*
         		 * ARMOR
@@ -80,11 +75,11 @@ public class mcRepair {
             			player.getItemInHand().setDurability(getToolRepairAmount(is, player));
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		if(mcm.getInstance().isShovel(is))
+	            		if(mcm.isShovel(is))
 	        				dif = (short) (dif / 3);
-	        			if(mcm.getInstance().isSwords(is))
+	        			if(mcm.isSwords(is))
 	        				dif = (short) (dif / 2);
-	        			if(mcm.getInstance().isHoe(is))
+	        			if(mcm.isHoe(is))
 	        				dif = (short) (dif / 2);
             			PP.addRepairXP(dif * mcLoadProperties.xpGainMultiplier);
             		} else if (isDiamondTools(is) && hasDiamond(player) && PP.getRepairInt() >= mcLoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
@@ -95,11 +90,11 @@ public class mcRepair {
             			removeDiamond(player);
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		if(mcm.getInstance().isShovel(is))
+	            		if(mcm.isShovel(is))
 	        				dif = (short) (dif / 3);
-	        			if(mcm.getInstance().isSwords(is))
+	        			if(mcm.isSwords(is))
 	        				dif = (short) (dif / 2);
-	        			if(mcm.getInstance().isHoe(is))
+	        			if(mcm.isHoe(is))
 	        				dif = (short) (dif / 2);
             			PP.addRepairXP(dif * mcLoadProperties.xpGainMultiplier);
             		} else if(isGoldTools(is) && hasGold(player)){
@@ -108,11 +103,11 @@ public class mcRepair {
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 7.6); //Boost XP for Gold to that of around Iron
-	            		if(mcm.getInstance().isShovel(is))
+	            		if(mcm.isShovel(is))
 	        				dif = (short) (dif / 3);
-	        			if(mcm.getInstance().isSwords(is))
+	        			if(mcm.isSwords(is))
 	        				dif = (short) (dif / 2);
-	        			if(mcm.getInstance().isHoe(is))
+	        			if(mcm.isHoe(is))
 	        				dif = (short) (dif / 2);
             			PP.addRepairXP(dif * mcLoadProperties.xpGainMultiplier);
             		} else {
@@ -127,10 +122,10 @@ public class mcRepair {
         	/*
         	 * GIVE SKILL IF THERE IS ENOUGH XP
         	 */
-        	mcSkills.getInstance().XpCheck(player);
+        	mcSkills.XpCheck(player);
         	}
     }
-	public boolean isArmor(ItemStack is){
+	public static boolean isArmor(ItemStack is){
     	if(is.getTypeId() == 306 || is.getTypeId() == 307 ||is.getTypeId() == 308 ||is.getTypeId() == 309 ||
     			is.getTypeId() == 310 ||is.getTypeId() == 311 ||is.getTypeId() == 312 ||is.getTypeId() == 313 ||
     			is.getTypeId() == 314 || is.getTypeId() == 315 || is.getTypeId() == 316 || is.getTypeId() == 317){
@@ -139,14 +134,14 @@ public class mcRepair {
     		return false;
     	}
     }
-	public boolean isGoldArmor(ItemStack is){
+	public static boolean isGoldArmor(ItemStack is){
 		if(is.getTypeId() == 314 || is.getTypeId() == 315 || is.getTypeId() == 316 || is.getTypeId() == 317){
 			return true;
 		} else {
 			return false;
 		}
 	}
-    public boolean isIronArmor(ItemStack is){
+    public static boolean isIronArmor(ItemStack is){
     	if(is.getTypeId() == 306 || is.getTypeId() == 307 || is.getTypeId() == 308 || is.getTypeId() == 309)
     	{
     		return true;
@@ -154,7 +149,7 @@ public class mcRepair {
     		return false;
     	}
     }
-    public boolean isDiamondArmor(ItemStack is){
+    public static boolean isDiamondArmor(ItemStack is){
     	if(is.getTypeId() == 310 || is.getTypeId() == 311 || is.getTypeId() == 312 || is.getTypeId() == 313)
     	{
     		return true;
@@ -162,7 +157,7 @@ public class mcRepair {
     		return false;
     	}
     }
-    public boolean isTools(ItemStack is){
+    public static boolean isTools(ItemStack is){
     	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || is.getTypeId() == 292 || //IRON
     			is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293 || //DIAMOND
     			is.getTypeId() == 283 || is.getTypeId() == 285 || is.getTypeId() == 286 || is.getTypeId() == 284) //GOLD
@@ -172,14 +167,14 @@ public class mcRepair {
     		return false;
     	}
     }
-    public boolean isGoldTools(ItemStack is){
+    public static boolean isGoldTools(ItemStack is){
     	if(is.getTypeId() == 283 || is.getTypeId() == 285 || is.getTypeId() == 286 || is.getTypeId() == 284 || is.getTypeId() == 294){
     		return true;
     	} else {
     		return false;
     	}
     }
-    public boolean isIronTools(ItemStack is){
+    public static boolean isIronTools(ItemStack is){
     	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || is.getTypeId() == 292)
     	{
     		return true;
@@ -188,7 +183,7 @@ public class mcRepair {
     	}
     }
     
-    public boolean isDiamondTools(ItemStack is){
+    public static boolean isDiamondTools(ItemStack is){
     	if(is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293)
     	{
     		return true;
@@ -196,7 +191,7 @@ public class mcRepair {
     		return false;
     	}
     }
-    public void removeIron(Player player){
+    public static void removeIron(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
     		if(x != null && x.getTypeId() == 265){
@@ -212,7 +207,7 @@ public class mcRepair {
     		}
     	}
     }
-    public void removeGold(Player player){
+    public static void removeGold(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
     		if(x != null && x.getTypeId() == 266){
@@ -228,7 +223,7 @@ public class mcRepair {
     		}
     	}
     }
-    public void removeDiamond(Player player){
+    public static void removeDiamond(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
     		if(x != null && x.getTypeId() == 264){
@@ -244,7 +239,7 @@ public class mcRepair {
     		}
     	}
     }
-    public boolean hasGold(Player player){
+    public static boolean hasGold(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
     		if(x != null && x.getTypeId() == 266){
@@ -253,7 +248,7 @@ public class mcRepair {
     	}
     	return false;
     }
-    public boolean hasDiamond(Player player){
+    public static boolean hasDiamond(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
     		if(x != null && x.getTypeId() == 264){
@@ -262,7 +257,7 @@ public class mcRepair {
     	}
     	return false;
     }
-    public boolean hasIron(Player player){
+    public static boolean hasIron(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
     		if(x != null && x.getTypeId() == 265){
@@ -271,7 +266,7 @@ public class mcRepair {
     	}
     	return false;
     }
-    public short repairCalculate(Player player, short durability, short ramt){
+    public static short repairCalculate(Player player, short durability, short ramt){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	float bonus = (PP.getRepairInt() / 500);
     	bonus = (ramt * bonus);
@@ -285,7 +280,7 @@ public class mcRepair {
     	}
     	return durability;
     }
-    public short getToolRepairAmount(ItemStack is, Player player){
+    public static short getToolRepairAmount(ItemStack is, Player player){
     	short durability = is.getDurability();
     	short ramt = 0;
     	switch(is.getTypeId())
@@ -354,7 +349,7 @@ public class mcRepair {
 		return repairCalculate(player, durability, ramt);
     }
     //This determines how much we repair
-    public short getArmorRepairAmount(ItemStack is, Player player){
+    public static short getArmorRepairAmount(ItemStack is, Player player){
     		short durability = is.getDurability();
     		short ramt = 0;
     		switch(is.getTypeId())
@@ -400,7 +395,7 @@ public class mcRepair {
 				durability = 0;
 			return repairCalculate(player, durability, ramt);
     }
-    public void needMoreVespeneGas(ItemStack is, Player player){
+    public static void needMoreVespeneGas(ItemStack is, Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if ((isDiamondTools(is) || isDiamondArmor(is)) && PP.getRepairInt() < mcLoadProperties.repairdiamondlevel){
 			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
@@ -421,7 +416,7 @@ public class mcRepair {
 		} else if (is.getAmount() > 1)
 			player.sendMessage(ChatColor.DARK_RED+"You can't repair stacked items");
     	}
-    public boolean checkPlayerProcRepair(Player player){
+    public static boolean checkPlayerProcRepair(Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
 		if(player != null){
 			if(Math.random() * 1000 <= PP.getRepairInt()){

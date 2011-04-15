@@ -35,7 +35,7 @@ public class mcAcrobatics {
 				if(player.getHealth() - newDamage >= 1){
 					if(!event.isCancelled())
 						PP.addAcrobaticsXP((event.getDamage() * 8) * mcLoadProperties.xpGainMultiplier);
-					mcSkills.getInstance().XpCheck(player);
+					mcSkills.XpCheck(player);
 					event.setDamage(newDamage);
 					if(event.getDamage() <= 0)
 						event.setCancelled(true);
@@ -48,7 +48,7 @@ public class mcAcrobatics {
 			} else if (!event.isCancelled()){
 				if(player.getHealth() - event.getDamage() >= 1){
 					PP.addAcrobaticsXP((event.getDamage() * 12) * mcLoadProperties.xpGainMultiplier);
-					mcSkills.getInstance().XpCheck(player);
+					mcSkills.XpCheck(player);
 				}
 			}
     	}

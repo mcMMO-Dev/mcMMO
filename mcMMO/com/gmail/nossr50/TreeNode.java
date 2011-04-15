@@ -7,20 +7,19 @@ import org.bukkit.entity.Player;
 public class TreeNode {
 	TreeNode left = null
 	, right = null;
-	Player player;
-	int stat;
+	PlayerStat ps = new PlayerStat();
 
-	public TreeNode(Player p, int in) {stat = in; player = p;}
+	public TreeNode(String p, int in) {ps.statVal = in; ps.name = p;}
 
-	public void add (Player p, int in) {
-		if (in <= stat)
+	public void add (String p, int in) {
+		if (in >= ps.statVal)
 		{
 			if (left == null)
 				left = new TreeNode(p,in);
 			else
 				left.add(p, in);
 		}
-		else if(in > stat)
+		else if(in < ps.statVal)
 		{
 		if (right == null)
 			right = new TreeNode(p,in);
@@ -29,12 +28,12 @@ public class TreeNode {
 		}
 	}
 	
-	public ArrayList<Player> inOrder(ArrayList<Player> a)
+	public ArrayList<PlayerStat> inOrder(ArrayList<PlayerStat> a)
 	{
 	if(left != null)
 	a = left.inOrder(a);
 
-	a.add(player);
+	a.add(ps);
 
 	if(right != null)
 	a = right.inOrder(a);

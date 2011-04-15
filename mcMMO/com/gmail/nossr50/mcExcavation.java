@@ -16,18 +16,11 @@ public class mcExcavation {
 	public mcExcavation(mcMMO instance) {
     	plugin = instance;
     }
-	private static volatile mcExcavation instance;
-	public static mcExcavation getInstance() {
-    	if (instance == null) {
-    	instance = new mcExcavation(plugin);
-    	}
-    	return instance;
-    	}
-	public void gigaDrillBreakerActivationCheck(Player player, Block block, Plugin pluginx){
+	public static void gigaDrillBreakerActivationCheck(Player player, Block block, Plugin pluginx){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
-		if(mcm.getInstance().isShovel(player.getItemInHand())){
+		if(mcm.isShovel(player.getItemInHand())){
 	    	if(block != null){
-		    	if(!mcm.getInstance().abilityBlockCheck(block))
+		    	if(!mcm.abilityBlockCheck(block))
 		    		return;
 	    	}
 	    	if(PP.getShovelPreparationMode()){
@@ -43,7 +36,7 @@ public class mcExcavation {
 	    	if(!PP.getGigaDrillBreakerMode() && PP.getGigaDrillBreakerCooldown() == 0){
 	    		player.sendMessage(ChatColor.GREEN+"**GIGA DRILL BREAKER ACTIVATED**");
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    			if(y != null && y != player && mcm.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Giga Drill Breaker!");
 	    		}
 	    		PP.setGigaDrillBreakerTicks(ticks * 1000);
@@ -53,7 +46,7 @@ public class mcExcavation {
 	    	
 	    }
 	}
-	public boolean canBeGigaDrillBroken(Block block){
+	public static boolean canBeGigaDrillBroken(Block block){
 		int i = block.getTypeId();
 		if(i == 2||i == 3||i == 12||i == 13){
 			return true;
@@ -61,7 +54,7 @@ public class mcExcavation {
 			return false;
 		}
 	}
-	public void excavationProcCheck(Block block, Player player){
+	public static void excavationProcCheck(Block block, Player player){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
     	int type = block.getTypeId();
     	Location loc = block.getLocation();
@@ -205,6 +198,6 @@ public class mcExcavation {
         		}
         	}
     	}
-    	mcSkills.getInstance().XpCheck(player);
+    	mcSkills.XpCheck(player);
     }
 }

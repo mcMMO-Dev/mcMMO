@@ -25,15 +25,8 @@ public class mcm {
 	public mcm(mcMMO instance) {
     	plugin = instance;
     }
-	private static volatile mcm instance;
-	public static mcm getInstance() {
-    	if (instance == null) {
-    	instance = new mcm(plugin);
-    	}
-    	return instance;
-    }
 	
-	public int getPowerLevel(Player player){
+	public static int getPowerLevel(Player player){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
 		int x = 0;
 		if(mcPermissions.getInstance().mining(player))
@@ -58,7 +51,7 @@ public class mcm {
 			x+=PP.getRepairInt();
 		return x;
 	}
-	public boolean blockBreakSimulate(Block block, Player player, Plugin plugin){
+	public static boolean blockBreakSimulate(Block block, Player player, Plugin plugin){
 
     	FakeBlockBreakEvent event = new FakeBlockBreakEvent(block, player);
     	if(block != null && plugin != null && player != null){
@@ -74,11 +67,11 @@ public class mcm {
     	}
     }
 	
-	public void damageTool(Player player, short damage){
+	public static void damageTool(Player player, short damage){
 		if(player.getItemInHand().getTypeId() == 0)
 			return;
 		player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability() + damage));
-		if(player.getItemInHand().getDurability() >= getMaxDurability(mcm.getInstance().getTier(player), player.getItemInHand())){
+		if(player.getItemInHand().getDurability() >= getMaxDurability(getTier(player), player.getItemInHand())){
 			ItemStack[] inventory = player.getInventory().getContents();
 	    	for(ItemStack x : inventory){
 	    		if(x != null && x.getTypeId() == player.getItemInHand().getTypeId() && x.getDurability() == player.getItemInHand().getDurability()){
@@ -109,7 +102,7 @@ public class mcm {
     		}
     	}
 	}
-	public Integer getTier(Player player){
+	public static Integer getTier(Player player){
 		int i = player.getItemInHand().getTypeId();
 		if(i == 268 || i == 269 || i == 270 || i == 271 || i == 290){
 			return 1; //WOOD
@@ -125,7 +118,7 @@ public class mcm {
 			return 1; //UNRECOGNIZED
 		}
 	}
-	public Integer getMaxDurability(Integer tier, ItemStack item){
+	public static Integer getMaxDurability(Integer tier, ItemStack item){
 		int id = item.getTypeId();
 		if(tier == 1){
 			if((id == 276 || id == 277 || id == 278 || id == 279 || id == 293)){
@@ -143,12 +136,12 @@ public class mcm {
 			return 0;
 		}
 	}
-	public double getDistance(Location loca, Location locb)
+	public static double getDistance(Location loca, Location locb)
     {
 	return Math.sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)
     + Math.pow(loca.getZ() - locb.getZ(), 2));
     }
-	public boolean abilityBlockCheck(Block block){
+	public static boolean abilityBlockCheck(Block block){
 		int i = block.getTypeId();
 		if(i == 68 || i == 355 || i == 26 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
 			return false;
@@ -156,7 +149,7 @@ public class mcm {
 			return true;
 		}
 	}
-	public boolean isBlockAround(Location loc, Integer radius, Integer typeid){
+	public static boolean isBlockAround(Location loc, Integer radius, Integer typeid){
 		Block blockx = loc.getBlock();
     	int ox = blockx.getX();
         int oy = blockx.getY();
@@ -174,7 +167,7 @@ public class mcm {
         }
     	return false;
 	}
-	public boolean isPvpEnabled(){
+	public static boolean isPvpEnabled(){
 		String propertyName = "pvp";
 		FileReader fr = null;
 		try {
@@ -205,7 +198,7 @@ public class mcm {
 			return false;
 		}
 	}
-	public boolean shouldBeWatched(Block block){
+	public static boolean shouldBeWatched(Block block){
 		int id = block.getTypeId();
 		if(id == 49 || id == 81 || id == 83 || id == 86 || id == 91 || id == 1 || id == 17 || id == 42 || id == 87 || id == 89 || id == 2 || id == 3 || id == 12 || id == 13 || id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40 || id == 24){
 			return true;
@@ -213,7 +206,7 @@ public class mcm {
 			return false;
 		}
 	}
-    public Integer calculateHealth(Integer health, Integer newvalue){
+    public static Integer calculateHealth(Integer health, Integer newvalue){
     	if((health + newvalue) > 20){
     		return 20;
     	} else {
@@ -227,7 +220,7 @@ public class mcm {
     		return health-newvalue;
     	}
     }
-    public Integer getHealth(Entity entity){
+    public static Integer getHealth(Entity entity){
     	if(entity instanceof Monster){
     		Monster monster = (Monster)entity;
     		return monster.getHealth();
@@ -241,7 +234,7 @@ public class mcm {
     		return 0;
     	}
     }
-    public boolean isInt(String string){
+    public static boolean isInt(String string){
 		try {
 		    int x = Integer.parseInt(string);
 		}
@@ -250,7 +243,7 @@ public class mcm {
 		}
 		return true;
 	}
-    public void mcDropItem(Location loc, int id){
+    public static void mcDropItem(Location loc, int id){
     	if(loc != null){
     	Material mat = Material.getMaterial(id);
 		byte damage = 0;
@@ -259,14 +252,14 @@ public class mcm {
     	}
     }
 	
-    public boolean isSwords(ItemStack is){
+    public static boolean isSwords(ItemStack is){
     	if(is.getTypeId() == 268 || is.getTypeId() == 267 || is.getTypeId() == 272 || is.getTypeId() == 283 || is.getTypeId() == 276){
     		return true;
     	} else {
     		return false;
     	}
     }
-    public boolean isHoe(ItemStack is){
+    public static boolean isHoe(ItemStack is){
     	int id = is.getTypeId();
     	if(id == 290 || id == 291 || id == 292 || id == 293 || id == 294){
     		return true;
@@ -274,21 +267,21 @@ public class mcm {
     		return false;
     	}
     }
-    public boolean isShovel(ItemStack is){
+    public static boolean isShovel(ItemStack is){
     	if(is.getTypeId() == 269 || is.getTypeId() == 273 || is.getTypeId() == 277 || is.getTypeId() == 284 || is.getTypeId() == 256){
     		return true;
     	} else {
     		return false;
     	}
     }
-    public boolean isAxes(ItemStack is){
+    public static boolean isAxes(ItemStack is){
     	if(is.getTypeId() == 271 || is.getTypeId() == 258 || is.getTypeId() == 286 || is.getTypeId() == 279 || is.getTypeId() == 275){
     		return true;
     	} else {
     		return false;
     	}
     }
-    public boolean isMiningPick(ItemStack is){
+    public static boolean isMiningPick(ItemStack is){
     	if(is.getTypeId() == 270 || is.getTypeId() == 274 || is.getTypeId() == 285 || is.getTypeId() == 257 || is.getTypeId() == 278){
     		return true;
     	} else {
@@ -303,7 +296,7 @@ public class mcm {
     		return false;
     	}
     }
-    public void mcmmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
+    public static void mcmmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(split[0].equalsIgnoreCase("/woodcutting")){
 			event.setCancelled(true);
@@ -665,6 +658,7 @@ public class mcm {
 	    		player.sendMessage("/"+mcLoadProperties.clearmyspawn+" "+ChatColor.RED+"- Clears your MySpawn");
     		}
     		player.sendMessage(ChatColor.GREEN+"--OTHER COMMANDS--");
+    		player.sendMessage("/mctop <skillname> <page> "+ChatColor.RED+"- Leaderboards");
     		if(mcPermissions.getInstance().mcAbility(player))
     			player.sendMessage("/"+mcLoadProperties.mcability+ChatColor.RED+" - Toggle ability activation with right click");
     		if(mcPermissions.getInstance().adminChat(player)){

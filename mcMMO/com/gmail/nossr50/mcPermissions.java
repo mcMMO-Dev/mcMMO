@@ -27,7 +27,7 @@ public class mcPermissions {
         }
     }
   
-    private boolean permission(Player player, String string) {
+    private static boolean permission(Player player, String string) {
         return permissionsPlugin.Security.permission(player, string);  
     }
     public boolean mcrefresh(Player player) {
@@ -204,7 +204,7 @@ public class mcPermissions {
             return true;
         }
     }
-    public boolean repair(Player player) {
+    public static boolean repair(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.skills.repair");
         } else {

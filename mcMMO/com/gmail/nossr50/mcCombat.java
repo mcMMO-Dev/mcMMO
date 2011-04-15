@@ -26,14 +26,7 @@ public class mcCombat {
 	public mcCombat(mcMMO instance) {
     	plugin = instance;
     }
-	private static volatile mcCombat instance;
-	public static mcCombat getInstance() {
-    	if (instance == null) {
-    	instance = new mcCombat(plugin);
-    	}
-    	return instance;
-    	}
-	public void playerVersusPlayerChecks(Entity x, Player attacker, EntityDamageByEntityEvent event){
+	public static void playerVersusPlayerChecks(Entity x, Player attacker, EntityDamageByEntityEvent event){
     	if(x instanceof Player){
     		if(mcLoadProperties.pvp == false){
     			event.setCancelled(true);
@@ -92,37 +85,39 @@ public class mcCombat {
     		if(attacker != null && defender != null && mcLoadProperties.pvpxp){
     			if(PPd.inParty() && PPa.inParty() && mcParty.getInstance().inSameParty(attacker, defender))
     				return;
-    			if(mcm.getInstance().isAxes(attacker.getItemInHand()))
-    				PPa.addAxesXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
-    			if(mcm.getInstance().isSwords(attacker.getItemInHand()))
-    				PPa.addSwordsXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
-    			if(attacker.getItemInHand().getTypeId() == 0)
-    				PPa.addUnarmedXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    			if(System.currentTimeMillis() >= PPd.getRespawnATS() + 5000 && defender.getHealth() >= 1){
+	    			if(mcm.isAxes(attacker.getItemInHand()))
+	    				PPa.addAxesXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+	    			if(mcm.isSwords(attacker.getItemInHand()))
+	    				PPa.addSwordsXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+	    			if(attacker.getItemInHand().getTypeId() == 0)
+	    				PPa.addUnarmedXP((event.getDamage() * 3) * mcLoadProperties.pvpxprewardmodifier);
+    			}
     		}
     		/*
     		 * CHECK FOR LEVEL UPS
     		 */
-    		mcSkills.getInstance().XpCheck(attacker);
+    		mcSkills.XpCheck(attacker);
 		}
     }
-    public void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
+    public static void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
     	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     	if(x instanceof Squid){
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
     		}
 			Squid defender = (Squid)event.getEntity();
-			if(mcm.getInstance().isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
+			if(mcm.isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
 					PPa.addSwordsXP(10 * mcLoadProperties.xpGainMultiplier);
 			}
-			mcSkills.getInstance().XpCheck(attacker);
-			if(mcm.getInstance().isAxes(attacker.getItemInHand()) 
+			mcSkills.XpCheck(attacker);
+			if(mcm.isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
 					PPa.addAxesXP(10 * mcLoadProperties.xpGainMultiplier);
-					mcSkills.getInstance().XpCheck(attacker);
+					mcSkills.XpCheck(attacker);
 			}
-			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
+			if(mcm.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
 				if(PPa.getAxesInt() >= 500){
 					event.setDamage(calculateDamage(event, 4));
 				}
@@ -145,19 +140,19 @@ public class mcCombat {
     			//XP
 					if(defender.getHealth() != 0){
 					PPa.addUnarmedXP(10 * mcLoadProperties.xpGainMultiplier);
-					mcSkills.getInstance().XpCheck(attacker);
+					mcSkills.XpCheck(attacker);
 					}
     			}
 		}
     }
-    public void playerVersusAnimalsChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, int type){
+    public static void playerVersusAnimalsChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, int type){
     	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     	if(x instanceof Animals){
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
     		}
 			Animals defender = (Animals)event.getEntity();
-    		if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
+    		if(mcm.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
 				if(defender.getHealth() <= 0)
 					return;
 				if(PPa.getAxesInt() >= 500){
@@ -175,7 +170,7 @@ public class mcCombat {
 			}
 		}
     }
-    public void playerVersusMonsterChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
+    public static void playerVersusMonsterChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
     	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
     	if(x instanceof Monster){
     		/*
@@ -186,7 +181,7 @@ public class mcCombat {
     			bleedCheck(attacker, x);
     		}
 			Monster defender = (Monster)event.getEntity();
-			if(mcm.getInstance().isSwords(attacker.getItemInHand()) 
+			if(mcm.isSwords(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().swords(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
@@ -201,9 +196,9 @@ public class mcCombat {
 					if(x instanceof PigZombie)
 						PPa.addSwordsXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					}
-					mcSkills.getInstance().XpCheck(attacker);
+					mcSkills.XpCheck(attacker);
 				}
-			if(mcm.getInstance().isAxes(attacker.getItemInHand()) 
+			if(mcm.isAxes(attacker.getItemInHand()) 
 					&& defender.getHealth() > 0 
 					&& mcPermissions.getInstance().axes(attacker)){
 					if(!mcConfig.getInstance().isMobSpawnTracked(x)){
@@ -218,12 +213,12 @@ public class mcCombat {
 					if(x instanceof PigZombie)
 						PPa.addAxesXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 					}
-					mcSkills.getInstance().XpCheck(attacker);
+					mcSkills.XpCheck(attacker);
 			}
 			/*
 			 * AXE DAMAGE SCALING && LOOT CHECKS
 			 */
-			if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
+			if(mcm.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
 				if(PPa.getAxesInt() >= 500){
 					event.setDamage(calculateDamage(event, 4));
 				}
@@ -253,11 +248,11 @@ public class mcCombat {
 			if(x instanceof PigZombie)
 				PPa.addUnarmedXP((event.getDamage() * 3) * mcLoadProperties.xpGainMultiplier);
 			}
-			mcSkills.getInstance().XpCheck(attacker);
+			mcSkills.XpCheck(attacker);
 			}
 		}
     }
-	public void archeryCheck(EntityDamageByProjectileEvent event){
+	public static void archeryCheck(EntityDamageByProjectileEvent event){
     	Entity y = event.getDamager();
     	Entity x = event.getEntity();
     	if(event.getProjectile().toString().equals("CraftArrow") && x instanceof Player){
@@ -450,10 +445,10 @@ public class mcCombat {
 	    				event.setDamage(calculateDamage(event, 5));
     			}
     		}
-    		mcSkills.getInstance().XpCheck(attacker);
+    		mcSkills.XpCheck(attacker);
     	}
     }
-	public boolean simulateUnarmedProc(Player player){
+	public static boolean simulateUnarmedProc(Player player){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(PP.getUnarmedInt() >= 1000){
     		if(Math.random() * 4000 <= 1000){
@@ -466,9 +461,9 @@ public class mcCombat {
     	}
     		return false;
     }
-    public void bleedCheck(Player attacker, Entity x){
+    public static void bleedCheck(Player attacker, Entity x){
     	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
-    	if(mcPermissions.getInstance().swords(attacker) && mcm.getInstance().isSwords(attacker.getItemInHand())){
+    	if(mcPermissions.getInstance().swords(attacker) && mcm.isSwords(attacker.getItemInHand())){
 			if(PPa.getSwordsInt() >= 750){
 				if(Math.random() * 1000 >= 750){
 					if(!(x instanceof Player))
@@ -490,10 +485,10 @@ public class mcCombat {
 			}
 		}
     }
-    public int calculateDamage(EntityDamageEvent event, int dmg){
+    public static int calculateDamage(EntityDamageEvent event, int dmg){
     	return event.getDamage() + dmg;
     }
-    public void dealDamage(Entity target, int dmg){
+    public static void dealDamage(Entity target, int dmg){
     	if(target instanceof Player){
     		((Player) target).damage(dmg);
     	}
@@ -504,11 +499,11 @@ public class mcCombat {
     		((Monster) target).damage(dmg);
     	}
     }
-    public void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    public static void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Entity x){
     	int targets = 0;
-    	targets = mcm.getInstance().getTier(attacker);
+    	targets = mcm.getTier(attacker);
     	for(Entity derp : x.getWorld().getEntities()){
-    		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 5){
+    		if(mcm.getDistance(x.getLocation(), derp.getLocation()) < 5){
     			if(derp instanceof Player){
     				Player target = (Player)derp;
     				if(mcParty.getInstance().inSameParty(attacker, target))
@@ -535,11 +530,11 @@ public class mcCombat {
     		}
     	}
     }
-    public void applySerratedStrikes(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    public static void applySerratedStrikes(Player attacker, EntityDamageByEntityEvent event, Entity x){
     	int targets = 0;
-    	targets = mcm.getInstance().getTier(attacker);
+    	targets = mcm.getTier(attacker);
     	for(Entity derp : x.getWorld().getEntities()){
-    		if(mcm.getInstance().getDistance(x.getLocation(), derp.getLocation()) < 5){
+    		if(mcm.getDistance(x.getLocation(), derp.getLocation()) < 5){
     			if(derp instanceof Player){
     				Player target = (Player)derp;
     				if(mcParty.getInstance().inSameParty(attacker, target))
@@ -569,12 +564,12 @@ public class mcCombat {
     				targets--;
     			}
     		}
-    		//attacker.sendMessage(ChatColor.GREEN+"**SERRATED STRIKES HIT "+(mcm.getInstance().getTier(attacker)-targets)+" FOES**");
+    		//attacker.sendMessage(ChatColor.GREEN+"**SERRATED STRIKES HIT "+(mcm.getTier(attacker)-targets)+" FOES**");
     	}
     }
-    public void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Entity x){
+    public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Entity x){
     	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
-    	if(mcm.getInstance().isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
+    	if(mcm.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
     		if(PPa.getAxesInt() >= 750){
     			if(Math.random() * 1000 <= 750){
     				if(x instanceof Player){
@@ -602,9 +597,9 @@ public class mcCombat {
     		}
     	}
     }
-    public void parryCheck(Player defender, EntityDamageByEntityEvent event, Entity y){
+    public static void parryCheck(Player defender, EntityDamageByEntityEvent event, Entity y){
     	PlayerProfile PPd = mcUsers.getProfile(defender.getName());
-    	if(defender != null && mcm.getInstance().isSwords(defender.getItemInHand()) 
+    	if(defender != null && mcm.isSwords(defender.getItemInHand()) 
     			&& mcPermissions.getInstance().swords(defender)){
 			if(PPd.getSwordsInt() >= 900){
 				if(Math.random() * 3000 <= 900){
@@ -629,7 +624,7 @@ public class mcCombat {
 			}
 		}
     }
-    public void bleedSimulate(){
+    public static void bleedSimulate(){
     	
     	//Add items from Que list to BleedTrack list
     	for(Entity x : mcConfig.getInstance().getBleedQue()){
@@ -652,7 +647,7 @@ public class mcCombat {
         		continue;
         	}
         	
-        	if(mcm.getInstance().getHealth(x) <= 0){
+        	if(mcm.getHealth(x) <= 0){
         		continue;
         	}
         	

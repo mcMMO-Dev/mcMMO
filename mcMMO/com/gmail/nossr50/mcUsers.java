@@ -160,7 +160,7 @@ class PlayerList
 		private boolean greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, hoePreparationMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
 		private long gigaDrillBreakerCooldown = 0, berserkCooldown = 0, superBreakerCooldown = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0,
 		greenTerraCooldown = 0, treeFellerCooldown = 0, recentlyHurt = 0, archeryShotATS = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
-		mySpawnATS = 0, greenTerraATS = 0, greenTerraDATS = 0, superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
+		respawnATS = 0, mySpawnATS = 0, greenTerraATS = 0, greenTerraDATS = 0, superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
 		skullSplitterATS = 0, skullSplitterDATS = 0, hoePreparationATS = 0, axePreparationATS = 0, pickaxePreparationATS = 0, fistsPreparationATS = 0, shovelPreparationATS = 0, swordsPreparationATS = 0;
 		private int berserkTicks = 0, bleedticks = 0, greenTerraTicks = 0, gigaDrillBreakerTicks = 0, superBreakerTicks = 0, serratedStrikesTicks = 0, skullSplitterTicks = 0, treeFellerTicks = 0;
 		//ATS = (Time of) Activation Time Stamp
@@ -221,23 +221,6 @@ class PlayerList
             	addPlayer();
 		}
 		
-		public void scoreBoard()
-		{
-            try {
-            	//Open the user file
-            	FileReader file = new FileReader(location);
-            	BufferedReader in = new BufferedReader(file);
-            	String line = "";
-            	while((line = in.readLine()) != null)
-            	{
-            		
-            	}
-            	in.close();
-	        } catch (Exception e) {
-	            log.log(Level.SEVERE, "Exception while reading "
-	            		+ location + " (Are you sure you formatted it correctly?)", e);
-	        }
-		}
 		public boolean load()
 		{
             try {
@@ -473,6 +456,12 @@ class PlayerList
 				return false;
 			}
 		}
+		/*
+		 * EXPLOIT PREVENTION
+		 */
+		public long getRespawnATS() {return respawnATS;}
+		public void setRespawnATS(long newvalue) {respawnATS = newvalue;}
+		
 		/*
 		 * ARCHERY NERF STUFF
 		 */
@@ -1607,7 +1596,7 @@ class PlayerList
 				axesXP = String.valueOf(Integer.valueOf(axesXP)+newvalue);
 			}
 			save();
-			mcSkills.getInstance().XpCheck(thisplayer);
+			mcSkills.XpCheck(thisplayer);
 		}
 		public void modifyskill(int newvalue, String skillname){
 			if(skillname.toLowerCase().equals("taming")){

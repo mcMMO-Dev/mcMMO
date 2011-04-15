@@ -6,21 +6,22 @@ import org.bukkit.entity.Player;
 
 public class Tree {
 
-	TreeNode root;
+	TreeNode root = null;
 
 	public Tree(){}
 
-	public void add(Player p, int in )
+	public void add(String p, int in)
 	{
-	if(root == null)
-	root = new TreeNode(p, in);
-	else
-	root.add(p,in);
+		if(root == null)
+			root = new TreeNode(p, in);
+		else
+			root.add(p,in);
 	}
 	
-	public Player[] inOrder()
+	public PlayerStat[] inOrder()
 	{
-	return (Player[]) root.inOrder(new ArrayList<Player>()).toArray();
+		ArrayList<PlayerStat> order = root.inOrder(new ArrayList<PlayerStat>());
+		return order.toArray(new PlayerStat[order.size()]);
 	}
 
 }

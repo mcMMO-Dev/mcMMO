@@ -148,7 +148,7 @@ public class mcConfig {
     	instance = new mcConfig();
     	}
     	return instance;
-    	}
+    }
     public void toggleAdminChat(String playerName){
     	if(isAdminToggled(playerName)){
     		removeAdminToggled(playerName);

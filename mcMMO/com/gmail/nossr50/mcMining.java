@@ -16,19 +16,12 @@ public class mcMining {
 	public mcMining(mcMMO instance) {
     	plugin = instance;
     }
-	private static volatile mcMining instance;
-	public static mcMining getInstance() {
-    	if (instance == null) {
-    	instance = new mcMining(plugin);
-    	}
-    	return instance;
-    	}
 	
-	public void superBreakerCheck(Player player, Block block, Plugin pluginx){
+	public static void superBreakerCheck(Player player, Block block, Plugin pluginx){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
-	    if(mcm.getInstance().isMiningPick(player.getItemInHand())){
+	    if(mcm.isMiningPick(player.getItemInHand())){
 	    	if(block != null){
-		    	if(!mcm.getInstance().abilityBlockCheck(block))
+		    	if(!mcm.abilityBlockCheck(block))
 		    		return;
 	    	}
 	    	if(PP.getPickaxePreparationMode()){
@@ -41,10 +34,10 @@ public class mcMining {
     			ticks++;
     		}
     		
-	    	if(!PP.getSuperBreakerMode() && mcSkills.getInstance().cooldownOver(player, PP.getSuperBreakerDeactivatedTimeStamp(), mcLoadProperties.superBreakerCooldown)){
+	    	if(!PP.getSuperBreakerMode() && mcSkills.cooldownOver(player, PP.getSuperBreakerDeactivatedTimeStamp(), mcLoadProperties.superBreakerCooldown)){
 	    		player.sendMessage(ChatColor.GREEN+"**SUPER BREAKER ACTIVATED**");
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    			if(y != null && y != player && mcm.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Super Breaker!");
 	    		}
 	    		PP.setSuperBreakerTicks(ticks * 1000);
@@ -54,7 +47,7 @@ public class mcMining {
 	    	
 	    }
 	}
-	public void blockProcSimulate(Block block){
+	public static void blockProcSimulate(Block block){
     	Location loc = block.getLocation();
     	Material mat = Material.getMaterial(block.getTypeId());
 		byte damage = 0;
@@ -100,7 +93,7 @@ public class mcMining {
 			loc.getWorld().dropItemNaturally(loc, item);
 		}
     }
-    public void blockProcCheck(Block block, Player player){
+    public static void blockProcCheck(Block block, Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(player != null){
     		if(Math.random() * 1000 <= PP.getMiningInt()){
@@ -109,7 +102,7 @@ public class mcMining {
     		}
     	}		
 	}
-    public void miningBlockCheck(Player player, Block block){
+    public static void miningBlockCheck(Player player, Block block){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(mcConfig.getInstance().isBlockWatched(block) || block.getData() == (byte) 5)
     		return;
@@ -164,12 +157,12 @@ public class mcMining {
     		blockProcCheck(block, player);
     	}
     	PP.addMiningXP(xp * mcLoadProperties.xpGainMultiplier);
-    	mcSkills.getInstance().XpCheck(player);
+    	mcSkills.XpCheck(player);
     }
     /*
      * Handling SuperBreaker stuff
      */
-    public Boolean canBeSuperBroken(Block block){
+    public static Boolean canBeSuperBroken(Block block){
     	int t = block.getTypeId();
     	if(t == 49 || t == 87 || t == 89 || t == 73 || t == 74 || t == 56 || t == 21 || t == 1 || t == 16 || t == 14 || t == 15){
     		return true;
@@ -177,10 +170,10 @@ public class mcMining {
     		return false;
     	}
     }
-    public void SuperBreakerBlockCheck(Player player, Block block){
+    public static void SuperBreakerBlockCheck(Player player, Block block){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(mcLoadProperties.toolsLoseDurabilityFromAbilities)
-    		mcm.getInstance().damageTool(player, (short) mcLoadProperties.abilityDurabilityLoss);
+    		mcm.damageTool(player, (short) mcLoadProperties.abilityDurabilityLoss);
     	Location loc = block.getLocation();
     	Material mat = Material.getMaterial(block.getTypeId());
     	int xp = 0;
@@ -238,7 +231,7 @@ public class mcMining {
     		block.setType(Material.AIR);
     	}
     	//GOLD
-    	if(block.getTypeId() == 14 && mcm.getInstance().getTier(player) >= 3){
+    	if(block.getTypeId() == 14 && mcm.getTier(player) >= 3){
     		if(!mcConfig.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 35;
         		blockProcCheck(block, player);
@@ -249,9 +242,9 @@ public class mcMining {
     		block.setType(Material.AIR);
     	}
     	//OBSIDIAN
-    	if(block.getTypeId() == 49 && mcm.getInstance().getTier(player) >= 4){
+    	if(block.getTypeId() == 49 && mcm.getTier(player) >= 4){
     		if(mcLoadProperties.toolsLoseDurabilityFromAbilities)
-        		mcm.getInstance().damageTool(player, (short) 104);
+        		mcm.damageTool(player, (short) 104);
     		if(!mcConfig.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 15;
         		blockProcCheck(block, player);
@@ -263,7 +256,7 @@ public class mcMining {
     		block.setType(Material.AIR);
     	}
     	//DIAMOND
-    	if(block.getTypeId() == 56 && mcm.getInstance().getTier(player) >= 3){
+    	if(block.getTypeId() == 56 && mcm.getTier(player) >= 3){
     		if(!mcConfig.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 75;
         		blockProcCheck(block, player);
@@ -275,7 +268,7 @@ public class mcMining {
     		block.setType(Material.AIR);
     	}
     	//IRON
-    	if(block.getTypeId() == 15 && mcm.getInstance().getTier(player) >= 2){
+    	if(block.getTypeId() == 15 && mcm.getTier(player) >= 2){
     		if(!mcConfig.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 25;
         		blockProcCheck(block, player);
@@ -286,7 +279,7 @@ public class mcMining {
     		block.setType(Material.AIR);
     	}
     	//REDSTONE
-    	if((block.getTypeId() == 73 || block.getTypeId() == 74) && mcm.getInstance().getTier(player) >= 4){
+    	if((block.getTypeId() == 73 || block.getTypeId() == 74) && mcm.getTier(player) >= 4){
     		if(!mcConfig.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 15;
         		blockProcCheck(block, player);
@@ -303,7 +296,7 @@ public class mcMining {
     		block.setType(Material.AIR);
     	}
     	//LAPUS
-    	if(block.getTypeId() == 21 && mcm.getInstance().getTier(player) >= 3){
+    	if(block.getTypeId() == 21 && mcm.getTier(player) >= 3){
     		if(!mcConfig.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 40;
         		blockProcCheck(block, player);
@@ -319,6 +312,6 @@ public class mcMining {
     	}
     	if(block.getData() != (byte) 5)
     		PP.addMiningXP(xp * mcLoadProperties.xpGainMultiplier);
-    	mcSkills.getInstance().XpCheck(player);
+    	mcSkills.XpCheck(player);
     }
 }

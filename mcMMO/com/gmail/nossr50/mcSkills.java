@@ -16,13 +16,8 @@ public class mcSkills {
     	plugin = instance;
     }
 	private static volatile mcSkills instance;
-	public static mcSkills getInstance() {
-    	if (instance == null) {
-    		instance = new mcSkills(plugin);
-    	}
-    	return instance;
-    }
-	public boolean cooldownOver(Player player, long oldTime, int cooldown){
+	
+	public static boolean cooldownOver(Player player, long oldTime, int cooldown){
 		long currentTime = System.currentTimeMillis();
 		if(currentTime - oldTime >= (cooldown * 1000)){
 			return true;
@@ -46,7 +41,7 @@ public class mcSkills {
     		}
     	}
     }
-    public int calculateTimeLeft(Player player, long deactivatedTimeStamp, int cooldown){
+    public static int calculateTimeLeft(Player player, long deactivatedTimeStamp, int cooldown){
     	long currentTime = System.currentTimeMillis();
     	int x = 0;
     	while(currentTime < deactivatedTimeStamp + (cooldown * 1000)){
@@ -55,7 +50,7 @@ public class mcSkills {
     	}
     	return x;
     }
-    public void watchCooldowns(Player player){
+    public static void watchCooldowns(Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(!PP.getGreenTerraInformed() && System.currentTimeMillis() - PP.getGreenTerraDeactivatedTimeStamp() >= (mcLoadProperties.greenTerraCooldown * 1000)){
 			PP.setGreenTerraInformed(true);
@@ -86,9 +81,9 @@ public class mcSkills {
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Giga Drill Breaker "+ChatColor.GREEN+"ability is refreshed!");
     	}
     }
-    public void hoeReadinessCheck(Player player){
+    public static void hoeReadinessCheck(Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
-    	if(mcPermissions.getInstance().herbalismAbility(player) && mcm.getInstance().isHoe(player.getItemInHand()) && !PP.getHoePreparationMode()){
+    	if(mcPermissions.getInstance().herbalismAbility(player) && mcm.isHoe(player.getItemInHand()) && !PP.getHoePreparationMode()){
     		if(!PP.getGreenTerraMode() && !cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), mcLoadProperties.greenTerraCooldown)){
 	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
 	    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getGreenTerraDeactivatedTimeStamp(), mcLoadProperties.greenTerraCooldown)+"s)");
@@ -99,11 +94,11 @@ public class mcSkills {
 			PP.setHoePreparationMode(true);
     	}
     }
-    public void abilityActivationCheck(Player player){
+    public static void abilityActivationCheck(Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(!PP.getAbilityUse())
     		return;
-    	if(mcPermissions.getInstance().miningAbility(player) && mcm.getInstance().isMiningPick(player.getItemInHand()) && !PP.getPickaxePreparationMode()){
+    	if(mcPermissions.getInstance().miningAbility(player) && mcm.isMiningPick(player.getItemInHand()) && !PP.getPickaxePreparationMode()){
     		if(!PP.getSuperBreakerMode() && !cooldownOver(player, PP.getSuperBreakerDeactivatedTimeStamp(), mcLoadProperties.superBreakerCooldown)){
 	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
 	    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getSuperBreakerDeactivatedTimeStamp(), mcLoadProperties.superBreakerCooldown)+"s)");
@@ -113,7 +108,7 @@ public class mcSkills {
 			PP.setPickaxePreparationATS(System.currentTimeMillis());
 			PP.setPickaxePreparationMode(true);
     	}
-    	if(mcPermissions.getInstance().excavationAbility(player) && mcm.getInstance().isShovel(player.getItemInHand()) && !PP.getShovelPreparationMode()){
+    	if(mcPermissions.getInstance().excavationAbility(player) && mcm.isShovel(player.getItemInHand()) && !PP.getShovelPreparationMode()){
     		if(!PP.getGigaDrillBreakerMode() && !cooldownOver(player, PP.getGigaDrillBreakerDeactivatedTimeStamp(), mcLoadProperties.gigaDrillBreakerCooldown)){
 	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
 	    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getGigaDrillBreakerDeactivatedTimeStamp(), mcLoadProperties.gigaDrillBreakerCooldown)+"s)");
@@ -123,7 +118,7 @@ public class mcSkills {
 			PP.setShovelPreparationATS(System.currentTimeMillis());
 			PP.setShovelPreparationMode(true);
     	}
-    	if(mcPermissions.getInstance().swordsAbility(player) && mcm.getInstance().isSwords(player.getItemInHand()) && !PP.getSwordsPreparationMode()){
+    	if(mcPermissions.getInstance().swordsAbility(player) && mcm.isSwords(player.getItemInHand()) && !PP.getSwordsPreparationMode()){
     		if(!PP.getSerratedStrikesMode() && !cooldownOver(player, PP.getSerratedStrikesDeactivatedTimeStamp(), mcLoadProperties.serratedStrikeCooldown)){
 	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
 	    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getSerratedStrikesDeactivatedTimeStamp(), mcLoadProperties.serratedStrikeCooldown)+"s)");
@@ -144,16 +139,16 @@ public class mcSkills {
 			PP.setFistsPreparationMode(true);
     	}
     	if((mcPermissions.getInstance().axes(player) || mcPermissions.getInstance().woodcutting(player)) && !PP.getAxePreparationMode()){
-    		if(mcm.getInstance().isAxes(player.getItemInHand())){
+    		if(mcm.isAxes(player.getItemInHand())){
     			player.sendMessage(ChatColor.GREEN+"**YOU READY YOUR AXE**");
     			PP.setAxePreparationATS(System.currentTimeMillis());
     			PP.setAxePreparationMode(true);
     		}
     	}
     }
-    public void serratedStrikesActivationCheck(Player player, Plugin pluginx){
+    public static void serratedStrikesActivationCheck(Player player, Plugin pluginx){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
-		if(mcm.getInstance().isSwords(player.getItemInHand())){
+		if(mcm.isSwords(player.getItemInHand())){
 			if(PP.getSwordsPreparationMode()){
     			PP.setSwordsPreparationMode(false);
     		}
@@ -167,7 +162,7 @@ public class mcSkills {
 	    	if(!PP.getSerratedStrikesMode() && PP.getSerratedStrikesCooldown() == 0){
 	    		player.sendMessage(ChatColor.GREEN+"**SERRATED STRIKES ACTIVATED**");
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    			if(y != null && y != player && mcm.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Serrated Strikes!");
 	    		}
 	    		PP.setSerratedStrikesTicks((ticks * 2) * 1000);
@@ -177,7 +172,7 @@ public class mcSkills {
 	    	
 	    }
 	}
-    public void berserkActivationCheck(Player player, Plugin pluginx){
+    public static void berserkActivationCheck(Player player, Plugin pluginx){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
 		if(player.getItemInHand().getTypeId() == 0){
 			if(PP.getFistsPreparationMode()){
@@ -193,7 +188,7 @@ public class mcSkills {
 	    	if(!PP.getBerserkMode() && cooldownOver(player, PP.getBerserkDeactivatedTimeStamp(), mcLoadProperties.berserkCooldown)){
 	    		player.sendMessage(ChatColor.GREEN+"**BERSERK ACTIVATED**");
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    			if(y != null && y != player && mcm.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Berserk!");
 	    		}
 	    		PP.setBerserkTicks(ticks * 1000);
@@ -202,9 +197,9 @@ public class mcSkills {
 	    	}
 	    }
 	}
-    public void skullSplitterCheck(Player player, Plugin pluginx){
+    public static void skullSplitterCheck(Player player, Plugin pluginx){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
-    	if(mcm.getInstance().isAxes(player.getItemInHand()) && mcPermissions.getInstance().axesAbility(player)){
+    	if(mcm.isAxes(player.getItemInHand()) && mcPermissions.getInstance().axesAbility(player)){
     		/*
     		 * CHECK FOR AXE PREP MODE
     		 */
@@ -221,7 +216,7 @@ public class mcSkills {
     		if(!PP.getSkullSplitterMode() && cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), mcLoadProperties.skullSplitterCooldown)){
     			player.sendMessage(ChatColor.GREEN+"**SKULL SPLITTER ACTIVATED**");
     			for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    			if(y != null && y != player && mcm.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Skull Splitter!");
 	    		}
     			PP.setSkullSplitterTicks(ticks * 1000);
@@ -234,7 +229,7 @@ public class mcSkills {
     		}
     	}
     }
-    public void monitorSkills(Player player){
+    public static void monitorSkills(Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(PP == null)
     		mcUsers.addUser(player);
@@ -340,7 +335,7 @@ public class mcSkills {
 			}
 		}
     }
-    public void XpCheck(Player player){
+    public static void XpCheck(Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	/*
     	 * TAMING
@@ -352,6 +347,13 @@ public class mcSkills {
 				PP.removeTamingXP(PP.getXpToLevel("taming"));
 				PP.skillUpTaming(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getTamingInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "taming");
 			if(player != null && PP.getTaming() != null)
 				player.sendMessage(ChatColor.YELLOW+"Taming skill increased by "+skillups+"."+" Total ("+PP.getTaming()+")");	
 		}
@@ -365,6 +367,14 @@ public class mcSkills {
 				PP.removeAcrobaticsXP(PP.getXpToLevel("acrobatics"));
 				PP.skillUpAcrobatics(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getAcrobaticsInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "acrobatics");
+			
 			if(player != null && PP.getAcrobatics() != null)
 				player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by "+skillups+"."+" Total ("+PP.getAcrobatics()+")");	
 		}
@@ -378,6 +388,14 @@ public class mcSkills {
 				PP.removeArcheryXP(PP.getXpToLevel("archery"));
 				PP.skillUpArchery(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getArcheryInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "archery");
+			
 			if(player != null && PP.getArchery() != null)
 				player.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+PP.getArchery()+")");	
 		}
@@ -391,6 +409,14 @@ public class mcSkills {
 				PP.removeSwordsXP(PP.getXpToLevel("swords"));
 				PP.skillUpSwords(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getSwordsInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "swords");
+			
 			if(player != null && PP.getSwords() != null)
 				player.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+PP.getSwords()+")");	
 		}
@@ -404,6 +430,14 @@ public class mcSkills {
 				PP.removeAxesXP(PP.getXpToLevel("axes"));
 				PP.skillUpAxes(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getAxesInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "axes");
+			
 			if(player != null && PP.getAxes() != null)
 				player.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+PP.getAxes()+")");	
 		}
@@ -417,6 +451,14 @@ public class mcSkills {
 				PP.removeUnarmedXP(PP.getXpToLevel("unarmed"));
 				PP.skillUpUnarmed(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getUnarmedInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "unarmed");
+			
 			if(player != null && PP.getUnarmed() != null)
 				player.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+PP.getUnarmed()+")");	
 		}
@@ -430,6 +472,14 @@ public class mcSkills {
 				PP.removeHerbalismXP(PP.getXpToLevel("herbalism"));
 				PP.skillUpHerbalism(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getHerbalismInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "herbalism");
+			
 			if(player != null && PP.getHerbalism() != null)
 				player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by "+skillups+"."+" Total ("+PP.getHerbalism()+")");	
 		}
@@ -443,6 +493,14 @@ public class mcSkills {
 				PP.removeMiningXP(PP.getXpToLevel("mining"));
 				PP.skillUpMining(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getMiningInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "mining");
+			
 			if(player != null && PP.getMining() != null)
 				player.sendMessage(ChatColor.YELLOW+"Mining skill increased by "+skillups+"."+" Total ("+PP.getMining()+")");	
 		}
@@ -456,6 +514,14 @@ public class mcSkills {
 				PP.removeWoodCuttingXP(PP.getXpToLevel("woodcutting"));
 				PP.skillUpWoodCutting(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getWoodCuttingInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "woodcutting");
+			
 			if(player != null && PP.getWoodCutting() != null)
 				player.sendMessage(ChatColor.YELLOW+"WoodCutting skill increased by "+skillups+"."+" Total ("+PP.getWoodCutting()+")");	
 		}
@@ -469,6 +535,14 @@ public class mcSkills {
 				PP.removeRepairXP(PP.getXpToLevel("repair"));
 				PP.skillUpRepair(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getRepairInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "repair");
+			
 			if(player != null && PP.getRepair() != null)
 				player.sendMessage(ChatColor.YELLOW+"Repair skill increased by "+skillups+"."+" Total ("+PP.getRepair()+")");	
 		}
@@ -482,11 +556,26 @@ public class mcSkills {
 				PP.removeExcavationXP(PP.getXpToLevel("excavation"));
 				PP.skillUpExcavation(1);
 			}
+			/*
+			 * Leaderboard updating stuff
+			 */
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = PP.getExcavationInt();
+			ps.name = player.getName();
+			mcLeaderboard.updateLeaderboard(ps, "excavation");
+			
 			if(player != null && PP.getExcavation() != null)
 				player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+skillups+"."+" Total ("+PP.getExcavation()+")");	
 		}
+		/*
+		 * Leaderboard updating stuff
+		 */
+		PlayerStat ps = new PlayerStat();
+		ps.statVal = mcm.getPowerLevel(player);
+		ps.name = player.getName();
+		mcLeaderboard.updateLeaderboard(ps, "powerlevel");
     }
-    public boolean isSkill(String skillname){
+    public static boolean isSkill(String skillname){
     	skillname = skillname.toLowerCase();
     	if(skillname.equals("all")){
     		return true;
@@ -528,11 +617,11 @@ public class mcSkills {
 			return false;
 		}
 }
-    public void arrowRetrievalCheck(Entity entity){
+    public static void arrowRetrievalCheck(Entity entity){
     	if(mcConfig.getInstance().isTracked(entity)){
     		Integer x = 0;
     		while(x < mcConfig.getInstance().getArrowCount(entity)){
-    		mcm.getInstance().mcDropItem(entity.getLocation(), 262);
+    		mcm.mcDropItem(entity.getLocation(), 262);
     		x++;
     		}
     	}

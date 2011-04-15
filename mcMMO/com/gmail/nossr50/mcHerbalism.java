@@ -18,14 +18,8 @@ public class mcHerbalism {
 	public mcHerbalism(mcMMO instance) {
     	plugin = instance;
     }
-	private static volatile mcHerbalism instance;
-	public static mcHerbalism getInstance() {
-    	if (instance == null) {
-    	instance = new mcHerbalism(plugin);
-    	}
-    	return instance;
-    	}
-	public void greenTerraWheat(Player player, Block block, BlockBreakEvent event){
+	
+	public static void greenTerraWheat(Player player, Block block, BlockBreakEvent event){
 		if(block.getType() == Material.WHEAT && block.getData() == (byte) 0x07){
 			event.setCancelled(true);
 			PlayerProfile PP = mcUsers.getProfile(player.getName());
@@ -39,7 +33,7 @@ public class mcHerbalism {
 			block.setData((byte) 0x03);
 		}
 	}
-	public void greenTerra(Player player, Block block){
+	public static void greenTerra(Player player, Block block){
 		if(block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT){
 			if(!hasSeeds(player))
 				player.sendMessage("You need more seeds to spread Green Terra");
@@ -52,7 +46,7 @@ public class mcHerbalism {
 			}
 		}
 	}
-	public Boolean canBeGreenTerra(Block block){
+	public static Boolean canBeGreenTerra(Block block){
     	int t = block.getTypeId();
     	if(t == 4 || t == 3 || t == 59 || t == 81 || t == 83 || t == 91 || t == 86 || t == 39 || t == 46 || t == 37 || t == 38){
     		return true;
@@ -60,7 +54,7 @@ public class mcHerbalism {
     		return false;
     	}
     }
-	public boolean hasSeeds(Player player){
+	public static boolean hasSeeds(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
     		if(x != null && x.getTypeId() == 295){
@@ -69,7 +63,7 @@ public class mcHerbalism {
     	}
     	return false;
     }
-	public void removeSeeds(Player player){
+	public static void removeSeeds(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
     		if(x != null && x.getTypeId() == 295){
@@ -85,11 +79,11 @@ public class mcHerbalism {
     		}
     	}
     }
-	public void greenTerraCheck(Player player, Block block, Plugin pluginx){
+	public static void greenTerraCheck(Player player, Block block, Plugin pluginx){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
-	    if(mcm.getInstance().isHoe(player.getItemInHand())){
+	    if(mcm.isHoe(player.getItemInHand())){
 	    	if(block != null){
-		    	if(!mcm.getInstance().abilityBlockCheck(block))
+		    	if(!mcm.abilityBlockCheck(block))
 		    		return;
 	    	}
 	    	if(PP.getHoePreparationMode()){
@@ -102,10 +96,10 @@ public class mcHerbalism {
     			ticks++;
     		}
     		
-	    	if(!PP.getGreenTerraMode() && mcSkills.getInstance().cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), mcLoadProperties.greenTerraCooldown)){
+	    	if(!PP.getGreenTerraMode() && mcSkills.cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), mcLoadProperties.greenTerraCooldown)){
 	    		player.sendMessage(ChatColor.GREEN+"**GREEN TERRA ACTIVATED**");
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    			if(y != null && y != player && mcm.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Green Terra!");
 	    		}
 	    		PP.setGreenTerraTicks(ticks * 1000);
@@ -115,7 +109,7 @@ public class mcHerbalism {
 	    	
 	    }
 	}
-	public void herbalismProcCheck(Block block, Player player, BlockBreakEvent event){
+	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
     	int type = block.getTypeId();
     	Location loc = block.getLocation();
@@ -218,9 +212,9 @@ public class mcHerbalism {
 	    		PP.addHerbalismXP(10 * mcLoadProperties.xpGainMultiplier);
 	    	}
     	}
-    	mcSkills.getInstance().XpCheck(player);
+    	mcSkills.XpCheck(player);
     }
-	public void breadCheck(Player player, ItemStack is){
+	public static void breadCheck(Player player, ItemStack is){
 		PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(is.getTypeId() == 297){
     		if(PP.getHerbalismInt() >= 50 && PP.getHerbalismInt() < 150){
@@ -242,7 +236,7 @@ public class mcHerbalism {
     		}
     	}
     }
-    public void stewCheck(Player player, ItemStack is){
+    public static void stewCheck(Player player, ItemStack is){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	if(is.getTypeId() == 282){
     		if(PP.getHerbalismInt() >= 50 && PP.getHerbalismInt() < 150){

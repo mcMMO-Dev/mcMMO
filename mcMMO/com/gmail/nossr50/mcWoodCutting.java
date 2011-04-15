@@ -14,20 +14,14 @@ import com.gmail.nossr50.PlayerList.PlayerProfile;
 
 
 public class mcWoodCutting {
-	int w = 0;
-	private boolean isdone = false;
+	static int w = 0;
+	private static boolean isdone = false;
 	private static mcMMO plugin;
 	public mcWoodCutting(mcMMO instance) {
     	plugin = instance;
     }
-	private static volatile mcWoodCutting instance;
-	public static mcWoodCutting getInstance() {
-    	if (instance == null) {
-    	instance = new mcWoodCutting(plugin);
-    	}
-    	return instance;
-    	}
-    public void woodCuttingProcCheck(Player player, Block block){
+	
+    public static void woodCuttingProcCheck(Player player, Block block){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	byte type = block.getData();
     	Material mat = Material.getMaterial(block.getTypeId());
@@ -38,11 +32,11 @@ public class mcWoodCutting {
     		}
     	}
     }
-    public void treeFellerCheck(Player player, Block block, Plugin pluginx){
+    public static void treeFellerCheck(Player player, Block block, Plugin pluginx){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
-    	if(mcm.getInstance().isAxes(player.getItemInHand())){
+    	if(mcm.isAxes(player.getItemInHand())){
     		if(block != null){
-        		if(!mcm.getInstance().abilityBlockCheck(block))
+        		if(!mcm.abilityBlockCheck(block))
         			return;
         	}
     		/*
@@ -58,23 +52,23 @@ public class mcWoodCutting {
     			ticks++;
     		}
 
-    		if(!PP.getTreeFellerMode() && mcSkills.getInstance().cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)){
+    		if(!PP.getTreeFellerMode() && mcSkills.cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)){
     			player.sendMessage(ChatColor.GREEN+"**TREE FELLING ACTIVATED**");
     			for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && mcm.getInstance().getDistance(player.getLocation(), y.getLocation()) < 10)
+	    			if(y != null && y != player && mcm.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Tree Feller!");
 	    		}
     			PP.setTreeFellerTicks(ticks * 1000);
     			PP.setTreeFellerActivatedTimeStamp(System.currentTimeMillis());
     			PP.setTreeFellerMode(true);
     		}
-    		if(!PP.getTreeFellerMode() && !mcSkills.getInstance().cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)){
+    		if(!PP.getTreeFellerMode() && !mcSkills.cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)){
     			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
-    					+ChatColor.YELLOW+" ("+mcSkills.getInstance().calculateTimeLeft(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)+"s)");
+    					+ChatColor.YELLOW+" ("+mcSkills.calculateTimeLeft(player, PP.getTreeFellerDeactivatedTimeStamp(), mcLoadProperties.treeFellerCooldown)+"s)");
     		}
     	}
     }
-    public void treeFeller(Block block, Player player){
+    public static void treeFeller(Block block, Player player){
     	PlayerProfile PP = mcUsers.getProfile(player.getName());
     	int radius = 1;
     	if(PP.getWoodCuttingXPInt() >= 500)
@@ -100,7 +94,7 @@ public class mcWoodCutting {
         }
         toAdd.clear();
     }
-    public void addBlocksToTreeFelling(ArrayList<Block> blocklist, ArrayList<Block> toAdd, Integer radius){
+    public static void addBlocksToTreeFelling(ArrayList<Block> blocklist, ArrayList<Block> toAdd, Integer radius){
     	int u = 0;
     	for (Block x : blocklist){
     		u++;
