@@ -15,10 +15,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcPlayerListener extends PlayerListener {
@@ -29,10 +30,11 @@ public class mcPlayerListener extends PlayerListener {
     public mcPlayerListener(mcMMO instance) {
     	plugin = instance;
     }
-    
+
+   
     public void onPlayerRespawn(PlayerRespawnEvent event) {
     	Player player = event.getPlayer();
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(player != null){
     		PP.setRespawnATS(System.currentTimeMillis());
 			Location mySpawn = PP.getMySpawn(player);
@@ -64,8 +66,11 @@ public class mcPlayerListener extends PlayerListener {
     }
     public void onPlayerLogin(PlayerLoginEvent event) {
     	Player player = event.getPlayer();
-    	mcUsers.addUser(player);
+    	mcUsers.addUser(player);	
     }
+    public void onPlayerQuit(PlayerQuitEvent event) {
+    	mcUsers.removeUser(event.getPlayer());    	
+    }        
     public void onPlayerJoin(PlayerJoinEvent event) {
     	Player player = event.getPlayer();
     	if(mcPermissions.getInstance().motd(player)){
@@ -75,7 +80,7 @@ public class mcPlayerListener extends PlayerListener {
     }
     public void onPlayerInteract(PlayerInteractEvent event) {
     	Player player = event.getPlayer();
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	Action action = event.getAction();
     	Block block = event.getClickedBlock();
     	//Archery Nerf
@@ -162,7 +167,7 @@ public class mcPlayerListener extends PlayerListener {
     }
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
     	Player player = event.getPlayer();
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	String[] split = event.getMessage().split(" ");
     	String playerName = player.getName();
     	//Check if the command is an mcMMO related help command
@@ -378,7 +383,7 @@ public class mcPlayerListener extends PlayerListener {
     		if(split.length == 4){
     			if(isPlayer(split[1]) && mcm.isInt(split[3]) && mcSkills.isSkill(split[2])){
     				int newvalue = Integer.valueOf(split[3]);
-    				mcUsers.getProfile(getPlayer(split[1]).getName()).modifyskill(newvalue, split[2]);
+    				mcUsers.getProfile(getPlayer(split[1])).modifyskill(newvalue, split[2]);
     				player.sendMessage(ChatColor.RED+split[2]+" has been modified.");
     			}
     		}
@@ -408,7 +413,7 @@ public class mcPlayerListener extends PlayerListener {
     		if(split.length == 4){
     			if(isPlayer(split[1]) && mcm.isInt(split[3]) && mcSkills.isSkill(split[2])){
     				int newvalue = Integer.valueOf(split[3]);
-    				mcUsers.getProfile(getPlayer(split[1]).getName()).addXpToSkill(newvalue, split[2]);
+    				mcUsers.getProfile(getPlayer(split[1])).addXpToSkill(newvalue, split[2]);
     				getPlayer(split[1]).sendMessage(ChatColor.GREEN+"Experience granted!");
     				player.sendMessage(ChatColor.RED+split[2]+" has been modified.");
     			}
@@ -439,7 +444,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     		if(isPlayer(split[1])){
         	Player target = getPlayer(split[1]);
-        	PlayerProfile PPt = mcUsers.getProfile(target.getName());
+        	PlayerProfile PPt = mcUsers.getProfile(target);
         	if(PP.getParty().equals(PPt.getParty())){
         	player.teleportTo(target);
         	player.sendMessage(ChatColor.GREEN+"You have teleported to "+target.getName());
@@ -459,7 +464,7 @@ public class mcPlayerListener extends PlayerListener {
     		//if split[1] is a player
     		if(isPlayer(split[1])){
     		Player target = getPlayer(split[1]);
-    		PlayerProfile PPt = mcUsers.getProfile(target.getName());
+    		PlayerProfile PPt = mcUsers.getProfile(target);
     		double x,y,z;
     		x = target.getLocation().getX();
     		y = target.getLocation().getY();
@@ -590,7 +595,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     		if(PP.inParty() && split.length >= 2 && isPlayer(split[1])){
     			Player target = getPlayer(split[1]);
-    			PlayerProfile PPt = mcUsers.getProfile(target.getName());
+    			PlayerProfile PPt = mcUsers.getProfile(target);
     			PPt.modifyInvite(PP.getParty());
     			player.sendMessage(ChatColor.GREEN+"Invite sent successfully");
     			target.sendMessage(ChatColor.RED+"ALERT: "+ChatColor.GREEN+"You have received a party invite for "+PPt.getInvite()+" from "+player.getName());
@@ -627,7 +632,7 @@ public class mcPlayerListener extends PlayerListener {
             	int x = 0;
                 for(Player p : plugin.getServer().getOnlinePlayers())
                 {
-                	if(PP.getParty().equals(mcUsers.getProfile(p.getName()).getParty())){
+                	if(PP.getParty().equals(mcUsers.getProfile(p).getParty())){
 	                	if(p != null && x+1 >= mcParty.getInstance().partyCount(player, getPlayersOnline())){
 	                		tempList+= p.getName();
 	                		x++;
@@ -733,16 +738,18 @@ public class mcPlayerListener extends PlayerListener {
     		}
     	}
     }
+ 
+    
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
     	String x = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getName() + ChatColor.GREEN + ") ";
     	String y = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getName() + ChatColor.AQUA + "} ";
     	if(mcConfig.getInstance().isPartyToggled(player.getName())){
     		event.setCancelled(true);
     		log.log(Level.INFO, "[P]("+PP.getParty()+")"+"<"+player.getName()+"> "+event.getMessage());
     		for(Player herp : plugin.getServer().getOnlinePlayers()){
-    			if(mcUsers.getProfile(herp.getName()).inParty()){
+    			if(mcUsers.getProfile(herp).inParty()){
     			if(mcParty.getInstance().inSameParty(herp, player)){
     				herp.sendMessage(x+event.getMessage());
     			}
@@ -759,7 +766,7 @@ public class mcPlayerListener extends PlayerListener {
     			}
     		}
     		return;
-    	}
+    	}    	
     	/*
     	 * Remove from normal chat if toggled 
     	for(Player z : event.getRecipients()){

@@ -4,8 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
-
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcAcrobatics {
@@ -18,7 +17,7 @@ public class mcAcrobatics {
     	}
 	public void acrobaticsCheck(Player player, EntityDamageEvent event, Location loc, int xx, int y, int z){
     	if(player != null && mcPermissions.getInstance().acrobatics(player)){
-    		PlayerProfile PP = mcUsers.getProfile(player.getName());
+    		PlayerProfile PP = mcUsers.getProfile(player);
     		int acrovar = PP.getAcrobaticsInt();
     		if(player.isSneaking())
     			acrovar = acrovar * 2;

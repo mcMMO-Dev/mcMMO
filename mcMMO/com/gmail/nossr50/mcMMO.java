@@ -1,6 +1,6 @@
 package com.gmail.nossr50;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijiko.Messaging;
 import com.nijiko.permissions.PermissionHandler;
@@ -11,7 +11,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import java.sql.PreparedStatement;
+import java.sql.DatabaseMetaData;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +44,7 @@ public class mcMMO extends JavaPlugin {
     public static PermissionHandler PermissionsHandler = null;
     private Permissions permissions;
     private Timer mcMMO_Timer = new Timer(true);
+    public static Database database = null;
     
     public void onEnable() {
     	mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(1000));
@@ -81,12 +92,23 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_ITEM_HELD, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
+        pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
         
         PluginDescriptionFile pdfFile = this.getDescription();
         mcPermissions.initialize(getServer());
-        mcLeaderboard.makeLeaderboards(); //Make the leaderboards
+        mcLoadMySQL();        	
+        
+        //mcLeaderboard.makeLeaderboards(); //Make the leaderboards
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
     }
+    
+    private void mcLoadMySQL() {
+    	if (mcLoadProperties.useMySQL) {
+    		// create database object
+    		database = new Database();
+    	}
+    }
+    
     public void setupPermissions() {
     	Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
     	if(this.PermissionsHandler == null) {
@@ -106,8 +128,8 @@ public class mcMMO extends JavaPlugin {
     	}
     }
     public boolean inSameParty(Player playera, Player playerb){
-    	if(mcUsers.getProfile(playera.getName()).inParty() && mcUsers.getProfile(playerb.getName()).inParty()){
-	        if(mcUsers.getProfile(playera.getName()).getParty().equals(mcUsers.getProfile(playerb.getName()).getParty())){
+    	if(mcUsers.getProfile(playera).inParty() && mcUsers.getProfile(playerb).inParty()){
+	        if(mcUsers.getProfile(playera).getParty().equals(mcUsers.getProfile(playerb).getParty())){
 	            return true;
 	        } else {
 	            return false;
@@ -117,12 +139,12 @@ public class mcMMO extends JavaPlugin {
     	}
     }
     public void addXp(Player player, String skillname, Integer newvalue){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	PP.addXpToSkill(newvalue, skillname);
     	mcSkills.XpCheck(player);
     }
     public void modifySkill(Player player, String skillname, Integer newvalue){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	PP.modifyskill(newvalue, skillname);
     }
     public ArrayList<String> getParties(){
@@ -151,11 +173,11 @@ public class mcMMO extends JavaPlugin {
         return parties;
 	}
     public static String getPartyName(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	return PP.getParty();
     }
     public static boolean inParty(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	return PP.inParty();
     }
     public boolean isAdminChatToggled(Player player){

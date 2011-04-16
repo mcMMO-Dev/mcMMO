@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.gmail.nossr50.datatypes.Tree;
+
 public class mcLeaderboard {
 	static String location = "plugins/mcMMO/mcmmo.users";
 	protected static final Logger log = Logger.getLogger("Minecraft");
@@ -38,6 +40,7 @@ public class mcLeaderboard {
         	String line = "";
         	while((line = in.readLine()) != null)
         	{
+        		
         		String[] character = line.split(":");
         		String p = character[0];
 
@@ -187,6 +190,8 @@ public class mcLeaderboard {
         return null; //Shouldn't get here
 	}
 	public static void updateLeaderboard(PlayerStat ps, String statName){
+		if(mcLoadProperties.useMySQL)
+			return;
 		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo";
 		try {
         	//Open the file

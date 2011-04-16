@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcItem {
@@ -20,7 +20,7 @@ public class mcItem {
 		}
 	}
 	public static void chimaerawing(Player player, Plugin plugin){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
 		ItemStack is = player.getItemInHand();
 		Block block = player.getLocation().getBlock();
 		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == 288){

@@ -1,9 +1,9 @@
 package com.gmail.nossr50;
 
 public class mcLoadProperties {
-	public static Boolean cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
-	public static String mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
-	public static int xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
+	public static Boolean useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	public static String MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
+	public static int MySQLport, xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public static void loadMain(){
     	String propertiesFile = mcMMO.maindirectory + "mcmmo.properties";
@@ -20,9 +20,22 @@ public class mcLoadProperties {
     	berserkCooldown = properties.getInteger("berserkCooldown", 240);
     	serratedStrikeCooldown = properties.getInteger("serratedStrikeCooldown", 240);
     	skullSplitterCooldown = properties.getInteger("skullSplitterCooldown", 240);
+    	
+    	/*
+    	 * MySQL Stuff
+    	 */
+    	
+    	MySQLserverName = properties.getString("MySQLServer", "ipofserver");
+    	MySQLdbPass = properties.getString("MySQLdbPass", "defaultdbpass");
+    	MySQLdbName = properties.getString("MySQLdbName", "defaultdbname");
+    	MySQLuserName = properties.getString("MySQLuserName", "defaultusername");
+    	MySQLport = properties.getInteger("MySQLport", 3306);
+    	useMySQL = properties.getBoolean("mysql", false);
+    	
     	/*
     	 * OTHER
     	 */
+    	
     	archeryFireRateLimit = properties.getBoolean("archeryFireRateLimit", true);
     	myspawnclearsinventory = properties.getBoolean("mySpawnClearsInventory", true);
     	xpGainMultiplier = properties.getInteger("xpGainMultiplier", 1);

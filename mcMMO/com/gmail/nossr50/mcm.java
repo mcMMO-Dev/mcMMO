@@ -14,7 +14,8 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 
 public class mcm {
 	/*
@@ -27,7 +28,7 @@ public class mcm {
     }
 	
 	public static int getPowerLevel(Player player){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
 		int x = 0;
 		if(mcPermissions.getInstance().mining(player))
 			x+=PP.getMiningInt();
@@ -297,7 +298,7 @@ public class mcm {
     	}
     }
     public static void mcmmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(split[0].equalsIgnoreCase("/woodcutting")){
 			event.setCancelled(true);
 			float skillvalue = (float)PP.getWoodCuttingInt();

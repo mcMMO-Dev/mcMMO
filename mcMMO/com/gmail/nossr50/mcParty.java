@@ -17,12 +17,12 @@ public class mcParty {
     	return instance;
     	}
     public boolean inSameParty(Player playera, Player playerb){
-    	if(mcUsers.getProfile(playera.getName()) == null || mcUsers.getProfile(playerb.getName()) == null){
+    	if(mcUsers.getProfile(playera) == null || mcUsers.getProfile(playerb) == null){
     		mcUsers.addUser(playera);
     		mcUsers.addUser(playerb);
     	}
-    	if(mcUsers.getProfile(playera.getName()).inParty() && mcUsers.getProfile(playerb.getName()).inParty()){
-	        if(mcUsers.getProfile(playera.getName()).getParty().equals(mcUsers.getProfile(playerb.getName()).getParty())){
+    	if(mcUsers.getProfile(playera).inParty() && mcUsers.getProfile(playerb).inParty()){
+	        if(mcUsers.getProfile(playera).getParty().equals(mcUsers.getProfile(playerb).getParty())){
 	            return true;
 	        } else {
 	            return false;
@@ -36,7 +36,7 @@ public class mcParty {
         int x = 0;
         for(Player hurrdurr : players){
         	if(player != null && hurrdurr != null){
-        	if(mcUsers.getProfile(player.getName()).getParty().equals(mcUsers.getProfile(hurrdurr.getName()).getParty()))
+        	if(mcUsers.getProfile(player).getParty().equals(mcUsers.getProfile(hurrdurr).getParty()))
         	x++;
         	}
         }

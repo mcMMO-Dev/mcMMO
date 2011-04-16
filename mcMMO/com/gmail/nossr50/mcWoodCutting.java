@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcWoodCutting {
@@ -22,7 +22,7 @@ public class mcWoodCutting {
     }
 	
     public static void woodCuttingProcCheck(Player player, Block block){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	byte type = block.getData();
     	Material mat = Material.getMaterial(block.getTypeId());
     	if(player != null){
@@ -33,7 +33,7 @@ public class mcWoodCutting {
     	}
     }
     public static void treeFellerCheck(Player player, Block block, Plugin pluginx){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(mcm.isAxes(player.getItemInHand())){
     		if(block != null){
         		if(!mcm.abilityBlockCheck(block))
@@ -69,7 +69,7 @@ public class mcWoodCutting {
     	}
     }
     public static void treeFeller(Block block, Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	int radius = 1;
     	if(PP.getWoodCuttingXPInt() >= 500)
     		radius++;

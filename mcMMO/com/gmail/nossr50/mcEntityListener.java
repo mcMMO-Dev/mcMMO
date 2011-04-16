@@ -17,7 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.ItemStack;
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcEntityListener extends EntityListener {
@@ -82,7 +82,7 @@ public class mcEntityListener extends EntityListener {
         	 */
         	if(e instanceof Player){
         		Player defender = (Player)e;
-        		PlayerProfile PPd = mcUsers.getProfile(defender.getName());
+        		PlayerProfile PPd = mcUsers.getProfile(defender);
         		if(defender != null && mcConfig.getInstance().isGodModeToggled(defender.getName()))
         			event.setCancelled(true);
         		if(PPd == null)
@@ -119,7 +119,7 @@ public class mcEntityListener extends EntityListener {
         		*/
            		mcSkills.monitorSkills(attacker);
            		
-        		PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
+        		PlayerProfile PPa = mcUsers.getProfile(attacker);
         		/*
         		 * ACTIVATE ABILITIES
         		 */
@@ -167,7 +167,7 @@ public class mcEntityListener extends EntityListener {
         	 */
         	if(e instanceof Player){
         		Player defender = (Player)e;
-        		PlayerProfile PPd = mcUsers.getProfile(defender.getName());
+        		PlayerProfile PPd = mcUsers.getProfile(defender);
         		if(f instanceof Player){
         			Player attacker = (Player)f;
         			if(mcParty.getInstance().inSameParty(defender, attacker)){
@@ -240,7 +240,7 @@ public class mcEntityListener extends EntityListener {
         		if(mcTaming.hasOwner(theWolf, plugin) && mcTaming.getInstance().getOwner(theWolf, plugin) != null){
         			Player wolfMaster = mcTaming.getInstance().getOwner(theWolf, plugin);
         			if(!event.isCancelled()){
-        				mcUsers.getProfile(wolfMaster.getName()).addXpToSkill(event.getDamage(), "Taming");
+        				mcUsers.getProfile(wolfMaster).addXpToSkill(event.getDamage(), "Taming");
         			}
         		}
         	}
@@ -252,7 +252,7 @@ public class mcEntityListener extends EntityListener {
     	 */
     	if(x instanceof Player && !event.isCancelled()){
     		Player herpderp = (Player)x;
-    		mcUsers.getProfile(herpderp.getName()).setRecentlyHurt(System.currentTimeMillis());
+    		mcUsers.getProfile(herpderp).setRecentlyHurt(System.currentTimeMillis());
     	}
     	}
     	}
@@ -272,7 +272,7 @@ public class mcEntityListener extends EntityListener {
 		}
     	if(x instanceof Player){
     		Player player = (Player)x;
-    		mcUsers.getProfile(player.getName()).setBleedTicks(0);
+    		mcUsers.getProfile(player).setBleedTicks(0);
     	}
     }
     public boolean isPlayer(Entity entity){

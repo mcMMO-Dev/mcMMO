@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcRepair {
@@ -16,7 +16,7 @@ public class mcRepair {
 	private static volatile mcRepair instance;
 	
 	public static void repairCheck(Player player, ItemStack is, Block block){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
 		short durabilityBefore = player.getItemInHand().getDurability();
 		short durabilityAfter = 0;
 		short dif = 0;
@@ -267,7 +267,7 @@ public class mcRepair {
     	return false;
     }
     public static short repairCalculate(Player player, short durability, short ramt){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	float bonus = (PP.getRepairInt() / 500);
     	bonus = (ramt * bonus);
     	ramt = ramt+=bonus;
@@ -396,7 +396,7 @@ public class mcRepair {
 			return repairCalculate(player, durability, ramt);
     }
     public static void needMoreVespeneGas(ItemStack is, Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if ((isDiamondTools(is) || isDiamondArmor(is)) && PP.getRepairInt() < mcLoadProperties.repairdiamondlevel){
 			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
 		} else if (isDiamondTools(is) && !hasDiamond(player) || isIronTools(is) && !hasIron(player) || isGoldTools(is) && !hasGold(player)){
@@ -417,7 +417,7 @@ public class mcRepair {
 			player.sendMessage(ChatColor.DARK_RED+"You can't repair stacked items");
     	}
     public static boolean checkPlayerProcRepair(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
 		if(player != null){
 			if(Math.random() * 1000 <= PP.getRepairInt()){
 				player.sendMessage(ChatColor.GRAY + "That felt easy.");

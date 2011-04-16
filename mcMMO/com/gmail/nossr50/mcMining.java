@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcMining {
@@ -18,7 +18,7 @@ public class mcMining {
     }
 	
 	public static void superBreakerCheck(Player player, Block block, Plugin pluginx){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
 	    if(mcm.isMiningPick(player.getItemInHand())){
 	    	if(block != null){
 		    	if(!mcm.abilityBlockCheck(block))
@@ -94,7 +94,7 @@ public class mcMining {
 		}
     }
     public static void blockProcCheck(Block block, Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(player != null){
     		if(Math.random() * 1000 <= PP.getMiningInt()){
     		blockProcSimulate(block);
@@ -103,7 +103,7 @@ public class mcMining {
     	}		
 	}
     public static void miningBlockCheck(Player player, Block block){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(mcConfig.getInstance().isBlockWatched(block) || block.getData() == (byte) 5)
     		return;
     	int xp = 0;
@@ -171,7 +171,7 @@ public class mcMining {
     	}
     }
     public static void SuperBreakerBlockCheck(Player player, Block block){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(mcLoadProperties.toolsLoseDurabilityFromAbilities)
     		mcm.damageTool(player, (short) mcLoadProperties.abilityDurabilityLoss);
     	Location loc = block.getLocation();

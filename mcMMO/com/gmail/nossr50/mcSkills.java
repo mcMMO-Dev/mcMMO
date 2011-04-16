@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcSkills {
@@ -51,7 +51,7 @@ public class mcSkills {
     	return x;
     }
     public static void watchCooldowns(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(!PP.getGreenTerraInformed() && System.currentTimeMillis() - PP.getGreenTerraDeactivatedTimeStamp() >= (mcLoadProperties.greenTerraCooldown * 1000)){
 			PP.setGreenTerraInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Green Terra "+ChatColor.GREEN+"ability is refreshed!");
@@ -82,7 +82,7 @@ public class mcSkills {
     	}
     }
     public static void hoeReadinessCheck(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(mcPermissions.getInstance().herbalismAbility(player) && mcm.isHoe(player.getItemInHand()) && !PP.getHoePreparationMode()){
     		if(!PP.getGreenTerraMode() && !cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), mcLoadProperties.greenTerraCooldown)){
 	    		player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
@@ -95,7 +95,7 @@ public class mcSkills {
     	}
     }
     public static void abilityActivationCheck(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(!PP.getAbilityUse())
     		return;
     	if(mcPermissions.getInstance().miningAbility(player) && mcm.isMiningPick(player.getItemInHand()) && !PP.getPickaxePreparationMode()){
@@ -147,7 +147,7 @@ public class mcSkills {
     	}
     }
     public static void serratedStrikesActivationCheck(Player player, Plugin pluginx){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
 		if(mcm.isSwords(player.getItemInHand())){
 			if(PP.getSwordsPreparationMode()){
     			PP.setSwordsPreparationMode(false);
@@ -173,7 +173,7 @@ public class mcSkills {
 	    }
 	}
     public static void berserkActivationCheck(Player player, Plugin pluginx){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
 		if(player.getItemInHand().getTypeId() == 0){
 			if(PP.getFistsPreparationMode()){
     			PP.setFistsPreparationMode(false);
@@ -198,7 +198,7 @@ public class mcSkills {
 	    }
 	}
     public static void skullSplitterCheck(Player player, Plugin pluginx){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(mcm.isAxes(player.getItemInHand()) && mcPermissions.getInstance().axesAbility(player)){
     		/*
     		 * CHECK FOR AXE PREP MODE
@@ -230,7 +230,7 @@ public class mcSkills {
     	}
     }
     public static void monitorSkills(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(PP == null)
     		mcUsers.addUser(player);
     	if(PP.getHoePreparationMode() && System.currentTimeMillis() - PP.getHoePreparationATS() >= 4000){
@@ -336,7 +336,7 @@ public class mcSkills {
 		}
     }
     public static void XpCheck(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	/*
     	 * TAMING
     	 */

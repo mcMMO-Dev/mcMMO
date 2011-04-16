@@ -17,9 +17,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.gmail.nossr50.PlayerList.PlayerProfile;
-
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class mcCombat {
 	private static mcMMO plugin;
@@ -32,16 +30,16 @@ public class mcCombat {
     			event.setCancelled(true);
     			return;
     		}
-    		PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
+    		PlayerProfile PPa = mcUsers.getProfile(attacker);
     		Player defender = (Player)x;
-    		PlayerProfile PPd = mcUsers.getProfile(defender.getName());
+    		PlayerProfile PPd = mcUsers.getProfile(defender);
     		
     		/*
     		 * COMPATABILITY CHECKS (Stuff that wouldn't happen normally in MC basically...)
     		 */
-    		if(mcUsers.getProfile(defender.getName()) == null)
+    		if(mcUsers.getProfile(defender) == null)
     			mcUsers.addUser(defender);
-    		if(attacker != null && defender != null && mcUsers.getProfile(attacker.getName()).inParty() && mcUsers.getProfile(defender.getName()).inParty()){
+    		if(attacker != null && defender != null && mcUsers.getProfile(attacker).inParty() && mcUsers.getProfile(defender).inParty()){
 				if(mcParty.getInstance().inSameParty(defender, attacker)){
 					event.setCancelled(true);
 					return;
@@ -101,7 +99,7 @@ public class mcCombat {
 		}
     }
     public static void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
-    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
+    	PlayerProfile PPa = mcUsers.getProfile(attacker);
     	if(x instanceof Squid){
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
@@ -146,7 +144,7 @@ public class mcCombat {
 		}
     }
     public static void playerVersusAnimalsChecks(Entity x, Player attacker, EntityDamageByEntityEvent event, int type){
-    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
+    	PlayerProfile PPa = mcUsers.getProfile(attacker);
     	if(x instanceof Animals){
     		if(!mcConfig.getInstance().isBleedTracked(x)){
     			bleedCheck(attacker, x);
@@ -171,7 +169,7 @@ public class mcCombat {
 		}
     }
     public static void playerVersusMonsterChecks(EntityDamageByEntityEvent event, Player attacker, Entity x, int type){
-    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
+    	PlayerProfile PPa = mcUsers.getProfile(attacker);
     	if(x instanceof Monster){
     		/*
     		 * AXE PROC CHECKS
@@ -257,7 +255,7 @@ public class mcCombat {
     	Entity x = event.getEntity();
     	if(event.getProjectile().toString().equals("CraftArrow") && x instanceof Player){
     		Player defender = (Player)x;
-    		PlayerProfile PPd = mcUsers.getProfile(defender.getName());
+    		PlayerProfile PPd = mcUsers.getProfile(defender);
     		if(PPd == null)
     			mcUsers.addUser(defender);
     		if(mcPermissions.getInstance().unarmed(defender) && defender.getItemInHand().getTypeId() == 0){
@@ -279,7 +277,7 @@ public class mcCombat {
     	 */
     	if(y instanceof Player){
     		Player attacker = (Player)y;
-    		PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
+    		PlayerProfile PPa = mcUsers.getProfile(attacker);
     		if(event.getProjectile().toString().equals("CraftArrow") && mcPermissions.getInstance().archery(attacker)){
     			if(!mcConfig.getInstance().isTracked(x) && event.getDamage() > 0){
     				mcConfig.getInstance().addArrowTrack(x, 0);
@@ -396,7 +394,7 @@ public class mcCombat {
     				return;
     			}
     			Player defender = (Player)x;
-    			PlayerProfile PPd = mcUsers.getProfile(defender.getName());
+    			PlayerProfile PPd = mcUsers.getProfile(defender);
     			/*
     			 * Stuff for the daze proc
     			 */
@@ -449,7 +447,7 @@ public class mcCombat {
     	}
     }
 	public static boolean simulateUnarmedProc(Player player){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
     	if(PP.getUnarmedInt() >= 1000){
     		if(Math.random() * 4000 <= 1000){
     			return true;
@@ -462,7 +460,7 @@ public class mcCombat {
     		return false;
     }
     public static void bleedCheck(Player attacker, Entity x){
-    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
+    	PlayerProfile PPa = mcUsers.getProfile(attacker);
     	if(mcPermissions.getInstance().swords(attacker) && mcm.isSwords(attacker.getItemInHand())){
 			if(PPa.getSwordsInt() >= 750){
 				if(Math.random() * 1000 >= 750){
@@ -470,7 +468,7 @@ public class mcCombat {
 						mcConfig.getInstance().addToBleedQue(x);
 					if(x instanceof Player){
 						Player target = (Player)x;
-						mcUsers.getProfile(target.getName()).addBleedTicks(3);
+						mcUsers.getProfile(target).addBleedTicks(3);
 					}
 					attacker.sendMessage(ChatColor.GREEN+"**ENEMY BLEEDING**");
 				}
@@ -479,7 +477,7 @@ public class mcCombat {
 					mcConfig.getInstance().addToBleedQue(x);
 				if(x instanceof Player){
 					Player target = (Player)x;
-					mcUsers.getProfile(target.getName()).addBleedTicks(2);
+					mcUsers.getProfile(target).addBleedTicks(2);
 				}
 				attacker.sendMessage(ChatColor.GREEN+"**ENEMY BLEEDING**");
 			}
@@ -542,7 +540,7 @@ public class mcCombat {
     				if(!target.getName().equals(attacker.getName()) && targets >= 1){
     					target.damage(event.getDamage() / 4);
     					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
-        				mcUsers.getProfile(target.getName()).addBleedTicks(5);
+        				mcUsers.getProfile(target).addBleedTicks(5);
     					targets--;
     				}
     			}
@@ -568,7 +566,7 @@ public class mcCombat {
     	}
     }
     public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Entity x){
-    	PlayerProfile PPa = mcUsers.getProfile(attacker.getName());
+    	PlayerProfile PPa = mcUsers.getProfile(attacker);
     	if(mcm.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
     		if(PPa.getAxesInt() >= 750){
     			if(Math.random() * 1000 <= 750){
@@ -598,7 +596,7 @@ public class mcCombat {
     	}
     }
     public static void parryCheck(Player defender, EntityDamageByEntityEvent event, Entity y){
-    	PlayerProfile PPd = mcUsers.getProfile(defender.getName());
+    	PlayerProfile PPd = mcUsers.getProfile(defender);
     	if(defender != null && mcm.isSwords(defender.getItemInHand()) 
     			&& mcPermissions.getInstance().swords(defender)){
 			if(PPd.getSwordsInt() >= 900){

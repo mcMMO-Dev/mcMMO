@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcExcavation {
@@ -17,7 +17,7 @@ public class mcExcavation {
     	plugin = instance;
     }
 	public static void gigaDrillBreakerActivationCheck(Player player, Block block, Plugin pluginx){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
 		if(mcm.isShovel(player.getItemInHand())){
 	    	if(block != null){
 		    	if(!mcm.abilityBlockCheck(block))
@@ -55,7 +55,7 @@ public class mcExcavation {
 		}
 	}
 	public static void excavationProcCheck(Block block, Player player){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
     	int type = block.getTypeId();
     	Location loc = block.getLocation();
     	ItemStack is = null;

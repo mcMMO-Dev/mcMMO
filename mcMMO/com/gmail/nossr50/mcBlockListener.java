@@ -1,6 +1,7 @@
 package com.gmail.nossr50;
 
 import org.bukkit.ChatColor;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -12,7 +13,7 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 
 
 public class mcBlockListener extends BlockListener {
@@ -43,7 +44,7 @@ public class mcBlockListener extends BlockListener {
     
     public void onBlockBreak(BlockBreakEvent event) {
     	Player player = event.getPlayer();
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	Block block = event.getBlock();
     	ItemStack inhand = player.getItemInHand();
     	if(event.isCancelled())
@@ -159,7 +160,7 @@ public class mcBlockListener extends BlockListener {
     	if(event.isCancelled())
     		return;
     	Player player = event.getPlayer();
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	ItemStack inhand = player.getItemInHand();
     	Block block = event.getBlock();
     	/*

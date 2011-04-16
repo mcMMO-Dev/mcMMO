@@ -5,7 +5,7 @@ import java.util.TimerTask;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcTimer extends TimerTask{
@@ -19,7 +19,7 @@ public class mcTimer extends TimerTask{
 	public void run() {
 		Player[] playerlist = plugin.getServer().getOnlinePlayers();
 		for(Player player : playerlist){
-			PlayerProfile PP = mcUsers.getProfile(player.getName());
+			PlayerProfile PP = mcUsers.getProfile(player);
 			if(player == null)
 				continue;
 			if(PP == null)

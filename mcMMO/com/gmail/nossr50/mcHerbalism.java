@@ -10,7 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.PlayerList.PlayerProfile;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class mcHerbalism {
@@ -22,7 +22,7 @@ public class mcHerbalism {
 	public static void greenTerraWheat(Player player, Block block, BlockBreakEvent event){
 		if(block.getType() == Material.WHEAT && block.getData() == (byte) 0x07){
 			event.setCancelled(true);
-			PlayerProfile PP = mcUsers.getProfile(player.getName());
+			PlayerProfile PP = mcUsers.getProfile(player);
 			Material mat = Material.getMaterial(296);
 			Location loc = block.getLocation();
 			ItemStack is = new ItemStack(mat, 1, (byte)0, (byte)0);
@@ -80,7 +80,7 @@ public class mcHerbalism {
     	}
     }
 	public static void greenTerraCheck(Player player, Block block, Plugin pluginx){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
 	    if(mcm.isHoe(player.getItemInHand())){
 	    	if(block != null){
 		    	if(!mcm.abilityBlockCheck(block))
@@ -110,7 +110,7 @@ public class mcHerbalism {
 	    }
 	}
 	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
     	int type = block.getTypeId();
     	Location loc = block.getLocation();
     	ItemStack is = null;
@@ -215,7 +215,7 @@ public class mcHerbalism {
     	mcSkills.XpCheck(player);
     }
 	public static void breadCheck(Player player, ItemStack is){
-		PlayerProfile PP = mcUsers.getProfile(player.getName());
+		PlayerProfile PP = mcUsers.getProfile(player);
     	if(is.getTypeId() == 297){
     		if(PP.getHerbalismInt() >= 50 && PP.getHerbalismInt() < 150){
     			player.setHealth(player.getHealth() + 1);
@@ -237,7 +237,7 @@ public class mcHerbalism {
     	}
     }
     public static void stewCheck(Player player, ItemStack is){
-    	PlayerProfile PP = mcUsers.getProfile(player.getName());
+    	PlayerProfile PP = mcUsers.getProfile(player);
     	if(is.getTypeId() == 282){
     		if(PP.getHerbalismInt() >= 50 && PP.getHerbalismInt() < 150){
     			player.setHealth(player.getHealth() + 1);
