@@ -1,5 +1,12 @@
 package com.gmail.nossr50;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -16,7 +23,11 @@ public class mcSkills {
     	plugin = instance;
     }
 	private static volatile mcSkills instance;
+	protected static final Logger log = Logger.getLogger("Minecraft");
 	
+	public void updateSQLfromFile(Player player){
+		
+	}
 	public static boolean cooldownOver(Player player, long oldTime, int cooldown){
 		long currentTime = System.currentTimeMillis();
 		if(currentTime - oldTime >= (cooldown * 1000)){

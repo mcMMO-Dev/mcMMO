@@ -98,7 +98,7 @@ public class mcMMO extends JavaPlugin {
         mcPermissions.initialize(getServer());
         mcLoadMySQL();        	
         
-        //mcLeaderboard.makeLeaderboards(); //Make the leaderboards
+        mcLeaderboard.makeLeaderboards(); //Make the leaderboards
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
     }
     

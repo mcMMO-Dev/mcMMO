@@ -35,7 +35,7 @@ public class mcBlockListener extends BlockListener {
     	if(player != null && mcm.shouldBeWatched(block)){
     		if(block.getTypeId() != 17)
     			block.setData((byte) 5); //Change the byte
-    		if(block.getTypeId() == 17)
+    		if(block.getTypeId() == 17 || block.getTypeId() == 91 || block.getTypeId() == 86)
     			mcConfig.getInstance().addBlockWatch(block);
     	}
     	if(block.getTypeId() == 42 && mcLoadProperties.anvilmessages)
@@ -163,6 +163,8 @@ public class mcBlockListener extends BlockListener {
     	PlayerProfile PP = mcUsers.getProfile(player);
     	ItemStack inhand = player.getItemInHand();
     	Block block = event.getBlock();
+    	if(player.isOp())
+    		player.sendMessage("mcMMO DEBUG: Byte: "+block.getData()+", ID: "+block.getTypeId());
     	/*
 		* Check if the Timer is doing its job
 		*/

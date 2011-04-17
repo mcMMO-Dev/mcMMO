@@ -179,7 +179,7 @@ public class mcHerbalism {
 	    		PP.addHerbalismXP(3 * mcLoadProperties.xpGainMultiplier);
 	    	}
     		//Pumpkins
-	    	if(type == 91 || type == 86){
+	    	if((type == 91 || type == 86) && !mcConfig.getInstance().isBlockWatched(block)){
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){

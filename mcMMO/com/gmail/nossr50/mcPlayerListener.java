@@ -76,6 +76,7 @@ public class mcPlayerListener extends PlayerListener {
     	if(mcPermissions.getInstance().motd(player)){
     		player.sendMessage(ChatColor.BLUE +"This server is running mcMMO "+plugin.getDescription().getVersion()+" type /"+ChatColor.YELLOW+mcLoadProperties.mcmmo+ChatColor.BLUE+ " for help.");
     		player.sendMessage(ChatColor.GREEN+"http://mcmmo.wikia.com"+ChatColor.BLUE+" - mcMMO Wiki");
+    		player.sendMessage(ChatColor.DARK_RED+"ATTN: YOUR STATS WILL BE BACK TO NORMAL SHORTLY, WE ARE USING MySQL NOW AND I HAVE TO WRITE A MYSQL QUERY TO UPDATE YOUR STATS!");
     	}
     }
     public void onPlayerInteract(PlayerInteractEvent event) {

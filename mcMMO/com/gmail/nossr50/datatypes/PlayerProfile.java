@@ -49,13 +49,21 @@ public class PlayerProfile
 		
 		if (mcLoadProperties.useMySQL) {
 			// if usemysql load from database
-			if(!loadMySQL(player)) { addMySQLPlayer(player); }			
+			if(!loadMySQL(player)) {
+				addMySQLPlayer(player);
+				/*
+				 * REMEMBER TO FIX THIS!
+				 */
+				loadMySQL(player); //For some reason its not loading the users after adding them, so heres this, this is a temporary solution
+			}			
 		} else {
 			// load from flat file
 			if(!load()) { addPlayer(); }			
 		}
 	}
-	
+	public int getMySQLuserId(){
+		return userid;
+	}
 	
 	
 	public boolean loadMySQL(Player p) {
@@ -65,8 +73,6 @@ public class PlayerProfile
 			System.out.println("User: " + userslist.get(i).get(0) + ", Lastlogin: " + userslist.get(i).get(1));
 		}
 		*/
-		
-		
 		Integer id = 0;
 		id = mcMMO.database.GetInt("SELECT id FROM users WHERE user = '" + p.getName() + "'");
 		this.userid = id;
@@ -228,8 +234,7 @@ public class PlayerProfile
     				+", acrobatics = "+acrobaticsXP
     				+" WHERE user_id = "+this.userid);
     		
-    	}
-    	else {
+    	} else {
     		// otherwise save to flatfile
 	        try {
 	        	//Open the file
@@ -319,7 +324,7 @@ public class PlayerProfile
             out.append(0+":"); //swordsXP
             out.append(0+":"); //axesXP
             out.append(0+":"); //acrobaticsXP
-            out.append(thisplayer.getWorld().getName());
+            out.append("");
             out.append(0+":"); //taming
             out.append(0+":"); //tamingXP
             //Add more in the same format as the line above
@@ -1681,6 +1686,10 @@ public class PlayerProfile
     	Location loc = new Location(player.getWorld(),(Double.parseDouble(getX())), Double.parseDouble(getY()), Double.parseDouble(getZ()));
     	loc.setYaw(0);
     	loc.setPitch(0);
-    	return loc;
+    	if(loc.getX() != 0 && loc.getY() != 0 && loc.getZ() != 0 && loc.getWorld() != null){
+    		return loc;
+    	} else {
+    		return null;
+    	}
     }
 }	
