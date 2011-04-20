@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.Swords;
 
 
 public class mcTimer extends TimerTask{
@@ -19,19 +21,19 @@ public class mcTimer extends TimerTask{
 	public void run() {
 		Player[] playerlist = plugin.getServer().getOnlinePlayers();
 		for(Player player : playerlist){
-			PlayerProfile PP = mcUsers.getProfile(player);
+			PlayerProfile PP = Users.getProfile(player);
 			if(player == null)
 				continue;
 			if(PP == null)
-	    		mcUsers.addUser(player);
+	    		Users.addUser(player);
 			/*
 			 * MONITOR SKILLS
 			 */
-			mcSkills.monitorSkills(player);
+			Skills.monitorSkills(player);
 			/*
 			 * COOLDOWN MONITORING
 			 */
-			mcSkills.watchCooldowns(player);
+			Skills.watchCooldowns(player);
 			
 			/*
 			 * PLAYER BLEED MONITORING
@@ -45,23 +47,23 @@ public class mcTimer extends TimerTask{
 				if(thecount == 10 || thecount == 20 || thecount == 30 || thecount == 40){
 				    if(player != null &&
 				    	player.getHealth() > 0 && player.getHealth() < 20 
-				    	&& mcm.getPowerLevel(player) >= 1000){
-				    	player.setHealth(mcm.calculateHealth(player.getHealth(), 1));
+				    	&& m.getPowerLevel(player) >= 1000){
+				    	player.setHealth(m.calculateHealth(player.getHealth(), 1));
 				    }
 				}
 				if(thecount == 20 || thecount == 40){
 			   		if(player != null &&
 			   			player.getHealth() > 0 && player.getHealth() < 20 
-			    		&& mcm.getPowerLevel(player) >= 500 
-			    		&& mcm.getPowerLevel(player) < 1000){
-			    		player.setHealth(mcm.calculateHealth(player.getHealth(), 1));
+			    		&& m.getPowerLevel(player) >= 500 
+			    		&& m.getPowerLevel(player) < 1000){
+			    		player.setHealth(m.calculateHealth(player.getHealth(), 1));
 			    	}
 				}
 				if(thecount == 40){
 			    	if(player != null &&
 			    		player.getHealth() > 0 && player.getHealth() < 20  
-			    		&& mcm.getPowerLevel(player) < 500){
-			    		player.setHealth(mcm.calculateHealth(player.getHealth(), 1));
+			    		&& m.getPowerLevel(player) < 500){
+			    		player.setHealth(m.calculateHealth(player.getHealth(), 1));
 			    	}
 				}
 			}
@@ -71,7 +73,7 @@ public class mcTimer extends TimerTask{
 		 * NON-PLAYER BLEED MONITORING
 		 */
 		if(thecount % 2 == 0)
-			mcCombat.bleedSimulate();
+			Swords.bleedSimulate();
 		
 		if(thecount < 40){
 			thecount++;

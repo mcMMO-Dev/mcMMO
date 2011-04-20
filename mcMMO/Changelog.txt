@@ -1,6 +1,9 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
 Version 1.0
+Water changing Gravel to Clay removed
+Code Organized/Optimized further
+MySQL Support
 Taming Skill
 Leaderboards
 Players won't hand out XP if they died within the last 5 seconds

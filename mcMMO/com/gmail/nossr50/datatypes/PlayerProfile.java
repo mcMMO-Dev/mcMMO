@@ -16,9 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.Database;
-import com.gmail.nossr50.mcLoadProperties;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcSkills;
+import com.gmail.nossr50.skills.*;
 
 
 
@@ -47,7 +47,7 @@ public class PlayerProfile
 	public PlayerProfile(Player player)
 	{
 		
-		if (mcLoadProperties.useMySQL) {
+		if (LoadProperties.useMySQL) {
 			// if usemysql load from database
 			if(!loadMySQL(player)) {
 				addMySQLPlayer(player);
@@ -208,11 +208,13 @@ public class PlayerProfile
     	Long timestamp = System.currentTimeMillis();
     	
     	// if we are using mysql save to database
-    	if (mcLoadProperties.useMySQL) {
+    	if (LoadProperties.useMySQL) {
     		mcMMO.database.Write("UPDATE users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
     		mcMMO.database.Write("UPDATE spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE skills SET "
     				+"  taming = "+taming
+    				+", mining = "+mining
+    				+", repair = "+repair
     				+", woodcutting = "+woodcutting
     				+", unarmed = "+unarmed
     				+", herbalism = "+herbalism
@@ -224,6 +226,8 @@ public class PlayerProfile
     				+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE experience SET "
     				+"  taming = "+tamingXP
+    				+", mining = "+miningXP
+    				+", repair = "+repairXP
     				+", woodcutting = "+woodCuttingXP
     				+", unarmed = "+unarmedXP
     				+", herbalism = "+herbalismXP
@@ -1520,7 +1524,7 @@ public class PlayerProfile
 			axesXP = String.valueOf(Integer.valueOf(axesXP)+newvalue);
 		}
 		save();
-		mcSkills.XpCheck(thisplayer);
+		Skills.XpCheck(thisplayer);
 	}
 	public void modifyskill(int newvalue, String skillname){
 		if(skillname.toLowerCase().equals("taming")){
@@ -1573,37 +1577,37 @@ public class PlayerProfile
 	}
 	public Integer getXpToLevel(String skillname){
 		if(skillname.equals("taming")){
-			return ((getTamingInt() + 50) * mcLoadProperties.tamingxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getTamingInt() + 50) * LoadProperties.tamingxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("mining")){
-			return ((getMiningInt() + 50) * mcLoadProperties.miningxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getMiningInt() + 50) * LoadProperties.miningxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("woodcutting")){
-			return ((getWoodCuttingInt() + 50) * mcLoadProperties.woodcuttingxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getWoodCuttingInt() + 50) * LoadProperties.woodcuttingxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("repair")){
-			return ((getRepairInt() + 50) * mcLoadProperties.repairxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getRepairInt() + 50) * LoadProperties.repairxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("herbalism")){
-			return ((getHerbalismInt() + 50) * mcLoadProperties.herbalismxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getHerbalismInt() + 50) * LoadProperties.herbalismxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("acrobatics")){
-			return ((getAcrobaticsInt() + 50) * mcLoadProperties.acrobaticsxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getAcrobaticsInt() + 50) * LoadProperties.acrobaticsxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("swords")){
-			return ((getSwordsInt() + 50) * mcLoadProperties.swordsxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getSwordsInt() + 50) * LoadProperties.swordsxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("archery")){
-			return ((getArcheryInt() + 50) * mcLoadProperties.archeryxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getArcheryInt() + 50) * LoadProperties.archeryxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("unarmed")){
-			return ((getUnarmedInt() + 50) * mcLoadProperties.unarmedxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getUnarmedInt() + 50) * LoadProperties.unarmedxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("excavation")){
-			return ((getExcavationInt() + 50) * mcLoadProperties.excavationxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getExcavationInt() + 50) * LoadProperties.excavationxpmodifier) * LoadProperties.globalxpmodifier;
 		}
 		if(skillname.equals("axes")){
-			return ((getAxesInt() + 50) * mcLoadProperties.axesxpmodifier) * mcLoadProperties.globalxpmodifier;
+			return ((getAxesInt() + 50) * LoadProperties.axesxpmodifier) * LoadProperties.globalxpmodifier;
 		} else {
 			return 0;
 		}

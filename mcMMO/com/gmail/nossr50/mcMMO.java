@@ -1,6 +1,10 @@
 package com.gmail.nossr50;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.config.*;
+import com.gmail.nossr50.datatypes.*;
+import com.gmail.nossr50.skills.*;
+import com.gmail.nossr50.party.*;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijiko.Messaging;
 import com.nijiko.permissions.PermissionHandler;
@@ -34,7 +38,7 @@ import org.bukkit.entity.Player;
 
 
 public class mcMMO extends JavaPlugin {
-	static String maindirectory = "plugins/mcMMO/";
+	public static String maindirectory = "plugins/mcMMO/";
 	static File Properties = new File(maindirectory + "mcmmo.properties");
     public static final Logger log = Logger.getLogger("Minecraft");
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
@@ -47,7 +51,7 @@ public class mcMMO extends JavaPlugin {
     public static Database database = null;
     
     public void onEnable() {
-    	mcMMO_Timer.schedule(new mcTimer(this), 0, (long)(1000));
+    	mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
     	new File(maindirectory).mkdir();
 
     	if(!Properties.exists()){
@@ -73,10 +77,10 @@ public class mcMMO extends JavaPlugin {
 			}
     	}
     	//Load the file
-    	mcLoadProperties.loadMain();
-    	mcUsers.getInstance().loadUsers();
+    	LoadProperties.loadMain();
+    	Users.getInstance().loadUsers();
     	for(Player player : getServer().getOnlinePlayers()){
-         	mcUsers.addUser(player);
+         	Users.addUser(player);
         }
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
@@ -98,12 +102,12 @@ public class mcMMO extends JavaPlugin {
         mcPermissions.initialize(getServer());
         mcLoadMySQL();        	
         
-        mcLeaderboard.makeLeaderboards(); //Make the leaderboards
+        Leaderboard.makeLeaderboards(); //Make the leaderboards
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
     }
     
     private void mcLoadMySQL() {
-    	if (mcLoadProperties.useMySQL) {
+    	if (LoadProperties.useMySQL) {
     		// create database object
     		database = new Database();
     	}
@@ -121,15 +125,15 @@ public class mcMMO extends JavaPlugin {
     	}
     }
     public boolean isPartyChatToggled(Player player){
-    	if(mcConfig.getInstance().isPartyToggled(player.getName())){
+    	if(Config.getInstance().isPartyToggled(player.getName())){
     		return true;
     	} else {
     		return false;
     	}
     }
     public boolean inSameParty(Player playera, Player playerb){
-    	if(mcUsers.getProfile(playera).inParty() && mcUsers.getProfile(playerb).inParty()){
-	        if(mcUsers.getProfile(playera).getParty().equals(mcUsers.getProfile(playerb).getParty())){
+    	if(Users.getProfile(playera).inParty() && Users.getProfile(playerb).inParty()){
+	        if(Users.getProfile(playera).getParty().equals(Users.getProfile(playerb).getParty())){
 	            return true;
 	        } else {
 	            return false;
@@ -139,12 +143,12 @@ public class mcMMO extends JavaPlugin {
     	}
     }
     public void addXp(Player player, String skillname, Integer newvalue){
-    	PlayerProfile PP = mcUsers.getProfile(player);
+    	PlayerProfile PP = Users.getProfile(player);
     	PP.addXpToSkill(newvalue, skillname);
-    	mcSkills.XpCheck(player);
+    	Skills.XpCheck(player);
     }
     public void modifySkill(Player player, String skillname, Integer newvalue){
-    	PlayerProfile PP = mcUsers.getProfile(player);
+    	PlayerProfile PP = Users.getProfile(player);
     	PP.modifyskill(newvalue, skillname);
     }
     public ArrayList<String> getParties(){
@@ -173,15 +177,15 @@ public class mcMMO extends JavaPlugin {
         return parties;
 	}
     public static String getPartyName(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player);
+    	PlayerProfile PP = Users.getProfile(player);
     	return PP.getParty();
     }
     public static boolean inParty(Player player){
-    	PlayerProfile PP = mcUsers.getProfile(player);
+    	PlayerProfile PP = Users.getProfile(player);
     	return PP.inParty();
     }
     public boolean isAdminChatToggled(Player player){
-    	if(mcConfig.getInstance().isAdminToggled(player.getName())){
+    	if(Config.getInstance().isAdminToggled(player.getName())){
     		return true;
     	} else {
     		return false;

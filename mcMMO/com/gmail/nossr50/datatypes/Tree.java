@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.PlayerStat;
+import com.gmail.nossr50.datatypes.PlayerStat;
 
 public class Tree {
 

@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.config.LoadProperties;
+
 
 public class Database {
 
@@ -28,7 +30,7 @@ public class Database {
 		
 		// make the connection
 		try {
-		    conn = DriverManager.getConnection("jdbc:mysql://" + mcLoadProperties.MySQLserverName + ":" + mcLoadProperties.MySQLport + "/" + mcLoadProperties.MySQLdbName + "?user=" + mcLoadProperties.MySQLuserName + "&password=" + mcLoadProperties.MySQLdbPass);			
+		    conn = DriverManager.getConnection("jdbc:mysql://" + LoadProperties.MySQLserverName + ":" + LoadProperties.MySQLport + "/" + LoadProperties.MySQLdbName + "?user=" + LoadProperties.MySQLuserName + "&password=" + LoadProperties.MySQLdbPass);			
 		} catch (SQLException ex) {
 		    // handle any errors
 		    System.out.println("SQLException: " + ex.getMessage());
