@@ -99,7 +99,7 @@ public class mcEntityListener extends EntityListener {
 			        		if(Party.getInstance().inSameParty(defender, attacker))
 			        			event.setCancelled(true);
 			    		}
-			    		Combat.combatChecks(event);	
+			    		Combat.combatChecks(event, plugin);	
 			        }
 			    	/*
 			    	 * Check to see if the defender took damage so we can apply recently hurt

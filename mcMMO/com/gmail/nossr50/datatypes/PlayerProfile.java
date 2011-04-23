@@ -700,12 +700,12 @@ public class PlayerProfile
 	public void skillUpTaming(int newskill){
 		int x = 0;
 		if(taming != null){
-		if(isInt(taming)){
-		x = Integer.parseInt(taming);
-		}else {
-			taming = "0";
-			x = Integer.parseInt(taming);
-		}
+			if(isInt(taming)){
+				x = Integer.parseInt(taming);
+			}else {
+				taming = "0";
+				x = Integer.parseInt(taming);
+			}
 		}
 		x += newskill;
 		taming = Integer.toString(x);
@@ -1053,7 +1053,7 @@ public class PlayerProfile
 		x = Integer.parseInt(tamingXP);
 		}
 		x += newXP;
-		acrobaticsXP = String.valueOf(x);
+		tamingXP = String.valueOf(x);
 		save();
 	}
 	public void addAcrobaticsXP(int newXP)

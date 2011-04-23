@@ -38,7 +38,47 @@ public class Database {
 		    System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}
-	
+	//Create the DB structure
+	public void createStructure(){
+		Write("CREATE TABLE IF NOT EXISTS `users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT," +
+				"`user` varchar(30) NOT NULL," +
+				"`lastlogin` int(10) unsigned NOT NULL," +
+				"`party` varchar(100) NOT NULL DEFAULT ''," +
+				"PRIMARY KEY (`id`)," +
+				"UNIQUE KEY `user` (`user`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+		Write("CREATE TABLE IF NOT EXISTS `skills` (`user_id` int(10) unsigned NOT NULL," +
+				"`taming` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`mining` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`woodcutting` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`repair` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`unarmed` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`herbalism` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`excavation` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`archery` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`swords` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`axes` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`acrobatics` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+		Write("CREATE TABLE IF NOT EXISTS `experience` (`user_id` int(10) unsigned NOT NULL," +
+				"`taming` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`mining` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`woodcutting` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`repair` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`unarmed` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`herbalism` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`excavation` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`archery` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`swords` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`axes` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`acrobatics` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+		Write("CREATE TABLE IF NOT EXISTS `spawn` (`user_id` int(10) NOT NULL," +
+				"`x` int(11) NOT NULL DEFAULT '0'," +
+				"`y` int(11) NOT NULL DEFAULT '0'," +
+				"`z` int(11) NOT NULL DEFAULT '0'," +
+				"`world` varchar(50) NOT NULL DEFAULT ''," +
+				"PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+	}
 	// write query
 	public boolean Write(String sql) {
 		try {

@@ -26,7 +26,6 @@ public class m {
 	 * I'm storing my functions/methods in here in an unorganized manner. Spheal with it.
 	 */
 	private static mcMMO plugin;
-	private static mcMMO pluginx;
 	public m(mcMMO instance) {
     	plugin = instance;
     }
@@ -172,7 +171,6 @@ public class m {
             for (int cy = -radius; cy <= radius; cy++) {
                 for (int cz = -radius; cz <= radius; cz++) {
                     Block block = loc.getWorld().getBlockAt(ox + cx, oy + cy, oz + cz);
-                    //If block is block
                     if (block.getTypeId() == typeid) {
                         return true;
                     }
@@ -181,6 +179,7 @@ public class m {
         }
     	return false;
 	}
+	
 	public static boolean isPvpEnabled(){
 		String propertyName = "pvp";
 		FileReader fr = null;
@@ -304,6 +303,35 @@ public class m {
     }
     public static void mmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
     	PlayerProfile PP = Users.getProfile(player);
+    	if(split[0].equalsIgnoreCase("/taming")){
+			event.setCancelled(true);
+			float skillvalue = (float)PP.getTamingInt();
+			
+    		String percentage = String.valueOf((skillvalue / 1000) * 100);
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"TAMING"+ChatColor.RED+"[]-----");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Fighting with your wolves");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			//player.sendMessage(ChatColor.DARK_AQUA+"Tree Feller (ABILITY): "+ChatColor.GREEN+"Make trees explode");
+			player.sendMessage(ChatColor.DARK_AQUA+"Gore: "+ChatColor.YELLOW+ChatColor.GREEN+"Critical Strike that applies Bleed");
+			player.sendMessage(ChatColor.DARK_AQUA+"Sharpened Claws: "+ChatColor.YELLOW+ChatColor.GREEN+"Damage Bonus");
+			player.sendMessage(ChatColor.DARK_AQUA+"Thick Fur: "+ChatColor.YELLOW+ChatColor.GREEN+"Damage Reduction");
+			player.sendMessage(ChatColor.DARK_AQUA+"Shock Proof: "+ChatColor.YELLOW+ChatColor.GREEN+"Explosive Damage Reduction");
+			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			if(PP.getTamingInt() < 250)
+				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 250+ SKILL (THICK FUR)");
+			else
+				player.sendMessage(ChatColor.RED+"Thick Fur: "+ChatColor.YELLOW+"Halved Damage");
+			if(PP.getTamingInt() < 500)
+				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 500+ SKILL (SHOCK PROOF)");
+			else
+				player.sendMessage(ChatColor.RED+"Shock Proof: "+ChatColor.YELLOW+"Explosives do 1/6 normal damage");
+			if(PP.getTamingInt() < 750)
+				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 750+ SKILL (SHARPENED CLAWS)");
+			else
+				player.sendMessage(ChatColor.RED+"Sharpened Claws: "+ChatColor.YELLOW+"+2 Damage");
+			player.sendMessage(ChatColor.RED+"Gore Chance: "+ChatColor.YELLOW+percentage+"%");
+			//player.sendMessage(ChatColor.RED+"Tree Feller Length: "+ChatColor.YELLOW+ticks+"s");
+    	}
     	if(split[0].equalsIgnoreCase("/woodcutting")){
 			event.setCancelled(true);
 			float skillvalue = (float)PP.getWoodCuttingInt();

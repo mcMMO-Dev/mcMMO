@@ -7,7 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -26,6 +28,7 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.Taming;
 
 
 public class mcPlayerListener extends PlayerListener {
@@ -82,7 +85,6 @@ public class mcPlayerListener extends PlayerListener {
     	if(mcPermissions.getInstance().motd(player)){
     		player.sendMessage(ChatColor.BLUE +"This server is running MMO "+plugin.getDescription().getVersion()+" type /"+ChatColor.YELLOW+LoadProperties.mcmmo+ChatColor.BLUE+ " for help.");
     		player.sendMessage(ChatColor.GREEN+"http://mmo.wikia.com"+ChatColor.BLUE+" - MMO Wiki");
-    		player.sendMessage(ChatColor.DARK_RED+"ATTN: YOUR STATS WILL BE BACK TO NORMAL SHORTLY, WE ARE USING MySQL NOW AND I HAVE TO WRITE A MYSQL QUERY TO UPDATE YOUR STATS!");
     	}
     }
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -91,6 +93,14 @@ public class mcPlayerListener extends PlayerListener {
     	Action action = event.getAction();
     	Block block = event.getClickedBlock();
     	//Archery Nerf
+    	if(action == Action.LEFT_CLICK_AIR)
+    	{
+    		if(player.getItemInHand().getTypeId() == 352)
+    		{
+    			Block targetBlock = player.getTargetBlock(null, 20);
+    			player.sendMessage("Target Block TypeID = "+targetBlock.getTypeId());
+    		}
+    	}
     	if(player.getItemInHand().getTypeId() == 261 && LoadProperties.archeryFireRateLimit){
     		if(System.currentTimeMillis() < PP.getArcheryShotATS() + 1000){
     			/*

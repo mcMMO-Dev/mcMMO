@@ -11,8 +11,8 @@ public class Taming {
 	public static String getOwnerName(Entity theWolf){
 		CraftWolf cWolf = (CraftWolf)theWolf;
 		EntityWolf eWolf = (EntityWolf)cWolf.getHandle();
-
-		String playerName = eWolf.v();
+		
+		String playerName = eWolf.x();
 		return playerName;
 	}
 	public static boolean hasOwner(Entity theWolf, Plugin pluginx){
@@ -23,16 +23,12 @@ public class Taming {
 		}
 		return false;
 	}
-	public Player getOwner(Entity theWolf, Plugin pluginx){
+	public static Player getOwner(Entity theWolf, Plugin pluginx){
 		for(Player x : pluginx.getServer().getOnlinePlayers()){
 			if(x != null && x.getName().equals(getOwnerName(theWolf))){
 				return x;
 			}
 		}
-		return null;
-	}
-	public static Taming getInstance() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

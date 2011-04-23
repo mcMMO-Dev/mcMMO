@@ -16,7 +16,9 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.LoadProperties;
@@ -26,17 +28,19 @@ import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.Axes;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Swords;
+import com.gmail.nossr50.skills.Taming;
+import com.gmail.nossr50.skills.Unarmed;
 
 public class Combat {
 	private static mcMMO plugin;
 	public Combat(mcMMO instance) {
     	plugin = instance;
     }
-	public static void combatChecks(EntityDamageEvent event){
+	public static void combatChecks(EntityDamageEvent event, Plugin pluginx){
 		if(event.isCancelled() || event.getDamage() == 0)
 			return;
 		/*
-		 * OFFENSIVE CHECKS
+		 * OFFENSIVE CHECKS FOR PLAYERS VERSUS ENTITIES
 		 */
 		if(event instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) event).getDamager() instanceof Player)
 		{
@@ -45,27 +49,114 @@ public class Combat {
 			Player attacker = (Player)((EntityDamageByEntityEvent) event).getDamager();
 			PlayerProfile PPa = Users.getProfile(attacker);
 			
+			//Damage modifiers
+			if(mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0) //Unarmed
+				Unarmed.unarmedBonus(attacker, eventb);
+			if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker) && PPa.getAxesInt() >= 500)
+					event.setDamage(event.getDamage()+4);
+			
 			//If there are any abilities to activate
 	    	combatAbilityChecks(attacker, PPa);
+	    	
+	    	//Check for offensive procs
+	    	Axes.axeCriticalCheck(attacker, eventb); //Axe Criticals
+	    	if(!Config.getInstance().isBleedTracked(event.getEntity())) //Swords Bleed
+    			Swords.bleedCheck(attacker, event.getEntity());
 	    	
 	    	//Modify the event damage if Attacker is Berserk
 	    	if(PPa.getBerserkMode())
 	    		event.setDamage(event.getDamage() + (event.getDamage() / 2));
-	    	//Handle the combat interactions between the Player and the defending entity
-	    	if(event.getEntity() instanceof Player)
-	    		playerVersusPlayerChecks(eventb, attacker);
-	    	if(event.getEntity() instanceof Animals)
-	    		playerVersusAnimalsChecks(eventb, attacker);
-	    	if(event.getEntity() instanceof Monster)
-	    		playerVersusMonsterChecks(eventb, attacker);
-	   		if(event.getEntity() instanceof Squid)
-	   			playerVersusSquidChecks(eventb, attacker);
        	
 	   		//Handle Ability Interactions
 	   		if(PPa.getSkullSplitterMode() && m.isAxes(attacker.getItemInHand()))
        			Axes.applyAoeDamage(attacker, eventb);
       		if(PPa.getSerratedStrikesMode() && m.isSwords(attacker.getItemInHand()))
        			Swords.applySerratedStrikes(attacker, eventb);
+      		
+      		//Experience
+      		if(event.getEntity() instanceof Player)
+      		{
+      			Player defender = (Player)event.getEntity();
+      			PlayerProfile PPd = Users.getProfile(defender);
+	    		if(attacker != null && defender != null && LoadProperties.pvpxp)
+	    		{
+	    			if(System.currentTimeMillis() >= PPd.getRespawnATS() + 5000 && defender.getHealth() >= 1)
+	    			{
+		    			if(m.isAxes(attacker.getItemInHand()))
+		    				PPa.addAxesXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
+		    			if(m.isSwords(attacker.getItemInHand()))
+		    				PPa.addSwordsXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
+		    			if(attacker.getItemInHand().getTypeId() == 0)
+		    				PPa.addUnarmedXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
+	    			}
+	    		}
+      		}
+      		
+      		if(event.getEntity() instanceof Monster)
+      		{
+      			int xp = 0;
+      			if(event.getEntity() instanceof Creeper)
+					xp = (event.getDamage() * 4) * LoadProperties.xpGainMultiplier;
+				if(event.getEntity() instanceof Spider)
+					xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
+				if(event.getEntity() instanceof Skeleton)
+					xp = (event.getDamage() * 2) * LoadProperties.xpGainMultiplier;
+				if(event.getEntity() instanceof Zombie)
+					xp = (event.getDamage() * 2) * LoadProperties.xpGainMultiplier;
+				if(event.getEntity() instanceof PigZombie)
+					xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
+				
+				if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
+					PPa.addSwordsXP(xp);
+				if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
+					PPa.addAxesXP(xp);
+				if(attacker.getItemInHand().getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker))
+					PPa.addUnarmedXP(xp);
+      		}
+      		Skills.XpCheck(attacker);
+      		
+      		//Taming Debug Stuff
+      		if(event.getEntity() instanceof Wolf)
+      		{
+      			attacker.sendMessage("mcMMO Debug: Wolf Owner Name "+Taming.getOwnerName(event.getEntity()));
+      			event.setCancelled(true);
+      		}
+		}
+		/*
+		 * OFFENSIVE CHECKS FOR WOLVES VERSUS ENTITIES
+		 */
+		if(event instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) event).getDamager() instanceof Wolf){
+			EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent) event;
+			if(Taming.hasOwner(eventb.getDamager(), pluginx)){
+				Player master = Taming.getOwner(eventb.getDamager(), pluginx);
+				PlayerProfile PPo = Users.getProfile(master);
+				
+				//Sharpened Claws
+				if(PPo.getTamingInt() >= 750)
+				{
+					event.setDamage(event.getDamage() + 2);
+				}
+				
+				//Gore
+				if(Math.random() * 1000 <= PPo.getTamingInt())
+				{
+					event.setDamage(event.getDamage() * 2);
+					
+					if(event.getEntity() instanceof Player)
+					{
+						Player target = (Player)event.getEntity();
+						target.sendMessage(ChatColor.RED+"**STRUCK BY GORE**");
+						Users.getProfile(target).setBleedTicks(2);
+					}
+					else
+						Config.getInstance().addToBleedQue(event.getEntity());
+					
+					master.sendMessage(ChatColor.GREEN+"**GORE**");
+				}
+				PPo.addTamingXP(event.getDamage() * 4);
+				master.sendMessage("mcMMO Debug: Event Damage "+event.getDamage());
+				Skills.XpCheck(master);
+			}
 		}
 		//Another offensive check for Archery
 		if(event instanceof EntityDamageByProjectileEvent)
@@ -81,6 +172,27 @@ public class Combat {
 			Swords.counterAttackChecks(event);
 			Acrobatics.dodgeChecks((EntityDamageByEntityEvent)event);
 		}
+		/*
+		 * DEFENSIVE CHECKS FOR WOLVES
+		 */
+		if(event.getEntity() instanceof Wolf){
+			if(Taming.hasOwner(event.getEntity(), pluginx))
+			{
+				Player master = Taming.getOwner(event.getEntity(), pluginx);
+				PlayerProfile PPo = Users.getProfile(master);
+				
+				//Shock-Proof
+				if((event.getCause() == DamageCause.ENTITY_EXPLOSION || event.getCause() == DamageCause.BLOCK_EXPLOSION) && PPo.getTamingInt() >= 500)
+				{
+					event.setDamage(event.getDamage() / 6);
+				}
+				
+				//Thick Fur
+				if(PPo.getTamingInt() >= 250)
+					event.setDamage(event.getDamage() / 2);
+				master.sendMessage("mcMMO Debug: Wolf Damage Taken "+event.getDamage());
+			}
+		}
 	}
 	
 	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa){
@@ -92,239 +204,6 @@ public class Combat {
 		if(PPa.getFistsPreparationMode())
 			Skills.berserkActivationCheck(attacker, plugin);
 	}
-	public static void playerVersusPlayerChecks(EntityDamageByEntityEvent event, Player attacker){
-		Entity x = event.getEntity();
-    	if(x instanceof Player){
-    		if(LoadProperties.pvp == false){
-    			event.setCancelled(true);
-    			return;
-    		}
-    		PlayerProfile PPa = Users.getProfile(attacker);
-    		Player defender = (Player)x;
-    		PlayerProfile PPd = Users.getProfile(defender);
-    		
-    		/*
-    		 * COMPATABILITY CHECKS (Stuff that wouldn't happen normally in  basically...)
-    		 */
-    		if(Users.getProfile(defender) == null)
-    			Users.addUser(defender);
-    		if(attacker != null && defender != null && Users.getProfile(attacker).inParty() && Users.getProfile(defender).inParty()){
-				if(Party.getInstance().inSameParty(defender, attacker)){
-					event.setCancelled(true);
-					return;
-				}
-    		}
-    		/*
-    		 * AXE CRITICAL CHECK
-    		 */
-    		axeCriticalCheck(attacker, event, x);
-    		if(!Config.getInstance().isBleedTracked(x)){
-    			Swords.bleedCheck(attacker, x);
-    		}
-			if(defender != null && mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0){
-				
-				//Bonus just for having unarmed
-				int bonus = 2;
-				if (PPa.getUnarmedInt() >= 250)
-					bonus++;
-				if (PPa.getUnarmedInt() >= 500)
-					bonus++;
-				event.setDamage(calculateDamage(event, bonus));
-				
-				//PROC
-				if(simulateUnarmedProc(attacker)){
-					Location loc = defender.getLocation();
-					if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0){
-						attacker.sendMessage(ChatColor.DARK_RED+"You have hit with great force.");
-						defender.sendMessage(ChatColor.DARK_RED+"You have been disarmed!");
-						ItemStack item = defender.getItemInHand();
-					if(item != null){
-						loc.getWorld().dropItemNaturally(loc, item);
-						ItemStack itemx = null;
-						defender.setItemInHand(itemx);
-						}
-					}
-				}
-			}
-			/*
-    		 * PVP XP
-    		 */
-    		if(attacker != null && defender != null && LoadProperties.pvpxp){
-    			if(PPd.inParty() && PPa.inParty() && Party.getInstance().inSameParty(attacker, defender))
-    				return;
-    			if(System.currentTimeMillis() >= PPd.getRespawnATS() + 5000 && defender.getHealth() >= 1){
-	    			if(m.isAxes(attacker.getItemInHand()))
-	    				PPa.addAxesXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
-	    			if(m.isSwords(attacker.getItemInHand()))
-	    				PPa.addSwordsXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
-	    			if(attacker.getItemInHand().getTypeId() == 0)
-	    				PPa.addUnarmedXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
-    			}
-    		}
-    		/*
-    		 * CHECK FOR LEVEL UPS
-    		 */
-    		Skills.XpCheck(attacker);
-		}
-    }
-    public static void playerVersusSquidChecks(EntityDamageByEntityEvent event, Player attacker){
-    	Entity x = event.getEntity();
-    	PlayerProfile PPa = Users.getProfile(attacker);
-    	int type = attacker.getItemInHand().getTypeId();
-    	if(x instanceof Squid){
-    		if(!Config.getInstance().isBleedTracked(x)){
-    			Swords.bleedCheck(attacker, x);
-    		}
-			Squid defender = (Squid)event.getEntity();
-			if(m.isSwords(attacker.getItemInHand()) && defender.getHealth() > 0 && mcPermissions.getInstance().swords(attacker)){
-					PPa.addSwordsXP(10 * LoadProperties.xpGainMultiplier);
-			}
-			Skills.XpCheck(attacker);
-			if(m.isAxes(attacker.getItemInHand()) 
-					&& defender.getHealth() > 0 
-					&& mcPermissions.getInstance().axes(attacker)){
-					PPa.addAxesXP(10 * LoadProperties.xpGainMultiplier);
-					Skills.XpCheck(attacker);
-			}
-			if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-				if(PPa.getAxesInt() >= 500){
-					event.setDamage(calculateDamage(event, 4));
-				}
-			}
-			/*
-			 * UNARMED VS SQUID
-			 */
-			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
-    			if(defender.getHealth() <= 0)
-    				return;
-    			
-    			//Bonus just for having unarmed
-    			int bonus = 2;
-    			if (PPa.getUnarmedInt() >= 250)
-    				bonus++;
-    			if (PPa.getUnarmedInt() >= 500)
-    				bonus++;
-    			event.setDamage(calculateDamage(event, bonus));
-    			
-    			//XP
-					if(defender.getHealth() != 0){
-					PPa.addUnarmedXP(10 * LoadProperties.xpGainMultiplier);
-					Skills.XpCheck(attacker);
-					}
-    			}
-		}
-    }
-    public static void playerVersusAnimalsChecks(EntityDamageByEntityEvent event, Player attacker){
-    	int type = attacker.getItemInHand().getTypeId();
-    	Entity x = event.getEntity();
-    	PlayerProfile PPa = Users.getProfile(attacker);
-    	if(x instanceof Animals){
-    		if(!Config.getInstance().isBleedTracked(x)){
-    			Swords.bleedCheck(attacker, x);
-    		}
-			Animals defender = (Animals)event.getEntity();
-    		if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-				if(defender.getHealth() <= 0)
-					return;
-				if(PPa.getAxesInt() >= 500){
-					event.setDamage(calculateDamage(event, 4));
-				}
-			}
-			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
-				//Bonus just for having unarmed
-				int bonus = 2;
-				if (PPa.getUnarmedInt() >= 250)
-					bonus++;
-				if (PPa.getUnarmedInt() >= 500)
-					bonus++;
-				event.setDamage(calculateDamage(event, bonus));
-			}
-		}
-    }
-    public static void playerVersusMonsterChecks(EntityDamageByEntityEvent event, Player attacker){
-    	Entity x = event.getEntity();
-    	int type = attacker.getItemInHand().getTypeId();
-    	PlayerProfile PPa = Users.getProfile(attacker);
-    	if(x instanceof Monster){
-    		/*
-    		 * AXE PROC CHECKS
-    		 */
-    		axeCriticalCheck(attacker, event, x);
-    		if(!Config.getInstance().isBleedTracked(x)){
-    			Swords.bleedCheck(attacker, x);
-    		}
-			Monster defender = (Monster)event.getEntity();
-			if(m.isSwords(attacker.getItemInHand()) 
-					&& defender.getHealth() > 0 
-					&& mcPermissions.getInstance().swords(attacker)){
-					if(!Config.getInstance().isMobSpawnTracked(x)){
-					if(x instanceof Creeper)
-						PPa.addSwordsXP((event.getDamage() * 4) * LoadProperties.xpGainMultiplier);
-					if(x instanceof Spider)
-						PPa.addSwordsXP((event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
-					if(x instanceof Skeleton)
-						PPa.addSwordsXP((event.getDamage() * 2) * LoadProperties.xpGainMultiplier);
-					if(x instanceof Zombie)
-						PPa.addSwordsXP((event.getDamage() * 2) * LoadProperties.xpGainMultiplier);
-					if(x instanceof PigZombie)
-						PPa.addSwordsXP((event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
-					}
-					Skills.XpCheck(attacker);
-				}
-			if(m.isAxes(attacker.getItemInHand()) 
-					&& defender.getHealth() > 0 
-					&& mcPermissions.getInstance().axes(attacker)){
-					if(!Config.getInstance().isMobSpawnTracked(x)){
-					if(x instanceof Creeper)
-					PPa.addAxesXP((event.getDamage() * 4) * LoadProperties.xpGainMultiplier);
-					if(x instanceof Spider)
-						PPa.addAxesXP((event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
-					if(x instanceof Skeleton)
-						PPa.addAxesXP((event.getDamage() * 2) * LoadProperties.xpGainMultiplier);
-					if(x instanceof Zombie)
-						PPa.addAxesXP((event.getDamage() * 2) * LoadProperties.xpGainMultiplier);
-					if(x instanceof PigZombie)
-						PPa.addAxesXP((event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
-					}
-					Skills.XpCheck(attacker);
-			}
-			/*
-			 * AXE DAMAGE SCALING && LOOT CHECKS
-			 */
-			if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-				if(PPa.getAxesInt() >= 500){
-					event.setDamage(calculateDamage(event, 4));
-				}
-			}
-			if(type == 0 && mcPermissions.getInstance().unarmed(attacker)){
-			if(defender.getHealth() <= 0)
-				return;
-			
-			//Bonus just for having unarmed
-			int bonus = 2;
-			if (PPa.getUnarmedInt() >= 250)
-				bonus++;
-			if (PPa.getUnarmedInt() >= 500)
-				bonus++;
-			event.setDamage(calculateDamage(event, bonus));
-			
-			//XP
-			if(!Config.getInstance().isMobSpawnTracked(x)){
-			if(x instanceof Creeper)
-				PPa.addUnarmedXP((event.getDamage() * 4) * LoadProperties.xpGainMultiplier);
-			if(x instanceof Spider)
-				PPa.addUnarmedXP((event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
-			if(x instanceof Skeleton)
-				PPa.addUnarmedXP((event.getDamage() * 2) * LoadProperties.xpGainMultiplier);
-			if(x instanceof Zombie)
-				PPa.addUnarmedXP((event.getDamage() * 2) * LoadProperties.xpGainMultiplier);
-			if(x instanceof PigZombie)
-				PPa.addUnarmedXP((event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
-			}
-			Skills.XpCheck(attacker);
-			}
-		}
-    }
 	public static void archeryCheck(EntityDamageByProjectileEvent event){
     	Entity y = event.getDamager();
     	Entity x = event.getEntity();
@@ -371,6 +250,20 @@ public class Combat {
     				}
     			}
     			/*
+    			 * DAMAGE MODIFIER
+    			 */
+    			if(PPa.getArcheryInt() >= 50 && PPa.getArcheryInt() < 250)
+    				event.setDamage(event.getDamage()+1);
+    			if(PPa.getArcheryInt() >= 250 && PPa.getArcheryInt() < 575)
+    				event.setDamage(event.getDamage()+2);
+    			if(PPa.getArcheryInt() >= 575 && PPa.getArcheryInt() < 725)
+    				event.setDamage(event.getDamage()+3);
+    			if(PPa.getArcheryInt() >= 725 && PPa.getArcheryInt() < 1000)
+    				event.setDamage(event.getDamage()+4);
+    			if(PPa.getArcheryInt() >= 1000)
+    				event.setDamage(event.getDamage()+5);
+    			
+    			/*
     			 * IGNITION
     			 */
     			if(Math.random() * 100 >= 75){
@@ -403,19 +296,6 @@ public class Combat {
     		 * Defender is Monster
     		 */
     		if(x instanceof Monster){
-    			/*
-    			 * TRACK ARROWS USED AGAINST THE ENTITY
-    			 */
-    			if(PPa.getArcheryInt() >= 50 && PPa.getArcheryInt() < 250)
-    				event.setDamage(calculateDamage(event, 1));
-    			if(PPa.getArcheryInt() >= 250 && PPa.getArcheryInt() < 575)
-    				event.setDamage(calculateDamage(event, 2));
-    			if(PPa.getArcheryInt() >= 575 && PPa.getArcheryInt() < 725)
-    				event.setDamage(calculateDamage(event, 3));
-    			if(PPa.getArcheryInt() >= 725 && PPa.getArcheryInt() < 1000)
-    				event.setDamage(calculateDamage(event, 4));
-    			if(PPa.getArcheryInt() >= 1000)
-    				event.setDamage(calculateDamage(event, 5));
     			//XP
     			if(!Config.getInstance().isMobSpawnTracked(x)){
     				if(x instanceof Creeper)
@@ -429,36 +309,6 @@ public class Combat {
 					if(x instanceof PigZombie)
 						PPa.addArcheryXP((event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
     			}
-    		}
-    		/*
-    		 * Defender is Animals	
-    		 */
-    		if(x instanceof Animals){
-    			if(PPa.getArcheryInt() >= 50 && PPa.getArcheryInt() < 250)
-    				event.setDamage(calculateDamage(event, 1));
-    			if(PPa.getArcheryInt() >= 250 && PPa.getArcheryInt() < 575)
-    				event.setDamage(calculateDamage(event, 2));
-    			if(PPa.getArcheryInt() >= 575 && PPa.getArcheryInt() < 725)
-    				event.setDamage(calculateDamage(event, 3));
-    			if(PPa.getArcheryInt() >= 725 && PPa.getArcheryInt() < 1000)
-    				event.setDamage(calculateDamage(event, 4));
-    			if(PPa.getArcheryInt() >= 1000)
-    				event.setDamage(calculateDamage(event, 5));
-    		}
-    		/*
-    		 * Defender is Squid
-    		 */
-    		if(x instanceof Squid){
-    			if(PPa.getArcheryInt() >= 50 && PPa.getArcheryInt() < 250)
-    				event.setDamage(calculateDamage(event, 1));
-    			if(PPa.getArcheryInt() >= 250 && PPa.getArcheryInt() < 575)
-    				event.setDamage(calculateDamage(event, 2));
-    			if(PPa.getArcheryInt() >= 575 && PPa.getArcheryInt() < 725)
-    				event.setDamage(calculateDamage(event, 3));
-    			if(PPa.getArcheryInt() >= 725 && PPa.getArcheryInt() < 1000)
-    				event.setDamage(calculateDamage(event, 4));
-    			if(PPa.getArcheryInt() >= 1000)
-    				event.setDamage(calculateDamage(event, 5));
     		}
     		/*
     		 * Attacker is Player
@@ -505,38 +355,10 @@ public class Combat {
 	    				defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
 	    				attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
     	    		}
-    				
-					if(PPa.getArcheryInt() >= 50 && PPa.getArcheryInt() < 250)
-	    				event.setDamage(calculateDamage(event, 1));
-	    			if(PPa.getArcheryInt() >= 250 && PPa.getArcheryInt() < 575)
-	    				event.setDamage(calculateDamage(event, 2));
-	    			if(PPa.getArcheryInt() >= 575 && PPa.getArcheryInt() < 725)
-	    				event.setDamage(calculateDamage(event, 3));
-	    			if(PPa.getArcheryInt() >= 725 && PPa.getArcheryInt() < 1000)
-	    				event.setDamage(calculateDamage(event, 4));
-	    			if(PPa.getArcheryInt() >= 1000)
-	    				event.setDamage(calculateDamage(event, 5));
     			}
     		}
     		Skills.XpCheck(attacker);
     	}
-    }
-	public static boolean simulateUnarmedProc(Player player){
-		PlayerProfile PP = Users.getProfile(player);
-    	if(PP.getUnarmedInt() >= 1000){
-    		if(Math.random() * 4000 <= 1000){
-    			return true;
-    		}
-    	} else {
-    		if(Math.random() * 4000 <= PP.getUnarmedInt()){
-    			return true;
-    		}
-    	}
-    		return false;
-    }
-    
-    public static int calculateDamage(EntityDamageEvent event, int dmg){
-    	return event.getDamage() + dmg;
     }
     public static void dealDamage(Entity target, int dmg){
     	if(target instanceof Player){
@@ -549,38 +371,4 @@ public class Combat {
     		((Monster) target).damage(dmg);
     	}
     }
-    public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Entity x){
-    	PlayerProfile PPa = Users.getProfile(attacker);
-    	if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(PPa.getAxesInt() >= 750){
-    			if(Math.random() * 1000 <= 750){
-    				if(x instanceof Player){
-    					Player player = (Player)x;
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    				}
-    				if(x instanceof Player){
-        				event.setDamage(event.getDamage() * 2 - event.getDamage() / 2);
-        			} else {
-        				event.setDamage(event.getDamage() * 2);
-        			}
-    				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    			}
-    		} else if(Math.random() * 1000 <= PPa.getAxesInt()){
-    			if(x instanceof Player){
-    				Player player = (Player)x;
-    				player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
-    			}
-    			if(x instanceof Player){
-    				event.setDamage(event.getDamage() * 2 - event.getDamage() / 2);
-    			} else {
-    				event.setDamage(event.getDamage() * 2);
-    			}
-				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
-    		}
-    	}
-    }
-
-    
-	
-	
 }

@@ -121,6 +121,8 @@ public class Swords {
 		   	{
 		   		Player defender = (Player)event.getEntity();
 		   		PlayerProfile PPd = Users.getProfile(defender);
+		   		if(m.isSwords(defender.getItemInHand())&& mcPermissions.getInstance().swords(defender))
+		   		{
 		    		if(PPd.getSwordsInt() >= 600)
 		    		{
 		    			if(Math.random() * 2000 <= 600)
@@ -138,6 +140,7 @@ public class Swords {
 		    			if(f instanceof Player)
 		    				((Player) f).sendMessage(ChatColor.DARK_RED+"Hit with counterattack!");
 		    		}
+		   		}
 		    }
     	}
     }
