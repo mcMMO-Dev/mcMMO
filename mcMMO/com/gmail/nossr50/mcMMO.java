@@ -53,29 +53,8 @@ public class mcMMO extends JavaPlugin {
     public void onEnable() {
     	mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
     	new File(maindirectory).mkdir();
-
-    	if(!Properties.exists()){
-	    	try {
-				Properties.createNewFile();
-				FileWriter writer = null;
-				try {
-					writer = new FileWriter(Properties);
-				} catch (Exception e) {
-					log.log(Level.SEVERE, "Exception while creating " + Properties, e);
-				} finally {
-					try {
-						if (writer != null) {
-							writer.close();
-						}
-					} catch (IOException e) {
-						log.log(Level.SEVERE, "Exception while closing writer for " + Properties, e);
-					}
-				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-    	}
+    	//Check if props file exists, if not make it
+    	mcProperties.makeProperties(Properties, log);
     	//Load the file
     	LoadProperties.loadMain();
     	Users.getInstance().loadUsers();
@@ -89,7 +68,7 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Lowest, this);
         pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
         pm.registerEvent(Event.Type.BLOCK_FROMTO, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Monitor, this);
@@ -102,8 +81,8 @@ public class mcMMO extends JavaPlugin {
         mcPermissions.initialize(getServer());
         mcLoadMySQL(); 
         database.createStructure(); //Make Structure
-        
-        //Leaderboard.makeLeaderboards(); //Make the leaderboards
+        if(!LoadProperties.useMySQL)
+        	Leaderboard.makeLeaderboards(); //Make the leaderboards
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
     }
     

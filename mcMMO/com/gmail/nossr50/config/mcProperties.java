@@ -3,8 +3,11 @@ package com.gmail.nossr50.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class mcProperties extends Properties{
 	//private static volatile mcProperties instance;
@@ -21,6 +24,30 @@ public class mcProperties extends Properties{
 				
 			}
 		}
+	}
+	public static void makeProperties(File Properties, Logger log){
+		if(!Properties.exists()){
+	    	try {
+				Properties.createNewFile();
+				FileWriter writer = null;
+				try {
+					writer = new FileWriter(Properties);
+				} catch (Exception e) {
+					log.log(Level.SEVERE, "Exception while creating " + Properties, e);
+				} finally {
+					try {
+						if (writer != null) {
+							writer.close();
+						}
+					} catch (IOException e) {
+						log.log(Level.SEVERE, "Exception while closing writer for " + Properties, e);
+					}
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
 	}
 	public void save(String start){
 		try{

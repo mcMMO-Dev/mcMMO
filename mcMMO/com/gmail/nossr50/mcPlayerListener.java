@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
@@ -102,6 +103,8 @@ public class mcPlayerListener extends PlayerListener {
     			Block targetBlock = player.getTargetBlock(null, 20);
     			player.sendMessage("Target Block TypeID = "+targetBlock.getTypeId());
     			player.sendMessage("Target Block Byte Data = "+targetBlock.getData());
+    			player.sendMessage("Wold Entity List SIZE : "+targetBlock.getWorld().getEntities().size());
+    			player.sendMessage("Chunk Entity List SIZE : "+targetBlock.getChunk().getEntities().length);
     		}
     	}
     	if(player.getItemInHand().getTypeId() == 261 && LoadProperties.archeryFireRateLimit){
@@ -204,6 +207,8 @@ public class mcPlayerListener extends PlayerListener {
     	}
     	if(split[0].equalsIgnoreCase("/details")){
     		event.setCancelled(true);
+    		player.getLocation().getWorld().spawnCreature(player.getLocation(), CreatureType.WOLF);
+    		player.getLocation().getWorld().spawnCreature(player.getLocation(), CreatureType.WOLF);
     		player.sendMessage("Material : "+player.getItemInHand().getType());
     		player.sendMessage("Type ID : "+player.getItemInHand().getTypeId());
     		player.sendMessage("Byte Data : "+player.getItemInHand().getDurability());
@@ -331,7 +336,9 @@ public class mcPlayerListener extends PlayerListener {
 	    	        	
 	    	        	for(int i=n;i<=n+10;i++)
     	    			{
-    	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+    	    				if (i >= userslist.size())
+    	    					break;
+	    	        		HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
     	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
     	    			}
     	        		return;
@@ -344,6 +351,7 @@ public class mcPlayerListener extends PlayerListener {
 	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
 	    			}
+	    	        return;
     			}
     			if(split.length >= 1)
     			{
@@ -363,7 +371,9 @@ public class mcPlayerListener extends PlayerListener {
 		    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
 	    	        	for(int i=n;i<=n+10;i++)
     	    			{
-    	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+	    	        		if (i >= userslist.size())
+    	    					break;
+	    	        		HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
     	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
     	    			}
     	        		return;
@@ -372,6 +382,8 @@ public class mcPlayerListener extends PlayerListener {
 	    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
 	    			for(int i=1;i<=10;i++)
 	    			{
+	    				if (i >= userslist.size())
+	    					break;
 	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
 	    				//System.out.println(username.get(1).get(0));
@@ -394,6 +406,7 @@ public class mcPlayerListener extends PlayerListener {
 			/*
 			 * PREP MODES
 			 */
+    		PP = Users.getProfile(player);
     		PP.setRecentlyHurt((long) 0);
     		PP.setHoePreparationMode(false);
     		PP.setAxePreparationMode(false);

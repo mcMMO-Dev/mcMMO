@@ -69,6 +69,8 @@ public class PlayerProfile
 	public boolean loadMySQL(Player p) {
 		Integer id = 0;
 		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + p.getName() + "'");
+		if(id == 0)
+			return false;
 		this.userid = id;
 		if (id > 0) {
 			HashMap<Integer, ArrayList<String>> users = mcMMO.database.Read("SELECT lastlogin, party FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = " + id);

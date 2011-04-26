@@ -56,7 +56,7 @@ public class Combat {
 					event.setDamage(event.getDamage()+4);
 			
 			//If there are any abilities to activate
-	    	combatAbilityChecks(attacker, PPa);
+	    	combatAbilityChecks(attacker, PPa, pluginx);
 	    	
 	    	//Check for offensive procs
 	    	Axes.axeCriticalCheck(attacker, eventb); //Axe Criticals
@@ -118,8 +118,15 @@ public class Combat {
       		//Taming Debug Stuff
       		if(event.getEntity() instanceof Wolf)
       		{
-      			attacker.sendMessage("mcMMO Debug: Wolf Owner Name "+Taming.getOwnerName(event.getEntity()));
-      			event.setCancelled(true);
+      			if(attacker.getItemInHand().getTypeId() == 352)
+      			{
+	      			attacker.sendMessage(ChatColor.GREEN+"**You examine the Wolf using Beast Lore**");
+	      			if(Taming.getOwnerName(event.getEntity()) != null)
+	      				attacker.sendMessage(ChatColor.DARK_GREEN+"The Beast's Master : "+Taming.getOwnerName(event.getEntity()));
+	      			else
+	      				attacker.sendMessage(ChatColor.GRAY+"This Beast has no Master...");
+	      			event.setCancelled(true);
+      			}
       		}
 		}
 		/*
@@ -195,14 +202,14 @@ public class Combat {
 		}
 	}
 	
-	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa){
+	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa, Plugin pluginx){
 		//Check to see if any abilities need to be activated
 		if(PPa.getAxePreparationMode())
-			Skills.skullSplitterCheck(attacker, plugin);
+			Skills.skullSplitterCheck(attacker, pluginx);
 		if(PPa.getSwordsPreparationMode())
-			Skills.serratedStrikesActivationCheck(attacker, plugin);
+			Skills.serratedStrikesActivationCheck(attacker, pluginx);
 		if(PPa.getFistsPreparationMode())
-			Skills.berserkActivationCheck(attacker, plugin);
+			Skills.berserkActivationCheck(attacker, pluginx);
 	}
 	public static void archeryCheck(EntityDamageByProjectileEvent event){
     	Entity y = event.getDamager();

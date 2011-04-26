@@ -124,8 +124,6 @@ public class Database {
   		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		HashMap<Integer, ArrayList<String>> Rows = new HashMap<Integer, ArrayList<String>>();
-
-		
 		
 		try {
 			stmt = this.conn.prepareStatement(sql);
@@ -146,8 +144,6 @@ public class Database {
 		    System.out.println("SQLState: " + ex.getSQLState());
 		    System.out.println("VendorError: " + ex.getErrorCode());
 		}
-		
-
 		
 		// release dataset
 	    if (rs != null) {
