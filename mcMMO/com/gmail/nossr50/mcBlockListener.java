@@ -96,13 +96,29 @@ public class mcBlockListener extends BlockListener {
 				if(m.isAxes(inhand)){
 					if(!Config.getInstance().isBlockWatched(block)){
 	    				WoodCutting.woodCuttingProcCheck(player, block);
-	    				PP.addWoodcuttingXP(7 * LoadProperties.xpGainMultiplier);
+	    				//Default
+	    				if(block.getData() == (byte)0)
+	    					PP.addWoodcuttingXP(7 * LoadProperties.xpGainMultiplier);
+	    				//Spruce
+	    				if(block.getData() == (byte)1)
+	    					PP.addWoodcuttingXP(8 * LoadProperties.xpGainMultiplier);
+	    				//Birch
+	    				if(block.getData() == (byte)2)
+	    					PP.addWoodcuttingXP(9 * LoadProperties.xpGainMultiplier);
 					}
     			}
     		} else {
-    			if(block.getData() != 5){
+    			if(!Config.getInstance().isBlockWatched(block)){
 	    			WoodCutting.woodCuttingProcCheck(player, block);
-					PP.addWoodcuttingXP(7 * LoadProperties.xpGainMultiplier);	
+	    			//Default
+    				if(block.getData() == (byte)0)
+    					PP.addWoodcuttingXP(7 * LoadProperties.xpGainMultiplier);
+    				//Spruce
+    				if(block.getData() == (byte)1)
+    					PP.addWoodcuttingXP(8 * LoadProperties.xpGainMultiplier);
+    				//Birch
+    				if(block.getData() == (byte)2)
+    					PP.addWoodcuttingXP(9 * LoadProperties.xpGainMultiplier);
     			}
    			}
     		Skills.XpCheck(player);
@@ -132,9 +148,11 @@ public class mcBlockListener extends BlockListener {
     						}
     					}
     					if(blockx.getTypeId() == 18){
-    						mat = Material.getMaterial(6);
-    						item = new ItemStack(mat, 1, (byte)0, (byte) 0);
-    						if(Math.random() * 10 > 8)
+    						mat = Material.SAPLING;
+    						
+    						item = new ItemStack(mat, 1, (short)0, blockx.getData());
+    						
+    						if(Math.random() * 10 > 9)
     							blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
     					}
     					blockx.setType(Material.AIR);
@@ -160,7 +178,7 @@ public class mcBlockListener extends BlockListener {
 			Herbalism.herbalismProcCheck(block, player, event);
     	
     	//Change the byte back when broken
-    	if(block.getData() == 5)
+    	if(block.getData() == 5 && m.shouldBeWatched(block))
     		block.setData((byte) 0);
     }
     public void onBlockDamage(BlockDamageEvent event) {
@@ -249,6 +267,19 @@ public class mcBlockListener extends BlockListener {
     		}
     	}
     	
+    	/*
+    	 * LEAF BLOWER
+    	 */
+    	if(block.getTypeId() == 18 && mcPermissions.getInstance().woodcutting(player) && PP.getWoodCuttingInt() >= 100 && m.isAxes(player.getItemInHand()) && m.blockBreakSimulate(block, player, plugin))
+    	{
+    		m.damageTool(player, (short)1);
+    		if(Math.random() * 10 > 9)
+    		{
+    			ItemStack x = new ItemStack(Material.SAPLING, 1, (short)0, block.getData());
+    			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), x);
+    		}
+    		block.setType(Material.AIR);
+    	}
     }
     
     public void onBlockFromTo(BlockFromToEvent event) {

@@ -38,7 +38,6 @@ public class m {
 			return false;
 		}
 	}
-
 	public static int getPowerLevel(Player player){
 		PlayerProfile PP = Users.getProfile(player);
 		int x = 0;
@@ -346,8 +345,13 @@ public class m {
 			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Chopping down trees");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.DARK_AQUA+"Tree Feller (ABILITY): "+ChatColor.GREEN+"Make trees explode");
+			player.sendMessage(ChatColor.DARK_AQUA+"Leaf Blower: "+ChatColor.GREEN+"Blow Away Leaves");
 			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.YELLOW+ChatColor.GREEN+"Double the normal loot");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
+			if(PP.getWoodCuttingInt() < 100)
+				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 100+ SKILL (LEAF BLOWER)");
+			else
+				player.sendMessage(ChatColor.RED+"Leaf Blower: "+ChatColor.YELLOW+"Blow away leaves");
 			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
 			player.sendMessage(ChatColor.RED+"Tree Feller Length: "+ChatColor.YELLOW+ticks+"s");
     	}

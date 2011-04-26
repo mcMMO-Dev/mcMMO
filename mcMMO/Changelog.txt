@@ -1,6 +1,8 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
 Version 1.0
+Added Leaf Blower to WoodCutting
+Different Trees give different WoodCutting XP
 Water changing Gravel to Clay removed
 Code Organized/Optimized further
 MySQL Support

@@ -1,5 +1,7 @@
 package com.gmail.nossr50;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -99,6 +101,7 @@ public class mcPlayerListener extends PlayerListener {
     		{
     			Block targetBlock = player.getTargetBlock(null, 20);
     			player.sendMessage("Target Block TypeID = "+targetBlock.getTypeId());
+    			player.sendMessage("Target Block Byte Data = "+targetBlock.getData());
     		}
     	}
     	if(player.getItemInHand().getTypeId() == 261 && LoadProperties.archeryFireRateLimit){
@@ -199,112 +202,185 @@ public class mcPlayerListener extends PlayerListener {
     			PP.toggleAbilityUse();
     		}
     	}
+    	if(split[0].equalsIgnoreCase("/details")){
+    		event.setCancelled(true);
+    		player.sendMessage("Material : "+player.getItemInHand().getType());
+    		player.sendMessage("Type ID : "+player.getItemInHand().getTypeId());
+    		player.sendMessage("Byte Data : "+player.getItemInHand().getDurability());
+    	}
     	/*
     	 * LEADER BOARD COMMAND
     	 */
-    	
     	if(split[0].equalsIgnoreCase("/"+LoadProperties.mctop)){
     		event.setCancelled(true);
-    		//Format: /top <skillname> <pagenumber>
-
+    		if(LoadProperties.useMySQL == false){
+	    		/*
+	    		 * POWER LEVEL INFO RETRIEVAL
+	    		 */
+	    		if(split.length == 1){
+	    			int p = 1;
+	    			String[] info = Leaderboard.retrieveInfo("powerlevel", p);
+	    			player.sendMessage(ChatColor.YELLOW+"--MMO"+ChatColor.BLUE+" Power Level "+ChatColor.YELLOW+"Leaderboard--");
+	    			int n = 1 * p; //Position
+	    			for(String x : info){
+	    				if(x != null){
+	    					String digit = String.valueOf(n);
+	    					if(n < 10)
+	    						digit ="0"+String.valueOf(n);
+		    				String[] splitx = x.split(":");
+		    				//Format: 1. Playername - skill value
+		    				player.sendMessage(digit+". "+ChatColor.GREEN+splitx[1]+" - "+ChatColor.WHITE+splitx[0]);
+		    				n++;
+	    				}
+	    			}
+	    		}
+	    		if(split.length >= 2 && Leaderboard.isInt(split[1])){
+	    			int p = 1;
+	    			//Grab page value if specified
+	    			if(split.length >= 2){
+	    				if(Leaderboard.isInt(split[1])){
+	    					p = Integer.valueOf(split[1]);
+	    				}
+	    			}
+	    			int pt = p;
+	    			if(p > 1){
+	    				pt -= 1;
+	    				pt += (pt * 10);
+	    				pt = 10;
+	    			}
+	    			String[] info = Leaderboard.retrieveInfo("powerlevel", p);
+	    			player.sendMessage("--MMO Power Level Leaderboard--");
+	    			int n = 1 * pt; //Position
+	    			for(String x : info){
+	    				if(x != null){
+	    					String digit = String.valueOf(n);
+	    					if(n < 10)
+	    						digit ="0"+String.valueOf(n);
+		    				String[] splitx = x.split(":");
+		    				//Format: 1. Playername - skill value
+		    				player.sendMessage(digit+". "+ChatColor.GREEN+splitx[1]+" - "+ChatColor.WHITE+splitx[0]);
+		    				n++;
+	    				}
+	    			}
+	    		}
+	    		/*
+	    		 * SKILL SPECIFIED INFO RETRIEVAL
+	    		 */
+	    		if(split.length >= 2 && Skills.isSkill(split[1])){
+	    			int p = 1;
+	    			//Grab page value if specified
+	    			if(split.length >= 3){
+	    				if(Leaderboard.isInt(split[2])){
+	    					p = Integer.valueOf(split[2]);
+	    				}
+	    			}
+	    			int pt = p;
+	    			if(p > 1){
+	    				pt -= 1;
+	    				pt += (pt * 10);
+	    				pt = 10;
+	    			}
+	    			String firstLetter = split[1].substring(0,1);  // Get first letter
+	    	        String remainder   = split[1].substring(1);    // Get remainder of word.
+	    	        String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
+	    	        
+	    			String[] info = Leaderboard.retrieveInfo(split[1].toLowerCase(), p);
+	    			player.sendMessage(ChatColor.YELLOW+"--MMO "+ChatColor.BLUE+capitalized+ChatColor.YELLOW+" Leaderboard--");
+	    			int n = 1 * pt; //Position
+	    			for(String x : info){
+	    				if(x != null){
+	    					String digit = String.valueOf(n);
+	    					if(n < 10)
+	    						digit ="0"+String.valueOf(n);
+		    				String[] splitx = x.split(":");
+		    				//Format: 1. Playername - skill value
+		    				player.sendMessage(digit+". "+ChatColor.GREEN+splitx[1]+" - "+ChatColor.WHITE+splitx[0]);
+		    				n++;
+	    				}
+	    			}
+	    		}
+    		} else
     		/*
-    		 * POWER LEVEL INFO RETRIEVAL
-    		 */
-    		if(split.length == 1){
-    			int p = 1;
-    			String[] info = Leaderboard.retrieveInfo("powerlevel", p);
-    			player.sendMessage(ChatColor.YELLOW+"--MMO"+ChatColor.BLUE+" Power Level "+ChatColor.YELLOW+"Leaderboard--");
-    			int n = 1 * p; //Position
-    			for(String x : info){
-    				if(x != null){
-    					String digit = String.valueOf(n);
-    					if(n < 10)
-    						digit ="0"+String.valueOf(n);
-	    				String[] splitx = x.split(":");
-	    				//Format: 1. Playername - skill value
-	    				player.sendMessage(digit+". "+ChatColor.GREEN+splitx[1]+" - "+ChatColor.WHITE+splitx[0]);
-	    				n++;
-    				}
+    		* MYSQL LEADERBOARDS
+    		*/
+    		{
+    			if(split.length >= 2 && Skills.isSkill(split[1]))
+    			{
+    				/*
+    				 * Create a nice consistent capitalized leaderboard name
+    				 */
+    				String lowercase = split[1].toLowerCase(); //For the query
+    				String firstLetter = split[1].substring(0,1); //Get first letter
+	    	        String remainder   = split[1].substring(1); //Get remainder of word.
+	    	        String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
+	    	        
+	    	        player.sendMessage(ChatColor.YELLOW+"--mcMMO "+ChatColor.BLUE+capitalized+ChatColor.YELLOW+" Leaderboard--");
+	    	        if(split.length >= 3 && m.isInt(split[2]))
+	    	        {
+	    	        	int n = 1; //For the page number
+	    	        	int n2 = Integer.valueOf(split[2]);
+	    	        	if(n2 > 1)
+	    	        	{
+	    	        		//Figure out the 'page' here
+	    	        		n = 10;
+	    	        		n = n * (n2-1);
+	    	        	}
+	    	        	//If a page number is specified
+	    	        	HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT "+lowercase+", user_id FROM "
+    	    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY `"+LoadProperties.MySQLtablePrefix+"skills`.`"+lowercase+"` DESC ");
+	    	        	
+	    	        	for(int i=n;i<=n+10;i++)
+    	    			{
+    	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+    	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
+    	    			}
+    	        		return;
+	    	        }
+	    	        //If no page number is specified
+	    	        HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT "+lowercase+", user_id FROM "
+	    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY `"+LoadProperties.MySQLtablePrefix+"skills`.`"+lowercase+"` DESC ");
+	    	        for(int i=1;i<=10;i++) //i<=userslist.size()
+	    			{
+	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
+	    			}
     			}
-    		}
-    		if(split.length >= 2 && Leaderboard.isInt(split[1])){
-    			int p = 1;
-    			//Grab page value if specified
-    			if(split.length >= 2){
-    				if(Leaderboard.isInt(split[1])){
-    					p = Integer.valueOf(split[1]);
-    				}
-    			}
-    			int pt = p;
-    			if(p > 1){
-    				pt -= 1;
-    				pt += (pt * 10);
-    				pt = 10;
-    			}
-    			String[] info = Leaderboard.retrieveInfo("powerlevel", p);
-    			player.sendMessage("--MMO Power Level Leaderboard--");
-    			int n = 1 * pt; //Position
-    			for(String x : info){
-    				if(x != null){
-    					String digit = String.valueOf(n);
-    					if(n < 10)
-    						digit ="0"+String.valueOf(n);
-	    				String[] splitx = x.split(":");
-	    				//Format: 1. Playername - skill value
-	    				player.sendMessage(digit+". "+ChatColor.GREEN+splitx[1]+" - "+ChatColor.WHITE+splitx[0]);
-	    				n++;
-    				}
-    			}
-    		}
-    		/*
-    		 * SKILL SPECIFIED INFO RETRIEVAL
-    		 */
-    		if(split.length >= 2 && Skills.isSkill(split[1])){
-    			int p = 1;
-    			//Grab page value if specified
-    			if(split.length >= 3){
-    				if(Leaderboard.isInt(split[2])){
-    					p = Integer.valueOf(split[2]);
-    				}
-    			}
-    			int pt = p;
-    			if(p > 1){
-    				pt -= 1;
-    				pt += (pt * 10);
-    				pt = 10;
-    			}
-    			String firstLetter = split[1].substring(0,1);  // Get first letter
-    	        String remainder   = split[1].substring(1);    // Get remainder of word.
-    	        String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
-    	        
-    			String[] info = Leaderboard.retrieveInfo(split[1].toLowerCase(), p);
-    			player.sendMessage(ChatColor.YELLOW+"--MMO "+ChatColor.BLUE+capitalized+ChatColor.YELLOW+" Leaderboard--");
-    			int n = 1 * pt; //Position
-    			for(String x : info){
-    				if(x != null){
-    					String digit = String.valueOf(n);
-    					if(n < 10)
-    						digit ="0"+String.valueOf(n);
-	    				String[] splitx = x.split(":");
-	    				//Format: 1. Playername - skill value
-	    				player.sendMessage(digit+". "+ChatColor.GREEN+splitx[1]+" - "+ChatColor.WHITE+splitx[0]);
-	    				n++;
-    				}
+    			if(split.length >= 1)
+    			{
+	    			player.sendMessage(ChatColor.YELLOW+"--mcMMO "+ChatColor.BLUE+"Power Level"+ChatColor.YELLOW+" Leaderboard--");
+	    			if(split.length >= 2 && m.isInt(split[1]))
+	    	        {
+	    	        	int n = 1; //For the page number
+	    	        	int n2 = Integer.valueOf(split[1]);
+	    	        	if(n2 > 1)
+	    	        	{
+	    	        		//Figure out the 'page' here
+	    	        		n = 10;
+	    	        		n = n * (n2-1);
+	    	        	}
+	    	        	//If a page number is specified
+	    	        	HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics, user_id FROM "
+		    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
+	    	        	for(int i=n;i<=n+10;i++)
+    	    			{
+    	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+    	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
+    	    			}
+    	        		return;
+	    	        }
+	    			HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics, user_id FROM "
+	    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
+	    			for(int i=1;i<=10;i++)
+	    			{
+	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
+	    				//System.out.println(username.get(1).get(0));
+	    				//System.out.println("Mining : " + userslist.get(i).get(0) + ", User id : " + userslist.get(i).get(1));
+	    			}
     			}
     		}
     	}
     	
-    	
-    	/*
-    	if(split[0].equalsIgnoreCase("/mutechat")){
-    		event.setCancelled(true);
-    		if(PP.getPartyChatOnlyToggle() == true)
-    			player.sendMessage("Party Chat Only "+ChatColor.RED+"Off");
-    		if(PP.getPartyChatOnlyToggle() == false)
-    			player.sendMessage("Party Chat Only "+ChatColor.RED+"On");
-    		PP.togglePartyChatOnly();
-    	}
-    	*/
 		if(mcPermissions.getInstance().mcAbility(player) && split[0].equalsIgnoreCase("/"+LoadProperties.mcrefresh)){
 			event.setCancelled(true);
     		if(!mcPermissions.getInstance().mcrefresh(player)){
@@ -460,14 +536,14 @@ public class mcPlayerListener extends PlayerListener {
     			player.sendMessage("That is not a valid player");
     		}
     		if(isPlayer(split[1])){
-        	Player target = getPlayer(split[1]);
-        	PlayerProfile PPt = Users.getProfile(target);
-        	if(PP.getParty().equals(PPt.getParty())){
-        	player.teleportTo(target);
-        	player.sendMessage(ChatColor.GREEN+"You have teleported to "+target.getName());
-        	target.sendMessage(ChatColor.GREEN+player.getName() + " has teleported to you.");
-        	}
-    	}
+    			Player target = getPlayer(split[1]);
+    			PlayerProfile PPt = Users.getProfile(target);
+	        	if(PP.getParty().equals(PPt.getParty())){
+	        		player.teleportTo(target);
+	        		player.sendMessage(ChatColor.GREEN+"You have teleported to "+target.getName());
+	        		target.sendMessage(ChatColor.GREEN+player.getName() + " has teleported to you.");
+	        	}
+    		}
     	}
     	/*
     	 * WHOIS COMMAND

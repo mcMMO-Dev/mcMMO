@@ -103,7 +103,7 @@ public class mcMMO extends JavaPlugin {
         mcLoadMySQL(); 
         database.createStructure(); //Make Structure
         
-        Leaderboard.makeLeaderboards(); //Make the leaderboards
+        //Leaderboard.makeLeaderboards(); //Make the leaderboards
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
     }
     

@@ -40,13 +40,13 @@ public class Database {
 	}
 	//Create the DB structure
 	public void createStructure(){
-		Write("CREATE TABLE IF NOT EXISTS `users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT," +
+		Write("CREATE TABLE IF NOT EXISTS `"+LoadProperties.MySQLtablePrefix+"users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT," +
 				"`user` varchar(30) NOT NULL," +
-				"`lastlogin` int(10) unsigned NOT NULL," +
+				"`lastlogin` int(32) unsigned NOT NULL," +
 				"`party` varchar(100) NOT NULL DEFAULT ''," +
 				"PRIMARY KEY (`id`)," +
 				"UNIQUE KEY `user` (`user`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
-		Write("CREATE TABLE IF NOT EXISTS `skills` (`user_id` int(10) unsigned NOT NULL," +
+		Write("CREATE TABLE IF NOT EXISTS `"+LoadProperties.MySQLtablePrefix+"skills` (`user_id` int(10) unsigned NOT NULL," +
 				"`taming` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`mining` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`woodcutting` int(10) unsigned NOT NULL DEFAULT '0'," +
@@ -59,7 +59,7 @@ public class Database {
 				"`axes` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`acrobatics` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-		Write("CREATE TABLE IF NOT EXISTS `experience` (`user_id` int(10) unsigned NOT NULL," +
+		Write("CREATE TABLE IF NOT EXISTS `"+LoadProperties.MySQLtablePrefix+"experience` (`user_id` int(10) unsigned NOT NULL," +
 				"`taming` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`mining` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`woodcutting` int(10) unsigned NOT NULL DEFAULT '0'," +
@@ -72,10 +72,10 @@ public class Database {
 				"`axes` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`acrobatics` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-		Write("CREATE TABLE IF NOT EXISTS `spawn` (`user_id` int(10) NOT NULL," +
-				"`x` int(11) NOT NULL DEFAULT '0'," +
-				"`y` int(11) NOT NULL DEFAULT '0'," +
-				"`z` int(11) NOT NULL DEFAULT '0'," +
+		Write("CREATE TABLE IF NOT EXISTS `"+LoadProperties.MySQLtablePrefix+"spawn` (`user_id` int(10) NOT NULL," +
+				"`x` int(64) NOT NULL DEFAULT '0'," +
+				"`y` int(64) NOT NULL DEFAULT '0'," +
+				"`z` int(64) NOT NULL DEFAULT '0'," +
 				"`world` varchar(50) NOT NULL DEFAULT ''," +
 				"PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 	}

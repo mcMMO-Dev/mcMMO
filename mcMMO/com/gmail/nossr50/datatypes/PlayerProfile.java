@@ -67,23 +67,17 @@ public class PlayerProfile
 	
 	
 	public boolean loadMySQL(Player p) {
-		/* returns a list of all the users ordered by their username
-		HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT id, lastlogin, party FROM users ORDER BY user");
-		for(int i=1;i<=userslist.size();i++) {
-			System.out.println("User: " + userslist.get(i).get(0) + ", Lastlogin: " + userslist.get(i).get(1));
-		}
-		*/
 		Integer id = 0;
-		id = mcMMO.database.GetInt("SELECT id FROM users WHERE user = '" + p.getName() + "'");
+		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + p.getName() + "'");
 		this.userid = id;
 		if (id > 0) {
-			HashMap<Integer, ArrayList<String>> users = mcMMO.database.Read("SELECT lastlogin, party FROM users WHERE id = " + id);
+			HashMap<Integer, ArrayList<String>> users = mcMMO.database.Read("SELECT lastlogin, party FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = " + id);
 				lastlogin = Integer.parseInt(users.get(1).get(0));
 				party = users.get(1).get(1);
-			HashMap<Integer, ArrayList<String>> spawn = mcMMO.database.Read("SELECT world, x, y, z FROM spawn WHERE user_id = " + id);
+			HashMap<Integer, ArrayList<String>> spawn = mcMMO.database.Read("SELECT world, x, y, z FROM "+LoadProperties.MySQLtablePrefix+"spawn WHERE user_id = " + id);
 				myspawnworld = spawn.get(1).get(0);
 				myspawn = spawn.get(1).get(1) + "," + spawn.get(1).get(2) + "," + spawn.get(1).get(3);				
-			HashMap<Integer, ArrayList<String>> skills = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM skills WHERE user_id = " + id);
+			HashMap<Integer, ArrayList<String>> skills = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
 				taming = skills.get(1).get(0);
 				mining = skills.get(1).get(1);;
 				repair = skills.get(1).get(2);;
@@ -95,7 +89,7 @@ public class PlayerProfile
 				swords = skills.get(1).get(8);
 				axes = skills.get(1).get(9);
 				acrobatics = skills.get(1).get(10);
-			HashMap<Integer, ArrayList<String>> experience = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM experience WHERE user_id = " + id);
+			HashMap<Integer, ArrayList<String>> experience = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"experience WHERE user_id = " + id);
 				tamingXP = experience.get(1).get(0);
 				miningXP = experience.get(1).get(1);;
 				repairXP = experience.get(1).get(2);;
@@ -115,13 +109,12 @@ public class PlayerProfile
 	}
 	public void addMySQLPlayer(Player p) {
 		Integer id = 0;
-		mcMMO.database.Write("INSERT INTO users (user, lastlogin) VALUES ('" + p.getName() + "'," + System.currentTimeMillis() / 1000 +")");
-		id = mcMMO.database.GetInt("SELECT id FROM users WHERE user = '" + p.getName() + "'");
-		mcMMO.database.Write("INSERT INTO spawn (user_id) VALUES ("+id+")");
-		mcMMO.database.Write("INSERT INTO skills (user_id) VALUES ("+id+")");
-		mcMMO.database.Write("INSERT INTO experience (user_id) VALUES ("+id+")");
+		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + p.getName() + "'," + System.currentTimeMillis() / 1000 +")");
+		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + p.getName() + "'");
+		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"spawn (user_id) VALUES ("+id+")");
+		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills (user_id) VALUES ("+id+")");
+		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")");
 		this.userid = id;
-
 	}
 	
 	public boolean load()
@@ -205,13 +198,12 @@ public class PlayerProfile
 	
     public void save()
     {
-    	Long timestamp = System.currentTimeMillis();
-    	
+    	Long timestamp = System.currentTimeMillis()/1000; //Convert to seconds
     	// if we are using mysql save to database
     	if (LoadProperties.useMySQL) {
-    		mcMMO.database.Write("UPDATE users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
-    		mcMMO.database.Write("UPDATE spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
-    		mcMMO.database.Write("UPDATE skills SET "
+    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
+    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
+    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
     				+"  taming = "+taming
     				+", mining = "+mining
     				+", repair = "+repair
@@ -224,7 +216,7 @@ public class PlayerProfile
     				+", axes = "+axes
     				+", acrobatics = "+acrobatics
     				+" WHERE user_id = "+this.userid);
-    		mcMMO.database.Write("UPDATE experience SET "
+    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET "
     				+"  taming = "+tamingXP
     				+", mining = "+miningXP
     				+", repair = "+repairXP
