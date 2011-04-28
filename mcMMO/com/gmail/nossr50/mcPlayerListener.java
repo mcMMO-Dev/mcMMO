@@ -213,6 +213,18 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Type ID : "+player.getItemInHand().getTypeId());
     		player.sendMessage("Byte Data : "+player.getItemInHand().getDurability());
     	}
+    	if(split[0].equalsIgnoreCase("/mmoupdate") && mcPermissions.getInstance().admin(player))
+    	{
+    		event.setCancelled(true);
+    		player.sendMessage(ChatColor.GRAY+"Starting conversion...");
+    		Users.clearUsers();
+    		m.convertToMySQL(plugin);
+    		for(Player x : plugin.getServer().getOnlinePlayers())
+    		{
+    			Users.addUser(x);
+    		}
+    		player.sendMessage(ChatColor.GREEN+"Conversion finished!");
+    	}
     	/*
     	 * LEADER BOARD COMMAND
     	 */
@@ -336,7 +348,7 @@ public class mcPlayerListener extends PlayerListener {
 	    	        	
 	    	        	for(int i=n;i<=n+10;i++)
     	    			{
-    	    				if (i >= userslist.size())
+    	    				if (i > userslist.size())
     	    					break;
 	    	        		HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
     	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
@@ -348,6 +360,8 @@ public class mcPlayerListener extends PlayerListener {
 	    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY `"+LoadProperties.MySQLtablePrefix+"skills`.`"+lowercase+"` DESC ");
 	    	        for(int i=1;i<=10;i++) //i<=userslist.size()
 	    			{
+	    	        	if (i > userslist.size())
+	    					break;
 	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
 	    			}
@@ -371,7 +385,7 @@ public class mcPlayerListener extends PlayerListener {
 		    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
 	    	        	for(int i=n;i<=n+10;i++)
     	    			{
-	    	        		if (i >= userslist.size())
+	    	        		if (i > userslist.size())
     	    					break;
 	    	        		HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
     	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
@@ -382,7 +396,7 @@ public class mcPlayerListener extends PlayerListener {
 	    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
 	    			for(int i=1;i<=10;i++)
 	    			{
-	    				if (i >= userslist.size())
+	    				if (i > userslist.size())
 	    					break;
 	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));

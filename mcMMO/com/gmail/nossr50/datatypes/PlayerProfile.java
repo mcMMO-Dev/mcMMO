@@ -81,8 +81,8 @@ public class PlayerProfile
 				myspawn = spawn.get(1).get(1) + "," + spawn.get(1).get(2) + "," + spawn.get(1).get(3);				
 			HashMap<Integer, ArrayList<String>> skills = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
 				taming = skills.get(1).get(0);
-				mining = skills.get(1).get(1);;
-				repair = skills.get(1).get(2);;
+				mining = skills.get(1).get(1);
+				repair = skills.get(1).get(2);
 				woodcutting = skills.get(1).get(3);
 				unarmed = skills.get(1).get(4);
 				herbalism = skills.get(1).get(5);
@@ -93,8 +93,8 @@ public class PlayerProfile
 				acrobatics = skills.get(1).get(10);
 			HashMap<Integer, ArrayList<String>> experience = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"experience WHERE user_id = " + id);
 				tamingXP = experience.get(1).get(0);
-				miningXP = experience.get(1).get(1);;
-				repairXP = experience.get(1).get(2);;
+				miningXP = experience.get(1).get(1);
+				repairXP = experience.get(1).get(2);
 				woodCuttingXP = experience.get(1).get(3);
 				unarmedXP = experience.get(1).get(4);
 				herbalismXP = experience.get(1).get(5);
@@ -204,6 +204,7 @@ public class PlayerProfile
     	// if we are using mysql save to database
     	if (LoadProperties.useMySQL) {
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
+    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
     				+"  taming = "+taming
@@ -1263,7 +1264,7 @@ public class PlayerProfile
 	}
 	public boolean isDouble(String string){
 		try {
-		    //Double x = Double.valueOf(string);
+		    Double x = Double.valueOf(string);
 		}
 		catch(NumberFormatException nFE) {
 		    return false;

@@ -30,6 +30,13 @@ public class mcPermissions {
     private static boolean permission(Player player, String string) {
         return permissionsPlugin.Security.permission(player, string);  
     }
+    public boolean admin(Player player){
+    	if (permissionsEnabled) {
+            return permission(player, "mcmmo.admin");
+        } else {
+            return true;
+        }
+    }
     public boolean mcrefresh(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.tools.mcrefresh");

@@ -41,7 +41,7 @@ public class Database {
 	//Create the DB structure
 	public void createStructure(){
 		Write("CREATE TABLE IF NOT EXISTS `"+LoadProperties.MySQLtablePrefix+"users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT," +
-				"`user` varchar(30) NOT NULL," +
+				"`user` varchar(40) NOT NULL," +
 				"`lastlogin` int(32) unsigned NOT NULL," +
 				"`party` varchar(100) NOT NULL DEFAULT ''," +
 				"PRIMARY KEY (`id`)," +
@@ -106,8 +106,10 @@ public class Database {
 		    if (stmt.executeQuery() != null) {
 		    	stmt.executeQuery();
 		        rs = stmt.getResultSet();
-		        rs.next();
-		        result = rs.getInt(1);
+		        if(rs.next()){
+		        	result = rs.getInt(1);
+		        }
+		        else { result = 0; }
 		    }
 		} 
 		catch (SQLException ex) {

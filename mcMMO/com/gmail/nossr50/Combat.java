@@ -3,6 +3,7 @@ package com.gmail.nossr50;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
@@ -125,6 +126,7 @@ public class Combat {
 	      				attacker.sendMessage(ChatColor.DARK_GREEN+"The Beast's Master : "+Taming.getOwnerName(event.getEntity()));
 	      			else
 	      				attacker.sendMessage(ChatColor.GRAY+"This Beast has no Master...");
+	      			attacker.sendMessage(ChatColor.GREEN+"This beast has "+((Wolf)event.getEntity()).getHealth()+" Health");
 	      			event.setCancelled(true);
       			}
       		}
@@ -132,9 +134,16 @@ public class Combat {
 		/*
 		 * OFFENSIVE CHECKS FOR WOLVES VERSUS ENTITIES
 		 */
-		if(event instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) event).getDamager() instanceof Wolf){
+		if(event instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) event).getDamager() instanceof Wolf)
+		{
+			//DEBUG STUFF
+			for(Player x : pluginx.getServer().getOnlinePlayers())
+			{
+				x.sendMessage("Wolf Versus Entity Triggered");
+			}
 			EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent) event;
-			if(Taming.hasOwner(eventb.getDamager(), pluginx)){
+			if(Taming.hasOwner(eventb.getDamager(), pluginx))
+			{
 				Player master = Taming.getOwner(eventb.getDamager(), pluginx);
 				PlayerProfile PPo = Users.getProfile(master);
 				
@@ -160,9 +169,6 @@ public class Combat {
 					
 					master.sendMessage(ChatColor.GREEN+"**GORE**");
 				}
-				PPo.addTamingXP(event.getDamage() * 4);
-				master.sendMessage("mcMMO Debug: Event Damage "+event.getDamage());
-				Skills.XpCheck(master);
 			}
 		}
 		//Another offensive check for Archery
@@ -188,16 +194,22 @@ public class Combat {
 				Player master = Taming.getOwner(event.getEntity(), pluginx);
 				PlayerProfile PPo = Users.getProfile(master);
 				
+				/*
+				 * TEMPORARY FIX AS WOLVES AREN'T TRIGGERING DAMAGE EVENTS WHEN ATTACKING NON PLAYERS AT THE TIME OF WRITING
+				 */
+				PPo.addTamingXP(event.getDamage() * 3);
+				Skills.XpCheck(master);
+				
 				//Shock-Proof
 				if((event.getCause() == DamageCause.ENTITY_EXPLOSION || event.getCause() == DamageCause.BLOCK_EXPLOSION) && PPo.getTamingInt() >= 500)
 				{
-					event.setDamage(event.getDamage() / 6);
+					event.setDamage(2);
 				}
 				
 				//Thick Fur
 				if(PPo.getTamingInt() >= 250)
 					event.setDamage(event.getDamage() / 2);
-				master.sendMessage("mcMMO Debug: Wolf Damage Taken "+event.getDamage());
+					master.sendMessage("mcMMO Debug: Wolf Damage Taken "+event.getDamage());
 			}
 		}
 	}

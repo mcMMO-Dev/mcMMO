@@ -70,6 +70,10 @@ public class Users {
     public static void addUser(Player player){
     	players.put(player, new PlayerProfile(player));
     }
+    public static void clearUsers()
+    {
+    	players.clear();
+    }
 
 
     public static void removeUser(Player player){    	

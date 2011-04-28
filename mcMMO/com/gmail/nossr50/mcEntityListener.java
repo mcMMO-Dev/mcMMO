@@ -49,7 +49,7 @@ public class mcEntityListener extends EntityListener {
     }
     public void onEntityDamage(EntityDamageEvent event) {
     	if(event.isCancelled())
-    		return;
+    		return;		
     	/*
     	 * CHECK FOR INVULNERABILITY
     	 */
@@ -71,6 +71,34 @@ public class mcEntityListener extends EntityListener {
 		    	{
 			    	Entity x = event.getEntity();
 			    	DamageCause type = event.getCause();
+			    	if(event.getEntity() instanceof Wolf)
+			    	{
+				    	Player master = Taming.getOwner(event.getEntity(), plugin);
+				    	PlayerProfile PPo = Users.getProfile(master);
+				    	if(master == null || PPo == null)
+				    		return;
+			    		//Environmentally Aware
+						if((event.getCause() == DamageCause.CONTACT || event.getCause() == DamageCause.LAVA || event.getCause() == DamageCause.FIRE) && PPo.getTamingInt() >= 100)
+						{
+							if(event.getDamage() < ((Wolf) event.getEntity()).getHealth())
+							{
+								event.getEntity().teleport(Taming.getOwner(event.getEntity(), plugin).getLocation());
+								master.sendMessage(ChatColor.DARK_GRAY+"Your wolf scurries back to you...");
+								event.getEntity().setFireTicks(0);
+							}
+						}
+						if(event.getCause() == DamageCause.FALL && PPo.getTamingInt() >= 100)
+						{
+							event.setCancelled(true);
+						}
+						
+						//Thick Fur
+						if(event.getCause() == DamageCause.FIRE_TICK)
+						{
+							event.getEntity().setFireTicks(0);
+						}
+			    	}
+			    	
 			    	/*
 			    	 * ACROBATICS
 			    	 */
