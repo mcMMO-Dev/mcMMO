@@ -147,6 +147,8 @@ public class Leaderboard {
 	        	String line = "";
 	        	for(PlayerStat p : ps)
 	        	{
+	        		if(p.name.equals("$mcMMO_DummyInfo"))
+	        			continue;
 	        		writer.append(p.name + ":" + p.statVal);
 	        		writer.append("\r\n"); 
 	        	}

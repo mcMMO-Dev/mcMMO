@@ -77,8 +77,7 @@ public class mcPlayerListener extends PlayerListener {
     	return null;
     }
     public void onPlayerLogin(PlayerLoginEvent event) {
-    	Player player = event.getPlayer();
-    	Users.addUser(player);	
+    	Users.addUser(event.getPlayer());	
     }
     public void onPlayerQuit(PlayerQuitEvent event) {
     	Users.removeUser(event.getPlayer());    	
@@ -86,8 +85,8 @@ public class mcPlayerListener extends PlayerListener {
     public void onPlayerJoin(PlayerJoinEvent event) {
     	Player player = event.getPlayer();
     	if(mcPermissions.getInstance().motd(player)){
-    		player.sendMessage(ChatColor.BLUE +"This server is running MMO "+plugin.getDescription().getVersion()+" type /"+ChatColor.YELLOW+LoadProperties.mcmmo+ChatColor.BLUE+ " for help.");
-    		player.sendMessage(ChatColor.GREEN+"http://mmo.wikia.com"+ChatColor.BLUE+" - MMO Wiki");
+    		player.sendMessage(ChatColor.BLUE +"This server is running mcMMO "+plugin.getDescription().getVersion()+" type /"+ChatColor.YELLOW+LoadProperties.mcmmo+ChatColor.BLUE+ " for help.");
+    		player.sendMessage(ChatColor.GREEN+"http://mcmmo.wikia.com"+ChatColor.BLUE+" - mcMMO Wiki");
     	}
     }
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -96,17 +95,6 @@ public class mcPlayerListener extends PlayerListener {
     	Action action = event.getAction();
     	Block block = event.getClickedBlock();
     	//Archery Nerf
-    	if(action == Action.LEFT_CLICK_AIR)
-    	{
-    		if(player.getItemInHand().getTypeId() == 352)
-    		{
-    			Block targetBlock = player.getTargetBlock(null, 20);
-    			player.sendMessage("Target Block TypeID = "+targetBlock.getTypeId());
-    			player.sendMessage("Target Block Byte Data = "+targetBlock.getData());
-    			player.sendMessage("Wold Entity List SIZE : "+targetBlock.getWorld().getEntities().size());
-    			player.sendMessage("Chunk Entity List SIZE : "+targetBlock.getChunk().getEntities().length);
-    		}
-    	}
     	if(player.getItemInHand().getTypeId() == 261 && LoadProperties.archeryFireRateLimit){
     		if(System.currentTimeMillis() < PP.getArcheryShotATS() + 1000){
     			/*
@@ -213,6 +201,10 @@ public class mcPlayerListener extends PlayerListener {
     		player.sendMessage("Type ID : "+player.getItemInHand().getTypeId());
     		player.sendMessage("Byte Data : "+player.getItemInHand().getDurability());
     	}
+    	
+    	/*
+    	 * FFS -> MySQL
+    	 */
     	if(split[0].equalsIgnoreCase("/mmoupdate") && mcPermissions.getInstance().admin(player))
     	{
     		event.setCancelled(true);
@@ -225,6 +217,7 @@ public class mcPlayerListener extends PlayerListener {
     		}
     		player.sendMessage(ChatColor.GREEN+"Conversion finished!");
     	}
+    	
     	/*
     	 * LEADER BOARD COMMAND
     	 */
@@ -533,17 +526,15 @@ public class mcPlayerListener extends PlayerListener {
     		if(split.length == 4){
     			if(isPlayer(split[1]) && m.isInt(split[3]) && Skills.isSkill(split[2])){
     				int newvalue = Integer.valueOf(split[3]);
-    				Users.getProfile(getPlayer(split[1])).addXpToSkill(newvalue, split[2]);
+    				Users.getProfile(getPlayer(split[1])).addXpToSkill(newvalue, split[2], getPlayer(split[1]));
     				getPlayer(split[1]).sendMessage(ChatColor.GREEN+"Experience granted!");
     				player.sendMessage(ChatColor.RED+split[2]+" has been modified.");
     			}
     		}
-    		else if(split.length == 3){
-    			if(m.isInt(split[2]) && Skills.isSkill(split[1])){
+    		else if(split.length == 3 && m.isInt(split[2]) && Skills.isSkill(split[1])){
     				int newvalue = Integer.valueOf(split[2]);
-    				PP.addXpToSkill(newvalue, split[1]);
+    				PP.addXpToSkill(newvalue, split[1], player);
     				player.sendMessage(ChatColor.RED+split[1]+" has been modified.");
-    			}
     		} else {
     			player.sendMessage(ChatColor.RED+"Usage is /"+LoadProperties.addxp+" playername skillname xp");
     		}

@@ -348,13 +348,14 @@ public class m {
         	String x = null, y = null, z = null, playerName = null, mining = null, myspawn = null, party = null, miningXP = null, woodcutting = null, woodCuttingXP = null, repair = null, unarmed = null, herbalism = null,
         	excavation = null, archery = null, swords = null, axes = null, acrobatics = null, repairXP = null, unarmedXP = null, herbalismXP = null, excavationXP = null, archeryXP = null, swordsXP = null, axesXP = null,
         	acrobaticsXP = null, myspawnworld = null, taming = null, tamingXP = null;
-        	int id = 0;
+        	int id = 0, theCount = 0;
         	while((line = in.readLine()) != null)
         	{
         		//Find if the line contains the player we want.
         		String[] character = line.split(":");
         		playerName = character[0];
-        		if(playerName == null)
+        		//Check for things we don't want put in the DB
+        		if(playerName == null || playerName.equals("null") || playerName.equals("#Storage place for user information"))
         			continue;
         		
     			//Get Mining
@@ -429,6 +430,7 @@ public class m {
     		    */
     			if(id > 0)
     			{
+    				theCount++;
     				//Update the skill values
     				mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + 0 + " WHERE id = " + id);
     				//if(getDouble(x) > 0 && getDouble(y) > 0 && getDouble(z) > 0)
@@ -462,6 +464,7 @@ public class m {
     			}
     			else
     			{
+    				theCount++;
     				//Create the user in the DB
     				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
     				id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
@@ -503,6 +506,7 @@ public class m {
     	    				+" WHERE user_id = "+id);
     			}
         	}
+        	System.out.println("[mcMMO] MySQL Updated from users file, "+theCount+" items added/updated to MySQL DB");
         	in.close();
         } catch (Exception e) {
             log.log(Level.SEVERE, "Exception while reading "
@@ -517,8 +521,10 @@ public class m {
 			
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"TAMING"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Fighting with your wolves");
+			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Wolves getting harmed");
+			player.sendMessage(ChatColor.GRAY+"**NOTE** Offensive skills are bugged due to a bukkit bug");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
+			player.sendMessage(ChatColor.DARK_AQUA+"Beast Lore: "+ChatColor.YELLOW+ChatColor.GREEN+"Bone-whacking inspects wolves");
 			player.sendMessage(ChatColor.DARK_AQUA+"Gore: "+ChatColor.YELLOW+ChatColor.GREEN+"Critical Strike that applies Bleed");
 			player.sendMessage(ChatColor.DARK_AQUA+"Sharpened Claws: "+ChatColor.YELLOW+ChatColor.GREEN+"Damage Bonus");
 			player.sendMessage(ChatColor.DARK_AQUA+"Environmentally Aware: "+ChatColor.YELLOW+ChatColor.GREEN+"Cactus/Lava Phobia, Fall DMG Immune");
@@ -869,8 +875,8 @@ public class m {
 		if(split[0].equalsIgnoreCase("/"+LoadProperties.mcmmo)){
 			event.setCancelled(true);
     		player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"mMO"+ChatColor.RED+"[]-----");
-    		player.sendMessage(ChatColor.YELLOW+"mMO is an RPG server mod for minecraft.");
-    		player.sendMessage(ChatColor.YELLOW+"There are many skills added by mMO to minecraft.");
+    		player.sendMessage(ChatColor.YELLOW+"mcMMO is an RPG server mod for minecraft.");
+    		player.sendMessage(ChatColor.YELLOW+"There are many skills added by mcMMO to minecraft.");
     		player.sendMessage(ChatColor.YELLOW+"They can do anything from giving a chance");
     		player.sendMessage(ChatColor.YELLOW+"for double drops to letting you break materials instantly.");
     		player.sendMessage(ChatColor.YELLOW+"For example, by harvesting logs from trees you will gain");
@@ -885,13 +891,13 @@ public class m {
     		player.sendMessage(ChatColor.YELLOW+"For example, if you hold a Mining Pick and right click");
     		player.sendMessage(ChatColor.YELLOW+"you will ready your Pickaxe, attack mining materials");
     		player.sendMessage(ChatColor.YELLOW+"and then "+ChatColor.RED+"Super Breaker "+ChatColor.YELLOW+"will activate.");
-    		player.sendMessage(ChatColor.GREEN+"Find out mMO commands with "+ChatColor.DARK_AQUA+"/"+LoadProperties.mcc);
+    		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with "+ChatColor.DARK_AQUA+"/"+LoadProperties.mcc);
     		player.sendMessage(ChatColor.GREEN+"You can donate via paypal to"+ChatColor.DARK_RED+" nossr50@gmail.com");
     	}
     	if(split[0].equalsIgnoreCase("/"+LoadProperties.mcc)){
     		event.setCancelled(true);
-    		player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mMO Commands"+ChatColor.RED+"[]---");
-    		player.sendMessage("/"+LoadProperties.stats+ChatColor.RED+" - View your mMO stats");
+    		player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mcMMO Commands"+ChatColor.RED+"[]---");
+    		player.sendMessage("/"+LoadProperties.stats+ChatColor.RED+" - View your mcMMO stats");
     		if(mcPermissions.getInstance().party(player)){
     			player.sendMessage(ChatColor.GREEN+"--PARTY COMMANDS--");
     			player.sendMessage("/"+LoadProperties.party+" [party name] "+ChatColor.RED+"- Create/Join designated party");

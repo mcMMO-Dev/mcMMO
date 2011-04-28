@@ -1,14 +1,8 @@
 package com.gmail.nossr50.skills;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,10 +20,7 @@ import com.gmail.nossr50.datatypes.PlayerStat;
 
 
 public class Skills {
-	private static mcMMO plugin;
-	public Skills(mcMMO instance) {
-    	plugin = instance;
-    }
+	
 	private static volatile Skills instance;
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	
@@ -359,240 +350,258 @@ public class Skills {
     	/*
     	 * TAMING
     	 */
-    	if(player != null && PP.getTamingXPInt() >= PP.getXpToLevel("taming")){
-			int skillups = 0;
-			while(PP.getTamingXPInt() >= PP.getXpToLevel("taming")){
-				skillups++;
-				PP.removeTamingXP(PP.getXpToLevel("taming"));
-				PP.skillUpTaming(1);
+    	if(player != null){
+	    	if(PP.getTamingXPInt() >= PP.getXpToLevel("taming")){
+				int skillups = 0;
+				while(PP.getTamingXPInt() >= PP.getXpToLevel("taming")){
+					skillups++;
+					PP.removeTamingXP(PP.getXpToLevel("taming"));
+					PP.skillUpTaming(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				PlayerStat ps = new PlayerStat();
+				if(!LoadProperties.useMySQL){
+					ps.statVal = PP.getTamingInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "taming");
+				}
+				if(player != null && PP != null && PP.getTaming() != null)
+					player.sendMessage(ChatColor.YELLOW+"Taming skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getTaming()+")");	
+			}
+	    	/*
+	    	 * ACROBATICS
+	    	 */
+	    	if(PP.getAcrobaticsXPInt() >= PP.getXpToLevel("acrobatics")){
+				int skillups = 0;
+				while(PP.getAcrobaticsXPInt() >= PP.getXpToLevel("acrobatics")){
+					skillups++;
+					PP.removeAcrobaticsXP(PP.getXpToLevel("acrobatics"));
+					PP.skillUpAcrobatics(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getAcrobaticsInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "acrobatics");
+				}
+				
+				if(player != null && PP != null && PP.getAcrobatics() != null)
+					player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getAcrobatics()+")");	
+			}
+	    	/*
+	    	 * ARCHERY
+	    	 */
+	    	if(PP.getArcheryXPInt() >= PP.getXpToLevel("archery")){
+				int skillups = 0;
+				while(PP.getArcheryXPInt() >= PP.getXpToLevel("archery")){
+					skillups++;
+					PP.removeArcheryXP(PP.getXpToLevel("archery"));
+					PP.skillUpArchery(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getArcheryInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "archery");
+				}
+				if(player != null && PP != null && PP.getArchery() != null)
+					player.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getArchery()+")");	
+			}
+	    	/*
+	    	 * SWORDS
+	    	 */
+	    	if(PP.getSwordsXPInt() >= PP.getXpToLevel("swords")){
+				int skillups = 0;
+				while(PP.getSwordsXPInt() >= PP.getXpToLevel("swords")){
+					skillups++;
+					PP.removeSwordsXP(PP.getXpToLevel("swords"));
+					PP.skillUpSwords(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getSwordsInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "swords");
+				}
+				
+				if(player != null && PP != null && PP.getSwords() != null)
+					player.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getSwords()+")");	
+			}
+	    	/*
+	    	 * AXES
+	    	 */
+			if(PP.getAxesXPInt() >= PP.getXpToLevel("axes")){
+				int skillups = 0;
+				while(PP.getAxesXPInt() >= PP.getXpToLevel("axes")){
+					skillups++;
+					PP.removeAxesXP(PP.getXpToLevel("axes"));
+					PP.skillUpAxes(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getAxesInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "axes");
+				}
+				if(player != null && PP != null && PP.getAxes() != null)
+					player.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getAxes()+")");	
 			}
 			/*
-			 * Leaderboard updating stuff
+			 * UNARMED
 			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getTamingInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "taming");
-			if(player != null && PP.getTaming() != null)
-				player.sendMessage(ChatColor.YELLOW+"Taming skill increased by "+skillups+"."+" Total ("+PP.getTaming()+")");	
-		}
-    	/*
-    	 * ACROBATICS
-    	 */
-    	if(player != null && PP.getAcrobaticsXPInt() >= PP.getXpToLevel("acrobatics")){
-			int skillups = 0;
-			while(PP.getAcrobaticsXPInt() >= PP.getXpToLevel("acrobatics")){
-				skillups++;
-				PP.removeAcrobaticsXP(PP.getXpToLevel("acrobatics"));
-				PP.skillUpAcrobatics(1);
+			if(PP.getUnarmedXPInt() >= PP.getXpToLevel("unarmed")){
+				int skillups = 0;
+				while(PP.getUnarmedXPInt() >= PP.getXpToLevel("unarmed")){
+					skillups++;
+					PP.removeUnarmedXP(PP.getXpToLevel("unarmed"));
+					PP.skillUpUnarmed(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getUnarmedInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "unarmed");
+				}
+				if(player != null && PP != null && PP.getUnarmed() != null)
+					player.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getUnarmed()+")");	
 			}
 			/*
-			 * Leaderboard updating stuff
+			 * HERBALISM
 			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getAcrobaticsInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "acrobatics");
-			
-			if(player != null && PP.getAcrobatics() != null)
-				player.sendMessage(ChatColor.YELLOW+"Acrobatics skill increased by "+skillups+"."+" Total ("+PP.getAcrobatics()+")");	
-		}
-    	/*
-    	 * ARCHERY
-    	 */
-    	if(PP.getArcheryXPInt() >= PP.getXpToLevel("archery")){
-			int skillups = 0;
-			while(PP.getArcheryXPInt() >= PP.getXpToLevel("archery")){
-				skillups++;
-				PP.removeArcheryXP(PP.getXpToLevel("archery"));
-				PP.skillUpArchery(1);
+			if(PP.getHerbalismXPInt() >= PP.getXpToLevel("herbalism")){
+				int skillups = 0;
+				while(PP.getHerbalismXPInt() >= PP.getXpToLevel("herbalism")){
+					skillups++;
+					PP.removeHerbalismXP(PP.getXpToLevel("herbalism"));
+					PP.skillUpHerbalism(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getHerbalismInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "herbalism");
+				}
+				if(player != null && PP != null && PP.getHerbalism() != null)
+					player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getHerbalism()+")");	
 			}
 			/*
-			 * Leaderboard updating stuff
+			 * MINING
 			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getArcheryInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "archery");
-			
-			if(player != null && PP.getArchery() != null)
-				player.sendMessage(ChatColor.YELLOW+"Archery skill increased by "+skillups+"."+" Total ("+PP.getArchery()+")");	
-		}
-    	/*
-    	 * SWORDS
-    	 */
-    	if(PP.getSwordsXPInt() >= PP.getXpToLevel("swords")){
-			int skillups = 0;
-			while(PP.getSwordsXPInt() >= PP.getXpToLevel("swords")){
-				skillups++;
-				PP.removeSwordsXP(PP.getXpToLevel("swords"));
-				PP.skillUpSwords(1);
+			if(player != null && PP.getMiningXPInt() >= PP.getXpToLevel("mining")){
+				int skillups = 0;
+				while(PP.getMiningXPInt() >= PP.getXpToLevel("mining")){
+					skillups++;
+					PP.removeMiningXP(PP.getXpToLevel("mining"));
+					PP.skillUpMining(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getMiningInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "mining");
+				}
+				if(player != null && PP != null && PP.getMining() != null)
+					player.sendMessage(ChatColor.YELLOW+"Mining skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getMining()+")");	
 			}
 			/*
-			 * Leaderboard updating stuff
+			 * WOODCUTTING
 			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getSwordsInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "swords");
-			
-			if(player != null && PP.getSwords() != null)
-				player.sendMessage(ChatColor.YELLOW+"Swords skill increased by "+skillups+"."+" Total ("+PP.getSwords()+")");	
-		}
-    	/*
-    	 * AXES
-    	 */
-		if(PP.getAxesXPInt() >= PP.getXpToLevel("axes")){
-			int skillups = 0;
-			while(PP.getAxesXPInt() >= PP.getXpToLevel("axes")){
-				skillups++;
-				PP.removeAxesXP(PP.getXpToLevel("axes"));
-				PP.skillUpAxes(1);
+			if(player != null && PP.getWoodCuttingXPInt() >= PP.getXpToLevel("woodcutting")){
+				int skillups = 0;
+				while(PP.getWoodCuttingXPInt() >= PP.getXpToLevel("woodcutting")){
+					skillups++;
+					PP.removeWoodCuttingXP(PP.getXpToLevel("woodcutting"));
+					PP.skillUpWoodCutting(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getWoodCuttingInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "woodcutting");
+				}
+				if(player != null && PP != null && PP.getWoodCutting() != null)
+					player.sendMessage(ChatColor.YELLOW+"WoodCutting skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getWoodCutting()+")");	
 			}
 			/*
-			 * Leaderboard updating stuff
+			 * REPAIR
 			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getAxesInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "axes");
-			
-			if(player != null && PP.getAxes() != null)
-				player.sendMessage(ChatColor.YELLOW+"Axes skill increased by "+skillups+"."+" Total ("+PP.getAxes()+")");	
-		}
-		/*
-		 * UNARMED
-		 */
-		if(PP.getUnarmedXPInt() >= PP.getXpToLevel("unarmed")){
-			int skillups = 0;
-			while(PP.getUnarmedXPInt() >= PP.getXpToLevel("unarmed")){
-				skillups++;
-				PP.removeUnarmedXP(PP.getXpToLevel("unarmed"));
-				PP.skillUpUnarmed(1);
+			if(PP.getRepairXPInt() >= PP.getXpToLevel("repair")){
+				int skillups = 0;
+				while(PP.getRepairXPInt() >= PP.getXpToLevel("repair")){
+					skillups++;
+					PP.removeRepairXP(PP.getXpToLevel("repair"));
+					PP.skillUpRepair(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getRepairInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "repair");
+				}
+				if(player != null && PP != null && PP.getRepair() != null)
+					player.sendMessage(ChatColor.YELLOW+"Repair skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getRepair()+")");	
 			}
 			/*
-			 * Leaderboard updating stuff
+			 * EXCAVATION
 			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getUnarmedInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "unarmed");
-			
-			if(player != null && PP.getUnarmed() != null)
-				player.sendMessage(ChatColor.YELLOW+"Unarmed skill increased by "+skillups+"."+" Total ("+PP.getUnarmed()+")");	
-		}
-		/*
-		 * HERBALISM
-		 */
-		if(PP.getHerbalismXPInt() >= PP.getXpToLevel("herbalism")){
-			int skillups = 0;
-			while(PP.getHerbalismXPInt() >= PP.getXpToLevel("herbalism")){
-				skillups++;
-				PP.removeHerbalismXP(PP.getXpToLevel("herbalism"));
-				PP.skillUpHerbalism(1);
+			if(PP.getExcavationXPInt() >= PP.getXpToLevel("excavation")){
+				int skillups = 0;
+				while(PP.getExcavationXPInt() >= PP.getXpToLevel("excavation")){
+					skillups++;
+					PP.removeExcavationXP(PP.getXpToLevel("excavation"));
+					PP.skillUpExcavation(1);
+				}
+				/*
+				 * Leaderboard updating stuff
+				 */
+				if(!LoadProperties.useMySQL){
+					PlayerStat ps = new PlayerStat();
+					ps.statVal = PP.getExcavationInt();
+					ps.name = player.getName();
+					Leaderboard.updateLeaderboard(ps, "excavation");
+				}
+				if(player != null && PP != null && PP.getExcavation() != null)
+					player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getExcavation()+")");	
 			}
-			/*
-			 * Leaderboard updating stuff
-			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getHerbalismInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "herbalism");
-			
-			if(player != null && PP.getHerbalism() != null)
-				player.sendMessage(ChatColor.YELLOW+"Herbalism skill increased by "+skillups+"."+" Total ("+PP.getHerbalism()+")");	
-		}
-		/*
-		 * MINING
-		 */
-		if(player != null && PP.getMiningXPInt() >= PP.getXpToLevel("mining")){
-			int skillups = 0;
-			while(PP.getMiningXPInt() >= PP.getXpToLevel("mining")){
-				skillups++;
-				PP.removeMiningXP(PP.getXpToLevel("mining"));
-				PP.skillUpMining(1);
-			}
-			/*
-			 * Leaderboard updating stuff
-			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getMiningInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "mining");
-			
-			if(player != null && PP.getMining() != null)
-				player.sendMessage(ChatColor.YELLOW+"Mining skill increased by "+skillups+"."+" Total ("+PP.getMining()+")");	
-		}
-		/*
-		 * WOODCUTTING
-		 */
-		if(player != null && PP.getWoodCuttingXPInt() >= PP.getXpToLevel("woodcutting")){
-			int skillups = 0;
-			while(PP.getWoodCuttingXPInt() >= PP.getXpToLevel("woodcutting")){
-				skillups++;
-				PP.removeWoodCuttingXP(PP.getXpToLevel("woodcutting"));
-				PP.skillUpWoodCutting(1);
-			}
-			/*
-			 * Leaderboard updating stuff
-			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getWoodCuttingInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "woodcutting");
-			
-			if(player != null && PP.getWoodCutting() != null)
-				player.sendMessage(ChatColor.YELLOW+"WoodCutting skill increased by "+skillups+"."+" Total ("+PP.getWoodCutting()+")");	
-		}
-		/*
-		 * REPAIR
-		 */
-		if(PP.getRepairXPInt() >= PP.getXpToLevel("repair")){
-			int skillups = 0;
-			while(PP.getRepairXPInt() >= PP.getXpToLevel("repair")){
-				skillups++;
-				PP.removeRepairXP(PP.getXpToLevel("repair"));
-				PP.skillUpRepair(1);
-			}
-			/*
-			 * Leaderboard updating stuff
-			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getRepairInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "repair");
-			
-			if(player != null && PP.getRepair() != null)
-				player.sendMessage(ChatColor.YELLOW+"Repair skill increased by "+skillups+"."+" Total ("+PP.getRepair()+")");	
-		}
-		/*
-		 * EXCAVATION
-		 */
-		if(PP.getExcavationXPInt() >= PP.getXpToLevel("excavation")){
-			int skillups = 0;
-			while(PP.getExcavationXPInt() >= PP.getXpToLevel("excavation")){
-				skillups++;
-				PP.removeExcavationXP(PP.getXpToLevel("excavation"));
-				PP.skillUpExcavation(1);
-			}
-			/*
-			 * Leaderboard updating stuff
-			 */
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = PP.getExcavationInt();
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "excavation");
-			
-			if(player != null && PP.getExcavation() != null)
-				player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+skillups+"."+" Total ("+PP.getExcavation()+")");	
-		}
+    	}
 		/*
 		 * Leaderboard updating stuff
 		 */
-		PlayerStat ps = new PlayerStat();
-		ps.statVal = m.getPowerLevel(player);
-		ps.name = player.getName();
-		Leaderboard.updateLeaderboard(ps, "powerlevel");
+    	if(!LoadProperties.useMySQL){
+			PlayerStat ps = new PlayerStat();
+			ps.statVal = m.getPowerLevel(player);
+			ps.name = player.getName();
+			Leaderboard.updateLeaderboard(ps, "powerlevel");
+    	}
     }
     public static boolean isSkill(String skillname){
     	skillname = skillname.toLowerCase();

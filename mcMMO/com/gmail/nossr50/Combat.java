@@ -119,7 +119,9 @@ public class Combat {
       		//Taming Debug Stuff
       		if(event.getEntity() instanceof Wolf)
       		{
-      			if(attacker.getItemInHand().getTypeId() == 352)
+      			if(Party.getInstance().inSameParty(attacker, Taming.getOwner(event.getEntity(), pluginx)))
+      				event.setCancelled(true);
+      			if(attacker.getItemInHand().getTypeId() == 352 && mcPermissions.getInstance().taming(attacker))
       			{
 	      			attacker.sendMessage(ChatColor.GREEN+"**You examine the Wolf using Beast Lore**");
 	      			if(Taming.getOwnerName(event.getEntity()) != null)
@@ -136,11 +138,6 @@ public class Combat {
 		 */
 		if(event instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) event).getDamager() instanceof Wolf)
 		{
-			//DEBUG STUFF
-			for(Player x : pluginx.getServer().getOnlinePlayers())
-			{
-				x.sendMessage("Wolf Versus Entity Triggered");
-			}
 			EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent) event;
 			if(Taming.hasOwner(eventb.getDamager(), pluginx))
 			{
@@ -197,8 +194,10 @@ public class Combat {
 				/*
 				 * TEMPORARY FIX AS WOLVES AREN'T TRIGGERING DAMAGE EVENTS WHEN ATTACKING NON PLAYERS AT THE TIME OF WRITING
 				 */
-				PPo.addTamingXP(event.getDamage() * 3);
-				Skills.XpCheck(master);
+				if(!event.isCancelled()){
+					PPo.addTamingXP(event.getDamage() * 3);
+					Skills.XpCheck(master);
+				}
 				
 				//Shock-Proof
 				if((event.getCause() == DamageCause.ENTITY_EXPLOSION || event.getCause() == DamageCause.BLOCK_EXPLOSION) && PPo.getTamingInt() >= 500)

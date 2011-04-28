@@ -32,14 +32,14 @@ public class TreeNode {
 	
 	public ArrayList<PlayerStat> inOrder(ArrayList<PlayerStat> a)
 	{
-	if(left != null)
-	a = left.inOrder(a);
-
-	a.add(ps);
-
-	if(right != null)
-	a = right.inOrder(a);
-
-	return a;
+		if(left != null)
+		a = left.inOrder(a);
+	
+		a.add(ps);
+	
+		if(right != null)
+		a = right.inOrder(a);
+	
+		return a;
 	}
 }

@@ -33,7 +33,7 @@ public class LoadProperties {
     	MySQLuserName = properties.getString("MySQLuserName", "defaultusername");
     	MySQLtablePrefix = properties.getString("MySQLTablePrefix", "mcmmo_");
     	MySQLport = properties.getInteger("MySQLport", 3306);
-    	useMySQL = properties.getBoolean("mysql", false);
+    	useMySQL = properties.getBoolean("UseMySQL", false);
     	
     	/*
     	 * OTHER

@@ -35,28 +35,29 @@ public class Repair {
         			/*
         			 * DIAMOND ARMOR
         			 */
-        			if(isDiamondArmor(is) && hasDiamond(player) && PP.getRepairInt() >= LoadProperties.repairdiamondlevel){
-	        			removeDiamond(player);
-	        			player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
+        			if(isDiamondArmor(is) && hasItem(player, 264) && PP.getRepairInt() >= LoadProperties.repairdiamondlevel){
+        				removeItem(player, 264);
+	        			player.getItemInHand().setDurability(getRepairAmount(is, player));
 	        			durabilityAfter = player.getItemInHand().getDurability();
 	        			player.sendMessage(String.valueOf(durabilityBefore - durabilityAfter));
 	        			dif = (short) (durabilityBefore - durabilityAfter);
 	        			dif = (short) (dif * 6); //Boost XP
 	        			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
-        			} else if (isIronArmor(is) && hasIron(player)){
+        			} 
+        			else if (isIronArmor(is) && hasItem(player, 265)){
         			/*
         			 * IRON ARMOR
         			 */
-	        			removeIron(player);
-	            		player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
+        				removeItem(player, 265);
+	            		player.getItemInHand().setDurability(getRepairAmount(is, player));
 	            		durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 2); //Boost XP
 	            		PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
 	            	//GOLD ARMOR
-        			} else if (isGoldArmor(is) && hasGold(player)){
-        				removeGold(player);
-        				player.getItemInHand().setDurability(getArmorRepairAmount(is, player));
+        			} else if (isGoldArmor(is) && hasItem(player, 266)){
+        				removeItem(player, 266);
+        				player.getItemInHand().setDurability(getRepairAmount(is, player));
         				durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 4); //Boost XP of Gold to around Iron
@@ -69,15 +70,48 @@ public class Repair {
         		 * TOOLS
         		 */
         		if(isTools(is)){
-        			/*
-        			 * IRON TOOLS
-        			 */
-            		if(isIronTools(is) && hasIron(player)){
-            			removeIron(player);
+        			if(isStoneTools(is) && hasItem(player, 4)){
+        				removeItem(player, 4);
             			/*
             			 * Repair Durability and calculate dif
             			 */
-            			player.getItemInHand().setDurability(getToolRepairAmount(is, player));
+            			player.getItemInHand().setDurability(getRepairAmount(is, player));
+            			durabilityAfter = player.getItemInHand().getDurability();
+	            		dif = (short) (durabilityBefore - durabilityAfter);
+	            		if(m.isShovel(is))
+	        				dif = (short) (dif / 3);
+	        			if(m.isSwords(is))
+	        				dif = (short) (dif / 2);
+	        			if(m.isHoe(is))
+	        				dif = (short) (dif / 2);
+	        			//STONE NERF
+	        			dif = (short) (dif / 2);
+	        			
+            			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
+        			} else if(isWoodTools(is) && hasItem(player, 5)){
+        				removeItem(player, 5);
+            			/*
+            			 * Repair Durability and calculate dif
+            			 */
+            			player.getItemInHand().setDurability(getRepairAmount(is, player));
+            			durabilityAfter = player.getItemInHand().getDurability();
+	            		dif = (short) (durabilityBefore - durabilityAfter);
+	            		if(m.isShovel(is))
+	        				dif = (short) (dif / 3);
+	        			if(m.isSwords(is))
+	        				dif = (short) (dif / 2);
+	        			if(m.isHoe(is))
+	        				dif = (short) (dif / 2);
+	        			//WOOD NERF
+	        			dif = (short) (dif / 2);
+	        			
+            			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
+        			} else if(isIronTools(is) && hasItem(player, 265)){
+            			removeItem(player, 265);
+            			/*
+            			 * Repair Durability and calculate dif
+            			 */
+            			player.getItemInHand().setDurability(getRepairAmount(is, player));
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(m.isShovel(is))
@@ -87,12 +121,12 @@ public class Repair {
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
             			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
-            		} else if (isDiamondTools(is) && hasDiamond(player) && PP.getRepairInt() >= LoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
+            		} else if (isDiamondTools(is) && hasItem(player, 264) && PP.getRepairInt() >= LoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
             			/*
             			 * DIAMOND TOOLS
             			 */
-            			player.getItemInHand().setDurability(getToolRepairAmount(is, player));
-            			removeDiamond(player);
+            			player.getItemInHand().setDurability(getRepairAmount(is, player));
+            			removeItem(player, 264);
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(m.isShovel(is))
@@ -102,9 +136,9 @@ public class Repair {
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
             			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
-            		} else if(isGoldTools(is) && hasGold(player)){
-            			player.getItemInHand().setDurability(getToolRepairAmount(is, player));
-            			removeGold(player);
+            		} else if(isGoldTools(is) && hasItem(player, 266)){
+            			player.getItemInHand().setDurability(getRepairAmount(is, player));
+            			removeItem(player, 266);
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 7.6); //Boost XP for Gold to that of around Iron
@@ -165,8 +199,24 @@ public class Repair {
     public static boolean isTools(ItemStack is){
     	if(is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || is.getTypeId() == 292 || //IRON
     			is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293 || //DIAMOND
-    			is.getTypeId() == 283 || is.getTypeId() == 285 || is.getTypeId() == 286 || is.getTypeId() == 284) //GOLD
+    			is.getTypeId() == 283 || is.getTypeId() == 285 || is.getTypeId() == 286 || is.getTypeId() == 284 || //GOLD
+    			is.getTypeId() == 268 || is.getTypeId() == 269 || is.getTypeId() == 270 || is.getTypeId() == 271 || //WOOD
+    			is.getTypeId() == 272 || is.getTypeId() == 273 || is.getTypeId() == 274 || is.getTypeId() == 275) //STONE
     	{
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    public static boolean isStoneTools(ItemStack is){
+    	if(is.getTypeId() == 272 || is.getTypeId() == 273 || is.getTypeId() == 274 || is.getTypeId() == 275){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    public static boolean isWoodTools(ItemStack is){
+    	if(is.getTypeId() == 268 || is.getTypeId() == 269 || is.getTypeId() == 270 || is.getTypeId() == 271){
     		return true;
     	} else {
     		return false;
@@ -196,10 +246,10 @@ public class Repair {
     		return false;
     	}
     }
-    public static void removeIron(Player player){
+    public static void removeItem(Player player, int typeid){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
-    		if(x != null && x.getTypeId() == 265){
+    		if(x != null && x.getTypeId() == typeid){
     			if(x.getAmount() == 1){
     				x.setTypeId(0);
     				x.setAmount(0);
@@ -212,60 +262,10 @@ public class Repair {
     		}
     	}
     }
-    public static void removeGold(Player player){
+    public static boolean hasItem(Player player, int typeid){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
-    		if(x != null && x.getTypeId() == 266){
-    			if(x.getAmount() == 1){
-    				x.setTypeId(0);
-    				x.setAmount(0);
-    				player.getInventory().setContents(inventory);
-    			} else{
-    			x.setAmount(x.getAmount() - 1);
-    			player.getInventory().setContents(inventory);
-    			}
-    			return;
-    		}
-    	}
-    }
-    public static void removeDiamond(Player player){
-    	ItemStack[] inventory = player.getInventory().getContents();
-    	for(ItemStack x : inventory){
-    		if(x != null && x.getTypeId() == 264){
-    			if(x.getAmount() == 1){
-    				x.setTypeId(0);
-    				x.setAmount(0);
-    				player.getInventory().setContents(inventory);
-    			} else{
-    			x.setAmount(x.getAmount() - 1);
-    			player.getInventory().setContents(inventory);
-    			}
-    			return;
-    		}
-    	}
-    }
-    public static boolean hasGold(Player player){
-    	ItemStack[] inventory = player.getInventory().getContents();
-    	for(ItemStack x : inventory){
-    		if(x != null && x.getTypeId() == 266){
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-    public static boolean hasDiamond(Player player){
-    	ItemStack[] inventory = player.getInventory().getContents();
-    	for(ItemStack x : inventory){
-    		if(x != null && x.getTypeId() == 264){
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-    public static boolean hasIron(Player player){
-    	ItemStack[] inventory = player.getInventory().getContents();
-    	for(ItemStack x : inventory){
-    		if(x != null && x.getTypeId() == 265){
+    		if(x != null && x.getTypeId() == typeid){
     			return true;
     		}
     	}
@@ -285,11 +285,46 @@ public class Repair {
     	}
     	return durability;
     }
-    public static short getToolRepairAmount(ItemStack is, Player player){
+    public static short getRepairAmount(ItemStack is, Player player){
     	short durability = is.getDurability();
     	short ramt = 0;
     	switch(is.getTypeId())
 		{
+    	/*
+    	 * TOOLS
+    	 */
+    	//WOOD SWORD
+		case 268:
+    		ramt = 30;
+    		break;
+    	//WOOD SHOVEL
+		case 269:
+    		ramt = 60;
+    		break;
+    	//WOOD PICKAXE
+		case 270:
+    		ramt = 20;
+    		break;
+    	//WOOD AXE
+		case 271:
+    		ramt = 20;
+    		break;
+    	//STONE SWORD
+		case 272:
+    		ramt = 44;
+    		break;
+    	//STONE SHOVEL
+		case 273:
+    		ramt = 132;
+    		break;
+    	//STONE PICKAXE
+		case 274:
+    		ramt = 44;
+    		break;
+    	//STONE AXE
+		case 275:
+    		ramt = 44;
+    		break;
     	//GOLD SHOVEL
     	case 284:
     		ramt = 33;
@@ -350,73 +385,68 @@ public class Repair {
     	case 294:
     		ramt = 17;
     		break;
+    	/*
+    	 * ARMOR
+    	 */
+    	case 306:
+			ramt = 27;
+			break;
+		case 310:
+			ramt = 55;
+    		break;
+		case 307:
+			ramt = 24;
+    		break;
+		case 311:
+			ramt = 48;
+    		break;
+		case 308:
+			ramt = 27;
+    		break;
+		case 312:
+			ramt = 53;
+    		break;
+		case 309:
+			ramt = 40;
+    		break;
+		case 313:
+			ramt = 80;
+    		break;
+		case 314:
+    		ramt = 13;
+    		break;
+		case 315:
+    		ramt = 12;
+    		break;
+		case 316:
+    		ramt = 14;
+    		break;
+		case 317:
+    		ramt = 20;
+    		break;
 		}
 		return repairCalculate(player, durability, ramt);
-    }
-    //This determines how much we repair
-    public static short getArmorRepairAmount(ItemStack is, Player player){
-    		short durability = is.getDurability();
-    		short ramt = 0;
-    		switch(is.getTypeId())
-    		{
-    		case 306:
-    			ramt = 27;
-    			break;
-    		case 310:
-    			ramt = 55;
-	    		break;
-    		case 307:
-    			ramt = 24;
-	    		break;
-    		case 311:
-    			ramt = 48;
-	    		break;
-    		case 308:
-    			ramt = 27;
-	    		break;
-    		case 312:
-    			ramt = 53;
-	    		break;
-    		case 309:
-    			ramt = 40;
-	    		break;
-    		case 313:
-    			ramt = 80;
-	    		break;
-    		case 314:
-        		ramt = 13;
-        		break;
-    		case 315:
-        		ramt = 12;
-        		break;
-    		case 316:
-        		ramt = 14;
-        		break;
-    		case 317:
-        		ramt = 20;
-        		break;
-    		}
-			if(durability < 0)
-				durability = 0;
-			return repairCalculate(player, durability, ramt);
     }
     public static void needMoreVespeneGas(ItemStack is, Player player){
     	PlayerProfile PP = Users.getProfile(player);
     	if ((isDiamondTools(is) || isDiamondArmor(is)) && PP.getRepairInt() < LoadProperties.repairdiamondlevel){
 			player.sendMessage(ChatColor.DARK_RED +"You're not adept enough to repair Diamond");
-		} else if (isDiamondTools(is) && !hasDiamond(player) || isIronTools(is) && !hasIron(player) || isGoldTools(is) && !hasGold(player)){
-			if(isDiamondTools(is) && !hasDiamond(player))
+		} else if (isDiamondTools(is) && !hasItem(player, 264) || isIronTools(is) && !hasItem(player, 265) || isGoldTools(is) && !hasItem(player, 266)){
+			if(isDiamondTools(is) && !hasItem(player, 264))
 				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
-			if(isIronTools(is) && !hasIron(player))
+			if(isIronTools(is) && !hasItem(player, 265))
 				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
-			//herp
-			if(isGoldTools(is) && !hasGold(player))
+			if(isGoldTools(is) && !hasItem(player, 266))
 				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GOLD+"Gold");
-		} else if (isDiamondArmor(is) && !hasDiamond(player)){
+			if(isWoodTools(is) && !hasItem(player, 5))
+				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.DARK_GREEN+"Wood");
+			if(isStoneTools(is) && !hasItem(player, 4))
+				player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+"Stone");
+		} else if (isDiamondArmor(is) && !hasItem(player, 264)){
 			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.BLUE+ "Diamonds");
-		} else if (isIronArmor(is) && !hasIron(player)){
+		} else if (isIronArmor(is) && !hasItem(player, 265)){
 			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GRAY+ "Iron");
-		} else if (isGoldArmor(is) && !hasGold(player)){
+		} else if (isGoldArmor(is) && !hasItem(player, 266)){
 			player.sendMessage(ChatColor.DARK_RED+"You need more "+ChatColor.GOLD+"Gold");
 		} else if (is.getAmount() > 1)
 			player.sendMessage(ChatColor.DARK_RED+"You can't repair stacked items");

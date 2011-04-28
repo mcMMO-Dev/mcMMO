@@ -25,8 +25,8 @@ import com.gmail.nossr50.skills.*;
 public class PlayerProfile
 {
     protected final Logger log = Logger.getLogger("Minecraft");
-	private String taming, tamingXP, playerName, miningXP, woodCuttingXP, woodcutting, repair, mining, party, myspawn, myspawnworld, unarmed, herbalism, excavation,
-	archery, swords, axes, invite, acrobatics, repairXP, unarmedXP, herbalismXP, excavationXP, archeryXP, swordsXP, axesXP, acrobaticsXP;
+	private String taming="0", tamingXP="0", miningXP="0", woodCuttingXP="0", woodcutting="0", repair="0", mining="0", party, myspawn, myspawnworld, unarmed="0", herbalism="0", excavation="0",
+	archery="0", swords="0", axes="0", invite, acrobatics="0", repairXP="0", unarmedXP="0", herbalismXP="0", excavationXP="0", archeryXP="0", swordsXP="0", axesXP="0", acrobaticsXP="0";
 	private boolean greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
 	superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
 	serratedStrikesMode, hoePreparationMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
@@ -46,21 +46,17 @@ public class PlayerProfile
         
 	public PlayerProfile(Player player)
 	{
-		
+		thisplayer = player;
 		if (LoadProperties.useMySQL) {
-			// if usemysql load from database
 			if(!loadMySQL(player)) {
 				addMySQLPlayer(player);
-				/*
-				 * REMEMBER TO FIX THIS!
-				 */
-				loadMySQL(player); //For some reason its not loading the users after adding them, so heres this, this is a temporary solution
-			}			
+				loadMySQL(player);//This is probably not needed anymore, could just delete
+			}
 		} else {
-			// load from flat file
 			if(!load()) { addPlayer(); }			
 		}
 	}
+	
 	public int getMySQLuserId(){
 		return userid;
 	}
@@ -131,7 +127,7 @@ public class PlayerProfile
         		//Find if the line contains the player we want.
         		String[] character = line.split(":");
 
-        		if(!character[0].equals(playerName)){continue;}
+        		if(!character[0].equals(thisplayer.getName())){continue;}
         		
     			//Get Mining
     			if(character.length > 1)
@@ -247,13 +243,13 @@ public class PlayerProfile
 	        	{
 	        		//Read the line in and copy it to the output it's not the player
 	        		//we want to edit
-	        		if(!line.split(":")[0].equalsIgnoreCase(playerName))
+	        		if(!line.split(":")[0].equalsIgnoreCase(thisplayer.getName()))
 	        		{
 	                    writer.append(line).append("\r\n");
 	                    
 	                //Otherwise write the new player information
 	        		} else {
-	        			writer.append(playerName + ":");
+	        			writer.append(thisplayer.getName() + ":");
 	        			writer.append(mining + ":");
 	        			writer.append(myspawn + ":");
 	        			writer.append(party+":");
@@ -300,7 +296,7 @@ public class PlayerProfile
             BufferedWriter out = new BufferedWriter(file);
             
             //Add the player to the end
-            out.append(playerName + ":");
+            out.append(thisplayer.getName() + ":");
             out.append(0 + ":"); //mining
             out.append(myspawn+":");
             out.append(party+":");
@@ -338,7 +334,7 @@ public class PlayerProfile
     
 	public boolean isPlayer(String player)
 	{
-		return player.equals(playerName);
+		return player.equals(thisplayer.getName());
 	}
 	public boolean getPartyChatOnlyToggle(){return partyChatOnly;}
 	public void togglePartyChatOnly(){partyChatOnly = !partyChatOnly;}
@@ -918,8 +914,7 @@ public class PlayerProfile
 	}
 	public int getTamingInt(){
 		if(isInt(taming)){
-			int x = Integer.parseInt(taming);
-			return x;
+			return Integer.parseInt(taming);
 		} else{
 			return 0;
 		}
@@ -1255,7 +1250,7 @@ public class PlayerProfile
 
 	public boolean isInt(String string){
 		try {
-		    //int x = Integer.parseInt(string);
+		    int x = Integer.parseInt(string);
 		}
 		catch(NumberFormatException nFE) {
 		    return false;
@@ -1448,7 +1443,7 @@ public class PlayerProfile
 			return 0;
 		}
 	}
-	public void addXpToSkill(int newvalue, String skillname){
+	public void addXpToSkill(int newvalue, String skillname, Player targetPlayer){
 		if(!isInt(tamingXP))
 			tamingXP = String.valueOf(0);
 		if(!isInt(miningXP))
@@ -1506,20 +1501,20 @@ public class PlayerProfile
 			axesXP = String.valueOf(Integer.valueOf(axesXP)+newvalue);
 		}
 		if(skillname.toLowerCase().equals("all")){
-			tamingXP = String.valueOf(Integer.valueOf(tamingXP)+newvalue);
-			miningXP = String.valueOf(Integer.valueOf(miningXP)+newvalue);
-			woodCuttingXP = String.valueOf(Integer.valueOf(woodCuttingXP)+newvalue);
-			repairXP = String.valueOf(Integer.valueOf(repairXP)+newvalue);
-			herbalismXP = String.valueOf(Integer.valueOf(herbalismXP)+newvalue);
-			acrobaticsXP = String.valueOf(Integer.valueOf(acrobaticsXP)+newvalue);
-			swordsXP = String.valueOf(Integer.valueOf(swordsXP)+newvalue);
-			archeryXP = String.valueOf(Integer.valueOf(archeryXP)+newvalue);
-			unarmedXP = String.valueOf(Integer.valueOf(unarmedXP)+newvalue);
-			excavationXP = String.valueOf(Integer.valueOf(excavationXP)+newvalue);
-			axesXP = String.valueOf(Integer.valueOf(axesXP)+newvalue);
+			tamingXP = String.valueOf(getTamingXPInt()+newvalue);
+			miningXP = String.valueOf(getMiningXPInt()+newvalue);
+			woodCuttingXP = String.valueOf(getWoodCuttingXPInt()+newvalue);
+			repairXP = String.valueOf(getRepairXPInt()+newvalue);
+			herbalismXP = String.valueOf(getHerbalismXPInt()+newvalue);
+			acrobaticsXP = String.valueOf(getAcrobaticsXPInt()+newvalue);
+			swordsXP = String.valueOf(getSwordsXPInt()+newvalue);
+			archeryXP = String.valueOf(getArcheryXPInt()+newvalue);
+			unarmedXP = String.valueOf(getUnarmedXPInt()+newvalue);
+			excavationXP = String.valueOf(getExcavationXPInt()+newvalue);
+			axesXP = String.valueOf(getAxesXPInt()+newvalue);
 		}
 		save();
-		Skills.XpCheck(thisplayer);
+		Skills.XpCheck(targetPlayer);
 	}
 	public void modifyskill(int newvalue, String skillname){
 		if(skillname.toLowerCase().equals("taming")){
@@ -1682,7 +1677,12 @@ public class PlayerProfile
     	return dead;
     }
     public Location getMySpawn(Player player){
-    	Location loc = new Location(player.getWorld(),(Double.parseDouble(getX())), Double.parseDouble(getY()), Double.parseDouble(getZ()));
+    	Location loc = null;
+    	if(isDouble(getX()) && isDouble(getY()) && isDouble(getZ()))
+    			loc = new Location(player.getWorld(),(Double.parseDouble(getX())), Double.parseDouble(getY()), Double.parseDouble(getZ()));
+    	else
+    		return null;
+    	
     	loc.setYaw(0);
     	loc.setPitch(0);
     	if(loc.getX() != 0 && loc.getY() != 0 && loc.getZ() != 0 && loc.getWorld() != null){

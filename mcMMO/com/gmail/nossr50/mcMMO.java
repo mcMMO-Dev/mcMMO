@@ -53,15 +53,14 @@ public class mcMMO extends JavaPlugin {
     public void onEnable() {
     	mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
     	new File(maindirectory).mkdir();
-    	//Check if props file exists, if not make it
-    	mcProperties.makeProperties(Properties, log);
-    	//Load the file
-    	LoadProperties.loadMain();
-    	Users.getInstance().loadUsers();
-    	for(Player player : getServer().getOnlinePlayers()){
-         	Users.addUser(player);
-        }
-        PluginManager pm = getServer().getPluginManager();
+    	mcProperties.makeProperties(Properties, log); //Make Props file
+    	LoadProperties.loadMain(); //Load Props file
+    	Users.getInstance().loadUsers(); //Load Users file
+    	for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile
+        /*
+         * REGISTER EVENTS
+         */
+    	PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
@@ -80,7 +79,8 @@ public class mcMMO extends JavaPlugin {
         PluginDescriptionFile pdfFile = this.getDescription();
         mcPermissions.initialize(getServer());
         mcLoadMySQL(); 
-        database.createStructure(); //Make Structure
+        if(LoadProperties.useMySQL)
+        	database.createStructure(); //Make Structure
         if(!LoadProperties.useMySQL)
         	Leaderboard.makeLeaderboards(); //Make the leaderboards
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
@@ -124,7 +124,7 @@ public class mcMMO extends JavaPlugin {
     }
     public void addXp(Player player, String skillname, Integer newvalue){
     	PlayerProfile PP = Users.getProfile(player);
-    	PP.addXpToSkill(newvalue, skillname);
+    	PP.addXpToSkill(newvalue, skillname, player);
     	Skills.XpCheck(player);
     }
     public void modifySkill(Player player, String skillname, Integer newvalue){

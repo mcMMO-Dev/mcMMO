@@ -43,7 +43,7 @@ public class Users {
 			FileWriter writer = null;
 			try {
 				writer = new FileWriter(location);
-				writer.write("#Storage place for user information\r\n");
+				//writer.write("#Storage place for user information\r\n");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
 			} finally {
@@ -57,7 +57,6 @@ public class Users {
 			}
 
 		} else {
-			//properties = new PropertiesFile(location);
 			try {
 				load();
 			} catch (IOException e) {
