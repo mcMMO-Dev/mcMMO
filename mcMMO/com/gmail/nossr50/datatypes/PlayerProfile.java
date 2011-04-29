@@ -1655,19 +1655,31 @@ public class PlayerProfile
     	save();
     }
     public String getX(){
+    	if(myspawn != null)
+    	{
     	String[] split = myspawn.split(",");
-    	String x = split[0];
-    	return x;
+    	return split[0];
+    	} 
+    	else
+    		return null;
     }
     public String getY(){
+    	if(myspawn != null)
+    	{
     	String[] split = myspawn.split(",");
-    	String y = split[1];
-    	return y;
+    	return split[1];
+    	} 
+    	else
+    		return null;
     }
     public String getZ(){
+    	if(myspawn != null)
+    	{
     	String[] split = myspawn.split(",");
-    	String z = split[2];
-    	return z;
+    	return split[2];
+    	} 
+    	else
+    		return null;
     }
     public void setDead(boolean x){
     	dead = x;
@@ -1678,9 +1690,12 @@ public class PlayerProfile
     }
     public Location getMySpawn(Player player){
     	Location loc = null;
-    	if(isDouble(getX()) && isDouble(getY()) && isDouble(getZ()))
-    			loc = new Location(player.getWorld(),(Double.parseDouble(getX())), Double.parseDouble(getY()), Double.parseDouble(getZ()));
+    	if(myspawn != null){
+    		if(isDouble(getX()) && isDouble(getY()) && isDouble(getZ()))
+    				loc = new Location(player.getWorld(),(Double.parseDouble(getX())), Double.parseDouble(getY()), Double.parseDouble(getZ()));
     	else
+    		return null;
+    	} else
     		return null;
     	
     	loc.setYaw(0);

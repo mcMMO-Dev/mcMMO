@@ -1,5 +1,21 @@
 Changelog:
-#Versions without changelogs probably had very small misc fixes, like tweaks to the source code#
+#Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.02
+Fixed bug where the Timer would start before everything else was ready
+Fixed bug where mcrefresh also required mcability permission node
+Fixed bug where Unarmed was not checking for disarm procs
+Green Thumb now checks for herbalism permissions
+Added "enableGreenThumbCobbleToMossy" to config file, this also changes Green Terra
+AoE abilities now harm wolves
+
+Version 1.0.01
+Removed debug message when wolves are struck
+Fixed issue with reloading mcMMO when MySQL was enabled
+Fixed a NPE with MySpawn
+Fixed a NPE with removing users from PlayerProfile
+Unarmed no longer starts with a damage bonus
+Unarmed apprentice DMG bonus changed from 3 to 2
+
 Version 1.0
 Players can now repair Stone/Wood tools
 Fixed duping bug with WG/Block Protection Plugins

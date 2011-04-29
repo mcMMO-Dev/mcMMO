@@ -13,11 +13,11 @@ public class Unarmed {
 	public static void unarmedBonus(Player attacker, EntityDamageByEntityEvent event)
 	{
 		PlayerProfile PPa = Users.getProfile(attacker);
-		int bonus = 2;
+		int bonus = 0;
 		if (PPa.getUnarmedInt() >= 250)
-			bonus++;
+			bonus+=2;
 		if (PPa.getUnarmedInt() >= 500)
-			bonus++;
+			bonus+=2;
 		event.setDamage(event.getDamage()+bonus);
 	}
 	public static void disarmProcCheck(Player attacker, Player defender)

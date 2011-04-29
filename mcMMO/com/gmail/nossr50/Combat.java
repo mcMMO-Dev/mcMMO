@@ -63,6 +63,11 @@ public class Combat {
 	    	Axes.axeCriticalCheck(attacker, eventb); //Axe Criticals
 	    	if(!Config.getInstance().isBleedTracked(event.getEntity())) //Swords Bleed
     			Swords.bleedCheck(attacker, event.getEntity());
+	    	if(event.getEntity() instanceof Player){
+	    		Player defender = (Player)event.getEntity();
+	    		Unarmed.disarmProcCheck(attacker, defender);
+	    	}
+	    	
 	    	
 	    	//Modify the event damage if Attacker is Berserk
 	    	if(PPa.getBerserkMode())
@@ -70,9 +75,9 @@ public class Combat {
        	
 	   		//Handle Ability Interactions
 	   		if(PPa.getSkullSplitterMode() && m.isAxes(attacker.getItemInHand()))
-       			Axes.applyAoeDamage(attacker, eventb);
+       			Axes.applyAoeDamage(attacker, eventb, pluginx);
       		if(PPa.getSerratedStrikesMode() && m.isSwords(attacker.getItemInHand()))
-       			Swords.applySerratedStrikes(attacker, eventb);
+       			Swords.applySerratedStrikes(attacker, eventb, pluginx);
       		
       		//Experience
       		if(event.getEntity() instanceof Player)
@@ -208,7 +213,6 @@ public class Combat {
 				//Thick Fur
 				if(PPo.getTamingInt() >= 250)
 					event.setDamage(event.getDamage() / 2);
-					master.sendMessage("mcMMO Debug: Wolf Damage Taken "+event.getDamage());
 			}
 		}
 	}

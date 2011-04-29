@@ -10,6 +10,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
@@ -45,7 +46,7 @@ public class Swords {
 			}
 		}
     }
-    public static void applySerratedStrikes(Player attacker, EntityDamageByEntityEvent event){
+    public static void applySerratedStrikes(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx){
     	int targets = 0;
     	Entity x = event.getEntity();
     	targets = m.getTier(attacker);
@@ -70,7 +71,11 @@ public class Swords {
     				targets--;
     			}
     			if(derp instanceof Wolf){
-					continue;
+					Wolf hurrDurr = (Wolf)derp;
+					if(Taming.getOwner(hurrDurr, pluginx) == attacker)
+						continue;
+					if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
+						continue;
 				}
     			if(derp instanceof Animals && targets >= 1){
     				if(!Config.getInstance().isBleedTracked(derp))

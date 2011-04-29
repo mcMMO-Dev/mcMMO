@@ -7,6 +7,7 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -48,7 +49,7 @@ public class Axes {
     	}
     }
 	
-	public static void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event){
+	public static void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx){
     	int targets = 0;
     	Entity x = event.getEntity();
     	targets = m.getTier(attacker);
@@ -70,7 +71,11 @@ public class Axes {
     				targets--;
     			}
     			if(derp instanceof Wolf){
-					continue;
+					Wolf hurrDurr = (Wolf)derp;
+					if(Taming.getOwner(hurrDurr, pluginx) == attacker)
+						continue;
+					if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
+						continue;
 				}
     			if(derp instanceof Animals  && targets >= 1){					
     				Animals target = (Animals)derp;

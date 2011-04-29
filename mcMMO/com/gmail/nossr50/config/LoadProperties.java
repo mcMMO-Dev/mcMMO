@@ -3,7 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 
 public class LoadProperties {
-	public static Boolean useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	public static Boolean enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, myspawnclearsinventory, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
 	public static int MySQLport, xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
@@ -39,6 +39,7 @@ public class LoadProperties {
     	 * OTHER
     	 */
     	
+    	enableCobbleToMossy = properties.getBoolean("enableGreenThumbCobbleToMossy", true);
     	archeryFireRateLimit = properties.getBoolean("archeryFireRateLimit", true);
     	xpGainMultiplier = properties.getInteger("xpGainMultiplier", 1);
     	toolsLoseDurabilityFromAbilities = properties.getBoolean("toolsLoseDurabilityFromAbilities", true);

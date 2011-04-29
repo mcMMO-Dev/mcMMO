@@ -77,8 +77,11 @@ public class Users {
 
     public static void removeUser(Player player){    	
     	PlayerProfile PP = Users.getProfile(player);
-    	PP.save();
-    	players.remove(player);
+    	if(PP != null){
+	    	PP.save();
+	    	if(players.containsKey(player))
+	    		players.remove(player);
+    	}
     }
 
     public static PlayerProfile getProfile(Player player){

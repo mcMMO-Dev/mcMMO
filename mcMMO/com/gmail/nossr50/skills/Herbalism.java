@@ -46,7 +46,7 @@ public class Herbalism {
 				removeSeeds(player);	
 			if(block.getType() == Material.DIRT)
 				block.setType(Material.GRASS);
-			if(block.getType() == Material.COBBLESTONE)
+			if(LoadProperties.enableCobbleToMossy && block.getType() == Material.COBBLESTONE)
 				block.setType(Material.MOSSY_COBBLESTONE);
 			}
 		}

@@ -51,12 +51,10 @@ public class mcMMO extends JavaPlugin {
     public static Database database = null;
     
     public void onEnable() {
-    	mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
     	new File(maindirectory).mkdir();
     	mcProperties.makeProperties(Properties, log); //Make Props file
     	LoadProperties.loadMain(); //Load Props file
     	Users.getInstance().loadUsers(); //Load Users file
-    	for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile
         /*
          * REGISTER EVENTS
          */
@@ -83,7 +81,9 @@ public class mcMMO extends JavaPlugin {
         	database.createStructure(); //Make Structure
         if(!LoadProperties.useMySQL)
         	Leaderboard.makeLeaderboards(); //Make the leaderboards
+        for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile
         System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+        mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
     }
     
     private void mcLoadMySQL() {

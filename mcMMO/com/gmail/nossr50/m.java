@@ -797,10 +797,10 @@ public class m {
 			if(PP.getUnarmedInt() < 250){
 				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 250+ SKILL (UNARMED APPRENTICE)");
 			} else if(PP.getUnarmedInt() >= 250 && PP.getUnarmedInt() < 500){
-				player.sendMessage(ChatColor.RED+"Unarmed Apprentice: "+ChatColor.YELLOW+"Damage Upgrade");
+				player.sendMessage(ChatColor.RED+"Unarmed Apprentice: "+ChatColor.YELLOW+"+2 DMG Upgrade");
 				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 500+ SKILL (UNARMED MASTERY)");
 			} else {
-				player.sendMessage(ChatColor.RED+"Unarmed Mastery: "+ChatColor.YELLOW+"Large Damage Upgrade");
+				player.sendMessage(ChatColor.RED+"Unarmed Mastery: "+ChatColor.YELLOW+"+4 DMG Upgrade");
 			}
 			player.sendMessage(ChatColor.RED+"Berserk Length: "+ChatColor.YELLOW+ticks+"s");
     	}
