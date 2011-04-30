@@ -203,8 +203,9 @@ public class mcBlockListener extends BlockListener {
     		Mining.superBreakerCheck(player, block, plugin);
     	if(PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block))
     		Excavation.gigaDrillBreakerActivationCheck(player, block, plugin);
-    	if(PP.getFistsPreparationMode() && Excavation.canBeGigaDrillBroken(block))
-    		Skills.berserkActivationCheck(player, plugin);
+    	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
+    		Unarmed.berserkActivationCheck(player, plugin);
+    	
     	/*
     	 * GREEN TERRA STUFF
     	 */
@@ -242,10 +243,12 @@ public class mcBlockListener extends BlockListener {
     	if(PP.getBerserkMode() 
     		&& m.blockBreakSimulate(block, player, plugin) 
     		&& player.getItemInHand().getTypeId() == 0 
-    		&& Excavation.canBeGigaDrillBroken(block)){
+    		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78)){
 		   	Material mat = Material.getMaterial(block.getTypeId());
 		   	if(block.getTypeId() == 2)
 		   		mat = Material.DIRT;
+		   	if(block.getTypeId() == 78)
+		   		mat = Material.SNOW_BALL;
 			byte type = block.getData();
 			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
 			block.setType(Material.AIR);

@@ -897,7 +897,6 @@ public class m {
     	if(split[0].equalsIgnoreCase("/"+LoadProperties.mcc)){
     		event.setCancelled(true);
     		player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mcMMO Commands"+ChatColor.RED+"[]---");
-    		player.sendMessage("/"+LoadProperties.stats+ChatColor.RED+" - View your mcMMO stats");
     		if(mcPermissions.getInstance().party(player)){
     			player.sendMessage(ChatColor.GREEN+"--PARTY COMMANDS--");
     			player.sendMessage("/"+LoadProperties.party+" [party name] "+ChatColor.RED+"- Create/Join designated party");
@@ -909,13 +908,13 @@ public class m {
     			if(mcPermissions.getInstance().partyTeleport(player))
     				player.sendMessage("/"+LoadProperties.ptp+" [party member name] "+ChatColor.RED+"- Teleport to party member");
     		}
+    		player.sendMessage(ChatColor.GREEN+"--OTHER COMMANDS--");
+    		player.sendMessage("/"+LoadProperties.stats+ChatColor.RED+" - View your mcMMO stats");
+    		player.sendMessage("/mctop <skillname> <page> "+ChatColor.RED+"- Leaderboards");
     		if(mcPermissions.getInstance().mySpawn(player)){
-	    		player.sendMessage(ChatColor.GREEN+"--MYSPAWN COMMANDS--");
 	    		player.sendMessage("/"+LoadProperties.myspawn+" "+ChatColor.RED+"- Clears inventory & teleports to myspawn");
 	    		player.sendMessage("/"+LoadProperties.clearmyspawn+" "+ChatColor.RED+"- Clears your MySpawn");
     		}
-    		player.sendMessage(ChatColor.GREEN+"--OTHER COMMANDS--");
-    		player.sendMessage("/mctop <skillname> <page> "+ChatColor.RED+"- Leaderboards");
     		if(mcPermissions.getInstance().mcAbility(player))
     			player.sendMessage("/"+LoadProperties.mcability+ChatColor.RED+" - Toggle ability activation with right click");
     		if(mcPermissions.getInstance().adminChat(player)){

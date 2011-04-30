@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Animals;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -17,13 +16,49 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.party.Party;
 
 public class Swords {
+	
+	public static void serratedStrikesActivationCheck(Player player, Plugin pluginx){
+    	PlayerProfile PP = Users.getProfile(player);
+		if(m.isSwords(player.getItemInHand())){
+			if(PP.getSwordsPreparationMode()){
+    			PP.setSwordsPreparationMode(false);
+    		}
+	    	int ticks = 2;
+	    	int x = PP.getSwordsInt();
+    		while(x >= 50){
+    			x-=50;
+    			ticks++;
+    		}
+    		
+	    	if(!PP.getSerratedStrikesMode() && PP.getSerratedStrikesCooldown() == 0){
+	    		player.sendMessage(ChatColor.GREEN+"**SERRATED STRIKES ACTIVATED**");
+	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
+	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
+	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Serrated Strikes!");
+	    		}
+	    		PP.setSerratedStrikesTicks((ticks * 2) * 1000);
+	    		PP.setSerratedStrikesActivatedTimeStamp(System.currentTimeMillis());
+	    		PP.setSerratedStrikesDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
+	    		PP.setSerratedStrikesMode(true);
+	    	}
+	    	
+	    }
+	}
 
-	public static void bleedCheck(Player attacker, Entity x){
+	public static void bleedCheck(Player attacker, Entity x, Plugin pluginx){
     	PlayerProfile PPa = Users.getProfile(attacker);
+    	if(x instanceof Wolf){
+    		Wolf wolf = (Wolf)x;
+    		if(Taming.getOwner(wolf, pluginx) == attacker)
+    			return;
+    		if(Party.getInstance().inSameParty(attacker, Taming.getOwner(wolf, pluginx)))
+    			return;
+    	}
     	if(mcPermissions.getInstance().swords(attacker) && m.isSwords(attacker.getItemInHand())){
 			if(PPa.getSwordsInt() >= 750){
 				if(Math.random() * 1000 >= 750){

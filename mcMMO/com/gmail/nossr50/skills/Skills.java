@@ -60,21 +60,37 @@ public class Skills {
     	}
     	return x;
     }
+    public static boolean isAllCooldownsOver(PlayerProfile PP)
+    {
+    	long t = System.currentTimeMillis();
+    	if(t - PP.getGreenTerraDeactivatedTimeStamp() >= (LoadProperties.greenTerraCooldown * 1000) && 
+    		t - PP.getTreeFellerDeactivatedTimeStamp() >= (LoadProperties.treeFellerCooldown * 1000) &&
+    		t - PP.getSuperBreakerDeactivatedTimeStamp() >= (LoadProperties.superBreakerCooldown * 1000) &&
+    		t - PP.getSerratedStrikesDeactivatedTimeStamp() >= (LoadProperties.serratedStrikeCooldown * 1000) &&
+    		t - PP.getBerserkDeactivatedTimeStamp() >= (LoadProperties.berserkCooldown * 1000) &&
+    		t - PP.getSkullSplitterDeactivatedTimeStamp() >= (LoadProperties.skullSplitterCooldown * 1000) &&
+    		t - PP.getGigaDrillBreakerDeactivatedTimeStamp() >= (LoadProperties.gigaDrillBreakerCooldown * 1000))
+    	{
+    		return true;
+    	}
+    	else
+    		return false;
+    }
     public static void watchCooldowns(Player player){
     	PlayerProfile PP = Users.getProfile(player);
     	if(!PP.getGreenTerraInformed() && System.currentTimeMillis() - PP.getGreenTerraDeactivatedTimeStamp() >= (LoadProperties.greenTerraCooldown * 1000)){
 			PP.setGreenTerraInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Green Terra "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!PP.getTreeFellerInformed() && System.currentTimeMillis() - PP.getTreeFellerDeactivatedTimeStamp() >= (LoadProperties.berserkCooldown * 1000)){
+    	if(!PP.getTreeFellerInformed() && System.currentTimeMillis() - PP.getTreeFellerDeactivatedTimeStamp() >= (LoadProperties.greenTerraCooldown * 1000)){
 			PP.setTreeFellerInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Tree Feller "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!PP.getSuperBreakerInformed() && System.currentTimeMillis() - PP.getSuperBreakerDeactivatedTimeStamp() >= (LoadProperties.berserkCooldown * 1000)){
+    	if(!PP.getSuperBreakerInformed() && System.currentTimeMillis() - PP.getSuperBreakerDeactivatedTimeStamp() >= (LoadProperties.superBreakerCooldown * 1000)){
 			PP.setSuperBreakerInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Super Breaker "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!PP.getSerratedStrikesInformed() && System.currentTimeMillis() - PP.getSerratedStrikesDeactivatedTimeStamp() >= (LoadProperties.berserkCooldown * 1000)){
+    	if(!PP.getSerratedStrikesInformed() && System.currentTimeMillis() - PP.getSerratedStrikesDeactivatedTimeStamp() >= (LoadProperties.serratedStrikeCooldown * 1000)){
 			PP.setSerratedStrikesInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Serrated Strikes "+ChatColor.GREEN+"ability is refreshed!");
     	}
@@ -82,11 +98,11 @@ public class Skills {
 			PP.setBerserkInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Berserk "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!PP.getSkullSplitterInformed() && System.currentTimeMillis() - PP.getSkullSplitterDeactivatedTimeStamp() >= (LoadProperties.berserkCooldown * 1000)){
+    	if(!PP.getSkullSplitterInformed() && System.currentTimeMillis() - PP.getSkullSplitterDeactivatedTimeStamp() >= (LoadProperties.skullSplitterCooldown * 1000)){
 			PP.setSkullSplitterInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Skull Splitter "+ChatColor.GREEN+"ability is refreshed!");
     	}
-    	if(!PP.getGigaDrillBreakerInformed() && System.currentTimeMillis() - PP.getGigaDrillBreakerDeactivatedTimeStamp() >= (LoadProperties.berserkCooldown * 1000)){
+    	if(!PP.getGigaDrillBreakerInformed() && System.currentTimeMillis() - PP.getGigaDrillBreakerDeactivatedTimeStamp() >= (LoadProperties.gigaDrillBreakerCooldown * 1000)){
 			PP.setGigaDrillBreakerInformed(true);
     		player.sendMessage(ChatColor.GREEN+"Your "+ChatColor.YELLOW+"Giga Drill Breaker "+ChatColor.GREEN+"ability is refreshed!");
     	}
@@ -104,7 +120,106 @@ public class Skills {
 			PP.setHoePreparationMode(true);
     	}
     }
-    public static void abilityActivationCheck(Player player){
+    public static void monitorSkills(Player player){
+		PlayerProfile PP = Users.getProfile(player);
+		if(PP == null)
+			Users.addUser(player);
+		if(PP.getHoePreparationMode() && System.currentTimeMillis() - PP.getHoePreparationATS() >= 4000){
+			PP.setHoePreparationMode(false);
+			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR HOE**");
+		}
+		if(PP.getAxePreparationMode() && System.currentTimeMillis() - PP.getAxePreparationATS() >= 4000){
+				PP.setAxePreparationMode(false);
+				player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR AXE**");
+		}
+		if(PP.getPickaxePreparationMode() && System.currentTimeMillis() - PP.getPickaxePreparationATS() >= 4000){
+			PP.setPickaxePreparationMode(false);
+			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR PICKAXE**");
+		}
+		if(PP.getSwordsPreparationMode() && System.currentTimeMillis() - PP.getSwordsPreparationATS() >= 4000){
+			PP.setSwordsPreparationMode(false);
+			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR SWORD**");
+		}
+		if(PP.getFistsPreparationMode() && System.currentTimeMillis() - PP.getFistsPreparationATS() >= 4000){
+			PP.setFistsPreparationMode(false);
+			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR FISTS**");
+		}
+		if(PP.getShovelPreparationMode() && System.currentTimeMillis() - PP.getShovelPreparationATS() >= 4000){
+			PP.setShovelPreparationMode(false);
+			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR SHOVEL**");
+		}
+		/*
+		 * HERBALISM ABILITY
+		 */
+		if(mcPermissions.getInstance().herbalismAbility(player)){
+			if(PP.getGreenTerraMode() && PP.getGreenTerraActivatedTimeStamp() + PP.getGreenTerraTicks() <= System.currentTimeMillis()){
+					PP.setGreenTerraMode(false);
+					PP.setGreenTerraInformed(false);
+					player.sendMessage(ChatColor.RED+"**Green Terra has worn off**");
+			}
+		}
+		/*
+		 * AXES ABILITY
+		 */
+		if(mcPermissions.getInstance().axesAbility(player)){
+			if(PP.getSkullSplitterMode() && PP.getSkullSplitterActivatedTimeStamp() + PP.getSkullSplitterTicks() <= System.currentTimeMillis()){
+					PP.setSkullSplitterMode(false);
+					PP.setSkullSplitterInformed(false);
+					player.sendMessage(ChatColor.RED+"**Skull Splitter has worn off**");
+			}
+		}
+		/*
+		 * WOODCUTTING ABILITY
+		 */
+		if(mcPermissions.getInstance().woodCuttingAbility(player)){
+			if(PP.getTreeFellerMode() && PP.getTreeFellerActivatedTimeStamp() + PP.getTreeFellerTicks() <= System.currentTimeMillis()){
+					PP.setTreeFellerMode(false);
+					PP.setTreeFellerInformed(false);
+					player.sendMessage(ChatColor.RED+"**Tree Feller has worn off**");
+			}
+		}
+		/*
+		 * MINING ABILITY
+		 */
+		if(mcPermissions.getInstance().miningAbility(player)){
+			if(PP.getSuperBreakerMode() && PP.getSuperBreakerActivatedTimeStamp() + PP.getSuperBreakerTicks() <= System.currentTimeMillis()){
+					PP.setSuperBreakerMode(false);
+					PP.setSuperBreakerInformed(false);
+					player.sendMessage(ChatColor.RED+"**Super Breaker has worn off**");
+			}
+		}
+		/*
+		 * EXCAVATION ABILITY
+		 */
+		if(mcPermissions.getInstance().excavationAbility(player)){
+			if(PP.getGigaDrillBreakerMode() && PP.getGigaDrillBreakerActivatedTimeStamp() + PP.getGigaDrillBreakerTicks() <= System.currentTimeMillis()){
+					PP.setGigaDrillBreakerMode(false);
+					PP.setGigaDrillBreakerInformed(false);
+					player.sendMessage(ChatColor.RED+"**Giga Drill Breaker has worn off**");
+			}
+		}
+		/*
+		 * SWORDS ABILITY
+		 */
+		if(mcPermissions.getInstance().swordsAbility(player)){
+			if(PP.getSerratedStrikesMode() && PP.getSerratedStrikesActivatedTimeStamp() + PP.getSerratedStrikesTicks() <= System.currentTimeMillis()){
+					PP.setSerratedStrikesMode(false);
+					PP.setSerratedStrikesInformed(false);
+					player.sendMessage(ChatColor.RED+"**Serrated Strikes has worn off**");
+			}
+		}
+		/*
+		 * UNARMED ABILITY
+		 */
+		if(mcPermissions.getInstance().unarmedAbility(player)){
+			if(PP.getBerserkMode() && PP.getBerserkActivatedTimeStamp() + PP.getBerserkTicks() <= System.currentTimeMillis()){
+					PP.setBerserkMode(false);
+					PP.setBerserkInformed(false);
+					player.sendMessage(ChatColor.RED+"**Berserk has worn off**");
+			}
+		}
+	}
+	public static void abilityActivationCheck(Player player){
     	PlayerProfile PP = Users.getProfile(player);
     	if(!PP.getAbilityUse())
     		return;
@@ -155,195 +270,6 @@ public class Skills {
     			PP.setAxePreparationMode(true);
     		}
     	}
-    }
-    public static void serratedStrikesActivationCheck(Player player, Plugin pluginx){
-    	PlayerProfile PP = Users.getProfile(player);
-		if(m.isSwords(player.getItemInHand())){
-			if(PP.getSwordsPreparationMode()){
-    			PP.setSwordsPreparationMode(false);
-    		}
-	    	int ticks = 2;
-	    	int x = PP.getSwordsInt();
-    		while(x >= 50){
-    			x-=50;
-    			ticks++;
-    		}
-    		
-	    	if(!PP.getSerratedStrikesMode() && PP.getSerratedStrikesCooldown() == 0){
-	    		player.sendMessage(ChatColor.GREEN+"**SERRATED STRIKES ACTIVATED**");
-	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Serrated Strikes!");
-	    		}
-	    		PP.setSerratedStrikesTicks((ticks * 2) * 1000);
-	    		PP.setSerratedStrikesActivatedTimeStamp(System.currentTimeMillis());
-	    		PP.setSerratedStrikesMode(true);
-	    	}
-	    	
-	    }
-	}
-    public static void berserkActivationCheck(Player player, Plugin pluginx){
-    	PlayerProfile PP = Users.getProfile(player);
-		if(player.getItemInHand().getTypeId() == 0){
-			if(PP.getFistsPreparationMode()){
-    			PP.setFistsPreparationMode(false);
-    		}
-	    	int ticks = 2;
-	    	int x = PP.getUnarmedInt();
-    		while(x >= 50){
-    			x-=50;
-    			ticks++;
-    		}
-    		
-	    	if(!PP.getBerserkMode() && cooldownOver(player, PP.getBerserkDeactivatedTimeStamp(), LoadProperties.berserkCooldown)){
-	    		player.sendMessage(ChatColor.GREEN+"**BERSERK ACTIVATED**");
-	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Berserk!");
-	    		}
-	    		PP.setBerserkTicks(ticks * 1000);
-	    		PP.setBerserkActivatedTimeStamp(System.currentTimeMillis());
-	    		PP.setBerserkMode(true);
-	    	}
-	    }
-	}
-    public static void skullSplitterCheck(Player player, Plugin pluginx){
-    	PlayerProfile PP = Users.getProfile(player);
-    	if(m.isAxes(player.getItemInHand()) && mcPermissions.getInstance().axesAbility(player)){
-    		/*
-    		 * CHECK FOR AXE PREP MODE
-    		 */
-    		if(PP.getAxePreparationMode()){
-    			PP.setAxePreparationMode(false);
-    		}
-    		int ticks = 2;
-    		int x = PP.getAxesInt();
-    		while(x >= 50){
-    			x-=50;
-    			ticks++;
-    		}
-
-    		if(!PP.getSkullSplitterMode() && cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)){
-    			player.sendMessage(ChatColor.GREEN+"**SKULL SPLITTER ACTIVATED**");
-    			for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Skull Splitter!");
-	    		}
-    			PP.setSkullSplitterTicks(ticks * 1000);
-    			PP.setSkullSplitterActivatedTimeStamp(System.currentTimeMillis());
-    			PP.setSkullSplitterMode(true);
-    		}
-    		if(!PP.getSkullSplitterMode() && !cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)){
-    			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
-    					+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)+"s)");
-    		}
-    	}
-    }
-    public static void monitorSkills(Player player){
-    	PlayerProfile PP = Users.getProfile(player);
-    	if(PP == null)
-    		Users.addUser(player);
-    	if(PP.getHoePreparationMode() && System.currentTimeMillis() - PP.getHoePreparationATS() >= 4000){
-			PP.setHoePreparationMode(false);
-			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR HOE**");
-    	}
-		if(PP.getAxePreparationMode() && System.currentTimeMillis() - PP.getAxePreparationATS() >= 4000){
-				PP.setAxePreparationMode(false);
-				player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR AXE**");
-		}
-		if(PP.getPickaxePreparationMode() && System.currentTimeMillis() - PP.getPickaxePreparationATS() >= 4000){
-			PP.setPickaxePreparationMode(false);
-			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR PICKAXE**");
-		}
-		if(PP.getSwordsPreparationMode() && System.currentTimeMillis() - PP.getSwordsPreparationATS() >= 4000){
-			PP.setSwordsPreparationMode(false);
-			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR SWORD**");
-		}
-		if(PP.getFistsPreparationMode() && System.currentTimeMillis() - PP.getFistsPreparationATS() >= 4000){
-			PP.setFistsPreparationMode(false);
-			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR FISTS**");
-		}
-		if(PP.getShovelPreparationMode() && System.currentTimeMillis() - PP.getShovelPreparationATS() >= 4000){
-			PP.setShovelPreparationMode(false);
-			player.sendMessage(ChatColor.GRAY+"**YOU LOWER YOUR SHOVEL**");
-		}
-		/*
-		 * HERBALISM ABILITY
-		 */
-		if(mcPermissions.getInstance().herbalismAbility(player)){
-    		if(PP.getGreenTerraMode() && PP.getGreenTerraActivatedTimeStamp() + PP.getGreenTerraTicks() <= System.currentTimeMillis()){
-    				PP.setGreenTerraMode(false);
-    				PP.setGreenTerraInformed(false);
-    				player.sendMessage(ChatColor.RED+"**Green Terra has worn off**");
-    				PP.setGreenTerraDeactivatedTimeStamp(System.currentTimeMillis());
-    		}
-		}
-    	/*
-    	 * AXES ABILITY
-    	 */
-    	if(mcPermissions.getInstance().axesAbility(player)){
-    		if(PP.getSkullSplitterMode() && PP.getSkullSplitterActivatedTimeStamp() + PP.getSkullSplitterTicks() <= System.currentTimeMillis()){
-    				PP.setSkullSplitterMode(false);
-    				PP.setSkullSplitterInformed(false);
-    				player.sendMessage(ChatColor.RED+"**Skull Splitter has worn off**");
-    				PP.setSkullSplitterDeactivatedTimeStamp(System.currentTimeMillis());
-    		}
-		}
-    	/*
-		 * WOODCUTTING ABILITY
-		 */
-    	if(mcPermissions.getInstance().woodCuttingAbility(player)){
-			if(PP.getTreeFellerMode() && PP.getTreeFellerActivatedTimeStamp() + PP.getTreeFellerTicks() <= System.currentTimeMillis()){
-					PP.setTreeFellerMode(false);
-					PP.setTreeFellerInformed(false);
-					player.sendMessage(ChatColor.RED+"**Tree Feller has worn off**");
-					PP.setTreeFellerDeactivatedTimeStamp(System.currentTimeMillis());
-			}
-		}
-		/*
-		 * MINING ABILITY
-		 */
-		if(mcPermissions.getInstance().miningAbility(player)){
-			if(PP.getSuperBreakerMode() && PP.getSuperBreakerActivatedTimeStamp() + PP.getSuperBreakerTicks() <= System.currentTimeMillis()){
-					PP.setSuperBreakerMode(false);
-					PP.setSuperBreakerInformed(false);
-					player.sendMessage(ChatColor.RED+"**Super Breaker has worn off**");
-					PP.setSuperBreakerDeactivatedTimeStamp(System.currentTimeMillis());
-			}
-		}
-		/*
-		 * EXCAVATION ABILITY
-		 */
-		if(mcPermissions.getInstance().excavationAbility(player)){
-			if(PP.getGigaDrillBreakerMode() && PP.getGigaDrillBreakerActivatedTimeStamp() + PP.getGigaDrillBreakerTicks() <= System.currentTimeMillis()){
-					PP.setGigaDrillBreakerMode(false);
-					PP.setGigaDrillBreakerInformed(false);
-					player.sendMessage(ChatColor.RED+"**Giga Drill Breaker has worn off**");
-					PP.setGigaDrillBreakerDeactivatedTimeStamp(System.currentTimeMillis());
-			}
-		}
-		/*
-		 * SWORDS ABILITY
-		 */
-		if(mcPermissions.getInstance().swordsAbility(player)){
-			if(PP.getSerratedStrikesMode() && PP.getSerratedStrikesActivatedTimeStamp() + PP.getSerratedStrikesTicks() <= System.currentTimeMillis()){
-					PP.setSerratedStrikesMode(false);
-					PP.setSerratedStrikesInformed(false);
-					player.sendMessage(ChatColor.RED+"**Serrated Strikes has worn off**");
-					PP.setSerratedStrikesDeactivatedTimeStamp(System.currentTimeMillis());
-			}
-		}
-		/*
-		 * UNARMED ABILITY
-		 */
-		if(mcPermissions.getInstance().unarmedAbility(player)){
-			if(PP.getBerserkMode() && PP.getBerserkActivatedTimeStamp() + PP.getBerserkTicks() <= System.currentTimeMillis()){
-					PP.setBerserkMode(false);
-					PP.setBerserkInformed(false);
-					player.sendMessage(ChatColor.RED+"**Berserk has worn off**");
-					PP.setBerserkDeactivatedTimeStamp(System.currentTimeMillis());
-			}
-		}
     }
     public static void XpCheck(Player player){
     	PlayerProfile PP = Users.getProfile(player);

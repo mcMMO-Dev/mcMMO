@@ -4,11 +4,13 @@ import java.util.*;
 import java.util.logging.Logger;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 public class Config {
 	private static volatile Config instance;
     String location = "mcmmo.properties";
     protected static final Logger log = Logger.getLogger("Minecraft");
+    public static ArrayList<Player> removalQue = new ArrayList<Player>();
     static ArrayList<String> adminChatList = new ArrayList<String>();
     static ArrayList<Block> blockWatchList = new ArrayList<Block>();
     static ArrayList<Block> treeFeller = new ArrayList<Block>();

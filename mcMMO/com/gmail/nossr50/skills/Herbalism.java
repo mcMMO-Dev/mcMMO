@@ -109,6 +109,7 @@ public class Herbalism {
 	    		}
 	    		PP.setGreenTerraTicks(ticks * 1000);
 	    		PP.setGreenTerraActivatedTimeStamp(System.currentTimeMillis());
+	    		PP.setGreenTerraDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
 	    		PP.setGreenTerraMode(true);
 	    	}
 	    	

@@ -73,8 +73,10 @@ public class Users {
     {
     	players.clear();
     }
-
-
+    public static HashMap<Player, PlayerProfile> getProfiles(){
+    	return players;
+    }
+    
     public static void removeUser(Player player){    	
     	PlayerProfile PP = Users.getProfile(player);
     	if(PP != null){

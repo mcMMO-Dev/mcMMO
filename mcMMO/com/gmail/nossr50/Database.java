@@ -46,6 +46,19 @@ public class Database {
 				"`party` varchar(100) NOT NULL DEFAULT ''," +
 				"PRIMARY KEY (`id`)," +
 				"UNIQUE KEY `user` (`user`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+		Write("CREATE TABLE IF NOT EXISTS `"+LoadProperties.MySQLtablePrefix+"cooldowns` (`user_id` int(10) unsigned NOT NULL," +
+				"`taming` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`mining` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`woodcutting` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`repair` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`unarmed` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`herbalism` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`excavation` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`archery` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`swords` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`axes` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"`acrobatics` int(32) unsigned NOT NULL DEFAULT '0'," +
+				"PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 		Write("CREATE TABLE IF NOT EXISTS `"+LoadProperties.MySQLtablePrefix+"skills` (`user_id` int(10) unsigned NOT NULL," +
 				"`taming` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`mining` int(10) unsigned NOT NULL DEFAULT '0'," +

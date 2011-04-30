@@ -60,9 +60,9 @@ public class Combat {
 	    	combatAbilityChecks(attacker, PPa, pluginx);
 	    	
 	    	//Check for offensive procs
-	    	Axes.axeCriticalCheck(attacker, eventb); //Axe Criticals
+	    	Axes.axeCriticalCheck(attacker, eventb, pluginx); //Axe Criticals
 	    	if(!Config.getInstance().isBleedTracked(event.getEntity())) //Swords Bleed
-    			Swords.bleedCheck(attacker, event.getEntity());
+    			Swords.bleedCheck(attacker, event.getEntity(), pluginx);
 	    	if(event.getEntity() instanceof Player){
 	    		Player defender = (Player)event.getEntity();
 	    		Unarmed.disarmProcCheck(attacker, defender);
@@ -199,7 +199,7 @@ public class Combat {
 				/*
 				 * TEMPORARY FIX AS WOLVES AREN'T TRIGGERING DAMAGE EVENTS WHEN ATTACKING NON PLAYERS AT THE TIME OF WRITING
 				 */
-				if(!event.isCancelled()){
+				if(!event.isCancelled() && event.getCause() != DamageCause.LIGHTNING){
 					PPo.addTamingXP(event.getDamage() * 3);
 					Skills.XpCheck(master);
 				}
@@ -217,14 +217,15 @@ public class Combat {
 		}
 	}
 	
-	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa, Plugin pluginx){
+	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa, Plugin pluginx)
+	{
 		//Check to see if any abilities need to be activated
 		if(PPa.getAxePreparationMode())
-			Skills.skullSplitterCheck(attacker, pluginx);
+			Axes.skullSplitterCheck(attacker, pluginx);
 		if(PPa.getSwordsPreparationMode())
-			Skills.serratedStrikesActivationCheck(attacker, pluginx);
+			Swords.serratedStrikesActivationCheck(attacker, pluginx);
 		if(PPa.getFistsPreparationMode())
-			Skills.berserkActivationCheck(attacker, pluginx);
+			Unarmed.berserkActivationCheck(attacker, pluginx);
 	}
 	public static void archeryCheck(EntityDamageByProjectileEvent event){
     	Entity y = event.getDamager();

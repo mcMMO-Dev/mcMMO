@@ -47,6 +47,7 @@ public class Mining {
 	    		}
 	    		PP.setSuperBreakerTicks(ticks * 1000);
 	    		PP.setSuperBreakerActivatedTimeStamp(System.currentTimeMillis());
+	    		PP.setSuperBreakerDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
 	    		PP.setSuperBreakerMode(true);
 	    	}
 	    	

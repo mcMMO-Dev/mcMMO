@@ -27,7 +27,7 @@ public class PlayerProfile
     protected final Logger log = Logger.getLogger("Minecraft");
 	private String taming="0", tamingXP="0", miningXP="0", woodCuttingXP="0", woodcutting="0", repair="0", mining="0", party, myspawn, myspawnworld, unarmed="0", herbalism="0", excavation="0",
 	archery="0", swords="0", axes="0", invite, acrobatics="0", repairXP="0", unarmedXP="0", herbalismXP="0", excavationXP="0", archeryXP="0", swordsXP="0", axesXP="0", acrobaticsXP="0";
-	private boolean greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
+	private boolean online = true, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
 	superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
 	serratedStrikesMode, hoePreparationMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode, pickaxePreparationMode, axePreparationMode, skullSplitterMode, berserkMode;
 	private long gigaDrillBreakerCooldown = 0, berserkCooldown = 0, superBreakerCooldown = 0, skullSplitterCooldown = 0, serratedStrikesCooldown = 0,
@@ -57,6 +57,12 @@ public class PlayerProfile
 		}
 	}
 	
+	public boolean getOnline(){
+		return online;
+	}
+	public void setOnline(Boolean bool){
+		online = bool;
+	}
 	public int getMySQLuserId(){
 		return userid;
 	}
@@ -75,6 +81,25 @@ public class PlayerProfile
 			HashMap<Integer, ArrayList<String>> spawn = mcMMO.database.Read("SELECT world, x, y, z FROM "+LoadProperties.MySQLtablePrefix+"spawn WHERE user_id = " + id);
 				myspawnworld = spawn.get(1).get(0);
 				myspawn = spawn.get(1).get(1) + "," + spawn.get(1).get(2) + "," + spawn.get(1).get(3);				
+			HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.Read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes FROM "+LoadProperties.MySQLtablePrefix+"cooldowns WHERE user_id = " + id);
+			/*
+			 * I'm still learning MySQL, this is a fix for adding a new table
+			 * its not pretty but it works
+			 */
+			if(cooldowns.get(1) == null)
+			{
+				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"cooldowns (user_id) VALUES ("+id+")");
+			}
+			else
+			{
+				superBreakerDATS = Long.valueOf(cooldowns.get(1).get(0)) * 1000;
+				treeFellerDATS = Long.valueOf(cooldowns.get(1).get(1)) * 1000;
+				berserkDATS = Long.valueOf(cooldowns.get(1).get(2)) * 1000;
+				greenTerraDATS = Long.valueOf(cooldowns.get(1).get(3)) * 1000;
+				gigaDrillBreakerDATS = Long.valueOf(cooldowns.get(1).get(4)) * 1000;
+				serratedStrikesDATS = Long.valueOf(cooldowns.get(1).get(5)) * 1000;
+				skullSplitterDATS = Long.valueOf(cooldowns.get(1).get(6)) * 1000;
+			}
 			HashMap<Integer, ArrayList<String>> skills = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
 				taming = skills.get(1).get(0);
 				mining = skills.get(1).get(1);
@@ -109,6 +134,7 @@ public class PlayerProfile
 		Integer id = 0;
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + p.getName() + "'," + System.currentTimeMillis() / 1000 +")");
 		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + p.getName() + "'");
+		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"cooldowns (user_id) VALUES ("+id+")");
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"spawn (user_id) VALUES ("+id+")");
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills (user_id) VALUES ("+id+")");
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")");
@@ -183,6 +209,22 @@ public class PlayerProfile
     				taming = character[24];
     			if(character.length > 25)
     				tamingXP = character[25];
+    			//Need to store the DATS of abilities nao
+    			//Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
+    			if(character.length > 26)
+    				berserkDATS = Long.valueOf(character[26]) * 1000;
+    			if(character.length > 27)
+    				gigaDrillBreakerDATS = Long.valueOf(character[27]) * 1000;
+    			if(character.length > 28)
+    				treeFellerDATS = Long.valueOf(character[28]) * 1000;
+    			if(character.length > 29)
+    				greenTerraDATS = Long.valueOf(character[29]) * 1000;
+    			if(character.length > 30)
+    				serratedStrikesDATS = Long.valueOf(character[30]) * 1000;
+    			if(character.length > 31)
+    				skullSplitterDATS = Long.valueOf(character[31]) * 1000;
+    			if(character.length > 32)
+    				superBreakerDATS = Long.valueOf(character[32]) * 1000;
             	in.close();
     			return true;
         	}
@@ -202,6 +244,15 @@ public class PlayerProfile
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
+    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"cooldowns SET "
+    				+" mining = "+(superBreakerDATS/1000)
+    				+", woodcutting = "+(treeFellerDATS/1000)
+    				+", unarmed = "+(berserkDATS/1000)
+    				+", herbalism = "+(greenTerraDATS/1000)
+    				+", excavation = "+(gigaDrillBreakerDATS/1000)
+    				+", swords = " +(serratedStrikesDATS/1000)
+    				+", axes = "+(skullSplitterDATS/1000)
+    				+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
     				+"  taming = "+taming
     				+", mining = "+mining
@@ -275,6 +326,15 @@ public class PlayerProfile
 	        			writer.append(myspawnworld+":");
 	        			writer.append(taming+":");
 	        			writer.append(tamingXP+":");
+	        			//Need to store the DATS of abilities nao
+	        			//Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
+	        			writer.append(String.valueOf(berserkDATS/1000)+":");
+	        			writer.append(String.valueOf(gigaDrillBreakerDATS/1000)+":");
+	        			writer.append(String.valueOf(treeFellerDATS/1000)+":");
+	        			writer.append(String.valueOf(greenTerraDATS/1000)+":");
+	        			writer.append(String.valueOf(serratedStrikesDATS/1000)+":");
+	        			writer.append(String.valueOf(skullSplitterDATS/1000)+":");
+	        			writer.append(String.valueOf(superBreakerDATS/1000)+":");
 	        			writer.append("\r\n");                   			
 	        		}
 	        	}
@@ -322,6 +382,14 @@ public class PlayerProfile
             out.append("");
             out.append(0+":"); //taming
             out.append(0+":"); //tamingXP
+            out.append(0+":"); //DATS
+            out.append(0+":"); //DATS
+            out.append(0+":"); //DATS
+            out.append(0+":"); //DATS
+            out.append(0+":"); //DATS
+            out.append(0+":"); //DATS
+            out.append(0+":"); //DATS
+
             //Add more in the same format as the line above
             
 			out.newLine();
@@ -498,6 +566,7 @@ public class PlayerProfile
 	public long getGreenTerraDeactivatedTimeStamp() {return greenTerraDATS;}
 	public void setGreenTerraDeactivatedTimeStamp(Long newvalue){
 		greenTerraDATS = newvalue;
+		save();
 	}
 	public void setGreenTerraCooldown(Long newvalue){
 		greenTerraCooldown = newvalue;
@@ -527,6 +596,7 @@ public class PlayerProfile
 	public long getBerserkDeactivatedTimeStamp() {return berserkDATS;}
 	public void setBerserkDeactivatedTimeStamp(Long newvalue){
 		berserkDATS = newvalue;
+		save();
 	}
 	public void setBerserkCooldown(Long newvalue){
 		berserkCooldown = newvalue;
@@ -556,6 +626,7 @@ public class PlayerProfile
 	public long getSkullSplitterDeactivatedTimeStamp() {return skullSplitterDATS;}
 	public void setSkullSplitterDeactivatedTimeStamp(Long newvalue){
 		skullSplitterDATS = newvalue;
+		save();
 	}
 	public void setSkullSplitterCooldown(Long newvalue){
 		skullSplitterCooldown = newvalue;
@@ -585,6 +656,7 @@ public class PlayerProfile
 	public long getSerratedStrikesDeactivatedTimeStamp() {return serratedStrikesDATS;}
 	public void setSerratedStrikesDeactivatedTimeStamp(Long newvalue){
 		serratedStrikesDATS = newvalue;
+		save();
 	}
 	public void setSerratedStrikesCooldown(Long newvalue){
 		serratedStrikesCooldown = newvalue;
@@ -614,6 +686,7 @@ public class PlayerProfile
 	public long getGigaDrillBreakerDeactivatedTimeStamp() {return gigaDrillBreakerDATS;}
 	public void setGigaDrillBreakerDeactivatedTimeStamp(Long newvalue){
 		gigaDrillBreakerDATS = newvalue;
+		save();
 	}
 	public void setGigaDrillBreakerCooldown(Long newvalue){
 		gigaDrillBreakerCooldown = newvalue;
@@ -643,6 +716,7 @@ public class PlayerProfile
 	public long getTreeFellerDeactivatedTimeStamp() {return treeFellerDATS;}
 	public void setTreeFellerDeactivatedTimeStamp(Long newvalue){
 		treeFellerDATS = newvalue;
+		save();
 	}
 	public void setTreeFellerCooldown(Long newvalue){
 		treeFellerCooldown = newvalue;
@@ -672,6 +746,7 @@ public class PlayerProfile
 	public long getSuperBreakerDeactivatedTimeStamp() {return superBreakerDATS;}
 	public void setSuperBreakerDeactivatedTimeStamp(Long newvalue){
 		superBreakerDATS = newvalue;
+		save();
 	}
 	public void setSuperBreakerCooldown(Long newvalue){
 		superBreakerCooldown = newvalue;

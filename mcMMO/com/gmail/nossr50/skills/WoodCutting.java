@@ -64,6 +64,7 @@ public class WoodCutting {
 	    		}
     			PP.setTreeFellerTicks(ticks * 1000);
     			PP.setTreeFellerActivatedTimeStamp(System.currentTimeMillis());
+    			PP.setTreeFellerDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
     			PP.setTreeFellerMode(true);
     		}
     		if(!PP.getTreeFellerMode() && !Skills.cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), LoadProperties.treeFellerCooldown)){

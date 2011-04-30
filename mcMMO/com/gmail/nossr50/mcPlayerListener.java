@@ -77,10 +77,13 @@ public class mcPlayerListener extends PlayerListener {
     	return null;
     }
     public void onPlayerLogin(PlayerLoginEvent event) {
+    	if(Users.getProfile(event.getPlayer()) != null){
+    		Users.getProfile(event.getPlayer()).setOnline(true);
+    	}
     	Users.addUser(event.getPlayer());	
     }
     public void onPlayerQuit(PlayerQuitEvent event) {
-    	Users.removeUser(event.getPlayer());    	
+    	Users.getProfile(event.getPlayer()).setOnline(false);
     }        
     public void onPlayerJoin(PlayerJoinEvent event) {
     	Player player = event.getPlayer();

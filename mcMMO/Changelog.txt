@@ -1,5 +1,17 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.04
+Fixed bug where players would be informed incorrectly when their cooldowns refreshed
+Fixed exploit where players could reconnect to reset their cooldowns
+Added new "cooldowns" table to MySQL
+Berserk now breaks through snow
+Lightning no longer gives Taming XP
+Shortened /mcc to fit the screen
+
+Version 1.0.03
+Bleed will no longer trigger on friendly wolves
+Axes criticals will no longer trigger on friendly wolves
+
 Version 1.0.02
 Fixed bug where the Timer would start before everything else was ready
 Fixed bug where mcrefresh also required mcability permission node

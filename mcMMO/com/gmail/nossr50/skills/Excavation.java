@@ -45,6 +45,7 @@ public class Excavation {
 	    		}
 	    		PP.setGigaDrillBreakerTicks(ticks * 1000);
 	    		PP.setGigaDrillBreakerActivatedTimeStamp(System.currentTimeMillis());
+	    		PP.setGigaDrillBreakerDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
 	    		PP.setGigaDrillBreakerMode(true);
 	    	}
 	    	
