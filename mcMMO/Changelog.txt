@@ -1,5 +1,12 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+
+Version 1.0.05
+PVP interactions now check for permissions before handing out any experience
+Many skill abilities now check for permissions correctly
+All interactions with Taming now check for permissions
+mcMMO now checks for its pvp flag being true before handling pvp interactions
+
 Version 1.0.04
 Fixed bug where players would be informed incorrectly when their cooldowns refreshed
 Fixed exploit where players could reconnect to reset their cooldowns

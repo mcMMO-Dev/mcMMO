@@ -49,7 +49,16 @@ public class mcEntityListener extends EntityListener {
     }
     public void onEntityDamage(EntityDamageEvent event) {
     	if(event.isCancelled())
-    		return;		
+    		return;
+    	/*
+    	 * CHECK FOR mcMMO PVP FLAG
+    	 */
+    	if(event instanceof EntityDamageByEntityEvent)
+    	{
+    		EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent)event;
+    		if(eventb.getEntity() instanceof Player && eventb.getDamager() instanceof Player && !LoadProperties.pvp)
+    			return;
+    	}
     	/*
     	 * CHECK FOR INVULNERABILITY
     	 */

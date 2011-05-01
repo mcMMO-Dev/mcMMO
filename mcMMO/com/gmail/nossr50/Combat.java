@@ -60,10 +60,11 @@ public class Combat {
 	    	combatAbilityChecks(attacker, PPa, pluginx);
 	    	
 	    	//Check for offensive procs
-	    	Axes.axeCriticalCheck(attacker, eventb, pluginx); //Axe Criticals
+	    	if(mcPermissions.getInstance().axes(attacker))
+	    		Axes.axeCriticalCheck(attacker, eventb, pluginx); //Axe Criticals
 	    	if(!Config.getInstance().isBleedTracked(event.getEntity())) //Swords Bleed
     			Swords.bleedCheck(attacker, event.getEntity(), pluginx);
-	    	if(event.getEntity() instanceof Player){
+	    	if(event.getEntity() instanceof Player && mcPermissions.getInstance().unarmed(attacker)){
 	    		Player defender = (Player)event.getEntity();
 	    		Unarmed.disarmProcCheck(attacker, defender);
 	    	}
@@ -88,11 +89,11 @@ public class Combat {
 	    		{
 	    			if(System.currentTimeMillis() >= PPd.getRespawnATS() + 5000 && defender.getHealth() >= 1)
 	    			{
-		    			if(m.isAxes(attacker.getItemInHand()))
+		    			if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
 		    				PPa.addAxesXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
-		    			if(m.isSwords(attacker.getItemInHand()))
+		    			if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
 		    				PPa.addSwordsXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
-		    			if(attacker.getItemInHand().getTypeId() == 0)
+		    			if(attacker.getItemInHand().getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker))
 		    				PPa.addUnarmedXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
 	    			}
 	    		}
@@ -148,28 +149,29 @@ public class Combat {
 			{
 				Player master = Taming.getOwner(eventb.getDamager(), pluginx);
 				PlayerProfile PPo = Users.getProfile(master);
-				
-				//Sharpened Claws
-				if(PPo.getTamingInt() >= 750)
-				{
-					event.setDamage(event.getDamage() + 2);
-				}
-				
-				//Gore
-				if(Math.random() * 1000 <= PPo.getTamingInt())
-				{
-					event.setDamage(event.getDamage() * 2);
-					
-					if(event.getEntity() instanceof Player)
+				if(mcPermissions.getInstance().taming(master)){
+					//Sharpened Claws
+					if(PPo.getTamingInt() >= 750)
 					{
-						Player target = (Player)event.getEntity();
-						target.sendMessage(ChatColor.RED+"**STRUCK BY GORE**");
-						Users.getProfile(target).setBleedTicks(2);
+						event.setDamage(event.getDamage() + 2);
 					}
-					else
-						Config.getInstance().addToBleedQue(event.getEntity());
 					
-					master.sendMessage(ChatColor.GREEN+"**GORE**");
+					//Gore
+					if(Math.random() * 1000 <= PPo.getTamingInt())
+					{
+						event.setDamage(event.getDamage() * 2);
+						
+						if(event.getEntity() instanceof Player)
+						{
+							Player target = (Player)event.getEntity();
+							target.sendMessage(ChatColor.RED+"**STRUCK BY GORE**");
+							Users.getProfile(target).setBleedTicks(2);
+						}
+						else
+							Config.getInstance().addToBleedQue(event.getEntity());
+						
+						master.sendMessage(ChatColor.GREEN+"**GORE**");
+					}
 				}
 			}
 		}
@@ -195,24 +197,26 @@ public class Combat {
 			{
 				Player master = Taming.getOwner(event.getEntity(), pluginx);
 				PlayerProfile PPo = Users.getProfile(master);
-				
-				/*
-				 * TEMPORARY FIX AS WOLVES AREN'T TRIGGERING DAMAGE EVENTS WHEN ATTACKING NON PLAYERS AT THE TIME OF WRITING
-				 */
-				if(!event.isCancelled() && event.getCause() != DamageCause.LIGHTNING){
-					PPo.addTamingXP(event.getDamage() * 3);
-					Skills.XpCheck(master);
-				}
-				
-				//Shock-Proof
-				if((event.getCause() == DamageCause.ENTITY_EXPLOSION || event.getCause() == DamageCause.BLOCK_EXPLOSION) && PPo.getTamingInt() >= 500)
+				if(mcPermissions.getInstance().taming(master))
 				{
-					event.setDamage(2);
+					/*
+					 * TEMPORARY FIX AS WOLVES AREN'T TRIGGERING DAMAGE EVENTS WHEN ATTACKING NON PLAYERS AT THE TIME OF WRITING
+					 */
+					if(!event.isCancelled() && event.getCause() != DamageCause.LIGHTNING){
+						PPo.addTamingXP(event.getDamage() * 3);
+						Skills.XpCheck(master);
+					}
+					
+					//Shock-Proof
+					if((event.getCause() == DamageCause.ENTITY_EXPLOSION || event.getCause() == DamageCause.BLOCK_EXPLOSION) && PPo.getTamingInt() >= 500)
+					{
+						event.setDamage(2);
+					}
+					
+					//Thick Fur
+					if(PPo.getTamingInt() >= 250)
+						event.setDamage(event.getDamage() / 2);
 				}
-				
-				//Thick Fur
-				if(PPo.getTamingInt() >= 250)
-					event.setDamage(event.getDamage() / 2);
 			}
 		}
 	}
