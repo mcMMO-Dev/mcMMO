@@ -47,7 +47,8 @@ public class PlayerProfile
 	public PlayerProfile(Player player)
 	{
 		thisplayer = player;
-		if (LoadProperties.useMySQL) {
+		if (LoadProperties.useMySQL) 
+		{
 			if(!loadMySQL(player)) {
 				addMySQLPlayer(player);
 				loadMySQL(player);//This is probably not needed anymore, could just delete
@@ -82,6 +83,7 @@ public class PlayerProfile
 				myspawnworld = spawn.get(1).get(0);
 				myspawn = spawn.get(1).get(1) + "," + spawn.get(1).get(2) + "," + spawn.get(1).get(3);				
 			HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.Read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes FROM "+LoadProperties.MySQLtablePrefix+"cooldowns WHERE user_id = " + id);
+			
 			/*
 			 * I'm still learning MySQL, this is a fix for adding a new table
 			 * its not pretty but it works

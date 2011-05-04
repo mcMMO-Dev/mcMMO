@@ -18,9 +18,11 @@ import com.gmail.nossr50.config.LoadProperties;
 public class Database {
 
 	private Connection conn;
+	private mcMMO plugin;
 	
-	public Database() {
-
+	public Database(mcMMO instance) 
+	{
+		plugin = instance;
 		// Load the driver instance
 		try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -92,20 +94,66 @@ public class Database {
 				"`world` varchar(50) NOT NULL DEFAULT ''," +
 				"PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 	}
-	// write query
-	public boolean Write(String sql) {
-		try {
-	  		PreparedStatement stmt = null;
-	  		stmt = this.conn.prepareStatement(sql);
-	  		stmt.executeUpdate();
-	  		return true;
-		} catch(SQLException ex) {
+	// check if its closed
+	private void reconnect()
+	{
+		System.out.println("[mcMMO] Reconnecting to MySQL...");
+		try 
+		{
+		    conn = DriverManager.getConnection("jdbc:mysql://" + LoadProperties.MySQLserverName + ":" + LoadProperties.MySQLport + "/" + LoadProperties.MySQLdbName + "?user=" + LoadProperties.MySQLuserName + "&password=" + LoadProperties.MySQLdbPass);			
+		    
+		    System.out.println("[mcMMO] Connection success!");
+		} catch (SQLException ex) 
+		{
+			System.out.println("[mcMMO] Connection to MySQL failed! Check status of MySQL server!");
 		    System.out.println("SQLException: " + ex.getMessage());
 		    System.out.println("SQLState: " + ex.getSQLState());
 		    System.out.println("VendorError: " + ex.getErrorCode());
-			return false;
+		}
+		
+		try {
+			if(conn.isValid(5)){
+				Users.clearUsers();
+				
+				for(Player x : plugin.getServer().getOnlinePlayers())
+				{
+					Users.addUser(x);
+				}
+			}
+		} catch (SQLException e) {
+			//Herp
 		}
 	}
+	// write query
+	public boolean Write(String sql) 
+	{
+		/*
+		 * Double check connection to MySQL
+		 */
+		try 
+		{
+			if(!conn.isValid(5))
+			{
+			reconnect();
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+			
+		try 
+			{
+		  		PreparedStatement stmt = null;
+		  		stmt = this.conn.prepareStatement(sql);
+		  		stmt.executeUpdate();
+		  		return true;
+			} catch(SQLException ex) {
+			    System.out.println("SQLException: " + ex.getMessage());
+			    System.out.println("SQLState: " + ex.getSQLState());
+			    System.out.println("VendorError: " + ex.getErrorCode());
+				return false;
+			}
+ 	}
 	
 	// Get Int
 	// only return first row / first field
@@ -113,6 +161,20 @@ public class Database {
   		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Integer result = 0;
+		
+		/*
+		 * Double check connection to MySQL
+		 */
+		try 
+		{
+			if(!conn.isValid(5))
+			{
+			reconnect();
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 		
 		try {
 			stmt = this.conn.prepareStatement(sql);
@@ -136,6 +198,20 @@ public class Database {
 	
 	// read query
 	public HashMap<Integer, ArrayList<String>> Read(String sql) {
+		/*
+		 * Double check connection to MySQL
+		 */
+		try 
+		{
+			if(!conn.isValid(5))
+			{
+			reconnect();
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
   		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		HashMap<Integer, ArrayList<String>> Rows = new HashMap<Integer, ArrayList<String>>();

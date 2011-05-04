@@ -619,7 +619,7 @@ public class m {
 			player.sendMessage(ChatColor.RED+"Chance to Daze: "+ChatColor.YELLOW+percentagedaze+"%");
 			player.sendMessage(ChatColor.RED+"Chance to Retrieve Arrows: "+ChatColor.YELLOW+percentage+"%");
 			player.sendMessage(ChatColor.RED+"Length of Ignition: "+ChatColor.YELLOW+(ignition / 20)+" seconds");
-			player.sendMessage(ChatColor.RED+"Damage+ (Rank"+rank+"): Bonus "+rank+" damage");
+			player.sendMessage(ChatColor.RED+"Damage+ (Rank"+rank+"):"+ChatColor.YELLOW+" Bonus "+rank+" damage");
     	}
     	if(split[0].equalsIgnoreCase("/axes")){
 			event.setCancelled(true);
@@ -851,12 +851,13 @@ public class m {
 			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops (All Herbs): "+ChatColor.GREEN+"Double the normal loot");
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
 			player.sendMessage(ChatColor.RED+"Green Terra Length: "+ChatColor.YELLOW+ticks+"s");
-			player.sendMessage(ChatColor.RED+"Green Thumb Chance: "+gpercentage+"%");
-			player.sendMessage(ChatColor.RED+"Green Thumb Stage: Wheat grows in stage "+bonus);
-			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+percentage+"%");
-			player.sendMessage(ChatColor.RED+"Food+ (Rank"+rank+"): Bonus "+rank+" healing");
+			player.sendMessage(ChatColor.RED+"Green Thumb Chance: "+ChatColor.YELLOW+gpercentage+"%");
+			player.sendMessage(ChatColor.RED+"Green Thumb Stage: "+ChatColor.YELLOW+"Wheat grows in stage "+bonus);
+			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
+			player.sendMessage(ChatColor.RED+"Food+ (Rank"+rank+"): "+ChatColor.YELLOW+"Bonus "+rank+" healing");
     	}
-    	if(split[0].equalsIgnoreCase("/excavation")){
+    	if(split[0].equalsIgnoreCase("/excavation"))
+    	{
 			event.setCancelled(true);
 			int ticks = 2;
 			int x = PP.getExcavationInt();

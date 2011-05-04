@@ -62,7 +62,8 @@ public class mcEntityListener extends EntityListener {
     	/*
     	 * CHECK FOR INVULNERABILITY
     	 */
-    	if(event.getEntity() instanceof Player){
+    	if(event.getEntity() instanceof Player)
+    	{
     		Player defender = (Player)event.getEntity();
     		PlayerProfile PPd = Users.getProfile(defender);
     		if(defender != null && Config.getInstance().isGodModeToggled(defender.getName()))
@@ -71,7 +72,8 @@ public class mcEntityListener extends EntityListener {
     			Users.addUser(defender);
     	}
     	
-    	if(event.getEntity() instanceof CraftEntity){
+    	if(event.getEntity() instanceof CraftEntity)
+    	{
     		CraftEntity cEntity = (CraftEntity)event.getEntity();
 	    	if(cEntity.getHandle() instanceof EntityLiving)
 	    	{

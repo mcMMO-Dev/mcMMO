@@ -144,14 +144,17 @@ public class Leaderboard {
 	    		//HERP
 	            BufferedReader in = new BufferedReader(file);
 	            StringBuilder writer = new StringBuilder();
-	        	String line = "";
+	            
 	        	for(PlayerStat p : ps)
 	        	{
 	        		if(p.name.equals("$mcMMO_DummyInfo"))
 	        			continue;
+	        		if(p.statVal == 0)
+	        			continue;
 	        		writer.append(p.name + ":" + p.statVal);
 	        		writer.append("\r\n"); 
 	        	}
+	        	
 	        	in.close();
 	        	//Write the new file
 	            FileWriter out = new FileWriter(theLocation);

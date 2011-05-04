@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -155,6 +156,8 @@ public class mcBlockListener extends BlockListener {
     						if(Math.random() * 10 > 9)
     							blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
     					}
+    					if(blockx.getType() != Material.AIR)
+    						player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
     					blockx.setType(Material.AIR);
     				}
     			}
@@ -233,6 +236,7 @@ public class mcBlockListener extends BlockListener {
 			byte type = block.getData();
 			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
 			block.setType(Material.AIR);
+			player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
 			if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
@@ -251,6 +255,7 @@ public class mcBlockListener extends BlockListener {
 		   		mat = Material.SNOW_BALL;
 			byte type = block.getData();
 			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
+			player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
 			block.setType(Material.AIR);
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
     	}
@@ -282,6 +287,7 @@ public class mcBlockListener extends BlockListener {
     			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), x);
     		}
     		block.setType(Material.AIR);
+    		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
     	}
     }
     

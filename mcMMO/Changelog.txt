@@ -1,5 +1,16 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.07
+Leaderboards ignore players with the respective stat at 0
+Reconnecting to MySQL will reload player data
+Fixed a NPE with MySQL's Leaderboards
+Removed "Loop iteration" debug message from mcMMO
+
+Version 1.0.06
+MySQL will attempt to reconnect if the connection is closed
+Breaking the bottom block of Cactus/Reeds will award the correct experience and double drops
+Added support for Minecraft Statistics
+Fixed NPE with /myspawn command
 
 Version 1.0.05
 PVP interactions now check for permissions before handing out any experience

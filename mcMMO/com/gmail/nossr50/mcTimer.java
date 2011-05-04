@@ -20,7 +20,8 @@ public class mcTimer extends TimerTask{
     
 	public void run() {
 		Player[] playerlist = plugin.getServer().getOnlinePlayers();
-		for(Player player : playerlist){
+		for(Player player : playerlist)
+		{
 			PlayerProfile PP = Users.getProfile(player);
 			if(player == null)
 				continue;
@@ -38,12 +39,13 @@ public class mcTimer extends TimerTask{
 			/*
 			 * PLAYER BLEED MONITORING
 			 */
-			if(thecount % 2 == 0 && player != null && PP != null && PP.getBleedTicks() >= 1){
+			if(thecount % 2 == 0 && PP != null && PP.getBleedTicks() >= 1){
         		player.damage(2);
         		PP.decreaseBleedTicks();
         	}
 			
-			if(mcPermissions.getInstance().regeneration(player) && PP != null && System.currentTimeMillis() >= PP.getRecentlyHurt() + 60000){
+			if(mcPermissions.getInstance().regeneration(player) && PP != null && System.currentTimeMillis() >= PP.getRecentlyHurt() + 60000)
+			{
 				if(thecount == 10 || thecount == 20 || thecount == 30 || thecount == 40){
 				    if(player != null &&
 				    	player.getHealth() > 0 && player.getHealth() < 20 
@@ -75,9 +77,11 @@ public class mcTimer extends TimerTask{
 		if(thecount % 2 == 0)
 			Swords.bleedSimulate();
 		
-		if(thecount < 40){
+		if(thecount < 40)
+		{
 			thecount++;
-		} else {
+		} else 
+		{
 			thecount = 1;
 		}
 	}

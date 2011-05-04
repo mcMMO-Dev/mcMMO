@@ -85,7 +85,8 @@ public class Swords {
     	int targets = 0;
     	Entity x = event.getEntity();
     	targets = m.getTier(attacker);
-    	for(Entity derp : x.getWorld().getEntities()){
+    	for(Entity derp : x.getWorld().getEntities())
+    	{
     		if(m.getDistance(x.getLocation(), derp.getLocation()) < 5){
     			if(derp instanceof Player){
     				Player target = (Player)derp;

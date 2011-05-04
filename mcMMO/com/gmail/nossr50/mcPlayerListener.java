@@ -313,6 +313,7 @@ public class mcPlayerListener extends PlayerListener {
     		* MYSQL LEADERBOARDS
     		*/
     		{
+    			String powerlevel = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics";
     			if(split.length >= 2 && Skills.isSkill(split[1]))
     			{
     				/*
@@ -336,12 +337,12 @@ public class mcPlayerListener extends PlayerListener {
 	    	        	}
 	    	        	//If a page number is specified
 	    	        	HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT "+lowercase+", user_id FROM "
-    	    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY `"+LoadProperties.MySQLtablePrefix+"skills`.`"+lowercase+"` DESC ");
+    	    					+LoadProperties.MySQLtablePrefix+"skills WHERE "+lowercase+" > 0 ORDER BY `"+LoadProperties.MySQLtablePrefix+"skills`.`"+lowercase+"` DESC ");
 	    	        	
 	    	        	for(int i=n;i<=n+10;i++)
     	    			{
-    	    				if (i > userslist.size())
-    	    					break;
+	    	        		if (i > userslist.size() || mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
+		    					break;
 	    	        		HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
     	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
     	    			}
@@ -349,10 +350,10 @@ public class mcPlayerListener extends PlayerListener {
 	    	        }
 	    	        //If no page number is specified
 	    	        HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT "+lowercase+", user_id FROM "
-	    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY `"+LoadProperties.MySQLtablePrefix+"skills`.`"+lowercase+"` DESC ");
+	    					+LoadProperties.MySQLtablePrefix+"skills WHERE "+lowercase+" > 0 ORDER BY `"+LoadProperties.MySQLtablePrefix+"skills`.`"+lowercase+"` DESC ");
 	    	        for(int i=1;i<=10;i++) //i<=userslist.size()
 	    			{
-	    	        	if (i > userslist.size())
+	    	        	if (i > userslist.size() || mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
 	    					break;
 	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
@@ -373,22 +374,22 @@ public class mcPlayerListener extends PlayerListener {
 	    	        		n = n * (n2-1);
 	    	        	}
 	    	        	//If a page number is specified
-	    	        	HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics, user_id FROM "
-		    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
+	    	        	HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT "+powerlevel+", user_id FROM "
+		    					+LoadProperties.MySQLtablePrefix+"skills WHERE "+powerlevel+" > 0 ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
 	    	        	for(int i=n;i<=n+10;i++)
     	    			{
-	    	        		if (i > userslist.size())
-    	    					break;
+	    	        		if (i > userslist.size() || mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
+		    					break;
 	    	        		HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
     	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
     	    			}
     	        		return;
 	    	        }
 	    			HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics, user_id FROM "
-	    					+LoadProperties.MySQLtablePrefix+"skills ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
+	    					+LoadProperties.MySQLtablePrefix+"skills WHERE "+powerlevel+" > 0 ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics DESC ");
 	    			for(int i=1;i<=10;i++)
 	    			{
-	    				if (i > userslist.size())
+	    				if (i > userslist.size() || mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
 	    					break;
 	    				HashMap<Integer, ArrayList<String>> username =  mcMMO.database.Read("SELECT user FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 	    				player.sendMessage(String.valueOf(i)+". "+ChatColor.GREEN+userslist.get(i).get(0)+" - "+ChatColor.WHITE+username.get(1).get(0));
@@ -836,13 +837,8 @@ public class mcPlayerListener extends PlayerListener {
 	    				//player.sendMessage("MMO DEBUG CODE 5");
 	    				mySpawn.setWorld(plugin.getServer().getWorlds().get(0));
 	    		}
-	    		//player.sendMessage("MMO DEBUG CODE 3");
 	    		player.teleportTo(mySpawn); //It's done twice because teleporting from one world to another is weird
 	    		player.teleportTo(mySpawn);
-	    		//Two lines of teleporting to prevent a bug when players try teleporting from one world to another bringing them to that worlds spawn at first.
-	    		//player.sendMessage("MMO DEBUG CODE 4");
-	    		if(LoadProperties.myspawnclearsinventory)
-	    			player.sendMessage("Traveled to your MySpawn");
     		} else {
     			player.sendMessage(ChatColor.RED+"Configure your myspawn first with a bed.");
     		}

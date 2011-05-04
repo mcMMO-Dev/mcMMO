@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +23,8 @@ public class Mining {
     	plugin = instance;
     }
 	
-	public static void superBreakerCheck(Player player, Block block, Plugin pluginx){
+	public static void superBreakerCheck(Player player, Block block, Plugin pluginx)
+	{
 		PlayerProfile PP = Users.getProfile(player);
 	    if(m.isMiningPick(player.getItemInHand())){
 	    	if(block != null){
@@ -53,7 +55,8 @@ public class Mining {
 	    	
 	    }
 	}
-	public static void blockProcSimulate(Block block){
+	public static void blockProcSimulate(Block block)
+	{
     	Location loc = block.getLocation();
     	Material mat = Material.getMaterial(block.getTypeId());
 		byte damage = 0;
@@ -99,7 +102,8 @@ public class Mining {
 			loc.getWorld().dropItemNaturally(loc, item);
 		}
     }
-    public static void blockProcCheck(Block block, Player player){
+    public static void blockProcCheck(Block block, Player player)
+    {
     	PlayerProfile PP = Users.getProfile(player);
     	if(player != null){
     		if(Math.random() * 1000 <= PP.getMiningInt()){
@@ -108,7 +112,8 @@ public class Mining {
     		}
     	}		
 	}
-    public static void miningBlockCheck(Player player, Block block){
+    public static void miningBlockCheck(Player player, Block block)
+    {
     	PlayerProfile PP = Users.getProfile(player);
     	if(Config.getInstance().isBlockWatched(block) || block.getData() == (byte) 5)
     		return;
@@ -185,7 +190,8 @@ public class Mining {
     	int xp = 0;
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-    	if(block.getTypeId() == 1 || block.getTypeId() == 24){
+    	if(block.getTypeId() == 1 || block.getTypeId() == 24)
+    	{
     		if(!Config.getInstance().isBlockWatched(block) && block.getData() != (byte) 5){
     			xp += 3;
     			blockProcCheck(block, player);
@@ -198,10 +204,12 @@ public class Mining {
     		}
 			item = new ItemStack(mat, 1, (byte)0, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	//NETHERRACK
-    	if(block.getTypeId() == 87){
+    	if(block.getTypeId() == 87)
+    	{
     		if(!Config.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 3;
     			blockProcCheck(block, player);
@@ -210,10 +218,12 @@ public class Mining {
     		mat = Material.getMaterial(87);
 			item = new ItemStack(mat, 1, (byte)0, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	//GLOWSTONE
-    	if(block.getTypeId() == 89){
+    	if(block.getTypeId() == 89)
+    	{
     		if(!Config.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 3;
     			blockProcCheck(block, player);
@@ -222,10 +232,12 @@ public class Mining {
     		mat = Material.getMaterial(348);
 			item = new ItemStack(mat, 1, (byte)0, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	//COAL
-    	if(block.getTypeId() == 16){
+    	if(block.getTypeId() == 16)
+    	{
     		if(!Config.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 10;
         		blockProcCheck(block, player);
@@ -234,10 +246,12 @@ public class Mining {
     		mat = Material.getMaterial(263);
 			item = new ItemStack(mat, 1, (byte)0, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	//GOLD
-    	if(block.getTypeId() == 14 && m.getTier(player) >= 3){
+    	if(block.getTypeId() == 14 && m.getTier(player) >= 3)
+    	{
     		if(!Config.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 35;
         		blockProcCheck(block, player);
@@ -245,10 +259,12 @@ public class Mining {
         		}
     		item = new ItemStack(mat, 1, (byte)0, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	//OBSIDIAN
-    	if(block.getTypeId() == 49 && m.getTier(player) >= 4){
+    	if(block.getTypeId() == 49 && m.getTier(player) >= 4)
+    	{
     		if(LoadProperties.toolsLoseDurabilityFromAbilities)
         		m.damageTool(player, (short) 104);
     		if(!Config.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
@@ -259,10 +275,12 @@ public class Mining {
     		mat = Material.getMaterial(49);
 			item = new ItemStack(mat, 1, (byte)0, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	//DIAMOND
-    	if(block.getTypeId() == 56 && m.getTier(player) >= 3){
+    	if(block.getTypeId() == 56 && m.getTier(player) >= 3)
+    	{
     		if(!Config.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 75;
         		blockProcCheck(block, player);
@@ -271,10 +289,12 @@ public class Mining {
     		mat = Material.getMaterial(264);
 			item = new ItemStack(mat, 1, (byte)0, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	//IRON
-    	if(block.getTypeId() == 15 && m.getTier(player) >= 2){
+    	if(block.getTypeId() == 15 && m.getTier(player) >= 2)
+    	{
     		if(!Config.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
     			xp += 25;
         		blockProcCheck(block, player);
@@ -282,11 +302,14 @@ public class Mining {
         	}
     		item = new ItemStack(mat, 1, (byte)0, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	//REDSTONE
-    	if((block.getTypeId() == 73 || block.getTypeId() == 74) && m.getTier(player) >= 4){
-    		if(!Config.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5){
+    	if((block.getTypeId() == 73 || block.getTypeId() == 74) && m.getTier(player) >= 4)
+    	{
+    		if(!Config.getInstance().isBlockWatched(block)&& block.getData() != (byte) 5)
+    		{
     			xp += 15;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
@@ -296,9 +319,11 @@ public class Mining {
 			loc.getWorld().dropItemNaturally(loc, item);
 			loc.getWorld().dropItemNaturally(loc, item);
 			loc.getWorld().dropItemNaturally(loc, item);
-			if(Math.random() * 10 > 5){
+			if(Math.random() * 10 > 5)
+			{
 				loc.getWorld().dropItemNaturally(loc, item);
 			}
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	//LAPUS
@@ -314,6 +339,7 @@ public class Mining {
 			loc.getWorld().dropItemNaturally(loc, item);
 			loc.getWorld().dropItemNaturally(loc, item);
 			loc.getWorld().dropItemNaturally(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
     	if(block.getData() != (byte) 5)

@@ -165,25 +165,80 @@ public class Herbalism {
     	if(block.getData() != (byte) 5){
     		//Cactus
 	    	if(type == 81){
-	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
-	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getHerbalismInt()){
-		    			loc.getWorld().dropItemNaturally(loc, is);
-		    		}
+	    		//Setup the loop
+	    		World world = block.getWorld();
+	    		Block[] blockArray = new Block[3];
+	    		blockArray[0] = block;
+	    		blockArray[1] = world.getBlockAt(block.getX(), block.getY()+1, block.getZ());
+	    		blockArray[2] = world.getBlockAt(block.getX(), block.getY()+2, block.getZ());
+	    		
+	    		Material[] materialArray = new Material[3];
+	    		materialArray[0] = blockArray[0].getType();
+	    		materialArray[1] = blockArray[1].getType();
+	    		materialArray[2] = blockArray[2].getType();
+	    		
+	    		byte[] byteArray = new byte[3];
+	    		byteArray[0] = blockArray[0].getData();
+	    		byteArray[1] = blockArray[0].getData();
+	    		byteArray[2] = blockArray[0].getData();
+	    		
+	    		int x = 0;
+	    		for(Block target : blockArray)
+	    		{
+	    			if(materialArray[x] == Material.CACTUS)
+	    			{
+	    				is = new ItemStack(Material.CACTUS, 1, (byte)0, (byte)0);
+	    				if(byteArray[x] != (byte) 5)
+	    				{
+		    		    	if(Math.random() * 1000 <= PP.getHerbalismInt())
+		    		    	{
+		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
+		    		    	}
+		    		    	PP.addHerbalismXP(3 * LoadProperties.xpGainMultiplier);
+	    				}
+	    			}
+	    			x++;
 	    		}
-	    		PP.addHerbalismXP(3 * LoadProperties.xpGainMultiplier);
 	    	}
     		//Sugar Canes
 	    	if(type == 83){
-				is = new ItemStack(Material.SUGAR_CANE, 1, (byte)0, (byte)0);
-	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getHerbalismInt()){
-		    			loc.getWorld().dropItemNaturally(loc, is);
-		    		}
+	    		//Setup the loop
+	    		World world = block.getWorld();
+	    		Block[] blockArray = new Block[3];
+	    		blockArray[0] = block;
+	    		blockArray[1] = world.getBlockAt(block.getX(), block.getY()+1, block.getZ());
+	    		blockArray[2] = world.getBlockAt(block.getX(), block.getY()+2, block.getZ());
+	    		
+	    		Material[] materialArray = new Material[3];
+	    		materialArray[0] = blockArray[0].getType();
+	    		materialArray[1] = blockArray[1].getType();
+	    		materialArray[2] = blockArray[2].getType();
+	    		
+	    		byte[] byteArray = new byte[3];
+	    		byteArray[0] = blockArray[0].getData();
+	    		byteArray[1] = blockArray[0].getData();
+	    		byteArray[2] = blockArray[0].getData();
+	    		
+	    		int x = 0;
+	    		for(Block target : blockArray)
+	    		{
+	    			if(materialArray[x] == Material.SUGAR_CANE_BLOCK)
+	    			{
+	    				is = new ItemStack(Material.SUGAR_CANE, 1, (byte)0, (byte)0);
+	    				//Check for being placed by the player
+	    				if(byteArray[x] != (byte) 5)
+	    				{
+		    		    	if(Math.random() * 1000 <= PP.getHerbalismInt())
+		    		    	{
+		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
+		    		    	}
+		    		    	PP.addHerbalismXP(3 * LoadProperties.xpGainMultiplier);
+	    				}
+	    			}
+	    			x++;
 	    		}
-	    		PP.addHerbalismXP(3 * LoadProperties.xpGainMultiplier);
 	    	}
+	    	
     		//Pumpkins
 	    	if((type == 91 || type == 86) && !Config.getInstance().isBlockWatched(block)){
 	    		mat = Material.getMaterial(block.getTypeId());
