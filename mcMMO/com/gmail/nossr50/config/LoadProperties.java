@@ -4,8 +4,8 @@ import com.gmail.nossr50.mcMMO;
 
 public class LoadProperties {
 	public static Boolean enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, pvp, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
-	public static String MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn;
-	public static int MySQLport, xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
+	public static String MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcitem, mcgod, stats, mmoedit, ptp, party, myspawn, setmyspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond;;
+	public static int MySQLport, xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;;
 	
 	public static void loadMain(){
     	String propertiesFile = mcMMO.maindirectory + "mcmmo.properties";
@@ -73,6 +73,20 @@ public class LoadProperties {
     	 * ANVIL MESSAGES
     	 */
     	anvilmessages = properties.getBoolean("anvilMessages", true);
+    	
+        /*
+    	 * ANVIL REPAIR (REQUIRED ITEM) AND (NAME OF ITEM)
+    	 */
+        rGold =  properties.getInteger("GoldRepairItemNumber", 266);
+        nGold =  properties.getString("GoldItemRepairName", "Gold Bars");        
+        rStone =  properties.getInteger("CobblestoneRepairItemNumber", 4);
+        nStone =  properties.getString("CobblestoneItemRepairName", "Cobblestone");        
+        rWood =  properties.getInteger("WoodRepairItemNumber", 5);
+        nWood =  properties.getString("WoodItemRepairName", "Wood Planks");        
+        rDiamond =   properties.getInteger("DiamondRepairItemNumber", 264);
+        nDiamond =  properties.getString("DiamondItemRepairName", "Diamond Ore");        
+        rIron =   properties.getInteger("IronRepairItemNumber", 265);
+        nIron =  properties.getString("IronItemRepairName", "Iron Bars");
     	/*
     	 * EXCAVATION LOOT TOGGLES
     	 */

@@ -5,6 +5,7 @@ Leaderboards ignore players with the respective stat at 0
 Reconnecting to MySQL will reload player data
 Fixed a NPE with MySQL's Leaderboards
 Removed "Loop iteration" debug message from mcMMO
+Added more repair customization by solarcloud7
 
 Version 1.0.06
 MySQL will attempt to reconnect if the connection is closed

@@ -51,7 +51,7 @@ public class Item {
     				if(player != null){
     					if(player.getLocation().getWorld().getBlockAt(block.getX(), y, block.getZ()).getType() != Material.AIR){
 	    					player.sendMessage("**CHIMAERA WING FAILED!**");
-	    					player.teleportTo(player.getLocation().getWorld().getBlockAt(block.getX(), (y - 1), block.getZ()).getLocation());
+	    					player.teleport(player.getLocation().getWorld().getBlockAt(block.getX(), (y - 1), block.getZ()).getLocation());
 	    					return;
     					}
     				}
@@ -61,11 +61,11 @@ public class Item {
     				if(mySpawn != null && plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)) != null)
     					mySpawn.setWorld(plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)));
     				if(mySpawn != null){
-	    				player.teleportTo(mySpawn);//Do it twice to prevent weird stuff
-	    				player.teleportTo(mySpawn);
+	    				player.teleport(mySpawn);//Do it twice to prevent weird stuff
+	    				player.teleport(mySpawn);
     				}
     			} else {
-    				player.teleportTo(player.getWorld().getSpawnLocation());
+    				player.teleport(player.getWorld().getSpawnLocation());
     			}
     			player.sendMessage("**CHIMAERA WING**");
     		} else if (!Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= 10) {

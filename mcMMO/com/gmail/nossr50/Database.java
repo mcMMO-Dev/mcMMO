@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 
 import org.bukkit.entity.Player;
 
+import com.avaje.ebeaninternal.server.lib.sql.DataSourceException;
 import com.gmail.nossr50.config.LoadProperties;
 
 
@@ -27,7 +28,7 @@ public class Database {
 		try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
         } catch (Exception ex) {
-            // handle the error
+        	throw new DataSourceException("Failed to initialize JDBC driver");
         }
 		
 		// make the connection

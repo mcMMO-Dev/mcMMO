@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 
 public class FakeBlockBreakEvent extends BlockBreakEvent {
+	private static final long serialVersionUID = 1L;
+
 	public FakeBlockBreakEvent(Block theBlock, Player player) {
 		super(theBlock, player);
 	}

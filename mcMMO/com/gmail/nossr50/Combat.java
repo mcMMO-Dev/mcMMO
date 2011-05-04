@@ -373,12 +373,12 @@ public class Combat {
 					}
     				if(PPa.getArcheryInt() >= 1000){
     	    			if(Math.random() * 1000 <= 500){
-    	    				defender.teleportTo(loc);
+    	    				defender.teleport(loc);
     	    				defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
     	    				attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
     	    			}
     	    		} else if(Math.random() * 2000 <= PPa.getArcheryInt()){
-    	    			defender.teleportTo(loc);
+    	    			defender.teleport(loc);
 	    				defender.sendMessage(ChatColor.DARK_RED+"Touched Fuzzy. Felt Dizzy.");
 	    				attacker.sendMessage("Target was "+ChatColor.DARK_RED+"Dazed");
     	    		}

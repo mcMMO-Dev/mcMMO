@@ -9,10 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.CreatureType;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -31,7 +28,6 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
-import com.gmail.nossr50.skills.Taming;
 
 
 public class mcPlayerListener extends PlayerListener {
@@ -557,7 +553,7 @@ public class mcPlayerListener extends PlayerListener {
     			Player target = getPlayer(split[1]);
     			PlayerProfile PPt = Users.getProfile(target);
 	        	if(PP.getParty().equals(PPt.getParty())){
-	        		player.teleportTo(target);
+	        		player.teleport(target);
 	        		player.sendMessage(ChatColor.GREEN+"You have teleported to "+target.getName());
 	        		target.sendMessage(ChatColor.GREEN+player.getName() + " has teleported to you.");
 	        	}
@@ -837,8 +833,8 @@ public class mcPlayerListener extends PlayerListener {
 	    				//player.sendMessage("MMO DEBUG CODE 5");
 	    				mySpawn.setWorld(plugin.getServer().getWorlds().get(0));
 	    		}
-	    		player.teleportTo(mySpawn); //It's done twice because teleporting from one world to another is weird
-	    		player.teleportTo(mySpawn);
+	    		player.teleport(mySpawn); //It's done twice because teleporting from one world to another is weird
+	    		player.teleport(mySpawn);
     		} else {
     			player.sendMessage(ChatColor.RED+"Configure your myspawn first with a bed.");
     		}
