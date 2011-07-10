@@ -1,8 +1,8 @@
 package com.gmail.nossr50.party;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.Messages;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 
@@ -50,22 +50,24 @@ public class Party {
         for(Player p : players){
         	if(player != null && p != null){
                 if(inSameParty(player, p) && !p.getName().equals(player.getName())){
-                p.sendMessage(player.getName() + ChatColor.GREEN + " has joined your party");
+                p.sendMessage(Messages.getString("Party.InformedOnJoin", new Object[] {player.getName()}));
                 x++;
                 }
             }
         }
     }
-    public void informPartyMembersQuit(Player player, Player[] players){
+    public void informPartyMembersQuit(Player player, Player[] players)
+    {
         int x = 0;
         for(Player p : players){
-        		if(player != null && p != null){
-                if(inSameParty(player, p) && !p.getName().equals(player.getName())){
-                p.sendMessage(player.getName() + ChatColor.GREEN + " has left your party");
-                x++;
+        	if(player != null && p != null){
+        		if(inSameParty(player, p) && !p.getName().equals(player.getName()))
+        		{
+        			p.sendMessage(Messages.getString("Party.InformedOnQuit", new Object[] {player.getName()}));
+        			x++;
                 }
-        		}
-            }
+        	}
+        }
     }
 
 }

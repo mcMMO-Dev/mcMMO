@@ -13,8 +13,8 @@ import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.Tree;
 
 public class Leaderboard {
-	static String location = "plugins/mcMMO/mcmmo.users";
-	protected static final Logger log = Logger.getLogger("Minecraft");
+	static String location = "plugins/mcMMO/mcmmo.users"; //$NON-NLS-1$
+	protected static final Logger log = Logger.getLogger("Minecraft"); //$NON-NLS-1$
 	
 	/*
 	 * Read from the file
@@ -39,11 +39,11 @@ public class Leaderboard {
         	//Open the user file
         	FileReader file = new FileReader(location);
         	BufferedReader in = new BufferedReader(file);
-        	String line = "";
+        	String line = ""; //$NON-NLS-1$
         	while((line = in.readLine()) != null)
         	{
         		
-        		String[] character = line.split(":");
+        		String[] character = line.split(":"); //$NON-NLS-1$
         		String p = character[0];
 
 
@@ -99,26 +99,26 @@ public class Leaderboard {
         	}
         	in.close();
         } catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while reading "
-            		+ location + " (Are you sure you formatted it correctly?)", e);
+            log.log(Level.SEVERE, "Exception while reading " //$NON-NLS-1$
+            		+ location + " (Are you sure you formatted it correctly?)", e); //$NON-NLS-1$
         }
         //Write the leader board files
-        leaderWrite(Mining.inOrder(), "mining");
-        leaderWrite(WoodCutting.inOrder(), "woodcutting");
-        leaderWrite(Repair.inOrder(), "repair");
-        leaderWrite(Unarmed.inOrder(), "unarmed");
-        leaderWrite(Herbalism.inOrder(), "herbalism");
-        leaderWrite(Excavation.inOrder(), "excavation");
-        leaderWrite(Archery.inOrder(), "archery");
-        leaderWrite(Swords.inOrder(), "swords");
-        leaderWrite(Axes.inOrder(), "axes");
-        leaderWrite(Acrobatics.inOrder(), "acrobatics");
-        leaderWrite(Taming.inOrder(), "taming");
-        leaderWrite(PowerLevel.inOrder(), "powerlevel");
+        leaderWrite(Mining.inOrder(), "mining"); //$NON-NLS-1$
+        leaderWrite(WoodCutting.inOrder(), "woodcutting"); //$NON-NLS-1$
+        leaderWrite(Repair.inOrder(), "repair"); //$NON-NLS-1$
+        leaderWrite(Unarmed.inOrder(), "unarmed"); //$NON-NLS-1$
+        leaderWrite(Herbalism.inOrder(), "herbalism"); //$NON-NLS-1$
+        leaderWrite(Excavation.inOrder(), "excavation"); //$NON-NLS-1$
+        leaderWrite(Archery.inOrder(), "archery"); //$NON-NLS-1$
+        leaderWrite(Swords.inOrder(), "swords"); //$NON-NLS-1$
+        leaderWrite(Axes.inOrder(), "axes"); //$NON-NLS-1$
+        leaderWrite(Acrobatics.inOrder(), "acrobatics"); //$NON-NLS-1$
+        leaderWrite(Taming.inOrder(), "taming"); //$NON-NLS-1$
+        leaderWrite(PowerLevel.inOrder(), "powerlevel"); //$NON-NLS-1$
 	}
 	public static void leaderWrite(PlayerStat[] ps, String statName)
 	{
-		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo";
+		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		//CHECK IF THE FILE EXISTS
 		File theDir = new File(theLocation);
 		if(!theDir.exists()){
@@ -127,14 +127,14 @@ public class Leaderboard {
 			try {
 				writer = new FileWriter(theLocation);
 			} catch (Exception e) {
-				log.log(Level.SEVERE, "Exception while creating " + theLocation, e);
+				log.log(Level.SEVERE, "Exception while creating " + theLocation, e); //$NON-NLS-1$
 			} finally {
 				try {
 					if (writer != null) {
 						writer.close();
 					}
 				} catch (IOException e) {
-					log.log(Level.SEVERE, "Exception while closing writer for " + theLocation, e);
+					log.log(Level.SEVERE, "Exception while closing writer for " + theLocation, e); //$NON-NLS-1$
 				}
 			}
 		} else {
@@ -147,12 +147,12 @@ public class Leaderboard {
 	            
 	        	for(PlayerStat p : ps)
 	        	{
-	        		if(p.name.equals("$mcMMO_DummyInfo"))
+	        		if(p.name.equals("$mcMMO_DummyInfo")) //$NON-NLS-1$
 	        			continue;
 	        		if(p.statVal == 0)
 	        			continue;
-	        		writer.append(p.name + ":" + p.statVal);
-	        		writer.append("\r\n"); 
+	        		writer.append(p.name + ":" + p.statVal); //$NON-NLS-1$
+	        		writer.append("\r\n");  //$NON-NLS-1$
 	        	}
 	        	
 	        	in.close();
@@ -161,7 +161,7 @@ public class Leaderboard {
 	            out.write(writer.toString());
 	            out.close();
 	        } catch (Exception e) {
-	                log.log(Level.SEVERE, "Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)", e);
+	                log.log(Level.SEVERE, "Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)", e); //$NON-NLS-1$ //$NON-NLS-2$
 	        }
 		}
 		//Create/open the file
@@ -170,7 +170,7 @@ public class Leaderboard {
 	}
 	
 	public static String[] retrieveInfo(String statName, int pagenumber){
-		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo";
+		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		try {
         	FileReader file = new FileReader(theLocation);
         	BufferedReader in = new BufferedReader(file);
@@ -178,7 +178,7 @@ public class Leaderboard {
         	int destination = (pagenumber - 1) * 10; //How many lines to skip through
         	int x = 0; //how many lines we've gone through
         	int y = 0; //going through the lines
-        	String line = "";
+        	String line = ""; //$NON-NLS-1$
         	String[] info = new String[10]; //what to return
         	while((line = in.readLine()) != null && y < 10)
         	{
@@ -191,41 +191,41 @@ public class Leaderboard {
         	in.close();
         	return info;
         } catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while reading "
-            		+ theLocation + " (Are you sure you formatted it correctly?)", e);
+            log.log(Level.SEVERE, "Exception while reading " //$NON-NLS-1$
+            		+ theLocation + " (Are you sure you formatted it correctly?)", e); //$NON-NLS-1$
         }
         return null; //Shouldn't get here
 	}
 	public static void updateLeaderboard(PlayerStat ps, String statName){
 		if(LoadProperties.useMySQL)
 			return;
-		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo";
+		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		try {
         	//Open the file
         	FileReader file = new FileReader(theLocation);
             BufferedReader in = new BufferedReader(file);
             StringBuilder writer = new StringBuilder();
-        	String line = "";
+        	String line = ""; //$NON-NLS-1$
         	Boolean inserted = false;
         	//While not at the end of the file
         	while((line = in.readLine()) != null)
         	{
         		//Insert the player into the line before it finds a smaller one
-        		if(Integer.valueOf(line.split(":")[1]) < ps.statVal && !inserted)
+        		if(Integer.valueOf(line.split(":")[1]) < ps.statVal && !inserted) //$NON-NLS-1$
         		{
-        			writer.append(ps.name + ":" + ps.statVal).append("\r\n");
+        			writer.append(ps.name + ":" + ps.statVal).append("\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
         			inserted = true;
         		}
         		//Write anything that isn't the player already in the file so we remove the duplicate
-        		if(!line.split(":")[0].equalsIgnoreCase(ps.name))
+        		if(!line.split(":")[0].equalsIgnoreCase(ps.name)) //$NON-NLS-1$
         		{
-                    writer.append(line).append("\r\n");
+                    writer.append(line).append("\r\n"); //$NON-NLS-1$
         		}
         	}
         	
         	if(!inserted)
         	{
-    			writer.append(ps.name + ":" + ps.statVal).append("\r\n");
+    			writer.append(ps.name + ":" + ps.statVal).append("\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
         	}
         	
         	in.close();
@@ -234,7 +234,7 @@ public class Leaderboard {
             out.write(writer.toString());
             out.close();
         } catch (Exception e) {
-                log.log(Level.SEVERE, "Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)", e);
+                log.log(Level.SEVERE, "Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
 	}
 	public static boolean isInt(String string){

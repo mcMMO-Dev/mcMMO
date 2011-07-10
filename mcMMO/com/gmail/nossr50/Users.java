@@ -1,16 +1,12 @@
 package com.gmail.nossr50;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.HashMap;
 
-import org.bukkit.Location;
 import org.bukkit.entity.*;
-import org.bukkit.plugin.Plugin;
-
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
@@ -28,15 +24,18 @@ public class Users {
         properties.load(new FileInputStream(location));
     }
     //To save
-    public void save() {
-        try {
-        properties.store(new FileOutputStream(location), null);
-        }catch(IOException ex) {
-        }
+    public void save() 
+    {
+        try 
+        {
+	        properties.store(new FileOutputStream(location), null);
+	        }catch(IOException ex) {
+	        }
     }
     
     
-    public void loadUsers(){
+    public void loadUsers()
+    {
         File theDir = new File(location);
 		if(!theDir.exists()){
 			//properties = new PropertiesFile(location);
@@ -77,9 +76,12 @@ public class Users {
     	return players;
     }
     
-    public static void removeUser(Player player){    	
+    public static void removeUser(Player player)
+    {    	
     	PlayerProfile PP = Users.getProfile(player);
-    	if(PP != null){
+    	
+    	if(PP != null)
+    	{
 	    	PP.save();
 	    	if(players.containsKey(player))
 	    		players.remove(player);
@@ -87,7 +89,13 @@ public class Users {
     }
 
     public static PlayerProfile getProfile(Player player){
-    	return players.get(player);
+    	if(players.get(player) != null)
+    		return players.get(player);
+    	else
+    	{
+    		players.put(player, new PlayerProfile(player));
+    		return players.get(player);
+    	}
     }
     
     public static Users getInstance() {
@@ -96,8 +104,5 @@ public class Users {
 		}
 		return instance;
 	}
-    public static void getRow(){
-
-    }
 
 }

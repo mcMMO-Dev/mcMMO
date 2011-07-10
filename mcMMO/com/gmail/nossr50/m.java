@@ -1,9 +1,7 @@
 package com.gmail.nossr50;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,26 +10,19 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.config.*;
-import com.gmail.nossr50.datatypes.*;
-import com.gmail.nossr50.skills.*;
-import com.gmail.nossr50.party.*;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 public class m {
-	public static final Logger log = Logger.getLogger("Minecraft");
+	public static final Logger log = Logger.getLogger("Minecraft"); //$NON-NLS-1$
 	/*
 	 * I'm storing my misc functions/methods in here in an unorganized manner. Spheal with it.
 	 */
-	private static mcMMO plugin;
-	public m(mcMMO instance) {
-    	plugin = instance;
-    }
+	
 	//The lazy way to default to 0
 	public static int getInt(String string)
 	{
@@ -73,29 +64,30 @@ public class m {
 			return false;
 		}
 	}
-	public static int getPowerLevel(Player player){
+	public static int getPowerLevel(Player player)
+	{
 		PlayerProfile PP = Users.getProfile(player);
 		int x = 0;
 		if(mcPermissions.getInstance().mining(player))
-			x+=PP.getMiningInt();
+			x+=PP.getSkill("mining");
 		if(mcPermissions.getInstance().woodcutting(player))
-			x+=PP.getWoodCuttingInt();
+			x+=PP.getSkill("woodcutting");
 		if(mcPermissions.getInstance().unarmed(player))
-			x+=PP.getUnarmedInt();
+			x+=PP.getSkill("unarmed");
 		if(mcPermissions.getInstance().herbalism(player))
-			x+=PP.getHerbalismInt();
+			x+=PP.getSkill("herbalism");
 		if(mcPermissions.getInstance().excavation(player))
-			x+=PP.getExcavationInt();
+			x+=PP.getSkill("excavation");
 		if(mcPermissions.getInstance().archery(player))
-			x+=PP.getArcheryInt();
+			x+=PP.getSkill("archery");
 		if(mcPermissions.getInstance().swords(player))
-			x+=PP.getSwordsInt();
+			x+=PP.getSkill("swords");
 		if(mcPermissions.getInstance().axes(player))
-			x+=PP.getAxesInt();
+			x+=PP.getSkill("axes");
 		if(mcPermissions.getInstance().acrobatics(player))
-			x+=PP.getAcrobaticsInt();
+			x+=PP.getSkill("acrobatics");
 		if(mcPermissions.getInstance().repair(player))
-			x+=PP.getRepairInt();
+			x+=PP.getSkill("repair");
 		return x;
 	}
 	public static boolean blockBreakSimulate(Block block, Player player, Plugin plugin){
@@ -183,20 +175,25 @@ public class m {
 			return 0;
 		}
 	}
+	
 	public static double getDistance(Location loca, Location locb)
     {
-	return Math.sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)
-    + Math.pow(loca.getZ() - locb.getZ(), 2));
+		return Math.sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)
+	    + Math.pow(loca.getZ() - locb.getZ(), 2));
     }
-	public static boolean abilityBlockCheck(Block block){
+	
+	public static boolean abilityBlockCheck(Block block)
+	{
 		int i = block.getTypeId();
-		if(i == 68 || i == 355 || i == 26 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
+		if(i == 96 || i == 68 || i == 355 || i == 26 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
 			return false;
 		} else {
 			return true;
 		}
 	}
-	public static boolean isBlockAround(Location loc, Integer radius, Integer typeid){
+	
+	public static boolean isBlockAround(Location loc, Integer radius, Integer typeid)
+	{
 		Block blockx = loc.getBlock();
     	int ox = blockx.getX();
         int oy = blockx.getY();
@@ -214,37 +211,6 @@ public class m {
     	return false;
 	}
 	
-	public static boolean isPvpEnabled(){
-		String propertyName = "pvp";
-		FileReader fr = null;
-		try {
-			fr = new FileReader("server.properties");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		BufferedReader br = new BufferedReader(fr);
-		String property;
-		String s = null;
-		try {
-			while((s=br.readLine()) .indexOf(propertyName)==-1);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		property = s.split("=")[1];
-		try {
-			fr.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(property.toLowerCase().equals("true")){
-			return true;
-		} else {
-			return false;
-		}
-	}
 	public static Integer calculateHealth(Integer health, Integer newvalue){
     	if((health + newvalue) > 20){
     		return 20;
@@ -257,20 +223,6 @@ public class m {
     		return 0;
     	} else {
     		return health-newvalue;
-    	}
-    }
-    public static Integer getHealth(Entity entity){
-    	if(entity instanceof Monster){
-    		Monster monster = (Monster)entity;
-    		return monster.getHealth();
-    	} else if (entity instanceof Animals){
-    		Animals animals = (Animals)entity;
-    		return animals.getHealth();
-    	} else if (entity instanceof Player){
-    		Player player = (Player)entity;
-    		return player.getHealth();
-    	} else {
-    		return 0;
     	}
     }
     public static boolean isInt(String string){
@@ -339,31 +291,28 @@ public class m {
     {
     	if(!LoadProperties.useMySQL)
     		return;
-    	String location = "plugins/mcMMO/mcmmo.users";
+    	String location = "plugins/mcMMO/mcmmo.users"; //$NON-NLS-1$
     	try {
         	//Open the user file
         	FileReader file = new FileReader(location);
         	BufferedReader in = new BufferedReader(file);
-        	String line = "";
-        	String x = null, y = null, z = null, playerName = null, mining = null, myspawn = null, party = null, miningXP = null, woodcutting = null, woodCuttingXP = null, repair = null, unarmed = null, herbalism = null,
+        	String line = ""; //$NON-NLS-1$
+        	String playerName = null, mining = null, party = null, miningXP = null, woodcutting = null, woodCuttingXP = null, repair = null, unarmed = null, herbalism = null,
         	excavation = null, archery = null, swords = null, axes = null, acrobatics = null, repairXP = null, unarmedXP = null, herbalismXP = null, excavationXP = null, archeryXP = null, swordsXP = null, axesXP = null,
-        	acrobaticsXP = null, myspawnworld = null, taming = null, tamingXP = null;
+        	acrobaticsXP = null, taming = null, tamingXP = null;
         	int id = 0, theCount = 0;
         	while((line = in.readLine()) != null)
         	{
         		//Find if the line contains the player we want.
-        		String[] character = line.split(":");
+        		String[] character = line.split(":"); //$NON-NLS-1$
         		playerName = character[0];
         		//Check for things we don't want put in the DB
-        		if(playerName == null || playerName.equals("null") || playerName.equals("#Storage place for user information"))
+        		if(playerName == null || playerName.equals("null") || playerName.equals("#Storage place for user information")) //$NON-NLS-1$ //$NON-NLS-2$
         			continue;
         		
     			//Get Mining
     			if(character.length > 1)
     				mining = character[1];
-    			//Myspawn
-    			if(character.length > 2)
-    				myspawn = character[2];
     			//Party
     			if(character.length > 3)
     				party = character[3];
@@ -406,14 +355,12 @@ public class m {
     				axesXP = character[21];
     			if(character.length > 22)
     				acrobaticsXP = character[22];
-    			if(character.length > 23)
-    				myspawnworld = character[23];
     			if(character.length > 24)
     				taming = character[24];
     			if(character.length > 25)
     				tamingXP = character[25];
             	//Check to see if the user is in the DB
-    			id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
+    			id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     			//Prepare some variables
     			/*
     			if(myspawn != null && myspawn.length() > 0)
@@ -432,505 +379,542 @@ public class m {
     			{
     				theCount++;
     				//Update the skill values
-    				mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + 0 + " WHERE id = " + id);
+    				mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + 0 + " WHERE id = " + id); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     				//if(getDouble(x) > 0 && getDouble(y) > 0 && getDouble(z) > 0)
     					//mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + myspawnworld + "', x = " +getDouble(x)+", y = "+getDouble(y)+", z = "+getDouble(z)+" WHERE user_id = "+id);
-    	    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
-    	    				+"  taming = taming+"+getInt(taming)
-    	    				+", mining = mining+"+getInt(mining)
-    	    				+", repair = repair+"+getInt(repair)
-    	    				+", woodcutting = woodcutting+"+getInt(woodcutting)
-    	    				+", unarmed = unarmed+"+getInt(unarmed)
-    	    				+", herbalism = herbalism+"+getInt(herbalism)
-    	    				+", excavation = excavation+"+getInt(excavation)
-    	    				+", archery = archery+" +getInt(archery)
-    	    				+", swords = swords+" +getInt(swords)
-    	    				+", axes = axes+"+getInt(axes)
-    	    				+", acrobatics = acrobatics+"+getInt(acrobatics)
-    	    				+" WHERE user_id = "+id);
-    	    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET "
-    	    				+"  taming = "+getInt(tamingXP)
-    	    				+", mining = "+getInt(miningXP)
-    	    				+", repair = "+getInt(repairXP)
-    	    				+", woodcutting = "+getInt(woodCuttingXP)
-    	    				+", unarmed = "+getInt(unarmedXP)
-    	    				+", herbalism = "+getInt(herbalismXP)
-    	    				+", excavation = "+getInt(excavationXP)
-    	    				+", archery = " +getInt(archeryXP)
-    	    				+", swords = " +getInt(swordsXP)
-    	    				+", axes = "+getInt(axesXP)
-    	    				+", acrobatics = "+getInt(acrobaticsXP)
-    	    				+" WHERE user_id = "+id);
+    	    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET " //$NON-NLS-1$ //$NON-NLS-2$
+    	    				+"  taming = taming+"+getInt(taming) //$NON-NLS-1$
+    	    				+", mining = mining+"+getInt(mining) //$NON-NLS-1$
+    	    				+", repair = repair+"+getInt(repair) //$NON-NLS-1$
+    	    				+", woodcutting = woodcutting+"+getInt(woodcutting) //$NON-NLS-1$
+    	    				+", unarmed = unarmed+"+getInt(unarmed) //$NON-NLS-1$
+    	    				+", herbalism = herbalism+"+getInt(herbalism) //$NON-NLS-1$
+    	    				+", excavation = excavation+"+getInt(excavation) //$NON-NLS-1$
+    	    				+", archery = archery+" +getInt(archery) //$NON-NLS-1$
+    	    				+", swords = swords+" +getInt(swords) //$NON-NLS-1$
+    	    				+", axes = axes+"+getInt(axes) //$NON-NLS-1$
+    	    				+", acrobatics = acrobatics+"+getInt(acrobatics) //$NON-NLS-1$
+    	    				+" WHERE user_id = "+id); //$NON-NLS-1$
+    	    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET " //$NON-NLS-1$ //$NON-NLS-2$
+    	    				+"  taming = "+getInt(tamingXP) //$NON-NLS-1$
+    	    				+", mining = "+getInt(miningXP) //$NON-NLS-1$
+    	    				+", repair = "+getInt(repairXP) //$NON-NLS-1$
+    	    				+", woodcutting = "+getInt(woodCuttingXP) //$NON-NLS-1$
+    	    				+", unarmed = "+getInt(unarmedXP) //$NON-NLS-1$
+    	    				+", herbalism = "+getInt(herbalismXP) //$NON-NLS-1$
+    	    				+", excavation = "+getInt(excavationXP) //$NON-NLS-1$
+    	    				+", archery = " +getInt(archeryXP) //$NON-NLS-1$
+    	    				+", swords = " +getInt(swordsXP) //$NON-NLS-1$
+    	    				+", axes = "+getInt(axesXP) //$NON-NLS-1$
+    	    				+", acrobatics = "+getInt(acrobaticsXP) //$NON-NLS-1$
+    	    				+" WHERE user_id = "+id); //$NON-NLS-1$
     			}
     			else
     			{
     				theCount++;
     				//Create the user in the DB
-    				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
-    				id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
-    				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"spawn (user_id) VALUES ("+id+")");
-    				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills (user_id) VALUES ("+id+")");
-    				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")");
+    				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    				id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"spawn (user_id) VALUES ("+id+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills (user_id) VALUES ("+id+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     				//Update the skill values
-    				mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + 0 + " WHERE id = " + id);
-    				mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+party+"' WHERE id = " +id);
+    				mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + 0 + " WHERE id = " + id); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    				mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+party+"' WHERE id = " +id); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     				/*
     				if(getDouble(x) > 0 && getDouble(y) > 0 && getDouble(z) > 0)
     					mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + myspawnworld + "', x = " +getDouble(x)+", y = "+getDouble(y)+", z = "+getDouble(z)+" WHERE user_id = "+id);
     	    		*/
-    	    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
-    	    				+"  taming = "+getInt(taming)
-    	    				+", mining = "+getInt(mining)
-    	    				+", repair = "+getInt(repair)
-    	    				+", woodcutting = "+getInt(woodcutting)
-    	    				+", unarmed = "+getInt(unarmed)
-    	    				+", herbalism = "+getInt(herbalism)
-    	    				+", excavation = "+getInt(excavation)
-    	    				+", archery = " +getInt(archery)
-    	    				+", swords = " +getInt(swords)
-    	    				+", axes = "+getInt(axes)
-    	    				+", acrobatics = "+getInt(acrobatics)
-    	    				+" WHERE user_id = "+id);
-    	    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET "
-    	    				+"  taming = "+getInt(tamingXP)
-    	    				+", mining = "+getInt(miningXP)
-    	    				+", repair = "+getInt(repairXP)
-    	    				+", woodcutting = "+getInt(woodCuttingXP)
-    	    				+", unarmed = "+getInt(unarmedXP)
-    	    				+", herbalism = "+getInt(herbalismXP)
-    	    				+", excavation = "+getInt(excavationXP)
-    	    				+", archery = " +getInt(archeryXP)
-    	    				+", swords = " +getInt(swordsXP)
-    	    				+", axes = "+getInt(axesXP)
-    	    				+", acrobatics = "+getInt(acrobaticsXP)
-    	    				+" WHERE user_id = "+id);
+    	    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET " //$NON-NLS-1$ //$NON-NLS-2$
+    	    				+"  taming = "+getInt(taming) //$NON-NLS-1$
+    	    				+", mining = "+getInt(mining) //$NON-NLS-1$
+    	    				+", repair = "+getInt(repair) //$NON-NLS-1$
+    	    				+", woodcutting = "+getInt(woodcutting) //$NON-NLS-1$
+    	    				+", unarmed = "+getInt(unarmed) //$NON-NLS-1$
+    	    				+", herbalism = "+getInt(herbalism) //$NON-NLS-1$
+    	    				+", excavation = "+getInt(excavation) //$NON-NLS-1$
+    	    				+", archery = " +getInt(archery) //$NON-NLS-1$
+    	    				+", swords = " +getInt(swords) //$NON-NLS-1$
+    	    				+", axes = "+getInt(axes) //$NON-NLS-1$
+    	    				+", acrobatics = "+getInt(acrobatics) //$NON-NLS-1$
+    	    				+" WHERE user_id = "+id); //$NON-NLS-1$
+    	    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET " //$NON-NLS-1$ //$NON-NLS-2$
+    	    				+"  taming = "+getInt(tamingXP) //$NON-NLS-1$
+    	    				+", mining = "+getInt(miningXP) //$NON-NLS-1$
+    	    				+", repair = "+getInt(repairXP) //$NON-NLS-1$
+    	    				+", woodcutting = "+getInt(woodCuttingXP) //$NON-NLS-1$
+    	    				+", unarmed = "+getInt(unarmedXP) //$NON-NLS-1$
+    	    				+", herbalism = "+getInt(herbalismXP) //$NON-NLS-1$
+    	    				+", excavation = "+getInt(excavationXP) //$NON-NLS-1$
+    	    				+", archery = " +getInt(archeryXP) //$NON-NLS-1$
+    	    				+", swords = " +getInt(swordsXP) //$NON-NLS-1$
+    	    				+", axes = "+getInt(axesXP) //$NON-NLS-1$
+    	    				+", acrobatics = "+getInt(acrobaticsXP) //$NON-NLS-1$
+    	    				+" WHERE user_id = "+id); //$NON-NLS-1$
     			}
         	}
-        	System.out.println("[mcMMO] MySQL Updated from users file, "+theCount+" items added/updated to MySQL DB");
+        	System.out.println("[mcMMO] MySQL Updated from users file, "+theCount+" items added/updated to MySQL DB"); //$NON-NLS-1$ //$NON-NLS-2$
         	in.close();
         } catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while reading "
-            		+ location + " (Are you sure you formatted it correctly?)", e);
+            log.log(Level.SEVERE, "Exception while reading " //$NON-NLS-1$
+            		+ location + " (Are you sure you formatted it correctly?)", e); //$NON-NLS-1$
         }
     }
     public static void mmoHelpCheck(String[] split, Player player, PlayerChatEvent event){
     	PlayerProfile PP = Users.getProfile(player);
-    	if(split[0].equalsIgnoreCase("/taming")){
+    	if(split[0].equalsIgnoreCase("/taming") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillTaming").toLowerCase())){ //$NON-NLS-1$
 			event.setCancelled(true);
-			float skillvalue = (float)PP.getTamingInt();
+			float skillvalue = (float)PP.getSkill("taming");
 			
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"TAMING"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Wolves getting harmed");
-			player.sendMessage(ChatColor.GRAY+"**NOTE** Offensive skills are bugged due to a bukkit bug");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Beast Lore: "+ChatColor.YELLOW+ChatColor.GREEN+"Bone-whacking inspects wolves");
-			player.sendMessage(ChatColor.DARK_AQUA+"Gore: "+ChatColor.YELLOW+ChatColor.GREEN+"Critical Strike that applies Bleed");
-			player.sendMessage(ChatColor.DARK_AQUA+"Sharpened Claws: "+ChatColor.YELLOW+ChatColor.GREEN+"Damage Bonus");
-			player.sendMessage(ChatColor.DARK_AQUA+"Environmentally Aware: "+ChatColor.YELLOW+ChatColor.GREEN+"Cactus/Lava Phobia, Fall DMG Immune");
-			player.sendMessage(ChatColor.DARK_AQUA+"Thick Fur: "+ChatColor.YELLOW+ChatColor.GREEN+"DMG Reduction, Fire Resistance");
-			player.sendMessage(ChatColor.DARK_AQUA+"Shock Proof: "+ChatColor.YELLOW+ChatColor.GREEN+"Explosive Damage Reduction");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			if(PP.getTamingInt() < 100)
-				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 100+ SKILL (ENVIRONMENTALLY AWARE)");
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillTaming")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainTaming")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().taming(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("taming"), PP.getSkillToString("tamingXP"), PP.getXpToLevel("taming")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsTaming1_0"), Messages.getString("m.EffectsTaming1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsTaming2_0"), Messages.getString("m.EffectsTaming2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsTaming3_0"), Messages.getString("m.EffectsTaming3_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsTaming4_0"), Messages.getString("m.EffectsTaming4_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsTaming5_0"), Messages.getString("m.EffectsTaming5_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsTaming6_0"), Messages.getString("m.EffectsTaming6_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			if(PP.getSkill("taming") < 100)
+				player.sendMessage(Messages.getString("m.AbilityLockTemplate", new Object[] {Messages.getString("m.AbilLockTaming1")})); //$NON-NLS-1$ 
 			else
-				player.sendMessage(ChatColor.RED+"Environmentally Aware: "+ChatColor.YELLOW+"Wolves avoid danger");
-			if(PP.getTamingInt() < 250)
-				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 250+ SKILL (THICK FUR)");
+				player.sendMessage(Messages.getString("m.AbilityBonusTemplate", new Object[] {Messages.getString("m.AbilBonusTaming1_0"), Messages.getString("m.AbilBonusTaming1_1")})); //$NON-NLS-1$  
+			if(PP.getSkill("taming") < 250)
+				player.sendMessage(Messages.getString("m.AbilityLockTemplate", new Object[] {Messages.getString("m.AbilLockTaming2")})); //$NON-NLS-1$ 
 			else
-				player.sendMessage(ChatColor.RED+"Thick Fur: "+ChatColor.YELLOW+"Halved Damage, Fire Resistance");
-			if(PP.getTamingInt() < 500)
-				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 500+ SKILL (SHOCK PROOF)");
+				player.sendMessage(Messages.getString("m.AbilityBonusTemplate", new Object[] {Messages.getString("m.AbilBonusTaming2_0"), Messages.getString("m.AbilBonusTaming2_1")})); //$NON-NLS-1$  
+			if(PP.getSkill("taming") < 500)
+				player.sendMessage(Messages.getString("m.AbilityLockTemplate", new Object[] {Messages.getString("m.AbilLockTaming3")})); //$NON-NLS-1$ 
 			else
-				player.sendMessage(ChatColor.RED+"Shock Proof: "+ChatColor.YELLOW+"Explosives do 1/6 normal damage");
-			if(PP.getTamingInt() < 750)
-				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 750+ SKILL (SHARPENED CLAWS)");
+				player.sendMessage(Messages.getString("m.AbilityBonusTemplate", new Object[] {Messages.getString("m.AbilBonusTaming3_0"), Messages.getString("m.AbilBonusTaming3_1")})); //$NON-NLS-1$  
+			if(PP.getSkill("taming") < 750)
+				player.sendMessage(Messages.getString("m.AbilityLockTemplate", new Object[] {Messages.getString("m.AbilLockTaming4")})); //$NON-NLS-1$ 
 			else
-				player.sendMessage(ChatColor.RED+"Sharpened Claws: "+ChatColor.YELLOW+"+2 Damage");
-			player.sendMessage(ChatColor.RED+"Gore Chance: "+ChatColor.YELLOW+percentage+"%");
-			//player.sendMessage(ChatColor.RED+"Tree Feller Length: "+ChatColor.YELLOW+ticks+"s");
+				player.sendMessage(Messages.getString("m.AbilityBonusTemplate", new Object[] {Messages.getString("m.AbilBonusTaming4_0"), Messages.getString("m.AbilBonusTaming4_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.TamingGoreChance", new Object[] {percentage})); //$NON-NLS-1$
     	}
-    	if(split[0].equalsIgnoreCase("/woodcutting")){
+    	if(split[0].equalsIgnoreCase("/woodcutting") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillWoodCutting").toLowerCase())){ //$NON-NLS-1$
 			event.setCancelled(true);
-			float skillvalue = (float)PP.getWoodCuttingInt();
+			float skillvalue = (float)PP.getSkill("woodcutting");
 			int ticks = 2;
-			int x = PP.getWoodCuttingInt();
+			int x = PP.getSkill("woodcutting");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"WOODCUTTING"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Chopping down trees");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Tree Feller (ABILITY): "+ChatColor.GREEN+"Make trees explode");
-			player.sendMessage(ChatColor.DARK_AQUA+"Leaf Blower: "+ChatColor.GREEN+"Blow Away Leaves");
-			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.YELLOW+ChatColor.GREEN+"Double the normal loot");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			if(PP.getWoodCuttingInt() < 100)
-				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 100+ SKILL (LEAF BLOWER)");
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillWoodCutting")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainWoodCutting")})); //$NON-NLS-1$
+			if(mcPermissions.getInstance().woodcutting(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("woodcutting"), PP.getSkillToString("woodcuttingXP"), PP.getXpToLevel("woodcutting")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsWoodCutting1_0"), Messages.getString("m.EffectsWoodCutting1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsWoodCutting2_0"), Messages.getString("m.EffectsWoodCutting2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsWoodCutting3_0"), Messages.getString("m.EffectsWoodCutting3_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			if(PP.getSkill("woodcutting") < 100)
+				player.sendMessage(Messages.getString("m.AbilityLockTemplate", new Object[] {Messages.getString("m.AbilLockWoodCutting1")})); //$NON-NLS-1$ 
 			else
-				player.sendMessage(ChatColor.RED+"Leaf Blower: "+ChatColor.YELLOW+"Blow away leaves");
-			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
-			player.sendMessage(ChatColor.RED+"Tree Feller Length: "+ChatColor.YELLOW+ticks+"s");
+				player.sendMessage(Messages.getString("m.AbilityBonusTemplate", new Object[] {Messages.getString("m.AbilBonusWoodCutting1_0"), Messages.getString("m.AbilBonusWoodCutting1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.WoodCuttingDoubleDropChance", new Object[] {percentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.WoodCuttingTreeFellerLength", new Object[] {ticks})); //$NON-NLS-1$
     	}
-    	if(split[0].equalsIgnoreCase("/archery")){
+    	if(split[0].equalsIgnoreCase("/archery") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillArchery").toLowerCase())){ //$NON-NLS-1$
 			event.setCancelled(true);
 			Integer rank = 0;
-			if(PP.getArcheryInt() >= 50)
+			if(PP.getSkill("archery") >= 50)
     			rank++;
-    		if(PP.getArcheryInt() >= 250)
+    		if(PP.getSkill("archery") >= 250)
     			rank++;
-    		if(PP.getArcheryInt() >= 575)
+    		if(PP.getSkill("archery") >= 575)
     			rank++;
-    		if(PP.getArcheryInt() >= 725)
+    		if(PP.getSkill("archery") >= 725)
     			rank++;
-    		if(PP.getArcheryInt() >= 1000)
+    		if(PP.getSkill("archery") >= 1000)
     			rank++;
-			float skillvalue = (float)PP.getArcheryInt();
+			float skillvalue = (float)PP.getSkill("archery");
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		
     		int ignition = 20;
-			if(PP.getArcheryInt() >= 200)
+			if(PP.getSkill("archery") >= 200)
 				ignition+=20;
-			if(PP.getArcheryInt() >= 400)
+			if(PP.getSkill("archery") >= 400)
 				ignition+=20;
-			if(PP.getArcheryInt() >= 600)
+			if(PP.getSkill("archery") >= 600)
 				ignition+=20;
-			if(PP.getArcheryInt() >= 800)
+			if(PP.getSkill("archery") >= 800)
 				ignition+=20;
-			if(PP.getArcheryInt() >= 1000)
+			if(PP.getSkill("archery") >= 1000)
 				ignition+=20;
 			
     		String percentagedaze;
-			if(PP.getArcheryInt() < 1000){
+			if(PP.getSkill("archery") < 1000){
 				percentagedaze = String.valueOf((skillvalue / 2000) * 100);
 			} else {
-				percentagedaze = "50";
+				percentagedaze = "50"; //$NON-NLS-1$
 			}
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"ARCHERY"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Ignition: "+ChatColor.GREEN+"25% Chance Enemies will ignite");
-			player.sendMessage(ChatColor.DARK_AQUA+"Daze (Players): "+ChatColor.GREEN+"Disorients foes");
-			player.sendMessage(ChatColor.DARK_AQUA+"Damage+: "+ChatColor.GREEN+"Modifies Damage");
-			player.sendMessage(ChatColor.DARK_AQUA+"Arrow Retrieval: "+ChatColor.GREEN+"Chance to retrieve arrows from corpses");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.RED+"Chance to Daze: "+ChatColor.YELLOW+percentagedaze+"%");
-			player.sendMessage(ChatColor.RED+"Chance to Retrieve Arrows: "+ChatColor.YELLOW+percentage+"%");
-			player.sendMessage(ChatColor.RED+"Length of Ignition: "+ChatColor.YELLOW+(ignition / 20)+" seconds");
-			player.sendMessage(ChatColor.RED+"Damage+ (Rank"+rank+"):"+ChatColor.YELLOW+" Bonus "+rank+" damage");
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillArchery")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainArchery")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().archery(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("archery"), PP.getSkillToString("archeryXP"), PP.getXpToLevel("archery")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsArchery1_0"), Messages.getString("m.EffectsArchery1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsArchery2_0"), Messages.getString("m.EffectsArchery2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsArchery3_0"), Messages.getString("m.EffectsArchery3_1")})); //$NON-NLS-1$  
+            player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsArchery4_0"), Messages.getString("m.EffectsArchery4_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.ArcheryDazeChance", new Object[] {percentagedaze})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.ArcheryRetrieveChance", new Object[] {percentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.ArcheryIgnitionLength", new Object[] {(ignition / 20)})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.ArcheryDamagePlus", new Object[] {rank})); //$NON-NLS-1$
     	}
-    	if(split[0].equalsIgnoreCase("/axes")){
+    	if(split[0].equalsIgnoreCase("/axes") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillAxes"))){ //$NON-NLS-1$
 			event.setCancelled(true);
 			String percentage;
-			float skillvalue = (float)PP.getAxesInt();
-			if(PP.getAxesInt() < 750){
+			float skillvalue = (float)PP.getSkill("axes");
+			if(PP.getSkill("axes") < 750){
 				percentage = String.valueOf((skillvalue / 1000) * 100);
 			} else {
-				percentage = "75";
+				percentage = "75"; //$NON-NLS-1$
 			}
 			int ticks = 2;
-			int x = PP.getAxesInt();
+			int x = PP.getSkill("axes");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
     		
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"AXES"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Skull Splitter (ABILITY): "+ChatColor.GREEN+"Deal AoE Damage");
-			player.sendMessage(ChatColor.DARK_AQUA+"Critical Strikes: "+ChatColor.GREEN+"Double Damage");
-			player.sendMessage(ChatColor.DARK_AQUA+"Axe Mastery (500 SKILL): "+ChatColor.GREEN+"Modifies Damage");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.RED+"Chance to crtically strike: "+ChatColor.YELLOW+percentage+"%");
-			if(PP.getAxesInt() < 500){
-				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 500+ SKILL (AXEMASTERY)");
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillAxes")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainAxes")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().axes(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("axes"), PP.getSkillToString("axesXP"), PP.getXpToLevel("axes")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsAxes1_0"), Messages.getString("m.EffectsAxes1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsAxes2_0"), Messages.getString("m.EffectsAxes2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsAxes3_0"), Messages.getString("m.EffectsAxes3_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.AxesCritChance", new Object[] {percentage})); //$NON-NLS-1$
+			if(PP.getSkill("axes") < 500){
+				player.sendMessage(Messages.getString("m.AbilityLockTemplate", new Object[] {Messages.getString("m.AbilLockAxes1")})); //$NON-NLS-1$ 
 			} else {
-				player.sendMessage(ChatColor.RED+"Axe Mastery:"+ChatColor.YELLOW+" Bonus 4 damage");
+				player.sendMessage(Messages.getString("m.AbilityBonusTemplate", new Object[] {Messages.getString("m.AbilBonusAxes1_0"), Messages.getString("m.AbilBonusAxes1_1")})); //$NON-NLS-1$  
 			}
-			player.sendMessage(ChatColor.RED+"Skull Splitter Length: "+ChatColor.YELLOW+ticks+"s");
+			player.sendMessage(Messages.getString("m.AxesSkullLength", new Object[] {ticks})); //$NON-NLS-1$
     	}
-    	if(split[0].equalsIgnoreCase("/swords")){
+    	if(split[0].equalsIgnoreCase("/swords") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillSwords").toLowerCase())){ //$NON-NLS-1$
 			event.setCancelled(true);
 			int bleedrank = 2;
 			String percentage, parrypercentage = null, counterattackpercentage;
-			float skillvalue = (float)PP.getSwordsInt();
-			if(PP.getSwordsInt() < 750){
+			float skillvalue = (float)PP.getSkill("swords");
+			if(PP.getSkill("swords") < 750){
 				percentage = String.valueOf((skillvalue / 1000) * 100);
 			} else {
-				percentage = "75";
+				percentage = "75"; //$NON-NLS-1$
 			}
 			if(skillvalue >= 750)
 				bleedrank+=1;
 			
-			if(PP.getSwordsInt() <= 900){
+			if(PP.getSkill("swords") <= 900){
 				parrypercentage = String.valueOf((skillvalue / 3000) * 100);
 			} else {
-				parrypercentage = "30";
+				parrypercentage = "30"; //$NON-NLS-1$
 			}
 			
-			if(PP.getSwordsInt() <= 600){
+			if(PP.getSkill("swords") <= 600){
 				counterattackpercentage = String.valueOf((skillvalue / 2000) * 100);
 			} else {
-				counterattackpercentage = "30";
+				counterattackpercentage = "30"; //$NON-NLS-1$
 			}
 			
 			int ticks = 2;
-			int x = PP.getSwordsInt();
+			int x = PP.getSkill("swords");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
     		
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"SWORDS"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Counter Attack: "+ChatColor.GREEN+"Reflect 50% of damage taken");
-			player.sendMessage(ChatColor.DARK_AQUA+"Serrated Strikes (ABILITY): "+ChatColor.GREEN+"25% DMG AoE, Bleed+ AoE");
-			player.sendMessage(ChatColor.DARK_GRAY+"Serrated Strikes Bleed+: "+ChatColor.GREEN+"5 Tick Bleed");
-			player.sendMessage(ChatColor.DARK_AQUA+"Parrying: "+ChatColor.GREEN+"Negates Damage");
-			player.sendMessage(ChatColor.DARK_AQUA+"Bleed: "+ChatColor.GREEN+"Apply a bleed DoT");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.RED+"Counter Attack Chance: "+ChatColor.YELLOW+counterattackpercentage+"%");
-			player.sendMessage(ChatColor.RED+"Bleed Length: "+ChatColor.YELLOW+bleedrank+" ticks");
-			player.sendMessage(ChatColor.GRAY+"NOTE: "+ChatColor.YELLOW+"1 Tick happens every 2 seconds");
-			player.sendMessage(ChatColor.RED+"Bleed Chance: "+ChatColor.YELLOW+percentage+"%");
-			player.sendMessage(ChatColor.RED+"Parry Chance: "+ChatColor.YELLOW+parrypercentage+"%");
-			player.sendMessage(ChatColor.RED+"Serrated Strikes Length: "+ChatColor.YELLOW+ticks+"s");
+            player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillSwords")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainSwords")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().swords(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("swords"), PP.getSkillToString("swordsXP"), PP.getXpToLevel("swords")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsSwords1_0"), Messages.getString("m.EffectsSwords1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsSwords2_0"), Messages.getString("m.EffectsSwords2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsSwords3_0"), Messages.getString("m.EffectsSwords3_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsSwords4_0"), Messages.getString("m.EffectsSwords4_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsSwords5_0"), Messages.getString("m.EffectsSwords5_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.SwordsCounterAttChance", new Object[] {counterattackpercentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.SwordsBleedLength", new Object[] {bleedrank})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.SwordsTickNote")); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.SwordsBleedLength", new Object[] {percentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.SwordsParryChance", new Object[] {parrypercentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.SwordsSSLength", new Object[] {ticks})); //$NON-NLS-1$
 			
     	}
-    	if(split[0].equalsIgnoreCase("/acrobatics")){
+    	if(split[0].equalsIgnoreCase("/acrobatics") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillAcrobatics").toLowerCase())){ //$NON-NLS-1$
 			event.setCancelled(true);
 			String dodgepercentage;
-			float skillvalue = (float)PP.getAcrobaticsInt();
+			float skillvalue = (float)PP.getSkill("acrobatics");
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		String gracepercentage = String.valueOf(((skillvalue / 1000) * 100) * 2);
-    		if(PP.getAcrobaticsInt() <= 800){
+    		if(PP.getSkill("acrobatics") <= 800){
     			dodgepercentage = String.valueOf((skillvalue / 4000 * 100));
     		} else {
-    			dodgepercentage = "20";
+    			dodgepercentage = "20"; 
     		}
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"ACROBATICS"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Falling");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Roll: "+ChatColor.GREEN+"Reduces or Negates damage");
-			player.sendMessage(ChatColor.DARK_AQUA+"Graceful Roll: "+ChatColor.GREEN+"Twice as effective as Roll");
-			player.sendMessage(ChatColor.DARK_AQUA+"Dodge: "+ChatColor.GREEN+"Reduce damage by half");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.RED+"Roll Chance: "+ChatColor.YELLOW+percentage+"%");
-			player.sendMessage(ChatColor.RED+"Graceful Roll Chance: "+ChatColor.YELLOW+gracepercentage+"%");
-			player.sendMessage(ChatColor.RED+"Dodge Chance: "+ChatColor.YELLOW+dodgepercentage+"%");
+            player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillAcrobatics")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainAcrobatics")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().acrobatics(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("acrobatics"), PP.getSkillToString("acrobaticsXP"), PP.getXpToLevel("acrobatics")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsAcrobatics1_0"), Messages.getString("m.EffectsAcrobatics1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsAcrobatics2_0"), Messages.getString("m.EffectsAcrobatics2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsAcrobatics3_0"), Messages.getString("m.EffectsAcrobatics3_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.AcrobaticsRollChance", new Object[] {percentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.AcrobaticsGracefulRollChance", new Object[] {gracepercentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.AcrobaticsDodgeChance", new Object[] {dodgepercentage})); //$NON-NLS-1$
     	}
-    	if(split[0].equalsIgnoreCase("/mining")){
-    		float skillvalue = (float)PP.getMiningInt();
+    	if(split[0].equalsIgnoreCase("/mining") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillMining"))){ //$NON-NLS-1$
+    		float skillvalue = (float)PP.getSkill("mining");
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		int ticks = 2;
-    		int x = PP.getMiningInt();
+    		int x = PP.getSkill("mining");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"MINING"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Mining Stone & Ore");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Super Breaker (ABILITY): "+ChatColor.GREEN+"Speed+, Triple Drop Chance");
-			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops: "+ChatColor.GREEN+"Double the normal loot");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
-			player.sendMessage(ChatColor.RED+"Super Breaker Length: "+ChatColor.YELLOW+ticks+"s");
+            player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillMining")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainMining")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().mining(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("taming"), PP.getSkillToString("tamingXP"), PP.getXpToLevel("taming")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsMining1_0"), Messages.getString("m.EffectsMining1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsMining2_0"), Messages.getString("m.EffectsMining2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.MiningDoubleDropChance", new Object[] {percentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.MiningSuperBreakerLength", new Object[] {ticks})); //$NON-NLS-1$
     	}
-    	if(split[0].equalsIgnoreCase("/repair")){
-    		float skillvalue = (float)PP.getRepairInt();
+    	if(split[0].equalsIgnoreCase("/repair") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillRepair").toLowerCase())){ //$NON-NLS-1$
+    		float skillvalue = (float)PP.getSkill("repair");
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		String repairmastery = String.valueOf((skillvalue / 500) * 100);
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"REPAIR"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Repairing");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Repair: "+ChatColor.GREEN+"Repair Iron Tools & Armor");
-			player.sendMessage(ChatColor.DARK_AQUA+"Repair Mastery: "+ChatColor.GREEN+"Increased repair amount");
-			player.sendMessage(ChatColor.DARK_AQUA+"Super Repair: "+ChatColor.GREEN+"Double effectiveness");
-			player.sendMessage(ChatColor.DARK_AQUA+"Diamond Repair ("+LoadProperties.repairdiamondlevel+"+ SKILL): "+ChatColor.GREEN+"Repair Diamond Tools & Armor");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.RED+"Repair Mastery: "+ChatColor.YELLOW+"Extra "+repairmastery+"% durability restored");
-			player.sendMessage(ChatColor.RED+"Super Repair Chance: "+ChatColor.YELLOW+percentage+"%");
+	        player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillRepair")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainRepair")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().repair(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("repair"), PP.getSkillToString("repairXP"), PP.getXpToLevel("repair")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsRepair1_0"), Messages.getString("m.EffectsRepair1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsRepair2_0"), Messages.getString("m.EffectsRepair2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsRepair3_0"), Messages.getString("m.EffectsRepair3_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsRepair4_0", new Object[]{LoadProperties.repairdiamondlevel}), Messages.getString("m.EffectsRepair4_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.RepairRepairMastery", new Object[] {repairmastery})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.RepairSuperRepairChance", new Object[] {percentage})); //$NON-NLS-1$
     	}
-    	if(split[0].equalsIgnoreCase("/unarmed")){
+    	if(split[0].equalsIgnoreCase("/unarmed")){ //$NON-NLS-1$
 			event.setCancelled(true);
 			String percentage, arrowpercentage;
-			float skillvalue = (float)PP.getUnarmedInt();
+			float skillvalue = (float)PP.getSkill("unarmed");
 			
-			if(PP.getUnarmedInt() < 1000){
+			if(PP.getSkill("unarmed") < 1000){
 				percentage = String.valueOf((skillvalue / 4000) * 100);
 			} else {
-				percentage = "25";
+				percentage = "25"; //$NON-NLS-1$
 			}
 			
-			if(PP.getUnarmedInt() < 1000){
+			if(PP.getSkill("unarmed") < 1000){
 				arrowpercentage = String.valueOf(((skillvalue / 1000) * 100) / 2);
 			} else {
-				arrowpercentage = "50";
+				arrowpercentage = "50"; //$NON-NLS-1$
 			}
 			
 			
 			int ticks = 2;
-			int x = PP.getUnarmedInt();
+			int x = PP.getSkill("unarmed");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
     		
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"UNARMED"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Attacking Monsters");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Berserk (ABILITY): "+ChatColor.GREEN+"+50% DMG, Breaks weak materials");
-			player.sendMessage(ChatColor.DARK_AQUA+"Disarm (Players): "+ChatColor.GREEN+"Drops the foes item held in hand");
-			player.sendMessage(ChatColor.DARK_AQUA+"Unarmed Mastery: "+ChatColor.GREEN+"Large Damage Upgrade");
-			player.sendMessage(ChatColor.DARK_AQUA+"Unarmed Apprentice: "+ChatColor.GREEN+"Damage Upgrade");
-			player.sendMessage(ChatColor.DARK_AQUA+"Arrow Deflect: "+ChatColor.GREEN+"Deflect arrows");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.RED+"Arrow Deflect Chance: "+ChatColor.YELLOW+arrowpercentage+"%");
-			player.sendMessage(ChatColor.RED+"Disarm Chance: "+ChatColor.YELLOW+percentage+"%");
-			if(PP.getUnarmedInt() < 250){
-				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 250+ SKILL (UNARMED APPRENTICE)");
-			} else if(PP.getUnarmedInt() >= 250 && PP.getUnarmedInt() < 500){
-				player.sendMessage(ChatColor.RED+"Unarmed Apprentice: "+ChatColor.YELLOW+"+2 DMG Upgrade");
-				player.sendMessage(ChatColor.GRAY+"LOCKED UNTIL 500+ SKILL (UNARMED MASTERY)");
+	        player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillUnarmed")})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainUnarmed")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().unarmed(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("unarmed"), PP.getSkillToString("unarmedXP"), PP.getXpToLevel("unarmed")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsUnarmed1_0"), Messages.getString("m.EffectsUnarmed1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsUnarmed2_0"), Messages.getString("m.EffectsUnarmed2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsUnarmed3_0"), Messages.getString("m.EffectsUnarmed3_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsUnarmed4_0"), Messages.getString("m.EffectsUnarmed4_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsUnarmed5_0"), Messages.getString("m.EffectsUnarmed5_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.UnarmedArrowDeflectChance", new Object[] {arrowpercentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.UnarmedDisarmChance", new Object[] {percentage})); //$NON-NLS-1$
+			if(PP.getSkill("unarmed") < 250){
+				player.sendMessage(Messages.getString("m.AbilityLockTemplate", new Object[] {Messages.getString("m.AbilLockUnarmed1")})); //$NON-NLS-1$ 
+			} else if(PP.getSkill("unarmed") >= 250 && PP.getSkill("unarmed") < 500){
+				player.sendMessage(Messages.getString("m.AbilityBonusTemplate", new Object[] {Messages.getString("m.AbilBonusUnarmed1_0"), Messages.getString("m.AbilBonusUnarmed1_1")})); //$NON-NLS-1$  
+				player.sendMessage(Messages.getString("m.AbilityLockTemplate", new Object[] {Messages.getString("m.AbilLockUnarmed2")})); //$NON-NLS-1$ 
 			} else {
-				player.sendMessage(ChatColor.RED+"Unarmed Mastery: "+ChatColor.YELLOW+"+4 DMG Upgrade");
+				player.sendMessage(Messages.getString("m.AbilityBonusTemplate", new Object[] {Messages.getString("m.AbilBonusUnarmed2_0"), Messages.getString("m.AbilBonusUnarmed2_1")})); //$NON-NLS-1$  
 			}
-			player.sendMessage(ChatColor.RED+"Berserk Length: "+ChatColor.YELLOW+ticks+"s");
+			player.sendMessage(Messages.getString("m.UnarmedBerserkLength", new Object[] {ticks})); //$NON-NLS-1$
     	}
-    	if(split[0].equalsIgnoreCase("/herbalism")){
+    	if(split[0].equalsIgnoreCase("/herbalism") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillHerbalism").toLowerCase())){ //$NON-NLS-1$
 			event.setCancelled(true);
 			int rank = 0;
-			if(PP.getHerbalismInt() >= 50)
+			if(PP.getSkill("herbalism") >= 50)
     			rank++;
-    		if (PP.getHerbalismInt() >= 150)
+    		if (PP.getSkill("herbalism") >= 150)
     			rank++;
-    		if (PP.getHerbalismInt() >= 250)
+    		if (PP.getSkill("herbalism") >= 250)
     			rank++;
-    		if (PP.getHerbalismInt() >= 350)
+    		if (PP.getSkill("herbalism") >= 350)
     			rank++;
-    		if (PP.getHerbalismInt() >= 450)
+    		if (PP.getSkill("herbalism") >= 450)
     			rank++;
-    		if (PP.getHerbalismInt() >= 550)
+    		if (PP.getSkill("herbalism") >= 550)
     			rank++;
-    		if (PP.getHerbalismInt() >= 650)
+    		if (PP.getSkill("herbalism") >= 650)
     			rank++;
-    		if (PP.getHerbalismInt() >= 750)
+    		if (PP.getSkill("herbalism") >= 750)
     			rank++;
     		int bonus = 0;
-    		if(PP.getHerbalismInt() >= 200)
+    		if(PP.getSkill("herbalism") >= 200)
     			bonus++;
-    		if(PP.getHerbalismInt() >= 400)
+    		if(PP.getSkill("herbalism") >= 400)
     			bonus++;
-    		if(PP.getHerbalismInt() >= 600)
+    		if(PP.getSkill("herbalism") >= 600)
     			bonus++;
     		
     		int ticks = 2;
-			int x = PP.getHerbalismInt();
+			int x = PP.getSkill("herbalism");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
     		
-			float skillvalue = (float)PP.getHerbalismInt();
+			float skillvalue = (float)PP.getSkill("herbalism");
     		String percentage = String.valueOf((skillvalue / 1000) * 100);
     		String gpercentage = String.valueOf((skillvalue / 1500) * 100);
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"HERBALISM"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Harvesting Herbs");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Green Terra (ABILITY): "+ChatColor.GREEN+"Spread the Terra, 3x Drops");
-			player.sendMessage(ChatColor.DARK_AQUA+"Green Thumb (Wheat): "+ChatColor.GREEN+"Auto-Plants wheat when harvesting");
-			player.sendMessage(ChatColor.DARK_AQUA+"Green Thumb (Cobble): "+ChatColor.GREEN+"Cobblestone -> Mossy w/ Seeds");
-			player.sendMessage(ChatColor.DARK_AQUA+"Food+: "+ChatColor.GREEN+"Modifies health received from bread/stew");
-			player.sendMessage(ChatColor.DARK_AQUA+"Double Drops (All Herbs): "+ChatColor.GREEN+"Double the normal loot");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.RED+"Green Terra Length: "+ChatColor.YELLOW+ticks+"s");
-			player.sendMessage(ChatColor.RED+"Green Thumb Chance: "+ChatColor.YELLOW+gpercentage+"%");
-			player.sendMessage(ChatColor.RED+"Green Thumb Stage: "+ChatColor.YELLOW+"Wheat grows in stage "+bonus);
-			player.sendMessage(ChatColor.RED+"Double Drop Chance: "+ChatColor.YELLOW+percentage+"%");
-			player.sendMessage(ChatColor.RED+"Food+ (Rank"+rank+"): "+ChatColor.YELLOW+"Bonus "+rank+" healing");
+	        player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillHerbalism")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainHerbalism")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().herbalism(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("herbalism"), PP.getSkillToString("herbalismXP"), PP.getXpToLevel("herbalism")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsHerbalism1_0"), Messages.getString("m.EffectsHerbalism1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsHerbalism2_0"), Messages.getString("m.EffectsHerbalism2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsHerbalism3_0"), Messages.getString("m.EffectsHerbalism3_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsHerbalism4_0"), Messages.getString("m.EffectsHerbalism4_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsHerbalism5_0"), Messages.getString("m.EffectsHerbalism5_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.HerbalismGreenTerraLength", new Object[] {ticks})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.HerbalismGreenThumbChance", new Object[] {gpercentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.HerbalismGreenThumbStage", new Object[] {bonus})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.HerbalismDoubleDropChance", new Object[] {percentage})); //$NON-NLS-1$
+			player.sendMessage(Messages.getString("m.HerbalismFoodPlus", new Object[] {rank})); //$NON-NLS-1$
     	}
-    	if(split[0].equalsIgnoreCase("/excavation"))
+    	
+    	if(split[0].equalsIgnoreCase("/excavation") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillExcavation").toLowerCase())) //$NON-NLS-1$
     	{
 			event.setCancelled(true);
 			int ticks = 2;
-			int x = PP.getExcavationInt();
+			int x = PP.getSkill("excavation");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"EXCAVATION"+ChatColor.RED+"[]-----");
-			player.sendMessage(ChatColor.DARK_GRAY+"XP GAIN: "+ChatColor.WHITE+"Digging and finding treasures");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"EFFECTS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.DARK_AQUA+"Giga Drill Breaker (ABILITY): "+ChatColor.GREEN+"3x Drop Rate, 3x EXP, +Speed");
-			player.sendMessage(ChatColor.DARK_AQUA+"Treasure Hunter: "+ChatColor.GREEN+"Ability to dig for treasure");
-			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.GREEN+"YOUR STATS"+ChatColor.RED+"[]---");
-			player.sendMessage(ChatColor.RED+"Giga Drill Breaker Length: "+ChatColor.YELLOW+ticks+"s");
+	        player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillExcavation")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainExcavation")})); //$NON-NLS-1$ 
+			if(mcPermissions.getInstance().excavation(player))
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("excavation"), PP.getSkillToString("excavationXP"), PP.getXpToLevel("excavation")}));
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsExcavation1_0"), Messages.getString("m.EffectsExcavation1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsExcavation2_0"), Messages.getString("m.EffectsExcavation2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.ExcavationGreenTerraLength", new Object[] {ticks})); //$NON-NLS-1$
     	}
-		if(split[0].equalsIgnoreCase("/"+LoadProperties.mcmmo)){
+    	
+    	if(split[0].equalsIgnoreCase("/sorcery") || split[0].toLowerCase().equalsIgnoreCase("/"+Messages.getString("m.SkillSorcery").toLowerCase())) //$NON-NLS-1$
+    	{
 			event.setCancelled(true);
-    		player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"mMO"+ChatColor.RED+"[]-----");
-    		player.sendMessage(ChatColor.YELLOW+"mcMMO is an RPG server mod for minecraft.");
-    		player.sendMessage(ChatColor.YELLOW+"There are many skills added by mcMMO to minecraft.");
-    		player.sendMessage(ChatColor.YELLOW+"They can do anything from giving a chance");
-    		player.sendMessage(ChatColor.YELLOW+"for double drops to letting you break materials instantly.");
-    		player.sendMessage(ChatColor.YELLOW+"For example, by harvesting logs from trees you will gain");
-    		player.sendMessage(ChatColor.YELLOW+"Woodcutting xp and once you have enough xp you will gain");
-    		player.sendMessage(ChatColor.YELLOW+"a skill level in Woodcutting. By raising this skill you will");
-    		player.sendMessage(ChatColor.YELLOW+"be able to receive benefits like "+ChatColor.RED+"double drops");
-    		player.sendMessage(ChatColor.YELLOW+"and increase the effects of the "+ChatColor.RED+"\"Tree Felling\""+ChatColor.YELLOW+" ability.");
-    		player.sendMessage(ChatColor.YELLOW+"mMO has abilities related to the skill, skills normally");
-    		player.sendMessage(ChatColor.YELLOW+"provide passive bonuses but they also have activated");
-    		player.sendMessage(ChatColor.YELLOW+"abilities too. Each ability is activated by holding");
-    		player.sendMessage(ChatColor.YELLOW+"the appropriate tool and "+ChatColor.RED+"right clicking.");
-    		player.sendMessage(ChatColor.YELLOW+"For example, if you hold a Mining Pick and right click");
-    		player.sendMessage(ChatColor.YELLOW+"you will ready your Pickaxe, attack mining materials");
-    		player.sendMessage(ChatColor.YELLOW+"and then "+ChatColor.RED+"Super Breaker "+ChatColor.YELLOW+"will activate.");
-    		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with "+ChatColor.DARK_AQUA+"/"+LoadProperties.mcc);
-    		player.sendMessage(ChatColor.GREEN+"You can donate via paypal to"+ChatColor.DARK_RED+" nossr50@gmail.com");
+			
+			/*
+	        player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillExcavation")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainExcavation")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsExcavation1_0"), Messages.getString("m.EffectsExcavation1_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsExcavation2_0"), Messages.getString("m.EffectsExcavation2_1")})); //$NON-NLS-1$  
+			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.YourStats")})); //$NON-NLS-1$ 
+			player.sendMessage(Messages.getString("m.ExcavationGreenTerraLength", new Object[] {ticks})); //$NON-NLS-1$
+			*/
     	}
-    	if(split[0].equalsIgnoreCase("/"+LoadProperties.mcc)){
+    	
+		if(LoadProperties.mcmmoEnable && split[0].equalsIgnoreCase("/"+LoadProperties.mcmmo)){ 
+			event.setCancelled(true);
+    		player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"mMO"+ChatColor.RED+"[]-----");   
+    		player.sendMessage(ChatColor.YELLOW+"mcMMO is an RPG server mod for minecraft."); 
+    		player.sendMessage(ChatColor.YELLOW+"There are many skills added by mcMMO to minecraft."); 
+    		player.sendMessage(ChatColor.YELLOW+"They can do anything from giving a chance"); 
+    		player.sendMessage(ChatColor.YELLOW+"for double drops to letting you break materials instantly."); 
+    		player.sendMessage(ChatColor.YELLOW+"For example, by harvesting logs from trees you will gain"); 
+    		player.sendMessage(ChatColor.YELLOW+"Woodcutting xp and once you have enough xp you will gain"); 
+    		player.sendMessage(ChatColor.YELLOW+"a skill level in Woodcutting. By raising this skill you will"); 
+    		player.sendMessage(ChatColor.YELLOW+"be able to receive benefits like "+ChatColor.RED+"double drops");  
+    		player.sendMessage(ChatColor.YELLOW+"and increase the effects of the "+ChatColor.RED+"\"Tree Felling\""+ChatColor.YELLOW+" ability.");   
+    		player.sendMessage(ChatColor.YELLOW+"mMO has abilities related to the skill, skills normally"); 
+    		player.sendMessage(ChatColor.YELLOW+"provide passive bonuses but they also have activated"); 
+    		player.sendMessage(ChatColor.YELLOW+"abilities too. Each ability is activated by holding"); 
+    		player.sendMessage(ChatColor.YELLOW+"the appropriate tool and "+ChatColor.RED+"right clicking.");  
+    		player.sendMessage(ChatColor.YELLOW+"For example, if you hold a Mining Pick and right click"); 
+    		player.sendMessage(ChatColor.YELLOW+"you will ready your Pickaxe, attack mining materials"); 
+    		player.sendMessage(ChatColor.YELLOW+"and then "+ChatColor.RED+"Super Breaker "+ChatColor.YELLOW+"will activate.");   
+    		player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with "+ChatColor.DARK_AQUA+"/"+LoadProperties.mcc);  
+    		player.sendMessage(ChatColor.GREEN+"You can donate via paypal to"+ChatColor.DARK_RED+" nossr50@gmail.com");  
+    	}
+    	if(LoadProperties.mccEnable && split[0].equalsIgnoreCase("/"+LoadProperties.mcc)){ 
     		event.setCancelled(true);
-    		player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mcMMO Commands"+ChatColor.RED+"[]---");
+    		player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mcMMO Commands"+ChatColor.RED+"[]---");   
     		if(mcPermissions.getInstance().party(player)){
-    			player.sendMessage(ChatColor.GREEN+"--PARTY COMMANDS--");
-    			player.sendMessage("/"+LoadProperties.party+" [party name] "+ChatColor.RED+"- Create/Join designated party");
-    			player.sendMessage("/"+LoadProperties.party+" q "+ChatColor.RED+"- Leave your current party");
+    			player.sendMessage(Messages.getString("m.mccPartyCommands")); 
+    			player.sendMessage("/"+LoadProperties.party+" "+Messages.getString("m.mccParty"));   
+    			player.sendMessage("/"+LoadProperties.party+" q "+Messages.getString("m.mccPartyQ"));
     			if(mcPermissions.getInstance().partyChat(player))
-    				player.sendMessage("/p "+ChatColor.RED+" - Toggle Party Chat");
-    			player.sendMessage("/"+LoadProperties.invite+" [player name] "+ChatColor.RED+"- Send party invite");
-    			player.sendMessage("/"+LoadProperties.accept+" "+ChatColor.RED+"- Accept party invite");
+    				player.sendMessage("/p "+Messages.getString("m.mccPartyToggle"));  
+    			player.sendMessage("/"+LoadProperties.invite+" "+Messages.getString("m.mccPartyInvite"));   
+    			player.sendMessage("/"+LoadProperties.accept+" "+Messages.getString("m.mccPartyAccept"));   
     			if(mcPermissions.getInstance().partyTeleport(player))
-    				player.sendMessage("/"+LoadProperties.ptp+" [party member name] "+ChatColor.RED+"- Teleport to party member");
+    				player.sendMessage("/"+LoadProperties.ptp+" "+Messages.getString("m.mccPartyTeleport"));   
     		}
-    		player.sendMessage(ChatColor.GREEN+"--OTHER COMMANDS--");
-    		player.sendMessage("/"+LoadProperties.stats+ChatColor.RED+" - View your mcMMO stats");
-    		player.sendMessage("/mctop <skillname> <page> "+ChatColor.RED+"- Leaderboards");
+    		player.sendMessage(Messages.getString("m.mccOtherCommands")); 
+    		player.sendMessage("/"+LoadProperties.stats+ChatColor.RED+" "+Messages.getString("m.mccStats"));  
+    		player.sendMessage("/mctop <skillname> <page> "+ChatColor.RED+Messages.getString("m.mccLeaderboards"));  
     		if(mcPermissions.getInstance().mySpawn(player)){
-	    		player.sendMessage("/"+LoadProperties.myspawn+" "+ChatColor.RED+"- Clears inventory & teleports to myspawn");
-	    		player.sendMessage("/"+LoadProperties.clearmyspawn+" "+ChatColor.RED+"- Clears your MySpawn");
+	    		player.sendMessage("/"+LoadProperties.myspawn+" "+ChatColor.RED+Messages.getString("m.mccMySpawn"));   
+	    		player.sendMessage("/"+LoadProperties.clearmyspawn+" "+ChatColor.RED+Messages.getString("m.mccClearMySpawn"));   
     		}
     		if(mcPermissions.getInstance().mcAbility(player))
-    			player.sendMessage("/"+LoadProperties.mcability+ChatColor.RED+" - Toggle ability activation with right click");
+    			player.sendMessage("/"+LoadProperties.mcability+ChatColor.RED+" "+Messages.getString("m.mccToggleAbility"));  
     		if(mcPermissions.getInstance().adminChat(player)){
-    			player.sendMessage("/a "+ChatColor.RED+"- Toggle admin chat");
+    			player.sendMessage("/a "+ChatColor.RED+Messages.getString("m.mccAdminToggle"));  
     		}
     		if(mcPermissions.getInstance().whois(player))
-    			player.sendMessage("/"+LoadProperties.whois+" [playername] "+ChatColor.RED+"- View detailed player info");
+    			player.sendMessage("/"+LoadProperties.whois+" "+Messages.getString("m.mccWhois"));   
     		if(mcPermissions.getInstance().mmoedit(player)){
     			//player.sendMessage("/"+LoadProperties.mmoedit+" [skill] [newvalue] "+ChatColor.RED+"Modify the designated skill value");
-    			player.sendMessage("/"+LoadProperties.mmoedit+" [playername] [skill] [newvalue] "+ChatColor.RED+"- Modify target");
+    			player.sendMessage("/"+LoadProperties.mmoedit+Messages.getString("m.mccMmoedit"));   
     		}
     		if(mcPermissions.getInstance().mcgod(player))
-    			player.sendMessage("/"+LoadProperties.mcgod+ChatColor.RED+" - God Mode");
-    		player.sendMessage("/[skillname] "+ChatColor.RED+" View detailed information about a skill");
-    		player.sendMessage("/"+LoadProperties.mcmmo+" "+ChatColor.RED+"- Read brief mod description");
+    			player.sendMessage("/"+LoadProperties.mcgod+ChatColor.RED+" "+Messages.getString("m.mccMcGod"));  
+    		player.sendMessage("/"+Messages.getString("m.mccSkillInfo"));  
+    		player.sendMessage("/"+LoadProperties.mcmmo+" "+Messages.getString("m.mccModDescription"));   
     	}
     }
 }

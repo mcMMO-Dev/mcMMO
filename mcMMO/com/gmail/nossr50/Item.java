@@ -1,6 +1,5 @@
 package com.gmail.nossr50;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -50,7 +49,7 @@ public class Item {
     				y++;
     				if(player != null){
     					if(player.getLocation().getWorld().getBlockAt(block.getX(), y, block.getZ()).getType() != Material.AIR){
-	    					player.sendMessage("**CHIMAERA WING FAILED!**");
+	    					player.sendMessage(Messages.getString("Item.ChimaeraWingFail")); //$NON-NLS-1$
 	    					player.teleport(player.getLocation().getWorld().getBlockAt(block.getX(), (y - 1), block.getZ()).getLocation());
 	    					return;
     					}
@@ -67,12 +66,11 @@ public class Item {
     			} else {
     				player.teleport(player.getWorld().getSpawnLocation());
     			}
-    			player.sendMessage("**CHIMAERA WING**");
+    			player.sendMessage(Messages.getString("Item.ChimaeraWingPass")); //$NON-NLS-1$
     		} else if (!Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= 10) {
-    			player.sendMessage("You were injured recently and must wait to use this."
-    					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, PP.getRecentlyHurt(), 60)+"s)");
+    			player.sendMessage(Messages.getString("Item.InjuredWait", new Object[] {Skills.calculateTimeLeft(player, PP.getRecentlyHurt(), 60)})); //$NON-NLS-1$
     		} else if (is.getTypeId() == 288 && is.getAmount() <= 9){
-    			player.sendMessage("You need more of that to use it");
+    			player.sendMessage(Messages.getString("Item.NeedFeathers")); //$NON-NLS-1$
     		}
     	}
 	}

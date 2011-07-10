@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -10,22 +9,20 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.nossr50.Messages;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 
 public class Herbalism {
-	private static mcMMO plugin;
-	public Herbalism(mcMMO instance) {
-    	plugin = instance;
-    }
 	
-	public static void greenTerraWheat(Player player, Block block, BlockBreakEvent event){
-		if(block.getType() == Material.WHEAT && block.getData() == (byte) 0x07){
+	public static void greenTerraWheat(Player player, Block block, BlockBreakEvent event, mcMMO plugin)
+	{
+		if(block.getType() == Material.WHEAT && block.getData() == (byte) 0x07)
+		{
 			event.setCancelled(true);
 			PlayerProfile PP = Users.getProfile(player);
 			Material mat = Material.getMaterial(296);
@@ -33,8 +30,14 @@ public class Herbalism {
 			ItemStack is = new ItemStack(mat, 1, (byte)0, (byte)0);
 			PP.addHerbalismXP(5 * LoadProperties.xpGainMultiplier);
 	    	loc.getWorld().dropItemNaturally(loc, is);
-	    	herbalismProcCheck(block, player, event);
-	    	herbalismProcCheck(block, player, event);
+	    	
+	    	//DROP SOME SEEDS
+			mat = Material.SEEDS;
+			is = new ItemStack(mat, 1, (byte)0, (byte)0);
+			loc.getWorld().dropItemNaturally(loc, is);
+			
+	    	herbalismProcCheck(block, player, event, plugin);
+	    	herbalismProcCheck(block, player, event, plugin);
 			block.setData((byte) 0x03);
 		}
 	}
@@ -42,7 +45,8 @@ public class Herbalism {
 		if(block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT){
 			if(!hasSeeds(player))
 				player.sendMessage("You need more seeds to spread Green Terra");
-			if(hasSeeds(player) && block.getType() != Material.WHEAT){
+			if(hasSeeds(player) && block.getType() != Material.WHEAT)
+			{
 				removeSeeds(player);	
 			if(block.getType() == Material.DIRT)
 				block.setType(Material.GRASS);
@@ -95,19 +99,18 @@ public class Herbalism {
     			PP.setHoePreparationMode(false);
     		}
 	    	int ticks = 2;
-	    	int x = PP.getHerbalismInt();
+	    	int x = PP.getSkill("herbalism");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
     		
 	    	if(!PP.getGreenTerraMode() && Skills.cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), LoadProperties.greenTerraCooldown)){
-	    		player.sendMessage(ChatColor.GREEN+"**GREEN TERRA ACTIVATED**");
+	    		player.sendMessage(Messages.getString("Skills.GreenTerraOn"));
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Green Terra!");
+	    				y.sendMessage(Messages.getString("Skills.GreenTerraPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setGreenTerraTicks(ticks * 1000);
 	    		PP.setGreenTerraActivatedTimeStamp(System.currentTimeMillis());
 	    		PP.setGreenTerraDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
 	    		PP.setGreenTerraMode(true);
@@ -115,39 +118,45 @@ public class Herbalism {
 	    	
 	    }
 	}
-	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event){
+	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event, mcMMO plugin)
+	{
 		PlayerProfile PP = Users.getProfile(player);
     	int type = block.getTypeId();
     	Location loc = block.getLocation();
     	ItemStack is = null;
     	Material mat = null;
     	
-    	if(Config.getInstance().isBlockWatched(block)){
+    	if(plugin.misc.blockWatchList.contains(block))
+    	{
     		return;
     	}
     	if(type == 59 && block.getData() == (byte) 0x7){
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    		PP.addHerbalismXP(5 * LoadProperties.xpGainMultiplier);
+    		PP.addHerbalismXP(LoadProperties.mwheat * LoadProperties.xpGainMultiplier);
     		if(player != null){
-	    		if(Math.random() * 1000 <= PP.getHerbalismInt()){
+	    		if(Math.random() * 1000 <= PP.getSkill("herbalism")){
 	    			loc.getWorld().dropItemNaturally(loc, is);
 	    		}
     		}
     		//GREEN THUMB
-    		if(Math.random() * 1500 <= PP.getHerbalismInt()){
+    		if(Math.random() * 1500 <= PP.getSkill("herbalism")){
     			event.setCancelled(true);
+    			loc.getWorld().dropItemNaturally(loc, is);
+    			//DROP SOME SEEDS
+    			mat = Material.SEEDS;
+    			is = new ItemStack(mat, 1, (byte)0, (byte)0);
     			loc.getWorld().dropItemNaturally(loc, is);
     			
     			block.setData((byte) 0x1); //Change it to first stage
     			
     			//Setup the bonuses
     			int bonus = 0;
-    			if(PP.getHerbalismInt() >= 200)
+    			if(PP.getSkill("herbalism") >= 200)
     				bonus++;
-    			if(PP.getHerbalismInt() >= 400)
+    			if(PP.getSkill("herbalism") >= 400)
     				bonus++;
-    			if(PP.getHerbalismInt() >= 600)
+    			if(PP.getSkill("herbalism") >= 600)
     				bonus++;
     			
     			//Change wheat to be whatever stage based on the bonus
@@ -190,11 +199,11 @@ public class Herbalism {
 	    				is = new ItemStack(Material.CACTUS, 1, (byte)0, (byte)0);
 	    				if(byteArray[x] != (byte) 5)
 	    				{
-		    		    	if(Math.random() * 1000 <= PP.getHerbalismInt())
+		    		    	if(Math.random() * 1000 <= PP.getSkill("herbalism"))
 		    		    	{
 		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
 		    		    	}
-		    		    	PP.addHerbalismXP(3 * LoadProperties.xpGainMultiplier);
+		    		    	PP.addHerbalismXP(LoadProperties.mcactus * LoadProperties.xpGainMultiplier);
 	    				}
 	    			}
 	    			x++;
@@ -228,11 +237,11 @@ public class Herbalism {
 	    				//Check for being placed by the player
 	    				if(byteArray[x] != (byte) 5)
 	    				{
-		    		    	if(Math.random() * 1000 <= PP.getHerbalismInt())
+		    		    	if(Math.random() * 1000 <= PP.getSkill("herbalism"))
 		    		    	{
 		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
 		    		    	}
-		    		    	PP.addHerbalismXP(3 * LoadProperties.xpGainMultiplier);
+		    		    	PP.addHerbalismXP(LoadProperties.msugar * LoadProperties.xpGainMultiplier);
 	    				}
 	    			}
 	    			x++;
@@ -240,81 +249,88 @@ public class Herbalism {
 	    	}
 	    	
     		//Pumpkins
-	    	if((type == 91 || type == 86) && !Config.getInstance().isBlockWatched(block)){
+	    	if((type == 91 || type == 86) && plugin.misc.blockWatchList.contains(block))
+	    	{
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getHerbalismInt()){
+		    		if(Math.random() * 1000 <= PP.getSkill("herbalism")){
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismXP(55 * LoadProperties.xpGainMultiplier);
+	    		PP.addHerbalismXP(LoadProperties.mpumpkin * LoadProperties.xpGainMultiplier);
 	    	}
     		//Mushroom
 	    	if(type == 39 || type == 40){
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getHerbalismInt()){
+		    		if(Math.random() * 1000 <= PP.getSkill("herbalism")){
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismXP(40 * LoadProperties.xpGainMultiplier);
+	    		PP.addHerbalismXP(LoadProperties.mmushroom * LoadProperties.xpGainMultiplier);
 	    	}
 	    	//Flower
 	    	if(type == 37 || type == 38){
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getHerbalismInt()){
+		    		if(Math.random() * 1000 <= PP.getSkill("herbalism")){
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismXP(10 * LoadProperties.xpGainMultiplier);
+	    		PP.addHerbalismXP(LoadProperties.mflower * LoadProperties.xpGainMultiplier);
 	    	}
     	}
     	Skills.XpCheck(player);
     }
 	public static void breadCheck(Player player, ItemStack is){
 		PlayerProfile PP = Users.getProfile(player);
-    	if(is.getTypeId() == 297){
-    		if(PP.getHerbalismInt() >= 50 && PP.getHerbalismInt() < 150){
-    			player.setHealth(player.getHealth() + 1);
-    		} else if (PP.getHerbalismInt() >= 150 && PP.getHerbalismInt() < 250){
-    			player.setHealth(player.getHealth() + 2);
-    		} else if (PP.getHerbalismInt() >= 250 && PP.getHerbalismInt() < 350){
-    			player.setHealth(player.getHealth() + 3);
-    		} else if (PP.getHerbalismInt() >= 350 && PP.getHerbalismInt() < 450){
-    			player.setHealth(player.getHealth() + 4);
-    		} else if (PP.getHerbalismInt() >= 450 && PP.getHerbalismInt() < 550){
-    			player.setHealth(player.getHealth() + 5);
-    		} else if (PP.getHerbalismInt() >= 550 && PP.getHerbalismInt() < 650){
-    			player.setHealth(player.getHealth() + 6);
-    		} else if (PP.getHerbalismInt() >= 650 && PP.getHerbalismInt() < 750){
-    			player.setHealth(player.getHealth() + 7);
-    		} else if (PP.getHerbalismInt() >= 750){
-    			player.setHealth(player.getHealth() + 8);
-    		}
-    	}
+		int herbalism = PP.getSkill("herbalism");
+		if(is != null && PP != null)
+		{
+	    	if(is.getTypeId() == 297)
+	    	{
+	    		if(herbalism >= 50 && herbalism < 150){
+	    			player.setHealth(player.getHealth() + 1);
+	    		} else if (herbalism >= 150 && herbalism < 250){
+	    			player.setHealth(player.getHealth() + 2);
+	    		} else if (herbalism >= 250 && herbalism < 350){
+	    			player.setHealth(player.getHealth() + 3);
+	    		} else if (herbalism >= 350 && herbalism < 450){
+	    			player.setHealth(player.getHealth() + 4);
+	    		} else if (herbalism >= 450 && herbalism < 550){
+	    			player.setHealth(player.getHealth() + 5);
+	    		} else if (herbalism >= 550 && herbalism < 650){
+	    			player.setHealth(player.getHealth() + 6);
+	    		} else if (herbalism >= 650 && herbalism < 750){
+	    			player.setHealth(player.getHealth() + 7);
+	    		} else if (herbalism >= 750){
+	    			player.setHealth(player.getHealth() + 8);
+	    		}
+	    	}
+		}
     }
     public static void stewCheck(Player player, ItemStack is){
     	PlayerProfile PP = Users.getProfile(player);
+    	int herbalism = PP.getSkill("herbalism");
     	if(is.getTypeId() == 282){
-    		if(PP.getHerbalismInt() >= 50 && PP.getHerbalismInt() < 150){
+    		if(herbalism >= 50 && herbalism < 150){
     			player.setHealth(player.getHealth() + 1);
-    		} else if (PP.getHerbalismInt() >= 150 && PP.getHerbalismInt() < 250){
+    		} else if (herbalism >= 150 && herbalism < 250){
     			player.setHealth(player.getHealth() + 2);
-    		} else if (PP.getHerbalismInt() >= 250 && PP.getHerbalismInt() < 350){
+    		} else if (herbalism >= 250 && herbalism < 350){
     			player.setHealth(player.getHealth() + 3);
-    		} else if (PP.getHerbalismInt() >= 350 && PP.getHerbalismInt() < 450){
+    		} else if (herbalism >= 350 && herbalism < 450){
     			player.setHealth(player.getHealth() + 4);
-    		} else if (PP.getHerbalismInt() >= 450 && PP.getHerbalismInt() < 550){
+    		} else if (herbalism >= 450 && herbalism < 550){
     			player.setHealth(player.getHealth() + 5);
-    		} else if (PP.getHerbalismInt() >= 550 && PP.getHerbalismInt() < 650){
+    		} else if (herbalism >= 550 && herbalism < 650){
     			player.setHealth(player.getHealth() + 6);
-    		} else if (PP.getHerbalismInt() >= 650 && PP.getHerbalismInt() < 750){
+    		} else if (herbalism >= 650 && herbalism < 750){
     			player.setHealth(player.getHealth() + 7);
-    		} else if (PP.getHerbalismInt() >= 750){
+    		} else if (herbalism >= 750){
     			player.setHealth(player.getHealth() + 8);
     		}
     	}

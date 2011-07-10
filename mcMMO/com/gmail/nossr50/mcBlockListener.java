@@ -1,12 +1,9 @@
 package com.gmail.nossr50;
 
-import org.bukkit.ChatColor;
-
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -16,11 +13,7 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.config.*;
-import com.gmail.nossr50.datatypes.*;
 import com.gmail.nossr50.skills.*;
-import com.gmail.nossr50.party.*;
-
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 
 
@@ -31,26 +24,40 @@ public class mcBlockListener extends BlockListener {
         this.plugin = plugin;
     }
     
-    public void onBlockPlace(BlockPlaceEvent event) {
+    public void onBlockPlace(BlockPlaceEvent event) 
+    {
+    	long before = System.currentTimeMillis();
     	Block block;
     	Player player = event.getPlayer();
-    	if (event.getBlock() != null && event.getBlockReplacedState() != null && event.getBlockReplacedState().getTypeId() == 78) {
+    	if (event.getBlock() != null && event.getBlockReplacedState() != null && event.getBlockReplacedState().getTypeId() == 78) 
+    	{
     			block = event.getBlockAgainst();
     		}
-    		else {
+    		else 
+    		{
     			block = event.getBlock();
     		}
-    	if(player != null && m.shouldBeWatched(block)){
-    		if(block.getTypeId() != 17)
+    	if(player != null && m.shouldBeWatched(block))
+    	{
+    		if(block.getTypeId() != 17 && block.getTypeId() != 39 && block.getTypeId() != 40 && block.getTypeId() != 91 && block.getTypeId() != 86)
     			block.setData((byte) 5); //Change the byte
-    		if(block.getTypeId() == 17 || block.getTypeId() == 91 || block.getTypeId() == 86)
-    			Config.getInstance().addBlockWatch(block);
+    		if(block.getTypeId() == 17 || block.getTypeId() == 39 || block.getTypeId() == 40 || block.getTypeId() == 91 || block.getTypeId() == 86)
+    			plugin.misc.blockWatchList.add(block);
     	}
     	if(block.getTypeId() == 42 && LoadProperties.anvilmessages)
-    		event.getPlayer().sendMessage(ChatColor.DARK_RED+"You have placed an anvil, anvils can repair tools and armor.");
+    		event.getPlayer().sendMessage(Messages.getString("mcBlockListener.PlacedAnvil")); //$NON-NLS-1$
+    	
+    	long after = System.currentTimeMillis();
+    	if(LoadProperties.print_reports)
+		{
+    		plugin.onBlockPlace+=(after-before);
+		}
     }
     
-    public void onBlockBreak(BlockBreakEvent event) {
+    public void onBlockBreak(BlockBreakEvent event) 
+    {
+    	long before = System.currentTimeMillis();
+    	
     	Player player = event.getPlayer();
     	PlayerProfile PP = Users.getProfile(player);
     	Block block = event.getBlock();
@@ -59,21 +66,19 @@ public class mcBlockListener extends BlockListener {
     		return;
     	if (event instanceof FakeBlockBreakEvent) 
     		return;
-    	/*
-		* Check if the Timer is doing its job
-		*/
-   		Skills.monitorSkills(player);
     	
    		/*
    		 * HERBALISM
    		 */
-   		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07){
+   		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07)
+   		{
    			Herbalism.greenTerraCheck(player, block, plugin);
    		}
    		//Wheat && Triple drops
-   		if(PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block)){
-   			Herbalism.herbalismProcCheck(block, player, event);
-   			Herbalism.greenTerraWheat(player, block, event);
+   		if(PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block))
+   		{
+   			Herbalism.herbalismProcCheck(block, player, event, plugin);
+   			Herbalism.greenTerraWheat(player, block, event, plugin);
    		}
    		
    		
@@ -83,43 +88,49 @@ public class mcBlockListener extends BlockListener {
     	if(mcPermissions.getInstance().mining(player)){
     		if(LoadProperties.miningrequirespickaxe){
     			if(m.isMiningPick(inhand))
-    				Mining.miningBlockCheck(player, block);
+    				Mining.miningBlockCheck(player, block, plugin);
     		} else {
-    			Mining.miningBlockCheck(player, block);
+    			Mining.miningBlockCheck(player, block, plugin);
     		}
     	}
     	/*
    		 * WOOD CUTTING
    		 */
     	
-   		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player)){
-   			if(LoadProperties.woodcuttingrequiresaxe){
-				if(m.isAxes(inhand)){
-					if(!Config.getInstance().isBlockWatched(block)){
+   		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player))
+   		{
+   			if(LoadProperties.woodcuttingrequiresaxe)
+   			{
+				if(m.isAxes(inhand))
+				{
+					if(!plugin.misc.blockWatchList.contains(block))
+					{
 	    				WoodCutting.woodCuttingProcCheck(player, block);
 	    				//Default
 	    				if(block.getData() == (byte)0)
-	    					PP.addWoodcuttingXP(7 * LoadProperties.xpGainMultiplier);
+	    					PP.addWoodcuttingXP(LoadProperties.mpine * LoadProperties.xpGainMultiplier);
 	    				//Spruce
 	    				if(block.getData() == (byte)1)
-	    					PP.addWoodcuttingXP(8 * LoadProperties.xpGainMultiplier);
+	    					PP.addWoodcuttingXP(LoadProperties.mspruce * LoadProperties.xpGainMultiplier);
 	    				//Birch
 	    				if(block.getData() == (byte)2)
-	    					PP.addWoodcuttingXP(9 * LoadProperties.xpGainMultiplier);
+	    					PP.addWoodcuttingXP(LoadProperties.mbirch * LoadProperties.xpGainMultiplier);
 					}
     			}
-    		} else {
-    			if(!Config.getInstance().isBlockWatched(block)){
+    		} else 
+    		{
+    			if(!plugin.misc.blockWatchList.contains(block))
+    			{
 	    			WoodCutting.woodCuttingProcCheck(player, block);
 	    			//Default
     				if(block.getData() == (byte)0)
-    					PP.addWoodcuttingXP(7 * LoadProperties.xpGainMultiplier);
+    					PP.addWoodcuttingXP(LoadProperties.mpine * LoadProperties.xpGainMultiplier);
     				//Spruce
     				if(block.getData() == (byte)1)
-    					PP.addWoodcuttingXP(8 * LoadProperties.xpGainMultiplier);
+    					PP.addWoodcuttingXP(LoadProperties.mspruce * LoadProperties.xpGainMultiplier);
     				//Birch
     				if(block.getData() == (byte)2)
-    					PP.addWoodcuttingXP(9 * LoadProperties.xpGainMultiplier);
+    					PP.addWoodcuttingXP(LoadProperties.mbirch * LoadProperties.xpGainMultiplier);
     			}
    			}
     		Skills.XpCheck(player);
@@ -132,8 +143,9 @@ public class mcBlockListener extends BlockListener {
    					&& block.getTypeId() == 17
    					&& m.blockBreakSimulate(block, player, plugin)){
    				
-    			WoodCutting.treeFeller(block, player);
-    			for(Block blockx : Config.getInstance().getTreeFeller()){
+    			WoodCutting.treeFeller(block, player, plugin);
+    			for(Block blockx : plugin.misc.treeFeller)
+    			{
     				if(blockx != null){
     					Material mat = Material.getMaterial(block.getTypeId());
     					byte type = 0;
@@ -143,12 +155,14 @@ public class mcBlockListener extends BlockListener {
     					if(blockx.getTypeId() == 17){
     						blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
     						//XP WOODCUTTING
-    						if(!Config.getInstance().isBlockWatched(block)){
+    						if(!plugin.misc.blockWatchList.contains(block))
+    						{
 	    						WoodCutting.woodCuttingProcCheck(player, blockx);
-	    						PP.addWoodcuttingXP(7);
+	    						PP.addWoodcuttingXP(LoadProperties.mpine);
     						}
     					}
-    					if(blockx.getTypeId() == 18){
+    					if(blockx.getTypeId() == 18)
+    					{
     						mat = Material.SAPLING;
     						
     						item = new ItemStack(mat, 1, (short)0, blockx.getData());
@@ -163,7 +177,7 @@ public class mcBlockListener extends BlockListener {
     			}
     			if(LoadProperties.toolsLoseDurabilityFromAbilities)
     		    	m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
-    				Config.getInstance().clearTreeFeller();
+    			plugin.misc.treeFeller.clear();
     		}
     	}
     	/*
@@ -174,27 +188,42 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * HERBALISM
     	 */
-    	if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalism(player) && Herbalism.canBeGreenTerra(block)){
+    	if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalism(player) && Herbalism.canBeGreenTerra(block))
+    	{
     		Herbalism.greenTerraCheck(player, block, plugin);
     	}
     	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
-			Herbalism.herbalismProcCheck(block, player, event);
+			Herbalism.herbalismProcCheck(block, player, event, plugin);
     	
     	//Change the byte back when broken
     	if(block.getData() == 5 && m.shouldBeWatched(block))
+    	{
     		block.setData((byte) 0);
+    		if(plugin.misc.blockWatchList.contains(block))
+    		{
+    			plugin.misc.blockWatchList.remove(block);
+    		}
+    	}
+    	
+    	long after = System.currentTimeMillis();
+    	if(LoadProperties.print_reports)
+		{
+    		plugin.onBlockBreak+=(after-before);
+		}
     }
-    public void onBlockDamage(BlockDamageEvent event) {
+    public void onBlockDamage(BlockDamageEvent event) 
+    {
+    	long before = System.currentTimeMillis();
+    	
     	if(event.isCancelled())
     		return;
     	Player player = event.getPlayer();
     	PlayerProfile PP = Users.getProfile(player);
     	ItemStack inhand = player.getItemInHand();
     	Block block = event.getBlock();
-    	/*
-		* Check if the Timer is doing its job
-		*/
-   		Skills.monitorSkills(player);
+    	
+    	Skills.monitorSkills(player);
+
     	/*
     	 * ABILITY PREPARATION CHECKS
     	 */
@@ -219,10 +248,7 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * GIGA DRILL BREAKER CHECKS
     	 */
-    	if(PP.getGigaDrillBreakerMode() 
-    			&& m.blockBreakSimulate(block, player, plugin) 
-    			&& Excavation.canBeGigaDrillBroken(block) 
-    			&& m.isShovel(inhand)){
+    	if(PP.getGigaDrillBreakerMode() && m.blockBreakSimulate(block, player, plugin) && Excavation.canBeGigaDrillBroken(block) && m.isShovel(inhand)){
     		
     		if(m.getTier(player) >= 2)
     			Excavation.excavationProcCheck(block, player);
@@ -265,20 +291,22 @@ public class mcBlockListener extends BlockListener {
     	 */
     	if(PP.getSuperBreakerMode() 
     			&& Mining.canBeSuperBroken(block)
-    			&& m.blockBreakSimulate(block, player, plugin)){
+    			&& m.blockBreakSimulate(block, player, plugin))
+    	{
     		
-    		if(LoadProperties.miningrequirespickaxe){
+    		if(LoadProperties.miningrequirespickaxe)
+    		{
     			if(m.isMiningPick(inhand))
-    				Mining.SuperBreakerBlockCheck(player, block);
+    				Mining.SuperBreakerBlockCheck(player, block, plugin);
     		} else {
-    			Mining.SuperBreakerBlockCheck(player, block);
+    			Mining.SuperBreakerBlockCheck(player, block, plugin);
     		}
     	}
     	
     	/*
     	 * LEAF BLOWER
     	 */
-    	if(block.getTypeId() == 18 && mcPermissions.getInstance().woodcutting(player) && PP.getWoodCuttingInt() >= 100 && m.isAxes(player.getItemInHand()) && m.blockBreakSimulate(block, player, plugin))
+    	if(block.getTypeId() == 18 && mcPermissions.getInstance().woodcutting(player) && PP.getSkill("woodcutting") >= 100 && m.isAxes(player.getItemInHand()) && m.blockBreakSimulate(block, player, plugin))
     	{
     		m.damageTool(player, (short)1);
     		if(Math.random() * 10 > 9)
@@ -289,13 +317,31 @@ public class mcBlockListener extends BlockListener {
     		block.setType(Material.AIR);
     		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
     	}
+    	if(block.getType() == Material.AIR && plugin.misc.blockWatchList.contains(block))
+    	{
+    		plugin.misc.blockWatchList.remove(block);
+    	}
+    	long after = System.currentTimeMillis();
+    	if(LoadProperties.print_reports)
+		{
+    		plugin.onBlockDamage+=(after-before);
+		}
     }
     
-    public void onBlockFromTo(BlockFromToEvent event) {
+    public void onBlockFromTo(BlockFromToEvent event) 
+    {
+    	long before = System.currentTimeMillis();
+    	
         Block blockFrom = event.getBlock();
         Block blockTo = event.getToBlock();
-        if(m.shouldBeWatched(blockFrom) && blockFrom.getData() == (byte)5){
+        if(m.shouldBeWatched(blockFrom) && blockFrom.getData() == (byte)5)
+        {
         	blockTo.setData((byte)5);
         }
+        long after = System.currentTimeMillis();
+        if(LoadProperties.print_reports)
+		{
+        	plugin.onBlockFromTo+=(after-before);
+		}
     }
 }

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.nossr50.Messages;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -20,49 +21,48 @@ import com.gmail.nossr50.config.*;
 public class WoodCutting {
 	static int w = 0;
 	private static boolean isdone = false;
-	private static mcMMO plugin;
-	public WoodCutting(mcMMO instance) {
-    	plugin = instance;
-    }
 	
     public static void woodCuttingProcCheck(Player player, Block block){
     	PlayerProfile PP = Users.getProfile(player);
     	byte type = block.getData();
     	Material mat = Material.getMaterial(block.getTypeId());
     	if(player != null){
-    		if(Math.random() * 1000 <= PP.getWoodCuttingInt()){
+    		if(Math.random() * 1000 <= PP.getSkill("woodcutting")){
     			ItemStack item = new ItemStack(mat, 1, (short) 0, type);
     			block.getWorld().dropItemNaturally(block.getLocation(), item);
     		}
     	}
     }
-    public static void treeFellerCheck(Player player, Block block, Plugin pluginx){
+    public static void treeFellerCheck(Player player, Block block, Plugin pluginx)
+    {
     	PlayerProfile PP = Users.getProfile(player);
-    	if(m.isAxes(player.getItemInHand())){
-    		if(block != null){
+    	if(m.isAxes(player.getItemInHand()))
+    	{
+    		if(block != null)
+    		{
         		if(!m.abilityBlockCheck(block))
         			return;
         	}
     		/*
     		 * CHECK FOR AXE PREP MODE
     		 */
-    		if(PP.getAxePreparationMode()){
+    		if(PP.getAxePreparationMode())
+    		{
     			PP.setAxePreparationMode(false);
     		}
     		int ticks = 2;
-    		int x = PP.getWoodCuttingInt();
+    		int x = PP.getSkill("woodcutting");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
 
     		if(!PP.getTreeFellerMode() && Skills.cooldownOver(player, PP.getTreeFellerDeactivatedTimeStamp(), LoadProperties.treeFellerCooldown)){
-    			player.sendMessage(ChatColor.GREEN+"**TREE FELLING ACTIVATED**");
+    			player.sendMessage(Messages.getString("Skills.TreeFellerOn"));
     			for(Player y : pluginx.getServer().getOnlinePlayers()){
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Tree Feller!");
+	    				y.sendMessage(Messages.getString("Skills.TreeFellerPlayer", new Object[] {player.getName()}));
 	    		}
-    			PP.setTreeFellerTicks(ticks * 1000);
     			PP.setTreeFellerActivatedTimeStamp(System.currentTimeMillis());
     			PP.setTreeFellerDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
     			PP.setTreeFellerMode(true);
@@ -73,12 +73,12 @@ public class WoodCutting {
     		}
     	}
     }
-    public static void treeFeller(Block block, Player player){
+    public static void treeFeller(Block block, Player player, mcMMO plugin){
     	PlayerProfile PP = Users.getProfile(player);
     	int radius = 1;
-    	if(PP.getWoodCuttingXPInt() >= 500)
+    	if(PP.getSkill("woodcutting") >= 500)
     		radius++;
-    	if(PP.getWoodCuttingXPInt() >= 950)
+    	if(PP.getSkill("woodcutting") >= 950)
     		radius++;
         ArrayList<Block> blocklist = new ArrayList<Block>();
         ArrayList<Block> toAdd = new ArrayList<Block>();
@@ -93,9 +93,10 @@ public class WoodCutting {
          * Add blocks from the temporary 'toAdd' array list into the 'treeFeller' array list
          * We use this temporary list to prevent concurrent modification exceptions
          */
-        for(Block x : toAdd){
-        	if(!Config.getInstance().isTreeFellerWatched(x))
-        		Config.getInstance().addTreeFeller(x);
+        for(Block x : toAdd)
+        {
+        	if(!plugin.misc.treeFeller.contains(x))
+        		plugin.misc.treeFeller.add(x);
         }
         toAdd.clear();
     }

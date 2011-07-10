@@ -3,12 +3,15 @@ package com.gmail.nossr50.skills;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.nossr50.Combat;
+import com.gmail.nossr50.Messages;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
@@ -27,25 +30,24 @@ public class Axes {
     			PP.setAxePreparationMode(false);
     		}
     		int ticks = 2;
-    		int x = PP.getAxesInt();
+    		int x = PP.getSkill("axes");
     		while(x >= 50){
     			x-=50;
     			ticks++;
     		}
 
     		if(!PP.getSkullSplitterMode() && Skills.cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)){
-    			player.sendMessage(ChatColor.GREEN+"**SKULL SPLITTER ACTIVATED**");
+    			player.sendMessage(Messages.getString("Skills.SkullSplitterOn"));
     			for(Player y : pluginx.getServer().getOnlinePlayers()){
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(ChatColor.GREEN+player.getName()+ChatColor.DARK_GREEN+" has used "+ChatColor.RED+"Skull Splitter!");
+	    				y.sendMessage(Messages.getString("Skills.SkullSplitterPlayer", new Object[] {player.getName()}));
 	    		}
-    			PP.setSkullSplitterTicks(ticks * 1000);
     			PP.setSkullSplitterActivatedTimeStamp(System.currentTimeMillis());
     			PP.setSkullSplitterDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
     			PP.setSkullSplitterMode(true);
     		}
     		if(!PP.getSkullSplitterMode() && !Skills.cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)){
-    			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
+    			player.sendMessage(Messages.getString("Skills.TooTired")
     					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)+"s)");
     		}
     	}
@@ -54,14 +56,17 @@ public class Axes {
     	Entity x = event.getEntity();
     	if(x instanceof Wolf){
     		Wolf wolf = (Wolf)x;
-    		if(Taming.getOwner(wolf, pluginx) == attacker)
-    			return;
-    		if(Party.getInstance().inSameParty(attacker, Taming.getOwner(wolf, pluginx)))
-    			return;
+    		if(Taming.getOwner(wolf, pluginx) != null)
+    		{
+	    		if(Taming.getOwner(wolf, pluginx) == attacker)
+	    			return;
+	    		if(Party.getInstance().inSameParty(attacker, Taming.getOwner(wolf, pluginx)))
+	    			return;
+    		}
     	}
     	PlayerProfile PPa = Users.getProfile(attacker);
     	if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(PPa.getAxesInt() >= 750){
+    		if(PPa.getSkill("axes") >= 750){
     			if(Math.random() * 1000 <= 750){
     				if(x instanceof Player){
     					Player player = (Player)x;
@@ -74,7 +79,7 @@ public class Axes {
         			}
     				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     			}
-    		} else if(Math.random() * 1000 <= PPa.getAxesInt()){
+    		} else if(Math.random() * 1000 <= PPa.getSkill("axes")){
     			if(x instanceof Player){
     				Player player = (Player)x;
     				player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
@@ -89,38 +94,44 @@ public class Axes {
     	}
     }
 	
-	public static void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx){
+	public static void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)
+	{
     	int targets = 0;
     	Entity x = event.getEntity();
     	targets = m.getTier(attacker);
-    	for(Entity derp : x.getWorld().getEntities()){
-    		if(m.getDistance(x.getLocation(), derp.getLocation()) < 5){
-    			if(derp instanceof Player){
-    				Player target = (Player)derp;
-    				if(Party.getInstance().inSameParty(attacker, target))
-    					continue;
-    				if(!target.getName().equals(attacker.getName()) && targets >= 1){
-    					target.damage(event.getDamage() / 2);
-    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
-    					targets--;
+    	for(Entity derp : x.getWorld().getEntities())
+    	{
+    		if(m.getDistance(x.getLocation(), derp.getLocation()) < 5)
+    		{
+    			if(derp instanceof Player)
+    			{
+    				if(Combat.pvpAllowed(event, derp.getWorld()))
+    				{
+	    				Player target = (Player)derp;
+	    				if(Party.getInstance().inSameParty(attacker, target))
+	    					continue;
+	    				if(!target.getName().equals(attacker.getName()) && targets >= 1)
+	    				{
+	    					target.damage(event.getDamage() / 2);
+	    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
+	    					targets--;
+	    				}
     				}
-    			}
-    			if(derp instanceof Monster  && targets >= 1){
-    				Monster target = (Monster)derp;
-    				target.damage(event.getDamage() / 2);
-    				targets--;
-    			}
-    			if(derp instanceof Wolf){
-					Wolf hurrDurr = (Wolf)derp;
-					if(Taming.getOwner(hurrDurr, pluginx) == attacker)
-						continue;
-					if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
-						continue;
-				}
-    			if(derp instanceof Animals  && targets >= 1){					
-    				Animals target = (Animals)derp;
-    				target.damage(event.getDamage() / 2);
-    				targets--;
+    			} else if(derp instanceof LivingEntity  && targets >= 1)
+    			{			
+    				if(derp instanceof Wolf)
+        			{
+    					Wolf hurrDurr = (Wolf)derp;
+    					if(Taming.getOwner(hurrDurr, pluginx) == attacker)
+    						continue;
+    					if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
+    						continue;
+    				}
+    				
+    				//Deal the damage
+	    			LivingEntity target = (LivingEntity)derp;
+	    			target.damage(event.getDamage() / 2);
+	    			targets--;
     			}
     		}
     	}

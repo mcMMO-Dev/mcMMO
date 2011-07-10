@@ -1,11 +1,169 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.33
+Fixed the toggle for the Excavation drop 'Cocoa Beans'
+Fixed bug where Unarmed users could disarm without being bare handed
+Cocoa Beans now have an XP modifier in config.yml
+You can now toggle whether or not Mobspawners will give XP (in config.yml)
+MySQL version now makes requests to the MySQL server less frequently (should help performance)
+Fixed bug with Skull Splitter hitting the user
+
+Version 1.0.32
+Added "General.Performance.Print_Reports" node to config.yml to help identify causes of performance issues
+Fixed bug of swords users hurting themselves with serrated strikes
+
+Version 1.0.31
+Fixed bug of trying to cast Animals to non-animals
+
+Version 1.0.30
+Mobs that spawn from spawners no longer give XP (for reals this time)
+
+Version 1.0.29
+Mobs that spawn from spawners no longer give XP (again)
+Fixed bug where Serrated Strikes did not Bleed additional targets
+Identified and solved a potential memory leak in Bleed Simulation
+Renamed the Object Config to Misc and rewrote parts of it
+Rewrote Party/Admin/God toggles
+Added Polish language support (pl)
+
+Version 1.0.28
+Actually fixed /stats showing excavation values for swords
+Made some improvements to how Bleed Simulation was handled for different entity types
+Obsidian now does normal durability damage during Super Breaker
+
+Version 1.0.27
+Fixed /stats showing excavation values for swords
+Hopefully fixed a wide range of NPE errors
+Updated German (de) localization
+
+Version 1.0.26
+Fixed accidentally making power levels go above 9,000
+
+Version 1.0.25
+Compatible with the latest CB
+Beast Lore now functions correctly
+Wolves are no longer invincible to players
+Changed the look of Beast Lore
+Skill info pages now show your stat in that skill (if you have permission)
+/stats and /whois has been alphabetized and divided into three categories (Gathering/Combat/Misc)
+Abilities will not trigger on Trap Doors
+
+Version 1.0.24
+Now compatible with latest RB (928)
+Taming now receives XP from your wolves harming foes
+Taming is now easier to level
+Green Thumb now drops seeds when harvesting Wheat
+
+Version 1.0.23
+Modified Bleed Simulation to fix performance problems
+Rewrote MySpawn to be more efficient when calculating time left
+Rewrote Skills to be more efficient when calculating time left
+
+Version 1.0.22
+Added 'Name' nodes to commands for renaming them
+
+Version 1.0.21
+Fixed Skull Splitter length in /axes displaying incorrectly
+Fire rate limiter now correctly uses the value in the config file
+Stone XP now correctly uses the value in the config file
+Cobble -> Mossy now correctly uses the value in the config file
+Removed setmyspawn from config file as it serves no purpose
+All commands now have an 'Enabled' node in the config file that when set to false disables the command completely
+Fixed color scheme inconsistency for Mining in /whois results
+
+Version 1.0.20
+Fixed Array Index Out of Bounds error
+
+Version 1.0.19
+Removed a failsafe for the Timer that is no longer necessary (should improve performance)
+Fixed /myspawn not working by rewriting it :3
+Fixed exploit where players could break a freshly placed mushroom for XP
+MySQL User Passwords can now be blank (Although you really should have a password...)
+Fixed a few NPE errors
+
+Version 1.0.18
+Fixed MySQL default TablePrefix
+Fixed Wheat not being configurable
+
+Version 1.0.17
+Brand new YAML Configuration file
+Ability to configure XP for all gathering skills in config file
+German Language added to mcMMO
+French Language added to mcMMO
+MySpawn will no longer heal players
+/<skillname> commands now also check for their localized names for displaying help
+Added many more Strings to localization files
+Added more safeguards to MySpawn for NPE
+Fixed bug where Tree Feller Radius depended on WoodCutting XP rather than Skill Level
+Fixed bug where Readying a Hoe returned a missing localization string
+Added some safeguards into Bleed Simulation to prevent possible memory leaks
+Performance improvements to storing/calling Skill/XP Values
+Plugged a potential memory leak with PlayerProfiles not being removed correctly
+Disabled the mob spawner camping anti-exploit in favor of performance
+
+Version 1.0.16
+Fixed bug where localization file failed to load
+Changed en_US to lowercase
+mcMMO now requires locale files to be in lowercase
+Fixed a few strings missing from the localization file
+
+Version 1.0.15
+Removed leftover code that spammed SQL errors
+
+Version 1.0.14
+Added many missed strings into localization
+Finnish Localization updated for the new strings
+Green Thumb should respect Block Protection plugins now
+Fixed Number Format Exception when loading a PlayerProfile
+
+Version 1.0.13
+Fixed bug/NPE where stats would not load and therefore 'reset' for players
+Fixed NPE involving /ptp
+Added "enableMOTD" setting to properties file
+
+Version 1.0.12
+Fixed another NPE error
+Non-Gathering skills should correctly gain XP if PVP is set to false now
+Localization will now support language codes that do not have two parts like "fi"
+Fixed bug where Wiki MOTD message would not be loaded from localization file
+
+Version 1.0.11
+Fixed bug where players could not gain experience in several skills
+Removed PVP flag from mcmmo.properties as its not needed anymore
+Fixed a few NPE errors
+Mushroom XP reduced from 25 to 15
+Fixed an exploit where players who just logged in could be farmed for experience because they were invulnerable
+
+Version 1.0.10
+Added Localization/String Customization
+Mushroom XP reduced from 40 to 25
+Removed "clears inventory" warning in /mcc for /myspawn since this no longer happens
+
+Version 1.0.09
+Fixed the NPE that occurs when players gain experience (Sorry!)
+Fixed bug where /myspawn & /clearmyspawn would work if MySpawn was disabled in the properties file
+Changed strings containing "MMO" to read "mcMMO"
+Removed a lot of unused or unnecessary variables from the PlayerProfiles in mcMMO, this should lower the memory footprint
+Added getXpToLevel() for modders
+
+Version 1.0.08
+Added removeXP() for modders
+Fixed bug where stone swords only repaired by 33% instead of 50%
+Fixed bug where stone/wooden hoes wouldn't repair
+Big overhaul to how skill values and xp values were handled in the code
+Modifying the players skill levels now sets the corresponding skill xp to zero
+Using Serrated Strikes/Skull Splitter on mobs should no longer harm nearby players when PVP is disabled
+Switching to another weapon after firing your bow should no longer trigger procs for that weapon when the arrow hits
+Slimes/Ghasts now give XP for combat skills
+Added "EnableHpRegeneration" property setting
+Added "EnableMySpawn" property setting
+
 Version 1.0.07
+Added more repair customization by solarcloud7
 Leaderboards ignore players with the respective stat at 0
 Reconnecting to MySQL will reload player data
 Fixed a NPE with MySQL's Leaderboards
 Removed "Loop iteration" debug message from mcMMO
-Added more repair customization by solarcloud7
 
 Version 1.0.06
 MySQL will attempt to reconnect if the connection is closed
