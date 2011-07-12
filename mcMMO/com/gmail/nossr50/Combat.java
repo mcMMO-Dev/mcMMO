@@ -201,6 +201,8 @@ public class Combat {
 			Wolf theWolf = (Wolf) eventb.getDamager();
 			if(Taming.ownerOnline(theWolf, pluginx))
 			{
+				if(Taming.getOwner(theWolf, pluginx) == null)
+					return;
 				Player master = Taming.getOwner(theWolf, pluginx);
 				PlayerProfile PPo = Users.getProfile(master);
 				
@@ -283,6 +285,9 @@ public class Combat {
 			
 			if(Taming.ownerOnline(theWolf, pluginx))
 			{
+				if(Taming.getOwner(theWolf, pluginx) == null)
+					return;
+				
 				Player master = Taming.getOwner(theWolf, pluginx);
 				PlayerProfile PPo = Users.getProfile(master);
 				if(mcPermissions.getInstance().taming(master))

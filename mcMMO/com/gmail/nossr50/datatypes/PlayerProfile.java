@@ -885,7 +885,7 @@ public class PlayerProfile
 			stats.put("axesXP", stats.get("axesXP")+newvalue);
 			stats.put("sorcery", stats.get("sorceryXP")+newvalue);
 		} else {
-			stats.put(skillname+"XP", stats.get(skillname+"XP")+newvalue);
+			stats.put(skillname.toLowerCase()+"XP", stats.get(skillname.toLowerCase()+"XP")+newvalue);
 		}
 		//save();
 	}
@@ -953,7 +953,7 @@ public class PlayerProfile
 			stats.put("axesXP", stats.get("axesXP")-newvalue);
 			stats.put("sorceryXP", stats.get("sorceryXP")-newvalue);
 		} else {
-			stats.put(skillname+"XP", stats.get(skillname+"XP")-newvalue);
+			stats.put(skillname.toLowerCase()+"XP", stats.get(skillname.toLowerCase()+"XP")-newvalue);
 		}
 		save();
 	}

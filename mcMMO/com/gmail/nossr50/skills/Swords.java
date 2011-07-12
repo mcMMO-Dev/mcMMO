@@ -125,7 +125,7 @@ public class Swords {
 	    			//Damage nearby LivingEntities
 	    			if(derp instanceof LivingEntity && targets >= 1)
 	    			{
-	    				if(derp instanceof Player && derp.getWorld().getPVP())
+	    				if(derp instanceof Player)
 		    			{
 		    				Player target = (Player)derp;
 		    				
@@ -134,7 +134,7 @@ public class Swords {
 		    				
 		    				if(Party.getInstance().inSameParty(attacker, target))
 		    					continue;
-		    				if(targets >= 1)
+		    				if(targets >= 1 && derp.getWorld().getPVP())
 		    				{
 		    					target.damage(event.getDamage() / 4);
 		    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");

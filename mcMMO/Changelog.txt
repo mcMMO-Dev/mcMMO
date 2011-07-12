@@ -1,5 +1,12 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.34
+Fixed the PVP setting determining whether or not you would hurt yourself from AoE Abilities
+Added Dutch (nl) language support
+Super Breaker now gives the correct XP as determined by config.yml
+Sand Stone XP is now configurable and no longer shares the 'stone' node
+/mining now shows mining values instead of taming values
+
 Version 1.0.33
 Fixed the toggle for the Excavation drop 'Cocoa Beans'
 Fixed bug where Unarmed users could disarm without being bare handed

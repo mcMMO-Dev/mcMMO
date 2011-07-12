@@ -56,7 +56,8 @@ public class m {
 		}
 		return true;
 	}
-	public static boolean shouldBeWatched(Block block){
+	public static boolean shouldBeWatched(Block block)
+	{
 		int id = block.getTypeId();
 		if(id == 49 || id == 81 || id == 83 || id == 86 || id == 91 || id == 1 || id == 17 || id == 42 || id == 87 || id == 89 || id == 2 || id == 3 || id == 12 || id == 13 || id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40 || id == 24){
 			return true;
@@ -90,7 +91,9 @@ public class m {
 			x+=PP.getSkill("repair");
 		return x;
 	}
-	public static boolean blockBreakSimulate(Block block, Player player, Plugin plugin){
+	
+	public static boolean blockBreakSimulate(Block block, Player player, Plugin plugin)
+	{
 
     	FakeBlockBreakEvent event = new FakeBlockBreakEvent(block, player);
     	if(block != null && plugin != null && player != null){
@@ -106,13 +109,16 @@ public class m {
     	}
     }
 	
-	public static void damageTool(Player player, short damage){
+	public static void damageTool(Player player, short damage)
+	{
 		if(player.getItemInHand().getTypeId() == 0)
 			return;
 		player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability() + damage));
-		if(player.getItemInHand().getDurability() >= getMaxDurability(getTier(player), player.getItemInHand())){
+		if(player.getItemInHand().getDurability() >= getMaxDurability(getTier(player), player.getItemInHand()))
+		{
 			ItemStack[] inventory = player.getInventory().getContents();
-	    	for(ItemStack x : inventory){
+	    	for(ItemStack x : inventory)
+	    	{
 	    		if(x != null && x.getTypeId() == player.getItemInHand().getTypeId() && x.getDurability() == player.getItemInHand().getDurability()){
 	    			x.setTypeId(0);
 	    			x.setAmount(0);
@@ -693,7 +699,7 @@ public class m {
             player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.SkillMining")})); //$NON-NLS-1$ 
 			player.sendMessage(Messages.getString("m.XPGain", new Object[] {Messages.getString("m.XPGainMining")})); //$NON-NLS-1$ 
 			if(mcPermissions.getInstance().mining(player))
-				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("taming"), PP.getSkillToString("tamingXP"), PP.getXpToLevel("taming")}));
+				player.sendMessage(Messages.getString("m.LVL", new Object[] {PP.getSkillToString("mining"), PP.getSkillToString("miningXP"), PP.getXpToLevel("mining")}));
 			player.sendMessage(Messages.getString("m.SkillHeader", new Object[] {Messages.getString("m.Effects")})); //$NON-NLS-1$ 
 			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsMining1_0"), Messages.getString("m.EffectsMining1_1")})); //$NON-NLS-1$  
 			player.sendMessage(Messages.getString("m.EffectsTemplate", new Object[] {Messages.getString("m.EffectsMining2_0"), Messages.getString("m.EffectsMining2_1")})); //$NON-NLS-1$  

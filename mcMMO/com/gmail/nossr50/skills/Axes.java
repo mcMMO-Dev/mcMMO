@@ -96,44 +96,57 @@ public class Axes {
 	
 	public static void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)
 	{
-    	int targets = 0;
-    	Entity x = event.getEntity();
-    	targets = m.getTier(attacker);
-    	for(Entity derp : x.getWorld().getEntities())
+		int targets = 0;
+    	
+    	if(event.getEntity() instanceof LivingEntity)
     	{
-    		if(m.getDistance(x.getLocation(), derp.getLocation()) < 5)
-    		{
-    			if(derp instanceof Player)
-    			{
-    				if(Combat.pvpAllowed(event, derp.getWorld()))
-    				{
-	    				Player target = (Player)derp;
-	    				if(Party.getInstance().inSameParty(attacker, target))
-	    					continue;
-	    				if(!target.getName().equals(attacker.getName()) && targets >= 1)
-	    				{
-	    					target.damage(event.getDamage() / 2);
-	    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
-	    					targets--;
-	    				}
-    				}
-    			} else if(derp instanceof LivingEntity  && targets >= 1)
-    			{			
-    				if(derp instanceof Wolf)
-        			{
-    					Wolf hurrDurr = (Wolf)derp;
-    					if(Taming.getOwner(hurrDurr, pluginx) == attacker)
-    						continue;
-    					if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
-    						continue;
-    				}
-    				
-    				//Deal the damage
-	    			LivingEntity target = (LivingEntity)derp;
-	    			target.damage(event.getDamage() / 2);
-	    			targets--;
-    			}
-    		}
+    		LivingEntity x = (LivingEntity) event.getEntity();
+	    	targets = m.getTier(attacker);
+	    	
+	    	for(Entity derp : x.getWorld().getEntities())
+	    	{
+	    		if(m.getDistance(x.getLocation(), derp.getLocation()) < 5)
+	    		{
+	    			
+	    			
+	    			//Make sure the Wolf is not friendly
+	    			if(derp instanceof Wolf)
+	    			{
+						Wolf hurrDurr = (Wolf)derp;
+						if(Taming.getOwner(hurrDurr, pluginx) == attacker)
+							continue;
+						if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
+							continue;
+					}
+	    			//Damage nearby LivingEntities
+	    			if(derp instanceof LivingEntity && targets >= 1)
+	    			{
+	    				if(derp instanceof Player)
+		    			{
+		    				Player target = (Player)derp;
+		    				
+		    				if(target.getName().equals(attacker.getName()))
+		    					continue;
+		    				
+		    				if(Party.getInstance().inSameParty(attacker, target))
+		    					continue;
+		    				if(targets >= 1 && derp.getWorld().getPVP())
+		    				{
+		    					target.damage(event.getDamage() / 2);
+		    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
+		    					targets--;
+		    					continue;
+		    				}
+		    			} 
+	    				else
+		    			{			
+		    				LivingEntity target = (LivingEntity)derp;
+		    				target.damage(event.getDamage() / 2);
+		    				targets--;
+		    			}
+	    			}
+	    		}
+	    	}
     	}
     }
 }
