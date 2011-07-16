@@ -6,27 +6,47 @@ import java.util.logging.Logger;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+
+import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class mcPermissions 
 {
-	private static Permissions permissionsPlugin;
+    private enum PermissionType {
+        PEX, PERMISSIONS, BUKKIT
+    }
+    
+    private static PermissionType permissionType;
+    private static Object PHandle;
     public static boolean permissionsEnabled = false;
     private static volatile mcPermissions instance;
 
     public static void initialize(Server server) 
     {
+        Plugin PEXtest = server.getPluginManager().getPlugin("PermissionsEx");
         Plugin test = server.getPluginManager().getPlugin("Permissions");
-        if (test != null) 
-        {
-            Logger log = Logger.getLogger("Minecraft");
-            permissionsPlugin = ((Permissions) test);
+        Logger log = Logger.getLogger("Minecraft");
+        if (PEXtest != null) {
+            PHandle = (PermissionManager) PermissionsEx.getPermissionManager();
+            permissionType = PermissionType.PEX;
             permissionsEnabled = true;
-            log.log(Level.INFO, "[mcMMO] Permissions enabled.");
+            log.log(Level.INFO, "[mcMMO] PermissionsEx enabled.");
+        } else if (test != null) {
+            PHandle = (PermissionHandler) ((Permissions) test).getHandler();
+            permissionType = PermissionType.PERMISSIONS;
+            permissionsEnabled = true;
+            log.log(Level.INFO, "[mcMMO] Permissions "+test.getDescription().getVersion()+" enabled.");
         } else 
         {
-            Logger log = Logger.getLogger("Minecraft");
             log.log(Level.SEVERE, "[mcMMO] Permissions isn't loaded, there are no restrictions.");
+            /*
+            permissionType = PermissionType.BUKKIT;
+            permissionsEnabled = true;
+            log.info("[mcMMO] Using Bukkit Permissions.")
+             */
         }
     }
     
@@ -37,7 +57,16 @@ public class mcPermissions
   
     private static boolean permission(Player player, String string) 
     {
-        return permissionsPlugin.getHandler().has(player, string);
+    	switch (permissionType) {
+            case PEX:
+                return ((PermissionManager) PHandle).has(player, string);
+            case PERMISSIONS:
+                return ((PermissionHandler) PHandle).has(player, string);
+            case BUKKIT:
+                //return player.hasPermission(string);
+            default:
+                return true;
+    	}
     }
     public boolean admin(Player player){
     	if (permissionsEnabled) {
