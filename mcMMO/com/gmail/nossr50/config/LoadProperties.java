@@ -6,9 +6,9 @@ import org.bukkit.util.config.Configuration;
 
 public class LoadProperties 
 {
-	public static Boolean xpGainsMobSpawners=false, myspawnEnable = true, mccEnable = true, mcmmoEnable = true, partyEnable = true, inviteEnable = true, acceptEnable = true, whoisEnable = true, statsEnable = true, addxpEnable = true, ptpEnable = true, mmoeditEnable = true, clearmyspawnEnable = true, mcgodEnable = true, mcabilityEnable = true, mctopEnable = true, mcrefreshEnable = true, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	public static Boolean chimaeraWingEnable=true, xpGainsMobSpawners=false, myspawnEnable = true, mccEnable = true, mcmmoEnable = true, partyEnable = true, inviteEnable = true, acceptEnable = true, whoisEnable = true, statsEnable = true, addxpEnable = true, ptpEnable = true, mmoeditEnable = true, clearmyspawnEnable = true, mcgodEnable = true, mcabilityEnable = true, mctopEnable = true, mcrefreshEnable = true, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond, locale;
-	public static int msandstone, mcocoa = 10, water_thunder = 75, cure_self = 5, cure_other = 5, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapus, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
+	public static int chimaeraId=288, msandstone, mcocoa = 10, water_thunder = 75, cure_self = 5, cure_other = 5, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapus, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
 	
 	public String directory = "plugins/mcMMO/"; 
 	File file = new File(directory + File.separator + "config.yml");
@@ -100,7 +100,9 @@ public class LoadProperties
 	    	write("General.HP_Regeneration.Enabled", true);
 	    	write("General.Performance.Print_Reports", false);
 	    	
+	    	write("Items.Chimaera_Wing.Enabled", true);
 	    	write("Items.Chimaera_Wing.Feather_Cost", 10);
+	    	write("Items.Chimaera_Wing.Item_ID", 288);
 	    	
 	    	write("XP.PVP.Rewards", true);
 	    	write("XP.Gains.Multiplier.PVP", 1);
@@ -313,6 +315,9 @@ public class LoadProperties
 	    	abilityDurabilityLoss = readInteger("Abilities.Tools.Durability_Loss");
 	    	
 	    	feathersConsumedByChimaeraWing = readInteger("Items.Chimaera_Wing.Feather_Cost");
+	    	chimaeraId = readInteger("Items.Chimaera_Wing.Item_ID");
+	    	chimaeraWingEnable = readBoolean("Items.Chimaera_Wing.Enabled");
+	    	
 	    	pvpxp = readBoolean("XP.PVP.Rewards");
 	    	pvpxprewardmodifier = readInteger("XP.Gains.Multiplier.PVP");
 	    	miningrequirespickaxe = readBoolean("Skills.Mining.Requires_Pickaxe");

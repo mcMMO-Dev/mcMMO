@@ -12,14 +12,16 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.Tree;
 
-public class Leaderboard {
-	static String location = "plugins/mcMMO/mcmmo.users"; //$NON-NLS-1$
+public class Leaderboard 
+{
+	static String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users"; //$NON-NLS-1$
 	protected static final Logger log = Logger.getLogger("Minecraft"); //$NON-NLS-1$
 	
 	/*
 	 * Read from the file
 	 */
-	public static void makeLeaderboards(){
+	public static void makeLeaderboards()
+	{
 		//Make Trees
 		Tree Mining = new Tree();
 		Tree WoodCutting = new Tree();
@@ -42,7 +44,6 @@ public class Leaderboard {
         	String line = ""; //$NON-NLS-1$
         	while((line = in.readLine()) != null)
         	{
-        		
         		String[] character = line.split(":"); //$NON-NLS-1$
         		String p = character[0];
 
