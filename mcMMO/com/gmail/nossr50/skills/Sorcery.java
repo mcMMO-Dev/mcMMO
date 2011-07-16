@@ -7,13 +7,13 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Messages;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.locale.mcLocale;
 
 public class Sorcery
 {
@@ -37,13 +37,13 @@ public class Sorcery
 	}
 	public void informSelected(String spellname, int cost, Player player)
 	{
-		player.sendMessage(Messages.getString("Sorcery.SpellSelected", new Object[] {spellname, cost}));
+		player.sendMessage(mcLocale.getString("Sorcery.SpellSelected", new Object[] {spellname, cost}));
 	}
 	
 	public void informSpell(String spellname, Player player)
 	{
 		PlayerProfile PP = Users.getProfile(player);
-		player.sendMessage(Messages.getString("Sorcery.HasCast") +" "+spellname+" "+ Messages.getString("Sorcery.Current_Mana")+ChatColor.YELLOW+"("+ChatColor.GRAY+PP.getCurrentMana()+ChatColor.YELLOW+"/"+ChatColor.GREEN+PP.getMaxMana()+ChatColor.YELLOW+")");
+		player.sendMessage(mcLocale.getString("Sorcery.HasCast") +" "+spellname+" "+ mcLocale.getString("Sorcery.Current_Mana")+ChatColor.YELLOW+"("+ChatColor.GRAY+PP.getCurrentMana()+ChatColor.YELLOW+"/"+ChatColor.GREEN+PP.getMaxMana()+ChatColor.YELLOW+")");
 	}
 	
 	public void shoutSpell(String spellname, Player player)
@@ -79,7 +79,7 @@ public class Sorcery
 				PP.setGreenDyeCycleSel(1);
 				PP.setGreenDyeCycle(0);
 				
-				informSelected(Messages.getString("Sorcery.Curative.Self"), LoadProperties.cure_self, player);
+				informSelected(mcLocale.getString("Sorcery.Curative.Self"), LoadProperties.cure_self, player);
 				break;
 			}
 			
@@ -94,7 +94,7 @@ public class Sorcery
 				PP.setGreenDyeCycleSel(0);
 				PP.setGreenDyeCycle(1);
 				
-				informSelected(Messages.getString("Sorcery.Curative.Other"), LoadProperties.cure_other, player);
+				informSelected(mcLocale.getString("Sorcery.Curative.Other"), LoadProperties.cure_other, player);
 				break;
 			} 
 			else

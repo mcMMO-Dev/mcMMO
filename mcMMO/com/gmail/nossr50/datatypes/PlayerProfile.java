@@ -994,29 +994,36 @@ public class PlayerProfile
 		removeXP("acrobatics", newXP);
 	}
 
-	public boolean isInt(String string){
+	public boolean isInt(String string)
+	{
 		try {
-		    int x = Integer.parseInt(string);
+		    Integer.parseInt(string);
 		}
 		catch(NumberFormatException nFE) {
 		    return false;
 		}
 		return true;
 	}
-	public boolean isDouble(String string){
-		try {
-		    Double x = Double.valueOf(string);
+	
+	public boolean isDouble(String string)
+	{
+		try 
+		{
+		    Double.valueOf(string);
 		}
-		catch(NumberFormatException nFE) {
+		catch(NumberFormatException nFE) 
+		{
 		    return false;
 		}
 		return true;
 	}
-	public void acceptInvite(){
+	public void acceptInvite()
+	{
 		party = invite;
 		invite = "";
 	}
-	public void modifyInvite(String invitename){
+	public void modifyInvite(String invitename)
+	{
 		invite = invitename;
 	}
 	public String getInvite() { return invite; }
@@ -1054,7 +1061,8 @@ public class PlayerProfile
 		}
 		save();
 	}
-	public Integer getXpToLevel(String skillname){
+	public Integer getXpToLevel(String skillname)
+	{
 		if(skillname.equals("sorcery")){
 			return ((stats.get("sorcery") + 50) * LoadProperties.sorceryxpmodifier) * LoadProperties.globalxpmodifier;
 		}
@@ -1111,13 +1119,15 @@ public class PlayerProfile
     	save();
     }
     //Retrieve whether or not the player is in a party
-    public boolean inParty() {
+    public boolean inParty() 
+    {
     	if(party != null && !party.equals("") && !party.equals("null")){
     		return true;
     	} else {
     		return false;
     	}
     }
+    
     //Retrieve whether or not the player has an invite
     public boolean hasPartyInvite() {
     	if(invite != null && !invite.equals("") && !invite.equals("null")){

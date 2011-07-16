@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.Messages;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
@@ -33,10 +33,10 @@ public class Excavation {
     		}
     		
 	    	if(!PP.getGigaDrillBreakerMode() && PP.getGigaDrillBreakerDeactivatedTimeStamp() < System.currentTimeMillis()){
-	    		player.sendMessage(Messages.getString("Skills.GigaDrillBreakerOn"));
+	    		player.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerOn"));
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(Messages.getString("Skills.GigaDrillBreakerPlayer", new Object[] {player.getName()}));
+	    				y.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerPlayer", new Object[] {player.getName()}));
 	    		}
 	    		PP.setGigaDrillBreakerActivatedTimeStamp(System.currentTimeMillis());
 	    		PP.setGigaDrillBreakerDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));

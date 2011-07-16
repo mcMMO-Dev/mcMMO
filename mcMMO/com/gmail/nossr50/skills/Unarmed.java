@@ -6,11 +6,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.Messages;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.locale.mcLocale;
 
 public class Unarmed {
 	public static void berserkActivationCheck(Player player, Plugin pluginx){
@@ -27,10 +27,10 @@ public class Unarmed {
     		}
     		
 	    	if(!PP.getBerserkMode() && Skills.cooldownOver(player, PP.getBerserkDeactivatedTimeStamp(), LoadProperties.berserkCooldown)){
-	    		player.sendMessage(Messages.getString("Skills.BerserkOn"));
+	    		player.sendMessage(mcLocale.getString("Skills.BerserkOn"));
 	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(Messages.getString("Skills.BerserkPlayer", new Object[] {player.getName()}));
+	    				y.sendMessage(mcLocale.getString("Skills.BerserkPlayer", new Object[] {player.getName()}));
 	    		}
 	    		PP.setBerserkActivatedTimeStamp(System.currentTimeMillis());
 	    		PP.setBerserkDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
@@ -60,7 +60,7 @@ public class Unarmed {
 	    			Location loc = defender.getLocation();
 	    			if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0)
 	    			{
-	    				defender.sendMessage(Messages.getString("Skills.Disarmed"));
+	    				defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
 	    				ItemStack item = defender.getItemInHand();
 		    			if(item != null)
 		    			{
@@ -75,7 +75,7 @@ public class Unarmed {
 	    			Location loc = defender.getLocation();
 	    			if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0)
 	    			{
-	    				defender.sendMessage(Messages.getString("Skills.Disarmed"));
+	    				defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
 	    				ItemStack item = defender.getItemInHand();
 		    			if(item != null)
 		    			{

@@ -1,5 +1,19 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.35
+Fixed bug with randomly receiving Taming XP
+mcmmo.users file moved into /plugins/mcMMO/FlatFileStuff/
+Leaderboard files now moved into /plugins/mcMMO/FlatFileStuff/Leaderboards
+Locale files now have the prefix locale_ instead of messages_
+Locale files are now located inside com/gmail/nossr50/locale/ instead of com/gmail/nossr50/
+Updated the code that handles permissions (this may mean 3.1.6 will finally play well!)
+Some more source code organization
+Fixed warnings for compiler
+Removed dependencies on CraftBukkit
+Registered commands to OnCommand
+Removed performance debugging
+Removed some useless settings from the config file
+
 Version 1.0.34
 Fixed the PVP setting determining whether or not you would hurt yourself from AoE Abilities
 Added Dutch (nl) language support

@@ -8,7 +8,8 @@ import org.bukkit.plugin.Plugin;
 
 public class Taming 
 {
-	public static boolean ownerOnline(Wolf theWolf, Plugin pluginx){
+	public static boolean ownerOnline(Wolf theWolf, Plugin pluginx)
+	{
 		for(Player x : pluginx.getServer().getOnlinePlayers())
 		{
 			if(x instanceof AnimalTamer)

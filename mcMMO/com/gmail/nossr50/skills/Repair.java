@@ -5,12 +5,12 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.Messages;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.locale.mcLocale;
 
 
 public class Repair {
@@ -30,6 +30,7 @@ public class Repair {
         private static String nIron =  LoadProperties.nIron;
         
 	
+	@SuppressWarnings("deprecation")
 	public static void repairCheck(Player player, ItemStack is, Block block){
 		PlayerProfile PP = Users.getProfile(player);
 		short durabilityBefore = player.getItemInHand().getDurability();
@@ -164,7 +165,7 @@ public class Repair {
         		}
         		
         	} else {
-        		player.sendMessage(Messages.getString("Skills.FullDurability"));
+        		player.sendMessage(mcLocale.getString("Skills.FullDurability"));
         	}
         	player.updateInventory();
         	/*
@@ -450,32 +451,32 @@ public class Repair {
     public static void needMoreVespeneGas(ItemStack is, Player player){
     	PlayerProfile PP = Users.getProfile(player);
     	if ((isDiamondTools(is) || isDiamondArmor(is)) && PP.getSkill("repair") < LoadProperties.repairdiamondlevel){
-			player.sendMessage(Messages.getString("AdeptDiamond"));
+			player.sendMessage(mcLocale.getString("AdeptDiamond"));
 		} else if (isDiamondTools(is) && !hasItem(player, rDiamond) || isIronTools(is) && !hasItem(player, rIron) || isGoldTools(is) && !hasItem(player, rGold)){
 			if(isDiamondTools(is) && !hasItem(player, rDiamond))
-				player.sendMessage(Messages.getString("Skills.NeedMore")+" "+ChatColor.BLUE+ nDiamond);
+				player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.BLUE+ nDiamond);
 			if(isIronTools(is) && !hasItem(player, rIron))
-				player.sendMessage(Messages.getString("Skills.NeedMore")+" "+ChatColor.GRAY+ nIron);
+				player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GRAY+ nIron);
 			if(isGoldTools(is) && !hasItem(player, rGold))
-				player.sendMessage(Messages.getString("Skills.NeedMore")+" "+ChatColor.GOLD+nGold);
+				player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GOLD+nGold);
 			if(isWoodTools(is) && !hasItem(player,rWood))
-				player.sendMessage(Messages.getString("Skills.NeedMore")+" "+ChatColor.DARK_GREEN+ nWood);
+				player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.DARK_GREEN+ nWood);
 			if(isStoneTools(is) && !hasItem(player, rStone))
-				player.sendMessage(Messages.getString("Skills.NeedMore")+" "+ChatColor.GRAY+nStone);
+				player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GRAY+nStone);
 		} else if (isDiamondArmor(is) && !hasItem(player, rDiamond)){
-			player.sendMessage(Messages.getString("Skills.NeedMore")+" "+ChatColor.BLUE+ nDiamond);
+			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.BLUE+ nDiamond);
 		} else if (isIronArmor(is) && !hasItem(player, rIron)){
-			player.sendMessage(Messages.getString("Skills.NeedMore")+" "+ChatColor.GRAY+ nIron);
+			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GRAY+ nIron);
 		} else if (isGoldArmor(is) && !hasItem(player, rGold)){
-			player.sendMessage(Messages.getString("Skills.NeedMore")+" "+ChatColor.GOLD+ nGold);
+			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GOLD+ nGold);
 		} else if (is.getAmount() > 1)
-			player.sendMessage(Messages.getString("Skills.StackedItems"));
+			player.sendMessage(mcLocale.getString("Skills.StackedItems"));
     	}
     public static boolean checkPlayerProcRepair(Player player){
     	PlayerProfile PP = Users.getProfile(player);
 		if(player != null){
 			if(Math.random() * 1000 <= PP.getSkill("repair")){
-				player.sendMessage(Messages.getString("Skills.FeltEasy"));
+				player.sendMessage(mcLocale.getString("Skills.FeltEasy"));
 				return true;
 			}
 		}

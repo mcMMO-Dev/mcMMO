@@ -4,13 +4,11 @@ import java.io.File;
 import java.util.List;
 import org.bukkit.util.config.Configuration;
 
-import com.gmail.nossr50.mcMMO;
-
-public class LoadProperties {
-	public static Boolean xpGainsMobSpawners=false, print_reports = false, myspawnEnable = true, mccEnable = true, mcmmoEnable = true, partyEnable = true, inviteEnable = true, acceptEnable = true, whoisEnable = true, statsEnable = true, addxpEnable = true, ptpEnable = true, mmoeditEnable = true, clearmyspawnEnable = true, mcgodEnable = true, mcabilityEnable = true, mctopEnable = true, mcrefreshEnable = true, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+public class LoadProperties 
+{
+	public static Boolean xpGainsMobSpawners=false, myspawnEnable = true, mccEnable = true, mcmmoEnable = true, partyEnable = true, inviteEnable = true, acceptEnable = true, whoisEnable = true, statsEnable = true, addxpEnable = true, ptpEnable = true, mmoeditEnable = true, clearmyspawnEnable = true, mcgodEnable = true, mcabilityEnable = true, mctopEnable = true, mcrefreshEnable = true, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond, locale;
 	public static int msandstone, mcocoa = 10, water_thunder = 75, cure_self = 5, cure_other = 5, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapus, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
-	private static mcMMO plugin;
 	
 	public String directory = "plugins/mcMMO/"; 
 	File file = new File(directory + File.separator + "config.yml");
@@ -52,16 +50,19 @@ public class LoadProperties {
 	    	return config.getInt(root, 0);
 	    }
 
-	    private Double readDouble(String root)
+	    @SuppressWarnings("unused")
+		private Double readDouble(String root)
 	    {
 	        Configuration config = load();
 	        return config.getDouble(root, 0);
 	    }
-	    private List<String> readStringList(String root)
+	    @SuppressWarnings("unused")
+		private List<String> readStringList(String root)
 	    {
 	        Configuration config = load();
 	        return config.getKeys(root);
 	    }
+	    
 	    private String readString(String root)
 	    {
 	        Configuration config = load();
@@ -80,8 +81,9 @@ public class LoadProperties {
 	        }
 	        return null;
 	    }
-	    private void addDefaults(){
-	        plugin.log.info("Generating Config File...");  	
+	    private void addDefaults()
+	    {
+	        System.out.println("Generating Config File...");  	
 	    	
 	        //Put in defaults
 	        write("MySQL.Enabled", false);
@@ -150,9 +152,9 @@ public class LoadProperties {
 	    	write("XP.Excavation.Cake", 300);
 	    	write("XP.Excavation.Cocoa_Beans", 10);
 	    	
-	    	write("Sorcery.Spells.Water.Thunder", 75);
-	    	write("Sorcery.Spells.Curative.Cure_Self.Mana_Cost", 5);
-	    	write("Sorcery.Spells.Curative.Cure_Other.Mana_Cost", 5);
+	    	//write("Sorcery.Spells.Water.Thunder", 75);
+	    	//write("Sorcery.Spells.Curative.Cure_Self.Mana_Cost", 5);
+	    	//write("Sorcery.Spells.Curative.Cure_Other.Mana_Cost", 5);
 	    	
 	    	write("Excavation.Drops.Cocoa_Beans", true);
 	    	write("Excavation.Drops.Mushrooms", true);
@@ -229,21 +231,15 @@ public class LoadProperties {
 	    	
 	     loadkeys();
 	    }
-	    private void loadkeys(){
-	        plugin.log.info("Loading Config File...");
-	        
-	        System.out.println("print_reports = "+readBoolean("General.Performance.Print_Reports"));
+	    private void loadkeys()
+	    {
+	        System.out.println("Loading Config File...");
 	        
 	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled");
 	        
-	        if(readBoolean("General.Performance.Print_Reports") != null)
-	        	print_reports = readBoolean("General.Performance.Print_Reports");
-	        else
-	        	print_reports = false;
-	        
-	        cure_self = readInteger("Sorcery.Spells.Curative.Cure_Self.Mana_Cost");
-	        cure_other = readInteger("Sorcery.Spells.Curative.Cure_Other.Mana_Cost");
-	        water_thunder = readInteger("Sorcery.Spells.Water.Thunder");
+	        //cure_self = readInteger("Sorcery.Spells.Curative.Cure_Self.Mana_Cost");
+	        //cure_other = readInteger("Sorcery.Spells.Curative.Cure_Other.Mana_Cost");
+	        //water_thunder = readInteger("Sorcery.Spells.Water.Thunder");
 	        
 	        msulphur = readInteger("XP.Excavation.Sulphur");
 	        mbones = readInteger("XP.Excavation.Bones");

@@ -1,17 +1,14 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.Messages;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
@@ -26,7 +23,8 @@ public class Axes {
     		/*
     		 * CHECK FOR AXE PREP MODE
     		 */
-    		if(PP.getAxePreparationMode()){
+    		if(PP.getAxePreparationMode())
+    		{
     			PP.setAxePreparationMode(false);
     		}
     		int ticks = 2;
@@ -37,17 +35,17 @@ public class Axes {
     		}
 
     		if(!PP.getSkullSplitterMode() && Skills.cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)){
-    			player.sendMessage(Messages.getString("Skills.SkullSplitterOn"));
+    			player.sendMessage(mcLocale.getString("Skills.SkullSplitterOn"));
     			for(Player y : pluginx.getServer().getOnlinePlayers()){
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(Messages.getString("Skills.SkullSplitterPlayer", new Object[] {player.getName()}));
+	    				y.sendMessage(mcLocale.getString("Skills.SkullSplitterPlayer", new Object[] {player.getName()}));
 	    		}
     			PP.setSkullSplitterActivatedTimeStamp(System.currentTimeMillis());
     			PP.setSkullSplitterDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
     			PP.setSkullSplitterMode(true);
     		}
     		if(!PP.getSkullSplitterMode() && !Skills.cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)){
-    			player.sendMessage(Messages.getString("Skills.TooTired")
+    			player.sendMessage(mcLocale.getString("Skills.TooTired")
     					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)+"s)");
     		}
     	}

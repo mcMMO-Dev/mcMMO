@@ -1,3 +1,66 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 1.0.34
+version: 1.0.35
+commands:
+    mcc:
+        description: Lists mcMMO commands
+    mcmmo:
+        description: Shows a brief mod description
+    mctop:
+        description: Shows leader boards for mcMMO
+    addxp:
+        description: Add XP to a user
+    mcability:
+        description: Toggle whether or not abilities get readied on right click
+    mcrefresh:
+        description: Refresh all cooldowns for mcMMO
+    mcgod:
+        description: Make yourself invulnerable
+    stats:
+        description: Shows your mcMMO stats and xp
+    mmoedit:
+        description: Edit the skill values for a user
+    ptp:
+        description: Teleport to a party member
+    party:
+        description: Create/join a party
+    myspawn:
+        description: Teleport to your MySpawn
+    whois:
+        description: View mcMMO stats of another player
+    invite:
+        description: Invite a player into your party
+    accept:
+        description: Accept a party invite
+    clearmyspawn:
+        description: Clear your MySpawn location
+    mmoupdate:
+        description: Convert from Flat File to MySQL
+    p:
+        description: Toggle Party chat or send party chat messages
+    excavation:
+        description: Detailed skill info
+    herbalism:
+        description: Detailed skill info
+    mining:
+        description: Detailed skill info
+    woodcutting:
+        description: Detailed skill info
+    axes:
+        description: Detailed skill info
+    archery:
+        description: Detailed skill info
+    swords:
+        description: Detailed skill info
+    taming:
+        description: Detailed skill info
+    unarmed:
+        description: Detailed skill info
+    acrobatics:
+        description: Detailed skill info
+    repair:
+        description: Detailed skill info
+    a:
+        description: Toggle Admin chat or send admin chat messages
+    sorcery:
+        description: Detailed skill info

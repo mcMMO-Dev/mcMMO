@@ -118,7 +118,7 @@ public class Leaderboard {
 	}
 	public static void leaderWrite(PlayerStat[] ps, String statName)
 	{
-		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
+		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		//CHECK IF THE FILE EXISTS
 		File theDir = new File(theLocation);
 		if(!theDir.exists()){
@@ -170,7 +170,7 @@ public class Leaderboard {
 	}
 	
 	public static String[] retrieveInfo(String statName, int pagenumber){
-		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
+		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		try {
         	FileReader file = new FileReader(theLocation);
         	BufferedReader in = new BufferedReader(file);
@@ -199,7 +199,7 @@ public class Leaderboard {
 	public static void updateLeaderboard(PlayerStat ps, String statName){
 		if(LoadProperties.useMySQL)
 			return;
-		String theLocation = "plugins/mcMMO/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
+		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		try {
         	//Open the file
         	FileReader file = new FileReader(theLocation);
@@ -237,11 +237,14 @@ public class Leaderboard {
                 log.log(Level.SEVERE, "Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
 	}
-	public static boolean isInt(String string){
-		try {
-		    int x = Integer.parseInt(string);
+	public static boolean isInt(String string)
+	{
+		try 
+		{
+		    Integer.parseInt(string);
 		}
-		catch(NumberFormatException nFE) {
+		catch(NumberFormatException nFE) 
+		{
 		    return false;
 		}
 		return true;

@@ -1,6 +1,5 @@
 package com.gmail.nossr50;
 
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -11,15 +10,18 @@ import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
+import com.gmail.nossr50.skills.Archery;
 import com.gmail.nossr50.skills.Axes;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Swords;
 import com.gmail.nossr50.skills.Taming;
 import com.gmail.nossr50.skills.Unarmed;
 
-public class Combat {
+public class Combat 
+{
 	public static void combatChecks(EntityDamageEvent event, mcMMO pluginx)
 	{
 		if(event.isCancelled() || event.getDamage() == 0)
@@ -28,36 +30,7 @@ public class Combat {
 		 * CHANGE DAMAGE BASED ON DIFFICULTY
 		 */
 		if(event instanceof EntityDamageByEntityEvent)
-		{
-			EntityDamageByEntityEvent eventx = (EntityDamageByEntityEvent) event;
-			/*
-			 * MOB DIFFICULTY STUFF
-			 */
-			
-			/*
-			if(eventx.getDamager() instanceof Monster)
-			{
-				Integer theMob = eventx.getDamager().getEntityId();
-				//System.out.println("FIRST STAGE");
-				if(pluginx.mob.mobDiff.containsKey(theMob))
-				{
-					//System.out.println("STAGE TWO");
-					if(eventx.getEntity() instanceof Player)
-					{
-						Player player = (Player) eventx.getEntity();
-						player.sendMessage("Mob Difficulty: "+((int) pluginx.mob.mobDiff.get(theMob)+1));
-						//System.out.println("STAGE THREE");
-						
-						//SETUP DMG
-						event.setDamage((pluginx.mob.mobDiff.get(theMob)+1) * event.getDamage());
-					}
-				} else
-				{
-					pluginx.mob.assignDifficulty(eventx.getDamager());
-				}
-			}
-			*/
-			
+		{	
 			/*
 			 * OFFENSIVE CHECKS FOR PLAYERS VERSUS ENTITIES
 			 */
@@ -177,14 +150,14 @@ public class Combat {
 		      				event.setCancelled(true);
 		      				if(theWolf.isTamed())
 		      				{
-		      				attacker.sendMessage(Messages.getString("Combat.BeastLore")+" "+
-		      						Messages.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(theWolf)})+" "+
-		      						Messages.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {theWolf.getHealth()}));
+		      				attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
+		      						mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(theWolf)})+" "+
+		      						mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {theWolf.getHealth()}));
 		      				} 
 		      				else
 		      				{
-		      					attacker.sendMessage(Messages.getString("Combat.BeastLore")+" "+
-		      							Messages.getString("Combat.BeastLoreHealthWolf", new Object[] {theWolf.getHealth()}));
+		      					attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
+		      							mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {theWolf.getHealth()}));
 		      				}
 		      			}
 		      		}
@@ -199,7 +172,7 @@ public class Combat {
 		{
 			EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent) event;
 			Wolf theWolf = (Wolf) eventb.getDamager();
-			if(Taming.ownerOnline(theWolf, pluginx))
+			if(theWolf.isTamed() && Taming.ownerOnline(theWolf, pluginx))
 			{
 				if(Taming.getOwner(theWolf, pluginx) == null)
 					return;
@@ -222,13 +195,13 @@ public class Combat {
 						if(event.getEntity() instanceof Player)
 						{
 							Player target = (Player)event.getEntity();
-							target.sendMessage(Messages.getString("Combat.StruckByGore")); //$NON-NLS-1$
+							target.sendMessage(mcLocale.getString("Combat.StruckByGore")); //$NON-NLS-1$
 							Users.getProfile(target).setBleedTicks(2);
 						}
 						else
 							pluginx.misc.addToBleedQue((LivingEntity) event.getEntity());
 						
-						master.sendMessage(Messages.getString("Combat.Gore")); //$NON-NLS-1$
+						master.sendMessage(mcLocale.getString("Combat.Gore")); //$NON-NLS-1$
 					}
 					if(!event.getEntity().isDead() && !pluginx.misc.mobSpawnerList.contains(event.getEntity()))
 					{
@@ -283,7 +256,7 @@ public class Combat {
 		{
 			Wolf theWolf = (Wolf) event.getEntity();
 			
-			if(Taming.ownerOnline(theWolf, pluginx))
+			if(theWolf.isTamed() && Taming.ownerOnline(theWolf, pluginx))
 			{
 				if(Taming.getOwner(theWolf, pluginx) == null)
 					return;
@@ -331,7 +304,7 @@ public class Combat {
     	Entity x = event.getEntity();
     	Projectile projectile = event.getProjectile();
     	if(projectile.toString().equals("CraftArrow") && x instanceof Player)
-    	{ //$NON-NLS-1$
+    	{
     		Player defender = (Player)x;
     		PlayerProfile PPd = Users.getProfile(defender);
     		if(PPd == null)
@@ -343,13 +316,13 @@ public class Combat {
 	    			if(Math.random() * 1000 <= 500)
 	    			{
 	    				event.setCancelled(true);
-	    				defender.sendMessage(Messages.getString("Combat.ArrowDeflect")); //$NON-NLS-1$
+	    				defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect")); //$NON-NLS-1$
 	    				return;
 	    			}
 	    		} else if(defender != null && Math.random() * 1000 <= (PPd.getSkill("unarmed") / 2))
 	    		{
 	    			event.setCancelled(true);
-	    			defender.sendMessage(Messages.getString("Combat.ArrowDeflect")); //$NON-NLS-1$
+	    			defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect")); //$NON-NLS-1$
 	    			return;
 	    		}
     		}
@@ -362,29 +335,8 @@ public class Combat {
     		Player attacker = (Player)y;
     		PlayerProfile PPa = Users.getProfile(attacker);
     		if(projectile.toString().equals("CraftArrow") && mcPermissions.getInstance().archery(attacker))
-    		{ //$NON-NLS-1$
-    			if(!pluginx.misc.arrowTracker.containsKey(x) && event.getDamage() > 0)
-    			{
-    				pluginx.misc.arrowTracker.put(x, 0);
-    				if(attacker != null)
-    				{
-    					if(Math.random() * 1000 <= PPa.getSkill("archery"))
-    					{
-    						pluginx.misc.arrowTracker.put(x, 1);
-    					}
-    				}
-    			} else 
-    			{
-    				if(event.getDamage() > 0)
-    				{
-    					if(attacker != null){
-        					if(Math.random() * 1000 <= PPa.getSkill("archery"))
-        					{
-        						pluginx.misc.arrowTracker.put(x, 1);
-        					}
-        				}
-    				}
-    			}
+    		{
+    			Archery.trackArrows(pluginx, x, event, attacker);
     			/*
     			 * DAMAGE MODIFIER
     			 */
@@ -402,32 +354,7 @@ public class Combat {
     			/*
     			 * IGNITION
     			 */
-    			if(Math.random() * 100 >= 75){
-    				
-    				int ignition = 20;	
-    				if(PPa.getSkill("archery") >= 200)
-    					ignition+=20;
-    				if(PPa.getSkill("archery") >= 400)
-    					ignition+=20;
-    				if(PPa.getSkill("archery") >= 600)
-    					ignition+=20;
-    				if(PPa.getSkill("archery") >= 800)
-    					ignition+=20;
-    				if(PPa.getSkill("archery") >= 1000)
-    					ignition+=20;
-    				
-        			if(x instanceof Player){
-        				Player Defender = (Player)x;
-        				if(!Party.getInstance().inSameParty(attacker, Defender)){
-        					event.getEntity().setFireTicks(ignition);
-        					attacker.sendMessage(Messages.getString("Combat.Ignition")); //$NON-NLS-1$
-        					Defender.sendMessage(Messages.getString("Combat.BurningArrowHit")); //$NON-NLS-1$
-        				}
-        			} else {
-        			event.getEntity().setFireTicks(ignition);
-        			attacker.sendMessage(Messages.getString("Combat.Ignition")); //$NON-NLS-1$
-        			}
-        		}
+    			Archery.ignitionCheck(x, event, attacker);
     		/*
     		 * Defender is Monster
     		 */
@@ -457,8 +384,10 @@ public class Combat {
     			/*
     			 * Stuff for the daze proc
     			 */
-    	    		if(PPa.inParty() && PPd.inParty()){
-    					if(Party.getInstance().inSameParty(defender, attacker)){
+    	    		if(PPa.inParty() && PPd.inParty())
+    	    		{
+    					if(Party.getInstance().inSameParty(defender, attacker))
+    					{
     						event.setCancelled(true);
     						return;
     					}
@@ -467,29 +396,14 @@ public class Combat {
     	    		 * PVP XP
     	    		 */
     	    		if(LoadProperties.pvpxp && !Party.getInstance().inSameParty(attacker, defender) 
-    	    				&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis()){
+    	    				&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis())
+    	    		{
     	    			PPa.addArcheryXP((event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
     	    		}
     				/*
     				 * DAZE PROC
     				 */
-    	    		Location loc = defender.getLocation();
-    				if(Math.random() * 10 > 5){
-					loc.setPitch(90);
-					} else {
-						loc.setPitch(-90);
-					}
-    				if(PPa.getSkill("archery") >= 1000){
-    	    			if(Math.random() * 1000 <= 500){
-    	    				defender.teleport(loc);
-    	    				defender.sendMessage(Messages.getString("Combat.TouchedFuzzy")); //$NON-NLS-1$
-    	    				attacker.sendMessage(Messages.getString("Combat.TargetDazed")); //$NON-NLS-1$ //$NON-NLS-2$
-    	    			}
-    	    		} else if(Math.random() * 2000 <= PPa.getSkill("archery")){
-    	    			defender.teleport(loc);
-	    				defender.sendMessage(Messages.getString("Combat.TouchedFuzzy")); //$NON-NLS-1$
-	    				attacker.sendMessage(Messages.getString("Combat.TargetDazed")); //$NON-NLS-1$ //$NON-NLS-2$
-    	    		}
+    	    		Archery.dazeCheck(defender, attacker);
     			}
     		}
     		Skills.XpCheck(attacker);

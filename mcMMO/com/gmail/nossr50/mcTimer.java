@@ -21,7 +21,6 @@ public class mcTimer extends TimerTask
     
 	public void run() 
 	{
-		long before = System.currentTimeMillis();
 		for(Player player : plugin.getServer().getOnlinePlayers())
 		{
 			if(player == null)
@@ -107,15 +106,5 @@ public class mcTimer extends TimerTask
 		thecount++;
 		if(thecount >= 41)
 			thecount = 1;
-		
-		
-		if(LoadProperties.print_reports)
-		{
-			long after = System.currentTimeMillis();
-			plugin.mcTimerx+=(after-before);
-			
-			if(thecount == 40)
-				plugin.printDelays();
-		}
 	}
 }

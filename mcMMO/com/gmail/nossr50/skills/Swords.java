@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -12,17 +11,16 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.Messages;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
-public class Swords {
-	
+public class Swords 
+{
 	public static void serratedStrikesActivationCheck(Player player, Plugin pluginx){
     	PlayerProfile PP = Users.getProfile(player);
 		if(m.isSwords(player.getItemInHand()))
@@ -41,11 +39,11 @@ public class Swords {
     		
 	    	if(!PP.getSerratedStrikesMode() && PP.getSerratedStrikesDeactivatedTimeStamp() < System.currentTimeMillis())
 	    	{
-	    		player.sendMessage(Messages.getString("Skills.SerratedStrikesOn"));
+	    		player.sendMessage(mcLocale.getString("Skills.SerratedStrikesOn"));
 	    		for(Player y : pluginx.getServer().getOnlinePlayers())
 	    		{
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(Messages.getString("Skills.SerratedStrikesPlayer", new Object[] {player.getName()}));
+	    				y.sendMessage(mcLocale.getString("Skills.SerratedStrikesPlayer", new Object[] {player.getName()}));
 	    		}
 	    		PP.setSerratedStrikesActivatedTimeStamp(System.currentTimeMillis());
 	    		PP.setSerratedStrikesDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
@@ -231,8 +229,6 @@ public class Swords {
     }
     public static void bleedSimulate(mcMMO plugin)
     {
-    	long before = System.currentTimeMillis();
-    	
     	//Add items from Que list to BleedTrack list
     	
     	for(LivingEntity x : plugin.misc.bleedQue)
@@ -269,11 +265,5 @@ public class Swords {
         		x.damage(2);
         	}
         }
-        
-        long after = System.currentTimeMillis();
-        if(LoadProperties.print_reports)
-		{
-        	plugin.bleedSimulation+=(after-before);
-		}
     }
 }

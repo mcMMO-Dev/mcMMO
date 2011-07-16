@@ -8,27 +8,36 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-public class mcPermissions {
-	//Thanks to myWarp source code for helping me figure this shit out!
+public class mcPermissions 
+{
 	private static Permissions permissionsPlugin;
     public static boolean permissionsEnabled = false;
     private static volatile mcPermissions instance;
 
-    public static void initialize(Server server) {
+    public static void initialize(Server server) 
+    {
         Plugin test = server.getPluginManager().getPlugin("Permissions");
-        if (test != null) {
+        if (test != null) 
+        {
             Logger log = Logger.getLogger("Minecraft");
             permissionsPlugin = ((Permissions) test);
             permissionsEnabled = true;
             log.log(Level.INFO, "[mcMMO] Permissions enabled.");
-        } else {
+        } else 
+        {
             Logger log = Logger.getLogger("Minecraft");
             log.log(Level.SEVERE, "[mcMMO] Permissions isn't loaded, there are no restrictions.");
         }
     }
+    
+    public static boolean getEnabled()
+    {
+    	return permissionsEnabled;
+    }
   
-    private static boolean permission(Player player, String string) {
-        return permissionsPlugin.Security.permission(player, string);  
+    private static boolean permission(Player player, String string) 
+    {
+        return permissionsPlugin.getHandler().has(player, string);
     }
     public boolean admin(Player player){
     	if (permissionsEnabled) {

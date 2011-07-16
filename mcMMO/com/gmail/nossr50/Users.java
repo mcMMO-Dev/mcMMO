@@ -13,7 +13,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 public class Users {
     private static volatile Users instance;
     protected static final Logger log = Logger.getLogger("Minecraft");
-    String location = "plugins/mcMMO/mcmmo.users";
+    String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
     
     //public static ArrayList<PlayerProfile> players;
     public static HashMap<Player, PlayerProfile> players = new HashMap<Player, PlayerProfile>();
@@ -65,7 +65,8 @@ public class Users {
     }
 
 	
-    public static void addUser(Player player){
+    public static void addUser(Player player)
+    {
     	players.put(player, new PlayerProfile(player));
     }
     public static void clearUsers()
