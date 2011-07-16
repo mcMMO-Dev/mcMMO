@@ -116,8 +116,6 @@ public class Skills {
     }
     public static void monitorSkills(Player player){
 		PlayerProfile PP = Users.getProfile(player);
-		if(PP == null)
-			Users.addUser(player);
 		if(PP != null) 
 		{
 			if(PP.getHoePreparationMode() && System.currentTimeMillis() - PP.getHoePreparationATS() >= 4000){

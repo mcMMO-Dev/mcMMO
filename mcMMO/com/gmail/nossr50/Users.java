@@ -14,6 +14,8 @@ public class Users {
     private static volatile Users instance;
     protected static final Logger log = Logger.getLogger("Minecraft");
     String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+    String directory = "plugins/mcMMO/FlatFileStuff/";
+    String directoryb = "plugins/mcMMO/FlatFileStuff/Leaderboards/";
     
     //public static ArrayList<PlayerProfile> players;
     public static HashMap<Player, PlayerProfile> players = new HashMap<Player, PlayerProfile>();
@@ -36,14 +38,18 @@ public class Users {
     
     public void loadUsers()
     {
+    	new File(directory).mkdir();
+    	new File(directoryb).mkdir();
         File theDir = new File(location);
-		if(!theDir.exists()){
+		if(!theDir.exists())
+		{
 			//properties = new PropertiesFile(location);
 			FileWriter writer = null;
 			try {
 				writer = new FileWriter(location);
 				//writer.write("#Storage place for user information\r\n");
-			} catch (Exception e) {
+			} catch (Exception e) 
+			{
 				log.log(Level.SEVERE, "Exception while creating " + location, e);
 			} finally {
 				try {

@@ -121,7 +121,8 @@ public class Leaderboard {
 		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		//CHECK IF THE FILE EXISTS
 		File theDir = new File(theLocation);
-		if(!theDir.exists()){
+		if(!theDir.exists())
+		{
 			//properties = new PropertiesFile(location);
 			FileWriter writer = null;
 			try {

@@ -50,7 +50,7 @@ public class PlayerProfile
 	
 	//Time to HashMap this shiz
 	HashMap<String, Integer> stats = new HashMap<String, Integer>(); //Skills and XP
-    String location = "plugins/mcMMO/mcmmo.users";
+    String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
         
 	public PlayerProfile(Player player)
 	{
