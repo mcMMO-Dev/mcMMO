@@ -63,7 +63,8 @@ public class Excavation {
     		return;
     	}
     	if(type == 2){
-    		if(PP.getSkill("excavation") > 250){
+    		if(PP.getSkill("excavation") >= 250)
+    		{
 	    		//CHANCE TO GET EGGS
 	    		if(LoadProperties.eggs == true && Math.random() * 100 > 99){
 	    			PP.addExcavationXP(LoadProperties.meggs * LoadProperties.xpGainMultiplier);
@@ -83,7 +84,7 @@ public class Excavation {
     	//DIRT SAND OR GRAVEL
     	if(type == 3 || type == 13 || type == 2 || type == 12){
     			PP.addExcavationXP(LoadProperties.mbase * LoadProperties.xpGainMultiplier);
-    		if(PP.getSkill("excavation") > 750){
+    		if(PP.getSkill("excavation") >= 750){
     			//CHANCE TO GET CAKE
     			if(LoadProperties.cake == true && Math.random() * 2000 > 1999){
     				PP.addExcavationXP(LoadProperties.mcake * LoadProperties.xpGainMultiplier);
@@ -92,7 +93,7 @@ public class Excavation {
     				loc.getWorld().dropItemNaturally(loc, is);
     			}
     		}
-    		if(PP.getSkill("excavation") > 350){
+    		if(PP.getSkill("excavation") >= 350){
     			//CHANCE TO GET DIAMOND
     			if(LoadProperties.diamond == true && Math.random() * 750 > 749){
     				PP.addExcavationXP(LoadProperties.mdiamond2 * LoadProperties.xpGainMultiplier);
@@ -101,7 +102,7 @@ public class Excavation {
         				loc.getWorld().dropItemNaturally(loc, is);
     			}
     		}
-    		if(PP.getSkill("excavation") > 250){
+    		if(PP.getSkill("excavation") >= 250){
     			//CHANCE TO GET YELLOW MUSIC
     			if(LoadProperties.music == true && Math.random() * 2000 > 1999){
     				PP.addExcavationXP(LoadProperties.mmusic * LoadProperties.xpGainMultiplier);
@@ -111,7 +112,7 @@ public class Excavation {
     			}
     			
     		}
-    		if(PP.getSkill("excavation") > 350){
+    		if(PP.getSkill("excavation") >= 350){
     			//CHANCE TO GET GREEN MUSIC
     			if(LoadProperties.music == true && Math.random() * 2000 > 1999){
     				PP.addExcavationXP(LoadProperties.mmusic * LoadProperties.xpGainMultiplier);
@@ -124,14 +125,14 @@ public class Excavation {
     	//SAND
     	if(type == 12){
     		//CHANCE TO GET GLOWSTONE
-    		if(LoadProperties.glowstone == true && PP.getSkill("excavation") > 50 && Math.random() * 100 > 95){
+    		if(LoadProperties.glowstone == true && PP.getSkill("excavation") >= 50 && Math.random() * 100 > 95){
     			PP.addExcavationXP(LoadProperties.mglowstone2 * LoadProperties.xpGainMultiplier);
 				mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
     		//CHANCE TO GET SLOWSAND
-    		if(LoadProperties.slowsand == true && PP.getSkill("excavation") > 650 && Math.random() * 200 > 199){
+    		if(LoadProperties.slowsand == true && PP.getSkill("excavation") >= 650 && Math.random() * 200 > 199){
     			PP.addExcavationXP(LoadProperties.mslowsand * LoadProperties.xpGainMultiplier);
 				mat = Material.getMaterial(88);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
@@ -140,7 +141,7 @@ public class Excavation {
     	}
     	//GRASS OR DIRT
     	if(type == 2 || type == 3){
-    		if(PP.getSkill("excavation") > 50){
+    		if(PP.getSkill("excavation") >= 50){
     			//CHANCE FOR COCOA BEANS
     			if(LoadProperties.cocoabeans == true && Math.random() * 75 > 74){
 	    			PP.addExcavationXP(LoadProperties.mcocoa * LoadProperties.xpGainMultiplier);
@@ -151,7 +152,7 @@ public class Excavation {
     			}
     		}
     		//CHANCE FOR SHROOMS
-    		if(LoadProperties.mushrooms == true && PP.getSkill("excavation") > 500 && Math.random() * 200 > 199){
+    		if(LoadProperties.mushrooms == true && PP.getSkill("excavation") >= 500 && Math.random() * 200 > 199){
     			PP.addExcavationXP(LoadProperties.mmushroom2 * LoadProperties.xpGainMultiplier);
     			if(Math.random() * 10 > 5){
     				mat = Material.getMaterial(39);
@@ -162,7 +163,7 @@ public class Excavation {
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
     		//CHANCE TO GET GLOWSTONE
-    		if(LoadProperties.glowstone == true && PP.getSkill("excavation") > 25 && Math.random() * 100 > 95){
+    		if(LoadProperties.glowstone == true && PP.getSkill("excavation") >= 25 && Math.random() * 100 > 95){
     			PP.addExcavationXP(LoadProperties.mglowstone2 * LoadProperties.xpGainMultiplier);
     			mat = Material.getMaterial(348);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
@@ -172,14 +173,14 @@ public class Excavation {
     	//GRAVEL
     	if(type == 13){
     		//CHANCE TO GET NETHERRACK
-    		if(LoadProperties.netherrack == true && PP.getSkill("excavation") > 850 && Math.random() * 200 > 199){
+    		if(LoadProperties.netherrack == true && PP.getSkill("excavation") >= 850 && Math.random() * 200 > 199){
     			PP.addExcavationXP(LoadProperties.mnetherrack * LoadProperties.xpGainMultiplier);
 				mat = Material.getMaterial(87);
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				loc.getWorld().dropItemNaturally(loc, is);
     		}
     		//CHANCE TO GET SULPHUR
-    		if(LoadProperties.sulphur == true && PP.getSkill("excavation") > 75){
+    		if(LoadProperties.sulphur == true && PP.getSkill("excavation") >= 75){
 	    		if(Math.random() * 10 > 9){
 	    			PP.addExcavationXP(LoadProperties.msulphur * LoadProperties.xpGainMultiplier);
 	    			mat = Material.getMaterial(289);
@@ -188,7 +189,7 @@ public class Excavation {
 	    		}
     		}
     		//CHANCE TO GET BONES
-    		if(LoadProperties.bones == true && PP.getSkill("excavation") > 175){
+    		if(LoadProperties.bones == true && PP.getSkill("excavation") >= 175){
         		if(Math.random() * 10 > 9){
         			PP.addExcavationXP(LoadProperties.mbones * LoadProperties.xpGainMultiplier);
         			mat = Material.getMaterial(352);

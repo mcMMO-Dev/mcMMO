@@ -1,5 +1,14 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Versions 1.0.36
+mcMMO now properly supports Bukkit/PEX/Permissions for Permissions
+Config.yml will no longer generate Performance Debugging nodes
+Registered permission nodes to plugin.yml
+Some more changes to Permissions code
+Fixed bug where Super Breaker activated where it shouldn't
+Fixed bug with enabling/disabling mcgod in config.yml
+Fixed bug with Excavation not kicking in until 1 level higher
+
 Version 1.0.35
 Added a Toggle for Chimaera Wing in config.yml
 Added customization of what item is used for Chimaera Wing in config.yml

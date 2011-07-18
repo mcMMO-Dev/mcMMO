@@ -98,7 +98,6 @@ public class LoadProperties
 	    	write("General.MOTD.Enabled", true);
 	    	write("General.MySpawn.Enabled", true);
 	    	write("General.HP_Regeneration.Enabled", true);
-	    	write("General.Performance.Print_Reports", false);
 	    	
 	    	write("Items.Chimaera_Wing.Enabled", true);
 	    	write("Items.Chimaera_Wing.Feather_Cost", 10);
@@ -386,7 +385,7 @@ public class LoadProperties
 	    	mccEnable = readBoolean("Commands.mcc.Enabled");
 	    	
 	    	mcgod = readString("Commands.mcgod.Name");
-	    	mcgodEnable = readBoolean("Commands.mcgodEnable.Enabled");
+	    	mcgodEnable = readBoolean("Commands.mcgod.Enabled");
 	    	
 	    	stats = readString("Commands.stats.Name");
 	    	statsEnable = readBoolean("Commands.stats.Enabled");

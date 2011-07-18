@@ -75,6 +75,8 @@ public class m
 	{
 		PlayerProfile PP = Users.getProfile(player);
 		int x = 0;
+		if(mcPermissions.getInstance().taming(player))
+			x+=PP.getSkill("taming");
 		if(mcPermissions.getInstance().mining(player))
 			x+=PP.getSkill("mining");
 		if(mcPermissions.getInstance().woodcutting(player))

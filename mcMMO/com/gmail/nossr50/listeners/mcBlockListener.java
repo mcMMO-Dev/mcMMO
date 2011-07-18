@@ -84,8 +84,10 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * MINING
     	 */
-    	if(mcPermissions.getInstance().mining(player)){
-    		if(LoadProperties.miningrequirespickaxe){
+    	if(mcPermissions.getInstance().mining(player))
+    	{
+    		if(LoadProperties.miningrequirespickaxe)
+    		{
     			if(m.isMiningPick(inhand))
     				Mining.miningBlockCheck(player, block, plugin);
     		} else {
@@ -226,7 +228,7 @@ public class mcBlockListener extends BlockListener {
     		Herbalism.greenTerraCheck(player, block, plugin);
     	if(PP.getAxePreparationMode() && block.getTypeId() == 17)
     		WoodCutting.treeFellerCheck(player, block, plugin);
-    	if(PP.getPickaxePreparationMode())
+    	if(PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block))
     		Mining.superBreakerCheck(player, block, plugin);
     	if(PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block))
     		Excavation.gigaDrillBreakerActivationCheck(player, block, plugin);
