@@ -15,9 +15,11 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Item {
 	
-	public static void itehecks(Player player, Plugin plugin){
+	public static void itemhecks(Player player, Plugin plugin)
+	{
 		ItemStack inhand = player.getItemInHand();
-		if(inhand.getTypeId() == 288){
+		if(LoadProperties.chimaeraWingEnable && inhand.getTypeId() == LoadProperties.chimaeraId)
+		{
 			chimaerawing(player, plugin);
 		}
 	}
@@ -28,7 +30,7 @@ public class Item {
 		PlayerProfile PP = Users.getProfile(player);
 		ItemStack is = player.getItemInHand();
 		Block block = player.getLocation().getBlock();
-		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == 288)
+		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == LoadProperties.chimaeraId)
 		{
     		if(Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= LoadProperties.feathersConsumedByChimaeraWing)
     		{
@@ -36,7 +38,7 @@ public class Item {
     			int y = derp.getY();
     			ItemStack[] inventory = player.getInventory().getContents();
     	    	for(ItemStack x : inventory){
-    	    		if(x != null && x.getTypeId() == 288){
+    	    		if(x != null && x.getTypeId() == LoadProperties.chimaeraId){
     	    			if(x.getAmount() >= LoadProperties.feathersConsumedByChimaeraWing + 1)
     	    			{
     	    				x.setAmount(x.getAmount() - LoadProperties.feathersConsumedByChimaeraWing);
@@ -81,7 +83,7 @@ public class Item {
     		} else if (!Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= 10) 
     		{
     			player.sendMessage(mcLocale.getString("Item.InjuredWait", new Object[] {Skills.calculateTimeLeft(player, PP.getRecentlyHurt(), 60)})); //$NON-NLS-1$
-    		} else if (is.getTypeId() == 288 && is.getAmount() <= 9){
+    		} else if (is.getTypeId() == LoadProperties.chimaeraId && is.getAmount() <= 9){
     			player.sendMessage(mcLocale.getString("Item.NeedFeathers")); //$NON-NLS-1$
     		}
     	}

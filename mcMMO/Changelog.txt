@@ -1,6 +1,8 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.0.35
+Added a Toggle for Chimaera Wing in config.yml
+Added customization of what item is used for Chimaera Wing in config.yml
 Fixed bug with randomly receiving Taming XP
 mcmmo.users file moved into /plugins/mcMMO/FlatFileStuff/
 Leaderboard files now moved into /plugins/mcMMO/FlatFileStuff/Leaderboards

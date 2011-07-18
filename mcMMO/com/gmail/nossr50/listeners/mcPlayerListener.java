@@ -192,11 +192,11 @@ public class mcPlayerListener extends PlayerListener
 		 * ITEM CHECKS
 		 */
 		if(action == Action.RIGHT_CLICK_AIR)
-			Item.itehecks(player, plugin);
+			Item.itemhecks(player, plugin);
 		if(action == Action.RIGHT_CLICK_BLOCK)
 		{
 			if(m.abilityBlockCheck(event.getClickedBlock()))
-				Item.itehecks(player, plugin);
+				Item.itemhecks(player, plugin);
 		}
 	}
 
