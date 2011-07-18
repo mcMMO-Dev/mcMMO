@@ -46,7 +46,7 @@ public class mcMMO extends JavaPlugin
 	 * Donate via paypal to nossr50@gmail.com (A million thanks to anyone that does!)
 	 */
 	
-	public static String maindirectory = "plugins + File.separator + mcMMO"; 
+	public static String maindirectory = "plugins" + File.separator + "mcMMO";
 	File file = new File(maindirectory + File.separator + "config.yml");
 	public static final Logger log = Logger.getLogger("Minecraft"); 
 	private final mcPlayerListener playerListener = new mcPlayerListener(this);
