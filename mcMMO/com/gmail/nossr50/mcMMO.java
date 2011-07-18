@@ -10,12 +10,9 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.*;
 import com.nijikokun.bukkit.Permissions.Permissions;
-import com.nijiko.permissions.PermissionHandler;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.plugin.Plugin;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -49,13 +46,13 @@ public class mcMMO extends JavaPlugin
 	 * Donate via paypal to nossr50@gmail.com (A million thanks to anyone that does!)
 	 */
 	
-	public static String maindirectory = "plugins/mcMMO/"; 
+	public static String maindirectory = "plugins + File.separator + mcMMO"; 
 	File file = new File(maindirectory + File.separator + "config.yml");
 	public static final Logger log = Logger.getLogger("Minecraft"); 
 	private final mcPlayerListener playerListener = new mcPlayerListener(this);
 	private final mcBlockListener blockListener = new mcBlockListener(this);
 	private final mcEntityListener entityListener = new mcEntityListener(this);
-	public static PermissionHandler permissionHandler;
+	public static mcPermissions permissionHandler = new mcPermissions();
 	private Permissions permissions;
 
 	private Timer mcMMO_Timer = new Timer(true); //BLEED AND REGENERATION
@@ -71,9 +68,9 @@ public class mcMMO extends JavaPlugin
 
 	public void onEnable() 
 	{
-		//new File(maindirectory).mkdir();
+		new File(maindirectory).mkdir();
 		
-		setupPermissions();
+		mcPermissions.initialize(getServer());
 		config.configCheck();
 		
 		if(!LoadProperties.useMySQL)
@@ -119,25 +116,6 @@ public class mcMMO extends JavaPlugin
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );  
 		mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
 		//mcMMO_SpellTimer.schedule(new mcTimerSpells(this), (long)0, (long)(100));
-	}
-
-	private void setupPermissions() 
-	{
-	    if (permissionHandler != null) 
-	    {
-	        return;
-	    }
-	    
-	    Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
-	    
-	    if (permissionsPlugin == null) 
-	    {
-	        //log.log(Level.INFO, "[mcMMO] Permission system not detected, defaulting to OP");
-	        return;
-	    }
-	    
-	    permissionHandler = ((Permissions) permissionsPlugin).getHandler();
-	    //log.log(Level.INFO, "[mcMMO] Found and will use plugin "+((Permissions)permissionsPlugin).getDescription().getFullName());
 	}
 
 	public boolean inSameParty(Player playera, Player playerb){

@@ -64,3 +64,166 @@ commands:
         description: Toggle Admin chat or send admin chat messages
     sorcery:
         description: Detailed skill info
+permissions:
+    mcmmo.*:
+        description: Implies all mcmmo permissions.
+        children:
+            mcmmo.admin: true 
+            mcmmo.tools.*: true
+            mcmmo.ability.*: true 
+            mcmmo.item.*: true 
+            mcmmo.tools.*: true 
+            mcmmo.regeneration: true 
+            mcmmo.motd: true 
+            mcmmo.commands.*: true 
+            mcmmo.chat.*: true 
+            mcmmo.skills.*: true
+    mcmmo.admin:
+        default: op
+        
+    mcmmo.tools.*:
+        description: Implies all mcmmo.tools permissions.
+        children:
+            mcmmo.tools.mcrefresh: true 
+            mcmmo.tools.mmoedit: true 
+            mcmmo.tools.mcgod: true 
+    mcmmo.tools.mcrefresh:
+        default: op
+    mcmmo.tools.mmoedit:
+        default: op
+    mcmmo.tools.mcgod:
+        default: op
+        
+    mcmmo.ability.*:
+        description: Implies all mcmmo.ability permissions.
+        children:
+            mcmmo.ability.herbalism: true 
+            mcmmo.ability.excavation: true 
+            mcmmo.ability.unarmed: true 
+            mcmmo.ability.mining: true 
+            mcmmo.ability.axes: true 
+            mcmmo.ability.swords: true 
+            mcmmo.ability.woodcutting: true 
+    mcmmo.ability.herbalism:
+        default: true
+    mcmmo.ability.excavation:
+        default: true
+    mcmmo.ability.unarmed:
+        default: true
+    mcmmo.ability.mining:
+        default: true
+    mcmmo.ability.axes:
+        default: true
+    mcmmo.ability.swords:
+        default: true
+    mcmmo.ability.woodcutting:
+        default: true
+        
+    mcmmo.item.*:
+        description: Implies all mcmmo.item permissions.
+        children:
+            mcmmo.item.chimaerawing: true 
+    mcmmo.item.chimaerawing:
+        default: true
+        
+    mcmmo.regeneration:
+        default: true
+        
+    mcmmo.motd:
+        default: true
+        
+    mcmmo.commands.*:
+        description: Implies all mcmmo.commands permissions.
+        children:
+            mcmmo.commands.ability: true 
+            mcmmo.commands.myspawn: true 
+            mcmmo.commands.setmyspawn: true 
+            mcmmo.commands.ptp: true 
+            mcmmo.commands.whois: true 
+            mcmmo.commands.party: true 
+    mcmmo.commands.ability:
+        default: true
+    mcmmo.commands.myspawn:
+        default: true
+    mcmmo.commands.setmyspawn:
+        default: true
+    mcmmo.commands.ptp:
+        default: true
+    mcmmo.commands.whois:
+        default: true
+    mcmmo.commands.party:
+        default: true
+        
+    mcmmo.chat.*:
+        description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
+        children:
+            mcmmo.chat.adminchat: true 
+            mcmmo.chat.partychat: true 
+    mcmmo.chat.adminchat:
+        default: op
+    mcmmo.chat.partychat:
+        default: true
+        
+    mcmmo.skills.*:
+        description: Implies all mcmmo.skills permissions.
+        children:
+            mcmmo.skills.sorcery.*: true 
+            mcmmo.skills.curative.*: true 
+            mcmmo.skills.taming: true 
+            mcmmo.skills.mining: true 
+            mcmmo.skills.woodcutting: true 
+            mcmmo.skills.repair: true 
+            mcmmo.skills.unarmed: true 
+            mcmmo.skills.archery: true 
+            mcmmo.skills.herbalism: true 
+            mcmmo.skills.excavation: true 
+            mcmmo.skills.swords: true 
+            mcmmo.skills.axes: true 
+            mcmmo.skills.acrobatics: true
+    mcmmo.skills.sorcery.*:
+        description: Implies all mcmmo.skills.sorcery permissions.
+        children:
+            mcmmo.skills.sorcery: true 
+            mcmmo.skills.sorcery.water: true 
+            mcmmo.skills.sorcery.water.thunder: true 
+    mcmmo.skills.curative.*:
+        description: Implies all mcmmo.skills.curative permissions.
+        children:
+            mcmmo.skills.curative: true 
+            mcmmo.skills.curative.heal.other: true 
+            mcmmo.skills.curative.heal.self: true 
+    
+    mcmmo.skills.sorcery:
+        default: true
+    mcmmo.skills.sorcery.water:
+        default: true
+    mcmmo.skills.sorcery.water.thunder:
+        default: true
+    mcmmo.skills.curative:
+        default: true
+    mcmmo.skills.curative.heal.other:
+        default: true
+    mcmmo.skills.curative.heal.self:
+        default: true
+    mcmmo.skills.taming:
+        default: true
+    mcmmo.skills.mining:
+        default: true
+    mcmmo.skills.woodcutting:
+        default: true
+    mcmmo.skills.repair:
+        default: true
+    mcmmo.skills.unarmed:
+        default: true
+    mcmmo.skills.archery:
+        default: true
+    mcmmo.skills.herbalism:
+        default: true
+    mcmmo.skills.excavation:
+        default: true
+    mcmmo.skills.swords:
+        default: true
+    mcmmo.skills.axes:
+        default: true
+    mcmmo.skills.acrobatics:
+        default: true
