@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
+import com.gmail.nossr50.datatypes.SkillType;
 
 public class m 
 {
@@ -76,27 +77,27 @@ public class m
 		PlayerProfile PP = Users.getProfile(player);
 		int x = 0;
 		if(mcPermissions.getInstance().taming(player))
-			x+=PP.getSkill("taming");
+			x+=PP.getSkillLevel(SkillType.TAMING);
 		if(mcPermissions.getInstance().mining(player))
-			x+=PP.getSkill("mining");
+			x+=PP.getSkillLevel(SkillType.MINING);
 		if(mcPermissions.getInstance().woodcutting(player))
-			x+=PP.getSkill("woodcutting");
+			x+=PP.getSkillLevel(SkillType.WOODCUTTING);
 		if(mcPermissions.getInstance().unarmed(player))
-			x+=PP.getSkill("unarmed");
+			x+=PP.getSkillLevel(SkillType.UNARMED);
 		if(mcPermissions.getInstance().herbalism(player))
-			x+=PP.getSkill("herbalism");
+			x+=PP.getSkillLevel(SkillType.HERBALISM);
 		if(mcPermissions.getInstance().excavation(player))
-			x+=PP.getSkill("excavation");
+			x+=PP.getSkillLevel(SkillType.EXCAVATION);
 		if(mcPermissions.getInstance().archery(player))
-			x+=PP.getSkill("archery");
+			x+=PP.getSkillLevel(SkillType.ARCHERY);
 		if(mcPermissions.getInstance().swords(player))
-			x+=PP.getSkill("swords");
+			x+=PP.getSkillLevel(SkillType.SWORDS);
 		if(mcPermissions.getInstance().axes(player))
-			x+=PP.getSkill("axes");
+			x+=PP.getSkillLevel(SkillType.AXES);
 		if(mcPermissions.getInstance().acrobatics(player))
-			x+=PP.getSkill("acrobatics");
+			x+=PP.getSkillLevel(SkillType.ACROBATICS);
 		if(mcPermissions.getInstance().repair(player))
-			x+=PP.getSkill("repair");
+			x+=PP.getSkillLevel(SkillType.REPAIR);
 		return x;
 	}
 

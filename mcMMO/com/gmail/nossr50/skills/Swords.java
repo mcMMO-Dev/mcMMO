@@ -16,6 +16,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
@@ -30,7 +31,7 @@ public class Swords
     			PP.setSwordsPreparationMode(false);
     		}
 	    	int ticks = 2;
-	    	int x = PP.getSkill("swords");
+	    	int x = PP.getSkillLevel(SkillType.SWORDS);
     		while(x >= 50)
     		{
     			x-=50;
@@ -69,7 +70,7 @@ public class Swords
     		}
     	}
     	if(mcPermissions.getInstance().swords(attacker) && m.isSwords(attacker.getItemInHand())){
-			if(PPa.getSkill("swords") >= 750)
+			if(PPa.getSkillLevel(SkillType.SWORDS) >= 750)
 			{
 				if(Math.random() * 1000 >= 750)
 				{
@@ -83,7 +84,7 @@ public class Swords
 					attacker.sendMessage(ChatColor.GREEN+"**ENEMY BLEEDING**");
 				}
 			} 
-			else if (Math.random() * 1000 <= PPa.getSkill("swords"))
+			else if (Math.random() * 1000 <= PPa.getSkillLevel(SkillType.SWORDS))
 			{
 				if(!(x instanceof Player))
 					pluginx.misc.addToBleedQue(x);
@@ -130,6 +131,9 @@ public class Swords
 		    				if(target.getName().equals(attacker.getName()))
 		    					continue;
 		    				
+		    				if(Users.getProfile(target).getGodMode())
+		    					continue;
+		    				
 		    				if(Party.getInstance().inSameParty(attacker, target))
 		    					continue;
 		    				if(targets >= 1 && derp.getWorld().getPVP())
@@ -162,7 +166,7 @@ public class Swords
     	PlayerProfile PPd = Users.getProfile(defender);
     	if(defender != null && m.isSwords(defender.getItemInHand()) 
     			&& mcPermissions.getInstance().swords(defender)){
-			if(PPd.getSkill("swords") >= 900)
+			if(PPd.getSkillLevel(SkillType.SWORDS) >= 900)
 			{
 				if(Math.random() * 3000 <= 900)
 				{
@@ -177,7 +181,7 @@ public class Swords
 				}
 			} else 
 			{
-				if(Math.random() * 3000 <= PPd.getSkill("swords"))
+				if(Math.random() * 3000 <= PPd.getSkillLevel(SkillType.SWORDS))
 				{
 					event.setCancelled(true);
 					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
@@ -206,7 +210,7 @@ public class Swords
 		   		PlayerProfile PPd = Users.getProfile(defender);
 		   		if(m.isSwords(defender.getItemInHand()) && mcPermissions.getInstance().swords(defender))
 		   		{
-		    		if(PPd.getSkill("swords") >= 600)
+		    		if(PPd.getSkillLevel(SkillType.SWORDS) >= 600)
 		    		{
 		    			if(Math.random() * 2000 <= 600)
 		    			{
@@ -216,7 +220,7 @@ public class Swords
 		    				((Player) f).sendMessage(ChatColor.DARK_RED+"Hit with counterattack!");
 		    			}
 		    		}
-		    		else if (Math.random() * 2000 <= PPd.getSkill("swords"))
+		    		else if (Math.random() * 2000 <= PPd.getSkillLevel(SkillType.SWORDS))
 		    		{
 			    		Combat.dealDamage(f, event.getDamage() / 2);
 			    		defender.sendMessage(ChatColor.GREEN+"**COUNTER-ATTACKED**");

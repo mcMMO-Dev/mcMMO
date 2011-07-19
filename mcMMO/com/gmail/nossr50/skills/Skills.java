@@ -14,6 +14,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.PlayerStat;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 
@@ -269,266 +270,62 @@ public class Skills {
 	    	}
     	}
     }
-    public static void XpCheck(Player player){
-    	PlayerProfile PP = Users.getProfile(player);
-    	/*
-    	 * TAMING
-    	 */
-    	if(player != null){
-	    	if(PP.getSkill("tamingXP") >= PP.getXpToLevel("taming")){
-				int skillups = 0;
-				while(PP.getSkill("tamingXP") >= PP.getXpToLevel("taming")){
-					skillups++;
-					PP.removeTamingXP(PP.getXpToLevel("taming"));
-					PP.skillUpTaming(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				PlayerStat ps = new PlayerStat();
-				if(!LoadProperties.useMySQL){
-					ps.statVal = PP.getSkill("taming");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "taming");
-				}
-				if(player != null && PP != null && PP.getSkillToString("taming") != null)
-					player.sendMessage(mcLocale.getString("Skills.TamingUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("taming")}));
-			}
-	    	/*
-	    	 * ACROBATICS
-	    	 */
-	    	if(PP.getSkill("acrobaticsXP") >= PP.getXpToLevel("acrobatics")){
-				int skillups = 0;
-				while(PP.getSkill("acrobaticsXP") >= PP.getXpToLevel("acrobatics")){
-					skillups++;
-					PP.removeAcrobaticsXP(PP.getXpToLevel("acrobatics"));
-					PP.skillUpAcrobatics(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("acrobatics");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "acrobatics");
-				}
-				
-				if(player != null && PP != null && PP.getSkillToString("acrobatics") != null)
-					player.sendMessage(mcLocale.getString("Skills.AcrobaticsUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("acrobatics")}));
-			}
-	    	/*
-	    	 * ARCHERY
-	    	 */
-	    	if(PP.getSkill("archeryXP") >= PP.getXpToLevel("archery")){
-				int skillups = 0;
-				while(PP.getSkill("archeryXP") >= PP.getXpToLevel("archery")){
-					skillups++;
-					PP.removeArcheryXP(PP.getXpToLevel("archery"));
-					PP.skillUpArchery(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("archery");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "archery");
-				}
-				if(player != null && PP != null && PP.getSkillToString("archery") != null)
-					player.sendMessage(mcLocale.getString("Skills.ArcheryUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("archery")}));
-			}
-	    	/*
-	    	 * SWORDS
-	    	 */
-	    	if(PP.getSkill("swordsXP") >= PP.getXpToLevel("swords")){
-				int skillups = 0;
-				while(PP.getSkill("swordsXP") >= PP.getXpToLevel("swords")){
-					skillups++;
-					PP.removeSwordsXP(PP.getXpToLevel("swords"));
-					PP.skillUpSwords(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("swords");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "swords");
-				}
-				
-				if(player != null && PP != null && PP.getSkillToString("swords") != null)
-					player.sendMessage(mcLocale.getString("Skills.SwordsUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("swords")}));	
-			}
-	    	/*
-	    	 * AXES
-	    	 */
-			if(PP.getSkill("axesXP") >= PP.getXpToLevel("axes")){
-				int skillups = 0;
-				while(PP.getSkill("axesXP") >= PP.getXpToLevel("axes")){
-					skillups++;
-					PP.removeAxesXP(PP.getXpToLevel("axes"));
-					PP.skillUpAxes(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("axes");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "axes");
-				}
-				if(player != null && PP != null && PP.getSkillToString("axes") != null)
-					player.sendMessage(mcLocale.getString("Skills.AxesUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("axes")}));	
-			}
-			/*
-			 * UNARMED
-			 */
-			if(PP.getSkill("unarmedXP") >= PP.getXpToLevel("unarmed")){
-				int skillups = 0;
-				while(PP.getSkill("unarmedXP") >= PP.getXpToLevel("unarmed")){
-					skillups++;
-					PP.removeUnarmedXP(PP.getXpToLevel("unarmed"));
-					PP.skillUpUnarmed(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("unarmed");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "unarmed");
-				}
-				if(player != null && PP != null && PP.getSkillToString("unarmed") != null)
-					player.sendMessage(mcLocale.getString("Skills.UnarmedUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("unarmed")}));
-			}
-			/*
-			 * HERBALISM
-			 */
-			if(PP.getSkill("herbalismXP") >= PP.getXpToLevel("herbalism")){
-				int skillups = 0;
-				while(PP.getSkill("herbalismXP") >= PP.getXpToLevel("herbalism")){
-					skillups++;
-					PP.removeHerbalismXP(PP.getXpToLevel("herbalism"));
-					PP.skillUpHerbalism(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("herbalism");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "herbalism");
-				}
-				if(player != null && PP != null && PP.getSkillToString("herbalism") != null)
-					player.sendMessage(mcLocale.getString("Skills.HerbalismUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("herbalism")}));
-			}
-			/*
-			 * MINING
-			 */
-			if(player != null && PP.getSkill("miningXP") >= PP.getXpToLevel("mining")){
-				int skillups = 0;
-				while(PP.getSkill("miningXP") >= PP.getXpToLevel("mining")){
-					skillups++;
-					PP.removeMiningXP(PP.getXpToLevel("mining"));
-					PP.skillUpMining(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("mining");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "mining");
-				}
-				if(player != null && PP != null && PP.getSkillToString("mining") != null)
-					player.sendMessage(mcLocale.getString("Skills.MiningUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("mining")}));	
-			}
-			/*
-			 * WOODCUTTING
-			 */
-			if(player != null && PP.getSkill("woodcuttingXP") >= PP.getXpToLevel("woodcutting")){
-				int skillups = 0;
-				while(PP.getSkill("woodcuttingXP") >= PP.getXpToLevel("woodcutting")){
-					skillups++;
-					PP.removeWoodCuttingXP(PP.getXpToLevel("woodcutting"));
-					PP.skillUpWoodCutting(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("woodcutting");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "woodcutting");
-				}
-				if(player != null && PP != null && PP.getSkillToString("woodcutting") != null)
-					player.sendMessage(mcLocale.getString("Skills.WoodcuttingUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("woodcutting")}));
-			}
-			/*
-			 * REPAIR
-			 */
-			if(PP.getSkill("repairXP") >= PP.getXpToLevel("repair")){
-				int skillups = 0;
-				while(PP.getSkill("repairXP") >= PP.getXpToLevel("repair")){
-					skillups++;
-					PP.removeRepairXP(PP.getXpToLevel("repair"));
-					PP.skillUpRepair(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("repair");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "repair");
-				}
-				if(player != null && PP != null && PP.getSkillToString("repair") != null)
-					player.sendMessage(mcLocale.getString("Skills.RepairUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("repair")}));	
-			}
-			/*
-			 * EXCAVATION
-			 */
-			if(PP.getSkill("excavationXP") >= PP.getXpToLevel("excavation")){
-				int skillups = 0;
-				while(PP.getSkill("excavationXP") >= PP.getXpToLevel("excavation")){
-					skillups++;
-					PP.removeExcavationXP(PP.getXpToLevel("excavation"));
-					PP.skillUpExcavation(1);
-				}
-				/*
-				 * Leaderboard updating stuff
-				 */
-				if(!LoadProperties.useMySQL){
-					PlayerStat ps = new PlayerStat();
-					ps.statVal = PP.getSkill("excavation");
-					ps.name = player.getName();
-					Leaderboard.updateLeaderboard(ps, "excavation");
-				}
-				if(player != null && PP != null && PP.getSkillToString("excavation") != null)
-					player.sendMessage(mcLocale.getString("Skills.ExcavationUp", new Object[] {String.valueOf(skillups), PP.getSkillToString("excavation")}));
-					//player.sendMessage(ChatColor.YELLOW+"Excavation skill increased by "+String.valueOf(skillups)+"."+" Total ("+PP.getSkillToString("excavation")+")");	
-					
-			}
-    	}
-		/*
-		 * Leaderboard updating stuff
-		 */
-    	if(!LoadProperties.useMySQL)
+	
+	public static void ProcessLeaderboardUpdate(SkillType skillType, Player player)
+	{
+		PlayerProfile PP = Users.getProfile(player);
+		
+		PlayerStat ps = new PlayerStat();
+		ps.statVal = PP.getSkillLevel(skillType);
+		ps.name = player.getName();
+		Leaderboard.updateLeaderboard(ps, skillType);
+	}
+	
+	public static void XpCheckSkill(SkillType skillType, Player player)
+	{
+		PlayerProfile PP = Users.getProfile(player);
+		
+		if(PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType))
     	{
-			PlayerStat ps = new PlayerStat();
-			ps.statVal = m.getPowerLevel(player);
-			ps.name = player.getName();
-			Leaderboard.updateLeaderboard(ps, "powerlevel");
+			int skillups = 0;
+			
+			while(PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType))
+			{
+				skillups++;
+				PP.removeXP(skillType, PP.getXpToLevel(skillType));
+				PP.skillUp(skillType, 1);
+			}
+			
+			if(!LoadProperties.useMySQL)
+				ProcessLeaderboardUpdate(skillType, player);
+			
+			String firstLetter = skillType.toString().substring(0,1);
+			String remainder   = skillType.toString().substring(1);
+			String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
+			
+			player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+		}
+	}
+	
+	public static void XpCheckAll(Player player)
+	{
+		for(SkillType x : SkillType.values())
+		{
+			//Don't want to do anything with this one
+			if(x == SkillType.ALL)
+				continue;
+			
+			XpCheckSkill(x, player);
+		}
+	}
+    public static SkillType getSkillType(String skillName)
+    {
+    	for(SkillType x : SkillType.values())
+    	{
+    		if(x.toString().equals(skillName.toUpperCase()))
+    			return x;
     	}
+    	return null;
     }
     public static boolean isSkill(String skillname){
     	skillname = skillname.toLowerCase();
@@ -588,7 +385,7 @@ public class Skills {
     	}
     	plugin.misc.arrowTracker.remove(entity);
     }
-    public static String getSkillStats(String skillname, String level, String XP, Integer XPToLevel)
+    public static String getSkillStats(String skillname, Integer level, Integer XP, Integer XPToLevel)
     {
     	ChatColor parColor = ChatColor.DARK_AQUA;
     	ChatColor xpColor = ChatColor.GRAY;

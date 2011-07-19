@@ -14,6 +14,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 
@@ -28,7 +29,7 @@ public class Herbalism {
 			Material mat = Material.getMaterial(296);
 			Location loc = block.getLocation();
 			ItemStack is = new ItemStack(mat, 1, (byte)0, (byte)0);
-			PP.addHerbalismXP(5 * LoadProperties.xpGainMultiplier);
+			PP.addXP(SkillType.HERBALISM, 5 * LoadProperties.xpGainMultiplier);
 	    	loc.getWorld().dropItemNaturally(loc, is);
 	    	
 	    	//DROP SOME SEEDS
@@ -99,7 +100,7 @@ public class Herbalism {
     			PP.setHoePreparationMode(false);
     		}
 	    	int ticks = 2;
-	    	int x = PP.getSkill("herbalism");
+	    	int x = PP.getSkillLevel(SkillType.HERBALISM);
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -133,14 +134,14 @@ public class Herbalism {
     	if(type == 59 && block.getData() == (byte) 0x7){
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    		PP.addHerbalismXP(LoadProperties.mwheat * LoadProperties.xpGainMultiplier);
+    		PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat * LoadProperties.xpGainMultiplier);
     		if(player != null){
-	    		if(Math.random() * 1000 <= PP.getSkill("herbalism")){
+	    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
 	    			loc.getWorld().dropItemNaturally(loc, is);
 	    		}
     		}
     		//GREEN THUMB
-    		if(Math.random() * 1500 <= PP.getSkill("herbalism")){
+    		if(Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM)){
     			event.setCancelled(true);
     			loc.getWorld().dropItemNaturally(loc, is);
     			//DROP SOME SEEDS
@@ -152,11 +153,11 @@ public class Herbalism {
     			
     			//Setup the bonuses
     			int bonus = 0;
-    			if(PP.getSkill("herbalism") >= 200)
+    			if(PP.getSkillLevel(SkillType.HERBALISM) >= 200)
     				bonus++;
-    			if(PP.getSkill("herbalism") >= 400)
+    			if(PP.getSkillLevel(SkillType.HERBALISM) >= 400)
     				bonus++;
-    			if(PP.getSkill("herbalism") >= 600)
+    			if(PP.getSkillLevel(SkillType.HERBALISM) >= 600)
     				bonus++;
     			
     			//Change wheat to be whatever stage based on the bonus
@@ -199,11 +200,11 @@ public class Herbalism {
 	    				is = new ItemStack(Material.CACTUS, 1, (byte)0, (byte)0);
 	    				if(byteArray[x] != (byte) 5)
 	    				{
-		    		    	if(Math.random() * 1000 <= PP.getSkill("herbalism"))
+		    		    	if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 		    		    	{
 		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
 		    		    	}
-		    		    	PP.addHerbalismXP(LoadProperties.mcactus * LoadProperties.xpGainMultiplier);
+		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.mcactus * LoadProperties.xpGainMultiplier);
 	    				}
 	    			}
 	    			x++;
@@ -237,11 +238,11 @@ public class Herbalism {
 	    				//Check for being placed by the player
 	    				if(byteArray[x] != (byte) 5)
 	    				{
-		    		    	if(Math.random() * 1000 <= PP.getSkill("herbalism"))
+		    		    	if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 		    		    	{
 		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
 		    		    	}
-		    		    	PP.addHerbalismXP(LoadProperties.msugar * LoadProperties.xpGainMultiplier);
+		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.msugar * LoadProperties.xpGainMultiplier);
 	    				}
 	    			}
 	    			x++;
@@ -254,40 +255,40 @@ public class Herbalism {
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getSkill("herbalism")){
+		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismXP(LoadProperties.mpumpkin * LoadProperties.xpGainMultiplier);
+	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mpumpkin * LoadProperties.xpGainMultiplier);
 	    	}
     		//Mushroom
 	    	if(type == 39 || type == 40){
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getSkill("herbalism")){
+		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismXP(LoadProperties.mmushroom * LoadProperties.xpGainMultiplier);
+	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mmushroom * LoadProperties.xpGainMultiplier);
 	    	}
 	    	//Flower
 	    	if(type == 37 || type == 38){
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getSkill("herbalism")){
+		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addHerbalismXP(LoadProperties.mflower * LoadProperties.xpGainMultiplier);
+	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mflower * LoadProperties.xpGainMultiplier);
 	    	}
     	}
-    	Skills.XpCheck(player);
+    	Skills.XpCheckSkill(SkillType.HERBALISM, player);
     }
 	public static void breadCheck(Player player, ItemStack is){
 		PlayerProfile PP = Users.getProfile(player);
-		int herbalism = PP.getSkill("herbalism");
+		int herbalism = PP.getSkillLevel(SkillType.HERBALISM);
 		if(is != null && PP != null)
 		{
 	    	if(is.getTypeId() == 297)
@@ -314,7 +315,7 @@ public class Herbalism {
     }
     public static void stewCheck(Player player, ItemStack is){
     	PlayerProfile PP = Users.getProfile(player);
-    	int herbalism = PP.getSkill("herbalism");
+    	int herbalism = PP.getSkillLevel(SkillType.HERBALISM);
     	if(is.getTypeId() == 282){
     		if(herbalism >= 50 && herbalism < 150){
     			player.setHealth(player.getHealth() + 1);

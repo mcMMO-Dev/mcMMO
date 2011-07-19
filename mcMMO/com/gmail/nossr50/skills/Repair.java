@@ -10,6 +10,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 
@@ -45,14 +46,14 @@ public class Repair {
         			/*
         			 * DIAMOND ARMOR
         			 */
-        			if(isDiamondArmor(is) && hasItem(player, rDiamond) && PP.getSkill("repair") >= LoadProperties.repairdiamondlevel){
+        			if(isDiamondArmor(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){
         				removeItem(player, rDiamond);
 	        			player.getItemInHand().setDurability(getRepairAmount(is, player));
 	        			durabilityAfter = player.getItemInHand().getDurability();
 	        			player.sendMessage(String.valueOf(durabilityBefore - durabilityAfter));
 	        			dif = (short) (durabilityBefore - durabilityAfter);
 	        			dif = (short) (dif * 6); //Boost XP
-	        			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
+	        			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
         			} 
         			else if (isIronArmor(is) && hasItem(player, rIron)){
         			/*
@@ -63,7 +64,7 @@ public class Repair {
 	            		durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 2); //Boost XP
-	            		PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
+	            		PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasItem(player, rGold)){
         				removeItem(player, rGold);
@@ -71,7 +72,7 @@ public class Repair {
         				durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 4); //Boost XP of Gold to around Iron
-        				PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
+        				PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
         			} else {
         				needMoreVespeneGas(is, player);
         			}
@@ -97,7 +98,7 @@ public class Repair {
 	        			//STONE NERF
 	        			dif = (short) (dif / 2);
 	        			
-            			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
+            			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
         			} else if(isWoodTools(is) && hasItem(player,rWood)){
         				removeItem(player,rWood);
             			/*
@@ -115,7 +116,7 @@ public class Repair {
 	        			//WOOD NERF
 	        			dif = (short) (dif / 2);
 	        			
-            			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
+            			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
         			} else if(isIronTools(is) && hasItem(player, rIron)){
             			removeItem(player, rIron);
             			/*
@@ -130,8 +131,8 @@ public class Repair {
 	        				dif = (short) (dif / 2);
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
-            		} else if (isDiamondTools(is) && hasItem(player, rDiamond) && PP.getSkill("repair") >= LoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
+            			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
+            		} else if (isDiamondTools(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
             			/*
             			 * DIAMOND TOOLS
             			 */
@@ -145,7 +146,7 @@ public class Repair {
 	        				dif = (short) (dif / 2);
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
+            			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
             		} else if(isGoldTools(is) && hasItem(player, rGold)){
             			player.getItemInHand().setDurability(getRepairAmount(is, player));
             			removeItem(player, rGold);
@@ -158,7 +159,7 @@ public class Repair {
 	        				dif = (short) (dif / 2);
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addRepairXP(dif * LoadProperties.xpGainMultiplier);
+            			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
             		} else {
             			needMoreVespeneGas(is, player);
             		}
@@ -171,7 +172,7 @@ public class Repair {
         	/*
         	 * GIVE SKILL IF THERE IS ENOUGH XP
         	 */
-        	Skills.XpCheck(player);
+        	Skills.XpCheckSkill(SkillType.REPAIR, player);
         	}
     }
 	public static boolean isArmor(ItemStack is){
@@ -284,7 +285,7 @@ public class Repair {
     }
     public static short repairCalculate(Player player, short durability, short ramt){
     	PlayerProfile PP = Users.getProfile(player);
-    	float bonus = (PP.getSkill("repair") / 500);
+    	float bonus = (PP.getSkillLevel(SkillType.REPAIR) / 500);
     	bonus = (ramt * bonus);
     	ramt = ramt+=bonus;
     	if(checkPlayerProcRepair(player)){
@@ -448,9 +449,11 @@ public class Repair {
 		}
 		return repairCalculate(player, durability, ramt);
     }
-    public static void needMoreVespeneGas(ItemStack is, Player player){
+    public static void needMoreVespeneGas(ItemStack is, Player player)
+    {
     	PlayerProfile PP = Users.getProfile(player);
-    	if ((isDiamondTools(is) || isDiamondArmor(is)) && PP.getSkill("repair") < LoadProperties.repairdiamondlevel){
+    	if ((isDiamondTools(is) || isDiamondArmor(is)) && PP.getSkillLevel(SkillType.REPAIR) < LoadProperties.repairdiamondlevel)
+    	{
 			player.sendMessage(mcLocale.getString("AdeptDiamond"));
 		} else if (isDiamondTools(is) && !hasItem(player, rDiamond) || isIronTools(is) && !hasItem(player, rIron) || isGoldTools(is) && !hasItem(player, rGold)){
 			if(isDiamondTools(is) && !hasItem(player, rDiamond))
@@ -472,10 +475,13 @@ public class Repair {
 		} else if (is.getAmount() > 1)
 			player.sendMessage(mcLocale.getString("Skills.StackedItems"));
     	}
-    public static boolean checkPlayerProcRepair(Player player){
+    public static boolean checkPlayerProcRepair(Player player)
+    {
     	PlayerProfile PP = Users.getProfile(player);
-		if(player != null){
-			if(Math.random() * 1000 <= PP.getSkill("repair")){
+		if(player != null)
+		{
+			if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.REPAIR))
+			{
 				player.sendMessage(mcLocale.getString("Skills.FeltEasy"));
 				return true;
 			}

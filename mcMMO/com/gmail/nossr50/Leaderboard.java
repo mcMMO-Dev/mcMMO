@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerStat;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.Tree;
 
 public class Leaderboard 
@@ -50,48 +51,48 @@ public class Leaderboard
 
     			int Plvl = 0;
     			
-    			if(character.length > 1 && isInt(character[1]))
+    			if(character.length > 1 && m.isInt(character[1]))
     			{
     				Mining.add(p, Integer.valueOf(character[1]));
     				Plvl += Integer.valueOf(character[1]);
     			}
-    			if(character.length > 5 && isInt(character[5])){
+    			if(character.length > 5 && m.isInt(character[5])){
     				WoodCutting.add(p, Integer.valueOf(character[5]));
     				Plvl += Integer.valueOf(character[5]);
     			}
-    			if(character.length > 7 && isInt(character[7])){
+    			if(character.length > 7 && m.isInt(character[7])){
     				Repair.add(p, Integer.valueOf(character[7]));
     				Plvl += Integer.valueOf(character[7]);
     			}
-    			if(character.length > 8 && isInt(character[8])){
+    			if(character.length > 8 && m.isInt(character[8])){
     				Unarmed.add(p, Integer.valueOf(character[8]));
     				Plvl += Integer.valueOf(character[8]);
     			}
-    			if(character.length > 9 && isInt(character[9])){
+    			if(character.length > 9 && m.isInt(character[9])){
     				Herbalism.add(p, Integer.valueOf(character[9]));
     				Plvl += Integer.valueOf(character[9]);
     			}
-    			if(character.length > 10 && isInt(character[10])){
+    			if(character.length > 10 && m.isInt(character[10])){
     				Excavation.add(p, Integer.valueOf(character[10]));
     				Plvl += Integer.valueOf(character[10]);
     			}
-    			if(character.length > 11 && isInt(character[11])){
+    			if(character.length > 11 && m.isInt(character[11])){
     				Archery.add(p, Integer.valueOf(character[11]));
     				Plvl += Integer.valueOf(character[11]);
     			}
-    			if(character.length > 12 && isInt(character[12])){
+    			if(character.length > 12 && m.isInt(character[12])){
     				Swords.add(p, Integer.valueOf(character[12]));
     				Plvl += Integer.valueOf(character[12]);
     			}
-    			if(character.length > 13 && isInt(character[13])){
+    			if(character.length > 13 && m.isInt(character[13])){
     				Axes.add(p, Integer.valueOf(character[13]));
     				Plvl += Integer.valueOf(character[13]);
     			}
-    			if(character.length > 14 && isInt(character[14])){
+    			if(character.length > 14 && m.isInt(character[14])){
     				Acrobatics.add(p, Integer.valueOf(character[14]));
     				Plvl += Integer.valueOf(character[14]);
     			}
-    			if(character.length > 24 && isInt(character[24])){
+    			if(character.length > 24 && m.isInt(character[24])){
     				Taming.add(p, Integer.valueOf(character[24]));
     				Plvl += Integer.valueOf(character[24]);
     			}
@@ -104,22 +105,22 @@ public class Leaderboard
             		+ location + " (Are you sure you formatted it correctly?)", e); //$NON-NLS-1$
         }
         //Write the leader board files
-        leaderWrite(Mining.inOrder(), "mining"); //$NON-NLS-1$
-        leaderWrite(WoodCutting.inOrder(), "woodcutting"); //$NON-NLS-1$
-        leaderWrite(Repair.inOrder(), "repair"); //$NON-NLS-1$
-        leaderWrite(Unarmed.inOrder(), "unarmed"); //$NON-NLS-1$
-        leaderWrite(Herbalism.inOrder(), "herbalism"); //$NON-NLS-1$
-        leaderWrite(Excavation.inOrder(), "excavation"); //$NON-NLS-1$
-        leaderWrite(Archery.inOrder(), "archery"); //$NON-NLS-1$
-        leaderWrite(Swords.inOrder(), "swords"); //$NON-NLS-1$
-        leaderWrite(Axes.inOrder(), "axes"); //$NON-NLS-1$
-        leaderWrite(Acrobatics.inOrder(), "acrobatics"); //$NON-NLS-1$
-        leaderWrite(Taming.inOrder(), "taming"); //$NON-NLS-1$
-        leaderWrite(PowerLevel.inOrder(), "powerlevel"); //$NON-NLS-1$
+        leaderWrite(Mining.inOrder(), SkillType.MINING); //$NON-NLS-1$
+        leaderWrite(WoodCutting.inOrder(), SkillType.WOODCUTTING); //$NON-NLS-1$
+        leaderWrite(Repair.inOrder(), SkillType.REPAIR); //$NON-NLS-1$
+        leaderWrite(Unarmed.inOrder(), SkillType.UNARMED); //$NON-NLS-1$
+        leaderWrite(Herbalism.inOrder(), SkillType.HERBALISM); //$NON-NLS-1$
+        leaderWrite(Excavation.inOrder(), SkillType.EXCAVATION); //$NON-NLS-1$
+        leaderWrite(Archery.inOrder(), SkillType.ARCHERY); //$NON-NLS-1$
+        leaderWrite(Swords.inOrder(), SkillType.SWORDS); //$NON-NLS-1$
+        leaderWrite(Axes.inOrder(), SkillType.AXES); //$NON-NLS-1$
+        leaderWrite(Acrobatics.inOrder(), SkillType.ACROBATICS); //$NON-NLS-1$
+        leaderWrite(Taming.inOrder(), SkillType.TAMING); //$NON-NLS-1$
+        leaderWrite(PowerLevel.inOrder(), SkillType.ALL); //$NON-NLS-1$
 	}
-	public static void leaderWrite(PlayerStat[] ps, String statName)
+	public static void leaderWrite(PlayerStat[] ps, SkillType skillType)
 	{
-		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
+		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + skillType + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		//CHECK IF THE FILE EXISTS
 		File theDir = new File(theLocation);
 		if(!theDir.exists())
@@ -171,8 +172,9 @@ public class Leaderboard
 		//Close the file
 	}
 	
-	public static String[] retrieveInfo(String statName, int pagenumber){
-		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
+	public static String[] retrieveInfo(String skillName, int pagenumber)
+	{
+		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + skillName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		try {
         	FileReader file = new FileReader(theLocation);
         	BufferedReader in = new BufferedReader(file);
@@ -198,10 +200,11 @@ public class Leaderboard
         }
         return null; //Shouldn't get here
 	}
-	public static void updateLeaderboard(PlayerStat ps, String statName){
+	public static void updateLeaderboard(PlayerStat ps, SkillType skillType)
+	{
 		if(LoadProperties.useMySQL)
 			return;
-		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + statName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
+		String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + skillType + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
 		try {
         	//Open the file
         	FileReader file = new FileReader(theLocation);
@@ -238,17 +241,5 @@ public class Leaderboard
         } catch (Exception e) {
                 log.log(Level.SEVERE, "Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
-	}
-	public static boolean isInt(String string)
-	{
-		try 
-		{
-		    Integer.parseInt(string);
-		}
-		catch(NumberFormatException nFE) 
-		{
-		    return false;
-		}
-		return true;
 	}
 }

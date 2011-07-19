@@ -25,6 +25,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Herbalism;
@@ -157,12 +158,12 @@ public class mcPlayerListener extends PlayerListener
 				boolean pass = false;
 				if(Herbalism.hasSeeds(player) && mcPermissions.getInstance().herbalism(player)){
 					Herbalism.removeSeeds(player);
-					if(LoadProperties.enableCobbleToMossy && m.blockBreakSimulate(block, player, plugin) && block.getType() == Material.COBBLESTONE && Math.random() * 1500 <= PP.getSkill("herbalism")){
+					if(LoadProperties.enableCobbleToMossy && m.blockBreakSimulate(block, player, plugin) && block.getType() == Material.COBBLESTONE && Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM)){
 						player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumb"));
 						block.setType(Material.MOSSY_COBBLESTONE);
 						pass = true;
 					}
-					if(block.getType() == Material.DIRT && m.blockBreakSimulate(block, player, plugin) && Math.random() * 1500 <= PP.getSkill("herbalism")){
+					if(block.getType() == Material.DIRT && m.blockBreakSimulate(block, player, plugin) && Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM)){
 						player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumb"));
 						block.setType(Material.GRASS);
 						pass = true;

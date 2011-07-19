@@ -10,6 +10,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Unarmed {
@@ -20,7 +21,7 @@ public class Unarmed {
     			PP.setFistsPreparationMode(false);
     		}
 	    	int ticks = 2;
-	    	int x = PP.getSkill("unarmed");
+	    	int x = PP.getSkillLevel(SkillType.UNARMED);
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -42,9 +43,9 @@ public class Unarmed {
 	{
 		PlayerProfile PPa = Users.getProfile(attacker);
 		int bonus = 0;
-		if (PPa.getSkill("unarmed") >= 250)
+		if (PPa.getSkillLevel(SkillType.UNARMED) >= 250)
 			bonus+=2;
-		if (PPa.getSkill("unarmed") >= 500)
+		if (PPa.getSkillLevel(SkillType.UNARMED) >= 500)
 			bonus+=2;
 		event.setDamage(event.getDamage()+bonus);
 	}
@@ -53,7 +54,7 @@ public class Unarmed {
 		PlayerProfile PP = Users.getProfile(attacker);
 		if(attacker.getItemInHand().getTypeId() == 0)
 		{
-			if(PP.getSkill("unarmed") >= 1000)
+			if(PP.getSkillLevel(SkillType.UNARMED) >= 1000)
 			{
 	    		if(Math.random() * 4000 <= 1000)
 	    		{
@@ -71,7 +72,7 @@ public class Unarmed {
 	    			}
 	    		}
 	    	} else {
-	    		if(Math.random() * 4000 <= PP.getSkill("unarmed")){
+	    		if(Math.random() * 4000 <= PP.getSkillLevel(SkillType.UNARMED)){
 	    			Location loc = defender.getLocation();
 	    			if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0)
 	    			{

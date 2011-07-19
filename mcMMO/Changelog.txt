@@ -1,6 +1,15 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
-Versions 1.0.36
+Version 1.0.37
+Taming no longer receives xp from wolves being harmed
+Fixed bug where modifying a skill also modified the xp to the same amount (when it should be zero)
+
+Code Stuff
+Added getPlayerProfile() which returns a PlayerProfile object for plugin devs
+100% more enums
+Changed how checking skill xp worked to be more efficient
+
+Version 1.0.36
 mcMMO now properly supports Bukkit/PEX/Permissions for Permissions
 Config.yml will no longer generate Performance Debugging nodes
 Registered permission nodes to plugin.yml

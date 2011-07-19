@@ -14,6 +14,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.config.*;
 
@@ -27,7 +28,7 @@ public class WoodCutting {
     	byte type = block.getData();
     	Material mat = Material.getMaterial(block.getTypeId());
     	if(player != null){
-    		if(Math.random() * 1000 <= PP.getSkill("woodcutting")){
+    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.WOODCUTTING)){
     			ItemStack item = new ItemStack(mat, 1, (short) 0, type);
     			block.getWorld().dropItemNaturally(block.getLocation(), item);
     		}
@@ -51,7 +52,7 @@ public class WoodCutting {
     			PP.setAxePreparationMode(false);
     		}
     		int ticks = 2;
-    		int x = PP.getSkill("woodcutting");
+    		int x = PP.getSkillLevel(SkillType.WOODCUTTING);
     		while(x >= 50){
     			x-=50;
     			ticks++;
@@ -76,9 +77,9 @@ public class WoodCutting {
     public static void treeFeller(Block block, Player player, mcMMO plugin){
     	PlayerProfile PP = Users.getProfile(player);
     	int radius = 1;
-    	if(PP.getSkill("woodcutting") >= 500)
+    	if(PP.getSkillLevel(SkillType.WOODCUTTING) >= 500)
     		radius++;
-    	if(PP.getSkill("woodcutting") >= 950)
+    	if(PP.getSkillLevel(SkillType.WOODCUTTING) >= 950)
     		radius++;
         ArrayList<Block> blocklist = new ArrayList<Block>();
         ArrayList<Block> toAdd = new ArrayList<Block>();

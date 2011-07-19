@@ -6,6 +6,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
+
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.block.Block;
@@ -109,13 +111,13 @@ public class mcBlockListener extends BlockListener {
 	    				WoodCutting.woodCuttingProcCheck(player, block);
 	    				//Default
 	    				if(block.getData() == (byte)0)
-	    					PP.addWoodcuttingXP(LoadProperties.mpine * LoadProperties.xpGainMultiplier);
+	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine * LoadProperties.xpGainMultiplier);
 	    				//Spruce
 	    				if(block.getData() == (byte)1)
-	    					PP.addWoodcuttingXP(LoadProperties.mspruce * LoadProperties.xpGainMultiplier);
+	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce * LoadProperties.xpGainMultiplier);
 	    				//Birch
 	    				if(block.getData() == (byte)2)
-	    					PP.addWoodcuttingXP(LoadProperties.mbirch * LoadProperties.xpGainMultiplier);
+	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch * LoadProperties.xpGainMultiplier);
 					}
     			}
     		} else 
@@ -125,16 +127,16 @@ public class mcBlockListener extends BlockListener {
 	    			WoodCutting.woodCuttingProcCheck(player, block);
 	    			//Default
     				if(block.getData() == (byte)0)
-    					PP.addWoodcuttingXP(LoadProperties.mpine * LoadProperties.xpGainMultiplier);
+    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine * LoadProperties.xpGainMultiplier);
     				//Spruce
     				if(block.getData() == (byte)1)
-    					PP.addWoodcuttingXP(LoadProperties.mspruce * LoadProperties.xpGainMultiplier);
+    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce * LoadProperties.xpGainMultiplier);
     				//Birch
     				if(block.getData() == (byte)2)
-    					PP.addWoodcuttingXP(LoadProperties.mbirch * LoadProperties.xpGainMultiplier);
+    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch * LoadProperties.xpGainMultiplier);
     			}
    			}
-    		Skills.XpCheck(player);
+    		Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
     			
     		/*
     		 * IF PLAYER IS USING TREEFELLER
@@ -159,7 +161,7 @@ public class mcBlockListener extends BlockListener {
     						if(!plugin.misc.blockWatchList.contains(block))
     						{
 	    						WoodCutting.woodCuttingProcCheck(player, blockx);
-	    						PP.addWoodcuttingXP(LoadProperties.mpine);
+	    						PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine);
     						}
     					}
     					if(blockx.getTypeId() == 18)
@@ -303,7 +305,7 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * LEAF BLOWER
     	 */
-    	if(block.getTypeId() == 18 && mcPermissions.getInstance().woodcutting(player) && PP.getSkill("woodcutting") >= 100 && m.isAxes(player.getItemInHand()) && m.blockBreakSimulate(block, player, plugin))
+    	if(block.getTypeId() == 18 && mcPermissions.getInstance().woodcutting(player) && PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 && m.isAxes(player.getItemInHand()) && m.blockBreakSimulate(block, player, plugin))
     	{
     		m.damageTool(player, (short)1);
     		if(Math.random() * 10 > 9)

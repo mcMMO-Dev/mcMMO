@@ -13,6 +13,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 
@@ -30,7 +31,7 @@ public class Mining {
     			PP.setPickaxePreparationMode(false);
     		}
 	    	int ticks = 2;
-	    	int x = PP.getSkill("mining");
+	    	int x = PP.getSkillLevel(SkillType.MINING);
     		while(x >= 50)
     		{
     			x-=50;
@@ -102,7 +103,7 @@ public class Mining {
     {
     	PlayerProfile PP = Users.getProfile(player);
     	if(player != null){
-    		if(Math.random() * 1000 <= PP.getSkill("mining")){
+    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING)){
     		blockProcSimulate(block);
 			return;
     		}
@@ -163,8 +164,8 @@ public class Mining {
     		xp += LoadProperties.mlapus;
     		blockProcCheck(block, player);
     	}
-    	PP.addMiningXP(xp * LoadProperties.xpGainMultiplier);
-    	Skills.XpCheck(player);
+    	PP.addXP(SkillType.MINING, xp * LoadProperties.xpGainMultiplier);
+    	Skills.XpCheckSkill(SkillType.MINING, player);
     }
     /*
      * Handling SuperBreaker stuff
@@ -349,7 +350,7 @@ public class Mining {
     		block.setType(Material.AIR);
     	}
     	if(block.getData() != (byte) 5)
-    		PP.addMiningXP(xp * LoadProperties.xpGainMultiplier);
-    	Skills.XpCheck(player);
+    		PP.addXP(SkillType.MINING, xp * LoadProperties.xpGainMultiplier);
+    	Skills.XpCheckSkill(SkillType.MINING, player);
     }
 }

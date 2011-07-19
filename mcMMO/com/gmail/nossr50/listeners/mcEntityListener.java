@@ -20,6 +20,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
@@ -79,7 +80,7 @@ public class mcEntityListener extends EntityListener
 				    	if(master == null || PPo == null)
 				    		return;
 			    		//Environmentally Aware
-						if((event.getCause() == DamageCause.CONTACT || event.getCause() == DamageCause.LAVA || event.getCause() == DamageCause.FIRE) && PPo.getSkill("taming") >= 100)
+						if((event.getCause() == DamageCause.CONTACT || event.getCause() == DamageCause.LAVA || event.getCause() == DamageCause.FIRE) && PPo.getSkillLevel(SkillType.TAMING) >= 100)
 						{
 							if(event.getDamage() < ((Wolf) event.getEntity()).getHealth())
 							{
@@ -88,7 +89,7 @@ public class mcEntityListener extends EntityListener
 								event.getEntity().setFireTicks(0);
 							}
 						}
-						if(event.getCause() == DamageCause.FALL && PPo.getSkill("taming") >= 100)
+						if(event.getCause() == DamageCause.FALL && PPo.getSkillLevel(SkillType.TAMING) >= 100)
 						{
 							event.setCancelled(true);
 						}

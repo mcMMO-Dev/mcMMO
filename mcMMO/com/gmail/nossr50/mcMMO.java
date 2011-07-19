@@ -2,6 +2,7 @@ package com.gmail.nossr50;
 
 import com.gmail.nossr50.datatypes.Mob;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.listeners.mcBlockListener;
 import com.gmail.nossr50.listeners.mcEntityListener;
@@ -118,7 +119,13 @@ public class mcMMO extends JavaPlugin
 		//mcMMO_SpellTimer.schedule(new mcTimerSpells(this), (long)0, (long)(100));
 	}
 
-	public boolean inSameParty(Player playera, Player playerb){
+	public PlayerProfile getPlayerProfile(Player player)
+	{
+		return Users.getProfile(player);
+	}
+	
+	public boolean inSameParty(Player playera, Player playerb)
+	{
 		if(Users.getProfile(playera).inParty() && Users.getProfile(playerb).inParty()){
 			if(Users.getProfile(playera).getParty().equals(Users.getProfile(playerb).getParty())){
 				return true;
@@ -128,23 +135,6 @@ public class mcMMO extends JavaPlugin
 		} else {
 			return false;
 		}
-	}
-	public void getXpToLevel(Player player, String skillname){
-		Users.getProfile(player).getXpToLevel(skillname.toLowerCase());
-	}
-	public void removeXp(Player player, String skillname, Integer newvalue){
-		PlayerProfile PP = Users.getProfile(player);
-		PP.removeXP(skillname, newvalue);
-		Skills.XpCheck(player);
-	}
-	public void addXp(Player player, String skillname, Integer newvalue){
-		PlayerProfile PP = Users.getProfile(player);
-		PP.addXP(skillname, newvalue);
-		Skills.XpCheck(player);
-	}
-	public void modifySkill(Player player, String skillname, Integer newvalue){
-		PlayerProfile PP = Users.getProfile(player);
-		PP.modifyskill(newvalue, skillname);
 	}
 	public ArrayList<String> getParties(){
 		String location = "plugins/mcMMO/mcmmo.users"; 
@@ -198,13 +188,13 @@ public class mcMMO extends JavaPlugin
 		
 		//Check if the command is an MMO related help command
 		if(split[0].equalsIgnoreCase("taming") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillTaming").toLowerCase())){ 
-			float skillvalue = (float)PP.getSkill("taming");
+			float skillvalue = (float)PP.getSkillLevel(SkillType.TAMING);
 
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillTaming")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainTaming")})); 
 			if(mcPermissions.getInstance().taming(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("taming"), PP.getSkillToString("tamingXP"), PP.getXpToLevel("taming")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.TAMING), PP.getSkillXpLevel(SkillType.TAMING), PP.getXpToLevel(SkillType.TAMING)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsTaming1_0"), mcLocale.getString("m.EffectsTaming1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsTaming2_0"), mcLocale.getString("m.EffectsTaming2_1")}));  
@@ -213,28 +203,28 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsTaming5_0"), mcLocale.getString("m.EffectsTaming5_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsTaming6_0"), mcLocale.getString("m.EffectsTaming6_1")}));  
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.YourStats")})); 
-			if(PP.getSkill("taming") < 100)
+			if(PP.getSkillLevel(SkillType.TAMING) < 100)
 				player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] {mcLocale.getString("m.AbilLockTaming1")})); 
 			else
 				player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] {mcLocale.getString("m.AbilBonusTaming1_0"), mcLocale.getString("m.AbilBonusTaming1_1")}));  
-			if(PP.getSkill("taming") < 250)
+			if(PP.getSkillLevel(SkillType.TAMING) < 250)
 				player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] {mcLocale.getString("m.AbilLockTaming2")})); 
 			else
 				player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] {mcLocale.getString("m.AbilBonusTaming2_0"), mcLocale.getString("m.AbilBonusTaming2_1")}));  
-			if(PP.getSkill("taming") < 500)
+			if(PP.getSkillLevel(SkillType.TAMING) < 500)
 				player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] {mcLocale.getString("m.AbilLockTaming3")})); 
 			else
 				player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] {mcLocale.getString("m.AbilBonusTaming3_0"), mcLocale.getString("m.AbilBonusTaming3_1")}));  
-			if(PP.getSkill("taming") < 750)
+			if(PP.getSkillLevel(SkillType.TAMING) < 750)
 				player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] {mcLocale.getString("m.AbilLockTaming4")})); 
 			else
 				player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] {mcLocale.getString("m.AbilBonusTaming4_0"), mcLocale.getString("m.AbilBonusTaming4_1")}));  
 			player.sendMessage(mcLocale.getString("m.TamingGoreChance", new Object[] {percentage})); 
 		}
 		if(split[0].equalsIgnoreCase("woodcutting") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillWoodCutting").toLowerCase())){ 
-			float skillvalue = (float)PP.getSkill("woodcutting");
+			float skillvalue = (float)PP.getSkillLevel(SkillType.WOODCUTTING);
 			int ticks = 2;
-			int x = PP.getSkill("woodcutting");
+			int x = PP.getSkillLevel(SkillType.WOODCUTTING);
 			while(x >= 50){
 				x-=50;
 				ticks++;
@@ -243,13 +233,13 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillWoodCutting")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainWoodCutting")})); 
 			if(mcPermissions.getInstance().woodcutting(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("woodcutting"), PP.getSkillToString("woodcuttingXP"), PP.getXpToLevel("woodcutting")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsWoodCutting1_0"), mcLocale.getString("m.EffectsWoodCutting1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsWoodCutting2_0"), mcLocale.getString("m.EffectsWoodCutting2_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsWoodCutting3_0"), mcLocale.getString("m.EffectsWoodCutting3_1")}));  
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.YourStats")})); 
-			if(PP.getSkill("woodcutting") < 100)
+			if(PP.getSkillLevel(SkillType.WOODCUTTING) < 100)
 				player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] {mcLocale.getString("m.AbilLockWoodCutting1")})); 
 			else
 				player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] {mcLocale.getString("m.AbilBonusWoodCutting1_0"), mcLocale.getString("m.AbilBonusWoodCutting1_1")}));  
@@ -258,33 +248,33 @@ public class mcMMO extends JavaPlugin
 		}
 		if(split[0].equalsIgnoreCase("archery") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillArchery").toLowerCase())){ 
 			Integer rank = 0;
-			if(PP.getSkill("archery") >= 50)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 50)
 				rank++;
-			if(PP.getSkill("archery") >= 250)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 250)
 				rank++;
-			if(PP.getSkill("archery") >= 575)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 575)
 				rank++;
-			if(PP.getSkill("archery") >= 725)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 725)
 				rank++;
-			if(PP.getSkill("archery") >= 1000)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 1000)
 				rank++;
-			float skillvalue = (float)PP.getSkill("archery");
+			float skillvalue = (float)PP.getSkillLevel(SkillType.ARCHERY);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 
 			int ignition = 20;
-			if(PP.getSkill("archery") >= 200)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 200)
 				ignition+=20;
-			if(PP.getSkill("archery") >= 400)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 400)
 				ignition+=20;
-			if(PP.getSkill("archery") >= 600)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 600)
 				ignition+=20;
-			if(PP.getSkill("archery") >= 800)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 800)
 				ignition+=20;
-			if(PP.getSkill("archery") >= 1000)
+			if(PP.getSkillLevel(SkillType.ARCHERY) >= 1000)
 				ignition+=20;
 
 			String percentagedaze;
-			if(PP.getSkill("archery") < 1000){
+			if(PP.getSkillLevel(SkillType.ARCHERY) < 1000){
 				percentagedaze = String.valueOf((skillvalue / 2000) * 100);
 			} else {
 				percentagedaze = "50"; 
@@ -292,7 +282,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillArchery")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainArchery")})); 
 			if(mcPermissions.getInstance().archery(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("archery"), PP.getSkillToString("archeryXP"), PP.getXpToLevel("archery")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.ARCHERY), PP.getSkillXpLevel(SkillType.ARCHERY), PP.getXpToLevel(SkillType.ARCHERY)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsArchery1_0"), mcLocale.getString("m.EffectsArchery1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsArchery2_0"), mcLocale.getString("m.EffectsArchery2_1")}));  
@@ -306,14 +296,14 @@ public class mcMMO extends JavaPlugin
 		}
 		if(split[0].equalsIgnoreCase("axes") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillAxes"))){ 
 			String percentage;
-			float skillvalue = (float)PP.getSkill("axes");
-			if(PP.getSkill("axes") < 750){
+			float skillvalue = (float)PP.getSkillLevel(SkillType.AXES);
+			if(PP.getSkillLevel(SkillType.AXES) < 750){
 				percentage = String.valueOf((skillvalue / 1000) * 100);
 			} else {
 				percentage = "75"; 
 			}
 			int ticks = 2;
-			int x = PP.getSkill("axes");
+			int x = PP.getSkillLevel(SkillType.AXES);
 			while(x >= 50){
 				x-=50;
 				ticks++;
@@ -322,14 +312,14 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillAxes")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainAxes")})); 
 			if(mcPermissions.getInstance().axes(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("axes"), PP.getSkillToString("axesXP"), PP.getXpToLevel("axes")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsAxes1_0"), mcLocale.getString("m.EffectsAxes1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsAxes2_0"), mcLocale.getString("m.EffectsAxes2_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsAxes3_0"), mcLocale.getString("m.EffectsAxes3_1")}));  
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.YourStats")})); 
 			player.sendMessage(mcLocale.getString("m.AxesCritChance", new Object[] {percentage})); 
-			if(PP.getSkill("axes") < 500){
+			if(PP.getSkillLevel(SkillType.AXES) < 500){
 				player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] {mcLocale.getString("m.AbilLockAxes1")})); 
 			} else {
 				player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] {mcLocale.getString("m.AbilBonusAxes1_0"), mcLocale.getString("m.AbilBonusAxes1_1")}));  
@@ -339,8 +329,8 @@ public class mcMMO extends JavaPlugin
 		if(split[0].equalsIgnoreCase("swords") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillSwords").toLowerCase())){ 
 			int bleedrank = 2;
 			String percentage, parrypercentage = null, counterattackpercentage;
-			float skillvalue = (float)PP.getSkill("swords");
-			if(PP.getSkill("swords") < 750){
+			float skillvalue = (float)PP.getSkillLevel(SkillType.SWORDS);
+			if(PP.getSkillLevel(SkillType.SWORDS) < 750){
 				percentage = String.valueOf((skillvalue / 1000) * 100);
 			} else {
 				percentage = "75"; 
@@ -348,20 +338,20 @@ public class mcMMO extends JavaPlugin
 			if(skillvalue >= 750)
 				bleedrank+=1;
 
-			if(PP.getSkill("swords") <= 900){
+			if(PP.getSkillLevel(SkillType.SWORDS) <= 900){
 				parrypercentage = String.valueOf((skillvalue / 3000) * 100);
 			} else {
 				parrypercentage = "30"; 
 			}
 
-			if(PP.getSkill("swords") <= 600){
+			if(PP.getSkillLevel(SkillType.SWORDS) <= 600){
 				counterattackpercentage = String.valueOf((skillvalue / 2000) * 100);
 			} else {
 				counterattackpercentage = "30"; 
 			}
 
 			int ticks = 2;
-			int x = PP.getSkill("swords");
+			int x = PP.getSkillLevel(SkillType.SWORDS);
 			while(x >= 50){
 				x-=50;
 				ticks++;
@@ -370,7 +360,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillSwords")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainSwords")})); 
 			if(mcPermissions.getInstance().swords(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("swords"), PP.getSkillToString("swordsXP"), PP.getXpToLevel("swords")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsSwords1_0"), mcLocale.getString("m.EffectsSwords1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsSwords2_0"), mcLocale.getString("m.EffectsSwords2_1")}));  
@@ -388,10 +378,10 @@ public class mcMMO extends JavaPlugin
 		}
 		if(split[0].equalsIgnoreCase("acrobatics") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillAcrobatics").toLowerCase())){ 
 			String dodgepercentage;
-			float skillvalue = (float)PP.getSkill("acrobatics");
+			float skillvalue = (float)PP.getSkillLevel(SkillType.ACROBATICS);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 			String gracepercentage = String.valueOf(((skillvalue / 1000) * 100) * 2);
-			if(PP.getSkill("acrobatics") <= 800){
+			if(PP.getSkillLevel(SkillType.ACROBATICS) <= 800){
 				dodgepercentage = String.valueOf((skillvalue / 4000 * 100));
 			} else {
 				dodgepercentage = "20"; 
@@ -399,7 +389,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillAcrobatics")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainAcrobatics")})); 
 			if(mcPermissions.getInstance().acrobatics(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("acrobatics"), PP.getSkillToString("acrobaticsXP"), PP.getXpToLevel("acrobatics")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsAcrobatics1_0"), mcLocale.getString("m.EffectsAcrobatics1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsAcrobatics2_0"), mcLocale.getString("m.EffectsAcrobatics2_1")}));  
@@ -410,10 +400,10 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.AcrobaticsDodgeChance", new Object[] {dodgepercentage})); 
 		}
 		if(split[0].equalsIgnoreCase("mining") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillMining"))){ 
-			float skillvalue = (float)PP.getSkill("mining");
+			float skillvalue = (float)PP.getSkillLevel(SkillType.MINING);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 			int ticks = 2;
-			int x = PP.getSkill("mining");
+			int x = PP.getSkillLevel(SkillType.MINING);
 			while(x >= 50){
 				x-=50;
 				ticks++;
@@ -421,7 +411,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillMining")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainMining")})); 
 			if(mcPermissions.getInstance().mining(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("mining"), PP.getSkillToString("miningXP"), PP.getXpToLevel("mining")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsMining1_0"), mcLocale.getString("m.EffectsMining1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsMining2_0"), mcLocale.getString("m.EffectsMining2_1")}));  
@@ -430,13 +420,13 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.MiningSuperBreakerLength", new Object[] {ticks})); 
 		}
 		if(split[0].equalsIgnoreCase("repair") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillRepair").toLowerCase())){ 
-			float skillvalue = (float)PP.getSkill("repair");
+			float skillvalue = (float)PP.getSkillXpLevel(SkillType.REPAIR);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 			String repairmastery = String.valueOf((skillvalue / 500) * 100);
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillRepair")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainRepair")})); 
 			if(mcPermissions.getInstance().repair(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("repair"), PP.getSkillToString("repairXP"), PP.getXpToLevel("repair")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillXpLevel(SkillType.REPAIR), PP.getSkillLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair1_0"), mcLocale.getString("m.EffectsRepair1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair2_0"), mcLocale.getString("m.EffectsRepair2_1")}));  
@@ -448,15 +438,15 @@ public class mcMMO extends JavaPlugin
 		}
 		if(split[0].equalsIgnoreCase("unarmed")){ 
 			String percentage, arrowpercentage;
-			float skillvalue = (float)PP.getSkill("unarmed");
+			float skillvalue = (float)PP.getSkillLevel(SkillType.UNARMED);
 
-			if(PP.getSkill("unarmed") < 1000){
+			if(PP.getSkillLevel(SkillType.UNARMED) < 1000){
 				percentage = String.valueOf((skillvalue / 4000) * 100);
 			} else {
 				percentage = "25"; 
 			}
 
-			if(PP.getSkill("unarmed") < 1000){
+			if(PP.getSkillLevel(SkillType.UNARMED) < 1000){
 				arrowpercentage = String.valueOf(((skillvalue / 1000) * 100) / 2);
 			} else {
 				arrowpercentage = "50"; 
@@ -464,7 +454,7 @@ public class mcMMO extends JavaPlugin
 
 
 			int ticks = 2;
-			int x = PP.getSkill("unarmed");
+			int x = PP.getSkillLevel(SkillType.UNARMED);
 			while(x >= 50){
 				x-=50;
 				ticks++;
@@ -473,7 +463,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillUnarmed")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainUnarmed")})); 
 			if(mcPermissions.getInstance().unarmed(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("unarmed"), PP.getSkillToString("unarmedXP"), PP.getXpToLevel("unarmed")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.UNARMED), PP.getSkillXpLevel(SkillType.UNARMED), PP.getXpToLevel(SkillType.UNARMED)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsUnarmed1_0"), mcLocale.getString("m.EffectsUnarmed1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsUnarmed2_0"), mcLocale.getString("m.EffectsUnarmed2_1")}));  
@@ -483,9 +473,9 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.YourStats")})); 
 			player.sendMessage(mcLocale.getString("m.UnarmedArrowDeflectChance", new Object[] {arrowpercentage})); 
 			player.sendMessage(mcLocale.getString("m.UnarmedDisarmChance", new Object[] {percentage})); 
-			if(PP.getSkill("unarmed") < 250){
+			if(PP.getSkillLevel(SkillType.UNARMED) < 250){
 				player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] {mcLocale.getString("m.AbilLockUnarmed1")})); 
-			} else if(PP.getSkill("unarmed") >= 250 && PP.getSkill("unarmed") < 500){
+			} else if(PP.getSkillLevel(SkillType.UNARMED) >= 250 && PP.getSkillLevel(SkillType.UNARMED) < 500){
 				player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] {mcLocale.getString("m.AbilBonusUnarmed1_0"), mcLocale.getString("m.AbilBonusUnarmed1_1")}));  
 				player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] {mcLocale.getString("m.AbilLockUnarmed2")})); 
 			} else {
@@ -495,44 +485,44 @@ public class mcMMO extends JavaPlugin
 		}
 		if(split[0].equalsIgnoreCase("herbalism") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillHerbalism").toLowerCase())){ 
 			int rank = 0;
-			if(PP.getSkill("herbalism") >= 50)
+			if(PP.getSkillLevel(SkillType.HERBALISM) >= 50)
 				rank++;
-			if (PP.getSkill("herbalism") >= 150)
+			if (PP.getSkillLevel(SkillType.HERBALISM) >= 150)
 				rank++;
-			if (PP.getSkill("herbalism") >= 250)
+			if (PP.getSkillLevel(SkillType.HERBALISM) >= 250)
 				rank++;
-			if (PP.getSkill("herbalism") >= 350)
+			if (PP.getSkillLevel(SkillType.HERBALISM) >= 350)
 				rank++;
-			if (PP.getSkill("herbalism") >= 450)
+			if (PP.getSkillLevel(SkillType.HERBALISM) >= 450)
 				rank++;
-			if (PP.getSkill("herbalism") >= 550)
+			if (PP.getSkillLevel(SkillType.HERBALISM) >= 550)
 				rank++;
-			if (PP.getSkill("herbalism") >= 650)
+			if (PP.getSkillLevel(SkillType.HERBALISM) >= 650)
 				rank++;
-			if (PP.getSkill("herbalism") >= 750)
+			if (PP.getSkillLevel(SkillType.HERBALISM) >= 750)
 				rank++;
 			int bonus = 0;
-			if(PP.getSkill("herbalism") >= 200)
+			if(PP.getSkillLevel(SkillType.HERBALISM) >= 200)
 				bonus++;
-			if(PP.getSkill("herbalism") >= 400)
+			if(PP.getSkillLevel(SkillType.HERBALISM) >= 400)
 				bonus++;
-			if(PP.getSkill("herbalism") >= 600)
+			if(PP.getSkillLevel(SkillType.HERBALISM) >= 600)
 				bonus++;
 
 			int ticks = 2;
-			int x = PP.getSkill("herbalism");
+			int x = PP.getSkillLevel(SkillType.HERBALISM);
 			while(x >= 50){
 				x-=50;
 				ticks++;
 			}
 
-			float skillvalue = (float)PP.getSkill("herbalism");
+			float skillvalue = (float)PP.getSkillLevel(SkillType.HERBALISM);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 			String gpercentage = String.valueOf((skillvalue / 1500) * 100);
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillHerbalism")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainHerbalism")})); 
 			if(mcPermissions.getInstance().herbalism(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("herbalism"), PP.getSkillToString("herbalismXP"), PP.getXpToLevel("herbalism")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.HERBALISM), PP.getSkillXpLevel(SkillType.HERBALISM), PP.getXpToLevel(SkillType.HERBALISM)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsHerbalism1_0"), mcLocale.getString("m.EffectsHerbalism1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsHerbalism2_0"), mcLocale.getString("m.EffectsHerbalism2_1")}));  
@@ -550,7 +540,7 @@ public class mcMMO extends JavaPlugin
 		if(split[0].equalsIgnoreCase("excavation") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillExcavation").toLowerCase())) 
 		{
 			int ticks = 2;
-			int x = PP.getSkill("excavation");
+			int x = PP.getSkillLevel(SkillType.EXCAVATION);
 			while(x >= 50){
 				x-=50;
 				ticks++;
@@ -558,7 +548,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillExcavation")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainExcavation")})); 
 			if(mcPermissions.getInstance().excavation(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillToString("excavation"), PP.getSkillToString("excavationXP"), PP.getXpToLevel("excavation")}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsExcavation1_0"), mcLocale.getString("m.EffectsExcavation1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsExcavation2_0"), mcLocale.getString("m.EffectsExcavation2_1")}));  
@@ -677,7 +667,7 @@ public class mcMMO extends JavaPlugin
 				 */
 				if(split.length == 1){
 					int p = 1;
-					String[] info = Leaderboard.retrieveInfo("powerlevel", p); 
+					String[] info = Leaderboard.retrieveInfo(SkillType.ALL.toString(), p); 
 					player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevelLeaderboard"));
 					int n = 1 * p; //Position
 					for(String x : info){
@@ -692,11 +682,11 @@ public class mcMMO extends JavaPlugin
 						}
 					}
 				}
-				if(split.length >= 2 && Leaderboard.isInt(split[1])){
+				if(split.length >= 2 && m.isInt(split[1])){
 					int p = 1;
 					//Grab page value if specified
 					if(split.length >= 2){
-						if(Leaderboard.isInt(split[1])){
+						if(m.isInt(split[1])){
 							p = Integer.valueOf(split[1]);
 						}
 					}
@@ -706,7 +696,7 @@ public class mcMMO extends JavaPlugin
 						pt += (pt * 10);
 						pt = 10;
 					}
-					String[] info = Leaderboard.retrieveInfo("powerlevel", p); 
+					String[] info = Leaderboard.retrieveInfo(SkillType.ALL.toString(), p); 
 					player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevelLeaderboard")); 
 					int n = 1 * pt; //Position
 					for(String x : info){
@@ -724,11 +714,13 @@ public class mcMMO extends JavaPlugin
 				/*
 				 * SKILL SPECIFIED INFO RETRIEVAL
 				 */
-				if(split.length >= 2 && Skills.isSkill(split[1])){
+				if(split.length >= 2 && Skills.isSkill(split[1]))
+				{
 					int p = 1;
 					//Grab page value if specified
-					if(split.length >= 3){
-						if(Leaderboard.isInt(split[2])){
+					if(split.length >= 3)
+					{
+						if(m.isInt(split[2])){
 							p = Integer.valueOf(split[2]);
 						}
 					}
@@ -742,11 +734,13 @@ public class mcMMO extends JavaPlugin
 					String remainder   = split[1].substring(1);    // Get remainder of word.
 					String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
 
-					String[] info = Leaderboard.retrieveInfo(split[1].toLowerCase(), p);
+					String[] info = Leaderboard.retrieveInfo(split[1].toUpperCase(), p);
 					player.sendMessage(mcLocale.getString("mcPlayerListener.SkillLeaderboard", new Object[] {capitalized}));  
 					int n = 1 * pt; //Position
-					for(String x : info){
-						if(x != null){
+					for(String x : info)
+					{
+						if(x != null)
+						{
 							String digit = String.valueOf(n);
 							if(n < 10)
 								digit ="0"+String.valueOf(n); 
@@ -953,7 +947,7 @@ public class mcMMO extends JavaPlugin
 				if(isPlayer(split[1]) && m.isInt(split[3]) && Skills.isSkill(split[2]))
 				{
 					int newvalue = Integer.valueOf(split[3]);
-					Users.getProfile(getPlayer(split[1])).modifyskill(newvalue, split[2]);
+					Users.getProfile(getPlayer(split[1])).modifyskill(Skills.getSkillType(split[2]), newvalue);
 					player.sendMessage(ChatColor.RED+split[2]+" has been modified."); 
 				}
 			}
@@ -962,7 +956,7 @@ public class mcMMO extends JavaPlugin
 				if(m.isInt(split[2]) && Skills.isSkill(split[1]))
 				{
 					int newvalue = Integer.valueOf(split[2]);
-					PP.modifyskill(newvalue, split[1]);
+					PP.modifyskill(Skills.getSkillType(split[1]), newvalue);
 					player.sendMessage(ChatColor.RED+split[1]+" has been modified."); 
 				}
 			} else 
@@ -984,17 +978,19 @@ public class mcMMO extends JavaPlugin
 				return true;
 			}
 			if(split.length == 4){
-				if(isPlayer(split[1]) && m.isInt(split[3]) && Skills.isSkill(split[2])){
+				if(isPlayer(split[1]) && m.isInt(split[3]) && Skills.isSkill(split[2]))
+				{
 					int newvalue = Integer.valueOf(split[3]);
-					Users.getProfile(getPlayer(split[1])).addXP(split[2], newvalue);
+					Users.getProfile(getPlayer(split[1])).addXP(Skills.getSkillType(split[2]), newvalue);
 					getPlayer(split[1]).sendMessage(ChatColor.GREEN+"Experience granted!"); 
 					player.sendMessage(ChatColor.RED+split[2]+" has been modified."); 
-					Skills.XpCheck(getPlayer(split[1]));
+					Skills.XpCheckAll(getPlayer(split[1]));
 				}
 			}
-			else if(split.length == 3 && m.isInt(split[2]) && Skills.isSkill(split[1])){
+			else if(split.length == 3 && m.isInt(split[2]) && Skills.isSkill(split[1]))
+			{
 				int newvalue = Integer.valueOf(split[2]);
-				Users.getProfile(player).addXP(split[1], newvalue);
+				Users.getProfile(player).addXP(Skills.getSkillType(split[1]), newvalue);
 				player.sendMessage(ChatColor.RED+split[1]+" has been modified."); 
 			} else {
 				player.sendMessage(ChatColor.RED+"Usage is /"+LoadProperties.addxp+" playername skillname xp");  
@@ -1050,33 +1046,33 @@ public class mcMMO extends JavaPlugin
 
 				player.sendMessage(ChatColor.GOLD+"-=GATHERING SKILLS=-");
 				if(mcPermissions.getInstance().excavation(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ExcavationSkill"), PPt.getSkillToString("excavation"), PPt.getSkillToString("excavationXP"), PPt.getXpToLevel("excavation")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ExcavationSkill"), PPt.getSkillLevel(SkillType.EXCAVATION), PPt.getSkillXpLevel(SkillType.EXCAVATION), PPt.getXpToLevel(SkillType.EXCAVATION)));
 				if(mcPermissions.getInstance().herbalism(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.HerbalismSkill"), PPt.getSkillToString("herbalism"), PPt.getSkillToString("herbalismXP"), PPt.getXpToLevel("herbalism")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.HerbalismSkill"), PPt.getSkillLevel(SkillType.HERBALISM), PPt.getSkillXpLevel(SkillType.HERBALISM), PPt.getXpToLevel(SkillType.HERBALISM)));
 				if(mcPermissions.getInstance().mining(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.MiningSkill"), PPt.getSkillToString("mining"), PPt.getSkillToString("miningXP"), PPt.getXpToLevel("mining")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.MiningSkill"), PPt.getSkillLevel(SkillType.MINING), PPt.getSkillXpLevel(SkillType.MINING), PPt.getXpToLevel(SkillType.MINING)));
 				if(mcPermissions.getInstance().woodCuttingAbility(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.WoodcuttingSkill"), PPt.getSkillToString("woodcutting"), PPt.getSkillToString("woodcuttingXP"), PPt.getXpToLevel("woodcutting")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.WoodcuttingSkill"), PPt.getSkillLevel(SkillType.WOODCUTTING), PPt.getSkillXpLevel(SkillType.WOODCUTTING), PPt.getXpToLevel(SkillType.WOODCUTTING)));
 
 				player.sendMessage(ChatColor.GOLD+"-=COMBAT SKILLS=-");
 				if(mcPermissions.getInstance().axes(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AxesSkill"), PPt.getSkillToString("axes"), PPt.getSkillToString("axesXP"), PPt.getXpToLevel("axes")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AxesSkill"), PPt.getSkillLevel(SkillType.AXES), PPt.getSkillXpLevel(SkillType.AXES), PPt.getXpToLevel(SkillType.AXES)));
 				if(mcPermissions.getInstance().archery(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ArcherySkill"), PPt.getSkillToString("archery"), PPt.getSkillToString("archeryXP"), PPt.getXpToLevel("archery")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ArcherySkill"), PPt.getSkillLevel(SkillType.ARCHERY), PPt.getSkillXpLevel(SkillType.ARCHERY), PPt.getXpToLevel(SkillType.ARCHERY)));
 				//if(mcPermissions.getInstance().sorcery(target))
-				//player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SorcerySkill"), PPt.getSkillToString("sorcery"), PPt.getSkillToString("sorceryXP"), PPt.getXpToLevel("excavation")));
+				//player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SorcerySkill"), PPt.getSkill("sorcery"), PPt.getSkill("sorceryXP"), PPt.getXpToLevel("excavation")));
 				if(mcPermissions.getInstance().swords(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SwordsSkill"), PPt.getSkillToString("swords"), PPt.getSkillToString("swordsXP"), PPt.getXpToLevel("swords")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SwordsSkill"), PPt.getSkillLevel(SkillType.SWORDS), PPt.getSkillXpLevel(SkillType.SWORDS), PPt.getXpToLevel(SkillType.SWORDS)));
 				if(mcPermissions.getInstance().taming(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.TamingSkill"), PPt.getSkillToString("taming"), PPt.getSkillToString("tamingXP"), PPt.getXpToLevel("taming")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.TamingSkill"), PPt.getSkillLevel(SkillType.TAMING), PPt.getSkillXpLevel(SkillType.TAMING), PPt.getXpToLevel(SkillType.TAMING)));
 				if(mcPermissions.getInstance().unarmed(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.UnarmedSkill"), PPt.getSkillToString("unarmed"), PPt.getSkillToString("unarmedXP"), PPt.getXpToLevel("unarmed")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.UnarmedSkill"), PPt.getSkillLevel(SkillType.UNARMED), PPt.getSkillXpLevel(SkillType.UNARMED), PPt.getXpToLevel(SkillType.UNARMED)));
 
 				player.sendMessage(ChatColor.GOLD+"-=MISC SKILLS=-");
 				if(mcPermissions.getInstance().acrobatics(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PPt.getSkillToString("acrobatics"), PPt.getSkillToString("acrobaticsXP"), PPt.getXpToLevel("acrobatics")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PPt.getSkillLevel(SkillType.ACROBATICS), PPt.getSkillXpLevel(SkillType.ACROBATICS), PPt.getXpToLevel(SkillType.ACROBATICS)));
 				if(mcPermissions.getInstance().repair(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PPt.getSkillToString("repair"), PPt.getSkillToString("repairXP"), PPt.getXpToLevel("repair")));	
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PPt.getSkillXpLevel(SkillType.REPAIR), PPt.getSkillXpLevel(SkillType.REPAIR), PPt.getXpToLevel(SkillType.REPAIR)));	
 
 				player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel") +ChatColor.GREEN+(m.getPowerLevel(target))); 
 
@@ -1101,36 +1097,36 @@ public class mcMMO extends JavaPlugin
 			if(Skills.hasGatheringSkills(player)){
 				player.sendMessage(header+"-=GATHERING SKILLS=-");
 				if(mcPermissions.getInstance().excavation(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ExcavationSkill"), PP.getSkillToString("excavation"), PP.getSkillToString("excavationXP"), PP.getXpToLevel("excavation")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ExcavationSkill"), PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION)));
 				if(mcPermissions.getInstance().herbalism(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.HerbalismSkill"), PP.getSkillToString("herbalism"), PP.getSkillToString("herbalismXP"), PP.getXpToLevel("herbalism")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.HerbalismSkill"), PP.getSkillLevel(SkillType.HERBALISM), PP.getSkillXpLevel(SkillType.HERBALISM), PP.getXpToLevel(SkillType.HERBALISM)));
 				if(mcPermissions.getInstance().mining(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.MiningSkill"), PP.getSkillToString("mining"), PP.getSkillToString("miningXP"), PP.getXpToLevel("mining")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.MiningSkill"), PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING)));
 				if(mcPermissions.getInstance().woodCuttingAbility(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.WoodcuttingSkill"), PP.getSkillToString("woodcutting"), PP.getSkillToString("woodcuttingXP"), PP.getXpToLevel("woodcutting")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.WoodcuttingSkill"), PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING)));
 			}
 			if(Skills.hasCombatSkills(player)){
 				player.sendMessage(header+"-=COMBAT SKILLS=-");
 				if(mcPermissions.getInstance().axes(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AxesSkill"), PP.getSkillToString("axes"), PP.getSkillToString("axesXP"), PP.getXpToLevel("axes")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AxesSkill"), PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES)));
 				if(mcPermissions.getInstance().archery(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ArcherySkill"), PP.getSkillToString("archery"), PP.getSkillToString("archeryXP"), PP.getXpToLevel("archery")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ArcherySkill"), PP.getSkillLevel(SkillType.ARCHERY), PP.getSkillXpLevel(SkillType.ARCHERY), PP.getXpToLevel(SkillType.ARCHERY)));
 				//if(mcPermissions.getInstance().sorcery(player))
-				//player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SorcerySkill"), PP.getSkillToString("sorcery"), PP.getSkillToString("sorceryXP"), PP.getXpToLevel("excavation")));
+				//player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SorcerySkill"), PP.getSkill("sorcery"), PP.getSkill("sorceryXP"), PP.getXpToLevel("excavation")));
 				if(mcPermissions.getInstance().swords(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SwordsSkill"), PP.getSkillToString("swords"), PP.getSkillToString("swordsXP"), PP.getXpToLevel("swords")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SwordsSkill"), PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS)));
 				if(mcPermissions.getInstance().taming(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.TamingSkill"), PP.getSkillToString("taming"), PP.getSkillToString("tamingXP"), PP.getXpToLevel("taming")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.TamingSkill"), PP.getSkillLevel(SkillType.TAMING), PP.getSkillXpLevel(SkillType.TAMING), PP.getXpToLevel(SkillType.TAMING)));
 				if(mcPermissions.getInstance().unarmed(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.UnarmedSkill"), PP.getSkillToString("unarmed"), PP.getSkillToString("unarmedXP"), PP.getXpToLevel("unarmed")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.UnarmedSkill"), PP.getSkillLevel(SkillType.UNARMED), PP.getSkillXpLevel(SkillType.UNARMED), PP.getXpToLevel(SkillType.UNARMED)));
 			}
 
 			if(Skills.hasMiscSkills(player)){
 				player.sendMessage(header+"-=MISC SKILLS=-");
 				if(mcPermissions.getInstance().acrobatics(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PP.getSkillToString("acrobatics"), PP.getSkillToString("acrobaticsXP"), PP.getXpToLevel("acrobatics")));
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS)));
 				if(mcPermissions.getInstance().repair(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PP.getSkillToString("repair"), PP.getSkillToString("repairXP"), PP.getXpToLevel("repair")));	
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PP.getSkillXpLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR)));	
 			}
 			player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel")+ChatColor.GREEN+(m.getPowerLevel(player))); 
 		}

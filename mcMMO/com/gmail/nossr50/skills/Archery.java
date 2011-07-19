@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
@@ -21,7 +22,7 @@ public class Archery
 			pluginx.misc.arrowTracker.put(x, 0);
 			if(attacker != null)
 			{
-				if(Math.random() * 1000 <= PPa.getSkill("archery"))
+				if(Math.random() * 1000 <= PPa.getSkillLevel(SkillType.ARCHERY))
 				{
 					pluginx.misc.arrowTracker.put(x, 1);
 				}
@@ -32,7 +33,7 @@ public class Archery
 			{
 				if(attacker != null)
 				{
-					if(Math.random() * 1000 <= PPa.getSkill("archery"))
+					if(Math.random() * 1000 <= PPa.getSkillLevel(SkillType.ARCHERY))
 					{
 						pluginx.misc.arrowTracker.put(x, 1);
 					}
@@ -47,15 +48,15 @@ public class Archery
 		{
 			
 			int ignition = 20;	
-			if(PPa.getSkill("archery") >= 200)
+			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 200)
 				ignition+=20;
-			if(PPa.getSkill("archery") >= 400)
+			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 400)
 				ignition+=20;
-			if(PPa.getSkill("archery") >= 600)
+			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 600)
 				ignition+=20;
-			if(PPa.getSkill("archery") >= 800)
+			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 800)
 				ignition+=20;
-			if(PPa.getSkill("archery") >= 1000)
+			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 1000)
 				ignition+=20;
 			
 			if(x instanceof Player)
@@ -84,13 +85,13 @@ public class Archery
 		} else {
 			loc.setPitch(-90);
 		}
-		if(PPa.getSkill("archery") >= 1000){
+		if(PPa.getSkillLevel(SkillType.ARCHERY) >= 1000){
 			if(Math.random() * 1000 <= 500){
 				defender.teleport(loc);
 				defender.sendMessage(mcLocale.getString("Combat.TouchedFuzzy")); //$NON-NLS-1$
 				attacker.sendMessage(mcLocale.getString("Combat.TargetDazed")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-		} else if(Math.random() * 2000 <= PPa.getSkill("archery")){
+		} else if(Math.random() * 2000 <= PPa.getSkillLevel(SkillType.ARCHERY)){
 			defender.teleport(loc);
 			defender.sendMessage(mcLocale.getString("Combat.TouchedFuzzy")); //$NON-NLS-1$
 			attacker.sendMessage(mcLocale.getString("Combat.TargetDazed")); //$NON-NLS-1$ //$NON-NLS-2$

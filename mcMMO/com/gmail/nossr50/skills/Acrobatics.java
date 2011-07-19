@@ -9,19 +9,26 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 
 
 public class Acrobatics {
-	public static void acrobaticsCheck(Player player, EntityDamageEvent event){
-    	if(player != null && mcPermissions.getInstance().acrobatics(player)){
+	public static void acrobaticsCheck(Player player, EntityDamageEvent event)
+	{
+    	if(player != null && mcPermissions.getInstance().acrobatics(player))
+    	{
     		PlayerProfile PP = Users.getProfile(player);
-    		int acrovar = PP.getSkill("acrobatics");
+    		int acrovar = PP.getSkillLevel(SkillType.ACROBATICS);
+    		
     		if(player.isSneaking())
     			acrovar = acrovar * 2;
-			if(Math.random() * 1000 <= acrovar && !event.isCancelled()){
+    		
+			if(Math.random() * 1000 <= acrovar && !event.isCancelled())
+			{
 				int threshold = 7;
 				if(player.isSneaking())
 					threshold = 14;
+				
 				int newDamage = event.getDamage() - threshold;
 				if(newDamage < 0)
 					newDamage = 0;
@@ -30,8 +37,8 @@ public class Acrobatics {
 				 */
 				if(player.getHealth() - newDamage >= 1){
 					if(!event.isCancelled())
-						PP.addAcrobaticsXP((event.getDamage() * 8) * LoadProperties.xpGainMultiplier);
-					Skills.XpCheck(player);
+						PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 8) * LoadProperties.xpGainMultiplier);
+					Skills.XpCheckSkill(SkillType.ACROBATICS, player);
 					event.setDamage(newDamage);
 					if(event.getDamage() <= 0)
 						event.setCancelled(true);
@@ -43,8 +50,8 @@ public class Acrobatics {
 				}
 			} else if (!event.isCancelled()){
 				if(player.getHealth() - event.getDamage() >= 1){
-					PP.addAcrobaticsXP((event.getDamage() * 12) * LoadProperties.xpGainMultiplier);
-					Skills.XpCheck(player);
+					PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 12) * LoadProperties.xpGainMultiplier);
+					Skills.XpCheckSkill(SkillType.ACROBATICS, player);
 				}
 			}
     	}
@@ -54,12 +61,12 @@ public class Acrobatics {
 		PlayerProfile PPd = Users.getProfile(defender);
 		
 		if(mcPermissions.getInstance().acrobatics(defender)){
-			if(PPd.getSkill("acrobatics") <= 800){
-	    		if(Math.random() * 4000 <= PPd.getSkill("acrobatics")){
+			if(PPd.getSkillLevel(SkillType.ACROBATICS) <= 800){
+	    		if(Math.random() * 4000 <= PPd.getSkillLevel(SkillType.ACROBATICS)){
 	    			defender.sendMessage(ChatColor.GREEN+"**DODGE**");
 	    			if(System.currentTimeMillis() >= 5000 + PPd.getRespawnATS() && defender.getHealth() >= 1){
-	    				PPd.addAcrobaticsXP(event.getDamage() * 12);
-	    				Skills.XpCheck(defender);
+	    				PPd.addXP(SkillType.ACROBATICS, event.getDamage() * 12);
+	    				Skills.XpCheckSkill(SkillType.ACROBATICS, defender);
 	    			}
 	    			event.setDamage(event.getDamage() / 2);
 	    			//Needs to do minimal damage
@@ -69,8 +76,8 @@ public class Acrobatics {
 			} else if(Math.random() * 4000 <= 800) {
 				defender.sendMessage(ChatColor.GREEN+"**DODGE**");
 				if(System.currentTimeMillis() >= 5000 + PPd.getRespawnATS() && defender.getHealth() >= 1){
-					PPd.addAcrobaticsXP(event.getDamage() * 12);
-					Skills.XpCheck(defender);
+					PPd.addXP(SkillType.ACROBATICS, event.getDamage() * 12);
+					Skills.XpCheckSkill(SkillType.ACROBATICS, defender);
 				}
 				event.setDamage(event.getDamage() / 2);
 				//Needs to deal minimal damage

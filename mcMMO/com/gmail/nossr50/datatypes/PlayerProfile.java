@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 
 
@@ -49,48 +50,50 @@ public class PlayerProfile
 	private String playername;
 	
 	//Time to HashMap this shiz
-	HashMap<String, Integer> stats = new HashMap<String, Integer>(); //Skills and XP
+	HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and XP
+	HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and XP
+	
     String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
         
 	public PlayerProfile(Player player)
 	{
 		
 		//Setup the HashMap for the skills
-		stats.put("sorcery", 0);
-		stats.put("sorceryXP", 0);
+		skills.put(SkillType.SORCERY, 0);
+		skillsXp.put(SkillType.SORCERY, 0);
 		
-		stats.put("unarmed", 0);
-		stats.put("unarmedXP", 0);
+		skills.put(SkillType.UNARMED, 0);
+		skillsXp.put(SkillType.UNARMED, 0);
 		
-		stats.put("taming", 0);
-		stats.put("tamingXP", 0);
+		skills.put(SkillType.TAMING, 0);
+		skillsXp.put(SkillType.TAMING, 0);
 		
-		stats.put("mining", 0);
-		stats.put("miningXP", 0);
+		skills.put(SkillType.MINING, 0);
+		skillsXp.put(SkillType.MINING, 0);
 		
-		stats.put("woodcutting", 0);
-		stats.put("woodcuttingXP", 0);
+		skills.put(SkillType.WOODCUTTING, 0);
+		skillsXp.put(SkillType.WOODCUTTING, 0);
 		
-		stats.put("repair", 0);
-		stats.put("repairXP", 0);
+		skills.put(SkillType.REPAIR, 0);
+		skillsXp.put(SkillType.REPAIR, 0);
 		
-		stats.put("herbalism", 0);
-		stats.put("herbalismXP", 0);
+		skills.put(SkillType.HERBALISM, 0);
+		skillsXp.put(SkillType.HERBALISM, 0);
 		
-		stats.put("excavation", 0);
-		stats.put("excavationXP", 0);
+		skills.put(SkillType.EXCAVATION, 0);
+		skillsXp.put(SkillType.EXCAVATION, 0);
 		
-		stats.put("archery", 0);
-		stats.put("archeryXP", 0);
+		skills.put(SkillType.ARCHERY, 0);
+		skillsXp.put(SkillType.ARCHERY, 0);
 		
-		stats.put("swords", 0);
-		stats.put("swordsXP", 0);
+		skills.put(SkillType.SWORDS, 0);
+		skillsXp.put(SkillType.SWORDS, 0);
 		
-		stats.put("axes", 0);
-		stats.put("axesXP", 0);
+		skills.put(SkillType.AXES, 0);
+		skillsXp.put(SkillType.AXES, 0);
 		
-		stats.put("acrobatics", 0);
-		stats.put("acrobaticsXP", 0);
+		skills.put(SkillType.ACROBATICS, 0);
+		skillsXp.put(SkillType.ACROBATICS, 0);
 		
 		mana = getMaxMana();
 		
@@ -148,30 +151,30 @@ public class PlayerProfile
 				serratedStrikesDATS = Long.valueOf(cooldowns.get(1).get(5)) * 1000;
 				skullSplitterDATS = Long.valueOf(cooldowns.get(1).get(6)) * 1000;
 			}
-			HashMap<Integer, ArrayList<String>> skills = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
-				stats.put("taming", Integer.valueOf(skills.get(1).get(0)));
-				stats.put("mining", Integer.valueOf(skills.get(1).get(1)));
-				stats.put("repair", Integer.valueOf(skills.get(1).get(2)));
-				stats.put("woodcutting", Integer.valueOf(skills.get(1).get(3)));
-				stats.put("unarmed", Integer.valueOf(skills.get(1).get(4)));
-				stats.put("herbalism", Integer.valueOf(skills.get(1).get(5)));
-				stats.put("excavation", Integer.valueOf(skills.get(1).get(6)));
-				stats.put("archery", Integer.valueOf(skills.get(1).get(7)));
-				stats.put("swords", Integer.valueOf(skills.get(1).get(8)));
-				stats.put("axes", Integer.valueOf(skills.get(1).get(9)));
-				stats.put("acrobatics", Integer.valueOf(skills.get(1).get(10)));
+			HashMap<Integer, ArrayList<String>> stats = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
+				skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
+				skills.put(SkillType.MINING, Integer.valueOf(stats.get(1).get(1)));
+				skills.put(SkillType.REPAIR, Integer.valueOf(stats.get(1).get(2)));
+				skills.put(SkillType.WOODCUTTING, Integer.valueOf(stats.get(1).get(3)));
+				skills.put(SkillType.UNARMED, Integer.valueOf(stats.get(1).get(4)));
+				skills.put(SkillType.HERBALISM, Integer.valueOf(stats.get(1).get(5)));
+				skills.put(SkillType.EXCAVATION, Integer.valueOf(stats.get(1).get(6)));
+				skills.put(SkillType.ARCHERY, Integer.valueOf(stats.get(1).get(7)));
+				skills.put(SkillType.SWORDS, Integer.valueOf(stats.get(1).get(8)));
+				skills.put(SkillType.AXES, Integer.valueOf(stats.get(1).get(9)));
+				skills.put(SkillType.ACROBATICS, Integer.valueOf(stats.get(1).get(10)));
 			HashMap<Integer, ArrayList<String>> experience = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"experience WHERE user_id = " + id);
-				stats.put("tamingXP", Integer.valueOf(experience.get(1).get(0)));
-				stats.put("miningXP", Integer.valueOf(experience.get(1).get(1)));
-				stats.put("repairXP", Integer.valueOf(experience.get(1).get(2)));
-				stats.put("woodcuttingXP", Integer.valueOf(experience.get(1).get(3)));
-				stats.put("unarmedXP", Integer.valueOf(experience.get(1).get(4)));
-				stats.put("herbalismXP", Integer.valueOf(experience.get(1).get(5)));
-				stats.put("excavationXP", Integer.valueOf(experience.get(1).get(6)));
-				stats.put("archeryXP", Integer.valueOf(experience.get(1).get(7)));
-				stats.put("swordsXP", Integer.valueOf(experience.get(1).get(8)));
-				stats.put("axesXP", Integer.valueOf(experience.get(1).get(9)));
-				stats.put("acrobaticsXP", Integer.valueOf(experience.get(1).get(10)));
+				skillsXp.put(SkillType.TAMING, Integer.valueOf(experience.get(1).get(0)));
+				skillsXp.put(SkillType.MINING, Integer.valueOf(experience.get(1).get(1)));
+				skillsXp.put(SkillType.REPAIR, Integer.valueOf(experience.get(1).get(2)));
+				skillsXp.put(SkillType.WOODCUTTING, Integer.valueOf(experience.get(1).get(3)));
+				skillsXp.put(SkillType.UNARMED, Integer.valueOf(experience.get(1).get(4)));
+				skillsXp.put(SkillType.HERBALISM, Integer.valueOf(experience.get(1).get(5)));
+				skillsXp.put(SkillType.EXCAVATION, Integer.valueOf(experience.get(1).get(6)));
+				skillsXp.put(SkillType.ARCHERY, Integer.valueOf(experience.get(1).get(7)));
+				skillsXp.put(SkillType.SWORDS, Integer.valueOf(experience.get(1).get(8)));
+				skillsXp.put(SkillType.AXES, Integer.valueOf(experience.get(1).get(9)));
+				skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(experience.get(1).get(10)));
 			return true;
 		}
 		else {
@@ -204,8 +207,8 @@ public class PlayerProfile
         		if(!character[0].equals(playername)){continue;}
         		
     			//Get Mining
-    			if(character.length > 1 && isInt(character[1]))
-    				stats.put("mining", Integer.valueOf(character[1]));
+    			if(character.length > 1 && m.isInt(character[1]))
+    				skills.put(SkillType.MINING, Integer.valueOf(character[1]));
     			//Myspawn
     			if(character.length > 2)
     				myspawn = character[2];
@@ -213,50 +216,50 @@ public class PlayerProfile
     			if(character.length > 3)
     				party = character[3];
     			//Mining XP
-    			if(character.length > 4 && isInt(character[4]))
-    				stats.put("miningXP", Integer.valueOf(character[4]));
-    			if(character.length > 5 && isInt(character[5]))
-    				stats.put("woodcutting", Integer.valueOf(character[5]));
-    			if(character.length > 6 && isInt(character[6]))
-    				stats.put("woodcuttingXP", Integer.valueOf(character[6]));
-    			if(character.length > 7 && isInt(character[7]))
-    				stats.put("repair", Integer.valueOf(character[7]));
-    			if(character.length > 8 && isInt(character[8]))
-    				stats.put("unarmed",  Integer.valueOf(character[8]));
-    			if(character.length > 9 && isInt(character[9]))
-    				stats.put("herbalism", Integer.valueOf(character[9]));
-    			if(character.length > 10 && isInt(character[10]))
-    				stats.put("excavation", Integer.valueOf(character[10]));
-    			if(character.length > 11 && isInt(character[11]))
-    				stats.put("archery", Integer.valueOf(character[11]));
-    			if(character.length > 12 && isInt(character[12]))
-    				stats.put("swords", Integer.valueOf(character[12]));
-    			if(character.length > 13 && isInt(character[13]))
-    				stats.put("axes", Integer.valueOf(character[13]));
-    			if(character.length > 14 && isInt(character[14]))
-    				stats.put("acrobatics", Integer.valueOf(character[14]));
-    			if(character.length > 15 && isInt(character[15]))
-    				stats.put("repairXP", Integer.valueOf(character[15]));
-    			if(character.length > 16 && isInt(character[16]))
-    				stats.put("unarmedXP", Integer.valueOf(character[16]));
-    			if(character.length > 17 && isInt(character[17]))
-    				stats.put("herbalismXP", Integer.valueOf(character[17]));
-    			if(character.length > 18 && isInt(character[18]))
-    				stats.put("excavationXP", Integer.valueOf(character[18]));
-    			if(character.length > 19 && isInt(character[19]))
-    				stats.put("archeryXP", Integer.valueOf(character[19]));
-    			if(character.length > 20 && isInt(character[20]))
-    				stats.put("swordsXP", Integer.valueOf(character[20]));
-    			if(character.length > 21 && isInt(character[21]))
-    				stats.put("axesXP", Integer.valueOf(character[21]));
-    			if(character.length > 22 && isInt(character[22]))
-    				stats.put("acrobaticsXP", Integer.valueOf(character[22]));
-    			if(character.length > 23 && isInt(character[23]))
+    			if(character.length > 4 && m.isInt(character[4]))
+    				skillsXp.put(SkillType.MINING, Integer.valueOf(character[4]));
+    			if(character.length > 5 && m.isInt(character[5]))
+    				skills.put(SkillType.WOODCUTTING, Integer.valueOf(character[5]));
+    			if(character.length > 6 && m.isInt(character[6]))
+    				skillsXp.put(SkillType.WOODCUTTING, Integer.valueOf(character[6]));
+    			if(character.length > 7 && m.isInt(character[7]))
+    				skills.put(SkillType.REPAIR, Integer.valueOf(character[7]));
+    			if(character.length > 8 && m.isInt(character[8]))
+    				skills.put(SkillType.UNARMED,  Integer.valueOf(character[8]));
+    			if(character.length > 9 && m.isInt(character[9]))
+    				skills.put(SkillType.HERBALISM, Integer.valueOf(character[9]));
+    			if(character.length > 10 && m.isInt(character[10]))
+    				skills.put(SkillType.EXCAVATION, Integer.valueOf(character[10]));
+    			if(character.length > 11 && m.isInt(character[11]))
+    				skills.put(SkillType.ARCHERY, Integer.valueOf(character[11]));
+    			if(character.length > 12 && m.isInt(character[12]))
+    				skills.put(SkillType.SWORDS, Integer.valueOf(character[12]));
+    			if(character.length > 13 && m.isInt(character[13]))
+    				skills.put(SkillType.AXES, Integer.valueOf(character[13]));
+    			if(character.length > 14 && m.isInt(character[14]))
+    				skills.put(SkillType.ACROBATICS, Integer.valueOf(character[14]));
+    			if(character.length > 15 && m.isInt(character[15]))
+    				skillsXp.put(SkillType.REPAIR, Integer.valueOf(character[15]));
+    			if(character.length > 16 && m.isInt(character[16]))
+    				skillsXp.put(SkillType.UNARMED, Integer.valueOf(character[16]));
+    			if(character.length > 17 && m.isInt(character[17]))
+    				skillsXp.put(SkillType.HERBALISM, Integer.valueOf(character[17]));
+    			if(character.length > 18 && m.isInt(character[18]))
+    				skillsXp.put(SkillType.EXCAVATION, Integer.valueOf(character[18]));
+    			if(character.length > 19 && m.isInt(character[19]))
+    				skillsXp.put(SkillType.ARCHERY, Integer.valueOf(character[19]));
+    			if(character.length > 20 && m.isInt(character[20]))
+    				skillsXp.put(SkillType.SWORDS, Integer.valueOf(character[20]));
+    			if(character.length > 21 && m.isInt(character[21]))
+    				skillsXp.put(SkillType.AXES, Integer.valueOf(character[21]));
+    			if(character.length > 22 && m.isInt(character[22]))
+    				skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(character[22]));
+    			if(character.length > 23 && m.isInt(character[23]))
     				myspawnworld = character[23];
-    			if(character.length > 24 && isInt(character[24]))
-    				stats.put("taming", Integer.valueOf(character[24]));
-    			if(character.length > 25 && isInt(character[25]))
-    				stats.put("tamingXP", Integer.valueOf(character[25]));
+    			if(character.length > 24 && m.isInt(character[24]))
+    				skills.put(SkillType.TAMING, Integer.valueOf(character[24]));
+    			if(character.length > 25 && m.isInt(character[25]))
+    				skillsXp.put(SkillType.TAMING, Integer.valueOf(character[25]));
     			if(character.length > 26)
     				berserkDATS = Long.valueOf(character[26]) * 1000;
     			if(character.length > 27)
@@ -300,30 +303,30 @@ public class PlayerProfile
     				+", axes = "+(skullSplitterDATS/1000)
     				+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
-    				+"  taming = "+stats.get("taming")
-    				+", mining = "+stats.get("mining")
-    				+", repair = "+stats.get("repair")
-    				+", woodcutting = "+stats.get("woodcutting")
-    				+", unarmed = "+stats.get("unarmed")
-    				+", herbalism = "+stats.get("herbalism")
-    				+", excavation = "+stats.get("excavation")
-    				+", archery = " +stats.get("archery")
-    				+", swords = " +stats.get("swords")
-    				+", axes = "+stats.get("axes")
-    				+", acrobatics = "+stats.get("acrobatics")
+    				+"  taming = "+skills.get(SkillType.TAMING)
+    				+", mining = "+skills.get(SkillType.MINING)
+    				+", repair = "+skills.get(SkillType.REPAIR)
+    				+", woodcutting = "+skills.get(SkillType.WOODCUTTING)
+    				+", unarmed = "+skills.get(SkillType.UNARMED)
+    				+", herbalism = "+skills.get(SkillType.HERBALISM)
+    				+", excavation = "+skills.get(SkillType.EXCAVATION)
+    				+", archery = " +skills.get(SkillType.ARCHERY)
+    				+", swords = " +skills.get(SkillType.SWORDS)
+    				+", axes = "+skills.get(SkillType.AXES)
+    				+", acrobatics = "+skills.get(SkillType.ACROBATICS)
     				+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET "
-    				+"  taming = "+stats.get("tamingXP")
-    				+", mining = "+stats.get("miningXP")
-    				+", repair = "+stats.get("repairXP")
-    				+", woodcutting = "+stats.get("woodcuttingXP")
-    				+", unarmed = "+stats.get("unarmedXP")
-    				+", herbalism = "+stats.get("herbalismXP")
-    				+", excavation = "+stats.get("excavationXP")
-    				+", archery = " +stats.get("archeryXP")
-    				+", swords = " +stats.get("swordsXP")
-    				+", axes = "+stats.get("axesXP")
-    				+", acrobatics = "+stats.get("acrobaticsXP")
+    				+"  taming = "+skillsXp.get(SkillType.TAMING)
+    				+", mining = "+skillsXp.get(SkillType.MINING)
+    				+", repair = "+skillsXp.get(SkillType.REPAIR)
+    				+", woodcutting = "+skillsXp.get(SkillType.WOODCUTTING)
+    				+", unarmed = "+skillsXp.get(SkillType.UNARMED)
+    				+", herbalism = "+skillsXp.get(SkillType.HERBALISM)
+    				+", excavation = "+skillsXp.get(SkillType.EXCAVATION)
+    				+", archery = " +skillsXp.get(SkillType.ARCHERY)
+    				+", swords = " +skillsXp.get(SkillType.SWORDS)
+    				+", axes = "+skillsXp.get(SkillType.AXES)
+    				+", acrobatics = "+skillsXp.get(SkillType.ACROBATICS)
     				+" WHERE user_id = "+this.userid);
     		
     	} else {
@@ -347,31 +350,31 @@ public class PlayerProfile
 	                //Otherwise write the new player information
 	        		} else {
 	        			writer.append(playername + ":");
-	        			writer.append(stats.get("mining") + ":");
+	        			writer.append(skills.get(SkillType.MINING) + ":");
 	        			writer.append(myspawn + ":");
 	        			writer.append(party+":");
-	        			writer.append(stats.get("miningXP") + ":");
-	        			writer.append(stats.get("woodcutting") + ":");
-	        			writer.append(stats.get("woodcuttingXP") + ":");
-	        			writer.append(stats.get("repair") + ":");
-	        			writer.append(stats.get("unarmed") + ":");
-	        			writer.append(stats.get("herbalism") + ":");
-	        			writer.append(stats.get("excavation") + ":");
-	        			writer.append(stats.get("archery") + ":");
-	        			writer.append(stats.get("swords") + ":");
-	        			writer.append(stats.get("axes") + ":");
-	        			writer.append(stats.get("acrobatics") + ":");
-	        			writer.append(stats.get("repairXP") + ":");
-	        			writer.append(stats.get("unarmedXP") + ":");
-	        			writer.append(stats.get("herbalismXP") + ":");
-	        			writer.append(stats.get("excavationXP") + ":");
-	        			writer.append(stats.get("archeryXP") + ":");
-	        			writer.append(stats.get("swordsXP") + ":");
-	        			writer.append(stats.get("axesXP") + ":");
-	        			writer.append(stats.get("acrobaticsXP") + ":");
+	        			writer.append(skillsXp.get(SkillType.MINING) + ":");
+	        			writer.append(skills.get(SkillType.WOODCUTTING) + ":");
+	        			writer.append(skillsXp.get(SkillType.WOODCUTTING) + ":");
+	        			writer.append(skills.get(SkillType.REPAIR) + ":");
+	        			writer.append(skills.get(SkillType.UNARMED) + ":");
+	        			writer.append(skills.get(SkillType.HERBALISM) + ":");
+	        			writer.append(skills.get(SkillType.EXCAVATION) + ":");
+	        			writer.append(skills.get(SkillType.ARCHERY) + ":");
+	        			writer.append(skills.get(SkillType.SWORDS) + ":");
+	        			writer.append(skills.get(SkillType.AXES) + ":");
+	        			writer.append(skills.get(SkillType.ACROBATICS) + ":");
+	        			writer.append(skillsXp.get(SkillType.REPAIR) + ":");
+	        			writer.append(skillsXp.get(SkillType.UNARMED) + ":");
+	        			writer.append(skillsXp.get(SkillType.HERBALISM) + ":");
+	        			writer.append(skillsXp.get(SkillType.EXCAVATION) + ":");
+	        			writer.append(skillsXp.get(SkillType.ARCHERY) + ":");
+	        			writer.append(skillsXp.get(SkillType.SWORDS) + ":");
+	        			writer.append(skillsXp.get(SkillType.AXES) + ":");
+	        			writer.append(skillsXp.get(SkillType.ACROBATICS) + ":");
 	        			writer.append(myspawnworld+":");
-	        			writer.append(stats.get("taming") + ":");
-	        			writer.append(stats.get("tamingXP") + ":");
+	        			writer.append(skills.get(SkillType.TAMING) + ":");
+	        			writer.append(skillsXp.get(SkillType.TAMING) + ":");
 	        			//Need to store the DATS of abilities nao
 	        			//Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
 	        			writer.append(String.valueOf(berserkDATS/1000)+":");
@@ -475,9 +478,9 @@ public class PlayerProfile
     }
     public int getMaxMana()
     {
-    	if(stats.get("sorcery") < 50)
+    	if(skills.get(SkillType.SORCERY) < 50)
     		return 5;
-    	return stats.get("sorcery") / 10;
+    	return skills.get(SkillType.SORCERY) / 10;
     }
     public void setDyeChanged(Boolean bool)
     {
@@ -529,12 +532,9 @@ public class PlayerProfile
 	public boolean getAbilityUse(){
 		return abilityuse;
 	}
-	public void toggleAbilityUse(){
-		if(abilityuse == false){
-			abilityuse = true;
-		} else {
-			abilityuse = false;
-		}
+	public void toggleAbilityUse()
+	{
+		abilityuse = !abilityuse;
 	}
 	public long getMySpawnATS(){
 		return mySpawnATS;
@@ -542,10 +542,9 @@ public class PlayerProfile
 	public void setMySpawnATS(long newvalue){
 		mySpawnATS = newvalue;
 	}
-	public void decreaseBleedTicks(){
-		if(bleedticks >= 1){
-			bleedticks--;
-		}
+	public void decreaseBleedTicks()
+	{
+		bleedticks--;
 	}
 	public Integer getBleedTicks(){
 		return bleedticks;
@@ -819,203 +818,64 @@ public class PlayerProfile
 	public void setRecentlyHurt(long newvalue){
 		recentlyHurt = newvalue;
 	}
-	public void skillUp(String skillname, int newvalue)
+	public void skillUp(SkillType skillType, int newvalue)
 	{
-		stats.put(skillname, stats.get(skillname)+newvalue);
+		skills.put(skillType, skills.get(skillType)+newvalue);
 		save();
 	}
-	public void skillUpSorcery (int newskill){
-		skillUp("sorcery", newskill);
-	}
-	public void skillUpTaming(int newskill){
-		skillUp("taming", newskill);
-	}
-	public void skillUpAxes(int newskill){
-		skillUp("axes", newskill);
-	}
-	public void skillUpAcrobatics(int newskill){
-		skillUp("acrobatics", newskill);
-	}
-	public void skillUpSwords(int newskill){
-		skillUp("swords", newskill);
-	}
-	public void skillUpArchery(int newskill){
-		skillUp("archery", newskill);
-	}
-	public void skillUpRepair(int newskill){
-		skillUp("repair", newskill);
-	}
-	public void skillUpMining(int newskill){
-		skillUp("mining", newskill);
-	}
-	public void skillUpUnarmed(int newskill){
-		skillUp("unarmed", newskill);
-	}
-	public void skillUpHerbalism(int newskill){
-		skillUp("herbalism", newskill);
-	}
-	public void skillUpExcavation(int newskill){
-		skillUp("excavation", newskill);
-	}
-	public void skillUpWoodCutting(int newskill){
-		skillUp("woodcutting", newskill);
-	}
-	public String getSkillToString(String skillname){
-		return String.valueOf(stats.get(skillname));
-	}
-	public Integer getSkill(String skillname){
-		return stats.get(skillname);
-	}
-	public void resetSkillXp(String skillname){
-		stats.put(skillname+"XP", 0);
-	}
-	public void addXP(String skillname, int newvalue)
+	public Integer getSkillLevel(SkillType skillType)
 	{
-		if(skillname.toLowerCase().equals("all")){
-			stats.put("tamingXP", stats.get("tamingXP")+newvalue);
-			stats.put("miningXP", stats.get("miningXP")+newvalue);
-			stats.put("woodcuttingXP", stats.get("woodcuttingXP")+newvalue);
-			stats.put("repairXP", stats.get("repairXP")+newvalue);
-			stats.put("herbalismXP", stats.get("herbalismXP")+newvalue);
-			stats.put("acrobaticsXP", stats.get("acrobaticsXP")+newvalue);
-			stats.put("swordsXP", stats.get("swordsXP")+newvalue);
-			stats.put("archeryXP", stats.get("archeryXP")+newvalue);
-			stats.put("unarmedXP", stats.get("unarmedXP")+newvalue);
-			stats.put("excavationXP", stats.get("excavationXP")+newvalue);
-			stats.put("axesXP", stats.get("axesXP")+newvalue);
-			stats.put("sorcery", stats.get("sorceryXP")+newvalue);
+		return skills.get(skillType);
+	}
+	public Integer getSkillXpLevel(SkillType skillType)
+	{
+		return skillsXp.get(skillType);
+	}
+	public void resetSkillXp(SkillType skillType)
+	{
+		skills.put(skillType, 0);
+	}
+	public void addXP(SkillType skillType, int newvalue)
+	{
+		if(skillType == SkillType.ALL)
+		{
+			skillsXp.put(SkillType.TAMING, skillsXp.get(SkillType.TAMING)+newvalue);
+			skillsXp.put(SkillType.MINING, skillsXp.get(SkillType.MINING)+newvalue);
+			skillsXp.put(SkillType.WOODCUTTING, skillsXp.get(SkillType.WOODCUTTING)+newvalue);
+			skillsXp.put(SkillType.REPAIR, skillsXp.get(SkillType.REPAIR)+newvalue);
+			skillsXp.put(SkillType.HERBALISM, skillsXp.get(SkillType.HERBALISM)+newvalue);
+			skillsXp.put(SkillType.ACROBATICS, skillsXp.get(SkillType.ACROBATICS)+newvalue);
+			skillsXp.put(SkillType.SWORDS, skillsXp.get(SkillType.SWORDS)+newvalue);
+			skillsXp.put(SkillType.ARCHERY, skillsXp.get(SkillType.ARCHERY)+newvalue);
+			skillsXp.put(SkillType.UNARMED, skillsXp.get(SkillType.UNARMED)+newvalue);
+			skillsXp.put(SkillType.EXCAVATION, skillsXp.get(SkillType.EXCAVATION)+newvalue);
+			skillsXp.put(SkillType.AXES, skillsXp.get(SkillType.AXES)+newvalue);
+			skillsXp.put(SkillType.SORCERY, skillsXp.get(SkillType.SORCERY)+newvalue);
 		} else {
-			stats.put(skillname.toLowerCase()+"XP", stats.get(skillname.toLowerCase()+"XP")+newvalue);
+			skillsXp.put(skillType, skillsXp.get(skillType)+newvalue);
 		}
 		//save();
 	}
-	public void addSorceryXP(int newXP)
+	public void removeXP(SkillType skillType, int newvalue)
 	{
-		addXP("sorcery", newXP);
-	}
-	public void addTamingXP(int newXP)
-	{
-		addXP("taming", newXP);
-	}
-	public void addAcrobaticsXP(int newXP)
-	{
-		addXP("acrobatics", newXP);
-	}
-	public void addAxesXP(int newXP)
-	{
-		addXP("axes", newXP);
-	}
-	public void addSwordsXP(int newXP)
-	{
-		addXP("swords", newXP);
-	}
-	public void addArcheryXP(int newXP)
-	{
-		addXP("archery", newXP);
-	}
-	public void addExcavationXP(int newXP)
-	{
-		addXP("excavation", newXP);
-	}
-	public void addHerbalismXP(int newXP)
-	{
-		addXP("herbalism", newXP);
-	}
-	public void addRepairXP(int newXP)
-	{
-		addXP("repair", newXP);
-	}
-	public void addUnarmedXP(int newXP)
-	{
-		addXP("unarmed", newXP);
-	}
-	public void addWoodcuttingXP(int newXP)
-	{
-		addXP("woodcutting", newXP);
-	}
-	public void addMiningXP(int newXP)
-	{
-		addXP("mining", newXP);
-	}
-	public void removeXP(String skillname, int newvalue)
-	{
-		if(skillname.toLowerCase().equals("all")){
-			stats.put("tamingXP", stats.get("tamingXP")-newvalue);
-			stats.put("miningXP", stats.get("miningXP")-newvalue);
-			stats.put("woodcuttingXP", stats.get("woodcuttingXP")-newvalue);
-			stats.put("repairXP", stats.get("repairXP")-newvalue);
-			stats.put("herbalismXP", stats.get("herbalismXP")-newvalue);
-			stats.put("acrobaticsXP", stats.get("acrobaticsXP")-newvalue);
-			stats.put("swordsXP", stats.get("swordsXP")-newvalue);
-			stats.put("archeryXP", stats.get("archeryXP")-newvalue);
-			stats.put("unarmedXP", stats.get("unarmedXP")-newvalue);
-			stats.put("excavationXP", stats.get("excavationXP")-newvalue);
-			stats.put("axesXP", stats.get("axesXP")-newvalue);
-			stats.put("sorceryXP", stats.get("sorceryXP")-newvalue);
+		if(skillType == SkillType.ALL)
+		{
+			skillsXp.put(SkillType.TAMING, skillsXp.get(SkillType.TAMING)-newvalue);
+			skillsXp.put(SkillType.MINING, skillsXp.get(SkillType.MINING)-newvalue);
+			skillsXp.put(SkillType.WOODCUTTING, skillsXp.get(SkillType.WOODCUTTING)-newvalue);
+			skillsXp.put(SkillType.REPAIR, skillsXp.get(SkillType.REPAIR)-newvalue);
+			skillsXp.put(SkillType.HERBALISM, skillsXp.get(SkillType.HERBALISM)-newvalue);
+			skillsXp.put(SkillType.ACROBATICS, skillsXp.get(SkillType.ACROBATICS)-newvalue);
+			skillsXp.put(SkillType.SWORDS, skillsXp.get(SkillType.SWORDS)-newvalue);
+			skillsXp.put(SkillType.ARCHERY, skillsXp.get(SkillType.ARCHERY)-newvalue);
+			skillsXp.put(SkillType.UNARMED, skillsXp.get(SkillType.UNARMED)-newvalue);
+			skillsXp.put(SkillType.EXCAVATION, skillsXp.get(SkillType.EXCAVATION)-newvalue);
+			skillsXp.put(SkillType.AXES, skillsXp.get(SkillType.AXES)-newvalue);
+			skillsXp.put(SkillType.SORCERY, skillsXp.get(SkillType.SORCERY)-newvalue);
 		} else {
-			stats.put(skillname.toLowerCase()+"XP", stats.get(skillname.toLowerCase()+"XP")-newvalue);
+			skillsXp.put(skillType, skillsXp.get(skillType)-newvalue);
 		}
 		save();
-	}
-	public void removeSorceryXP(int newXP){
-		removeXP("sorcery", newXP);
-	}
-	public void removeTamingXP(int newXP){
-		removeXP("taming", newXP);
-	}
-	public void removeWoodCuttingXP(int newXP){
-		removeXP("woodcutting", newXP);
-	}
-	public void removeMiningXP(int newXP){
-		removeXP("mining", newXP);
-	}
-	public void removeRepairXP(int newXP){
-		removeXP("repair", newXP);
-	}
-	public void removeUnarmedXP(int newXP){
-		removeXP("unarmed", newXP);
-	}
-	public void removeHerbalismXP(int newXP){
-		removeXP("herbalism", newXP);
-	}
-	public void removeExcavationXP(int newXP){
-		removeXP("excavation", newXP);
-	}
-	public void removeArcheryXP(int newXP){
-		removeXP("archery", newXP);
-	}
-	public void removeSwordsXP(int newXP){
-		removeXP("swords", newXP);
-	}
-	public void removeAxesXP(int newXP){
-		removeXP("axes", newXP);
-	}
-	public void removeAcrobaticsXP(int newXP){
-		removeXP("acrobatics", newXP);
-	}
-
-	public boolean isInt(String string)
-	{
-		try {
-		    Integer.parseInt(string);
-		}
-		catch(NumberFormatException nFE) {
-		    return false;
-		}
-		return true;
-	}
-	
-	public boolean isDouble(String string)
-	{
-		try 
-		{
-		    Double.valueOf(string);
-		}
-		catch(NumberFormatException nFE) 
-		{
-		    return false;
-		}
-		return true;
 	}
 	public void acceptInvite()
 	{
@@ -1028,84 +888,75 @@ public class PlayerProfile
 	}
 	public String getInvite() { return invite; }
 	
-	public void modifyskill(int newvalue, String skillname){
-		if(skillname.toLowerCase().equals("all")){
-			stats.put("sorcery", newvalue);
-			stats.put("taming", newvalue);
-			stats.put("mining", newvalue);
-			stats.put("woodcutting", newvalue);
-			stats.put("repair", newvalue);
-			stats.put("herbalism", newvalue);
-			stats.put("acrobatics", newvalue);
-			stats.put("swords", newvalue);
-			stats.put("archery", newvalue);
-			stats.put("unarmed", newvalue);
-			stats.put("excavation", newvalue);
-			stats.put("axes", newvalue);
+	public void modifyskill(SkillType skillType, int newvalue)
+	{
+		if(skillType == SkillType.ALL)
+		{
+			skills.put(SkillType.TAMING, newvalue);
+			skills.put(SkillType.MINING, newvalue);
+			skills.put(SkillType.WOODCUTTING, newvalue);
+			skills.put(SkillType.REPAIR, newvalue);
+			skills.put(SkillType.HERBALISM, newvalue);
+			skills.put(SkillType.ACROBATICS, newvalue);
+			skills.put(SkillType.SWORDS, newvalue);
+			skills.put(SkillType.ARCHERY, newvalue);
+			skills.put(SkillType.UNARMED, newvalue);
+			skills.put(SkillType.EXCAVATION, newvalue);
+			skills.put(SkillType.AXES, newvalue);
+			skills.put(SkillType.SORCERY, newvalue);
 			
-			stats.put("tamingXP", 0);
-			stats.put("sorceryXP", 0);
-			stats.put("miningXP", 0);
-			stats.put("woodcuttingXP", 0);
-			stats.put("repairXP", 0);
-			stats.put("herbalismXP", 0);
-			stats.put("acrobaticsXP", 0);
-			stats.put("swordsXP", 0);
-			stats.put("archeryXP", 0);
-			stats.put("unarmedXP", 0);
-			stats.put("excavationXP", 0);
-			stats.put("axesXP", 0);
+			skillsXp.put(SkillType.TAMING, 0);
+			skillsXp.put(SkillType.MINING, 0);
+			skillsXp.put(SkillType.WOODCUTTING, 0);
+			skillsXp.put(SkillType.REPAIR, 0);
+			skillsXp.put(SkillType.HERBALISM, 0);
+			skillsXp.put(SkillType.ACROBATICS, 0);
+			skillsXp.put(SkillType.SWORDS, 0);
+			skillsXp.put(SkillType.ARCHERY, 0);
+			skillsXp.put(SkillType.UNARMED, 0);
+			skillsXp.put(SkillType.EXCAVATION, 0);
+			skillsXp.put(SkillType.AXES, 0);
+			skillsXp.put(SkillType.SORCERY, 0);
 		} else {
-			stats.put(skillname, newvalue);
-			stats.put(skillname+"XP", newvalue);
+			skills.put(skillType, newvalue);
+			skillsXp.put(skillType, newvalue);
 		}
 		save();
 	}
-	public Integer getXpToLevel(String skillname)
+	public Integer getXpToLevel(SkillType skillType)
 	{
-		if(skillname.equals("sorcery")){
-			return ((stats.get("sorcery") + 50) * LoadProperties.sorceryxpmodifier) * LoadProperties.globalxpmodifier;
+		switch(skillType)
+		{
+		case SORCERY:
+			return ((skills.get(skillType) + 50) * LoadProperties.sorceryxpmodifier * LoadProperties.globalxpmodifier);
+		case TAMING:
+			return ((skills.get(skillType) + 50) * LoadProperties.tamingxpmodifier * LoadProperties.globalxpmodifier);
+		case MINING:
+			return ((skills.get(skillType) + 50) * LoadProperties.miningxpmodifier * LoadProperties.globalxpmodifier);
+		case WOODCUTTING:
+			return ((skills.get(skillType) + 50) * LoadProperties.woodcuttingxpmodifier * LoadProperties.globalxpmodifier);
+		case REPAIR:
+			return ((skills.get(skillType) + 50) * LoadProperties.repairxpmodifier * LoadProperties.globalxpmodifier);
+		case HERBALISM:
+			return ((skills.get(skillType) + 50) * LoadProperties.herbalismxpmodifier * LoadProperties.globalxpmodifier);
+		case ACROBATICS:
+			return ((skills.get(skillType) + 50) * LoadProperties.acrobaticsxpmodifier * LoadProperties.globalxpmodifier);
+		case SWORDS:
+			return ((skills.get(skillType) + 50) * LoadProperties.swordsxpmodifier * LoadProperties.globalxpmodifier);
+		case ARCHERY:
+			return ((skills.get(skillType) + 50) * LoadProperties.archeryxpmodifier * LoadProperties.globalxpmodifier);
+		case UNARMED:
+			return ((skills.get(skillType) + 50) * LoadProperties.unarmedxpmodifier * LoadProperties.globalxpmodifier);
+		case EXCAVATION:
+			return ((skills.get(skillType) + 50) * LoadProperties.excavationxpmodifier * LoadProperties.globalxpmodifier);
+		case AXES:
+			return ((skills.get(skillType) + 50) * LoadProperties.axesxpmodifier * LoadProperties.globalxpmodifier);
+		default:
+			return null;
 		}
-		if(skillname.equals("taming")){
-			return ((stats.get("taming") + 50) * LoadProperties.tamingxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("mining")){
-			return ((stats.get("mining") + 50) * LoadProperties.miningxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("woodcutting")){
-			return ((stats.get("woodcutting") + 50) * LoadProperties.woodcuttingxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("repair")){
-			return ((stats.get("repair") + 50) * LoadProperties.repairxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("herbalism")){
-			return ((stats.get("herbalism") + 50) * LoadProperties.herbalismxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("acrobatics")){
-			return ((stats.get("acrobatics") + 50) * LoadProperties.acrobaticsxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("swords")){
-			return ((stats.get("swords") + 50) * LoadProperties.swordsxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("archery")){
-			return ((stats.get("archery") + 50) * LoadProperties.archeryxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("unarmed")){
-			return ((stats.get("unarmed") + 50) * LoadProperties.unarmedxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("excavation")){
-			return ((stats.get("excavation") + 50) * LoadProperties.excavationxpmodifier) * LoadProperties.globalxpmodifier;
-		}
-		if(skillname.equals("axes")){
-			return ((stats.get("axes") + 50) * LoadProperties.axesxpmodifier) * LoadProperties.globalxpmodifier;
-		} else {
-			System.out.println("ELSE CONDITIONS MET");
-			return 0;
-		}
-	}
-	
-            
-           //Store the player's party
+	}   
+    
+	//Store the player's party
     public void setParty(String newParty)
     {
     	party = newParty;
@@ -1184,7 +1035,7 @@ public class PlayerProfile
     	Location loc = null;
     	if(myspawn != null)
     	{
-    		if(isDouble(getX()) && isDouble(getY()) && isDouble(getZ()))
+    		if(m.isDouble(getX()) && m.isDouble(getY()) && m.isDouble(getZ()))
     				loc = new Location(player.getWorld(),(Double.parseDouble(getX())), Double.parseDouble(getY()), Double.parseDouble(getZ()));
     		else
     			return null;
