@@ -90,6 +90,7 @@ public class mcMMO extends JavaPlugin
 		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Lowest, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Normal, this);
 
 		//Block Stuff
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
@@ -1133,18 +1134,23 @@ public class mcMMO extends JavaPlugin
 		//Invite Command
 		if(LoadProperties.inviteEnable && mcPermissions.getInstance().party(player) && split[0].equalsIgnoreCase(LoadProperties.invite)){ 
 
-			if(!PP.inParty()){
+			if(!PP.inParty())
+			{
 				player.sendMessage(mcLocale.getString("mcPlayerListener.NotInParty")); 
 				return true;
 			}
-			if(split.length < 2){
+			if(split.length < 2)
+			{
 				player.sendMessage(ChatColor.RED+"Usage is /"+LoadProperties.invite+" <playername>");  
 				return true;
 			}
-			if(PP.inParty() && split.length >= 2 && isPlayer(split[1])){
+			if(PP.inParty() && split.length >= 2 && isPlayer(split[1]))
+			{
 				Player target = getPlayer(split[1]);
 				PlayerProfile PPt = Users.getProfile(target);
 				PPt.modifyInvite(PP.getParty());
+				
+				
 				player.sendMessage(mcLocale.getString("mcPlayerListener.InviteSuccess")); 
 				//target.sendMessage(ChatColor.RED+"ALERT: "+ChatColor.GREEN+"You have received a party invite for "+PPt.getInvite()+" from "+player.getName());   
 				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite1", new Object[] {PPt.getInvite(), player.getName()}));

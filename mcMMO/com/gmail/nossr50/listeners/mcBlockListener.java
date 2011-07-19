@@ -5,6 +5,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.contrib.contribStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
@@ -18,6 +19,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkitcontrib.sound.SoundEffect;
 
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.*;
@@ -91,9 +93,18 @@ public class mcBlockListener extends BlockListener {
     		if(LoadProperties.miningrequirespickaxe)
     		{
     			if(m.isMiningPick(inhand))
-    				Mining.miningBlockCheck(player, block, plugin);
-    		} else {
-    			Mining.miningBlockCheck(player, block, plugin);
+    			{
+    				if(PP.getSkillLevel(SkillType.MINING) >= 500)
+    					Mining.miningBlockCheck(false, player, block, plugin);
+    				else
+    					Mining.miningBlockCheck(true, player, block, plugin);
+    			}
+    		} else 
+    		{
+    			if(PP.getSkillLevel(SkillType.MINING) >= 500)
+					Mining.miningBlockCheck(false, player, block, plugin);
+				else
+					Mining.miningBlockCheck(true, player, block, plugin);
     		}
     	}
     	/*
@@ -144,8 +155,9 @@ public class mcBlockListener extends BlockListener {
    			if(mcPermissions.getInstance().woodCuttingAbility(player) 
    					&& PP.getTreeFellerMode() 
    					&& block.getTypeId() == 17
-   					&& m.blockBreakSimulate(block, player, plugin)){
-   				
+   					&& m.blockBreakSimulate(block, player, plugin))
+   			{
+   				contribStuff.playSoundForPlayer(SoundEffect.EXPLODE, player, block.getLocation());
     			WoodCutting.treeFeller(block, player, plugin);
     			for(Block blockx : plugin.misc.treeFeller)
     			{
@@ -187,7 +199,7 @@ public class mcBlockListener extends BlockListener {
     	 * EXCAVATION
     	 */
     	if(mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
-    		Excavation.excavationProcCheck(block, player);
+    		Excavation.excavationProcCheck(block.getTypeId(), block.getLocation(), player);
     	/*
     	 * HERBALISM
     	 */
@@ -237,6 +249,39 @@ public class mcBlockListener extends BlockListener {
     	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
     		Unarmed.berserkActivationCheck(player, plugin);
     	
+    	
+    	if(mcPermissions.getInstance().mining(player) && Mining.canBeSuperBroken(block) && 
+    			m.blockBreakSimulate(block, player, plugin) && PP.getSkillLevel(SkillType.MINING) >= 250 && block.getType() != Material.STONE)
+    	{
+    		contribStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
+    		if(PP.getSkillLevel(SkillType.MINING) >= 500)
+    		{
+    			if(Math.random() * 100 > 99)
+    			{
+    				Mining.blockProcSmeltSimulate(block);
+    				Mining.miningBlockCheck(true, player, block, plugin); //PROC
+    				block.setType(Material.AIR);
+    				contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+    			}
+    				
+    		} else
+    		{
+    			if(Math.random() * 100 > 97)
+    			{
+    				Mining.blockProcSmeltSimulate(block);
+    				Mining.miningBlockCheck(true, player, block, plugin); //PROC
+    				block.setType(Material.AIR);
+    				contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+    			}
+    		}
+    	}
+    	
+    	/*
+    	 * TREE FELLAN STUFF
+    	 */
+    	if(block.getTypeId() == 17 && Users.getProfile(player).getTreeFellerMode())
+    		contribStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
+    	
     	/*
     	 * GREEN TERRA STUFF
     	 */
@@ -247,14 +292,18 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * GIGA DRILL BREAKER CHECKS
     	 */
-    	if(PP.getGigaDrillBreakerMode() && m.blockBreakSimulate(block, player, plugin) && Excavation.canBeGigaDrillBroken(block) && m.isShovel(inhand)){
+    	if(PP.getGigaDrillBreakerMode() && m.blockBreakSimulate(block, player, plugin) 
+    			&& Excavation.canBeGigaDrillBroken(block) && m.isShovel(inhand)
+    			&& block.getData() != (byte) 5){
     		
-    		if(m.getTier(player) >= 2)
-    			Excavation.excavationProcCheck(block, player);
-    		if(m.getTier(player) >= 3)
-    			Excavation.excavationProcCheck(block, player);
-    		if(m.getTier(player) >= 4)
-    			Excavation.excavationProcCheck(block, player);
+    		int x = 1;
+    		
+    		while(x < 4)
+    		{
+    			Excavation.excavationProcCheck(block.getTypeId(), block.getLocation(), player);
+    			x++;
+    		}
+    		
     		Material mat = Material.getMaterial(block.getTypeId());
     		if(block.getTypeId() == 2)
     			mat = Material.DIRT;
@@ -265,6 +314,9 @@ public class mcBlockListener extends BlockListener {
 			if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+			
+			//Contrib stuff
+			contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	/*
     	 * BERSERK MODE CHECKS
@@ -283,6 +335,8 @@ public class mcBlockListener extends BlockListener {
 			player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
 			block.setType(Material.AIR);
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+			
+			contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	
     	/*
@@ -315,6 +369,7 @@ public class mcBlockListener extends BlockListener {
     		}
     		block.setType(Material.AIR);
     		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
+    		contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	if(block.getType() == Material.AIR && plugin.misc.blockWatchList.contains(block))
     	{

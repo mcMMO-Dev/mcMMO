@@ -7,11 +7,13 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkitcontrib.sound.SoundEffect;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.contrib.contribStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -58,9 +60,77 @@ public class Mining {
     	Material mat = Material.getMaterial(block.getTypeId());
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-		if(block.getTypeId() != 89 && block.getTypeId() != 73 && block.getTypeId() != 74 && block.getTypeId() != 56 && block.getTypeId() != 21 && block.getTypeId() != 1 && block.getTypeId() != 16)
+		if(block.getTypeId() != 89 && block.getTypeId() != 73 && block.getTypeId() != 74 && block.getTypeId() != 56 
+				&& block.getTypeId() != 21 && block.getTypeId() != 1 && block.getTypeId() != 16)
 			loc.getWorld().dropItemNaturally(loc, item);
-		if(block.getTypeId() == 89){
+		if(block.getTypeId() == 89)
+		{
+			mat = Material.getMaterial(348);
+			item = new ItemStack(mat, 1, (byte)0, damage);
+			loc.getWorld().dropItemNaturally(loc, item);
+		}
+		if(block.getTypeId() == 73 || block.getTypeId() == 74)
+		{
+			mat = Material.getMaterial(331);
+			item = new ItemStack(mat, 1, (byte)0, damage);
+			loc.getWorld().dropItemNaturally(loc, item);
+			loc.getWorld().dropItemNaturally(loc, item);
+			loc.getWorld().dropItemNaturally(loc, item);
+			if(Math.random() * 10 > 5){
+				loc.getWorld().dropItemNaturally(loc, item);
+			}
+		}
+		if(block.getTypeId() == 21)
+		{
+			mat = Material.getMaterial(351);
+			item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
+			loc.getWorld().dropItemNaturally(loc, item);
+			loc.getWorld().dropItemNaturally(loc, item);
+			loc.getWorld().dropItemNaturally(loc, item);
+			loc.getWorld().dropItemNaturally(loc, item);
+		}
+		if(block.getTypeId() == 56)
+		{
+			mat = Material.getMaterial(264);
+			item = new ItemStack(mat, 1, (byte)0, damage);
+			loc.getWorld().dropItemNaturally(loc, item);
+		}
+		if(block.getTypeId() == 1)
+		{
+			mat = Material.getMaterial(4);
+			item = new ItemStack(mat, 1, (byte)0, damage);
+			loc.getWorld().dropItemNaturally(loc, item);
+		}
+		if(block.getTypeId() == 16)
+		{
+			mat = Material.getMaterial(263);
+			item = new ItemStack(mat, 1, (byte)0, damage);
+			loc.getWorld().dropItemNaturally(loc, item);
+		}
+    }
+	public static void blockProcSmeltSimulate(Block block)
+	{
+    	Location loc = block.getLocation();
+    	Material mat = Material.getMaterial(block.getTypeId());
+		byte damage = 0;
+		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+		if(block.getTypeId() != 14 && block.getTypeId() != 15 && block.getTypeId() != 89 && block.getTypeId() != 73 && block.getTypeId() != 74 
+				&& block.getTypeId() != 56 && block.getTypeId() != 21 && block.getTypeId() != 1 && block.getTypeId() != 16)
+			loc.getWorld().dropItemNaturally(loc, item);
+		if(block.getTypeId() == 14)
+		{
+			mat = Material.getMaterial(266);
+			item = new ItemStack(mat, 1, (byte)0, damage);
+			loc.getWorld().dropItemNaturally(loc, item);
+		}
+		if(block.getTypeId() == 15)
+		{
+			mat = Material.getMaterial(265);
+			item = new ItemStack(mat, 1, (byte)0, damage);
+			loc.getWorld().dropItemNaturally(loc, item);
+		}
+		if(block.getTypeId() == 89)
+		{
 			mat = Material.getMaterial(348);
 			item = new ItemStack(mat, 1, (byte)0, damage);
 			loc.getWorld().dropItemNaturally(loc, item);
@@ -102,14 +172,28 @@ public class Mining {
     public static void blockProcCheck(Block block, Player player)
     {
     	PlayerProfile PP = Users.getProfile(player);
-    	if(player != null){
-    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING)){
-    		blockProcSimulate(block);
-			return;
+    	if(player != null)
+    	{
+    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))
+    		{
+	    		blockProcSimulate(block);
+				return;
     		}
     	}		
 	}
-    public static void miningBlockCheck(Player player, Block block, mcMMO plugin)
+    public static void blockProcSmeltCheck(Block block, Player player)
+    {
+    	PlayerProfile PP = Users.getProfile(player);
+    	if(player != null)
+    	{
+    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))
+    		{
+	    		blockProcSmeltSimulate(block);
+				return;
+    		}
+    	}		
+	}
+    public static void miningBlockCheck(Boolean smelt, Player player, Block block, mcMMO plugin)
     {
     	PlayerProfile PP = Users.getProfile(player);
     	if(plugin.misc.blockWatchList.contains(block) || block.getData() == (byte) 5)
@@ -117,52 +201,90 @@ public class Mining {
     	int xp = 0;
     	if(block.getTypeId() == 1 || block.getTypeId() == 24){
     		xp += LoadProperties.mstone;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	//OBSIDIAN
-    	if(block.getTypeId() == 49){
+    	if(block.getTypeId() == 49)
+    	{
     		xp += LoadProperties.mobsidian;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	//NETHERRACK
-    	if(block.getTypeId() == 87){
+    	if(block.getTypeId() == 87)
+    	{
     		xp += LoadProperties.mnetherrack;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	//GLOWSTONE
-    	if(block.getTypeId() == 89){
+    	if(block.getTypeId() == 89)
+    	{
     		xp += LoadProperties.mglowstone;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	//COAL
-    	if(block.getTypeId() == 16){
+    	if(block.getTypeId() == 16)
+    	{
     		xp += LoadProperties.mcoal;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	//GOLD
-    	if(block.getTypeId() == 14){
+    	if(block.getTypeId() == 14)
+    	{
     		xp += LoadProperties.mgold;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	//DIAMOND
     	if(block.getTypeId() == 56){
     		xp += LoadProperties.mdiamond;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	//IRON
-    	if(block.getTypeId() == 15){
+    	if(block.getTypeId() == 15)
+    	{
     		xp += LoadProperties.miron;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	//REDSTONE
-    	if(block.getTypeId() == 73 || block.getTypeId() == 74){
+    	if(block.getTypeId() == 73 || block.getTypeId() == 74)
+    	{
     		xp += LoadProperties.mredstone;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	//LAPUS
-    	if(block.getTypeId() == 21){
+    	if(block.getTypeId() == 21)
+    	{
     		xp += LoadProperties.mlapus;
-    		blockProcCheck(block, player);
+    		if(smelt = false)
+    			blockProcCheck(block, player);
+    		else
+    			blockProcSmeltCheck(block, player);
     	}
     	PP.addXP(SkillType.MINING, xp * LoadProperties.xpGainMultiplier);
     	Skills.XpCheckSkill(SkillType.MINING, player);
@@ -351,6 +473,9 @@ public class Mining {
     	}
     	if(block.getData() != (byte) 5)
     		PP.addXP(SkillType.MINING, xp * LoadProperties.xpGainMultiplier);
+    	
+    	contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+    	
     	Skills.XpCheckSkill(SkillType.MINING, player);
     }
 }

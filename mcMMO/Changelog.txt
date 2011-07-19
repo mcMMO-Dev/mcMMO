@@ -1,8 +1,15 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.0.37
+Berserk mode stops items from being collected
 Taming no longer receives xp from wolves being harmed
+Fixed bug where players with mcgod could be harmed by AoE
 Fixed bug where modifying a skill also modified the xp to the same amount (when it should be zero)
+
+BukkitContrib Stuff
+Added 'notifications' on levelup (BukkitContrib)
+Added sound effects to abilities
+Added an extra cool sound for WoodCutting
 
 Code Stuff
 Added getPlayerProfile() which returns a PlayerProfile object for plugin devs

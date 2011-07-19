@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -43,6 +44,14 @@ public class mcPlayerListener extends PlayerListener
 	{
 		plugin = instance;
 	}
+	
+	 public void onPlayerPickupItem(PlayerPickupItemEvent event) 
+	 {
+		 if(Users.getProfile(event.getPlayer()).getBerserkMode())
+		 {
+			 event.setCancelled(true);
+		 }
+	 }
 
 
 	public void onPlayerRespawn(PlayerRespawnEvent event) 
@@ -78,7 +87,7 @@ public class mcPlayerListener extends PlayerListener
 		 * GARBAGE COLLECTION
 		 */
 
-		 //Discard the PlayerProfile object from players array in the Users object stored for this player as it is no longer needed
+		 //Discard the PlayerProfile object
 		Users.removeUser(event.getPlayer());
 	}
 

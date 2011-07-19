@@ -6,12 +6,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkitcontrib.player.ContribCraftPlayer;
+import org.bukkitcontrib.player.ContribPlayer;
+
 import com.gmail.nossr50.Leaderboard;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.contrib.contribStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -55,22 +59,6 @@ public class Skills {
     	return (int) (((deactivatedTimeStamp + (cooldown * 1000)) - System.currentTimeMillis())/1000);
     }
     
-    public static boolean isAllCooldownsOver(PlayerProfile PP)
-    {
-    	long t = System.currentTimeMillis();
-    	if(t - PP.getGreenTerraDeactivatedTimeStamp() >= (LoadProperties.greenTerraCooldown * 1000) && 
-    		t - PP.getTreeFellerDeactivatedTimeStamp() >= (LoadProperties.treeFellerCooldown * 1000) &&
-    		t - PP.getSuperBreakerDeactivatedTimeStamp() >= (LoadProperties.superBreakerCooldown * 1000) &&
-    		t - PP.getSerratedStrikesDeactivatedTimeStamp() >= (LoadProperties.serratedStrikeCooldown * 1000) &&
-    		t - PP.getBerserkDeactivatedTimeStamp() >= (LoadProperties.berserkCooldown * 1000) &&
-    		t - PP.getSkullSplitterDeactivatedTimeStamp() >= (LoadProperties.skullSplitterCooldown * 1000) &&
-    		t - PP.getGigaDrillBreakerDeactivatedTimeStamp() >= (LoadProperties.gigaDrillBreakerCooldown * 1000))
-    	{
-    		return true;
-    	}
-    	else
-    		return false;
-    }
     public static void watchCooldowns(Player player){
     	PlayerProfile PP = Users.getProfile(player);
     	if(!PP.getGreenTerraInformed() && System.currentTimeMillis() - PP.getGreenTerraDeactivatedTimeStamp() >= (LoadProperties.greenTerraCooldown * 1000)){
@@ -216,13 +204,17 @@ public class Skills {
 			}
 		}
 	}
-	public static void abilityActivationCheck(Player player){
+	public static void abilityActivationCheck(Player player)
+	{
     	PlayerProfile PP = Users.getProfile(player);
-    	if(PP != null){
+    	if(PP != null)
+    	{
 	    	if(!PP.getAbilityUse())
 	    		return;
-	    	if(mcPermissions.getInstance().miningAbility(player) && m.isMiningPick(player.getItemInHand()) && !PP.getPickaxePreparationMode()){
-	    		if(!PP.getSuperBreakerMode() && !cooldownOver(player, PP.getSuperBreakerDeactivatedTimeStamp(), LoadProperties.superBreakerCooldown)){
+	    	if(mcPermissions.getInstance().miningAbility(player) && m.isMiningPick(player.getItemInHand()) && !PP.getPickaxePreparationMode())
+	    	{
+	    		if(!PP.getSuperBreakerMode() && !cooldownOver(player, PP.getSuperBreakerDeactivatedTimeStamp(), LoadProperties.superBreakerCooldown))
+	    		{
 		    		player.sendMessage(mcLocale.getString("Skills.TooTired")
 		    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getSuperBreakerDeactivatedTimeStamp(), LoadProperties.superBreakerCooldown)+"s)");
 		    		return;
@@ -231,8 +223,10 @@ public class Skills {
 				PP.setPickaxePreparationATS(System.currentTimeMillis());
 				PP.setPickaxePreparationMode(true);
 	    	}
-	    	if(mcPermissions.getInstance().excavationAbility(player) && m.isShovel(player.getItemInHand()) && !PP.getShovelPreparationMode()){
-	    		if(!PP.getGigaDrillBreakerMode() && !cooldownOver(player, PP.getGigaDrillBreakerDeactivatedTimeStamp(), LoadProperties.gigaDrillBreakerCooldown)){
+	    	if(mcPermissions.getInstance().excavationAbility(player) && m.isShovel(player.getItemInHand()) && !PP.getShovelPreparationMode())
+	    	{
+	    		if(!PP.getGigaDrillBreakerMode() && !cooldownOver(player, PP.getGigaDrillBreakerDeactivatedTimeStamp(), LoadProperties.gigaDrillBreakerCooldown))
+	    		{
 		    		player.sendMessage(mcLocale.getString("Skills.TooTired")
 		    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getGigaDrillBreakerDeactivatedTimeStamp(), LoadProperties.gigaDrillBreakerCooldown)+"s)");
 		    		return;
@@ -241,8 +235,10 @@ public class Skills {
 				PP.setShovelPreparationATS(System.currentTimeMillis());
 				PP.setShovelPreparationMode(true);
 	    	}
-	    	if(mcPermissions.getInstance().swordsAbility(player) && m.isSwords(player.getItemInHand()) && !PP.getSwordsPreparationMode()){
-	    		if(!PP.getSerratedStrikesMode() && !cooldownOver(player, PP.getSerratedStrikesDeactivatedTimeStamp(), LoadProperties.serratedStrikeCooldown)){
+	    	if(mcPermissions.getInstance().swordsAbility(player) && m.isSwords(player.getItemInHand()) && !PP.getSwordsPreparationMode())
+	    	{
+	    		if(!PP.getSerratedStrikesMode() && !cooldownOver(player, PP.getSerratedStrikesDeactivatedTimeStamp(), LoadProperties.serratedStrikeCooldown))
+	    		{
 		    		player.sendMessage(mcLocale.getString("Skills.TooTired")
 		    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getSerratedStrikesDeactivatedTimeStamp(), LoadProperties.serratedStrikeCooldown)+"s)");
 		    		return;
@@ -251,8 +247,10 @@ public class Skills {
 				PP.setSwordsPreparationATS(System.currentTimeMillis());
 				PP.setSwordsPreparationMode(true);
 	    	}
-	    	if(mcPermissions.getInstance().unarmedAbility(player) && player.getItemInHand().getTypeId() == 0 && !PP.getFistsPreparationMode()){
-		    	if(!PP.getBerserkMode() && !cooldownOver(player, PP.getBerserkDeactivatedTimeStamp(), LoadProperties.berserkCooldown)){
+	    	if(mcPermissions.getInstance().unarmedAbility(player) && player.getItemInHand().getTypeId() == 0 && !PP.getFistsPreparationMode())
+	    	{
+		    	if(!PP.getBerserkMode() && !cooldownOver(player, PP.getBerserkDeactivatedTimeStamp(), LoadProperties.berserkCooldown))
+		    	{
 		    		player.sendMessage(mcLocale.getString("Skills.TooTired")
 		    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, PP.getBerserkDeactivatedTimeStamp(), LoadProperties.berserkCooldown)+"s)");
 		    		return;
@@ -261,8 +259,10 @@ public class Skills {
 				PP.setFistsPreparationATS(System.currentTimeMillis());
 				PP.setFistsPreparationMode(true);
 	    	}
-	    	if((mcPermissions.getInstance().axes(player) || mcPermissions.getInstance().woodcutting(player)) && !PP.getAxePreparationMode()){
-	    		if(m.isAxes(player.getItemInHand())){
+	    	if((mcPermissions.getInstance().axes(player) || mcPermissions.getInstance().woodcutting(player)) && !PP.getAxePreparationMode())
+	    	{
+	    		if(m.isAxes(player.getItemInHand()))
+	    		{
 	    			player.sendMessage(mcLocale.getString("Skills.ReadyAxe"));
 	    			PP.setAxePreparationATS(System.currentTimeMillis());
 	    			PP.setAxePreparationMode(true);
@@ -276,7 +276,10 @@ public class Skills {
 		PlayerProfile PP = Users.getProfile(player);
 		
 		PlayerStat ps = new PlayerStat();
-		ps.statVal = PP.getSkillLevel(skillType);
+		if(skillType != SkillType.ALL)
+			ps.statVal = PP.getSkillLevel(skillType);
+		else
+			ps.statVal = m.getPowerLevel(player);
 		ps.name = player.getName();
 		Leaderboard.updateLeaderboard(ps, skillType);
 	}
@@ -297,13 +300,22 @@ public class Skills {
 			}
 			
 			if(!LoadProperties.useMySQL)
+			{
 				ProcessLeaderboardUpdate(skillType, player);
+				ProcessLeaderboardUpdate(SkillType.ALL, player);
+			}
 			
-			String firstLetter = skillType.toString().substring(0,1);
-			String remainder   = skillType.toString().substring(1);
-			String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
+			String capitalized = m.getCapitalized(skillType.toString());
+						
+			//Contrib stuff
 			
-			player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+			ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
+			if(cPlayer.isBukkitContribEnabled())
+			{
+				contribStuff.levelUpNotification(skillType, cPlayer);
+			} else {
+				player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+			}
 		}
 	}
 	
@@ -328,49 +340,13 @@ public class Skills {
     	return null;
     }
     public static boolean isSkill(String skillname){
-    	skillname = skillname.toLowerCase();
-    	if(skillname.equals("all")){
-    		return true;
+    	skillname = skillname.toUpperCase();
+    	for(SkillType x : SkillType.values())
+    	{
+    		if(x.toString().equals(skillname))
+    			return true;
     	}
-    	else if(skillname.equals("sorcery")){
-    		return true;
-    	}
-    	else if(skillname.equals("taming")){
-			return true;
-		}
-    	else if(skillname.equals("mining")){
-			return true;
-		}
-		else if(skillname.equals("woodcutting")){
-			return true;
-		}
-		else if(skillname.equals("excavation")){
-			return true;
-		}
-		else if(skillname.equals("repair")){
-			return true;
-		}
-		else if(skillname.equals("herbalism")){
-			return true;
-		}
-		else if(skillname.equals("acrobatics")){
-			return true;
-		}
-		else if(skillname.equals("swords")){
-			return true;
-		}
-		else if(skillname.equals("archery")){
-			return true;
-		}
-		else if(skillname.equals("unarmed")){
-			 return true;
-		}
-		else if(skillname.equals("axes")){
-			return true;
-		}
-		else {
-			return false;
-		}
+    	return false;
     }
     public static void arrowRetrievalCheck(Entity entity, mcMMO plugin)
     {

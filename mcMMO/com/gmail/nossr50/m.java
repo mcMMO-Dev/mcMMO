@@ -27,6 +27,15 @@ public class m
 	 */
 
 	//The lazy way to default to 0
+	
+	public static String getCapitalized(String target)
+	{
+		String firstLetter = target.substring(0,1);
+		String remainder   = target.substring(1);
+		String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
+		
+		return capitalized;
+	}
 	public static int getInt(String string)
 	{
 		if(isInt(string))

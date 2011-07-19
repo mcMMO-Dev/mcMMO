@@ -63,16 +63,12 @@ public class Excavation
 			return false;
 		}
 	}
-	public static void excavationProcCheck(Block block, Player player)
+	public static void excavationProcCheck(int type, Location loc, Player player)
 	{
 		PlayerProfile PP = Users.getProfile(player);
-    	int type = block.getTypeId();
-    	Location loc = block.getLocation();
     	ItemStack is = null;
     	Material mat = null;
-    	if(block.getData() == (byte) 5){
-    		return;
-    	}
+    	
     	if(type == 2)
     	{
     		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 250)
