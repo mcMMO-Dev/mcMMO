@@ -14,9 +14,17 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -31,6 +39,8 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.entity.Player;
+import org.bukkitcontrib.player.ContribCraftPlayer;
+import org.bukkitcontrib.player.ContribPlayer;
 
 
 public class mcMMO extends JavaPlugin 
@@ -76,7 +86,6 @@ public class mcMMO extends JavaPlugin
 		
 		if(!LoadProperties.useMySQL)
 			Users.getInstance().loadUsers(); //Load Users file
-
 		/*
 		 * REGISTER EVENTS
 		 */
@@ -115,14 +124,59 @@ public class mcMMO extends JavaPlugin
 			Leaderboard.makeLeaderboards(); //Make the leaderboards
 
 		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile
+		
+	    if (pm.getPlugin("BukkitContrib") == null)
+	        try {
+	            download(log, new URL("http://bit.ly/autoupdateBukkitContrib"), new File("plugins/BukkitContrib.jar"));
+	            pm.loadPlugin(new File("plugins" + File.separator + "BukkitContrib.jar"));
+	            pm.enablePlugin(pm.getPlugin("BukkitContrib"));
+	        } catch (final Exception ex) {
+	            log.warning("[mcMMO] Failed to install BukkitContrib, you may have to restart your server or install it manually.");
+	        }
+	        
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );  
 		mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
 		//mcMMO_SpellTimer.schedule(new mcTimerSpells(this), (long)0, (long)(100));
+	}
+	
+	public static void download(Logger log, URL url, File file) throws IOException 
+	{
+	    if (!file.getParentFile().exists())
+	        file.getParentFile().mkdir();
+	    if (file.exists())
+	        file.delete();
+	    file.createNewFile();
+	    final int size = url.openConnection().getContentLength();
+	    log.info("Downloading " + file.getName() + " (" + size / 1024 + "kb) ...");
+	    final InputStream in = url.openStream();
+	    final OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+	    final byte[] buffer = new byte[1024];
+	    int len, downloaded = 0, msgs = 0;
+	    final long start = System.currentTimeMillis();
+	    while ((len = in.read(buffer)) >= 0) {
+	        out.write(buffer, 0, len);
+	        downloaded += len;
+	        if ((int)((System.currentTimeMillis() - start) / 500) > msgs) {
+	            log.info((int)((double)downloaded / (double)size * 100d) + "%");
+	            msgs++;
+	        }
+	    }
+	    in.close();
+	    out.close();
+	    log.info("Download finished");
 	}
 
 	public PlayerProfile getPlayerProfile(Player player)
 	{
 		return Users.getProfile(player);
+	}
+	
+	public void checkXp(Player player, SkillType skillType)
+	{
+		if(skillType == SkillType.ALL)
+			Skills.XpCheckAll(player);
+		else
+			Skills.XpCheckSkill(skillType, player);
 	}
 	
 	public boolean inSameParty(Player playera, Player playerb)
@@ -180,17 +234,17 @@ public class mcMMO extends JavaPlugin
 	public boolean onCommand( CommandSender sender, Command command, String label, String[] args ) {
 		Player player = null;
 		PlayerProfile PP = null;
-		if(!isConsole(sender)) {
+		if(sender instanceof Player) {
 			player = (Player) sender;
 			PP = Users.getProfile(player);
 		}
-		
+
 		String[] split = new String[args.length + 1];
 		split[0] = label;
 		for(int a = 0; a < args.length; a++){
 			split[a + 1] = args[a];
 		}
-		
+
 		//Check if the command is an MMO related help command
 		if(label.equalsIgnoreCase("taming") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillTaming").toLowerCase())){ 
 			float skillvalue = (float)PP.getSkillLevel(SkillType.TAMING);
@@ -574,26 +628,20 @@ public class mcMMO extends JavaPlugin
 			 */
 		}
 
-		else if(LoadProperties.mcmmoEnable && label.equalsIgnoreCase(LoadProperties.mcmmo)){ 
-			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"mMO"+ChatColor.RED+"[]-----");   
-			player.sendMessage(ChatColor.YELLOW+"mcMMO is an RPG server mod for minecraft."); 
-			player.sendMessage(ChatColor.YELLOW+"There are many skills added by mcMMO to minecraft."); 
-			player.sendMessage(ChatColor.YELLOW+"They can do anything from giving a chance"); 
-			player.sendMessage(ChatColor.YELLOW+"for double drops to letting you break materials instantly."); 
-			player.sendMessage(ChatColor.YELLOW+"For example, by harvesting logs from trees you will gain"); 
-			player.sendMessage(ChatColor.YELLOW+"Woodcutting xp and once you have enough xp you will gain"); 
-			player.sendMessage(ChatColor.YELLOW+"a skill level in Woodcutting. By raising this skill you will"); 
-			player.sendMessage(ChatColor.YELLOW+"be able to receive benefits like "+ChatColor.RED+"double drops");  
-			player.sendMessage(ChatColor.YELLOW+"and increase the effects of the "+ChatColor.RED+"\"Tree Felling\""+ChatColor.YELLOW+" ability.");   
-			player.sendMessage(ChatColor.YELLOW+"mMO has abilities related to the skill, skills normally"); 
-			player.sendMessage(ChatColor.YELLOW+"provide passive bonuses but they also have activated"); 
-			player.sendMessage(ChatColor.YELLOW+"abilities too. Each ability is activated by holding"); 
-			player.sendMessage(ChatColor.YELLOW+"the appropriate tool and "+ChatColor.RED+"right clicking.");  
-			player.sendMessage(ChatColor.YELLOW+"For example, if you hold a Mining Pick and right click"); 
-			player.sendMessage(ChatColor.YELLOW+"you will ready your Pickaxe, attack mining materials"); 
-			player.sendMessage(ChatColor.YELLOW+"and then "+ChatColor.RED+"Super Breaker "+ChatColor.YELLOW+"will activate.");   
-			player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with "+ChatColor.DARK_AQUA+LoadProperties.mcc);  
-			player.sendMessage(ChatColor.GREEN+"You can donate via paypal to"+ChatColor.DARK_RED+" nossr50@gmail.com");  
+		else if(LoadProperties.mcmmoEnable && label.equalsIgnoreCase(LoadProperties.mcmmo))
+		{ 
+			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"mcMMO"+ChatColor.RED+"[]-----");
+			String description = mcLocale.getString("mcMMO.Description", new Object[] {LoadProperties.mcc});
+			String[] mcSplit = description.split(",");
+			
+			for(String x : mcSplit)
+			{
+				player.sendMessage(x);
+			}
+			
+			ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
+			if(LoadProperties.donateMessage)
+				cPlayer.sendNotification("[mcMMO] Donate!", "Paypal nossr50@gmail.com", Material.CAKE);
 		}
 		else if(LoadProperties.mccEnable && label.equalsIgnoreCase(LoadProperties.mcc)){ 
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mcMMO Commands"+ChatColor.RED+"[]---");   
@@ -1079,10 +1127,11 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * STATS COMMAND
 		 */
-		else if(LoadProperties.statsEnable && label.equalsIgnoreCase(LoadProperties.stats)){ 
+		else if(LoadProperties.statsEnable && label.equalsIgnoreCase(LoadProperties.stats))
+		{ 
 
 			player.sendMessage(mcLocale.getString("mcPlayerListener.YourStats"));
-			
+
 			if(mcPermissions.getEnabled())
 				player.sendMessage(mcLocale.getString("mcPlayerListener.NoSkillNote")); 
 
@@ -1096,7 +1145,7 @@ public class mcMMO extends JavaPlugin
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.HerbalismSkill"), PP.getSkillLevel(SkillType.HERBALISM), PP.getSkillXpLevel(SkillType.HERBALISM), PP.getXpToLevel(SkillType.HERBALISM)));
 				if(mcPermissions.getInstance().mining(player))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.MiningSkill"), PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING)));
-				if(mcPermissions.getInstance().woodCuttingAbility(player))
+				if(mcPermissions.getInstance().woodcutting(player))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.WoodcuttingSkill"), PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING)));
 			}
 			if(Skills.hasCombatSkills(player)){
@@ -1142,8 +1191,8 @@ public class mcMMO extends JavaPlugin
 				Player target = getPlayer(split[1]);
 				PlayerProfile PPt = Users.getProfile(target);
 				PPt.modifyInvite(PP.getParty());
-				
-				
+
+
 				player.sendMessage(mcLocale.getString("mcPlayerListener.InviteSuccess")); 
 				//target.sendMessage(ChatColor.RED+"ALERT: "+ChatColor.GREEN+"You have received a party invite for "+PPt.getInvite()+" from "+player.getName());   
 				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite1", new Object[] {PPt.getInvite(), player.getName()}));
@@ -1209,20 +1258,21 @@ public class mcMMO extends JavaPlugin
 		else if(LoadProperties.partyEnable && label.equalsIgnoreCase("p")){
 
 			// Console message?
-			if(isConsole(sender)) {
+			if(!(sender instanceof Player)) 
+			{
 				if(args.length < 2) return true;
 				String pMessage = args[1];
 				for (int i = 2; i <= args.length - 1; i++) {
 					pMessage = pMessage + " " + args[i];
 				}
-				
+
 				String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE
 				+ "*Console*" + ChatColor.GREEN + ") ";
-	
+
 				log.log(Level.INFO,
 						"[P](" + args[0] + ")" + "<*Console*> "
 						+ pMessage);
-				
+
 				for(Player herp : getServer().getOnlinePlayers()) {
 					if(Users.getProfile(herp).inParty()) {
 						log.info(Users.getProfile(herp).getParty());
@@ -1233,12 +1283,12 @@ public class mcMMO extends JavaPlugin
 				}
 				return true;
 			}
-			
+
 			if(!mcPermissions.getInstance().party(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
-			
+
 			// Not a toggle, a message
 
 			if (args.length >= 1) {
@@ -1262,7 +1312,7 @@ public class mcMMO extends JavaPlugin
 
 				return true;
 			}
-			
+
 			if(PP.getAdminChatMode())
 				PP.toggleAdminChat();
 
@@ -1278,27 +1328,28 @@ public class mcMMO extends JavaPlugin
 		}
 
 		else if(label.equalsIgnoreCase("a")){
-			
+
 			// Console message?
-			if(isConsole(sender) && args.length >= 1) {
+			if(!(sender instanceof Player) && args.length >= 1) 
+			{
 				String aMessage = args[0];
 				for (int i = 1; i <= args.length - 1; i++) {
 					aMessage = aMessage + " " + args[i];
 				}
-	
+
 				String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE
 				+ "*Console*" + ChatColor.AQUA + "} ";
-				
+
 				log.log(Level.INFO, "[A]<*Console*> "
 						+ aMessage);
-				
+
 				for (Player herp : getServer().getOnlinePlayers()) {
 					if (mcPermissions.getInstance().adminChat(herp))
 						herp.sendMessage(aPrefix + aMessage);
 				}
 				return true;
 			}
-			
+
 			if(!mcPermissions.getInstance().adminChat(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
@@ -1322,7 +1373,7 @@ public class mcMMO extends JavaPlugin
 				}
 				return true;
 			}
-			
+
 			if(PP.getPartyChatMode())
 				PP.togglePartyChat();
 
@@ -1383,10 +1434,6 @@ public class mcMMO extends JavaPlugin
 		return false;
 	}
 
-    public boolean isConsole(CommandSender sender) {
-        return !(sender instanceof Player);
-    }
-	
 	public Player getPlayer(String playerName){
 		for(Player herp : getPlayersOnline()){
 			if(herp.getName().toLowerCase().equals(playerName.toLowerCase())){

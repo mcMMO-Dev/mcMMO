@@ -28,7 +28,7 @@ public class PlayerProfile
 	private String party, myspawn, myspawnworld, invite;
 	
 	//TOGGLES
-	private boolean partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
+	private boolean placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
 	superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
 	serratedStrikesMode, hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false, pickaxePreparationMode = false, axePreparationMode = false, skullSplitterMode, berserkMode;
 	
@@ -452,6 +452,14 @@ public class PlayerProfile
     public boolean getPartyChatMode() {return partyChatMode;}
     public boolean getGodMode() {return godMode;}
     
+    public void togglePlacedAnvil()
+    {
+    	placedAnvil = !placedAnvil;
+    }
+    public Boolean getPlacedAnvil()
+    {
+    	return placedAnvil;
+    }
     public void toggleAdminChat()
     {
     	adminChatMode = !adminChatMode;

@@ -1,18 +1,25 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.0.37
+The donation message in /mcmmo is now toggle-able
+The anvil message now only gets shown the first time you place an anvil (after login)
+Reworked /mcmmo (an improvement I would say)
+Added /mcmmo text to localization file
+Archery fire rate now configurable
 Berserk mode stops items from being collected
 Taming no longer receives xp from wolves being harmed
+Fixed bug where /stats required Tree Feller permission to show Woodcutting skill
 Fixed bug where players with mcgod could be harmed by AoE
 Fixed bug where modifying a skill also modified the xp to the same amount (when it should be zero)
 
 BukkitContrib Stuff
-Added 'notifications' on levelup (BukkitContrib)
-Added sound effects to abilities
-Added an extra cool sound for WoodCutting
+Added a pop-up when placing an Anvil
+Added pop-ups on levelup
+Added basic sound effects to various abilities (Berserk, Tree Feller, Super Breaker, Leaf Blower, etc...)
 
 Code Stuff
-Added getPlayerProfile() which returns a PlayerProfile object for plugin devs
+Added checkXp(SkillType, Player) for plugin devs (use this after modifying XP to check for levels)
+Added getPlayerProfile() which returns a PlayerProfile object for plugin devs (You can do almost everything with this object)
 100% more enums
 Changed how checking skill xp worked to be more efficient
 

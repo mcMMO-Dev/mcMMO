@@ -21,11 +21,8 @@ public class contribStuff
 	{
 		//Contrib stuff
 		ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
-		if(cPlayer.isBukkitContribEnabled())
-		{
-			SoundManager SM = BukkitContrib.getSoundManager();
-			SM.playSoundEffect(cPlayer, effect, location);
-		}
+		SoundManager SM = BukkitContrib.getSoundManager();
+		SM.playSoundEffect(cPlayer, effect, location);
 	}
 	public static void levelUpNotification(SkillType skillType, ContribPlayer cPlayer)
 	{

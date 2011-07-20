@@ -19,6 +19,8 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkitcontrib.player.ContribCraftPlayer;
+import org.bukkitcontrib.player.ContribPlayer;
 import org.bukkitcontrib.sound.SoundEffect;
 
 import com.gmail.nossr50.locale.mcLocale;
@@ -54,7 +56,26 @@ public class mcBlockListener extends BlockListener {
     			plugin.misc.blockWatchList.add(block);
     	}
     	if(block.getTypeId() == 42 && LoadProperties.anvilmessages)
-    		event.getPlayer().sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil")); //$NON-NLS-1$
+    	{
+    		ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
+    		PlayerProfile PP = Users.getProfile(player);
+    		if(cPlayer.isBukkitContribEnabled())
+    		{
+    			if(!PP.getPlacedAnvil())
+    			{
+    				cPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.IRON_BLOCK);
+    				PP.togglePlacedAnvil();
+    			}
+    		}
+    		else
+    		{
+    			if(!PP.getPlacedAnvil())
+    			{
+    				event.getPlayer().sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil")); //$NON-NLS-1$
+    				PP.togglePlacedAnvil();
+    			}
+    		}
+    	}
     }
     
     public void onBlockBreak(BlockBreakEvent event) 
@@ -251,7 +272,8 @@ public class mcBlockListener extends BlockListener {
     	
     	
     	if(mcPermissions.getInstance().mining(player) && Mining.canBeSuperBroken(block) && 
-    			m.blockBreakSimulate(block, player, plugin) && PP.getSkillLevel(SkillType.MINING) >= 250 && block.getType() != Material.STONE)
+    			m.blockBreakSimulate(block, player, plugin) && PP.getSkillLevel(SkillType.MINING) >= 250 
+    			&& block.getType() != Material.STONE && m.isMiningPick(inhand))
     	{
     		contribStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
     		if(PP.getSkillLevel(SkillType.MINING) >= 500)

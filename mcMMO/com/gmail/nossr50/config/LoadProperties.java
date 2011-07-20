@@ -1,15 +1,13 @@
 package com.gmail.nossr50.config;
 
 import java.io.File;
-import java.util.List;
 import org.bukkit.util.config.Configuration;
 
 public class LoadProperties 
 {
-	public static Boolean chimaeraWingEnable=true, xpGainsMobSpawners=false, myspawnEnable = true, mccEnable = true, mcmmoEnable = true, partyEnable = true, inviteEnable = true, acceptEnable = true, whoisEnable = true, statsEnable = true, addxpEnable = true, ptpEnable = true, mmoeditEnable = true, clearmyspawnEnable = true, mcgodEnable = true, mcabilityEnable = true, mctopEnable = true, mcrefreshEnable = true, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	public static Boolean donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond, locale;
-	public static int chimaeraId=288, msandstone, mcocoa = 10, water_thunder = 75, cure_self = 5, cure_other = 5, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapus, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
-	
+	public static int archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapus, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
 	public String directory = "plugins/mcMMO/"; 
 	File file = new File(directory + File.separator + "config.yml");
 	
@@ -35,42 +33,34 @@ public class LoadProperties
 	}
 	    private void write(String root, Object x)
 	    {
-	        Configuration config = load();
+	    	Configuration config = load();
 	        config.setProperty(root, x);
 	        config.save();
 	    }
-	    private Boolean readBoolean(String root)
-	    {
-	        Configuration config = load();
-	        return config.getBoolean(root, false);
-	    }
-	    private Integer readInteger(String root)
+	    private Boolean readBoolean(String root, Boolean def)
 	    {
 	    	Configuration config = load();
-	    	return config.getInt(root, 0);
+	    	Boolean result = config.getBoolean(root, def);
+	    	config.save();
+	        return result;
 	    }
-
-	    @SuppressWarnings("unused")
-		private Double readDouble(String root)
+	    private Integer readInteger(String root, Integer def)
 	    {
-	        Configuration config = load();
-	        return config.getDouble(root, 0);
-	    }
-	    @SuppressWarnings("unused")
-		private List<String> readStringList(String root)
-	    {
-	        Configuration config = load();
-	        return config.getKeys(root);
+	    	Configuration config = load();
+	    	Integer result = config.getInt(root, def);
+	    	config.save();
+	        return result;
 	    }
 	    
-	    private String readString(String root)
+	    private String readString(String root, String def)
 	    {
-	        Configuration config = load();
-	        return config.getString(root);
+	    	Configuration config = load();
+	    	String result = config.getString(root, def);
+	    	config.save();
+	        return result;
 	    }
 	    private Configuration load()
 	    {
-
 	        try {
 	            Configuration config = new Configuration(file);
 	            config.load();
@@ -179,6 +169,7 @@ public class LoadProperties
 	    	write("Commands.mcrefresh.Name", "mcrefresh");
 	    	write("Commands.mcrefresh.Enabled", true);
 	    	write("Commands.mcmmo.Name", "mcmmo");
+	    	write("Commands.mcmmo.Donate_Message", true);
 	    	write("Commands.mcmmo.Enabled", true);
 	    	write("Commands.mcc.Name", "mcc");
 	    	write("Commands.mcc.Enabled", true);
@@ -221,197 +212,191 @@ public class LoadProperties
 	    	write("Skills.Repair.Wood.ID", 5);
 	    	write("Skills.Repair.Wood.Name", "Wood Planks");
 	    	write("Skills.Repair.Diamond.ID", 264);
-	    	write("Skills.Repair.Diamond.Name", "Diamond Ore");
+	    	write("Skills.Repair.Diamond.Name", "Diamond");
 	    	write("Skills.Repair.Diamond.Level_Required", 50);
 	    	write("Skills.Repair.Iron.ID", 265);
 	    	write("Skills.Repair.Iron.Name", "Iron Bars");
 	    	write("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
-	    	write("Skills.Archery.Fire_Rate_Limiter", true);
+	    	write("Skills.Archery.Fire_Rate_Limiter.Enabled", true);
+	    	write("Skills.Archery.Fire_Rate_Limiter.Interval", 1000);
 	    	write("Skills.Mining.Requires_Pickaxe", true);
 	    	write("Skills.Woodcutting.Requires_Axe", true);
 	    	
-	     loadkeys();
+	    	loadkeys();
 	    }
 	    private void loadkeys()
 	    {
 	        System.out.println("Loading Config File...");
 	        
-	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled");
+	        donateMessage = readBoolean("Commands.mcmmo.Donate_Message", true);
+	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);
 	        
 	        //cure_self = readInteger("Sorcery.Spells.Curative.Cure_Self.Mana_Cost");
 	        //cure_other = readInteger("Sorcery.Spells.Curative.Cure_Other.Mana_Cost");
 	        //water_thunder = readInteger("Sorcery.Spells.Water.Thunder");
 	        
-	        msulphur = readInteger("XP.Excavation.Sulphur");
-	        mbones = readInteger("XP.Excavation.Bones");
-	        mbase = readInteger("XP.Excavation.Base");
-	        mmushroom2 = readInteger("XP.Excavation.Mushroom");
-	    	mslowsand = readInteger("XP.Excavation.Slowsand");
-	    	mglowstone2 = readInteger("XP.Excavation.Glowstone");
-	    	mmusic = readInteger("XP.Excavation.Music");
-	    	mdiamond2 = readInteger("XP.Excavation.Diamond");
-	    	mapple = readInteger("XP.Excavation.Apple");
-	    	meggs = readInteger("XP.Excavation.Eggs");
-	    	mcake = readInteger("XP.Excavation.Cake");
-	    	mcocoa = readInteger("XP.Excavation.Cocoa_Beans");
+	        msulphur = readInteger("XP.Excavation.Sulphur", 3);
+	        mbones = readInteger("XP.Excavation.Bones", 3);
+	        mbase = readInteger("XP.Excavation.Base", 4);
+	        mmushroom2 = readInteger("XP.Excavation.Mushroom", 8);
+	    	mslowsand = readInteger("XP.Excavation.Slowsand", 8);
+	    	mglowstone2 = readInteger("XP.Excavation.Glowstone", 8);
+	    	mmusic = readInteger("XP.Excavation.Music", 300);
+	    	mdiamond2 = readInteger("XP.Excavation.Diamond", 100);
+	    	mapple = readInteger("XP.Excavation.Apple", 10);
+	    	meggs = readInteger("XP.Excavation.Eggs", 10);
+	    	mcake = readInteger("XP.Excavation.Cake", 300);
+	    	mcocoa = readInteger("XP.Excavation.Cocoa_Beans", 10);
+	    	
+	        msugar = readInteger("XP.Herbalism.Sugar_Cane", 3);
+	        mwheat = readInteger("XP.Herbalism.Wheat", 5);
+	    	mcactus = readInteger("XP.Herbalism.Cactus", 3);
+	    	mpumpkin = readInteger("XP.Herbalism.Pumpkin", 55);
+	    	mflower = readInteger("XP.Herbalism.Flowers", 10);
+	    	mmushroom = readInteger("XP.Herbalism.Mushrooms", 15);
+	    	
+	    	mpine = readInteger("XP.Woodcutting.Pine", 7);
+	    	mbirch = readInteger("XP.Woodcutting.Birch", 8);
+	    	mspruce = readInteger("XP.Woodcutting.Spruce", 9);
 	        
-	        msugar = readInteger("XP.Herbalism.Sugar_Cane");
-	        mwheat = readInteger("XP.Herbalism.Wheat");
-	    	mcactus = readInteger("XP.Herbalism.Cactus");
-	    	mpumpkin = readInteger("XP.Herbalism.Pumpkin");
-	    	mflower = readInteger("XP.Herbalism.Flowers");
-	    	mmushroom = readInteger("XP.Herbalism.Mushrooms");
-	    	
-	    	mpine = readInteger("XP.Woodcutting.Pine");
-	    	mbirch = readInteger("XP.Woodcutting.Birch");
-	    	mspruce = readInteger("XP.Woodcutting.Spruce");
+	        mgold = readInteger("XP.Mining.Gold", 25);
+	        mdiamond = readInteger("XP.Mining.Diamond", 75);
+	        miron = readInteger("XP.Mining.Iron", 25);
+	        mredstone = readInteger("XP.Mining.Redstone", 15);
+	        mlapus = readInteger("XP.Mining.Lapus", 40);
+	        mobsidian = readInteger("XP.Mining.Obsidian", 15);
+	        mnetherrack = readInteger("XP.Mining.Netherrack", 3);
+	        mglowstone = readInteger("XP.Mining.Glowstone", 3);
+	        mcoal = readInteger("XP.Mining.Coal", 10);
+	        mstone = readInteger("XP.Mining.Stone", 3);
+	        msandstone = readInteger("XP.Mining.Sandstone", 3);
 	        
-	        mgold = readInteger("XP.Mining.Gold");
-	        mdiamond = readInteger("XP.Mining.Diamond");
-	        miron = readInteger("XP.Mining.Iron");
-	        mredstone = readInteger("XP.Mining.Redstone");
-	        mlapus = readInteger("XP.Mining.Lapus");
-	        mobsidian = readInteger("XP.Mining.Obsidian");
-	        mnetherrack = readInteger("XP.Mining.Netherrack");
-	        mglowstone = readInteger("XP.Mining.Glowstone");
-	        mcoal = readInteger("XP.Mining.Coal");
-	        mstone = readInteger("XP.Mining.Stone");
-	        msandstone = readInteger("XP.Mining.Sandstone");
-	        
-	        enableMotd = readBoolean("enableMOTD");
-	        
-	        greenTerraCooldown = readInteger("Abilities.Cooldowns.Green_Terra");
-	    	superBreakerCooldown = readInteger("Abilities.Cooldowns.Super_Breaker");
-	    	gigaDrillBreakerCooldown = readInteger("Abilities.Cooldowns.Giga_Drill_Breaker");
-	    	treeFellerCooldown = readInteger("Abilities.Cooldowns.Tree_Feller");
-	    	berserkCooldown = readInteger("Abilities.Cooldowns.Berserk");
-	    	serratedStrikeCooldown = readInteger("Abilities.Cooldowns.Serrated_Strikes");
-	    	skullSplitterCooldown = readInteger("Abilities.Cooldowns.Skull_Splitter");
+	        greenTerraCooldown = readInteger("Abilities.Cooldowns.Green_Terra", 240);
+	    	superBreakerCooldown = readInteger("Abilities.Cooldowns.Super_Breaker", 240);
+	    	gigaDrillBreakerCooldown = readInteger("Abilities.Cooldowns.Giga_Drill_Breaker", 240);
+	    	treeFellerCooldown = readInteger("Abilities.Cooldowns.Tree_Feller", 240);
+	    	berserkCooldown = readInteger("Abilities.Cooldowns.Berserk", 240);
+	    	serratedStrikeCooldown = readInteger("Abilities.Cooldowns.Serrated_Strikes", 240);
+	    	skullSplitterCooldown = readInteger("Abilities.Cooldowns.Skull_Splitter", 240);
 	    	
-	    	MySQLserverName = readString("MySQL.Server.Address");
+	    	MySQLserverName = readString("MySQL.Server.Address", "localhost");
+	    	MySQLdbPass = readString("MySQL.Database.User.Password", "");
 	    	
-	    	if(readString("MySQL.Database.User.Password") != null)
-	    		MySQLdbPass = readString("MySQL.Database.User.Password");
-	    	else
-	    		MySQLdbPass = "";
+	    	MySQLdbName = readString("MySQL.Database.Name", "DatabaseName");
+	    	MySQLuserName = readString("MySQL.Database.User.Name", "UserName");
+	    	MySQLtablePrefix = readString("MySQL.Database.TablePrefix", "mcmmo_");
+	    	MySQLport = readInteger("MySQL.Server.Port", 3306);
+	    	useMySQL = readBoolean("MySQL.Enabled", false);
 	    	
-	    	MySQLdbName = readString("MySQL.Database.Name");
-	    	MySQLuserName = readString("MySQL.Database.User.Name");
-	    	MySQLtablePrefix = readString("MySQL.Database.TablePrefix");
-	    	MySQLport = readInteger("MySQL.Server.Port");
-	    	useMySQL = readBoolean("MySQL.Enabled");
+	    	locale = readString("General.Locale", "en_us");
+	    	enableMotd = readBoolean("General.MOTD.Enabled", true);
+	    	enableMySpawn = readBoolean("General.MySpawn.Enabled", true);
+	    	enableRegen = readBoolean("General.HP_Regeneration.Enabled", true);
 	    	
-	    	locale = readString("General.Locale");
-	    	enableMotd = readBoolean("General.MOTD.Enabled");
-	    	enableMySpawn = readBoolean("General.MySpawn.Enabled");
-	    	enableRegen = readBoolean("General.HP_Regeneration.Enabled");
+	    	enableCobbleToMossy = readBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
+	    	archeryFireRateLimit = readBoolean("Skills.Archery.Fire_Rate_Limiter.Enabled", true);
+	    	archeryLimit = readInteger("Skills.Archery.Fire_Rate_Limiter.Interval", 1000);
 	    	
-	    	enableCobbleToMossy = readBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy");
-	    	archeryFireRateLimit = readBoolean("Skills.Archery.Fire_Rate_Limiter");
+	    	xpGainMultiplier = readInteger("XP.Gains.Multiplier.Global", 1);
+	    	toolsLoseDurabilityFromAbilities = readBoolean("Abilities.Tools.Durability_Loss_Enabled", true);
+	    	abilityDurabilityLoss = readInteger("Abilities.Tools.Durability_Loss", 2);
 	    	
-	    	xpGainMultiplier = readInteger("XP.Gains.Multiplier.Global");
-	    	toolsLoseDurabilityFromAbilities = readBoolean("Abilities.Tools.Durability_Loss_Enabled");
-	    	abilityDurabilityLoss = readInteger("Abilities.Tools.Durability_Loss");
+	    	feathersConsumedByChimaeraWing = readInteger("Items.Chimaera_Wing.Feather_Cost", 10);
+	    	chimaeraId = readInteger("Items.Chimaera_Wing.Item_ID", 288);
+	    	chimaeraWingEnable = readBoolean("Items.Chimaera_Wing.Enabled", true);
 	    	
-	    	feathersConsumedByChimaeraWing = readInteger("Items.Chimaera_Wing.Feather_Cost");
-	    	chimaeraId = readInteger("Items.Chimaera_Wing.Item_ID");
-	    	chimaeraWingEnable = readBoolean("Items.Chimaera_Wing.Enabled");
-	    	
-	    	pvpxp = readBoolean("XP.PVP.Rewards");
-	    	pvpxprewardmodifier = readInteger("XP.Gains.Multiplier.PVP");
-	    	miningrequirespickaxe = readBoolean("Skills.Mining.Requires_Pickaxe");
-	    	woodcuttingrequiresaxe = readBoolean("Skills.Woodcutting.Requires_Axe");
-	    	repairdiamondlevel = readInteger("Skills.Repair.Diamond.Level_Required");
+	    	pvpxp = readBoolean("XP.PVP.Rewards", true);
+	    	pvpxprewardmodifier = readInteger("XP.Gains.Multiplier.PVP", 1);
+	    	miningrequirespickaxe = readBoolean("Skills.Mining.Requires_Pickaxe", true);
+	    	woodcuttingrequiresaxe = readBoolean("Skills.Woodcutting.Requires_Axe", true);
+	    	repairdiamondlevel = readInteger("Skills.Repair.Diamond.Level_Required", 50);
 
-	    	globalxpmodifier = readInteger("XP.Formula.Multiplier.Global");
-	    	if(readInteger("XP.Formula.Multiplier.Sorcery") != null)
-	    		sorceryxpmodifier = readInteger("XP.Formula.Multiplier.Sorcery");
-	    	else
-	    		sorceryxpmodifier = 2;
-	    	tamingxpmodifier = readInteger("XP.Formula.Multiplier.Taming");
-	    	miningxpmodifier = readInteger("XP.Formula.Multiplier.Mining");
-	    	repairxpmodifier = readInteger("XP.Formula.Multiplier.Repair");
-	    	woodcuttingxpmodifier = readInteger("XP.Formula.Multiplier.Woodcutting");
-	    	unarmedxpmodifier = readInteger("XP.Formula.Multiplier.Unarmed");
-	    	herbalismxpmodifier = readInteger("XP.Formula.Multiplier.Herbalism");
-	    	excavationxpmodifier = readInteger("XP.Formula.Multiplier.Excavation");
-	    	archeryxpmodifier = readInteger("XP.Formula.Multiplier.Archery");
-	    	swordsxpmodifier = readInteger("XP.Formula.Multiplier.Swords");
-	    	axesxpmodifier = readInteger("XP.Formula.Multiplier.Axes");
-	    	acrobaticsxpmodifier = readInteger("XP.Formula.Multiplier.Acrobatics");
+	    	globalxpmodifier = readInteger("XP.Formula.Multiplier.Global", 1);
+	    	sorceryxpmodifier = readInteger("XP.Formula.Multiplier.Sorcery", 2);
+	    	tamingxpmodifier = readInteger("XP.Formula.Multiplier.Taming", 2);
+	    	miningxpmodifier = readInteger("XP.Formula.Multiplier.Mining", 2);
+	    	repairxpmodifier = readInteger("XP.Formula.Multiplier.Repair", 2);
+	    	woodcuttingxpmodifier = readInteger("XP.Formula.Multiplier.Woodcutting", 2);
+	    	unarmedxpmodifier = readInteger("XP.Formula.Multiplier.Unarmed", 2);
+	    	herbalismxpmodifier = readInteger("XP.Formula.Multiplier.Herbalism", 2);
+	    	excavationxpmodifier = readInteger("XP.Formula.Multiplier.Excavation", 2);
+	    	archeryxpmodifier = readInteger("XP.Formula.Multiplier.Archery", 2);
+	    	swordsxpmodifier = readInteger("XP.Formula.Multiplier.Swords", 2);
+	    	axesxpmodifier = readInteger("XP.Formula.Multiplier.Axes", 2);
+	    	acrobaticsxpmodifier = readInteger("XP.Formula.Multiplier.Acrobatics", 2);
 
-	    	anvilmessages = readBoolean("Skills.Repair.Anvil_Messages");
+	    	anvilmessages = readBoolean("Skills.Repair.Anvil_Messages", true);
 	    	
-	        rGold =  readInteger("Skills.Repair.Gold.ID");
-	        nGold =  readString("Skills.Repair.Gold.Name");      
-	        rStone =  readInteger("Skills.Repair.Stone.ID");
-	        nStone =  readString("Skills.Repair.Stone.Name");     
-	        rWood =  readInteger("Skills.Repair.Wood.ID");
-	        nWood =  readString("Skills.Repair.Wood.Name");        
-	        rDiamond =   readInteger("Skills.Repair.Diamond.ID");
-	        nDiamond =  readString("Skills.Repair.Diamond.Name");          
-	        rIron =   readInteger("Skills.Repair.Iron.ID");
-	        nIron =  readString("Skills.Repair.Iron.Name");  
+	        rGold =  readInteger("Skills.Repair.Gold.ID", 266);
+	        nGold =  readString("Skills.Repair.Gold.Name", "Gold Bars");      
+	        rStone =  readInteger("Skills.Repair.Stone.ID", 4);
+	        nStone =  readString("Skills.Repair.Stone.Name", "Cobblestone");     
+	        rWood =  readInteger("Skills.Repair.Wood.ID", 5);
+	        nWood =  readString("Skills.Repair.Wood.Name", "Wood Planks");        
+	        rDiamond =   readInteger("Skills.Repair.Diamond.ID", 264);
+	        nDiamond =  readString("Skills.Repair.Diamond.Name", "Diamond");          
+	        rIron =   readInteger("Skills.Repair.Iron.ID", 265);
+	        nIron =  readString("Skills.Repair.Iron.Name", "Iron Bars");  
 
-	    	cocoabeans = readBoolean("Excavation.Drops.Cocoa_Beans");
-	    	mushrooms = readBoolean("Excavation.Drops.Mushrooms");
-	    	glowstone = readBoolean("Excavation.Drops.Glowstone");
-	    	eggs = readBoolean("Excavation.Drops.Eggs");
-	    	apples = readBoolean("Excavation.Drops.Apples");
-	    	cake = readBoolean("Excavation.Drops.Cake");
-	    	music = readBoolean("Excavation.Drops.Music");
-	    	diamond = readBoolean("Excavation.Drops.Diamond");
-	    	slowsand = readBoolean("Excavation.Drops.Slowsand");
-	    	sulphur = readBoolean("Excavation.Drops.Sulphur");
-	    	netherrack = readBoolean("Excavation.Drops.Netherrack");
-	    	bones = readBoolean("Excavation.Drops.Bones");
+	    	cocoabeans = readBoolean("Excavation.Drops.Cocoa_Beans", true);
+	    	mushrooms = readBoolean("Excavation.Drops.Mushrooms", true);
+	    	glowstone = readBoolean("Excavation.Drops.Glowstone", true);
+	    	eggs = readBoolean("Excavation.Drops.Eggs", true);
+	    	apples = readBoolean("Excavation.Drops.Apples", true);
+	    	cake = readBoolean("Excavation.Drops.Cake", true);
+	    	music = readBoolean("Excavation.Drops.Music", true);
+	    	diamond = readBoolean("Excavation.Drops.Diamond", true);
+	    	slowsand = readBoolean("Excavation.Drops.Slowsand", true);
+	    	sulphur = readBoolean("Excavation.Drops.Sulphur", true);
+	    	netherrack = readBoolean("Excavation.Drops.Netherrack", true);
+	    	bones = readBoolean("Excavation.Drops.Bones", true);
 	    	
-	    	mctop = readString("Commands.mctop.Name");
-	    	mctopEnable = readBoolean("Commands.mctop.Enabled");
+	    	mctop = readString("Commands.mctop.Name", "mctop");
+	    	mctopEnable = readBoolean("Commands.mctop.Enabled", true);
 	    	
-	    	addxp = readString("Commands.addxp.Name");
-	    	addxpEnable = readBoolean("Commands.addxp.Enabled");
+	    	addxp = readString("Commands.addxp.Name", "addxp");
+	    	addxpEnable = readBoolean("Commands.addxp.Enabled", true);
 	    	
-	    	mcability = readString("Commands.mcability.Name");
-	    	mcabilityEnable = readBoolean("Commands.mcability.Enabled");
+	    	mcability = readString("Commands.mcability.Name", "mcability");
+	    	mcabilityEnable = readBoolean("Commands.mcability.Enabled", true);
 	    	
-	    	mcrefresh = readString("Commands.mcrefresh.Name");
-	    	mcrefreshEnable = readBoolean("Commands.mcrefresh.Enabled");
+	    	mcrefresh = readString("Commands.mcrefresh.Name", "mcrefresh");
+	    	mcrefreshEnable = readBoolean("Commands.mcrefresh.Enabled", true);
 	    	
-	    	mcmmo = readString("Commands.mcmmo.Name");
-	    	mcmmoEnable = readBoolean("Commands.mcmmo.Enabled");
+	    	mcmmo = readString("Commands.mcmmo.Name", "mcmmo");
+	    	mcmmoEnable = readBoolean("Commands.mcmmo.Enabled", true);
 	    	
-	    	mcc = readString("Commands.mcc.Name");
-	    	mccEnable = readBoolean("Commands.mcc.Enabled");
+	    	mcc = readString("Commands.mcc.Name", "mcc");
+	    	mccEnable = readBoolean("Commands.mcc.Enabled", true);
 	    	
-	    	mcgod = readString("Commands.mcgod.Name");
-	    	mcgodEnable = readBoolean("Commands.mcgod.Enabled");
+	    	mcgod = readString("Commands.mcgod.Name", "mcgod");
+	    	mcgodEnable = readBoolean("Commands.mcgod.Enabled", true);
 	    	
-	    	stats = readString("Commands.stats.Name");
-	    	statsEnable = readBoolean("Commands.stats.Enabled");
+	    	stats = readString("Commands.stats.Name", "stats");
+	    	statsEnable = readBoolean("Commands.stats.Enabled", true);
 	    	
-	    	mmoedit = readString("Commands.mmoedit.Name");
-	    	mmoeditEnable = readBoolean("Commands.mmoedit.Enabled");
+	    	mmoedit = readString("Commands.mmoedit.Name", "mmoedit");
+	    	mmoeditEnable = readBoolean("Commands.mmoedit.Enabled", true);
 	    	
-	    	ptp = readString("Commands.ptp.Name");
-	    	ptpEnable = readBoolean("Commands.ptp.Enabled");
+	    	ptp = readString("Commands.ptp.Name", "ptp");
+	    	ptpEnable = readBoolean("Commands.ptp.Enabled", true);
 	    	
-	    	party = readString("Commands.party.Name");
-	    	partyEnable = readBoolean("Commands.party.Enabled");
+	    	party = readString("Commands.party.Name", "party");
+	    	partyEnable = readBoolean("Commands.party.Enabled", true);
 	    	
-	    	myspawn = readString("Commands.myspawn.Name");
-	    	myspawnEnable = readBoolean("Commands.myspawn.Enabled");
+	    	myspawn = readString("Commands.myspawn.Name", "myspawn");
+	    	myspawnEnable = readBoolean("Commands.myspawn.Enabled", true);
 	    	
-	    	whois = readString("Commands.whois.Name");
-	    	whoisEnable = readBoolean("Commands.whois.Enabled");
+	    	whois = readString("Commands.whois.Name", "whois");
+	    	whoisEnable = readBoolean("Commands.whois.Enabled", true);
 	    	
-	    	invite = readString("Commands.invite.Name");
-	    	inviteEnable = readBoolean("Commands.invite.Enabled");
+	    	invite = readString("Commands.invite.Name", "invite");
+	    	inviteEnable = readBoolean("Commands.invite.Enabled", true);
 	    	
-	    	accept = readString("Commands.accept.Name");
-	    	acceptEnable = readBoolean("Commands.accept.Enabled");
+	    	accept = readString("Commands.accept.Name", "accept");
+	    	acceptEnable = readBoolean("Commands.accept.Enabled", true);
 	    	
-	    	clearmyspawn = readString("Commands.clearmyspawn.Name");
-	    	clearmyspawnEnable = readBoolean("Commands.clearmyspawn.Enabled");
+	    	clearmyspawn = readString("Commands.clearmyspawn.Name", "clearmyspawn");
+	    	clearmyspawnEnable = readBoolean("Commands.clearmyspawn.Enabled", true);
 	        }
 	}

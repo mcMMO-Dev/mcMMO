@@ -106,9 +106,8 @@ public class mcPlayerListener extends PlayerListener
 	}
 
 	@SuppressWarnings("deprecation")
-	public void onPlayerInteract(PlayerInteractEvent event) {
-		
-
+	public void onPlayerInteract(PlayerInteractEvent event) 
+	{
 		Player player = event.getPlayer();
 		PlayerProfile PP = Users.getProfile(player);
 		Action action = event.getAction();
@@ -117,8 +116,10 @@ public class mcPlayerListener extends PlayerListener
 
 
 		//Archery Nerf
-		if(player.getItemInHand().getTypeId() == 261 && LoadProperties.archeryFireRateLimit){
-			if(System.currentTimeMillis() < PP.getArcheryShotATS() + 1000){
+		if(player.getItemInHand().getTypeId() == 261 && LoadProperties.archeryFireRateLimit)
+		{
+			if(System.currentTimeMillis() < PP.getArcheryShotATS() + LoadProperties.archeryLimit)
+			{
 				/*
     			if(m.hasArrows(player))
     				m.addArrows(player);
