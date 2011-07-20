@@ -644,7 +644,7 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * FFS -> MySQL
 		 */
-		else if(label.equalsIgnoreCase("mmoupdate") && player.isOp())
+		else if(label.equalsIgnoreCase("mmoupdate"))
 		{
 			if(!mcPermissions.getInstance().admin(player))
 			{
@@ -912,17 +912,6 @@ public class mcMMO extends JavaPlugin
 					player.sendMessage(mcLocale.getString("mcPlayerListener.GodModeEnabled")); 
 					PP.toggleGodMode();
 				}
-			} else if (player.isOp())
-			{
-				if(PP.getGodMode())
-				{
-					player.sendMessage(mcLocale.getString("mcPlayerListener.GodModeDisabled")); 
-					PP.toggleGodMode();
-				} else 
-				{
-					player.sendMessage(mcLocale.getString("mcPlayerListener.GodModeEnabled")); 
-					PP.toggleGodMode();
-				}
 			}
 		}
 		else if(LoadProperties.clearmyspawnEnable && LoadProperties.enableMySpawn && label.equalsIgnoreCase(LoadProperties.clearmyspawn) && mcPermissions.getInstance().mySpawn(player))
@@ -1027,7 +1016,7 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * WHOIS COMMAND
 		 */
-		else if(LoadProperties.whoisEnable && label.equalsIgnoreCase(LoadProperties.whois) && (player.isOp() || mcPermissions.getInstance().whois(player))){ 
+		else if(LoadProperties.whoisEnable && label.equalsIgnoreCase(LoadProperties.whois) && mcPermissions.getInstance().whois(player)){ 
 			if(split.length < 2){
 				player.sendMessage(ChatColor.RED + "Proper usage is /"+LoadProperties.whois+" <playername>");  
 				return true;
@@ -1304,14 +1293,13 @@ public class mcMMO extends JavaPlugin
 						+ aMessage);
 				
 				for (Player herp : getServer().getOnlinePlayers()) {
-					if ((herp.isOp() || mcPermissions.getInstance().adminChat(
-							herp)))
+					if (mcPermissions.getInstance().adminChat(herp))
 						herp.sendMessage(aPrefix + aMessage);
 				}
 				return true;
 			}
 			
-			if(!mcPermissions.getInstance().adminChat(player) && !player.isOp()){
+			if(!mcPermissions.getInstance().adminChat(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
@@ -1329,8 +1317,7 @@ public class mcMMO extends JavaPlugin
 				log.log(Level.INFO, "[A]<" + player.getName() + "> "
 						+ aMessage);
 				for (Player herp : getServer().getOnlinePlayers()) {
-					if ((herp.isOp() || mcPermissions.getInstance().adminChat(
-							herp)))
+					if (mcPermissions.getInstance().adminChat(herp))
 						herp.sendMessage(aPrefix + aMessage);
 				}
 				return true;
