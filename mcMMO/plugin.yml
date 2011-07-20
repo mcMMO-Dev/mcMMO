@@ -68,18 +68,35 @@ permissions:
     mcmmo.*:
         description: Implies all mcmmo permissions.
         children:
-            mcmmo.admin: true 
+            mcmmo.defaults: true
+            #Instead of containing mcmmo.defaultsop on its own, it should specify each of mcmmo.defaultsop
+            mcmmo.admin: true
             mcmmo.tools.*: true
+            mcmmo.chat.adminchat: true 
+            
+    mcmmo.defaults:
+        default: true
+        description: mcmmo permisionss that default to true
+        children:
             mcmmo.ability.*: true 
             mcmmo.item.*: true 
             mcmmo.tools.*: true 
             mcmmo.regeneration: true 
             mcmmo.motd: true 
             mcmmo.commands.*: true 
-            mcmmo.chat.*: true 
+            mcmmo.chat.partychat: true 
             mcmmo.skills.*: true
-    mcmmo.admin:
+        
+    mcmmo.defaultsop:
         default: op
+        description: mcmmo permissions that default to op
+        children:
+            mcmmo.admin: true
+            mcmmo.tools.*: true
+            mcmmo.chat.adminchat: true 
+    
+    mcmmo.admin:
+        description:
         
     mcmmo.tools.*:
         description: Implies all mcmmo.tools permissions.
@@ -88,11 +105,11 @@ permissions:
             mcmmo.tools.mmoedit: true 
             mcmmo.tools.mcgod: true 
     mcmmo.tools.mcrefresh:
-        default: op
+        description:
     mcmmo.tools.mmoedit:
-        default: op
+        description:
     mcmmo.tools.mcgod:
-        default: op
+        description:
         
     mcmmo.ability.*:
         description: Implies all mcmmo.ability permissions.
@@ -105,32 +122,32 @@ permissions:
             mcmmo.ability.swords: true 
             mcmmo.ability.woodcutting: true 
     mcmmo.ability.herbalism:
-        default: true
+        description:
     mcmmo.ability.excavation:
-        default: true
+        description:
     mcmmo.ability.unarmed:
-        default: true
+        description:
     mcmmo.ability.mining:
-        default: true
+        description:
     mcmmo.ability.axes:
-        default: true
+        description:
     mcmmo.ability.swords:
-        default: true
+        description:
     mcmmo.ability.woodcutting:
-        default: true
+        description:
         
     mcmmo.item.*:
         description: Implies all mcmmo.item permissions.
         children:
             mcmmo.item.chimaerawing: true 
     mcmmo.item.chimaerawing:
-        default: true
+        description:
         
     mcmmo.regeneration:
-        default: true
+        description:
         
     mcmmo.motd:
-        default: true
+        description:
         
     mcmmo.commands.*:
         description: Implies all mcmmo.commands permissions.
@@ -142,17 +159,17 @@ permissions:
             mcmmo.commands.whois: true 
             mcmmo.commands.party: true 
     mcmmo.commands.ability:
-        default: true
+        description:
     mcmmo.commands.myspawn:
-        default: true
+        description:
     mcmmo.commands.setmyspawn:
-        default: true
+        description:
     mcmmo.commands.ptp:
-        default: true
+        description:
     mcmmo.commands.whois:
-        default: true
+        description:
     mcmmo.commands.party:
-        default: true
+        description:
         
     mcmmo.chat.*:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
@@ -160,9 +177,9 @@ permissions:
             mcmmo.chat.adminchat: true 
             mcmmo.chat.partychat: true 
     mcmmo.chat.adminchat:
-        default: op
+        description:
     mcmmo.chat.partychat:
-        default: true
+        description:
         
     mcmmo.skills.*:
         description: Implies all mcmmo.skills permissions.
@@ -194,36 +211,38 @@ permissions:
             mcmmo.skills.curative.heal.self: true 
     
     mcmmo.skills.sorcery:
-        default: true
+        description:
     mcmmo.skills.sorcery.water:
-        default: true
+        description:
     mcmmo.skills.sorcery.water.thunder:
-        default: true
+        description:
+    
     mcmmo.skills.curative:
-        default: true
+        description:
     mcmmo.skills.curative.heal.other:
-        default: true
+        description:
     mcmmo.skills.curative.heal.self:
-        default: true
+        description:
+    
     mcmmo.skills.taming:
-        default: true
+        description:
     mcmmo.skills.mining:
-        default: true
+        description:
     mcmmo.skills.woodcutting:
-        default: true
+        description:
     mcmmo.skills.repair:
-        default: true
+        description:
     mcmmo.skills.unarmed:
-        default: true
+        description:
     mcmmo.skills.archery:
-        default: true
+        description:
     mcmmo.skills.herbalism:
-        default: true
+        description:
     mcmmo.skills.excavation:
-        default: true
+        description:
     mcmmo.skills.swords:
-        default: true
+        description:
     mcmmo.skills.axes:
-        default: true
+        description:
     mcmmo.skills.acrobatics:
-        default: true
+        description:

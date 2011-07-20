@@ -178,8 +178,12 @@ public class mcMMO extends JavaPlugin
 	}
 
 	public boolean onCommand( CommandSender sender, Command command, String label, String[] args ) {
-		Player player = (Player) sender;
-		PlayerProfile PP = Users.getProfile(player);
+		Player player = null;
+		PlayerProfile PP = null;
+		if(!isConsole(sender)) {
+			player = (Player) sender;
+			PP = Users.getProfile(player);
+		}
 		
 		String[] split = new String[args.length + 1];
 		split[0] = label;
@@ -188,7 +192,7 @@ public class mcMMO extends JavaPlugin
 		}
 		
 		//Check if the command is an MMO related help command
-		if(split[0].equalsIgnoreCase("taming") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillTaming").toLowerCase())){ 
+		if(label.equalsIgnoreCase("taming") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillTaming").toLowerCase())){ 
 			float skillvalue = (float)PP.getSkillLevel(SkillType.TAMING);
 
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
@@ -222,7 +226,7 @@ public class mcMMO extends JavaPlugin
 				player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] {mcLocale.getString("m.AbilBonusTaming4_0"), mcLocale.getString("m.AbilBonusTaming4_1")}));  
 			player.sendMessage(mcLocale.getString("m.TamingGoreChance", new Object[] {percentage})); 
 		}
-		if(split[0].equalsIgnoreCase("woodcutting") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillWoodCutting").toLowerCase())){ 
+		else if(label.equalsIgnoreCase("woodcutting") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillWoodCutting").toLowerCase())){ 
 			float skillvalue = (float)PP.getSkillLevel(SkillType.WOODCUTTING);
 			int ticks = 2;
 			int x = PP.getSkillLevel(SkillType.WOODCUTTING);
@@ -247,7 +251,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.WoodCuttingDoubleDropChance", new Object[] {percentage})); 
 			player.sendMessage(mcLocale.getString("m.WoodCuttingTreeFellerLength", new Object[] {ticks})); 
 		}
-		if(split[0].equalsIgnoreCase("archery") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillArchery").toLowerCase())){ 
+		else if(label.equalsIgnoreCase("archery") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillArchery").toLowerCase())){ 
 			Integer rank = 0;
 			if(PP.getSkillLevel(SkillType.ARCHERY) >= 50)
 				rank++;
@@ -295,7 +299,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.ArcheryIgnitionLength", new Object[] {(ignition / 20)})); 
 			player.sendMessage(mcLocale.getString("m.ArcheryDamagePlus", new Object[] {rank})); 
 		}
-		if(split[0].equalsIgnoreCase("axes") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillAxes"))){ 
+		else if(label.equalsIgnoreCase("axes") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillAxes"))){ 
 			String percentage;
 			float skillvalue = (float)PP.getSkillLevel(SkillType.AXES);
 			if(PP.getSkillLevel(SkillType.AXES) < 750){
@@ -327,7 +331,7 @@ public class mcMMO extends JavaPlugin
 			}
 			player.sendMessage(mcLocale.getString("m.AxesSkullLength", new Object[] {ticks})); 
 		}
-		if(split[0].equalsIgnoreCase("swords") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillSwords").toLowerCase())){ 
+		else if(label.equalsIgnoreCase("swords") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillSwords").toLowerCase())){ 
 			int bleedrank = 2;
 			String percentage, parrypercentage = null, counterattackpercentage;
 			float skillvalue = (float)PP.getSkillLevel(SkillType.SWORDS);
@@ -377,7 +381,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.SwordsSSLength", new Object[] {ticks})); 
 
 		}
-		if(split[0].equalsIgnoreCase("acrobatics") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillAcrobatics").toLowerCase())){ 
+		else if(label.equalsIgnoreCase("acrobatics") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillAcrobatics").toLowerCase())){ 
 			String dodgepercentage;
 			float skillvalue = (float)PP.getSkillLevel(SkillType.ACROBATICS);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
@@ -400,7 +404,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.AcrobaticsGracefulRollChance", new Object[] {gracepercentage})); 
 			player.sendMessage(mcLocale.getString("m.AcrobaticsDodgeChance", new Object[] {dodgepercentage})); 
 		}
-		if(split[0].equalsIgnoreCase("mining") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillMining"))){ 
+		else if(label.equalsIgnoreCase("mining") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillMining"))){ 
 			float skillvalue = (float)PP.getSkillLevel(SkillType.MINING);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 			int ticks = 2;
@@ -420,7 +424,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.MiningDoubleDropChance", new Object[] {percentage})); 
 			player.sendMessage(mcLocale.getString("m.MiningSuperBreakerLength", new Object[] {ticks})); 
 		}
-		if(split[0].equalsIgnoreCase("repair") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillRepair").toLowerCase())){ 
+		else if(label.equalsIgnoreCase("repair") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillRepair").toLowerCase())){ 
 			float skillvalue = (float)PP.getSkillXpLevel(SkillType.REPAIR);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 			String repairmastery = String.valueOf((skillvalue / 500) * 100);
@@ -437,7 +441,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.RepairRepairMastery", new Object[] {repairmastery})); 
 			player.sendMessage(mcLocale.getString("m.RepairSuperRepairChance", new Object[] {percentage})); 
 		}
-		if(split[0].equalsIgnoreCase("unarmed")){ 
+		else if(label.equalsIgnoreCase("unarmed")){ 
 			String percentage, arrowpercentage;
 			float skillvalue = (float)PP.getSkillLevel(SkillType.UNARMED);
 
@@ -484,7 +488,7 @@ public class mcMMO extends JavaPlugin
 			}
 			player.sendMessage(mcLocale.getString("m.UnarmedBerserkLength", new Object[] {ticks})); 
 		}
-		if(split[0].equalsIgnoreCase("herbalism") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillHerbalism").toLowerCase())){ 
+		else if(label.equalsIgnoreCase("herbalism") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillHerbalism").toLowerCase())){ 
 			int rank = 0;
 			if(PP.getSkillLevel(SkillType.HERBALISM) >= 50)
 				rank++;
@@ -538,7 +542,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.HerbalismFoodPlus", new Object[] {rank})); 
 		}
 
-		if(split[0].equalsIgnoreCase("excavation") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillExcavation").toLowerCase())) 
+		else if(label.equalsIgnoreCase("excavation") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillExcavation").toLowerCase())) 
 		{
 			int ticks = 2;
 			int x = PP.getSkillLevel(SkillType.EXCAVATION);
@@ -557,7 +561,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.ExcavationGreenTerraLength", new Object[] {ticks})); 
 		}
 
-		if(split[0].equalsIgnoreCase("sorcery") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillSorcery").toLowerCase())) 
+		else if(label.equalsIgnoreCase("sorcery") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillSorcery").toLowerCase())) 
 		{
 			/*
 	        player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillExcavation")})); 
@@ -570,7 +574,7 @@ public class mcMMO extends JavaPlugin
 			 */
 		}
 
-		if(LoadProperties.mcmmoEnable && split[0].equalsIgnoreCase(LoadProperties.mcmmo)){ 
+		else if(LoadProperties.mcmmoEnable && label.equalsIgnoreCase(LoadProperties.mcmmo)){ 
 			player.sendMessage(ChatColor.RED+"-----[]"+ChatColor.GREEN+"mMO"+ChatColor.RED+"[]-----");   
 			player.sendMessage(ChatColor.YELLOW+"mcMMO is an RPG server mod for minecraft."); 
 			player.sendMessage(ChatColor.YELLOW+"There are many skills added by mcMMO to minecraft."); 
@@ -591,7 +595,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(ChatColor.GREEN+"Find out mcMMO commands with "+ChatColor.DARK_AQUA+LoadProperties.mcc);  
 			player.sendMessage(ChatColor.GREEN+"You can donate via paypal to"+ChatColor.DARK_RED+" nossr50@gmail.com");  
 		}
-		if(LoadProperties.mccEnable && split[0].equalsIgnoreCase(LoadProperties.mcc)){ 
+		else if(LoadProperties.mccEnable && label.equalsIgnoreCase(LoadProperties.mcc)){ 
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mcMMO Commands"+ChatColor.RED+"[]---");   
 			if(mcPermissions.getInstance().party(player)){
 				player.sendMessage(mcLocale.getString("m.mccPartyCommands")); 
@@ -627,7 +631,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.mccSkillInfo"));  
 			player.sendMessage(LoadProperties.mcmmo+" "+mcLocale.getString("m.mccModDescription"));   
 		}
-		if(LoadProperties.mcabilityEnable && mcPermissions.permissionsEnabled && split[0].equalsIgnoreCase(LoadProperties.mcability)){ 
+		else if(LoadProperties.mcabilityEnable && mcPermissions.permissionsEnabled && label.equalsIgnoreCase(LoadProperties.mcability)){ 
 			if(PP.getAbilityUse()){
 				player.sendMessage(mcLocale.getString("mcPlayerListener.AbilitiesOff")); 
 				PP.toggleAbilityUse();
@@ -640,7 +644,7 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * FFS -> MySQL
 		 */
-		if(player.isOp() && split[0].equalsIgnoreCase("mmoupdate"))
+		else if(label.equalsIgnoreCase("mmoupdate"))
 		{
 			if(!mcPermissions.getInstance().admin(player))
 			{
@@ -660,7 +664,7 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * LEADER BOARD COMMAND
 		 */
-		if(LoadProperties.mctopEnable && split[0].equalsIgnoreCase(LoadProperties.mctop)){ 
+		else if(LoadProperties.mctopEnable && label.equalsIgnoreCase(LoadProperties.mctop)){ 
 
 			if(LoadProperties.useMySQL == false){
 				/*
@@ -833,7 +837,7 @@ public class mcMMO extends JavaPlugin
 			}
 		}
 
-		if(LoadProperties.mcrefreshEnable && split[0].equalsIgnoreCase(LoadProperties.mcrefresh)){ 
+		else if(LoadProperties.mcrefreshEnable && label.equalsIgnoreCase(LoadProperties.mcrefresh)){ 
 
 			if(!mcPermissions.getInstance().mcrefresh(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
@@ -890,7 +894,7 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * GODMODE COMMAND
 		 */
-		if(LoadProperties.mcgodEnable && split[0].equalsIgnoreCase(LoadProperties.mcgod))
+		else if(LoadProperties.mcgodEnable && label.equalsIgnoreCase(LoadProperties.mcgod))
 		{ 
 			if(mcPermissions.permissionsEnabled)
 			{
@@ -908,20 +912,9 @@ public class mcMMO extends JavaPlugin
 					player.sendMessage(mcLocale.getString("mcPlayerListener.GodModeEnabled")); 
 					PP.toggleGodMode();
 				}
-			} else if (player.isOp())
-			{
-				if(PP.getGodMode())
-				{
-					player.sendMessage(mcLocale.getString("mcPlayerListener.GodModeDisabled")); 
-					PP.toggleGodMode();
-				} else 
-				{
-					player.sendMessage(mcLocale.getString("mcPlayerListener.GodModeEnabled")); 
-					PP.toggleGodMode();
-				}
 			}
 		}
-		if(LoadProperties.clearmyspawnEnable && LoadProperties.enableMySpawn && mcPermissions.getInstance().mySpawn(player) && split[0].equalsIgnoreCase(LoadProperties.clearmyspawn))
+		else if(LoadProperties.clearmyspawnEnable && LoadProperties.enableMySpawn && label.equalsIgnoreCase(LoadProperties.clearmyspawn) && mcPermissions.getInstance().mySpawn(player))
 		{ 
 			double x = this.getServer().getWorlds().get(0).getSpawnLocation().getX();
 			double y = this.getServer().getWorlds().get(0).getSpawnLocation().getY();
@@ -930,7 +923,7 @@ public class mcMMO extends JavaPlugin
 			PP.setMySpawn(x, y, z, worldname);
 			player.sendMessage(mcLocale.getString("mcPlayerListener.MyspawnCleared")); 
 		}
-		if(LoadProperties.mmoeditEnable && mcPermissions.permissionsEnabled && split[0].equalsIgnoreCase(""+LoadProperties.mmoedit))
+		else if(LoadProperties.mmoeditEnable && mcPermissions.permissionsEnabled && label.equalsIgnoreCase(""+LoadProperties.mmoedit))
 		{ 
 
 			if(!mcPermissions.getInstance().mmoedit(player))
@@ -968,7 +961,7 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * ADD EXPERIENCE COMMAND
 		 */
-		if(LoadProperties.addxpEnable && mcPermissions.permissionsEnabled && split[0].equalsIgnoreCase(LoadProperties.addxp)){ 
+		else if(LoadProperties.addxpEnable && mcPermissions.permissionsEnabled && label.equalsIgnoreCase(LoadProperties.addxp)){ 
 
 			if(!mcPermissions.getInstance().mmoedit(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
@@ -997,7 +990,7 @@ public class mcMMO extends JavaPlugin
 				player.sendMessage(ChatColor.RED+"Usage is /"+LoadProperties.addxp+" playername skillname xp");  
 			}
 		}
-		if(LoadProperties.ptpEnable && PP != null && PP.inParty() && split[0].equalsIgnoreCase(LoadProperties.ptp)){ 
+		else if(LoadProperties.ptpEnable && label.equalsIgnoreCase(LoadProperties.ptp) && PP != null && PP.inParty()){ 
 
 			if(!mcPermissions.getInstance().partyTeleport(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
@@ -1023,7 +1016,7 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * WHOIS COMMAND
 		 */
-		if(LoadProperties.whoisEnable && (player.isOp() || mcPermissions.getInstance().whois(player)) && split[0].equalsIgnoreCase(LoadProperties.whois)){ 
+		else if(LoadProperties.whoisEnable && label.equalsIgnoreCase(LoadProperties.whois) && mcPermissions.getInstance().whois(player)){ 
 			if(split.length < 2){
 				player.sendMessage(ChatColor.RED + "Proper usage is /"+LoadProperties.whois+" <playername>");  
 				return true;
@@ -1086,7 +1079,7 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * STATS COMMAND
 		 */
-		if(LoadProperties.statsEnable && split[0].equalsIgnoreCase(LoadProperties.stats)){ 
+		else if(LoadProperties.statsEnable && label.equalsIgnoreCase(LoadProperties.stats)){ 
 
 			player.sendMessage(mcLocale.getString("mcPlayerListener.YourStats"));
 			
@@ -1132,7 +1125,7 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel")+ChatColor.GREEN+(m.getPowerLevel(player))); 
 		}
 		//Invite Command
-		if(LoadProperties.inviteEnable && mcPermissions.getInstance().party(player) && split[0].equalsIgnoreCase(LoadProperties.invite)){ 
+		else if(LoadProperties.inviteEnable && label.equalsIgnoreCase(LoadProperties.invite) && mcPermissions.getInstance().party(player)){ 
 
 			if(!PP.inParty())
 			{
@@ -1159,7 +1152,7 @@ public class mcMMO extends JavaPlugin
 			}
 		}
 		//Accept invite
-		if(LoadProperties.acceptEnable && mcPermissions.getInstance().party(player) && split[0].equalsIgnoreCase(LoadProperties.accept)){ 
+		else if(LoadProperties.acceptEnable && label.equalsIgnoreCase(LoadProperties.accept) && mcPermissions.getInstance().party(player)){ 
 			if(PP.hasPartyInvite()){
 				if(PP.inParty()){
 					Party.getInstance().informPartyMembersQuit(player, getPlayersOnline());
@@ -1172,7 +1165,7 @@ public class mcMMO extends JavaPlugin
 			}
 		}
 		//Party command
-		if(LoadProperties.partyEnable && split[0].equalsIgnoreCase(LoadProperties.party)){ 
+		else if(LoadProperties.partyEnable && label.equalsIgnoreCase(LoadProperties.party)){ 
 			if(!mcPermissions.getInstance().party(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
@@ -1213,8 +1206,34 @@ public class mcMMO extends JavaPlugin
 				Party.getInstance().informPartyMembers(player, getPlayersOnline());
 			}
 		}
-		if(LoadProperties.partyEnable && split[0].equalsIgnoreCase("p")){
+		else if(LoadProperties.partyEnable && label.equalsIgnoreCase("p")){
 
+			// Console message?
+			if(isConsole(sender)) {
+				if(args.length < 2) return true;
+				String pMessage = args[1];
+				for (int i = 2; i <= args.length - 1; i++) {
+					pMessage = pMessage + " " + args[i];
+				}
+				
+				String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE
+				+ "*Console*" + ChatColor.GREEN + ") ";
+	
+				log.log(Level.INFO,
+						"[P](" + args[0] + ")" + "<*Console*> "
+						+ pMessage);
+				
+				for(Player herp : getServer().getOnlinePlayers()) {
+					if(Users.getProfile(herp).inParty()) {
+						log.info(Users.getProfile(herp).getParty());
+						if(Users.getProfile(herp).getParty().equalsIgnoreCase(args[0])) {
+							herp.sendMessage(pPrefix + pMessage);
+						}
+					}
+				}
+				return true;
+			}
+			
 			if(!mcPermissions.getInstance().party(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
@@ -1258,8 +1277,29 @@ public class mcMMO extends JavaPlugin
 			}
 		}
 
-		if(split[0].equalsIgnoreCase("a") && (player.isOp() || mcPermissions.getInstance().adminChat(player))){
-			if(!mcPermissions.getInstance().adminChat(player) && !player.isOp()){
+		else if(label.equalsIgnoreCase("a")){
+			
+			// Console message?
+			if(isConsole(sender) && args.length >= 1) {
+				String aMessage = args[0];
+				for (int i = 1; i <= args.length - 1; i++) {
+					aMessage = aMessage + " " + args[i];
+				}
+	
+				String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE
+				+ "*Console*" + ChatColor.AQUA + "} ";
+				
+				log.log(Level.INFO, "[A]<*Console*> "
+						+ aMessage);
+				
+				for (Player herp : getServer().getOnlinePlayers()) {
+					if (mcPermissions.getInstance().adminChat(herp))
+						herp.sendMessage(aPrefix + aMessage);
+				}
+				return true;
+			}
+			
+			if(!mcPermissions.getInstance().adminChat(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
@@ -1274,11 +1314,10 @@ public class mcMMO extends JavaPlugin
 
 				String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE
 				+ player.getName() + ChatColor.AQUA + "} ";
-				log.log(Level.INFO, "[A]" + "<" + player.getName() + "> "
+				log.log(Level.INFO, "[A]<" + player.getName() + "> "
 						+ aMessage);
 				for (Player herp : getServer().getOnlinePlayers()) {
-					if ((herp.isOp() || mcPermissions.getInstance().adminChat(
-							herp)))
+					if (mcPermissions.getInstance().adminChat(herp))
 						herp.sendMessage(aPrefix + aMessage);
 				}
 				return true;
@@ -1302,7 +1341,7 @@ public class mcMMO extends JavaPlugin
 		/*
 		 * MYSPAWN
 		 */
-		if(LoadProperties.myspawnEnable && LoadProperties.enableMySpawn && split[0].equalsIgnoreCase(LoadProperties.myspawn)){ 
+		else if(LoadProperties.myspawnEnable && LoadProperties.enableMySpawn && label.equalsIgnoreCase(LoadProperties.myspawn)){ 
 			if(!mcPermissions.getInstance().mySpawn(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
@@ -1344,6 +1383,10 @@ public class mcMMO extends JavaPlugin
 		return false;
 	}
 
+    public boolean isConsole(CommandSender sender) {
+        return !(sender instanceof Player);
+    }
+	
 	public Player getPlayer(String playerName){
 		for(Player herp : getPlayersOnline()){
 			if(herp.getName().toLowerCase().equals(playerName.toLowerCase())){
