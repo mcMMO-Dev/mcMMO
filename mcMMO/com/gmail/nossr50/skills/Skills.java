@@ -309,13 +309,20 @@ public class Skills {
 						
 			//Contrib stuff
 			
-			ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
-			if(cPlayer.isBukkitContribEnabled())
+			if(LoadProperties.contribEnabled)
 			{
-				contribStuff.levelUpNotification(skillType, cPlayer);
-			} else {
-				player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+				ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
+				if(cPlayer.isBukkitContribEnabled())
+				{
+					contribStuff.levelUpNotification(skillType, cPlayer);
+				} else 
+				{
+					player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+				}
 			}
+				else
+					player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+
 		}
 	}
 	

@@ -57,15 +57,26 @@ public class mcBlockListener extends BlockListener {
     	}
     	if(block.getTypeId() == 42 && LoadProperties.anvilmessages)
     	{
-    		ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
     		PlayerProfile PP = Users.getProfile(player);
-    		if(cPlayer.isBukkitContribEnabled())
+    		if(LoadProperties.contribEnabled)
+    		{
+    			ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
+	    		if(cPlayer.isBukkitContribEnabled())
+	    		{
+	    			if(!PP.getPlacedAnvil())
+	    			{
+	    				cPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.IRON_BLOCK);
+	    				PP.togglePlacedAnvil();
+	    			}
+	    		}
+    		else
     		{
     			if(!PP.getPlacedAnvil())
     			{
-    				cPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.IRON_BLOCK);
+    				event.getPlayer().sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil")); //$NON-NLS-1$
     				PP.togglePlacedAnvil();
     			}
+    		}
     		}
     		else
     		{
@@ -118,14 +129,14 @@ public class mcBlockListener extends BlockListener {
     				if(PP.getSkillLevel(SkillType.MINING) >= 500)
     					Mining.miningBlockCheck(false, player, block, plugin);
     				else
-    					Mining.miningBlockCheck(true, player, block, plugin);
+    					Mining.miningBlockCheck(false, player, block, plugin);
     			}
     		} else 
     		{
     			if(PP.getSkillLevel(SkillType.MINING) >= 500)
 					Mining.miningBlockCheck(false, player, block, plugin);
 				else
-					Mining.miningBlockCheck(true, player, block, plugin);
+					Mining.miningBlockCheck(false, player, block, plugin);
     		}
     	}
     	/*
@@ -271,6 +282,7 @@ public class mcBlockListener extends BlockListener {
     		Unarmed.berserkActivationCheck(player, plugin);
     	
     	
+    	/*
     	if(mcPermissions.getInstance().mining(player) && Mining.canBeSuperBroken(block) && 
     			m.blockBreakSimulate(block, player, plugin) && PP.getSkillLevel(SkillType.MINING) >= 250 
     			&& block.getType() != Material.STONE && m.isMiningPick(inhand))
@@ -297,6 +309,7 @@ public class mcBlockListener extends BlockListener {
     			}
     		}
     	}
+    	*/
     	
     	/*
     	 * TREE FELLAN STUFF

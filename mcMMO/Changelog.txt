@@ -1,5 +1,14 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.40
+Fixed errors if your server wasn't running BukkitContrib
+
+Version 1.0.39
+mcMMO won't auto-download and auto-run BukkitContrib anymore
+
+Version 1.0.38
+Commented code for the half-finished Infernal Pick subskill (Whoops)
+
 Version 1.0.37
 The donation message in /mcmmo is now toggle-able
 The anvil message now only gets shown the first time you place an anvil (after login)

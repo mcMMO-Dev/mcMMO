@@ -91,6 +91,11 @@ public class mcMMO extends JavaPlugin
 		 */
 
 		PluginManager pm = getServer().getPluginManager();
+		
+		if(pm.getPlugin("BukkitContrib") != null)
+			LoadProperties.contribEnabled = true;
+		else
+			LoadProperties.contribEnabled = false;
 
 		//Player Stuff
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
@@ -123,17 +128,7 @@ public class mcMMO extends JavaPlugin
 		} else
 			Leaderboard.makeLeaderboards(); //Make the leaderboards
 
-		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile
-		
-	    if (pm.getPlugin("BukkitContrib") == null)
-	        try {
-	            download(log, new URL("http://bit.ly/autoupdateBukkitContrib"), new File("plugins/BukkitContrib.jar"));
-	            pm.loadPlugin(new File("plugins" + File.separator + "BukkitContrib.jar"));
-	            pm.enablePlugin(pm.getPlugin("BukkitContrib"));
-	        } catch (final Exception ex) {
-	            log.warning("[mcMMO] Failed to install BukkitContrib, you may have to restart your server or install it manually.");
-	        }
-	        
+		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile   
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );  
 		mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
 		//mcMMO_SpellTimer.schedule(new mcTimerSpells(this), (long)0, (long)(100));
@@ -638,10 +633,17 @@ public class mcMMO extends JavaPlugin
 			{
 				player.sendMessage(x);
 			}
-			
-			ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
-			if(LoadProperties.donateMessage)
-				cPlayer.sendNotification("[mcMMO] Donate!", "Paypal nossr50@gmail.com", Material.CAKE);
+			if(LoadProperties.contribEnabled)
+			{
+				ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
+				if(LoadProperties.donateMessage)
+					cPlayer.sendNotification("[mcMMO] Donate!", "Paypal nossr50@gmail.com", Material.CAKE);
+			}
+			else
+			{
+				if(LoadProperties.donateMessage)
+					player.sendMessage(ChatColor.GREEN+"If you like my work you can donate via Paypal: nossr50@gmail.com");
+			}
 		}
 		else if(LoadProperties.mccEnable && label.equalsIgnoreCase(LoadProperties.mcc)){ 
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mcMMO Commands"+ChatColor.RED+"[]---");   
