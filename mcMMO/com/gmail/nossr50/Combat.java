@@ -114,23 +114,7 @@ public class Combat
 							xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
 						if(event.getEntity() instanceof Ghast)
 							xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
-						
-						if(pluginx.mob.mobDiff.containsKey(event.getEntity().getEntityId()))
-		      			{
-		      				pluginx.mob.isAggressive.put(event.getEntity().getEntityId(), true);
-		      				//ARMOR REDUCTION BASED ON ENEMY RANKING
-		      				int modifiedDmg = event.getDamage() / (pluginx.mob.mobDiff.get(event.getEntity().getEntityId())+1);
-		      				if(modifiedDmg < 1)
-		      					modifiedDmg = 1;
-		      				event.setDamage(modifiedDmg);
-		      			}
-						
-						//ADJUST TO DIFFICULTY
-						if(pluginx.mob.mobDiff.containsKey(event.getEntity().getEntityId()))
-		      			{
-							xp = xp * (pluginx.mob.mobDiff.get(event.getEntity().getEntityId())+1);
-		      			}
-						
+
 						if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
 							PPa.addXP(SkillType.SWORDS, xp);
 						else if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
@@ -348,7 +332,8 @@ public class Combat
     		/*
     		 * Defender is Monster
     		 */
-    		if(x instanceof Monster){
+    		if(!pluginx.misc.mobSpawnerList.contains(x) && x instanceof Monster)
+    		{
     			//XP
     			if(x instanceof Creeper)
     				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 4) * LoadProperties.xpGainMultiplier);

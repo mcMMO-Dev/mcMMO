@@ -63,11 +63,13 @@ public class Excavation
 			return false;
 		}
 	}
-	public static void excavationProcCheck(int type, Location loc, Player player)
+	public static void excavationProcCheck(byte data, int type, Location loc, Player player)
 	{
 		PlayerProfile PP = Users.getProfile(player);
     	ItemStack is = null;
     	Material mat = null;
+    	if(data != (byte) 5)
+    		return;
     	
     	if(type == 2)
     	{

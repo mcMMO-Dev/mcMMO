@@ -1,5 +1,10 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.41
+Fixed errors using Tree Feller if your server wasn't running BukkitContrib (sorry!)
+Fixed some more leftover stuff involving the new half-finished mining skill
+Fixed excavation's Giga Drill Breaker not working on placed blocks
+
 Version 1.0.40
 Fixed errors if your server wasn't running BukkitContrib
 

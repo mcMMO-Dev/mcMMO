@@ -645,7 +645,8 @@ public class mcMMO extends JavaPlugin
 					player.sendMessage(ChatColor.GREEN+"If you like my work you can donate via Paypal: nossr50@gmail.com");
 			}
 		}
-		else if(LoadProperties.mccEnable && label.equalsIgnoreCase(LoadProperties.mcc)){ 
+		else if(LoadProperties.mccEnable && label.equalsIgnoreCase(LoadProperties.mcc))
+		{ 
 			player.sendMessage(ChatColor.RED+"---[]"+ChatColor.YELLOW+"mcMMO Commands"+ChatColor.RED+"[]---");   
 			if(mcPermissions.getInstance().party(player)){
 				player.sendMessage(mcLocale.getString("m.mccPartyCommands")); 

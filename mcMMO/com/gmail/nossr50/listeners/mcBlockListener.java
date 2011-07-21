@@ -230,8 +230,8 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * EXCAVATION
     	 */
-    	if(mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
-    		Excavation.excavationProcCheck(block.getTypeId(), block.getLocation(), player);
+    	if(mcPermissions.getInstance().excavation(player))
+    		Excavation.excavationProcCheck(block.getData(), block.getTypeId(), block.getLocation(), player);
     	/*
     	 * HERBALISM
     	 */
@@ -314,7 +314,7 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * TREE FELLAN STUFF
     	 */
-    	if(block.getTypeId() == 17 && Users.getProfile(player).getTreeFellerMode())
+    	if(LoadProperties.contribEnabled && block.getTypeId() == 17 && Users.getProfile(player).getTreeFellerMode())
     		contribStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
     	
     	/*
@@ -328,14 +328,14 @@ public class mcBlockListener extends BlockListener {
     	 * GIGA DRILL BREAKER CHECKS
     	 */
     	if(PP.getGigaDrillBreakerMode() && m.blockBreakSimulate(block, player, plugin) 
-    			&& Excavation.canBeGigaDrillBroken(block) && m.isShovel(inhand)
-    			&& block.getData() != (byte) 5){
+    			&& Excavation.canBeGigaDrillBroken(block) && m.isShovel(inhand))
+    	{
     		
     		int x = 1;
     		
     		while(x < 4)
     		{
-    			Excavation.excavationProcCheck(block.getTypeId(), block.getLocation(), player);
+    			Excavation.excavationProcCheck(block.getData(), block.getTypeId(), block.getLocation(), player);
     			x++;
     		}
     		

@@ -169,19 +169,21 @@ public class Mining {
 			loc.getWorld().dropItemNaturally(loc, item);
 		}
     }
-    public static void blockProcCheck(Block block, Player player)
+	/*
+    public static void blockProcSmeltCheck(Block block, Player player)
     {
     	PlayerProfile PP = Users.getProfile(player);
     	if(player != null)
     	{
     		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))
     		{
-	    		blockProcSimulate(block);
+	    		blockProcSmeltSimulate(block);
 				return;
     		}
-    	}		
+    	}
 	}
-    public static void blockProcSmeltCheck(Block block, Player player)
+	*/
+    public static void blockProcCheck(Block block, Player player)
     {
     	PlayerProfile PP = Users.getProfile(player);
     	if(player != null)
@@ -199,12 +201,13 @@ public class Mining {
     	if(plugin.misc.blockWatchList.contains(block) || block.getData() == (byte) 5)
     		return;
     	int xp = 0;
-    	if(block.getTypeId() == 1 || block.getTypeId() == 24){
+    	if(block.getTypeId() == 1 || block.getTypeId() == 24)
+    	{
     		xp += LoadProperties.mstone;
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	//OBSIDIAN
     	if(block.getTypeId() == 49)
@@ -213,7 +216,7 @@ public class Mining {
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	//NETHERRACK
     	if(block.getTypeId() == 87)
@@ -222,7 +225,7 @@ public class Mining {
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	//GLOWSTONE
     	if(block.getTypeId() == 89)
@@ -231,7 +234,7 @@ public class Mining {
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	//COAL
     	if(block.getTypeId() == 16)
@@ -240,7 +243,7 @@ public class Mining {
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	//GOLD
     	if(block.getTypeId() == 14)
@@ -249,7 +252,7 @@ public class Mining {
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	//DIAMOND
     	if(block.getTypeId() == 56){
@@ -257,7 +260,7 @@ public class Mining {
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	//IRON
     	if(block.getTypeId() == 15)
@@ -266,7 +269,7 @@ public class Mining {
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	//REDSTONE
     	if(block.getTypeId() == 73 || block.getTypeId() == 74)
@@ -275,7 +278,7 @@ public class Mining {
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	//LAPUS
     	if(block.getTypeId() == 21)
@@ -284,7 +287,7 @@ public class Mining {
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
-    			blockProcSmeltCheck(block, player);
+    			blockProcCheck(block, player);
     	}
     	PP.addXP(SkillType.MINING, xp * LoadProperties.xpGainMultiplier);
     	Skills.XpCheckSkill(SkillType.MINING, player);
