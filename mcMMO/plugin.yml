@@ -1,6 +1,6 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 1.0.41
+version: 1.0.43
 commands:
     mcc:
         description: Lists mcMMO commands

@@ -1,5 +1,11 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.43
+Stopped things from being auto-smelt'd
+
+Version 1.0.42
+Corrected 2 more errors involving not running BukkitContrib
+
 Version 1.0.41
 Fixed errors using Tree Feller if your server wasn't running BukkitContrib (sorry!)
 Fixed some more leftover stuff involving the new half-finished mining skill

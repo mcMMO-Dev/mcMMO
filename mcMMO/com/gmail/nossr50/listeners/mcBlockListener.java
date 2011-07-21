@@ -351,7 +351,8 @@ public class mcBlockListener extends BlockListener {
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
 			
 			//Contrib stuff
-			contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+			if(LoadProperties.contribEnabled)
+				contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	/*
     	 * BERSERK MODE CHECKS
@@ -359,7 +360,8 @@ public class mcBlockListener extends BlockListener {
     	if(PP.getBerserkMode() 
     		&& m.blockBreakSimulate(block, player, plugin) 
     		&& player.getItemInHand().getTypeId() == 0 
-    		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78)){
+    		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
+    	{
 		   	Material mat = Material.getMaterial(block.getTypeId());
 		   	if(block.getTypeId() == 2)
 		   		mat = Material.DIRT;
@@ -371,7 +373,8 @@ public class mcBlockListener extends BlockListener {
 			block.setType(Material.AIR);
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
 			
-			contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+			if(LoadProperties.contribEnabled)
+				contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	
     	/*
@@ -404,7 +407,8 @@ public class mcBlockListener extends BlockListener {
     		}
     		block.setType(Material.AIR);
     		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
-    		contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+    		if(LoadProperties.contribEnabled)
+    			contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	if(block.getType() == Material.AIR && plugin.misc.blockWatchList.contains(block))
     	{

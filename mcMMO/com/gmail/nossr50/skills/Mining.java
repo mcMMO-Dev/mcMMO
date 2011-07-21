@@ -19,8 +19,8 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 
-public class Mining {
-	
+public class Mining 
+{	
 	public static void superBreakerCheck(Player player, Block block, Plugin pluginx)
 	{
 		PlayerProfile PP = Users.getProfile(player);
@@ -190,7 +190,7 @@ public class Mining {
     	{
     		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))
     		{
-	    		blockProcSmeltSimulate(block);
+	    		blockProcSimulate(block);
 				return;
     		}
     	}		
