@@ -189,7 +189,9 @@ public class mcBlockListener extends BlockListener {
    					&& block.getTypeId() == 17
    					&& m.blockBreakSimulate(block, player, plugin))
    			{
-   				contribStuff.playSoundForPlayer(SoundEffect.EXPLODE, player, block.getLocation());
+   				if(LoadProperties.contribEnabled)
+   					contribStuff.playSoundForPlayer(SoundEffect.EXPLODE, player, block.getLocation());
+   				
     			WoodCutting.treeFeller(block, player, plugin);
     			for(Block blockx : plugin.misc.treeFeller)
     			{

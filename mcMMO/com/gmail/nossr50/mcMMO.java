@@ -474,13 +474,13 @@ public class mcMMO extends JavaPlugin
 			player.sendMessage(mcLocale.getString("m.MiningSuperBreakerLength", new Object[] {ticks})); 
 		}
 		else if(label.equalsIgnoreCase("repair") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillRepair").toLowerCase())){ 
-			float skillvalue = (float)PP.getSkillXpLevel(SkillType.REPAIR);
+			float skillvalue = (float)PP.getSkillLevel(SkillType.REPAIR);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 			String repairmastery = String.valueOf((skillvalue / 500) * 100);
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.SkillRepair")})); 
 			player.sendMessage(mcLocale.getString("m.XPGain", new Object[] {mcLocale.getString("m.XPGainRepair")})); 
 			if(mcPermissions.getInstance().repair(player))
-				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillXpLevel(SkillType.REPAIR), PP.getSkillLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR)}));
+				player.sendMessage(mcLocale.getString("m.LVL", new Object[] {PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR)}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair1_0"), mcLocale.getString("m.EffectsRepair1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair2_0"), mcLocale.getString("m.EffectsRepair2_1")}));  
@@ -1117,7 +1117,7 @@ public class mcMMO extends JavaPlugin
 				if(mcPermissions.getInstance().acrobatics(target))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PPt.getSkillLevel(SkillType.ACROBATICS), PPt.getSkillXpLevel(SkillType.ACROBATICS), PPt.getXpToLevel(SkillType.ACROBATICS)));
 				if(mcPermissions.getInstance().repair(target))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PPt.getSkillXpLevel(SkillType.REPAIR), PPt.getSkillXpLevel(SkillType.REPAIR), PPt.getXpToLevel(SkillType.REPAIR)));	
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PPt.getSkillLevel(SkillType.REPAIR), PPt.getSkillXpLevel(SkillType.REPAIR), PPt.getXpToLevel(SkillType.REPAIR)));	
 
 				player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel") +ChatColor.GREEN+(m.getPowerLevel(target))); 
 
@@ -1172,7 +1172,7 @@ public class mcMMO extends JavaPlugin
 				if(mcPermissions.getInstance().acrobatics(player))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS)));
 				if(mcPermissions.getInstance().repair(player))
-					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PP.getSkillXpLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR)));	
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR)));	
 			}
 			player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel")+ChatColor.GREEN+(m.getPowerLevel(player))); 
 		}

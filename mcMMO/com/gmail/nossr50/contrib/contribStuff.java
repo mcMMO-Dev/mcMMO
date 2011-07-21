@@ -12,7 +12,6 @@ import org.bukkitcontrib.sound.SoundManager;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
-import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
@@ -20,8 +19,6 @@ public class contribStuff
 {
 	public static void playSoundForPlayer(SoundEffect effect, Player player, Location location)
 	{
-		if(!LoadProperties.contribEnabled)
-			return;
 		//Contrib stuff
 		ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
 		SoundManager SM = BukkitContrib.getSoundManager();

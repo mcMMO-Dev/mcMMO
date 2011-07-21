@@ -476,8 +476,8 @@ public class Mining
     	}
     	if(block.getData() != (byte) 5)
     		PP.addXP(SkillType.MINING, xp * LoadProperties.xpGainMultiplier);
-    	
-    	contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+    	if(LoadProperties.contribEnabled)
+    		contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	
     	Skills.XpCheckSkill(SkillType.MINING, player);
     }

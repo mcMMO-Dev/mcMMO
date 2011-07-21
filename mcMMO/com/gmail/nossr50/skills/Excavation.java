@@ -68,7 +68,7 @@ public class Excavation
 		PlayerProfile PP = Users.getProfile(player);
     	ItemStack is = null;
     	Material mat = null;
-    	if(data != (byte) 5)
+    	if(data == (byte) 5)
     		return;
     	
     	if(type == 2)

@@ -1,5 +1,19 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.47
+Fixed another BukkitContrib error for servers not running BukkitContrib
+
+Version 1.0.46
+Fixed bug preventing Excavation from gaining skill
+
+Version 1.0.45
+Corrected /stats showing Repair XP as Level for Repair
+Corrected /repair showing Repair XP as Level for Repair
+Corrected /whois showing Repair XP as Level for Repair
+
+Version 1.0.44
+Fixed my 'fix' of BukkitContrib errors with Tree Feller
+
 Version 1.0.43
 Stopped things from being auto-smelt'd
 

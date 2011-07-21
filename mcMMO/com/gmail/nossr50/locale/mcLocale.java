@@ -37,7 +37,8 @@ public class mcLocale
 			
 			String output = RESOURCE_BUNDLE.getString(key);
 
-			if (messageArguments != null) {
+			if (messageArguments != null) 
+			{
 				MessageFormat formatter = new MessageFormat("");
 				formatter.applyPattern(output);
 				output = formatter.format(messageArguments);

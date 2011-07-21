@@ -1,6 +1,6 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 1.0.43
+version: 1.0.47
 commands:
     mcc:
         description: Lists mcMMO commands
@@ -91,7 +91,7 @@ permissions:
         default: op
         description: mcmmo permissions that default to op
         children:
-            mcmmo.admin: true
+            mcmmo.admin: false
             mcmmo.tools.*: true
             mcmmo.chat.adminchat: true 
     
