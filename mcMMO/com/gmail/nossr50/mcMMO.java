@@ -16,11 +16,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -59,6 +64,7 @@ public class mcMMO extends JavaPlugin
 	
 	public static String maindirectory = "plugins" + File.separator + "mcMMO";
 	File file = new File(maindirectory + File.separator + "config.yml");
+	static File versionFile = new File(maindirectory + File.separator + "VERSION");
 	public static final Logger log = Logger.getLogger("Minecraft"); 
 	private final mcPlayerListener playerListener = new mcPlayerListener(this);
 	private final mcBlockListener blockListener = new mcBlockListener(this);
@@ -80,6 +86,20 @@ public class mcMMO extends JavaPlugin
 	public void onEnable() 
 	{
 		new File(maindirectory).mkdir();
+		
+		if(!versionFile.exists()) {
+			updateVersion();
+		} else {
+			String vnum = readVersion();
+			//This will be changed to whatever version preceded when we actually need updater code.
+			//Version 1.0.48 is the first to implement this, no checking before that version can be done.
+			if(vnum.equalsIgnoreCase("1.0.48")) {
+				updateFrom(1);
+			}
+			//Just add in more else if blocks for versions that need updater code.  Increment the updateFrom age int as we do so.
+			//Catch all for versions not matching and no specific code being needed
+			else if(!vnum.equalsIgnoreCase(this.getDescription().getVersion())) updateFrom(-1);
+		}
 		
 		mcPermissions.initialize(getServer());
 		config.configCheck();
@@ -1437,6 +1457,60 @@ public class mcMMO extends JavaPlugin
 		return false;
 	}
 
+	/*
+	 * It is important to always assume that you are updating from the lowest possible version.
+	 * Thus, every block of updater code should be complete and self-contained; finishing all 
+	 * SQL transactions and closing all file handlers, such that the next block of updater code
+	 * if called will handle updating as expected.
+	 */
+	public void updateFrom(int age) {
+		//No updater code needed, just update the version.
+		if(age == -1) {
+			updateVersion();
+			return;
+		}
+		//Updater code from age 1 goes here
+		if(age <= 1) {
+			//Since age 1 is an example for now, we will just let it do nothing.
+			
+		}
+		//If we are updating from age 1 but we need more to reach age 2, this will run too.
+		if(age <= 2) {
+			
+		}
+		updateVersion();
+	}
+	
+	public void updateVersion() {
+		try {
+			versionFile.createNewFile();
+			BufferedWriter vout = new BufferedWriter(new FileWriter(versionFile));
+			vout.write(this.getDescription().getVersion());
+			vout.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (SecurityException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public String readVersion() {
+		byte[] buffer = new byte[(int) versionFile.length()];
+		BufferedInputStream f = null;
+		try {
+			f = new BufferedInputStream(new FileInputStream(versionFile));
+			f.read(buffer);
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (f != null) try { f.close(); } catch (IOException ignored) { }
+		}
+		
+		return new String(buffer);
+	}
+	
 	public Player getPlayer(String playerName){
 		for(Player herp : getPlayersOnline()){
 			if(herp.getName().toLowerCase().equals(playerName.toLowerCase())){
