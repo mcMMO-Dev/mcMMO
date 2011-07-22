@@ -1,28 +1,47 @@
 package com.gmail.nossr50.party;
 
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 
 
 public class Party 
 {
+	public static String partyPlayersFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyPlayers";
+	public static String partyLocksFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyLocks";
+	public static String partyPasswordsFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyPasswords";
+	
+	HashMap<String, HashMap<String, Boolean>> partyPlayers = new HashMap<String, HashMap<String, Boolean>>();
+	HashMap<String, Boolean> partyLocks = new HashMap<String, Boolean>();
+	HashMap<String, String> partyPasswords = new HashMap<String, String>();
+	
 	private static mcMMO plugin;
-	public Party(mcMMO instance) 
-	{
+	public Party(mcMMO instance) {
     	plugin = instance;
     }
 	private static volatile Party instance;
 	public static Party getInstance() 
 	{
-    	if (instance == null) 
-    	{
-    	instance = new Party(plugin);
+    	if (instance == null) {
+    		instance = new Party(plugin);
     	}
     	return instance;
-    	}
+    }
     public boolean inSameParty(Player playera, Player playerb){
     	if(Users.getProfile(playera) == null || Users.getProfile(playerb) == null)
     	{
@@ -57,6 +76,13 @@ public class Party
         }
         return x;
     }
+	
+    public void informPartyMembers(Player player) {
+    	Player[] players = plugin.getPlayersOnline();
+    	informPartyMembers(player, players);
+    }
+    
+	
     public void informPartyMembers(Player player, Player[] players)
     {
         int x = 0;
@@ -72,6 +98,32 @@ public class Party
             }
         }
     }
+    
+    public void informPartyMembersOwnerChange(String newOwner) {
+    	Player newOwnerPlayer = plugin.getServer().getPlayer(newOwner);
+    	Player[] players = plugin.getPlayersOnline();
+    	informPartyMembersOwnerChange(newOwnerPlayer, players);
+    }
+    
+    public void informPartyMembersOwnerChange(Player newOwner, Player[] players) {
+        int x = 0;
+        for(Player p : players){
+        	if(newOwner != null && p != null){
+        		if(inSameParty(newOwner, p) && !p.getName().equals(newOwner.getName()))
+        		{
+        			//TODO: Needs more locale.
+        			p.sendMessage(newOwner.getName()+" is the new party owner.");
+        			x++;
+                }
+        	}
+        }
+    }
+    
+    public void informPartyMembersQuit(Player player) {
+    	Player[] players = plugin.getPlayersOnline();
+    	informPartyMembersQuit(player, players);
+    }
+    
     public void informPartyMembersQuit(Player player, Player[] players)
     {
         int x = 0;
@@ -85,5 +137,252 @@ public class Party
         	}
         }
     }
+    
+    public void removeFromParty(Player player, PlayerProfile PP) {
+    	informPartyMembersQuit(player);
+    	String party = PP.getParty();
+    	if(isPartyLeader(player, party)) {
+    		if(isPartyLocked(party)) {
+    			unlockParty(party);
+    		}
+    	}
+    	this.partyPlayers.get(party).remove(player.getName());
+    	if(isPartyEmpty(party)) deleteParty(party);
+		PP.removeParty();
+		savePartyPlayers();
+    }
+    
+    public void addToParty(Player player, PlayerProfile PP, String newParty, Boolean invite) {
+    	addToParty(player, PP, newParty, invite, null);
+    }
 
+    
+    public void addToParty(Player player, PlayerProfile PP, String newParty, Boolean invite, String password) {
+    	//Don't care about passwords on invites
+    	if(!invite) {
+    		//Don't care about passwords if it isn't locked
+    		if(isPartyLocked(newParty)) {
+    			if(isPartyPasswordProtected(newParty)) {
+	    			if(password == null) {
+	    				//TODO: Needs more locale.
+	    				player.sendMessage("This party requires a password. Use "+LoadProperties.party+" <party> <password> to join it.");
+	    				return;
+	    			} else if(!password.equalsIgnoreCase(getPartyPassword(newParty))) {
+	    				//TODO: Needs more locale.
+	    				player.sendMessage("Party password incorrect.");
+	    				return;
+	    			}
+    			} else {
+    				//TODO: Needs more locale.
+    				player.sendMessage("Party is locked.");
+    				return;
+    			}
+    		}
+    	} else {
+			PP.acceptInvite();
+    	}
+    	//New party?
+    	if(!isParty(newParty)) {
+    		putNestedEntry(this.partyPlayers, newParty, player.getName(), true);
+    		
+    		//Get default locking behavior from config?
+    		this.partyLocks.put(newParty, false);
+    		this.partyPasswords.put(newParty, null);
+    		saveParties();
+    	} else {		
+    		putNestedEntry(this.partyPlayers, newParty, player.getName(), false);
+
+    		savePartyPlayers();
+    	}
+		PP.setParty(newParty);
+		informPartyMembers(player);
+		
+		if(!invite) {
+			player.sendMessage(mcLocale.getString("mcPlayerListener.JoinedParty", new Object[] { newParty }));
+		} else {
+			player.sendMessage(mcLocale.getString("mcPlayerListener.InviteAccepted", new Object[]{ PP.getParty() }));
+		}
+    }
+    
+    private static <U,V,W> W putNestedEntry(
+            HashMap<U,HashMap<V,W>> nest,
+            U nestKey,
+            V nestedKey,
+            W nestedValue)
+    {
+        HashMap<V,W> nested = nest.get(nestKey);
+
+        if (nested == null) {
+            nested = new HashMap<V,W>();
+            nest.put(nestKey, nested);
+        }
+
+        return nested.put(nestedKey, nestedValue);        
+    }
+    
+    public void dump(Player player) {
+    	player.sendMessage(partyPlayers.toString());
+    	player.sendMessage(partyLocks.toString());
+    	player.sendMessage(partyPasswords.toString());
+    	Iterator<String> i = partyPlayers.keySet().iterator();
+    	while(i.hasNext()) {
+    		String nestkey = i.next();
+    		player.sendMessage(nestkey);
+    		Iterator<String> j = partyPlayers.get(nestkey).keySet().iterator();
+    		while(j.hasNext()) {
+    			String nestedkey = j.next();
+    			player.sendMessage("."+nestedkey);
+    			if(partyPlayers.get(nestkey).get(nestedkey)) {
+    				player.sendMessage("..True");
+    			} else {
+    				player.sendMessage("..False");
+    			}
+    		}
+    	}
+    }
+    
+    public void lockParty(String partyName) {
+    	this.partyLocks.put(partyName, true);
+    	savePartyLocks();
+    }
+    
+    public void unlockParty(String partyName) {
+    	this.partyLocks.put(partyName, false);
+    	savePartyLocks();
+    }
+    
+    public void deleteParty(String partyName) {
+    	this.partyPlayers.remove(partyName);
+    	this.partyLocks.remove(partyName);
+    	this.partyPasswords.remove(partyName);
+    	saveParties();
+    }
+    
+    public void setPartyPassword(String partyName, String password) {
+    	if(password.equalsIgnoreCase("\"\"")) password = null;
+    	this.partyPasswords.put(partyName, password);
+    	savePartyPasswords();
+    }
+    
+    public void setPartyLeader(String partyName, String playerName) {
+    	Iterator<String> i = partyPlayers.get(partyName).keySet().iterator();
+    	while(i.hasNext()) {
+    		String playerKey = i.next();
+    		if(playerKey.equalsIgnoreCase(playerName)) {
+    			partyPlayers.get(partyName).put(playerName, true);
+    			informPartyMembersOwnerChange(playerName);
+    			//TODO: Needs more locale.
+    			plugin.getServer().getPlayer(playerName).sendMessage("You are now the party owner.");
+    			continue;
+    		}
+    		if(partyPlayers.get(partyName).get(playerKey)) {
+    			//TODO: Needs more locale.
+    			plugin.getServer().getPlayer(playerKey).sendMessage("You are no longer party owner.");
+    			partyPlayers.get(partyName).put(playerKey, false);
+    		}
+    	}
+    }
+    
+    public String getPartyPassword(String partyName) {
+    	return this.partyPasswords.get(partyName);
+    }
+    
+    public boolean canInvite(Player player, PlayerProfile PP) {
+    	return (isPartyLocked(PP.getParty()) && !isPartyLeader(player, PP.getParty())) ? false : true;
+    }
+    
+    public boolean isParty(String partyName) {
+    	return this.partyPlayers.containsKey(partyName);
+    }
+
+    public boolean isPartyEmpty(String partyName) {
+    	return this.partyPlayers.get(partyName).isEmpty();
+    }
+    
+    public boolean isPartyLeader(Player player, String partyName) {
+    	if(this.partyPlayers.get(partyName).get(player.getName()) == null) return false;
+    	return this.partyPlayers.get(partyName).get(player.getName());
+    }
+    
+    public boolean isPartyLocked(String partyName) {
+    	if(this.partyLocks.get(partyName) ==  null) return false;
+    	return this.partyLocks.get(partyName);
+    }
+    
+    public boolean isPartyPasswordProtected(String partyName) {
+    	return !(this.partyPasswords.get(partyName) == null);
+    }
+    
+    public boolean isInParty(Player player, PlayerProfile PP) {
+    	return partyPlayers.get(PP.getParty()).containsKey(player.getName());
+    }
+    
+    @SuppressWarnings("unchecked")
+	public void loadParties() {
+    	if(new File(partyPlayersFile).exists()) {
+			try {
+				ObjectInputStream obj = new ObjectInputStream(new FileInputStream(partyPlayersFile));
+				this.partyPlayers = (HashMap<String, HashMap<String, Boolean>>)obj.readObject();
+			} catch (FileNotFoundException e) { e.printStackTrace();
+			} catch (EOFException e) { mcMMO.log.info("partyPlayersFile empty.");
+			} catch (IOException e) { e.printStackTrace();
+			} catch (ClassNotFoundException e) { e.printStackTrace(); }
+    	}
+
+    	if(new File(partyLocksFile).exists()) {
+			try {
+				ObjectInputStream obj = new ObjectInputStream(new FileInputStream(partyLocksFile));
+				this.partyLocks = (HashMap<String, Boolean>)obj.readObject();
+			} catch (FileNotFoundException e) { e.printStackTrace();
+			} catch (EOFException e) { mcMMO.log.info("partyLocksFile empty.");
+			} catch (IOException e) { e.printStackTrace();
+			} catch (ClassNotFoundException e) { e.printStackTrace(); }
+    	}
+
+    	if(new File(partyPasswordsFile).exists()) {
+			try {
+				ObjectInputStream obj = new ObjectInputStream(new FileInputStream(partyPasswordsFile));
+				this.partyPasswords = (HashMap<String, String>)obj.readObject();
+			} catch (FileNotFoundException e) { e.printStackTrace();
+			} catch (EOFException e) { mcMMO.log.info("partyPasswordsFile empty.");
+			} catch (IOException e) { e.printStackTrace();
+			} catch (ClassNotFoundException e) { e.printStackTrace(); }
+    	}
+    }
+    
+    public void saveParties() {
+    	savePartyPlayers();
+    	savePartyLocks();
+    	savePartyPasswords();
+    }
+    
+    public void savePartyPlayers() {
+    	try {
+			new File(partyPlayersFile).createNewFile();
+			ObjectOutputStream obj = new ObjectOutputStream(new FileOutputStream(partyPlayersFile));
+			obj.writeObject(this.partyPlayers);
+			obj.close();
+		} catch (FileNotFoundException e) { e.printStackTrace();
+		} catch (IOException e) { e.printStackTrace(); }
+    }
+    
+    public void savePartyLocks() {
+    	try {
+			new File(partyLocksFile).createNewFile();
+			ObjectOutputStream obj = new ObjectOutputStream(new FileOutputStream(partyLocksFile));
+			obj.writeObject(this.partyLocks);
+			obj.close();
+		} catch (FileNotFoundException e) { e.printStackTrace();
+		} catch (IOException e) { e.printStackTrace(); }
+    }
+    
+    public void savePartyPasswords() {
+    	try {
+			new File(partyPasswordsFile).createNewFile();
+			ObjectOutputStream obj = new ObjectOutputStream(new FileOutputStream(partyPasswordsFile));
+			obj.writeObject(this.partyPasswords);
+			obj.close();
+		} catch (FileNotFoundException e) { e.printStackTrace();
+		} catch (IOException e) { e.printStackTrace(); }
+    }
 }

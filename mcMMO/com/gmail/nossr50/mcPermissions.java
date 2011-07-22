@@ -194,6 +194,13 @@ public class mcPermissions
             return true;
         }
     }
+    public boolean partyLock(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.chat.partylock");
+        } else {
+            return true;
+        }
+    }
     public boolean partyTeleport(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.commands.ptp");
