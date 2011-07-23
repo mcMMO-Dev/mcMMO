@@ -87,9 +87,11 @@ public class mcMMO extends JavaPlugin
 	{
 		new File(maindirectory).mkdir();
 		
-		if(!versionFile.exists()) {
+		if(!versionFile.exists()) 
+		{
 			updateVersion();
-		} else {
+		} else 
+		{
 			String vnum = readVersion();
 			//This will be changed to whatever version preceded when we actually need updater code.
 			//Version 1.0.48 is the first to implement this, no checking before that version can be done.
@@ -102,7 +104,9 @@ public class mcMMO extends JavaPlugin
 		}
 		
 		mcPermissions.initialize(getServer());
+		
 		config.configCheck();
+		
 		Party.getInstance().loadParties();
 		new Party(this);
 		
@@ -151,9 +155,8 @@ public class mcMMO extends JavaPlugin
 			Leaderboard.makeLeaderboards(); //Make the leaderboards
 
 		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile   
-		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );  
+		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
-		//mcMMO_SpellTimer.schedule(new mcTimerSpells(this), (long)0, (long)(100));
 	}
 	
 	public static void download(Logger log, URL url, File file) throws IOException 

@@ -10,10 +10,12 @@ public class LoadProperties
 	public static int archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapus, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
 	public String directory = "plugins/mcMMO/"; 
 	File file = new File(directory + File.separator + "config.yml");
+	Configuration config = null;
 	
 	public void configCheck()
 	{
 		new File(directory).mkdir();
+		config = load();
 		if(!file.exists())
 		{
 			try 
@@ -33,20 +35,20 @@ public class LoadProperties
 	}
 	    private void write(String root, Object x)
 	    {
-	    	Configuration config = load();
+	    	//Configuration config = load();
 	        config.setProperty(root, x);
 	        config.save();
 	    }
 	    private Boolean readBoolean(String root, Boolean def)
 	    {
-	    	Configuration config = load();
+	    	//Configuration config = load();
 	    	Boolean result = config.getBoolean(root, def);
 	    	config.save();
 	        return result;
 	    }
 	    private Integer readInteger(String root, Integer def)
 	    {
-	    	Configuration config = load();
+	    	//Configuration config = load();
 	    	Integer result = config.getInt(root, def);
 	    	config.save();
 	        return result;
@@ -54,7 +56,7 @@ public class LoadProperties
 	    
 	    private String readString(String root, String def)
 	    {
-	    	Configuration config = load();
+	    	//Configuration config = load();
 	    	String result = config.getString(root, def);
 	    	config.save();
 	        return result;
@@ -62,9 +64,9 @@ public class LoadProperties
 	    private Configuration load()
 	    {
 	        try {
-	            Configuration config = new Configuration(file);
-	            config.load();
-	            return config;
+	            Configuration configx = new Configuration(file);
+	            configx.load();
+	            return configx;
 
 	        } catch (Exception e) {
 	            e.printStackTrace();
