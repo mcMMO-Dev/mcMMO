@@ -1230,8 +1230,7 @@ public class mcMMO extends JavaPlugin
 					//target.sendMessage(ChatColor.YELLOW+"Type "+ChatColor.GREEN+LoadProperties.accept+ChatColor.YELLOW+" to accept the invite");   
 					target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite2", new Object[] {LoadProperties.accept}));
 				} else {
-					//TODO: Needs more locale.
-					player.sendMessage("Party is locked, only party leader may invite.");
+					player.sendMessage(mcLocale.getString("Party.Locked"));
 					return true;
 				}
 			}
@@ -1251,41 +1250,65 @@ public class mcMMO extends JavaPlugin
 			}
 		}
 		//Party command
-		else if(LoadProperties.partyEnable && label.equalsIgnoreCase(LoadProperties.party)){ 
-			if(!mcPermissions.getInstance().party(player)){
+		else if(LoadProperties.partyEnable && label.equalsIgnoreCase(LoadProperties.party))
+		{ 
+			if(!mcPermissions.getInstance().party(player))
+			{
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 			
 			Party Pinstance = Party.getInstance();
 			
-			if(PP.inParty() && (!Pinstance.isParty(PP.getParty()) || !Pinstance.isInParty(player, PP))) {
+			if(PP.inParty() && (!Pinstance.isParty(PP.getParty()) || !Pinstance.isInParty(player, PP))) 
+			{
 				Pinstance.addToParty(player, PP, PP.getParty(), false);
 			}
 			
-			if(args.length == 0 && !PP.inParty()){
-				//TODO: Needs more locale.
-				player.sendMessage("Proper usage is "+LoadProperties.party+" <name> or 'q' to quit");
-				player.sendMessage("To join a password protected party use "+LoadProperties.party+" <name> <password>");
-				player.sendMessage("Or "+LoadProperties.party+" ? for more information.");
+			if(args.length == 0 && !PP.inParty())
+			{
+				player.sendMessage(mcLocale.getString("Party.Help1", new Object[] {LoadProperties.party}));
+				player.sendMessage(mcLocale.getString("Party.Help2", new Object[] {LoadProperties.party}));
+				player.sendMessage(mcLocale.getString("Party.Help3", new Object[] {LoadProperties.party}));
 				return true;
-			} else if(args.length == 0 && PP.inParty()){
+			} else if(args.length == 0 && PP.inParty())
+			{
 				String tempList = ""; 
 				int x = 0;
-				for(Player p : this.getServer().getOnlinePlayers()){
-					if(PP.getParty().equals(Users.getProfile(p).getParty())){
-						if(p != null && x+1 >= Pinstance.partyCount(player, getPlayersOnline())){
-							tempList+= p.getName();
-							x++;
+				for(Player p : this.getServer().getOnlinePlayers())
+				{
+					if(PP.getParty().equals(Users.getProfile(p).getParty()))
+					{
+						if(p != null && x+1 >= Pinstance.partyCount(player, getPlayersOnline()))
+						{
+							if(Pinstance.isPartyLeader(p, PP.getParty()))
+							{
+								tempList+=ChatColor.GOLD+p.getName();
+								x++;
+							}
+							else
+							{
+								tempList+= ChatColor.WHITE+p.getName();
+								x++;
+							}
 						}
-						if(p != null && x < Pinstance.partyCount(player, getPlayersOnline())){
-							tempList+= p.getName() +", "; 
-							x++;
+						if(p != null && x < Pinstance.partyCount(player, getPlayersOnline()))
+						{
+							if(Pinstance.isPartyLeader(p, PP.getParty()))
+							{
+								tempList+=ChatColor.GOLD+p.getName();
+								x++;
+							}
+							else
+							{
+								tempList+= ChatColor.WHITE+p.getName();
+								x++;
+							}
 						}
 					}
 				}
 				player.sendMessage(mcLocale.getString("mcPlayerListener.YouAreInParty", new Object[] {PP.getParty()}));
-				player.sendMessage(mcLocale.getString("mcPlayerListener.PartyMembers")+" ("+ChatColor.WHITE+tempList+ChatColor.GREEN+")");
+				player.sendMessage(mcLocale.getString("mcPlayerListener.PartyMembers")+" ("+tempList+ChatColor.GREEN+")");
 				return true;
 			} else if(args.length == 1){
 				if(args[0].equals("q") && PP.inParty()) {
@@ -1294,84 +1317,99 @@ public class mcMMO extends JavaPlugin
 					return true;
 				} else if (args[0].equalsIgnoreCase("?")) {
 					//TODO: Needs more locale.
-					player.sendMessage("Use "+LoadProperties.party+" <name> to join a party or 'q' to quit");
-					player.sendMessage("To join a password protected party use "+LoadProperties.party+" <name> <password>");
-					player.sendMessage("To lock your party use "+LoadProperties.party+" lock");
-					player.sendMessage("To unlock your party use "+LoadProperties.party+" unlock");
-					player.sendMessage("To password protect your party use "+LoadProperties.party+" password <password>");
-					player.sendMessage("To kick from your party use "+LoadProperties.party+" kick <player>");
-					player.sendMessage("To transfer ownership of your party use "+LoadProperties.party+" owner <player>");
-				} else if (args[0].equalsIgnoreCase("lock")) {
-					if(PP.inParty()) {
-						if(Pinstance.isPartyLeader(player, PP.getParty())) {
+					player.sendMessage(mcLocale.getString("Party.Help4", new Object[] {LoadProperties.party}));
+					player.sendMessage(mcLocale.getString("Party.Help2", new Object[] {LoadProperties.party}));
+					player.sendMessage(mcLocale.getString("Party.Help5", new Object[] {LoadProperties.party}));
+					player.sendMessage(mcLocale.getString("Party.Help6", new Object[] {LoadProperties.party}));
+					player.sendMessage(mcLocale.getString("Party.Help7", new Object[] {LoadProperties.party}));
+					player.sendMessage(mcLocale.getString("Party.Help8", new Object[] {LoadProperties.party}));
+					player.sendMessage(mcLocale.getString("Party.Help9", new Object[] {LoadProperties.party}));
+				} else if (args[0].equalsIgnoreCase("lock")) 
+				{
+					if(PP.inParty()) 
+					{
+						if(Pinstance.isPartyLeader(player, PP.getParty())) 
+						{
 							Pinstance.lockParty(PP.getParty());
-							//TODO: Needs more locale.
-							player.sendMessage("Party locked.");
-						} else {
-							//TODO: Needs more locale.
-							player.sendMessage("You are not the party owner.");
+							player.sendMessage(mcLocale.getString("Party.Locked"));
+						} else 
+						{
+							player.sendMessage(mcLocale.getString("Party.NotOwner"));
 						}
-					} else {
-						//TODO: Needs more locale.
-						player.sendMessage("This is not a valid party name");
+					} else 
+					{
+						player.sendMessage(mcLocale.getString("Party.InvalidName"));
 					}
-				} else if (args[0].equalsIgnoreCase("unlock")) {
-					if(PP.inParty()) {
-						if(Pinstance.isPartyLeader(player, PP.getParty())) {
+				} else if (args[0].equalsIgnoreCase("unlock")) 
+				{
+					if(PP.inParty()) 
+					{
+						if(Pinstance.isPartyLeader(player, PP.getParty())) 
+						{
 							Pinstance.unlockParty(PP.getParty());
-							//TODO: Needs more locale.
-							player.sendMessage("Party unlocked");
-						} else {
-							//TODO: Needs more locale.
-							player.sendMessage("You are not the party owner.");
+							player.sendMessage(mcLocale.getString("Party.Unlocked"));
+						} else 
+						{
+							player.sendMessage(mcLocale.getString("Party.NotOwner"));
 						}
-					} else {
-						//TODO: Needs more locale.
-						player.sendMessage("This is not a valid party name");
+					} else 
+					{
+						player.sendMessage(mcLocale.getString("Party.InvalidName"));
 					}
 				//Party debugging command.
 				//} else if (args[0].equalsIgnoreCase("dump")) {
 				//	Pinstance.dump(player);
-				} else {
-					if(PP.inParty()) {
+				} else 
+				{
+					if(PP.inParty()) 
+					{
 						Pinstance.removeFromParty(player, PP);
 					}
 					Pinstance.addToParty(player, PP, args[0], false);
 					return true;
 				}
-			} else if(args.length == 2 && PP.inParty()) {
-				if(args[0].equalsIgnoreCase("password")) {
-					if(Pinstance.isPartyLeader(player, PP.getParty())) {
-						if(Pinstance.isPartyLocked(PP.getParty())) {
+			} else if(args.length == 2 && PP.inParty()) 
+			{
+				if(args[0].equalsIgnoreCase("password")) 
+				{
+					if(Pinstance.isPartyLeader(player, PP.getParty())) 
+					{
+						if(Pinstance.isPartyLocked(PP.getParty())) 
+						{
 							Pinstance.setPartyPassword(PP.getParty(), args[1]);
-							//TODO: Needs more locale.
-							player.sendMessage("Party password set to "+args[1]);
-						} else {
-							//TODO: Needs more locale.
-							player.sendMessage("Party not locked.");
+							player.sendMessage(mcLocale.getString("Party.PasswordSet", new Object[] {args[1]}));
+						} else 
+						{
+							player.sendMessage(mcLocale.getString("Party.IsntLocked"));
 						}
-					} else {
-						//TODO: Needs more locale.
-						player.sendMessage("You are not the party owner.");
+					} else 
+					{
+						player.sendMessage(mcLocale.getString("Party.NotOwner"));
 					}
-				} else if(args[0].equalsIgnoreCase("kick")) {
-					if(Pinstance.isPartyLeader(player, PP.getParty())) {
-						if(Pinstance.isPartyLocked(PP.getParty())) {
+				} else if(args[0].equalsIgnoreCase("kick")) 
+				{
+					if(Pinstance.isPartyLeader(player, PP.getParty())) 
+					{
+						if(Pinstance.isPartyLocked(PP.getParty())) 
+						{
 							Player tPlayer = null;
 							if(this.getServer().getPlayer(args[1]) != null) tPlayer = this.getServer().getPlayer(args[1]);
-							if(tPlayer == null) {
-								//TODO: Needs more locale.
-								player.sendMessage("Could not kick player "+args[1]);
+							if(tPlayer == null) 
+							{
+								player.sendMessage(mcLocale.getString("Party.CouldNotKick", new Object[] {args[1]}));
 							}
-							if(!Pinstance.inSameParty(player, tPlayer)) {
-								player.sendMessage(tPlayer.getName()+" not in your party.");
-							} else {
+							if(!Pinstance.inSameParty(player, tPlayer)) 
+							{
+								player.sendMessage(mcLocale.getString("Party.NotInYourParty", new Object[] {tPlayer.getName()}));
+							} else 
+							{
 								//Not an admin
-								if(!mcPermissions.getInstance().admin(player)) {
+								if(!mcPermissions.getInstance().admin(player)) 
+								{
 									//Can't kick an admin
-									if(mcPermissions.getInstance().admin(tPlayer)) {
-										//TODO: Needs more locale.
-										player.sendMessage("Could not kick player "+tPlayer.getName());
+									if(mcPermissions.getInstance().admin(tPlayer)) 
+									{
+										player.sendMessage(mcLocale.getString("Party.CouldNotKick", new Object[] {tPlayer.getName()}));
 									}
 								}
 								PlayerProfile tPP = Users.getProfile(tPlayer);
@@ -1379,35 +1417,39 @@ public class mcMMO extends JavaPlugin
 								tPlayer.sendMessage(mcLocale.getString("mcPlayerListener.LeftParty"));
 							}
 						} else {
-							//TODO: Needs more locale.
-							player.sendMessage("Party not locked.");
+							player.sendMessage(mcLocale.getString("Party.IsntLocked"));
 						}
 					} else {
-						//TODO: Needs more locale.
-						player.sendMessage("You are not the party owner.");
+						player.sendMessage(mcLocale.getString("Party.NotOwner"));
 					}
-				} else if(args[0].equalsIgnoreCase("owner")) {
-					if(Pinstance.isPartyLeader(player, PP.getParty())) {
+				} else if(args[0].equalsIgnoreCase("owner")) 
+				{
+					if(Pinstance.isPartyLeader(player, PP.getParty())) 
+					{
 						Player tPlayer = null;
 						if(this.getServer().getPlayer(args[1]) != null) tPlayer = this.getServer().getPlayer(args[1]);
-						if(tPlayer == null) {
-							//TODO: Needs more locale.
-							player.sendMessage("Could not set owner to "+args[1]);
+						if(tPlayer == null) 
+						{
+							player.sendMessage(mcLocale.getString("Party.CouldNotSetOwner", new Object[] {args[1]}));
 						}
-						if(!Pinstance.inSameParty(player, tPlayer)) {
-							player.sendMessage("Could not set owner to "+tPlayer.getName());
-						} else {
+						if(!Pinstance.inSameParty(player, tPlayer)) 
+						{
+							player.sendMessage(mcLocale.getString("Party.CouldNotSetOwner", new Object[] {tPlayer.getName()}));
+						} else 
+						{
 							Pinstance.setPartyLeader(PP.getParty(), tPlayer.getName());
 						}
-					} else {
-						//TODO: Needs more locale.
-						player.sendMessage("You are not the party owner.");
+					} else 
+					{
+						player.sendMessage(mcLocale.getString("Party.NotOwner"));
 					}
-				} else {
+				} else 
+				{
 					Pinstance.removeFromParty(player, PP);
 					Pinstance.addToParty(player, PP, args[0], false, args[1]);
 				}
-			} else if(args.length == 2 && !PP.inParty()) {
+			} else if(args.length == 2 && !PP.inParty()) 
+			{
 				Pinstance.addToParty(player, PP, args[0], false, args[1]);
 			}
 		}
