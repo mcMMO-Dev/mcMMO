@@ -10,34 +10,47 @@ commands:
         description: Shows leader boards for mcMMO
     addxp:
         description: Add XP to a user
+        permission: mcmmo.tools.mmoedit
     mcability:
         description: Toggle whether or not abilities get readied on right click
+        permission: mcmmo.commands.ability
     mcrefresh:
         description: Refresh all cooldowns for mcMMO
+        permission: mcmmo.tools.mcrefresh
     mcgod:
         description: Make yourself invulnerable
+        permission: mcmmo.tools.mcgod        
     stats:
         description: Shows your mcMMO stats and xp
     mmoedit:
         description: Edit the skill values for a user
+        permission: mcmmo.tools.mmoedit
     ptp:
         description: Teleport to a party member
+        permission: mcmmo.commands.ptp
     party:
         description: Create/join a party
+        permission: mcmmo.commands.party
     myspawn:
         description: Teleport to your MySpawn
+        permission: mcmmo.commands.myspawn
     whois:
         description: View mcMMO stats of another player
     invite:
         description: Invite a player into your party
+        permission: mcmmo.chat.partychat
     accept:
         description: Accept a party invite
+        permission: mcmmo.chat.partychat
     clearmyspawn:
         description: Clear your MySpawn location
+        permission: mcmmo.commands.myspawn
     mmoupdate:
         description: Convert from Flat File to MySQL
+        permission: mcmmo.admin
     p:
         description: Toggle Party chat or send party chat messages
+        permission: mcmmo.chat.partychat
     excavation:
         description: Detailed skill info
     herbalism:
@@ -62,6 +75,7 @@ commands:
         description: Detailed skill info
     a:
         description: Toggle Admin chat or send admin chat messages
+        permission: mcmmo.chat.adminchat
     sorcery:
         description: Detailed skill info
 permissions:
@@ -96,8 +110,7 @@ permissions:
             mcmmo.chat.adminchat: true 
     
     mcmmo.admin:
-        description:
-        
+        description:        
     mcmmo.tools.*:
         description: Implies all mcmmo.tools permissions.
         children:
@@ -109,8 +122,7 @@ permissions:
     mcmmo.tools.mmoedit:
         description:
     mcmmo.tools.mcgod:
-        description:
-        
+        description:        
     mcmmo.ability.*:
         description: Implies all mcmmo.ability permissions.
         children:
@@ -134,21 +146,17 @@ permissions:
     mcmmo.ability.swords:
         description:
     mcmmo.ability.woodcutting:
-        description:
-        
+        description:        
     mcmmo.item.*:
         description: Implies all mcmmo.item permissions.
         children:
             mcmmo.item.chimaerawing: true 
     mcmmo.item.chimaerawing:
-        description:
-        
+        description:        
     mcmmo.regeneration:
-        description:
-        
+        description:        
     mcmmo.motd:
-        description:
-        
+        description:        
     mcmmo.commands.*:
         description: Implies all mcmmo.commands permissions.
         children:
@@ -169,8 +177,7 @@ permissions:
     mcmmo.commands.whois:
         description:
     mcmmo.commands.party:
-        description:
-        
+        description:        
     mcmmo.chat.*:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
@@ -179,8 +186,7 @@ permissions:
     mcmmo.chat.adminchat:
         description:
     mcmmo.chat.partychat:
-        description:
-        
+        description:        
     mcmmo.skills.*:
         description: Implies all mcmmo.skills permissions.
         children:
@@ -208,22 +214,19 @@ permissions:
         children:
             mcmmo.skills.curative: true 
             mcmmo.skills.curative.heal.other: true 
-            mcmmo.skills.curative.heal.self: true 
-    
+            mcmmo.skills.curative.heal.self: true     
     mcmmo.skills.sorcery:
         description:
     mcmmo.skills.sorcery.water:
         description:
     mcmmo.skills.sorcery.water.thunder:
-        description:
-    
+        description:    
     mcmmo.skills.curative:
         description:
     mcmmo.skills.curative.heal.other:
         description:
     mcmmo.skills.curative.heal.self:
-        description:
-    
+        description:    
     mcmmo.skills.taming:
         description:
     mcmmo.skills.mining:
