@@ -1236,11 +1236,14 @@ public class mcMMO extends JavaPlugin
 			}
 		}
 		//Accept invite
-		else if(LoadProperties.acceptEnable && label.equalsIgnoreCase(LoadProperties.accept) && mcPermissions.getInstance().party(player)){ 
-			if(PP.hasPartyInvite()){
+		else if(LoadProperties.acceptEnable && label.equalsIgnoreCase(LoadProperties.accept) && mcPermissions.getInstance().party(player))
+		{ 
+			if(PP.hasPartyInvite())
+			{
 				Party Pinstance = Party.getInstance();
 				
-				if(PP.inParty()) {
+				if(PP.inParty()) 
+				{
 					Pinstance.removeFromParty(player, PP);
 				}
 				PP.acceptInvite();

@@ -139,7 +139,12 @@ public class Party
         }
     }
     
-    public void removeFromParty(Player player, PlayerProfile PP) {
+    public void removeFromParty(Player player, PlayerProfile PP) 
+    {
+    	//Stop NPE... hopefully
+    	if(!isParty(PP.getParty()) || !isInParty(player, PP))
+    		addToParty(player, PP, PP.getParty(), false);
+    		
     	informPartyMembersQuit(player);
     	String party = PP.getParty();
     	if(isPartyLeader(player, party)) {
@@ -158,39 +163,49 @@ public class Party
     }
 
     
-    public void addToParty(Player player, PlayerProfile PP, String newParty, Boolean invite, String password) {
+    public void addToParty(Player player, PlayerProfile PP, String newParty, Boolean invite, String password) 
+    {
     	//Don't care about passwords on invites
-    	if(!invite) {
+    	if(!invite) 
+    	{
     		//Don't care about passwords if it isn't locked
-    		if(isPartyLocked(newParty)) {
-    			if(isPartyPasswordProtected(newParty)) {
-	    			if(password == null) {
+    		if(isPartyLocked(newParty)) 
+    		{
+    			if(isPartyPasswordProtected(newParty)) 
+    			{
+	    			if(password == null) 
+	    			{
 	    				//TODO: Needs more locale.
 	    				player.sendMessage("This party requires a password. Use "+LoadProperties.party+" <party> <password> to join it.");
 	    				return;
-	    			} else if(!password.equalsIgnoreCase(getPartyPassword(newParty))) {
+	    			} else if(!password.equalsIgnoreCase(getPartyPassword(newParty))) 
+	    			{
 	    				//TODO: Needs more locale.
 	    				player.sendMessage("Party password incorrect.");
 	    				return;
 	    			}
-    			} else {
+    			} else 
+    			{
     				//TODO: Needs more locale.
     				player.sendMessage("Party is locked.");
     				return;
     			}
     		}
-    	} else {
+    	} else 
+    	{
 			PP.acceptInvite();
     	}
     	//New party?
-    	if(!isParty(newParty)) {
+    	if(!isParty(newParty)) 
+    	{
     		putNestedEntry(this.partyPlayers, newParty, player.getName(), true);
     		
     		//Get default locking behavior from config?
     		this.partyLocks.put(newParty, false);
     		this.partyPasswords.put(newParty, null);
     		saveParties();
-    	} else {		
+    	} else 
+    	{		
     		putNestedEntry(this.partyPlayers, newParty, player.getName(), false);
 
     		savePartyPlayers();
@@ -198,9 +213,11 @@ public class Party
 		PP.setParty(newParty);
 		informPartyMembers(player);
 		
-		if(!invite) {
+		if(!invite) 
+		{
 			player.sendMessage(mcLocale.getString("mcPlayerListener.JoinedParty", new Object[] { newParty }));
-		} else {
+		} else 
+		{
 			player.sendMessage(mcLocale.getString("mcPlayerListener.InviteAccepted", new Object[]{ PP.getParty() }));
 		}
     }

@@ -1,5 +1,11 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.49
+Updated German locale
+Fixed bug where using the party system on a MySQL setup caused errors when writing to non-existent files
+Fixed bug where using /accept caused a NPE (hopefully)
+Fixed a few missing descriptions for commands
+
 Version 1.0.48
 Updated French Translation
 Updated German Translation
