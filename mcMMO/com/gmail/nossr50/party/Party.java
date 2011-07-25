@@ -32,6 +32,7 @@ public class Party
 	
 	private static mcMMO plugin;
 	public Party(mcMMO instance) {
+		new File(mcMMO.maindirectory + File.separator + "FlatFileStuff").mkdir();
     	plugin = instance;
     }
 	private static volatile Party instance;
