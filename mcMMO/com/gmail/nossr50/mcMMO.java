@@ -1319,7 +1319,6 @@ public class mcMMO extends JavaPlugin
 					player.sendMessage(mcLocale.getString("mcPlayerListener.LeftParty")); 
 					return true;
 				} else if (args[0].equalsIgnoreCase("?")) {
-					//TODO: Needs more locale.
 					player.sendMessage(mcLocale.getString("Party.Help4", new Object[] {LoadProperties.party}));
 					player.sendMessage(mcLocale.getString("Party.Help2", new Object[] {LoadProperties.party}));
 					player.sendMessage(mcLocale.getString("Party.Help5", new Object[] {LoadProperties.party}));
@@ -1476,7 +1475,6 @@ public class mcMMO extends JavaPlugin
 
 				for(Player herp : getServer().getOnlinePlayers()) {
 					if(Users.getProfile(herp).inParty()) {
-						log.info(Users.getProfile(herp).getParty());
 						if(Users.getProfile(herp).getParty().equalsIgnoreCase(args[0])) {
 							herp.sendMessage(pPrefix + pMessage);
 						}
