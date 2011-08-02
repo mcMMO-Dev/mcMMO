@@ -289,7 +289,8 @@ public class PlayerProfile
     {
     	Long timestamp = System.currentTimeMillis()/1000; //Convert to seconds
     	// if we are using mysql save to database
-    	if (LoadProperties.useMySQL) {
+    	if (LoadProperties.useMySQL) 
+    	{
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
@@ -329,7 +330,8 @@ public class PlayerProfile
     				+", acrobatics = "+skillsXp.get(SkillType.ACROBATICS)
     				+" WHERE user_id = "+this.userid);
     		
-    	} else {
+    	} else 
+    	{
     		// otherwise save to flatfile
 	        try {
 	        	//Open the file

@@ -7,13 +7,13 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.bukkitcontrib.sound.SoundEffect;
+import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.contrib.contribStuff;
+import com.gmail.nossr50.contrib.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -476,8 +476,8 @@ public class Mining
     	}
     	if(block.getData() != (byte) 5)
     		PP.addXP(SkillType.MINING, xp * LoadProperties.xpGainMultiplier);
-    	if(LoadProperties.contribEnabled)
-    		contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+    	if(LoadProperties.spoutEnabled)
+    		SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	
     	Skills.XpCheckSkill(SkillType.MINING, player);
     }

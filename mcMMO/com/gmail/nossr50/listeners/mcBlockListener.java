@@ -5,10 +5,9 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.contrib.contribStuff;
+import com.gmail.nossr50.contrib.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.block.Block;
@@ -19,9 +18,8 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkitcontrib.player.ContribCraftPlayer;
-import org.bukkitcontrib.player.ContribPlayer;
-import org.bukkitcontrib.sound.SoundEffect;
+import org.getspout.spoutapi.player.SpoutPlayer;
+import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.*;
@@ -58,25 +56,25 @@ public class mcBlockListener extends BlockListener {
     	if(block.getTypeId() == 42 && LoadProperties.anvilmessages)
     	{
     		PlayerProfile PP = Users.getProfile(player);
-    		if(LoadProperties.contribEnabled)
+    		if(LoadProperties.spoutEnabled)
     		{
-    			ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
-	    		if(cPlayer.isBukkitContribEnabled())
+    			SpoutPlayer sPlayer = (SpoutPlayer)player;
+	    		if(sPlayer.isSpoutCraftEnabled())
 	    		{
 	    			if(!PP.getPlacedAnvil())
 	    			{
-	    				cPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.IRON_BLOCK);
+	    				sPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.IRON_BLOCK);
 	    				PP.togglePlacedAnvil();
 	    			}
 	    		}
-    		else
-    		{
-    			if(!PP.getPlacedAnvil())
-    			{
-    				event.getPlayer().sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil")); //$NON-NLS-1$
-    				PP.togglePlacedAnvil();
-    			}
-    		}
+	    		else
+	    		{
+	    			if(!PP.getPlacedAnvil())
+	    			{
+	    				event.getPlayer().sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil")); //$NON-NLS-1$
+	    				PP.togglePlacedAnvil();
+	    			}
+	    		}
     		}
     		else
     		{
@@ -189,19 +187,21 @@ public class mcBlockListener extends BlockListener {
    					&& block.getTypeId() == 17
    					&& m.blockBreakSimulate(block, player, plugin))
    			{
-   				if(LoadProperties.contribEnabled)
-   					contribStuff.playSoundForPlayer(SoundEffect.EXPLODE, player, block.getLocation());
+   				if(LoadProperties.spoutEnabled)
+   					SpoutStuff.playSoundForPlayer(SoundEffect.EXPLODE, player, block.getLocation());
    				
     			WoodCutting.treeFeller(block, player, plugin);
     			for(Block blockx : plugin.misc.treeFeller)
     			{
-    				if(blockx != null){
+    				if(blockx != null)
+    				{
     					Material mat = Material.getMaterial(block.getTypeId());
     					byte type = 0;
     					if(block.getTypeId() == 17)
     						type = block.getData();
     					ItemStack item = new ItemStack(mat, 1, (byte)0, type);
-    					if(blockx.getTypeId() == 17){
+    					if(blockx.getTypeId() == 17)
+    					{
     						blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
     						//XP WOODCUTTING
     						if(!plugin.misc.blockWatchList.contains(block))
@@ -316,8 +316,8 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * TREE FELLAN STUFF
     	 */
-    	if(LoadProperties.contribEnabled && block.getTypeId() == 17 && Users.getProfile(player).getTreeFellerMode())
-    		contribStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
+    	if(LoadProperties.spoutEnabled && block.getTypeId() == 17 && Users.getProfile(player).getTreeFellerMode())
+    		SpoutStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
     	
     	/*
     	 * GREEN TERRA STUFF
@@ -353,8 +353,8 @@ public class mcBlockListener extends BlockListener {
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
 			
 			//Contrib stuff
-			if(LoadProperties.contribEnabled)
-				contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+			if(LoadProperties.spoutEnabled)
+				SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	/*
     	 * BERSERK MODE CHECKS
@@ -375,8 +375,8 @@ public class mcBlockListener extends BlockListener {
 			block.setType(Material.AIR);
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
 			
-			if(LoadProperties.contribEnabled)
-				contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+			if(LoadProperties.spoutEnabled)
+				SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	
     	/*
@@ -409,8 +409,8 @@ public class mcBlockListener extends BlockListener {
     		}
     		block.setType(Material.AIR);
     		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
-    		if(LoadProperties.contribEnabled)
-    			contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+    		if(LoadProperties.spoutEnabled)
+    			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	if(block.getType() == Material.AIR && plugin.misc.blockWatchList.contains(block))
     	{

@@ -44,8 +44,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.entity.Player;
-import org.bukkitcontrib.player.ContribCraftPlayer;
-import org.bukkitcontrib.player.ContribPlayer;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 
 public class mcMMO extends JavaPlugin 
@@ -118,10 +117,10 @@ public class mcMMO extends JavaPlugin
 
 		PluginManager pm = getServer().getPluginManager();
 		
-		if(pm.getPlugin("BukkitContrib") != null)
-			LoadProperties.contribEnabled = true;
+		if(pm.getPlugin("Spout") != null)
+			LoadProperties.spoutEnabled = true;
 		else
-			LoadProperties.contribEnabled = false;
+			LoadProperties.spoutEnabled = false;
 
 		//Player Stuff
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
@@ -658,11 +657,11 @@ public class mcMMO extends JavaPlugin
 			{
 				player.sendMessage(x);
 			}
-			if(LoadProperties.contribEnabled)
+			if(LoadProperties.spoutEnabled && player instanceof SpoutPlayer)
 			{
-				ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
+				SpoutPlayer sPlayer = (SpoutPlayer)player;
 				if(LoadProperties.donateMessage)
-					cPlayer.sendNotification("[mcMMO] Donate!", "Paypal nossr50@gmail.com", Material.CAKE);
+					sPlayer.sendNotification("[mcMMO] Donate!", "Paypal nossr50@gmail.com", Material.CAKE);
 			}
 			else
 			{

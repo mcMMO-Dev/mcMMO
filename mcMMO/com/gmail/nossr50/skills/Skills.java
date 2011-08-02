@@ -6,8 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkitcontrib.player.ContribCraftPlayer;
-import org.bukkitcontrib.player.ContribPlayer;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Leaderboard;
 import com.gmail.nossr50.Users;
@@ -15,7 +15,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.contrib.contribStuff;
+import com.gmail.nossr50.contrib.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -309,12 +309,12 @@ public class Skills {
 						
 			//Contrib stuff
 			
-			if(LoadProperties.contribEnabled)
+			if(LoadProperties.spoutEnabled && player instanceof SpoutPlayer)
 			{
-				ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
-				if(cPlayer.isBukkitContribEnabled())
+				SpoutPlayer sPlayer = SpoutManager.getPlayerFromId(player.getEntityId());
+				if(sPlayer.isSpoutCraftEnabled())
 				{
-					contribStuff.levelUpNotification(skillType, cPlayer);
+					SpoutStuff.levelUpNotification(skillType, sPlayer);
 				} else 
 				{
 					player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
