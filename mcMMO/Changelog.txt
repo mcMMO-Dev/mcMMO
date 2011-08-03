@@ -1,9 +1,16 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.0.50
-/mcgod and /mmoedit now require permissions to be setup in some shape or form to be used
+New /xprate command for those with mcmmo.admin permissions!
 mcMMO now uses Spout instead of BukkitContrib
 BukkitContrib support dropped
+XP Formula is now 100+(skill level value * skill modifier * global modifier) thanks to suggestion
+Fixed bug where /mmoupdate used the old directory instead of the new one to find the flat file
+Fixed bug where Unarmed Mastery damage bonus only did as much as Unarmed Apprentice
+Fixed bug where Pumpkins did not give out XP
+Coordinates removed from /whois as they didn't really fit
+/mcgod and /mmoedit now require permissions to be setup in some shape or form to be used
+Lapus renamed to Lapis in config
 
 Version 1.0.49
 Updated German locale

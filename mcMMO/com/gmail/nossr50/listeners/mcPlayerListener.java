@@ -103,6 +103,8 @@ public class mcPlayerListener extends PlayerListener
 			//player.sendMessage(ChatColor.GREEN+"http://mcmmo.wikia.com"+ChatColor.BLUE+" - mcMMO Wiki");
 			player.sendMessage(mcLocale.getString("mcPlayerListener.WIKI"));
 		}
+		if(plugin.xpevent)
+			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
 	}
 
 	@SuppressWarnings("deprecation")
@@ -203,11 +205,11 @@ public class mcPlayerListener extends PlayerListener
 		 * ITEM CHECKS
 		 */
 		if(action == Action.RIGHT_CLICK_AIR)
-			Item.itemhecks(player, plugin);
+			Item.itemchecks(player, plugin);
 		if(action == Action.RIGHT_CLICK_BLOCK)
 		{
 			if(m.abilityBlockCheck(event.getClickedBlock()))
-				Item.itemhecks(player, plugin);
+				Item.itemchecks(player, plugin);
 		}
 	}
 

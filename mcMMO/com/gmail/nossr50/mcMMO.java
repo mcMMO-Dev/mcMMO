@@ -12,6 +12,7 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.*;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -68,6 +69,8 @@ public class mcMMO extends JavaPlugin
 	private final mcPlayerListener playerListener = new mcPlayerListener(this);
 	private final mcBlockListener blockListener = new mcBlockListener(this);
 	private final mcEntityListener entityListener = new mcEntityListener(this);
+	public boolean xpevent = false;
+	int oldrate = 1;
 	public static mcPermissions permissionHandler = new mcPermissions();
 	private Permissions permissions;
 
@@ -715,7 +718,105 @@ public class mcMMO extends JavaPlugin
 				PP.toggleAbilityUse();
 			}
 		}
-
+		else if (label.equalsIgnoreCase("xprate"))
+		{
+			//TODO: Localization.. I know me so lazy today, I'll do it tomorrow
+			
+			if(sender instanceof Player)
+			{
+				if(!mcPermissions.getInstance().admin(player))
+				{
+					player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+					return true;
+				}
+				if(split.length <= 1)
+				{
+					player.sendMessage(ChatColor.DARK_AQUA+"Proper usage is /xprate [integer] [true:false]");
+					player.sendMessage(ChatColor.DARK_AQUA+"Also you can type /xprate reset to turn everything back to normal");
+				}
+				if(split.length == 2 && split[1].equalsIgnoreCase("reset"))
+				{
+					if(xpevent)
+					{
+						for(Player x : Bukkit.getServer().getOnlinePlayers())
+							x.sendMessage(ChatColor.RED+"mcMMO XP Event is OVER!!");
+						xpevent = !xpevent;
+						LoadProperties.xpGainMultiplier = oldrate;
+					} else
+					{
+						LoadProperties.xpGainMultiplier = oldrate;
+					}
+				}
+				if(split.length >= 2 && m.isInt(split[1]))
+				{
+					oldrate = LoadProperties.xpGainMultiplier;
+					
+					if(split.length >= 3 && (split[2].equalsIgnoreCase("true") || split[2].equalsIgnoreCase("false")))
+					{
+						if(split[2].equalsIgnoreCase("true"))
+							xpevent = true;
+						else
+							xpevent = false;
+					} else
+					{
+						player.sendMessage("Enter true or false for the second value");
+						return true;
+					}
+					LoadProperties.xpGainMultiplier = m.getInt(split[1]);
+					if(xpevent = true)
+						for(Player x : Bukkit.getServer().getOnlinePlayers())
+						{
+							x.sendMessage(ChatColor.GOLD+"XP EVENT FOR mcMMO HAS STARTED!");
+							x.sendMessage(ChatColor.GOLD+"mcMMO XP RATE IS NOW "+LoadProperties.xpGainMultiplier+"x!!");
+						}
+				}
+			} else
+			{
+				if(split.length <= 1)
+				{
+					System.out.println(ChatColor.DARK_AQUA+"Proper usage is /xprate [integer] [true:false]");
+					System.out.println(ChatColor.DARK_AQUA+"Also you can type /xprate reset to turn everything back to normal");
+				}
+				
+				if(split.length == 2 && split[1].equalsIgnoreCase("reset"))
+				{
+					if(xpevent)
+					{
+						for(Player x : Bukkit.getServer().getOnlinePlayers())
+							x.sendMessage(ChatColor.RED+"mcMMO XP Event is OVER!!");
+						xpevent = !xpevent;
+						LoadProperties.xpGainMultiplier = oldrate;
+					} else
+					{
+						LoadProperties.xpGainMultiplier = oldrate;
+					}
+				}
+				
+				if(split.length >= 2 && m.isInt(split[1]))
+				{
+					oldrate = LoadProperties.xpGainMultiplier;
+					
+					if(split.length >= 3 && (split[2].equalsIgnoreCase("true") || split[2].equalsIgnoreCase("false")))
+					{
+						if(split[2].equalsIgnoreCase("true"))
+							xpevent = true;
+						else
+							xpevent = false;
+					} else
+					{
+						System.out.println("Enter true or false for the second value");
+						return true;
+					}
+					LoadProperties.xpGainMultiplier = m.getInt(split[1]);
+					if(xpevent = true)
+						for(Player x : Bukkit.getServer().getOnlinePlayers())
+						{
+							x.sendMessage(ChatColor.GOLD+"XP EVENT FOR mcMMO HAS STARTED!");
+							x.sendMessage(ChatColor.GOLD+"mcMMO XP RATE IS NOW "+LoadProperties.xpGainMultiplier+"x!!");
+						}
+				}
+			}
+		}
 		/*
 		 * FFS -> MySQL
 		 */
@@ -723,7 +824,7 @@ public class mcMMO extends JavaPlugin
 		{
 			if(!mcPermissions.getInstance().admin(player))
 			{
-				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 			player.sendMessage(ChatColor.GRAY+"Starting conversion..."); 
@@ -915,7 +1016,7 @@ public class mcMMO extends JavaPlugin
 		else if(LoadProperties.mcrefreshEnable && label.equalsIgnoreCase(LoadProperties.mcrefresh)){ 
 
 			if(!mcPermissions.getInstance().mcrefresh(player)){
-				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 			if(split.length >= 2 && isPlayer(split[1])){
@@ -975,7 +1076,7 @@ public class mcMMO extends JavaPlugin
 			{
 				if(!mcPermissions.getInstance().mcgod(player))
 				{
-					player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+					player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 					return true;
 				}
 				if(PP.getGodMode())
@@ -1003,7 +1104,7 @@ public class mcMMO extends JavaPlugin
 
 			if(!mcPermissions.getInstance().mmoedit(player))
 			{
-				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 			if(split.length < 3)
@@ -1039,7 +1140,7 @@ public class mcMMO extends JavaPlugin
 		else if(LoadProperties.addxpEnable && mcPermissions.permissionsEnabled && label.equalsIgnoreCase(LoadProperties.addxp)){ 
 
 			if(!mcPermissions.getInstance().mmoedit(player)){
-				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 			if(split.length < 3){
@@ -1068,7 +1169,7 @@ public class mcMMO extends JavaPlugin
 		else if(LoadProperties.ptpEnable && label.equalsIgnoreCase(LoadProperties.ptp) && PP != null && PP.inParty()){ 
 
 			if(!mcPermissions.getInstance().partyTeleport(player)){
-				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 			if(split.length < 2){
@@ -1101,10 +1202,7 @@ public class mcMMO extends JavaPlugin
 			{
 				Player target = getPlayer(split[1]);
 				PlayerProfile PPt = Users.getProfile(target);
-				double x,y,z;
-				x = target.getLocation().getX();
-				y = target.getLocation().getY();
-				z = target.getLocation().getZ();
+
 				player.sendMessage(ChatColor.GREEN + "~~WHOIS RESULTS~~"); 
 				player.sendMessage(target.getName());
 				if(PPt.inParty())
@@ -1144,11 +1242,6 @@ public class mcMMO extends JavaPlugin
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PPt.getSkillLevel(SkillType.REPAIR), PPt.getSkillXpLevel(SkillType.REPAIR), PPt.getXpToLevel(SkillType.REPAIR)));	
 
 				player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel") +ChatColor.GREEN+(m.getPowerLevel(target))); 
-
-				player.sendMessage(ChatColor.GREEN+"~~COORDINATES~~"); 
-				player.sendMessage("X: "+x); 
-				player.sendMessage("Y: "+y); 
-				player.sendMessage("Z: "+z); 
 			}
 		}
 		/*
@@ -1256,7 +1349,7 @@ public class mcMMO extends JavaPlugin
 		{ 
 			if(!mcPermissions.getInstance().party(player))
 			{
-				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 			
@@ -1483,7 +1576,7 @@ public class mcMMO extends JavaPlugin
 			}
 
 			if(!mcPermissions.getInstance().party(player)){
-				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 
@@ -1549,7 +1642,7 @@ public class mcMMO extends JavaPlugin
 			}
 
 			if(!mcPermissions.getInstance().adminChat(player)){
-				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 
@@ -1592,7 +1685,7 @@ public class mcMMO extends JavaPlugin
 		 */
 		else if(LoadProperties.myspawnEnable && LoadProperties.enableMySpawn && label.equalsIgnoreCase(LoadProperties.myspawn)){ 
 			if(!mcPermissions.getInstance().mySpawn(player)){
-				player.sendMessage(ChatColor.YELLOW+"[mcMMO]"+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
 			if(System.currentTimeMillis() < PP.getMySpawnATS() + 3600000){

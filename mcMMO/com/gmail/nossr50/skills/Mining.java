@@ -283,7 +283,7 @@ public class Mining
     	//LAPUS
     	if(block.getTypeId() == 21)
     	{
-    		xp += LoadProperties.mlapus;
+    		xp += LoadProperties.mlapis;
     		if(smelt = false)
     			blockProcCheck(block, player);
     		else
@@ -461,7 +461,7 @@ public class Mining
     	//LAPUS
     	if(block.getTypeId() == 21 && m.getTier(player) >= 3){
     		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
-    			xp += LoadProperties.mlapus;
+    			xp += LoadProperties.mlapis;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}

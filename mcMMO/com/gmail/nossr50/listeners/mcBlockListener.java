@@ -50,7 +50,7 @@ public class mcBlockListener extends BlockListener {
     	{
     		if(block.getTypeId() != 17 && block.getTypeId() != 39 && block.getTypeId() != 40 && block.getTypeId() != 91 && block.getTypeId() != 86)
     			block.setData((byte) 5); //Change the byte
-    		if(block.getTypeId() == 17 || block.getTypeId() == 39 || block.getTypeId() == 40 || block.getTypeId() == 91 || block.getTypeId() == 86)
+    		else if(block.getTypeId() == 17 || block.getTypeId() == 39 || block.getTypeId() == 40 || block.getTypeId() == 91 || block.getTypeId() == 86)
     			plugin.misc.blockWatchList.add(block);
     	}
     	if(block.getTypeId() == 42 && LoadProperties.anvilmessages)

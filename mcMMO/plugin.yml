@@ -1,7 +1,9 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 1.0.50 WIP
+version: 1.0.50
 commands:
+    xprate:
+        description: Modify the xp rate or start an event
     mcc:
         description: Lists mcMMO commands
     mcmmo:
