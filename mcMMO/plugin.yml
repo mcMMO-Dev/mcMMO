@@ -1,7 +1,9 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 1.0.49
+version: 1.0.50
 commands:
+    xprate:
+        description: Modify the xp rate or start an event
     mcc:
         description: Lists mcMMO commands
     mcmmo:
@@ -76,8 +78,6 @@ commands:
     a:
         description: Toggle Admin chat or send admin chat messages
         permission: mcmmo.chat.adminchat
-    sorcery:
-        description: Detailed skill info
 permissions:
     mcmmo.*:
         description: Implies all mcmmo permissions.
@@ -90,7 +90,7 @@ permissions:
             
     mcmmo.defaults:
         default: true
-        description: mcmmo permisionss that default to true
+        description: mcmmo permisions that default to true
         children:
             mcmmo.ability.*: true 
             mcmmo.item.*: true 
@@ -100,13 +100,14 @@ permissions:
             mcmmo.commands.*: true 
             mcmmo.chat.partychat: true 
             mcmmo.skills.*: true
+            mcmmo.tools.*: false
         
     mcmmo.defaultsop:
         default: op
         description: mcmmo permissions that default to op
         children:
             mcmmo.admin: false
-            mcmmo.tools.*: true
+            mcmmo.tools.*: false
             mcmmo.chat.adminchat: true 
     
     mcmmo.admin:

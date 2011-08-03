@@ -289,7 +289,8 @@ public class PlayerProfile
     {
     	Long timestamp = System.currentTimeMillis()/1000; //Convert to seconds
     	// if we are using mysql save to database
-    	if (LoadProperties.useMySQL) {
+    	if (LoadProperties.useMySQL) 
+    	{
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
@@ -329,7 +330,8 @@ public class PlayerProfile
     				+", acrobatics = "+skillsXp.get(SkillType.ACROBATICS)
     				+" WHERE user_id = "+this.userid);
     		
-    	} else {
+    	} else 
+    	{
     		// otherwise save to flatfile
 	        try {
 	        	//Open the file
@@ -936,29 +938,29 @@ public class PlayerProfile
 		switch(skillType)
 		{
 		case SORCERY:
-			return ((skills.get(skillType) + 50) * LoadProperties.sorceryxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.sorceryxpmodifier * LoadProperties.globalxpmodifier);
 		case TAMING:
-			return ((skills.get(skillType) + 50) * LoadProperties.tamingxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.tamingxpmodifier * LoadProperties.globalxpmodifier);
 		case MINING:
-			return ((skills.get(skillType) + 50) * LoadProperties.miningxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.miningxpmodifier * LoadProperties.globalxpmodifier);
 		case WOODCUTTING:
-			return ((skills.get(skillType) + 50) * LoadProperties.woodcuttingxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.woodcuttingxpmodifier * LoadProperties.globalxpmodifier);
 		case REPAIR:
-			return ((skills.get(skillType) + 50) * LoadProperties.repairxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.repairxpmodifier * LoadProperties.globalxpmodifier);
 		case HERBALISM:
-			return ((skills.get(skillType) + 50) * LoadProperties.herbalismxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.herbalismxpmodifier * LoadProperties.globalxpmodifier);
 		case ACROBATICS:
-			return ((skills.get(skillType) + 50) * LoadProperties.acrobaticsxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.acrobaticsxpmodifier * LoadProperties.globalxpmodifier);
 		case SWORDS:
-			return ((skills.get(skillType) + 50) * LoadProperties.swordsxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.swordsxpmodifier * LoadProperties.globalxpmodifier);
 		case ARCHERY:
-			return ((skills.get(skillType) + 50) * LoadProperties.archeryxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.archeryxpmodifier * LoadProperties.globalxpmodifier);
 		case UNARMED:
-			return ((skills.get(skillType) + 50) * LoadProperties.unarmedxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.unarmedxpmodifier * LoadProperties.globalxpmodifier);
 		case EXCAVATION:
-			return ((skills.get(skillType) + 50) * LoadProperties.excavationxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.excavationxpmodifier * LoadProperties.globalxpmodifier);
 		case AXES:
-			return ((skills.get(skillType) + 50) * LoadProperties.axesxpmodifier * LoadProperties.globalxpmodifier);
+			return 100+(skills.get(skillType) * LoadProperties.axesxpmodifier * LoadProperties.globalxpmodifier);
 		default:
 			return null;
 		}

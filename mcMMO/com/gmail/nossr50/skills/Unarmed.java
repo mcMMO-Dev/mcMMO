@@ -46,7 +46,7 @@ public class Unarmed {
 		if (PPa.getSkillLevel(SkillType.UNARMED) >= 250)
 			bonus+=2;
 		if (PPa.getSkillLevel(SkillType.UNARMED) >= 500)
-			bonus+=2;
+			bonus+=4;
 		event.setDamage(event.getDamage()+bonus);
 	}
 	public static void disarmProcCheck(Player attacker, Player defender)

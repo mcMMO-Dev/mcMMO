@@ -230,7 +230,8 @@ public class m
 			return health-newvalue;
 		}
 	}
-	public static boolean isInt(String string){
+	public static boolean isInt(String string)
+	{
 		try 
 		{
 			Integer.parseInt(string);
@@ -301,7 +302,7 @@ public class m
 	{
 		if(!LoadProperties.useMySQL)
 			return;
-		String location = "plugins/mcMMO/mcmmo.users"; 
+		String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users"; 
 		try {
 			//Open the user file
 			FileReader file = new FileReader(location);

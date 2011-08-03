@@ -4,29 +4,28 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkitcontrib.BukkitContrib;
-import org.bukkitcontrib.player.ContribCraftPlayer;
-import org.bukkitcontrib.player.ContribPlayer;
-import org.bukkitcontrib.sound.SoundEffect;
-import org.bukkitcontrib.sound.SoundManager;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.player.SpoutPlayer;
+import org.getspout.spoutapi.sound.SoundEffect;
+import org.getspout.spoutapi.sound.SoundManager;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
-public class contribStuff 
+public class SpoutStuff 
 {
 	public static void playSoundForPlayer(SoundEffect effect, Player player, Location location)
 	{
 		//Contrib stuff
-		ContribPlayer cPlayer = ContribCraftPlayer.getContribPlayer(player);
-		SoundManager SM = BukkitContrib.getSoundManager();
-		SM.playSoundEffect(cPlayer, effect, location);
+		SoundManager SM = SpoutManager.getSoundManager();
+		SpoutPlayer sPlayer = (SpoutPlayer)player;
+		SM.playSoundEffect(sPlayer, effect, location);
 	}
-	public static void levelUpNotification(SkillType skillType, ContribPlayer cPlayer)
+	public static void levelUpNotification(SkillType skillType, SpoutPlayer sPlayer)
 	{
-		PlayerProfile PP = Users.getProfile(cPlayer);
+		PlayerProfile PP = Users.getProfile(sPlayer);
 		
 		Material mat = null;
 		switch(skillType)
@@ -241,7 +240,7 @@ public class contribStuff
 			mat = Material.WATCH;
 			break;
 		}
-			cPlayer.sendNotification(ChatColor.GREEN+"Level Up!", ChatColor.YELLOW+m.getCapitalized(skillType.toString())+ChatColor.DARK_AQUA+" ("+ChatColor.GREEN+PP.getSkillLevel(skillType)+ChatColor.DARK_AQUA+")", mat);
+			sPlayer.sendNotification(ChatColor.GREEN+"Level Up!", ChatColor.YELLOW+m.getCapitalized(skillType.toString())+ChatColor.DARK_AQUA+" ("+ChatColor.GREEN+PP.getSkillLevel(skillType)+ChatColor.DARK_AQUA+")", mat);
 	}
 	
 	public static Integer getNotificationTier(Integer level)

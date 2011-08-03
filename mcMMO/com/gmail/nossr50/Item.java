@@ -15,7 +15,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Item {
 	
-	public static void itemhecks(Player player, Plugin plugin)
+	public static void itemchecks(Player player, Plugin plugin)
 	{
 		ItemStack inhand = player.getItemInHand();
 		if(LoadProperties.chimaeraWingEnable && inhand.getTypeId() == LoadProperties.chimaeraId)
