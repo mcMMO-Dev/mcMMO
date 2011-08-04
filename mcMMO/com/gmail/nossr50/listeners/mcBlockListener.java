@@ -53,6 +53,7 @@ public class mcBlockListener extends BlockListener {
     		else if(block.getTypeId() == 17 || block.getTypeId() == 39 || block.getTypeId() == 40 || block.getTypeId() == 91 || block.getTypeId() == 86)
     			plugin.misc.blockWatchList.add(block);
     	}
+    	
     	if(block.getTypeId() == 42 && LoadProperties.anvilmessages)
     	{
     		PlayerProfile PP = Users.getProfile(player);
