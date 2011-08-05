@@ -1,5 +1,9 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.0.51
+Converted many big numbers to much smaller numbers reducing memory usage
+XP Bars
+
 Version 1.0.50
 New /xprate command for those with mcmmo.admin permissions!
 mcMMO now uses Spout instead of BukkitContrib

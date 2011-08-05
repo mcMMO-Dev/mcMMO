@@ -7,6 +7,7 @@ import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.listeners.mcBlockListener;
 import com.gmail.nossr50.listeners.mcEntityListener;
 import com.gmail.nossr50.listeners.mcPlayerListener;
+import com.gmail.nossr50.listeners.mcSpoutListener;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.*;
@@ -66,9 +67,12 @@ public class mcMMO extends JavaPlugin
 	File file = new File(maindirectory + File.separator + "config.yml");
 	static File versionFile = new File(maindirectory + File.separator + "VERSION");
 	public static final Logger log = Logger.getLogger("Minecraft"); 
+	
 	private final mcPlayerListener playerListener = new mcPlayerListener(this);
 	private final mcBlockListener blockListener = new mcBlockListener(this);
 	private final mcEntityListener entityListener = new mcEntityListener(this);
+	private final mcSpoutListener spoutListener = new mcSpoutListener(this);
+	
 	public boolean xpevent = false;
 	int oldrate = 1;
 	public static mcPermissions permissionHandler = new mcPermissions();
@@ -80,7 +84,6 @@ public class mcMMO extends JavaPlugin
 	public static Database database = null;
 	public Mob mob = new Mob();
 	public Misc misc = new Misc(this);
-	public Sorcery sorcery = new Sorcery(this);
 
 	//Config file stuff
 	LoadProperties config = new LoadProperties();
@@ -145,6 +148,12 @@ public class mcMMO extends JavaPlugin
 		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Priority.Normal, this);
+		
+		//Spout Stuff
+		if(LoadProperties.spoutEnabled)
+		{
+			pm.registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, this);
+		}
 
 		PluginDescriptionFile pdfFile = this.getDescription();
 		mcPermissions.initialize(getServer());

@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.contrib.SpoutStuff;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 
@@ -35,12 +36,14 @@ public class PlayerProfile
 	//TIMESTAMPS
 	//ATS = (Time of) Activation Time Stamp
 	//DATS = (Time of) Deactivation Time Stamp
-	private long recentlyHurt = 0, archeryShotATS = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
+	private int recentlyHurt = 0, archeryShotATS = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
 	respawnATS = 0, mySpawnATS = 0, greenTerraATS = 0, greenTerraDATS = 0, superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
 	skullSplitterATS = 0, skullSplitterDATS = 0, hoePreparationATS = 0, axePreparationATS = 0, pickaxePreparationATS = 0, fistsPreparationATS = 0, shovelPreparationATS = 0, swordsPreparationATS = 0;
 	
+	private SkillType lastgained = null;
+	
 	//MySQL STUFF
-	private int lastlogin=0, userid = 0, bleedticks = 0;
+	private int xpbarinc=0, lastlogin=0, userid = 0, bleedticks = 0;
 	
 	//MAGIC STUFF
 	private int mana = 0;
@@ -143,13 +146,13 @@ public class PlayerProfile
 			}
 			else
 			{
-				superBreakerDATS = Long.valueOf(cooldowns.get(1).get(0)) * 1000;
-				treeFellerDATS = Long.valueOf(cooldowns.get(1).get(1)) * 1000;
-				berserkDATS = Long.valueOf(cooldowns.get(1).get(2)) * 1000;
-				greenTerraDATS = Long.valueOf(cooldowns.get(1).get(3)) * 1000;
-				gigaDrillBreakerDATS = Long.valueOf(cooldowns.get(1).get(4)) * 1000;
-				serratedStrikesDATS = Long.valueOf(cooldowns.get(1).get(5)) * 1000;
-				skullSplitterDATS = Long.valueOf(cooldowns.get(1).get(6)) * 1000;
+				superBreakerDATS = Integer.valueOf(cooldowns.get(1).get(0));
+				treeFellerDATS = Integer.valueOf(cooldowns.get(1).get(1));
+				berserkDATS = Integer.valueOf(cooldowns.get(1).get(2));
+				greenTerraDATS = Integer.valueOf(cooldowns.get(1).get(3));
+				gigaDrillBreakerDATS = Integer.valueOf(cooldowns.get(1).get(4));
+				serratedStrikesDATS = Integer.valueOf(cooldowns.get(1).get(5));
+				skullSplitterDATS = Integer.valueOf(cooldowns.get(1).get(6));
 			}
 			HashMap<Integer, ArrayList<String>> stats = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
 				skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
@@ -261,19 +264,19 @@ public class PlayerProfile
     			if(character.length > 25 && m.isInt(character[25]))
     				skillsXp.put(SkillType.TAMING, Integer.valueOf(character[25]));
     			if(character.length > 26)
-    				berserkDATS = Long.valueOf(character[26]) * 1000;
+    				berserkDATS = Integer.valueOf(character[26]);
     			if(character.length > 27)
-    				gigaDrillBreakerDATS = Long.valueOf(character[27]) * 1000;
+    				gigaDrillBreakerDATS = Integer.valueOf(character[27]);
     			if(character.length > 28)
-    				treeFellerDATS = Long.valueOf(character[28]) * 1000;
+    				treeFellerDATS = Integer.valueOf(character[28]);
     			if(character.length > 29)
-    				greenTerraDATS = Long.valueOf(character[29]) * 1000;
+    				greenTerraDATS = Integer.valueOf(character[29]);
     			if(character.length > 30)
-    				serratedStrikesDATS = Long.valueOf(character[30]) * 1000;
+    				serratedStrikesDATS = Integer.valueOf(character[30]);
     			if(character.length > 31)
-    				skullSplitterDATS = Long.valueOf(character[31]) * 1000;
+    				skullSplitterDATS = Integer.valueOf(character[31]);
     			if(character.length > 32)
-    				superBreakerDATS = Long.valueOf(character[32]) * 1000;
+    				superBreakerDATS = Integer.valueOf(character[32]);
             	in.close();
     			return true;
         	}
@@ -295,13 +298,13 @@ public class PlayerProfile
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"cooldowns SET "
-    				+" mining = "+(superBreakerDATS/1000)
-    				+", woodcutting = "+(treeFellerDATS/1000)
-    				+", unarmed = "+(berserkDATS/1000)
-    				+", herbalism = "+(greenTerraDATS/1000)
-    				+", excavation = "+(gigaDrillBreakerDATS/1000)
-    				+", swords = " +(serratedStrikesDATS/1000)
-    				+", axes = "+(skullSplitterDATS/1000)
+    				+" mining = "+(superBreakerDATS)
+    				+", woodcutting = "+(treeFellerDATS)
+    				+", unarmed = "+(berserkDATS)
+    				+", herbalism = "+(greenTerraDATS)
+    				+", excavation = "+(gigaDrillBreakerDATS)
+    				+", swords = " +(serratedStrikesDATS)
+    				+", axes = "+(skullSplitterDATS)
     				+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
     				+"  taming = "+skills.get(SkillType.TAMING)
@@ -379,13 +382,13 @@ public class PlayerProfile
 	        			writer.append(skillsXp.get(SkillType.TAMING) + ":");
 	        			//Need to store the DATS of abilities nao
 	        			//Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
-	        			writer.append(String.valueOf(berserkDATS/1000)+":");
-	        			writer.append(String.valueOf(gigaDrillBreakerDATS/1000)+":");
-	        			writer.append(String.valueOf(treeFellerDATS/1000)+":");
-	        			writer.append(String.valueOf(greenTerraDATS/1000)+":");
-	        			writer.append(String.valueOf(serratedStrikesDATS/1000)+":");
-	        			writer.append(String.valueOf(skullSplitterDATS/1000)+":");
-	        			writer.append(String.valueOf(superBreakerDATS/1000)+":");
+	        			writer.append(String.valueOf(berserkDATS)+":");
+	        			writer.append(String.valueOf(gigaDrillBreakerDATS)+":");
+	        			writer.append(String.valueOf(treeFellerDATS)+":");
+	        			writer.append(String.valueOf(greenTerraDATS)+":");
+	        			writer.append(String.valueOf(serratedStrikesDATS)+":");
+	        			writer.append(String.valueOf(skullSplitterDATS)+":");
+	        			writer.append(String.valueOf(superBreakerDATS)+":");
 	        			writer.append("\r\n");                   			
 	        		}
 	        	}
@@ -448,6 +451,22 @@ public class PlayerProfile
         } catch (Exception e) {
                 log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
         }
+    }
+    public int getXpBarInc()
+    {
+    	return xpbarinc;
+    }
+    public void setXpBarInc(int newvalue)
+    {
+    	xpbarinc = newvalue;
+    }
+    public void setLastGained(SkillType newvalue)
+    {
+    	lastgained = newvalue;
+    }
+    public SkillType getLastGained()
+    {
+    	return lastgained;
     }
     
     public boolean getAdminChatMode() {return adminChatMode;}
@@ -549,8 +568,9 @@ public class PlayerProfile
 	public long getMySpawnATS(){
 		return mySpawnATS;
 	}
-	public void setMySpawnATS(long newvalue){
-		mySpawnATS = newvalue;
+	public void setMySpawnATS(long newvalue)
+	{
+		mySpawnATS = (int) (newvalue/1000);
 	}
 	public void decreaseBleedTicks()
 	{
@@ -569,13 +589,13 @@ public class PlayerProfile
 	 * EXPLOIT PREVENTION
 	 */
 	public long getRespawnATS() {return respawnATS;}
-	public void setRespawnATS(long newvalue) {respawnATS = newvalue;}
+	public void setRespawnATS(long newvalue) {respawnATS = (int) (newvalue/1000);}
 	
 	/*
 	 * ARCHERY NERF STUFF
 	 */
 	public long getArcheryShotATS() {return archeryShotATS;}
-	public void setArcheryShotATS(long newvalue) {archeryShotATS = newvalue;}
+	public void setArcheryShotATS(long newvalue) {archeryShotATS = (int) (newvalue/1000);}
 	
 	/*
 	 * HOE PREPARATION
@@ -590,7 +610,7 @@ public class PlayerProfile
 		return hoePreparationATS;
 	}
 	public void setHoePreparationATS(long newvalue){
-		hoePreparationATS = newvalue;
+		hoePreparationATS = (int) (newvalue/1000);
 	}
 	
 	/*
@@ -606,7 +626,7 @@ public class PlayerProfile
 		return swordsPreparationATS;
 	}
 	public void setSwordsPreparationATS(long newvalue){
-		swordsPreparationATS = newvalue;
+		swordsPreparationATS = (int) (newvalue/1000);
 	}
 	/*
 	 * SHOVEL PREPARATION
@@ -621,7 +641,7 @@ public class PlayerProfile
 		return shovelPreparationATS;
 	}
 	public void setShovelPreparationATS(long newvalue){
-		shovelPreparationATS = newvalue;
+		shovelPreparationATS = (int) (newvalue/1000);
 	}
 	/*
 	 * FISTS PREPARATION
@@ -636,7 +656,7 @@ public class PlayerProfile
 		return fistsPreparationATS;
 	}
 	public void setFistsPreparationATS(long newvalue){
-		fistsPreparationATS = newvalue;
+		fistsPreparationATS = (int) (newvalue/1000);
 	}
 	/*
 	 * AXE PREPARATION
@@ -651,7 +671,7 @@ public class PlayerProfile
 		return axePreparationATS;
 	}
 	public void setAxePreparationATS(long newvalue){
-		axePreparationATS = newvalue;
+		axePreparationATS = (int) (newvalue/1000);
 	}
 	/*
 	 * PICKAXE PREPARATION
@@ -666,7 +686,7 @@ public class PlayerProfile
 		return pickaxePreparationATS;
 	}
 	public void setPickaxePreparationATS(long newvalue){
-		pickaxePreparationATS = newvalue;
+		pickaxePreparationATS = (int) (newvalue/1000);
 	}
 	/*
 	 * GREEN TERRA MODE
@@ -683,11 +703,11 @@ public class PlayerProfile
 	}
 	public long getGreenTerraActivatedTimeStamp() {return greenTerraATS;}
 	public void setGreenTerraActivatedTimeStamp(Long newvalue){
-		greenTerraATS = newvalue;
+		greenTerraATS = (int) (newvalue/1000);
 	}
 	public long getGreenTerraDeactivatedTimeStamp() {return greenTerraDATS;}
 	public void setGreenTerraDeactivatedTimeStamp(Long newvalue){
-		greenTerraDATS = newvalue;
+		greenTerraDATS = (int) (newvalue/1000);
 		save();
 	}
 	/*
@@ -705,11 +725,11 @@ public class PlayerProfile
 	}
 	public long getBerserkActivatedTimeStamp() {return berserkATS;}
 	public void setBerserkActivatedTimeStamp(Long newvalue){
-		berserkATS = newvalue;
+		berserkATS = (int) (newvalue/1000);
 	}
 	public long getBerserkDeactivatedTimeStamp() {return berserkDATS;}
 	public void setBerserkDeactivatedTimeStamp(Long newvalue){
-		berserkDATS = newvalue;
+		berserkDATS = (int) (newvalue/1000);
 		save();
 	}
 	/*
@@ -727,11 +747,11 @@ public class PlayerProfile
 	}
 	public long getSkullSplitterActivatedTimeStamp() {return skullSplitterATS;}
 	public void setSkullSplitterActivatedTimeStamp(Long newvalue){
-		skullSplitterATS = newvalue;
+		skullSplitterATS = (int) (newvalue/1000);
 	}
 	public long getSkullSplitterDeactivatedTimeStamp() {return skullSplitterDATS;}
 	public void setSkullSplitterDeactivatedTimeStamp(Long newvalue){
-		skullSplitterDATS = newvalue;
+		skullSplitterDATS = (int) (newvalue/1000);
 		save();
 	}
 	/*
@@ -749,11 +769,11 @@ public class PlayerProfile
 	}
 	public long getSerratedStrikesActivatedTimeStamp() {return serratedStrikesATS;}
 	public void setSerratedStrikesActivatedTimeStamp(Long newvalue){
-		serratedStrikesATS = newvalue;
+		serratedStrikesATS = (int) (newvalue/1000);
 	}
 	public long getSerratedStrikesDeactivatedTimeStamp() {return serratedStrikesDATS;}
 	public void setSerratedStrikesDeactivatedTimeStamp(Long newvalue){
-		serratedStrikesDATS = newvalue;
+		serratedStrikesDATS = (int) (newvalue/1000);
 		save();
 	}
 	/*
@@ -771,11 +791,11 @@ public class PlayerProfile
 	}
 	public long getGigaDrillBreakerActivatedTimeStamp() {return gigaDrillBreakerATS;}
 	public void setGigaDrillBreakerActivatedTimeStamp(Long newvalue){
-		gigaDrillBreakerATS = newvalue;
+		gigaDrillBreakerATS = (int) (newvalue/1000);
 	}
 	public long getGigaDrillBreakerDeactivatedTimeStamp() {return gigaDrillBreakerDATS;}
 	public void setGigaDrillBreakerDeactivatedTimeStamp(Long newvalue){
-		gigaDrillBreakerDATS = newvalue;
+		gigaDrillBreakerDATS = (int) (newvalue/1000);
 		save();
 	}
 	/*
@@ -793,11 +813,11 @@ public class PlayerProfile
 	}
 	public long getTreeFellerActivatedTimeStamp() {return treeFellerATS;}
 	public void setTreeFellerActivatedTimeStamp(Long newvalue){
-		treeFellerATS = newvalue;
+		treeFellerATS = (int) (newvalue/1000);
 	}
 	public long getTreeFellerDeactivatedTimeStamp() {return treeFellerDATS;}
 	public void setTreeFellerDeactivatedTimeStamp(Long newvalue){
-		treeFellerDATS = newvalue;
+		treeFellerDATS = (int) (newvalue/1000);
 		save();
 	}
 	/*
@@ -815,18 +835,18 @@ public class PlayerProfile
 	}
 	public long getSuperBreakerActivatedTimeStamp() {return superBreakerATS;}
 	public void setSuperBreakerActivatedTimeStamp(Long newvalue){
-		superBreakerATS = newvalue;
+		superBreakerATS = (int) (newvalue/1000);
 	}
 	public long getSuperBreakerDeactivatedTimeStamp() {return superBreakerDATS;}
 	public void setSuperBreakerDeactivatedTimeStamp(Long newvalue){
-		superBreakerDATS = newvalue;
+		superBreakerDATS = (int) (newvalue/1000);
 		save();
 	}
 	public long getRecentlyHurt(){
 		return recentlyHurt;
 	}
 	public void setRecentlyHurt(long newvalue){
-		recentlyHurt = newvalue;
+		recentlyHurt = (int) (newvalue/1000);
 	}
 	public void skillUp(SkillType skillType, int newvalue)
 	{
@@ -863,6 +883,14 @@ public class PlayerProfile
 			skillsXp.put(SkillType.SORCERY, skillsXp.get(SkillType.SORCERY)+newvalue);
 		} else {
 			skillsXp.put(skillType, skillsXp.get(skillType)+newvalue);
+			
+			SkillType prevLastGained = lastgained;
+			
+			lastgained = skillType;
+			
+			//In case of an xp bar switch
+			if(prevLastGained != skillType || prevLastGained == null)
+				xpbarinc = SpoutStuff.getXpInc(this.getSkillXpLevel(lastgained), this.getXpToLevel(lastgained));
 		}
 		//save();
 	}
@@ -885,7 +913,7 @@ public class PlayerProfile
 		} else {
 			skillsXp.put(skillType, skillsXp.get(skillType)-newvalue);
 		}
-		save();
+		//save();
 	}
 	public void acceptInvite()
 	{
