@@ -83,7 +83,7 @@ public class Combat
 		      			PlayerProfile PPd = Users.getProfile(defender);
 			    		if(attacker != null && defender != null && LoadProperties.pvpxp)
 			    		{
-			    			if(System.currentTimeMillis() >= PPd.getRespawnATS() + 5000 
+			    			if(System.currentTimeMillis() >= (PPd.getRespawnATS()*1000) + 5000 
 			    					&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis()
 			    					&& defender.getHealth() >= 1)
 			    			{

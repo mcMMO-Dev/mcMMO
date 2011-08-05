@@ -25,6 +25,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.contrib.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -89,6 +90,14 @@ public class mcPlayerListener extends PlayerListener
 
 		 //Discard the PlayerProfile object
 		Users.removeUser(event.getPlayer());
+		if(LoadProperties.spoutEnabled)
+		{
+			if(SpoutStuff.xpbars.containsKey(event.getPlayer()))
+				SpoutStuff.xpbars.remove(event.getPlayer());
+			
+			if(SpoutStuff.xpicons.containsKey(event.getPlayer()))
+				SpoutStuff.xpicons.remove(event.getPlayer());
+		}
 	}
 
 	public void onPlayerJoin(PlayerJoinEvent event) 
@@ -120,7 +129,7 @@ public class mcPlayerListener extends PlayerListener
 		//Archery Nerf
 		if(player.getItemInHand().getTypeId() == 261 && LoadProperties.archeryFireRateLimit)
 		{
-			if(System.currentTimeMillis() < PP.getArcheryShotATS() + LoadProperties.archeryLimit)
+			if(System.currentTimeMillis() < (PP.getArcheryShotATS()*1000) + LoadProperties.archeryLimit)
 			{
 				/*
     			if(m.hasArrows(player))

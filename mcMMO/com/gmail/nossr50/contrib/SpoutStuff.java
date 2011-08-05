@@ -1,10 +1,13 @@
 package com.gmail.nossr50.contrib;
 
+import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
 import org.getspout.spoutapi.sound.SoundManager;
@@ -16,6 +19,9 @@ import com.gmail.nossr50.datatypes.SkillType;
 
 public class SpoutStuff 
 {
+	public static HashMap<Player, GenericTexture> xpbars = new HashMap<Player, GenericTexture>();
+	public static HashMap<Player, GenericTexture> xpicons = new HashMap<Player, GenericTexture>();
+	
 	public static void playSoundForPlayer(SoundEffect effect, Player player, Location location)
 	{
 		//Contrib stuff
@@ -255,5 +261,135 @@ public class SpoutStuff
 			return 4;
 		else
 			return 5;
+	}
+	
+	public static Integer getXpInc(int skillxp, int xptolevel)
+	{
+		double percentage = (double) skillxp/xptolevel;
+		double inc = 0.0039370078740157;
+		return (int) (percentage/inc);
+	}
+	
+	public static void updateXpBar(Player player)
+	{
+		PlayerProfile PP = Users.getProfile(player);
+		
+		if(PP.getLastGained() != null)
+		{
+			
+			int num = getXpInc(PP.getSkillXpLevel(PP.getLastGained()), PP.getXpToLevel(PP.getLastGained()));
+			
+			xpbars.get(player).setUrl(getUrlBar(num)).setDirty(true);
+			xpicons.get(player).setUrl(getUrlIcon(PP.getLastGained())).setDirty(true);
+			
+			((SpoutPlayer)player).getMainScreen().setDirty(true);
+		}
+	}
+	public static void updateXpBarFill(Player player)
+	{
+		PlayerProfile PP = Users.getProfile(player);
+		
+		if(PP.getLastGained() != null)
+		{
+			if(PP.getXpBarInc() < 254)
+				xpbars.get(player).setUrl(getUrlBar(PP.getXpBarInc()+1)).setDirty(true);
+			else
+				xpbars.get(player).setUrl(getUrlBar(0)).setDirty(true);
+			
+			PP.setXpBarInc(PP.getXpBarInc()+1);
+			
+			xpicons.get(player).setUrl(getUrlIcon(PP.getLastGained())).setDirty(true);
+			
+			((SpoutPlayer)player).getMainScreen().setDirty(true);
+		}
+	}
+	
+	public static String getUrlBar(Integer number)
+	{
+		if(number.toString().toCharArray().length == 1)
+		{
+			return "http://dl.dropbox.com/u/18212134/xpbar/xpbar_inc00"+number+".png";
+			//return "file:///C:/Users/Rob/Dropbox/Public/xpbar/xpbar_inc00"+number+".png";
+		} else if (number.toString().toCharArray().length == 2)
+		{
+			return "http://dl.dropbox.com/u/18212134/xpbar/xpbar_inc0"+number+".png";
+			//return "file:///C:/Users/Rob/Dropbox/Public/xpbar/xpbar_inc0"+number+".png";
+		} else {
+			return "http://dl.dropbox.com/u/18212134/xpbar/xpbar_inc"+number+".png";
+			//return "file:///C:/Users/Rob/Dropbox/Public/xpbar/xpbar_inc"+number+".png";
+		}
+	}
+	public static String getUrlIcon(SkillType skillType)
+	{
+		String url = "http://dl.dropbox.com/u/18212134/xpbar/";
+		switch(skillType)
+		{
+		case SORCERY:
+		{
+			url+="Sorcery";
+			break;
+		}
+		case TAMING:
+		{
+			url+="Taming";
+			break;
+		}
+		case MINING:
+		{
+			url+="Mining";
+			break;
+		}
+		case WOODCUTTING:
+		{
+			url+="Woodcutting";
+			break;
+		}
+		case REPAIR:
+		{
+			url+="Repair";
+			break;
+		}
+		case HERBALISM:
+		{
+			url+="Herbalism";
+			break;
+		}
+		case ACROBATICS:
+		{
+			url+="Acrobatics";
+			break;
+		}
+		case SWORDS:
+		{
+			url+="Swords";
+			break;
+		}
+		case ARCHERY:
+		{
+			url+="Archery";
+			break;
+		}
+		case UNARMED:
+		{
+			url+="Unarmed";
+			break;
+		}
+		case EXCAVATION:
+		{
+			url+="Excavation";
+			break;
+		}
+		case AXES:
+		{
+			url+="Axes";
+			break;
+		}
+		}
+		url+=".png";
+		return url;
+	}
+	public static boolean shouldBeFilled(PlayerProfile PP)
+	{
+		return PP.getXpBarInc() < getXpInc(PP.getSkillXpLevel(PP.getLastGained()), PP.getXpToLevel(PP.getLastGained()));
 	}
 }

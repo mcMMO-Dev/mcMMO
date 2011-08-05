@@ -1,7 +1,7 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
 version: 1.0.51 WIP
-softdepend: Spout
+softdepend: [Spout]
 commands:
     xprate:
         description: Modify the xp rate or start an event
