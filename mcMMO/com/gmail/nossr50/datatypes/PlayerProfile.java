@@ -1068,7 +1068,7 @@ public class PlayerProfile
     public boolean isDead(){
     	return dead;
     }
-    public Location getMySpawn(Player player)
+    public Location getMySpawn(Player player, Plugin plugin)
     {
     	Location loc = null;
     	if(myspawn != null)
@@ -1082,7 +1082,9 @@ public class PlayerProfile
     	
     	loc.setYaw(0);
     	loc.setPitch(0);
-    	if(loc.getX() != 0 && loc.getY() != 0 && loc.getZ() != 0 && loc.getWorld() != null){
+    	if(loc.getX() != 0 && loc.getY() != 0 && loc.getZ() != 0 && loc.getWorld() != null)
+    	{
+    		loc.setWorld(plugin.getServer().getWorld(this.getMySpawnWorld(plugin)));
     		return loc;
     	} else {
     		return null;

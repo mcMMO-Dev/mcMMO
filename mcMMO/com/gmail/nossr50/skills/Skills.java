@@ -22,8 +22,8 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 
-public class Skills {
-	
+public class Skills 
+{
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	
 	public void updateSQLfromFile(Player player){
