@@ -61,41 +61,14 @@ public class PlayerProfile
 	{
 		
 		//Setup the HashMap for the skills
-		skills.put(SkillType.SORCERY, 0);
-		skillsXp.put(SkillType.SORCERY, 0);
-		
-		skills.put(SkillType.UNARMED, 0);
-		skillsXp.put(SkillType.UNARMED, 0);
-		
-		skills.put(SkillType.TAMING, 0);
-		skillsXp.put(SkillType.TAMING, 0);
-		
-		skills.put(SkillType.MINING, 0);
-		skillsXp.put(SkillType.MINING, 0);
-		
-		skills.put(SkillType.WOODCUTTING, 0);
-		skillsXp.put(SkillType.WOODCUTTING, 0);
-		
-		skills.put(SkillType.REPAIR, 0);
-		skillsXp.put(SkillType.REPAIR, 0);
-		
-		skills.put(SkillType.HERBALISM, 0);
-		skillsXp.put(SkillType.HERBALISM, 0);
-		
-		skills.put(SkillType.EXCAVATION, 0);
-		skillsXp.put(SkillType.EXCAVATION, 0);
-		
-		skills.put(SkillType.ARCHERY, 0);
-		skillsXp.put(SkillType.ARCHERY, 0);
-		
-		skills.put(SkillType.SWORDS, 0);
-		skillsXp.put(SkillType.SWORDS, 0);
-		
-		skills.put(SkillType.AXES, 0);
-		skillsXp.put(SkillType.AXES, 0);
-		
-		skills.put(SkillType.ACROBATICS, 0);
-		skillsXp.put(SkillType.ACROBATICS, 0);
+		for(SkillType skillType : SkillType.values())
+		{
+			if(skillType != SkillType.ALL)
+			{
+				skills.put(skillType, 0);
+				skillsXp.put(skillType, 0);
+			}
+		}
 		
 		mana = getMaxMana();
 		

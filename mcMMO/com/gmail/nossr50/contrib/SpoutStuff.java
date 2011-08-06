@@ -332,72 +332,7 @@ public class SpoutStuff
 	}
 	public static String getUrlIcon(SkillType skillType)
 	{
-		String url = "http://dl.dropbox.com/u/18212134/xpbar/";
-		switch(skillType)
-		{
-		case SORCERY:
-		{
-			url+="Sorcery";
-			break;
-		}
-		case TAMING:
-		{
-			url+="Taming";
-			break;
-		}
-		case MINING:
-		{
-			url+="Mining";
-			break;
-		}
-		case WOODCUTTING:
-		{
-			url+="Woodcutting";
-			break;
-		}
-		case REPAIR:
-		{
-			url+="Repair";
-			break;
-		}
-		case HERBALISM:
-		{
-			url+="Herbalism";
-			break;
-		}
-		case ACROBATICS:
-		{
-			url+="Acrobatics";
-			break;
-		}
-		case SWORDS:
-		{
-			url+="Swords";
-			break;
-		}
-		case ARCHERY:
-		{
-			url+="Archery";
-			break;
-		}
-		case UNARMED:
-		{
-			url+="Unarmed";
-			break;
-		}
-		case EXCAVATION:
-		{
-			url+="Excavation";
-			break;
-		}
-		case AXES:
-		{
-			url+="Axes";
-			break;
-		}
-		}
-		url+=".png";
-		return url;
+		return "http://dl.dropbox.com/u/18212134/xpbar/+"+m.getCapitalized(skillType.toString())+".png";
 	}
 	public static boolean shouldBeFilled(PlayerProfile PP)
 	{
