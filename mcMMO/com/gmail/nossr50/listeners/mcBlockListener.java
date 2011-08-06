@@ -18,6 +18,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
 
@@ -26,27 +27,33 @@ import com.gmail.nossr50.skills.*;
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 
 
-public class mcBlockListener extends BlockListener {
+public class mcBlockListener extends BlockListener 
+{
     private final mcMMO plugin;
 
-    public mcBlockListener(final mcMMO plugin) {
+    public mcBlockListener(final mcMMO plugin) 
+    {
         this.plugin = plugin;
     }
     
     public void onBlockPlace(BlockPlaceEvent event) 
     {
-    	
+    	//Setup some basic vars
     	Block block;
     	Player player = event.getPlayer();
-    	if (event.getBlock() != null && event.getBlockReplacedState() != null && event.getBlockReplacedState().getTypeId() == 78) 
+    	
+    	//When blocks are placed on snow this event reports the wrong block.
+    	if (event.getBlockReplacedState() != null && event.getBlockReplacedState().getTypeId() == 78) 
     	{
-    			block = event.getBlockAgainst();
-    		}
-    		else 
-    		{
-    			block = event.getBlock();
-    		}
-    	if(player != null && m.shouldBeWatched(block))
+    		block = event.getBlockAgainst();
+    	}
+    	else 
+    	{
+    		block = event.getBlock();
+    	}
+    	
+    	//Check if the blocks placed should be monitored so they do not give out XP in the future
+    	if(m.shouldBeWatched(block))
     	{
     		if(block.getTypeId() != 17 && block.getTypeId() != 39 && block.getTypeId() != 40 && block.getTypeId() != 91 && block.getTypeId() != 86)
     			block.setData((byte) 5); //Change the byte
@@ -59,7 +66,7 @@ public class mcBlockListener extends BlockListener {
     		PlayerProfile PP = Users.getProfile(player);
     		if(LoadProperties.spoutEnabled)
     		{
-    			SpoutPlayer sPlayer = (SpoutPlayer)player;
+    			SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 	    		if(sPlayer.isSpoutCraftEnabled())
 	    		{
 	    			if(!PP.getPlacedAnvil())
@@ -104,10 +111,13 @@ public class mcBlockListener extends BlockListener {
    		/*
    		 * HERBALISM
    		 */
+    	
+    	//Green Terra
    		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07)
    		{
    			Herbalism.greenTerraCheck(player, block, plugin);
    		}
+   		
    		//Wheat && Triple drops
    		if(PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block))
    		{
@@ -233,7 +243,7 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * EXCAVATION
     	 */
-    	if(mcPermissions.getInstance().excavation(player))
+    	if(mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
     		Excavation.excavationProcCheck(block.getData(), block.getTypeId(), block.getLocation(), player);
     	/*
     	 * HERBALISM
@@ -254,13 +264,10 @@ public class mcBlockListener extends BlockListener {
     			plugin.misc.blockWatchList.remove(block);
     		}
     	}
-    	
-    	
     }
+    
     public void onBlockDamage(BlockDamageEvent event) 
     {
-    	
-    	
     	if(event.isCancelled())
     		return;
     	Player player = event.getPlayer();
@@ -284,36 +291,6 @@ public class mcBlockListener extends BlockListener {
     	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
     		Unarmed.berserkActivationCheck(player, plugin);
     	
-    	
-    	/*
-    	if(mcPermissions.getInstance().mining(player) && Mining.canBeSuperBroken(block) && 
-    			m.blockBreakSimulate(block, player, plugin) && PP.getSkillLevel(SkillType.MINING) >= 250 
-    			&& block.getType() != Material.STONE && m.isMiningPick(inhand))
-    	{
-    		contribStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
-    		if(PP.getSkillLevel(SkillType.MINING) >= 500)
-    		{
-    			if(Math.random() * 100 > 99)
-    			{
-    				Mining.blockProcSmeltSimulate(block);
-    				Mining.miningBlockCheck(true, player, block, plugin); //PROC
-    				block.setType(Material.AIR);
-    				contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-    			}
-    				
-    		} else
-    		{
-    			if(Math.random() * 100 > 97)
-    			{
-    				Mining.blockProcSmeltSimulate(block);
-    				Mining.miningBlockCheck(true, player, block, plugin); //PROC
-    				block.setType(Material.AIR);
-    				contribStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-    			}
-    		}
-    	}
-    	*/
-    	
     	/*
     	 * TREE FELLAN STUFF
     	 */
@@ -323,7 +300,8 @@ public class mcBlockListener extends BlockListener {
     	/*
     	 * GREEN TERRA STUFF
     	 */
-    	if(PP.getGreenTerraMode() && mcPermissions.getInstance().herbalismAbility(player) && PP.getGreenTerraMode()){
+    	if(PP.getGreenTerraMode() && mcPermissions.getInstance().herbalismAbility(player) && PP.getGreenTerraMode())
+    	{
    			Herbalism.greenTerra(player, block);
    		}
     	
@@ -333,27 +311,33 @@ public class mcBlockListener extends BlockListener {
     	if(PP.getGigaDrillBreakerMode() && m.blockBreakSimulate(block, player, plugin) 
     			&& Excavation.canBeGigaDrillBroken(block) && m.isShovel(inhand))
     	{
+    		int x = 0;
     		
-    		int x = 1;
-    		
-    		while(x < 4)
+    		while(x < 3)
     		{
-    			Excavation.excavationProcCheck(block.getData(), block.getTypeId(), block.getLocation(), player);
+    			if(block.getData() != (byte)5)
+    				Excavation.excavationProcCheck(block.getData(), block.getTypeId(), block.getLocation(), player);
     			x++;
     		}
     		
     		Material mat = Material.getMaterial(block.getTypeId());
+    		
     		if(block.getTypeId() == 2)
     			mat = Material.DIRT;
+    		
 			byte type = block.getData();
 			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
+			
 			block.setType(Material.AIR);
+			
 			player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
+			
 			if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+			
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
 			
-			//Contrib stuff
+			//Spout stuff
 			if(LoadProperties.spoutEnabled)
 				SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
