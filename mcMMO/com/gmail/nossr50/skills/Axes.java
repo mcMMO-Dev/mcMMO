@@ -35,7 +35,8 @@ public class Axes {
     			ticks++;
     		}
 
-    		if(!PP.getSkullSplitterMode() && Skills.cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)){
+    		if(!PP.getSkullSplitterMode() && Skills.cooldownOver(player, (PP.getSkullSplitterDeactivatedTimeStamp()*1000), LoadProperties.skullSplitterCooldown))
+    		{
     			player.sendMessage(mcLocale.getString("Skills.SkullSplitterOn"));
     			for(Player y : pluginx.getServer().getOnlinePlayers()){
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
@@ -45,9 +46,9 @@ public class Axes {
     			PP.setSkullSplitterDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
     			PP.setSkullSplitterMode(true);
     		}
-    		if(!PP.getSkullSplitterMode() && !Skills.cooldownOver(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)){
+    		if(!PP.getSkullSplitterMode() && !Skills.cooldownOver(player, (PP.getSkullSplitterDeactivatedTimeStamp()*1000), LoadProperties.skullSplitterCooldown)){
     			player.sendMessage(mcLocale.getString("Skills.TooTired")
-    					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, PP.getSkullSplitterDeactivatedTimeStamp(), LoadProperties.skullSplitterCooldown)+"s)");
+    					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, (PP.getSkullSplitterDeactivatedTimeStamp()*1000), LoadProperties.skullSplitterCooldown)+"s)");
     		}
     	}
     }

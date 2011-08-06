@@ -10,10 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.contrib.SpoutStuff;
 import com.gmail.nossr50.m;
@@ -62,41 +61,14 @@ public class PlayerProfile
 	{
 		
 		//Setup the HashMap for the skills
-		skills.put(SkillType.SORCERY, 0);
-		skillsXp.put(SkillType.SORCERY, 0);
-		
-		skills.put(SkillType.UNARMED, 0);
-		skillsXp.put(SkillType.UNARMED, 0);
-		
-		skills.put(SkillType.TAMING, 0);
-		skillsXp.put(SkillType.TAMING, 0);
-		
-		skills.put(SkillType.MINING, 0);
-		skillsXp.put(SkillType.MINING, 0);
-		
-		skills.put(SkillType.WOODCUTTING, 0);
-		skillsXp.put(SkillType.WOODCUTTING, 0);
-		
-		skills.put(SkillType.REPAIR, 0);
-		skillsXp.put(SkillType.REPAIR, 0);
-		
-		skills.put(SkillType.HERBALISM, 0);
-		skillsXp.put(SkillType.HERBALISM, 0);
-		
-		skills.put(SkillType.EXCAVATION, 0);
-		skillsXp.put(SkillType.EXCAVATION, 0);
-		
-		skills.put(SkillType.ARCHERY, 0);
-		skillsXp.put(SkillType.ARCHERY, 0);
-		
-		skills.put(SkillType.SWORDS, 0);
-		skillsXp.put(SkillType.SWORDS, 0);
-		
-		skills.put(SkillType.AXES, 0);
-		skillsXp.put(SkillType.AXES, 0);
-		
-		skills.put(SkillType.ACROBATICS, 0);
-		skillsXp.put(SkillType.ACROBATICS, 0);
+		for(SkillType skillType : SkillType.values())
+		{
+			if(skillType != SkillType.ALL)
+			{
+				skills.put(skillType, 0);
+				skillsXp.put(skillType, 0);
+			}
+		}
 		
 		mana = getMaxMana();
 		
@@ -1025,11 +997,12 @@ public class PlayerProfile
     		return false;
     	}
     }
-    public String getMySpawnWorld(Plugin plugin){
+    public String getMySpawnWorld()
+    {
     	if(myspawnworld != null && !myspawnworld.equals("") && !myspawnworld.equals("null")){
     		return myspawnworld;
     	} else {
-    		return plugin.getServer().getWorlds().get(0).toString();
+    		return Bukkit.getServer().getWorlds().get(0).toString();
     	}
     }
     //Save a users spawn location
@@ -1082,7 +1055,12 @@ public class PlayerProfile
     	
     	loc.setYaw(0);
     	loc.setPitch(0);
-    	if(loc.getX() != 0 && loc.getY() != 0 && loc.getZ() != 0 && loc.getWorld() != null){
+    	if(loc.getX() != 0 && loc.getY() != 0 && loc.getZ() != 0 && loc.getWorld() != null)
+    	{
+    		if(Bukkit.getServer().getWorld(this.getMySpawnWorld()) != null)
+    			loc.setWorld(Bukkit.getServer().getWorld(this.getMySpawnWorld()));
+    		else
+    			loc.setWorld(Bukkit.getServer().getWorlds().get(0));
     		return loc;
     	} else {
     		return null;

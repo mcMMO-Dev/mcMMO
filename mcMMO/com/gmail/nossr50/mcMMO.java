@@ -34,7 +34,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,7 +77,7 @@ public class mcMMO extends JavaPlugin
 	public static mcPermissions permissionHandler = new mcPermissions();
 	private Permissions permissions;
 
-	private Timer mcMMO_Timer = new Timer(true); //BLEED AND REGENERATION
+	private Runnable mcMMO_Timer = new mcTimer(this); //BLEED AND REGENERATION
 	//private Timer mcMMO_SpellTimer = new Timer(true);
 
 	public static Database database = null;
@@ -167,7 +166,7 @@ public class mcMMO extends JavaPlugin
 
 		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile   
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
-		mcMMO_Timer.schedule(new mcTimer(this), (long)0, (long)(1000));
+		Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, mcMMO_Timer, 0, 20);
 	}
 	
 	public static void download(Logger log, URL url, File file) throws IOException 
@@ -1175,23 +1174,30 @@ public class mcMMO extends JavaPlugin
 				player.sendMessage(ChatColor.RED+"Usage is /"+LoadProperties.addxp+" playername skillname xp");  
 			}
 		}
-		else if(LoadProperties.ptpEnable && label.equalsIgnoreCase(LoadProperties.ptp) && PP != null && PP.inParty()){ 
+		else if(LoadProperties.ptpEnable && label.equalsIgnoreCase(LoadProperties.ptp) && PP.inParty())
+		{
+			
 
-			if(!mcPermissions.getInstance().partyTeleport(player)){
+			if(!mcPermissions.getInstance().partyTeleport(player))
+			{
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
-			if(split.length < 2){
+			if(split.length < 2)
+			{
 				player.sendMessage(ChatColor.RED+"Usage is /"+LoadProperties.ptp+" <playername>");  
 				return true;
 			}
-			if(!isPlayer(split[1])){
+			if(!isPlayer(split[1]))
+			{
 				player.sendMessage("That is not a valid player"); 
 			}
-			if(isPlayer(split[1])){
+			if(isPlayer(split[1]))
+			{
 				Player target = getPlayer(split[1]);
 				PlayerProfile PPt = Users.getProfile(target);
-				if(PP.getParty().equals(PPt.getParty())){
+				if(PP.getParty().equals(PPt.getParty()))
+				{
 					player.teleport(target);
 					player.sendMessage(ChatColor.GREEN+"You have teleported to "+target.getName()); 
 					target.sendMessage(ChatColor.GREEN+player.getName() + " has teleported to you."); 
@@ -1400,12 +1406,12 @@ public class mcMMO extends JavaPlugin
 						{
 							if(Pinstance.isPartyLeader(p, PP.getParty()))
 							{
-								tempList+=ChatColor.GOLD+p.getName();
+								tempList+=ChatColor.GOLD+p.getName()+", ";
 								x++;
 							}
 							else
 							{
-								tempList+= ChatColor.WHITE+p.getName();
+								tempList+= ChatColor.WHITE+p.getName()+", ";
 								x++;
 							}
 						}
@@ -1697,18 +1703,18 @@ public class mcMMO extends JavaPlugin
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
-			if(System.currentTimeMillis() < PP.getMySpawnATS() + 3600000){
-				long x = ((PP.getMySpawnATS() + 3600000) - System.currentTimeMillis());
+			if(System.currentTimeMillis() < (PP.getMySpawnATS()*1000) + 3600000){
+				long x = (((PP.getMySpawnATS()*1000) + 3600000) - System.currentTimeMillis());
 				int y = (int) (x/60000);
 				int z = (int) ((x/1000) - (y*60));
 				player.sendMessage(mcLocale.getString("mcPlayerListener.MyspawnTimeNotice", new Object[] {y, z}));    
 				return true;
 			}
 			PP.setMySpawnATS(System.currentTimeMillis());
-			if(PP.getMySpawn(player) != null){
+			if(PP.getMySpawn(player) != null)
+			{
 				Location mySpawn = PP.getMySpawn(player);
-				if(mySpawn != null && this.getServer().getWorld(PP.getMySpawnWorld(this)) != null)
-					mySpawn.setWorld(this.getServer().getWorld(PP.getMySpawnWorld(this)));
+				
 				if(mySpawn != null){
 					//It's done twice because it acts oddly when you are in another world
 					player.teleport(mySpawn);

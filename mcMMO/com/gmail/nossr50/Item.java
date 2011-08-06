@@ -70,10 +70,8 @@ public class Item {
     			if(PP.getMySpawn(player) != null)
     			{
     				Location mySpawn = PP.getMySpawn(player);
-    				if(mySpawn != null && plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)) != null)
-    					mySpawn.setWorld(plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)));
     				if(mySpawn != null){
-	    				player.teleport(mySpawn);//Do it twice to prevent weird stuff
+	    				player.teleport(mySpawn); //Do it twice to prevent weird stuff
 	    				player.teleport(mySpawn);
     				}
     			} else {

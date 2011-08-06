@@ -66,12 +66,14 @@ public class mcPlayerListener extends PlayerListener
 			if(player != null && PP != null)
 			{
 				PP.setRespawnATS(System.currentTimeMillis());
+				
 				Location mySpawn = PP.getMySpawn(player);
-				if(mySpawn != null && plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)) != null)
-					mySpawn.setWorld(plugin.getServer().getWorld(PP.getMySpawnWorld(plugin)));
+				
 				if(mySpawn != null)
 				{
-					event.setRespawnLocation(mySpawn);
+					{
+						event.setRespawnLocation(mySpawn);
+					}
 				}
 			}
 		}
@@ -88,7 +90,7 @@ public class mcPlayerListener extends PlayerListener
 		 * GARBAGE COLLECTION
 		 */
 
-		 //Discard the PlayerProfile object
+		//Discard the PlayerProfile object
 		Users.removeUser(event.getPlayer());
 		if(LoadProperties.spoutEnabled)
 		{
@@ -107,9 +109,7 @@ public class mcPlayerListener extends PlayerListener
 
 		if(mcPermissions.getInstance().motd(player) && LoadProperties.enableMotd)
 		{
-			//player.sendMessage(ChatColor.BLUE +"This server is running mcMMO "+plugin.getDescription().getVersion()+" type /"+ChatColor.YELLOW+LoadProperties.mcmmo+ChatColor.BLUE+ " for help.");
 			player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), LoadProperties.mcmmo}));
-			//player.sendMessage(ChatColor.GREEN+"http://mcmmo.wikia.com"+ChatColor.BLUE+" - mcMMO Wiki");
 			player.sendMessage(mcLocale.getString("mcPlayerListener.WIKI"));
 		}
 		if(plugin.xpevent)
@@ -156,7 +156,7 @@ public class mcPlayerListener extends PlayerListener
 					if(mcPermissions.getInstance().setMySpawn(player)){
 						PP.setMySpawn(loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName());
 					}
-					player.sendMessage(mcLocale.getString("mcPlayerListener.MyspawnSet"));
+					//player.sendMessage(mcLocale.getString("mcPlayerListener.MyspawnSet"));
 				}
 			}
 

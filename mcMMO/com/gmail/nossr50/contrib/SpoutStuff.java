@@ -2,6 +2,7 @@ package com.gmail.nossr50.contrib;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,9 +27,18 @@ public class SpoutStuff
 	{
 		//Contrib stuff
 		SoundManager SM = SpoutManager.getSoundManager();
-		SpoutPlayer sPlayer = (SpoutPlayer)player;
+		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 		SM.playSoundEffect(sPlayer, effect, location);
 	}
+	
+	public static void playLevelUpNoise(Player player)
+	{
+		SoundManager SM = SpoutManager.getSoundManager();
+		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+		String r = String.valueOf((int) (Math.random()*8));
+		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://dl.dropbox.com/u/18212134/ANUSOUND/"+r+".wav", false);
+	}
+	
 	public static void levelUpNotification(SkillType skillType, SpoutPlayer sPlayer)
 	{
 		PlayerProfile PP = Users.getProfile(sPlayer);
@@ -247,6 +257,7 @@ public class SpoutStuff
 			break;
 		}
 			sPlayer.sendNotification(ChatColor.GREEN+"Level Up!", ChatColor.YELLOW+m.getCapitalized(skillType.toString())+ChatColor.DARK_AQUA+" ("+ChatColor.GREEN+PP.getSkillLevel(skillType)+ChatColor.DARK_AQUA+")", mat);
+			playLevelUpNoise(sPlayer);
 	}
 	
 	public static Integer getNotificationTier(Integer level)
@@ -321,72 +332,7 @@ public class SpoutStuff
 	}
 	public static String getUrlIcon(SkillType skillType)
 	{
-		String url = "http://dl.dropbox.com/u/18212134/xpbar/";
-		switch(skillType)
-		{
-		case SORCERY:
-		{
-			url+="Sorcery";
-			break;
-		}
-		case TAMING:
-		{
-			url+="Taming";
-			break;
-		}
-		case MINING:
-		{
-			url+="Mining";
-			break;
-		}
-		case WOODCUTTING:
-		{
-			url+="Woodcutting";
-			break;
-		}
-		case REPAIR:
-		{
-			url+="Repair";
-			break;
-		}
-		case HERBALISM:
-		{
-			url+="Herbalism";
-			break;
-		}
-		case ACROBATICS:
-		{
-			url+="Acrobatics";
-			break;
-		}
-		case SWORDS:
-		{
-			url+="Swords";
-			break;
-		}
-		case ARCHERY:
-		{
-			url+="Archery";
-			break;
-		}
-		case UNARMED:
-		{
-			url+="Unarmed";
-			break;
-		}
-		case EXCAVATION:
-		{
-			url+="Excavation";
-			break;
-		}
-		case AXES:
-		{
-			url+="Axes";
-			break;
-		}
-		}
-		url+=".png";
-		return url;
+		return "http://dl.dropbox.com/u/18212134/xpbar/+"+m.getCapitalized(skillType.toString())+".png";
 	}
 	public static boolean shouldBeFilled(PlayerProfile PP)
 	{

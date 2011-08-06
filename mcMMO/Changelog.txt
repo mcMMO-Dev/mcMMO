@@ -1,8 +1,14 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.0.51
-Converted many big numbers to much smaller numbers reducing memory usage
-XP Bars
+Brand new XP Bars and Skill Icons designed by BrandonXP
+Noises added to leveling
+MySpawn now works correctly when you are in the nether
+MySpawn message when you right click a bed is now squelched
+Intervals at which players renegerate hp have doubled in length
+Rewrote many variables stored per player to be integer instead of long, reducing overall memory usage of mcMMO
+Rewrote the Timer mcMMO relies on to instead use the BukkitScheduler for performance
+Fixed the party member list of /party
 
 Version 1.0.50
 New /xprate command for those with mcmmo.admin permissions!

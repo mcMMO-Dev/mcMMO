@@ -1,6 +1,4 @@
 package com.gmail.nossr50;
-import java.util.TimerTask;
-
 import org.bukkit.entity.*;
 
 import com.gmail.nossr50.config.LoadProperties;
@@ -9,7 +7,7 @@ import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Swords;
 
 
-public class mcTimer extends TimerTask
+public class mcTimer implements Runnable
 {
 	private final mcMMO plugin;
 	int thecount = 1;
@@ -41,23 +39,6 @@ public class mcTimer extends TimerTask
 			Skills.watchCooldowns(player);
 			
 			/*
-			 * MANA MONITORING
-			 */
-			/*
-			if(mcPermissions.getInstance().sorcery(player) && thecount == 20 && PP.getCurrentMana() < PP.getMaxMana())
-			{
-				PP.setMana(PP.getCurrentMana()+PP.getMaxMana()/5);
-				
-				//MAKE SURE THE MANA IS NOT ABOVE MAXIMUM
-				if(PP.getMaxMana() < PP.getCurrentMana())
-					PP.setMana(PP.getMaxMana());
-				
-				if(PP.getMaxMana() != PP.getCurrentMana())
-					player.sendMessage(Messages.getString("Sorcery.Current_Mana")+" "+ChatColor.GREEN+PP.getCurrentMana()+"/"+PP.getMaxMana());
-			}
-			*/
-			
-			/*
 			 * PLAYER BLEED MONITORING
 			 */
 			if(thecount % 2 == 0 && PP.getBleedTicks() >= 1)
@@ -68,14 +49,14 @@ public class mcTimer extends TimerTask
 			
 			if(LoadProperties.enableRegen && mcPermissions.getInstance().regeneration(player) && System.currentTimeMillis() >= PP.getRecentlyHurt() + 60000)
 			{
-				if(thecount == 10 || thecount == 20 || thecount == 30 || thecount == 40){
+				if(thecount == 20 || thecount == 40 || thecount == 60 || thecount == 80){
 				    if(player != null &&
 				    	player.getHealth() > 0 && player.getHealth() < 20 
 				    	&& m.getPowerLevel(player) >= 1000){
 				    	player.setHealth(m.calculateHealth(player.getHealth(), 1));
 				    }
 				}
-				if(thecount == 20 || thecount == 40){
+				if(thecount == 40 || thecount == 80){
 			   		if(player != null &&
 			   			player.getHealth() > 0 && player.getHealth() < 20 
 			    		&& m.getPowerLevel(player) >= 500 
@@ -83,7 +64,7 @@ public class mcTimer extends TimerTask
 			    		player.setHealth(m.calculateHealth(player.getHealth(), 1));
 			    	}
 				}
-				if(thecount == 40)
+				if(thecount == 80)
 				{
 			    	if(player != null &&
 			    		player.getHealth() > 0 && player.getHealth() < 20  
@@ -104,7 +85,7 @@ public class mcTimer extends TimerTask
 		
 		//SETUP FOR HP REGEN/BLEED
 		thecount++;
-		if(thecount >= 41)
+		if(thecount >= 81)
 			thecount = 1;
 	}
 }
