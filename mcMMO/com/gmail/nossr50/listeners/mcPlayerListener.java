@@ -67,7 +67,7 @@ public class mcPlayerListener extends PlayerListener
 			{
 				PP.setRespawnATS(System.currentTimeMillis());
 				
-				Location mySpawn = PP.getMySpawn(player, plugin);
+				Location mySpawn = PP.getMySpawn(player);
 				
 				if(mySpawn != null)
 				{

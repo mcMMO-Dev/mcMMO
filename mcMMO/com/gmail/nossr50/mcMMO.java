@@ -1711,9 +1711,9 @@ public class mcMMO extends JavaPlugin
 				return true;
 			}
 			PP.setMySpawnATS(System.currentTimeMillis());
-			if(PP.getMySpawn(player, this) != null)
+			if(PP.getMySpawn(player) != null)
 			{
-				Location mySpawn = PP.getMySpawn(player, this);
+				Location mySpawn = PP.getMySpawn(player);
 				
 				if(mySpawn != null){
 					//It's done twice because it acts oddly when you are in another world

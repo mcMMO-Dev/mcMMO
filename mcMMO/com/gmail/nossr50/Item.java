@@ -67,9 +67,9 @@ public class Item {
     					}
     				}
     			}
-    			if(PP.getMySpawn(player, plugin) != null)
+    			if(PP.getMySpawn(player) != null)
     			{
-    				Location mySpawn = PP.getMySpawn(player, plugin);
+    				Location mySpawn = PP.getMySpawn(player);
     				if(mySpawn != null){
 	    				player.teleport(mySpawn); //Do it twice to prevent weird stuff
 	    				player.teleport(mySpawn);
