@@ -8,8 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -38,7 +36,7 @@ public class WoodCutting
     		}
     	}
     }
-    public static void treeFellerCheck(Player player, Block block, Plugin pluginx)
+    public static void treeFellerCheck(Player player, Block block)
     {
     	PlayerProfile PP = Users.getProfile(player);
     	if(m.isAxes(player.getItemInHand()))
@@ -66,7 +64,7 @@ public class WoodCutting
     		if(!PP.getTreeFellerMode() && Skills.cooldownOver(player, (PP.getTreeFellerDeactivatedTimeStamp()*1000), LoadProperties.treeFellerCooldown))
     		{
     			player.sendMessage(mcLocale.getString("Skills.TreeFellerOn"));
-    			for(Player y : pluginx.getServer().getOnlinePlayers())
+    			for(Player y : player.getWorld().getPlayers())
     			{
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.TreeFellerPlayer", new Object[] {player.getName()}));

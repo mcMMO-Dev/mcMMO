@@ -9,6 +9,7 @@ Intervals at which players renegerate hp have doubled in length
 Rewrote many variables stored per player to be integer instead of long, reducing overall memory usage of mcMMO
 Rewrote the Timer mcMMO relies on to instead use the BukkitScheduler for performance
 Fixed the party member list of /party
+Removed a debug message when repairing diamond armor
 
 Version 1.0.50
 New /xprate command for those with mcmmo.admin permissions!

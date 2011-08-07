@@ -266,11 +266,11 @@ public class Combat
 	{
 		//Check to see if any abilities need to be activated
 		if(PPa.getAxePreparationMode())
-			Axes.skullSplitterCheck(attacker, pluginx);
+			Axes.skullSplitterCheck(attacker);
 		if(PPa.getSwordsPreparationMode())
-			Swords.serratedStrikesActivationCheck(attacker, pluginx);
+			Swords.serratedStrikesActivationCheck(attacker);
 		if(PPa.getFistsPreparationMode())
-			Unarmed.berserkActivationCheck(attacker, pluginx);
+			Unarmed.berserkActivationCheck(attacker);
 	}
 	public static void archeryCheck(EntityDamageByProjectileEvent event, mcMMO pluginx)
 	{

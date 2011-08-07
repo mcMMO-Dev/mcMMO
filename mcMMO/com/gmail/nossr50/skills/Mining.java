@@ -6,7 +6,6 @@ import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.Users;
@@ -21,19 +20,24 @@ import com.gmail.nossr50.locale.mcLocale;
 
 public class Mining 
 {	
-	public static void superBreakerCheck(Player player, Block block, Plugin pluginx)
+	public static void superBreakerCheck(Player player, Block block)
 	{
 		PlayerProfile PP = Users.getProfile(player);
-	    if(m.isMiningPick(player.getItemInHand())){
-	    	if(block != null){
+	    if(m.isMiningPick(player.getItemInHand()))
+	    {
+	    	if(block != null)
+	    	{
 		    	if(!m.abilityBlockCheck(block))
 		    		return;
 	    	}
-	    	if(PP.getPickaxePreparationMode()){
+	    	if(PP.getPickaxePreparationMode())
+	    	{
     			PP.setPickaxePreparationMode(false);
     		}
+	    	
 	    	int ticks = 2;
 	    	int x = PP.getSkillLevel(SkillType.MINING);
+	    	
     		while(x >= 50)
     		{
     			x-=50;
@@ -42,7 +46,7 @@ public class Mining
     		
 	    	if(!PP.getSuperBreakerMode() && Skills.cooldownOver(player, PP.getSuperBreakerDeactivatedTimeStamp(), LoadProperties.superBreakerCooldown)){
 	    		player.sendMessage(mcLocale.getString("Skills.SuperBreakerOn"));
-	    		for(Player y : pluginx.getServer().getOnlinePlayers())
+	    		for(Player y : player.getWorld().getPlayers())
 	    		{
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.SuperBreakerPlayer", new Object[] {player.getName()}));
@@ -108,93 +112,17 @@ public class Mining
 			loc.getWorld().dropItemNaturally(loc, item);
 		}
     }
-	public static void blockProcSmeltSimulate(Block block)
-	{
-    	Location loc = block.getLocation();
-    	Material mat = Material.getMaterial(block.getTypeId());
-		byte damage = 0;
-		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-		if(block.getTypeId() != 14 && block.getTypeId() != 15 && block.getTypeId() != 89 && block.getTypeId() != 73 && block.getTypeId() != 74 
-				&& block.getTypeId() != 56 && block.getTypeId() != 21 && block.getTypeId() != 1 && block.getTypeId() != 16)
-			loc.getWorld().dropItemNaturally(loc, item);
-		if(block.getTypeId() == 14)
-		{
-			mat = Material.getMaterial(266);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-		}
-		if(block.getTypeId() == 15)
-		{
-			mat = Material.getMaterial(265);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-		}
-		if(block.getTypeId() == 89)
-		{
-			mat = Material.getMaterial(348);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-		}
-		if(block.getTypeId() == 73 || block.getTypeId() == 74){
-			mat = Material.getMaterial(331);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			if(Math.random() * 10 > 5){
-				loc.getWorld().dropItemNaturally(loc, item);
-			}
-		}
-		if(block.getTypeId() == 21){
-			mat = Material.getMaterial(351);
-			item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-		}
-		if(block.getTypeId() == 56){
-			mat = Material.getMaterial(264);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-		}
-		if(block.getTypeId() == 1){
-			mat = Material.getMaterial(4);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-		}
-		if(block.getTypeId() == 16){
-			mat = Material.getMaterial(263);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-		}
-    }
-	/*
-    public static void blockProcSmeltCheck(Block block, Player player)
-    {
-    	PlayerProfile PP = Users.getProfile(player);
-    	if(player != null)
-    	{
-    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))
-    		{
-	    		blockProcSmeltSimulate(block);
-				return;
-    		}
-    	}
-	}
-	*/
     public static void blockProcCheck(Block block, Player player)
     {
     	PlayerProfile PP = Users.getProfile(player);
-    	if(player != null)
+
+    	if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))
     	{
-    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))
-    		{
-	    		blockProcSimulate(block);
-				return;
-    		}
-    	}		
+	    	blockProcSimulate(block);
+			return;
+    	}	
 	}
+    
     public static void miningBlockCheck(Boolean smelt, Player player, Block block, mcMMO plugin)
     {
     	PlayerProfile PP = Users.getProfile(player);
@@ -295,14 +223,17 @@ public class Mining
     /*
      * Handling SuperBreaker stuff
      */
-    public static Boolean canBeSuperBroken(Block block){
+    public static Boolean canBeSuperBroken(Block block)
+    {
     	int t = block.getTypeId();
-    	if(t == 49 || t == 87 || t == 89 || t == 73 || t == 74 || t == 56 || t == 21 || t == 1 || t == 16 || t == 14 || t == 15){
+    	if(t == 49 || t == 87 || t == 89 || t == 73 || t == 74 || t == 56 || t == 21 || t == 1 || t == 16 || t == 14 || t == 15)
+    	{
     		return true;
     	} else {
     		return false;
     	}
     }
+    
     public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin)
     {
     	PlayerProfile PP = Users.getProfile(player);

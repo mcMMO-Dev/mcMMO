@@ -332,7 +332,7 @@ public class SpoutStuff
 	}
 	public static String getUrlIcon(SkillType skillType)
 	{
-		return "http://dl.dropbox.com/u/18212134/xpbar/+"+m.getCapitalized(skillType.toString())+".png";
+		return "http://dl.dropbox.com/u/18212134/xpbar/"+m.getCapitalized(skillType.toString())+".png";
 	}
 	public static boolean shouldBeFilled(PlayerProfile PP)
 	{

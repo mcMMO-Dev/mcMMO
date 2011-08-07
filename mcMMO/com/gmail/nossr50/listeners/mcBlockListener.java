@@ -115,7 +115,7 @@ public class mcBlockListener extends BlockListener
     	//Green Terra
    		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07)
    		{
-   			Herbalism.greenTerraCheck(player, block, plugin);
+   			Herbalism.greenTerraCheck(player, block);
    		}
    		
    		//Wheat && Triple drops
@@ -135,17 +135,11 @@ public class mcBlockListener extends BlockListener
     		{
     			if(m.isMiningPick(inhand))
     			{
-    				if(PP.getSkillLevel(SkillType.MINING) >= 500)
-    					Mining.miningBlockCheck(false, player, block, plugin);
-    				else
-    					Mining.miningBlockCheck(false, player, block, plugin);
+    				Mining.miningBlockCheck(false, player, block, plugin);
     			}
     		} else 
     		{
-    			if(PP.getSkillLevel(SkillType.MINING) >= 500)
-					Mining.miningBlockCheck(false, player, block, plugin);
-				else
-					Mining.miningBlockCheck(false, player, block, plugin);
+    			Mining.miningBlockCheck(false, player, block, plugin);
     		}
     	}
     	/*
@@ -243,14 +237,14 @@ public class mcBlockListener extends BlockListener
     	/*
     	 * EXCAVATION
     	 */
-    	if(mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
+    	if(Excavation.canBeGigaDrillBroken(block) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
     		Excavation.excavationProcCheck(block.getData(), block.getTypeId(), block.getLocation(), player);
     	/*
     	 * HERBALISM
     	 */
     	if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalism(player) && Herbalism.canBeGreenTerra(block))
     	{
-    		Herbalism.greenTerraCheck(player, block, plugin);
+    		Herbalism.greenTerraCheck(player, block);
     	}
     	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
 			Herbalism.herbalismProcCheck(block, player, event, plugin);
@@ -281,15 +275,15 @@ public class mcBlockListener extends BlockListener
     	 * ABILITY PREPARATION CHECKS
     	 */
    		if(PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block))
-    		Herbalism.greenTerraCheck(player, block, plugin);
+    		Herbalism.greenTerraCheck(player, block);
     	if(PP.getAxePreparationMode() && block.getTypeId() == 17)
-    		WoodCutting.treeFellerCheck(player, block, plugin);
+    		WoodCutting.treeFellerCheck(player, block);
     	if(PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block))
-    		Mining.superBreakerCheck(player, block, plugin);
+    		Mining.superBreakerCheck(player, block);
     	if(PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block))
-    		Excavation.gigaDrillBreakerActivationCheck(player, block, plugin);
+    		Excavation.gigaDrillBreakerActivationCheck(player, block);
     	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
-    		Unarmed.berserkActivationCheck(player, plugin);
+    		Unarmed.berserkActivationCheck(player);
     	
     	/*
     	 * TREE FELLAN STUFF

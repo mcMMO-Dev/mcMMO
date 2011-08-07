@@ -50,7 +50,6 @@ public class Repair {
         				removeItem(player, rDiamond);
 	        			player.getItemInHand().setDurability(getRepairAmount(is, player));
 	        			durabilityAfter = player.getItemInHand().getDurability();
-	        			player.sendMessage(String.valueOf(durabilityBefore - durabilityAfter));
 	        			dif = (short) (durabilityBefore - durabilityAfter);
 	        			dif = (short) (dif * 6); //Boost XP
 	        			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);

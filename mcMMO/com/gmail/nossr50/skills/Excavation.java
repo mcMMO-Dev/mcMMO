@@ -7,8 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -19,7 +17,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 
 public class Excavation 
 {
-	public static void gigaDrillBreakerActivationCheck(Player player, Block block, Plugin pluginx)
+	public static void gigaDrillBreakerActivationCheck(Player player, Block block)
 	{
 		PlayerProfile PP = Users.getProfile(player);
 		if(m.isShovel(player.getItemInHand()))
@@ -44,7 +42,7 @@ public class Excavation
 	    	if(!PP.getGigaDrillBreakerMode() && PP.getGigaDrillBreakerDeactivatedTimeStamp() < System.currentTimeMillis())
 	    	{
 	    		player.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerOn"));
-	    		for(Player y : pluginx.getServer().getOnlinePlayers())
+	    		for(Player y : player.getWorld().getPlayers())
 	    		{
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerPlayer", new Object[] {player.getName()}));

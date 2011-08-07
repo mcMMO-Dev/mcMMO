@@ -7,8 +7,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -18,8 +16,46 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 
-public class Herbalism {
+public class Herbalism 
+{
 	
+	public static void greenTerraCheck(Player player, Block block)
+	{
+		PlayerProfile PP = Users.getProfile(player);
+	    if(m.isHoe(player.getItemInHand()))
+	    {
+	    	if(block != null)
+	    	{
+		    	if(!m.abilityBlockCheck(block))
+		    		return;
+	    	}
+	    	if(PP.getHoePreparationMode())
+	    	{
+				PP.setHoePreparationMode(false);
+			}
+	    	int ticks = 2;
+	    	int x = PP.getSkillLevel(SkillType.HERBALISM);
+			while(x >= 50)
+			{
+				x-=50;
+				ticks++;
+			}
+			
+	    	if(!PP.getGreenTerraMode() && Skills.cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), LoadProperties.greenTerraCooldown))
+	    	{
+	    		player.sendMessage(mcLocale.getString("Skills.GreenTerraOn"));
+	    		for(Player y : player.getWorld().getPlayers())
+	    		{
+	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
+	    				y.sendMessage(mcLocale.getString("Skills.GreenTerraPlayer", new Object[] {player.getName()}));
+	    		}
+	    		PP.setGreenTerraActivatedTimeStamp(System.currentTimeMillis());
+	    		PP.setGreenTerraDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
+	    		PP.setGreenTerraMode(true);
+	    	}
+	    	
+	    }
+	}
 	public static void greenTerraWheat(Player player, Block block, BlockBreakEvent event, mcMMO plugin)
 	{
 		if(block.getType() == Material.WHEAT && block.getData() == (byte) 0x07)
@@ -89,36 +125,6 @@ public class Herbalism {
     		}
     	}
     }
-	public static void greenTerraCheck(Player player, Block block, Plugin pluginx){
-		PlayerProfile PP = Users.getProfile(player);
-	    if(m.isHoe(player.getItemInHand())){
-	    	if(block != null){
-		    	if(!m.abilityBlockCheck(block))
-		    		return;
-	    	}
-	    	if(PP.getHoePreparationMode()){
-    			PP.setHoePreparationMode(false);
-    		}
-	    	int ticks = 2;
-	    	int x = PP.getSkillLevel(SkillType.HERBALISM);
-    		while(x >= 50){
-    			x-=50;
-    			ticks++;
-    		}
-    		
-	    	if(!PP.getGreenTerraMode() && Skills.cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), LoadProperties.greenTerraCooldown)){
-	    		player.sendMessage(mcLocale.getString("Skills.GreenTerraOn"));
-	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
-	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(mcLocale.getString("Skills.GreenTerraPlayer", new Object[] {player.getName()}));
-	    		}
-	    		PP.setGreenTerraActivatedTimeStamp(System.currentTimeMillis());
-	    		PP.setGreenTerraDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
-	    		PP.setGreenTerraMode(true);
-	    	}
-	    	
-	    }
-	}
 	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event, mcMMO plugin)
 	{
 		PlayerProfile PP = Users.getProfile(player);

@@ -8,7 +8,6 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
@@ -22,7 +21,7 @@ import com.gmail.nossr50.party.Party;
 
 public class Swords 
 {
-	public static void serratedStrikesActivationCheck(Player player, Plugin pluginx){
+	public static void serratedStrikesActivationCheck(Player player){
     	PlayerProfile PP = Users.getProfile(player);
 		if(m.isSwords(player.getItemInHand()))
 		{
@@ -41,7 +40,7 @@ public class Swords
 	    	if(!PP.getSerratedStrikesMode() && PP.getSerratedStrikesDeactivatedTimeStamp() < System.currentTimeMillis())
 	    	{
 	    		player.sendMessage(mcLocale.getString("Skills.SerratedStrikesOn"));
-	    		for(Player y : pluginx.getServer().getOnlinePlayers())
+	    		for(Player y : player.getWorld().getPlayers())
 	    		{
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.SerratedStrikesPlayer", new Object[] {player.getName()}));

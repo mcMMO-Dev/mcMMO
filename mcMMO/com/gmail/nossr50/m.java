@@ -112,7 +112,6 @@ public class m
 
 	public static boolean blockBreakSimulate(Block block, Player player, Plugin plugin)
 	{
-
 		FakeBlockBreakEvent event = new FakeBlockBreakEvent(block, player);
 		if(block != null && plugin != null && player != null){
 			plugin.getServer().getPluginManager().callEvent(event);
@@ -146,7 +145,8 @@ public class m
 			}
 		}
 	}
-	public static Integer getTier(Player player){
+	public static Integer getTier(Player player)
+	{
 		int i = player.getItemInHand().getTypeId();
 		if(i == 268 || i == 269 || i == 270 || i == 271 || i == 290){
 			return 1; //WOOD
@@ -162,7 +162,8 @@ public class m
 			return 1; //UNRECOGNIZED
 		}
 	}
-	public static Integer getMaxDurability(Integer tier, ItemStack item){
+	public static Integer getMaxDurability(Integer tier, ItemStack item)
+	{
 		int id = item.getTypeId();
 		if(tier == 1){
 			if((id == 276 || id == 277 || id == 278 || id == 279 || id == 293)){
@@ -242,8 +243,10 @@ public class m
 		}
 		return true;
 	}
-	public static void mcDropItem(Location loc, int id){
-		if(loc != null){
+	public static void mcDropItem(Location loc, int id)
+	{
+		if(loc != null)
+		{
 			Material mat = Material.getMaterial(id);
 			byte damage = 0;
 			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
@@ -251,18 +254,24 @@ public class m
 		}
 	}
 
-	public static boolean isSwords(ItemStack is){
-		if(is.getTypeId() == 268 || is.getTypeId() == 267 || is.getTypeId() == 272 || is.getTypeId() == 283 || is.getTypeId() == 276){
+	public static boolean isSwords(ItemStack is)
+	{
+		if(is.getTypeId() == 268 || is.getTypeId() == 267 || is.getTypeId() == 272 || is.getTypeId() == 283 || is.getTypeId() == 276)
+		{
 			return true;
-		} else {
+		} else 
+		{
 			return false;
 		}
 	}
-	public static boolean isHoe(ItemStack is){
+	public static boolean isHoe(ItemStack is)
+	{
 		int id = is.getTypeId();
-		if(id == 290 || id == 291 || id == 292 || id == 293 || id == 294){
+		if(id == 290 || id == 291 || id == 292 || id == 293 || id == 294)
+		{
 			return true;
-		} else {
+		} else 
+		{
 			return false;
 		}
 	}

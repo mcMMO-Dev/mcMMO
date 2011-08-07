@@ -4,8 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
@@ -14,10 +12,13 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Unarmed {
-	public static void berserkActivationCheck(Player player, Plugin pluginx){
+	public static void berserkActivationCheck(Player player)
+	{
     	PlayerProfile PP = Users.getProfile(player);
-		if(player.getItemInHand().getTypeId() == 0){
-			if(PP.getFistsPreparationMode()){
+		if(player.getItemInHand().getTypeId() == 0)
+		{
+			if(PP.getFistsPreparationMode())
+			{
     			PP.setFistsPreparationMode(false);
     		}
 	    	int ticks = 2;
@@ -27,9 +28,11 @@ public class Unarmed {
     			ticks++;
     		}
     		
-	    	if(!PP.getBerserkMode() && Skills.cooldownOver(player, PP.getBerserkDeactivatedTimeStamp(), LoadProperties.berserkCooldown)){
+	    	if(!PP.getBerserkMode() && Skills.cooldownOver(player, PP.getBerserkDeactivatedTimeStamp(), LoadProperties.berserkCooldown))
+	    	{
 	    		player.sendMessage(mcLocale.getString("Skills.BerserkOn"));
-	    		for(Player y : pluginx.getServer().getOnlinePlayers()){
+	    		for(Player y : player.getWorld().getPlayers())
+	    		{
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.BerserkPlayer", new Object[] {player.getName()}));
 	    		}

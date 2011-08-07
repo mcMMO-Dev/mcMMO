@@ -100,7 +100,7 @@ public class Skills
 	    		return;
 	    	}
     		player.sendMessage(mcLocale.getString("Skills.ReadyHoe"));
-			PP.setHoePreparationATS(System.currentTimeMillis()/1000);
+			PP.setHoePreparationATS(System.currentTimeMillis());
 			PP.setHoePreparationMode(true);
     	}
     }

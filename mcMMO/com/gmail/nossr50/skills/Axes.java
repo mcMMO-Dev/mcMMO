@@ -18,7 +18,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.party.Party;
 
 public class Axes {
-	public static void skullSplitterCheck(Player player, Plugin pluginx){
+	public static void skullSplitterCheck(Player player){
     	PlayerProfile PP = Users.getProfile(player);
     	if(m.isAxes(player.getItemInHand()) && mcPermissions.getInstance().axesAbility(player)){
     		/*
@@ -38,7 +38,7 @@ public class Axes {
     		if(!PP.getSkullSplitterMode() && Skills.cooldownOver(player, (PP.getSkullSplitterDeactivatedTimeStamp()*1000), LoadProperties.skullSplitterCooldown))
     		{
     			player.sendMessage(mcLocale.getString("Skills.SkullSplitterOn"));
-    			for(Player y : pluginx.getServer().getOnlinePlayers()){
+    			for(Player y : player.getWorld().getPlayers()){
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.SkullSplitterPlayer", new Object[] {player.getName()}));
 	    		}
