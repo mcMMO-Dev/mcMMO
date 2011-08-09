@@ -24,6 +24,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.command.Commands;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.contrib.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -112,7 +113,7 @@ public class mcPlayerListener extends PlayerListener
 			player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), LoadProperties.mcmmo}));
 			player.sendMessage(mcLocale.getString("mcPlayerListener.WIKI"));
 		}
-		if(plugin.xpevent)
+		if(Commands.xpevent)
 			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
 	}
 
@@ -123,9 +124,7 @@ public class mcPlayerListener extends PlayerListener
 		PlayerProfile PP = Users.getProfile(player);
 		Action action = event.getAction();
 		Block block = event.getClickedBlock();
-
-
-
+		
 		//Archery Nerf
 		if(player.getItemInHand().getTypeId() == 261 && LoadProperties.archeryFireRateLimit)
 		{
@@ -179,12 +178,12 @@ public class mcPlayerListener extends PlayerListener
 				boolean pass = false;
 				if(Herbalism.hasSeeds(player) && mcPermissions.getInstance().herbalism(player)){
 					Herbalism.removeSeeds(player);
-					if(LoadProperties.enableCobbleToMossy && m.blockBreakSimulate(block, player, plugin) && block.getType() == Material.COBBLESTONE && Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM)){
+					if(LoadProperties.enableCobbleToMossy && m.blockBreakSimulate(block, player) && block.getType() == Material.COBBLESTONE && Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM)){
 						player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumb"));
 						block.setType(Material.MOSSY_COBBLESTONE);
 						pass = true;
 					}
-					if(block.getType() == Material.DIRT && m.blockBreakSimulate(block, player, plugin) && Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM)){
+					if(block.getType() == Material.DIRT && m.blockBreakSimulate(block, player) && Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM)){
 						player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumb"));
 						block.setType(Material.GRASS);
 						pass = true;

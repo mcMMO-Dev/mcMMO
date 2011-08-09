@@ -190,7 +190,7 @@ public class mcBlockListener extends BlockListener
    			if(mcPermissions.getInstance().woodCuttingAbility(player) 
    					&& PP.getTreeFellerMode() 
    					&& block.getTypeId() == 17
-   					&& m.blockBreakSimulate(block, player, plugin))
+   					&& m.blockBreakSimulate(block, player))
    			{
    				if(LoadProperties.spoutEnabled)
    					SpoutStuff.playSoundForPlayer(SoundEffect.EXPLODE, player, block.getLocation());
@@ -302,7 +302,7 @@ public class mcBlockListener extends BlockListener
     	/*
     	 * GIGA DRILL BREAKER CHECKS
     	 */
-    	if(PP.getGigaDrillBreakerMode() && m.blockBreakSimulate(block, player, plugin) 
+    	if(PP.getGigaDrillBreakerMode() && m.blockBreakSimulate(block, player) 
     			&& Excavation.canBeGigaDrillBroken(block) && m.isShovel(inhand))
     	{
     		int x = 0;
@@ -339,7 +339,7 @@ public class mcBlockListener extends BlockListener
     	 * BERSERK MODE CHECKS
     	 */
     	if(PP.getBerserkMode() 
-    		&& m.blockBreakSimulate(block, player, plugin) 
+    		&& m.blockBreakSimulate(block, player) 
     		&& player.getItemInHand().getTypeId() == 0 
     		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
     	{
@@ -363,7 +363,7 @@ public class mcBlockListener extends BlockListener
     	 */
     	if(PP.getSuperBreakerMode() 
     			&& Mining.canBeSuperBroken(block)
-    			&& m.blockBreakSimulate(block, player, plugin))
+    			&& m.blockBreakSimulate(block, player))
     	{
     		
     		if(LoadProperties.miningrequirespickaxe)
@@ -378,7 +378,7 @@ public class mcBlockListener extends BlockListener
     	/*
     	 * LEAF BLOWER
     	 */
-    	if(block.getTypeId() == 18 && mcPermissions.getInstance().woodcutting(player) && PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 && m.isAxes(player.getItemInHand()) && m.blockBreakSimulate(block, player, plugin))
+    	if(block.getTypeId() == 18 && mcPermissions.getInstance().woodcutting(player) && PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 && m.isAxes(player.getItemInHand()) && m.blockBreakSimulate(block, player))
     	{
     		m.damageTool(player, (short)1);
     		if(Math.random() * 10 > 9)

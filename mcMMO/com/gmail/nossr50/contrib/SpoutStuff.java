@@ -7,6 +7,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -17,12 +19,18 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.listeners.mcSpoutListener;
 
 public class SpoutStuff 
 {
+	private final static mcSpoutListener spoutListener = new mcSpoutListener();
 	public static HashMap<Player, GenericTexture> xpbars = new HashMap<Player, GenericTexture>();
 	public static HashMap<Player, GenericTexture> xpicons = new HashMap<Player, GenericTexture>();
 	
+	public static void registerCustomEvent()
+	{
+		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, Bukkit.getServer().getPluginManager().getPlugin("mcMMO"));
+	}
 	public static void playSoundForPlayer(SoundEffect effect, Player player, Location location)
 	{
 		//Contrib stuff

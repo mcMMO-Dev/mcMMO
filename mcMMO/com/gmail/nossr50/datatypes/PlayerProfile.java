@@ -856,13 +856,16 @@ public class PlayerProfile
 		} else {
 			skillsXp.put(skillType, skillsXp.get(skillType)+newvalue);
 			
-			SkillType prevLastGained = lastgained;
-			
-			lastgained = skillType;
-			
-			//In case of an xp bar switch
-			if(prevLastGained != skillType || prevLastGained == null)
-				xpbarinc = SpoutStuff.getXpInc(this.getSkillXpLevel(lastgained), this.getXpToLevel(lastgained));
+			if(LoadProperties.spoutEnabled)
+			{
+				SkillType prevLastGained = lastgained;
+				
+				lastgained = skillType;
+				
+				//In case of an xp bar switch
+				if(prevLastGained != skillType || prevLastGained == null)
+					xpbarinc = SpoutStuff.getXpInc(this.getSkillXpLevel(lastgained), this.getXpToLevel(lastgained));
+			}
 		}
 		//save();
 	}

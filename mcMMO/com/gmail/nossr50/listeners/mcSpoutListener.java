@@ -4,16 +4,10 @@ import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.event.spout.SpoutListener;
 import org.getspout.spoutapi.gui.GenericTexture;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.contrib.SpoutStuff;
 
 public class mcSpoutListener extends SpoutListener
 {
-	mcMMO plugin = null;
-	public mcSpoutListener(mcMMO pluginx) 
-	{
-		plugin = pluginx;
-	}
 	public void onSpoutCraftEnable(SpoutCraftEnableEvent event) 
 	{
 		if(event.getPlayer().isSpoutCraftEnabled())

@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
@@ -78,9 +79,9 @@ public class Party
         return x;
     }
 	
-    public void informPartyMembers(Player player) {
-    	Player[] players = plugin.getPlayersOnline();
-    	informPartyMembers(player, players);
+    public void informPartyMembers(Player player) 
+    {
+    	informPartyMembers(player, Bukkit.getServer().getOnlinePlayers());
     }
     
 	
@@ -102,8 +103,7 @@ public class Party
     
     public void informPartyMembersOwnerChange(String newOwner) {
     	Player newOwnerPlayer = plugin.getServer().getPlayer(newOwner);
-    	Player[] players = plugin.getPlayersOnline();
-    	informPartyMembersOwnerChange(newOwnerPlayer, players);
+    	informPartyMembersOwnerChange(newOwnerPlayer, Bukkit.getServer().getOnlinePlayers());
     }
     
     public void informPartyMembersOwnerChange(Player newOwner, Player[] players) {
@@ -120,9 +120,9 @@ public class Party
         }
     }
     
-    public void informPartyMembersQuit(Player player) {
-    	Player[] players = plugin.getPlayersOnline();
-    	informPartyMembersQuit(player, players);
+    public void informPartyMembersQuit(Player player) 
+    {
+    	informPartyMembersQuit(player, Bukkit.getServer().getOnlinePlayers());
     }
     
     public void informPartyMembersQuit(Player player, Player[] players)

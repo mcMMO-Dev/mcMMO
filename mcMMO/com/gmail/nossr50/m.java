@@ -5,13 +5,12 @@ import java.io.FileReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
@@ -110,11 +109,11 @@ public class m
 		return x;
 	}
 
-	public static boolean blockBreakSimulate(Block block, Player player, Plugin plugin)
+	public static boolean blockBreakSimulate(Block block, Player player)
 	{
 		FakeBlockBreakEvent event = new FakeBlockBreakEvent(block, player);
-		if(block != null && plugin != null && player != null){
-			plugin.getServer().getPluginManager().callEvent(event);
+		if(block != null && player != null){
+			Bukkit.getServer().getPluginManager().callEvent(event);
 			if(!event.isCancelled())
 			{
 				return true; //Return true if not cancelled
@@ -307,7 +306,7 @@ public class m
 			return false;
 		}
 	}
-	public static void convertToMySQL(Plugin pluginx)
+	public static void convertToMySQL()
 	{
 		if(!LoadProperties.useMySQL)
 			return;
