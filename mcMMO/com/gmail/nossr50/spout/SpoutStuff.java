@@ -12,6 +12,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.GenericTexture;
+import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
 import org.getspout.spoutapi.sound.SoundManager;
@@ -87,11 +88,22 @@ public class SpoutStuff
 			SpoutPlayer sPlayer = SpoutManager.getPlayer(x);
 			if(sPlayer.isSpoutCraftEnabled())
 			{
-				for(HealthBarMMO y : partyHealthBars.get(x))
+				ArrayList<Widget> widgets = new ArrayList<Widget>();
+				for(Widget w : sPlayer.getMainScreen().getAttachedWidgets())
 				{
-					sPlayer.getMainScreen().removeWidget(y.health_bar);
-					sPlayer.getMainScreen().removeWidget(y.health_name);
+					if(w instanceof HealthBarMMO)
+					{
+						widgets.add(w);
+					}
 				}
+				for(Widget w : widgets)
+				{
+					sPlayer.getMainScreen().removeWidget(w);
+				}
+				
+				sPlayer.getMainScreen().setDirty(true);
+				partyHealthBars.get(x).clear();
+				
 				initializePartyTracking(SpoutManager.getPlayer(x));
 			}
 		}
