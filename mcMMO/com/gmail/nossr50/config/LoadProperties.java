@@ -5,9 +5,9 @@ import org.bukkit.util.config.Configuration;
 
 public class LoadProperties 
 {
-	public static Boolean spoutEnabled, donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	public static Boolean slimeballs, spoutEnabled, donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	public static String MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond, locale;
-	public static int archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
+	public static int archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
 	public String directory = "plugins/mcMMO/"; 
 	File file = new File(directory + File.separator + "config.yml");
 	Configuration config = null;
@@ -143,6 +143,7 @@ public class LoadProperties
 	    	write("XP.Excavation.Apple", 10);
 	    	write("XP.Excavation.Eggs", 10);
 	    	write("XP.Excavation.Cake", 300);
+	    	write("XP.Excavation.Slimeballs", 10);
 	    	write("XP.Excavation.Cocoa_Beans", 10);
 	    	
 	    	//write("Sorcery.Spells.Water.Thunder", 75);
@@ -161,6 +162,7 @@ public class LoadProperties
 	    	write("Excavation.Drops.Sulphur", true);
 	    	write("Excavation.Drops.Netherrack", true);
 	    	write("Excavation.Drops.Bones", true);
+	    	write("Excavation.Drops.Slimeballs", true);
 	    	
 	    	write("Commands.mctop.Name", "mctop");
 	    	write("Commands.mctop.Enabled", true);
@@ -233,10 +235,6 @@ public class LoadProperties
 	        donateMessage = readBoolean("Commands.mcmmo.Donate_Message", true);
 	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);
 	        
-	        //cure_self = readInteger("Sorcery.Spells.Curative.Cure_Self.Mana_Cost");
-	        //cure_other = readInteger("Sorcery.Spells.Curative.Cure_Other.Mana_Cost");
-	        //water_thunder = readInteger("Sorcery.Spells.Water.Thunder");
-	        
 	        msulphur = readInteger("XP.Excavation.Sulphur", 3);
 	        mbones = readInteger("XP.Excavation.Bones", 3);
 	        mbase = readInteger("XP.Excavation.Base", 4);
@@ -249,6 +247,7 @@ public class LoadProperties
 	    	meggs = readInteger("XP.Excavation.Eggs", 10);
 	    	mcake = readInteger("XP.Excavation.Cake", 300);
 	    	mcocoa = readInteger("XP.Excavation.Cocoa_Beans", 10);
+	    	mslimeballs = readInteger("XP.Excavation.Slimeballs", 10);
 	    	
 	        msugar = readInteger("XP.Herbalism.Sugar_Cane", 3);
 	        mwheat = readInteger("XP.Herbalism.Wheat", 5);
@@ -355,6 +354,7 @@ public class LoadProperties
 	    	sulphur = readBoolean("Excavation.Drops.Sulphur", true);
 	    	netherrack = readBoolean("Excavation.Drops.Netherrack", true);
 	    	bones = readBoolean("Excavation.Drops.Bones", true);
+	    	slimeballs = readBoolean("Excavation.Drops.Slimeballs", true);
 	    	
 	    	mctop = readString("Commands.mctop.Name", "mctop");
 	    	mctopEnable = readBoolean("Commands.mctop.Enabled", true);

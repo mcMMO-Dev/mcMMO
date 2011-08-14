@@ -1,5 +1,6 @@
-package com.gmail.nossr50.contrib;
+package com.gmail.nossr50.spout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -19,17 +20,31 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.HealthBarMMO;
 import com.gmail.nossr50.listeners.mcSpoutListener;
+import com.gmail.nossr50.party.Party;
 
 public class SpoutStuff 
 {
 	private final static mcSpoutListener spoutListener = new mcSpoutListener();
 	public static HashMap<Player, GenericTexture> xpbars = new HashMap<Player, GenericTexture>();
 	public static HashMap<Player, GenericTexture> xpicons = new HashMap<Player, GenericTexture>();
+	public static HashMap<Player, ArrayList<HealthBarMMO>> partyHealthBars = new HashMap<Player, ArrayList<HealthBarMMO>>();
 	
 	public static void registerCustomEvent()
 	{
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, Bukkit.getServer().getPluginManager().getPlugin("mcMMO"));
+	}
+	public static String getHealthBarURL(Integer hp)
+	{
+		String url = "";
+		
+		if(hp.toString().toCharArray().length > 1)
+			url = "http://dl.dropbox.com/u/18212134/xpbar/health_inc"+hp+".png";
+		else
+			url = "http://dl.dropbox.com/u/18212134/xpbar/health_inc0"+hp+".png";
+		
+		return url;
 	}
 	public static void playSoundForPlayer(SoundEffect effect, Player player, Location location)
 	{
@@ -38,13 +53,80 @@ public class SpoutStuff
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 		SM.playSoundEffect(sPlayer, effect, location);
 	}
+	public static void initializePartyTracking(SpoutPlayer player)
+	{
+		int pos = 0;
+		
+		ArrayList<HealthBarMMO> hpbars = new ArrayList<HealthBarMMO>();
+		for(Player x : Party.getInstance().getPartyMembers(player))
+		{
+			HealthBarMMO hpbar = new HealthBarMMO(x, x.getName());
+			hpbar.health_name.setX(0).setY(pos);
+			hpbar.health_bar.setX(-11).setY(pos+8);
+			hpbars.add(hpbar);
+			pos+=20;
+		}
+		
+		partyHealthBars.put(player, hpbars);
+		
+		for(HealthBarMMO x : partyHealthBars.get(player))
+		{
+			if(x != null)
+			{
+				player.getMainScreen().attachWidget(x.health_bar);
+				player.getMainScreen().attachWidget(x.health_name);
+			}
+		}
+		
+		player.getMainScreen().setDirty(true);
+	}
+	public static void resetPartyHealthBarDisplays(ArrayList<Player> players)
+	{
+		for(Player x : players)
+		{
+			SpoutPlayer sPlayer = SpoutManager.getPlayer(x);
+			if(sPlayer.isSpoutCraftEnabled())
+			{
+				for(HealthBarMMO y : partyHealthBars.get(x))
+				{
+					sPlayer.getMainScreen().removeWidget(y.health_bar);
+					sPlayer.getMainScreen().removeWidget(y.health_name);
+				}
+				initializePartyTracking(SpoutManager.getPlayer(x));
+			}
+		}
+	}
 	
+	public static void updatePartyHealthBarDisplay(Player player, Integer hp)
+	{
+		for(Player x : Party.getInstance().getPartyMembers(player))
+		{
+			SpoutPlayer sPlayer = SpoutManager.getPlayer(x);
+			if(sPlayer.isSpoutCraftEnabled())
+			{
+				for(HealthBarMMO y : partyHealthBars.get(x))
+				{
+					if(y.playerName.equalsIgnoreCase(player.getName()))
+					{
+						y.health_bar.setUrl(getHealthBarURL(hp)).setDirty(true);
+						sPlayer.getMainScreen().setDirty(true);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void playRepairNoise(Player player)
+	{
+		SoundManager SM = SpoutManager.getSoundManager();
+		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://dl.dropbox.com/u/18212134/xpbar/ui_armorweapon_repair.wav", false);
+	}
 	public static void playLevelUpNoise(Player player)
 	{
 		SoundManager SM = SpoutManager.getSoundManager();
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		String r = String.valueOf((int) (Math.random()*8));
-		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://dl.dropbox.com/u/18212134/ANUSOUND/"+r+".wav", false);
+		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://dl.dropbox.com/u/18212134/ANUSOUND/"+(int)Math.random()*8+".wav", false);
 	}
 	
 	public static void levelUpNotification(SkillType skillType, SpoutPlayer sPlayer)

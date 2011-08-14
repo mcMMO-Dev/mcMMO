@@ -1,6 +1,6 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 1.0.51 WIP
+version: 1.0.51 WIP v2
 softdepend: [Spout]
 commands:
     xprate:
@@ -107,8 +107,6 @@ permissions:
         default: op
         description: mcmmo permissions that default to op
         children:
-            mcmmo.admin: false
-            mcmmo.tools.*: false
             mcmmo.chat.adminchat: true 
     
     mcmmo.admin:
@@ -186,9 +184,9 @@ permissions:
             mcmmo.chat.adminchat: true 
             mcmmo.chat.partychat: true 
     mcmmo.chat.adminchat:
-        description:
+        description: Allows participation in admin chat
     mcmmo.chat.partychat:
-        description:        
+        description: Allows participation in party chat
     mcmmo.skills.*:
         description: Implies all mcmmo.skills permissions.
         children:

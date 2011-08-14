@@ -131,6 +131,15 @@ public class Excavation
 				is.add(new ItemStack(Material.SOUL_SAND, 1, (byte)0, (byte)0));
     		}
     		break;
+    	case 13:
+    		if(LoadProperties.slimeballs && PP.getSkillLevel(SkillType.EXCAVATION) >= 50)
+    		{
+    			if(Math.random() * 20 > 19)
+    			{
+    				xp+= LoadProperties.mslimeballs * LoadProperties.xpGainMultiplier;
+    				is.add(new ItemStack(Material.SLIME_BALL, 1, (byte)0, (byte)0));
+    			}
+    		}
     	}
     	
     	//DIRT SAND OR GRAVEL

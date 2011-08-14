@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -94,11 +95,28 @@ public class Party
         	{
                 if(inSameParty(player, p) && !p.getName().equals(player.getName()))
                 {
-                p.sendMessage(mcLocale.getString("Party.InformedOnJoin", new Object[] {player.getName()}));
-                x++;
+                	p.sendMessage(mcLocale.getString("Party.InformedOnJoin", new Object[] {player.getName()}));
+                	x++;
                 }
             }
         }
+    }
+    
+    public ArrayList<Player> getPartyMembers(Player player)
+    {
+    	ArrayList<Player> players = new ArrayList<Player>();
+    	
+    	for(Player p : Bukkit.getServer().getOnlinePlayers())
+        {
+        	if(player != null && p != null)
+        	{
+                if(inSameParty(player, p) && !p.getName().equals(player.getName()))
+                {
+                	players.add(p);
+                }
+            }
+        }
+    	return players;
     }
     
     public void informPartyMembersOwnerChange(String newOwner) {
@@ -110,7 +128,7 @@ public class Party
         int x = 0;
         for(Player p : players){
         	if(newOwner != null && p != null){
-        		if(inSameParty(newOwner, p) && !p.getName().equals(newOwner.getName()))
+        		if(inSameParty(newOwner, p))
         		{
         			//TODO: Needs more locale.
         			p.sendMessage(newOwner.getName()+" is the new party owner.");

@@ -9,6 +9,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -53,6 +54,10 @@ public class Repair {
 	        			dif = (short) (durabilityBefore - durabilityAfter);
 	        			dif = (short) (dif * 6); //Boost XP
 	        			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
+	        			
+	        			//CLANG CLANG
+	        			if(LoadProperties.spoutEnabled)
+	        				SpoutStuff.playRepairNoise(player);
         			} 
         			else if (isIronArmor(is) && hasItem(player, rIron)){
         			/*
@@ -64,6 +69,10 @@ public class Repair {
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 2); //Boost XP
 	            		PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
+	            		
+	            		//CLANG CLANG
+	        			if(LoadProperties.spoutEnabled)
+	        				SpoutStuff.playRepairNoise(player);
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasItem(player, rGold)){
         				removeItem(player, rGold);
@@ -72,6 +81,10 @@ public class Repair {
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 4); //Boost XP of Gold to around Iron
         				PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
+        				
+        				//CLANG CLANG
+	        			if(LoadProperties.spoutEnabled)
+	        				SpoutStuff.playRepairNoise(player);
         			} else {
         				needMoreVespeneGas(is, player);
         			}
@@ -131,6 +144,10 @@ public class Repair {
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
             			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
+            			
+            			//CLANG CLANG
+	        			if(LoadProperties.spoutEnabled)
+	        				SpoutStuff.playRepairNoise(player);
             		} else if (isDiamondTools(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
             			/*
             			 * DIAMOND TOOLS
@@ -146,6 +163,10 @@ public class Repair {
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
             			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
+            			
+            			//CLANG CLANG
+	        			if(LoadProperties.spoutEnabled)
+	        				SpoutStuff.playRepairNoise(player);
             		} else if(isGoldTools(is) && hasItem(player, rGold)){
             			player.getItemInHand().setDurability(getRepairAmount(is, player));
             			removeItem(player, rGold);
@@ -159,6 +180,10 @@ public class Repair {
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
             			PP.addXP(SkillType.REPAIR, dif * LoadProperties.xpGainMultiplier);
+            			
+            			//CLANG CLANG
+	        			if(LoadProperties.spoutEnabled)
+	        				SpoutStuff.playRepairNoise(player);
             		} else {
             			needMoreVespeneGas(is, player);
             		}

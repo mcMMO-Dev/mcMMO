@@ -26,7 +26,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.command.Commands;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.contrib.SpoutStuff;
+import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -60,10 +60,9 @@ public class mcPlayerListener extends PlayerListener
 	{
 		
 		Player player = event.getPlayer();
+		PlayerProfile PP = Users.getProfile(player);
 		if(LoadProperties.enableMySpawn && mcPermissions.getInstance().mySpawn(player))
 		{
-			PlayerProfile PP = Users.getProfile(player);
-
 			if(player != null && PP != null)
 			{
 				PP.setRespawnATS(System.currentTimeMillis());
@@ -78,7 +77,12 @@ public class mcPlayerListener extends PlayerListener
 				}
 			}
 		}
+		if(LoadProperties.spoutEnabled && PP.inParty())
+		{
+			SpoutStuff.updatePartyHealthBarDisplay(player, 20);
+		}
 	}
+	
 	public void onPlayerLogin(PlayerLoginEvent event) 
 	{
 		Users.addUser(event.getPlayer());
@@ -92,6 +96,8 @@ public class mcPlayerListener extends PlayerListener
 		 */
 
 		//Discard the PlayerProfile object
+		Player player = event.getPlayer();
+		
 		Users.removeUser(event.getPlayer());
 		if(LoadProperties.spoutEnabled)
 		{
@@ -101,6 +107,10 @@ public class mcPlayerListener extends PlayerListener
 			if(SpoutStuff.xpicons.containsKey(event.getPlayer()))
 				SpoutStuff.xpicons.remove(event.getPlayer());
 		}
+		
+		//Health bar stuff
+		if(LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
+			SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
 	}
 
 	public void onPlayerJoin(PlayerJoinEvent event) 
@@ -115,6 +125,10 @@ public class mcPlayerListener extends PlayerListener
 		}
 		if(Commands.xpevent)
 			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
+		
+		//Health bar stuff
+		if(LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
+			SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -227,13 +241,13 @@ public class mcPlayerListener extends PlayerListener
 		Player player = event.getPlayer();
 		PlayerProfile PP = Users.getProfile(player);
 
-		String x = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getName() + ChatColor.GREEN + ") "; //$NON-NLS-1$ //$NON-NLS-2$
-		String y = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getName() + ChatColor.AQUA + "} "; //$NON-NLS-1$ //$NON-NLS-2$
+		String x = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getDisplayName() + ChatColor.GREEN + ") "; //$NON-NLS-1$ //$NON-NLS-2$
+		String y = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getDisplayName() + ChatColor.AQUA + "} "; //$NON-NLS-1$ //$NON-NLS-2$
 
 		if(PP.getPartyChatMode())
 		{
 			event.setCancelled(true);
-			log.log(Level.INFO, "[P]("+PP.getParty()+")"+"<"+player.getName()+"> "+event.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			log.log(Level.INFO, "[P]("+PP.getParty()+")"+"<"+player.getDisplayName()+"> "+event.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			for(Player herp : plugin.getServer().getOnlinePlayers())
 			{
 				if(Users.getProfile(herp).inParty())
@@ -249,7 +263,7 @@ public class mcPlayerListener extends PlayerListener
 
 		if((player.isOp() || mcPermissions.getInstance().adminChat(player)) && PP.getAdminChatMode())
 		{
-			log.log(Level.INFO, "[A]"+"<"+player.getName()+"> "+event.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			log.log(Level.INFO, "[A]"+"<"+player.getDisplayName()+"> "+event.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			event.setCancelled(true);
 			for(Player herp : plugin.getServer().getOnlinePlayers()){
 				if((herp.isOp() || mcPermissions.getInstance().adminChat(herp))){

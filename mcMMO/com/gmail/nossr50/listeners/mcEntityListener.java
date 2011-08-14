@@ -26,6 +26,7 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
+import com.gmail.nossr50.spout.SpoutStuff;
 
 
 public class mcEntityListener extends EntityListener 
@@ -134,10 +135,16 @@ public class mcEntityListener extends EntityListener
 			    	/*
 			    	 * Check to see if the defender took damage so we can apply recently hurt
 			    	 */
-			    	if(event.getEntity() instanceof Player && !event.isCancelled() && event.getDamage() >= 1)
+			    	if(event.getEntity() instanceof Player)
 			    	{
 			    		Player herpderp = (Player)event.getEntity();
-			    		Users.getProfile(herpderp).setRecentlyHurt(System.currentTimeMillis());
+			    		if(!event.isCancelled() && event.getDamage() >= 1)
+			    		{
+			    			Users.getProfile(herpderp).setRecentlyHurt(System.currentTimeMillis());
+			    		}
+			    		
+			    		if(LoadProperties.spoutEnabled && Users.getProfile(herpderp).inParty())
+			    			SpoutStuff.updatePartyHealthBarDisplay(herpderp, herpderp.getHealth()-event.getDamage());
 			    	}
 		    	}
 	    	}

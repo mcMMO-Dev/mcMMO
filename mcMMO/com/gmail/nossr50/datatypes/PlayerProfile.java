@@ -14,7 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.contrib.SpoutStuff;
+import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 

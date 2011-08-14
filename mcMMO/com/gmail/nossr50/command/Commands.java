@@ -25,6 +25,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.spout.SpoutStuff;
 
 public class Commands 
 {
@@ -1213,8 +1214,15 @@ public class Commands
 				player.sendMessage(mcLocale.getString("mcPlayerListener.PartyMembers")+" ("+tempList+ChatColor.GREEN+")");
 				return true;
 			} else if(args.length == 1){
-				if(args[0].equals("q") && PP.inParty()) {
+				if(args[0].equals("q") && PP.inParty()) 
+				{
+					ArrayList<Player> partymembers = Party.getInstance().getPartyMembers(player);
+					
 					Pinstance.removeFromParty(player, PP);
+					
+					if(LoadProperties.spoutEnabled)
+						SpoutStuff.resetPartyHealthBarDisplays(partymembers);
+					
 					player.sendMessage(mcLocale.getString("mcPlayerListener.LeftParty")); 
 					return true;
 				} else if (args[0].equalsIgnoreCase("?")) {
@@ -1264,7 +1272,12 @@ public class Commands
 				{
 					if(PP.inParty()) 
 					{
+						ArrayList<Player> partymembers = Party.getInstance().getPartyMembers(player);
+						
 						Pinstance.removeFromParty(player, PP);
+						
+						if(LoadProperties.spoutEnabled)
+							SpoutStuff.resetPartyHealthBarDisplays(partymembers);
 					}
 					Pinstance.addToParty(player, PP, args[0], false);
 					return true;
@@ -1314,7 +1327,14 @@ public class Commands
 									}
 								}
 								PlayerProfile tPP = Users.getProfile(tPlayer);
+								
+								ArrayList<Player> partymembers = Party.getInstance().getPartyMembers(player);
+								
 								Pinstance.removeFromParty(tPlayer, tPP);
+								
+								if(LoadProperties.spoutEnabled)
+									SpoutStuff.resetPartyHealthBarDisplays(partymembers);
+								
 								tPlayer.sendMessage(mcLocale.getString("mcPlayerListener.LeftParty"));
 							}
 						} else {
@@ -1395,10 +1415,10 @@ public class Commands
 					pMessage = pMessage + " " + args[i];
 				}
 				String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE
-				+ player.getName() + ChatColor.GREEN + ") ";
+				+ player.getDisplayName() + ChatColor.GREEN + ") ";
 
 				log.log(Level.INFO,
-						"[P](" + PP.getParty() + ")" + "<" + player.getName()
+						"[P](" + PP.getParty() + ")" + "<" + player.getDisplayName()
 						+ "> " + pMessage);
 
 				for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
@@ -1426,7 +1446,6 @@ public class Commands
 		}
 
 		else if(label.equalsIgnoreCase("a")){
-
 			// Console message?
 			if(!(sender instanceof Player) && args.length >= 1) 
 			{
@@ -1442,13 +1461,14 @@ public class Commands
 						+ aMessage);
 
 				for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
-					if (mcPermissions.getInstance().adminChat(herp))
+					if (mcPermissions.getInstance().adminChat(herp) || herp.isOp())
 						herp.sendMessage(aPrefix + aMessage);
 				}
 				return true;
 			}
 
-			if(!mcPermissions.getInstance().adminChat(player)){
+			if(!mcPermissions.getInstance().adminChat(player) && !player.isOp())
+			{
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
 			}
@@ -1463,10 +1483,10 @@ public class Commands
 
 				String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE
 				+ player.getName() + ChatColor.AQUA + "} ";
-				log.log(Level.INFO, "[A]<" + player.getName() + "> "
+				log.log(Level.INFO, "[A]<" + player.getDisplayName() + "> "
 						+ aMessage);
 				for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
-					if (mcPermissions.getInstance().adminChat(herp))
+					if (mcPermissions.getInstance().adminChat(herp) || herp.isOp())
 						herp.sendMessage(aPrefix + aMessage);
 				}
 				return true;
