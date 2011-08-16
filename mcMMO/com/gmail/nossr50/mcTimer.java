@@ -55,7 +55,7 @@ public class mcTimer implements Runnable
 				    	player.getHealth() > 0 && player.getHealth() < 20 
 				    	&& m.getPowerLevel(player) >= 1000){
 				    	player.setHealth(m.calculateHealth(player.getHealth(), 1));
-				    	if(LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
+				    	if(LoadProperties.partybar && LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
 				    		SpoutStuff.updatePartyHealthBarDisplay(player, player.getHealth());
 				    }
 				}
@@ -65,7 +65,7 @@ public class mcTimer implements Runnable
 			    		&& m.getPowerLevel(player) >= 500 
 			    		&& m.getPowerLevel(player) < 1000){
 			    		player.setHealth(m.calculateHealth(player.getHealth(), 1));
-			    		if(LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
+			    		if(LoadProperties.partybar && LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
 			    			SpoutStuff.updatePartyHealthBarDisplay(player, player.getHealth());
 			    	}
 				}
@@ -75,7 +75,7 @@ public class mcTimer implements Runnable
 			    		player.getHealth() > 0 && player.getHealth() < 20  
 			    		&& m.getPowerLevel(player) < 500){
 			    		player.setHealth(m.calculateHealth(player.getHealth(), 1));
-			    		if(LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
+			    		if(LoadProperties.partybar && LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
 			    			SpoutStuff.updatePartyHealthBarDisplay(player, player.getHealth());
 			    	}
 				}

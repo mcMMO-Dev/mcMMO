@@ -238,7 +238,7 @@ public class mcBlockListener extends BlockListener
     	 * EXCAVATION
     	 */
     	if(Excavation.canBeGigaDrillBroken(block) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
-    		Excavation.excavationProcCheck(block.getData(), block.getTypeId(), block.getLocation(), player);
+    		Excavation.excavationProcCheck(block.getData(), block.getType(), block.getLocation(), player);
     	/*
     	 * HERBALISM
     	 */
@@ -310,7 +310,7 @@ public class mcBlockListener extends BlockListener
     		while(x < 3)
     		{
     			if(block.getData() != (byte)5)
-    				Excavation.excavationProcCheck(block.getData(), block.getTypeId(), block.getLocation(), player);
+    				Excavation.excavationProcCheck(block.getData(), block.getType(), block.getLocation(), player);
     			x++;
     		}
     		

@@ -181,7 +181,7 @@ public class Party
 		savePartyPlayers();
 		
 		//Refresh party hp bars
-		if(LoadProperties.spoutEnabled)
+		if(LoadProperties.partybar && LoadProperties.spoutEnabled)
 		{
 			SpoutStuff.resetPartyHealthBarDisplays(partymembers);
 			SpoutStuff.resetPartyHealthBarDisplays(player);

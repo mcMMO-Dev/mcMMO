@@ -1,5 +1,13 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.1.02
+Fixed bug where toggle for xpicon didn't work
+Fixed bug where Excavation gave gravel drops to grass
+Excavation now uses more enums
+
+Version 1.1.01
+Fixed toggles for hpbar/xpbar not working
+
 Version 1.1.0
 Brand new XP Bars, Health bars, and Skill Icons designed by BrandonXP
 Added /xplock <skillname> to lock the xp bar to a skill

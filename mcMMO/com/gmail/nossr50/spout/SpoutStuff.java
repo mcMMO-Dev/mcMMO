@@ -44,20 +44,28 @@ public class SpoutStuff
 	{
 		//Setup xp bar
 		GenericTexture xpbar = new GenericTexture();
-		GenericTexture xpicon = new GenericTexture();
 		
-		xpicon.setUrl(LoadProperties.xpicon_url+"icon.png");
-		
-		xpicon.setHeight(16).setWidth(32).setX(LoadProperties.xpicon_x).setY(LoadProperties.xpicon_y);
+		if(LoadProperties.xpicon)
+		{
+			GenericTexture xpicon = new GenericTexture();
+			
+			xpicon.setUrl(LoadProperties.xpicon_url+"icon.png");
+			
+			xpicon.setHeight(16).setWidth(32).setX(LoadProperties.xpicon_x).setY(LoadProperties.xpicon_y);
+			
+			SpoutStuff.xpicons.put(sPlayer, xpicon);
+			
+			sPlayer.getMainScreen().attachWidget(plugin, SpoutStuff.xpicons.get(sPlayer));
+		}
 		
 		xpbar.setUrl(LoadProperties.xpbar_url+"xpbar_inc000.png");
 		xpbar.setX(LoadProperties.xpbar_x).setY(LoadProperties.xpbar_y).setHeight(8).setWidth(256);
 		
 		SpoutStuff.xpbars.put(sPlayer, xpbar);
-		SpoutStuff.xpicons.put(sPlayer, xpicon);
+		
 		
 		sPlayer.getMainScreen().attachWidget(plugin, SpoutStuff.xpbars.get(sPlayer));
-		sPlayer.getMainScreen().attachWidget(plugin, SpoutStuff.xpicons.get(sPlayer));
+		
 		sPlayer.getMainScreen().setDirty(true);
 	}
 	
@@ -528,7 +536,8 @@ public class SpoutStuff
 			
 			PP.setXpBarInc(PP.getXpBarInc()+1);
 			
-			xpicons.get(player).setUrl(getUrlIcon(PP.getLastGained())).setDirty(true);
+			if(LoadProperties.xpicon)
+				xpicons.get(player).setUrl(getUrlIcon(PP.getLastGained())).setDirty(true);
 			
 			((SpoutPlayer)player).getMainScreen().setDirty(true);
 		}

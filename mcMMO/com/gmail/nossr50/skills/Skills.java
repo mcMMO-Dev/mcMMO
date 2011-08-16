@@ -325,7 +325,7 @@ public class Skills
 				else
 					player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
 		}
-		if(LoadProperties.spoutEnabled)
+		if(LoadProperties.xpbar && LoadProperties.spoutEnabled)
 		{
 			SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 			if(sPlayer.isSpoutCraftEnabled())

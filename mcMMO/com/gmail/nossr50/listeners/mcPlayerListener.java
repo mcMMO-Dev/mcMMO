@@ -77,7 +77,7 @@ public class mcPlayerListener extends PlayerListener
 				}
 			}
 		}
-		if(LoadProperties.spoutEnabled && PP.inParty())
+		if(LoadProperties.partybar && LoadProperties.spoutEnabled && PP.inParty())
 		{
 			SpoutStuff.updatePartyHealthBarDisplay(player, 20);
 		}

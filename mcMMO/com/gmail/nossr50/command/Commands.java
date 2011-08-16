@@ -1149,7 +1149,7 @@ public class Commands
 				Pinstance.addToParty(player, PP, PP.getParty(), true);
 				
 				//Refresh party hp bars
-				if(LoadProperties.spoutEnabled)
+				if(LoadProperties.partybar && LoadProperties.spoutEnabled)
 				{
 					SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
 					SpoutStuff.resetPartyHealthBarDisplays(player);
@@ -1176,7 +1176,7 @@ public class Commands
 				Pinstance.addToParty(player, PP, PP.getParty(), false);
 				
 				//Refresh party hp bars
-				if(LoadProperties.spoutEnabled)
+				if(LoadProperties.partybar && LoadProperties.spoutEnabled)
 				{
 					SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
 					SpoutStuff.resetPartyHealthBarDisplays(player);
@@ -1288,7 +1288,7 @@ public class Commands
 						Pinstance.removeFromParty(player, PP);
 						
 						//Refresh party hp bars
-						if(LoadProperties.spoutEnabled)
+						if(LoadProperties.partybar && LoadProperties.spoutEnabled)
 						{
 							SpoutStuff.resetPartyHealthBarDisplays(partymembers);
 							SpoutStuff.resetPartyHealthBarDisplays(player);
@@ -1348,7 +1348,7 @@ public class Commands
 								Pinstance.removeFromParty(tPlayer, tPP);
 								
 								//Refresh party hp bars
-								if(LoadProperties.spoutEnabled)
+								if(LoadProperties.partybar && LoadProperties.spoutEnabled)
 								{
 									SpoutStuff.resetPartyHealthBarDisplays(partymembers);
 									SpoutStuff.resetPartyHealthBarDisplays(player);

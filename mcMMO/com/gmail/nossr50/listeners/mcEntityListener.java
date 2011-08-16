@@ -143,7 +143,7 @@ public class mcEntityListener extends EntityListener
 			    			Users.getProfile(herpderp).setRecentlyHurt(System.currentTimeMillis());
 			    		}
 			    		
-			    		if(LoadProperties.spoutEnabled && Users.getProfile(herpderp).inParty())
+			    		if(LoadProperties.partybar && LoadProperties.spoutEnabled && Users.getProfile(herpderp).inParty())
 			    			SpoutStuff.updatePartyHealthBarDisplay(herpderp, herpderp.getHealth()-event.getDamage());
 			    	}
 		    	}

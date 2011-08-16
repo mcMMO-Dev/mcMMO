@@ -5,6 +5,7 @@ import org.getspout.spoutapi.event.spout.SpoutListener;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class mcSpoutListener extends SpoutListener
@@ -15,11 +16,12 @@ public class mcSpoutListener extends SpoutListener
 		if(sPlayer.isSpoutCraftEnabled())
 		{
 			//Setup Party HUD stuff
-			if(Users.getProfile(sPlayer).inParty())
+			if(LoadProperties.partybar && Users.getProfile(sPlayer).inParty())
 				SpoutStuff.initializePartyTracking(sPlayer);
 			
 			//Setup player XP-Bar & XP-Icon
-			SpoutStuff.initializeXpBarDisplay(sPlayer);
+			if(LoadProperties.xpbar)
+				SpoutStuff.initializeXpBarDisplay(sPlayer);
 		}
 	}
 }

@@ -58,7 +58,7 @@ public class Excavation
 	{
 		return block.getType() == Material.DIRT || block.getType() == Material.GRASS || block.getType() == Material.SAND || block.getType() == Material.GRAVEL || block.getType() == Material.CLAY;
 	}
-	public static void excavationProcCheck(byte data, int type, Location loc, Player player)
+	public static void excavationProcCheck(byte data, Material type, Location loc, Player player)
 	{
 		PlayerProfile PP = Users.getProfile(player);
     	ArrayList<ItemStack> is = new ArrayList<ItemStack>();
@@ -67,7 +67,7 @@ public class Excavation
     	
     	switch(type)
     	{
-    	case 2:
+    	case GRASS:
     		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 250)
     		{
 	    		//CHANCE TO GET EGGS
@@ -84,7 +84,7 @@ public class Excavation
 	    		}
     		}
     		break;
-    	case 3:
+    	case GRAVEL:
     		//CHANCE TO GET NETHERRACK
     		if(LoadProperties.netherrack == true && PP.getSkillLevel(SkillType.EXCAVATION) >= 850 && Math.random() * 200 > 199)
     		{
@@ -111,7 +111,7 @@ public class Excavation
         		}
         	}
     		break;
-    	case 12:
+    	case SAND:
     		//CHANCE TO GET GLOWSTONE
     		if(LoadProperties.glowstone == true && PP.getSkillLevel(SkillType.EXCAVATION) >= 50 && Math.random() * 100 > 95)
     		{
@@ -126,7 +126,7 @@ public class Excavation
 				is.add(new ItemStack(Material.SOUL_SAND, 1, (byte)0, (byte)0));
     		}
     		break;
-    	case 82:
+    	case CLAY:
     		if(LoadProperties.slimeballs && PP.getSkillLevel(SkillType.EXCAVATION) >= 150)
     		{
     			if(Math.random() * 20 > 19)
@@ -171,7 +171,7 @@ public class Excavation
     	}
     	
     	//DIRT SAND OR GRAVEL
-    	if(type == 3 || type == 13 || type == 2 || type == 12 || type == 82)
+    	if(type == Material.GRASS || type == Material.DIRT || type == Material.GRAVEL || type == Material.SAND || type == Material.CLAY)
     	{
     		xp+= LoadProperties.mbase * LoadProperties.xpGainMultiplier;
     		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 750)
@@ -213,7 +213,7 @@ public class Excavation
     	}
     	
     	//GRASS OR DIRT
-    	if(type == 2 || type == 3)
+    	if(type == Material.DIRT || type == Material.GRASS)
     	{
     		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 50)
     		{
