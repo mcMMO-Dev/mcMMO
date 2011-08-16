@@ -7,7 +7,7 @@ import org.getspout.spoutapi.gui.GenericTexture;
 
 import com.gmail.nossr50.spout.SpoutStuff;
 
-public class HealthBarMMO 
+public class HealthBarMMO
 {
 	public GenericTexture health_bar = null;
 	public GenericLabel health_name = null;

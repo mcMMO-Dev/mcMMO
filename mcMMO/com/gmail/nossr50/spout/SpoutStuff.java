@@ -19,6 +19,8 @@ import org.getspout.spoutapi.sound.SoundManager;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.HealthBarMMO;
@@ -32,21 +34,45 @@ public class SpoutStuff
 	public static HashMap<Player, GenericTexture> xpicons = new HashMap<Player, GenericTexture>();
 	public static HashMap<Player, ArrayList<HealthBarMMO>> partyHealthBars = new HashMap<Player, ArrayList<HealthBarMMO>>();
 	
+	static mcMMO plugin = (mcMMO) Bukkit.getServer().getPluginManager().getPlugin("mcMMO");
+	
 	public static void registerCustomEvent()
 	{
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, Bukkit.getServer().getPluginManager().getPlugin("mcMMO"));
 	}
+	public static void initializeXpBarDisplay(SpoutPlayer sPlayer)
+	{
+		//Setup xp bar
+		GenericTexture xpbar = new GenericTexture();
+		GenericTexture xpicon = new GenericTexture();
+		
+		xpicon.setUrl(LoadProperties.xpicon_url+"icon.png");
+		
+		xpicon.setHeight(16).setWidth(32).setX(LoadProperties.xpicon_x).setY(LoadProperties.xpicon_y);
+		
+		xpbar.setUrl(LoadProperties.xpbar_url+"xpbar_inc000.png");
+		xpbar.setX(LoadProperties.xpbar_x).setY(LoadProperties.xpbar_y).setHeight(8).setWidth(256);
+		
+		SpoutStuff.xpbars.put(sPlayer, xpbar);
+		SpoutStuff.xpicons.put(sPlayer, xpicon);
+		
+		sPlayer.getMainScreen().attachWidget(plugin, SpoutStuff.xpbars.get(sPlayer));
+		sPlayer.getMainScreen().attachWidget(plugin, SpoutStuff.xpicons.get(sPlayer));
+		sPlayer.getMainScreen().setDirty(true);
+	}
+	
 	public static String getHealthBarURL(Integer hp)
 	{
 		String url = "";
 		
 		if(hp.toString().toCharArray().length > 1)
-			url = "http://dl.dropbox.com/u/18212134/xpbar/health_inc"+hp+".png";
+			url = LoadProperties.xpbar_url+"health_inc"+hp+".png";
 		else
-			url = "http://dl.dropbox.com/u/18212134/xpbar/health_inc0"+hp+".png";
+			url = LoadProperties.xpbar_url+"health_inc0"+hp+".png";
 		
 		return url;
 	}
+	
 	public static void playSoundForPlayer(SoundEffect effect, Player player, Location location)
 	{
 		//Contrib stuff
@@ -54,59 +80,142 @@ public class SpoutStuff
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 		SM.playSoundEffect(sPlayer, effect, location);
 	}
+	
 	public static void initializePartyTracking(SpoutPlayer player)
 	{
-		int pos = 0;
-		
-		ArrayList<HealthBarMMO> hpbars = new ArrayList<HealthBarMMO>();
-		for(Player x : Party.getInstance().getPartyMembers(player))
+		if(Users.getProfile(player).inParty())
 		{
-			HealthBarMMO hpbar = new HealthBarMMO(x, x.getName());
-			hpbar.health_name.setX(0).setY(pos);
-			hpbar.health_bar.setX(-11).setY(pos+8);
-			hpbars.add(hpbar);
-			pos+=20;
-		}
-		
-		partyHealthBars.put(player, hpbars);
-		
-		for(HealthBarMMO x : partyHealthBars.get(player))
-		{
-			if(x != null)
+			int pos = LoadProperties.partybar_y;
+			
+			ArrayList<HealthBarMMO> hpbars = new ArrayList<HealthBarMMO>();
+			for(Player x : Party.getInstance().getPartyMembers(player))
 			{
-				player.getMainScreen().attachWidget(x.health_bar);
-				player.getMainScreen().attachWidget(x.health_name);
-			}
-		}
-		
-		player.getMainScreen().setDirty(true);
-	}
-	public static void resetPartyHealthBarDisplays(ArrayList<Player> players)
-	{
-		for(Player x : players)
-		{
-			SpoutPlayer sPlayer = SpoutManager.getPlayer(x);
-			if(sPlayer.isSpoutCraftEnabled())
-			{
-				ArrayList<Widget> widgets = new ArrayList<Widget>();
-				for(Widget w : sPlayer.getMainScreen().getAttachedWidgets())
+				if(x.isOnline())
 				{
-					if(w instanceof HealthBarMMO)
+					HealthBarMMO hpbar = new HealthBarMMO(x, x.getName());
+					hpbar.health_name.setX(LoadProperties.partybar_x+11).setY(pos);
+					hpbar.health_bar.setX(LoadProperties.partybar_x).setY(pos+8);
+					hpbars.add(hpbar);
+					pos+=LoadProperties.partybar_spacing;
+				}
+			}
+			
+			if(hpbars.size() >= 1)
+				partyHealthBars.put(player, hpbars);
+			
+			if(partyHealthBars.get(player) != null)
+			{
+				for(HealthBarMMO x : partyHealthBars.get(player))
+				{
+					if(x != null)
 					{
-						widgets.add(w);
+						player.getMainScreen().attachWidget(plugin, x.health_bar);
+						player.getMainScreen().attachWidget(plugin, x.health_name);
 					}
 				}
-				for(Widget w : widgets)
-				{
-					sPlayer.getMainScreen().removeWidget(w);
-				}
 				
-				sPlayer.getMainScreen().setDirty(true);
-				partyHealthBars.get(x).clear();
-				
-				initializePartyTracking(SpoutManager.getPlayer(x));
+				player.getMainScreen().setDirty(true);
 			}
 		}
+	}
+	public static void resetPartyHealthBarDisplays(final ArrayList<Player> players)
+	{
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
+		new Runnable() 
+		{
+			public void run() 
+			{
+				
+				for (Player x : players) 
+				{
+					if(partyHealthBars.get(x) != null)
+					{
+						final SpoutPlayer sPlayer = SpoutManager.getPlayer(x);
+						if (sPlayer.isSpoutCraftEnabled()) 
+						{
+							ArrayList<Widget> widgets = new ArrayList<Widget>();
+							for (Widget w : sPlayer.getMainScreen().getAttachedWidgets()) 
+							{
+								for (HealthBarMMO hp : partyHealthBars.get(x))
+								{
+									if(w.getId() == hp.health_bar.getId() || w.getId() == hp.health_name.getId())
+									{
+										widgets.add(w);
+									}
+								}
+							}
+							for (Widget w : widgets) 
+							{
+								sPlayer.getMainScreen().removeWidget(w);
+							}
+	
+							sPlayer.getMainScreen().setDirty(true);
+							partyHealthBars.get(x).clear();
+	
+							Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
+									new Runnable() 
+									{
+										public void run() {
+											initializePartyTracking(sPlayer);
+										}
+									}, 1);
+						}
+					} else if (SpoutManager.getPlayer(x).isSpoutCraftEnabled())
+					{
+						initializePartyTracking(SpoutManager.getPlayer(x));
+					}
+				}
+			}
+		}, 1);
+	}
+	
+	public static void resetPartyHealthBarDisplays(final Player player)
+	{
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
+		new Runnable() 
+		{
+			public void run() 
+			{
+				if(partyHealthBars.get(player) != null)
+				{
+					SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+					if (sPlayer.isSpoutCraftEnabled()) 
+					{
+						System.out.println("Resetting health bars for "+player.getName());
+						ArrayList<Widget> widgets = new ArrayList<Widget>();
+						for (Widget w : sPlayer.getMainScreen().getAttachedWidgets()) 
+						{
+							for (HealthBarMMO hp : partyHealthBars.get(player))
+							{
+								if(w.getId() == hp.health_bar.getId() || w.getId() == hp.health_name.getId())
+								{
+									widgets.add(w);
+								}
+							}
+						}
+						for (Widget w : widgets) 
+						{
+							System.out.println("Removing hpbar for "+sPlayer.getName());
+							sPlayer.getMainScreen().removeWidget(w);
+						}
+						sPlayer.getMainScreen().setDirty(true);
+						partyHealthBars.get(player).clear();
+						
+						Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
+						new Runnable() 
+						{
+							public void run() {
+								initializePartyTracking(SpoutManager
+										.getPlayer(player));
+							}
+						}, 1);
+					}
+				} else if (SpoutManager.getPlayer(player).isSpoutCraftEnabled())
+				{
+					initializePartyTracking(SpoutManager.getPlayer(player));
+				}
+			}
+		}, 1);
 	}
 	
 	public static void updatePartyHealthBarDisplay(Player player, Integer hp)
@@ -132,13 +241,13 @@ public class SpoutStuff
 	{
 		SoundManager SM = SpoutManager.getSoundManager();
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://dl.dropbox.com/u/18212134/xpbar/ui_armorweapon_repair.wav", false);
+		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, LoadProperties.repair_url, false);
 	}
 	public static void playLevelUpNoise(Player player)
 	{
-		SoundManager SM = SpoutManager.getSoundManager();
-		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://dl.dropbox.com/u/18212134/ANUSOUND/"+(int)Math.random()*8+".wav", false);
+		//SoundManager SM = SpoutManager.getSoundManager();
+		//SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+		//SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://dl.dropbox.com/u/18212134/ANUSOUND/"+(int)Math.random()*8+".wav", false);
 	}
 	
 	public static void levelUpNotification(SkillType skillType, SpoutPlayer sPlayer)
@@ -387,17 +496,25 @@ public class SpoutStuff
 	{
 		PlayerProfile PP = Users.getProfile(player);
 		
-		if(PP.getLastGained() != null)
+		if(PP.getLastGained() != null && !PP.getXpBarLocked())
 		{
-			
 			int num = getXpInc(PP.getSkillXpLevel(PP.getLastGained()), PP.getXpToLevel(PP.getLastGained()));
 			
 			xpbars.get(player).setUrl(getUrlBar(num)).setDirty(true);
 			xpicons.get(player).setUrl(getUrlIcon(PP.getLastGained())).setDirty(true);
 			
-			((SpoutPlayer)player).getMainScreen().setDirty(true);
+			SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
+		} else if (PP.getXpBarLocked())
+		{
+			int num = getXpInc(PP.getSkillXpLevel(PP.getSkillLock()), PP.getXpToLevel(PP.getSkillLock()));
+			
+			xpbars.get(player).setUrl(getUrlBar(num)).setDirty(true);
+			xpicons.get(player).setUrl(getUrlIcon(PP.getSkillLock())).setDirty(true);
+			
+			SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
 		}
 	}
+	
 	public static void updateXpBarFill(Player player)
 	{
 		PlayerProfile PP = Users.getProfile(player);

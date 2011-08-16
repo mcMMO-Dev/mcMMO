@@ -94,11 +94,13 @@ public class mcPlayerListener extends PlayerListener
 		/*
 		 * GARBAGE COLLECTION
 		 */
-
 		//Discard the PlayerProfile object
 		Player player = event.getPlayer();
 		
-		Users.removeUser(event.getPlayer());
+		//Health bar stuff
+		if(LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
+			SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
+		
 		if(LoadProperties.spoutEnabled)
 		{
 			if(SpoutStuff.xpbars.containsKey(event.getPlayer()))
@@ -108,9 +110,7 @@ public class mcPlayerListener extends PlayerListener
 				SpoutStuff.xpicons.remove(event.getPlayer());
 		}
 		
-		//Health bar stuff
-		if(LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
-			SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
+		Users.removeUser(event.getPlayer());
 	}
 
 	public void onPlayerJoin(PlayerJoinEvent event) 

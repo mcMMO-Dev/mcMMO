@@ -54,7 +54,7 @@ public class mcPermissions
     	return permissionsEnabled;
     }
   
-    private static boolean permission(Player player, String permission) 
+    public static boolean permission(Player player, String permission) 
     {
 		if(!permissionsEnabled) return player.isOp();
 		switch(permissionType) {
@@ -235,60 +235,6 @@ public class mcPermissions
     	}
     	return instance;
     	}
-    public boolean sorcery(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.sorcery");
-        } else {
-            return true;
-        }
-    }
-    /*
-     * SORCERY WATER
-     */
-    public boolean sorceryWater(Player player)
-    {
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.sorcery.water");
-        } else {
-            return true;
-        }
-    }
-    public boolean sorceryWaterThunder(Player player)
-    {
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.sorcery.water.thunder");
-        } else {
-            return true;
-        }
-    }
-    /*
-     * SORCERY CURATIVE
-     */
-    public boolean sorceryCurative(Player player)
-    {
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.curative");
-        } else {
-            return true;
-        }
-    }
-    public boolean sorceryCurativeHealOther(Player player)
-    {
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.curative.heal.other");
-        } else {
-            return true;
-        }
-    }
-    public boolean sorceryCurativeHealSelf(Player player)
-    {
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.curative.heal.self");
-        } else {
-            return true;
-        }
-    }
-    
     public boolean taming(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.skills.taming");

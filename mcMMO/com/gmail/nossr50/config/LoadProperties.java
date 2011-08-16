@@ -5,9 +5,9 @@ import org.bukkit.util.config.Configuration;
 
 public class LoadProperties 
 {
-	public static Boolean slimeballs, spoutEnabled, donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
-	public static String MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond, locale;
-	public static int archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
+	public static Boolean xplockEnable, xpbar, xpicon, partybar, map, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	public static String xplock, repair_url, xpbar_url, xpicon_url, partybar_url, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond, locale;
+	public static int xpbar_x, xpbar_y, xpicon_x, xpicon_y, partybar_x, partybar_y, partybar_spacing, mmap, mstring, mbucket, mweb, archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
 	public String directory = "plugins/mcMMO/"; 
 	File file = new File(directory + File.separator + "config.yml");
 	Configuration config = null;
@@ -78,6 +78,21 @@ public class LoadProperties
 	        System.out.println("Generating Config File...");  	
 	    	
 	        //Put in defaults
+	        write("Spout.XP.Bar.Enabled", true);
+	        write("Spout.XP.Bar.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
+	        write("Spout.XP.Icon.Enabled", true);
+	        write("Spout.XP.Icon.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
+	        write("Spout.XP.Bar.X_POS", 95);
+	        write("Spout.XP.Bar.Y_POS", 6);
+	        write("Spout.XP.Icon.X_POS", 78);
+	        write("Spout.XP.Icon.Y_POS", 2);
+	        write("Spout.Party.HP.Enabled", true);
+	        write("Spout.Party.HP.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
+	        write("Spout.Party.HP.X_POS", -11);
+	        write("Spout.Party.HP.Y_POS", 0);
+	        write("Spout.Party.HP.SPACING", 16);
+	        write("Spout.SFX.Repair.URL", "http://dl.dropbox.com/u/18212134/xpbar/ui_armorweapon_repair.wav");
+	        
 	        write("MySQL.Enabled", false);
 	        write("MySQL.Server.Address", "localhost");
 	        write("MySQL.Server.Port", 3306);
@@ -145,6 +160,10 @@ public class LoadProperties
 	    	write("XP.Excavation.Cake", 300);
 	    	write("XP.Excavation.Slimeballs", 10);
 	    	write("XP.Excavation.Cocoa_Beans", 10);
+	    	write("XP.Excavation.Map", 20);
+	    	write("XP.Excavation.String", 20);
+	    	write("XP.Excavation.Bucket", 10);
+	    	write("XP.Excavation.Web", 15);
 	    	
 	    	//write("Sorcery.Spells.Water.Thunder", 75);
 	    	//write("Sorcery.Spells.Curative.Cure_Self.Mana_Cost", 5);
@@ -163,7 +182,13 @@ public class LoadProperties
 	    	write("Excavation.Drops.Netherrack", true);
 	    	write("Excavation.Drops.Bones", true);
 	    	write("Excavation.Drops.Slimeballs", true);
+	    	write("Excavation.Drops.Map", true);
+	    	write("Excavation.Drops.String", true);
+	    	write("Excavation.Drops.Bucket", true);
+	    	write("Excavation.Drops.Web", true);
 	    	
+	    	write("Commands.xprate.Name", "xprate");
+	    	write("Commands.xprate.Enabled", true);
 	    	write("Commands.mctop.Name", "mctop");
 	    	write("Commands.mctop.Enabled", true);
 	    	write("Commands.addxp.Name", "addxp");
@@ -197,6 +222,8 @@ public class LoadProperties
 	    	write("Commands.accept.Enabled", true);
 	    	write("Commands.clearmyspawn.Name", "clearmyspawn");
 	    	write("Commands.clearmyspawn.Enabled", true);
+	    	write("Commands.xplock.Enabled", true);
+	    	write("Commands.xplock.Name", "xplock");
 	    	
 	    	write("Abilities.Tools.Durability_Loss_Enabled", true);
 	    	write("Abilities.Tools.Durability_Loss", 2);
@@ -235,6 +262,21 @@ public class LoadProperties
 	        donateMessage = readBoolean("Commands.mcmmo.Donate_Message", true);
 	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);
 	        
+	        xpbar = readBoolean("Spout.XP.Bar.Enabled", true);
+	        xpbar_url = readString("Spout.XP.Bar.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
+	        xpicon = readBoolean("Spout.XP.Icon.Enabled", true);
+	        xpicon_url = readString("Spout.XP.Icon.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
+	        xpbar_x = readInteger("Spout.XP.Bar.X_POS", 95);
+	        xpbar_y = readInteger("Spout.XP.Bar.Y_POS", 6);
+	        xpicon_x = readInteger("Spout.XP.Icon.X_POS", 78);
+	        xpicon_y = readInteger("Spout.XP.Icon.Y_POS", 2);
+	        partybar = readBoolean("Spout.Party.HP.Enabled", true);
+	        partybar_url = readString("Spout.Party.HP.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
+	        partybar_x = readInteger("Spout.Party.HP.X_POS", -11);
+	        partybar_y = readInteger("Spout.Party.HP.Y_POS", 0);
+	        partybar_spacing = readInteger("Spout.Party.HP.SPACING", 16);
+	        repair_url = readString("Spout.SFX.Repair.URL", "http://dl.dropbox.com/u/18212134/xpbar/ui_armorweapon_repair.wav");
+	        
 	        msulphur = readInteger("XP.Excavation.Sulphur", 3);
 	        mbones = readInteger("XP.Excavation.Bones", 3);
 	        mbase = readInteger("XP.Excavation.Base", 4);
@@ -248,6 +290,10 @@ public class LoadProperties
 	    	mcake = readInteger("XP.Excavation.Cake", 300);
 	    	mcocoa = readInteger("XP.Excavation.Cocoa_Beans", 10);
 	    	mslimeballs = readInteger("XP.Excavation.Slimeballs", 10);
+	    	mstring = readInteger("XP.Excavation.String", 20);
+	    	mbucket = readInteger("XP.Excavation.Bucket", 10);
+	    	mweb = readInteger("XP.Excavation.Web", 15);
+	    	mmap = readInteger("XP.Excavation.Map", 20);
 	    	
 	        msugar = readInteger("XP.Herbalism.Sugar_Cane", 3);
 	        mwheat = readInteger("XP.Herbalism.Wheat", 5);
@@ -355,6 +401,13 @@ public class LoadProperties
 	    	netherrack = readBoolean("Excavation.Drops.Netherrack", true);
 	    	bones = readBoolean("Excavation.Drops.Bones", true);
 	    	slimeballs = readBoolean("Excavation.Drops.Slimeballs", true);
+	    	map = readBoolean("Excavation.Drops.Map", true);
+	    	string = readBoolean("Excavation.Drops.String", true);
+	    	bucket = readBoolean("Excavation.Drops.Bucket", true);
+	    	web = readBoolean("Excavation.Drops.Web", true);
+	    	
+	    	xprate = readString("Commands.xprate.Name", "xprate");
+	    	xprateEnable = readBoolean("Commands.xprate.Enabled", true);
 	    	
 	    	mctop = readString("Commands.mctop.Name", "mctop");
 	    	mctopEnable = readBoolean("Commands.mctop.Enabled", true);
@@ -403,5 +456,8 @@ public class LoadProperties
 	    	
 	    	clearmyspawn = readString("Commands.clearmyspawn.Name", "clearmyspawn");
 	    	clearmyspawnEnable = readBoolean("Commands.clearmyspawn.Enabled", true);
+	    	
+	    	xplockEnable = readBoolean("Commands.xplock.Enabled", true);
+	    	xplock = readString("Commands.xplock.Name", "xplock");
 	        }
 	}

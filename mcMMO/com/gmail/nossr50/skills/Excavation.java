@@ -56,12 +56,7 @@ public class Excavation
 	}
 	public static boolean canBeGigaDrillBroken(Block block)
 	{
-		int i = block.getTypeId();
-		if(i == 2||i == 3||i == 12||i == 13){
-			return true;
-		} else {
-			return false;
-		}
+		return block.getType() == Material.DIRT || block.getType() == Material.GRASS || block.getType() == Material.SAND || block.getType() == Material.GRAVEL || block.getType() == Material.CLAY;
 	}
 	public static void excavationProcCheck(byte data, int type, Location loc, Player player)
 	{
@@ -131,8 +126,8 @@ public class Excavation
 				is.add(new ItemStack(Material.SOUL_SAND, 1, (byte)0, (byte)0));
     		}
     		break;
-    	case 13:
-    		if(LoadProperties.slimeballs && PP.getSkillLevel(SkillType.EXCAVATION) >= 50)
+    	case 82:
+    		if(LoadProperties.slimeballs && PP.getSkillLevel(SkillType.EXCAVATION) >= 150)
     		{
     			if(Math.random() * 20 > 19)
     			{
@@ -140,10 +135,43 @@ public class Excavation
     				is.add(new ItemStack(Material.SLIME_BALL, 1, (byte)0, (byte)0));
     			}
     		}
+    		if(LoadProperties.string && PP.getSkillLevel(SkillType.EXCAVATION) >= 250)
+    		{
+    			if(Math.random() * 20 > 19)
+    			{
+    				xp+= LoadProperties.mstring * LoadProperties.xpGainMultiplier;
+    				is.add(new ItemStack(Material.STRING, 1, (byte)0, (byte)0));
+    			}
+    		}
+    		if(LoadProperties.map && PP.getSkillLevel(SkillType.EXCAVATION) >= 25)
+    		{
+    			if(Math.random() * 50 > 49)
+    			{
+    				xp+= LoadProperties.mmap * LoadProperties.xpGainMultiplier;
+    				is.add(new ItemStack(Material.MAP, 1, (byte)0, (byte)0));
+    			}
+    		}
+    		if(LoadProperties.bucket && PP.getSkillLevel(SkillType.EXCAVATION) >= 500)
+    		{
+    			if(Math.random() * 100 > 99)
+    			{
+    				xp+= LoadProperties.mbucket * LoadProperties.xpGainMultiplier;
+    				is.add(new ItemStack(Material.BUCKET, 1, (byte)0, (byte)0));
+    			}
+    		}
+    		if(LoadProperties.web && PP.getSkillLevel(SkillType.EXCAVATION) >= 750)
+    		{
+    			if(Math.random() * 20 > 19)
+    			{
+    				xp+= LoadProperties.mweb * LoadProperties.xpGainMultiplier;
+    				is.add(new ItemStack(Material.WEB, 1, (byte)0, (byte)0));
+    			}
+    		}
+    		break;
     	}
     	
     	//DIRT SAND OR GRAVEL
-    	if(type == 3 || type == 13 || type == 2 || type == 12)
+    	if(type == 3 || type == 13 || type == 2 || type == 12 || type == 82)
     	{
     		xp+= LoadProperties.mbase * LoadProperties.xpGainMultiplier;
     		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 750)
@@ -193,7 +221,7 @@ public class Excavation
     			if(LoadProperties.cocoabeans == true && Math.random() * 75 > 74)
     			{
     				xp+= LoadProperties.mcocoa * LoadProperties.xpGainMultiplier;
-					is.add(new ItemStack(Material.getMaterial(351), 1, (short)3, (byte)0));
+					is.add(new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)3));
     			}
     		}
     		//CHANCE FOR SHROOMS

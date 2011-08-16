@@ -1,8 +1,10 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 1.0.51 WIP v2
+version: 1.1.0
 softdepend: [Spout]
 commands:
+    xplock:
+        description: Lock your xp bar
     xprate:
         description: Modify the xp rate or start an event
     mcc:

@@ -3,7 +3,6 @@ package com.gmail.nossr50;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.plugin.Plugin;
@@ -50,7 +49,7 @@ public class Combat
 		    	combatAbilityChecks(attacker, PPa, pluginx);
 		    	
 		    	//Check for offensive procs
-		    	if(!(event instanceof EntityDamageByProjectileEvent))
+		    	if(!(((EntityDamageByEntityEvent) event).getDamager() instanceof Arrow))
 		    	{
 			    	if(mcPermissions.getInstance().axes(attacker))
 			    		Axes.axeCriticalCheck(attacker, eventb, pluginx); //Axe Criticals
@@ -218,8 +217,8 @@ public class Combat
 			}
 		}
 		//Another offensive check for Archery
-		if(event instanceof EntityDamageByProjectileEvent)
-			archeryCheck((EntityDamageByProjectileEvent) event, pluginx);
+		if(event instanceof EntityDamageByEntityEvent && event.getCause() == DamageCause.PROJECTILE && ((EntityDamageByEntityEvent) event).getDamager() instanceof Arrow)
+			archeryCheck((EntityDamageByEntityEvent)event, pluginx);
 			
 		/*
 		 * DEFENSIVE CHECKS
@@ -228,7 +227,7 @@ public class Combat
 		{
 			Player defender = (Player)event.getEntity();
 			Swords.parryCheck((EntityDamageByEntityEvent) event, defender);
-			Swords.counterAttackChecks(event);
+			Swords.counterAttackChecks((EntityDamageByEntityEvent)event);
 			Acrobatics.dodgeChecks((EntityDamageByEntityEvent)event);
 		}
 		/*
@@ -272,12 +271,12 @@ public class Combat
 		if(PPa.getFistsPreparationMode())
 			Unarmed.berserkActivationCheck(attacker);
 	}
-	public static void archeryCheck(EntityDamageByProjectileEvent event, mcMMO pluginx)
+	public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx)
 	{
-    	Entity y = event.getDamager();
+		Arrow arrow = (Arrow)event.getDamager();
+    	Entity y = arrow.getShooter();
     	Entity x = event.getEntity();
-    	Projectile projectile = event.getProjectile();
-    	if(projectile.toString().equals("CraftArrow") && x instanceof Player)
+    	if(x instanceof Player)
     	{
     		Player defender = (Player)x;
     		PlayerProfile PPd = Users.getProfile(defender);
@@ -308,7 +307,7 @@ public class Combat
     	{
     		Player attacker = (Player)y;
     		PlayerProfile PPa = Users.getProfile(attacker);
-    		if(projectile.toString().equals("CraftArrow") && mcPermissions.getInstance().archery(attacker))
+    		if(mcPermissions.getInstance().archery(attacker))
     		{
     			Archery.trackArrows(pluginx, x, event, attacker);
     			/*

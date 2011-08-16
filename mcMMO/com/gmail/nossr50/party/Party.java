@@ -20,6 +20,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.spout.SpoutStuff;
 
 
 public class Party 
@@ -108,7 +109,7 @@ public class Party
     	
     	for(Player p : Bukkit.getServer().getOnlinePlayers())
         {
-        	if(player != null && p != null)
+        	if(p.isOnline() && player != null && p != null)
         	{
                 if(inSameParty(player, p) && !p.getName().equals(player.getName()))
                 {
@@ -159,21 +160,32 @@ public class Party
     
     public void removeFromParty(Player player, PlayerProfile PP) 
     {
+    	ArrayList<Player> partymembers = Party.getInstance().getPartyMembers(player);
+    	
     	//Stop NPE... hopefully
     	if(!isParty(PP.getParty()) || !isInParty(player, PP))
     		addToParty(player, PP, PP.getParty(), false);
     		
     	informPartyMembersQuit(player);
     	String party = PP.getParty();
-    	if(isPartyLeader(player, party)) {
+    	if(isPartyLeader(player, party)) 
+    	{
     		if(isPartyLocked(party)) {
     			unlockParty(party);
     		}
     	}
+    	
     	this.partyPlayers.get(party).remove(player.getName());
     	if(isPartyEmpty(party)) deleteParty(party);
 		PP.removeParty();
 		savePartyPlayers();
+		
+		//Refresh party hp bars
+		if(LoadProperties.spoutEnabled)
+		{
+			SpoutStuff.resetPartyHealthBarDisplays(partymembers);
+			SpoutStuff.resetPartyHealthBarDisplays(player);
+		}
     }
     
     public void addToParty(Player player, PlayerProfile PP, String newParty, Boolean invite) {

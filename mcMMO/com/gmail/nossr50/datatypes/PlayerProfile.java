@@ -28,7 +28,7 @@ public class PlayerProfile
 	private String party, myspawn, myspawnworld, invite;
 	
 	//TOGGLES
-	private boolean placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
+	private boolean xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
 	superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
 	serratedStrikesMode, hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false, pickaxePreparationMode = false, axePreparationMode = false, skullSplitterMode, berserkMode;
 	
@@ -39,7 +39,7 @@ public class PlayerProfile
 	respawnATS = 0, mySpawnATS = 0, greenTerraATS = 0, greenTerraDATS = 0, superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
 	skullSplitterATS = 0, skullSplitterDATS = 0, hoePreparationATS = 0, axePreparationATS = 0, pickaxePreparationATS = 0, fistsPreparationATS = 0, shovelPreparationATS = 0, swordsPreparationATS = 0;
 	
-	private SkillType lastgained = null;
+	private SkillType lastgained = null, skillLock = null;
 	
 	//MySQL STUFF
 	private int xpbarinc=0, lastlogin=0, userid = 0, bleedticks = 0;
@@ -424,6 +424,14 @@ public class PlayerProfile
                 log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
         }
     }
+    public boolean getXpBarLocked()
+    {
+    	return xpbarlocked;
+    }
+    public void toggleXpBarLocked()
+    {
+    	xpbarlocked = !xpbarlocked;
+    }
     public int getXpBarInc()
     {
     	return xpbarinc;
@@ -431,6 +439,14 @@ public class PlayerProfile
     public void setXpBarInc(int newvalue)
     {
     	xpbarinc = newvalue;
+    }
+    public void setSkillLock(SkillType newvalue)
+    {
+    	skillLock = newvalue;
+    }
+    public SkillType getSkillLock()
+    {
+    	return skillLock;
     }
     public void setLastGained(SkillType newvalue)
     {

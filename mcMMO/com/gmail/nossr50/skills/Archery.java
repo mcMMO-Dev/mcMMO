@@ -3,8 +3,7 @@ package com.gmail.nossr50.skills;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByProjectileEvent;
-
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -14,7 +13,7 @@ import com.gmail.nossr50.party.Party;
 
 public class Archery 
 {
-	public static void trackArrows(mcMMO pluginx, Entity x, EntityDamageByProjectileEvent event, Player attacker)
+	public static void trackArrows(mcMMO pluginx, Entity x, EntityDamageByEntityEvent event, Player attacker)
 	{
 		PlayerProfile PPa = Users.getProfile(attacker);
 		if(!pluginx.misc.arrowTracker.containsKey(x) && event.getDamage() > 0)
@@ -41,7 +40,7 @@ public class Archery
 			}
 		}
 	}
-	public static void ignitionCheck(Entity x, EntityDamageByProjectileEvent event, Player attacker)
+	public static void ignitionCheck(Entity x, EntityDamageByEntityEvent event, Player attacker)
 	{
 		PlayerProfile PPa = Users.getProfile(attacker);
 		if(Math.random() * 100 >= 75)

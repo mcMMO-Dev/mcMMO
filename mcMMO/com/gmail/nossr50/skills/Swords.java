@@ -1,14 +1,12 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageByProjectileEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -194,10 +192,11 @@ public class Swords
 			}
 		}
     }
-    public static void counterAttackChecks(EntityDamageEvent event){
+    public static void counterAttackChecks(EntityDamageByEntityEvent event)
+    {
     	//Don't want to counter attack arrows
     	
-    	if(event instanceof EntityDamageByProjectileEvent)
+    	if(event.getDamager() instanceof Arrow)
     		return;
     	
 	    if(event instanceof EntityDamageByEntityEvent)

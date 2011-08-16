@@ -57,7 +57,8 @@ public class Commands
 	{
 		Player player = null;
 		PlayerProfile PP = null;
-		if(sender instanceof Player) {
+		if(sender instanceof Player) 
+		{
 			player = (Player) sender;
 			PP = Users.getProfile(player);
 		}
@@ -67,7 +68,7 @@ public class Commands
 		for(int a = 0; a < args.length; a++){
 			split[a + 1] = args[a];
 		}
-
+		
 		//Check if the command is an MMO related help command
 		if(label.equalsIgnoreCase("taming") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillTaming").toLowerCase())){ 
 			float skillvalue = (float)PP.getSkillLevel(SkillType.TAMING);
@@ -519,10 +520,8 @@ public class Commands
 				PP.toggleAbilityUse();
 			}
 		}
-		else if (label.equalsIgnoreCase("xprate"))
+		else if (LoadProperties.xprateEnable && label.equalsIgnoreCase(LoadProperties.xprate))
 		{
-			//TODO: Localization.. I know me so lazy today, I'll do it tomorrow
-			
 			if(sender instanceof Player)
 			{
 				if(!mcPermissions.getInstance().admin(player))
@@ -532,15 +531,15 @@ public class Commands
 				}
 				if(split.length <= 1)
 				{
-					player.sendMessage(ChatColor.DARK_AQUA+"Proper usage is /xprate [integer] [true:false]");
-					player.sendMessage(ChatColor.DARK_AQUA+"Also you can type /xprate reset to turn everything back to normal");
+					player.sendMessage(mcLocale.getString("Commands.xprate.proper", new Object[] {LoadProperties.xprate}));
+					player.sendMessage(mcLocale.getString("Commands.xprate.proper2", new Object[] {LoadProperties.xprate}));
 				}
 				if(split.length == 2 && split[1].equalsIgnoreCase("reset"))
 				{
 					if(xpevent)
 					{
 						for(Player x : Bukkit.getServer().getOnlinePlayers())
-							x.sendMessage(ChatColor.RED+"mcMMO XP Event is OVER!!");
+							x.sendMessage(mcLocale.getString("Commands.xprate.over"));
 						xpevent = !xpevent;
 						LoadProperties.xpGainMultiplier = oldrate;
 					} else
@@ -560,23 +559,23 @@ public class Commands
 							xpevent = false;
 					} else
 					{
-						player.sendMessage("Enter true or false for the second value");
+						player.sendMessage(mcLocale.getString("Commands.xprate.proper3"));
 						return true;
 					}
 					LoadProperties.xpGainMultiplier = m.getInt(split[1]);
 					if(xpevent = true)
 						for(Player x : Bukkit.getServer().getOnlinePlayers())
 						{
-							x.sendMessage(ChatColor.GOLD+"XP EVENT FOR mcMMO HAS STARTED!");
-							x.sendMessage(ChatColor.GOLD+"mcMMO XP RATE IS NOW "+LoadProperties.xpGainMultiplier+"x!!");
+							x.sendMessage(mcLocale.getString("Commands.xprate.started"));
+							x.sendMessage(mcLocale.getString("Commands.xprate.started2", new Object[] {LoadProperties.xpGainMultiplier}));
 						}
 				}
 			} else
 			{
 				if(split.length <= 1)
 				{
-					System.out.println(ChatColor.DARK_AQUA+"Proper usage is /xprate [integer] [true:false]");
-					System.out.println(ChatColor.DARK_AQUA+"Also you can type /xprate reset to turn everything back to normal");
+					System.out.println(mcLocale.getString("Commands.xprate.proper", new Object[] {LoadProperties.xprate}));
+					System.out.println(mcLocale.getString("Commands.xprate.proper2", new Object[] {LoadProperties.xprate}));
 				}
 				
 				if(split.length == 2 && split[1].equalsIgnoreCase("reset"))
@@ -584,7 +583,7 @@ public class Commands
 					if(xpevent)
 					{
 						for(Player x : Bukkit.getServer().getOnlinePlayers())
-							x.sendMessage(ChatColor.RED+"mcMMO XP Event is OVER!!");
+							x.sendMessage(mcLocale.getString("Commands.xprate.over"));
 						xpevent = !xpevent;
 						LoadProperties.xpGainMultiplier = oldrate;
 					} else
@@ -605,7 +604,7 @@ public class Commands
 							xpevent = false;
 					} else
 					{
-						System.out.println("Enter true or false for the second value");
+						System.out.println(mcLocale.getString("Commands.xprate.proper3"));
 						return true;
 					}
 					LoadProperties.xpGainMultiplier = m.getInt(split[1]);
@@ -1148,7 +1147,16 @@ public class Commands
 				}
 				PP.acceptInvite();
 				Pinstance.addToParty(player, PP, PP.getParty(), true);
-			} else {
+				
+				//Refresh party hp bars
+				if(LoadProperties.spoutEnabled)
+				{
+					SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
+					SpoutStuff.resetPartyHealthBarDisplays(player);
+				}
+				
+			} else 
+			{
 				player.sendMessage(mcLocale.getString("mcPlayerListener.NoInvites")); 
 			}
 		}
@@ -1166,6 +1174,13 @@ public class Commands
 			if(PP.inParty() && (!Pinstance.isParty(PP.getParty()) || !Pinstance.isInParty(player, PP))) 
 			{
 				Pinstance.addToParty(player, PP, PP.getParty(), false);
+				
+				//Refresh party hp bars
+				if(LoadProperties.spoutEnabled)
+				{
+					SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
+					SpoutStuff.resetPartyHealthBarDisplays(player);
+				}
 			}
 			
 			if(args.length == 0 && !PP.inParty())
@@ -1213,16 +1228,12 @@ public class Commands
 				player.sendMessage(mcLocale.getString("mcPlayerListener.YouAreInParty", new Object[] {PP.getParty()}));
 				player.sendMessage(mcLocale.getString("mcPlayerListener.PartyMembers")+" ("+tempList+ChatColor.GREEN+")");
 				return true;
-			} else if(args.length == 1){
+			} else if(args.length == 1)
+			{
 				if(args[0].equals("q") && PP.inParty()) 
 				{
-					ArrayList<Player> partymembers = Party.getInstance().getPartyMembers(player);
-					
 					Pinstance.removeFromParty(player, PP);
-					
-					if(LoadProperties.spoutEnabled)
-						SpoutStuff.resetPartyHealthBarDisplays(partymembers);
-					
+
 					player.sendMessage(mcLocale.getString("mcPlayerListener.LeftParty")); 
 					return true;
 				} else if (args[0].equalsIgnoreCase("?")) {
@@ -1276,8 +1287,12 @@ public class Commands
 						
 						Pinstance.removeFromParty(player, PP);
 						
+						//Refresh party hp bars
 						if(LoadProperties.spoutEnabled)
+						{
 							SpoutStuff.resetPartyHealthBarDisplays(partymembers);
+							SpoutStuff.resetPartyHealthBarDisplays(player);
+						}
 					}
 					Pinstance.addToParty(player, PP, args[0], false);
 					return true;
@@ -1332,8 +1347,12 @@ public class Commands
 								
 								Pinstance.removeFromParty(tPlayer, tPP);
 								
+								//Refresh party hp bars
 								if(LoadProperties.spoutEnabled)
+								{
 									SpoutStuff.resetPartyHealthBarDisplays(partymembers);
+									SpoutStuff.resetPartyHealthBarDisplays(player);
+								}
 								
 								tPlayer.sendMessage(mcLocale.getString("mcPlayerListener.LeftParty"));
 							}
@@ -1482,7 +1501,7 @@ public class Commands
 				}
 
 				String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE
-				+ player.getName() + ChatColor.AQUA + "} ";
+				+ player.getDisplayName() + ChatColor.AQUA + "} ";
 				log.log(Level.INFO, "[A]<" + player.getDisplayName() + "> "
 						+ aMessage);
 				for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
@@ -1510,7 +1529,8 @@ public class Commands
 		/*
 		 * MYSPAWN
 		 */
-		else if(LoadProperties.myspawnEnable && LoadProperties.enableMySpawn && label.equalsIgnoreCase(LoadProperties.myspawn)){ 
+		else if(LoadProperties.myspawnEnable && LoadProperties.enableMySpawn && label.equalsIgnoreCase(LoadProperties.myspawn))
+		{ 
 			if(!mcPermissions.getInstance().mySpawn(player)){
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
@@ -1534,6 +1554,45 @@ public class Commands
 				}
 			} else {
 				player.sendMessage(mcLocale.getString("mcPlayerListener.MyspawnNotExist")); 
+			}
+		}
+		else if(LoadProperties.spoutEnabled && LoadProperties.xpbar && LoadProperties.xplockEnable && label.equalsIgnoreCase(LoadProperties.xplock))
+		{
+			if(split.length >= 2 && Skills.isSkill(split[1]) && mcPermissions.permission(player, "mcmmo.skills."+Skills.getSkillType(split[1]).toString().toLowerCase()))
+			{
+				if(PP.getXpBarLocked())
+				{
+					PP.setSkillLock(Skills.getSkillType(split[1]));
+					player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] {m.getCapitalized(PP.getSkillLock().toString())}));
+				}
+				else
+				{
+					PP.setSkillLock(Skills.getSkillType(split[1]));
+					PP.toggleXpBarLocked();
+					player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] {m.getCapitalized(PP.getSkillLock().toString())}));
+				}
+				SpoutStuff.updateXpBar(player);
+			} else if (split.length < 2)
+			{
+				if(PP.getXpBarLocked())
+				{
+					PP.toggleXpBarLocked();
+					player.sendMessage(mcLocale.getString("Commands.xplock.unlocked"));
+				} else if(PP.getLastGained() != null)
+				{
+					PP.toggleXpBarLocked();
+					PP.setSkillLock(PP.getLastGained());
+					player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] {m.getCapitalized(PP.getSkillLock().toString())}));
+				}
+			}
+			else if (split.length >= 2 && !Skills.isSkill(split[1]))
+			{
+				player.sendMessage("Commands.xplock.invalid");
+			}
+			else if(split.length >= 2 && Skills.isSkill(split[1]) && !mcPermissions.permission(player, "mcmmo.skills."+Skills.getSkillType(split[1]).toString().toLowerCase()))
+			{
+				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
+				return true;
 			}
 		}
 		return true;
