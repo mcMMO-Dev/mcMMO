@@ -1,5 +1,11 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.1.05
+Maps dropped from excavation are created correctly, and represent the area they are found in
+Fixed an exploit with clay and excavation
+Fixed a NPE with locking xp bars
+Fixed the !AdeptDiamond! localization error when repairing diamond with a skill below 50
+
 Version 1.1.04
 Removed URL settings for XPBAR/XPICON/HPBAR
 Added single URL setting for mcMMO

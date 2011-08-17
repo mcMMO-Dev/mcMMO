@@ -534,15 +534,25 @@ public class SpoutStuff
 			SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
 		} else if (PP.getXpBarLocked())
 		{
-			int num = getXpInc(PP.getSkillXpLevel(PP.getSkillLock()), PP.getXpToLevel(PP.getSkillLock()));
-			
-			xpbars.get(player).setUrl(getUrlBar(num)).setDirty(true);
-			xpicons.get(player).setUrl(getUrlIcon(PP.getSkillLock())).setDirty(true);
-			
-			SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
+			if(xpbars.get(player) != null && xpicons.get(player) != null)
+			{
+				updateXpBarUrl(PP, player);
+			} else 
+			{
+				initializeXpBarDisplay(SpoutManager.getPlayer(player));
+				updateXpBarUrl(PP, player);
+			}
 		}
 	}
-	
+	public static void updateXpBarUrl(PlayerProfile PP, Player player)
+	{
+		int num = getXpInc(PP.getSkillXpLevel(PP.getSkillLock()), PP.getXpToLevel(PP.getSkillLock()));
+		
+		xpbars.get(player).setUrl(getUrlBar(num)).setDirty(true);
+		xpicons.get(player).setUrl(getUrlIcon(PP.getSkillLock())).setDirty(true);
+		
+		SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
+	}
 	public static void updateXpBarFill(Player player)
 	{
 		PlayerProfile PP = Users.getProfile(player);

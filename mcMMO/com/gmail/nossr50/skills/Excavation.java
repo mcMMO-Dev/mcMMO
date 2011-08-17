@@ -1,12 +1,14 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
-
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.map.MapView;
+
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -147,8 +149,10 @@ public class Excavation
     		{
     			if(Math.random() * 50 > 49)
     			{
+    				MapView mv = Bukkit.getServer().createMap(loc.getWorld());
+    				
     				xp+= LoadProperties.mmap * LoadProperties.xpGainMultiplier;
-    				is.add(new ItemStack(Material.MAP, 1, (byte)0, (byte)0));
+    				is.add(new ItemStack(Material.MAP, 1, (byte)0, (byte) mv.getId()));
     			}
     		}
     		if(LoadProperties.bucket && PP.getSkillLevel(SkillType.EXCAVATION) >= 500)

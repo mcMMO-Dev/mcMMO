@@ -443,7 +443,7 @@ public class Repair {
     	PlayerProfile PP = Users.getProfile(player);
     	if ((isDiamondTools(is) || isDiamondArmor(is)) && PP.getSkillLevel(SkillType.REPAIR) < LoadProperties.repairdiamondlevel)
     	{
-			player.sendMessage(mcLocale.getString("AdeptDiamond"));
+			player.sendMessage(mcLocale.getString("Skills.AdeptDiamond"));
 		} else if (isDiamondTools(is) && !hasItem(player, rDiamond) || isIronTools(is) && !hasItem(player, rIron) || isGoldTools(is) && !hasItem(player, rGold)){
 			if(isDiamondTools(is) && !hasItem(player, rDiamond))
 				player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.BLUE+ nDiamond);
