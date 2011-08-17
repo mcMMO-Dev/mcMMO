@@ -105,9 +105,10 @@ public class mcPlayerListener extends PlayerListener
 		{
 			if(SpoutStuff.xpbars.containsKey(event.getPlayer()))
 				SpoutStuff.xpbars.remove(event.getPlayer());
-			
 			if(SpoutStuff.xpicons.containsKey(event.getPlayer()))
 				SpoutStuff.xpicons.remove(event.getPlayer());
+			if(SpoutStuff.partyHealthBars.containsKey(event.getPlayer()))
+				SpoutStuff.partyHealthBars.remove(event.getPlayer());
 		}
 		
 		Users.removeUser(event.getPlayer());

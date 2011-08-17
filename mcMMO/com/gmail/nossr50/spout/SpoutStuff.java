@@ -12,6 +12,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.GenericTexture;
+import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
@@ -49,7 +50,7 @@ public class SpoutStuff
 		{
 			GenericTexture xpicon = new GenericTexture();
 			
-			xpicon.setUrl(LoadProperties.xpicon_url+"icon.png");
+			xpicon.setUrl(LoadProperties.web_url+"/HUD/Standard/icon.png");
 			
 			xpicon.setHeight(16).setWidth(32).setX(LoadProperties.xpicon_x).setY(LoadProperties.xpicon_y);
 			
@@ -58,7 +59,7 @@ public class SpoutStuff
 			sPlayer.getMainScreen().attachWidget(plugin, SpoutStuff.xpicons.get(sPlayer));
 		}
 		
-		xpbar.setUrl(LoadProperties.xpbar_url+"xpbar_inc000.png");
+		xpbar.setUrl(LoadProperties.web_url+"/HUD/Standard/xpbar_inc000.png");
 		xpbar.setX(LoadProperties.xpbar_x).setY(LoadProperties.xpbar_y).setHeight(8).setWidth(256);
 		
 		SpoutStuff.xpbars.put(sPlayer, xpbar);
@@ -68,15 +69,34 @@ public class SpoutStuff
 		
 		sPlayer.getMainScreen().setDirty(true);
 	}
+	public static void initializeXpBarMiniDisplay(SpoutPlayer sPlayer)
+	{
+		//Coordinates 240, 427 are the bottom right.
+		GenericTexture xpbar = new GenericTexture();
+		GenericTexture xpbar_fill = new GenericTexture();
+		
+		xpbar.setUrl("http://dl.dropbox.com/u/18212134/xpbar/mini/bar.png");
+		xpbar_fill.setUrl("http://dl.dropbox.com/u/18212134/xpbar/mini/bar_fill.png");
+		
+		xpbar.setWidth(128).setHeight(4).setX(149).setY(10).setDirty(true);
+		xpbar_fill.setWidth(2).setHeight(2).setX(150).setY(11).setPriority(RenderPriority.High).setDirty(true);
+		
+		SpoutStuff.xpbars.put(sPlayer, xpbar);
+		
+		sPlayer.getMainScreen().attachWidget(plugin, xpbar);
+		sPlayer.getMainScreen().attachWidget(plugin, xpbar_fill);
+		
+		sPlayer.getMainScreen().setDirty(true);
+	}
 	
 	public static String getHealthBarURL(Integer hp)
 	{
 		String url = "";
 		
 		if(hp.toString().toCharArray().length > 1)
-			url = LoadProperties.xpbar_url+"health_inc"+hp+".png";
+			url = LoadProperties.web_url+"/HUD/Standard/health_inc"+hp+".png";
 		else
-			url = LoadProperties.xpbar_url+"health_inc0"+hp+".png";
+			url = LoadProperties.web_url+"/HUD/Standard/health_inc0"+hp+".png";
 		
 		return url;
 	}
@@ -249,7 +269,7 @@ public class SpoutStuff
 	{
 		SoundManager SM = SpoutManager.getSoundManager();
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, LoadProperties.repair_url, false);
+		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, LoadProperties.web_url+"/Sound/repair.wav", false);
 	}
 	public static void playLevelUpNoise(Player player)
 	{
@@ -547,20 +567,17 @@ public class SpoutStuff
 	{
 		if(number.toString().toCharArray().length == 1)
 		{
-			return "http://dl.dropbox.com/u/18212134/xpbar/xpbar_inc00"+number+".png";
-			//return "file:///C:/Users/Rob/Dropbox/Public/xpbar/xpbar_inc00"+number+".png";
+			return LoadProperties.web_url+"/HUD/Standard/xpbar_inc00"+number+".png";
 		} else if (number.toString().toCharArray().length == 2)
 		{
-			return "http://dl.dropbox.com/u/18212134/xpbar/xpbar_inc0"+number+".png";
-			//return "file:///C:/Users/Rob/Dropbox/Public/xpbar/xpbar_inc0"+number+".png";
+			return LoadProperties.web_url+"/HUD/Standard/xpbar_inc0"+number+".png";
 		} else {
-			return "http://dl.dropbox.com/u/18212134/xpbar/xpbar_inc"+number+".png";
-			//return "file:///C:/Users/Rob/Dropbox/Public/xpbar/xpbar_inc"+number+".png";
+			return LoadProperties.web_url+"/HUD/Standard/xpbar_inc"+number+".png";
 		}
 	}
 	public static String getUrlIcon(SkillType skillType)
 	{
-		return "http://dl.dropbox.com/u/18212134/xpbar/"+m.getCapitalized(skillType.toString())+".png";
+		return LoadProperties.web_url+"/HUD/Standard/"+m.getCapitalized(skillType.toString())+".png";
 	}
 	public static boolean shouldBeFilled(PlayerProfile PP)
 	{

@@ -6,7 +6,7 @@ import org.bukkit.util.config.Configuration;
 public class LoadProperties 
 {
 	public static Boolean xplockEnable, xpbar, xpicon, partybar, map, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
-	public static String xplock, repair_url, xpbar_url, xpicon_url, partybar_url, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond, locale;
+	public static String xplock, web_url, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond, locale;
 	public static int xpbar_x, xpbar_y, xpicon_x, xpicon_y, partybar_x, partybar_y, partybar_spacing, mmap, mstring, mbucket, mweb, archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
 	public String directory = "plugins/mcMMO/"; 
 	File file = new File(directory + File.separator + "config.yml");
@@ -79,19 +79,16 @@ public class LoadProperties
 	    	
 	        //Put in defaults
 	        write("Spout.XP.Bar.Enabled", true);
-	        write("Spout.XP.Bar.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
+	        write("Spout.Images.URL_DIR", "http://mcmmo.rycochet.net/mcmmo/");
 	        write("Spout.XP.Icon.Enabled", true);
-	        write("Spout.XP.Icon.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
 	        write("Spout.XP.Bar.X_POS", 95);
 	        write("Spout.XP.Bar.Y_POS", 6);
 	        write("Spout.XP.Icon.X_POS", 78);
 	        write("Spout.XP.Icon.Y_POS", 2);
 	        write("Spout.Party.HP.Enabled", true);
-	        write("Spout.Party.HP.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
 	        write("Spout.Party.HP.X_POS", -11);
 	        write("Spout.Party.HP.Y_POS", 0);
 	        write("Spout.Party.HP.SPACING", 16);
-	        write("Spout.SFX.Repair.URL", "http://dl.dropbox.com/u/18212134/xpbar/ui_armorweapon_repair.wav");
 	        
 	        write("MySQL.Enabled", false);
 	        write("MySQL.Server.Address", "localhost");
@@ -263,19 +260,16 @@ public class LoadProperties
 	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);
 	        
 	        xpbar = readBoolean("Spout.XP.Bar.Enabled", true);
-	        xpbar_url = readString("Spout.XP.Bar.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
+	        web_url = readString("Spout.Images.URL_DIR", "http://mcmmo.rycochet.net/mcmmo/");
 	        xpicon = readBoolean("Spout.XP.Icon.Enabled", true);
-	        xpicon_url = readString("Spout.XP.Icon.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
 	        xpbar_x = readInteger("Spout.XP.Bar.X_POS", 95);
 	        xpbar_y = readInteger("Spout.XP.Bar.Y_POS", 6);
 	        xpicon_x = readInteger("Spout.XP.Icon.X_POS", 78);
 	        xpicon_y = readInteger("Spout.XP.Icon.Y_POS", 2);
 	        partybar = readBoolean("Spout.Party.HP.Enabled", true);
-	        partybar_url = readString("Spout.Party.HP.URL_DIR", "http://dl.dropbox.com/u/18212134/xpbar/");
 	        partybar_x = readInteger("Spout.Party.HP.X_POS", -11);
 	        partybar_y = readInteger("Spout.Party.HP.Y_POS", 0);
 	        partybar_spacing = readInteger("Spout.Party.HP.SPACING", 16);
-	        repair_url = readString("Spout.SFX.Repair.URL", "http://dl.dropbox.com/u/18212134/xpbar/ui_armorweapon_repair.wav");
 	        
 	        msulphur = readInteger("XP.Excavation.Sulphur", 3);
 	        mbones = readInteger("XP.Excavation.Bones", 3);
