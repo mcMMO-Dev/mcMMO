@@ -89,11 +89,11 @@ public class Combat
 			    				int xp = (int) (event.getDamage() * 2 * LoadProperties.pvpxprewardmodifier);
 			    				
 				    			if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
-				    				PPa.addXP(SkillType.AXES, xp);
+				    				PPa.addXP(SkillType.AXES, xp*10);
 				    			if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
-				    				PPa.addXP(SkillType.SWORDS, xp);
+				    				PPa.addXP(SkillType.SWORDS, xp*10);
 				    			if(attacker.getItemInHand().getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker))
-				    				PPa.addXP(SkillType.UNARMED, xp);
+				    				PPa.addXP(SkillType.UNARMED, xp*10);
 			    			}
 			    		}
 		      		}
@@ -117,11 +117,11 @@ public class Combat
 							xp = (event.getDamage() * 3);
 
 						if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
-							PPa.addXP(SkillType.SWORDS, xp);
+							PPa.addXP(SkillType.SWORDS, xp*10);
 						else if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
-							PPa.addXP(SkillType.AXES, xp);
+							PPa.addXP(SkillType.AXES, xp*10);
 						else if(attacker.getItemInHand().getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker))
-							PPa.addXP(SkillType.UNARMED, xp);
+							PPa.addXP(SkillType.UNARMED, xp*10);
 		      		}
 		      		Skills.XpCheckAll(attacker);
 		      		
@@ -206,12 +206,12 @@ public class Combat
 								xp = (event.getDamage() * 4);
 							if(event.getEntity() instanceof Ghast)
 								xp = (event.getDamage() * 4);
-							Users.getProfile(master).addXP(SkillType.TAMING, xp);
+							Users.getProfile(master).addXP(SkillType.TAMING, xp*10);
 						}
 						if(event.getEntity() instanceof Player)
 						{
 							xp = (event.getDamage() * 2);
-							Users.getProfile(master).addXP(SkillType.TAMING, xp);
+							Users.getProfile(master).addXP(SkillType.TAMING, xp*10);
 						}
 						Skills.XpCheckSkill(SkillType.TAMING, master);
 					}
@@ -337,19 +337,19 @@ public class Combat
     		{
     			//XP
     			if(x instanceof Creeper)
-    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 4));
+    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 4)*10);
 				if(x instanceof Spider)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3));
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
 				if(x instanceof Skeleton)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2));
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2)*10);
 				if(x instanceof Zombie)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2));
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2)*10);
 				if(x instanceof PigZombie)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3));
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
 				if(x instanceof Slime)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3));
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
 				if(x instanceof Ghast)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3));
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
     		}
     		/*
     		 * Attacker is Player
@@ -374,7 +374,7 @@ public class Combat
     	    		if(LoadProperties.pvpxp && !Party.getInstance().inSameParty(attacker, defender) 
     	    				&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis())
     	    		{
-    	    			int xp = (int) (event.getDamage() * 2 * LoadProperties.pvpxprewardmodifier);
+    	    			int xp = (int) ((event.getDamage() * 2) * 10);
     	    			PPa.addXP(SkillType.ARCHERY, xp);
     	    		}
     				/*

@@ -187,16 +187,27 @@ public class HUDmmo
 	{
 		SkillType theType = null;
 		
-		if(PP.getXpBarLocked())
+		if(PP.getXpBarLocked() && PP.getSkillLock() != null)
 			theType=PP.getSkillLock();
 		else
 			theType=PP.getLastGained();
 		
-		Color color = SpoutStuff.getRetroColor(theType);
+		Color color = new Color(0.3f, 0.3f, 0.75f, 1f);
 		
-		((GenericTexture) xpicon).setUrl(LoadProperties.web_url+"HUD/Retro/"+m.getCapitalized(theType.toString())+"_r.png");
+		if(xpicon != null && theType != null)
+			xpicon.setUrl(LoadProperties.web_url+"HUD/Retro/"+m.getCapitalized(theType.toString())+"_r.png");
+		else
+		{
+			if(xpicon == null)
+				System.out.println("xpicon was null!");
+			if(theType == null)
+				System.out.println("theType was null!");
+		}
 		
-		xpfill.setBottomColor(color).setTopColor(color).setWidth(SpoutStuff.getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.RETRO)).setDirty(true);
+		if(theType != null)
+			xpfill.setBottomColor(color).setTopColor(color).setWidth(SpoutStuff.getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.RETRO)).setDirty(true);
+		else
+			System.out.println("theType was null!");
 		
 		SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
 	}

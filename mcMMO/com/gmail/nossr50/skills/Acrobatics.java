@@ -36,7 +36,7 @@ public class Acrobatics {
 				 */
 				if(player.getHealth() - newDamage >= 1){
 					if(!event.isCancelled())
-						PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 8));
+						PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 8)*10);
 					Skills.XpCheckSkill(SkillType.ACROBATICS, player);
 					event.setDamage(newDamage);
 					if(event.getDamage() <= 0)
@@ -49,7 +49,7 @@ public class Acrobatics {
 				}
 			} else if (!event.isCancelled()){
 				if(player.getHealth() - event.getDamage() >= 1){
-					PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 12));
+					PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 12)*10);
 					Skills.XpCheckSkill(SkillType.ACROBATICS, player);
 				}
 			}
@@ -64,7 +64,7 @@ public class Acrobatics {
 	    		if(Math.random() * 4000 <= PPd.getSkillLevel(SkillType.ACROBATICS)){
 	    			defender.sendMessage(ChatColor.GREEN+"**DODGE**");
 	    			if(System.currentTimeMillis() >= 5000 + PPd.getRespawnATS() && defender.getHealth() >= 1){
-	    				PPd.addXP(SkillType.ACROBATICS, event.getDamage() * 12);
+	    				PPd.addXP(SkillType.ACROBATICS, (event.getDamage() * 12)*1);
 	    				Skills.XpCheckSkill(SkillType.ACROBATICS, defender);
 	    			}
 	    			event.setDamage(event.getDamage() / 2);
@@ -75,7 +75,7 @@ public class Acrobatics {
 			} else if(Math.random() * 4000 <= 800) {
 				defender.sendMessage(ChatColor.GREEN+"**DODGE**");
 				if(System.currentTimeMillis() >= 5000 + PPd.getRespawnATS() && defender.getHealth() >= 1){
-					PPd.addXP(SkillType.ACROBATICS, event.getDamage() * 12);
+					PPd.addXP(SkillType.ACROBATICS, (event.getDamage() * 12)*10);
 					Skills.XpCheckSkill(SkillType.ACROBATICS, defender);
 				}
 				event.setDamage(event.getDamage() / 2);

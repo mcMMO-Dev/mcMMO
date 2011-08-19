@@ -928,14 +928,9 @@ public class PlayerProfile
 				xp=(int) (xp/LoadProperties.sorceryxpmodifier);
 				break;
 			}
-			
+			xp=xp*LoadProperties.xpGainMultiplier;
 			skillsXp.put(skillType, skillsXp.get(skillType)+xp);
-			
-			if(LoadProperties.spoutEnabled)
-			{
-				lastgained = skillType;
-				//switch
-			}
+			lastgained = skillType;
 		}
 		//save();
 	}

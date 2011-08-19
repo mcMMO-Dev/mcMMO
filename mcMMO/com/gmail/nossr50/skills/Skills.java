@@ -316,7 +316,6 @@ public class Skills
 				if(sPlayer.isSpoutCraftEnabled())
 				{
 					SpoutStuff.levelUpNotification(skillType, sPlayer);
-					PP.setXpBarInc(0);
 				} else 
 				{
 					player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));

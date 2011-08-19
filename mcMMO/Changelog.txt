@@ -8,6 +8,13 @@ GigaDrillBreaker/Berserk doesn't drop clay blocks anymore
 Fixed bug where Herbalism didn't heal more for bread/stew when right clicking a block
 Fixed bug where Wheat did not use the values form the config file
 
+TODO:
+	Fix the NPE with theType
+	Permission nodes for Spout elements
+	Small HUD style
+	HUD persistence
+	Maybe incorporate mmoParty
+
 In order to streamline the configuration of how XP/Levels are gained, we rewrote the formulas, it is paramount to understand that from a game perspective that does NOT change how fast you level up, it just changes how easy it is to configure the system, current configuration files will be automatically updated maintaining your selected leveling speed
 
 
