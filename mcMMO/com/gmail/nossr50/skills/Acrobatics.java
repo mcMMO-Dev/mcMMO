@@ -7,7 +7,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
@@ -37,7 +36,7 @@ public class Acrobatics {
 				 */
 				if(player.getHealth() - newDamage >= 1){
 					if(!event.isCancelled())
-						PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 8) * LoadProperties.xpGainMultiplier);
+						PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 8));
 					Skills.XpCheckSkill(SkillType.ACROBATICS, player);
 					event.setDamage(newDamage);
 					if(event.getDamage() <= 0)
@@ -50,7 +49,7 @@ public class Acrobatics {
 				}
 			} else if (!event.isCancelled()){
 				if(player.getHealth() - event.getDamage() >= 1){
-					PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 12) * LoadProperties.xpGainMultiplier);
+					PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 12));
 					Skills.XpCheckSkill(SkillType.ACROBATICS, player);
 				}
 			}

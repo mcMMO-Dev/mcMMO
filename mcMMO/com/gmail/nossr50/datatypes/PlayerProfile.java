@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 
@@ -24,11 +23,14 @@ public class PlayerProfile
 {
     protected final Logger log = Logger.getLogger("Minecraft");
     
+    //HUD
+    private HUDType hud = HUDType.RETRO;
+    
     //MISC
 	private String party, myspawn, myspawnworld, invite;
 	
 	//TOGGLES
-	private boolean xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
+	private boolean spoutcraft = false, filling = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
 	superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
 	serratedStrikesMode, hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false, pickaxePreparationMode = false, axePreparationMode = false, skullSplitterMode, berserkMode;
 	
@@ -423,6 +425,27 @@ public class PlayerProfile
         } catch (Exception e) {
                 log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
         }
+    }
+    public void toggleSpoutEnabled()
+    {
+    	spoutcraft = !spoutcraft;
+    }
+    
+    public boolean isFilling()
+    {
+    	return filling;
+    }
+    public void toggleFilling()
+    {
+    	filling = !filling;
+    }
+    public HUDType getHUDType()
+    {
+    	return hud;
+    }
+    public void setHUDType(HUDType type)
+    {
+    	hud = type;
     }
     public boolean getXpBarLocked()
     {
@@ -857,30 +880,61 @@ public class PlayerProfile
 	{
 		if(skillType == SkillType.ALL)
 		{
-			skillsXp.put(SkillType.TAMING, skillsXp.get(SkillType.TAMING)+newvalue);
-			skillsXp.put(SkillType.MINING, skillsXp.get(SkillType.MINING)+newvalue);
-			skillsXp.put(SkillType.WOODCUTTING, skillsXp.get(SkillType.WOODCUTTING)+newvalue);
-			skillsXp.put(SkillType.REPAIR, skillsXp.get(SkillType.REPAIR)+newvalue);
-			skillsXp.put(SkillType.HERBALISM, skillsXp.get(SkillType.HERBALISM)+newvalue);
-			skillsXp.put(SkillType.ACROBATICS, skillsXp.get(SkillType.ACROBATICS)+newvalue);
-			skillsXp.put(SkillType.SWORDS, skillsXp.get(SkillType.SWORDS)+newvalue);
-			skillsXp.put(SkillType.ARCHERY, skillsXp.get(SkillType.ARCHERY)+newvalue);
-			skillsXp.put(SkillType.UNARMED, skillsXp.get(SkillType.UNARMED)+newvalue);
-			skillsXp.put(SkillType.EXCAVATION, skillsXp.get(SkillType.EXCAVATION)+newvalue);
-			skillsXp.put(SkillType.AXES, skillsXp.get(SkillType.AXES)+newvalue);
-			skillsXp.put(SkillType.SORCERY, skillsXp.get(SkillType.SORCERY)+newvalue);
+			for(SkillType x : SkillType.values())
+			{
+				if(x == SkillType.ALL)
+					continue;
+				skillsXp.put(x, skillsXp.get(x)+newvalue);
+			}
 		} else {
-			skillsXp.put(skillType, skillsXp.get(skillType)+newvalue);
+			int xp = newvalue;
+			
+			switch(skillType)
+			{
+			case TAMING:
+				xp=(int) (xp/LoadProperties.tamingxpmodifier);
+				break;
+			case MINING:
+				xp=(int) (xp/LoadProperties.miningxpmodifier);
+				break;
+			case WOODCUTTING:
+				xp=(int) (xp/LoadProperties.woodcuttingxpmodifier);
+				break;
+			case REPAIR:
+				xp=(int) (xp/LoadProperties.repairxpmodifier);
+				break;
+			case HERBALISM:
+				xp=(int) (xp/LoadProperties.herbalismxpmodifier);
+				break;
+			case ACROBATICS:
+				xp=(int) (xp/LoadProperties.acrobaticsxpmodifier);
+				break;
+			case SWORDS:
+				xp=(int) (xp/LoadProperties.swordsxpmodifier);
+				break;
+			case ARCHERY:
+				xp=(int) (xp/LoadProperties.archeryxpmodifier);
+				break;
+			case UNARMED:
+				xp=(int) (xp/LoadProperties.unarmedxpmodifier);
+				break;
+			case EXCAVATION:
+				xp=(int) (xp/LoadProperties.excavationxpmodifier);
+				break;
+			case AXES:
+				xp=(int) (xp/LoadProperties.axesxpmodifier);
+				break;
+			case SORCERY:
+				xp=(int) (xp/LoadProperties.sorceryxpmodifier);
+				break;
+			}
+			
+			skillsXp.put(skillType, skillsXp.get(skillType)+xp);
 			
 			if(LoadProperties.spoutEnabled)
 			{
-				SkillType prevLastGained = lastgained;
-				
 				lastgained = skillType;
-				
-				//In case of an xp bar switch
-				if(prevLastGained != skillType || prevLastGained == null)
-					xpbarinc = SpoutStuff.getXpInc(this.getSkillXpLevel(lastgained), this.getXpToLevel(lastgained));
+				//switch
 			}
 		}
 		//save();
@@ -954,36 +1008,8 @@ public class PlayerProfile
 	}
 	public Integer getXpToLevel(SkillType skillType)
 	{
-		switch(skillType)
-		{
-		case SORCERY:
-			return 100+(skills.get(skillType) * LoadProperties.sorceryxpmodifier * LoadProperties.globalxpmodifier);
-		case TAMING:
-			return 100+(skills.get(skillType) * LoadProperties.tamingxpmodifier * LoadProperties.globalxpmodifier);
-		case MINING:
-			return 100+(skills.get(skillType) * LoadProperties.miningxpmodifier * LoadProperties.globalxpmodifier);
-		case WOODCUTTING:
-			return 100+(skills.get(skillType) * LoadProperties.woodcuttingxpmodifier * LoadProperties.globalxpmodifier);
-		case REPAIR:
-			return 100+(skills.get(skillType) * LoadProperties.repairxpmodifier * LoadProperties.globalxpmodifier);
-		case HERBALISM:
-			return 100+(skills.get(skillType) * LoadProperties.herbalismxpmodifier * LoadProperties.globalxpmodifier);
-		case ACROBATICS:
-			return 100+(skills.get(skillType) * LoadProperties.acrobaticsxpmodifier * LoadProperties.globalxpmodifier);
-		case SWORDS:
-			return 100+(skills.get(skillType) * LoadProperties.swordsxpmodifier * LoadProperties.globalxpmodifier);
-		case ARCHERY:
-			return 100+(skills.get(skillType) * LoadProperties.archeryxpmodifier * LoadProperties.globalxpmodifier);
-		case UNARMED:
-			return 100+(skills.get(skillType) * LoadProperties.unarmedxpmodifier * LoadProperties.globalxpmodifier);
-		case EXCAVATION:
-			return 100+(skills.get(skillType) * LoadProperties.excavationxpmodifier * LoadProperties.globalxpmodifier);
-		case AXES:
-			return 100+(skills.get(skillType) * LoadProperties.axesxpmodifier * LoadProperties.globalxpmodifier);
-		default:
-			return null;
-		}
-	}   
+		return (int) ((100+(skills.get(skillType) * LoadProperties.globalxpmodifier))*10);
+	}
     
 	//Store the player's party
     public void setParty(String newParty)

@@ -5,9 +5,29 @@ import org.bukkit.util.config.Configuration;
 
 public class LoadProperties 
 {
-	public static Boolean xplockEnable, xpbar, xpicon, partybar, map, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
-	public static String xplock, web_url, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone, nIron, nGold, nDiamond, locale;
-	public static int xpbar_x, xpbar_y, xpicon_x, xpicon_y, partybar_x, partybar_y, partybar_spacing, mmap, mstring, mbucket, mweb, archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand, mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier, superBreakerCooldown = 240, greenTerraCooldown = 240, gigaDrillBreakerCooldown = 240, treeFellerCooldown = 240, berserkCooldown = 240, serratedStrikeCooldown = 240, skullSplitterCooldown = 240, abilityDurabilityLoss, feathersConsumedByChimaeraWing, pvpxprewardmodifier, repairdiamondlevel, globalxpmodifier, tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier = 2, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier, archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier, rWood, rStone, rIron, rGold, rDiamond;
+	public static Boolean xplockEnable, xpbar, xpicon, partybar, map, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
+	donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, 
+	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
+	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, 
+	toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, 
+	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	
+	public static String xplock, web_url, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp,
+	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
+	nStone, nIron, nGold, nDiamond, locale;
+	
+	public static int xpbar_x, xpbar_y, xpicon_x, xpicon_y, partybar_x, partybar_y, partybar_spacing, mmap, mstring, mbucket, mweb,
+	archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand,
+	mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower,
+	msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport,
+	xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown,
+	berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss,
+	feathersConsumedByChimaeraWing, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond;
+	
+	public static double pvpxprewardmodifier, globalxpmodifier, tamingxpmodifier, miningxpmodifier,
+	repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier,
+	archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
+	
 	public String directory = "plugins/mcMMO/"; 
 	File file = new File(directory + File.separator + "config.yml");
 	Configuration config = null;
@@ -45,6 +65,12 @@ public class LoadProperties
 	    	Boolean result = config.getBoolean(root, def);
 	    	config.save();
 	        return result;
+	    }
+	    private Double readDouble(String root, Double def)
+	    {
+	    	Double result = config.getDouble(root, def);
+	    	config.save();
+	    	return result;
 	    }
 	    private Integer readInteger(String root, Integer def)
 	    {
@@ -107,60 +133,60 @@ public class LoadProperties
 	    	write("Items.Chimaera_Wing.Feather_Cost", 10);
 	    	write("Items.Chimaera_Wing.Item_ID", 288);
 	    	
-	    	write("XP.PVP.Rewards", true);
-	    	write("XP.Gains.Multiplier.PVP", 1);
-	    	write("XP.Gains.Mobspawners.Enabled", false);
-	    	write("XP.Gains.Multiplier.Global", 1);
-	    	write("XP.Formula.Multiplier.Global", 1);
-	    	write("XP.Formula.Multiplier.Taming", 2);
-	    	write("XP.Formula.Multiplier.Mining", 2);
-	    	write("XP.Formula.Multiplier.Repair", 2);
-	    	write("XP.Formula.Multiplier.Woodcutting", 2);
-	    	write("XP.Formula.Multiplier.Unarmed", 2);
-	    	write("XP.Formula.Multiplier.Herbalism", 2);
-	    	write("XP.Formula.Multiplier.Excavation", 2);
-	    	write("XP.Formula.Multiplier.Swords", 2);
-	    	write("XP.Formula.Multiplier.Archery", 2);
-	    	write("XP.Formula.Multiplier.Axes", 2);
-	    	write("XP.Formula.Multiplier.Sorcery", 2);
-	    	write("XP.Formula.Multiplier.Acrobatics", 2);
-	    	write("XP.Mining.Gold", 35);
-	    	write("XP.Mining.Diamond", 75);
-	    	write("XP.Mining.Iron", 25);
-	    	write("XP.Mining.Redstone", 15);
-	    	write("XP.Mining.lapis", 40);
-	    	write("XP.Mining.Obsidian", 15);
-	    	write("XP.Mining.Netherrack", 3);
-	    	write("XP.Mining.Glowstone", 3);
-	    	write("XP.Mining.Coal", 10);
-	    	write("XP.Mining.Stone", 3);
-	    	write("XP.Mining.Sandstone", 3);
-	    	write("XP.Herbalism.Sugar_Cane", 3);
-	    	write("XP.Herbalism.Cactus", 3);
-	    	write("XP.Herbalism.Pumpkin", 55);
-	    	write("XP.Herbalism.Flowers", 10);
-	    	write("XP.Herbalism.Wheat", 5);
-	    	write("XP.Herbalism.Mushrooms", 15);
-	    	write("XP.Woodcutting.Pine", 9);
-	    	write("XP.Woodcutting.Birch", 7);
-	    	write("XP.Woodcutting.Spruce", 8);
-	    	write("XP.Excavation.Base", 4);
-	    	write("XP.Excavation.Mushroom", 8);
-	    	write("XP.Excavation.Sulphur", 3);
-	    	write("XP.Excavation.Slowsand", 8);
-	    	write("XP.Excavation.Glowstone", 8);
-	    	write("XP.Excavation.Music", 300);
-	    	write("XP.Excavation.Bones", 3);
-	    	write("XP.Excavation.Diamond", 100);
-	    	write("XP.Excavation.Apple", 10);
-	    	write("XP.Excavation.Eggs", 10);
-	    	write("XP.Excavation.Cake", 300);
-	    	write("XP.Excavation.Slimeballs", 10);
-	    	write("XP.Excavation.Cocoa_Beans", 10);
-	    	write("XP.Excavation.Map", 20);
-	    	write("XP.Excavation.String", 20);
-	    	write("XP.Excavation.Bucket", 10);
-	    	write("XP.Excavation.Web", 15);
+	    	write("Experience.PVP.Rewards", true);
+	    	write("Experience.Gains.Multiplier.PVP", 1);
+	    	write("Experience.Gains.Mobspawners.Enabled", false);
+	    	write("Experience.Gains.Multiplier.Global", 1);
+	    	write("Experience.Formula.Multiplier.Global", 1);
+	    	write("Experience.Formula.Multiplier.Taming", 2);
+	    	write("Experience.Formula.Multiplier.Mining", 2);
+	    	write("Experience.Formula.Multiplier.Repair", 2);
+	    	write("Experience.Formula.Multiplier.Woodcutting", 2);
+	    	write("Experience.Formula.Multiplier.Unarmed", 2);
+	    	write("Experience.Formula.Multiplier.Herbalism", 2);
+	    	write("Experience.Formula.Multiplier.Excavation", 2);
+	    	write("Experience.Formula.Multiplier.Swords", 2);
+	    	write("Experience.Formula.Multiplier.Archery", 2);
+	    	write("Experience.Formula.Multiplier.Axes", 2);
+	    	write("Experience.Formula.Multiplier.Sorcery", 2);
+	    	write("Experience.Formula.Multiplier.Acrobatics", 2);
+	    	write("Experience.Mining.Gold", 35);
+	    	write("Experience.Mining.Diamond", 75);
+	    	write("Experience.Mining.Iron", 25);
+	    	write("Experience.Mining.Redstone", 15);
+	    	write("Experience.Mining.lapis", 40);
+	    	write("Experience.Mining.Obsidian", 15);
+	    	write("Experience.Mining.Netherrack", 3);
+	    	write("Experience.Mining.Glowstone", 3);
+	    	write("Experience.Mining.Coal", 10);
+	    	write("Experience.Mining.Stone", 3);
+	    	write("Experience.Mining.Sandstone", 3);
+	    	write("Experience.Herbalism.Sugar_Cane", 3);
+	    	write("Experience.Herbalism.Cactus", 3);
+	    	write("Experience.Herbalism.Pumpkin", 55);
+	    	write("Experience.Herbalism.Flowers", 10);
+	    	write("Experience.Herbalism.Wheat", 5);
+	    	write("Experience.Herbalism.Mushrooms", 15);
+	    	write("Experience.Woodcutting.Pine", 9);
+	    	write("Experience.Woodcutting.Birch", 7);
+	    	write("Experience.Woodcutting.Spruce", 8);
+	    	write("Experience.Excavation.Base", 4);
+	    	write("Experience.Excavation.Mushroom", 8);
+	    	write("Experience.Excavation.Sulphur", 3);
+	    	write("Experience.Excavation.Slowsand", 8);
+	    	write("Experience.Excavation.Glowstone", 8);
+	    	write("Experience.Excavation.Music", 300);
+	    	write("Experience.Excavation.Bones", 3);
+	    	write("Experience.Excavation.Diamond", 100);
+	    	write("Experience.Excavation.Apple", 10);
+	    	write("Experience.Excavation.Eggs", 10);
+	    	write("Experience.Excavation.Cake", 300);
+	    	write("Experience.Excavation.Slimeballs", 10);
+	    	write("Experience.Excavation.Cocoa_Beans", 10);
+	    	write("Experience.Excavation.Map", 20);
+	    	write("Experience.Excavation.String", 20);
+	    	write("Experience.Excavation.Bucket", 10);
+	    	write("Experience.Excavation.Web", 15);
 	    	
 	    	//write("Sorcery.Spells.Water.Thunder", 75);
 	    	//write("Sorcery.Spells.Curative.Cure_Self.Mana_Cost", 5);
@@ -271,46 +297,46 @@ public class LoadProperties
 	        partybar_y = readInteger("Spout.Party.HP.Y_POS", 0);
 	        partybar_spacing = readInteger("Spout.Party.HP.SPACING", 16);
 	        
-	        msulphur = readInteger("XP.Excavation.Sulphur", 3);
-	        mbones = readInteger("XP.Excavation.Bones", 3);
-	        mbase = readInteger("XP.Excavation.Base", 4);
-	        mmushroom2 = readInteger("XP.Excavation.Mushroom", 8);
-	    	mslowsand = readInteger("XP.Excavation.Slowsand", 8);
-	    	mglowstone2 = readInteger("XP.Excavation.Glowstone", 8);
-	    	mmusic = readInteger("XP.Excavation.Music", 300);
-	    	mdiamond2 = readInteger("XP.Excavation.Diamond", 100);
-	    	mapple = readInteger("XP.Excavation.Apple", 10);
-	    	meggs = readInteger("XP.Excavation.Eggs", 10);
-	    	mcake = readInteger("XP.Excavation.Cake", 300);
-	    	mcocoa = readInteger("XP.Excavation.Cocoa_Beans", 10);
-	    	mslimeballs = readInteger("XP.Excavation.Slimeballs", 10);
-	    	mstring = readInteger("XP.Excavation.String", 20);
-	    	mbucket = readInteger("XP.Excavation.Bucket", 10);
-	    	mweb = readInteger("XP.Excavation.Web", 15);
-	    	mmap = readInteger("XP.Excavation.Map", 20);
+	        msulphur = readInteger("Experience.Excavation.Sulphur", 30);
+	        mbones = readInteger("Experience.Excavation.Bones", 30);
+	        mbase = readInteger("Experience.Excavation.Base", 40);
+	        mmushroom2 = readInteger("Experience.Excavation.Mushroom", 80);
+	    	mslowsand = readInteger("Experience.Excavation.Slowsand", 80);
+	    	mglowstone2 = readInteger("Experience.Excavation.Glowstone", 80);
+	    	mmusic = readInteger("Experience.Excavation.Music", 3000);
+	    	mdiamond2 = readInteger("Experience.Excavation.Diamond", 1000);
+	    	mapple = readInteger("Experience.Excavation.Apple", 100);
+	    	meggs = readInteger("Experience.Excavation.Eggs", 100);
+	    	mcake = readInteger("Experience.Excavation.Cake", 3000);
+	    	mcocoa = readInteger("Experience.Excavation.Cocoa_Beans", 100);
+	    	mslimeballs = readInteger("Experience.Excavation.Slimeballs", 100);
+	    	mstring = readInteger("Experience.Excavation.String", 200);
+	    	mbucket = readInteger("Experience.Excavation.Bucket", 100);
+	    	mweb = readInteger("Experience.Excavation.Web", 150);
+	    	mmap = readInteger("Experience.Excavation.Map", 200);
 	    	
-	        msugar = readInteger("XP.Herbalism.Sugar_Cane", 3);
-	        mwheat = readInteger("XP.Herbalism.Wheat", 5);
-	    	mcactus = readInteger("XP.Herbalism.Cactus", 3);
-	    	mpumpkin = readInteger("XP.Herbalism.Pumpkin", 55);
-	    	mflower = readInteger("XP.Herbalism.Flowers", 10);
-	    	mmushroom = readInteger("XP.Herbalism.Mushrooms", 15);
+	        msugar = readInteger("Experience.Herbalism.Sugar_Cane", 30);
+	        mwheat = readInteger("Experience.Herbalism.Wheat", 50);
+	    	mcactus = readInteger("Experience.Herbalism.Cactus", 30);
+	    	mpumpkin = readInteger("Experience.Herbalism.Pumpkin", 550);
+	    	mflower = readInteger("Experience.Herbalism.Flowers", 100);
+	    	mmushroom = readInteger("Experience.Herbalism.Mushrooms", 150);
 	    	
-	    	mpine = readInteger("XP.Woodcutting.Pine", 7);
-	    	mbirch = readInteger("XP.Woodcutting.Birch", 8);
-	    	mspruce = readInteger("XP.Woodcutting.Spruce", 9);
+	    	mpine = readInteger("Experience.Woodcutting.Pine", 70);
+	    	mbirch = readInteger("Experience.Woodcutting.Birch", 80);
+	    	mspruce = readInteger("Experience.Woodcutting.Spruce", 90);
 	        
-	        mgold = readInteger("XP.Mining.Gold", 25);
-	        mdiamond = readInteger("XP.Mining.Diamond", 75);
-	        miron = readInteger("XP.Mining.Iron", 25);
-	        mredstone = readInteger("XP.Mining.Redstone", 15);
-	        mlapis = readInteger("XP.Mining.lapis", 40);
-	        mobsidian = readInteger("XP.Mining.Obsidian", 15);
-	        mnetherrack = readInteger("XP.Mining.Netherrack", 3);
-	        mglowstone = readInteger("XP.Mining.Glowstone", 3);
-	        mcoal = readInteger("XP.Mining.Coal", 10);
-	        mstone = readInteger("XP.Mining.Stone", 3);
-	        msandstone = readInteger("XP.Mining.Sandstone", 3);
+	        mgold = readInteger("Experience.Mining.Gold", 250);
+	        mdiamond = readInteger("Experience.Mining.Diamond", 750);
+	        miron = readInteger("Experience.Mining.Iron", 250);
+	        mredstone = readInteger("Experience.Mining.Redstone", 150);
+	        mlapis = readInteger("Experience.Mining.lapis", 400);
+	        mobsidian = readInteger("Experience.Mining.Obsidian", 150);
+	        mnetherrack = readInteger("Experience.Mining.Netherrack", 30);
+	        mglowstone = readInteger("Experience.Mining.Glowstone", 30);
+	        mcoal = readInteger("Experience.Mining.Coal", 100);
+	        mstone = readInteger("Experience.Mining.Stone", 30);
+	        msandstone = readInteger("Experience.Mining.Sandstone", 30);
 	        
 	        greenTerraCooldown = readInteger("Abilities.Cooldowns.Green_Terra", 240);
 	    	superBreakerCooldown = readInteger("Abilities.Cooldowns.Super_Breaker", 240);
@@ -341,7 +367,7 @@ public class LoadProperties
 	    	archeryFireRateLimit = readBoolean("Skills.Archery.Fire_Rate_Limiter.Enabled", true);
 	    	archeryLimit = readInteger("Skills.Archery.Fire_Rate_Limiter.Interval", 1000);
 	    	
-	    	xpGainMultiplier = readInteger("XP.Gains.Multiplier.Global", 1);
+	    	xpGainMultiplier = readInteger("Experience.Gains.Multiplier.Global", 1);
 	    	toolsLoseDurabilityFromAbilities = readBoolean("Abilities.Tools.Durability_Loss_Enabled", true);
 	    	abilityDurabilityLoss = readInteger("Abilities.Tools.Durability_Loss", 2);
 	    	
@@ -350,24 +376,24 @@ public class LoadProperties
 	    	chimaeraWingEnable = readBoolean("Items.Chimaera_Wing.Enabled", true);
 	    	
 	    	pvpxp = readBoolean("XP.PVP.Rewards", true);
-	    	pvpxprewardmodifier = readInteger("XP.Gains.Multiplier.PVP", 1);
+	    	pvpxprewardmodifier = readDouble("Experience.Gains.Multiplier.PVP", 1.0);
 	    	miningrequirespickaxe = readBoolean("Skills.Mining.Requires_Pickaxe", true);
 	    	woodcuttingrequiresaxe = readBoolean("Skills.Woodcutting.Requires_Axe", true);
 	    	repairdiamondlevel = readInteger("Skills.Repair.Diamond.Level_Required", 50);
 
-	    	globalxpmodifier = readInteger("XP.Formula.Multiplier.Global", 1);
-	    	sorceryxpmodifier = readInteger("XP.Formula.Multiplier.Sorcery", 2);
-	    	tamingxpmodifier = readInteger("XP.Formula.Multiplier.Taming", 2);
-	    	miningxpmodifier = readInteger("XP.Formula.Multiplier.Mining", 2);
-	    	repairxpmodifier = readInteger("XP.Formula.Multiplier.Repair", 2);
-	    	woodcuttingxpmodifier = readInteger("XP.Formula.Multiplier.Woodcutting", 2);
-	    	unarmedxpmodifier = readInteger("XP.Formula.Multiplier.Unarmed", 2);
-	    	herbalismxpmodifier = readInteger("XP.Formula.Multiplier.Herbalism", 2);
-	    	excavationxpmodifier = readInteger("XP.Formula.Multiplier.Excavation", 2);
-	    	archeryxpmodifier = readInteger("XP.Formula.Multiplier.Archery", 2);
-	    	swordsxpmodifier = readInteger("XP.Formula.Multiplier.Swords", 2);
-	    	axesxpmodifier = readInteger("XP.Formula.Multiplier.Axes", 2);
-	    	acrobaticsxpmodifier = readInteger("XP.Formula.Multiplier.Acrobatics", 2);
+	    	globalxpmodifier = readDouble("Experience.Formula.Multiplier.Global", 1.0);
+	    	sorceryxpmodifier = readDouble("Experience.Formula.Multiplier.Sorcery", 1.0);
+	    	tamingxpmodifier = readDouble("Experience.Formula.Multiplier.Taming", 1.0);
+	    	miningxpmodifier = readDouble("Experience.Formula.Multiplier.Mining", 1.0);
+	    	repairxpmodifier = readDouble("Experience.Formula.Multiplier.Repair", 1.0);
+	    	woodcuttingxpmodifier = readDouble("Experience.Formula.Multiplier.Woodcutting", 1.0);
+	    	unarmedxpmodifier = readDouble("Experience.Formula.Multiplier.Unarmed", 1.0);
+	    	herbalismxpmodifier = readDouble("Experience.Formula.Multiplier.Herbalism", 1.0);
+	    	excavationxpmodifier = readDouble("Experience.Formula.Multiplier.Excavation", 1.0);
+	    	archeryxpmodifier = readDouble("Experience.Formula.Multiplier.Archery", 1.0);
+	    	swordsxpmodifier = readDouble("Experience.Formula.Multiplier.Swords", 1.0);
+	    	axesxpmodifier = readDouble("Experience.Formula.Multiplier.Axes", 1.0);
+	    	acrobaticsxpmodifier = readDouble("Experience.Formula.Multiplier.Acrobatics", 1.0);
 
 	    	anvilmessages = readBoolean("Skills.Repair.Anvil_Messages", true);
 	    	

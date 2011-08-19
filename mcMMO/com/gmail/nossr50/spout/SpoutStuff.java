@@ -11,8 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.gui.GenericTexture;
-import org.getspout.spoutapi.gui.RenderPriority;
+import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
@@ -22,6 +21,8 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.HUDType;
+import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.HealthBarMMO;
@@ -31,8 +32,7 @@ import com.gmail.nossr50.party.Party;
 public class SpoutStuff 
 {
 	private final static mcSpoutListener spoutListener = new mcSpoutListener();
-	public static HashMap<Player, GenericTexture> xpbars = new HashMap<Player, GenericTexture>();
-	public static HashMap<Player, GenericTexture> xpicons = new HashMap<Player, GenericTexture>();
+	public static HashMap<Player, HUDmmo> playerHUDs = new HashMap<Player, HUDmmo>();
 	public static HashMap<Player, ArrayList<HealthBarMMO>> partyHealthBars = new HashMap<Player, ArrayList<HealthBarMMO>>();
 	
 	static mcMMO plugin = (mcMMO) Bukkit.getServer().getPluginManager().getPlugin("mcMMO");
@@ -41,52 +41,49 @@ public class SpoutStuff
 	{
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, Bukkit.getServer().getPluginManager().getPlugin("mcMMO"));
 	}
-	public static void initializeXpBarDisplay(SpoutPlayer sPlayer)
+	
+	public static Color getRetroColor(SkillType type)
 	{
-		//Setup xp bar
-		GenericTexture xpbar = new GenericTexture();
-		
-		if(LoadProperties.xpicon)
+		switch(type)
 		{
-			GenericTexture xpicon = new GenericTexture();
-			
-			xpicon.setUrl(LoadProperties.web_url+"/HUD/Standard/icon.png");
-			
-			xpicon.setHeight(16).setWidth(32).setX(LoadProperties.xpicon_x).setY(LoadProperties.xpicon_y);
-			
-			SpoutStuff.xpicons.put(sPlayer, xpicon);
-			
-			sPlayer.getMainScreen().attachWidget(plugin, SpoutStuff.xpicons.get(sPlayer));
+			case ACROBATICS:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case ARCHERY:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case AXES:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case EXCAVATION:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case HERBALISM:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case MINING:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case REPAIR:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case SORCERY:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case SWORDS:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case TAMING:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case UNARMED:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			case WOODCUTTING:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
+			default:
+				return new Color(0.3f, 0.3f, 0.75f, 1f);
 		}
-		
-		xpbar.setUrl(LoadProperties.web_url+"/HUD/Standard/xpbar_inc000.png");
-		xpbar.setX(LoadProperties.xpbar_x).setY(LoadProperties.xpbar_y).setHeight(8).setWidth(256);
-		
-		SpoutStuff.xpbars.put(sPlayer, xpbar);
-		
-		
-		sPlayer.getMainScreen().attachWidget(plugin, SpoutStuff.xpbars.get(sPlayer));
-		
-		sPlayer.getMainScreen().setDirty(true);
 	}
-	public static void initializeXpBarMiniDisplay(SpoutPlayer sPlayer)
+	public static SpoutPlayer getSpoutPlayer(String playerName)
 	{
-		//Coordinates 240, 427 are the bottom right.
-		GenericTexture xpbar = new GenericTexture();
-		GenericTexture xpbar_fill = new GenericTexture();
-		
-		xpbar.setUrl("http://dl.dropbox.com/u/18212134/xpbar/mini/bar.png");
-		xpbar_fill.setUrl("http://dl.dropbox.com/u/18212134/xpbar/mini/bar_fill.png");
-		
-		xpbar.setWidth(128).setHeight(4).setX(149).setY(10).setDirty(true);
-		xpbar_fill.setWidth(2).setHeight(2).setX(150).setY(11).setPriority(RenderPriority.High).setDirty(true);
-		
-		SpoutStuff.xpbars.put(sPlayer, xpbar);
-		
-		sPlayer.getMainScreen().attachWidget(plugin, xpbar);
-		sPlayer.getMainScreen().attachWidget(plugin, xpbar_fill);
-		
-		sPlayer.getMainScreen().setDirty(true);
+		for(Player x : Bukkit.getServer().getOnlinePlayers())
+		{
+			if(x.getName().equalsIgnoreCase(playerName))
+			{
+				return SpoutManager.getPlayer(x);
+			}
+		}
+		return null;
 	}
 	
 	public static String getHealthBarURL(Integer hp)
@@ -94,9 +91,9 @@ public class SpoutStuff
 		String url = "";
 		
 		if(hp.toString().toCharArray().length > 1)
-			url = LoadProperties.web_url+"/HUD/Standard/health_inc"+hp+".png";
+			url = LoadProperties.web_url+"HUD/Standard/health_inc"+hp+".png";
 		else
-			url = LoadProperties.web_url+"/HUD/Standard/health_inc0"+hp+".png";
+			url = LoadProperties.web_url+"HUD/Standard/health_inc0"+hp+".png";
 		
 		return url;
 	}
@@ -269,13 +266,13 @@ public class SpoutStuff
 	{
 		SoundManager SM = SpoutManager.getSoundManager();
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, LoadProperties.web_url+"/Sound/repair.wav", false);
+		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, LoadProperties.web_url+"/Sound/repair.wav", false);
 	}
 	public static void playLevelUpNoise(Player player)
 	{
-		//SoundManager SM = SpoutManager.getSoundManager();
-		//SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		//SM.playCustomMusic(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://dl.dropbox.com/u/18212134/ANUSOUND/"+(int)Math.random()*8+".wav", false);
+		SoundManager SM = SpoutManager.getSoundManager();
+		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, LoadProperties.web_url+"/Sound/level.wav", false);
 	}
 	
 	public static void levelUpNotification(SkillType skillType, SpoutPlayer sPlayer)
@@ -513,84 +510,46 @@ public class SpoutStuff
 			return 5;
 	}
 	
-	public static Integer getXpInc(int skillxp, int xptolevel)
+	public static Integer getXpInc(int skillxp, int xptolevel, HUDType hud)
 	{
-		double percentage = (double) skillxp/xptolevel;
-		double inc = 0.0039370078740157;
-		return (int) (percentage/inc);
+		if(hud == HUDType.STANDARD)
+		{
+			double percentage = (double) skillxp/xptolevel;
+			double inc = 0.0039370078740157;
+			return (int) (percentage/inc);
+		} else if (hud == HUDType.RETRO)
+		{
+			double percentage = (double) skillxp/xptolevel;
+			double inc = 0.0079365079365079;
+			return (int) (percentage/inc);
+		} else {
+			return 1;
+		}
 	}
 	
 	public static void updateXpBar(Player player)
 	{
-		PlayerProfile PP = Users.getProfile(player);
-		
-		if(PP.getLastGained() != null && !PP.getXpBarLocked())
-		{
-			int num = getXpInc(PP.getSkillXpLevel(PP.getLastGained()), PP.getXpToLevel(PP.getLastGained()));
-			
-			xpbars.get(player).setUrl(getUrlBar(num)).setDirty(true);
-			xpicons.get(player).setUrl(getUrlIcon(PP.getLastGained())).setDirty(true);
-			
-			SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
-		} else if (PP.getXpBarLocked())
-		{
-			if(xpbars.get(player) != null && xpicons.get(player) != null)
-			{
-				updateXpBarUrl(PP, player);
-			} else 
-			{
-				initializeXpBarDisplay(SpoutManager.getPlayer(player));
-				updateXpBarUrl(PP, player);
-			}
-		}
-	}
-	public static void updateXpBarUrl(PlayerProfile PP, Player player)
-	{
-		int num = getXpInc(PP.getSkillXpLevel(PP.getSkillLock()), PP.getXpToLevel(PP.getSkillLock()));
-		
-		xpbars.get(player).setUrl(getUrlBar(num)).setDirty(true);
-		xpicons.get(player).setUrl(getUrlIcon(PP.getSkillLock())).setDirty(true);
-		
-		SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
-	}
-	public static void updateXpBarFill(Player player)
-	{
-		PlayerProfile PP = Users.getProfile(player);
-		
-		if(PP.getLastGained() != null)
-		{
-			if(PP.getXpBarInc() < 254)
-				xpbars.get(player).setUrl(getUrlBar(PP.getXpBarInc()+1)).setDirty(true);
-			else
-				xpbars.get(player).setUrl(getUrlBar(0)).setDirty(true);
-			
-			PP.setXpBarInc(PP.getXpBarInc()+1);
-			
-			if(LoadProperties.xpicon)
-				xpicons.get(player).setUrl(getUrlIcon(PP.getLastGained())).setDirty(true);
-			
-			((SpoutPlayer)player).getMainScreen().setDirty(true);
-		}
+		playerHUDs.get(player).updateXpBarDisplay(Users.getProfile(player).getHUDType(), player);
 	}
 	
 	public static String getUrlBar(Integer number)
 	{
 		if(number.toString().toCharArray().length == 1)
 		{
-			return LoadProperties.web_url+"/HUD/Standard/xpbar_inc00"+number+".png";
+			return LoadProperties.web_url+"HUD/Standard/xpbar_inc00"+number+".png";
 		} else if (number.toString().toCharArray().length == 2)
 		{
-			return LoadProperties.web_url+"/HUD/Standard/xpbar_inc0"+number+".png";
+			return LoadProperties.web_url+"HUD/Standard/xpbar_inc0"+number+".png";
 		} else {
-			return LoadProperties.web_url+"/HUD/Standard/xpbar_inc"+number+".png";
+			return LoadProperties.web_url+"HUD/Standard/xpbar_inc"+number+".png";
 		}
 	}
 	public static String getUrlIcon(SkillType skillType)
 	{
-		return LoadProperties.web_url+"/HUD/Standard/"+m.getCapitalized(skillType.toString())+".png";
+		return LoadProperties.web_url+"HUD/Standard/"+m.getCapitalized(skillType.toString())+".png";
 	}
 	public static boolean shouldBeFilled(PlayerProfile PP)
 	{
-		return PP.getXpBarInc() < getXpInc(PP.getSkillXpLevel(PP.getLastGained()), PP.getXpToLevel(PP.getLastGained()));
+		return PP.getXpBarInc() < getXpInc(PP.getSkillXpLevel(PP.getLastGained()), PP.getXpToLevel(PP.getLastGained()), HUDType.STANDARD);
 	}
 }

@@ -157,13 +157,13 @@ public class mcBlockListener extends BlockListener
 	    				WoodCutting.woodCuttingProcCheck(player, block);
 	    				//Default
 	    				if(block.getData() == (byte)0)
-	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine * LoadProperties.xpGainMultiplier);
+	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine);
 	    				//Spruce
 	    				if(block.getData() == (byte)1)
-	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce * LoadProperties.xpGainMultiplier);
+	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce);
 	    				//Birch
 	    				if(block.getData() == (byte)2)
-	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch * LoadProperties.xpGainMultiplier);
+	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch);
 					}
     			}
     		} else 
@@ -173,13 +173,13 @@ public class mcBlockListener extends BlockListener
 	    			WoodCutting.woodCuttingProcCheck(player, block);
 	    			//Default
     				if(block.getData() == (byte)0)
-    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine * LoadProperties.xpGainMultiplier);
+    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine);
     				//Spruce
     				if(block.getData() == (byte)1)
-    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce * LoadProperties.xpGainMultiplier);
+    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce);
     				//Birch
     				if(block.getData() == (byte)2)
-    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch * LoadProperties.xpGainMultiplier);
+    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch);
     			}
    			}
     		Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
@@ -316,8 +316,10 @@ public class mcBlockListener extends BlockListener
     		
     		Material mat = Material.getMaterial(block.getTypeId());
     		
-    		if(block.getTypeId() == 2)
+    		if(block.getType() == Material.GRASS)
     			mat = Material.DIRT;
+    		if(block.getType() == Material.CLAY)
+    			mat = Material.CLAY_BALL;
     		
 			byte type = block.getData();
 			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
@@ -329,7 +331,16 @@ public class mcBlockListener extends BlockListener
 			if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
 			
-			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+			if(item.getType() == Material.CLAY_BALL)
+			{
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+			} else
+			{
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+			}
 			
 			//Spout stuff
 			if(LoadProperties.spoutEnabled)
@@ -344,15 +355,31 @@ public class mcBlockListener extends BlockListener
     		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
     	{
 		   	Material mat = Material.getMaterial(block.getTypeId());
+		   	
 		   	if(block.getTypeId() == 2)
 		   		mat = Material.DIRT;
 		   	if(block.getTypeId() == 78)
 		   		mat = Material.SNOW_BALL;
+		   	if(block.getTypeId() == 82)
+		   		mat = Material.CLAY_BALL;
+		   	
 			byte type = block.getData();
+			
 			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
 			player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
+			
 			block.setType(Material.AIR);
-			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+			
+			if(item.getType() == Material.CLAY_BALL)
+			{
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+			} else
+			{
+				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+			}
 			
 			if(LoadProperties.spoutEnabled)
 				SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());

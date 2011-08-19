@@ -86,12 +86,14 @@ public class Combat
 			    					&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis()
 			    					&& defender.getHealth() >= 1)
 			    			{
+			    				int xp = (int) (event.getDamage() * 2 * LoadProperties.pvpxprewardmodifier);
+			    				
 				    			if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
-				    				PPa.addXP(SkillType.AXES, (event.getDamage() * 2) * LoadProperties.pvpxprewardmodifier);
+				    				PPa.addXP(SkillType.AXES, xp);
 				    			if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
-				    				PPa.addXP(SkillType.SWORDS, (event.getDamage() * 2) * LoadProperties.pvpxprewardmodifier);
+				    				PPa.addXP(SkillType.SWORDS, xp);
 				    			if(attacker.getItemInHand().getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker))
-				    				PPa.addXP(SkillType.UNARMED, (event.getDamage() * 2) * LoadProperties.pvpxprewardmodifier);
+				    				PPa.addXP(SkillType.UNARMED, xp);
 			    			}
 			    		}
 		      		}
@@ -100,19 +102,19 @@ public class Combat
 		      		{
 		      			int xp = 0;
 		      			if(event.getEntity() instanceof Creeper)
-							xp = (event.getDamage() * 4) * LoadProperties.xpGainMultiplier;
+							xp = (event.getDamage() * 4);
 						if(event.getEntity() instanceof Spider)
-							xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
+							xp = (event.getDamage() * 3);
 						if(event.getEntity() instanceof Skeleton)
-							xp = (event.getDamage() * 2) * LoadProperties.xpGainMultiplier;
+							xp = (event.getDamage() * 2);
 						if(event.getEntity() instanceof Zombie)
-							xp = (event.getDamage() * 2) * LoadProperties.xpGainMultiplier;
+							xp = (event.getDamage() * 2);
 						if(event.getEntity() instanceof PigZombie)
-							xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
+							xp = (event.getDamage() * 3);
 						if(event.getEntity() instanceof Slime)
-							xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
+							xp = (event.getDamage() * 3);
 						if(event.getEntity() instanceof Ghast)
-							xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
+							xp = (event.getDamage() * 3);
 
 						if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
 							PPa.addXP(SkillType.SWORDS, xp);
@@ -191,24 +193,24 @@ public class Combat
 						if(event.getEntity() instanceof Monster)
 						{
 			      			if(event.getEntity() instanceof Creeper)
-								xp = (event.getDamage() * 6) * LoadProperties.xpGainMultiplier;
+								xp = (event.getDamage() * 6);
 							if(event.getEntity() instanceof Spider)
-								xp = (event.getDamage() * 5) * LoadProperties.xpGainMultiplier;
+								xp = (event.getDamage() * 5);
 							if(event.getEntity() instanceof Skeleton)
-								xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
+								xp = (event.getDamage() * 3);
 							if(event.getEntity() instanceof Zombie)
-								xp = (event.getDamage() * 3) * LoadProperties.xpGainMultiplier;
+								xp = (event.getDamage() * 3);
 							if(event.getEntity() instanceof PigZombie)
-								xp = (event.getDamage() * 4) * LoadProperties.xpGainMultiplier;
+								xp = (event.getDamage() * 4);
 							if(event.getEntity() instanceof Slime)
-								xp = (event.getDamage() * 4) * LoadProperties.xpGainMultiplier;
+								xp = (event.getDamage() * 4);
 							if(event.getEntity() instanceof Ghast)
-								xp = (event.getDamage() * 4) * LoadProperties.xpGainMultiplier;
+								xp = (event.getDamage() * 4);
 							Users.getProfile(master).addXP(SkillType.TAMING, xp);
 						}
 						if(event.getEntity() instanceof Player)
 						{
-							xp = (event.getDamage() * 2) * LoadProperties.xpGainMultiplier;
+							xp = (event.getDamage() * 2);
 							Users.getProfile(master).addXP(SkillType.TAMING, xp);
 						}
 						Skills.XpCheckSkill(SkillType.TAMING, master);
@@ -335,19 +337,19 @@ public class Combat
     		{
     			//XP
     			if(x instanceof Creeper)
-    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 4) * LoadProperties.xpGainMultiplier);
+    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 4));
 				if(x instanceof Spider)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3));
 				if(x instanceof Skeleton)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2) * LoadProperties.xpGainMultiplier);
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2));
 				if(x instanceof Zombie)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2) * LoadProperties.xpGainMultiplier);
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2));
 				if(x instanceof PigZombie)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3));
 				if(x instanceof Slime)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3));
 				if(x instanceof Ghast)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3) * LoadProperties.xpGainMultiplier);
+					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3));
     		}
     		/*
     		 * Attacker is Player
@@ -372,7 +374,8 @@ public class Combat
     	    		if(LoadProperties.pvpxp && !Party.getInstance().inSameParty(attacker, defender) 
     	    				&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis())
     	    		{
-    	    			PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3) * LoadProperties.pvpxprewardmodifier);
+    	    			int xp = (int) (event.getDamage() * 2 * LoadProperties.pvpxprewardmodifier);
+    	    			PPa.addXP(SkillType.ARCHERY, xp);
     	    		}
     				/*
     				 * DAZE PROC

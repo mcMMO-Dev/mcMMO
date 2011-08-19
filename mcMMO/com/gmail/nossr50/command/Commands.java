@@ -20,6 +20,8 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.HUDType;
+import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -968,8 +970,6 @@ public class Commands
 		}
 		else if(LoadProperties.ptpEnable && label.equalsIgnoreCase(LoadProperties.ptp) && PP.inParty())
 		{
-			
-
 			if(!mcPermissions.getInstance().partyTeleport(player))
 			{
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
@@ -1593,6 +1593,25 @@ public class Commands
 			{
 				player.sendMessage(ChatColor.YELLOW+"[mcMMO] "+ChatColor.DARK_RED +mcLocale.getString("mcPlayerListener.NoPermission"));  
 				return true;
+			}
+		}
+		else if (LoadProperties.spoutEnabled && label.equalsIgnoreCase("mchud"))
+		{
+			if(split.length >= 2)
+			{
+				for(HUDType x : HUDType.values())
+				{
+					if(x.toString().toLowerCase().equals(split[1].toLowerCase()))
+					{
+						if(SpoutStuff.playerHUDs.containsKey(player))
+						{
+							SpoutStuff.playerHUDs.get(player).resetHUD();
+							SpoutStuff.playerHUDs.remove(player);
+							PP.setHUDType(x);
+							SpoutStuff.playerHUDs.put(player, new HUDmmo(player));
+						}
+					}
+				}
 			}
 		}
 		return true;

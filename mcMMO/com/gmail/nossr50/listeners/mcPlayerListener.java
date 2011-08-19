@@ -55,7 +55,6 @@ public class mcPlayerListener extends PlayerListener
 		 }
 	 }
 
-
 	public void onPlayerRespawn(PlayerRespawnEvent event) 
 	{
 		
@@ -103,10 +102,8 @@ public class mcPlayerListener extends PlayerListener
 		
 		if(LoadProperties.spoutEnabled)
 		{
-			if(SpoutStuff.xpbars.containsKey(event.getPlayer()))
-				SpoutStuff.xpbars.remove(event.getPlayer());
-			if(SpoutStuff.xpicons.containsKey(event.getPlayer()))
-				SpoutStuff.xpicons.remove(event.getPlayer());
+			if(SpoutStuff.playerHUDs.containsKey(player))
+				SpoutStuff.playerHUDs.remove(player);
 			if(SpoutStuff.partyHealthBars.containsKey(event.getPlayer()))
 				SpoutStuff.partyHealthBars.remove(event.getPlayer());
 		}
@@ -213,7 +210,9 @@ public class mcPlayerListener extends PlayerListener
 		{
 			Skills.hoeReadinessCheck(player);
 			Skills.abilityActivationCheck(player);
-
+		}
+		if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
+		{
 			/*
 			 * HERBALISM MODIFIERS
 			 */
