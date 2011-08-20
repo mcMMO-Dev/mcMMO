@@ -2,13 +2,16 @@ Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.1.06
 Retro HUD implemented!
-With the help of Randomage the XP Formulas have been vastly changed for flexability
+With the help of Randomage the XP Formulas have been vastly changed for flexibility
 Global modifiers and skill modifiers now support decimals
+Global formula modifier dropped from config
 GigaDrillBreaker/Berserk doesn't drop clay blocks anymore
 Fixed bug where Herbalism didn't heal more for bread/stew when right clicking a block
 Fixed bug where Wheat did not use the values form the config file
 
 TODO:
+	Add full customization of the colors
+	Fix Archery exploit
 	Fix the NPE with theType
 	Permission nodes for Spout elements
 	Small HUD style

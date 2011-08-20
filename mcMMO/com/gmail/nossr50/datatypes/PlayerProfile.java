@@ -1003,7 +1003,7 @@ public class PlayerProfile
 	}
 	public Integer getXpToLevel(SkillType skillType)
 	{
-		return (int) ((100+(skills.get(skillType) * LoadProperties.globalxpmodifier))*10);
+		return (int) ((1020+(skills.get(skillType) *  20)));
 	}
     
 	//Store the player's party

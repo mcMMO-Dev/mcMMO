@@ -78,6 +78,7 @@ public class Herbalism
 			block.setData((byte) 0x03);
 		}
 	}
+	
 	public static void greenTerra(Player player, Block block){
 		if(block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT){
 			if(!hasSeeds(player))
@@ -92,6 +93,7 @@ public class Herbalism
 			}
 		}
 	}
+	
 	public static Boolean canBeGreenTerra(Block block){
     	int t = block.getTypeId();
     	if(t == 4 || t == 3 || t == 59 || t == 81 || t == 83 || t == 91 || t == 86 || t == 39 || t == 46 || t == 37 || t == 38){

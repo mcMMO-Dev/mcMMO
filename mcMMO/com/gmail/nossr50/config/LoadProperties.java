@@ -24,7 +24,7 @@ public class LoadProperties
 	berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss,
 	feathersConsumedByChimaeraWing, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond;
 	
-	public static double pvpxprewardmodifier, globalxpmodifier, tamingxpmodifier, miningxpmodifier,
+	public static double pvpxprewardmodifier, tamingxpmodifier, miningxpmodifier,
 	repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier,
 	archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
@@ -381,7 +381,6 @@ public class LoadProperties
 	    	woodcuttingrequiresaxe = readBoolean("Skills.Woodcutting.Requires_Axe", true);
 	    	repairdiamondlevel = readInteger("Skills.Repair.Diamond.Level_Required", 50);
 
-	    	globalxpmodifier = readDouble("Experience.Formula.Multiplier.Global", 1.0);
 	    	sorceryxpmodifier = readDouble("Experience.Formula.Multiplier.Sorcery", 1.0);
 	    	tamingxpmodifier = readDouble("Experience.Formula.Multiplier.Taming", 1.0);
 	    	miningxpmodifier = readDouble("Experience.Formula.Multiplier.Mining", 1.0);

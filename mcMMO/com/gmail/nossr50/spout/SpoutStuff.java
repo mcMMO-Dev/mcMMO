@@ -24,22 +24,33 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.HUDType;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.HealthBarMMO;
+import com.gmail.nossr50.listeners.mcSpoutInputListener;
 import com.gmail.nossr50.listeners.mcSpoutListener;
+import com.gmail.nossr50.listeners.mcSpoutScreenListener;
 import com.gmail.nossr50.party.Party;
 
 public class SpoutStuff 
 {
+	static mcMMO plugin = (mcMMO) Bukkit.getServer().getPluginManager().getPlugin("mcMMO");
+	
 	private final static mcSpoutListener spoutListener = new mcSpoutListener();
+	private final static mcSpoutInputListener spoutInputListener = new mcSpoutInputListener(plugin);
+	private final static mcSpoutScreenListener spoutScreenListener = new mcSpoutScreenListener(plugin);
+	
 	public static HashMap<Player, HUDmmo> playerHUDs = new HashMap<Player, HUDmmo>();
 	public static HashMap<Player, ArrayList<HealthBarMMO>> partyHealthBars = new HashMap<Player, ArrayList<HealthBarMMO>>();
+	public static HashMap<SpoutPlayer, PopupMMO> playerScreens = new HashMap<SpoutPlayer, PopupMMO>();
 	
-	static mcMMO plugin = (mcMMO) Bukkit.getServer().getPluginManager().getPlugin("mcMMO");
+	
 	
 	public static void registerCustomEvent()
 	{
-		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, Bukkit.getServer().getPluginManager().getPlugin("mcMMO"));
+		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, plugin);
+		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutInputListener, Priority.Normal, plugin);
+		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutScreenListener, Priority.Normal, plugin);
 	}
 	
 	public static Color getRetroColor(SkillType type)

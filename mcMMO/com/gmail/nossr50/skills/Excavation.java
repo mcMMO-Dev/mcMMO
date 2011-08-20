@@ -128,7 +128,7 @@ public class Excavation
     		}
     		break;
     	case CLAY:
-    		if(LoadProperties.slimeballs && PP.getSkillLevel(SkillType.EXCAVATION) >= 150)
+    		if(LoadProperties.slimeballs && PP.getSkillLevel(SkillType.EXCAVATION) >= 50)
     		{
     			if(Math.random() * 20 > 19)
     			{
@@ -144,13 +144,13 @@ public class Excavation
     				is.add(new ItemStack(Material.STRING, 1, (byte)0, (byte)0));
     			}
     		}
-    		if(LoadProperties.map && PP.getSkillLevel(SkillType.EXCAVATION) >= 25)
+    		if(LoadProperties.watch && PP.getSkillLevel(SkillType.EXCAVATION) >= 500)
     		{
-    			if(Math.random() * 50 > 49)
+    			if(Math.random() * 100 > 99)
     			{
     				MapView mv = Bukkit.getServer().createMap(loc.getWorld());	
-    				xp+= LoadProperties.mmap;
-    				is.add(new ItemStack(Material.MAP, 1, mv.getId()));
+    				xp+= LoadProperties.mwatch;
+    				is.add(new ItemStack(Material.WATCH, 1, mv.getId()));
     			}
     		}
     		if(LoadProperties.bucket && PP.getSkillLevel(SkillType.EXCAVATION) >= 500)
