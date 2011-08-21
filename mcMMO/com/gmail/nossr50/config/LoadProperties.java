@@ -2,10 +2,11 @@ package com.gmail.nossr50.config;
 
 import java.io.File;
 import org.bukkit.util.config.Configuration;
+import org.getspout.spoutapi.keyboard.Keyboard;
 
 public class LoadProperties 
 {
-	public static Boolean xplockEnable, xpbar, xpicon, partybar, map, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
+	public static Boolean watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
 	donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, 
 	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
 	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, 
@@ -16,7 +17,7 @@ public class LoadProperties
 	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
 	nStone, nIron, nGold, nDiamond, locale;
 	
-	public static int xpbar_x, xpbar_y, xpicon_x, xpicon_y, partybar_x, partybar_y, partybar_spacing, mmap, mstring, mbucket, mweb,
+	public static int mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y, partybar_x, partybar_y, partybar_spacing, mstring, mbucket, mweb,
 	archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand,
 	mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower,
 	msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport,
@@ -24,11 +25,17 @@ public class LoadProperties
 	berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss,
 	feathersConsumedByChimaeraWing, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond;
 	
-	public static double pvpxprewardmodifier, tamingxpmodifier, miningxpmodifier,
+	public static double xpbackground_r, xpbackground_g, xpbackground_b, xpborder_r, xpborder_g, xpborder_b, acrobatics_r, acrobatics_g, acrobatics_b, archery_r, archery_g, archery_b, axes_r, axes_g, axes_b,
+	excavation_r, excavation_g, excavation_b, herbalism_r, herbalism_g, herbalism_b, mining_r, mining_g, mining_b,
+	repair_r, repair_g, repair_b, swords_r, swords_g, swords_b, taming_r, taming_g, taming_b, unarmed_r, unarmed_g, unarmed_b,
+	woodcutting_r, woodcutting_g, woodcutting_b, pvpxprewardmodifier, tamingxpmodifier, miningxpmodifier,
 	repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier,
 	archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public String directory = "plugins/mcMMO/"; 
+	
+	public static Keyboard keypress;
+	
 	File file = new File(directory + File.separator + "config.yml");
 	Configuration config = null;
 	
@@ -115,6 +122,46 @@ public class LoadProperties
 	        write("Spout.Party.HP.X_POS", -11);
 	        write("Spout.Party.HP.Y_POS", 0);
 	        write("Spout.Party.HP.SPACING", 16);
+	        write("Spout.Menu.Key", "KEY_M");
+	        write("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Acrobatics.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Archery.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Archery.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Archery.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Axes.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Axes.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Axes.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Excavation.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Excavation.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Excavation.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Herbalism.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Herbalism.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Herbalism.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Mining.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Mining.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Mining.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Repair.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Repair.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Repair.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Swords.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Swords.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Swords.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Taming.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Taming.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Taming.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Unarmed.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Unarmed.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Unarmed.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Woodcutting.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Woodcutting.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Woodcutting.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Border.RED", 0.0);
+	        write("Spout.HUD.Retro.Colors.Border.GREEN", 0.0);
+	        write("Spout.HUD.Retro.Colors.Border.BLUE", 0.0);
+	        write("Spout.HUD.Retro.Colors.Background.RED", 0.75);
+	        write("Spout.HUD.Retro.Colors.Background.GREEN", 0.75);
+	        write("Spout.HUD.Retro.Colors.Background.BLUE", 0.75);
 	        
 	        write("MySQL.Enabled", false);
 	        write("MySQL.Server.Address", "localhost");
@@ -282,6 +329,21 @@ public class LoadProperties
 	    {
 	        System.out.println("Loading Config File...");
 	        
+	        String temp = readString("Spout.Menu.Key", "KEY_M");
+	        
+	        for(Keyboard x : Keyboard.values())
+	        {
+	        	if(x.toString().equalsIgnoreCase(temp))
+	        	{
+	        		keypress = x;
+	        	}
+	        }
+	        
+        	if(keypress == null)
+        	{
+        		System.out.println("Invalid KEY for Spout.Menu.Key, using KEY_M");
+        		keypress = Keyboard.KEY_M;
+        	}
 	        donateMessage = readBoolean("Commands.mcmmo.Donate_Message", true);
 	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);
 	        
@@ -296,6 +358,47 @@ public class LoadProperties
 	        partybar_x = readInteger("Spout.Party.HP.X_POS", -11);
 	        partybar_y = readInteger("Spout.Party.HP.Y_POS", 0);
 	        partybar_spacing = readInteger("Spout.Party.HP.SPACING", 16);
+	        
+	        acrobatics_r = readDouble("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
+	        acrobatics_g = readDouble("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3);
+	        acrobatics_b = readDouble("Spout.HUD.Retro.Colors.Acrobatics.BLUE", 0.75);
+	        archery_r = readDouble("Spout.HUD.Retro.Colors.Archery.RED", 0.3);
+	        archery_g = readDouble("Spout.HUD.Retro.Colors.Archery.GREEN", 0.3);
+	        archery_b = readDouble("Spout.HUD.Retro.Colors.Archery.BLUE", 0.75);
+	        axes_r = readDouble("Spout.HUD.Retro.Colors.Axes.RED", 0.3);
+	        axes_g = readDouble("Spout.HUD.Retro.Colors.Axes.GREEN", 0.3);
+	        axes_b = readDouble("Spout.HUD.Retro.Colors.Axes.BLUE", 0.75);
+	        excavation_r = readDouble("Spout.HUD.Retro.Colors.Excavation.RED", 0.3);
+	        excavation_g = readDouble("Spout.HUD.Retro.Colors.Excavation.GREEN", 0.3);
+	        excavation_b = readDouble("Spout.HUD.Retro.Colors.Excavation.BLUE", 0.75);
+	        herbalism_r = readDouble("Spout.HUD.Retro.Colors.Herbalism.RED", 0.3);
+	        herbalism_g = readDouble("Spout.HUD.Retro.Colors.Herbalism.GREEN", 0.3);
+	        herbalism_b = readDouble("Spout.HUD.Retro.Colors.Herbalism.BLUE", 0.75);
+	        mining_r = readDouble("Spout.HUD.Retro.Colors.Mining.RED", 0.3);
+	        mining_g = readDouble("Spout.HUD.Retro.Colors.Mining.GREEN", 0.3);
+	        mining_b = readDouble("Spout.HUD.Retro.Colors.Mining.BLUE", 0.75);
+	        repair_r = readDouble("Spout.HUD.Retro.Colors.Repair.RED", 0.3);
+	        repair_g = readDouble("Spout.HUD.Retro.Colors.Repair.GREEN", 0.3);
+	        repair_b = readDouble("Spout.HUD.Retro.Colors.Repair.BLUE", 0.75);
+	        swords_r = readDouble("Spout.HUD.Retro.Colors.Swords.RED", 0.3);
+	        swords_g = readDouble("Spout.HUD.Retro.Colors.Swords.GREEN", 0.3);
+	        swords_b = readDouble("Spout.HUD.Retro.Colors.Swords.BLUE", 0.75);
+	        taming_r = readDouble("Spout.HUD.Retro.Colors.Taming.RED", 0.3);
+	        taming_g = readDouble("Spout.HUD.Retro.Colors.Taming.GREEN", 0.3);
+	        taming_b = readDouble("Spout.HUD.Retro.Colors.Taming.BLUE", 0.75);
+	        unarmed_r = readDouble("Spout.HUD.Retro.Colors.Unarmed.RED", 0.3);
+	        unarmed_g = readDouble("Spout.HUD.Retro.Colors.Unarmed.GREEN", 0.3);
+	        unarmed_b = readDouble("Spout.HUD.Retro.Colors.Unarmed.BLUE", 0.75);
+	        woodcutting_r = readDouble("Spout.HUD.Retro.Colors.Woodcutting.RED", 0.3);
+	        woodcutting_g = readDouble("Spout.HUD.Retro.Colors.Woodcutting.GREEN", 0.3);
+	        woodcutting_b = readDouble("Spout.HUD.Retro.Colors.Woodcutting.BLUE", 0.75);
+	        
+	        xpborder_r = readDouble("Spout.HUD.Retro.Colors.Border.RED", 0.0);
+	        xpborder_g = readDouble("Spout.HUD.Retro.Colors.Border.GREEN", 0.0);
+	        xpborder_b = readDouble("Spout.HUD.Retro.Colors.Border.BLUE", 0.0);
+	        xpbackground_r = readDouble("Spout.HUD.Retro.Colors.Background.RED", 0.75);
+	        xpbackground_g = readDouble("Spout.HUD.Retro.Colors.Background.GREEN", 0.75);
+	        xpbackground_b = readDouble("Spout.HUD.Retro.Colors.Background.BLUE", 0.75);
 	        
 	        msulphur = readInteger("Experience.Excavation.Sulphur", 30);
 	        mbones = readInteger("Experience.Excavation.Bones", 30);
@@ -313,7 +416,7 @@ public class LoadProperties
 	    	mstring = readInteger("Experience.Excavation.String", 200);
 	    	mbucket = readInteger("Experience.Excavation.Bucket", 100);
 	    	mweb = readInteger("Experience.Excavation.Web", 150);
-	    	mmap = readInteger("Experience.Excavation.Map", 200);
+	    	mwatch = readInteger("Experience.Excavation.Watch", 200);
 	    	
 	        msugar = readInteger("Experience.Herbalism.Sugar_Cane", 30);
 	        mwheat = readInteger("Experience.Herbalism.Wheat", 50);
@@ -420,7 +523,7 @@ public class LoadProperties
 	    	netherrack = readBoolean("Excavation.Drops.Netherrack", true);
 	    	bones = readBoolean("Excavation.Drops.Bones", true);
 	    	slimeballs = readBoolean("Excavation.Drops.Slimeballs", true);
-	    	map = readBoolean("Excavation.Drops.Map", true);
+	    	watch = readBoolean("Excavation.Drops.Watch", true);
 	    	string = readBoolean("Excavation.Drops.String", true);
 	    	bucket = readBoolean("Excavation.Drops.Bucket", true);
 	    	web = readBoolean("Excavation.Drops.Web", true);

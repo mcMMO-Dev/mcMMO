@@ -44,8 +44,6 @@ public class SpoutStuff
 	public static HashMap<Player, ArrayList<HealthBarMMO>> partyHealthBars = new HashMap<Player, ArrayList<HealthBarMMO>>();
 	public static HashMap<SpoutPlayer, PopupMMO> playerScreens = new HashMap<SpoutPlayer, PopupMMO>();
 	
-	
-	
 	public static void registerCustomEvent()
 	{
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, plugin);
@@ -58,29 +56,29 @@ public class SpoutStuff
 		switch(type)
 		{
 			case ACROBATICS:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float) LoadProperties.acrobatics_r, (float) LoadProperties.acrobatics_g, (float) LoadProperties.acrobatics_b, 1);
 			case ARCHERY:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float) LoadProperties.archery_r, (float)LoadProperties.archery_g, (float)LoadProperties.archery_b, 1f);
 			case AXES:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float) LoadProperties.axes_r, (float)LoadProperties.axes_g, (float)LoadProperties.axes_b, 1f);
 			case EXCAVATION:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float)LoadProperties.excavation_r, (float)LoadProperties.excavation_g, (float)LoadProperties.excavation_b, 1f);
 			case HERBALISM:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float)LoadProperties.herbalism_r, (float)LoadProperties.herbalism_g, (float)LoadProperties.herbalism_b, 1f);
 			case MINING:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float)LoadProperties.mining_r, (float)LoadProperties.mining_g, (float)LoadProperties.mining_b, 1f);
 			case REPAIR:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float)LoadProperties.repair_r, (float)LoadProperties.repair_g, (float)LoadProperties.repair_b, 1f);
 			case SORCERY:
 				return new Color(0.3f, 0.3f, 0.75f, 1f);
 			case SWORDS:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float)LoadProperties.swords_r, (float)LoadProperties.swords_g, (float)LoadProperties.swords_b, 1f);
 			case TAMING:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float)LoadProperties.taming_r, (float)LoadProperties.taming_g, (float)LoadProperties.taming_b, 1f);
 			case UNARMED:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float)LoadProperties.unarmed_r, (float)LoadProperties.unarmed_g, (float)LoadProperties.unarmed_b, 1f);
 			case WOODCUTTING:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
+				return new Color((float)LoadProperties.woodcutting_r, (float)LoadProperties.woodcutting_g, (float)LoadProperties.woodcutting_b, 1f);
 			default:
 				return new Color(0.3f, 0.3f, 0.75f, 1f);
 		}

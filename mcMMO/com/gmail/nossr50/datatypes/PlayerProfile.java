@@ -103,6 +103,19 @@ public class PlayerProfile
 			return false;
 		this.userid = id;
 		if (id > 0) {
+			HashMap<Integer, ArrayList<String>> huds = mcMMO.database.Read("SELECT hudtype FROM "+LoadProperties.MySQLtablePrefix+"huds WHERE user_id = " + id);
+			if(huds.get(1) == null)
+			{
+				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"huds (user_id) VALUES ("+id+")");
+			} else {
+				for(HUDType x : HUDType.values())
+				{
+					if(x.toString().equals(huds.get(1).get(0)))
+					{
+						hud = x;
+					}
+				}
+			}
 			HashMap<Integer, ArrayList<String>> users = mcMMO.database.Read("SELECT lastlogin, party FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = " + id);
 				//lastlogin = Integer.parseInt(users.get(1).get(0));
 				party = users.get(1).get(1);
@@ -251,6 +264,16 @@ public class PlayerProfile
     				skullSplitterDATS = Integer.valueOf(character[31]);
     			if(character.length > 32)
     				superBreakerDATS = Integer.valueOf(character[32]);
+    			if(character.length > 33)
+    			{
+    				for(HUDType x : HUDType.values())
+    				{
+    					if(x.toString().equals(character[33]))
+    					{
+    						hud = x;
+    					}
+    				}
+    			}
             	in.close();
     			return true;
         	}
@@ -268,6 +291,8 @@ public class PlayerProfile
     	// if we are using mysql save to database
     	if (LoadProperties.useMySQL) 
     	{
+    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"huds SET "
+    				+" hudtype = '"+hud.toString()+"' WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
@@ -363,6 +388,7 @@ public class PlayerProfile
 	        			writer.append(String.valueOf(serratedStrikesDATS)+":");
 	        			writer.append(String.valueOf(skullSplitterDATS)+":");
 	        			writer.append(String.valueOf(superBreakerDATS)+":");
+	        			writer.append(hud.toString()+":");
 	        			writer.append("\r\n");                   			
 	        		}
 	        	}
@@ -417,6 +443,7 @@ public class PlayerProfile
             out.append(0+":"); //DATS
             out.append(0+":"); //DATS
             out.append(0+":"); //DATS
+            out.append("STANDARD"+":");//HUD
 
             //Add more in the same format as the line above
             

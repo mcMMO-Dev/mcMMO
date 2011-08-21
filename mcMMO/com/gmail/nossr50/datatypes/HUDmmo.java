@@ -18,10 +18,15 @@ import com.gmail.nossr50.spout.SpoutStuff;
 
 public class HUDmmo 
 {
+	int center_x = 427/2;
+	int center_y = 240/2;
+	
 	String playerName = null;
 	Widget xpbar = null;
 	GenericGradient xpfill = null;
 	GenericGradient xpbg = null;
+	GenericGradient xpicon_bg = null;
+	GenericGradient xpicon_border = null;
 	GenericTexture xpicon = null;
 	mcMMO plugin = (mcMMO) Bukkit.getServer().getPluginManager().getPlugin("mcMMO");
 	
@@ -30,6 +35,7 @@ public class HUDmmo
 		playerName = player.getName();
 		initializeHUD(player);
 	}
+	
 	public void initializeHUD(Player player)
 	{
 		HUDType type = Users.getProfile(player).getHUDType();
@@ -69,6 +75,7 @@ public class HUDmmo
 		}
 		case SMALL:
 		{
+			updateXpBarStandard(player, Users.getProfile(player));
 			break;
 		}
 		}
@@ -87,37 +94,52 @@ public class HUDmmo
 			xpbg = null;
 			xpicon = null;
 			
+			if(SpoutStuff.partyHealthBars.containsKey(sPlayer))
+			{
+				SpoutStuff.partyHealthBars.remove(sPlayer);
+				if(LoadProperties.partybar && Users.getProfile(sPlayer).inParty())
+					SpoutStuff.initializePartyTracking(sPlayer);
+			}
+			
 			sPlayer.getMainScreen().setDirty(true);
 		}
 	}
 	
 	private void initializeXpBarDisplayRetro(SpoutPlayer sPlayer)
 	{
-		Color black = new Color(0, 0, 0, 1f);
+		Color border = new Color((float)LoadProperties.xpborder_r, (float)LoadProperties.xpborder_g, (float)LoadProperties.xpborder_b, 1f);
 		Color green = new Color(0, 1f, 0, 1f);
-		Color gray = new Color(0.75f, 0.75f, 0.75f, 1f);
-		
+		Color background = new Color((float)LoadProperties.xpbackground_r, (float)LoadProperties.xpbackground_g, (float)LoadProperties.xpbackground_b, 1f);
+		Color darkbg = new Color(0.2f, 0.2f, 0.2f, 1f);
 		xpicon = new GenericTexture();
 		xpbar = new GenericGradient();
 		xpfill = new GenericGradient();
 		xpbg = new GenericGradient();
 		
-		xpicon.setWidth(6).setHeight(6).setX(149-6).setY(9).setDirty(true);
+		xpicon_bg = new GenericGradient();
+		xpicon_border = new GenericGradient();
+		
+		xpicon_bg.setBottomColor(darkbg).setTopColor(darkbg).setWidth(4).setHeight(4).setPriority(RenderPriority.High).setX(142).setY(10).setDirty(true);
+		xpicon_border.setBottomColor(border).setTopColor(border).setWidth(6).setHeight(6).setPriority(RenderPriority.Highest).setX(141).setY(9).setDirty(true);
+		
+		xpicon.setWidth(6).setHeight(6).setX(141).setY(9).setPriority(RenderPriority.Normal).setDirty(true);
 		xpicon.setUrl(LoadProperties.web_url+"HUD/Retro/Icon_r.png");
 		
 		xpbar.setWidth(128).setHeight(4).setX(149).setY(10);
-		((GenericGradient) xpbar).setBottomColor(black).setTopColor(black).setPriority(RenderPriority.Highest).setDirty(true);
+		((GenericGradient) xpbar).setBottomColor(border).setTopColor(border).setPriority(RenderPriority.Highest).setDirty(true);
 		
 		xpfill.setWidth(0).setHeight(2).setX(150).setY(11);
 		xpfill.setBottomColor(green).setTopColor(green).setPriority(RenderPriority.Lowest).setDirty(true);
 		
 		xpbg.setWidth(126).setHeight(2).setX(150).setY(11);
-		xpbg.setBottomColor(gray).setTopColor(gray).setPriority(RenderPriority.Low).setDirty(true);
+		xpbg.setBottomColor(background).setTopColor(background).setPriority(RenderPriority.Low).setDirty(true);
 		
 		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpbar);
 		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpfill);
 		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpbg);
 		sPlayer.getMainScreen().attachWidget(plugin, (GenericTexture)xpicon);
+		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpicon_bg);
+		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpicon_border);
 		
 		sPlayer.getMainScreen().setDirty(true);
 	}
@@ -150,18 +172,26 @@ public class HUDmmo
 	
 	private void initializeXpBarDisplaySmall(SpoutPlayer sPlayer)
 	{
-		//Coordinates 240, 427 are the bottom right.
-		GenericTexture xpbar = new GenericTexture();
-		GenericTexture xpbar_fill = new GenericTexture();
+		//Setup xp bar
+		xpbar = new GenericTexture();
 		
-		xpbar.setUrl("http://dl.dropbox.com/u/18212134/xpbar/mini/bar.png");
-		xpbar_fill.setUrl("http://dl.dropbox.com/u/18212134/xpbar/mini/bar_fill.png");
+		if(LoadProperties.xpicon)
+		{
+			xpicon = new GenericTexture();
+			
+			xpicon.setUrl(LoadProperties.web_url+"HUD/Standard/Icon.png");
+			
+			xpicon.setHeight(8).setWidth(16).setX(center_x-(8+64)).setY(LoadProperties.xpicon_y+2);
+			
+			xpicon.setDirty(true);
+			
+			sPlayer.getMainScreen().attachWidget(plugin, xpicon);
+		}
 		
-		xpbar.setWidth(128).setHeight(4).setX(149).setY(10).setDirty(true);
-		xpbar_fill.setWidth(2).setHeight(2).setX(150).setY(11).setPriority(RenderPriority.High).setDirty(true);
+		((GenericTexture)xpbar).setUrl(LoadProperties.web_url+"HUD/Standard/xpbar_inc000.png");
+		xpbar.setX(center_x-64).setY(LoadProperties.xpbar_y).setHeight(4).setWidth(128);
 		
 		sPlayer.getMainScreen().attachWidget(plugin, xpbar);
-		sPlayer.getMainScreen().attachWidget(plugin, xpbar_fill);
 		
 		sPlayer.getMainScreen().setDirty(true);
 	}
@@ -175,6 +205,9 @@ public class HUDmmo
 		else
 			theType=PP.getLastGained();
 		
+		if(theType == null)
+			return;
+		
 		((GenericTexture) xpicon).setUrl(LoadProperties.web_url+"HUD/Standard/"+m.getCapitalized(theType.toString())+".png");
 		xpicon.setDirty(true);
 
@@ -183,6 +216,7 @@ public class HUDmmo
 		
 		SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
 	}
+	
 	private void updateXpBarRetro(Player player, PlayerProfile PP)
 	{
 		SkillType theType = null;
@@ -192,17 +226,13 @@ public class HUDmmo
 		else
 			theType=PP.getLastGained();
 		
-		Color color = new Color(0.3f, 0.3f, 0.75f, 1f);
+		if(theType == null)
+			return;
+		
+		Color color = SpoutStuff.getRetroColor(theType);
 		
 		if(xpicon != null && theType != null)
 			xpicon.setUrl(LoadProperties.web_url+"HUD/Retro/"+m.getCapitalized(theType.toString())+"_r.png");
-		else
-		{
-			if(xpicon == null)
-				System.out.println("xpicon was null!");
-			if(theType == null)
-				System.out.println("theType was null!");
-		}
 		
 		if(theType != null)
 			xpfill.setBottomColor(color).setTopColor(color).setWidth(SpoutStuff.getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.RETRO)).setDirty(true);

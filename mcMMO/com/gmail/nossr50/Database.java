@@ -42,6 +42,9 @@ public class Database {
 	}
 	//Create the DB structure
 	public void createStructure(){
+		Write("CREATE TABLE IF NOT EXISTS `"+LoadProperties.MySQLtablePrefix+"huds` (`user_id` int(10) unsigned NOT NULL," +
+				"`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD'," +
+				"PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 		Write("CREATE TABLE IF NOT EXISTS `"+LoadProperties.MySQLtablePrefix+"users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT," +
 				"`user` varchar(40) NOT NULL," +
 				"`lastlogin` int(32) unsigned NOT NULL," +

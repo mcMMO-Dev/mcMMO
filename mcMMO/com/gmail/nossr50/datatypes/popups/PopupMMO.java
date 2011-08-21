@@ -6,11 +6,13 @@ import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.buttons.ButtonEscape;
 import com.gmail.nossr50.datatypes.buttons.ButtonHUDStyle;
 
 public class PopupMMO extends GenericPopup
 {
 	ButtonHUDStyle HUDButton = null;
+	ButtonEscape EscapeButton = null;
 	GenericLabel mcMMO_label = new GenericLabel();
 	GenericLabel tip_escape = new GenericLabel();
 	int center_x = 427/2;
@@ -28,9 +30,13 @@ public class PopupMMO extends GenericPopup
 		HUDButton = new ButtonHUDStyle(PP);
 		HUDButton.setX(center_x-(HUDButton.getWidth()/2)).setY(center_y/2).setDirty(true);
 		
+		EscapeButton = new ButtonEscape();
+		EscapeButton.setX(center_x-(EscapeButton.getWidth()/2)).setY((center_y/2)+HUDButton.getHeight()+5).setDirty(true);
+		
 		this.attachWidget(plugin, HUDButton);
 		this.attachWidget(plugin, mcMMO_label);
 		this.attachWidget(plugin, tip_escape);
+		this.attachWidget(plugin, EscapeButton);
 		
 		this.setDirty(true);
 	}

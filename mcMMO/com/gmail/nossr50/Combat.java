@@ -372,7 +372,7 @@ public class Combat
     	    		 * PVP XP
     	    		 */
     	    		if(LoadProperties.pvpxp && !Party.getInstance().inSameParty(attacker, defender) 
-    	    				&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis())
+    	    				&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis() && !attacker.getName().equals(defender.getName()))
     	    		{
     	    			int xp = (int) ((event.getDamage() * 2) * 10);
     	    			PPa.addXP(SkillType.ARCHERY, xp);
