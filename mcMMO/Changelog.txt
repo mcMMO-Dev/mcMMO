@@ -1,5 +1,14 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.1.09
+Fixed mcMMO to run fine without Spout :)
+
+Version 1.1.08
+Fixed repair being 10x slower to level than normal
+
+Version 1.1.07
+Fixed the default HUD being set to RETRO instead of STANDARD
+
 Version 1.1.06
 mcMMO menu implemented! Default is 'M', change this in config
 Retro HUD implemented!

@@ -13,6 +13,7 @@ import org.bukkit.event.Event.Priority;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.Widget;
+import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
 import org.getspout.spoutapi.sound.SoundManager;
@@ -44,6 +45,26 @@ public class SpoutStuff
 	public static HashMap<Player, ArrayList<HealthBarMMO>> partyHealthBars = new HashMap<Player, ArrayList<HealthBarMMO>>();
 	public static HashMap<SpoutPlayer, PopupMMO> playerScreens = new HashMap<SpoutPlayer, PopupMMO>();
 	
+	public static Keyboard keypress;
+	
+	public static void setupSpoutConfigs()
+	{
+		 String temp = LoadProperties.readString("Spout.Menu.Key", "KEY_M");
+	        
+	        for(Keyboard x : Keyboard.values())
+	        {
+	        	if(x.toString().equalsIgnoreCase(temp))
+	        	{
+	        		keypress = x;
+	        	}
+	        }
+	        
+     	if(keypress == null)
+     	{
+     		System.out.println("Invalid KEY for Spout.Menu.Key, using KEY_M");
+     		keypress = Keyboard.KEY_M;
+     	}
+	}
 	public static void registerCustomEvent()
 	{
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, plugin);

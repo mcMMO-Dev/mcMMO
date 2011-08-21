@@ -2,7 +2,6 @@ package com.gmail.nossr50.config;
 
 import java.io.File;
 import org.bukkit.util.config.Configuration;
-import org.getspout.spoutapi.keyboard.Keyboard;
 
 public class LoadProperties 
 {
@@ -34,10 +33,8 @@ public class LoadProperties
 	
 	public String directory = "plugins/mcMMO/"; 
 	
-	public static Keyboard keypress;
-	
 	File file = new File(directory + File.separator + "config.yml");
-	Configuration config = null;
+	static Configuration config = null;
 	
 	public void configCheck()
 	{
@@ -87,13 +84,14 @@ public class LoadProperties
 	        return result;
 	    }
 	    
-	    private String readString(String root, String def)
+	    public static String readString(String root, String def)
 	    {
 	    	//Configuration config = load();
 	    	String result = config.getString(root, def);
 	    	config.save();
 	        return result;
 	    }
+	    
 	    private Configuration load()
 	    {
 	        try {
@@ -329,21 +327,6 @@ public class LoadProperties
 	    {
 	        System.out.println("Loading Config File...");
 	        
-	        String temp = readString("Spout.Menu.Key", "KEY_M");
-	        
-	        for(Keyboard x : Keyboard.values())
-	        {
-	        	if(x.toString().equalsIgnoreCase(temp))
-	        	{
-	        		keypress = x;
-	        	}
-	        }
-	        
-        	if(keypress == null)
-        	{
-        		System.out.println("Invalid KEY for Spout.Menu.Key, using KEY_M");
-        		keypress = Keyboard.KEY_M;
-        	}
 	        donateMessage = readBoolean("Commands.mcmmo.Donate_Message", true);
 	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);
 	        

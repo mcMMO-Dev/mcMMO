@@ -137,6 +137,7 @@ public class mcMMO extends JavaPlugin
 		//Spout Stuff
 		if(LoadProperties.spoutEnabled)
 		{
+			SpoutStuff.setupSpoutConfigs();
 			SpoutStuff.registerCustomEvent();
 		}
 

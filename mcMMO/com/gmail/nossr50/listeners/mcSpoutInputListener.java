@@ -7,7 +7,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.spout.SpoutStuff;
 
@@ -29,7 +28,7 @@ public class mcSpoutInputListener extends InputListener
 		
 		SpoutPlayer sPlayer = event.getPlayer();
 		
-		if(event.getKey() == LoadProperties.keypress)
+		if(event.getKey() == SpoutStuff.keypress)
 		{
 			if(!SpoutStuff.playerScreens.containsKey(sPlayer))
 			{

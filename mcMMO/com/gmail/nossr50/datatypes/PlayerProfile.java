@@ -24,7 +24,7 @@ public class PlayerProfile
     protected final Logger log = Logger.getLogger("Minecraft");
     
     //HUD
-    private HUDType hud = HUDType.RETRO;
+    private HUDType hud = HUDType.STANDARD;
     
     //MISC
 	private String party, myspawn, myspawnworld, invite;

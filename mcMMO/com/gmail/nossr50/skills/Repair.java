@@ -53,7 +53,7 @@ public class Repair {
 	        			durabilityAfter = player.getItemInHand().getDurability();
 	        			dif = (short) (durabilityBefore - durabilityAfter);
 	        			dif = (short) (dif * 6); //Boost XP
-	        			PP.addXP(SkillType.REPAIR, dif);
+	        			PP.addXP(SkillType.REPAIR, dif*10);
 	        			
 	        			//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
@@ -68,7 +68,7 @@ public class Repair {
 	            		durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 2); //Boost XP
-	            		PP.addXP(SkillType.REPAIR, dif);
+	            		PP.addXP(SkillType.REPAIR, dif*10);
 	            		
 	            		//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
@@ -80,7 +80,7 @@ public class Repair {
         				durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 4); //Boost XP of Gold to around Iron
-        				PP.addXP(SkillType.REPAIR, dif);
+        				PP.addXP(SkillType.REPAIR, dif*10);
         				
         				//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
@@ -110,7 +110,7 @@ public class Repair {
 	        			//STONE NERF
 	        			dif = (short) (dif / 2);
 	        			
-            			PP.addXP(SkillType.REPAIR, dif);
+            			PP.addXP(SkillType.REPAIR, dif*10);
         			} else if(isWoodTools(is) && hasItem(player,rWood)){
         				removeItem(player,rWood);
             			/*
@@ -128,7 +128,7 @@ public class Repair {
 	        			//WOOD NERF
 	        			dif = (short) (dif / 2);
 	        			
-            			PP.addXP(SkillType.REPAIR, dif);
+            			PP.addXP(SkillType.REPAIR, dif*10);
         			} else if(isIronTools(is) && hasItem(player, rIron)){
             			removeItem(player, rIron);
             			/*
@@ -143,7 +143,7 @@ public class Repair {
 	        				dif = (short) (dif / 2);
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addXP(SkillType.REPAIR, dif);
+            			PP.addXP(SkillType.REPAIR, dif*10);
             			
             			//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
@@ -162,7 +162,7 @@ public class Repair {
 	        				dif = (short) (dif / 2);
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addXP(SkillType.REPAIR, dif);
+            			PP.addXP(SkillType.REPAIR, dif*10);
             			
             			//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
@@ -179,7 +179,7 @@ public class Repair {
 	        				dif = (short) (dif / 2);
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addXP(SkillType.REPAIR, dif);
+            			PP.addXP(SkillType.REPAIR, dif*10);
             			
             			//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
