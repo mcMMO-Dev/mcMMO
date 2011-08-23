@@ -15,6 +15,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.mmoHelper;
 
 public class HUDmmo 
 {
@@ -94,13 +95,7 @@ public class HUDmmo
 			xpbg = null;
 			xpicon = null;
 			
-			if(SpoutStuff.partyHealthBars.containsKey(sPlayer))
-			{
-				SpoutStuff.partyHealthBars.remove(sPlayer);
-				if(LoadProperties.partybar && Users.getProfile(sPlayer).inParty())
-					SpoutStuff.initializePartyTracking(sPlayer);
-			}
-			
+			mmoHelper.initialize(sPlayer, plugin);
 			sPlayer.getMainScreen().setDirty(true);
 		}
 	}

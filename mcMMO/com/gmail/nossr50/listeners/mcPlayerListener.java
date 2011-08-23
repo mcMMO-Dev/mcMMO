@@ -27,6 +27,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.command.Commands;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.mmoHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -76,10 +77,6 @@ public class mcPlayerListener extends PlayerListener
 				}
 			}
 		}
-		if(LoadProperties.partybar && LoadProperties.spoutEnabled && PP.inParty())
-		{
-			SpoutStuff.updatePartyHealthBarDisplay(player, 20);
-		}
 	}
 	
 	public void onPlayerLogin(PlayerLoginEvent event) 
@@ -96,16 +93,12 @@ public class mcPlayerListener extends PlayerListener
 		//Discard the PlayerProfile object
 		Player player = event.getPlayer();
 		
-		//Health bar stuff
-		if(LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
-			SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
-		
 		if(LoadProperties.spoutEnabled)
 		{
 			if(SpoutStuff.playerHUDs.containsKey(player))
 				SpoutStuff.playerHUDs.remove(player);
-			if(SpoutStuff.partyHealthBars.containsKey(event.getPlayer()))
-				SpoutStuff.partyHealthBars.remove(event.getPlayer());
+			if(mmoHelper.containers.containsKey(player))
+				mmoHelper.containers.remove(player);
 		}
 		
 		Users.removeUser(event.getPlayer());
@@ -123,10 +116,6 @@ public class mcPlayerListener extends PlayerListener
 		}
 		if(Commands.xpevent)
 			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
-		
-		//Health bar stuff
-		if(LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
-			SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
 	}
 
 	@SuppressWarnings("deprecation")

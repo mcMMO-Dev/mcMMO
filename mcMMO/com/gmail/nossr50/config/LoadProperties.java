@@ -3,6 +3,8 @@ package com.gmail.nossr50.config;
 import java.io.File;
 import org.bukkit.util.config.Configuration;
 
+import com.gmail.nossr50.datatypes.HUDType;
+
 public class LoadProperties 
 {
 	public static Boolean watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
@@ -30,6 +32,8 @@ public class LoadProperties
 	woodcutting_r, woodcutting_g, woodcutting_b, pvpxprewardmodifier, tamingxpmodifier, miningxpmodifier,
 	repairxpmodifier, woodcuttingxpmodifier, sorceryxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier,
 	archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
+	
+	public static HUDType defaulthud;
 	
 	public String directory = "plugins/mcMMO/"; 
 	
@@ -109,6 +113,7 @@ public class LoadProperties
 	        System.out.println("Generating Config File...");  	
 	    	
 	        //Put in defaults
+	        write("Spout.HUD.Default", "STANDARD");
 	        write("Spout.XP.Bar.Enabled", true);
 	        write("Spout.Images.URL_DIR", "http://mcmmo.rycochet.net/mcmmo/");
 	        write("Spout.XP.Icon.Enabled", true);
@@ -181,57 +186,56 @@ public class LoadProperties
 	    	write("Experience.PVP.Rewards", true);
 	    	write("Experience.Gains.Multiplier.PVP", 1);
 	    	write("Experience.Gains.Mobspawners.Enabled", false);
-	    	write("Experience.Gains.Multiplier.Global", 1);
-	    	write("Experience.Formula.Multiplier.Global", 1);
-	    	write("Experience.Formula.Multiplier.Taming", 2);
-	    	write("Experience.Formula.Multiplier.Mining", 2);
-	    	write("Experience.Formula.Multiplier.Repair", 2);
-	    	write("Experience.Formula.Multiplier.Woodcutting", 2);
-	    	write("Experience.Formula.Multiplier.Unarmed", 2);
-	    	write("Experience.Formula.Multiplier.Herbalism", 2);
-	    	write("Experience.Formula.Multiplier.Excavation", 2);
-	    	write("Experience.Formula.Multiplier.Swords", 2);
-	    	write("Experience.Formula.Multiplier.Archery", 2);
-	    	write("Experience.Formula.Multiplier.Axes", 2);
-	    	write("Experience.Formula.Multiplier.Sorcery", 2);
-	    	write("Experience.Formula.Multiplier.Acrobatics", 2);
-	    	write("Experience.Mining.Gold", 35);
-	    	write("Experience.Mining.Diamond", 75);
-	    	write("Experience.Mining.Iron", 25);
-	    	write("Experience.Mining.Redstone", 15);
-	    	write("Experience.Mining.lapis", 40);
-	    	write("Experience.Mining.Obsidian", 15);
-	    	write("Experience.Mining.Netherrack", 3);
-	    	write("Experience.Mining.Glowstone", 3);
-	    	write("Experience.Mining.Coal", 10);
-	    	write("Experience.Mining.Stone", 3);
-	    	write("Experience.Mining.Sandstone", 3);
-	    	write("Experience.Herbalism.Sugar_Cane", 3);
-	    	write("Experience.Herbalism.Cactus", 3);
-	    	write("Experience.Herbalism.Pumpkin", 55);
-	    	write("Experience.Herbalism.Flowers", 10);
-	    	write("Experience.Herbalism.Wheat", 5);
-	    	write("Experience.Herbalism.Mushrooms", 15);
-	    	write("Experience.Woodcutting.Pine", 9);
-	    	write("Experience.Woodcutting.Birch", 7);
-	    	write("Experience.Woodcutting.Spruce", 8);
-	    	write("Experience.Excavation.Base", 4);
-	    	write("Experience.Excavation.Mushroom", 8);
-	    	write("Experience.Excavation.Sulphur", 3);
-	    	write("Experience.Excavation.Slowsand", 8);
-	    	write("Experience.Excavation.Glowstone", 8);
-	    	write("Experience.Excavation.Music", 300);
-	    	write("Experience.Excavation.Bones", 3);
-	    	write("Experience.Excavation.Diamond", 100);
-	    	write("Experience.Excavation.Apple", 10);
-	    	write("Experience.Excavation.Eggs", 10);
-	    	write("Experience.Excavation.Cake", 300);
-	    	write("Experience.Excavation.Slimeballs", 10);
-	    	write("Experience.Excavation.Cocoa_Beans", 10);
-	    	write("Experience.Excavation.Map", 20);
-	    	write("Experience.Excavation.String", 20);
-	    	write("Experience.Excavation.Bucket", 10);
-	    	write("Experience.Excavation.Web", 15);
+	    	write("Experience.Gains.Multiplier.Global", 1.0);
+	    	write("Experience.Formula.Multiplier.Taming", 1.0);
+	    	write("Experience.Formula.Multiplier.Mining", 1.0);
+	    	write("Experience.Formula.Multiplier.Repair", 1.0);
+	    	write("Experience.Formula.Multiplier.Woodcutting", 1.0);
+	    	write("Experience.Formula.Multiplier.Unarmed", 1.0);
+	    	write("Experience.Formula.Multiplier.Herbalism", 1.0);
+	    	write("Experience.Formula.Multiplier.Excavation", 1.0);
+	    	write("Experience.Formula.Multiplier.Swords", 1.0);
+	    	write("Experience.Formula.Multiplier.Archery", 1.0);
+	    	write("Experience.Formula.Multiplier.Axes", 1.0);
+	    	write("Experience.Formula.Multiplier.Sorcery", 1.0);
+	    	write("Experience.Formula.Multiplier.Acrobatics", 1.0);
+	    	write("Experience.Mining.Gold", 350);
+	    	write("Experience.Mining.Diamond", 750);
+	    	write("Experience.Mining.Iron", 250);
+	    	write("Experience.Mining.Redstone", 150);
+	    	write("Experience.Mining.lapis", 400);
+	    	write("Experience.Mining.Obsidian", 150);
+	    	write("Experience.Mining.Netherrack", 30);
+	    	write("Experience.Mining.Glowstone", 30);
+	    	write("Experience.Mining.Coal", 100);
+	    	write("Experience.Mining.Stone", 30);
+	    	write("Experience.Mining.Sandstone", 30);
+	    	write("Experience.Herbalism.Sugar_Cane", 30);
+	    	write("Experience.Herbalism.Cactus", 30);
+	    	write("Experience.Herbalism.Pumpkin", 550);
+	    	write("Experience.Herbalism.Flowers", 100);
+	    	write("Experience.Herbalism.Wheat", 50);
+	    	write("Experience.Herbalism.Mushrooms", 150);
+	    	write("Experience.Woodcutting.Pine", 90);
+	    	write("Experience.Woodcutting.Birch", 70);
+	    	write("Experience.Woodcutting.Spruce", 80);
+	    	write("Experience.Excavation.Base", 40);
+	    	write("Experience.Excavation.Mushroom", 80);
+	    	write("Experience.Excavation.Sulphur", 30);
+	    	write("Experience.Excavation.Slowsand", 80);
+	    	write("Experience.Excavation.Glowstone", 80);
+	    	write("Experience.Excavation.Music", 3000);
+	    	write("Experience.Excavation.Bones", 30);
+	    	write("Experience.Excavation.Diamond", 1000);
+	    	write("Experience.Excavation.Apple", 100);
+	    	write("Experience.Excavation.Eggs", 100);
+	    	write("Experience.Excavation.Cake", 3000);
+	    	write("Experience.Excavation.Slimeballs", 100);
+	    	write("Experience.Excavation.Cocoa_Beans", 100);
+	    	write("Experience.Excavation.Map", 200);
+	    	write("Experience.Excavation.String", 200);
+	    	write("Experience.Excavation.Bucket", 100);
+	    	write("Experience.Excavation.Web", 150);
 	    	
 	    	//write("Sorcery.Spells.Water.Thunder", 75);
 	    	//write("Sorcery.Spells.Curative.Cure_Self.Mana_Cost", 5);
@@ -326,6 +330,16 @@ public class LoadProperties
 	    private void loadkeys()
 	    {
 	        System.out.println("Loading Config File...");
+	        
+	        //Setup default HUD
+	        String temp = readString("Spout.HUD.Default", "STANDARD");
+	        for(HUDType x : HUDType.values())
+	        {
+	        	if(x.toString().equalsIgnoreCase(temp))
+	        	{
+	        		defaulthud = x;
+	        	}
+	        }
 	        
 	        donateMessage = readBoolean("Commands.mcmmo.Donate_Message", true);
 	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);

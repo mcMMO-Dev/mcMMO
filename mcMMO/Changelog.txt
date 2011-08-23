@@ -1,5 +1,13 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.1.11
+mcMMO now properly cancels its Async taks when disabled
+Fixed newly generated configs using 2 instead of 1 for skill multipliers
+
+Version 1.1.10
+Added default hud setting to config
+Fixed bug where newly generated configs used old xp gain numbers
+
 Version 1.1.09
 Fixed mcMMO to run fine without Spout :)
 

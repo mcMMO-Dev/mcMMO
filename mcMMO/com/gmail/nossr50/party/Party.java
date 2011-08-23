@@ -14,21 +14,37 @@ import java.util.Iterator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.ArrayListString;
 
 
 public class Party 
 {
+	/*
+	 * This file is part of mmoMinecraft (http://code.google.com/p/mmo-minecraft/).
+	 * 
+	 * mmoMinecraft is free software: you can redistribute it and/or modify
+	 * it under the terms of the GNU General Public License as published by
+	 * the Free Software Foundation, either version 3 of the License, or
+	 * (at your option) any later version.
+	 *
+	 * This program is distributed in the hope that it will be useful,
+	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	 * GNU General Public License for more details.
+
+	 * You should have received a copy of the GNU General Public License
+	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	 */
+	
 	public static String partyPlayersFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyPlayers";
 	public static String partyLocksFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyLocks";
 	public static String partyPasswordsFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyPasswords";
-	
+
 	HashMap<String, HashMap<String, Boolean>> partyPlayers = new HashMap<String, HashMap<String, Boolean>>();
 	HashMap<String, Boolean> partyLocks = new HashMap<String, Boolean>();
 	HashMap<String, String> partyPasswords = new HashMap<String, String>();
@@ -39,6 +55,7 @@ public class Party
     	plugin = instance;
     }
 	private static volatile Party instance;
+	
 	public static Party getInstance() 
 	{
     	if (instance == null) {
@@ -46,6 +63,7 @@ public class Party
     	}
     	return instance;
     }
+	
     public boolean inSameParty(Player playera, Player playerb){
     	if(Users.getProfile(playera) == null || Users.getProfile(playerb) == null)
     	{
@@ -119,6 +137,22 @@ public class Party
         }
     	return players;
     }
+    public ArrayListString getPartyMembersByName(Player player)
+    {
+    	ArrayListString players = new ArrayListString();
+    	
+    	for(Player p : Bukkit.getServer().getOnlinePlayers())
+        {
+        	if(p.isOnline() && player != null && p != null)
+        	{
+                if(inSameParty(player, p))
+                {
+                	players.add(p.getName());
+                }
+            }
+        }
+    	return players;
+    }
     
     public void informPartyMembersOwnerChange(String newOwner) {
     	Player newOwnerPlayer = plugin.getServer().getPlayer(newOwner);
@@ -160,8 +194,6 @@ public class Party
     
     public void removeFromParty(Player player, PlayerProfile PP) 
     {
-    	ArrayList<Player> partymembers = Party.getInstance().getPartyMembers(player);
-    	
     	//Stop NPE... hopefully
     	if(!isParty(PP.getParty()) || !isInParty(player, PP))
     		addToParty(player, PP, PP.getParty(), false);
@@ -179,13 +211,6 @@ public class Party
     	if(isPartyEmpty(party)) deleteParty(party);
 		PP.removeParty();
 		savePartyPlayers();
-		
-		//Refresh party hp bars
-		if(LoadProperties.partybar && LoadProperties.spoutEnabled)
-		{
-			SpoutStuff.resetPartyHealthBarDisplays(partymembers);
-			SpoutStuff.resetPartyHealthBarDisplays(player);
-		}
     }
     
     public void addToParty(Player player, PlayerProfile PP, String newParty, Boolean invite) {

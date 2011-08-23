@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.command.Commands;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.mmoHelper;
 import com.gmail.nossr50.listeners.mcBlockListener;
 import com.gmail.nossr50.listeners.mcEntityListener;
 import com.gmail.nossr50.listeners.mcPlayerListener;
@@ -153,7 +154,17 @@ public class mcMMO extends JavaPlugin
 
 		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile   
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+		
 		Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, mcMMO_Timer, 0, 20);
+		
+		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				  new Runnable() {
+
+					  @Override
+					  public void run() {
+						  mmoHelper.updateAll();
+					  }
+				  }, 20, 20);
 	}
 
 	public PlayerProfile getPlayerProfile(Player player)
@@ -218,6 +229,7 @@ public class mcMMO extends JavaPlugin
 		return permissions;
 	}
 	public void onDisable() {
+		Bukkit.getServer().getScheduler().cancelTasks(this);
 		System.out.println("mcMMO was disabled."); 
 	}
 

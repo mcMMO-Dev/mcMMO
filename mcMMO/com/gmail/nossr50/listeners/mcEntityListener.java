@@ -26,7 +26,6 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
-import com.gmail.nossr50.spout.SpoutStuff;
 
 
 public class mcEntityListener extends EntityListener 
@@ -142,9 +141,6 @@ public class mcEntityListener extends EntityListener
 			    		{
 			    			Users.getProfile(herpderp).setRecentlyHurt(System.currentTimeMillis());
 			    		}
-			    		
-			    		if(LoadProperties.partybar && LoadProperties.spoutEnabled && Users.getProfile(herpderp).inParty())
-			    			SpoutStuff.updatePartyHealthBarDisplay(herpderp, herpderp.getHealth()-event.getDamage());
 			    	}
 		    	}
 	    	}

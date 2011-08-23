@@ -5,7 +5,6 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Swords;
-import com.gmail.nossr50.spout.SpoutStuff;
 
 
 public class mcTimer implements Runnable
@@ -55,8 +54,6 @@ public class mcTimer implements Runnable
 				    	player.getHealth() > 0 && player.getHealth() < 20 
 				    	&& m.getPowerLevel(player) >= 1000){
 				    	player.setHealth(m.calculateHealth(player.getHealth(), 1));
-				    	if(LoadProperties.partybar && LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
-				    		SpoutStuff.updatePartyHealthBarDisplay(player, player.getHealth());
 				    }
 				}
 				if(thecount == 40 || thecount == 80){
@@ -65,8 +62,6 @@ public class mcTimer implements Runnable
 			    		&& m.getPowerLevel(player) >= 500 
 			    		&& m.getPowerLevel(player) < 1000){
 			    		player.setHealth(m.calculateHealth(player.getHealth(), 1));
-			    		if(LoadProperties.partybar && LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
-			    			SpoutStuff.updatePartyHealthBarDisplay(player, player.getHealth());
 			    	}
 				}
 				if(thecount == 80)
@@ -75,8 +70,6 @@ public class mcTimer implements Runnable
 			    		player.getHealth() > 0 && player.getHealth() < 20  
 			    		&& m.getPowerLevel(player) < 500){
 			    		player.setHealth(m.calculateHealth(player.getHealth(), 1));
-			    		if(LoadProperties.partybar && LoadProperties.spoutEnabled && Users.getProfile(player).inParty())
-			    			SpoutStuff.updatePartyHealthBarDisplay(player, player.getHealth());
 			    	}
 				}
 			}

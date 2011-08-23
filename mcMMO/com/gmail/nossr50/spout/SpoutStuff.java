@@ -1,6 +1,5 @@
 package com.gmail.nossr50.spout;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -12,7 +11,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.Color;
-import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
@@ -27,22 +25,20 @@ import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.datatypes.HealthBarMMO;
 import com.gmail.nossr50.listeners.mcSpoutInputListener;
 import com.gmail.nossr50.listeners.mcSpoutListener;
 import com.gmail.nossr50.listeners.mcSpoutScreenListener;
-import com.gmail.nossr50.party.Party;
 
 public class SpoutStuff 
 {
 	static mcMMO plugin = (mcMMO) Bukkit.getServer().getPluginManager().getPlugin("mcMMO");
 	
-	private final static mcSpoutListener spoutListener = new mcSpoutListener();
+	private final static mcSpoutListener spoutListener = new mcSpoutListener(plugin);
 	private final static mcSpoutInputListener spoutInputListener = new mcSpoutInputListener(plugin);
 	private final static mcSpoutScreenListener spoutScreenListener = new mcSpoutScreenListener(plugin);
 	
 	public static HashMap<Player, HUDmmo> playerHUDs = new HashMap<Player, HUDmmo>();
-	public static HashMap<Player, ArrayList<HealthBarMMO>> partyHealthBars = new HashMap<Player, ArrayList<HealthBarMMO>>();
+	//public static HashMap<Player, ArrayList<HealthBarMMO>> partyHealthBars = new HashMap<Player, ArrayList<HealthBarMMO>>();
 	public static HashMap<SpoutPlayer, PopupMMO> playerScreens = new HashMap<SpoutPlayer, PopupMMO>();
 	
 	public static Keyboard keypress;
@@ -136,6 +132,7 @@ public class SpoutStuff
 		SM.playSoundEffect(sPlayer, effect, location);
 	}
 	
+	/*
 	public static void initializePartyTracking(SpoutPlayer player)
 	{
 		if(Users.getProfile(player).inParty())
@@ -173,6 +170,7 @@ public class SpoutStuff
 			}
 		}
 	}
+	
 	public static void resetPartyHealthBarDisplays(final ArrayList<Player> players)
 	{
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
@@ -223,6 +221,7 @@ public class SpoutStuff
 			}
 		}, 1);
 	}
+	
 	
 	public static void resetPartyHealthBarDisplays(final Player player)
 	{
@@ -291,7 +290,7 @@ public class SpoutStuff
 			}
 		}
 	}
-	
+	*/
 	public static void playRepairNoise(Player player)
 	{
 		SoundManager SM = SpoutManager.getSoundManager();

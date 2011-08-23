@@ -24,7 +24,7 @@ public class PlayerProfile
     protected final Logger log = Logger.getLogger("Minecraft");
     
     //HUD
-    private HUDType hud = HUDType.STANDARD;
+    private HUDType hud;
     
     //MISC
 	private String party, myspawn, myspawnworld, invite;
@@ -61,7 +61,7 @@ public class PlayerProfile
         
 	public PlayerProfile(Player player)
 	{
-		
+		hud = LoadProperties.defaulthud;
 		//Setup the HashMap for the skills
 		for(SkillType skillType : SkillType.values())
 		{
@@ -108,12 +108,17 @@ public class PlayerProfile
 			{
 				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"huds (user_id) VALUES ("+id+")");
 			} else {
+				if(huds.get(1).get(0) != null)
+				{
 				for(HUDType x : HUDType.values())
 				{
 					if(x.toString().equals(huds.get(1).get(0)))
 					{
 						hud = x;
 					}
+				}
+				} else {
+					hud = LoadProperties.defaulthud;
 				}
 			}
 			HashMap<Integer, ArrayList<String>> users = mcMMO.database.Read("SELECT lastlogin, party FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = " + id);
@@ -268,7 +273,7 @@ public class PlayerProfile
     			{
     				for(HUDType x : HUDType.values())
     				{
-    					if(x.toString().equals(character[33]))
+    					if(x.toString().equalsIgnoreCase(character[33]))
     					{
     						hud = x;
     					}
@@ -443,7 +448,7 @@ public class PlayerProfile
             out.append(0+":"); //DATS
             out.append(0+":"); //DATS
             out.append(0+":"); //DATS
-            out.append("STANDARD"+":");//HUD
+            out.append(LoadProperties.defaulthud.toString()+":");//HUD
 
             //Add more in the same format as the line above
             

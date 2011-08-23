@@ -1148,13 +1148,6 @@ public class Commands
 				PP.acceptInvite();
 				Pinstance.addToParty(player, PP, PP.getParty(), true);
 				
-				//Refresh party hp bars
-				if(LoadProperties.partybar && LoadProperties.spoutEnabled)
-				{
-					SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
-					SpoutStuff.resetPartyHealthBarDisplays(player);
-				}
-				
 			} else 
 			{
 				player.sendMessage(mcLocale.getString("mcPlayerListener.NoInvites")); 
@@ -1175,12 +1168,6 @@ public class Commands
 			{
 				Pinstance.addToParty(player, PP, PP.getParty(), false);
 				
-				//Refresh party hp bars
-				if(LoadProperties.partybar && LoadProperties.spoutEnabled)
-				{
-					SpoutStuff.resetPartyHealthBarDisplays(Party.getInstance().getPartyMembers(player));
-					SpoutStuff.resetPartyHealthBarDisplays(player);
-				}
 			}
 			
 			if(args.length == 0 && !PP.inParty())
@@ -1283,16 +1270,7 @@ public class Commands
 				{
 					if(PP.inParty()) 
 					{
-						ArrayList<Player> partymembers = Party.getInstance().getPartyMembers(player);
-						
 						Pinstance.removeFromParty(player, PP);
-						
-						//Refresh party hp bars
-						if(LoadProperties.partybar && LoadProperties.spoutEnabled)
-						{
-							SpoutStuff.resetPartyHealthBarDisplays(partymembers);
-							SpoutStuff.resetPartyHealthBarDisplays(player);
-						}
 					}
 					Pinstance.addToParty(player, PP, args[0], false);
 					return true;
@@ -1343,16 +1321,7 @@ public class Commands
 								}
 								PlayerProfile tPP = Users.getProfile(tPlayer);
 								
-								ArrayList<Player> partymembers = Party.getInstance().getPartyMembers(player);
-								
 								Pinstance.removeFromParty(tPlayer, tPP);
-								
-								//Refresh party hp bars
-								if(LoadProperties.partybar && LoadProperties.spoutEnabled)
-								{
-									SpoutStuff.resetPartyHealthBarDisplays(partymembers);
-									SpoutStuff.resetPartyHealthBarDisplays(player);
-								}
 								
 								tPlayer.sendMessage(mcLocale.getString("mcPlayerListener.LeftParty"));
 							}
