@@ -191,9 +191,9 @@ public class mmoHelper
 	
 	public static void update(Player player) 
 	{
-		boolean show_pets = true;
+		//boolean show_pets = true;
 		Container container = containers.get(player);
-
+		
 		if (container != null) 
 		{
 			int index = 0;
@@ -208,7 +208,7 @@ public class mmoHelper
 					bar = (GenericLivingEntity)bars[index];
 				}
 				bar.setEntity(name, Party.getInstance().isPartyLeader(Bukkit.getServer().getPlayer(name), Users.getProfile(Bukkit.getServer().getPlayer(name)).getParty()) ? ChatColor.GREEN + "@" : "");
-				bar.setTargets(show_pets ? getPets(Bukkit.getServer().getPlayer(name)) : null);
+				//bar.setTargets(show_pets ? getPets(Bukkit.getServer().getPlayer(name)) : null);
 				index++;
 			}
 			while (index < bars.length) {

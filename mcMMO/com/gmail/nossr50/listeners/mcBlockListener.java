@@ -97,8 +97,6 @@ public class mcBlockListener extends BlockListener
     
     public void onBlockBreak(BlockBreakEvent event) 
     {
-    	
-    	
     	Player player = event.getPlayer();
     	PlayerProfile PP = Users.getProfile(player);
     	Block block = event.getBlock();

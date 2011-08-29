@@ -42,8 +42,8 @@ public class Combat
 				//Damage modifiers
 				if(mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0) //Unarmed
 					Unarmed.unarmedBonus(attacker, eventb);
-				if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker) && PPa.getSkillLevel(SkillType.AXES) >= 500)
-						event.setDamage(event.getDamage()+4);
+				if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker) && Users.getProfile(attacker).getSkillLevel(SkillType.AXES) >= 500)
+				    event.setDamage(event.getDamage()+4);
 				
 				//If there are any abilities to activate
 		    	combatAbilityChecks(attacker, PPa, pluginx);
