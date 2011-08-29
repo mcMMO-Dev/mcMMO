@@ -10,7 +10,6 @@ public enum SkillType
 	HERBALISM,
 	MINING,
 	REPAIR,
-	SORCERY,
 	SWORDS,
 	TAMING,
 	UNARMED,

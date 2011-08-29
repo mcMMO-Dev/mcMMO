@@ -1167,7 +1167,6 @@ public class Commands
 			if(PP.inParty() && (!Pinstance.isParty(PP.getParty()) || !Pinstance.isInParty(player, PP))) 
 			{
 				Pinstance.addToParty(player, PP, PP.getParty(), false);
-				
 			}
 			
 			if(args.length == 0 && !PP.inParty())

@@ -200,21 +200,19 @@ public class mmoHelper
 			Widget[] bars = container.getChildren();
 			for (String name : Party.getInstance().getPartyMembersByName(player).meFirst(player.getName())) 
 			{
-				if(Bukkit.getServer().getPlayer(name).isOnline())
+				GenericLivingEntity bar;
+				if (index >= bars.length) 
 				{
-					GenericLivingEntity bar;
-					if (index >= bars.length) {
-						container.addChild(bar = new GenericLivingEntity());
-					} else {
-						bar = (GenericLivingEntity)bars[index];
-					}
-					bar.setEntity(name, Party.getInstance().isPartyLeader(player, Users.getProfile(player).getParty()) ? ChatColor.GREEN + "@" : "");
-					bar.setTargets(show_pets ? getPets(Bukkit.getServer().getPlayer(name)) : null);
-					index++;
+					container.addChild(bar = new GenericLivingEntity());
+				} else {
+					bar = (GenericLivingEntity)bars[index];
 				}
+				bar.setEntity(name, Party.getInstance().isPartyLeader(Bukkit.getServer().getPlayer(name), Users.getProfile(Bukkit.getServer().getPlayer(name)).getParty()) ? ChatColor.GREEN + "@" : "");
+				bar.setTargets(show_pets ? getPets(Bukkit.getServer().getPlayer(name)) : null);
+				index++;
 			}
 			while (index < bars.length) {
-				container.removeChild(bars[index--]);
+				container.removeChild(bars[index++]);
 			}
 			container.updateLayout();
 		}

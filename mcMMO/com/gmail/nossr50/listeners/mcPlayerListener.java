@@ -205,6 +205,11 @@ public class mcPlayerListener extends PlayerListener
 			/*
 			 * HERBALISM MODIFIERS
 			 */
+			if(action == Action.RIGHT_CLICK_BLOCK && !m.abilityBlockCheck(event.getClickedBlock()))
+			{
+				return;
+			}
+			
 			if(mcPermissions.getInstance().herbalism(player))
 			{
 				Herbalism.breadCheck(player, player.getItemInHand());

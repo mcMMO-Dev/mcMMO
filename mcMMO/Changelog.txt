@@ -1,5 +1,13 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.1.12
+mcMMO now downloads files when you join the server to provide the best experience
+mcMMO now uses a brand new Party HUD by Rycochet (from his mmoParty plugin)
+Fixed the xpbar and xpicon settings in config to work properly
+Fixed infinite HP exploit with Herbalism
+Fixed bug where herbalism would heal out of the players normal health range
+Fixed bug where entering ':' into your party name caused stat loss among other things
+
 Version 1.1.11
 mcMMO now properly cancels its Async taks when disabled
 Fixed newly generated configs using 2 instead of 1 for skill multipliers

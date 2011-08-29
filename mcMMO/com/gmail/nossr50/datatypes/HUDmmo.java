@@ -106,6 +106,7 @@ public class HUDmmo
 		Color green = new Color(0, 1f, 0, 1f);
 		Color background = new Color((float)LoadProperties.xpbackground_r, (float)LoadProperties.xpbackground_g, (float)LoadProperties.xpbackground_b, 1f);
 		Color darkbg = new Color(0.2f, 0.2f, 0.2f, 1f);
+		
 		xpicon = new GenericTexture();
 		xpbar = new GenericGradient();
 		xpfill = new GenericGradient();
@@ -129,12 +130,18 @@ public class HUDmmo
 		xpbg.setWidth(126).setHeight(2).setX(150).setY(11);
 		xpbg.setBottomColor(background).setTopColor(background).setPriority(RenderPriority.Low).setDirty(true);
 		
-		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpbar);
-		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpfill);
-		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpbg);
-		sPlayer.getMainScreen().attachWidget(plugin, (GenericTexture)xpicon);
-		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpicon_bg);
-		sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpicon_border);
+		if(LoadProperties.xpbar)
+		{
+			sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpbar);
+			sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpfill);
+			sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpbg);
+			if(LoadProperties.xpicon)
+			{
+				sPlayer.getMainScreen().attachWidget(plugin, (GenericTexture)xpicon);
+				sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpicon_bg);
+			}
+			sPlayer.getMainScreen().attachWidget(plugin, (GenericGradient)xpicon_border);
+		}
 		
 		sPlayer.getMainScreen().setDirty(true);
 	}
@@ -144,7 +151,7 @@ public class HUDmmo
 		//Setup xp bar
 		xpbar = new GenericTexture();
 		
-		if(LoadProperties.xpicon)
+		if(LoadProperties.xpbar && LoadProperties.xpicon)
 		{
 			xpicon = new GenericTexture();
 			
@@ -157,11 +164,13 @@ public class HUDmmo
 			sPlayer.getMainScreen().attachWidget(plugin, xpicon);
 		}
 		
-		((GenericTexture)xpbar).setUrl(LoadProperties.web_url+"HUD/Standard/xpbar_inc000.png");
-		xpbar.setX(LoadProperties.xpbar_x).setY(LoadProperties.xpbar_y).setHeight(8).setWidth(256);
+		if(LoadProperties.xpbar)
+		{
+			((GenericTexture)xpbar).setUrl(LoadProperties.web_url+"HUD/Standard/xpbar_inc000.png");
+			xpbar.setX(LoadProperties.xpbar_x).setY(LoadProperties.xpbar_y).setHeight(8).setWidth(256);
 		
-		sPlayer.getMainScreen().attachWidget(plugin, xpbar);
-		
+			sPlayer.getMainScreen().attachWidget(plugin, xpbar);
+		}
 		sPlayer.getMainScreen().setDirty(true);
 	}
 	
@@ -170,7 +179,7 @@ public class HUDmmo
 		//Setup xp bar
 		xpbar = new GenericTexture();
 		
-		if(LoadProperties.xpicon)
+		if(LoadProperties.xpbar && LoadProperties.xpicon)
 		{
 			xpicon = new GenericTexture();
 			
@@ -183,16 +192,22 @@ public class HUDmmo
 			sPlayer.getMainScreen().attachWidget(plugin, xpicon);
 		}
 		
-		((GenericTexture)xpbar).setUrl(LoadProperties.web_url+"HUD/Standard/xpbar_inc000.png");
-		xpbar.setX(center_x-64).setY(LoadProperties.xpbar_y).setHeight(4).setWidth(128);
+		if(LoadProperties.xpbar)
+		{
+			((GenericTexture)xpbar).setUrl(LoadProperties.web_url+"HUD/Standard/xpbar_inc000.png");
+			xpbar.setX(center_x-64).setY(LoadProperties.xpbar_y).setHeight(4).setWidth(128);
 		
-		sPlayer.getMainScreen().attachWidget(plugin, xpbar);
+			sPlayer.getMainScreen().attachWidget(plugin, xpbar);
+		}
 		
 		sPlayer.getMainScreen().setDirty(true);
 	}
 	
 	private void updateXpBarStandard(Player player, PlayerProfile PP)
 	{
+		if(!LoadProperties.xpbar)
+			return;
+		
 		SkillType theType = null;
 		
 		if(PP.getXpBarLocked())
@@ -214,6 +229,8 @@ public class HUDmmo
 	
 	private void updateXpBarRetro(Player player, PlayerProfile PP)
 	{
+		if(!LoadProperties.xpbar)
+			return;
 		SkillType theType = null;
 		
 		if(PP.getXpBarLocked() && PP.getSkillLock() != null)

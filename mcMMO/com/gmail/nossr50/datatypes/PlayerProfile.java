@@ -72,8 +72,6 @@ public class PlayerProfile
 			}
 		}
 		
-		mana = getMaxMana();
-		
 		playername = player.getName();
 		if (LoadProperties.useMySQL) 
 		{
@@ -548,12 +546,6 @@ public class PlayerProfile
     {
     	return mana;
     }
-    public int getMaxMana()
-    {
-    	if(skills.get(SkillType.SORCERY) < 50)
-    		return 5;
-    	return skills.get(SkillType.SORCERY) / 10;
-    }
     public void setDyeChanged(Boolean bool)
     {
     	dyeChanged = bool;
@@ -956,9 +948,6 @@ public class PlayerProfile
 			case AXES:
 				xp=(int) (xp/LoadProperties.axesxpmodifier);
 				break;
-			case SORCERY:
-				xp=(int) (xp/LoadProperties.sorceryxpmodifier);
-				break;
 			}
 			xp=xp*LoadProperties.xpGainMultiplier;
 			skillsXp.put(skillType, skillsXp.get(skillType)+xp);
@@ -981,7 +970,6 @@ public class PlayerProfile
 			skillsXp.put(SkillType.UNARMED, skillsXp.get(SkillType.UNARMED)-newvalue);
 			skillsXp.put(SkillType.EXCAVATION, skillsXp.get(SkillType.EXCAVATION)-newvalue);
 			skillsXp.put(SkillType.AXES, skillsXp.get(SkillType.AXES)-newvalue);
-			skillsXp.put(SkillType.SORCERY, skillsXp.get(SkillType.SORCERY)-newvalue);
 		} else {
 			skillsXp.put(skillType, skillsXp.get(skillType)-newvalue);
 		}
@@ -1013,7 +1001,6 @@ public class PlayerProfile
 			skills.put(SkillType.UNARMED, newvalue);
 			skills.put(SkillType.EXCAVATION, newvalue);
 			skills.put(SkillType.AXES, newvalue);
-			skills.put(SkillType.SORCERY, newvalue);
 			
 			skillsXp.put(SkillType.TAMING, 0);
 			skillsXp.put(SkillType.MINING, 0);
@@ -1026,7 +1013,6 @@ public class PlayerProfile
 			skillsXp.put(SkillType.UNARMED, 0);
 			skillsXp.put(SkillType.EXCAVATION, 0);
 			skillsXp.put(SkillType.AXES, 0);
-			skillsXp.put(SkillType.SORCERY, 0);
 		} else {
 			skills.put(skillType, newvalue);
 			skillsXp.put(skillType, newvalue);

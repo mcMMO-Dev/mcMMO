@@ -143,7 +143,7 @@ public class Party
     	
     	for(Player p : Bukkit.getServer().getOnlinePlayers())
         {
-        	if(p.isOnline() && player != null && p != null)
+        	if(p.isOnline())
         	{
                 if(inSameParty(player, p))
                 {
@@ -214,12 +214,16 @@ public class Party
     }
     
     public void addToParty(Player player, PlayerProfile PP, String newParty, Boolean invite) {
+    	newParty = newParty.replace(":", ".");
     	addToParty(player, PP, newParty, invite, null);
     }
 
     
     public void addToParty(Player player, PlayerProfile PP, String newParty, Boolean invite, String password) 
     {
+    	//Fix for FFS
+    	newParty = newParty.replace(":", ".");
+    	
     	//Don't care about passwords on invites
     	if(!invite) 
     	{
@@ -373,8 +377,13 @@ public class Party
     }
     
     public boolean isPartyLeader(Player player, String partyName) {
-    	if(this.partyPlayers.get(partyName).get(player.getName()) == null) return false;
-    	return this.partyPlayers.get(partyName).get(player.getName());
+    	if(this.partyPlayers.get(partyName) != null)
+    	{
+	    	if(this.partyPlayers.get(partyName).get(player.getName()) == null) return false;
+	    	return this.partyPlayers.get(partyName).get(player.getName());
+    	}
+    	else
+    		return false;
     }
     
     public boolean isPartyLocked(String partyName) {

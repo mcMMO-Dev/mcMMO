@@ -1,5 +1,6 @@
 package com.gmail.nossr50.spout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -61,6 +62,46 @@ public class SpoutStuff
      		keypress = Keyboard.KEY_M;
      	}
 	}
+	public static ArrayList<String> getFiles()
+	{
+		ArrayList<String> files = new ArrayList<String>();
+		int x = 0;
+		
+		//XP BAR
+		while(x < 255)
+		{
+			if(x < 10)
+			{
+				files.add(LoadProperties.web_url+"HUD/Standard/xpbar_inc00"+x+".png");
+			} else if (x < 100)
+			{
+				files.add(LoadProperties.web_url+"HUD/Standard/xpbar_inc0"+x+".png");
+			} else 
+			{
+				files.add(LoadProperties.web_url+"HUD/Standard/xpbar_inc"+x+".png");
+			}
+			x++;
+		}
+		
+		//Standard XP Icons
+		for(SkillType y : SkillType.values())
+		{
+			if(y == SkillType.ALL)
+				continue;
+			files.add(LoadProperties.web_url+"HUD/Standard/"+m.getCapitalized(y.toString())+".png");
+			files.add(LoadProperties.web_url+"HUD/Retro/"+m.getCapitalized(y.toString())+"_r.png");
+		}
+		
+		//Blank icons
+		files.add(LoadProperties.web_url+"HUD/Standard/Icon.png");
+		files.add(LoadProperties.web_url+"HUD/Retro/Icon_r.png");
+		//Repair SFX
+		files.add(LoadProperties.web_url+"/Sound/repair.wav");
+		//Level SFX
+		files.add(LoadProperties.web_url+"/Sound/level.wav");
+		
+		return files;
+	}
 	public static void registerCustomEvent()
 	{
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, plugin);
@@ -86,8 +127,6 @@ public class SpoutStuff
 				return new Color((float)LoadProperties.mining_r, (float)LoadProperties.mining_g, (float)LoadProperties.mining_b, 1f);
 			case REPAIR:
 				return new Color((float)LoadProperties.repair_r, (float)LoadProperties.repair_g, (float)LoadProperties.repair_b, 1f);
-			case SORCERY:
-				return new Color(0.3f, 0.3f, 0.75f, 1f);
 			case SWORDS:
 				return new Color((float)LoadProperties.swords_r, (float)LoadProperties.swords_g, (float)LoadProperties.swords_b, 1f);
 			case TAMING:
@@ -311,9 +350,6 @@ public class SpoutStuff
 		Material mat = null;
 		switch(skillType)
 		{
-		case SORCERY:
-			mat = Material.PORTAL;
-			break;
 		case TAMING:
 			switch(getNotificationTier(PP.getSkillLevel(skillType)))
 			{

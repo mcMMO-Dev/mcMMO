@@ -36,6 +36,8 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.entity.Player;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.player.FileManager;
 
 
 public class mcMMO extends JavaPlugin 
@@ -140,6 +142,18 @@ public class mcMMO extends JavaPlugin
 		{
 			SpoutStuff.setupSpoutConfigs();
 			SpoutStuff.registerCustomEvent();
+			
+			FileManager FM = SpoutManager.getFileManager();
+			FM.addToPreLoginCache(this, SpoutStuff.getFiles());
+			
+			Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this,
+					  new Runnable() {
+
+						  @Override
+						  public void run() {
+							  mmoHelper.updateAll();
+						  }
+					  }, 20, 20);
 		}
 
 		PluginDescriptionFile pdfFile = this.getDescription();
@@ -156,15 +170,6 @@ public class mcMMO extends JavaPlugin
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		
 		Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, mcMMO_Timer, 0, 20);
-		
-		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				  new Runnable() {
-
-					  @Override
-					  public void run() {
-						  mmoHelper.updateAll();
-					  }
-				  }, 20, 20);
 	}
 
 	public PlayerProfile getPlayerProfile(Player player)

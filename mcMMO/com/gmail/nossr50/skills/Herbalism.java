@@ -309,66 +309,82 @@ public class Herbalism
 	{
 		PlayerProfile PP = Users.getProfile(player);
 		int herbalism = PP.getSkillLevel(SkillType.HERBALISM);
-	    if(is.getTypeId() == 297)
+	    int heal = 0;
+		if(is.getTypeId() == 297)
 	    {
 	    	if(herbalism >= 50 && herbalism < 150)
     		{
-    			player.setHealth(player.getHealth() + 1);
+    			heal = 1;
     		} else if (herbalism >= 150 && herbalism < 250)
     		{
-    			player.setHealth(player.getHealth() + 2);
+    			heal = 2;
     		} else if (herbalism >= 250 && herbalism < 350)
     		{
-    			player.setHealth(player.getHealth() + 3);
+    			heal = 3;
     		} else if (herbalism >= 350 && herbalism < 450)
     		{
-    			player.setHealth(player.getHealth() + 4);
+    			heal = 4;
     		} else if (herbalism >= 450 && herbalism < 550)
     		{
-    			player.setHealth(player.getHealth() + 5);
+    			heal = 5;
     		} else if (herbalism >= 550 && herbalism < 650)
     		{
-    			player.setHealth(player.getHealth() + 6);
+    			heal = 6;
     		} else if (herbalism >= 650 && herbalism < 750)
     		{
-    			player.setHealth(player.getHealth() + 7);
+    			heal = 7;
     		} else if (herbalism >= 750)
     		{
-    			player.setHealth(player.getHealth() + 8);
+    			heal = 8;
     		}
+	    	
+	    	if(player.getHealth()+heal > 20)
+	    	{
+	    		player.setHealth(20);
+	    	}
+	    	else
+	    		player.setHealth(player.getHealth()+heal);
 	   	}
     }
     public static void stewCheck(Player player, ItemStack is)
     {
     	PlayerProfile PP = Users.getProfile(player);
     	int herbalism = PP.getSkillLevel(SkillType.HERBALISM);
+    	int heal = 0;
     	if(is.getTypeId() == 282)
     	{
     		if(herbalism >= 50 && herbalism < 150)
     		{
-    			player.setHealth(player.getHealth() + 1);
+    			heal = 1;
     		} else if (herbalism >= 150 && herbalism < 250)
     		{
-    			player.setHealth(player.getHealth() + 2);
+    			heal = 2;
     		} else if (herbalism >= 250 && herbalism < 350)
     		{
-    			player.setHealth(player.getHealth() + 3);
+    			heal = 3;
     		} else if (herbalism >= 350 && herbalism < 450)
     		{
-    			player.setHealth(player.getHealth() + 4);
+    			heal = 4;
     		} else if (herbalism >= 450 && herbalism < 550)
     		{
-    			player.setHealth(player.getHealth() + 5);
+    			heal = 5;
     		} else if (herbalism >= 550 && herbalism < 650)
     		{
-    			player.setHealth(player.getHealth() + 6);
+    			heal = 6;
     		} else if (herbalism >= 650 && herbalism < 750)
     		{
-    			player.setHealth(player.getHealth() + 7);
+    			heal = 7;
     		} else if (herbalism >= 750)
     		{
-    			player.setHealth(player.getHealth() + 8);
+    			heal = 8;
     		}
+    		
+    		if(player.getHealth()+heal > 20)
+	    	{
+	    		player.setHealth(20);
+	    	}
+	    	else
+	    		player.setHealth(player.getHealth()+heal);
     	}
     }
 }
