@@ -14,7 +14,7 @@ public class LoadProperties
 	toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, 
 	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	
-	public static String xplock, web_url, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp,
+	public static String xplock, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp,
 	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
 	nStone, nIron, nGold, nDiamond, locale;
 	
@@ -345,7 +345,7 @@ public class LoadProperties
 	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);
 	        
 	        xpbar = readBoolean("Spout.XP.Bar.Enabled", true);
-	        web_url = readString("Spout.Images.URL_DIR", "http://mcmmo.rycochet.net/mcmmo/");
+	        //web_url = readString("Spout.Images.URL_DIR", "http://mcmmo.rycochet.net/mcmmo/");
 	        xpicon = readBoolean("Spout.XP.Icon.Enabled", true);
 	        xpbar_x = readInteger("Spout.XP.Bar.X_POS", 95);
 	        xpbar_y = readInteger("Spout.XP.Bar.Y_POS", 6);

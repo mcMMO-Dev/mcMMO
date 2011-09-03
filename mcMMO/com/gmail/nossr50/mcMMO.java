@@ -75,9 +75,12 @@ public class mcMMO extends JavaPlugin
 
 	//Config file stuff
 	LoadProperties config = new LoadProperties();
+	//Jar stuff
+	public static File mcmmo;
 
 	public void onEnable() 
 	{
+		mcmmo = this.getFile();
 		new File(maindirectory).mkdir();
 		
 		if(!versionFile.exists()) 
@@ -120,7 +123,7 @@ public class mcMMO extends JavaPlugin
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Lowest, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Normal, this);
@@ -142,6 +145,7 @@ public class mcMMO extends JavaPlugin
 		{
 			SpoutStuff.setupSpoutConfigs();
 			SpoutStuff.registerCustomEvent();
+			SpoutStuff.extractFiles(); //Extract source materials
 			
 			FileManager FM = SpoutManager.getFileManager();
 			FM.addToPreLoginCache(this, SpoutStuff.getFiles());

@@ -1,5 +1,10 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.1.14
+Due to high demand of mcMMO files, I cannot justify hosting mcMMO content on a webserver, so mcMMO will now behaves like Valve's source games, files are transferred between the Server and client not a webserver. This should be an improvement over the old system.
+The option to change the weburl of mcMMO Images/Sounds has been removed, if you want to customize mcMMO images/sounds you can open mcMMO.jar and replace them there
+Made party/admin chat modes more compatible with chat plugins (vChat)
+
 Version 1.1.13
 Pets are removed from party bars
 

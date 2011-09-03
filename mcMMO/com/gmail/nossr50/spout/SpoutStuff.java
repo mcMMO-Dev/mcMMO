@@ -1,7 +1,14 @@
 package com.gmail.nossr50.spout;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,6 +51,87 @@ public class SpoutStuff
 	
 	public static Keyboard keypress;
 	
+	public static void writeFile(String theFileName, String theFilePath)
+	{
+		try {
+			File currentFile = new File("plugins/mcMMO/Resources/"+theFilePath+theFileName);
+			//System.out.println(theFileName);
+			@SuppressWarnings("static-access")
+			JarFile jar = new JarFile(plugin.mcmmo);
+			JarEntry entry = jar.getJarEntry(theFileName);
+			InputStream is = jar.getInputStream(entry);
+			FileOutputStream os = new FileOutputStream(currentFile);
+			byte[] buf = new byte[(int)entry.getSize()];
+			is.read(buf, 0, (int)entry.getSize());
+			os.write(buf);
+			os.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void extractFiles()
+	{
+		//Setup directories
+		new File("plugins/mcMMO/Resources/").mkdir();
+		new File("plugins/mcMMO/Resources/HUD/").mkdir();
+		new File("plugins/mcMMO/Resources/HUD/Standard/").mkdir();
+		new File("plugins/mcMMO/Resources/HUD/Retro/").mkdir();
+		new File("plugins/mcMMO/Resources/Sound/").mkdir();
+		
+		//Xp Bar images
+		for(int x =0; x < 255; x++)
+		{
+			//String s = File.separator;
+			String theFilePath = "HUD/Standard/";
+			if(x < 10)
+			{
+				String theFileName = "xpbar_inc00"+x+".png";
+				writeFile(theFileName, theFilePath);
+			} else if (x < 100)
+			{
+				String theFileName = "xpbar_inc0"+x+".png";
+				writeFile(theFileName, theFilePath);
+			} else 
+			{
+				String theFileName = "xpbar_inc"+x+".png";
+				writeFile(theFileName, theFilePath);
+			}
+		}
+		
+		//Standard XP Icons
+		
+		String theFilePathA = "HUD/Standard/";
+		String theFilePathB = "HUD/Retro/";
+		
+		for(SkillType y : SkillType.values())
+		{
+			if(y == SkillType.ALL)
+				continue;
+			
+			
+			String theFileNameA = m.getCapitalized(y.toString())+".png";
+			String theFileNameB = m.getCapitalized(y.toString())+"_r.png";
+			
+			writeFile(theFileNameA, theFilePathA);
+			writeFile(theFileNameB, theFilePathB);
+		}
+		
+		//Blank icons
+		
+		writeFile("Icon.png", theFilePathA);
+		writeFile("Icon_r.png", theFilePathB);
+		
+		String theSoundFilePath = "Sound/";
+		//Repair SFX
+		writeFile("repair.wav", theSoundFilePath);
+		writeFile("level.wav", theSoundFilePath);
+	}
+	
 	public static void setupSpoutConfigs()
 	{
 		 String temp = LoadProperties.readString("Spout.Menu.Key", "KEY_M");
@@ -62,9 +150,10 @@ public class SpoutStuff
      		keypress = Keyboard.KEY_M;
      	}
 	}
-	public static ArrayList<String> getFiles()
+	public static ArrayList<File> getFiles()
 	{
-		ArrayList<String> files = new ArrayList<String>();
+		ArrayList<File> files = new ArrayList<File>();
+		String dir = "plugins/mcMMO/Resources/";
 		int x = 0;
 		
 		//XP BAR
@@ -72,13 +161,13 @@ public class SpoutStuff
 		{
 			if(x < 10)
 			{
-				files.add(LoadProperties.web_url+"HUD/Standard/xpbar_inc00"+x+".png");
+				files.add(new File(dir+"HUD/Standard/xpbar_inc00"+x+".png"));
 			} else if (x < 100)
 			{
-				files.add(LoadProperties.web_url+"HUD/Standard/xpbar_inc0"+x+".png");
+				files.add(new File(dir+"HUD/Standard/xpbar_inc0"+x+".png"));
 			} else 
 			{
-				files.add(LoadProperties.web_url+"HUD/Standard/xpbar_inc"+x+".png");
+				files.add(new File(dir+"HUD/Standard/xpbar_inc"+x+".png"));
 			}
 			x++;
 		}
@@ -88,17 +177,17 @@ public class SpoutStuff
 		{
 			if(y == SkillType.ALL)
 				continue;
-			files.add(LoadProperties.web_url+"HUD/Standard/"+m.getCapitalized(y.toString())+".png");
-			files.add(LoadProperties.web_url+"HUD/Retro/"+m.getCapitalized(y.toString())+"_r.png");
+			files.add(new File(dir+"HUD/Standard/"+m.getCapitalized(y.toString())+".png"));
+			files.add(new File(dir+"HUD/Retro/"+m.getCapitalized(y.toString())+"_r.png"));
 		}
 		
 		//Blank icons
-		files.add(LoadProperties.web_url+"HUD/Standard/Icon.png");
-		files.add(LoadProperties.web_url+"HUD/Retro/Icon_r.png");
+		files.add(new File(dir+"HUD/Standard/Icon.png"));
+		files.add(new File(dir+"HUD/Retro/Icon_r.png"));
 		//Repair SFX
-		files.add(LoadProperties.web_url+"/Sound/repair.wav");
+		files.add(new File(dir+"/Sound/repair.wav"));
 		//Level SFX
-		files.add(LoadProperties.web_url+"/Sound/level.wav");
+		files.add(new File(dir+"/Sound/level.wav"));
 		
 		return files;
 	}
@@ -151,18 +240,6 @@ public class SpoutStuff
 		return null;
 	}
 	
-	public static String getHealthBarURL(Integer hp)
-	{
-		String url = "";
-		
-		if(hp.toString().toCharArray().length > 1)
-			url = LoadProperties.web_url+"HUD/Standard/health_inc"+hp+".png";
-		else
-			url = LoadProperties.web_url+"HUD/Standard/health_inc0"+hp+".png";
-		
-		return url;
-	}
-	
 	public static void playSoundForPlayer(SoundEffect effect, Player player, Location location)
 	{
 		//Contrib stuff
@@ -171,176 +248,18 @@ public class SpoutStuff
 		SM.playSoundEffect(sPlayer, effect, location);
 	}
 	
-	/*
-	public static void initializePartyTracking(SpoutPlayer player)
-	{
-		if(Users.getProfile(player).inParty())
-		{
-			int pos = LoadProperties.partybar_y;
-			
-			ArrayList<HealthBarMMO> hpbars = new ArrayList<HealthBarMMO>();
-			for(Player x : Party.getInstance().getPartyMembers(player))
-			{
-				if(x.isOnline())
-				{
-					HealthBarMMO hpbar = new HealthBarMMO(x, x.getName());
-					hpbar.health_name.setX(LoadProperties.partybar_x+11).setY(pos);
-					hpbar.health_bar.setX(LoadProperties.partybar_x).setY(pos+8);
-					hpbars.add(hpbar);
-					pos+=LoadProperties.partybar_spacing;
-				}
-			}
-			
-			if(hpbars.size() >= 1)
-				partyHealthBars.put(player, hpbars);
-			
-			if(partyHealthBars.get(player) != null)
-			{
-				for(HealthBarMMO x : partyHealthBars.get(player))
-				{
-					if(x != null)
-					{
-						player.getMainScreen().attachWidget(plugin, x.health_bar);
-						player.getMainScreen().attachWidget(plugin, x.health_name);
-					}
-				}
-				
-				player.getMainScreen().setDirty(true);
-			}
-		}
-	}
-	
-	public static void resetPartyHealthBarDisplays(final ArrayList<Player> players)
-	{
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
-		new Runnable() 
-		{
-			public void run() 
-			{
-				
-				for (Player x : players) 
-				{
-					if(partyHealthBars.get(x) != null)
-					{
-						final SpoutPlayer sPlayer = SpoutManager.getPlayer(x);
-						if (sPlayer.isSpoutCraftEnabled()) 
-						{
-							ArrayList<Widget> widgets = new ArrayList<Widget>();
-							for (Widget w : sPlayer.getMainScreen().getAttachedWidgets()) 
-							{
-								for (HealthBarMMO hp : partyHealthBars.get(x))
-								{
-									if(w.getId() == hp.health_bar.getId() || w.getId() == hp.health_name.getId())
-									{
-										widgets.add(w);
-									}
-								}
-							}
-							for (Widget w : widgets) 
-							{
-								sPlayer.getMainScreen().removeWidget(w);
-							}
-	
-							sPlayer.getMainScreen().setDirty(true);
-							partyHealthBars.get(x).clear();
-	
-							Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
-									new Runnable() 
-									{
-										public void run() {
-											initializePartyTracking(sPlayer);
-										}
-									}, 1);
-						}
-					} else if (SpoutManager.getPlayer(x).isSpoutCraftEnabled())
-					{
-						initializePartyTracking(SpoutManager.getPlayer(x));
-					}
-				}
-			}
-		}, 1);
-	}
-	
-	
-	public static void resetPartyHealthBarDisplays(final Player player)
-	{
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
-		new Runnable() 
-		{
-			public void run() 
-			{
-				if(partyHealthBars.get(player) != null)
-				{
-					SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-					if (sPlayer.isSpoutCraftEnabled()) 
-					{
-						System.out.println("Resetting health bars for "+player.getName());
-						ArrayList<Widget> widgets = new ArrayList<Widget>();
-						for (Widget w : sPlayer.getMainScreen().getAttachedWidgets()) 
-						{
-							for (HealthBarMMO hp : partyHealthBars.get(player))
-							{
-								if(w.getId() == hp.health_bar.getId() || w.getId() == hp.health_name.getId())
-								{
-									widgets.add(w);
-								}
-							}
-						}
-						for (Widget w : widgets) 
-						{
-							System.out.println("Removing hpbar for "+sPlayer.getName());
-							sPlayer.getMainScreen().removeWidget(w);
-						}
-						sPlayer.getMainScreen().setDirty(true);
-						partyHealthBars.get(player).clear();
-						
-						Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
-						new Runnable() 
-						{
-							public void run() {
-								initializePartyTracking(SpoutManager
-										.getPlayer(player));
-							}
-						}, 1);
-					}
-				} else if (SpoutManager.getPlayer(player).isSpoutCraftEnabled())
-				{
-					initializePartyTracking(SpoutManager.getPlayer(player));
-				}
-			}
-		}, 1);
-	}
-	
-	public static void updatePartyHealthBarDisplay(Player player, Integer hp)
-	{
-		for(Player x : Party.getInstance().getPartyMembers(player))
-		{
-			SpoutPlayer sPlayer = SpoutManager.getPlayer(x);
-			if(sPlayer.isSpoutCraftEnabled())
-			{
-				for(HealthBarMMO y : partyHealthBars.get(x))
-				{
-					if(y.playerName.equalsIgnoreCase(player.getName()))
-					{
-						y.health_bar.setUrl(getHealthBarURL(hp)).setDirty(true);
-						sPlayer.getMainScreen().setDirty(true);
-					}
-				}
-			}
-		}
-	}
-	*/
 	public static void playRepairNoise(Player player)
 	{
 		SoundManager SM = SpoutManager.getSoundManager();
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, LoadProperties.web_url+"/Sound/repair.wav", false);
+		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "repair.wav", false);
 	}
+	
 	public static void playLevelUpNoise(Player player)
 	{
 		SoundManager SM = SpoutManager.getSoundManager();
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, LoadProperties.web_url+"/Sound/level.wav", false);
+		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "level.wav", false);
 	}
 	
 	public static void levelUpNotification(SkillType skillType, SpoutPlayer sPlayer)
@@ -601,17 +520,18 @@ public class SpoutStuff
 	{
 		if(number.toString().toCharArray().length == 1)
 		{
-			return LoadProperties.web_url+"HUD/Standard/xpbar_inc00"+number+".png";
+			return "xpbar_inc00"+number+".png";
 		} else if (number.toString().toCharArray().length == 2)
 		{
-			return LoadProperties.web_url+"HUD/Standard/xpbar_inc0"+number+".png";
+			return "xpbar_inc0"+number+".png";
 		} else {
-			return LoadProperties.web_url+"HUD/Standard/xpbar_inc"+number+".png";
+			return "xpbar_inc"+number+".png";
 		}
 	}
+	
 	public static String getUrlIcon(SkillType skillType)
 	{
-		return LoadProperties.web_url+"HUD/Standard/"+m.getCapitalized(skillType.toString())+".png";
+		return m.getCapitalized(skillType.toString())+".png";
 	}
 	public static boolean shouldBeFilled(PlayerProfile PP)
 	{

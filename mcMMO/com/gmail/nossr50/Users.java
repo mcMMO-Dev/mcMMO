@@ -2,7 +2,6 @@ package com.gmail.nossr50;
 
 import java.io.*;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.HashMap;
 
@@ -35,7 +34,6 @@ public class Users {
 	        }
     }
     
-    
     public void loadUsers()
     {
     	new File(directory).mkdir();
@@ -43,29 +41,12 @@ public class Users {
         File theDir = new File(location);
 		if(!theDir.exists())
 		{
-			//properties = new PropertiesFile(location);
-			FileWriter writer = null;
 			try {
-				writer = new FileWriter(location);
-				//writer.write("#Storage place for user information\r\n");
-			} catch (Exception e) 
-			{
-				log.log(Level.SEVERE, "Exception while creating " + location, e);
-			} finally {
-				try {
-					if (writer != null) {
-						writer.close();
-					}
-				} catch (IOException e) {
-					log.log(Level.SEVERE, "Exception while closing writer for " + location, e);
-				}
-			}
-
-		} else {
-			try {
-				load();
+				FileWriter writer = new FileWriter(theDir);
+				writer.close();
 			} catch (IOException e) {
-				log.log(Level.SEVERE, "Exception while loading " + location, e);
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
     }

@@ -119,7 +119,7 @@ public class HUDmmo
 		xpicon_border.setBottomColor(border).setTopColor(border).setWidth(6).setHeight(6).setPriority(RenderPriority.Highest).setX(141).setY(9).setDirty(true);
 		
 		xpicon.setWidth(6).setHeight(6).setX(141).setY(9).setPriority(RenderPriority.Normal).setDirty(true);
-		xpicon.setUrl(LoadProperties.web_url+"HUD/Retro/Icon_r.png");
+		xpicon.setUrl("Icon_r.png");
 		
 		xpbar.setWidth(128).setHeight(4).setX(149).setY(10);
 		((GenericGradient) xpbar).setBottomColor(border).setTopColor(border).setPriority(RenderPriority.Highest).setDirty(true);
@@ -155,7 +155,7 @@ public class HUDmmo
 		{
 			xpicon = new GenericTexture();
 			
-			xpicon.setUrl(LoadProperties.web_url+"HUD/Standard/Icon.png");
+			xpicon.setUrl("Icon.png");
 			
 			xpicon.setHeight(16).setWidth(32).setX(LoadProperties.xpicon_x).setY(LoadProperties.xpicon_y);
 			
@@ -166,7 +166,7 @@ public class HUDmmo
 		
 		if(LoadProperties.xpbar)
 		{
-			((GenericTexture)xpbar).setUrl(LoadProperties.web_url+"HUD/Standard/xpbar_inc000.png");
+			((GenericTexture)xpbar).setUrl("xpbar_inc000.png");
 			xpbar.setX(LoadProperties.xpbar_x).setY(LoadProperties.xpbar_y).setHeight(8).setWidth(256);
 		
 			sPlayer.getMainScreen().attachWidget(plugin, xpbar);
@@ -183,7 +183,7 @@ public class HUDmmo
 		{
 			xpicon = new GenericTexture();
 			
-			xpicon.setUrl(LoadProperties.web_url+"HUD/Standard/Icon.png");
+			xpicon.setUrl("Icon.png");
 			
 			xpicon.setHeight(8).setWidth(16).setX(center_x-(8+64)).setY(LoadProperties.xpicon_y+2);
 			
@@ -194,7 +194,7 @@ public class HUDmmo
 		
 		if(LoadProperties.xpbar)
 		{
-			((GenericTexture)xpbar).setUrl(LoadProperties.web_url+"HUD/Standard/xpbar_inc000.png");
+			((GenericTexture)xpbar).setUrl("xpbar_inc000.png");
 			xpbar.setX(center_x-64).setY(LoadProperties.xpbar_y).setHeight(4).setWidth(128);
 		
 			sPlayer.getMainScreen().attachWidget(plugin, xpbar);
@@ -218,7 +218,7 @@ public class HUDmmo
 		if(theType == null)
 			return;
 		
-		((GenericTexture) xpicon).setUrl(LoadProperties.web_url+"HUD/Standard/"+m.getCapitalized(theType.toString())+".png");
+		((GenericTexture) xpicon).setUrl(m.getCapitalized(theType.toString())+".png");
 		xpicon.setDirty(true);
 
 		((GenericTexture) xpbar).setUrl(SpoutStuff.getUrlBar(SpoutStuff.getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.STANDARD)));
@@ -244,7 +244,7 @@ public class HUDmmo
 		Color color = SpoutStuff.getRetroColor(theType);
 		
 		if(xpicon != null && theType != null)
-			xpicon.setUrl(LoadProperties.web_url+"HUD/Retro/"+m.getCapitalized(theType.toString())+"_r.png");
+			xpicon.setUrl(m.getCapitalized(theType.toString())+"_r.png");
 		
 		if(theType != null)
 			xpfill.setBottomColor(color).setTopColor(color).setWidth(SpoutStuff.getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.RETRO)).setDirty(true);

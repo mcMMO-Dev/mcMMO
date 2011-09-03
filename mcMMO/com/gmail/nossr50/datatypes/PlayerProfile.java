@@ -900,6 +900,7 @@ public class PlayerProfile
 	{
 		skills.put(skillType, 0);
 	}
+	
 	public void addXP(SkillType skillType, int newvalue)
 	{
 		if(skillType == SkillType.ALL)
@@ -955,6 +956,7 @@ public class PlayerProfile
 		}
 		//save();
 	}
+	
 	public void removeXP(SkillType skillType, int newvalue)
 	{
 		if(skillType == SkillType.ALL)

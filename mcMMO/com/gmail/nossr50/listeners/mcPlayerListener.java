@@ -1,12 +1,13 @@
 package com.gmail.nossr50.listeners;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.command.ColouredConsoleSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -231,40 +232,35 @@ public class mcPlayerListener extends PlayerListener
 
 	public void onPlayerChat(PlayerChatEvent event) 
 	{
-		
 		Player player = event.getPlayer();
 		PlayerProfile PP = Users.getProfile(player);
-
-		String x = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getDisplayName() + ChatColor.GREEN + ") "; //$NON-NLS-1$ //$NON-NLS-2$
-		String y = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getDisplayName() + ChatColor.AQUA + "} "; //$NON-NLS-1$ //$NON-NLS-2$
-
 		if(PP.getPartyChatMode())
 		{
 			event.setCancelled(true);
-			log.log(Level.INFO, "[P]("+PP.getParty()+")"+"<"+player.getDisplayName()+"> "+event.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			for(Player herp : plugin.getServer().getOnlinePlayers())
+			String format = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getDisplayName() + ChatColor.GREEN + ") "+event.getMessage();
+			for(Player x : Bukkit.getServer().getOnlinePlayers())
 			{
-				if(Users.getProfile(herp).inParty())
-				{
-					if(Party.getInstance().inSameParty(herp, player))
-					{
-						herp.sendMessage(x+event.getMessage());
-					}
-				}
+				if(Party.getInstance().inSameParty(player, x))
+					x.sendMessage(format);
 			}
-			return;
-		}
-
-		if((player.isOp() || mcPermissions.getInstance().adminChat(player)) && PP.getAdminChatMode())
-		{
-			log.log(Level.INFO, "[A]"+"<"+player.getDisplayName()+"> "+event.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			if(Bukkit.getServer() instanceof ColouredConsoleSender)
+			{
+				ColouredConsoleSender ccs = (ColouredConsoleSender) Bukkit.getServer();
+				ccs.sendMessage(ChatColor.GREEN+"[P]"+format); //Colors, woot!
+			}
+		} else if (PP.getAdminChatMode()) {
 			event.setCancelled(true);
-			for(Player herp : plugin.getServer().getOnlinePlayers()){
-				if((herp.isOp() || mcPermissions.getInstance().adminChat(herp))){
-					herp.sendMessage(y+event.getMessage());
-				}
+			String format = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getDisplayName() + ChatColor.AQUA + "} "+event.getMessage();
+			for(Player x : Bukkit.getServer().getOnlinePlayers())
+			{
+				if(x.isOp() || mcPermissions.getInstance().adminChat(x))
+					x.sendMessage(format);
 			}
-			return;
+			if(Bukkit.getServer() instanceof ColouredConsoleSender)
+			{
+				ColouredConsoleSender ccs = (ColouredConsoleSender) Bukkit.getServer();
+				ccs.sendMessage(ChatColor.AQUA+"[A]"+format); //Colors, woot!
+			}
 		}
 	}
 }
