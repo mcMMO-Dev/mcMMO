@@ -58,7 +58,7 @@ public class SpoutStuff
 			//System.out.println(theFileName);
 			@SuppressWarnings("static-access")
 			JarFile jar = new JarFile(plugin.mcmmo);
-			JarEntry entry = jar.getJarEntry(theFileName);
+			JarEntry entry = jar.getJarEntry("resources/"+theFileName);
 			InputStream is = jar.getInputStream(entry);
 			FileOutputStream os = new FileOutputStream(currentFile);
 			byte[] buf = new byte[(int)entry.getSize()];
