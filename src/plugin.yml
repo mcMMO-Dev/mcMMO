@@ -1,6 +1,6 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 1.1.14-Disk-GIT
+version: 1.1.14
 softdepend: [Spout]
 commands:
     mchud:
