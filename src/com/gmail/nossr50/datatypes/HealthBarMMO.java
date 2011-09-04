@@ -5,7 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericTexture;
 
-import com.gmail.nossr50.spout.SpoutStuff;
+//import com.gmail.nossr50.spout.SpoutStuff;
 
 public class HealthBarMMO
 {
@@ -18,8 +18,8 @@ public class HealthBarMMO
 		health_name = new GenericLabel();
 		health_name.setText(ChatColor.GREEN+name).setDirty(true);
 		
-		health_bar = new GenericTexture();
-		health_bar.setUrl(SpoutStuff.getHealthBarURL(entity.getHealth())).setHeight(8).setWidth(64).setDirty(true);
+		//health_bar = new GenericTexture();
+		//health_bar.setUrl(SpoutStuff.getHealthBarURL(entity.getHealth())).setHeight(8).setWidth(64).setDirty(true);
 		
 		playerName = name;
 	}

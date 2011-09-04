@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.command.ColouredConsoleSender;
+//import org.bukkit.craftbukkit.command.ColouredConsoleSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -243,11 +243,11 @@ public class mcPlayerListener extends PlayerListener
 				if(Party.getInstance().inSameParty(player, x))
 					x.sendMessage(format);
 			}
-			if(Bukkit.getServer() instanceof ColouredConsoleSender)
+			/*if(Bukkit.getServer() instanceof ColouredConsoleSender)
 			{
 				ColouredConsoleSender ccs = (ColouredConsoleSender) Bukkit.getServer();
 				ccs.sendMessage(ChatColor.GREEN+"[P]"+format); //Colors, woot!
-			}
+			}*/
 		} else if (PP.getAdminChatMode()) {
 			event.setCancelled(true);
 			String format = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getDisplayName() + ChatColor.AQUA + "} "+event.getMessage();
@@ -256,11 +256,11 @@ public class mcPlayerListener extends PlayerListener
 				if(x.isOp() || mcPermissions.getInstance().adminChat(x))
 					x.sendMessage(format);
 			}
-			if(Bukkit.getServer() instanceof ColouredConsoleSender)
+			/*if(Bukkit.getServer() instanceof ColouredConsoleSender)
 			{
 				ColouredConsoleSender ccs = (ColouredConsoleSender) Bukkit.getServer();
 				ccs.sendMessage(ChatColor.AQUA+"[A]"+format); //Colors, woot!
-			}
+			}*/
 		}
 	}
 }
