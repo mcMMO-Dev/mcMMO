@@ -1,0 +1,255 @@
+name: mcMMO
+main: com.gmail.nossr50.mcMMO
+version: 1.1.14-Disk-GIT
+softdepend: [Spout]
+commands:
+    mchud:
+        description: Change your HUD
+    xplock:
+        description: Lock your xp bar
+    xprate:
+        description: Modify the xp rate or start an event
+    mcc:
+        description: Lists mcMMO commands
+    mcmmo:
+        description: Shows a brief mod description
+    mctop:
+        description: Shows leader boards for mcMMO
+    addxp:
+        description: Add XP to a user
+        permission: mcmmo.tools.mmoedit
+    mcability:
+        description: Toggle whether or not abilities get readied on right click
+        permission: mcmmo.commands.ability
+    mcrefresh:
+        description: Refresh all cooldowns for mcMMO
+        permission: mcmmo.tools.mcrefresh
+    mcgod:
+        description: Make yourself invulnerable
+        permission: mcmmo.tools.mcgod        
+    stats:
+        description: Shows your mcMMO stats and xp
+    mmoedit:
+        description: Edit the skill values for a user
+        permission: mcmmo.tools.mmoedit
+    ptp:
+        description: Teleport to a party member
+        permission: mcmmo.commands.ptp
+    party:
+        description: Create/join a party
+        permission: mcmmo.commands.party
+    myspawn:
+        description: Teleport to your MySpawn
+        permission: mcmmo.commands.myspawn
+    whois:
+        description: View mcMMO stats of another player
+    invite:
+        description: Invite a player into your party
+        permission: mcmmo.chat.partychat
+    accept:
+        description: Accept a party invite
+        permission: mcmmo.chat.partychat
+    clearmyspawn:
+        description: Clear your MySpawn location
+        permission: mcmmo.commands.myspawn
+    mmoupdate:
+        description: Convert from Flat File to MySQL
+        permission: mcmmo.admin
+    p:
+        description: Toggle Party chat or send party chat messages
+        permission: mcmmo.chat.partychat
+    excavation:
+        description: Detailed skill info
+    herbalism:
+        description: Detailed skill info
+    mining:
+        description: Detailed skill info
+    woodcutting:
+        description: Detailed skill info
+    axes:
+        description: Detailed skill info
+    archery:
+        description: Detailed skill info
+    swords:
+        description: Detailed skill info
+    taming:
+        description: Detailed skill info
+    unarmed:
+        description: Detailed skill info
+    acrobatics:
+        description: Detailed skill info
+    repair:
+        description: Detailed skill info
+    a:
+        description: Toggle Admin chat or send admin chat messages
+        permission: mcmmo.chat.adminchat
+permissions:
+    mcmmo.*:
+        description: Implies all mcmmo permissions.
+        children:
+            mcmmo.defaults: true
+            #Instead of containing mcmmo.defaultsop on its own, it should specify each of mcmmo.defaultsop
+            mcmmo.admin: true
+            mcmmo.tools.*: true
+            mcmmo.chat.adminchat: true 
+            
+    mcmmo.defaults:
+        default: true
+        description: mcmmo permisions that default to true
+        children:
+            mcmmo.ability.*: true 
+            mcmmo.item.*: true 
+            mcmmo.tools.*: true 
+            mcmmo.regeneration: true 
+            mcmmo.motd: true 
+            mcmmo.commands.*: true 
+            mcmmo.chat.partychat: true 
+            mcmmo.skills.*: true
+            mcmmo.tools.*: false
+        
+    mcmmo.defaultsop:
+        default: op
+        description: mcmmo permissions that default to op
+        children:
+            mcmmo.chat.adminchat: true 
+    
+    mcmmo.admin:
+        description:        
+    mcmmo.tools.*:
+        description: Implies all mcmmo.tools permissions.
+        children:
+            mcmmo.tools.mcrefresh: true 
+            mcmmo.tools.mmoedit: true 
+            mcmmo.tools.mcgod: true 
+    mcmmo.tools.mcrefresh:
+        description:
+    mcmmo.tools.mmoedit:
+        description:
+    mcmmo.tools.mcgod:
+        description:        
+    mcmmo.ability.*:
+        description: Implies all mcmmo.ability permissions.
+        children:
+            mcmmo.ability.herbalism: true 
+            mcmmo.ability.excavation: true 
+            mcmmo.ability.unarmed: true 
+            mcmmo.ability.mining: true 
+            mcmmo.ability.axes: true 
+            mcmmo.ability.swords: true 
+            mcmmo.ability.woodcutting: true 
+    mcmmo.ability.herbalism:
+        description:
+    mcmmo.ability.excavation:
+        description:
+    mcmmo.ability.unarmed:
+        description:
+    mcmmo.ability.mining:
+        description:
+    mcmmo.ability.axes:
+        description:
+    mcmmo.ability.swords:
+        description:
+    mcmmo.ability.woodcutting:
+        description:        
+    mcmmo.item.*:
+        description: Implies all mcmmo.item permissions.
+        children:
+            mcmmo.item.chimaerawing: true 
+    mcmmo.item.chimaerawing:
+        description:        
+    mcmmo.regeneration:
+        description:        
+    mcmmo.motd:
+        description:        
+    mcmmo.commands.*:
+        description: Implies all mcmmo.commands permissions.
+        children:
+            mcmmo.commands.ability: true 
+            mcmmo.commands.myspawn: true 
+            mcmmo.commands.setmyspawn: true 
+            mcmmo.commands.ptp: true 
+            mcmmo.commands.whois: true 
+            mcmmo.commands.party: true 
+    mcmmo.commands.ability:
+        description:
+    mcmmo.commands.myspawn:
+        description:
+    mcmmo.commands.setmyspawn:
+        description:
+    mcmmo.commands.ptp:
+        description:
+    mcmmo.commands.whois:
+        description:
+    mcmmo.commands.party:
+        description:        
+    mcmmo.chat.*:
+        description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
+        children:
+            mcmmo.chat.adminchat: true 
+            mcmmo.chat.partychat: true 
+    mcmmo.chat.adminchat:
+        description: Allows participation in admin chat
+    mcmmo.chat.partychat:
+        description: Allows participation in party chat
+    mcmmo.skills.*:
+        description: Implies all mcmmo.skills permissions.
+        children:
+            mcmmo.skills.sorcery.*: true 
+            mcmmo.skills.curative.*: true 
+            mcmmo.skills.taming: true 
+            mcmmo.skills.mining: true 
+            mcmmo.skills.woodcutting: true 
+            mcmmo.skills.repair: true 
+            mcmmo.skills.unarmed: true 
+            mcmmo.skills.archery: true 
+            mcmmo.skills.herbalism: true 
+            mcmmo.skills.excavation: true 
+            mcmmo.skills.swords: true 
+            mcmmo.skills.axes: true 
+            mcmmo.skills.acrobatics: true
+    mcmmo.skills.sorcery.*:
+        description: Implies all mcmmo.skills.sorcery permissions.
+        children:
+            mcmmo.skills.sorcery: true 
+            mcmmo.skills.sorcery.water: true 
+            mcmmo.skills.sorcery.water.thunder: true 
+    mcmmo.skills.curative.*:
+        description: Implies all mcmmo.skills.curative permissions.
+        children:
+            mcmmo.skills.curative: true 
+            mcmmo.skills.curative.heal.other: true 
+            mcmmo.skills.curative.heal.self: true     
+    mcmmo.skills.sorcery:
+        description:
+    mcmmo.skills.sorcery.water:
+        description:
+    mcmmo.skills.sorcery.water.thunder:
+        description:    
+    mcmmo.skills.curative:
+        description:
+    mcmmo.skills.curative.heal.other:
+        description:
+    mcmmo.skills.curative.heal.self:
+        description:    
+    mcmmo.skills.taming:
+        description:
+    mcmmo.skills.mining:
+        description:
+    mcmmo.skills.woodcutting:
+        description:
+    mcmmo.skills.repair:
+        description:
+    mcmmo.skills.unarmed:
+        description:
+    mcmmo.skills.archery:
+        description:
+    mcmmo.skills.herbalism:
+        description:
+    mcmmo.skills.excavation:
+        description:
+    mcmmo.skills.swords:
+        description:
+    mcmmo.skills.axes:
+        description:
+    mcmmo.skills.acrobatics:
+        description:
