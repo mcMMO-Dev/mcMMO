@@ -1,0 +1,944 @@
+Changelog:
+#Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.1.14
+Due to high demand of mcMMO files, I cannot justify hosting mcMMO content on a webserver, so mcMMO will now behaves like Valve's source games, files are transferred between the Server and client not a webserver. This should be an improvement over the old system.
+The option to change the weburl of mcMMO Images/Sounds has been removed, if you want to customize mcMMO images/sounds you can open mcMMO.jar and replace them there
+Made party/admin chat modes more compatible with chat plugins (vChat)
+
+Version 1.1.13
+Pets are removed from party bars
+
+Version 1.1.12
+mcMMO now downloads files when you join the server to provide the best experience
+mcMMO now uses a brand new Party HUD by Rycochet (from his mmoParty plugin)
+Fixed the xpbar and xpicon settings in config to work properly
+Fixed infinite HP exploit with Herbalism
+Fixed bug where herbalism would heal out of the players normal health range
+Fixed bug where entering ':' into your party name caused stat loss among other things
+Fixed issue with block break listener priority
+
+Version 1.1.11
+mcMMO now properly cancels its Async taks when disabled
+Fixed newly generated configs using 2 instead of 1 for skill multipliers
+
+Version 1.1.10
+Added default hud setting to config
+Fixed bug where newly generated configs used old xp gain numbers
+
+Version 1.1.09
+Fixed mcMMO to run fine without Spout :)
+
+Version 1.1.08
+Fixed repair being 10x slower to level than normal
+
+Version 1.1.07
+Fixed the default HUD being set to RETRO instead of STANDARD
+
+Version 1.1.06
+mcMMO menu implemented! Default is 'M', change this in config
+Retro HUD implemented!
+Retro XP fill color is completely customizable on a per skill basis
+New levelup sound thanks to @Rustydaggers !
+With the help of Randomage the XP Formulas have been vastly changed for flexibility
+Global modifiers and skill modifiers now support decimals
+Global formula modifier dropped from config
+GigaDrillBreaker/Berserk doesn't drop clay blocks anymore
+Fixed bug where Herbalism didn't heal more for bread/stew when right clicking a block
+Fixed bug where Wheat did not use the values form the config file
+Fixed bug where Archery gave xp for inflicting self injury
+Watch added to clay loot tables and maps remove from clay loot tables
+
+Version 1.1.05
+Maps dropped from excavation are created correctly, and represent the area they are found in
+Fixed an exploit with clay and excavation
+Fixed a NPE with locking xp bars
+Fixed the !AdeptDiamond! localization error when repairing diamond with a skill below 50
+
+Version 1.1.04
+Removed URL settings for XPBAR/XPICON/HPBAR
+Added single URL setting for mcMMO
+Changed default host from Dropbox to Rycochet's webserver (with apparently unlimited bandwidth!, thanks Rycochet)
+Fixed Repair noise not getting played
+Fixed a small memory leak with party health bars
+
+Version 1.1.03
+Fixed a few images being hard-coded still rather than configurable
+
+Version 1.1.02
+Fixed bug where toggle for xpicon didn't work
+Fixed bug where Excavation gave gravel drops to grass
+Excavation now uses more enums
+
+Version 1.1.01
+Fixed toggles for hpbar/xpbar not working
+
+Version 1.1.0
+Brand new XP Bars, Health bars, and Skill Icons designed by BrandonXP
+Added /xplock <skillname> to lock the xp bar to a skill
+Repairing metal now has a sound effect
+Shears added to Repair
+MySpawn now works correctly when you are in the nether
+MySpawn message when you right click a bed is now squelched
+Intervals at which players renegerate hp have doubled in length (making it take 100% longer to regenerate than before)
+Rewrote many variables stored per player to be integer instead of long, reducing overall memory usage of mcMMO
+Rewrote the Timer mcMMO relies on to instead use the BukkitScheduler for performance
+Fixed the party member list of /party
+Fixed bug where Swords would counter-attack Projectiles
+Removed a debug message when repairing diamond armor
+Changed chat to use getDisplayName() instead of getName()
+Changed chat priority from lowest to highest
+Added Clay to excavation
+Added new items to Clay's loot tables
+Archery now works with the latest CB
+
+Version 1.0.50
+New /xprate command for those with mcmmo.admin permissions!
+mcMMO now uses Spout instead of BukkitContrib
+BukkitContrib support dropped
+XP Formula is now 100+(skill level value * skill modifier * global modifier) thanks to suggestion
+Fixed bug where /mmoupdate used the old directory instead of the new one to find the flat file
+Fixed bug where Unarmed Mastery damage bonus only did as much as Unarmed Apprentice
+Fixed bug where Pumpkins did not give out XP
+Coordinates removed from /whois as they didn't really fit
+/mcgod and /mmoedit now require permissions to be setup in some shape or form to be used
+Lapus renamed to Lapis in config
+
+Version 1.0.49
+Updated German locale
+Fixed bug where using the party system on a MySQL setup caused errors when writing to non-existent files
+Fixed bug where using /accept caused a NPE (hopefully)
+Fixed a few missing descriptions for commands
+
+Version 1.0.48
+Updated French Translation
+Updated German Translation
+Updated Polish Translation
+Placed Coal Ore and Redstone Ore won't give XP anymore
+Fixed unusually high memory usage at startup
+Added many features to the party system written by NuclearW
+
+Version 1.0.47
+Fixed another BukkitContrib error for servers not running BukkitContrib
+
+Version 1.0.46
+Fixed bug preventing Excavation from gaining skill
+
+Version 1.0.45
+Corrected /stats showing Repair XP as Level for Repair
+Corrected /repair showing Repair XP as Level for Repair
+Corrected /whois showing Repair XP as Level for Repair
+
+Version 1.0.44
+Fixed my 'fix' of BukkitContrib errors with Tree Feller
+
+Version 1.0.43
+Stopped things from being auto-smelt'd
+
+Version 1.0.42
+Corrected 2 more errors involving not running BukkitContrib
+
+Version 1.0.41
+Fixed errors using Tree Feller if your server wasn't running BukkitContrib (sorry!)
+Fixed some more leftover stuff involving the new half-finished mining skill
+Fixed excavation's Giga Drill Breaker not working on placed blocks
+
+Version 1.0.40
+Fixed errors if your server wasn't running BukkitContrib
+
+Version 1.0.39
+mcMMO won't auto-download and auto-run BukkitContrib anymore
+
+Version 1.0.38
+Commented code for the half-finished Infernal Pick subskill (Whoops)
+
+Version 1.0.37
+The donation message in /mcmmo is now toggle-able
+The anvil message now only gets shown the first time you place an anvil (after login)
+Reworked /mcmmo (an improvement I would say)
+Added /mcmmo text to localization file
+Archery fire rate now configurable
+Berserk mode stops items from being collected
+Taming no longer receives xp from wolves being harmed
+Fixed bug where /stats required Tree Feller permission to show Woodcutting skill
+Fixed bug where players with mcgod could be harmed by AoE
+Fixed bug where modifying a skill also modified the xp to the same amount (when it should be zero)
+
+BukkitContrib Stuff
+Added a pop-up when placing an Anvil
+Added pop-ups on levelup
+Added basic sound effects to various abilities (Berserk, Tree Feller, Super Breaker, Leaf Blower, etc...)
+
+Code Stuff
+Added checkXp(SkillType, Player) for plugin devs (use this after modifying XP to check for levels)
+Added getPlayerProfile() which returns a PlayerProfile object for plugin devs (You can do almost everything with this object)
+100% more enums
+Changed how checking skill xp worked to be more efficient
+
+Version 1.0.36
+mcMMO now properly supports Bukkit/PEX/Permissions for Permissions
+Config.yml will no longer generate Performance Debugging nodes
+Registered permission nodes to plugin.yml
+Some more changes to Permissions code
+Fixed bug where Super Breaker activated where it shouldn't
+Fixed bug with enabling/disabling mcgod in config.yml
+Fixed bug with Excavation not kicking in until 1 level higher
+
+Version 1.0.35
+Added a Toggle for Chimaera Wing in config.yml
+Added customization of what item is used for Chimaera Wing in config.yml
+Fixed bug with randomly receiving Taming XP
+mcmmo.users file moved into /plugins/mcMMO/FlatFileStuff/
+Leaderboard files now moved into /plugins/mcMMO/FlatFileStuff/Leaderboards
+Locale files now have the prefix locale_ instead of messages_
+Locale files are now located inside com/gmail/nossr50/locale/ instead of com/gmail/nossr50/
+Updated the code that handles permissions (this may mean 3.1.6 will finally play well!)
+Some more source code organization
+Fixed warnings for compiler
+Removed dependencies on CraftBukkit
+Registered commands to OnCommand
+Removed performance debugging
+Removed some useless settings from the config file
+
+Version 1.0.34
+Fixed the PVP setting determining whether or not you would hurt yourself from AoE Abilities
+Added Dutch (nl) language support
+Super Breaker now gives the correct XP as determined by config.yml
+Sand Stone XP is now configurable and no longer shares the 'stone' node
+/mining now shows mining values instead of taming values
+
+Version 1.0.33
+Fixed the toggle for the Excavation drop 'Cocoa Beans'
+Fixed bug where Unarmed users could disarm without being bare handed
+Cocoa Beans now have an XP modifier in config.yml
+You can now toggle whether or not Mobspawners will give XP (in config.yml)
+MySQL version now makes requests to the MySQL server less frequently (should help performance)
+Fixed bug with Skull Splitter hitting the user
+
+Version 1.0.32
+Added "General.Performance.Print_Reports" node to config.yml to help identify causes of performance issues
+Fixed bug of swords users hurting themselves with serrated strikes
+
+Version 1.0.31
+Fixed bug of trying to cast Animals to non-animals
+
+Version 1.0.30
+Mobs that spawn from spawners no longer give XP (for reals this time)
+
+Version 1.0.29
+Mobs that spawn from spawners no longer give XP (again)
+Fixed bug where Serrated Strikes did not Bleed additional targets
+Identified and solved a potential memory leak in Bleed Simulation
+Renamed the Object Config to Misc and rewrote parts of it
+Rewrote Party/Admin/God toggles
+Added Polish language support (pl)
+
+Version 1.0.28
+Actually fixed /stats showing excavation values for swords
+Made some improvements to how Bleed Simulation was handled for different entity types
+Obsidian now does normal durability damage during Super Breaker
+
+Version 1.0.27
+Fixed /stats showing excavation values for swords
+Hopefully fixed a wide range of NPE errors
+Updated German (de) localization
+
+Version 1.0.26
+Fixed accidentally making power levels go above 9,000
+
+Version 1.0.25
+Compatible with the latest CB
+Beast Lore now functions correctly
+Wolves are no longer invincible to players
+Changed the look of Beast Lore
+Skill info pages now show your stat in that skill (if you have permission)
+/stats and /whois has been alphabetized and divided into three categories (Gathering/Combat/Misc)
+Abilities will not trigger on Trap Doors
+
+Version 1.0.24
+Now compatible with latest RB (928)
+Taming now receives XP from your wolves harming foes
+Taming is now easier to level
+Green Thumb now drops seeds when harvesting Wheat
+
+Version 1.0.23
+Modified Bleed Simulation to fix performance problems
+Rewrote MySpawn to be more efficient when calculating time left
+Rewrote Skills to be more efficient when calculating time left
+
+Version 1.0.22
+Added 'Name' nodes to commands for renaming them
+
+Version 1.0.21
+Fixed Skull Splitter length in /axes displaying incorrectly
+Fire rate limiter now correctly uses the value in the config file
+Stone XP now correctly uses the value in the config file
+Cobble -> Mossy now correctly uses the value in the config file
+Removed setmyspawn from config file as it serves no purpose
+All commands now have an 'Enabled' node in the config file that when set to false disables the command completely
+Fixed color scheme inconsistency for Mining in /whois results
+
+Version 1.0.20
+Fixed Array Index Out of Bounds error
+
+Version 1.0.19
+Removed a failsafe for the Timer that is no longer necessary (should improve performance)
+Fixed /myspawn not working by rewriting it :3
+Fixed exploit where players could break a freshly placed mushroom for XP
+MySQL User Passwords can now be blank (Although you really should have a password...)
+Fixed a few NPE errors
+
+Version 1.0.18
+Fixed MySQL default TablePrefix
+Fixed Wheat not being configurable
+
+Version 1.0.17
+Brand new YAML Configuration file
+Ability to configure XP for all gathering skills in config file
+German Language added to mcMMO
+French Language added to mcMMO
+MySpawn will no longer heal players
+/<skillname> commands now also check for their localized names for displaying help
+Added many more Strings to localization files
+Added more safeguards to MySpawn for NPE
+Fixed bug where Tree Feller Radius depended on WoodCutting XP rather than Skill Level
+Fixed bug where Readying a Hoe returned a missing localization string
+Added some safeguards into Bleed Simulation to prevent possible memory leaks
+Performance improvements to storing/calling Skill/XP Values
+Plugged a potential memory leak with PlayerProfiles not being removed correctly
+Disabled the mob spawner camping anti-exploit in favor of performance
+
+Version 1.0.16
+Fixed bug where localization file failed to load
+Changed en_US to lowercase
+mcMMO now requires locale files to be in lowercase
+Fixed a few strings missing from the localization file
+
+Version 1.0.15
+Removed leftover code that spammed SQL errors
+
+Version 1.0.14
+Added many missed strings into localization
+Finnish Localization updated for the new strings
+Green Thumb should respect Block Protection plugins now
+Fixed Number Format Exception when loading a PlayerProfile
+
+Version 1.0.13
+Fixed bug/NPE where stats would not load and therefore 'reset' for players
+Fixed NPE involving /ptp
+Added "enableMOTD" setting to properties file
+
+Version 1.0.12
+Fixed another NPE error
+Non-Gathering skills should correctly gain XP if PVP is set to false now
+Localization will now support language codes that do not have two parts like "fi"
+Fixed bug where Wiki MOTD message would not be loaded from localization file
+
+Version 1.0.11
+Fixed bug where players could not gain experience in several skills
+Removed PVP flag from mcmmo.properties as its not needed anymore
+Fixed a few NPE errors
+Mushroom XP reduced from 25 to 15
+Fixed an exploit where players who just logged in could be farmed for experience because they were invulnerable
+
+Version 1.0.10
+Added Localization/String Customization
+Mushroom XP reduced from 40 to 25
+Removed "clears inventory" warning in /mcc for /myspawn since this no longer happens
+
+Version 1.0.09
+Fixed the NPE that occurs when players gain experience (Sorry!)
+Fixed bug where /myspawn & /clearmyspawn would work if MySpawn was disabled in the properties file
+Changed strings containing "MMO" to read "mcMMO"
+Removed a lot of unused or unnecessary variables from the PlayerProfiles in mcMMO, this should lower the memory footprint
+Added getXpToLevel() for modders
+
+Version 1.0.08
+Added removeXP() for modders
+Fixed bug where stone swords only repaired by 33% instead of 50%
+Fixed bug where stone/wooden hoes wouldn't repair
+Big overhaul to how skill values and xp values were handled in the code
+Modifying the players skill levels now sets the corresponding skill xp to zero
+Using Serrated Strikes/Skull Splitter on mobs should no longer harm nearby players when PVP is disabled
+Switching to another weapon after firing your bow should no longer trigger procs for that weapon when the arrow hits
+Slimes/Ghasts now give XP for combat skills
+Added "EnableHpRegeneration" property setting
+Added "EnableMySpawn" property setting
+
+Version 1.0.07
+Added more repair customization by solarcloud7
+Leaderboards ignore players with the respective stat at 0
+Reconnecting to MySQL will reload player data
+Fixed a NPE with MySQL's Leaderboards
+Removed "Loop iteration" debug message from mcMMO
+
+Version 1.0.06
+MySQL will attempt to reconnect if the connection is closed
+Breaking the bottom block of Cactus/Reeds will award the correct experience and double drops
+Added support for Minecraft Statistics
+Fixed NPE with /myspawn command
+
+Version 1.0.05
+PVP interactions now check for permissions before handing out any experience
+Many skill abilities now check for permissions correctly
+All interactions with Taming now check for permissions
+mcMMO now checks for its pvp flag being true before handling pvp interactions
+
+Version 1.0.04
+Fixed bug where players would be informed incorrectly when their cooldowns refreshed
+Fixed exploit where players could reconnect to reset their cooldowns
+Added new "cooldowns" table to MySQL
+Berserk now breaks through snow
+Lightning no longer gives Taming XP
+Shortened /mcc to fit the screen
+
+Version 1.0.03
+Bleed will no longer trigger on friendly wolves
+Axes criticals will no longer trigger on friendly wolves
+
+Version 1.0.02
+Fixed bug where the Timer would start before everything else was ready
+Fixed bug where mcrefresh also required mcability permission node
+Fixed bug where Unarmed was not checking for disarm procs
+Green Thumb now checks for herbalism permissions
+Added "enableGreenThumbCobbleToMossy" to config file, this also changes Green Terra
+AoE abilities now harm wolves
+
+Version 1.0.01
+Removed debug message when wolves are struck
+Fixed issue with reloading mcMMO when MySQL was enabled
+Fixed a NPE with MySpawn
+Fixed a NPE with removing users from PlayerProfile
+Unarmed no longer starts with a damage bonus
+Unarmed apprentice DMG bonus changed from 3 to 2
+
+Version 1.0
+Players can now repair Stone/Wood tools
+Fixed duping bug with WG/Block Protection Plugins
+Added Leaf Blower to WoodCutting
+Different Trees give different WoodCutting XP
+Water changing Gravel to Clay removed
+Code Organized/Optimized further
+MySQL Support
+Taming Skill
+Leaderboards
+Players won't hand out XP if they died within the last 5 seconds
+
+Version 0.9.29
+Fixes critical bug involving water turning anything into clay
+
+Version 0.9.28
+Green thumb can now spread grass to dirt using seeds
+Adding XP will check for level ups again
+Acrobatics won't hand out XP on death anymore
+Acrobatics will check plugins for the event being cancelled before handing out XP
+
+Version 0.9.27
+Fixed Herbalism not properly receiving Triple Drops from Green Terra
+Fixed Herbalism not handing out any XP outside of Green Terra
+Fixed Herbalism asking for seeds on things that did not require it
+
+Version 0.9.26
+Fixed Green Terra going off without readiness
+Fixed Hoe trying to ready when tilling Grass
+
+Version 0.9.25
+Fixed issue with anti-exploits and Herbalism
+MySpawn works like a hearthstone now, no inv pentality, 1hr cooldown
+Added Green Terra Ability to Herbalism
+Added Green Thumb ability to Herbalism
+Fixed Repair not working for Iron Tools
+Fixed bug where Axes Ability checked for Unarmed Ability Permission
+Added Cocoa Beans to Excavation XP/Loot Tables, Found in Grass/Dirt
+Using Super Breaker on Obsidian significantly damages it compared to other materials
+Added Obsidian to Mining XP Table/Super Breaker
+Added Pumpkins/Reeds/Cactus to Herbalism XP Tables/Double Drops
+Corrected "mcMMMO" to "mcMMO" in MOTD
+
+Version 0.9.24
+PLAYER_BED_ENTER removed due to its unusual issues
+Added info about the Wiki to the motd
+/mcrefresh will reset if you were recently hurt (Chimaera Wing/HP Regen)
+Fixed Armor Repair not adding XP
+Boosted Repair XP of Armor to match Tools
+Repairing Armor won't trigger Super Repair twice anymore
+Setting your MySpawn now just requires right clicking a bed (still requires the setmyspawn permission node)
+
+Version 0.9.23
+Players will now announce ability usage within a short distance to nearby players
+Chimaera Wing now takes the world into account
+Acrobatics won't give XP on death, and will fail if you would've died after the damage reduction
+Added yet another check to see if a Player is not in the Users system for NPC mod compatibility
+
+
+Version 0.9.22
+Fixed bug where chimaera wing was unusable after being hurt even after the cooldown
+
+Version 0.9.21
+/mcrefresh fixed to work properly with the new ability monitoring system
+Ability lengths are now based on your skill level directly rather than a tiered system
+Chimaera Wings won't trigger on things they shouldn't (Doors, Chests, ETC)
+Chimaera Wings will properly tell you how long you have to wait to use it if you've been recently hurt
+
+Version 0.9.20
+Fixed Tree Feller not checking if their cooldown was refreshed and always activating
+/stats and /whois will now show the powerlevel based on permissions
+Shovels will no longer say you've lowered your axe
+/myspawn will no longer say your inventory has been cleared if the server settings disable this feature
+
+
+Version 0.9.19
+Fixed Anti-Exploit XP stuff not working
+
+Version 0.9.18
+Added failsafe to prevent abilities from going on forever, abilities will check if they should've expired when being used in case the Timer fails
+Archery Spam has been nerf'd, you can only fire once per second now (Toggle-able in config file)
+Fixed bug when just having the Admin Chat permission wouldn't allow you to see Admin Chat
+Fixed bug where Axes ability could be used without permission
+Abilities are monitored with Timestamps rather than a Timer monitored tick rate
+When players were last hurt is now monitored with Timestamps rather than a Timer monitored tick rate
+Made Anti XP-Exploits more Robust
+Repair XP is now based on durability restored
+Acrobatics rolling will now reduce damage if you go over the damage threshold
+Acrobatics rolling damage threshold lowered to 10 from 20
+Added Graceful Roll to Acrobatics, hold Shift when falling to do a Graceful Roll
+mcMMO now checks for the blockBreak and EntityDamage events being canceled before proceeding
+Dodge notification shortened
+Dodge won't negate damage completely anymore
+Added 3 more functions for plugin authors to call, getPartyName(Player player), inParty(Player player), and getParties()
+
+Version 0.9.17
+Players now set their MySpawn by entering a bed, it requires the setmyspawn permission node
+/setmyspawn has been removed
+Compatible with CB 670
+Fixed errors related to Repair
+Abilities will no longer trigger from Bed interactions
+/unarmed will now tell the player when they will receive unarmed master (if they have apprentice)
+
+Version 0.9.16
+Logs placed by the player won't grant XP/Double Drops anymore
+Added more functions plugin authors can call
+Acrobatics roll has a damage threshold of 20, going above this means a failed Roll
+
+
+Version 0.9.15
+Acrobatics will now behave properly
+AoE Abilities ignore wolves (temp fix)
+Added "all" parameter to /mmoedit & /addxp
+After giving XP to a player it will now check for level ups in skills
+
+Version 0.9.14
+mcMMO checks for abilities being active before sending the fake block break event
+
+Version 0.9.13
+Fixed excavation ignoring the xpGainMultiplier
+Now compatible with CB 600+
+Fixed bug where Dodge acted maxed out no matter your skill level
+
+Version 0.9.12
+mcMMO now fakes a block break event for abilities to maximize plugin compatibility
+/herbalism will return the correct values now
+New /addxp command
+
+Version 0.9.11
+PVE Combat Skills experience is now based on damage dealt
+The Timer will no longer break from Bleed Simulation
+Tree feller no longer "damages" saplings
+Bleed+ (Serrated Strikes) lasts 5 ticks down from 12
+Bleed/Bleed+ now do 2 damage instead of 1
+Power Level is now based on permissions
+Counter Attack added to swords
+Parry is now based directly on Swords skill level
+Parry maximum proc chance raised to 30% from 20%
+Serrated Strikes now properly applies Bleed+ to targets
+Players who parry can no longer be disarmed
+Acrobatics now has a Dodge passive skill reducing damage
+Repair skill now effects how much durability is restored
+Super repair now doubles the repair amount on proc
+Unarmed now starts with a bonus to damage to encourage use
+Unarmed now has two steps to damage scaling, Appentice, and Mastery
+Unarmed disarm now caps at 25% for 1000 skill
+Fixed problem where Archery skill procs would ignore other plugins
+Ignition changed to 25% chance
+Ignition length will be based on archery skill level
+/myspawn now has a warning about the inventory loss penalty in /mcc
+mcMMO Timer now runs in 1 second intervals rather than 2
+
+Version 0.9.10
+Party invites now show who they are from
+Mushrooms added to Dirt/Grass excavation loot tables, drops with 500+ skill
+mcMMO configuration files property setting names have been changed for readability
+Fixed bug where Gold and Iron wouldn't drop anything during Super Breaker
+Added /mcability info to /mcc
+Potentially fixed NPE error when checking players for being in same party for PVP XP
+Removed sand specific diamond drop from sand excavation loot table, Diamonds can still drop globally for sand
+Added a global XP gain multiplier, increase it to increase XP gained
+Reduced PVE XP for Unarmed, now identical to Axes/Swords
+Changed Chat priority in mcMMO to be higher, this should help plugin conflicts
+Mushroom XP raised to 40 from 10
+Flower XP raised to 10 from 3
+
+Version 0.9.9
+Fixed problem where entities never got removed from the arrow retrieval list of entities
+
+Version 0.9.8
+EntityLiving shouldn't be cast to entities that are not an instance of EntityLiving
+Added a null check in the timer for players being null before proceeding
+
+Version 0.9.7
+Procs/XP Gain will no longer happen when the Entity is immune to damage (Thanks EdwardHand!)
+Axes critical damage versus players reduced to 150% damage from 200% damage
+Fixed bug where Daze might not proc
+Changed archery Daze to follow smooth transition
+Added archery Daze chance info to /archery
+Cooldown lengths are now customizable, they are in seconds and multiplied by 2 by mcMMO
+
+Version 0.9.6
+Timer checks for player being null before adding them to the mcUsers system
+Cooldowns will now show how much time is remaining when trying to use their respective abilities
+SkullSpliiter will now correctly inform the player when they are too tired to use it
+Acrobatics will no longer give XP if the event was cancelled by another plugin
+Version 0.9.5
+Super Breaker now gives a chance for Triple Drops based on mining skill
+Ability durability loss down from 15 to 2
+Ability durability loss is now toggle-able
+Ability durability loss can be adjusted in the configuration file
+Mining Picks are no longer lowered after activating Super Breaker
+
+Version 0.9.4
+Flowers won't drop wheat anymore
+Signs won't trigger ability readiness anymore
+Version 0.9.3
+Bug stopping abilities from never wearing of may have been fixed
+Changed color of "X Ability has worn off" to RED from GRAY
+Super Breaker, Giga Drill Breaker, and Tree Feller now damage the tool significantly during use
+Netherrack and Glowstone now give Mining XP
+Netherrack and Glowstone are now effected by Super Breaker
+Abilities will no longer be readied when you right click signs or beds
+Chimaera Wings won't activate on blocks you can interact with and signs
+Abilities now adjust their effects depending on tool quality
+Superbreaker won't break things that tool couldn't normally break
+Giga Drill Breaker will only give triple xp and triple drops for diamond tools, with a reduced effect for lesser tools
+Skull Splitter now has a limit of opponents nearby it will strike based on your tool quality
+Serrated Strikes now has a limit of opponents nearby it will strike based on your tool quality
+Modified /mcmmo description to be a little bit more relevant.
+
+Version 0.9.2
+Changed priority of some of the mcMMO listeners
+Now when certain abilities are activated it shouldn't say "You lower your x"
+
+Version 0.9.1
+Fixed "Unknown console command" errors with CB 556
+Added /mcability command to toggle being able to trigger abilities with right click
+Added some more nullchecks for people reporting NPE errors
+Compatibility with NPC mods improved (Mainly for archery!)
+Other plugins can now call inSameParty() from mcMMO to increase compatibility
+
+Version 0.9
+--NEW CONTENT--
+Woodcutting now has the "Tree Feller" Ability
+Unarmed now has the "Berserk" Ability
+Swords now has the "Serrated Strikes" Ability
+Mining now has the "Super Breaker" Ability
+Axes now has the "Skull Splitter" Ability
+Excavation now has the "Giga Drill Breaker" Ability
+Added /mcrefresh <playername> - tool for refreshing cooldowns
+Unarmed now has the "Deflect Arrows" passive skill
+Chimaera Wing Item Added
+
+--CHANGES--
+HP Regen & Bleed are back
+Woodcutting will drop the appropriate log on double drop procs
+Herbalism now applies double drops to herbs
+/<skillname> now shows much more information to the player regarding their stats
+Axes skill Critical Strikes are now based directly on your skill level
+Swords skill Bleed chance is now based directly on your skill level
+Unarmed disarm chance is now based directly on your skill level
+Acrobatics now gives XP when you roll
+
+--BUGFIXES--
+Memory Leak Fixed
+Axes not doing critical strikes
+Gold Armor repair
+Capped skills now have the correct proc chance
+/mmoedit is no longer case sensitive
+More NPE errors fixed
+Many bugs I forgot to write down
+
+--PLUGIN COMPATABILITY FIXES--
+If combat interactions are cancelled by other plugins mcMMO should ignore the event
+If block damage interactions are cancelled by other plugins mcMMO should ignore the event
+	
+Version 0.8.22
+	Fixed bug where Axes did less damage than normal
+	Acrobatic rolls now give XP
+	Acrobatics XP increased for non-rolls
+Version 0.8.21
+	Fixed bug where axe criticals would dupe items
+Version 0.8.20
+	99.99% sure I fixed anvils that suddenly stop working
+Version 0.8.19
+	Fixed being able to excavate placed blocks
+	Added toggle option to mining requiring a pickaxe
+	Added toggle option to woodcutting requiring an axe
+	PVP interactions now reward XP based on the damage caused (this is effected by skills)
+	PVP XP gain can be disabled in the configuration file
+	PVP XP has a modifier, increase the modifier for higher XP rewards from PVP combat
+Version 0.8.18
+	Fixed sandstone not being watched for exploitation
+Version 0.8.17
+	mcmmo.users moved to plugins/mcMMO/
+	Snowballs and Eggs will no longer trigger Ignition
+	Loot tables for excavation adjusted
+	Mining benefits now require the player to be holding a mining pick
+	Woodcutting benefits now require the player to be holding an axe
+Version 0.8.16
+	Moved configuration file to /plugins/mcMMO
+	Arrows now have a chance to Ignite enemiesw
+	Fixed arrows not being retrievable from corpses
+	Added info about ignition to /archery
+Version 0.8.14
+	Mining, Woodcutting, Herbalism, and Acrobatics proc rates now are based on your skill level directly rather than tiers you unlock via skill levels
+	Archery's ability to retrieve arrows from corpses now is based on your skill level directly rather than tiers you unlock via skill levels
+	Mining, Woodcutting, Herbalism, Archery, and Acrobatics now show their proc % relative to your skill if you type /<skillname>
+	You can now adjust what level is required to repair diamond in the configuration file
+	Changed mining XP rates to be a tad higher for some things
+	You can now get XP from sandstone
+	XP rates increased for gathering glowstone with excavation
+	XP rates increased a bit for excavation
+	Skill info is now a bit more detailed for certain skills
+	Added info about arrow retrieval to /archery
+Version 0.8.13
+	Enemies no longer look like they have frozen when they die
+	Item duping fix
+Version 0.8.11
+	Performance improvements
+	Memory leak fixed
+	NPE error with MySpawn really fixed
+Version 0.8.9
+	Fixed NPE for My Spawn
+	Fixed NPE for onBlockDamage
+	Bleed proc now correctly checks for Swords permissions
+Version 0.8.8
+	Gold can now be repaired
+	Tweaked Mining XP gains
+	Reorganized code
+	Added /mcgod godmode command
+	Fixed the pvp toggle in the settings file
+Version 0.8.7
+	Removed packet-sending stuff wasn't working anyways
+	Fixed another NPE with the TimerTask
+	Skills now only show up in /stats if you have permissions for them
+Version 0.8.6
+	Added a null check in bleed simulation to prevent a NPE
+Version 0.8.5
+	Players are now added to files when they connect (to fix a NPE)
+	onPlayerCommand stuff moved into onPlayerCommandPreprocess
+Version 0.8.4
+	Fixed another nullpointer error for TimerTask
+	Fixed bug making regeneration take twice as long to kick in after combat
+Version 0.8.3
+	Modified the timer intervals (from 1 second to 2)
+	All skills now have an individual modifier (Set by default to 2)
+	There is now a global XP modifier (Set by default to 1)
+	Herbalism now correctly follows its skill curve
+	Unarmed no longer gives experience for harming other players
+	Players can no longer exploit mob spawners for experience
+Version 0.8.2
+	Fixed Concurrent Modification Exception
+	Fixed some incorrect skill descriptions
+	First tier of HP Regeneration is now available from the start
+	Fixed bleed proc rate for very high skill levels
+	Changed regeneration permissions to 'mcmmo.regeneration'
+Version 0.8
+	Archery skill now lets players recover arrows from downed foes
+	Health regenerates based on power level
+	Added toggle to myspawn clearing player inventory in settings file
+	Swords now have a bleed effect
+	Rewrote Skill descriptions to be more informative/better
+Version 0.7.9
+	XP Curve now follows a new formula
+	Acrobatics XP gains changed
+	Compiled against permissions 2.1
+Version 0.7.8
+	Massive tweaks to XP gain for Archery, Swords, Axes, Unarmed
+Version 0.7.7
+	Minor tweak to how players are added to the flat file
+	Fixed some nullpointer exceptions when players die
+Version 0.7.6
+	Fixed being able to repair diamond armor with below 50 skill
+	Myspawn now supports multiple worlds, clearing myspawn will set it to the first world created by the server
+Version 0.7.5
+	Removed random checks for herbalism XP
+	Herbalism is now called properly (This should fix gaining no xp or double drops)
+Version 0.7.4
+	Work around for a bukkit bug that broke my onBlockDamage event
+	Added /clearmyspawn
+Version 0.7.3
+	Fixed to work with build 424 of CB
+	Lowered the XP of gold due to it not being that rare anymore
+Version 0.7.2
+	Fixed security flaw where players could access /mmoedit if the server was not running permissions
+	Reduced XP gain of woodcutting a bit
+Version 0.7
+	Completely rewrote the XP system
+	Added an XP skillrate modifier to the settings file
+	
+Version 0.6.2
+	Axes now do critical strikes against farm animals
+	Removed the "Stupidly Long Constructor"
+	Now compatible with the latest CB builds
+Version 0.6.1
+	Customizable command names
+	Axes can now be modified with /mmoedit
+	Party members are now correctly informed when you leave the party
+	Fixed incorrect commands in /mcc
+Version 0.5.17
+
+	Changed namespaces to fit bukkits new standard
+	Adjusted excavation proc rates
+	Modified excavation loot tables
+	Added Party Invite System
+
+Version 0.5.16
+
+	Fixed unarmed not checking for permissions when hitting players
+
+Version 0.5.15
+	Fixed stone swords not being recognized as swords
+	Fixed /a not working if you were an op but did not have permissions
+	
+Version 0.5.14
+	Added permissions for skills
+
+Version 0.5.13
+
+	Removed skillgain from succesful parries
+	Repair now refreshed the inventory
+	
+Version 0.5.12
+
+	Fixed being able to hurt party members with the bow and arrow
+	
+Version 0.5.11
+
+	Added /mmoedit command
+	Fixed bug preventing player versus player damage
+	Fixed bug preventing damage from scaling with unarmed & bows
+	Fixed disarm proc making the opponent dupe his/her items
+	Added mcmmo.tools.mmoedit permission
+	Added mcmmo.commands.setmyspawn permission
+	Added totalskill to /stats
+	Changed the look of /stats
+	
+Version 0.5.10
+
+    Fixed trying to set health to an invalid value
+
+Version 0.5.9
+
+    Fixed duping inventories on death
+
+Version 0.5.8
+
+    Fixed bug where players inventories would dupe during combat
+    
+Version 0.5.7
+
+    Fixed monsters instant killing players
+    Misc fixes
+Version 0.5.4
+
+    Changed herbalism skill gain from wheat to be WAAAAY slower
+
+Version 0.5.3
+
+    Players will now correctly drop their inventories when killed by a monster
+
+Version 0.5.2
+
+    Fixed MAJOR bug preventing swords skill from gaining through combat
+
+Version 0.5
+
+    Archery Added
+    Swords Added
+    Acrobatics Added
+    Logging for Party/Admin chat added
+    Fixed whois to show correct values for Excavation
+    Made death messages much much more specific
+
+Version 0.4.4
+
+    Fixed being able to repair full durability iron tools
+    Fixed herbalism benefits not behaving properly
+    Fixed removing 1 diamond from every stack of diamond when repairing diamond
+
+Version 0.4.2
+
+    Removed myspawn from the motd
+
+Version 0.4.1
+
+    Fixed /mcc showing incorrect command for herbalism
+    Changed unarmed skillrate to be much slower than before
+    Modified a few skill descriptions
+    Added permission for /whois
+    Players can now use admin chat without being op as long as they have the correct permission (requires Permissions)
+
+Version 0.4
+
+    Permissions support
+    Removed OPs having different names than normal players
+    Removed /setspawn & /spawn
+    Slowed down excavation skill rate
+    Fixed excavation coal drop being too rare
+
+Version 0.3.4
+
+    Creepers now give double xp for unarmed
+    Iron armor can now be repaired!
+    Fixed bug stopping items from being repaired
+
+Version 0.3.3
+
+    Yet another herbalism skill gain tweak
+
+Version 0.3.2
+
+    Changed excavation loot tables to be more rewarding
+    Changed sand to give normal excavation xp instead of double xp
+    Fixed herbalism skill exploit
+    Mobs killed with unarmed now drop loot properly
+    Unarmed xp rate depends on mob (zombies lowest fyi)
+    Huge player crashing bug fix on disarm!
+
+Version 0.3.1
+
+    Fixed excavation not saving properly
+    Fixed repair using excavation values
+
+Version 0.3
+
+    Unarmed skill
+    Herbalism skill
+    Excavation skill
+    Many bugfixes (thanks for reporting them!)
+    /<skillname> - Detailed information about skills in game
+
+Version 0.2.1
+
+    Misc bugfixes
+
+Version 0.2
+
+    Repair ability added
+    Repair skill added
+    Iron Armor repair temporarily disabled
+    Anvils (Iron Block) added
+    /mcmmo & /mcc added
+    Misc changes to existing commands
+    Misc bug fixes
+
+Version 0.1
+
+    Releasing my awesome plugin
