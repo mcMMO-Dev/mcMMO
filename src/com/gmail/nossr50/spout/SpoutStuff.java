@@ -1,5 +1,6 @@
 package com.gmail.nossr50.spout;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -60,9 +61,9 @@ public class SpoutStuff
 			JarFile jar = new JarFile(plugin.mcmmo);
 			JarEntry entry = jar.getJarEntry("resources/"+theFileName);
 			InputStream is = jar.getInputStream(entry);
-			FileOutputStream os = new FileOutputStream(currentFile);
 			byte[] buf = new byte[(int)entry.getSize()];
-			is.read(buf, 0, (int)entry.getSize());
+			is.read(buf, 0, buf.length);
+			FileOutputStream os = new FileOutputStream(currentFile);
 			os.write(buf);
 			os.close();
 		} catch (FileNotFoundException e) {
@@ -185,9 +186,9 @@ public class SpoutStuff
 		files.add(new File(dir+"HUD/Standard/Icon.png"));
 		files.add(new File(dir+"HUD/Retro/Icon_r.png"));
 		//Repair SFX
-		files.add(new File(dir+"/Sound/repair.wav"));
+		files.add(new File(dir+"Sound/repair.wav"));
 		//Level SFX
-		files.add(new File(dir+"/Sound/level.wav"));
+		files.add(new File(dir+"Sound/level.wav"));
 		
 		return files;
 	}

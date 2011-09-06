@@ -260,7 +260,7 @@ public class Skills
 				PP.setFistsPreparationATS(System.currentTimeMillis());
 				PP.setFistsPreparationMode(true);
 	    	}
-	    	if((mcPermissions.getInstance().axes(player) || mcPermissions.getInstance().woodcutting(player)) && !PP.getAxePreparationMode())
+	    	if((mcPermissions.getInstance().axesAbility(player) || mcPermissions.getInstance().woodCuttingAbility(player)) && !PP.getAxePreparationMode())
 	    	{
 	    		if(m.isAxes(player.getItemInHand()))
 	    		{
