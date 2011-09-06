@@ -901,6 +901,34 @@ public class PlayerProfile
 		skills.put(skillType, 0);
 	}
 	
+	/**
+	 * Adds XP to the player, this ignores skill modifiers
+	 * @param skillType The skill to add XP to
+	 * @param newvalue The amount of XP to add
+	 */
+	public void addXPOverride(SkillType skillType, int newvalue)
+	{
+		if(skillType == SkillType.ALL)
+		{
+			for(SkillType x : SkillType.values())
+			{
+				if(x == SkillType.ALL)
+					continue;
+				skillsXp.put(x, skillsXp.get(x)+newvalue);
+			}
+		} else {
+			int xp = newvalue;
+			
+			xp=xp*LoadProperties.xpGainMultiplier;
+			skillsXp.put(skillType, skillsXp.get(skillType)+xp);
+			lastgained = skillType;
+		}
+	}
+	/**
+	 * Adds XP to the player, this is affected by skill modifiers
+	 * @param skillType The skill to add XP to
+	 * @param newvalue The amount of XP to add
+	 */
 	public void addXP(SkillType skillType, int newvalue)
 	{
 		if(skillType == SkillType.ALL)

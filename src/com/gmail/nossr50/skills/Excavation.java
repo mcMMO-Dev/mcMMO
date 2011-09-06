@@ -59,6 +59,9 @@ public class Excavation
 	}
 	public static void excavationProcCheck(byte data, Material type, Location loc, Player player)
 	{
+		if(LoadProperties.excavationRequiresShovel && !m.isShovel(player.getItemInHand()))
+			return;
+		
 		PlayerProfile PP = Users.getProfile(player);
     	ArrayList<ItemStack> is = new ArrayList<ItemStack>();
     	

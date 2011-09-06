@@ -11,7 +11,7 @@ public class LoadProperties
 	donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, 
 	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
 	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, 
-	toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, 
+	toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, excavationRequiresShovel, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, 
 	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	
 	public static String xplock, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp,
@@ -322,6 +322,7 @@ public class LoadProperties
 	    	write("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
 	    	write("Skills.Archery.Fire_Rate_Limiter.Enabled", true);
 	    	write("Skills.Archery.Fire_Rate_Limiter.Interval", 1000);
+	    	write("Skills.Excavation.Requires_Shovel", true);
 	    	write("Skills.Mining.Requires_Pickaxe", true);
 	    	write("Skills.Woodcutting.Requires_Axe", true);
 	    	
@@ -478,6 +479,7 @@ public class LoadProperties
 	    	pvpxp = readBoolean("XP.PVP.Rewards", true);
 	    	pvpxprewardmodifier = readDouble("Experience.Gains.Multiplier.PVP", 1.0);
 	    	miningrequirespickaxe = readBoolean("Skills.Mining.Requires_Pickaxe", true);
+	    	excavationRequiresShovel = readBoolean("Skills.Excavation.Requires_Shovel", true);
 	    	woodcuttingrequiresaxe = readBoolean("Skills.Woodcutting.Requires_Axe", true);
 	    	repairdiamondlevel = readInteger("Skills.Repair.Diamond.Level_Required", 50);
 

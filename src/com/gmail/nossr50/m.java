@@ -24,8 +24,6 @@ public class m
 	 * This is probably the most embarrassing part of my code for mcMMO
 	 * I really should find an organized place for these things!
 	 */
-
-	//The lazy way to default to 0
 	
 	public static String getCapitalized(String target)
 	{
@@ -252,32 +250,19 @@ public class m
 
 	public static boolean isSwords(ItemStack is)
 	{
-		if(is.getTypeId() == 268 || is.getTypeId() == 267 || is.getTypeId() == 272 || is.getTypeId() == 283 || is.getTypeId() == 276)
-		{
-			return true;
-		} else 
-		{
-			return false;
-		}
+		return is.getTypeId() == 268 || is.getTypeId() == 267 || is.getTypeId() == 272 || is.getTypeId() == 283 || is.getTypeId() == 276;
 	}
+	
 	public static boolean isHoe(ItemStack is)
 	{
 		int id = is.getTypeId();
-		if(id == 290 || id == 291 || id == 292 || id == 293 || id == 294)
-		{
-			return true;
-		} else 
-		{
-			return false;
-		}
+		return id == 290 || id == 291 || id == 292 || id == 293 || id == 294;
 	}
+	
 	public static boolean isShovel(ItemStack is){
-		if(is.getTypeId() == 269 || is.getTypeId() == 273 || is.getTypeId() == 277 || is.getTypeId() == 284 || is.getTypeId() == 256){
-			return true;
-		} else {
-			return false;
-		}
+		return is.getTypeId() == 269 || is.getTypeId() == 273 || is.getTypeId() == 277 || is.getTypeId() == 284 || is.getTypeId() == 256;
 	}
+	
 	public static boolean isAxes(ItemStack is){
 		if(is.getTypeId() == 271 || is.getTypeId() == 258 || is.getTypeId() == 286 || is.getTypeId() == 279 || is.getTypeId() == 275){
 			return true;
