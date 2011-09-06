@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.jar.JarEntry;
@@ -54,25 +55,25 @@ public class SpoutStuff
 	
 	public static void writeFile(String theFileName, String theFilePath)
 	{
-		try {
-			File currentFile = new File("plugins/mcMMO/Resources/"+theFilePath+theFileName);
-			//System.out.println(theFileName);
-			@SuppressWarnings("static-access")
-			JarFile jar = new JarFile(plugin.mcmmo);
-			JarEntry entry = jar.getJarEntry("resources/"+theFileName);
-			InputStream is = jar.getInputStream(entry);
-			byte[] buf = new byte[(int)entry.getSize()];
-			is.read(buf, 0, buf.length);
-			FileOutputStream os = new FileOutputStream(currentFile);
-			os.write(buf);
-			os.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	    try {
+	        File currentFile = new File("plugins/mcMMO/Resources/"+theFilePath+theFileName);
+	        @SuppressWarnings("static-access")
+	        JarFile jar = new JarFile(plugin.mcmmo);
+	        JarEntry entry = jar.getJarEntry("resources/"+theFileName);
+	        InputStream is = jar.getInputStream(entry);
+	        byte[] buf = new byte[2048];
+	        int nbRead;
+	        OutputStream os = new BufferedOutputStream(new FileOutputStream(currentFile));
+	        while((nbRead = is.read(buf)) != -1) {
+	            os.write(buf, 0, nbRead);
+	        }
+	        os.flush();
+	        os.close();
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public static void extractFiles()
