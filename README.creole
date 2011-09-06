@@ -14,7 +14,6 @@ I take design very seriously, I am not the kind of person who can be satisfied g
 Hearing that people enjoy mcMMO and seeing the daily youtube videos about my mod has become a joy, I really can't believe how popular my mod has gotten!
 
 === Compiling
-Built using Eclipse.
 
 Required Libraries:
 * Bukkit
@@ -25,6 +24,5 @@ Required Libraries:
 
 Required to Run:
 * Bukkit
-* Permissions 2.x-3.x, PermissionsEx, or SuperPerms
 
 http://dev.bukkit.org/server-mods/mcmmo for more up to date information.
