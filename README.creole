@@ -18,6 +18,7 @@ Built using Eclipse.
 
 Required Libraries:
 * Bukkit
+* CraftBukkit
 * Spout API
 * Permissions
 * PermissionsEx
