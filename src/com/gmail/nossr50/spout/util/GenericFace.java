@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.gmail.nossr50.spout;
+package com.gmail.nossr50.spout.util;
 
 import org.getspout.spoutapi.gui.GenericTexture;
 

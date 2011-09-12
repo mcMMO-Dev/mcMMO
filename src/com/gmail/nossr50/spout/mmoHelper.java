@@ -38,6 +38,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.spout.util.GenericLivingEntity;
 
 public class mmoHelper 
 {

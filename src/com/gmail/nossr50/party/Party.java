@@ -19,7 +19,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.spout.ArrayListString;
+import com.gmail.nossr50.spout.util.ArrayListString;
 
 
 public class Party 

@@ -227,8 +227,6 @@ public class Combat
 		 */
 		if(event instanceof EntityDamageByEntityEvent && event.getEntity() instanceof Player)
 		{
-			Player defender = (Player)event.getEntity();
-			Swords.parryCheck((EntityDamageByEntityEvent) event, defender);
 			Swords.counterAttackChecks((EntityDamageByEntityEvent)event);
 			Acrobatics.dodgeChecks((EntityDamageByEntityEvent)event);
 		}
@@ -312,19 +310,6 @@ public class Combat
     		if(mcPermissions.getInstance().archery(attacker))
     		{
     			Archery.trackArrows(pluginx, x, event, attacker);
-    			/*
-    			 * DAMAGE MODIFIER
-    			 */
-    			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 50 && PPa.getSkillLevel(SkillType.ARCHERY) < 250)
-    				event.setDamage(event.getDamage()+1);
-    			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 250 && PPa.getSkillLevel(SkillType.ARCHERY) < 575)
-    				event.setDamage(event.getDamage()+2);
-    			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 575 && PPa.getSkillLevel(SkillType.ARCHERY) < 725)
-    				event.setDamage(event.getDamage()+3);
-    			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 725 && PPa.getSkillLevel(SkillType.ARCHERY) < 1000)
-    				event.setDamage(event.getDamage()+4);
-    			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 1000)
-    				event.setDamage(event.getDamage()+5);
     			
     			/*
     			 * IGNITION

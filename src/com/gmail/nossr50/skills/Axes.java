@@ -52,7 +52,8 @@ public class Axes {
     		}
     	}
     }
-	public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx){
+	public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)
+	{
     	Entity x = event.getEntity();
     	if(x instanceof Wolf){
     		Wolf wolf = (Wolf)x;

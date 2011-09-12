@@ -14,12 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gmail.nossr50.spout;
+package com.gmail.nossr50.spout.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.gui.*;
+
+import com.gmail.nossr50.spout.mmoHelper;
 
 public class GenericLivingEntity extends GenericContainer {
 

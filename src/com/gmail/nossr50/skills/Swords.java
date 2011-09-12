@@ -157,41 +157,6 @@ public class Swords
     	}
     }
     
-    public static void parryCheck(EntityDamageByEntityEvent event, Player defender)
-    {
-    	Entity y = event.getDamager();
-    	PlayerProfile PPd = Users.getProfile(defender);
-    	if(defender != null && m.isSwords(defender.getItemInHand()) 
-    			&& mcPermissions.getInstance().swords(defender)){
-			if(PPd.getSkillLevel(SkillType.SWORDS) >= 900)
-			{
-				if(Math.random() * 3000 <= 900)
-				{
-					event.setCancelled(true);
-					defender.sendMessage(ChatColor.GREEN+"**PARRIED**");
-					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
-					if(y instanceof Player)
-					{
-						Player attacker = (Player)y;
-						attacker.sendMessage(ChatColor.GREEN+"**PARRIED**");
-					}
-				}
-			} else 
-			{
-				if(Math.random() * 3000 <= PPd.getSkillLevel(SkillType.SWORDS))
-				{
-					event.setCancelled(true);
-					defender.sendMessage(ChatColor.YELLOW+"*CLANG* SUCCESSFUL PARRY *CLANG*");
-					defender.getItemInHand().setDurability((short) (defender.getItemInHand().getDurability() + 1));
-					if(y instanceof Player)
-					{
-						Player attacker = (Player)y;
-						attacker.sendMessage(ChatColor.DARK_RED+"**TARGET HAS PARRIED THAT ATTACK**");
-					}
-				}
-			}
-		}
-    }
     public static void counterAttackChecks(EntityDamageByEntityEvent event)
     {
     	//Don't want to counter attack arrows

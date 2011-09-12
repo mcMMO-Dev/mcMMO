@@ -132,17 +132,6 @@ public class Commands
 			player.sendMessage(mcLocale.getString("m.WoodCuttingTreeFellerLength", new Object[] {ticks})); 
 		}
 		else if(label.equalsIgnoreCase("archery") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillArchery").toLowerCase())){ 
-			Integer rank = 0;
-			if(PP.getSkillLevel(SkillType.ARCHERY) >= 50)
-				rank++;
-			if(PP.getSkillLevel(SkillType.ARCHERY) >= 250)
-				rank++;
-			if(PP.getSkillLevel(SkillType.ARCHERY) >= 575)
-				rank++;
-			if(PP.getSkillLevel(SkillType.ARCHERY) >= 725)
-				rank++;
-			if(PP.getSkillLevel(SkillType.ARCHERY) >= 1000)
-				rank++;
 			float skillvalue = (float)PP.getSkillLevel(SkillType.ARCHERY);
 			String percentage = String.valueOf((skillvalue / 1000) * 100);
 
@@ -171,13 +160,11 @@ public class Commands
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.Effects")})); 
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsArchery1_0"), mcLocale.getString("m.EffectsArchery1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsArchery2_0"), mcLocale.getString("m.EffectsArchery2_1")}));  
-			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsArchery3_0"), mcLocale.getString("m.EffectsArchery3_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsArchery4_0"), mcLocale.getString("m.EffectsArchery4_1")}));  
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.YourStats")})); 
 			player.sendMessage(mcLocale.getString("m.ArcheryDazeChance", new Object[] {percentagedaze})); 
 			player.sendMessage(mcLocale.getString("m.ArcheryRetrieveChance", new Object[] {percentage})); 
-			player.sendMessage(mcLocale.getString("m.ArcheryIgnitionLength", new Object[] {(ignition / 20)})); 
-			player.sendMessage(mcLocale.getString("m.ArcheryDamagePlus", new Object[] {rank})); 
+			player.sendMessage(mcLocale.getString("m.ArcheryIgnitionLength", new Object[] {(ignition / 20)}));  
 		}
 		else if(label.equalsIgnoreCase("axes") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillAxes"))){ 
 			String percentage;
@@ -213,7 +200,7 @@ public class Commands
 		}
 		else if(label.equalsIgnoreCase("swords") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillSwords").toLowerCase())){ 
 			int bleedrank = 2;
-			String percentage, parrypercentage = null, counterattackpercentage;
+			String percentage, counterattackpercentage;
 			float skillvalue = (float)PP.getSkillLevel(SkillType.SWORDS);
 			if(PP.getSkillLevel(SkillType.SWORDS) < 750){
 				percentage = String.valueOf((skillvalue / 1000) * 100);
@@ -222,12 +209,6 @@ public class Commands
 			}
 			if(skillvalue >= 750)
 				bleedrank+=1;
-
-			if(PP.getSkillLevel(SkillType.SWORDS) <= 900){
-				parrypercentage = String.valueOf((skillvalue / 3000) * 100);
-			} else {
-				parrypercentage = "30"; 
-			}
 
 			if(PP.getSkillLevel(SkillType.SWORDS) <= 600){
 				counterattackpercentage = String.valueOf((skillvalue / 2000) * 100);
@@ -250,14 +231,12 @@ public class Commands
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsSwords1_0"), mcLocale.getString("m.EffectsSwords1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsSwords2_0"), mcLocale.getString("m.EffectsSwords2_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsSwords3_0"), mcLocale.getString("m.EffectsSwords3_1")}));  
-			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsSwords4_0"), mcLocale.getString("m.EffectsSwords4_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsSwords5_0"), mcLocale.getString("m.EffectsSwords5_1")}));  
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.YourStats")})); 
 			player.sendMessage(mcLocale.getString("m.SwordsCounterAttChance", new Object[] {counterattackpercentage})); 
 			player.sendMessage(mcLocale.getString("m.SwordsBleedLength", new Object[] {bleedrank})); 
 			player.sendMessage(mcLocale.getString("m.SwordsTickNote")); 
 			player.sendMessage(mcLocale.getString("m.SwordsBleedLength", new Object[] {percentage})); 
-			player.sendMessage(mcLocale.getString("m.SwordsParryChance", new Object[] {parrypercentage})); 
 			player.sendMessage(mcLocale.getString("m.SwordsSSLength", new Object[] {ticks})); 
 
 		}
@@ -369,23 +348,6 @@ public class Commands
 			player.sendMessage(mcLocale.getString("m.UnarmedBerserkLength", new Object[] {ticks})); 
 		}
 		else if(label.equalsIgnoreCase("herbalism") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillHerbalism").toLowerCase())){ 
-			int rank = 0;
-			if(PP.getSkillLevel(SkillType.HERBALISM) >= 50)
-				rank++;
-			if (PP.getSkillLevel(SkillType.HERBALISM) >= 150)
-				rank++;
-			if (PP.getSkillLevel(SkillType.HERBALISM) >= 250)
-				rank++;
-			if (PP.getSkillLevel(SkillType.HERBALISM) >= 350)
-				rank++;
-			if (PP.getSkillLevel(SkillType.HERBALISM) >= 450)
-				rank++;
-			if (PP.getSkillLevel(SkillType.HERBALISM) >= 550)
-				rank++;
-			if (PP.getSkillLevel(SkillType.HERBALISM) >= 650)
-				rank++;
-			if (PP.getSkillLevel(SkillType.HERBALISM) >= 750)
-				rank++;
 			int bonus = 0;
 			if(PP.getSkillLevel(SkillType.HERBALISM) >= 200)
 				bonus++;
@@ -412,14 +374,12 @@ public class Commands
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsHerbalism1_0"), mcLocale.getString("m.EffectsHerbalism1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsHerbalism2_0"), mcLocale.getString("m.EffectsHerbalism2_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsHerbalism3_0"), mcLocale.getString("m.EffectsHerbalism3_1")}));  
-			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsHerbalism4_0"), mcLocale.getString("m.EffectsHerbalism4_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsHerbalism5_0"), mcLocale.getString("m.EffectsHerbalism5_1")}));  
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.YourStats")})); 
 			player.sendMessage(mcLocale.getString("m.HerbalismGreenTerraLength", new Object[] {ticks})); 
 			player.sendMessage(mcLocale.getString("m.HerbalismGreenThumbChance", new Object[] {gpercentage})); 
 			player.sendMessage(mcLocale.getString("m.HerbalismGreenThumbStage", new Object[] {bonus})); 
-			player.sendMessage(mcLocale.getString("m.HerbalismDoubleDropChance", new Object[] {percentage})); 
-			player.sendMessage(mcLocale.getString("m.HerbalismFoodPlus", new Object[] {rank})); 
+			player.sendMessage(mcLocale.getString("m.HerbalismDoubleDropChance", new Object[] {percentage}));  
 		}
 
 		else if(label.equalsIgnoreCase("excavation") || split[0].toLowerCase().equalsIgnoreCase(mcLocale.getString("m.SkillExcavation").toLowerCase())) 

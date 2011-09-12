@@ -1,10 +1,10 @@
 package com.gmail.nossr50;
 
-import com.gmail.nossr50.datatypes.Mob;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.command.Commands;
 import com.gmail.nossr50.config.*;
+import com.gmail.nossr50.runnables.mcTimer;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.spout.mmoHelper;
 import com.gmail.nossr50.listeners.mcBlockListener;
@@ -14,6 +14,7 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.*;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
+import org.blockface.bukkitstats.CallHome;
 import org.bukkit.Bukkit;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -70,7 +71,6 @@ public class mcMMO extends JavaPlugin
 	//private Timer mcMMO_SpellTimer = new Timer(true);
 
 	public static Database database = null;
-	public Mob mob = new Mob();
 	public Misc misc = new Misc(this);
 
 	//Config file stuff
@@ -135,7 +135,6 @@ public class mcMMO extends JavaPlugin
 		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Normal, this);
 
 		//Entity Stuff
-		pm.registerEvent(Event.Type.ENTITY_TARGET, entityListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Priority.Normal, this);
@@ -174,6 +173,7 @@ public class mcMMO extends JavaPlugin
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		
 		Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, mcMMO_Timer, 0, 20);
+		CallHome.load(this); //Swearword's blockface usage statistics, only dials home once
 	}
 
 	public PlayerProfile getPlayerProfile(Player player)

@@ -2,7 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -12,7 +11,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
-import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
@@ -149,14 +147,8 @@ public class mcEntityListener extends EntityListener
     
     public void onEntityDeath(EntityDeathEvent event) 
     {
-    	
     	Entity x = event.getEntity();
     	x.setFireTicks(0);
-    	
-    	//cleanup mob diff
-    	if(plugin.mob.mobDiff.containsKey(event.getEntity().getEntityId()))
-    			plugin.mob.mobDiff.remove(event.getEntity().getEntityId());
-    	
     	
     	//Remove bleed track
     	if(plugin.misc.bleedTracker.contains((LivingEntity)x))
@@ -183,29 +175,9 @@ public class mcEntityListener extends EntityListener
     	if(reason == SpawnReason.SPAWNER && !LoadProperties.xpGainsMobSpawners)
     	{
     		plugin.misc.mobSpawnerList.add(event.getEntity());
-    	} else 
-    	{
-    		if(event.getEntity() instanceof Monster && !plugin.mob.mobDiff.containsKey(event.getEntity().getEntityId()))
-        		plugin.mob.assignDifficulty(event.getEntity());
     	}
     }
     
-    public void onEntityTarget(EntityTargetEvent event) 
-	{
-    	
-		int type = event.getEntity().getEntityId();
-		//Make 3+ non-aggressive
-		if(event.getEntity() instanceof Monster 
-				&& plugin.mob.mobDiff.containsKey(type)
-				&& plugin.mob.isAggressive.containsKey(type))
-		{
-			if(plugin.mob.mobDiff.get(type) >= 2 && plugin.mob.isAggressive.get(type) == false)
-			{
-				event.setCancelled(true);
-				event.setTarget(null);
-			}
-		}
-	}
 	public boolean isBow(ItemStack is){
 		if (is.getTypeId() == 261){
 			return true;

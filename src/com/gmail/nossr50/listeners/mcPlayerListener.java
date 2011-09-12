@@ -201,22 +201,6 @@ public class mcPlayerListener extends PlayerListener
 			Skills.hoeReadinessCheck(player);
 			Skills.abilityActivationCheck(player);
 		}
-		if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
-		{
-			/*
-			 * HERBALISM MODIFIERS
-			 */
-			if(action == Action.RIGHT_CLICK_BLOCK && !m.abilityBlockCheck(event.getClickedBlock()))
-			{
-				return;
-			}
-			
-			if(mcPermissions.getInstance().herbalism(player))
-			{
-				Herbalism.breadCheck(player, player.getItemInHand());
-				Herbalism.stewCheck(player, player.getItemInHand());
-			}
-		}
 		
 		/*
 		 * ITEM CHECKS
