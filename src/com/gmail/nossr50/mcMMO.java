@@ -22,7 +22,6 @@ import com.gmail.nossr50.command.Commands;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.runnables.mcTimer;
 import com.gmail.nossr50.spout.SpoutStuff;
-import com.gmail.nossr50.spout.mmoHelper;
 import com.gmail.nossr50.listeners.mcBlockListener;
 import com.gmail.nossr50.listeners.mcEntityListener;
 import com.gmail.nossr50.listeners.mcPlayerListener;
@@ -165,6 +164,7 @@ public class mcMMO extends JavaPlugin
 			FileManager FM = SpoutManager.getFileManager();
 			FM.addToPreLoginCache(this, SpoutStuff.getFiles());
 			
+			/*
 			Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					  new Runnable() {
 
@@ -173,6 +173,7 @@ public class mcMMO extends JavaPlugin
 							  mmoHelper.updateAll();
 						  }
 					  }, 20, 20);
+			 */
 		}
 
 		PluginDescriptionFile pdfFile = this.getDescription();

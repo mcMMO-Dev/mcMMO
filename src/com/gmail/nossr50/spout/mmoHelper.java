@@ -37,6 +37,7 @@ import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.spout.util.GenericLivingEntity;
 
@@ -71,10 +72,13 @@ public class mmoHelper
 	 */
 	public static String getColor(Player player, LivingEntity target) {
 		if (target instanceof Player) {
+			if (((Player) target).isOp()) {
+				return ChatColor.GOLD.toString();
+			}
 			return ChatColor.YELLOW.toString();
 		} else {
 			if (target instanceof Monster) {
-				if (player != null && player.equals(((Creature) target).getTarget())) {
+				if (player != null && player.equals(((Monster) target).getTarget())) {
 					return ChatColor.RED.toString();
 				} else {
 					return ChatColor.YELLOW.toString();
@@ -84,7 +88,7 @@ public class mmoHelper
 			} else if (target instanceof Flying) {
 				return ChatColor.YELLOW.toString();
 			} else if (target instanceof Animals) {
-				if (player != null && player.equals(((Creature) target).getTarget())) {
+				if (player != null && player.equals(((Animals) target).getTarget())) {
 					return ChatColor.RED.toString();
 				} else if (target instanceof Tameable) {
 					Tameable pet = (Tameable) target;
@@ -125,12 +129,22 @@ public class mmoHelper
 	public static String getSimpleName(LivingEntity target, boolean showOwner) {
 		String name = "";
 		if (target instanceof Player) {
-			name += ((Player)target).getName();
+			if (LoadProperties.showDisplayName) {
+				name += ((Player) target).getName();
+			} else {
+				name += ((Player) target).getDisplayName();
+			}
+		} else if (target instanceof HumanEntity) {
+			name += ((HumanEntity) target).getName();
 		} else {
 			if (target instanceof Tameable) {
-				if (((Tameable)target).isTamed()) {
-					if (showOwner && ((Tameable)target).getOwner() instanceof Player) {
-						name += ((Player)((Tameable)target).getOwner()).getName() + "'s ";
+				if (((Tameable) target).isTamed()) {
+					if (showOwner && ((Tameable) target).getOwner() instanceof Player) {
+						if (LoadProperties.showDisplayName) {
+							name += ((Player) ((Tameable) target).getOwner()).getName() + "'s ";
+						} else {
+							name += ((Player) ((Tameable) target).getOwner()).getDisplayName() + "'s ";
+						}
 					} else {
 						name += "Pet ";
 					}
@@ -142,6 +156,8 @@ public class mmoHelper
 				name += "Cow";
 			} else if (target instanceof Creeper) {
 				name += "Creeper";
+			} else if (target instanceof Ghast) {
+				name += "Ghast";
 			} else if (target instanceof Giant) {
 				name += "Giant";
 			} else if (target instanceof Pig) {
@@ -150,6 +166,8 @@ public class mmoHelper
 				name += "PigZombie";
 			} else if (target instanceof Sheep) {
 				name += "Sheep";
+			} else if (target instanceof Slime) {
+				name += "Slime";
 			} else if (target instanceof Skeleton) {
 				name += "Skeleton";
 			} else if (target instanceof Spider) {
@@ -173,7 +191,7 @@ public class mmoHelper
 	
 	public static LivingEntity[] getPets(HumanEntity player) {
 		ArrayList<LivingEntity> pets = new ArrayList<LivingEntity>();
-		if (player != null && (!(player instanceof Player) || ((Player)player).isOnline())) {
+		if (player != null && (!(player instanceof Player) || ((Player) player).isOnline())) {
 			String name = player.getName();
 			for (World world : Bukkit.getServer().getWorlds()) {
 				for (LivingEntity entity : world.getLivingEntities()) {

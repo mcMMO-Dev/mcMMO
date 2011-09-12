@@ -28,6 +28,7 @@ import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.buttons.ButtonEscape;
 import com.gmail.nossr50.datatypes.buttons.ButtonHUDStyle;
+import com.gmail.nossr50.datatypes.buttons.ButtonPartyToggle;
 import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.spout.SpoutStuff;
 
@@ -59,8 +60,10 @@ public class mcSpoutScreenListener extends ScreenListener
 					PP.setHUDType(HUDType.SMALL);
 					break;
 				case SMALL:
-					PP.setHUDType(HUDType.RETRO);
+					PP.setHUDType(HUDType.DISABLED);
 					break;
+				case DISABLED:
+					PP.setHUDType(HUDType.RETRO);
 				}
 				
 				SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer));
@@ -70,6 +73,13 @@ public class mcSpoutScreenListener extends ScreenListener
 		} else if (event.getButton() instanceof ButtonEscape)
 		{
 			sPlayer.getMainScreen().closePopup();
+		} else if (event.getButton() instanceof ButtonPartyToggle)
+		{
+			PP.togglePartyHUD();
+			ButtonPartyToggle bpt = (ButtonPartyToggle)event.getButton();
+			bpt.updateText(PP);
+			SpoutStuff.playerHUDs.get(sPlayer).resetHUD();
+			SpoutStuff.playerHUDs.get(sPlayer).initializeHUD(sPlayer);
 		}
 	}
 	

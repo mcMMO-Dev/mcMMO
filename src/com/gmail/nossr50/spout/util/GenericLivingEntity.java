@@ -1,7 +1,7 @@
 /*
- * This file is from mmoMinecraft (http://code.google.com/p/mmo-minecraft/).
- * 
- * mmoMinecraft is free software: you can redistribute it and/or modify
+ * This file is part of mmoHelperMinecraft (https://github.com/mmoHelperMinecraftDev).
+ *
+ * mmoHelperMinecraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -10,13 +10,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.gmail.nossr50.spout.util;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.gui.*;
@@ -25,7 +24,6 @@ import com.gmail.nossr50.spout.mmoHelper;
 
 public class GenericLivingEntity extends GenericContainer {
 
-	private Container _bars;
 	private Container _space;
 	private Label _label;
 	private Gradient _health;
@@ -54,7 +52,7 @@ public class GenericLivingEntity extends GenericContainer {
 							.setTopColor(black)
 							.setBottomColor(black)
 							.setPriority(RenderPriority.Highest),
-					_bars = (Container) new GenericContainer(
+					new GenericContainer(
 						_health = (Gradient) new GenericGradient(),
 						_armor = (Gradient) new GenericGradient()
 					)		.setMargin(1)
@@ -96,7 +94,7 @@ public class GenericLivingEntity extends GenericContainer {
 	 * @return 
 	 */
 	public GenericLivingEntity setEntity(String name, String prefix) {
-		Player player = Bukkit.getServer().getPlayer(name);
+		Player player = this.getPlugin().getServer().getPlayer(name);
 		if (player != null && player.isOnline()) {
 			return setEntity(player, prefix);
 		}
@@ -127,7 +125,7 @@ public class GenericLivingEntity extends GenericContainer {
 			setHealth(mmoHelper.getHealth(entity)); // Needs a maxHealth() check
 			setArmor(mmoHelper.getArmor(entity));
 			setLabel((!"".equals(prefix) ? prefix : "") + mmoHelper.getColor(screen != null ? screen.getPlayer() : null, entity) + mmoHelper.getSimpleName(entity, !target));
-			setFace(entity instanceof Player ? ((Player)entity).getName() : "");
+			setFace(entity instanceof Player ? ((Player)entity).getName() : "+" + mmoHelper.getSimpleName(entity,false).replaceAll(" ", ""));
 		} else {
 			setHealth(0);
 			setArmor(0);
@@ -222,8 +220,8 @@ public class GenericLivingEntity extends GenericContainer {
 	@Override
 	public Container updateLayout() {
 		super.updateLayout();
-		_armor.setWidth((_bars.getWidth() * armor) / 100).setDirty(true);
-		_health.setWidth((_bars.getWidth() * health) / 100).setDirty(true);
+		_armor.setWidth((_armor.getContainer().getWidth() * armor) / 100).setDirty(true);
+		_health.setWidth((_health.getContainer().getWidth() * health) / 100).setDirty(true);
 		return this;
 	}
 }

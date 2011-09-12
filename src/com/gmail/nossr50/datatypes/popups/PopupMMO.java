@@ -21,13 +21,16 @@ import org.bukkit.entity.Player;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.buttons.ButtonEscape;
 import com.gmail.nossr50.datatypes.buttons.ButtonHUDStyle;
+import com.gmail.nossr50.datatypes.buttons.ButtonPartyToggle;
 
 public class PopupMMO extends GenericPopup
 {
 	ButtonHUDStyle HUDButton = null;
+	ButtonPartyToggle PartyButton = null;
 	ButtonEscape EscapeButton = null;
 	GenericLabel mcMMO_label = new GenericLabel();
 	GenericLabel tip_escape = new GenericLabel();
@@ -46,8 +49,15 @@ public class PopupMMO extends GenericPopup
 		HUDButton = new ButtonHUDStyle(PP);
 		HUDButton.setX(center_x-(HUDButton.getWidth()/2)).setY(center_y/2).setDirty(true);
 		
+		if(LoadProperties.partybar)
+		{
+			PartyButton = new ButtonPartyToggle(PP);
+			PartyButton.setX(center_x-(PartyButton.getWidth()/2)).setY(center_y/2+PartyButton.getHeight()).setDirty(true);
+			this.attachWidget(plugin, PartyButton);
+		}
+		
 		EscapeButton = new ButtonEscape();
-		EscapeButton.setX(center_x-(EscapeButton.getWidth()/2)).setY((center_y/2)+HUDButton.getHeight()+5).setDirty(true);
+		EscapeButton.setX(center_x-(EscapeButton.getWidth()/2)).setY((center_y/2)+(HUDButton.getHeight()*2)+5).setDirty(true);
 		
 		this.attachWidget(plugin, HUDButton);
 		this.attachWidget(plugin, mcMMO_label);

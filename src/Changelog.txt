@@ -6,6 +6,7 @@ Version 1.1.14
 [1.8] Swords no longer parry, no need to compete with in game mechanics
 [1.8] mcMMO no longer has an HP Regen system, no need to compete with in game mechanics
 [SPOUT] mcMMO now transfers files between [MC Server] -> [Client] rather than [Webserver] -> [Client]
+[SPOUT] Temporarily disabled the PartyHUD due to some performance issues
 [SPOUT/CONFIG] mcMMO now allows for disabling of the party HUD with the node Spout.Party.HUD.Enabled
 [BUG] Fixed a few problems with readying abilities for Woodcutting/Axes
 [MYSQL] Improvements have been made to the performance of MySQL thanks to krinsdeath

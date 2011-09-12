@@ -81,11 +81,6 @@ public class Party
     }
 	
     public boolean inSameParty(Player playera, Player playerb){
-    	if(Users.getProfile(playera) == null || Users.getProfile(playerb) == null)
-    	{
-    		Users.addUser(playera);
-    		Users.addUser(playerb);
-    	}
     	if(Users.getProfile(playera).inParty() && Users.getProfile(playerb).inParty())
     	{
 	        if(Users.getProfile(playera).getParty().equals(Users.getProfile(playerb).getParty()))

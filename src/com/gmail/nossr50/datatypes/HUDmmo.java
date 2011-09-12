@@ -31,7 +31,6 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
-import com.gmail.nossr50.spout.mmoHelper;
 
 public class HUDmmo 
 {
@@ -55,10 +54,11 @@ public class HUDmmo
 	
 	public void initializeHUD(Player player)
 	{
+		//PlayerProfile PP = Users.getProfile(player);
 		HUDType type = Users.getProfile(player).getHUDType();
 		
-		if(LoadProperties.partybar)
-			mmoHelper.initialize(SpoutManager.getPlayer(player), plugin); //PARTY HUD
+		//if(LoadProperties.partybar && PP.getPartyHUD())
+			//mmoHelper.initialize(SpoutManager.getPlayer(player), plugin); //PARTY HUD
 		
 		switch(type)
 		{
@@ -76,6 +76,10 @@ public class HUDmmo
 			{
 				initializeXpBarDisplaySmall(SpoutManager.getPlayer(player));
 				break;
+			}
+			case DISABLED:
+			{
+				//Do nothing.. :)
 			}
 		}
 	}
@@ -99,12 +103,17 @@ public class HUDmmo
 			updateXpBarStandard(player, Users.getProfile(player));
 			break;
 		}
+		case DISABLED:
+		{
+			//Do nothing.. :)
+		}
 		}
 	}
 	
 	public void resetHUD()
 	{
 		SpoutPlayer sPlayer = SpoutStuff.getSpoutPlayer(playerName);
+		//PlayerProfile PP = Users.getProfile(sPlayer);
 		if(sPlayer != null)
 		{
 			sPlayer.getMainScreen().removeWidgets(plugin);
@@ -115,8 +124,8 @@ public class HUDmmo
 			xpbg = null;
 			xpicon = null;
 			
-			if(LoadProperties.partybar)
-				mmoHelper.initialize(sPlayer, plugin);
+			//if(LoadProperties.partybar && PP.getPartyHUD())
+				//mmoHelper.initialize(sPlayer, plugin);
 			
 			sPlayer.getMainScreen().setDirty(true);
 		}

@@ -46,7 +46,7 @@ public class PlayerProfile
 	private String party, myspawn, myspawnworld, invite;
 	
 	//TOGGLES
-	private boolean spoutcraft = false, filling = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
+	private boolean partyhud = true, spoutcraft = false, filling = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
 	superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
 	serratedStrikesMode, hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false, pickaxePreparationMode = false, axePreparationMode = false, skullSplitterMode, berserkMode;
 	
@@ -472,6 +472,14 @@ public class PlayerProfile
                 log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
         }
     }
+    public void togglePartyHUD()
+    {
+    	partyhud = !partyhud;
+    }
+    public boolean getPartyHUD()
+    {
+    	return partyhud;
+    }
     public void toggleSpoutEnabled()
     {
     	spoutcraft = !spoutcraft;
@@ -492,6 +500,7 @@ public class PlayerProfile
     public void setHUDType(HUDType type)
     {
     	hud = type;
+    	save();
     }
     public boolean getXpBarLocked()
     {

@@ -23,7 +23,7 @@ import com.gmail.nossr50.datatypes.HUDType;
 
 public class LoadProperties 
 {
-	public static Boolean watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
+	public static Boolean showDisplayName, showFaces, watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
 	donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, 
 	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
 	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, 
@@ -138,6 +138,8 @@ public class LoadProperties
 	        write("Spout.XP.Icon.X_POS", 78);
 	        write("Spout.XP.Icon.Y_POS", 2);
 	        write("Spout.Party.HUD.Enabled", true);
+	        write("Spout.Party.HUD.Show_Faces", true);
+	        write("Spout.Party.HUD.Show_Display_Name", false);
 	        write("Spout.Menu.Key", "KEY_M");
 	        write("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
 	        write("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3);
@@ -365,6 +367,9 @@ public class LoadProperties
 	        xpbar_y = readInteger("Spout.XP.Bar.Y_POS", 6);
 	        xpicon_x = readInteger("Spout.XP.Icon.X_POS", 78);
 	        xpicon_y = readInteger("Spout.XP.Icon.Y_POS", 2);
+	        
+	        showFaces = readBoolean("Spout.Party.HUD.Show_Faces", true);
+	        showDisplayName = readBoolean("Spout.Party.HUD.Show_Display_Name", false);
 	        partybar = readBoolean("Spout.Party.HUD.Enabled", true);
 	        
 	        acrobatics_r = readDouble("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
