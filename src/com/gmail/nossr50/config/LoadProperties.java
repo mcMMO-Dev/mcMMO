@@ -1,3 +1,19 @@
+/*
+	This file is part of mcMMO.
+
+    mcMMO is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    mcMMO is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mcMMO.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.gmail.nossr50.config;
 
 import java.io.File;
@@ -18,7 +34,7 @@ public class LoadProperties
 	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
 	nStone, nIron, nGold, nDiamond, locale;
 	
-	public static int mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y, partybar_x, partybar_y, partybar_spacing, mstring, mbucket, mweb,
+	public static int mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y, mstring, mbucket, mweb,
 	archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand,
 	mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower,
 	msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport,
@@ -121,10 +137,7 @@ public class LoadProperties
 	        write("Spout.XP.Bar.Y_POS", 6);
 	        write("Spout.XP.Icon.X_POS", 78);
 	        write("Spout.XP.Icon.Y_POS", 2);
-	        write("Spout.Party.HP.Enabled", true);
-	        write("Spout.Party.HP.X_POS", -11);
-	        write("Spout.Party.HP.Y_POS", 0);
-	        write("Spout.Party.HP.SPACING", 16);
+	        write("Spout.Party.HUD.Enabled", true);
 	        write("Spout.Menu.Key", "KEY_M");
 	        write("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
 	        write("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3);
@@ -352,10 +365,7 @@ public class LoadProperties
 	        xpbar_y = readInteger("Spout.XP.Bar.Y_POS", 6);
 	        xpicon_x = readInteger("Spout.XP.Icon.X_POS", 78);
 	        xpicon_y = readInteger("Spout.XP.Icon.Y_POS", 2);
-	        partybar = readBoolean("Spout.Party.HP.Enabled", true);
-	        partybar_x = readInteger("Spout.Party.HP.X_POS", -11);
-	        partybar_y = readInteger("Spout.Party.HP.Y_POS", 0);
-	        partybar_spacing = readInteger("Spout.Party.HP.SPACING", 16);
+	        partybar = readBoolean("Spout.Party.HUD.Enabled", true);
 	        
 	        acrobatics_r = readDouble("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
 	        acrobatics_g = readDouble("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3);

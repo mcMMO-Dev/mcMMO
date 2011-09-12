@@ -1,20 +1,22 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.1.14
-Improvements have been made with MySQL thanks to krinsdeath
-Added some experimental usage tracking, you can opt out of this in /plugins/stats/config.yml (Once its generated, may require 2 restarts)
 [1.8] Removed the bonus damage from Archery (I'll rework this skill soon)
 [1.8] Removed the food bonuses to healing Herbalism provided due to the change of eating in game mechanics
 [1.8] Swords no longer parry, no need to compete with in game mechanics
 [1.8] mcMMO no longer has an HP Regen system, no need to compete with in game mechanics
-mcMMO now transfers files between MC Server -> Client rather than Webserver -> Client (By default, you can change this..)
-Fixed a few problems with readying abilities for Woodcutting/Axes
-Changed the listener priority for OnEntityDamage from High to Monitor (Should make mcMMO compatible with Worldguards pvp regions among other things)
-Added addXpOverride for modders, this will ignore skill modifiers
-Added an option for Excavation to require use of a shovel, on by default
-The option to change the weburl of mcMMO Images/Sounds has been removed, if you want to customize mcMMO images/sounds you can open mcMMO.jar and replace them there
-Made party/admin chat modes more compatible with chat plugins (vChat)
-Portuguese Brazil locale added (Code: pt_br)
+[SPOUT] mcMMO now transfers files between [MC Server] -> [Client] rather than [Webserver] -> [Client]
+[SPOUT/CONFIG] mcMMO now allows for disabling of the party HUD with the node Spout.Party.HUD.Enabled
+[BUG] Fixed a few problems with readying abilities for Woodcutting/Axes
+[MYSQL] Improvements have been made to the performance of MySQL thanks to krinsdeath
+[CONFIG] Spout.Party.HP tree removed, replaced with Spout.Party.HUD
+[CONFIG] Added an option for Excavation to require use of a shovel, on by default
+[COMPATIBILITY] Changed the listener priority for OnEntityDamage from High to Monitor (Should make mcMMO compatible with Worldguards pvp regions among other things)
+[COMPATIBILITY] Made party/admin chat modes more compatible with chat plugins (vChat)
+[API] Added addXpOverride for modders, this will ignore skill modifiers
+[SPOUT] The option to change the weburl of mcMMO Images/Sounds has been removed, if you want to customize mcMMO images/sounds you can open mcMMO.jar and replace them there
+[LOCALE] Portuguese Brazil locale added (Code: pt_br)
+[MISC] Added some experimental usage tracking, you can opt out of this in /plugins/stats/config.yml (Once its generated, may require 2 restarts)
 
 Version 1.1.13
 Pets are removed from party bars

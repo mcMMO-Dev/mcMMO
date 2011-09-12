@@ -1,3 +1,19 @@
+/*
+	This file is part of mcMMO.
+
+    mcMMO is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    mcMMO is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mcMMO.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.gmail.nossr50.datatypes;
 
 import org.bukkit.Bukkit;
@@ -40,6 +56,10 @@ public class HUDmmo
 	public void initializeHUD(Player player)
 	{
 		HUDType type = Users.getProfile(player).getHUDType();
+		
+		if(LoadProperties.partybar)
+			mmoHelper.initialize(SpoutManager.getPlayer(player), plugin); //PARTY HUD
+		
 		switch(type)
 		{
 			case RETRO:
@@ -95,7 +115,9 @@ public class HUDmmo
 			xpbg = null;
 			xpicon = null;
 			
-			mmoHelper.initialize(sPlayer, plugin);
+			if(LoadProperties.partybar)
+				mmoHelper.initialize(sPlayer, plugin);
+			
 			sPlayer.getMainScreen().setDirty(true);
 		}
 	}
