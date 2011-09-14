@@ -47,13 +47,13 @@ public class CallHome{
             if(!verifyConfig()) return;
         }
         if(cfg.getBoolean("opt-out",false)) return;
-        plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin,new CallTask(plugin,cfg.getBoolean("list-server",true)),0L,20L*60L*10);
+        plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin,new CallTask(plugin,cfg.getBoolean("list-server",true)),0L,20L*60L*60);
         System.out.println(plugin.getDescription().getName() + " is keeping usage stats an. To opt-out for whatever bizarre reason, check plugins/stats.");
 
     }
 
     private static Boolean verifyConfig() {
-        Boolean ret = true;
+		Boolean ret = true;
         File config = new File("plugins/stats/config.yml");
         if(!config.getParentFile().exists()) config.getParentFile().mkdir();
         if(!config.exists()) try {
@@ -106,8 +106,9 @@ class CallTask implements Runnable {
                                 new InputStreamReader(
                                 yc.getInputStream()));
         String inputLine;
+        String result = "";
         while ((inputLine = in.readLine()) != null)
-            inputLine += "";
-        return inputLine;
+            result += inputLine;
+        return result;
     }
 }

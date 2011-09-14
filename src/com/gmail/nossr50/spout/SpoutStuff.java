@@ -270,14 +270,14 @@ public class SpoutStuff
 	{
 		SoundManager SM = SpoutManager.getSoundManager();
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "repair.wav", false);
+		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://mcmmo.rycochet.net/mcmmo/Sound/repair.wav", false);
 	}
 	
 	public static void playLevelUpNoise(Player player)
 	{
 		SoundManager SM = SpoutManager.getSoundManager();
 		SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "level.wav", false);
+		SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "http://mcmmo.rycochet.net/mcmmo/Sound/level.wav", false);
 	}
 	
 	public static void levelUpNotification(SkillType skillType, SpoutPlayer sPlayer)

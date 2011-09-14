@@ -135,29 +135,12 @@ public class mcPlayerListener extends PlayerListener
 			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
 	}
 
-	@SuppressWarnings("deprecation")
 	public void onPlayerInteract(PlayerInteractEvent event) 
 	{
 		Player player = event.getPlayer();
 		PlayerProfile PP = Users.getProfile(player);
 		Action action = event.getAction();
 		Block block = event.getClickedBlock();
-		
-		//Archery Nerf
-		if(player.getItemInHand().getTypeId() == 261 && LoadProperties.archeryFireRateLimit)
-		{
-			if(System.currentTimeMillis() < (PP.getArcheryShotATS()*1000) + LoadProperties.archeryLimit)
-			{
-				/*
-    			if(m.hasArrows(player))
-    				m.addArrows(player);
-				 */
-				player.updateInventory();
-				event.setCancelled(true);
-			} else {
-				PP.setArcheryShotATS(System.currentTimeMillis());
-			}
-		}
 
 		/*
 		 * Ability checks

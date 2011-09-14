@@ -53,7 +53,7 @@ public class PlayerProfile
 	//TIMESTAMPS
 	//ATS = (Time of) Activation Time Stamp
 	//DATS = (Time of) Deactivation Time Stamp
-	private int recentlyHurt = 0, archeryShotATS = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
+	private int recentlyHurt = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
 	respawnATS = 0, mySpawnATS = 0, greenTerraATS = 0, greenTerraDATS = 0, superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
 	skullSplitterATS = 0, skullSplitterDATS = 0, hoePreparationATS = 0, axePreparationATS = 0, pickaxePreparationATS = 0, fistsPreparationATS = 0, shovelPreparationATS = 0, swordsPreparationATS = 0;
 	
@@ -650,12 +650,6 @@ public class PlayerProfile
 	 */
 	public long getRespawnATS() {return respawnATS;}
 	public void setRespawnATS(long newvalue) {respawnATS = (int) (newvalue/1000);}
-	
-	/*
-	 * ARCHERY NERF STUFF
-	 */
-	public long getArcheryShotATS() {return archeryShotATS;}
-	public void setArcheryShotATS(long newvalue) {archeryShotATS = (int) (newvalue/1000);}
 	
 	/*
 	 * HOE PREPARATION

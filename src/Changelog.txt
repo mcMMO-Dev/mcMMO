@@ -1,6 +1,7 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.1.14
+[1.8] Removed the Archery fire rate limiter as its no longer necesarry due to changes in game mechanics
 [1.8] Removed the bonus damage from Archery (I'll rework this skill soon)
 [1.8] Removed the food bonuses to healing Herbalism provided due to the change of eating in game mechanics
 [1.8] Swords no longer parry, no need to compete with in game mechanics

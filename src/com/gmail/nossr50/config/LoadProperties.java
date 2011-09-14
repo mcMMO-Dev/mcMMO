@@ -26,7 +26,7 @@ public class LoadProperties
 	public static Boolean showDisplayName, showFaces, watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
 	donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, 
 	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
-	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, archeryFireRateLimit, mushrooms, 
+	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, mushrooms, 
 	toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, excavationRequiresShovel, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, 
 	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
 	
@@ -35,7 +35,7 @@ public class LoadProperties
 	nStone, nIron, nGold, nDiamond, locale;
 	
 	public static int mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y, mstring, mbucket, mweb,
-	archeryLimit, chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand,
+	chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand,
 	mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower,
 	msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport,
 	xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown,
@@ -335,8 +335,6 @@ public class LoadProperties
 	    	write("Skills.Repair.Iron.ID", 265);
 	    	write("Skills.Repair.Iron.Name", "Iron Bars");
 	    	write("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
-	    	write("Skills.Archery.Fire_Rate_Limiter.Enabled", true);
-	    	write("Skills.Archery.Fire_Rate_Limiter.Interval", 1000);
 	    	write("Skills.Excavation.Requires_Shovel", true);
 	    	write("Skills.Mining.Requires_Pickaxe", true);
 	    	write("Skills.Woodcutting.Requires_Axe", true);
@@ -480,8 +478,6 @@ public class LoadProperties
 	    	enableRegen = readBoolean("General.HP_Regeneration.Enabled", true);
 	    	
 	    	enableCobbleToMossy = readBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
-	    	archeryFireRateLimit = readBoolean("Skills.Archery.Fire_Rate_Limiter.Enabled", true);
-	    	archeryLimit = readInteger("Skills.Archery.Fire_Rate_Limiter.Interval", 1000);
 	    	
 	    	xpGainMultiplier = readInteger("Experience.Gains.Multiplier.Global", 1);
 	    	toolsLoseDurabilityFromAbilities = readBoolean("Abilities.Tools.Durability_Loss_Enabled", true);
