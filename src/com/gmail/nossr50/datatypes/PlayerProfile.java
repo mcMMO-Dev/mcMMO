@@ -537,6 +537,7 @@ public class PlayerProfile
     
     public boolean getAdminChatMode() {return adminChatMode;}
     public boolean getPartyChatMode() {return partyChatMode;}
+    
     public boolean getGodMode() {return godMode;}
     
     public void togglePlacedAnvil()

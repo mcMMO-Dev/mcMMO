@@ -1,5 +1,17 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.1.16
+Added Melons to Herbalism xp tables
+Endermen added to Combat skill xp tables
+Silverfish added to Combat skill xp tables
+CaveSpider added to Combat skill xp tables
+
+Version 1.1.15
+Smooth Brick added to Green Terra
+Green thumb can be used to spread moss to Smooth Brick now
+Implemented a ghetto fix for the sword durability bug (real fix sometime soon)
+Added Spain Spanish localization (es_es)
+
 Version 1.1.14
 [1.8] Removed the Archery fire rate limiter as its no longer necesarry due to changes in game mechanics
 [1.8] Removed the bonus damage from Archery (I'll rework this skill soon)

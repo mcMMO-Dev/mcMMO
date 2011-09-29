@@ -117,8 +117,14 @@ public class Combat
 		      		if(event.getEntity() instanceof Monster && !pluginx.misc.mobSpawnerList.contains(event.getEntity()))
 		      		{
 		      			int xp = 0;
+		      			if(event.getEntity() instanceof Enderman)
+		      				xp = (event.getDamage() * 3);
 		      			if(event.getEntity() instanceof Creeper)
 							xp = (event.getDamage() * 4);
+		      			if(event.getEntity() instanceof Silverfish)
+		      				xp = (event.getDamage() * 3);
+		      			if(event.getEntity() instanceof CaveSpider)
+		      				xp = (event.getDamage() * 3);
 						if(event.getEntity() instanceof Spider)
 							xp = (event.getDamage() * 3);
 						if(event.getEntity() instanceof Skeleton)
@@ -210,6 +216,12 @@ public class Combat
 						{
 			      			if(event.getEntity() instanceof Creeper)
 								xp = (event.getDamage() * 6);
+			      			if(event.getEntity() instanceof Enderman)
+			      				xp = (event.getDamage() * 5);
+			      			if(event.getEntity() instanceof Silverfish)
+			      				xp = (event.getDamage() * 3);
+			      			if(event.getEntity() instanceof CaveSpider)
+			      				xp = (event.getDamage() * 3);
 							if(event.getEntity() instanceof Spider)
 								xp = (event.getDamage() * 5);
 							if(event.getEntity() instanceof Skeleton)
@@ -339,6 +351,12 @@ public class Combat
     			//XP
     			if(x instanceof Creeper)
     				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 4)*10);
+    			if(x instanceof Enderman)
+    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
+    			if(x instanceof Silverfish)
+    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2)*10);
+    			if(x instanceof CaveSpider)
+    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
 				if(x instanceof Spider)
 					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
 				if(x instanceof Skeleton)

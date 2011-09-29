@@ -36,7 +36,7 @@ public class LoadProperties
 	
 	public static int mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y, mstring, mbucket, mweb,
 	chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand,
-	mmushroom2, mglowstone2, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower,
+	mmushroom2, mglowstone2, mmelon, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower,
 	msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport,
 	xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown,
 	berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss,
@@ -231,6 +231,7 @@ public class LoadProperties
 	    	write("Experience.Herbalism.Flowers", 100);
 	    	write("Experience.Herbalism.Wheat", 50);
 	    	write("Experience.Herbalism.Mushrooms", 150);
+	    	write("Experience.Herbalism.Melon", 40);
 	    	write("Experience.Woodcutting.Pine", 90);
 	    	write("Experience.Woodcutting.Birch", 70);
 	    	write("Experience.Woodcutting.Spruce", 80);
@@ -435,6 +436,7 @@ public class LoadProperties
 	    	mpumpkin = readInteger("Experience.Herbalism.Pumpkin", 550);
 	    	mflower = readInteger("Experience.Herbalism.Flowers", 100);
 	    	mmushroom = readInteger("Experience.Herbalism.Mushrooms", 150);
+	    	mmelon = readInteger("Experience.Herbalism.Melon", 20);
 	    	
 	    	mpine = readInteger("Experience.Woodcutting.Pine", 70);
 	    	mbirch = readInteger("Experience.Woodcutting.Birch", 80);

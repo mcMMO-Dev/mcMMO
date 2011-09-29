@@ -17,6 +17,7 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -109,6 +110,14 @@ public class Repair {
         		 * TOOLS
         		 */
         		if(isTools(is)){
+        			if(is.getType() == Material.WOOD_SWORD || is.getType() == Material.STONE_SWORD || is.getType() == Material.IRON_SWORD ||
+        					is.getType() == Material.GOLD_SWORD || is.getType() == Material.DIAMOND_SWORD)
+        			{
+        				player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.GREEN+"Sorry this is disabled due to a bug");
+        				player.sendMessage(ChatColor.GREEN+" with changing the durability of swords in CB");
+        				return;
+        			}
+        			
         			if(isStoneTools(is) && hasItem(player, rStone)){
         				removeItem(player, rStone);
             			/*
@@ -151,7 +160,7 @@ public class Repair {
             			 * Repair Durability and calculate dif
             			 */
             			player.getItemInHand().setDurability(getRepairAmount(is, player));
-            			durabilityAfter = player.getItemInHand().getDurability();
+            			durabilityAfter = (short) (player.getItemInHand().getDurability()-getRepairAmount(is, player));
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(m.isShovel(is))
 	        				dif = (short) (dif / 3);

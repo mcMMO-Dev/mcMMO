@@ -88,7 +88,7 @@ public class m
 	public static boolean shouldBeWatched(Block block)
 	{
 		int id = block.getTypeId();
-		return id == 82 || id == 16 || id == 73 || id == 49 || id == 81 || id == 83 || id == 86 || id == 91 || id == 1 || id == 17 || id == 42 || id == 87 || id == 89 || id == 2 || id == 3 || id == 12 || id == 13 || id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40 || id == 24;
+		return id == 103 || id == 82 || id == 16 || id == 73 || id == 49 || id == 81 || id == 83 || id == 86 || id == 91 || id == 1 || id == 17 || id == 42 || id == 87 || id == 89 || id == 2 || id == 3 || id == 12 || id == 13 || id == 21 || id == 15 || id == 14 || id == 56 || id == 38 || id == 37 || id == 39 || id == 40 || id == 24;
 	}
 	
 	public static int getPowerLevel(Player player)

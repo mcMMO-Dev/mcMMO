@@ -101,7 +101,9 @@ public class Herbalism
 				player.sendMessage("You need more seeds to spread Green Terra");
 			if(hasSeeds(player) && block.getType() != Material.WHEAT)
 			{
-				removeSeeds(player);	
+				removeSeeds(player);
+			if(block.getType() == Material.SMOOTH_BRICK)
+				block.setData((byte)1);
 			if(block.getType() == Material.DIRT)
 				block.setType(Material.GRASS);
 			if(LoadProperties.enableCobbleToMossy && block.getType() == Material.COBBLESTONE)
@@ -112,7 +114,7 @@ public class Herbalism
 	
 	public static Boolean canBeGreenTerra(Block block){
     	int t = block.getTypeId();
-    	if(t == 4 || t == 3 || t == 59 || t == 81 || t == 83 || t == 91 || t == 86 || t == 39 || t == 46 || t == 37 || t == 38){
+    	if(t == 103 || t == 4 || t == 3 || t == 59 || t == 81 || t == 83 || t == 91 || t == 86 || t == 39 || t == 46 || t == 37 || t == 38){
     		return true;
     	} else {
     		return false;
@@ -292,6 +294,18 @@ public class Herbalism
 		    		}
 	    		}
 	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mpumpkin);
+	    	}
+	    	//Melon
+	    	if(type == 103)
+	    	{
+	    		mat = Material.getMaterial(block.getTypeId());
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				
+				if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+	    		{
+	    			loc.getWorld().dropItemNaturally(loc, is);
+	    		}
+				PP.addXP(SkillType.HERBALISM, LoadProperties.mmelon);
 	    	}
     		//Mushroom
 	    	if(type == 39 || type == 40)

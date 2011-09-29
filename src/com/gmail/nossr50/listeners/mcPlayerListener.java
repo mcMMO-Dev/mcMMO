@@ -174,23 +174,39 @@ public class mcPlayerListener extends PlayerListener
 			}
 
 			//GREEN THUMB
-			if(block != null && (block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT) && player.getItemInHand().getType() == Material.SEEDS)
+			if(block != null && mcPermissions.getInstance().herbalism(player) && (block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT || block.getType() == Material.SMOOTH_BRICK) && player.getItemInHand().getType() == Material.SEEDS)
 			{
 				boolean pass = false;
-				if(Herbalism.hasSeeds(player) && mcPermissions.getInstance().herbalism(player)){
+				if(Herbalism.hasSeeds(player))
+				{
 					Herbalism.removeSeeds(player);
-					if(LoadProperties.enableCobbleToMossy && m.blockBreakSimulate(block, player) && block.getType() == Material.COBBLESTONE && Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM)){
-						player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumb"));
-						block.setType(Material.MOSSY_COBBLESTONE);
-						pass = true;
+					
+					if(block.getType() == Material.DIRT || block.getType() == Material.COBBLESTONE || block.getType() == Material.SMOOTH_BRICK)
+					{
+						if(Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM) && m.blockBreakSimulate(block, player))
+						{
+							switch(block.getType())
+							{
+							case COBBLESTONE:
+								if(LoadProperties.enableCobbleToMossy)
+								{
+									block.setType(Material.MOSSY_COBBLESTONE);
+									pass = true;
+								}
+								break;
+							case DIRT:
+								pass = true;
+								block.setType(Material.GRASS);
+								break;
+							case SMOOTH_BRICK:
+								pass = true;
+								block.setData((byte)1);
+								break;
+							}
+							if(pass == false)
+								player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumbFail"));
+						}
 					}
-					if(block.getType() == Material.DIRT && m.blockBreakSimulate(block, player) && Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM)){
-						player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumb"));
-						block.setType(Material.GRASS);
-						pass = true;
-					}
-					if(pass == false)
-						player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumbFail"));
 				}
 				return;
 			}
