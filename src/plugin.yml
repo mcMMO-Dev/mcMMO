@@ -1,6 +1,6 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 1.1.16
+version: 1.1.17 ALPHA WIP #1
 softdepend: [Spout]
 commands:
     mchud:

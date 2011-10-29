@@ -1,5 +1,8 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.1.17
+/mmoedit and /addxp are useable from the console now
+
 Version 1.1.16
 Added Melons to Herbalism xp tables
 Endermen added to Combat skill xp tables
