@@ -2,6 +2,7 @@ Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.1.17
 XP gained in combat is now softcapped by the remaining health of the entity you are damaging, preventing many exploits.
+Players in Creative mode no longer gain XP
 Compiled against latest Spout & CraftBukkit
 Added World PVP check to Ignition, should no longer ignore PVP settings
 Enemies should no longer grant XP when hit during their death
