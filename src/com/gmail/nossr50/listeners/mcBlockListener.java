@@ -171,13 +171,13 @@ public class mcBlockListener extends BlockListener
 	    				WoodCutting.woodCuttingProcCheck(player, block);
 	    				//Default
 	    				if(block.getData() == (byte)0)
-	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine);
+	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine, player);
 	    				//Spruce
 	    				if(block.getData() == (byte)1)
-	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce);
+	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce, player);
 	    				//Birch
 	    				if(block.getData() == (byte)2)
-	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch);
+	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch, player);
 					}
     			}
     		} else 
@@ -187,13 +187,13 @@ public class mcBlockListener extends BlockListener
 	    			WoodCutting.woodCuttingProcCheck(player, block);
 	    			//Default
     				if(block.getData() == (byte)0)
-    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine);
+    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine, player);
     				//Spruce
     				if(block.getData() == (byte)1)
-    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce);
+    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce, player);
     				//Birch
     				if(block.getData() == (byte)2)
-    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch);
+    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch, player);
     			}
    			}
     		Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
@@ -226,7 +226,7 @@ public class mcBlockListener extends BlockListener
     						if(!plugin.misc.blockWatchList.contains(block))
     						{
 	    						WoodCutting.woodCuttingProcCheck(player, blockx);
-	    						PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine);
+	    						PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine, player);
     						}
     					}
     					if(blockx.getTypeId() == 18)

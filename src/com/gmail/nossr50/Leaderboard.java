@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,11 +60,17 @@ public class Leaderboard
         	FileReader file = new FileReader(location);
         	BufferedReader in = new BufferedReader(file);
         	String line = ""; //$NON-NLS-1$
+        	ArrayList<String> players = new ArrayList<String>();
         	while((line = in.readLine()) != null)
         	{
         		String[] character = line.split(":"); //$NON-NLS-1$
         		String p = character[0];
-
+        		
+        		//Prevent the same player from being added multiple times
+        		if(players.contains(p))
+        			continue;
+        		else
+        			players.add(p);
 
     			int Plvl = 0;
     			

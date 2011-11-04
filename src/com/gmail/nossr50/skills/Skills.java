@@ -226,7 +226,7 @@ public class Skills
     	PlayerProfile PP = Users.getProfile(player);
     	if(PP != null)
     	{
-	    	if(!PP.getAbilityUse())
+	    	if(!PP.getAbilityUse() || PP.getSuperBreakerMode() || PP.getSerratedStrikesMode() || PP.getTreeFellerMode() || PP.getGreenTerraMode() || PP.getBerserkMode() || PP.getGigaDrillBreakerMode())
 	    		return;
 	    	if(mcPermissions.getInstance().miningAbility(player) && m.isMiningPick(player.getItemInHand()) && !PP.getPickaxePreparationMode())
 	    	{

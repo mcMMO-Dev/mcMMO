@@ -52,6 +52,7 @@ public class Taming
 						return x;
 				}
 			}
+			return null;
 		}
 		return null;
 	}
@@ -61,7 +62,7 @@ public class Taming
 		Player owner = (Player)theWolf.getOwner();
 		if(owner != null)
 		{
-		return owner.getName();
+			return owner.getName();
 		}
 		else
 			return "Offline Master";

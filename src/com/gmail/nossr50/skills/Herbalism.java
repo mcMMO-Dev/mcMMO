@@ -81,7 +81,7 @@ public class Herbalism
 			Material mat = Material.getMaterial(296);
 			Location loc = block.getLocation();
 			ItemStack is = new ItemStack(mat, 1, (byte)0, (byte)0);
-			PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat);
+			PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat, player);
 	    	loc.getWorld().dropItemNaturally(loc, is);
 	    	
 	    	//DROP SOME SEEDS
@@ -161,7 +161,7 @@ public class Herbalism
     	{
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    		PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat);
+    		PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat, player);
     		if(player != null)
     		{
 	    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
@@ -235,7 +235,7 @@ public class Herbalism
 		    		    	{
 		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
 		    		    	}
-		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.mcactus);
+		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.mcactus, player);
 	    				}
 	    			}
 	    			x++;
@@ -274,7 +274,7 @@ public class Herbalism
 		    		    	{
 		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
 		    		    	}
-		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.msugar);
+		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.msugar, player);
 	    				}
 	    			}
 	    			x++;
@@ -293,7 +293,7 @@ public class Herbalism
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mpumpkin);
+	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mpumpkin, player);
 	    	}
 	    	//Melon
 	    	if(type == 103)
@@ -305,7 +305,7 @@ public class Herbalism
 	    		{
 	    			loc.getWorld().dropItemNaturally(loc, is);
 	    		}
-				PP.addXP(SkillType.HERBALISM, LoadProperties.mmelon);
+				PP.addXP(SkillType.HERBALISM, LoadProperties.mmelon, player);
 	    	}
     		//Mushroom
 	    	if(type == 39 || type == 40)
@@ -319,7 +319,7 @@ public class Herbalism
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mmushroom);
+	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mmushroom, player);
 	    	}
 	    	//Flower
 	    	if(type == 37 || type == 38){
@@ -330,7 +330,7 @@ public class Herbalism
 		    			loc.getWorld().dropItemNaturally(loc, is);
 		    		}
 	    		}
-	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mflower);
+	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mflower, player);
 	    	}
     	}
     	Skills.XpCheckSkill(SkillType.HERBALISM, player);

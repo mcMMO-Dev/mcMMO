@@ -953,7 +953,7 @@ public class Commands
 					if(isPlayer(split[1]) && m.isInt(split[3]) && Skills.isSkill(split[2]))
 					{
 						int newvalue = Integer.valueOf(split[3]);
-						Users.getProfile(getPlayer(split[1])).addXP(Skills.getSkillType(split[2]), newvalue);
+						Users.getProfile(getPlayer(split[1])).addXP(Skills.getSkillType(split[2]), newvalue, getPlayer(split[1]));
 						getPlayer(split[1]).sendMessage(ChatColor.GREEN+"Experience granted!"); 
 						player.sendMessage(ChatColor.RED+split[2]+" has been modified."); 
 						Skills.XpCheckAll(getPlayer(split[1]));
@@ -962,7 +962,7 @@ public class Commands
 				else if(split.length == 3 && m.isInt(split[2]) && Skills.isSkill(split[1]))
 				{
 					int newvalue = Integer.valueOf(split[2]);
-					Users.getProfile(player).addXP(Skills.getSkillType(split[1]), newvalue);
+					Users.getProfile(player).addXP(Skills.getSkillType(split[1]), newvalue, player);
 					player.sendMessage(ChatColor.RED+split[1]+" has been modified."); 
 				} else {
 					player.sendMessage(ChatColor.RED+"Usage is /"+LoadProperties.addxp+" playername skillname xp");  
@@ -977,7 +977,7 @@ public class Commands
 					if(isPlayer(split[1]) && m.isInt(split[3]) && Skills.isSkill(split[2]))
 					{
 						int newvalue = Integer.valueOf(split[3]);
-						Users.getProfile(getPlayer(split[1])).addXP(Skills.getSkillType(split[2]), newvalue);
+						Users.getProfile(getPlayer(split[1])).addXP(Skills.getSkillType(split[2]), newvalue, getPlayer(split[1]));
 						getPlayer(split[1]).sendMessage(ChatColor.GREEN+"Experience granted!"); 
 						System.out.println(split[2]+" has been modified for "+getPlayer(split[1]).getName()+".");
 						Skills.XpCheckAll(getPlayer(split[1]));

@@ -233,7 +233,7 @@ public class Mining
     		else
     			blockProcCheck(block, player);
     	}
-    	PP.addXP(SkillType.MINING, xp);
+    	PP.addXP(SkillType.MINING, xp, player);
     	Skills.XpCheckSkill(SkillType.MINING, player);
     }
     /*
@@ -422,7 +422,7 @@ public class Mining
     		block.setType(Material.AIR);
     	}
     	if(block.getData() != (byte) 5)
-    		PP.addXP(SkillType.MINING, xp);
+    		PP.addXP(SkillType.MINING, xp, player);
     	if(LoadProperties.spoutEnabled)
     		SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	

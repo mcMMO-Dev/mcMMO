@@ -1,7 +1,16 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.1.17
+XP gained in combat is now softcapped by the remaining health of the entity you are damaging, preventing many exploits.
+Compiled against latest Spout & CraftBukkit
+Added World PVP check to Ignition, should no longer ignore PVP settings
+Enemies should no longer grant XP when hit during their death
+Fixed an exploit that led to unlimited ability use
+Possibly fixed a bug where the same player would be listed multiple times in mctop
+Added author and description to plugin.yml
+
 /mmoedit and /addxp are useable from the console now
+Swearword's statistics tracking removed (He stopped the service, so its gone now.. On a positive note, I did find out 1000-1500 servers installed mcMMO a day)
 
 Version 1.1.16
 Added Melons to Herbalism xp tables

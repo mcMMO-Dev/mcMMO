@@ -102,48 +102,69 @@ public class Combat
 			    					&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis()
 			    					&& defender.getHealth() >= 1)
 			    			{
-			    				int xp = (int) (event.getDamage() * 2 * LoadProperties.pvpxprewardmodifier);
+			    				//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the mob
+				      			int hpLeft = defender.getHealth(), xpinc = 0;
+				      			
+				      			if(hpLeft < event.getDamage())
+				      				xpinc = event.getDamage();
+				      			else
+				      				xpinc = hpLeft;
+				      			
+			    				int xp = (int) (xpinc * 2 * LoadProperties.pvpxprewardmodifier);
 			    				
 				    			if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
-				    				PPa.addXP(SkillType.AXES, xp*10);
+				    				PPa.addXP(SkillType.AXES, xp*10, attacker);
 				    			if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
-				    				PPa.addXP(SkillType.SWORDS, xp*10);
+				    				PPa.addXP(SkillType.SWORDS, xp*10, attacker);
 				    			if(attacker.getItemInHand().getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker))
-				    				PPa.addXP(SkillType.UNARMED, xp*10);
+				    				PPa.addXP(SkillType.UNARMED, xp*10, attacker);
 			    			}
 			    		}
 		      		}
 		      		
 		      		if(event.getEntity() instanceof Monster && !pluginx.misc.mobSpawnerList.contains(event.getEntity()))
 		      		{
+		      			//Prevent XP from being handed out if the Monster is dead
+		      			Monster monster = (Monster)event.getEntity();
+		      			if(monster.getHealth() < 1)
+		      				return;
+		      			
+		      			//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the mob
+		      			int hpLeft = monster.getHealth(), xpinc = 0;
+		      			
+		      			if(hpLeft < event.getDamage())
+		      				xpinc = event.getDamage();
+		      			else
+		      				xpinc = hpLeft;
+		      			
 		      			int xp = 0;
 		      			if(event.getEntity() instanceof Enderman)
-		      				xp = (event.getDamage() * 3);
+		      				xp = (xpinc * 3);
 		      			if(event.getEntity() instanceof Creeper)
-							xp = (event.getDamage() * 4);
+							xp = (xpinc * 4);
 		      			if(event.getEntity() instanceof Silverfish)
-		      				xp = (event.getDamage() * 3);
+		      				xp = (xpinc * 3);
 		      			if(event.getEntity() instanceof CaveSpider)
-		      				xp = (event.getDamage() * 3);
+		      				xp = (xpinc * 3);
 						if(event.getEntity() instanceof Spider)
-							xp = (event.getDamage() * 3);
+							xp = (xpinc * 3);
 						if(event.getEntity() instanceof Skeleton)
-							xp = (event.getDamage() * 2);
+							xp = (xpinc * 2);
 						if(event.getEntity() instanceof Zombie)
-							xp = (event.getDamage() * 2);
+							xp = (xpinc * 2);
 						if(event.getEntity() instanceof PigZombie)
-							xp = (event.getDamage() * 3);
+							xp = (xpinc * 3);
 						if(event.getEntity() instanceof Slime)
-							xp = (event.getDamage() * 3);
+							xp = (xpinc * 3);
 						if(event.getEntity() instanceof Ghast)
-							xp = (event.getDamage() * 3);
+							xp = (xpinc * 3);
 
 						if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
-							PPa.addXP(SkillType.SWORDS, xp*10);
+							PPa.addXP(SkillType.SWORDS, xp*10, attacker);
 						else if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
-							PPa.addXP(SkillType.AXES, xp*10);
+							PPa.addXP(SkillType.AXES, xp*10, attacker);
 						else if(attacker.getItemInHand().getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker))
-							PPa.addXP(SkillType.UNARMED, xp*10);
+							PPa.addXP(SkillType.UNARMED, xp*10, attacker);
 		      		}
 		      		Skills.XpCheckAll(attacker);
 		      		
@@ -214,32 +235,45 @@ public class Combat
 						int xp = 0;
 						if(event.getEntity() instanceof Monster)
 						{
+							//Prevent XP from being handed out if the Monster is dead
+			      			Monster monster = (Monster)event.getEntity();
+			      			if(monster.getHealth() < 1)
+			      				return;
+			      			
+			      			//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the mob
+			      			int hpLeft = monster.getHealth(), xpinc = 0;
+			      			
+			      			if(hpLeft < event.getDamage())
+			      				xpinc = event.getDamage();
+			      			else
+			      				xpinc = hpLeft;
+			      			
 			      			if(event.getEntity() instanceof Creeper)
-								xp = (event.getDamage() * 6);
+								xp = (xpinc * 6);
 			      			if(event.getEntity() instanceof Enderman)
-			      				xp = (event.getDamage() * 5);
+			      				xp = (xpinc * 5);
 			      			if(event.getEntity() instanceof Silverfish)
-			      				xp = (event.getDamage() * 3);
+			      				xp = (xpinc * 3);
 			      			if(event.getEntity() instanceof CaveSpider)
-			      				xp = (event.getDamage() * 3);
+			      				xp = (xpinc * 3);
 							if(event.getEntity() instanceof Spider)
-								xp = (event.getDamage() * 5);
+								xp = (xpinc * 5);
 							if(event.getEntity() instanceof Skeleton)
-								xp = (event.getDamage() * 3);
+								xp = (xpinc * 3);
 							if(event.getEntity() instanceof Zombie)
-								xp = (event.getDamage() * 3);
+								xp = (xpinc * 3);
 							if(event.getEntity() instanceof PigZombie)
-								xp = (event.getDamage() * 4);
+								xp = (xpinc * 4);
 							if(event.getEntity() instanceof Slime)
-								xp = (event.getDamage() * 4);
+								xp = (xpinc * 4);
 							if(event.getEntity() instanceof Ghast)
-								xp = (event.getDamage() * 4);
-							Users.getProfile(master).addXP(SkillType.TAMING, xp*10);
+								xp = (xpinc * 4);
+							Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
 						}
 						if(event.getEntity() instanceof Player)
 						{
 							xp = (event.getDamage() * 2);
-							Users.getProfile(master).addXP(SkillType.TAMING, xp*10);
+							Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
 						}
 						Skills.XpCheckSkill(SkillType.TAMING, master);
 					}
@@ -348,27 +382,40 @@ public class Combat
     		 */
     		if(!pluginx.misc.mobSpawnerList.contains(x) && x instanceof Monster)
     		{
+    			//Prevent XP from being handed out if the Monster is dead
+      			Monster monster = (Monster)x;
+      			if(monster.getHealth() < 1)
+      				return;
+      			
+      			//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the mob
+      			int hpLeft = monster.getHealth(), xpinc = 0;
+      			
+      			if(hpLeft < event.getDamage())
+      				xpinc = event.getDamage();
+      			else
+      				xpinc = hpLeft;
+      			
     			//XP
     			if(x instanceof Creeper)
-    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 4)*10);
+    				PPa.addXP(SkillType.ARCHERY, (xpinc * 4)*10, attacker);
     			if(x instanceof Enderman)
-    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
+    				PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
     			if(x instanceof Silverfish)
-    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2)*10);
+    				PPa.addXP(SkillType.ARCHERY, (xpinc * 2)*10, attacker);
     			if(x instanceof CaveSpider)
-    				PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
+    				PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
 				if(x instanceof Spider)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
+					PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
 				if(x instanceof Skeleton)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2)*10);
+					PPa.addXP(SkillType.ARCHERY, (xpinc * 2)*10, attacker);
 				if(x instanceof Zombie)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 2)*10);
+					PPa.addXP(SkillType.ARCHERY, (xpinc * 2)*10, attacker);
 				if(x instanceof PigZombie)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
+					PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
 				if(x instanceof Slime)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
+					PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
 				if(x instanceof Ghast)
-					PPa.addXP(SkillType.ARCHERY, (event.getDamage() * 3)*10);
+					PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
     		}
     		/*
     		 * Attacker is Player
@@ -394,7 +441,7 @@ public class Combat
     	    				&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis() && !attacker.getName().equals(defender.getName()))
     	    		{
     	    			int xp = (int) ((event.getDamage() * 2) * 10);
-    	    			PPa.addXP(SkillType.ARCHERY, xp);
+    	    			PPa.addXP(SkillType.ARCHERY, xp, attacker);
     	    		}
     				/*
     				 * DAZE PROC

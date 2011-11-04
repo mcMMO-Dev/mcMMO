@@ -29,7 +29,6 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.*;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-import org.blockface.bukkitstats.CallHome;
 import org.bukkit.Bukkit;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -190,7 +189,6 @@ public class mcMMO extends JavaPlugin
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		
 		Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, mcMMO_Timer, 0, 20);
-		CallHome.load(this); //Swearword's blockface usage statistics, only dials home once
 	}
 
 	public PlayerProfile getPlayerProfile(Player player)

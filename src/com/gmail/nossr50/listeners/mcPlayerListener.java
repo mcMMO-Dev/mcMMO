@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.listeners;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -259,6 +260,8 @@ public class mcPlayerListener extends PlayerListener
 			{
 				ColouredConsoleSender ccs = (ColouredConsoleSender) Bukkit.getServer();
 				ccs.sendMessage(ChatColor.AQUA+"[A]"+format); //Colors, woot!
+			} else {
+				log.log(Level.INFO, "[A]"+format);
 			}
 		}
 	}

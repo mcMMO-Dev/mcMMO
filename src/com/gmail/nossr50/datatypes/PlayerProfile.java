@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.LoadProperties;
@@ -949,8 +950,10 @@ public class PlayerProfile
 	 * @param skillType The skill to add XP to
 	 * @param newvalue The amount of XP to add
 	 */
-	public void addXP(SkillType skillType, int newvalue)
+	public void addXP(SkillType skillType, int newvalue, Player thisplayer)
 	{
+		if(thisplayer.getGameMode() == GameMode.CREATIVE)
+			return;
 		if(skillType == SkillType.ALL)
 		{
 			for(SkillType x : SkillType.values())
