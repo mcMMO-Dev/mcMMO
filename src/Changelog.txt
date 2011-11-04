@@ -8,7 +8,6 @@ Enemies should no longer grant XP when hit during their death
 Fixed an exploit that led to unlimited ability use
 Possibly fixed a bug where the same player would be listed multiple times in mctop
 Added author and description to plugin.yml
-
 /mmoedit and /addxp are useable from the console now
 Swearword's statistics tracking removed (He stopped the service, so its gone now.. On a positive note, I did find out 1000-1500 servers installed mcMMO a day)
 
