@@ -19,6 +19,7 @@ package com.gmail.nossr50.skills;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -55,6 +56,21 @@ public class Repair {
 		short durabilityBefore = player.getItemInHand().getDurability();
 		short durabilityAfter = 0;
 		short dif = 0;
+		
+		//Stuff for keeping enchants
+		Enchantment[] enchants = new Enchantment[is.getEnchantments().size()];
+		int[] enchantsLevel = new int[is.getEnchantments().size()];
+		
+		int pos = 0;
+		for(Enchantment x : is.getEnchantments().keySet())
+		{
+			enchants[pos] = x;
+			enchantsLevel[pos] = is.getEnchantmentLevel(x);
+			pos++;
+		}
+		
+		System.out.println("[mcMMO] Enchantments stored!");
+		
     	if(block != null && mcPermissions.getInstance().repair(player)){
         	if(player.getItemInHand().getDurability() > 0 && player.getItemInHand().getAmount() < 2){
         		/*
@@ -66,7 +82,9 @@ public class Repair {
         			 */
         			if(isDiamondArmor(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){
         				removeItem(player, rDiamond);
+        				
 	        			player.getItemInHand().setDurability(getRepairAmount(is, player));
+	        			
 	        			durabilityAfter = player.getItemInHand().getDurability();
 	        			dif = (short) (durabilityBefore - durabilityAfter);
 	        			dif = (short) (dif * 6); //Boost XP
@@ -81,7 +99,9 @@ public class Repair {
         			 * IRON ARMOR
         			 */
         				removeItem(player, rIron);
-	            		player.getItemInHand().setDurability(getRepairAmount(is, player));
+        				
+        				player.getItemInHand().setDurability(getRepairAmount(is, player));
+	        			
 	            		durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 2); //Boost XP
@@ -93,7 +113,9 @@ public class Repair {
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasItem(player, rGold)){
         				removeItem(player, rGold);
+        				
         				player.getItemInHand().setDurability(getRepairAmount(is, player));
+        				
         				durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 4); //Boost XP of Gold to around Iron
@@ -123,7 +145,9 @@ public class Repair {
             			/*
             			 * Repair Durability and calculate dif
             			 */
-            			player.getItemInHand().setDurability(getRepairAmount(is, player));
+        				
+        				player.getItemInHand().setDurability(getRepairAmount(is, player));
+	        			
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(m.isShovel(is))
@@ -141,7 +165,8 @@ public class Repair {
             			/*
             			 * Repair Durability and calculate dif
             			 */
-            			player.getItemInHand().setDurability(getRepairAmount(is, player));
+        				player.getItemInHand().setDurability(getRepairAmount(is, player));
+	        			
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(m.isShovel(is))
@@ -160,6 +185,7 @@ public class Repair {
             			 * Repair Durability and calculate dif
             			 */
             			player.getItemInHand().setDurability(getRepairAmount(is, player));
+	        			
             			durabilityAfter = (short) (player.getItemInHand().getDurability()-getRepairAmount(is, player));
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(m.isShovel(is))
@@ -178,6 +204,7 @@ public class Repair {
             			 * DIAMOND TOOLS
             			 */
             			player.getItemInHand().setDurability(getRepairAmount(is, player));
+	        			
             			removeItem(player, rDiamond);
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
@@ -194,6 +221,7 @@ public class Repair {
 	        				SpoutStuff.playRepairNoise(player);
             		} else if(isGoldTools(is) && hasItem(player, rGold)){
             			player.getItemInHand().setDurability(getRepairAmount(is, player));
+	        			
             			removeItem(player, rGold);
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
@@ -212,6 +240,15 @@ public class Repair {
             		} else {
             			needMoreVespeneGas(is, player);
             		}
+        			
+        			//This will solve the issue with swords not repairing properly
+        			if(is.getType() == Material.WOOD_SWORD || is.getType() == Material.STONE_SWORD || is.getType() == Material.IRON_SWORD ||
+        					is.getType() == Material.GOLD_SWORD || is.getType() == Material.DIAMOND_SWORD)
+        			{
+        				player.getItemInHand().getData().setData((byte)player.getItemInHand().getDurability());
+        			}
+        			
+        			player.sendMessage("Current Durability Value: "+player.getItemInHand().getDurability());
         		}
         		
         	} else {
@@ -222,8 +259,113 @@ public class Repair {
         	 * GIVE SKILL IF THERE IS ENOUGH XP
         	 */
         	Skills.XpCheckSkill(SkillType.REPAIR, player);
+        	addEnchants(player.getItemInHand(), enchants, enchantsLevel, PP, player);
         	}
     }
+	public static int getArcaneForgingRank(PlayerProfile PP)
+	{
+		int rank = 0;
+		
+		if(PP.getSkillLevel(SkillType.REPAIR) >= 750)
+		{
+			rank = 4;
+		} else if (PP.getSkillLevel(SkillType.REPAIR) >= 500)
+		{
+			rank = 3;
+		} else if(PP.getSkillLevel(SkillType.REPAIR) >= 250)
+		{
+			rank = 2;
+		} else if (PP.getSkillLevel(SkillType.REPAIR) >= 100)
+		{
+			rank = 1;
+		}
+		return rank;
+	}
+	public static void addEnchants(ItemStack is, Enchantment[] enchants, int[] enchantsLvl, PlayerProfile PP, Player player)
+	{
+		if(is.getEnchantments().keySet().size() == 0)
+			return;
+		
+		int pos = 0;
+		int rank = getArcaneForgingRank(PP);
+		
+		if(rank == 0)
+		{
+			player.sendMessage(mcLocale.getString("Repair.LostEnchants"));
+			return;
+		}
+		
+		boolean failure = false, downgrade = false;
+		
+		for(Enchantment x : enchants)
+		{
+			if(x.canEnchantItem(is))
+			{
+				if(Math.random() * 100 <= getEnchantChance(rank))
+				{
+					if(enchantsLvl[pos] > 1)
+					{
+						if(Math.random() * 100 <= getDowngradeChance(rank))
+						{
+							is.addEnchantment(x, enchantsLvl[pos]-1);
+							downgrade = true;
+						} else
+						{
+							is.addEnchantment(x, enchantsLvl[pos]);
+						}
+					}
+					else {
+						is.addEnchantment(x, enchantsLvl[pos]);
+					}
+				} else {
+				failure = true;	
+				}
+			}
+			pos++;
+		}
+		
+		if(failure == false && downgrade == false)
+		{
+			player.sendMessage(mcLocale.getString("Repair.ArcanePerfect"));
+		} else {
+			if(failure == false)
+				player.sendMessage("Repair.ArcaneFailed");
+			if(downgrade == false)
+				player.sendMessage("Repair.Downgraded");
+		}
+	}
+	public static int getEnchantChance(int rank)
+	{
+		switch(rank)
+		{
+		case 4:
+			return 40;
+		case 3:
+			return 30;
+		case 2:
+			return 20;
+		case 1:
+			return 10;
+		default:
+			return 0;
+		}
+	}
+	public static int getDowngradeChance(int rank)
+	{
+		switch(rank)
+		{
+		case 4:
+			return 15;
+		case 3:
+			return 25;
+		case 2:
+			return 50;
+		case 1:
+			return 75;
+		default:
+			return 100;
+		}
+	}
 	public static boolean isArmor(ItemStack is){
     	return is.getTypeId() == 306 || is.getTypeId() == 307 ||is.getTypeId() == 308 ||is.getTypeId() == 309 ||
     			is.getTypeId() == 310 ||is.getTypeId() == 311 ||is.getTypeId() == 312 ||is.getTypeId() == 313 ||
@@ -488,7 +630,7 @@ public class Repair {
 			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GOLD+ nGold);
 		} else if (is.getAmount() > 1)
 			player.sendMessage(mcLocale.getString("Skills.StackedItems"));
-    	}
+    }
     public static boolean checkPlayerProcRepair(Player player)
     {
     	PlayerProfile PP = Users.getProfile(player);

@@ -42,6 +42,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.spout.SpoutStuff;
 
@@ -311,10 +312,17 @@ public class Commands
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair1_0"), mcLocale.getString("m.EffectsRepair1_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair2_0"), mcLocale.getString("m.EffectsRepair2_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair3_0"), mcLocale.getString("m.EffectsRepair3_1")}));  
-			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair4_0", new Object[]{LoadProperties.repairdiamondlevel}), mcLocale.getString("m.EffectsRepair4_1")}));  
+			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair4_0", new Object[]{LoadProperties.repairdiamondlevel}), mcLocale.getString("m.EffectsRepair4_1")})); 
+			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsRepair5_0"), mcLocale.getString("m.EffectsRepair5_1")}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.YourStats")})); 
 			player.sendMessage(mcLocale.getString("m.RepairRepairMastery", new Object[] {repairmastery})); 
 			player.sendMessage(mcLocale.getString("m.RepairSuperRepairChance", new Object[] {percentage})); 
+			player.sendMessage(mcLocale.getString("m.ArcaneForgingRank", new Object[] {Repair.getArcaneForgingRank(PP)})); 
+			player.sendMessage(mcLocale.getString("m.ArcaneEnchantKeepChance", new Object[] {Repair.getEnchantChance(Repair.getArcaneForgingRank(PP))})); 
+			player.sendMessage(mcLocale.getString("m.ArcaneEnchantDowngradeChance", new Object[] {Repair.getDowngradeChance(Repair.getArcaneForgingRank(PP))})); 
+			player.sendMessage(mcLocale.getString("m.ArcaneForgingMilestones"));
+			player.sendMessage(mcLocale.getString("m.ArcaneForgingMilestones2"));
+
 		}
 		else if(label.equalsIgnoreCase("unarmed")){ 
 			String percentage, arrowpercentage;
@@ -1040,6 +1048,8 @@ public class Commands
 				player.sendMessage(ChatColor.GOLD+"-=GATHERING SKILLS=-");
 				if(mcPermissions.getInstance().excavation(target))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ExcavationSkill"), PPt.getSkillLevel(SkillType.EXCAVATION), PPt.getSkillXpLevel(SkillType.EXCAVATION), PPt.getXpToLevel(SkillType.EXCAVATION)));
+				if(mcPermissions.getInstance().fishing(target))
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.FishingSkill"), PPt.getSkillLevel(SkillType.FISHING), PPt.getSkillXpLevel(SkillType.FISHING), PPt.getXpToLevel(SkillType.FISHING)));
 				if(mcPermissions.getInstance().herbalism(target))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.HerbalismSkill"), PPt.getSkillLevel(SkillType.HERBALISM), PPt.getSkillXpLevel(SkillType.HERBALISM), PPt.getXpToLevel(SkillType.HERBALISM)));
 				if(mcPermissions.getInstance().mining(target))
@@ -1064,6 +1074,10 @@ public class Commands
 				player.sendMessage(ChatColor.GOLD+"-=MISC SKILLS=-");
 				if(mcPermissions.getInstance().acrobatics(target))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PPt.getSkillLevel(SkillType.ACROBATICS), PPt.getSkillXpLevel(SkillType.ACROBATICS), PPt.getXpToLevel(SkillType.ACROBATICS)));
+				if(mcPermissions.getInstance().alchemy(target))
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AlchemySkill"), PPt.getSkillLevel(SkillType.ALCHEMY), PPt.getSkillXpLevel(SkillType.ALCHEMY), PPt.getXpToLevel(SkillType.ALCHEMY)));
+				if(mcPermissions.getInstance().enchanting(target))
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.EnchantingSkill"), PPt.getSkillLevel(SkillType.ENCHANTING), PPt.getSkillXpLevel(SkillType.ENCHANTING), PPt.getXpToLevel(SkillType.ENCHANTING)));
 				if(mcPermissions.getInstance().repair(target))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PPt.getSkillLevel(SkillType.REPAIR), PPt.getSkillXpLevel(SkillType.REPAIR), PPt.getXpToLevel(SkillType.REPAIR)));	
 
@@ -1087,6 +1101,8 @@ public class Commands
 				player.sendMessage(header+"-=GATHERING SKILLS=-");
 				if(mcPermissions.getInstance().excavation(player))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ExcavationSkill"), PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION)));
+				if(mcPermissions.getInstance().fishing(player))
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.FishingSkill"), PP.getSkillLevel(SkillType.FISHING), PP.getSkillXpLevel(SkillType.FISHING), PP.getXpToLevel(SkillType.FISHING)));
 				if(mcPermissions.getInstance().herbalism(player))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.HerbalismSkill"), PP.getSkillLevel(SkillType.HERBALISM), PP.getSkillXpLevel(SkillType.HERBALISM), PP.getXpToLevel(SkillType.HERBALISM)));
 				if(mcPermissions.getInstance().mining(player))
@@ -1114,6 +1130,10 @@ public class Commands
 				player.sendMessage(header+"-=MISC SKILLS=-");
 				if(mcPermissions.getInstance().acrobatics(player))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS)));
+				if(mcPermissions.getInstance().alchemy(player))
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AlchemySkill"), PP.getSkillLevel(SkillType.ALCHEMY), PP.getSkillXpLevel(SkillType.ALCHEMY), PP.getXpToLevel(SkillType.ALCHEMY)));
+				if(mcPermissions.getInstance().enchanting(player))
+					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.EnchantingSkill"), PP.getSkillLevel(SkillType.ENCHANTING), PP.getSkillXpLevel(SkillType.ENCHANTING), PP.getXpToLevel(SkillType.ENCHANTING)));				
 				if(mcPermissions.getInstance().repair(player))
 					player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR)));	
 			}
@@ -1204,7 +1224,7 @@ public class Commands
 					{
 						if(p != null && x+1 >= Pinstance.partyCount(player, Bukkit.getServer().getOnlinePlayers()))
 						{
-							if(Pinstance.isPartyLeader(p, PP.getParty()))
+							if(Pinstance.isPartyLeader(p.getName(), PP.getParty()))
 							{
 								tempList+=ChatColor.GOLD+p.getName();
 								x++;
@@ -1217,7 +1237,7 @@ public class Commands
 						}
 						if(p != null && x < Pinstance.partyCount(player, Bukkit.getServer().getOnlinePlayers()))
 						{
-							if(Pinstance.isPartyLeader(p, PP.getParty()))
+							if(Pinstance.isPartyLeader(p.getName(), PP.getParty()))
 							{
 								tempList+=ChatColor.GOLD+p.getName()+", ";
 								x++;
@@ -1253,7 +1273,7 @@ public class Commands
 				{
 					if(PP.inParty()) 
 					{
-						if(Pinstance.isPartyLeader(player, PP.getParty())) 
+						if(Pinstance.isPartyLeader(player.getName(), PP.getParty())) 
 						{
 							Pinstance.lockParty(PP.getParty());
 							player.sendMessage(mcLocale.getString("Party.Locked"));
@@ -1269,7 +1289,7 @@ public class Commands
 				{
 					if(PP.inParty()) 
 					{
-						if(Pinstance.isPartyLeader(player, PP.getParty())) 
+						if(Pinstance.isPartyLeader(player.getName(), PP.getParty())) 
 						{
 							Pinstance.unlockParty(PP.getParty());
 							player.sendMessage(mcLocale.getString("Party.Unlocked"));
@@ -1297,7 +1317,7 @@ public class Commands
 			{
 				if(args[0].equalsIgnoreCase("password")) 
 				{
-					if(Pinstance.isPartyLeader(player, PP.getParty())) 
+					if(Pinstance.isPartyLeader(player.getName(), PP.getParty())) 
 					{
 						if(Pinstance.isPartyLocked(PP.getParty())) 
 						{
@@ -1313,7 +1333,7 @@ public class Commands
 					}
 				} else if(args[0].equalsIgnoreCase("kick")) 
 				{
-					if(Pinstance.isPartyLeader(player, PP.getParty())) 
+					if(Pinstance.isPartyLeader(player.getName(), PP.getParty())) 
 					{
 						if(Pinstance.isPartyLocked(PP.getParty())) 
 						{
@@ -1351,7 +1371,7 @@ public class Commands
 					}
 				} else if(args[0].equalsIgnoreCase("owner")) 
 				{
-					if(Pinstance.isPartyLeader(player, PP.getParty())) 
+					if(Pinstance.isPartyLeader(player.getName(), PP.getParty())) 
 					{
 						Player tPlayer = null;
 						if(Bukkit.getServer().getPlayer(args[1]) != null) tPlayer = Bukkit.getServer().getPlayer(args[1]);

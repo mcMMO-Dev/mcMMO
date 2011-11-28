@@ -52,6 +52,9 @@ public class Leaderboard
 		Tree Archery = new Tree();
 		Tree Unarmed = new Tree();
 		Tree Taming = new Tree();
+		Tree Fishing = new Tree();
+		Tree Enchanting = new Tree();
+		Tree Alchemy = new Tree();
 		Tree PowerLevel = new Tree();
 		
 		//Add Data To Trees
@@ -139,6 +142,9 @@ public class Leaderboard
         leaderWrite(Axes.inOrder(), SkillType.AXES); //$NON-NLS-1$
         leaderWrite(Acrobatics.inOrder(), SkillType.ACROBATICS); //$NON-NLS-1$
         leaderWrite(Taming.inOrder(), SkillType.TAMING); //$NON-NLS-1$
+        leaderWrite(Fishing.inOrder(), SkillType.FISHING); //$NON-NLS-1$
+        leaderWrite(Alchemy.inOrder(), SkillType.ALCHEMY); //$NON-NLS-1$
+        leaderWrite(Enchanting.inOrder(), SkillType.ENCHANTING); //$NON-NLS-1$
         leaderWrite(PowerLevel.inOrder(), SkillType.ALL); //$NON-NLS-1$
 	}
 	public static void leaderWrite(PlayerStat[] ps, SkillType skillType)

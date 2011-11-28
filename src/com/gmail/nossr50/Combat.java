@@ -122,42 +122,9 @@ public class Combat
 			    		}
 		      		}
 		      		
-		      		if(event.getEntity() instanceof Monster && !pluginx.misc.mobSpawnerList.contains(event.getEntity()))
+		      		if(!pluginx.misc.mobSpawnerList.contains(event.getEntity()))
 		      		{
-		      			//Prevent XP from being handed out if the Monster is dead
-		      			Monster monster = (Monster)event.getEntity();
-		      			if(monster.getHealth() < 1)
-		      				return;
-		      			
-		      			//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the mob
-		      			int hpLeft = monster.getHealth(), xpinc = 0;
-		      			
-		      			if(hpLeft < event.getDamage())
-		      				xpinc = event.getDamage();
-		      			else
-		      				xpinc = hpLeft;
-		      			
-		      			int xp = 0;
-		      			if(event.getEntity() instanceof Enderman)
-		      				xp = (xpinc * 3);
-		      			if(event.getEntity() instanceof Creeper)
-							xp = (xpinc * 4);
-		      			if(event.getEntity() instanceof Silverfish)
-		      				xp = (xpinc * 3);
-		      			if(event.getEntity() instanceof CaveSpider)
-		      				xp = (xpinc * 3);
-						if(event.getEntity() instanceof Spider)
-							xp = (xpinc * 3);
-						if(event.getEntity() instanceof Skeleton)
-							xp = (xpinc * 2);
-						if(event.getEntity() instanceof Zombie)
-							xp = (xpinc * 2);
-						if(event.getEntity() instanceof PigZombie)
-							xp = (xpinc * 3);
-						if(event.getEntity() instanceof Slime)
-							xp = (xpinc * 3);
-						if(event.getEntity() instanceof Ghast)
-							xp = (xpinc * 3);
+		      			int xp = getXp(event.getEntity(), event);
 
 						if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
 							PPa.addXP(SkillType.SWORDS, xp*10, attacker);
@@ -232,48 +199,13 @@ public class Combat
 					}
 					if(!event.getEntity().isDead() && !pluginx.misc.mobSpawnerList.contains(event.getEntity()))
 					{
-						int xp = 0;
-						if(event.getEntity() instanceof Monster)
-						{
-							//Prevent XP from being handed out if the Monster is dead
-			      			Monster monster = (Monster)event.getEntity();
-			      			if(monster.getHealth() < 1)
-			      				return;
-			      			
-			      			//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the mob
-			      			int hpLeft = monster.getHealth(), xpinc = 0;
-			      			
-			      			if(hpLeft < event.getDamage())
-			      				xpinc = event.getDamage();
-			      			else
-			      				xpinc = hpLeft;
-			      			
-			      			if(event.getEntity() instanceof Creeper)
-								xp = (xpinc * 6);
-			      			if(event.getEntity() instanceof Enderman)
-			      				xp = (xpinc * 5);
-			      			if(event.getEntity() instanceof Silverfish)
-			      				xp = (xpinc * 3);
-			      			if(event.getEntity() instanceof CaveSpider)
-			      				xp = (xpinc * 3);
-							if(event.getEntity() instanceof Spider)
-								xp = (xpinc * 5);
-							if(event.getEntity() instanceof Skeleton)
-								xp = (xpinc * 3);
-							if(event.getEntity() instanceof Zombie)
-								xp = (xpinc * 3);
-							if(event.getEntity() instanceof PigZombie)
-								xp = (xpinc * 4);
-							if(event.getEntity() instanceof Slime)
-								xp = (xpinc * 4);
-							if(event.getEntity() instanceof Ghast)
-								xp = (xpinc * 4);
-							Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
-						}
+						int xp = getXp(event.getEntity(), event);
+						Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
+						
 						if(event.getEntity() instanceof Player)
 						{
 							xp = (event.getDamage() * 2);
-							Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
+							Users.getProfile(master).addXP(SkillType.TAMING, (int)((xp*10)*1.5), master);
 						}
 						Skills.XpCheckSkill(SkillType.TAMING, master);
 					}
@@ -380,42 +312,10 @@ public class Combat
     		/*
     		 * Defender is Monster
     		 */
-    		if(!pluginx.misc.mobSpawnerList.contains(x) && x instanceof Monster)
+    		if(!pluginx.misc.mobSpawnerList.contains(x))
     		{
-    			//Prevent XP from being handed out if the Monster is dead
-      			Monster monster = (Monster)x;
-      			if(monster.getHealth() < 1)
-      				return;
-      			
-      			//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the mob
-      			int hpLeft = monster.getHealth(), xpinc = 0;
-      			
-      			if(hpLeft < event.getDamage())
-      				xpinc = event.getDamage();
-      			else
-      				xpinc = hpLeft;
-      			
-    			//XP
-    			if(x instanceof Creeper)
-    				PPa.addXP(SkillType.ARCHERY, (xpinc * 4)*10, attacker);
-    			if(x instanceof Enderman)
-    				PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
-    			if(x instanceof Silverfish)
-    				PPa.addXP(SkillType.ARCHERY, (xpinc * 2)*10, attacker);
-    			if(x instanceof CaveSpider)
-    				PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
-				if(x instanceof Spider)
-					PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
-				if(x instanceof Skeleton)
-					PPa.addXP(SkillType.ARCHERY, (xpinc * 2)*10, attacker);
-				if(x instanceof Zombie)
-					PPa.addXP(SkillType.ARCHERY, (xpinc * 2)*10, attacker);
-				if(x instanceof PigZombie)
-					PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
-				if(x instanceof Slime)
-					PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
-				if(x instanceof Ghast)
-					PPa.addXP(SkillType.ARCHERY, (xpinc * 3)*10, attacker);
+    			int xp = getXp(event.getEntity(), event);
+				PPa.addXP(SkillType.ARCHERY, xp*10, attacker);
     		}
     		/*
     		 * Attacker is Player
@@ -469,5 +369,52 @@ public class Combat
     		return false;
     	//If it made it this far, pvp is enabled
     	return true;
+    }
+    public static int getXp(Entity entity, EntityDamageEvent event)
+    {
+    	int xp = 0;
+    	if(entity instanceof LivingEntity)
+    	{
+    		LivingEntity le = (LivingEntity)entity;
+	    	//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the entity
+				int hpLeft = le.getHealth(), xpinc = 0;
+				
+				if(hpLeft < event.getDamage())
+					xpinc = event.getDamage();
+				else
+					xpinc = hpLeft;
+			
+	    	if(entity instanceof Animals)
+	    	{
+		    	xp = (int) (xpinc * 1.5);
+	    	} else
+	    	{
+	    		if(entity instanceof Enderman)
+					xp = (xpinc * 3);
+		    	else if(entity instanceof Creeper)
+					xp = (xpinc * 4);
+		    	else if(entity instanceof Silverfish)
+					xp = (xpinc * 3);
+		    	else if(entity instanceof CaveSpider)
+					xp = (xpinc * 3);
+		    	else if(entity instanceof Spider)
+					xp = (xpinc * 3);
+		    	else if(entity instanceof Skeleton)
+					xp = (xpinc * 2);
+		    	else if(entity instanceof Zombie)
+					xp = (xpinc * 2);
+		    	else if(entity instanceof PigZombie)
+					xp = (xpinc * 3);
+		    	else if(entity instanceof Slime)
+					xp = (xpinc * 2);
+		    	else if(entity instanceof Ghast)
+					xp = (xpinc * 3);
+		    	else if(entity instanceof Blaze)
+		    		xp = (xpinc * 3);
+		    	else if(entity instanceof EnderDragon)
+		    		xp = (xpinc * 8);
+	    	}
+    	}
+    	return xp;
     }
 }

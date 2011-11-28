@@ -27,10 +27,13 @@ import java.util.logging.Logger;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 
@@ -954,6 +957,30 @@ public class PlayerProfile
 	{
 		if(thisplayer.getGameMode() == GameMode.CREATIVE)
 			return;
+		
+		double bonusModifier = 0;
+		String leaderName = "";
+		
+		if(inParty())
+		{
+			for(Player x : Party.getInstance().getPartyMembers(thisplayer))
+			{
+				if(x.isOnline() && !x.getName().equals(thisplayer.getName()) && Party.getInstance().isPartyLeader(x.getName(), this.getParty()))
+				{
+					leaderName = x.getName();
+					if(m.getDistance(thisplayer.getLocation(), x.getLocation()) < 25)
+					{
+						PlayerProfile PartyLeader = Users.getProfile(x);
+						if(PartyLeader.getSkillLevel(skillType) >= this.getSkillLevel(skillType))
+						{
+							int leaderLevel = PartyLeader.getSkillLevel(skillType); 
+							int difference = leaderLevel - this.getSkillLevel(skillType);
+							bonusModifier = (difference*0.75D)/100D;
+						}
+					}
+				}
+			}
+		}
 		if(skillType == SkillType.ALL)
 		{
 			for(SkillType x : SkillType.values())
@@ -1002,6 +1029,18 @@ public class PlayerProfile
 				break;
 			}
 			xp=xp*LoadProperties.xpGainMultiplier;
+			
+			if(bonusModifier > 0)
+			{
+				if(bonusModifier >= 3)
+					bonusModifier = 3;
+				
+				double trueBonus = bonusModifier * xp;
+				double oldxp = xp;
+				xp+=trueBonus;
+				double percent = (trueBonus/oldxp)*100;
+				thisplayer.sendMessage(ChatColor.GREEN+"XP: "+oldxp+" Bonus XP: "+trueBonus+" Total: "+xp+ChatColor.GOLD+" [Master: "+leaderName+" " +" +"+(int)percent+"%]");
+			}
 			skillsXp.put(skillType, skillsXp.get(skillType)+xp);
 			lastgained = skillType;
 		}

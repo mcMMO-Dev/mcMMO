@@ -211,7 +211,7 @@ public class Party
     		
     	informPartyMembersQuit(player);
     	String party = PP.getParty();
-    	if(isPartyLeader(player, party)) 
+    	if(isPartyLeader(player.getName(), party)) 
     	{
     		if(isPartyLocked(party)) {
     			unlockParty(party);
@@ -376,7 +376,7 @@ public class Party
     }
     
     public boolean canInvite(Player player, PlayerProfile PP) {
-    	return (isPartyLocked(PP.getParty()) && !isPartyLeader(player, PP.getParty())) ? false : true;
+    	return (isPartyLocked(PP.getParty()) && !isPartyLeader(player.getName(), PP.getParty())) ? false : true;
     }
     
     public boolean isParty(String partyName) {
@@ -387,11 +387,11 @@ public class Party
     	return this.partyPlayers.get(partyName).isEmpty();
     }
     
-    public boolean isPartyLeader(Player player, String partyName) {
+    public boolean isPartyLeader(String playerName, String partyName) {
     	if(this.partyPlayers.get(partyName) != null)
     	{
-	    	if(this.partyPlayers.get(partyName).get(player.getName()) == null) return false;
-	    	return this.partyPlayers.get(partyName).get(player.getName());
+	    	if(this.partyPlayers.get(partyName).get(playerName) == null) return false;
+	    	return this.partyPlayers.get(partyName).get(playerName);
     	}
     	else
     		return false;

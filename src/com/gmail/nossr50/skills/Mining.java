@@ -16,6 +16,8 @@
 */
 package com.gmail.nossr50.skills;
 
+import net.minecraft.server.Enchantment;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -254,7 +256,14 @@ public class Mining
     {
     	PlayerProfile PP = Users.getProfile(player);
     	if(LoadProperties.toolsLoseDurabilityFromAbilities)
+    	{
+    		if(player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
+    		{
+    			
+    		}
     		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+    	}
+    	
     	Location loc = block.getLocation();
     	Material mat = Material.getMaterial(block.getTypeId());
     	int xp = 0;

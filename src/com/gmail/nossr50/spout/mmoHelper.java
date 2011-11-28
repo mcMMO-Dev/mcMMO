@@ -226,7 +226,7 @@ public class mmoHelper
 				} else {
 					bar = (GenericLivingEntity)bars[index];
 				}
-				bar.setEntity(name, Party.getInstance().isPartyLeader(Bukkit.getServer().getPlayer(name), Users.getProfile(Bukkit.getServer().getPlayer(name)).getParty()) ? ChatColor.GREEN + "@" : "");
+				bar.setEntity(name, Party.getInstance().isPartyLeader(name, Users.getProfile(Bukkit.getServer().getPlayer(name)).getParty()) ? ChatColor.GREEN + "@" : "");
 				//bar.setTargets(show_pets ? getPets(Bukkit.getServer().getPlayer(name)) : null);
 				index++;
 			}

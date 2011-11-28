@@ -141,6 +141,7 @@ public class mcMMO extends JavaPlugin
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_FISH, playerListener, Priority.Normal, this);
 
 		//Block Stuff
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);

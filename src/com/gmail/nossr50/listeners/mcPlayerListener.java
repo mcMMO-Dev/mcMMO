@@ -25,9 +25,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.command.ColouredConsoleSender;
+import org.bukkit.craftbukkit.entity.CraftItem;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Fish;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -36,6 +41,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.Item;
 import com.gmail.nossr50.Users;
@@ -50,6 +56,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.skills.Fishing;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
@@ -64,6 +71,22 @@ public class mcPlayerListener extends PlayerListener
 	public mcPlayerListener(mcMMO instance) 
 	{
 		plugin = instance;
+	}
+	
+	//Fishing stuff
+	public void onPlayerFish(PlayerFishEvent event) 
+	{
+		Player player = event.getPlayer();
+		if(mcPermissions.getInstance().fishing(player))
+		{
+			if(event.getState() == State.CAUGHT_FISH)
+			{
+				if(event.getCaught() instanceof CraftItem)
+				{
+					Fishing.getFishingResults(player, event);
+				}
+			}
+		}
 	}
 	
 	 public void onPlayerPickupItem(PlayerPickupItemEvent event) 
@@ -124,9 +147,7 @@ public class mcPlayerListener extends PlayerListener
 
 	public void onPlayerJoin(PlayerJoinEvent event) 
 	{
-		
 		Player player = event.getPlayer();
-
 		if(mcPermissions.getInstance().motd(player) && LoadProperties.enableMotd)
 		{
 			player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), LoadProperties.mcmmo}));

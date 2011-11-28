@@ -265,6 +265,27 @@ public class mcPermissions
             return true;
         }
     }
+    public boolean fishing(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.fishing");
+        } else {
+            return true;
+        }
+    }
+    public boolean alchemy(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.alchemy");
+        } else {
+            return true;
+        }
+    }
+    public boolean enchanting(Player player) {
+        if (permissionsEnabled) {
+            return permission(player, "mcmmo.skills.enchanting");
+        } else {
+            return true;
+        }
+    }
     public boolean woodcutting(Player player) {
         if (permissionsEnabled) {
             return permission(player, "mcmmo.skills.woodcutting");

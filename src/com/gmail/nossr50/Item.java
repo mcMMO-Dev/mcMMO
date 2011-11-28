@@ -28,7 +28,6 @@ import com.gmail.nossr50.skills.*;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
-
 public class Item {
 	
 	public static void itemchecks(Player player, Plugin plugin)
