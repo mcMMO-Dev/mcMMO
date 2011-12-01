@@ -23,12 +23,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.command.ColouredConsoleSender;
 import org.bukkit.craftbukkit.entity.CraftItem;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Fish;
+import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -41,8 +45,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-
 import com.gmail.nossr50.Item;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -60,6 +62,7 @@ import com.gmail.nossr50.skills.Fishing;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.Taming;
 
 
 public class mcPlayerListener extends PlayerListener 
@@ -73,17 +76,21 @@ public class mcPlayerListener extends PlayerListener
 		plugin = instance;
 	}
 	
-	//Fishing stuff
 	public void onPlayerFish(PlayerFishEvent event) 
 	{
-		Player player = event.getPlayer();
-		if(mcPermissions.getInstance().fishing(player))
+		if(mcPermissions.getInstance().fishing(event.getPlayer()))
 		{
 			if(event.getState() == State.CAUGHT_FISH)
 			{
 				if(event.getCaught() instanceof CraftItem)
 				{
-					Fishing.getFishingResults(player, event);
+					Fishing.processResults(event);
+				}
+			} else if (event.getState() == State.CAUGHT_ENTITY)
+			{
+				if(Users.getProfile(event.getPlayer()).getSkillLevel(SkillType.FISHING) >= 150 && event.getCaught() instanceof LivingEntity)
+				{
+					Fishing.shakeMob(event);
 				}
 			}
 		}
@@ -248,6 +255,43 @@ public class mcPlayerListener extends PlayerListener
 		{
 			if(m.abilityBlockCheck(event.getClickedBlock()))
 				Item.itemchecks(player, plugin);
+		}
+		
+		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK))
+		{
+			if(player.getItemInHand().getType() == Material.BONE && player.getItemInHand().getAmount() > 9)
+			{
+				for(Entity x : player.getNearbyEntities(40, 40, 40))
+				{
+					if(x instanceof Wolf)
+					{
+						player.sendMessage(mcLocale.getString("m.TamingSummonFailed"));
+						return;
+					}
+				}
+				World world = player.getWorld();
+				world.spawnCreature(player.getLocation(), CreatureType.WOLF);
+				
+				ItemStack[] inventory = player.getInventory().getContents();
+    	    	for(ItemStack x : inventory){
+    	    		if(x != null && x.getType() == Material.BONE){
+    	    			if(x.getAmount() >= 10)
+    	    			{
+    	    				x.setAmount(x.getAmount() - 10);
+    	    				player.getInventory().setContents(inventory);
+        	    			player.updateInventory();
+        	    			break;
+    	    			} else {
+    	    				x.setAmount(0);
+    	    				x.setTypeId(0);
+    	    				player.getInventory().setContents(inventory);
+        	    			player.updateInventory();
+        	    			break;
+    	    			}
+    	    		}
+    	    	}
+    	    	player.sendMessage(mcLocale.getString("m.TamingSummon"));
+			}
 		}
 	}
 

@@ -24,6 +24,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.block.Block;
@@ -440,8 +441,6 @@ public class mcBlockListener extends BlockListener
     
     public void onBlockFromTo(BlockFromToEvent event) 
     {
-    	
-    	
         Block blockFrom = event.getBlock();
         Block blockTo = event.getToBlock();
         if(m.shouldBeWatched(blockFrom) && blockFrom.getData() == (byte)5)

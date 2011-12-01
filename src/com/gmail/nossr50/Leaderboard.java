@@ -122,6 +122,11 @@ public class Leaderboard
     				Taming.add(p, Integer.valueOf(character[24]));
     				Plvl += Integer.valueOf(character[24]);
     			}
+    			if(character.length > 34 && m.isInt(character[34]))
+    			{
+    				Fishing.add(p, Integer.valueOf(character[34]));
+    				Plvl += Integer.valueOf(character[34]);
+    			}
     			
     			PowerLevel.add(p, Plvl);
         	}

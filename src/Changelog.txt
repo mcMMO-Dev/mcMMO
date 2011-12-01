@@ -1,11 +1,13 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.2.00
-New mobs added to xp tables
-Party leaders can now give bonus xp to nearby party members when grouped provided they are more skilled than their underlings
+Added Fishing Skill
+Added Call Of The Wild to Taming
+Added Arcane Forging to Repair
+Added new mobs to XP tables
+Added Master/Apprentice system to the Party system
 Animals now give xp to combat skills (those poor sheep ;_;)
 Removed unnecessary sorcery permissions from plugin.yml
-Added 'Arcane Forging' subskill to Repair
 
 Version 1.1.17
 XP gained in combat is now softcapped by the remaining health of the entity you are damaging, preventing many exploits.

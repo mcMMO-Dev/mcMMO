@@ -69,8 +69,6 @@ public class Repair {
 			pos++;
 		}
 		
-		System.out.println("[mcMMO] Enchantments stored!");
-		
     	if(block != null && mcPermissions.getInstance().repair(player)){
         	if(player.getItemInHand().getDurability() > 0 && player.getItemInHand().getAmount() < 2){
         		/*
@@ -296,9 +294,13 @@ public class Repair {
 		}
 		
 		boolean failure = false, downgrade = false;
-		
+
 		for(Enchantment x : enchants)
 		{
+			//Remove enchant
+			if(is.getEnchantments().containsKey(x))
+				is.removeEnchantment(x);
+			
 			if(x.canEnchantItem(is))
 			{
 				if(Math.random() * 100 <= getEnchantChance(rank))

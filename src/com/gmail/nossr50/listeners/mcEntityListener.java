@@ -52,8 +52,6 @@ public class mcEntityListener extends EntityListener
     
     public void onEntityDamage(EntityDamageEvent event) 
     {
-    	
-    	
     	if(event.isCancelled())
     		return;
     	//Check for world pvp flag
@@ -185,7 +183,6 @@ public class mcEntityListener extends EntityListener
     
     public void onCreatureSpawn(CreatureSpawnEvent event) 
     {
-    	
     	SpawnReason reason = event.getSpawnReason();
     	
     	if(reason == SpawnReason.SPAWNER && !LoadProperties.xpGainsMobSpawners)

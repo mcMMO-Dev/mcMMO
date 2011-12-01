@@ -85,6 +85,11 @@ public class Database {
 				+ "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "skills2` (`user_id` int(10) unsigned NOT NULL,"
+				+ "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
+				+ "`enchanting` int(10) unsigned NOT NULL DEFAULT '0',"
+				+ "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "experience` (`user_id` int(10) unsigned NOT NULL,"
 				+ "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -97,6 +102,11 @@ public class Database {
 				+ "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
+				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "experience2` (`user_id` int(10) unsigned NOT NULL,"
+				+ "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
+				+ "`enchanting` int(10) unsigned NOT NULL DEFAULT '0',"
+				+ "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "spawn` (`user_id` int(10) NOT NULL,"
 				+ "`x` int(64) NOT NULL DEFAULT '0',"

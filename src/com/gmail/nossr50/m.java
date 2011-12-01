@@ -117,6 +117,8 @@ public class m
 			x+=PP.getSkillLevel(SkillType.ACROBATICS);
 		if(mcPermissions.getInstance().repair(player))
 			x+=PP.getSkillLevel(SkillType.REPAIR);
+		if(mcPermissions.getInstance().fishing(player))
+			x+=PP.getSkillLevel(SkillType.FISHING);
 		return x;
 	}
 
