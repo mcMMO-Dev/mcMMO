@@ -106,7 +106,7 @@ public class Commands
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsTaming5_0"), mcLocale.getString("m.EffectsTaming5_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsTaming6_0"), mcLocale.getString("m.EffectsTaming6_1")}));  
 			player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] {mcLocale.getString("m.EffectsTaming7_0"), mcLocale.getString("m.EffectsTaming7_1")}));
-			player.sendMessage(mcLocale.getString("m.EffectsTaming7_2"));
+			player.sendMessage(mcLocale.getString("m.EffectsTaming7_2", new Object[] {LoadProperties.bonesConsumedByCOTW}));
 			player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] {mcLocale.getString("m.YourStats")})); 
 			if(PP.getSkillLevel(SkillType.TAMING) < 100)
 				player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] {mcLocale.getString("m.AbilLockTaming1")})); 

@@ -1,5 +1,20 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.2.01
+Added a setting to turn off abilities completely from config
+Added a setting to just turn off ability messages from config
+Fixed the bug with sword repair
+Fixed mcMMO not working properly with Spout
+Added Fishing XP icon to Normal/Retro HUDs for Spout
+Added icons to Spout notifications for leveling Fishing
+Added Fishing Retro XP bar color customization to config file
+The number of bones required to use Call of The Wild is now configurable
+Reduced the XP animals would give from 1.5x to 1x
+Removed current durability value message from Repairing
+Fixed bug where Arcane Forging failed to display messages
+Fixed bug where Arcane Forging tries to downgrade level 1 enchants
+Fixed bug where Arcane Forging always kept enchantments if you had under 100 Repair skill
+
 Version 1.2.00
 Added Fishing Skill
 Added Call Of The Wild to Taming

@@ -64,7 +64,6 @@ public class SpoutStuff
 	private final static mcSpoutScreenListener spoutScreenListener = new mcSpoutScreenListener(plugin);
 	
 	public static HashMap<Player, HUDmmo> playerHUDs = new HashMap<Player, HUDmmo>();
-	//public static HashMap<Player, ArrayList<HealthBarMMO>> partyHealthBars = new HashMap<Player, ArrayList<HealthBarMMO>>();
 	public static HashMap<SpoutPlayer, PopupMMO> playerScreens = new HashMap<SpoutPlayer, PopupMMO>();
 	
 	public static Keyboard keypress;
@@ -128,9 +127,8 @@ public class SpoutStuff
 		
 		for(SkillType y : SkillType.values())
 		{
-			if(y == SkillType.ALL)
+			if(y == SkillType.ALL || y == SkillType.ENCHANTING || y == SkillType.ALCHEMY)
 				continue;
-			
 			
 			String theFileNameA = m.getCapitalized(y.toString())+".png";
 			String theFileNameB = m.getCapitalized(y.toString())+"_r.png";
@@ -193,7 +191,7 @@ public class SpoutStuff
 		//Standard XP Icons
 		for(SkillType y : SkillType.values())
 		{
-			if(y == SkillType.ALL)
+			if(y == SkillType.ALL || y == SkillType.ENCHANTING || y == SkillType.ALCHEMY)
 				continue;
 			files.add(new File(dir+"HUD/Standard/"+m.getCapitalized(y.toString())+".png"));
 			files.add(new File(dir+"HUD/Retro/"+m.getCapitalized(y.toString())+"_r.png"));
@@ -242,6 +240,8 @@ public class SpoutStuff
 				return new Color((float)LoadProperties.unarmed_r, (float)LoadProperties.unarmed_g, (float)LoadProperties.unarmed_b, 1f);
 			case WOODCUTTING:
 				return new Color((float)LoadProperties.woodcutting_r, (float)LoadProperties.woodcutting_g, (float)LoadProperties.woodcutting_b, 1f);
+			case FISHING:
+				return new Color((float)LoadProperties.fishing_r, (float)LoadProperties.fishing_g, (float)LoadProperties.fishing_b, 1f);
 			default:
 				return new Color(0.3f, 0.3f, 0.75f, 1f);
 		}
@@ -490,6 +490,25 @@ public class SpoutStuff
 				break;
 			}
 			break;
+		case FISHING:
+			switch(getNotificationTier(PP.getSkillLevel(skillType)))
+			{
+			case 1:
+				mat = Material.RAW_FISH;
+				break;
+			case 2:
+				mat = Material.RAW_FISH;
+				break;
+			case 3:
+				mat = Material.COOKED_FISH;
+				break;
+			case 4:
+				mat = Material.COOKED_FISH;
+				break;
+			case 5:
+				mat = Material.FISHING_ROD;
+				break;
+			}
 		default:
 			mat = Material.WATCH;
 			break;

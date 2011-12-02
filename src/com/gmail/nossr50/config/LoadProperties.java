@@ -23,7 +23,7 @@ import com.gmail.nossr50.datatypes.HUDType;
 
 public class LoadProperties 
 {
-	public static Boolean showDisplayName, showFaces, watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
+	public static Boolean enableAbilityMessages, enableAbilities, showDisplayName, showFaces, watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
 	donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, 
 	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
 	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, mushrooms, 
@@ -40,9 +40,9 @@ public class LoadProperties
 	msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport,
 	xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown,
 	berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss,
-	feathersConsumedByChimaeraWing, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond;
+	feathersConsumedByChimaeraWing, bonesConsumedByCOTW, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond;
 	
-	public static double xpbackground_r, xpbackground_g, xpbackground_b, xpborder_r, xpborder_g, xpborder_b, acrobatics_r, acrobatics_g, acrobatics_b, archery_r, archery_g, archery_b, axes_r, axes_g, axes_b,
+	public static double xpbackground_r, xpbackground_g, xpbackground_b, xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g, fishing_b, acrobatics_r, acrobatics_g, acrobatics_b, archery_r, archery_g, archery_b, axes_r, axes_g, axes_b,
 	excavation_r, excavation_g, excavation_b, herbalism_r, herbalism_g, herbalism_b, mining_r, mining_g, mining_b,
 	repair_r, repair_g, repair_b, swords_r, swords_g, swords_b, taming_r, taming_g, taming_b, unarmed_r, unarmed_g, unarmed_b,
 	woodcutting_r, woodcutting_g, woodcutting_b, pvpxprewardmodifier, tamingxpmodifier, miningxpmodifier,
@@ -174,6 +174,9 @@ public class LoadProperties
 	        write("Spout.HUD.Retro.Colors.Woodcutting.RED", 0.3);
 	        write("Spout.HUD.Retro.Colors.Woodcutting.GREEN", 0.3);
 	        write("Spout.HUD.Retro.Colors.Woodcutting.BLUE", 0.75);
+	        write("Spout.HUD.Retro.Colors.Fishing.RED", 0.3);
+	        write("Spout.HUD.Retro.Colors.Fishing.GREEN", 0.3);
+	        write("Spout.HUD.Retro.Colors.Fishing.BLUE", 0.75);
 	        write("Spout.HUD.Retro.Colors.Border.RED", 0.0);
 	        write("Spout.HUD.Retro.Colors.Border.GREEN", 0.0);
 	        write("Spout.HUD.Retro.Colors.Border.BLUE", 0.0);
@@ -322,6 +325,8 @@ public class LoadProperties
 	    	write("Abilities.Cooldowns.Berserk", 240);
 	    	write("Abilities.Cooldowns.Serrated_Strikes", 240);
 	    	write("Abilities.Cooldowns.Skull_Splitter", 240);
+	    	write("Abilities.Messages", true);
+	    	write("Abilities.Enabled", true);
 	    	
 	    	write("Skills.Repair.Anvil_Messages", true);
 	    	write("Skills.Repair.Gold.ID", 266);
@@ -339,6 +344,7 @@ public class LoadProperties
 	    	write("Skills.Excavation.Requires_Shovel", true);
 	    	write("Skills.Mining.Requires_Pickaxe", true);
 	    	write("Skills.Woodcutting.Requires_Axe", true);
+	    	write("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
 	    	
 	    	loadkeys();
 	    }
@@ -356,8 +362,13 @@ public class LoadProperties
 	        	}
 	        }
 	        
+	        enableAbilityMessages = readBoolean("Abilities.Messages", true);
+	    	enableAbilities = readBoolean("Abilities.Enabled", true);
+	        
 	        donateMessage = readBoolean("Commands.mcmmo.Donate_Message", true);
 	        xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);
+	        
+	        bonesConsumedByCOTW = readInteger("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
 	        
 	        xpbar = readBoolean("Spout.XP.Bar.Enabled", true);
 	        //web_url = readString("Spout.Images.URL_DIR", "http://mcmmo.rycochet.net/mcmmo/");
@@ -404,6 +415,9 @@ public class LoadProperties
 	        woodcutting_r = readDouble("Spout.HUD.Retro.Colors.Woodcutting.RED", 0.3);
 	        woodcutting_g = readDouble("Spout.HUD.Retro.Colors.Woodcutting.GREEN", 0.3);
 	        woodcutting_b = readDouble("Spout.HUD.Retro.Colors.Woodcutting.BLUE", 0.75);
+	        fishing_r = readDouble("Spout.HUD.Retro.Colors.Fishing.RED", 0.3);
+	        fishing_g = readDouble("Spout.HUD.Retro.Colors.Fishing.GREEN", 0.3);
+	        fishing_b = readDouble("Spout.HUD.Retro.Colors.Fishing.BLUE", 0.75);
 	        
 	        xpborder_r = readDouble("Spout.HUD.Retro.Colors.Border.RED", 0.0);
 	        xpborder_g = readDouble("Spout.HUD.Retro.Colors.Border.GREEN", 0.0);

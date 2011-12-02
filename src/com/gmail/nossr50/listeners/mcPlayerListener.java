@@ -27,7 +27,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.command.ColouredConsoleSender;
 import org.bukkit.craftbukkit.entity.CraftItem;
-import org.bukkit.entity.AnimalTamer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -62,7 +62,6 @@ import com.gmail.nossr50.skills.Fishing;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
-import com.gmail.nossr50.skills.Taming;
 
 
 public class mcPlayerListener extends PlayerListener 
@@ -191,10 +190,11 @@ public class mcPlayerListener extends PlayerListener
 
 			if(block != null && player != null && mcPermissions.getInstance().repair(player) && event.getClickedBlock().getTypeId() == 42)
 			{
+				event.setCancelled(true);//This is a fix for the sword repair bug
 				Repair.repairCheck(player, is, event.getClickedBlock());
 			}
 
-			if(m.abilityBlockCheck(block))
+			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
 			{
 				if(block != null && m.isHoe(player.getItemInHand()) && block.getTypeId() != 3 && block.getTypeId() != 2 && block.getTypeId() != 60){
 					Skills.hoeReadinessCheck(player);
@@ -240,7 +240,7 @@ public class mcPlayerListener extends PlayerListener
 				return;
 			}
 		}
-		if(action == Action.RIGHT_CLICK_AIR)
+		if(LoadProperties.enableAbilities && action == Action.RIGHT_CLICK_AIR)
 		{
 			Skills.hoeReadinessCheck(player);
 			Skills.abilityActivationCheck(player);
@@ -275,9 +275,9 @@ public class mcPlayerListener extends PlayerListener
 				ItemStack[] inventory = player.getInventory().getContents();
     	    	for(ItemStack x : inventory){
     	    		if(x != null && x.getType() == Material.BONE){
-    	    			if(x.getAmount() >= 10)
+    	    			if(x.getAmount() >= LoadProperties.bonesConsumedByCOTW)
     	    			{
-    	    				x.setAmount(x.getAmount() - 10);
+    	    				x.setAmount(x.getAmount() - LoadProperties.bonesConsumedByCOTW);
     	    				player.getInventory().setContents(inventory);
         	    			player.updateInventory();
         	    			break;

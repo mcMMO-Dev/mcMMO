@@ -386,7 +386,7 @@ public class Combat
 			
 	    	if(entity instanceof Animals)
 	    	{
-		    	xp = (int) (xpinc * 1.5);
+		    	xp = (int) (xpinc * 1);
 	    	} else
 	    	{
 	    		if(entity instanceof Enderman)

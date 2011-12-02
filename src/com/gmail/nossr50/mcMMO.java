@@ -153,6 +153,21 @@ public class mcMMO extends JavaPlugin
 		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Priority.Normal, this);
+
+		PluginDescriptionFile pdfFile = this.getDescription();
+		mcPermissions.initialize(getServer());
+
+		if(LoadProperties.useMySQL)
+		{
+			database = new Database(this);
+			database.createStructure();
+		} else
+			Leaderboard.makeLeaderboards(); //Make the leaderboards
+
+		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile   
+		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+		
+		Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, mcMMO_Timer, 0, 20);
 		
 		//Spout Stuff
 		if(LoadProperties.spoutEnabled)
@@ -175,21 +190,6 @@ public class mcMMO extends JavaPlugin
 					  }, 20, 20);
 			 */
 		}
-
-		PluginDescriptionFile pdfFile = this.getDescription();
-		mcPermissions.initialize(getServer());
-
-		if(LoadProperties.useMySQL)
-		{
-			database = new Database(this);
-			database.createStructure();
-		} else
-			Leaderboard.makeLeaderboards(); //Make the leaderboards
-
-		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile   
-		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
-		
-		Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, mcMMO_Timer, 0, 20);
 	}
 
 	public PlayerProfile getPlayerProfile(Player player)

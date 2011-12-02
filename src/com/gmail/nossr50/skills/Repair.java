@@ -17,12 +17,10 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
@@ -50,7 +48,6 @@ public class Repair {
         private static String nIron =  LoadProperties.nIron;
         
 	
-	@SuppressWarnings("deprecation")
 	public static void repairCheck(Player player, ItemStack is, Block block){
 		PlayerProfile PP = Users.getProfile(player);
 		short durabilityBefore = player.getItemInHand().getDurability();
@@ -69,7 +66,11 @@ public class Repair {
 			pos++;
 		}
 		
-    	if(block != null && mcPermissions.getInstance().repair(player)){
+    	if(block != null && mcPermissions.getInstance().repair(player))
+    	{
+    		//Handle the enchantments
+        	addEnchants(player.getItemInHand(), enchants, enchantsLevel, PP, player);
+        	
         	if(player.getItemInHand().getDurability() > 0 && player.getItemInHand().getAmount() < 2){
         		/*
         		 * ARMOR
@@ -130,14 +131,6 @@ public class Repair {
         		 * TOOLS
         		 */
         		if(isTools(is)){
-        			if(is.getType() == Material.WOOD_SWORD || is.getType() == Material.STONE_SWORD || is.getType() == Material.IRON_SWORD ||
-        					is.getType() == Material.GOLD_SWORD || is.getType() == Material.DIAMOND_SWORD)
-        			{
-        				player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.GREEN+"Sorry this is disabled due to a bug");
-        				player.sendMessage(ChatColor.GREEN+" with changing the durability of swords in CB");
-        				return;
-        			}
-        			
         			if(isStoneTools(is) && hasItem(player, rStone)){
         				removeItem(player, rStone);
             			/*
@@ -145,7 +138,6 @@ public class Repair {
             			 */
         				
         				player.getItemInHand().setDurability(getRepairAmount(is, player));
-	        			
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(m.isShovel(is))
@@ -238,26 +230,16 @@ public class Repair {
             		} else {
             			needMoreVespeneGas(is, player);
             		}
-        			
-        			//This will solve the issue with swords not repairing properly
-        			if(is.getType() == Material.WOOD_SWORD || is.getType() == Material.STONE_SWORD || is.getType() == Material.IRON_SWORD ||
-        					is.getType() == Material.GOLD_SWORD || is.getType() == Material.DIAMOND_SWORD)
-        			{
-        				player.getItemInHand().getData().setData((byte)player.getItemInHand().getDurability());
-        			}
-        			
-        			player.sendMessage("Current Durability Value: "+player.getItemInHand().getDurability());
         		}
         		
         	} else {
         		player.sendMessage(mcLocale.getString("Skills.FullDurability"));
         	}
-        	player.updateInventory();
+        	//player.updateInventory();
         	/*
         	 * GIVE SKILL IF THERE IS ENOUGH XP
         	 */
         	Skills.XpCheckSkill(SkillType.REPAIR, player);
-        	addEnchants(player.getItemInHand(), enchants, enchantsLevel, PP, player);
         	}
     }
 	public static int getArcaneForgingRank(PlayerProfile PP)
@@ -290,6 +272,10 @@ public class Repair {
 		if(rank == 0)
 		{
 			player.sendMessage(mcLocale.getString("Repair.LostEnchants"));
+			for(Enchantment x : enchants)
+			{
+				is.removeEnchantment(x);
+			}
 			return;
 		}
 		
@@ -298,8 +284,7 @@ public class Repair {
 		for(Enchantment x : enchants)
 		{
 			//Remove enchant
-			if(is.getEnchantments().containsKey(x))
-				is.removeEnchantment(x);
+			is.removeEnchantment(x);
 			
 			if(x.canEnchantItem(is))
 			{
@@ -320,7 +305,7 @@ public class Repair {
 						is.addEnchantment(x, enchantsLvl[pos]);
 					}
 				} else {
-				failure = true;	
+					failure = true;	
 				}
 			}
 			pos++;
@@ -330,10 +315,10 @@ public class Repair {
 		{
 			player.sendMessage(mcLocale.getString("Repair.ArcanePerfect"));
 		} else {
-			if(failure == false)
-				player.sendMessage("Repair.ArcaneFailed");
-			if(downgrade == false)
-				player.sendMessage("Repair.Downgraded");
+			if(failure == true)
+				player.sendMessage(mcLocale.getString("Repair.ArcaneFailed"));
+			if(downgrade == true)
+				player.sendMessage(mcLocale.getString("Repair.Downgraded"));
 		}
 	}
 	public static int getEnchantChance(int rank)

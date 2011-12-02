@@ -115,7 +115,8 @@ public class Skills
 	    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, (PP.getGreenTerraDeactivatedTimeStamp()*1000), LoadProperties.greenTerraCooldown)+"s)");
 	    		return;
 	    	}
-    		player.sendMessage(mcLocale.getString("Skills.ReadyHoe"));
+    		if(LoadProperties.enableAbilityMessages)
+    			player.sendMessage(mcLocale.getString("Skills.ReadyHoe"));
 			PP.setHoePreparationATS(System.currentTimeMillis());
 			PP.setHoePreparationMode(true);
     	}
@@ -236,7 +237,8 @@ public class Skills
 		    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, (PP.getSuperBreakerDeactivatedTimeStamp()*1000), LoadProperties.superBreakerCooldown)+"s)");
 		    		return;
 		    	}
-	    		player.sendMessage(mcLocale.getString("Skills.ReadyPickAxe"));
+	    		if(LoadProperties.enableAbilityMessages)
+	    			player.sendMessage(mcLocale.getString("Skills.ReadyPickAxe"));
 				PP.setPickaxePreparationATS(System.currentTimeMillis());
 				PP.setPickaxePreparationMode(true);
 	    	}
@@ -248,7 +250,8 @@ public class Skills
 		    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, (PP.getGigaDrillBreakerDeactivatedTimeStamp()*1000), LoadProperties.gigaDrillBreakerCooldown)+"s)");
 		    		return;
 		    	}
-	    		player.sendMessage(mcLocale.getString("Skills.ReadyShovel"));
+	    		if(LoadProperties.enableAbilityMessages)
+	    			player.sendMessage(mcLocale.getString("Skills.ReadyShovel"));
 				PP.setShovelPreparationATS(System.currentTimeMillis());
 				PP.setShovelPreparationMode(true);
 	    	}
@@ -260,7 +263,8 @@ public class Skills
 		    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, (PP.getSerratedStrikesDeactivatedTimeStamp()*1000), LoadProperties.serratedStrikeCooldown)+"s)");
 		    		return;
 		    	}
-	    		player.sendMessage(mcLocale.getString("Skills.ReadySword"));
+	    		if(LoadProperties.enableAbilityMessages)
+	    			player.sendMessage(mcLocale.getString("Skills.ReadySword"));
 				PP.setSwordsPreparationATS(System.currentTimeMillis());
 				PP.setSwordsPreparationMode(true);
 	    	}
@@ -272,7 +276,8 @@ public class Skills
 		    				+ChatColor.YELLOW+" ("+calculateTimeLeft(player, (PP.getBerserkDeactivatedTimeStamp()*1000), LoadProperties.berserkCooldown)+"s)");
 		    		return;
 		    	}
-		    	player.sendMessage(mcLocale.getString("Skills.ReadyFists"));
+		    	if(LoadProperties.enableAbilityMessages)
+		    		player.sendMessage(mcLocale.getString("Skills.ReadyFists"));
 				PP.setFistsPreparationATS(System.currentTimeMillis());
 				PP.setFistsPreparationMode(true);
 	    	}
@@ -280,7 +285,8 @@ public class Skills
 	    	{
 	    		if(m.isAxes(player.getItemInHand()))
 	    		{
-	    			player.sendMessage(mcLocale.getString("Skills.ReadyAxe"));
+	    			if(LoadProperties.enableAbilityMessages)
+	    				player.sendMessage(mcLocale.getString("Skills.ReadyAxe"));
 	    			PP.setAxePreparationATS(System.currentTimeMillis());
 	    			PP.setAxePreparationMode(true);
 	    		}
