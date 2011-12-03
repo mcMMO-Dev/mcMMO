@@ -743,7 +743,7 @@ public class Commands
 				/*
 				 * MYSQL LEADERBOARDS
 				 */
-				String powerlevel = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics"; 
+				String powerlevel = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing"; 
 				if(split.length >= 2 && Skills.isSkill(split[1])){
 					/*
 					 * Create a nice consistent capitalized leaderboard name

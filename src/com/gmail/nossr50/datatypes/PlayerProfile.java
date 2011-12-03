@@ -33,6 +33,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.Database;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -164,7 +165,7 @@ public class PlayerProfile
 				serratedStrikesDATS = Integer.valueOf(cooldowns.get(1).get(5));
 				skullSplitterDATS = Integer.valueOf(cooldowns.get(1).get(6));
 			}
-			HashMap<Integer, ArrayList<String>> stats = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
+			HashMap<Integer, ArrayList<String>> stats = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
 				skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
 				skills.put(SkillType.MINING, Integer.valueOf(stats.get(1).get(1)));
 				skills.put(SkillType.REPAIR, Integer.valueOf(stats.get(1).get(2)));
@@ -176,16 +177,8 @@ public class PlayerProfile
 				skills.put(SkillType.SWORDS, Integer.valueOf(stats.get(1).get(8)));
 				skills.put(SkillType.AXES, Integer.valueOf(stats.get(1).get(9)));
 				skills.put(SkillType.ACROBATICS, Integer.valueOf(stats.get(1).get(10)));
-			HashMap<Integer, ArrayList<String>> stats2 = mcMMO.database.Read("SELECT fishing, enchanting, alchemy FROM "+LoadProperties.MySQLtablePrefix+"skills2 WHERE user_id = " + id);
-				if(stats2.get(1) == null)
-				{
-					mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills2 (user_id) VALUES ("+id+")");
-				} else {
-					skills.put(SkillType.FISHING, Integer.valueOf(stats2.get(1).get(0)));
-					skills.put(SkillType.ENCHANTING, Integer.valueOf(stats2.get(1).get(1)));
-					skills.put(SkillType.ALCHEMY, Integer.valueOf(stats2.get(1).get(2)));
-				}
-			HashMap<Integer, ArrayList<String>> experience = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics FROM "+LoadProperties.MySQLtablePrefix+"experience WHERE user_id = " + id);
+				skills.put(SkillType.FISHING, Integer.valueOf(stats.get(1).get(11)));
+			HashMap<Integer, ArrayList<String>> experience = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+LoadProperties.MySQLtablePrefix+"experience WHERE user_id = " + id);
 				skillsXp.put(SkillType.TAMING, Integer.valueOf(experience.get(1).get(0)));
 				skillsXp.put(SkillType.MINING, Integer.valueOf(experience.get(1).get(1)));
 				skillsXp.put(SkillType.REPAIR, Integer.valueOf(experience.get(1).get(2)));
@@ -197,15 +190,7 @@ public class PlayerProfile
 				skillsXp.put(SkillType.SWORDS, Integer.valueOf(experience.get(1).get(8)));
 				skillsXp.put(SkillType.AXES, Integer.valueOf(experience.get(1).get(9)));
 				skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(experience.get(1).get(10)));
-			HashMap<Integer, ArrayList<String>> experience2 = mcMMO.database.Read("SELECT fishing, enchanting, alchemy FROM "+LoadProperties.MySQLtablePrefix+"experience2 WHERE user_id = " + id);
-				if(experience2.get(1) == null)
-				{
-					mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience2 (user_id) VALUES ("+id+")");
-				} else {
-					skillsXp.put(SkillType.FISHING, Integer.valueOf(experience2.get(1).get(0)));
-					skillsXp.put(SkillType.ENCHANTING, Integer.valueOf(experience2.get(1).get(1)));
-					skillsXp.put(SkillType.ALCHEMY, Integer.valueOf(experience2.get(1).get(2)));
-				}
+				skillsXp.put(SkillType.FISHING, Integer.valueOf(experience.get(1).get(11)));
 			return true;
 		}
 		else {
@@ -219,9 +204,7 @@ public class PlayerProfile
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"cooldowns (user_id) VALUES ("+id+")");
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"spawn (user_id) VALUES ("+id+")");
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills (user_id) VALUES ("+id+")");
-		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills2 (user_id) VALUES ("+id+")");
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")");
-		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience2 (user_id) VALUES ("+id+")");
 		this.userid = id;
 	}
 	
@@ -364,11 +347,7 @@ public class PlayerProfile
     				+", swords = " +skills.get(SkillType.SWORDS)
     				+", axes = "+skills.get(SkillType.AXES)
     				+", acrobatics = "+skills.get(SkillType.ACROBATICS)
-    				+" WHERE user_id = "+this.userid);
-    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills2 SET "
-    				+"  fishing = "+skills.get(SkillType.TAMING)
-    				+", enchanting = "+skills.get(SkillType.MINING)
-    				+", alchemy = "+skills.get(SkillType.REPAIR)
+    				+", fishing = "+skills.get(SkillType.FISHING)
     				+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET "
     				+"  taming = "+skillsXp.get(SkillType.TAMING)
@@ -382,11 +361,7 @@ public class PlayerProfile
     				+", swords = " +skillsXp.get(SkillType.SWORDS)
     				+", axes = "+skillsXp.get(SkillType.AXES)
     				+", acrobatics = "+skillsXp.get(SkillType.ACROBATICS)
-    				+" WHERE user_id = "+this.userid);
-    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience2 SET "
-    				+"  fishing = "+skills.get(SkillType.TAMING)
-    				+", enchanting = "+skills.get(SkillType.MINING)
-    				+", alchemy = "+skills.get(SkillType.REPAIR)
+    				+", fishing = "+skillsXp.get(SkillType.FISHING)
     				+" WHERE user_id = "+this.userid);
     	} else 
     	{

@@ -48,7 +48,6 @@ public class Database {
 		}
 	}
 	//Create the DB structure
-
 	public void createStructure() {
 		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "huds` (`user_id` int(10) unsigned NOT NULL,"
 				+ "`hudtype` varchar(50) NOT NULL DEFAULT '',"
@@ -85,11 +84,6 @@ public class Database {
 				+ "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "skills2` (`user_id` int(10) unsigned NOT NULL,"
-				+ "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-				+ "`enchanting` int(10) unsigned NOT NULL DEFAULT '0',"
-				+ "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
-				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "experience` (`user_id` int(10) unsigned NOT NULL,"
 				+ "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -103,19 +97,47 @@ public class Database {
 				+ "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
 				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "experience2` (`user_id` int(10) unsigned NOT NULL,"
-				+ "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-				+ "`enchanting` int(10) unsigned NOT NULL DEFAULT '0',"
-				+ "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
-				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "spawn` (`user_id` int(10) NOT NULL,"
 				+ "`x` int(64) NOT NULL DEFAULT '0',"
 				+ "`y` int(64) NOT NULL DEFAULT '0',"
 				+ "`z` int(64) NOT NULL DEFAULT '0',"
 				+ "`world` varchar(50) NOT NULL DEFAULT '',"
 				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+		
+		Write("DROP TABLE IF EXISTS `"+LoadProperties.MySQLtablePrefix+"skills2`");
+		Write("DROP TABLE IF EXISTS `"+LoadProperties.MySQLtablePrefix+"experience2`");
+		
+		checkDatabaseStructure();
 	}
 
+	public void checkDatabaseStructure()
+	{
+		String sql = "SELECT * FROM  `mcmmo_experience` ORDER BY  `"+LoadProperties.MySQLtablePrefix+"experience`.`fishing` ASC LIMIT 0 , 30";
+		
+		ResultSet rs = null;
+		HashMap<Integer, ArrayList<String>> Rows = new HashMap<Integer, ArrayList<String>>();
+		try {
+			Connection conn = DriverManager.getConnection(connectionString);
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			if (stmt.executeQuery() != null) {
+				stmt.executeQuery();
+				rs = stmt.getResultSet();
+				while (rs.next()) {
+					ArrayList<String> Col = new ArrayList<String>();
+					for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+						Col.add(rs.getString(i));
+					}
+					Rows.put(rs.getRow(), Col);
+				}
+			}
+			conn.close();
+		} catch (SQLException ex) {
+			System.out.println("Updating mcMMO MySQL tables...");
+			Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
+			Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
+		}
+	}
+	
 	// write query
 	public boolean Write(String sql) {
 		try {

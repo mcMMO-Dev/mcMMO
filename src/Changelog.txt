@@ -1,6 +1,10 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 1.2.03
+skills2 and experience2 will be removed from MySQL DB automagically when this version first runs
+Fishing is now stored in skills and experience tables on the MySQL DB as it should have been
+Fishing will now save properly for MySQL
+Fishing will now work properly with mctop for those using MySQL
 Fixed problems with mmoedit and fishing
 
 Version 1.2.02
