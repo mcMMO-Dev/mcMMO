@@ -57,7 +57,7 @@ public class PlayerProfile
 	//TIMESTAMPS
 	//ATS = (Time of) Activation Time Stamp
 	//DATS = (Time of) Deactivation Time Stamp
-	private int recentlyHurt = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
+	private int xpGainATS = 0, recentlyHurt = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
 	respawnATS = 0, mySpawnATS = 0, greenTerraATS = 0, greenTerraDATS = 0, superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
 	skullSplitterATS = 0, skullSplitterDATS = 0, hoePreparationATS = 0, axePreparationATS = 0, pickaxePreparationATS = 0, fistsPreparationATS = 0, shovelPreparationATS = 0, swordsPreparationATS = 0;
 	
@@ -992,8 +992,11 @@ public class PlayerProfile
 	 */
 	public void addXP(SkillType skillType, int newvalue, Player thisplayer)
 	{
-		if(thisplayer.getGameMode() == GameMode.CREATIVE)
+		if(System.currentTimeMillis() < ((xpGainATS*1000)+250) || thisplayer.getGameMode() == GameMode.CREATIVE)
 			return;
+		
+		//Setup a timestamp of when xp was given
+		xpGainATS = (int) (System.currentTimeMillis()/1000);
 		
 		double bonusModifier = 0;
 		String leaderName = "";
@@ -1099,6 +1102,7 @@ public class PlayerProfile
 			skillsXp.put(SkillType.UNARMED, skillsXp.get(SkillType.UNARMED)-newvalue);
 			skillsXp.put(SkillType.EXCAVATION, skillsXp.get(SkillType.EXCAVATION)-newvalue);
 			skillsXp.put(SkillType.AXES, skillsXp.get(SkillType.AXES)-newvalue);
+			skillsXp.put(SkillType.FISHING, skillsXp.get(SkillType.FISHING)-newvalue);
 		} else {
 			skillsXp.put(skillType, skillsXp.get(skillType)-newvalue);
 		}
@@ -1130,6 +1134,7 @@ public class PlayerProfile
 			skills.put(SkillType.UNARMED, newvalue);
 			skills.put(SkillType.EXCAVATION, newvalue);
 			skills.put(SkillType.AXES, newvalue);
+			skills.put(skillType.FISHING, newvalue);
 			
 			skillsXp.put(SkillType.TAMING, 0);
 			skillsXp.put(SkillType.MINING, 0);
@@ -1142,6 +1147,7 @@ public class PlayerProfile
 			skillsXp.put(SkillType.UNARMED, 0);
 			skillsXp.put(SkillType.EXCAVATION, 0);
 			skillsXp.put(SkillType.AXES, 0);
+			skillsXp.put(skillType.FISHING, newvalue);
 		} else {
 			skills.put(skillType, newvalue);
 			skillsXp.put(skillType, newvalue);

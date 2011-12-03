@@ -274,7 +274,7 @@ public class mcPlayerListener extends PlayerListener
 				
 				ItemStack[] inventory = player.getInventory().getContents();
     	    	for(ItemStack x : inventory){
-    	    		if(x != null && x.getType() == Material.BONE){
+    	    		if(x != null && x.getAmount() > LoadProperties.bonesConsumedByCOTW-1 && x.getType() == Material.BONE){
     	    			if(x.getAmount() >= LoadProperties.bonesConsumedByCOTW)
     	    			{
     	    				x.setAmount(x.getAmount() - LoadProperties.bonesConsumedByCOTW);

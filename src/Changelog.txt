@@ -1,5 +1,16 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.2.03
+Fixed problems with mmoedit and fishing
+
+Version 1.2.02
+Added measures to prevent easy xp from hacks that cause a ridiculous amount of clicks per second
+Fixed bug where Call Of The Wild used only 1 bone to summon
+Reduced Endermen XP from 3x to 2x
+The number of bonus fish caught from fishing has been reduced
+Fishing XP reduced from 1500 to 800
+Fishing XP is now configurable in the config file
+
 Version 1.2.01
 Added a setting to turn off abilities completely from config
 Added a setting to just turn off ability messages from config

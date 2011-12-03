@@ -34,7 +34,7 @@ public class LoadProperties
 	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
 	nStone, nIron, nGold, nDiamond, locale;
 	
-	public static int mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y, mstring, mbucket, mweb,
+	public static int mfishing, mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y, mstring, mbucket, mweb,
 	chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand,
 	mmushroom2, mglowstone2, mmelon, mmusic, mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce, mcactus, mmushroom, mflower,
 	msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport,
@@ -255,6 +255,7 @@ public class LoadProperties
 	    	write("Experience.Excavation.String", 200);
 	    	write("Experience.Excavation.Bucket", 100);
 	    	write("Experience.Excavation.Web", 150);
+	    	write("Experience.Fishing.Base", 800);
 	    	
 	    	//write("Sorcery.Spells.Water.Thunder", 75);
 	    	//write("Sorcery.Spells.Curative.Cure_Self.Mana_Cost", 5);
@@ -467,6 +468,8 @@ public class LoadProperties
 	        mcoal = readInteger("Experience.Mining.Coal", 100);
 	        mstone = readInteger("Experience.Mining.Stone", 30);
 	        msandstone = readInteger("Experience.Mining.Sandstone", 30);
+	        
+	        mfishing = readInteger("Experience.Fishing.Base", 800);
 	        
 	        greenTerraCooldown = readInteger("Abilities.Cooldowns.Green_Terra", 240);
 	    	superBreakerCooldown = readInteger("Abilities.Cooldowns.Super_Breaker", 240);

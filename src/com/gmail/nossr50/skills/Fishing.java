@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -152,30 +153,22 @@ public class Fishing {
 		{
 		case 1:
 			getFishingResultsTier1(player, event);
-			Users.getProfile(player).addXP(SkillType.FISHING, 1500, player);
-			player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.RAW_FISH, 1));
 			break;
 		case 2:
 			getFishingResultsTier2(player, event);
-			Users.getProfile(player).addXP(SkillType.FISHING, 1500, player);
-			player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.RAW_FISH, 2));
 			break;
 		case 3:
 			getFishingResultsTier3(player, event);
-			Users.getProfile(player).addXP(SkillType.FISHING, 1500, player);
-			player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.RAW_FISH, 3));
 			break;
 		case 4:
 			getFishingResultsTier4(player, event);
-			Users.getProfile(player).addXP(SkillType.FISHING, 1500, player);
-			player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.RAW_FISH, 4));
 			break;
 		case 5:
 			getFishingResultsTier5(player, event);
-			Users.getProfile(player).addXP(SkillType.FISHING, 1500, player);
-			player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.RAW_FISH, 5));
 			break;
 		}
+		player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.RAW_FISH, 1));
+		Users.getProfile(player).addXP(SkillType.FISHING, LoadProperties.mfishing, player);
 		Skills.XpCheckSkill(SkillType.FISHING, player);
 	}
 	

@@ -390,7 +390,7 @@ public class Combat
 	    	} else
 	    	{
 	    		if(entity instanceof Enderman)
-					xp = (xpinc * 3);
+					xp = (xpinc * 2);
 		    	else if(entity instanceof Creeper)
 					xp = (xpinc * 4);
 		    	else if(entity instanceof Silverfish)
