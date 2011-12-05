@@ -188,10 +188,12 @@ public class mcPlayerListener extends PlayerListener
 				}
 			}
 
-			if(block != null && player != null && mcPermissions.getInstance().repair(player) && event.getClickedBlock().getTypeId() == 42)
+			if(block != null && player != null && mcPermissions.getInstance().repair(player) 
+					&& event.getClickedBlock().getTypeId() == 42 && (Repair.isTools(player.getItemInHand()) || Repair.isArmor(player.getItemInHand())))
 			{
-				event.setCancelled(true);//This is a fix for the sword repair bug
 				Repair.repairCheck(player, is, event.getClickedBlock());
+				event.setCancelled(true);
+				player.updateInventory();
 			}
 
 			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))

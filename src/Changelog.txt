@@ -1,5 +1,12 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.2.05
+Fixed my fix of not being able to place blocks near/on Anvils
+Fixed resources in inventory not correctly updating after Repair
+
+Version 1.2.04
+Fixed bug where you could not place blocks near/on the Anvil
+
 Version 1.2.03
 skills2 and experience2 will be removed from MySQL DB automagically when this version first runs
 Fishing is now stored in skills and experience tables on the MySQL DB as it should have been
