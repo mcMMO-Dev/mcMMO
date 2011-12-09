@@ -33,7 +33,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.Database;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -1109,7 +1108,7 @@ public class PlayerProfile
 			skills.put(SkillType.UNARMED, newvalue);
 			skills.put(SkillType.EXCAVATION, newvalue);
 			skills.put(SkillType.AXES, newvalue);
-			skills.put(skillType.FISHING, newvalue);
+			skills.put(SkillType.FISHING, newvalue);
 			
 			skillsXp.put(SkillType.TAMING, 0);
 			skillsXp.put(SkillType.MINING, 0);
@@ -1122,7 +1121,7 @@ public class PlayerProfile
 			skillsXp.put(SkillType.UNARMED, 0);
 			skillsXp.put(SkillType.EXCAVATION, 0);
 			skillsXp.put(SkillType.AXES, 0);
-			skillsXp.put(skillType.FISHING, newvalue);
+			skillsXp.put(SkillType.FISHING, 0);
 		} else {
 			skills.put(skillType, newvalue);
 			skillsXp.put(skillType, newvalue);

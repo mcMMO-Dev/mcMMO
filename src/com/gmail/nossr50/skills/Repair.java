@@ -68,9 +68,6 @@ public class Repair {
 		
     	if(block != null && mcPermissions.getInstance().repair(player))
     	{
-    		//Handle the enchantments
-        	addEnchants(player.getItemInHand(), enchants, enchantsLevel, PP, player);
-        	
         	if(player.getItemInHand().getDurability() > 0 && player.getItemInHand().getAmount() < 2){
         		/*
         		 * ARMOR
@@ -81,8 +78,7 @@ public class Repair {
         			 */
         			if(isDiamondArmor(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){
         				removeItem(player, rDiamond);
-        				
-	        			player.getItemInHand().setDurability(getRepairAmount(is, player));
+	        			repairItem(player, enchants, enchantsLevel);
 	        			
 	        			durabilityAfter = player.getItemInHand().getDurability();
 	        			dif = (short) (durabilityBefore - durabilityAfter);
@@ -98,8 +94,7 @@ public class Repair {
         			 * IRON ARMOR
         			 */
         				removeItem(player, rIron);
-        				
-        				player.getItemInHand().setDurability(getRepairAmount(is, player));
+        				repairItem(player, enchants, enchantsLevel);
 	        			
 	            		durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
@@ -112,8 +107,7 @@ public class Repair {
 	            	//GOLD ARMOR
         			} else if (isGoldArmor(is) && hasItem(player, rGold)){
         				removeItem(player, rGold);
-        				
-        				player.getItemInHand().setDurability(getRepairAmount(is, player));
+        				repairItem(player, enchants, enchantsLevel);
         				
         				durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
@@ -133,11 +127,8 @@ public class Repair {
         		if(isTools(is)){
         			if(isStoneTools(is) && hasItem(player, rStone)){
         				removeItem(player, rStone);
-            			/*
-            			 * Repair Durability and calculate dif
-            			 */
+        				repairItem(player, enchants, enchantsLevel);
         				
-        				player.getItemInHand().setDurability(getRepairAmount(is, player));
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(m.isShovel(is))
@@ -152,10 +143,7 @@ public class Repair {
             			PP.addXP(SkillType.REPAIR, dif*10, player);
         			} else if(isWoodTools(is) && hasItem(player,rWood)){
         				removeItem(player,rWood);
-            			/*
-            			 * Repair Durability and calculate dif
-            			 */
-        				player.getItemInHand().setDurability(getRepairAmount(is, player));
+        				repairItem(player, enchants, enchantsLevel);
 	        			
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
@@ -171,10 +159,7 @@ public class Repair {
             			PP.addXP(SkillType.REPAIR, dif*10, player);
         			} else if(isIronTools(is) && hasItem(player, rIron)){
             			removeItem(player, rIron);
-            			/*
-            			 * Repair Durability and calculate dif
-            			 */
-            			player.getItemInHand().setDurability(getRepairAmount(is, player));
+            			repairItem(player, enchants, enchantsLevel);
 	        			
             			durabilityAfter = (short) (player.getItemInHand().getDurability()-getRepairAmount(is, player));
 	            		dif = (short) (durabilityBefore - durabilityAfter);
@@ -189,13 +174,10 @@ public class Repair {
             			//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
 	        				SpoutStuff.playRepairNoise(player);
-            		} else if (isDiamondTools(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){ //Check if its diamond and the player has diamonds
-            			/*
-            			 * DIAMOND TOOLS
-            			 */
-            			player.getItemInHand().setDurability(getRepairAmount(is, player));
-	        			
+            		} else if (isDiamondTools(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){
             			removeItem(player, rDiamond);
+            			repairItem(player, enchants, enchantsLevel);
+            			
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		if(m.isShovel(is))
@@ -210,9 +192,9 @@ public class Repair {
 	        			if(LoadProperties.spoutEnabled)
 	        				SpoutStuff.playRepairNoise(player);
             		} else if(isGoldTools(is) && hasItem(player, rGold)){
-            			player.getItemInHand().setDurability(getRepairAmount(is, player));
-	        			
             			removeItem(player, rGold);
+            			repairItem(player, enchants, enchantsLevel);
+            			
             			durabilityAfter = player.getItemInHand().getDurability();
 	            		dif = (short) (durabilityBefore - durabilityAfter);
 	            		dif = (short) (dif * 7.6); //Boost XP for Gold to that of around Iron
@@ -630,5 +612,13 @@ public class Repair {
 			}
 		}
 		return false;
+    }
+    public static void repairItem(Player player, Enchantment[] enchants, int[] enchantsLevel)
+    {
+    	PlayerProfile PP = Users.getProfile(player);
+    	ItemStack is = player.getItemInHand();
+    	//Handle the enchantments
+    	addEnchants(player.getItemInHand(), enchants, enchantsLevel, PP, player);
+    	player.getItemInHand().setDurability(getRepairAmount(is, player));
     }
 }

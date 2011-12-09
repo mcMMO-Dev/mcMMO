@@ -45,7 +45,7 @@ public class Taming
 			Wolf theWolf = (Wolf)wolf;
 			for(Player x : pluginx.getServer().getOnlinePlayers())
 			{
-				if(x instanceof AnimalTamer)
+				if(x instanceof AnimalTamer && x.isOnline())
 				{
 					AnimalTamer tamer = (AnimalTamer)x;
 					if(theWolf.getOwner() == tamer)

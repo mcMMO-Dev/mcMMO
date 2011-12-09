@@ -1,5 +1,21 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+Version 1.2.07
+Fixed mctop not working at all (whoops!)
+Fixed problem with multithreading in mcMMO causing errors
+Fixed bug with Repair where it would remove the enchantments if you could not even repair the item
+The command mmoupdate now runs in its own thread to ease the burden on the server
+
+Version 1.2.06
+German translation has been updated
+Fixed fishing not being applied to MySQL DB when converting from Flat File -> MySQL
+Fixed mctop not taking Fishing into account some of the time
+Fixed bug where Taming would try to grab the name of offline players
+Fixed bug where Fishing would try to add an enchantment level not normally possible
+Fixed another bug with mmoedit and Fishing
+Added option to only allow tools to ready when you are sneaking, this is off by default
+Added Brewing Stand & Enchanters table to the list of blocks that won't cause you to ready your tool on right click
+
 Version 1.2.05
 Fixed my fix of not being able to place blocks near/on Anvils
 Fixed resources in inventory not correctly updating after Repair

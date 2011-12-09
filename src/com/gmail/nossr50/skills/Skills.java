@@ -108,6 +108,9 @@ public class Skills
     }
     public static void hoeReadinessCheck(Player player)
     {
+    	if(LoadProperties.enableOnlyActivateWhenSneaking && !player.isSneaking())
+			return;
+    	
     	PlayerProfile PP = Users.getProfile(player);
     	if(mcPermissions.getInstance().herbalismAbility(player) && m.isHoe(player.getItemInHand()) && !PP.getHoePreparationMode()){
     		if(!PP.getGreenTerraMode() && !cooldownOver(player, (PP.getGreenTerraDeactivatedTimeStamp()*1000), LoadProperties.greenTerraCooldown)){
@@ -224,6 +227,9 @@ public class Skills
 	}
 	public static void abilityActivationCheck(Player player)
 	{
+		if(LoadProperties.enableOnlyActivateWhenSneaking && !player.isSneaking())
+			return;
+		
     	PlayerProfile PP = Users.getProfile(player);
     	if(PP != null)
     	{

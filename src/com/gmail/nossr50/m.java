@@ -203,7 +203,7 @@ public class m
 	public static boolean abilityBlockCheck(Block block)
 	{
 		int i = block.getTypeId();
-		if(i == 96 || i == 68 || i == 355 || i == 26 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
+		if(i == 107 ||i == 117 || i == 116 || i == 96 || i == 68 || i == 355 || i == 26 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
 			return false;
 		} else {
 			return true;
@@ -310,173 +310,212 @@ public class m
 	{
 		if(!LoadProperties.useMySQL)
 			return;
-		String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users"; 
-		try {
-			//Open the user file
-			FileReader file = new FileReader(location);
-			BufferedReader in = new BufferedReader(file);
-			String line = ""; 
-			String playerName = null, mining = null, party = null, miningXP = null, woodcutting = null, woodCuttingXP = null, repair = null, unarmed = null, herbalism = null,
-			excavation = null, archery = null, swords = null, axes = null, acrobatics = null, repairXP = null, unarmedXP = null, herbalismXP = null, excavationXP = null, archeryXP = null, swordsXP = null, axesXP = null,
-			acrobaticsXP = null, taming = null, tamingXP = null;
-			int id = 0, theCount = 0;
-			while((line = in.readLine()) != null)
-			{
-				//Find if the line contains the player we want.
-				String[] character = line.split(":"); 
-				playerName = character[0];
-				//Check for things we don't want put in the DB
-				if(playerName == null || playerName.equals("null") || playerName.equals("#Storage place for user information")) 
-					continue;
+		
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), new Runnable(){
+			public void run() {
+				String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+				try {
+					//Open the user file
+					FileReader file = new FileReader(location);
+					BufferedReader in = new BufferedReader(file);
+					String line = "";
+					String playerName = null, mining = null, party = null, miningXP = null, woodcutting = null, woodCuttingXP = null, repair = null, unarmed = null, herbalism = null, excavation = null, archery = null, swords = null, axes = null, acrobatics = null, repairXP = null, unarmedXP = null, herbalismXP = null, excavationXP = null, archeryXP = null, swordsXP = null, axesXP = null, acrobaticsXP = null, taming = null, tamingXP = null, fishing = null, fishingXP = null;
+					int id = 0, theCount = 0;
+					while ((line = in.readLine()) != null) {
+						//Find if the line contains the player we want.
+						String[] character = line.split(":");
+						playerName = character[0];
+						//Check for things we don't want put in the DB
+						if (playerName == null
+								|| playerName.equals("null")
+								|| playerName
+										.equals("#Storage place for user information"))
+							continue;
 
-				//Get Mining
-				if(character.length > 1)
-					mining = character[1];
-				//Party
-				if(character.length > 3)
-					party = character[3];
-				//Mining XP
-				if(character.length > 4)
-					miningXP = character[4];
-				if(character.length > 5)
-					woodcutting = character[5];
-				if(character.length > 6)
-					woodCuttingXP = character[6];
-				if(character.length > 7)
-					repair = character[7];
-				if(character.length > 8)
-					unarmed = character[8];
-				if(character.length > 9)
-					herbalism = character[9];
-				if(character.length > 10)
-					excavation = character[10];
-				if(character.length > 11)
-					archery = character[11];
-				if(character.length > 12)
-					swords = character[12];
-				if(character.length > 13)
-					axes = character[13];
-				if(character.length > 14)
-					acrobatics = character[14];
-				if(character.length > 15)
-					repairXP = character[15];
-				if(character.length > 16)
-					unarmedXP = character[16];
-				if(character.length > 17)
-					herbalismXP = character[17];
-				if(character.length > 18)
-					excavationXP = character[18];
-				if(character.length > 19)
-					archeryXP = character[19];
-				if(character.length > 20)
-					swordsXP = character[20];
-				if(character.length > 21)
-					axesXP = character[21];
-				if(character.length > 22)
-					acrobaticsXP = character[22];
-				if(character.length > 24)
-					taming = character[24];
-				if(character.length > 25)
-					tamingXP = character[25];
-				//Check to see if the user is in the DB
-				id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'"); 
-				//Prepare some variables
-				/*
-    			if(myspawn != null && myspawn.length() > 0)
-    			{
-    				String[] split = myspawn.split(",");
-    				x = split[0];
-    				y = split[1];
-    				z = split[2];
-    			}
-				 */
-				/*
-    		    if(myspawnworld.equals("") || myspawnworld == null)
-    		    	myspawnworld = pluginx.getServer().getWorlds().get(0).toString();
-				 */
-				if(id > 0)
-				{
-					theCount++;
-					//Update the skill values
-					mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + 0 + " WHERE id = " + id); 
-					//if(getDouble(x) > 0 && getDouble(y) > 0 && getDouble(z) > 0)
-					//mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + myspawnworld + "', x = " +getDouble(x)+", y = "+getDouble(y)+", z = "+getDouble(z)+" WHERE user_id = "+id);
-					mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET " 
-							+"  taming = taming+"+getInt(taming) 
-							+", mining = mining+"+getInt(mining) 
-							+", repair = repair+"+getInt(repair) 
-							+", woodcutting = woodcutting+"+getInt(woodcutting) 
-							+", unarmed = unarmed+"+getInt(unarmed) 
-							+", herbalism = herbalism+"+getInt(herbalism) 
-							+", excavation = excavation+"+getInt(excavation) 
-							+", archery = archery+" +getInt(archery) 
-							+", swords = swords+" +getInt(swords) 
-							+", axes = axes+"+getInt(axes) 
-							+", acrobatics = acrobatics+"+getInt(acrobatics) 
-							+" WHERE user_id = "+id); 
-					mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET " 
-							+"  taming = "+getInt(tamingXP) 
-							+", mining = "+getInt(miningXP) 
-							+", repair = "+getInt(repairXP) 
-							+", woodcutting = "+getInt(woodCuttingXP) 
-							+", unarmed = "+getInt(unarmedXP) 
-							+", herbalism = "+getInt(herbalismXP) 
-							+", excavation = "+getInt(excavationXP) 
-							+", archery = " +getInt(archeryXP) 
-							+", swords = " +getInt(swordsXP) 
-							+", axes = "+getInt(axesXP) 
-							+", acrobatics = "+getInt(acrobaticsXP) 
-							+" WHERE user_id = "+id); 
-				}
-				else
-				{
-					theCount++;
-					//Create the user in the DB
-					mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")"); 
-					id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'"); 
-					mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"spawn (user_id) VALUES ("+id+")"); 
-					mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills (user_id) VALUES ("+id+")"); 
-					mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")"); 
-					//Update the skill values
-					mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + 0 + " WHERE id = " + id); 
-					mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+party+"' WHERE id = " +id); 
-					/*
-    				if(getDouble(x) > 0 && getDouble(y) > 0 && getDouble(z) > 0)
-    					mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + myspawnworld + "', x = " +getDouble(x)+", y = "+getDouble(y)+", z = "+getDouble(z)+" WHERE user_id = "+id);
-					 */
-					mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET " 
-							+"  taming = "+getInt(taming) 
-							+", mining = "+getInt(mining) 
-							+", repair = "+getInt(repair) 
-							+", woodcutting = "+getInt(woodcutting) 
-							+", unarmed = "+getInt(unarmed) 
-							+", herbalism = "+getInt(herbalism) 
-							+", excavation = "+getInt(excavation) 
-							+", archery = " +getInt(archery) 
-							+", swords = " +getInt(swords) 
-							+", axes = "+getInt(axes) 
-							+", acrobatics = "+getInt(acrobatics) 
-							+" WHERE user_id = "+id); 
-					mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET " 
-							+"  taming = "+getInt(tamingXP) 
-							+", mining = "+getInt(miningXP) 
-							+", repair = "+getInt(repairXP) 
-							+", woodcutting = "+getInt(woodCuttingXP) 
-							+", unarmed = "+getInt(unarmedXP) 
-							+", herbalism = "+getInt(herbalismXP) 
-							+", excavation = "+getInt(excavationXP) 
-							+", archery = " +getInt(archeryXP) 
-							+", swords = " +getInt(swordsXP) 
-							+", axes = "+getInt(axesXP) 
-							+", acrobatics = "+getInt(acrobaticsXP) 
-							+" WHERE user_id = "+id); 
+						//Get Mining
+						if (character.length > 1)
+							mining = character[1];
+						//Party
+						if (character.length > 3)
+							party = character[3];
+						//Mining XP
+						if (character.length > 4)
+							miningXP = character[4];
+						if (character.length > 5)
+							woodcutting = character[5];
+						if (character.length > 6)
+							woodCuttingXP = character[6];
+						if (character.length > 7)
+							repair = character[7];
+						if (character.length > 8)
+							unarmed = character[8];
+						if (character.length > 9)
+							herbalism = character[9];
+						if (character.length > 10)
+							excavation = character[10];
+						if (character.length > 11)
+							archery = character[11];
+						if (character.length > 12)
+							swords = character[12];
+						if (character.length > 13)
+							axes = character[13];
+						if (character.length > 14)
+							acrobatics = character[14];
+						if (character.length > 15)
+							repairXP = character[15];
+						if (character.length > 16)
+							unarmedXP = character[16];
+						if (character.length > 17)
+							herbalismXP = character[17];
+						if (character.length > 18)
+							excavationXP = character[18];
+						if (character.length > 19)
+							archeryXP = character[19];
+						if (character.length > 20)
+							swordsXP = character[20];
+						if (character.length > 21)
+							axesXP = character[21];
+						if (character.length > 22)
+							acrobaticsXP = character[22];
+						if (character.length > 24)
+							taming = character[24];
+						if (character.length > 25)
+							tamingXP = character[25];
+						if (character.length > 34)
+							fishing = character[34];
+						if (character.length > 35)
+							fishingXP = character[35];
+
+						//Check to see if the user is in the DB
+						id = mcMMO.database.GetInt("SELECT id FROM "
+								+ LoadProperties.MySQLtablePrefix
+								+ "users WHERE user = '" + playerName + "'");
+
+						if (id > 0) {
+							theCount++;
+							//Update the skill values
+							mcMMO.database.Write("UPDATE "
+									+ LoadProperties.MySQLtablePrefix
+									+ "users SET lastlogin = " + 0
+									+ " WHERE id = " + id);
+							//if(getDouble(x) > 0 && getDouble(y) > 0 && getDouble(z) > 0)
+							//mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + myspawnworld + "', x = " +getDouble(x)+", y = "+getDouble(y)+", z = "+getDouble(z)+" WHERE user_id = "+id);
+							mcMMO.database.Write("UPDATE "
+									+ LoadProperties.MySQLtablePrefix
+									+ "skills SET " + "  taming = taming+"
+									+ getInt(taming) + ", mining = mining+"
+									+ getInt(mining) + ", repair = repair+"
+									+ getInt(repair)
+									+ ", woodcutting = woodcutting+"
+									+ getInt(woodcutting)
+									+ ", unarmed = unarmed+" + getInt(unarmed)
+									+ ", herbalism = herbalism+"
+									+ getInt(herbalism)
+									+ ", excavation = excavation+"
+									+ getInt(excavation)
+									+ ", archery = archery+" + getInt(archery)
+									+ ", swords = swords+" + getInt(swords)
+									+ ", axes = axes+" + getInt(axes)
+									+ ", acrobatics = acrobatics+"
+									+ getInt(acrobatics)
+									+ ", fishing = fishing+" + getInt(fishing)
+									+ " WHERE user_id = " + id);
+							mcMMO.database.Write("UPDATE "
+									+ LoadProperties.MySQLtablePrefix
+									+ "experience SET " + "  taming = "
+									+ getInt(tamingXP) + ", mining = "
+									+ getInt(miningXP) + ", repair = "
+									+ getInt(repairXP) + ", woodcutting = "
+									+ getInt(woodCuttingXP) + ", unarmed = "
+									+ getInt(unarmedXP) + ", herbalism = "
+									+ getInt(herbalismXP) + ", excavation = "
+									+ getInt(excavationXP) + ", archery = "
+									+ getInt(archeryXP) + ", swords = "
+									+ getInt(swordsXP) + ", axes = "
+									+ getInt(axesXP) + ", acrobatics = "
+									+ getInt(acrobaticsXP) + ", fishing = "
+									+ getInt(fishingXP) + " WHERE user_id = "
+									+ id);
+						} else {
+							theCount++;
+							//Create the user in the DB
+							mcMMO.database.Write("INSERT INTO "
+									+ LoadProperties.MySQLtablePrefix
+									+ "users (user, lastlogin) VALUES ('"
+									+ playerName + "',"
+									+ System.currentTimeMillis() / 1000 + ")");
+							id = mcMMO.database
+									.GetInt("SELECT id FROM "
+											+ LoadProperties.MySQLtablePrefix
+											+ "users WHERE user = '"
+											+ playerName + "'");
+							mcMMO.database.Write("INSERT INTO "
+									+ LoadProperties.MySQLtablePrefix
+									+ "spawn (user_id) VALUES (" + id + ")");
+							mcMMO.database.Write("INSERT INTO "
+									+ LoadProperties.MySQLtablePrefix
+									+ "skills (user_id) VALUES (" + id + ")");
+							mcMMO.database.Write("INSERT INTO "
+									+ LoadProperties.MySQLtablePrefix
+									+ "experience (user_id) VALUES (" + id
+									+ ")");
+							//Update the skill values
+							mcMMO.database.Write("UPDATE "
+									+ LoadProperties.MySQLtablePrefix
+									+ "users SET lastlogin = " + 0
+									+ " WHERE id = " + id);
+							mcMMO.database.Write("UPDATE "
+									+ LoadProperties.MySQLtablePrefix
+									+ "users SET party = '" + party
+									+ "' WHERE id = " + id);
+							/*
+							if(getDouble(x) > 0 && getDouble(y) > 0 && getDouble(z) > 0)
+								mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + myspawnworld + "', x = " +getDouble(x)+", y = "+getDouble(y)+", z = "+getDouble(z)+" WHERE user_id = "+id);
+							 */
+							mcMMO.database.Write("UPDATE "
+									+ LoadProperties.MySQLtablePrefix
+									+ "skills SET " + "  taming = "
+									+ getInt(taming) + ", mining = "
+									+ getInt(mining) + ", repair = "
+									+ getInt(repair) + ", woodcutting = "
+									+ getInt(woodcutting) + ", unarmed = "
+									+ getInt(unarmed) + ", herbalism = "
+									+ getInt(herbalism) + ", excavation = "
+									+ getInt(excavation) + ", archery = "
+									+ getInt(archery) + ", swords = "
+									+ getInt(swords) + ", axes = "
+									+ getInt(axes) + ", acrobatics = "
+									+ getInt(acrobatics) + ", fishing = "
+									+ getInt(fishing) + " WHERE user_id = "
+									+ id);
+							mcMMO.database.Write("UPDATE "
+									+ LoadProperties.MySQLtablePrefix
+									+ "experience SET " + "  taming = "
+									+ getInt(tamingXP) + ", mining = "
+									+ getInt(miningXP) + ", repair = "
+									+ getInt(repairXP) + ", woodcutting = "
+									+ getInt(woodCuttingXP) + ", unarmed = "
+									+ getInt(unarmedXP) + ", herbalism = "
+									+ getInt(herbalismXP) + ", excavation = "
+									+ getInt(excavationXP) + ", archery = "
+									+ getInt(archeryXP) + ", swords = "
+									+ getInt(swordsXP) + ", axes = "
+									+ getInt(axesXP) + ", acrobatics = "
+									+ getInt(acrobaticsXP) + ", fishing = "
+									+ getInt(fishingXP) + " WHERE user_id = "
+									+ id);
+						}
+					}
+					System.out
+							.println("[mcMMO] MySQL Updated from users file, "
+									+ theCount
+									+ " items added/updated to MySQL DB");
+					in.close();
+				} catch (Exception e) {
+					log.log(Level.SEVERE, "Exception while reading " + location
+							+ " (Are you sure you formatted it correctly?)", e);
 				}
 			}
-			System.out.println("[mcMMO] MySQL Updated from users file, "+theCount+" items added/updated to MySQL DB"); 
-			in.close();
-		} catch (Exception e) {
-			log.log(Level.SEVERE, "Exception while reading " 
-					+ location + " (Are you sure you formatted it correctly?)", e); 
-		}
+		}, 1);
 	}
 }

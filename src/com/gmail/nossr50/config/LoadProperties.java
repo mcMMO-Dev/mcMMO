@@ -23,7 +23,7 @@ import com.gmail.nossr50.datatypes.HUDType;
 
 public class LoadProperties 
 {
-	public static Boolean enableAbilityMessages, enableAbilities, showDisplayName, showFaces, watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
+	public static Boolean enableOnlyActivateWhenSneaking, enableAbilityMessages, enableAbilities, showDisplayName, showFaces, watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web, xprateEnable, slimeballs, spoutEnabled, 
 	donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable, 
 	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
 	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, mushrooms, 
@@ -319,6 +319,7 @@ public class LoadProperties
 	    	
 	    	write("Abilities.Tools.Durability_Loss_Enabled", true);
 	    	write("Abilities.Tools.Durability_Loss", 2);
+	    	write("Abilities.Activation.Only_Activate_When_Sneaking", false);
 	    	write("Abilities.Cooldowns.Green_Terra", 240);
 	    	write("Abilities.Cooldowns.Super_Breaker", 240);
 	    	write("Abilities.Cooldowns.Giga_Drill_Breaker", 240);
@@ -470,6 +471,8 @@ public class LoadProperties
 	        msandstone = readInteger("Experience.Mining.Sandstone", 30);
 	        
 	        mfishing = readInteger("Experience.Fishing.Base", 800);
+	        
+	        enableOnlyActivateWhenSneaking = readBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false);
 	        
 	        greenTerraCooldown = readInteger("Abilities.Cooldowns.Green_Terra", 240);
 	    	superBreakerCooldown = readInteger("Abilities.Cooldowns.Super_Breaker", 240);

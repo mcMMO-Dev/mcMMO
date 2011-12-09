@@ -167,7 +167,7 @@ public class mcMMO extends JavaPlugin
 		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile   
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		
-		Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, mcMMO_Timer, 0, 20);
+		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_Timer, 0, 20);
 		
 		//Spout Stuff
 		if(LoadProperties.spoutEnabled)
