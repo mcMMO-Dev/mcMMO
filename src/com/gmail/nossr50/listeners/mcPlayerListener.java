@@ -34,6 +34,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -49,7 +50,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.command.Commands;
+import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.spout.mmoHelper;
@@ -158,7 +159,8 @@ public class mcPlayerListener extends PlayerListener
 			player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), LoadProperties.mcmmo}));
 			player.sendMessage(mcLocale.getString("mcPlayerListener.WIKI"));
 		}
-		if(Commands.xpevent)
+		//THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
+		if(XprateCommand.xpevent)
 			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
 	}
 
@@ -329,6 +331,16 @@ public class mcPlayerListener extends PlayerListener
 			} else {
 				log.log(Level.INFO, "[A]"+format);
 			}
+		}
+	}
+	
+	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+		String message = event.getMessage();
+		if(!message.startsWith("/")) return;
+		String command = message.substring(1).split(" ")[0];
+		if(plugin.aliasMap.containsKey(command)) {
+			event.setCancelled(true);
+			event.getPlayer().chat(message.replaceFirst(command, plugin.aliasMap.get(command)));
 		}
 	}
 }
