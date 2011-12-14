@@ -18,13 +18,18 @@ package com.gmail.nossr50;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.command.Commands;
+import com.gmail.nossr50.commands.skills.*;
+import com.gmail.nossr50.commands.spout.*;
+import com.gmail.nossr50.commands.mc.*;
+import com.gmail.nossr50.commands.party.*;
+import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.runnables.mcTimer;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.listeners.mcBlockListener;
 import com.gmail.nossr50.listeners.mcEntityListener;
 import com.gmail.nossr50.listeners.mcPlayerListener;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.*;
 import com.nijikokun.bukkit.Permissions.Permissions;
@@ -40,11 +45,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -84,6 +88,9 @@ public class mcMMO extends JavaPlugin
 	private Runnable mcMMO_Timer = new mcTimer(this); //BLEED AND REGENERATION
 	//private Timer mcMMO_SpellTimer = new Timer(true);
 
+	//Alias - Command
+	public HashMap<String, String> aliasMap = new HashMap<String, String>();
+	
 	public static Database database = null;
 	public Misc misc = new Misc(this);
 
@@ -142,6 +149,7 @@ public class mcMMO extends JavaPlugin
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_FISH, playerListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Lowest, this);
 
 		//Block Stuff
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
@@ -168,6 +176,8 @@ public class mcMMO extends JavaPlugin
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_Timer, 0, 20);
+		
+		registerCommands();
 		
 		//Spout Stuff
 		if(LoadProperties.spoutEnabled)
@@ -257,10 +267,99 @@ public class mcMMO extends JavaPlugin
 		Bukkit.getServer().getScheduler().cancelTasks(this);
 		System.out.println("mcMMO was disabled."); 
 	}
-
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) 
-	{
-		return Commands.processCommands(sender, command, label, args);
+	
+	private void registerCommands() {
+		//Register aliases with the aliasmap (used in the playercommandpreprocessevent to ugly alias them to actual commands)
+		//Skills commands
+		aliasMap.put(mcLocale.getString("m.SkillAcrobatics").toLowerCase(), "acrobatics");
+		aliasMap.put(mcLocale.getString("m.SkillArchery").toLowerCase(), "archery");
+		aliasMap.put(mcLocale.getString("m.SkillAxes").toLowerCase(), "axes");
+		aliasMap.put(mcLocale.getString("m.SkillExcavation").toLowerCase(), "excavation");
+		aliasMap.put(mcLocale.getString("m.SkillFishing").toLowerCase(), "fishing");
+		aliasMap.put(mcLocale.getString("m.SkillHerbalism").toLowerCase(), "herbalism");
+		aliasMap.put(mcLocale.getString("m.SkillMining").toLowerCase(), "mining");
+		aliasMap.put(mcLocale.getString("m.SkillRepair").toLowerCase(), "repair");
+		aliasMap.put(mcLocale.getString("m.SkillSwords").toLowerCase(), "swords");
+		aliasMap.put(mcLocale.getString("m.SkillTaming").toLowerCase(), "taming");
+		aliasMap.put(mcLocale.getString("m.SkillUnarmed").toLowerCase(), "unarmed");
+		aliasMap.put(mcLocale.getString("m.SkillWoodCutting").toLowerCase(), "woodcutting");
+		
+		//Mc* commands
+		aliasMap.put(LoadProperties.mcability, "mcability");
+		aliasMap.put(LoadProperties.mcc, "mcc");
+		aliasMap.put(LoadProperties.mcgod, "mcgod");
+		aliasMap.put(LoadProperties.mcmmo, "mcmmo");
+		aliasMap.put(LoadProperties.mcrefresh, "mcrefresh");
+		aliasMap.put(LoadProperties.mctop, "mctop");
+		
+		//Party commands
+		aliasMap.put(LoadProperties.accept, "accept");
+		//aliasMap.put(null, "a");
+		aliasMap.put(LoadProperties.invite, "invite");
+		aliasMap.put(LoadProperties.party, "party");
+		//aliasMap.put(null, "p");
+		aliasMap.put(LoadProperties.ptp, "ptp");
+		
+		//Other commands
+		aliasMap.put(LoadProperties.addxp, "addxp");
+		aliasMap.put(LoadProperties.clearmyspawn, "clearmyspawn");
+		aliasMap.put(LoadProperties.mmoedit, "mmoedit");
+		//aliasMap.put(key, "mmoupdate");
+		aliasMap.put(LoadProperties.myspawn, "myspawn");
+		aliasMap.put(LoadProperties.stats, "stats");
+		aliasMap.put(LoadProperties.whois, "whois");
+		aliasMap.put(LoadProperties.xprate, "xprate");
+		
+		//Spout commands
+		//aliasMap.put(null, "mchud");
+		aliasMap.put(LoadProperties.xplock, "xplock");
+		
+		
+		//Register commands
+		//Skills commands
+		getCommand("acrobatics").setExecutor(new AcrobaticsCommand());
+		getCommand("archery").setExecutor(new ArcheryCommand());
+		getCommand("axes").setExecutor(new AxesCommand());
+		getCommand("excavation").setExecutor(new ExcavationCommand());
+		getCommand("fishing").setExecutor(new FishingCommand());
+		getCommand("herbalism").setExecutor(new HerbalismCommand());
+		getCommand("mining").setExecutor(new MiningCommand());
+		getCommand("repair").setExecutor(new RepairCommand());
+		getCommand("swords").setExecutor(new SwordsCommand());
+		getCommand("taming").setExecutor(new TamingCommand());
+		getCommand("unarmed").setExecutor(new UnarmedCommand());
+		getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
+		
+		//Mc* commands
+		getCommand("mcability").setExecutor(new McabilityCommand());
+		getCommand("mcc").setExecutor(new MccCommand());
+		getCommand("mcgod").setExecutor(new McgodCommand());
+		getCommand("mcmmo").setExecutor(new McmmoCommand());
+		getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
+		getCommand("mctop").setExecutor(new MctopCommand());
+		
+		//Party commands
+		getCommand("accept").setExecutor(new AcceptCommand());
+		getCommand("a").setExecutor(new ACommand());
+		getCommand("invite").setExecutor(new InviteCommand(this));
+		getCommand("party").setExecutor(new PartyCommand());
+		getCommand("p").setExecutor(new PCommand());
+		getCommand("ptp").setExecutor(new PtpCommand(this));
+		
+		//Other commands
+		getCommand("addxp").setExecutor(new AddxpCommand(this));
+		getCommand("clearmyspawn").setExecutor(new ClearmyspawnCommand());
+		getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
+		getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
+		getCommand("myspawn").setExecutor(new MyspawnCommand());
+		getCommand("stats").setExecutor(new StatsCommand());
+		getCommand("whois").setExecutor(new WhoisCommand(this));
+		getCommand("xprate").setExecutor(new XprateCommand());
+		
+		//Spout commands
+		getCommand("mchud").setExecutor(new MchudCommand());
+		getCommand("xplock").setExecutor(new XplockCommand());
+		
 	}
 
 	/*
