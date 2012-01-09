@@ -70,6 +70,13 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.0.1-R2-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.nijikokun.bukkit</groupId>
             <artifactId>Permissions</artifactId>
             <version>3.2</version>
