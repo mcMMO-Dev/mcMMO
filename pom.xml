@@ -27,6 +27,7 @@
                 <directory>${basedir}/src/main/resources/</directory>
                 <includes>
                     <include>*.png</include>
+                    <include>*.wav</include>
                 </includes>
             </resource>
         </resources>
