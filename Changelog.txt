@@ -1,5 +1,9 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+
+Version 1.2.08
+ - Fixed CraftOfflinePlayer issue (Issue #212) errors for offline wolf owners
+
 Version 1.2.07
 Fixed mctop not working at all (whoops!)
 Fixed problem with multithreading in mcMMO causing errors
