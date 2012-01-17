@@ -3,6 +3,7 @@ Changelog:
 
 Version 1.2.08
  - Fixed CraftOfflinePlayer issue (Issue #212) errors for offline wolf owners
+ - Pull in commit from @NuclearW for issue from previous commit
 
 Version 1.2.07
 Fixed mctop not working at all (whoops!)
