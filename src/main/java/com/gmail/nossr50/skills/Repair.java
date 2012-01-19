@@ -67,16 +67,15 @@ public class Repair {
 			pos++;
 		}
 		
-    	if(block != null && mcPermissions.getInstance().repair(player))
-    	{
-        	if(player.getItemInHand().getDurability() > 0 && player.getItemInHand().getAmount() < 2){
+    		if(block != null && mcPermissions.getInstance().repair(player)){
+        		if(player.getItemInHand().getDurability() > 0 && player.getItemInHand().getAmount() < 2){
+        		
         		/*
-        		 * ARMOR
-        		 */
+        		* REPAIR ARMOR
+        		*/
         		if(isArmor(is)){
-        			/*
-        			 * DIAMOND ARMOR
-        			 */
+        		
+        			//DIAMOND ARMOR
         			if(isDiamondArmor(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){
         				removeItem(player, rDiamond);
 	        			repairItem(player, enchants, enchantsLevel);
@@ -89,50 +88,57 @@ public class Repair {
 	        			//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
 	        				SpoutStuff.playRepairNoise(player);
-        			} 
+        			}
+        			
+        			//IRON ARMOR
         			else if (isIronArmor(is) && hasItem(player, rIron)){
-        			/*
-        			 * IRON ARMOR
-        			 */
         				removeItem(player, rIron);
         				repairItem(player, enchants, enchantsLevel);
 	        			
-	            		durabilityAfter = player.getItemInHand().getDurability();
-	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		dif = (short) (dif * 2); //Boost XP
-	            		PP.addXP(SkillType.REPAIR, dif*10, player);
-	            		
-	            		//CLANG CLANG
+	            			durabilityAfter = player.getItemInHand().getDurability();
+	            			dif = (short) (durabilityBefore - durabilityAfter);
+		            		dif = (short) (dif * 2); //Boost XP
+		            		PP.addXP(SkillType.REPAIR, dif*10, player);
+	        	    		
+	            			//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
 	        				SpoutStuff.playRepairNoise(player);
-	            	//GOLD ARMOR
-        			} else if (isGoldArmor(is) && hasItem(player, rGold)){
+        			}
+        			
+	            		//GOLD ARMOR
+        			else if (isGoldArmor(is) && hasItem(player, rGold)){
         				removeItem(player, rGold);
         				repairItem(player, enchants, enchantsLevel);
         				
         				durabilityAfter = player.getItemInHand().getDurability();
-	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		dif = (short) (dif * 4); //Boost XP of Gold to around Iron
+	            			dif = (short) (durabilityBefore - durabilityAfter);
+	            			dif = (short) (dif * 4); //Boost XP
         				PP.addXP(SkillType.REPAIR, dif*10, player);
         				
         				//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
 	        				SpoutStuff.playRepairNoise(player);
-        			} else {
+        			} 
+        			
+        			//UNABLE TO REPAIR
+        			else {
         				needMoreVespeneGas(is, player);
         			}
         		}
+        		
         		/*
-        		 * TOOLS
+        		 * REPAIR TOOLS
         		 */
         		if(isTools(is)){
+        			
+        			//STONE TOOLS
         			if(isStoneTools(is) && hasItem(player, rStone)){
         				removeItem(player, rStone);
         				repairItem(player, enchants, enchantsLevel);
         				
-            			durabilityAfter = player.getItemInHand().getDurability();
-	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		if(m.isShovel(is))
+            				durabilityAfter = player.getItemInHand().getDurability();
+	            			dif = (short) (durabilityBefore - durabilityAfter);
+	            			if(m.isShovel(is))
 	        				dif = (short) (dif / 3);
 	        			if(m.isSwords(is))
 	        				dif = (short) (dif / 2);
@@ -141,14 +147,17 @@ public class Repair {
 	        			//STONE NERF
 	        			dif = (short) (dif / 2);
 	        			
-            			PP.addXP(SkillType.REPAIR, dif*10, player);
-        			} else if(isWoodTools(is) && hasItem(player,rWood)){
+            				PP.addXP(SkillType.REPAIR, dif*10, player);
+        			} 
+        			
+        			//WOOD TOOLS
+        			else if(isWoodTools(is) && hasItem(player,rWood)){
         				removeItem(player,rWood);
         				repairItem(player, enchants, enchantsLevel);
 	        			
-            			durabilityAfter = player.getItemInHand().getDurability();
-	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		if(m.isShovel(is))
+            				durabilityAfter = player.getItemInHand().getDurability();
+	            			dif = (short) (durabilityBefore - durabilityAfter);
+	            			if(m.isShovel(is))
 	        				dif = (short) (dif / 3);
 	        			if(m.isSwords(is))
 	        				dif = (short) (dif / 2);
@@ -157,65 +166,80 @@ public class Repair {
 	        			//WOOD NERF
 	        			dif = (short) (dif / 2);
 	        			
-            			PP.addXP(SkillType.REPAIR, dif*10, player);
-        			} else if(isIronTools(is) && hasItem(player, rIron)){
-            			removeItem(player, rIron);
-            			repairItem(player, enchants, enchantsLevel);
+            				PP.addXP(SkillType.REPAIR, dif*10, player);
+        			}
+        			
+        			//IRON TOOLS
+        			else if(isIronTools(is) && hasItem(player, rIron)){
+            				removeItem(player, rIron);
+            				repairItem(player, enchants, enchantsLevel);
 	        			
-            			durabilityAfter = (short) (player.getItemInHand().getDurability()-getRepairAmount(is, player));
-	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		if(m.isShovel(is))
+            				durabilityAfter = (short) (player.getItemInHand().getDurability()-getRepairAmount(is, player));
+	            			dif = (short) (durabilityBefore - durabilityAfter);
+	            			if(m.isShovel(is))
 	        				dif = (short) (dif / 3);
 	        			if(m.isSwords(is))
 	        				dif = (short) (dif / 2);
 	        			if(m.isHoe(is))
 	        				dif = (short) (dif / 2);
-            			PP.addXP(SkillType.REPAIR, dif*10, player);
+            				
+            				PP.addXP(SkillType.REPAIR, dif*10, player);
             			
             			//CLANG CLANG
 	        			if(LoadProperties.spoutEnabled)
 	        				SpoutStuff.playRepairNoise(player);
-            		} else if (isDiamondTools(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){
-            			removeItem(player, rDiamond);
-            			repairItem(player, enchants, enchantsLevel);
-            			
-            			durabilityAfter = player.getItemInHand().getDurability();
-	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		if(m.isShovel(is))
-	        				dif = (short) (dif / 3);
-	        			if(m.isSwords(is))
-	        				dif = (short) (dif / 2);
-	        			if(m.isHoe(is))
-	        				dif = (short) (dif / 2);
-            			PP.addXP(SkillType.REPAIR, dif*10, player);
-            			
-            			//CLANG CLANG
-	        			if(LoadProperties.spoutEnabled)
-	        				SpoutStuff.playRepairNoise(player);
-            		} else if(isGoldTools(is) && hasItem(player, rGold)){
-            			removeItem(player, rGold);
-            			repairItem(player, enchants, enchantsLevel);
-            			
-            			durabilityAfter = player.getItemInHand().getDurability();
-	            		dif = (short) (durabilityBefore - durabilityAfter);
-	            		dif = (short) (dif * 7.6); //Boost XP for Gold to that of around Iron
-	            		if(m.isShovel(is))
-	        				dif = (short) (dif / 3);
-	        			if(m.isSwords(is))
-	        				dif = (short) (dif / 2);
-	        			if(m.isHoe(is))
-	        				dif = (short) (dif / 2);
-            			PP.addXP(SkillType.REPAIR, dif*10, player);
-            			
-            			//CLANG CLANG
-	        			if(LoadProperties.spoutEnabled)
-	        				SpoutStuff.playRepairNoise(player);
-            		} else {
-            			needMoreVespeneGas(is, player);
+	        				
             		}
+            		
+            			//DIAMOND TOOLS
+            			else if (isDiamondTools(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){
+            				removeItem(player, rDiamond);
+            				repairItem(player, enchants, enchantsLevel);
+            			
+            				durabilityAfter = player.getItemInHand().getDurability();
+	            			dif = (short) (durabilityBefore - durabilityAfter);
+	            			if(m.isShovel(is))
+	        				dif = (short) (dif / 3);
+	        			if(m.isSwords(is))
+	        				dif = (short) (dif / 2);
+	        			if(m.isHoe(is))
+	        				dif = (short) (dif / 2);
+            				PP.addXP(SkillType.REPAIR, dif*10, player);
+            			
+            			//CLANG CLANG
+	        			if(LoadProperties.spoutEnabled)
+	        				SpoutStuff.playRepairNoise(player);
+	        				
+            		}
+            			//GOLD TOOLS
+            			else if(isGoldTools(is) && hasItem(player, rGold)){
+            				removeItem(player, rGold);
+            				repairItem(player, enchants, enchantsLevel);
+            			
+            				durabilityAfter = player.getItemInHand().getDurability();
+	            			dif = (short) (durabilityBefore - durabilityAfter);
+	            			dif = (short) (dif * 7.6); //Boost XP for Gold to that of around Iron
+	            			if(m.isShovel(is))
+	        				dif = (short) (dif / 3);
+	        			if(m.isSwords(is))
+	        				dif = (short) (dif / 2);
+	        			if(m.isHoe(is))
+	        				dif = (short) (dif / 2);
+            				PP.addXP(SkillType.REPAIR, dif*10, player);
+            			
+            			//CLANG CLANG
+	        			if(LoadProperties.spoutEnabled)
+	        				SpoutStuff.playRepairNoise(player);
+            		} 
+            		
+            			//UNABLE TO REPAIR
+            			else {
+            				needMoreVespeneGas(is, player);
+            			}
         		}
-        		
-        	} else {
+		}
+        	
+        	else {
         		player.sendMessage(mcLocale.getString("Skills.FullDurability"));
         	}
         	//player.updateInventory();
@@ -223,8 +247,8 @@ public class Repair {
         	 * GIVE SKILL IF THERE IS ENOUGH XP
         	 */
         	Skills.XpCheckSkill(SkillType.REPAIR, player);
-        	}
-    }
+        }
+}
 	public static int getArcaneForgingRank(PlayerProfile PP)
 	{
 		int rank = 0;
