@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.skills;
 
+import org.bukkit.Material;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -429,145 +430,156 @@ public class Repair {
     	 * TOOLS
     	 */
     	//SHEARS
-    	case 359:
-    		ramt = 119;
+    		case 359:
+    		ramt = Material.SHEARS.getMaxDurability();
     		break;
     	//WOOD SWORD
 		case 268:
-    		ramt = 30;
+    		ramt = Material.WOOD_SWORD.getMaxDurability();
     		break;
     	//WOOD SHOVEL
 		case 269:
-    		ramt = 60;
+    		ramt = Material.WOOD_SPADE.getMaxDurability();
     		break;
     	//WOOD PICKAXE
 		case 270:
-    		ramt = 20;
+    		ramt = Material.WOOD_PICKAXE.getMaxDurability();
     		break;
     	//WOOD AXE
 		case 271:
-    		ramt = 20;
+    		ramt = Material.WOOD_AXE.getMaxDurability();
     		break;
     	//WOOD HOE
 		case 290:
-			ramt = 30;
-			break;
+		ramt = Material.WOOD_HOE.getMaxDurability();
+		break;
     	//STONE SWORD
 		case 272:
-    		ramt = 66;
+    		ramt = Material.STONE_SWORD.getMaxDurability();
     		break;
     	//STONE SHOVEL
 		case 273:
-    		ramt = 132;
+    		ramt = Material.STONE_SPADE.getMaxDurability();
     		break;
     	//STONE PICKAXE
 		case 274:
-    		ramt = 44;
+    		ramt = Material.STONE_PICKAXE.getMaxDurability();
     		break;
     	//STONE AXE
 		case 275:
-    		ramt = 44;
+    		ramt = Material.STONE_AXE.getMaxDurability();
     		break;
-		//STONE HOE
+	//STONE HOE
 		case 291:
-			ramt = 66;
-			break;
+		ramt = Material.STONE_HOE.getMaxDurability();
+		break;
     	//GOLD SHOVEL
-    	case 284:
-    		ramt = 33;
+    		case 284:
+    		ramt = Material.GOLD_SPADE.getMaxDurability();
     		break;
     	//IRON SHOVEL
-    	case 256:
-    		ramt = 251;
+    		case 256:
+    		ramt = Material.IRON_SPADE.getMaxDurability();
     		break;
     	//DIAMOND SHOVEL
-    	case 277:
-    		ramt = 1562;
+    		case 277:
+    		ramt = Material.DIAMOND_SPADE.getMaxDurability();
     		break;
     	//IRON PICK
-    	case 257:
-    		ramt = 84;
+    		case 257:
+    		ramt = Material.IRON_PICKAXE.getMaxDurability();
     		break;
     	//IRON AXE
-    	case 258:
-    		ramt = 84;
+    		case 258:
+    		ramt = Material.IRON_AXE.getMaxDurability();
     		break;
     	//IRON SWORD
-    	case 267:
-    		ramt = 126;
+    		case 267:
+    		ramt = Material.IRON_SWORD.getMaxDurability();
     		break;
     	//IRON HOE
-    	case 292:
-    		ramt = 126;
+    		case 292:
+    		ramt = Material.IRON_HOE.getMaxDurability();
     		break;
     	//DIAMOND SWORD
-    	case 276:
-    		ramt = 781;
+    		case 276:
+    		ramt = Material.DIAMOND_SWORD.getMaxDurability();
     		break;
     	//DIAMOND PICK
-    	case 278:
-    		ramt = 521;
+    		case 278:
+    		ramt = Material.DIAMOND_PICKAXE.getMaxDurability();
     		break;
     	//DIAMOND AXE
-    	case 279:
-    		ramt = 521;
+    		case 279:
+    		ramt = Material.DIAMOND_AXE.getMaxDurability();
     		break;
     	//DIAMOND HOE
-    	case 293:
-    		ramt = 781;
+    		case 293:
+    		ramt = Material.DIAMOND_HOE.getMaxDurability();
     		break;
     	//GOLD SWORD
-    	case 283:
-    		ramt = 17;
+    		case 283:
+    		ramt = Material.GOLD_SWORD.getMaxDurability();
     		break;
     	//GOLD PICK
-    	case 285:
-    		ramt = 11;
+    		case 285:
+    		ramt = Material.GOLD_PICKAXE.getMaxDurability();
     		break;
     	//GOLD AXE
-    	case 286:
-    		ramt = 11;
+    		case 286:
+    		ramt = Material.GOLD_AXE.getMaxDurability();
     		break;
     	//GOLD HOE
-    	case 294:
-    		ramt = 17;
+    		case 294:
+    		ramt = Material.GOLD_HOE.getMaxDurability();
     		break;
     	/*
     	 * ARMOR
     	 */
-    	case 306:
-			ramt = 27;
-			break;
+    		case 306:
+		ramt = 27;
+		break;
+		
 		case 310:
-			ramt = 55;
+		ramt = 55;
     		break;
+		
 		case 307:
-			ramt = 24;
+		ramt = 24;
     		break;
+		
 		case 311:
-			ramt = 48;
+		ramt = 48;
     		break;
+		
 		case 308:
-			ramt = 27;
+		ramt = 27;
     		break;
+		
 		case 312:
-			ramt = 53;
+		ramt = 53;
     		break;
+		
 		case 309:
-			ramt = 40;
+		ramt = 40;
     		break;
+		
 		case 313:
-			ramt = 80;
+		ramt = 80;
     		break;
+		
 		case 314:
     		ramt = 13;
     		break;
+		
 		case 315:
     		ramt = 12;
     		break;
+		
 		case 316:
     		ramt = 14;
     		break;
+		
 		case 317:
     		ramt = 20;
     		break;
