@@ -626,21 +626,21 @@ public class Fishing {
 						if(x.canEnchantItem(fishingResults))
 						{
 							//Prevent impossible enchantment combinations
-							if((fishingResults.containsEnchantment(PROTECTION_ENVIRONMENTAL) || fishingResults.containsEnchantment(PROTECTION_EXPLOSIONS) || 
-									fishingResults.containsEnchantment(PROTECTION_FIRE) || fishingResults.containsEnchantment(PROTECTION_PROJECTILE)) && 
-									(x.equals(PROTECTION_EXPLOSIONS) || x.equals(PROTECTION_PROJECTILE) || x.equals(PROTECTION_FIRE) || x.equals(PROTECTION_ENVIRONMENTAL))){
+							if((fishingResults.containsEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL) || fishingResults.containsEnchantment(Enchantment.PROTECTION_EXPLOSIONS) || 
+									fishingResults.containsEnchantment(Enchantment.PROTECTION_FIRE) || fishingResults.containsEnchantment(Enchantment.PROTECTION_PROJECTILE)) && 
+									(x.equals(Enchantment.PROTECTION_EXPLOSIONS) || x.equals(Enchantment.PROTECTION_PROJECTILE) || x.equals(Enchantment.PROTECTION_FIRE) || x.equals(Enchantment.PROTECTION_ENVIRONMENTAL))){
 								return;
 							}
 							
 							//More impossible enchantment combinations
-							else if((fishingResults.containsEnchantment(DAMAGE_ALL) || fishingResults.containsEnchantment(DAMAGE_ARTHROPODS) || fishingResults.containsEnchantment(DAMAGE_UNDEAD)) && 
-									(x.equals(DAMAGE_ALL) || x.equals(DAMAGE_ARTHROPODS) || x.equals(DAMAGE_UNDEAD))){
+							else if((fishingResults.containsEnchantment(Enchantment.DAMAGE_ALL) || fishingResults.containsEnchantment(Enchantment.DAMAGE_ARTHROPODS) || fishingResults.containsEnchantment(Enchantment.DAMAGE_UNDEAD)) && 
+									(x.equals(Enchantment.DAMAGE_ALL) || x.equals(Enchantment.DAMAGE_ARTHROPODS) || x.equals(Enchantment.DAMAGE_UNDEAD))){
 								return;
 							}
 							
 							//Even more impossible enchantment combinations
-							else if((fishingResults.containsEnchantment(SILK_TOUCH) || fishingResults.containsEnchantment(LOOT_BONUS_BLOCKS)) &&
-									(x.equals(SILK_TOUCH) || x.equals(LOOT_BONUS_BLOCKS))){
+							else if((fishingResults.containsEnchantment(Enchantment.SILK_TOUCH) || fishingResults.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) &&
+									(x.equals(Enchantment.SILK_TOUCH) || x.equals(Enchantment.LOOT_BONUS_BLOCKS))){
 								return;
 							}
 							
