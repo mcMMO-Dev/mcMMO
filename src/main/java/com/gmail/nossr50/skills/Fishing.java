@@ -24,12 +24,12 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Fishing {
-	
+
 	//Return the fishing tier for the player
 	public static int getFishingLootTier(PlayerProfile PP)
 	{
 		int lvl = PP.getSkillLevel(SkillType.FISHING);
-		
+
 		if(lvl < 100)
 		{
 			return 1;
@@ -47,106 +47,7 @@ public class Fishing {
 			return 5;
 		}
 	}
-	
-	public static short getItemMaxDurability(Material mat)
-	{
-		switch(mat)
-		{
-		case LEATHER_BOOTS:
-			return (short) 40;
-		case LEATHER_LEGGINGS:
-			return (short) 46;
-		case LEATHER_HELMET:
-			return (short) 34;
-		case LEATHER_CHESTPLATE:
-			return (short) 49;
-		case CHAINMAIL_BOOTS:
-			return (short) 79;
-		case CHAINMAIL_LEGGINGS:
-			return (short) 92;
-		case CHAINMAIL_HELMET:
-			return (short) 67;
-		case CHAINMAIL_CHESTPLATE:
-			return (short) 96;
-		case GOLD_BOOTS:
-			return (short) 80;
-		case GOLD_LEGGINGS:
-			return (short) 92;
-		case GOLD_HELMET:
-			return (short) 68;
-		case GOLD_CHESTPLATE:
-			return (short) 96;
-		case IRON_BOOTS:
-			return (short) 160;
-		case IRON_LEGGINGS:
-			return (short) 184;
-		case IRON_HELMET:
-			return (short) 136;
-		case IRON_CHESTPLATE:
-			return (short) 192;
-		case DIAMOND_BOOTS:
-			return (short) 320;
-		case DIAMOND_LEGGINGS:
-			return (short) 368;
-		case DIAMOND_HELMET:
-			return (short) 272;
-		case DIAMOND_CHESTPLATE:
-			return (short) 384;
-		case GOLD_AXE:
-			return (short) 33;
-		case GOLD_SWORD:
-			return (short) 33;
-		case GOLD_HOE:
-			return (short) 33;
-		case GOLD_SPADE:
-			return (short) 33;
-		case GOLD_PICKAXE:
-			return (short) 33;
-		case WOOD_AXE:
-			return (short) 60;
-		case WOOD_SWORD:
-			return (short) 60;
-		case WOOD_HOE:
-			return (short) 60;
-		case WOOD_SPADE:
-			return (short) 60;
-		case WOOD_PICKAXE:
-			return (short) 60;
-		case STONE_AXE:
-			return (short) 132;
-		case STONE_SWORD:
-			return (short) 132;
-		case STONE_HOE:
-			return (short) 132;
-		case STONE_SPADE:
-			return (short) 132;
-		case STONE_PICKAXE:
-			return (short) 132;
-		case IRON_AXE:
-			return (short) 251;
-		case IRON_SWORD:
-			return (short) 251;
-		case IRON_HOE:
-			return (short) 251;
-		case IRON_SPADE:
-			return (short) 251;
-		case IRON_PICKAXE:
-			return (short) 251;
-		case DIAMOND_AXE:
-			return (short) 1562;
-		case DIAMOND_SWORD:
-			return (short) 1562;
-		case DIAMOND_HOE:
-			return (short) 1562;
-		case DIAMOND_SPADE:
-			return (short) 1562;
-		case DIAMOND_PICKAXE:
-			return (short) 1562;
-		default:
-			return (short) 0;
-		}
-	}
-	
+
 	public static void getFishingResults(Player player, PlayerFishEvent event)
 	{
 		switch(getFishingLootTier(Users.getProfile(player)))
@@ -171,12 +72,12 @@ public class Fishing {
 		Users.getProfile(player).addXP(SkillType.FISHING, LoadProperties.mfishing, player);
 		Skills.XpCheckSkill(SkillType.FISHING, player);
 	}
-	
+
 	private static void getFishingResultsTier1(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 14);
+		int randomNum = (int)(Math.random() * 15);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 20)
 		{
 			switch(randomNum)
@@ -229,15 +130,15 @@ public class Fishing {
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 		}
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType()))); //Change the damage value
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 
 	}
 
 	private static void getFishingResultsTier2(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 19);
+		int randomNum = (int)(Math.random() * 20);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 25)
 		{
 			switch(randomNum)
@@ -304,16 +205,16 @@ public class Fishing {
 		{
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
-		
+
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType())));
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
-	
+
 	private static void getFishingResultsTier3(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 23);
+		int randomNum = (int)(Math.random() * 24);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 30)
 		{
 			switch(randomNum)
@@ -394,14 +295,14 @@ public class Fishing {
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType())));
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
-	
+
 	private static void getFishingResultsTier4(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 40);
+		int randomNum = (int)(Math.random() * 41);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 35)
 		{
 			switch(randomNum)
@@ -532,14 +433,14 @@ public class Fishing {
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType())));
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
-	
+
 	private static void getFishingResultsTier5(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 49);
+		int randomNum = (int)(Math.random() * 50);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 40)
 		{
 			switch(randomNum)
@@ -696,24 +597,24 @@ public class Fishing {
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType())));
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
 	public static void processResults(PlayerFishEvent event)
 	{
 		Player player = event.getPlayer();
 		PlayerProfile PP = Users.getProfile(player);
-		
+
 		Fishing.getFishingResults(player, event);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(theCatch.getItemStack().getType() != Material.RAW_FISH)
 		{
 			//Inform the player they retrieved a treasure...
 			player.sendMessage(mcLocale.getString("Fishing.ItemFound"));
-			
+
 			//Keep track of whether or not the treasure is enchanted
 			boolean enchanted = false;
-			
+
 			ItemStack fishingResults = theCatch.getItemStack();
 			if(Repair.isArmor(fishingResults) || Repair.isTools(fishingResults))
 			{
@@ -724,23 +625,45 @@ public class Fishing {
 					{
 						if(x.canEnchantItem(fishingResults))
 						{
-							//Actual chance to have an enchantment is related to your fishing skill
-							if(Math.random() * 15 < Fishing.getFishingLootTier(PP))
-							{
-								enchanted = true;
-								int randomEnchantLevel = (int) Math.random() * x.getMaxLevel();
-								
-								if(randomEnchantLevel == 0)
-									randomEnchantLevel = 1;
-								if(randomEnchantLevel > x.getMaxLevel())
-									randomEnchantLevel = x.getMaxLevel();
-								
-								fishingResults.addEnchantment(x, randomEnchantLevel);
+							//Prevent impossible enchantment combinations
+							if((fishingResults.containsEnchantment(PROTECTION_ENVIRONMENTAL) || fishingResults.containsEnchantment(PROTECTION_EXPLOSIONS) || 
+									fishingResults.containsEnchantment(PROTECTION_FIRE) || fishingResults.containsEnchantment(PROTECTION_PROJECTILE)) && 
+									(x.equals(PROTECTION_EXPLOSIONS) || x.equals(PROTECTION_PROJECTILE) || x.equals(PROTECTION_FIRE) || x.equals(PROTECTION_ENVIRONMENTAL))){
+								return;
+							}
+							
+							//More impossible enchantment combinations
+							else if((fishingResults.containsEnchantment(DAMAGE_ALL) || fishingResults.containsEnchantment(DAMAGE_ARTHROPODS) || fishingResults.containsEnchantment(DAMAGE_UNDEAD)) && 
+									(x.equals(DAMAGE_ALL) || x.equals(DAMAGE_ARTHROPODS) || x.equals(DAMAGE_UNDEAD))){
+								return;
+							}
+							
+							//Even more impossible enchantment combinations
+							else if((fishingResults.containsEnchantment(SILK_TOUCH) || fishingResults.containsEnchantment(LOOT_BONUS_BLOCKS)) &&
+									(x.equals(SILK_TOUCH) || x.equals(LOOT_BONUS_BLOCKS))){
+								return;
+							}
+							
+							else{		
+								//Actual chance to have an enchantment is related to your fishing skill
+								if(Math.random() * 15 < Fishing.getFishingLootTier(PP))
+								{
+									enchanted = true;
+									int randomEnchantLevel = (int)(Math.random() * x.getMaxLevel());
+									
+									if(randomEnchantLevel == 0)
+										randomEnchantLevel = 1;
+									if(randomEnchantLevel > x.getMaxLevel())
+										randomEnchantLevel = x.getMaxLevel();
+
+									fishingResults.addEnchantment(x, randomEnchantLevel);
+								}
 							}
 						}
 					}
 				}
 			}
+			
 			//Inform the player of magical properties
 			if(enchanted)
 			{
@@ -755,7 +678,7 @@ public class Fishing {
 			return;
 		le.damage(1);
 		World world = le.getWorld();
-		
+
 		if(le instanceof Sheep)
 		{
 			Sheep sheep = (Sheep)le;
