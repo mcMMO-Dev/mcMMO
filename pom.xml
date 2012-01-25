@@ -24,11 +24,42 @@
             <resource>
                 <targetPath>resources</targetPath>
                 <filtering>true</filtering>
-                <directory>${basedir}/src/main/resources/</directory>
+                <directory>${basedir}/src/main/resources/xpbar/</directory>
+                <includes>
+                    <include>xpbar*.png</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>resources</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/healthbar/</directory>
+                <includes>
+                    <include>health*.png</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>resources</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/skillicon/</directory>
                 <includes>
                     <include>*.png</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>resources</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/sound/</directory>
+                <includes>
                     <include>*.wav</include>
                 </includes>
+            </resource>
+            <resource>
+            	<targetPath>com/gmail/nossr50/locale</targetPath>
+            	<filtering>true</filtering>
+            	<directory>${basedir}/src/main/resources/locale/</directory>
+            	<includes>
+            		<include>locale*.properties</include>
+            	</includes>
             </resource>
         </resources>
         <plugins>
@@ -62,31 +93,41 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public/</url>
+        </repository>
+        <repository>
+        	<id>spout-repo</id>
+        	<url>http://nexus.getspout.org/content/groups/public/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.0.1-R2-SNAPSHOT</version>
+            <version>1.1-R1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.0.1-R2-SNAPSHOT</version>
+            <version>1.1-R1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.nijikokun.bukkit</groupId>
             <artifactId>Permissions</artifactId>
-            <version>3.2</version>
+            <version>3.1.6</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ru.tehkode</groupId>
-            <artifactId>PermissionsEx</artifactId>
+            <groupId>ru.tehkode.permissions</groupId>
+            <artifactId>bukkit</artifactId>
             <version>1.18</version>
             <type>jar</type>
             <scope>compile</scope>

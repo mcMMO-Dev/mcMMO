@@ -339,6 +339,7 @@ public class mcPlayerListener extends PlayerListener
 		if(!message.startsWith("/")) return;
 		String command = message.substring(1).split(" ")[0];
 		if(plugin.aliasMap.containsKey(command)) {
+			if(command.equalsIgnoreCase(plugin.aliasMap.get(command))) return;
 			event.setCancelled(true);
 			event.getPlayer().chat(message.replaceFirst(command, plugin.aliasMap.get(command)));
 		}
