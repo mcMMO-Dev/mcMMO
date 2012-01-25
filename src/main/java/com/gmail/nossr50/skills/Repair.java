@@ -422,7 +422,7 @@ public class Repair {
 		}
 		return false;
 	}
-	public static short repairCalculate(Player player, short durability, short ramt){
+	public static short repairCalculate(Player player, short durability, int ramt){
 		PlayerProfile PP = Users.getProfile(player);
 		float bonus = (PP.getSkillLevel(SkillType.REPAIR) / 500);
 		bonus = (ramt * bonus);
@@ -438,7 +438,7 @@ public class Repair {
 	}
 	public static short getRepairAmount(ItemStack is, Player player){
 		short durability = is.getDurability();
-		short ramt = 0;
+		int ramt = 0;
 		switch(is.getTypeId())
 		{
 		/*
