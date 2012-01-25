@@ -4,15 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Chicken;
-import org.bukkit.entity.Cow;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Pig;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Spider;
+import org.bukkit.entity.*
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
@@ -24,12 +16,12 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Fishing {
-	
+
 	//Return the fishing tier for the player
 	public static int getFishingLootTier(PlayerProfile PP)
 	{
 		int lvl = PP.getSkillLevel(SkillType.FISHING);
-		
+
 		if(lvl < 100)
 		{
 			return 1;
@@ -47,106 +39,7 @@ public class Fishing {
 			return 5;
 		}
 	}
-	
-	public static short getItemMaxDurability(Material mat)
-	{
-		switch(mat)
-		{
-		case LEATHER_BOOTS:
-			return (short) 40;
-		case LEATHER_LEGGINGS:
-			return (short) 46;
-		case LEATHER_HELMET:
-			return (short) 34;
-		case LEATHER_CHESTPLATE:
-			return (short) 49;
-		case CHAINMAIL_BOOTS:
-			return (short) 79;
-		case CHAINMAIL_LEGGINGS:
-			return (short) 92;
-		case CHAINMAIL_HELMET:
-			return (short) 67;
-		case CHAINMAIL_CHESTPLATE:
-			return (short) 96;
-		case GOLD_BOOTS:
-			return (short) 80;
-		case GOLD_LEGGINGS:
-			return (short) 92;
-		case GOLD_HELMET:
-			return (short) 68;
-		case GOLD_CHESTPLATE:
-			return (short) 96;
-		case IRON_BOOTS:
-			return (short) 160;
-		case IRON_LEGGINGS:
-			return (short) 184;
-		case IRON_HELMET:
-			return (short) 136;
-		case IRON_CHESTPLATE:
-			return (short) 192;
-		case DIAMOND_BOOTS:
-			return (short) 320;
-		case DIAMOND_LEGGINGS:
-			return (short) 368;
-		case DIAMOND_HELMET:
-			return (short) 272;
-		case DIAMOND_CHESTPLATE:
-			return (short) 384;
-		case GOLD_AXE:
-			return (short) 33;
-		case GOLD_SWORD:
-			return (short) 33;
-		case GOLD_HOE:
-			return (short) 33;
-		case GOLD_SPADE:
-			return (short) 33;
-		case GOLD_PICKAXE:
-			return (short) 33;
-		case WOOD_AXE:
-			return (short) 60;
-		case WOOD_SWORD:
-			return (short) 60;
-		case WOOD_HOE:
-			return (short) 60;
-		case WOOD_SPADE:
-			return (short) 60;
-		case WOOD_PICKAXE:
-			return (short) 60;
-		case STONE_AXE:
-			return (short) 132;
-		case STONE_SWORD:
-			return (short) 132;
-		case STONE_HOE:
-			return (short) 132;
-		case STONE_SPADE:
-			return (short) 132;
-		case STONE_PICKAXE:
-			return (short) 132;
-		case IRON_AXE:
-			return (short) 251;
-		case IRON_SWORD:
-			return (short) 251;
-		case IRON_HOE:
-			return (short) 251;
-		case IRON_SPADE:
-			return (short) 251;
-		case IRON_PICKAXE:
-			return (short) 251;
-		case DIAMOND_AXE:
-			return (short) 1562;
-		case DIAMOND_SWORD:
-			return (short) 1562;
-		case DIAMOND_HOE:
-			return (short) 1562;
-		case DIAMOND_SPADE:
-			return (short) 1562;
-		case DIAMOND_PICKAXE:
-			return (short) 1562;
-		default:
-			return (short) 0;
-		}
-	}
-	
+
 	public static void getFishingResults(Player player, PlayerFishEvent event)
 	{
 		switch(getFishingLootTier(Users.getProfile(player)))
@@ -171,12 +64,12 @@ public class Fishing {
 		Users.getProfile(player).addXP(SkillType.FISHING, LoadProperties.mfishing, player);
 		Skills.XpCheckSkill(SkillType.FISHING, player);
 	}
-	
+
 	private static void getFishingResultsTier1(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 14);
+		int randomNum = (int)(Math.random() * 15);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 20)
 		{
 			switch(randomNum)
@@ -229,15 +122,15 @@ public class Fishing {
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 		}
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType()))); //Change the damage value
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 
 	}
 
 	private static void getFishingResultsTier2(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 19);
+		int randomNum = (int)(Math.random() * 20);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 25)
 		{
 			switch(randomNum)
@@ -304,16 +197,16 @@ public class Fishing {
 		{
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
-		
+
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType())));
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
-	
+
 	private static void getFishingResultsTier3(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 23);
+		int randomNum = (int)(Math.random() * 24);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 30)
 		{
 			switch(randomNum)
@@ -394,14 +287,14 @@ public class Fishing {
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType())));
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
-	
+
 	private static void getFishingResultsTier4(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 40);
+		int randomNum = (int)(Math.random() * 41);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 35)
 		{
 			switch(randomNum)
@@ -521,7 +414,7 @@ public class Fishing {
 				theCatch.setItemStack(new ItemStack(Material.RECORD_11, 1));
 				break;
 			case 39:
-				theCatch.setItemStack(new ItemStack(Material.REDSTONE_WIRE, 64));
+				theCatch.setItemStack(new ItemStack(Material.GLOWSTONE_DUST, 16));
 				break;
 			case 40:
 				theCatch.setItemStack(new ItemStack(Material.DIAMOND, (int)(Math.random() * 10)));
@@ -532,14 +425,14 @@ public class Fishing {
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType())));
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
-	
+
 	private static void getFishingResultsTier5(Player player, PlayerFishEvent event)
 	{
-		int randomNum = (int)(Math.random() * 49);
+		int randomNum = (int)(Math.random() * 50);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(Math.random() * 100 < 40)
 		{
 			switch(randomNum)
@@ -659,7 +552,7 @@ public class Fishing {
 				theCatch.setItemStack(new ItemStack(Material.RECORD_11, 1));
 				break;
 			case 39:
-				theCatch.setItemStack(new ItemStack(Material.REDSTONE_WIRE, 64));
+				theCatch.setItemStack(new ItemStack(Material.GLOWSTONE_DUST, 16));
 				break;
 			case 40:
 				theCatch.setItemStack(new ItemStack(Material.DIAMOND, (int)(Math.random() * 20)));
@@ -696,24 +589,24 @@ public class Fishing {
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
 		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * Fishing.getItemMaxDurability(theCatch.getItemStack().getType())));
+		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
 	public static void processResults(PlayerFishEvent event)
 	{
 		Player player = event.getPlayer();
 		PlayerProfile PP = Users.getProfile(player);
-		
+
 		Fishing.getFishingResults(player, event);
 		CraftItem theCatch = (CraftItem)event.getCaught();
-		
+
 		if(theCatch.getItemStack().getType() != Material.RAW_FISH)
 		{
 			//Inform the player they retrieved a treasure...
 			player.sendMessage(mcLocale.getString("Fishing.ItemFound"));
-			
+
 			//Keep track of whether or not the treasure is enchanted
 			boolean enchanted = false;
-			
+
 			ItemStack fishingResults = theCatch.getItemStack();
 			if(Repair.isArmor(fishingResults) || Repair.isTools(fishingResults))
 			{
@@ -724,23 +617,45 @@ public class Fishing {
 					{
 						if(x.canEnchantItem(fishingResults))
 						{
-							//Actual chance to have an enchantment is related to your fishing skill
-							if(Math.random() * 15 < Fishing.getFishingLootTier(PP))
-							{
-								enchanted = true;
-								int randomEnchantLevel = (int) Math.random() * x.getMaxLevel();
-								
-								if(randomEnchantLevel == 0)
-									randomEnchantLevel = 1;
-								if(randomEnchantLevel > x.getMaxLevel())
-									randomEnchantLevel = x.getMaxLevel();
-								
-								fishingResults.addEnchantment(x, randomEnchantLevel);
+							//Prevent impossible enchantment combinations
+							if((fishingResults.containsEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL) || fishingResults.containsEnchantment(Enchantment.PROTECTION_EXPLOSIONS) || 
+									fishingResults.containsEnchantment(Enchantment.PROTECTION_FIRE) || fishingResults.containsEnchantment(Enchantment.PROTECTION_PROJECTILE)) && 
+									(x.equals(Enchantment.PROTECTION_EXPLOSIONS) || x.equals(Enchantment.PROTECTION_PROJECTILE) || x.equals(Enchantment.PROTECTION_FIRE) || x.equals(Enchantment.PROTECTION_ENVIRONMENTAL))){
+								return;
+							}
+							
+							//More impossible enchantment combinations
+							else if((fishingResults.containsEnchantment(Enchantment.DAMAGE_ALL) || fishingResults.containsEnchantment(Enchantment.DAMAGE_ARTHROPODS) || fishingResults.containsEnchantment(Enchantment.DAMAGE_UNDEAD)) && 
+									(x.equals(Enchantment.DAMAGE_ALL) || x.equals(Enchantment.DAMAGE_ARTHROPODS) || x.equals(Enchantment.DAMAGE_UNDEAD))){
+								return;
+							}
+							
+							//Even more impossible enchantment combinations
+							else if((fishingResults.containsEnchantment(Enchantment.SILK_TOUCH) || fishingResults.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) &&
+									(x.equals(Enchantment.SILK_TOUCH) || x.equals(Enchantment.LOOT_BONUS_BLOCKS))){
+								return;
+							}
+							
+							else{		
+								//Actual chance to have an enchantment is related to your fishing skill
+								if(Math.random() * 15 < Fishing.getFishingLootTier(PP))
+								{
+									enchanted = true;
+									int randomEnchantLevel = (int)(Math.random() * x.getMaxLevel());
+									
+									if(randomEnchantLevel == 0)
+										randomEnchantLevel = 1;
+									if(randomEnchantLevel > x.getMaxLevel())
+										randomEnchantLevel = x.getMaxLevel();
+
+									fishingResults.addEnchantment(x, randomEnchantLevel);
+								}
 							}
 						}
 					}
 				}
 			}
+			
 			//Inform the player of magical properties
 			if(enchanted)
 			{
@@ -751,11 +666,15 @@ public class Fishing {
 	public static void shakeMob(PlayerFishEvent event)
 	{
 		LivingEntity le = (LivingEntity)event.getCaught();
+		
+		//Do nothing to players
 		if(le instanceof Player)
 			return;
+		
 		le.damage(1);
 		World world = le.getWorld();
-		
+
+		/* Neutral Mobs */
 		if(le instanceof Sheep)
 		{
 			Sheep sheep = (Sheep)le;
@@ -768,33 +687,148 @@ public class Fishing {
 				world.dropItemNaturally(le.getLocation(), theWool);
 				sheep.setSheared(true);
 			}
-		} else if(le instanceof Pig)
+		} 
+		
+		else if(le instanceof Pig)
 		{
 			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.PORK, 1));
-		} else if(le instanceof Skeleton)
+		} 
+		
+		else if(le instanceof Cow)
+		{
+			if(Math.random() * 100 < 99){
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
+			}
+			else if(Math.random() * 10 < 5){
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.LEATHER, 1));
+			}
+			else{
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_BEEF, 1));)
+			}
+		}
+		
+		else if(le instanceof Chicken)
+		{
+			if(Math.random() * 10 <= 7){
+				if(Math.random() * 10 < 5){
+					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.FEATHER, 1));
+				}
+				else{
+					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_CHICKEN, 1));
+				}
+			}
+			else{
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.EGG, 1));
+			}
+		}
+		
+		else if(le instanceof MushroomCow)
+		{
+			if(Math.random() * 100 < 99){
+				if(Math.random() * 10 < 5){
+					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
+				}
+				else{
+					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.MUSHROOM_SOUP, 1)); //rare chance to drop soup
+				}
+			}
+			else if(Math.random() * 10 <= 7){
+				if(Math.random() * 10 < 5){
+					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.LEATHER, 1));
+				}
+				else{
+					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_BEEF, 1));)
+				}
+			}
+			else{
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RED_MUSHROOM, 3));
+				//need some way to remove MushroomCow & replace with regular cow when sheared
+			}
+		}
+		
+		else if(le instanceof Squid)
+		{
+			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)0)));
+		}
+		
+		else if(le instanceof Snowman){
+			if(Math.random() * 100 < 99){
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.PUMPKIN, 1)); //rare chance to drop pumpkin
+			}
+			else{
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SNOW_BALL, 5));
+			}
+		}
+		
+		/* Hostile Mobs */
+		else if(le instanceof Skeleton)
 		{
 			if(Math.random() * 10 < 5)
 				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.BONE, 1));
 			else
 				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.ARROW, 3));
-		} else if(le instanceof Cow)
-		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.LEATHER, 1));
-		} else if(le instanceof Spider)
+		} 
+		
+		else if(le instanceof Spider)
 		{
 			if(Math.random() * 10 < 5)
 				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SPIDER_EYE, 1));
 			else
 				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.STRING, 1));
-		} else if(le instanceof Chicken)
-		{
-			if(Math.random() * 10 < 5)
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.FEATHER, 1));
-			else
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.EGG, 1));
-		} else if(le instanceof Creeper)
+		} 
+		
+		else if(le instanceof Creeper)
 		{
 			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SULPHUR, 1));
+		}
+		
+		else if(le instanceof Enderman)
+		{
+			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.ENDER_PEARL, 1));
+		}
+		
+		else if(le instanceof PigZombie)
+		{
+			if(Math.random() * 10 < 5)
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
+			else
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.GOLD_NUGGET, 1));
+		}
+		
+		else if(le instanceof Blaze)
+		{
+			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.BLAZE_ROD, 1));
+		}
+		
+		else if(le instanceof CaveSpider)
+		{
+			if(Math.random() * 10 < 5)
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SPIDER_EYE, 1));
+			else
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.STRING, 1));
+		}
+		
+		else if(le instanceof Ghast)
+		{
+			if(Math.random() * 10 < 5)
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SULPHUR, 1));
+			else
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.GHAST_TEAR, 1));
+		}
+		
+		else if(le instanceof MagmaCube)
+		{
+			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.MAGMA_CREAM, 1));
+		}
+		
+		else if(le instanceof Slime)
+		{
+			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SLIME_BALL, 1));
+		}
+		
+		else if(le instanceof Zombie)
+		{
+			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
 		}
 	}
 }
