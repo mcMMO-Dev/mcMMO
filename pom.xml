@@ -134,7 +134,7 @@
         </dependency>
         <dependency>
             <groupId>org.getspout</groupId>
-            <artifactId>spoutplugin</artifactId>
+            <artifactId>spoutpluginapi</artifactId>
             <version>dev-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>

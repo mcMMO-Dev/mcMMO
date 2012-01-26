@@ -49,8 +49,6 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
@@ -139,28 +137,11 @@ public class mcMMO extends JavaPlugin
 			LoadProperties.spoutEnabled = true;
 		else
 			LoadProperties.spoutEnabled = false;
-
-		//Player Stuff
-		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Lowest, this);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Monitor, this);
-		pm.registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_FISH, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Lowest, this);
-
-		//Block Stuff
-		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Monitor, this);
-		pm.registerEvent(Event.Type.BLOCK_FROMTO, blockListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Normal, this);
-
-		//Entity Stuff
-		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Monitor, this);
-		pm.registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Priority.Normal, this);
+		
+		//Register events
+		pm.registerEvents(playerListener, this);
+		pm.registerEvents(blockListener, this);
+		pm.registerEvents(entityListener, this);
 
 		PluginDescriptionFile pdfFile = this.getDescription();
 		mcPermissions.initialize(getServer());

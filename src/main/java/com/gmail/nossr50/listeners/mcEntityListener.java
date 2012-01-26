@@ -20,13 +20,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
@@ -42,14 +44,15 @@ import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
 
 
-public class mcEntityListener extends EntityListener 
+public class mcEntityListener implements Listener 
 {
 	private final mcMMO plugin;
 
     public mcEntityListener(final mcMMO plugin) {
         this.plugin = plugin;
     }
-    
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageEvent event) 
     {
     	if(event.isCancelled())
@@ -158,7 +161,8 @@ public class mcEntityListener extends EntityListener
 	    	}
     	}
     }
-    
+
+    @EventHandler
     public void onEntityDeath(EntityDeathEvent event) 
     {
     	Entity x = event.getEntity();
@@ -180,7 +184,8 @@ public class mcEntityListener extends EntityListener
     	}
     	
     }
-    
+
+    @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent event) 
     {
     	SpawnReason reason = event.getSpawnReason();

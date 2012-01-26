@@ -29,10 +29,12 @@ import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
@@ -44,7 +46,7 @@ import com.gmail.nossr50.skills.*;
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 
 
-public class mcBlockListener extends BlockListener 
+public class mcBlockListener implements Listener 
 {
     private final mcMMO plugin;
 
@@ -53,6 +55,7 @@ public class mcBlockListener extends BlockListener
         this.plugin = plugin;
     }
     
+    @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) 
     {
     	//Setup some basic vars
@@ -111,7 +114,8 @@ public class mcBlockListener extends BlockListener
     		}
     	}
     }
-    
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent event) 
     {
     	Player player = event.getPlayer();
@@ -274,7 +278,8 @@ public class mcBlockListener extends BlockListener
     		}
     	}
     }
-    
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockDamage(BlockDamageEvent event) 
     {
     	if(event.isCancelled())
@@ -439,6 +444,7 @@ public class mcBlockListener extends BlockListener
     	}
     }
     
+    @EventHandler
     public void onBlockFromTo(BlockFromToEvent event) 
     {
         Block blockFrom = event.getBlock();
