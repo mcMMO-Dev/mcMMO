@@ -295,11 +295,11 @@ public class m
 		int id = is.getTypeId();
 		return id == 270 || id == 274 || id == 285 || id == 257 || id == 278;
 	}
-	public boolean isGold(ItemStack is)
-	{
-		int id = is.getTypeId();
-		return id == 283 || id == 284 || id == 285 || id == 286 || id == 294 || id == 314 || id == 315 || id == 316 || id == 317;
-	}
+//	public boolean isGold(ItemStack is)
+//	{
+//		int id = is.getTypeId();
+//		return id == 283 || id == 284 || id == 285 || id == 286 || id == 294 || id == 314 || id == 315 || id == 316 || id == 317;
+//	}
 	public static void convertToMySQL()
 	{
 		if(!LoadProperties.useMySQL)
