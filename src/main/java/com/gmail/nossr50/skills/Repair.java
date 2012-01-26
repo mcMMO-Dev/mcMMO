@@ -47,7 +47,10 @@ public class Repair {
 	private static String nDiamond =  LoadProperties.nDiamond;        
 	private static int rIron =  LoadProperties.rIron;
 	private static String nIron =  LoadProperties.nIron;
-
+	private static int rString =  LoadProperties.rString;
+	private static String nString =  LoadProperties.nString;
+	private static int rLeather =  LoadProperties.rLeather;
+	private static String nLeather =  LoadProperties.nLeather;
 
 	public static void repairCheck(Player player, ItemStack is, Block block){
 		PlayerProfile PP = Users.getProfile(player);
@@ -113,6 +116,21 @@ public class Repair {
 						durabilityAfter = player.getItemInHand().getDurability();
 						dif = (short) (durabilityBefore - durabilityAfter);
 						dif = (short) (dif * 4); //Boost XP
+						PP.addXP(SkillType.REPAIR, dif*10, player);
+
+						//CLANG CLANG
+						if(LoadProperties.spoutEnabled)
+							SpoutStuff.playRepairNoise(player);
+					} 
+
+					//LEATHER ARMOR
+					else if (isLeatherArmor(is) && hasItem(player, rLeather)){
+						removeItem(player, rLeather);
+						repairItem(player, enchants, enchantsLevel);
+
+						durabilityAfter = player.getItemInHand().getDurability();
+						dif = (short) (durabilityBefore - durabilityAfter);
+						dif = (short) (dif * 1); //Boost XP
 						PP.addXP(SkillType.REPAIR, dif*10, player);
 
 						//CLANG CLANG
@@ -362,7 +380,11 @@ public class Repair {
 	public static boolean isArmor(ItemStack is){
 		return is.getTypeId() == 306 || is.getTypeId() == 307 ||is.getTypeId() == 308 ||is.getTypeId() == 309 || //IRON
 				is.getTypeId() == 310 ||is.getTypeId() == 311 ||is.getTypeId() == 312 ||is.getTypeId() == 313 || //DIAMOND
-				is.getTypeId() == 314 || is.getTypeId() == 315 || is.getTypeId() == 316 || is.getTypeId() == 317; //GOLD
+				is.getTypeId() == 314 || is.getTypeId() == 315 || is.getTypeId() == 316 || is.getTypeId() == 317 || //GOLD
+				is.getTypeId() == 298 || is.getTypeId() == 299 || is.getTypeId() == 300 || is.getTypeId() == 301; //LEATHER
+	}
+	public static boolean isLeatherArmor(ItemStack is){
+		return is.getTypeId() == 298 || is.getTypeId() == 299 || is.getTypeId() == 300 || is.getTypeId() == 301;
 	}
 	public static boolean isGoldArmor(ItemStack is){
 		return is.getTypeId() == 314 || is.getTypeId() == 315 || is.getTypeId() == 316 || is.getTypeId() == 317;
@@ -652,6 +674,8 @@ public class Repair {
 			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GRAY+ nIron);
 		} else if (isGoldArmor(is) && !hasItem(player, rGold)){
 			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GOLD+ nGold);
+		} else if (isLeatherArmor(is) && !hasItem(player, rLeather)){
+			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.YELLOW+ nLeather);
 		} else if (is.getAmount() > 1)
 			player.sendMessage(mcLocale.getString("Skills.StackedItems"));
 	}
