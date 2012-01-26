@@ -106,9 +106,9 @@ public class Combat
 				      			int hpLeft = defender.getHealth(), xpinc = 0;
 				      			
 				      			if(hpLeft < event.getDamage())
-				      				xpinc = event.getDamage();
-				      			else
 				      				xpinc = hpLeft;
+				      			else
+				      				xpinc = event.getDamage;
 				      			
 			    				int xp = (int) (xpinc * 2 * LoadProperties.pvpxprewardmodifier);
 			    				
@@ -380,9 +380,9 @@ public class Combat
 				int hpLeft = le.getHealth(), xpinc = 0;
 				
 				if(hpLeft < event.getDamage())
-					xpinc = event.getDamage();
-				else
 					xpinc = hpLeft;
+				else
+					xpinc = event.getDamage();
 			
 	    	if(entity instanceof Animals)
 	    	{
