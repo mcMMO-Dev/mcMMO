@@ -268,7 +268,8 @@ public class m
 
 	public static boolean isSwords(ItemStack is)
 	{
-		return is.getTypeId() == 268 || is.getTypeId() == 267 || is.getTypeId() == 272 || is.getTypeId() == 283 || is.getTypeId() == 276;
+		int id = is.getTypeId();
+		return id == 268 || id == 267 || id == 272 || id == 283 || id == 276;
 	}
 	
 	public static boolean isHoe(ItemStack is)
@@ -277,34 +278,27 @@ public class m
 		return id == 290 || id == 291 || id == 292 || id == 293 || id == 294;
 	}
 	
-	public static boolean isShovel(ItemStack is){
-		return is.getTypeId() == 269 || is.getTypeId() == 273 || is.getTypeId() == 277 || is.getTypeId() == 284 || is.getTypeId() == 256;
+	public static boolean isShovel(ItemStack is)
+	{	
+		int id = is.getTypeId();
+		return id == 269 || id == 273 || id == 277 || id == 284 || id == 256;
 	}
 	
-	public static boolean isAxes(ItemStack is){
-		if(is.getTypeId() == 271 || is.getTypeId() == 258 || is.getTypeId() == 286 || is.getTypeId() == 279 || is.getTypeId() == 275){
-			return true;
-		} else {
-			return false;
-		}
+	public static boolean isAxes(ItemStack is)
+	{	
+		int id = is.getTypeId();
+		return id == 271 || id == 258 || id == 286 || id == 279 || id == 275;
 	}
+	
 	public static boolean isMiningPick(ItemStack is)
 	{
-		if(is.getTypeId() == 270 || is.getTypeId() == 274 || is.getTypeId() == 285 || is.getTypeId() == 257 || is.getTypeId() == 278)
-		{
-			return true;
-		} else {
-			return false;
-		}
+		int id = is.getTypeId();
+		return id == 270 || id == 274 || id == 285 || id == 257 || id == 278;
 	}
 	public boolean isGold(ItemStack is)
 	{
-		int i = is.getTypeId();
-		if(i == 283 || i == 284 || i == 285 || i == 286 || i == 294 || i == 314 || i == 315 || i == 316 || i == 317){
-			return true;
-		} else {
-			return false;
-		}
+		int id = is.getTypeId();
+		return id == 283 || id == 284 || id == 285 || id == 286 || id == 294 || id == 314 || id == 315 || id == 316 || id == 317;
 	}
 	public static void convertToMySQL()
 	{
