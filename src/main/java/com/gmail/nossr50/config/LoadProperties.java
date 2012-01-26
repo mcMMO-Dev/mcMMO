@@ -32,7 +32,7 @@ public class LoadProperties
 	
 	public static String xplock, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp,
 	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
-	nStone, nIron, nGold, nDiamond, locale, nString, rLeather;
+	nStone, nIron, nGold, nDiamond, locale, nString, nLeather;
 	
 	public static int mfishing, mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y, mstring, mbucket, mweb,
 	chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand,
@@ -338,7 +338,7 @@ public class LoadProperties
 	    	write("Skills.Repair.Wood.ID", 5);
 	    	write("Skills.Repair.Wood.Name", "Wood Planks");
 	    	write("Skills.Repair.Diamond.ID", 264);
-	    	write("Skills.Repair.Diamond.Name", "Diamond");;
+	    	write("Skills.Repair.Diamond.Name", "Diamond");
 	    	write("Skills.Repair.Diamond.Level_Required", 50);
 	    	write("Skills.Repair.Iron.ID", 265);
 	    	write("Skills.Repair.Iron.Name", "Iron Bars");
