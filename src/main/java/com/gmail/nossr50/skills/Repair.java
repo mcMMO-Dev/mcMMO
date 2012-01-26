@@ -47,7 +47,10 @@ public class Repair {
 	private static String nDiamond =  LoadProperties.nDiamond;        
 	private static int rIron =  LoadProperties.rIron;
 	private static String nIron =  LoadProperties.nIron;
-
+	private static int rString =  LoadProperties.rString;
+	private static String nString =  LoadProperties.nString;
+	private static int rLeather =  LoadProperties.rLeather;
+	private static String nLeather =  LoadProperties.nLeather;
 
 	public static void repairCheck(Player player, ItemStack is, Block block){
 		PlayerProfile PP = Users.getProfile(player);
@@ -113,6 +116,21 @@ public class Repair {
 						durabilityAfter = player.getItemInHand().getDurability();
 						dif = (short) (durabilityBefore - durabilityAfter);
 						dif = (short) (dif * 4); //Boost XP
+						PP.addXP(SkillType.REPAIR, dif*10, player);
+
+						//CLANG CLANG
+						if(LoadProperties.spoutEnabled)
+							SpoutStuff.playRepairNoise(player);
+					} 
+
+					//LEATHER ARMOR
+					else if (isLeatherArmor(is) && hasItem(player, rLeather)){
+						removeItem(player, rLeather);
+						repairItem(player, enchants, enchantsLevel);
+
+						durabilityAfter = player.getItemInHand().getDurability();
+						dif = (short) (durabilityBefore - durabilityAfter);
+						dif = (short) (dif * 1); //Boost XP
 						PP.addXP(SkillType.REPAIR, dif*10, player);
 
 						//CLANG CLANG
@@ -231,7 +249,26 @@ public class Repair {
 						//CLANG CLANG
 						if(LoadProperties.spoutEnabled)
 							SpoutStuff.playRepairNoise(player);
-					} 
+					}
+					
+					//BOW
+					else if(isBow(is) && hasItem(player, rString)){
+						removeItem(player, rString);
+						repairItem(player, enchants, enchantsLevel);
+
+						durabilityAfter = player.getItemInHand().getDurability();
+						dif = (short) (durabilityBefore - durabilityAfter);
+						
+						//STRING NERF
+						dif = (short) (dif / 2);
+						
+						PP.addXP(SkillType.REPAIR, dif*10, player);
+
+						
+						//CLANG CLANG
+						if(LoadProperties.spoutEnabled)
+							SpoutStuff.playRepairNoise(player);
+					}
 
 					//UNABLE TO REPAIR
 					else {
@@ -362,7 +399,11 @@ public class Repair {
 	public static boolean isArmor(ItemStack is){
 		return is.getTypeId() == 306 || is.getTypeId() == 307 ||is.getTypeId() == 308 ||is.getTypeId() == 309 || //IRON
 				is.getTypeId() == 310 ||is.getTypeId() == 311 ||is.getTypeId() == 312 ||is.getTypeId() == 313 || //DIAMOND
-				is.getTypeId() == 314 || is.getTypeId() == 315 || is.getTypeId() == 316 || is.getTypeId() == 317; //GOLD
+				is.getTypeId() == 314 || is.getTypeId() == 315 || is.getTypeId() == 316 || is.getTypeId() == 317 || //GOLD
+				is.getTypeId() == 298 || is.getTypeId() == 299 || is.getTypeId() == 300 || is.getTypeId() == 301; //LEATHER
+	}
+	public static boolean isLeatherArmor(ItemStack is){
+		return is.getTypeId() == 298 || is.getTypeId() == 299 || is.getTypeId() == 300 || is.getTypeId() == 301;
 	}
 	public static boolean isGoldArmor(ItemStack is){
 		return is.getTypeId() == 314 || is.getTypeId() == 315 || is.getTypeId() == 316 || is.getTypeId() == 317;
@@ -379,7 +420,8 @@ public class Repair {
 				is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293 || //DIAMOND
 				is.getTypeId() == 283 || is.getTypeId() == 285 || is.getTypeId() == 286 || is.getTypeId() == 284 || is.getTypeId() == 294 || //GOLD
 				is.getTypeId() == 268 || is.getTypeId() == 269 || is.getTypeId() == 270 || is.getTypeId() == 271 || is.getTypeId() == 290 ||//WOOD
-				is.getTypeId() == 272 || is.getTypeId() == 273 || is.getTypeId() == 274 || is.getTypeId() == 275|| is.getTypeId() == 291;  //STONE
+				is.getTypeId() == 272 || is.getTypeId() == 273 || is.getTypeId() == 274 || is.getTypeId() == 275|| is.getTypeId() == 291 ||  //STONE
+				is.getTypeId() == 261; //BOW
 	}
 	public static boolean isStoneTools(ItemStack is){
 		return is.getTypeId() == 272 || is.getTypeId() == 273 || is.getTypeId() == 274 || is.getTypeId() == 275 || is.getTypeId() == 291;
@@ -395,6 +437,9 @@ public class Repair {
 	}
 	public static boolean isDiamondTools(ItemStack is){
 		return is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293;
+	}
+	public static boolean isBow(ItemStack is){
+		return is.getTypeId() == 261;
 	}
 	public static void removeItem(Player player, int typeid)
 	{
@@ -422,7 +467,7 @@ public class Repair {
 		}
 		return false;
 	}
-	public static short repairCalculate(Player player, short durability, short ramt){
+	public static short repairCalculate(Player player, short durability, int ramt){
 		PlayerProfile PP = Users.getProfile(player);
 		float bonus = (PP.getSkillLevel(SkillType.REPAIR) / 500);
 		bonus = (ramt * bonus);
@@ -438,7 +483,7 @@ public class Repair {
 	}
 	public static short getRepairAmount(ItemStack is, Player player){
 		short durability = is.getDurability();
-		short ramt = 0;
+		int ramt = 0;
 		switch(is.getTypeId())
 		{
 		/*
@@ -448,6 +493,11 @@ public class Repair {
 		//SHEARS
 		case 359:
 			ramt = Material.SHEARS.getMaxDurability() / 2;
+			break;
+			
+		//BOW
+		case 261:
+			ramt = Material.BOW.getMaxDurability() / 3;
 			break;
 			
 		/* WOOD TOOLS */
@@ -624,6 +674,25 @@ public class Repair {
 		case 317:
 			ramt = Material.GOLD_BOOTS.getMaxDurability() / 4;
 			break;			
+		
+		/* LEATHER ARMOR */
+		
+		//LEATHER HELMET
+		case 298:
+			ramt = Material.LEATHER_HELMET.getMaxDurability() / 5;
+			break;
+		//LEATHER CHESTPLATE
+		case 299:
+			ramt = Material.LEATHER_CHESTPLATE.getMaxDurability() / 8;
+			break;
+		//LEATHER LEGGINGS
+		case 300:
+			ramt = Material.LEATHER_LEGGINGS.getMaxDurability() / 7;
+			break;
+		//LEATHER BOOTS
+		case 301:
+			ramt = Material.LEATHER_BOOTS.getMaxDurability() / 4;
+			break;			
 		}
 		
 		return repairCalculate(player, durability, ramt);
@@ -652,6 +721,10 @@ public class Repair {
 			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GRAY+ nIron);
 		} else if (isGoldArmor(is) && !hasItem(player, rGold)){
 			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GOLD+ nGold);
+		} else if (isLeatherArmor(is) && !hasItem(player, rLeather)){
+			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.YELLOW+ nLeather);
+		} else if (isBow(is) && !hasItem(player, rString)){
+			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.YELLOW+ nString);
 		} else if (is.getAmount() > 1)
 			player.sendMessage(mcLocale.getString("Skills.StackedItems"));
 	}

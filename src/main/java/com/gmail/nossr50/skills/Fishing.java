@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*
+import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
@@ -703,7 +703,7 @@ public class Fishing {
 				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.LEATHER, 1));
 			}
 			else{
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_BEEF, 1));)
+				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_BEEF, 1));
 			}
 		}
 		
@@ -737,7 +737,7 @@ public class Fishing {
 					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.LEATHER, 1));
 				}
 				else{
-					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_BEEF, 1));)
+					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_BEEF, 1));
 				}
 			}
 			else{
@@ -748,7 +748,7 @@ public class Fishing {
 		
 		else if(le instanceof Squid)
 		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)0)));
+			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)0));
 		}
 		
 		else if(le instanceof Snowman){
