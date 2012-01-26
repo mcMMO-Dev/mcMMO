@@ -32,7 +32,7 @@ public class LoadProperties
 	
 	public static String xplock, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp,
 	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
-	nStone, nIron, nGold, nDiamond, locale;
+	nStone, nIron, nGold, nDiamond, locale, nString, nLeather;
 	
 	public static int mfishing, mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y, mstring, mbucket, mweb,
 	chimaeraId, msandstone, mcocoa, water_thunder, cure_self, cure_other, mslimeballs, mbones, msulphur, mslowsand,
@@ -40,7 +40,7 @@ public class LoadProperties
 	msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport,
 	xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown,
 	berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss,
-	feathersConsumedByChimaeraWing, bonesConsumedByCOTW, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond;
+	feathersConsumedByChimaeraWing, bonesConsumedByCOTW, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond, rString, rLeather;
 	
 	public static double xpbackground_r, xpbackground_g, xpbackground_b, xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g, fishing_b, acrobatics_r, acrobatics_g, acrobatics_b, archery_r, archery_g, archery_b, axes_r, axes_g, axes_b,
 	excavation_r, excavation_g, excavation_b, herbalism_r, herbalism_g, herbalism_b, mining_r, mining_g, mining_b,
@@ -342,6 +342,10 @@ public class LoadProperties
 	    	write("Skills.Repair.Diamond.Level_Required", 50);
 	    	write("Skills.Repair.Iron.ID", 265);
 	    	write("Skills.Repair.Iron.Name", "Iron Bars");
+		write("Skills.Repair.String.ID", 287);
+	        write("Skills.Repair.String.Name", "String");
+	        write("Skills.Repair.Leather.ID", 334);
+	        write("Skills.Repair.String.Name", "Leather")
 	    	write("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
 	    	write("Skills.Excavation.Requires_Shovel", true);
 	    	write("Skills.Mining.Requires_Pickaxe", true);
@@ -540,7 +544,11 @@ public class LoadProperties
 	        rDiamond =   readInteger("Skills.Repair.Diamond.ID", 264);
 	        nDiamond =  readString("Skills.Repair.Diamond.Name", "Diamond");          
 	        rIron =   readInteger("Skills.Repair.Iron.ID", 265);
-	        nIron =  readString("Skills.Repair.Iron.Name", "Iron Bars");  
+	        nIron =  readString("Skills.Repair.Iron.Name", "Iron Bars");
+	        rString = readInteger("Skills.Repair.String.ID", 287);
+	        nString = readString("Skills.Repair.String.Name", "String");
+	        rLeather = readInteger("Skills.Repair.Leather.ID", 334);
+	        nLeather = readString("Skills.Repair.String.Name", "Leather");
 
 	    	cocoabeans = readBoolean("Excavation.Drops.Cocoa_Beans", true);
 	    	mushrooms = readBoolean("Excavation.Drops.Mushrooms", true);
