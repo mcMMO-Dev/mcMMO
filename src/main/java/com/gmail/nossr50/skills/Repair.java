@@ -249,7 +249,26 @@ public class Repair {
 						//CLANG CLANG
 						if(LoadProperties.spoutEnabled)
 							SpoutStuff.playRepairNoise(player);
-					} 
+					}
+					
+					//BOW
+					else if(isBow(is) && hasItem(player, rString)){
+						removeItem(player, rString);
+						repairItem(player, enchants, enchantsLevel);
+
+						durabilityAfter = player.getItemInHand().getDurability();
+						dif = (short) (durabilityBefore - durabilityAfter);
+						
+						//STRING NERF
+						dif = (short) (dif / 2);
+						
+						PP.addXP(SkillType.REPAIR, dif*10, player);
+
+						
+						//CLANG CLANG
+						if(LoadProperties.spoutEnabled)
+							SpoutStuff.playRepairNoise(player);
+					}
 
 					//UNABLE TO REPAIR
 					else {
@@ -401,7 +420,8 @@ public class Repair {
 				is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293 || //DIAMOND
 				is.getTypeId() == 283 || is.getTypeId() == 285 || is.getTypeId() == 286 || is.getTypeId() == 284 || is.getTypeId() == 294 || //GOLD
 				is.getTypeId() == 268 || is.getTypeId() == 269 || is.getTypeId() == 270 || is.getTypeId() == 271 || is.getTypeId() == 290 ||//WOOD
-				is.getTypeId() == 272 || is.getTypeId() == 273 || is.getTypeId() == 274 || is.getTypeId() == 275|| is.getTypeId() == 291;  //STONE
+				is.getTypeId() == 272 || is.getTypeId() == 273 || is.getTypeId() == 274 || is.getTypeId() == 275|| is.getTypeId() == 291 ||  //STONE
+				is.getTypeId() == 261; //BOW
 	}
 	public static boolean isStoneTools(ItemStack is){
 		return is.getTypeId() == 272 || is.getTypeId() == 273 || is.getTypeId() == 274 || is.getTypeId() == 275 || is.getTypeId() == 291;
@@ -417,6 +437,9 @@ public class Repair {
 	}
 	public static boolean isDiamondTools(ItemStack is){
 		return is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293;
+	}
+	public static boolean isBow(ItemStack is){
+		return is.getTypeId() == 261;
 	}
 	public static void removeItem(Player player, int typeid)
 	{
@@ -470,6 +493,11 @@ public class Repair {
 		//SHEARS
 		case 359:
 			ramt = Material.SHEARS.getMaxDurability() / 2;
+			break;
+			
+		//BOW
+		case 261:
+			ramt = Material.BOW.getMaxDurability() / 3;
 			break;
 			
 		/* WOOD TOOLS */
@@ -646,6 +674,25 @@ public class Repair {
 		case 317:
 			ramt = Material.GOLD_BOOTS.getMaxDurability() / 4;
 			break;			
+		
+		/* LEATHER ARMOR */
+		
+		//LEATHER HELMET
+		case 298:
+			ramt = Material.LEATHER_HELMET.getMaxDurability() / 5;
+			break;
+		//LEATHER CHESTPLATE
+		case 299:
+			ramt = Material.LEATHER_CHESTPLATE.getMaxDurability() / 8;
+			break;
+		//LEATHER LEGGINGS
+		case 300:
+			ramt = Material.LEATHER_LEGGINGS.getMaxDurability() / 7;
+			break;
+		//LEATHER BOOTS
+		case 301:
+			ramt = Material.LEATHER_BOOTS.getMaxDurability() / 4;
+			break;			
 		}
 		
 		return repairCalculate(player, durability, ramt);
@@ -676,6 +723,8 @@ public class Repair {
 			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GOLD+ nGold);
 		} else if (isLeatherArmor(is) && !hasItem(player, rLeather)){
 			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.YELLOW+ nLeather);
+		} else if (isBow(is) && !hasItem(player, rString)){
+			player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.YELLOW+ nString);
 		} else if (is.getAmount() > 1)
 			player.sendMessage(mcLocale.getString("Skills.StackedItems"));
 	}
