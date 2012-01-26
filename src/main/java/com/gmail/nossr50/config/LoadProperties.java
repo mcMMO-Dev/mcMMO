@@ -345,7 +345,7 @@ public class LoadProperties
 		write("Skills.Repair.String.ID", 287);
 	        write("Skills.Repair.String.Name", "String");
 	        write("Skills.Repair.Leather.ID", 334);
-	        write("Skills.Repair.String.Name", "Leather")
+	        write("Skills.Repair.String.Name", "Leather");
 	    	write("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
 	    	write("Skills.Excavation.Requires_Shovel", true);
 	    	write("Skills.Mining.Requires_Pickaxe", true);
