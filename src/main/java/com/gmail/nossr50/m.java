@@ -178,10 +178,10 @@ public class m
 	{
 		int id = item.getTypeId();
 		if(tier == 1){
-			if((id == 276 || id == 277 || id == 278 || id == 279 || id == 293)){
-				return 33;
+			if((id == 283 || id == 284 || id == 285 || id == 286 || id == 294)){
+				return 33; //GOLD
 			} else {
-				return 60;
+				return 60; //WOOD
 			}
 		} else if (tier == 2){
 			return 132;
