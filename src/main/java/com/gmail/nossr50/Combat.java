@@ -108,7 +108,7 @@ public class Combat
 				      			if(hpLeft < event.getDamage())
 				      				xpinc = hpLeft;
 				      			else
-				      				xpinc = event.getDamage;
+				      				xpinc = event.getDamage();
 				      			
 			    				int xp = (int) (xpinc * 2 * LoadProperties.pvpxprewardmodifier);
 			    				
