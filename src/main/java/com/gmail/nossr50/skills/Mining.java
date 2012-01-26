@@ -394,7 +394,7 @@ public class Mining
     		block.setType(Material.AIR);
     	}
     	//REDSTONE
-    	if((block.getTypeId() == 73 || block.getTypeId() == 74) && m.getTier(player) >= 4)
+    	if((block.getTypeId() == 73 || block.getTypeId() == 74) && m.getTier(player) >= 3)
     	{
     		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5)
     		{
