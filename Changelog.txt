@@ -2,6 +2,8 @@ Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 
 Version 1.2.08
+ - Changed Bukkit events to new event system
+ - Changed aliasing to send both the mcmmo command and the command used.
  - Changes in combat exp (Pull Request #49)
  - Repair for bows & leather armor (Pull Request #46)
  - Fixed missing images (Pull Request #45)
