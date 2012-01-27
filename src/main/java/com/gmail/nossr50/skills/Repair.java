@@ -315,44 +315,53 @@ public class Repair {
 
 		if(rank == 0)
 		{
-			player.sendMessage(mcLocale.getString("Repair.LostEnchants"));
-			for(Enchantment x : enchants)
+			if(LoadProperties.mayLoseEnchants())
 			{
-				is.removeEnchantment(x);
+				player.sendMessage(mcLocale.getString("Repair.LostEnchants"));
+				for(Enchantment x : enchants)
+				{
+					is.removeEnchantment(x);
+				}
 			}
 			return;
 		}
 
 		boolean failure = false, downgrade = false;
 
-		for(Enchantment x : enchants)
+		if(LoadProperties.mayLoseEnchants())
 		{
-			//Remove enchant
-			is.removeEnchantment(x);
-
-			if(x.canEnchantItem(is))
+			for(Enchantment x : enchants)
 			{
-				if(Math.random() * 100 <= getEnchantChance(rank))
+				//Remove enchant
+				is.removeEnchantment(x);
+	
+				if(x.canEnchantItem(is))
 				{
-					if(enchantsLvl[pos] > 1)
+					if(Math.random() * 100 <= getEnchantChance(rank))
 					{
-						if(Math.random() * 100 <= getDowngradeChance(rank))
+						if(enchantsLvl[pos] > 1)
 						{
-							is.addEnchantment(x, enchantsLvl[pos]-1);
-							downgrade = true;
-						} else
-						{
+							if(LoadProperties.mayDowngradeEnchants())
+							{
+								if(Math.random() * 100 <= getDowngradeChance(rank))
+								{
+									is.addEnchantment(x, enchantsLvl[pos]-1);
+									downgrade = true;
+								} else
+								{
+									is.addEnchantment(x, enchantsLvl[pos]);
+								}
+							}
+						}
+						else {
 							is.addEnchantment(x, enchantsLvl[pos]);
 						}
+					} else {
+						failure = true;	
 					}
-					else {
-						is.addEnchantment(x, enchantsLvl[pos]);
-					}
-				} else {
-					failure = true;	
 				}
+				pos++;
 			}
-			pos++;
 		}
 
 		if(failure == false && downgrade == false)
@@ -369,13 +378,13 @@ public class Repair {
 		switch(rank)
 		{
 		case 4:
-			return 40;
+			return LoadProperties.keepEnchantsRank4;
 		case 3:
-			return 30;
+			return LoadProperties.keepEnchantsRank3;
 		case 2:
-			return 20;
+			return LoadProperties.keepEnchantsRank2;
 		case 1:
-			return 10;
+			return LoadProperties.keepEnchantsRank1;
 		default:
 			return 0;
 		}
@@ -385,13 +394,13 @@ public class Repair {
 		switch(rank)
 		{
 		case 4:
-			return 15;
+			return LoadProperties.downgradeRank4;
 		case 3:
-			return 25;
+			return LoadProperties.downgradeRank3;
 		case 2:
-			return 50;
+			return LoadProperties.downgradeRank2;
 		case 1:
-			return 75;
+			return LoadProperties.downgradeRank1;
 		default:
 			return 100;
 		}
