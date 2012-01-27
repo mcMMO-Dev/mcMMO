@@ -28,7 +28,7 @@ public class LoadProperties
 	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
 	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, mushrooms, 
 	toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, excavationRequiresShovel, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, 
-	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages;
+	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages, mayDowngradeEnchants, mayLoseEnchants;
 	
 	public static String xplock, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp,
 	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
@@ -40,7 +40,8 @@ public class LoadProperties
 	msugar, mpumpkin, mwheat, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, MySQLport,
 	xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown,
 	berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss,
-	feathersConsumedByChimaeraWing, bonesConsumedByCOTW, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond, rString, rLeather;
+	feathersConsumedByChimaeraWing, bonesConsumedByCOTW, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond, rString, rLeather,
+	downgradeRank1, downgradeRank2, downgradeRank3, downgradeRank4, keepEnchantsRank1, keepEnchantsRank2, keepEnchantsRank3, keepEnchantsRank4;
 	
 	public static double xpbackground_r, xpbackground_g, xpbackground_b, xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g, fishing_b, acrobatics_r, acrobatics_g, acrobatics_b, archery_r, archery_g, archery_b, axes_r, axes_g, axes_b,
 	excavation_r, excavation_g, excavation_b, herbalism_r, herbalism_g, herbalism_b, mining_r, mining_g, mining_b,
@@ -221,7 +222,7 @@ public class LoadProperties
 	    	write("Experience.Mining.Diamond", 750);
 	    	write("Experience.Mining.Iron", 250);
 	    	write("Experience.Mining.Redstone", 150);
-	    	write("Experience.Mining.lapis", 400);
+	    	write("Experience.Mining.Lapis", 400);
 	    	write("Experience.Mining.Obsidian", 150);
 	    	write("Experience.Mining.Netherrack", 30);
 	    	write("Experience.Mining.Glowstone", 30);
@@ -352,6 +353,16 @@ public class LoadProperties
 	    	write("Skills.Woodcutting.Requires_Axe", true);
 	    	write("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
 	    	
+		write("Arcane_Forging.Downgrades.Enabled", true);
+	        write("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
+	        write("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
+	        write("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
+	        write("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
+	        write("Arcane_Forging.May_Lose_Enchants.Enabled", true);
+	    	write("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
+	        write("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
+	        write("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
+	        write("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
 	    	loadkeys();
 	    }
 	    private void loadkeys()
@@ -550,6 +561,17 @@ public class LoadProperties
 	        rLeather = readInteger("Skills.Repair.Leather.ID", 334);
 	        nLeather = readString("Skills.Repair.String.Name", "Leather");
 
+		mayDowngradeEnchants = readBoolean("Arcane_Forging.Downgrades.Enabled", true);
+	        downgradeRank1 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
+	        downgradeRank2 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
+	        downgradeRank3 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
+	        downgradeRank4 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
+	        mayLoseEnchants = readBoolean("Arcane_Forging.May_Lose_Enchants.Enabled", true);
+	    	keepEnchantsRank1 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
+	        keepEnchantsRank2 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
+	        keepEnchantsRank3 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
+	        keepEnchantsRank4 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
+	        
 	    	cocoabeans = readBoolean("Excavation.Drops.Cocoa_Beans", true);
 	    	mushrooms = readBoolean("Excavation.Drops.Mushrooms", true);
 	    	glowstone = readBoolean("Excavation.Drops.Glowstone", true);
