@@ -469,9 +469,9 @@ public class Repair {
 	}
 	public static short repairCalculate(Player player, short durability, int ramt){
 		PlayerProfile PP = Users.getProfile(player);
-		float bonus = (PP.getSkillLevel(SkillType.REPAIR) / 500);
+		float bonus = (float)(PP.getSkillLevel(SkillType.REPAIR)) / 500;
 		bonus = (ramt * bonus);
-		ramt = ramt+=bonus;
+		ramt+=bonus;
 		if(checkPlayerProcRepair(player)){
 			ramt = (short) (ramt * 2);
 		}

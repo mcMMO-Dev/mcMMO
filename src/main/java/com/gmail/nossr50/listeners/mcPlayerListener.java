@@ -32,6 +32,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -39,7 +42,6 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -64,7 +66,7 @@ import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
 
 
-public class mcPlayerListener extends PlayerListener 
+public class mcPlayerListener implements Listener 
 {
 	protected static final Logger log = Logger.getLogger("Minecraft"); //$NON-NLS-1$
 	public Location spawn = null;
@@ -74,7 +76,8 @@ public class mcPlayerListener extends PlayerListener
 	{
 		plugin = instance;
 	}
-	
+
+	@EventHandler
 	public void onPlayerFish(PlayerFishEvent event) 
 	{
 		if(mcPermissions.getInstance().fishing(event.getPlayer()))
@@ -94,15 +97,17 @@ public class mcPlayerListener extends PlayerListener
 			}
 		}
 	}
-	
-	 public void onPlayerPickupItem(PlayerPickupItemEvent event) 
-	 {
-		 if(Users.getProfile(event.getPlayer()).getBerserkMode())
-		 {
-			 event.setCancelled(true);
-		 }
-	 }
 
+	@EventHandler
+	public void onPlayerPickupItem(PlayerPickupItemEvent event) 
+	{
+		if(Users.getProfile(event.getPlayer()).getBerserkMode())
+		{
+			 event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) 
 	{
 		
@@ -126,11 +131,13 @@ public class mcPlayerListener extends PlayerListener
 		}
 	}
 	
+	@EventHandler
 	public void onPlayerLogin(PlayerLoginEvent event) 
 	{
 		Users.addUser(event.getPlayer());
 	}
 
+	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) 
 	{
 		
@@ -151,6 +158,7 @@ public class mcPlayerListener extends PlayerListener
 		Users.removeUser(event.getPlayer());
 	}
 
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) 
 	{
 		Player player = event.getPlayer();
@@ -164,6 +172,7 @@ public class mcPlayerListener extends PlayerListener
 			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
 	}
 
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) 
 	{
 		Player player = event.getPlayer();
@@ -298,6 +307,7 @@ public class mcPlayerListener extends PlayerListener
 		}
 	}
 
+	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerChat(PlayerChatEvent event) 
 	{
 		Player player = event.getPlayer();
@@ -333,14 +343,17 @@ public class mcPlayerListener extends PlayerListener
 			}
 		}
 	}
-	
+
+	// Dynamically aliasing commands need to be re-done.
+	// For now, using a command with an alias will send both the original command, and the mcMMO command
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		String message = event.getMessage();
 		if(!message.startsWith("/")) return;
 		String command = message.substring(1).split(" ")[0];
 		if(plugin.aliasMap.containsKey(command)) {
 			if(command.equalsIgnoreCase(plugin.aliasMap.get(command))) return;
-			event.setCancelled(true);
+			//event.setCancelled(true);
 			event.getPlayer().chat(message.replaceFirst(command, plugin.aliasMap.get(command)));
 		}
 	}
