@@ -28,7 +28,7 @@ public class LoadProperties
 	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
 	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, mushrooms, 
 	toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, excavationRequiresShovel, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, 
-	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages, downgradesEnabled, keepEnchantsEnabled;
+	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages, mayDowngradeEnchants, mayLoseEnchants;
 	
 	public static String xplock, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp,
 	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
@@ -358,7 +358,7 @@ public class LoadProperties
 	        write("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
 	        write("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
 	        write("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
-	        write("Arcane_Forging.Keep_Enchants.Enabled", true);
+	        write("Arcane_Forging.May_Lose_Enchants.Enabled", true);
 	    	write("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
 	        write("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
 	        write("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
@@ -561,12 +561,12 @@ public class LoadProperties
 	        rLeather = readInteger("Skills.Repair.Leather.ID", 334);
 	        nLeather = readString("Skills.Repair.String.Name", "Leather");
 
-		downgradesEnabled = readBoolean("Arcane_Forging.Downgrades.Enabled", true);
+		mayDowngradeEnchants = readBoolean("Arcane_Forging.Downgrades.Enabled", true);
 	        downgradeRank1 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
 	        downgradeRank2 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
 	        downgradeRank3 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
 	        downgradeRank4 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
-	        keepEnchantsEnabled = readBoolean("Arcane_Forging.Keep_Enchants.Enabled", true);
+	        mayLoseEnchants = readBoolean("Arcane_Forging.May_Lose_Enchants.Enabled", true);
 	    	keepEnchantsRank1 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
 	        keepEnchantsRank2 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
 	        keepEnchantsRank3 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
