@@ -18,6 +18,7 @@ package com.gmail.nossr50.skills;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -35,6 +36,7 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.mcLocale;
 
 
@@ -326,6 +328,9 @@ public class Skills
 				skillups++;
 				PP.removeXP(skillType, PP.getXpToLevel(skillType));
 				PP.skillUp(skillType, 1);
+				
+				McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
+				Bukkit.getPluginManager().callEvent(eventToFire);
 			}
 			
 			if(!LoadProperties.useMySQL)
