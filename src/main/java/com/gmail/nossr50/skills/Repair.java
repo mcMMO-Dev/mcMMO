@@ -192,7 +192,7 @@ public class Repair {
 						removeItem(player, rIron);
 						repairItem(player, enchants, enchantsLevel);
 
-						durabilityAfter = (short) (player.getItemInHand().getDurability()-getRepairAmount(is, player));
+						durabilityAfter = (short) (player.getItemInHand().getDurability();
 						dif = (short) (durabilityBefore - durabilityAfter);
 						if(m.isShovel(is))
 							dif = (short) (dif / 3);
