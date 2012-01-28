@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
+import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -671,7 +672,7 @@ public class Fishing {
 		if(le instanceof Player)
 			return;
 		
-		le.damage(1);
+		Combat.dealDamage(le, 1, event.getPlayer());
 		World world = le.getWorld();
 
 		/* Neutral Mobs */
