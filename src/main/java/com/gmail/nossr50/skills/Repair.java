@@ -315,7 +315,7 @@ public class Repair {
 
 		if(rank == 0)
 		{
-			if(LoadProperties.mayLoseEnchants())
+			if(LoadProperties.mayLoseEnchants)
 			{
 				player.sendMessage(mcLocale.getString("Repair.LostEnchants"));
 				for(Enchantment x : enchants)
@@ -328,7 +328,7 @@ public class Repair {
 
 		boolean failure = false, downgrade = false;
 
-		if(LoadProperties.mayLoseEnchants())
+		if(LoadProperties.mayLoseEnchants)
 		{
 			for(Enchantment x : enchants)
 			{
@@ -341,7 +341,7 @@ public class Repair {
 					{
 						if(enchantsLvl[pos] > 1)
 						{
-							if(LoadProperties.mayDowngradeEnchants())
+							if(LoadProperties.mayDowngradeEnchants)
 							{
 								if(Math.random() * 100 <= getDowngradeChance(rank))
 								{
