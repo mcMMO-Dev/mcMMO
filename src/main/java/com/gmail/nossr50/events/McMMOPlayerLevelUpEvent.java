@@ -43,13 +43,13 @@ public class McMMOPlayerLevelUpEvent extends Event {
 	}
 	
 	/** Rest of file is required boilerplate for custom events **/
-	private static final HandlerList handers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 	
 	public HandlerList getHandlers() {
-		return handers;
+		return handlers;
 	}
 	
 	public static HandlerList getHandlerList() {
-		return handers;
+		return handlers;
 	}
 }
