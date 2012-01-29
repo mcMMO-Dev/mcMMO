@@ -37,6 +37,7 @@ public class mcTimer implements Runnable
     
 	public void run() 
 	{
+		long curTime = System.currentTimeMillis();
 		for(Player player : plugin.getServer().getOnlinePlayers())
 		{
 			if(player == null)
@@ -49,12 +50,12 @@ public class mcTimer implements Runnable
 			/*
 			 * MONITOR SKILLS
 			 */
-			Skills.monitorSkills(player);
+			Skills.monitorSkills(player, PP, curTime);
 			
 			/*
 			 * COOLDOWN MONITORING
 			 */
-			Skills.watchCooldowns(player);
+			Skills.watchCooldowns(player, PP, curTime);
 			
 			/*
 			 * PLAYER BLEED MONITORING
