@@ -226,7 +226,7 @@ public class mcBlockListener implements Listener
     					ItemStack item = new ItemStack(mat, 1, (byte)0, type);
     					if(blockx.getTypeId() == 17)
     					{
-    						blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
+    						m.mcDropItem(blockx.getLocation(), item);
     						//XP WOODCUTTING
     						if(!plugin.misc.blockWatchList.contains(block))
     						{
@@ -241,7 +241,7 @@ public class mcBlockListener implements Listener
     						item = new ItemStack(mat, 1, (short)0, blockx.getData());
     						
     						if(Math.random() * 10 > 9)
-    							blockx.getLocation().getWorld().dropItemNaturally(blockx.getLocation(), item);
+    							m.mcDropItem(blockx.getLocation(), item);
     					}
     					if(blockx.getType() != Material.AIR)
     						player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
@@ -353,13 +353,13 @@ public class mcBlockListener implements Listener
 			
 			if(item.getType() == Material.CLAY_BALL)
 			{
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
 			} else
 			{
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
 			}
 			
 			//Spout stuff
@@ -392,13 +392,13 @@ public class mcBlockListener implements Listener
 			
 			if(item.getType() == Material.CLAY_BALL)
 			{
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
 			} else
 			{
-				block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+				m.mcDropItem(block.getLocation(), item);
 			}
 			
 			if(LoadProperties.spoutEnabled)
@@ -431,7 +431,7 @@ public class mcBlockListener implements Listener
     		if(Math.random() * 10 > 9)
     		{
     			ItemStack x = new ItemStack(Material.SAPLING, 1, (short)0, block.getData());
-    			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), x);
+    			m.mcDropItem(block.getLocation(), x);
     		}
     		block.setType(Material.AIR);
     		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());

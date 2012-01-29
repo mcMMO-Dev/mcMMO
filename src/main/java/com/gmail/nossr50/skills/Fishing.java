@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -11,6 +11,7 @@ import org.bukkit.material.Wool;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -61,7 +62,7 @@ public class Fishing {
 			getFishingResultsTier5(player, event);
 			break;
 		}
-		player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.RAW_FISH, 1));
+		m.mcDropItem(player.getLocation(), new ItemStack(Material.RAW_FISH, 1));
 		Users.getProfile(player).addXP(SkillType.FISHING, LoadProperties.mfishing, player);
 		Skills.XpCheckSkill(SkillType.FISHING, player);
 	}
@@ -673,7 +674,7 @@ public class Fishing {
 			return;
 		
 		Combat.dealDamage(le, 1, event.getPlayer());
-		World world = le.getWorld();
+		Location loc = le.getLocation();
 
 		/* Neutral Mobs */
 		if(le instanceof Sheep)
@@ -685,26 +686,26 @@ public class Fishing {
 				wool.setColor(sheep.getColor());
 				ItemStack theWool = wool.toItemStack();
 				theWool.setAmount((int)(Math.random() * 6));
-				world.dropItemNaturally(le.getLocation(), theWool);
+				m.mcDropItem(loc, theWool);
 				sheep.setSheared(true);
 			}
 		} 
 		
 		else if(le instanceof Pig)
 		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.PORK, 1));
+			m.mcDropItem(loc, new ItemStack(Material.PORK, 1));
 		} 
 		
 		else if(le instanceof Cow)
 		{
 			if(Math.random() * 100 < 99){
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
+				m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
 			}
 			else if(Math.random() * 10 < 5){
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.LEATHER, 1));
+				m.mcDropItem(loc, new ItemStack(Material.LEATHER, 1));
 			}
 			else{
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_BEEF, 1));
+				m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF, 1));
 			}
 		}
 		
@@ -712,14 +713,14 @@ public class Fishing {
 		{
 			if(Math.random() * 10 <= 7){
 				if(Math.random() * 10 < 5){
-					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.FEATHER, 1));
+					m.mcDropItem(loc, new ItemStack(Material.FEATHER, 1));
 				}
 				else{
-					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_CHICKEN, 1));
+					m.mcDropItem(loc, new ItemStack(Material.RAW_CHICKEN, 1));
 				}
 			}
 			else{
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.EGG, 1));
+				m.mcDropItem(loc, new ItemStack(Material.EGG, 1));
 			}
 		}
 		
@@ -727,37 +728,37 @@ public class Fishing {
 		{
 			if(Math.random() * 100 < 99){
 				if(Math.random() * 10 < 5){
-					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
+					m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
 				}
 				else{
-					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.MUSHROOM_SOUP, 1)); //rare chance to drop soup
+					m.mcDropItem(loc, new ItemStack(Material.MUSHROOM_SOUP, 1)); //rare chance to drop soup
 				}
 			}
 			else if(Math.random() * 10 <= 7){
 				if(Math.random() * 10 < 5){
-					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.LEATHER, 1));
+					m.mcDropItem(loc, new ItemStack(Material.LEATHER, 1));
 				}
 				else{
-					world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RAW_BEEF, 1));
+					m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF, 1));
 				}
 			}
 			else{
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.RED_MUSHROOM, 3));
+				m.mcDropItem(loc, new ItemStack(Material.RED_MUSHROOM, 3));
 				//need some way to remove MushroomCow & replace with regular cow when sheared
 			}
 		}
 		
 		else if(le instanceof Squid)
 		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)0));
+			m.mcDropItem(loc, new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)0));
 		}
 		
 		else if(le instanceof Snowman){
 			if(Math.random() * 100 < 99){
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.PUMPKIN, 1)); //rare chance to drop pumpkin
+				m.mcDropItem(loc, new ItemStack(Material.PUMPKIN, 1)); //rare chance to drop pumpkin
 			}
 			else{
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SNOW_BALL, 5));
+				m.mcDropItem(loc, new ItemStack(Material.SNOW_BALL, 5));
 			}
 		}
 		
@@ -765,71 +766,71 @@ public class Fishing {
 		else if(le instanceof Skeleton)
 		{
 			if(Math.random() * 10 < 5)
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.BONE, 1));
+				m.mcDropItem(loc, new ItemStack(Material.BONE, 1));
 			else
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.ARROW, 3));
+				m.mcDropItem(loc, new ItemStack(Material.ARROW, 3));
 		} 
 		
 		else if(le instanceof Spider)
 		{
 			if(Math.random() * 10 < 5)
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SPIDER_EYE, 1));
+				m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
 			else
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.STRING, 1));
+				m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
 		} 
 		
 		else if(le instanceof Creeper)
 		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SULPHUR, 1));
+			m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
 		}
 		
 		else if(le instanceof Enderman)
 		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.ENDER_PEARL, 1));
+			m.mcDropItem(loc, new ItemStack(Material.ENDER_PEARL, 1));
 		}
 		
 		else if(le instanceof PigZombie)
 		{
 			if(Math.random() * 10 < 5)
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
+				m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH, 1));
 			else
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.GOLD_NUGGET, 1));
+				m.mcDropItem(loc, new ItemStack(Material.GOLD_NUGGET, 1));
 		}
 		
 		else if(le instanceof Blaze)
 		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.BLAZE_ROD, 1));
+			m.mcDropItem(loc, new ItemStack(Material.BLAZE_ROD, 1));
 		}
 		
 		else if(le instanceof CaveSpider)
 		{
 			if(Math.random() * 10 < 5)
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SPIDER_EYE, 1));
+				m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
 			else
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.STRING, 1));
+				m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
 		}
 		
 		else if(le instanceof Ghast)
 		{
 			if(Math.random() * 10 < 5)
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SULPHUR, 1));
+				m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
 			else
-				world.dropItemNaturally(le.getLocation(), new ItemStack(Material.GHAST_TEAR, 1));
+				m.mcDropItem(loc, new ItemStack(Material.GHAST_TEAR, 1));
 		}
 		
 		else if(le instanceof MagmaCube)
 		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.MAGMA_CREAM, 1));
+			m.mcDropItem(loc, new ItemStack(Material.MAGMA_CREAM, 1));
 		}
 		
 		else if(le instanceof Slime)
 		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.SLIME_BALL, 1));
+			m.mcDropItem(loc, new ItemStack(Material.SLIME_BALL, 1));
 		}
 		
 		else if(le instanceof Zombie)
 		{
-			world.dropItemNaturally(le.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
+			m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH, 1));
 		}
 	}
 }

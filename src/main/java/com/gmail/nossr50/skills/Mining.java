@@ -84,50 +84,50 @@ public class Mining
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
 		if(block.getTypeId() != 89 && block.getTypeId() != 73 && block.getTypeId() != 74 && block.getTypeId() != 56 
 				&& block.getTypeId() != 21 && block.getTypeId() != 1 && block.getTypeId() != 16)
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 		if(block.getTypeId() == 89)
 		{
 			mat = Material.getMaterial(348);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 		}
 		if(block.getTypeId() == 73 || block.getTypeId() == 74)
 		{
 			mat = Material.getMaterial(331);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
 			if(Math.random() * 10 > 5){
-				loc.getWorld().dropItemNaturally(loc, item);
+				m.mcDropItem(loc, item);
 			}
 		}
 		if(block.getTypeId() == 21)
 		{
 			mat = Material.getMaterial(351);
 			item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
 		}
 		if(block.getTypeId() == 56)
 		{
 			mat = Material.getMaterial(264);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 		}
 		if(block.getTypeId() == 1)
 		{
 			mat = Material.getMaterial(4);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 		}
 		if(block.getTypeId() == 16)
 		{
 			mat = Material.getMaterial(263);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 		}
     }
     public static void blockProcCheck(Block block, Player player)
@@ -291,7 +291,7 @@ public class Mining
         		}
     		}
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -305,7 +305,7 @@ public class Mining
     		}
     		mat = Material.getMaterial(87);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -319,7 +319,7 @@ public class Mining
     		}
     		mat = Material.getMaterial(348);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -333,7 +333,7 @@ public class Mining
         		}
     		mat = Material.getMaterial(263);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -346,7 +346,7 @@ public class Mining
         		blockProcCheck(block, player);
         		}
     		item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -362,7 +362,7 @@ public class Mining
         	}
     		mat = Material.getMaterial(49);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -376,7 +376,7 @@ public class Mining
         	}
     		mat = Material.getMaterial(264);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -389,7 +389,7 @@ public class Mining
         		blockProcCheck(block, player);
         	}
     		item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -404,12 +404,12 @@ public class Mining
         	}
     		mat = Material.getMaterial(331);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
 			if(Math.random() * 10 > 5)
 			{
-				loc.getWorld().dropItemNaturally(loc, item);
+				m.mcDropItem(loc, item);
 			}
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -423,10 +423,10 @@ public class Mining
         	}
     		mat = Material.getMaterial(351);
 			item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
-			loc.getWorld().dropItemNaturally(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}

@@ -82,12 +82,12 @@ public class Herbalism
 			Location loc = block.getLocation();
 			ItemStack is = new ItemStack(mat, 1, (byte)0, (byte)0);
 			PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat, player);
-	    	loc.getWorld().dropItemNaturally(loc, is);
+			m.mcDropItem(loc, is);
 	    	
 	    	//DROP SOME SEEDS
 			mat = Material.SEEDS;
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-			loc.getWorld().dropItemNaturally(loc, is);
+			m.mcDropItem(loc, is);
 			
 	    	herbalismProcCheck(block, player, event, plugin);
 	    	herbalismProcCheck(block, player, event, plugin);
@@ -166,18 +166,18 @@ public class Herbalism
     		{
 	    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 	    		{
-	    			loc.getWorld().dropItemNaturally(loc, is);
+	    			m.mcDropItem(loc, is);
 	    		}
     		}
     		//GREEN THUMB
     		if(Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM))
     		{
     			event.setCancelled(true);
-    			loc.getWorld().dropItemNaturally(loc, is);
+    			m.mcDropItem(loc, is);
     			//DROP SOME SEEDS
     			mat = Material.SEEDS;
     			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-    			loc.getWorld().dropItemNaturally(loc, is);
+    			m.mcDropItem(loc, is);
     			
     			block.setData((byte) 0x1); //Change it to first stage
     			
@@ -233,7 +233,7 @@ public class Herbalism
 	    				{
 		    		    	if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 		    		    	{
-		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
+		    		    		m.mcDropItem(target.getLocation(), is);
 		    		    	}
 		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.mcactus, player);
 	    				}
@@ -272,7 +272,7 @@ public class Herbalism
 	    				{
 		    		    	if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 		    		    	{
-		    		    		loc.getWorld().dropItemNaturally(target.getLocation(), is);
+		    		    		m.mcDropItem(target.getLocation(), is);
 		    		    	}
 		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.msugar, player);
 	    				}
@@ -290,7 +290,7 @@ public class Herbalism
 	    		{
 		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 		    		{
-		    			loc.getWorld().dropItemNaturally(loc, is);
+		    			m.mcDropItem(loc, is);
 		    		}
 	    		}
 	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mpumpkin, player);
@@ -303,7 +303,7 @@ public class Herbalism
 				
 				if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 	    		{
-	    			loc.getWorld().dropItemNaturally(loc, is);
+					m.mcDropItem(loc, is);
 	    		}
 				PP.addXP(SkillType.HERBALISM, LoadProperties.mmelon, player);
 	    	}
@@ -316,7 +316,7 @@ public class Herbalism
 	    		{
 		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 		    		{
-		    			loc.getWorld().dropItemNaturally(loc, is);
+		    			m.mcDropItem(loc, is);
 		    		}
 	    		}
 	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mmushroom, player);
@@ -327,7 +327,7 @@ public class Herbalism
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
 		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
-		    			loc.getWorld().dropItemNaturally(loc, is);
+		    			m.mcDropItem(loc, is);
 		    		}
 	    		}
 	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mflower, player);

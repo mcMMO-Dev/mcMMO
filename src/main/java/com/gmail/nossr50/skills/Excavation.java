@@ -269,7 +269,7 @@ public class Excavation
     	for(ItemStack x : is)
     	{
     		if(x != null)
-    			loc.getWorld().dropItemNaturally(loc, x);
+    			m.mcDropItem(loc, x);
     	}
     	
     	//Handle XP related tasks

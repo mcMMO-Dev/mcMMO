@@ -48,7 +48,7 @@ public class WoodCutting
     		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.WOODCUTTING))
     		{
     			ItemStack item = new ItemStack(mat, 1, (short) 0, type);
-    			block.getWorld().dropItemNaturally(block.getLocation(), item);
+    			m.mcDropItem(block.getLocation(), item);
     		}
     	}
     }
