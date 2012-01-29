@@ -361,8 +361,7 @@ public class Combat
      * @param dmg Amount of damage to attempt to do
      */
     public static void dealDamage(LivingEntity target, int dmg){
-    	EntityDamageEvent ede = new EntityDamageEvent(target, EntityDamageEvent.DamageCause.CUSTOM, dmg);
-    	Bukkit.getPluginManager().callEvent(ede);
+    	dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM);
     }
     
     /**
@@ -375,6 +374,9 @@ public class Combat
     public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
     	EntityDamageEvent ede = new EntityDamageEvent(target, cause, dmg);
     	Bukkit.getPluginManager().callEvent(ede);
+    	if(ede.isCancelled()) return;
+    	
+    	target.damage(ede.getDamage());
     }
     
     /**
@@ -387,6 +389,8 @@ public class Combat
     public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
     	EntityDamageEvent ede = new EntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
     	Bukkit.getPluginManager().callEvent(ede);
+    	
+    	target.damage(ede.getDamage());
     }
     
     public static boolean pvpAllowed(EntityDamageByEntityEvent event, World world)
