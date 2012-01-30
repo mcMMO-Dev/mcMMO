@@ -7,7 +7,8 @@ Version 1.2.09-dev
  - Changed timer to be a bit more efficient (Issue #19)
  - Changed to fire EntityDamageEvents for all damage done by mcMMO
  - New custom event for developers McMMOPlayerLevelUpEvent
- - New custmo event for developers McMMOItemSpawnEvent
+ - New custom event for developers McMMOItemSpawnEvent
+ - Fishing Configuration inclusion (Pull Request #60)
 
 Version 1.2.08
  - Changed Bukkit events to new event system
