@@ -97,7 +97,7 @@ public class mcMMO extends JavaPlugin
 	public Misc misc = new Misc(this);
 
 	//Config file stuff
-	LoadProperties config = new LoadProperties();
+	LoadProperties config = new LoadProperties(this);
 	//Jar stuff
 	public static File mcmmo;
 	

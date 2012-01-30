@@ -16,8 +16,11 @@
 */
 package com.gmail.nossr50.config;
 
+import com.gmail.nossr50.mcMMO;
 import java.io.File;
-import org.bukkit.util.config.Configuration;
+import java.io.IOException;
+
+import org.bukkit.configuration.file.FileConfiguration;
 
 import com.gmail.nossr50.datatypes.HUDType;
 
@@ -54,21 +57,27 @@ public class LoadProperties
 	archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 	
 	public static HUDType defaulthud;
+	protected static File configFile;
+	protected static File dataFolder;
+	protected final mcMMO plugin;
+	protected static FileConfiguration config;
 	
-	public String directory = "plugins/mcMMO/"; 
-	
-	File file = new File(directory + File.separator + "config.yml");
-	static Configuration config = null;
+	public LoadProperties(mcMMO plugin)
+	{
+		this.plugin = plugin;
+		dataFolder = plugin.getDataFolder();
+		configFile = new File(dataFolder, "config.yml");
+	}
 	
 	public void configCheck()
 	{
-		new File(directory).mkdir();
-		config = load();
-		if(!file.exists())
+		load();
+		if(!configFile.exists())
 		{
 			try 
 			{
-				file.createNewFile();
+				configFile.getParentFile().mkdir();
+				configFile.createNewFile();
 				addDefaults();
 			} 
 			catch (Exception ex) 
@@ -84,27 +93,26 @@ public class LoadProperties
 	    private void write(String root, Object x)
 	    {
 	    	//Configuration config = load();
-	        config.setProperty(root, x);
-	        config.save();
+	        config.set(root, x);
 	    }
 	    private Boolean readBoolean(String root, Boolean def)
 	    {
 	    	//Configuration config = load();
 	    	Boolean result = config.getBoolean(root, def);
-	    	config.save();
+	    	saveConfig();
 	        return result;
 	    }
 	    private Double readDouble(String root, Double def)
 	    {
 	    	Double result = config.getDouble(root, def);
-	    	config.save();
+	    	saveConfig();
 	    	return result;
 	    }
 	    private Integer readInteger(String root, Integer def)
 	    {
 	    	//Configuration config = load();
 	    	Integer result = config.getInt(root, def);
-	    	config.save();
+	    	saveConfig();
 	        return result;
 	    }
 	    
@@ -112,22 +120,31 @@ public class LoadProperties
 	    {
 	    	//Configuration config = load();
 	    	String result = config.getString(root, def);
-	    	config.save();
+	    	saveConfig();
 	        return result;
 	    }
 	    
-	    private Configuration load()
+	    private FileConfiguration load()
 	    {
 	        try {
-	            Configuration configx = new Configuration(file);
-	            configx.load();
-	            return configx;
+	            config.load(configFile);
+	            return config;
 
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
 	        return null;
 	    }
+	    
+	    private static void saveConfig()
+	    {
+	    	try {
+	    		config.save(configFile);
+	    	} catch (IOException e) {
+	    		e.printStackTrace();
+	    	}
+	    }
+	    
 	    private void addDefaults()
 	    {
 	        System.out.println("Generating Config File...");  	
@@ -403,6 +420,7 @@ public class LoadProperties
 	        write("Fishing.Drops.Glowstone_Dust", true);
 	        write("Fishing.Drops.Diamonds", true);
 	        
+	        saveConfig();
 	    	loadkeys();
 	    }
 	    private void loadkeys()
@@ -410,6 +428,7 @@ public class LoadProperties
 	        System.out.println("Loading Config File...");
 	        
 	        //Setup default HUD
+	        load();
 	        String temp = readString("Spout.HUD.Default", "STANDARD");
 	        for(HUDType x : HUDType.values())
 	        {
