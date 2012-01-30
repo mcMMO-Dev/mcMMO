@@ -71,6 +71,7 @@ public class Fishing {
 	{
 		int randomNum = (int)(Math.random() * 15);
 		CraftItem theCatch = (CraftItem)event.getCaught();
+		theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier1)
 		{
@@ -79,101 +80,72 @@ public class Fishing {
 			case 1:
 				if(LoadProperties.leatherArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.LEATHER_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 2:
 				if(LoadProperties.leatherArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.LEATHER_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 3:
 				if(LoadProperties.leatherArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.LEATHER_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 4:
 				if(LoadProperties.leatherArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.LEATHER_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 5:
 				if(LoadProperties.woodenTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.WOOD_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 6:
 				if(LoadProperties.woodenTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.WOOD_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 7:
 				if(LoadProperties.woodenTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.WOOD_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 8:
 				if(LoadProperties.woodenTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.WOOD_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 9:
 				if(LoadProperties.woodenTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.WOOD_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 10:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 11:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 12:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 13:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 14:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			}
-		} else
-		{
-			theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 		}
-		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
-
+		if(theCatch.getItemStack().getType() != Material.RAW_FISH) {
+			//Change durability to random value
+			theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
+		}
 	}
 
 	private static void getFishingResultsTier2(Player player, PlayerFishEvent event)
 	{
 		int randomNum = (int)(Math.random() * 20);
 		CraftItem theCatch = (CraftItem)event.getCaught();
+		theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier2)
 		{
@@ -182,131 +154,92 @@ public class Fishing {
 			case 1:
 				if(LoadProperties.leatherArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.LEATHER_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 2:
 				if(LoadProperties.leatherArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.LEATHER_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 3:
 				if(LoadProperties.leatherArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.LEATHER_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 4:
 				if(LoadProperties.leatherArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.LEATHER_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 5:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 6:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 7:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 8:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 9:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 10:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 11:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 12:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 13:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 14:
 				if(LoadProperties.stoneTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.STONE_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 15:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 16:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 17:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 18:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 19:
 				if(LoadProperties.enderPearl && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.ENDER_PEARL, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			}
-		} else
-		{
-			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
-
-		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
+		if(theCatch.getItemStack().getType() != Material.RAW_FISH) {
+			//Change durability to random value
+			theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
+		}
 	}
 
 	private static void getFishingResultsTier3(Player player, PlayerFishEvent event)
 	{
 		int randomNum = (int)(Math.random() * 24);
 		CraftItem theCatch = (CraftItem)event.getCaught();
+		theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier3)
 		{
@@ -315,155 +248,108 @@ public class Fishing {
 			case 1:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 2:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 3:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 4:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 5:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 6:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 7:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 8:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 9:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 10:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 11:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 12:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 13:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 14:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 15:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 16:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 17:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 18:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 19:
 				if(LoadProperties.enderPearl && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.ENDER_PEARL, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 20:
 				if(LoadProperties.blazeRod && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.BLAZE_ROD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 21:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_3, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 22:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_4, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 23:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_5, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			}
 		}
-		else
-		{
-			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
+		if(theCatch.getItemStack().getType() != Material.RAW_FISH) {
+			//Change durability to random value
+			theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 		}
-		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
 
 	private static void getFishingResultsTier4(Player player, PlayerFishEvent event)
 	{
 		int randomNum = (int)(Math.random() * 41);
 		CraftItem theCatch = (CraftItem)event.getCaught();
+		theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier4)
 		{
@@ -472,256 +358,176 @@ public class Fishing {
 			case 1:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 2:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 3:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 4:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 5:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 6:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 7:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 8:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 9:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 10:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 11:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 12:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 13:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 14:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 15:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 16:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 17:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 18:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 19:
 				if(LoadProperties.enderPearl && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.ENDER_PEARL, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 20:
 				if(LoadProperties.blazeRod && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.BLAZE_ROD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 21:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_3, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 22:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_4, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 23:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_5, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 24:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 25:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 26:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 27:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 28:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 29:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 30:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 31:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 32:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 33:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_6, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 34:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_7, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 35:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_8, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 36:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_9, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 37:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_10, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 38:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_11, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 39:
 				if(LoadProperties.glowstoneDust && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GLOWSTONE_DUST, 16));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 40:
 				if(LoadProperties.fishingDiamonds && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND, (int)(Math.random() * 10)));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			}
-		} else
-		{
-			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
-		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
+		if(theCatch.getItemStack().getType() != Material.RAW_FISH) {
+			//Change durability to random value
+			theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
+		}
 	}
 
 	private static void getFishingResultsTier5(Player player, PlayerFishEvent event)
 	{
 		int randomNum = (int)(Math.random() * 50);
 		CraftItem theCatch = (CraftItem)event.getCaught();
+		theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier5)
 		{
@@ -730,134 +536,90 @@ public class Fishing {
 			case 1:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 2:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 3:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 4:
 				if(LoadProperties.goldArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 5:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 6:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 7:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 8:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 9:
 				if(LoadProperties.ironTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 10:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 11:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 12:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 13:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 14:
 				if(LoadProperties.goldTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GOLD_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 15:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 16:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 17:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 18:
 				if(LoadProperties.ironArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.IRON_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 19:
 				if(LoadProperties.enderPearl && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.ENDER_PEARL, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 20:
 				if(LoadProperties.blazeRod && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.BLAZE_ROD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 21:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_3, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 22:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_4, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 23:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
@@ -867,165 +629,113 @@ public class Fishing {
 			case 24:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 25:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 26:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 27:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 28:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 29:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 30:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 31:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 32:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 33:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_6, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 34:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_7, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 35:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_8, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 36:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_9, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 37:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_10, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 38:
 				if(LoadProperties.records && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.RECORD_11, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 39:
 				if(LoadProperties.glowstoneDust && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.GLOWSTONE_DUST, 16));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 40:
 				if(LoadProperties.fishingDiamonds && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND, (int)(Math.random() * 20)));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 41:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_BOOTS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 42:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_HELMET, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 43:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_LEGGINGS, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 44:
 				if(LoadProperties.diamondArmor && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_CHESTPLATE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 45:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_AXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 46:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_PICKAXE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 47:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_SWORD, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 48:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_HOE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			case 49:
 				if(LoadProperties.diamondTools && LoadProperties.fishingDrops)
 					theCatch.setItemStack(new ItemStack(Material.DIAMOND_SPADE, 1));
-				else
-					theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
 				break;
 			}
-		} else {
-			theCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
 		}
-		//Change durability to random value
-		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
+		if(theCatch.getItemStack().getType() != Material.RAW_FISH) {
+			//Change durability to random value
+			theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
+		}
 	}
 	public static void processResults(PlayerFishEvent event)
 	{

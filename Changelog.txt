@@ -4,10 +4,11 @@ Changelog:
 Version 1.2.09-dev
  - Fixed issue with Repair Mastery (Issue #47)
  - Made Arcane Forging fully configurable (Pull Request #52)
+ - Made Fishing configurable (Pull Request #60)
  - Changed timer to be a bit more efficient (Issue #19)
  - Changed to fire EntityDamageEvents for all damage done by mcMMO
  - New custom event for developers McMMOPlayerLevelUpEvent
- - New custmo event for developers McMMOItemSpawnEvent
+ - New custom event for developers McMMOItemSpawnEvent
 
 Version 1.2.08
  - Changed Bukkit events to new event system
