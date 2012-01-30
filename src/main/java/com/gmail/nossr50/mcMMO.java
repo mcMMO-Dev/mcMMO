@@ -24,7 +24,7 @@ import com.gmail.nossr50.commands.mc.*;
 import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.*;
-import com.gmail.nossr50.runnables.mcTimer;
+import com.gmail.nossr50.runnables.*;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.listeners.mcBlockListener;
 import com.gmail.nossr50.listeners.mcEntityListener;
@@ -35,6 +35,7 @@ import com.gmail.nossr50.skills.*;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 import org.bukkit.Bukkit;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -44,6 +45,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -52,6 +54,7 @@ import java.util.logging.Logger;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.FileManager;
@@ -84,6 +87,7 @@ public class mcMMO extends JavaPlugin
 	private Permissions permissions;
 
 	private Runnable mcMMO_Timer = new mcTimer(this); //BLEED AND REGENERATION
+	private Runnable ChangeDataValueTimer = new ChangeDataValueTimer(this);		//R2 block place workaround
 	//private Timer mcMMO_SpellTimer = new Timer(true);
 
 	//Alias - Command
@@ -96,6 +100,9 @@ public class mcMMO extends JavaPlugin
 	LoadProperties config = new LoadProperties();
 	//Jar stuff
 	public static File mcmmo;
+	
+	//Queue for block data change for R2+ fix
+	public ArrayDeque<Block> changeQueue = new ArrayDeque<Block>();
 
 	public void onEnable() 
 	{
@@ -157,6 +164,8 @@ public class mcMMO extends JavaPlugin
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_Timer, 0, 20);
+		//R2+ block place fix
+		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, ChangeDataValueTimer, 0, 10);
 		
 		registerCommands();
 		
