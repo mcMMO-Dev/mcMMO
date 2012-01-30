@@ -107,14 +107,14 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.1-R3-SNAPSHOT</version>
+            <version>bukkit-1.1-R4-20120130.090521-1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.1-R2</version>
+            <version>1.1-R3</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
