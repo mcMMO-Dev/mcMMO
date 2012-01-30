@@ -127,6 +127,7 @@ public class mcMMO extends JavaPlugin
 		
 		mcPermissions.initialize(getServer());
 		
+		System.out.println("[mcMMO]Checking config file at: " + this.getDataFolder().toString() + File.separator + "config.yml");
 		config.configCheck();
 		
 		Party.getInstance().loadParties();
