@@ -20,7 +20,7 @@ import com.gmail.nossr50.mcMMO;
 import java.io.File;
 import java.io.IOException;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.datatypes.HUDType;
 
@@ -59,13 +59,13 @@ public class LoadProperties
 	protected static File configFile;
 	protected static File dataFolder;
 	protected final mcMMO plugin;
-	protected static FileConfiguration config;
+	protected static YamlConfiguration config;
 	
 	public LoadProperties(mcMMO plugin)
 	{
 		this.plugin = plugin;
 		dataFolder = plugin.getDataFolder();
-		configFile = new File(dataFolder, "config.yml");
+		configFile = new File(dataFolder, File.separator + "config.yml");
 	}
 	
 	public void configCheck()
@@ -123,10 +123,10 @@ public class LoadProperties
 	        return result;
 	    }
 	    
-	    private FileConfiguration load()
+	    private YamlConfiguration load()
 	    {
 	        try {
-	            config.load(configFile);
+	            config = YamlConfiguration.loadConfiguration(configFile);
 	            return config;
 
 	        } catch (Exception e) {
