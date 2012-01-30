@@ -25,6 +25,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
@@ -152,7 +153,7 @@ public class Axes {
 		    					continue;
 		    				if(targets >= 1 && derp.getWorld().getPVP())
 		    				{
-		    					target.damage(event.getDamage() / 2);
+		    					Combat.dealDamage(target, event.getDamage() / 2, attacker);
 		    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
 		    					targets--;
 		    					continue;
@@ -161,7 +162,7 @@ public class Axes {
 	    				else
 		    			{			
 		    				LivingEntity target = (LivingEntity)derp;
-		    				target.damage(event.getDamage() / 2);
+	    					Combat.dealDamage(target, event.getDamage() / 2, attacker);
 		    				targets--;
 		    			}
 	    			}

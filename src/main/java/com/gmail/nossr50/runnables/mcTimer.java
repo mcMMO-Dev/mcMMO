@@ -17,6 +17,7 @@
 package com.gmail.nossr50.runnables;
 import org.bukkit.entity.*;
 
+import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -60,7 +61,7 @@ public class mcTimer implements Runnable
 			 */
 			if(thecount % 2 == 0 && PP.getBleedTicks() >= 1)
 			{
-        		player.damage(2);
+        		Combat.dealDamage(player, 2);
         		PP.decreaseBleedTicks();
         	}
 		

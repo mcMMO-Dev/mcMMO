@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -352,17 +353,42 @@ public class Combat
     		Skills.XpCheckSkill(SkillType.ARCHERY, attacker);
     	}
     }
-    public static void dealDamage(Entity target, int dmg){
-    	if(target instanceof Player){
-    		((Player) target).damage(dmg);
-    	}
-    	if(target instanceof Animals){
-    		((Animals) target).damage(dmg);
-    	}
-    	if(target instanceof Monster){
-    		((Monster) target).damage(dmg);
-    	}
+	
+    /**
+     * Attempt to damage target for value dmg with reason CUSTOM
+     * 
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     */
+    public static void dealDamage(LivingEntity target, int dmg){
+    	EntityDamageEvent ede = new EntityDamageEvent(target, EntityDamageEvent.DamageCause.CUSTOM, dmg);
+    	Bukkit.getPluginManager().callEvent(ede);
     }
+    
+    /**
+     * Attempt to damage target for value dmg with reason cause
+     * 
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     * @param cause DamageCause to pass to damage event
+     */
+    public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
+    	EntityDamageEvent ede = new EntityDamageEvent(target, cause, dmg);
+    	Bukkit.getPluginManager().callEvent(ede);
+    }
+    
+    /**
+     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
+     * 
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     * @param attacker Player to pass to event as damager
+     */
+    public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
+    	EntityDamageEvent ede = new EntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
+    	Bukkit.getPluginManager().callEvent(ede);
+    }
+    
     public static boolean pvpAllowed(EntityDamageByEntityEvent event, World world)
     {
     	if(!event.getEntity().getWorld().getPVP())

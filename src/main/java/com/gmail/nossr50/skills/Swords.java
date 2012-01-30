@@ -151,7 +151,7 @@ public class Swords
 		    					continue;
 		    				if(targets >= 1 && derp.getWorld().getPVP())
 		    				{
-		    					target.damage(event.getDamage() / 4);
+		    					Combat.dealDamage(target, event.getDamage() / 4, attacker);
 		    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
 		        				Users.getProfile(target).addBleedTicks(5);
 		    					targets--;
@@ -164,7 +164,7 @@ public class Swords
 		    					pluginx.misc.addToBleedQue((LivingEntity)derp);
 		    				
 		    				LivingEntity target = (LivingEntity)derp;
-		    				target.damage(event.getDamage() / 4);
+	    					Combat.dealDamage(target, event.getDamage() / 4, attacker);
 		    				targets--;
 		    			}
 	    			}
@@ -193,7 +193,7 @@ public class Swords
 		    		{
 		    			if(Math.random() * 2000 <= 600)
 		    			{
-			    			Combat.dealDamage(f, event.getDamage() / 2);
+			    			Combat.dealDamage((LivingEntity) f, event.getDamage() / 2);
 		    				defender.sendMessage(ChatColor.GREEN+"**COUNTER-ATTACKED**");
 			    			if(f instanceof Player)
 		    				((Player) f).sendMessage(ChatColor.DARK_RED+"Hit with counterattack!");
@@ -201,7 +201,7 @@ public class Swords
 		    		}
 		    		else if (Math.random() * 2000 <= PPd.getSkillLevel(SkillType.SWORDS))
 		    		{
-			    		Combat.dealDamage(f, event.getDamage() / 2);
+			    		Combat.dealDamage((LivingEntity) f, event.getDamage() / 2);
 			    		defender.sendMessage(ChatColor.GREEN+"**COUNTER-ATTACKED**");
 		    			if(f instanceof Player)
 		    				((Player) f).sendMessage(ChatColor.DARK_RED+"Hit with counterattack!");
@@ -245,7 +245,7 @@ public class Swords
         	}
         	else
         	{
-        		x.damage(2);
+				Combat.dealDamage(x, 2);
         	}
         }
     }
