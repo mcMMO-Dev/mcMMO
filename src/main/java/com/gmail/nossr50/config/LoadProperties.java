@@ -28,7 +28,8 @@ public class LoadProperties
 	whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable, clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable, 
 	mcrefreshEnable, enableMotd, enableMySpawn, enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, mushrooms, 
 	toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe, excavationRequiresShovel, woodcuttingrequiresaxe, eggs, apples, cake, music, diamond, glowstone, 
-	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages, mayDowngradeEnchants, mayLoseEnchants;
+	slowsand, sulphur, netherrack, bones, coal, clay, anvilmessages, mayDowngradeEnchants, mayLoseEnchants,
+	fishingDrops, leatherArmor, ironArmor, goldArmor, diamondArmor, woodenTools, stoneTools, ironTools, goldTools, diamondTools, enderPearl, blazeRod, records, glowstoneDust, fishingDiamonds;
 	
 	public static String xplock, MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp,
 	xprate, mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp, party, myspawn, whois, invite, accept, clearmyspawn, nWood,
@@ -41,7 +42,8 @@ public class LoadProperties
 	xpGainMultiplier, superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown, treeFellerCooldown,
 	berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss,
 	feathersConsumedByChimaeraWing, bonesConsumedByCOTW, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond, rString, rLeather,
-	downgradeRank1, downgradeRank2, downgradeRank3, downgradeRank4, keepEnchantsRank1, keepEnchantsRank2, keepEnchantsRank3, keepEnchantsRank4;
+	downgradeRank1, downgradeRank2, downgradeRank3, downgradeRank4, keepEnchantsRank1, keepEnchantsRank2, keepEnchantsRank3, keepEnchantsRank4,
+	fishingDropChanceTier1, fishingDropChanceTier2, fishingDropChanceTier3, fishingDropChanceTier4, fishingDropChanceTier5;
 	
 	public static double xpbackground_r, xpbackground_g, xpbackground_b, xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g, fishing_b, acrobatics_r, acrobatics_g, acrobatics_b, archery_r, archery_g, archery_b, axes_r, axes_g, axes_b,
 	excavation_r, excavation_g, excavation_b, herbalism_r, herbalism_g, herbalism_b, mining_r, mining_g, mining_b,
@@ -343,7 +345,7 @@ public class LoadProperties
 	    	write("Skills.Repair.Diamond.Level_Required", 50);
 	    	write("Skills.Repair.Iron.ID", 265);
 	    	write("Skills.Repair.Iron.Name", "Iron Bars");
-		write("Skills.Repair.String.ID", 287);
+	    	write("Skills.Repair.String.ID", 287);
 	        write("Skills.Repair.String.Name", "String");
 	        write("Skills.Repair.Leather.ID", 334);
 	        write("Skills.Repair.String.Name", "Leather");
@@ -353,7 +355,8 @@ public class LoadProperties
 	    	write("Skills.Woodcutting.Requires_Axe", true);
 	    	write("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
 	    	
-		write("Arcane_Forging.Downgrades.Enabled", true);
+	    	//Arcane Forging Config Options
+	    	write("Arcane_Forging.Downgrades.Enabled", true);
 	        write("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
 	        write("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
 	        write("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
@@ -363,6 +366,29 @@ public class LoadProperties
 	        write("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
 	        write("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
 	        write("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
+	        
+	        //Fishing Config Options
+	        write("Fishing.Drops.Item_Drops_Enabled", true);
+	        write("Fishing.Drops.Drop_Chance.Tier_1", 20);
+	        write("Fishing.Drops.Drop_Chance.Tier_2", 25);
+	        write("Fishing.Drops.Drop_Chance.Tier_3", 30);
+	        write("Fishing.Drops.Drop_Chance.Tier_4", 35);
+	        write("Fishing.Drops.Drop_Chance.Tier_5", 40);
+	        write("Fishing.Drops.Leather_Armor", true);
+	        write("Fishing.Drops.Iron_Armor", true);
+	        write("Fishing.Drops.Gold_Armor", true);
+	        write("Fishing.Drops.Diamond_Armor", true);
+	        write("Fishing.Drops.Wooden_Tools", true);
+	        write("Fishing.Drops.Stone_Tools", true);
+	        write("Fishing.Drops.Iron_Tools", true);
+	        write("Fishing.Drops.Gold_Tools", true);
+	        write("Fishing.Drops.Diamond_Tools", true);
+	        write("Fishing.Drops.Ender_Pearl", true);
+	        write("Fishing.Drops.Blaze_Rod", true);
+	        write("Fishing.Drops.Records", true);
+	        write("Fishing.Drops.Glowstone_Dust", true);
+	        write("Fishing.Drops.Diamonds", true);
+	        
 	    	loadkeys();
 	    }
 	    private void loadkeys()
@@ -561,7 +587,7 @@ public class LoadProperties
 	        rLeather = readInteger("Skills.Repair.Leather.ID", 334);
 	        nLeather = readString("Skills.Repair.String.Name", "Leather");
 
-		mayDowngradeEnchants = readBoolean("Arcane_Forging.Downgrades.Enabled", true);
+	        mayDowngradeEnchants = readBoolean("Arcane_Forging.Downgrades.Enabled", true);
 	        downgradeRank1 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
 	        downgradeRank2 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
 	        downgradeRank3 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
@@ -590,6 +616,27 @@ public class LoadProperties
 	    	bucket = readBoolean("Excavation.Drops.Bucket", true);
 	    	web = readBoolean("Excavation.Drops.Web", true);
 	    	
+	    	fishingDrops = readBoolean("Fishing.Drops.Item_Drops_Enabled", true);
+	    	fishingDropChanceTier1 = readInteger("Fishing.Drops.Drop_Chance.Tier_1", 20);
+	    	fishingDropChanceTier2 = readInteger("Fishing.Drops.Drop_Chance.Tier_2", 25);
+	    	fishingDropChanceTier3 = readInteger("Fishing.Drops.Drop_Chance.Tier_3", 30);
+	    	fishingDropChanceTier4 = readInteger("Fishing.Drops.Drop_Chance.Tier_4", 35);
+	    	fishingDropChanceTier5 = readInteger("Fishing.Drops.Drop_Chance.Tier_5", 40);
+	        leatherArmor = readBoolean("Fishing.Drops.Leather_Armor", true);
+	        ironArmor = readBoolean("Fishing.Drops.Iron_Armor", true);
+	        goldArmor = readBoolean("Fishing.Drops.Gold_Armor", true);
+	        diamondArmor = readBoolean("Fishing.Drops.Diamond_Armor", true);
+	        woodenTools = readBoolean("Fishing.Drops.Wooden_Tools", true);
+	        stoneTools = readBoolean("Fishing.Drops.Stone_Tools", true);
+	        ironTools = readBoolean("Fishing.Drops.Iron_Tools", true);
+	        goldTools = readBoolean("Fishing.Drops.Gold_Tools", true);
+	        diamondTools = readBoolean("Fishing.Drops.Diamond_Tools", true);
+	        enderPearl = readBoolean("Fishing.Drops.Ender_Pearl", true);
+	        blazeRod = readBoolean("Fishing.Drops.Blaze_Rod", true);
+	        records = readBoolean("Fishing.Drops.Records", true);
+	        glowstoneDust = readBoolean("Fishing.Drops.Glowstone_Dust", true);
+	        fishingDiamonds = readBoolean("Fishing.Drops.Diamonds", true);
+	        
 	    	xprate = readString("Commands.xprate.Name", "xprate");
 	    	xprateEnable = readBoolean("Commands.xprate.Enabled", true);
 	    	
