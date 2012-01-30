@@ -84,7 +84,7 @@ public class Unarmed {
 	    				ItemStack item = defender.getItemInHand();
 		    			if(item != null)
 		    			{
-		    				loc.getWorld().dropItemNaturally(loc, item);
+		    				m.mcDropItem(loc, item);
 		    				ItemStack itemx = null;
 		    				defender.setItemInHand(itemx);
 		    			}
@@ -99,7 +99,7 @@ public class Unarmed {
 	    				ItemStack item = defender.getItemInHand();
 		    			if(item != null)
 		    			{
-		    				loc.getWorld().dropItemNaturally(loc, item);
+		    				m.mcDropItem(loc, item);
 		    				ItemStack itemx = null;
 		    				defender.setItemInHand(itemx);
 	    				}

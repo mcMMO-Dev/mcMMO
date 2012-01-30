@@ -31,6 +31,7 @@ import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.McMMOItemSpawnEvent;
 
 public class m 
 {
@@ -255,15 +256,21 @@ public class m
 		}
 		return true;
 	}
-	public static void mcDropItem(Location loc, int id)
+	public static void mcDropItem(Location location, int id)
 	{
-		if(loc != null)
-		{
-			Material mat = Material.getMaterial(id);
-			byte damage = 0;
-			ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-			loc.getWorld().dropItemNaturally(loc, item);
-		}
+		if(location == null) return;
+		
+		Material mat = Material.getMaterial(id);
+		ItemStack item = new ItemStack(mat, 1, (byte) 0, (byte) 0);
+		mcDropItem(location, item);
+	}
+	public static void mcDropItem(Location location, ItemStack itemStack) {
+		// We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
+		McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
+		Bukkit.getPluginManager().callEvent(event);
+		if(event.isCancelled()) return;
+		
+		location.getWorld().dropItemNaturally(location, itemStack);
 	}
 
 	public static boolean isSwords(ItemStack is)

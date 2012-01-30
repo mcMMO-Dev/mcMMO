@@ -77,33 +77,32 @@ public class Skills
     	return (int) (((deactivatedTimeStamp + (cooldown * 1000)) - System.currentTimeMillis())/1000);
     }
     
-    public static void watchCooldowns(Player player){
-    	PlayerProfile PP = Users.getProfile(player);
-    	if(!PP.getGreenTerraInformed() && System.currentTimeMillis() - (PP.getGreenTerraDeactivatedTimeStamp()*1000) >= (LoadProperties.greenTerraCooldown * 1000)){
+    public static void watchCooldowns(Player player, PlayerProfile PP, long curTime){
+    	if(!PP.getGreenTerraInformed() && curTime - (PP.getGreenTerraDeactivatedTimeStamp()*1000) >= (LoadProperties.greenTerraCooldown * 1000)){
 			PP.setGreenTerraInformed(true);
     		player.sendMessage(mcLocale.getString("Skills.YourGreenTerra"));
     	}
-    	if(!PP.getTreeFellerInformed() && System.currentTimeMillis() - (PP.getTreeFellerDeactivatedTimeStamp()*1000) >= (LoadProperties.greenTerraCooldown * 1000)){
+    	if(!PP.getTreeFellerInformed() && curTime - (PP.getTreeFellerDeactivatedTimeStamp()*1000) >= (LoadProperties.greenTerraCooldown * 1000)){
 			PP.setTreeFellerInformed(true);
 			player.sendMessage(mcLocale.getString("Skills.YourTreeFeller"));
     	}
-    	if(!PP.getSuperBreakerInformed() && System.currentTimeMillis() - (PP.getSuperBreakerDeactivatedTimeStamp()*1000) >= (LoadProperties.superBreakerCooldown * 1000)){
+    	if(!PP.getSuperBreakerInformed() && curTime - (PP.getSuperBreakerDeactivatedTimeStamp()*1000) >= (LoadProperties.superBreakerCooldown * 1000)){
 			PP.setSuperBreakerInformed(true);
 			player.sendMessage(mcLocale.getString("Skills.YourSuperBreaker"));
     	}
-    	if(!PP.getSerratedStrikesInformed() && System.currentTimeMillis() - (PP.getSerratedStrikesDeactivatedTimeStamp()*1000) >= (LoadProperties.serratedStrikeCooldown * 1000)){
+    	if(!PP.getSerratedStrikesInformed() && curTime - (PP.getSerratedStrikesDeactivatedTimeStamp()*1000) >= (LoadProperties.serratedStrikeCooldown * 1000)){
 			PP.setSerratedStrikesInformed(true);
 			player.sendMessage(mcLocale.getString("Skills.YourSerratedStrikes"));
     	}
-    	if(!PP.getBerserkInformed() && System.currentTimeMillis() - (PP.getBerserkDeactivatedTimeStamp()*1000) >= (LoadProperties.berserkCooldown * 1000)){
+    	if(!PP.getBerserkInformed() && curTime - (PP.getBerserkDeactivatedTimeStamp()*1000) >= (LoadProperties.berserkCooldown * 1000)){
 			PP.setBerserkInformed(true);
 			player.sendMessage(mcLocale.getString("Skills.YourBerserk"));
     	}
-    	if(!PP.getSkullSplitterInformed() && System.currentTimeMillis() - (PP.getSkullSplitterDeactivatedTimeStamp()*1000) >= (LoadProperties.skullSplitterCooldown * 1000)){
+    	if(!PP.getSkullSplitterInformed() && curTime - (PP.getSkullSplitterDeactivatedTimeStamp()*1000) >= (LoadProperties.skullSplitterCooldown * 1000)){
 			PP.setSkullSplitterInformed(true);
 			player.sendMessage(mcLocale.getString("Skills.YourSkullSplitter"));
     	}
-    	if(!PP.getGigaDrillBreakerInformed() && System.currentTimeMillis() - (PP.getGigaDrillBreakerDeactivatedTimeStamp()*1000) >= (LoadProperties.gigaDrillBreakerCooldown * 1000)){
+    	if(!PP.getGigaDrillBreakerInformed() && curTime - (PP.getGigaDrillBreakerDeactivatedTimeStamp()*1000) >= (LoadProperties.gigaDrillBreakerCooldown * 1000)){
 			PP.setGigaDrillBreakerInformed(true);
 			player.sendMessage(mcLocale.getString("Skills.YourGigaDrillBreaker"));
     	}
@@ -126,104 +125,103 @@ public class Skills
 			PP.setHoePreparationMode(true);
     	}
     }
-    public static void monitorSkills(Player player){
-		PlayerProfile PP = Users.getProfile(player);
-		if(PP != null) 
-		{
-			if(PP.getHoePreparationMode() && System.currentTimeMillis() - (PP.getHoePreparationATS()*1000) >= 4000){
-				PP.setHoePreparationMode(false);
-				player.sendMessage(mcLocale.getString("Skills.LowerHoe"));
+    public static void monitorSkills(Player player, PlayerProfile PP) {
+    	monitorSkills(player, PP, System.currentTimeMillis());
+    }
+    public static void monitorSkills(Player player, PlayerProfile PP, long curTime){
+		if(PP.getHoePreparationMode() && curTime - (PP.getHoePreparationATS()*1000) >= 4000){
+			PP.setHoePreparationMode(false);
+			player.sendMessage(mcLocale.getString("Skills.LowerHoe"));
+		}
+		if(PP.getAxePreparationMode() && curTime - (PP.getAxePreparationATS()*1000) >= 4000){
+			PP.setAxePreparationMode(false);
+			player.sendMessage(mcLocale.getString("Skills.LowerAxe"));
+		}
+		if(PP.getPickaxePreparationMode() && curTime - (PP.getPickaxePreparationATS()*1000) >= 4000){
+			PP.setPickaxePreparationMode(false);
+			player.sendMessage(mcLocale.getString("Skills.LowerPickAxe"));
+		}
+		if(PP.getSwordsPreparationMode() && curTime - (PP.getSwordsPreparationATS()*1000) >= 4000){
+			PP.setSwordsPreparationMode(false);
+			player.sendMessage(mcLocale.getString("Skills.LowerSword"));
+		}
+		if(PP.getFistsPreparationMode() && curTime - (PP.getFistsPreparationATS()*1000) >= 4000){
+			PP.setFistsPreparationMode(false);
+			player.sendMessage(mcLocale.getString("Skills.LowerFists"));
+		}
+		if(PP.getShovelPreparationMode() && curTime - (PP.getShovelPreparationATS()*1000) >= 4000){
+			PP.setShovelPreparationMode(false);
+			player.sendMessage(mcLocale.getString("Skills.LowerShovel"));
+		}
+		
+		/*
+		 * HERBALISM ABILITY
+		 */
+		if(mcPermissions.getInstance().herbalismAbility(player)){
+			if(PP.getGreenTerraMode() && (PP.getGreenTerraDeactivatedTimeStamp()*1000) <= curTime){
+				PP.setGreenTerraMode(false);
+				PP.setGreenTerraInformed(false);
+				player.sendMessage(mcLocale.getString("Skills.GreenTerraOff"));
 			}
-			if(PP.getAxePreparationMode() && System.currentTimeMillis() - (PP.getAxePreparationATS()*1000) >= 4000){
-				PP.setAxePreparationMode(false);
-				player.sendMessage(mcLocale.getString("Skills.LowerAxe"));
+		}
+		/*
+		 * AXES ABILITY
+		 */
+		if(mcPermissions.getInstance().axesAbility(player)){
+			if(PP.getSkullSplitterMode() && (PP.getSkullSplitterDeactivatedTimeStamp()*1000) <= curTime){
+					PP.setSkullSplitterMode(false);
+					PP.setSkullSplitterInformed(false);
+					player.sendMessage(mcLocale.getString("Skills.SkullSplitterOff"));
 			}
-			if(PP.getPickaxePreparationMode() && System.currentTimeMillis() - (PP.getPickaxePreparationATS()*1000) >= 4000){
-				PP.setPickaxePreparationMode(false);
-				player.sendMessage(mcLocale.getString("Skills.LowerPickAxe"));
+		}
+		/*
+		 * WOODCUTTING ABILITY
+		 */
+		if(mcPermissions.getInstance().woodCuttingAbility(player)){
+			if(PP.getTreeFellerMode() && (PP.getTreeFellerDeactivatedTimeStamp()*1000) <= curTime){
+					PP.setTreeFellerMode(false);
+					PP.setTreeFellerInformed(false);
+					player.sendMessage(mcLocale.getString("Skills.TreeFellerOff"));
 			}
-			if(PP.getSwordsPreparationMode() && System.currentTimeMillis() - (PP.getSwordsPreparationATS()*1000) >= 4000){
-				PP.setSwordsPreparationMode(false);
-				player.sendMessage(mcLocale.getString("Skills.LowerSword"));
+		}
+		/*
+		 * MINING ABILITY
+		 */
+		if(mcPermissions.getInstance().miningAbility(player)){
+			if(PP.getSuperBreakerMode() && (PP.getSuperBreakerDeactivatedTimeStamp()*1000) <= curTime){
+					PP.setSuperBreakerMode(false);
+					PP.setSuperBreakerInformed(false);
+					player.sendMessage(mcLocale.getString("Skills.SuperBreakerOff"));
 			}
-			if(PP.getFistsPreparationMode() && System.currentTimeMillis() - (PP.getFistsPreparationATS()*1000) >= 4000){
-				PP.setFistsPreparationMode(false);
-				player.sendMessage(mcLocale.getString("Skills.LowerFists"));
+		}
+		/*
+		 * EXCAVATION ABILITY
+		 */
+		if(mcPermissions.getInstance().excavationAbility(player)){
+			if(PP.getGigaDrillBreakerMode() && (PP.getGigaDrillBreakerDeactivatedTimeStamp()*1000) <= curTime){
+					PP.setGigaDrillBreakerMode(false);
+					PP.setGigaDrillBreakerInformed(false);
+					player.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerOff"));
 			}
-			if(PP.getShovelPreparationMode() && System.currentTimeMillis() - (PP.getShovelPreparationATS()*1000) >= 4000){
-				PP.setShovelPreparationMode(false);
-				player.sendMessage(mcLocale.getString("Skills.LowerShovel"));
+		}
+		/*
+		 * SWORDS ABILITY
+		 */
+		if(mcPermissions.getInstance().swordsAbility(player)){
+			if(PP.getSerratedStrikesMode() && (PP.getSerratedStrikesDeactivatedTimeStamp()*1000) <= curTime){
+					PP.setSerratedStrikesMode(false);
+					PP.setSerratedStrikesInformed(false);
+					player.sendMessage(mcLocale.getString("Skills.SerratedStrikesOff"));
 			}
-			
-			/*
-			 * HERBALISM ABILITY
-			 */
-			if(mcPermissions.getInstance().herbalismAbility(player)){
-				if(PP.getGreenTerraMode() && (PP.getGreenTerraDeactivatedTimeStamp()*1000) <= System.currentTimeMillis()){
-					PP.setGreenTerraMode(false);
-					PP.setGreenTerraInformed(false);
-					player.sendMessage(mcLocale.getString("Skills.GreenTerraOff"));
-				}
-			}
-			/*
-			 * AXES ABILITY
-			 */
-			if(mcPermissions.getInstance().axesAbility(player)){
-				if(PP.getSkullSplitterMode() && (PP.getSkullSplitterDeactivatedTimeStamp()*1000) <= System.currentTimeMillis()){
-						PP.setSkullSplitterMode(false);
-						PP.setSkullSplitterInformed(false);
-						player.sendMessage(mcLocale.getString("Skills.SkullSplitterOff"));
-				}
-			}
-			/*
-			 * WOODCUTTING ABILITY
-			 */
-			if(mcPermissions.getInstance().woodCuttingAbility(player)){
-				if(PP.getTreeFellerMode() && (PP.getTreeFellerDeactivatedTimeStamp()*1000) <= System.currentTimeMillis()){
-						PP.setTreeFellerMode(false);
-						PP.setTreeFellerInformed(false);
-						player.sendMessage(mcLocale.getString("Skills.TreeFellerOff"));
-				}
-			}
-			/*
-			 * MINING ABILITY
-			 */
-			if(mcPermissions.getInstance().miningAbility(player)){
-				if(PP.getSuperBreakerMode() && (PP.getSuperBreakerDeactivatedTimeStamp()*1000) <= System.currentTimeMillis()){
-						PP.setSuperBreakerMode(false);
-						PP.setSuperBreakerInformed(false);
-						player.sendMessage(mcLocale.getString("Skills.SuperBreakerOff"));
-				}
-			}
-			/*
-			 * EXCAVATION ABILITY
-			 */
-			if(mcPermissions.getInstance().excavationAbility(player)){
-				if(PP.getGigaDrillBreakerMode() && (PP.getGigaDrillBreakerDeactivatedTimeStamp()*1000) <= System.currentTimeMillis()){
-						PP.setGigaDrillBreakerMode(false);
-						PP.setGigaDrillBreakerInformed(false);
-						player.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerOff"));
-				}
-			}
-			/*
-			 * SWORDS ABILITY
-			 */
-			if(mcPermissions.getInstance().swordsAbility(player)){
-				if(PP.getSerratedStrikesMode() && (PP.getSerratedStrikesDeactivatedTimeStamp()*1000) <= System.currentTimeMillis()){
-						PP.setSerratedStrikesMode(false);
-						PP.setSerratedStrikesInformed(false);
-						player.sendMessage(mcLocale.getString("Skills.SerratedStrikesOff"));
-				}
-			}
-			/*
-			 * UNARMED ABILITY
-			 */
-			if(mcPermissions.getInstance().unarmedAbility(player)){
-				if(PP.getBerserkMode() && (PP.getBerserkDeactivatedTimeStamp()*1000) <= System.currentTimeMillis()){
-						PP.setBerserkMode(false);
-						PP.setBerserkInformed(false);
-						player.sendMessage(mcLocale.getString("Skills.BerserkOff"));
-				}
+		}
+		/*
+		 * UNARMED ABILITY
+		 */
+		if(mcPermissions.getInstance().unarmedAbility(player)){
+			if(PP.getBerserkMode() && (PP.getBerserkDeactivatedTimeStamp()*1000) <= curTime){
+					PP.setBerserkMode(false);
+					PP.setBerserkInformed(false);
+					player.sendMessage(mcLocale.getString("Skills.BerserkOff"));
 			}
 		}
 	}
