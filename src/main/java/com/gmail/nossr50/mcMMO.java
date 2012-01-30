@@ -101,7 +101,7 @@ public class mcMMO extends JavaPlugin
 	//Jar stuff
 	public static File mcmmo;
 	
-	//Queue for block data change for R2 workaround
+	//Queue for block data change for R2+ fix
 	public ArrayDeque<Block> changeQueue = new ArrayDeque<Block>();
 
 	public void onEnable() 
@@ -164,7 +164,7 @@ public class mcMMO extends JavaPlugin
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_Timer, 0, 20);
-		//R2 block place workaround
+		//R2+ block place fix
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, ChangeDataValueTimer, 0, 10);
 		
 		registerCommands();
