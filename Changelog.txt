@@ -9,6 +9,7 @@ Version 1.2.09-dev
  - Changed to fire EntityDamageEvents for all damage done by mcMMO
  - New custom event for developers McMMOPlayerLevelUpEvent
  - New custom event for developers McMMOItemSpawnEvent
+ - Changed LoadProperties from the old Configuration to FileConfiguration
 
 Version 1.2.08
  - Changed Bukkit events to new event system
