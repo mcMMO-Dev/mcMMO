@@ -10,6 +10,7 @@ Version 1.2.09-dev
  - New custom event for developers McMMOPlayerLevelUpEvent
  - New custom event for developers McMMOItemSpawnEvent
  - Changed LoadProperties from the old Configuration to FileConfiguration
+ - Removed aliasing from config.yml
 
 Version 1.2.08
  - Changed Bukkit events to new event system

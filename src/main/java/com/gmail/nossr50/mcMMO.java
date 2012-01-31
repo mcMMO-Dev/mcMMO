@@ -292,34 +292,34 @@ public class mcMMO extends JavaPlugin
 		getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
 		
 		//Mc* commands
-		getCommand("mcability").setExecutor(new McabilityCommand());
-		getCommand("mcc").setExecutor(new MccCommand());
-		getCommand("mcgod").setExecutor(new McgodCommand());
-		getCommand("mcmmo").setExecutor(new McmmoCommand());
-		getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
-		getCommand("mctop").setExecutor(new MctopCommand());
+		if(LoadProperties.mcabilityEnable) getCommand("mcability").setExecutor(new McabilityCommand());
+		if(LoadProperties.mccEnable) getCommand("mcc").setExecutor(new MccCommand());
+		if(LoadProperties.mcgodEnable) getCommand("mcgod").setExecutor(new McgodCommand());
+		if(LoadProperties.mcmmoEnable) getCommand("mcmmo").setExecutor(new McmmoCommand());
+		if(LoadProperties.mcrefreshEnable) getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
+		if(LoadProperties.mctopEnable) getCommand("mctop").setExecutor(new MctopCommand());
 		
 		//Party commands
-		getCommand("accept").setExecutor(new AcceptCommand());
+		if(LoadProperties.acceptEnable) getCommand("accept").setExecutor(new AcceptCommand());
 		getCommand("a").setExecutor(new ACommand());
-		getCommand("invite").setExecutor(new InviteCommand(this));
-		getCommand("party").setExecutor(new PartyCommand());
+		if(LoadProperties.inviteEnable) getCommand("invite").setExecutor(new InviteCommand(this));
+		if(LoadProperties.partyEnable) getCommand("party").setExecutor(new PartyCommand());
 		getCommand("p").setExecutor(new PCommand());
-		getCommand("ptp").setExecutor(new PtpCommand(this));
+		if(LoadProperties.ptpEnable) getCommand("ptp").setExecutor(new PtpCommand(this));
 		
 		//Other commands
-		getCommand("addxp").setExecutor(new AddxpCommand(this));
-		getCommand("clearmyspawn").setExecutor(new ClearmyspawnCommand());
-		getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
+		if(LoadProperties.addxpEnable) getCommand("addxp").setExecutor(new AddxpCommand(this));
+		if(LoadProperties.clearmyspawnEnable) getCommand("clearmyspawn").setExecutor(new ClearmyspawnCommand());
+		if(LoadProperties.mmoeditEnable) getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
 		getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
-		getCommand("myspawn").setExecutor(new MyspawnCommand());
-		getCommand("stats").setExecutor(new StatsCommand());
-		getCommand("whois").setExecutor(new WhoisCommand(this));
-		getCommand("xprate").setExecutor(new XprateCommand());
+		if(LoadProperties.myspawnEnable) getCommand("myspawn").setExecutor(new MyspawnCommand());
+		if(LoadProperties.statsEnable) getCommand("stats").setExecutor(new StatsCommand());
+		if(LoadProperties.whoisEnable) getCommand("whois").setExecutor(new WhoisCommand(this));
+		if(LoadProperties.xprateEnable) getCommand("xprate").setExecutor(new XprateCommand());
 		
 		//Spout commands
 		getCommand("mchud").setExecutor(new MchudCommand());
-		getCommand("xplock").setExecutor(new XplockCommand());
+		if(LoadProperties.xplockEnable) getCommand("xplock").setExecutor(new XplockCommand());
 		
 	}
 
