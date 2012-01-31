@@ -37,10 +37,10 @@ public class McmmoCommand implements CommandExecutor {
 		if (LoadProperties.spoutEnabled && player instanceof SpoutPlayer) {
 			SpoutPlayer sPlayer = (SpoutPlayer) player;
 			if (LoadProperties.donateMessage)
-				sPlayer.sendNotification("[mcMMO] Donate!", "Paypal nossr50@gmail.com", Material.CAKE);
+				sPlayer.sendNotification("[mcMMO] Donate!", "Paypal theno1yeti@gmail.com", Material.CAKE);
 		} else {
 			if (LoadProperties.donateMessage)
-				player.sendMessage(ChatColor.GREEN + "If you like my work you can donate via Paypal: nossr50@gmail.com");
+				player.sendMessage(ChatColor.GREEN + "If you like my work you can donate via Paypal: theno1yeti@gmail.com");
 		}
 
 		return true;
