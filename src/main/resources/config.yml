@@ -1,0 +1,348 @@
+Items:
+    Chimaera_Wing:
+        Enabled: true
+        Feather_Cost: 10
+        Item_ID: 288
+Spout:
+    Menu:
+        Key: KEY_M
+    XP:
+        Bar:
+            Enabled: true
+            X_POS: 95
+            Y_POS: 6
+        Icon:
+            Enabled: true
+            X_POS: 78
+            Y_POS: 2
+    Party:
+        HUD:
+            Show_Faces: true
+            Enabled: true
+            Show_Display_Name: false
+    Images:
+        URL_DIR: http://mcmmo.rycochet.net/mcmmo/
+    HUD:
+        Default: STANDARD
+        Retro:
+            Colors:
+                Swords:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Taming:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Acrobatics:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Border:
+                    BLUE: 0.0
+                    GREEN: 0.0
+                    RED: 0.0
+                Background:
+                    BLUE: 0.75
+                    GREEN: 0.75
+                    RED: 0.75
+                Woodcutting:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Archery:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Axes:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Repair:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Fishing:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Excavation:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Herbalism:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Unarmed:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+                Mining:
+                    BLUE: 0.75
+                    GREEN: 0.3
+                    RED: 0.3
+Fishing:
+    Drops:
+        Gold_Tools: true
+        Diamond_Armor: true
+        Stone_Tools: true
+        Diamonds: true
+        Iron_Armor: true
+        Iron_Tools: true
+        Diamond_Tools: true
+        Item_Drops_Enabled: true
+        Records: true
+        Blaze_Rod: true
+        Leather_Armor: true
+        Drop_Chance:
+            Tier_1: 20
+            Tier_2: 25
+            Tier_3: 30
+            Tier_4: 35
+            Tier_5: 40
+        Gold_Armor: true
+        Glowstone_Dust: true
+        Ender_Pearl: true
+        Wooden_Tools: true
+Skills:
+    Taming:
+        Call_Of_The_Wild:
+            Bones_Required: 10
+    Excavation:
+        Requires_Shovel: true
+    Woodcutting:
+        Requires_Axe: true
+    Herbalism:
+        Green_Thumb:
+            Cobble_To_Mossy: true
+    Mining:
+        Requires_Pickaxe: true
+    Repair:
+        Leather:
+            ID: 334
+        String:
+            Name: Leather
+            ID: 287
+        Stone:
+            Name: Cobblestone
+            ID: 4
+        Wood:
+            Name: Wood Planks
+            ID: 5
+        Gold:
+            Name: Gold Bars
+            ID: 266
+        Anvil_Messages: true
+        Diamond:
+            Name: Diamond
+            Level_Required: 50
+            ID: 264
+        Iron:
+            Name: Iron Bars
+            ID: 265
+Experience:
+    Fishing:
+        Base: 800
+    Formula:
+        Multiplier:
+            Swords: 1.0
+            Taming: 1.0
+            Acrobatics: 1.0
+            Sorcery: 1.0
+            Excavation: 1.0
+            Herbalism: 1.0
+            Unarmed: 1.0
+            Woodcutting: 1.0
+            Mining: 1.0
+            Archery: 1.0
+            Axes: 1.0
+            Repair: 1.0
+    Gains:
+        Mobspawners:
+            Enabled: false
+        Multiplier:
+            PVP: 1
+            Global: 1.0
+    PVP:
+        Rewards: true
+    Excavation:
+        Base: 40
+        Cake: 3000
+        Sulphur: 30
+        Bones: 30
+        Map: 200
+        Slimeballs: 100
+        Bucket: 100
+        Apple: 100
+        Mushroom: 80
+        Eggs: 100
+        Slowsand: 80
+        Watch: 200
+        Web: 150
+        String: 200
+        Glowstone: 80
+        Music: 3000
+        Diamond: 1000
+        Cocoa_Beans: 100
+    Woodcutting:
+        Birch: 70
+        Spruce: 80
+        Pine: 90
+    Herbalism:
+        Sugar_Cane: 30
+        Cactus: 30
+        Flowers: 100
+        Pumpkin: 20
+        Mushrooms: 150
+        Wheat: 50
+        Melon: 20
+        Nether_Wart: 50
+        Lily_Pads: 100
+        Vines: 10
+    Mining:
+        Sandstone: 30
+        Glowstone: 30
+        Lapis: 400
+        Obsidian: 150
+        Stone: 30
+        Netherrack: 30
+        Gold: 350
+        Redstone: 150
+        Coal: 100
+        Diamond: 750
+        lapis: 400
+        Iron: 250
+MySQL:
+    Enabled: false
+    Database:
+        User:
+            Name: UserName
+            Password: UserPassword
+        Name: DataBaseName
+        TablePrefix: mcmmo_
+    Server:
+        Port: 3306
+        Address: localhost
+XP:
+    Gains:
+        Mobspawners:
+            Enabled: false
+    PVP:
+        Rewards: true
+General:
+    HP_Regeneration:
+        Enabled: true
+    Locale: en_us
+    MySpawn:
+        Enabled: true
+    MOTD:
+        Enabled: true
+Excavation:
+    Drops:
+        Cake: true
+        Sulphur: true
+        Bones: true
+        Apples: true
+        Map: true
+        Slimeballs: true
+        Bucket: true
+        Netherrack: true
+        Mushrooms: true
+        Eggs: true
+        Slowsand: true
+        Watch: true
+        Web: true
+        String: true
+        Glowstone: true
+        Music: true
+        Diamond: true
+        Cocoa_Beans: true
+Arcane_Forging:
+    Keep_Enchants:
+        Chance:
+            Rank_4: 40
+            Rank_3: 30
+            Rank_2: 20
+            Rank_1: 10
+    May_Lose_Enchants:
+        Enabled: true
+    Downgrades:
+        Enabled: true
+        Chance:
+            Rank_4: 15
+            Rank_3: 25
+            Rank_2: 50
+            Rank_1: 75
+Abilities:
+    Activation:
+        Only_Activate_When_Sneaking: false
+    Enabled: true
+    Messages: true
+    Cooldowns:
+        Giga_Drill_Breaker: 240
+        Berserk: 240
+        Green_Terra: 240
+        Skull_Splitter: 240
+        Serrated_Strikes: 240
+        Tree_Feller: 240
+        Super_Breaker: 240
+    Tools:
+        Durability_Loss: 2
+        Durability_Loss_Enabled: true
+Commands:
+    invite:
+        Name: invite
+        Enabled: true
+    mctop:
+        Name: mctop
+        Enabled: true
+    xplock:
+        Name: xplock
+        Enabled: true
+    whois:
+        Name: whois
+        Enabled: true
+    mcc:
+        Name: mcc
+        Enabled: true
+    mmoedit:
+        Name: mmoedit
+        Enabled: true
+    accept:
+        Name: accept
+        Enabled: true
+    stats:
+        Name: stats
+        Enabled: true
+    mcability:
+        Name: mcability
+        Enabled: true
+    party:
+        Name: party
+        Enabled: true
+    xprate:
+        Name: xprate
+        Enabled: true
+    mcgod:
+        Name: mcgod
+        Enabled: true
+    mcmmo:
+        Name: mcmmo
+        Enabled: true
+        Donate_Message: true
+    mcrefresh:
+        Name: mcrefresh
+        Enabled: true
+    myspawn:
+        Name: myspawn
+        Enabled: true
+    addxp:
+        Name: addxp
+        Enabled: true
+    clearmyspawn:
+        Name: clearmyspawn
+        Enabled: true
+    ptp:
+        Name: ptp
+        Enabled: true

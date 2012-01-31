@@ -97,7 +97,7 @@ public class mcMMO extends JavaPlugin
 	public Misc misc = new Misc(this);
 
 	//Config file stuff
-	LoadProperties config = new LoadProperties(this);
+	LoadProperties config;
 	//Jar stuff
 	public static File mcmmo;
 	
@@ -127,8 +127,8 @@ public class mcMMO extends JavaPlugin
 		
 		mcPermissions.initialize(getServer());
 		
-		System.out.println("[mcMMO]Checking config file at: " + this.getDataFolder().toString() + File.separator + "config.yml");
-		config.configCheck();
+		this.config = new LoadProperties(this);
+		this.config.load();
 		
 		Party.getInstance().loadParties();
 		new Party(this);
