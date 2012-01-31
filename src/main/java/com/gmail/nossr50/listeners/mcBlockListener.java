@@ -75,14 +75,15 @@ public class mcBlockListener implements Listener
     	//Check if the blocks placed should be monitored so they do not give out XP in the future
     	if(m.shouldBeWatched(block))
     	{
-    		if(block.getTypeId() != 17 && block.getTypeId() != 39 && block.getTypeId() != 40 && block.getTypeId() != 91 && block.getTypeId() != 86) {
+    		int id = block.getTypeId();
+    		if (id == 17 || id == 39 || id == 40 || id == 91 || id == 86 || id == 73) {
+    			plugin.misc.blockWatchList.add(block);
+    		} else {
     			//block.setData((byte) 5); //Change the byte
     			//The following is a method to get around a breakage in 1.1-R2 and onward
     			//it should be removed as soon as functionality to change a block
     			//in this event returns.
     			plugin.changeQueue.push(block);
-    		} else if(block.getTypeId() == 17 || block.getTypeId() == 39 || block.getTypeId() == 40 || block.getTypeId() == 91 || block.getTypeId() == 86) {
-    			plugin.misc.blockWatchList.add(block);
     		}
     	}
     	
