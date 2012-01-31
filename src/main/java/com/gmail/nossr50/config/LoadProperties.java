@@ -46,7 +46,8 @@ public class LoadProperties
 	berserkCooldown, serratedStrikeCooldown, skullSplitterCooldown, abilityDurabilityLoss,
 	feathersConsumedByChimaeraWing, bonesConsumedByCOTW, repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond, rString, rLeather,
 	downgradeRank1, downgradeRank2, downgradeRank3, downgradeRank4, keepEnchantsRank1, keepEnchantsRank2, keepEnchantsRank3, keepEnchantsRank4,
-	fishingDropChanceTier1, fishingDropChanceTier2, fishingDropChanceTier3, fishingDropChanceTier4, fishingDropChanceTier5;
+	fishingDropChanceTier1, fishingDropChanceTier2, fishingDropChanceTier3, fishingDropChanceTier4, fishingDropChanceTier5,
+	mnetherwart, mvines, mlilypad;
 	
 	public static double xpbackground_r, xpbackground_g, xpbackground_b, xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g, fishing_b, acrobatics_r, acrobatics_g, acrobatics_b, archery_r, archery_g, archery_b, axes_r, axes_g, axes_b,
 	excavation_r, excavation_g, excavation_b, herbalism_r, herbalism_g, herbalism_b, mining_r, mining_g, mining_b,
@@ -237,6 +238,8 @@ public class LoadProperties
 	    	write("Experience.Formula.Multiplier.Axes", 1.0);
 	    	write("Experience.Formula.Multiplier.Sorcery", 1.0);
 	    	write("Experience.Formula.Multiplier.Acrobatics", 1.0);
+	    	
+	    	//Mining XP values
 	    	write("Experience.Mining.Gold", 350);
 	    	write("Experience.Mining.Diamond", 750);
 	    	write("Experience.Mining.Iron", 250);
@@ -248,16 +251,25 @@ public class LoadProperties
 	    	write("Experience.Mining.Coal", 100);
 	    	write("Experience.Mining.Stone", 30);
 	    	write("Experience.Mining.Sandstone", 30);
+	    	
+	    	//Herbalism XP values
 	    	write("Experience.Herbalism.Sugar_Cane", 30);
 	    	write("Experience.Herbalism.Cactus", 30);
-	    	write("Experience.Herbalism.Pumpkin", 550);
+	    	write("Experience.Herbalism.Pumpkin", 20);
 	    	write("Experience.Herbalism.Flowers", 100);
 	    	write("Experience.Herbalism.Wheat", 50);
 	    	write("Experience.Herbalism.Mushrooms", 150);
-	    	write("Experience.Herbalism.Melon", 40);
+	    	write("Experience.Herbalism.Melon", 20);
+	    	write("Experience.Herbalism.Nether_Wart", 50);
+	    	write("Experience.Herbalism.Lily_Pads", 100);
+	    	write("Experience.Herbalism.Vines", 10);
+	    	
+	    	//Woodcutting XP values
 	    	write("Experience.Woodcutting.Pine", 90);
 	    	write("Experience.Woodcutting.Birch", 70);
 	    	write("Experience.Woodcutting.Spruce", 80);
+	    	
+	    	//Excavation XP values
 	    	write("Experience.Excavation.Base", 40);
 	    	write("Experience.Excavation.Mushroom", 80);
 	    	write("Experience.Excavation.Sulphur", 30);
@@ -275,6 +287,8 @@ public class LoadProperties
 	    	write("Experience.Excavation.String", 200);
 	    	write("Experience.Excavation.Bucket", 100);
 	    	write("Experience.Excavation.Web", 150);
+	    	
+	    	//Fishing XP values
 	    	write("Experience.Fishing.Base", 800);
 	    	
 	    	//write("Sorcery.Spells.Water.Thunder", 75);
@@ -509,10 +523,13 @@ public class LoadProperties
 	        msugar = readInteger("Experience.Herbalism.Sugar_Cane", 30);
 	        mwheat = readInteger("Experience.Herbalism.Wheat", 50);
 	    	mcactus = readInteger("Experience.Herbalism.Cactus", 30);
-	    	mpumpkin = readInteger("Experience.Herbalism.Pumpkin", 550);
+	    	mpumpkin = readInteger("Experience.Herbalism.Pumpkin", 20);
 	    	mflower = readInteger("Experience.Herbalism.Flowers", 100);
 	    	mmushroom = readInteger("Experience.Herbalism.Mushrooms", 150);
 	    	mmelon = readInteger("Experience.Herbalism.Melon", 20);
+	    	mnetherwart = readInteger("Experience.Herbalism.Nether_Wart", 50);
+	    	mlilypad = readInteger("Experience.Herbalism.Lily_Pads", 100);
+	    	mvines = readInteger("Experience.Herbalism.Vines", 10);
 	    	
 	    	mpine = readInteger("Experience.Woodcutting.Pine", 70);
 	    	mbirch = readInteger("Experience.Woodcutting.Birch", 80);

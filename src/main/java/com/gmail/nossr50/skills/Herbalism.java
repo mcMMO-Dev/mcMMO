@@ -157,6 +157,8 @@ public class Herbalism
     	{
     		return;
     	}
+    	
+    	//Wheat
     	if(type == 59 && block.getData() == (byte) 0x7)
     	{
     		mat = Material.getMaterial(296);
@@ -199,8 +201,24 @@ public class Herbalism
     				block.setData((byte) 0x4);
     		}
     	}
+    	
+    	//Nether Wart
+    	if(type == 115 && block.getData() == (byte) 0x3)
+    	{
+    		mat = Material.getMaterial(372);
+			is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    		PP.addXP(SkillType.HERBALISM, LoadProperties.mnetherwart, player);
+    		if(player != null)
+    		{
+	    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+	    		{
+	    			m.mcDropItem(loc, is);
+	    		}
+    		}
+    	}
+    	
     	/*
-    	 * We need to check not-wheat stuff for if it was placed by the player or not
+    	 * We need to check not-wheat and not-netherwart stuff for if it was placed by the player or not
     	 */
     	if(block.getData() != (byte) 5)
     	{
@@ -298,8 +316,9 @@ public class Herbalism
 	    	//Melon
 	    	if(type == 103)
 	    	{
-	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+	    		mat = Material.getMaterial(360);
+	    		int slices = (int) ((Math.random() + 3) + (int)(Math.random() * 4)); //drop 3-7 melon slices rather than melon blocks
+				is = new ItemStack(mat, slices, (byte)0, (byte)0);
 				
 				if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 	    		{
@@ -331,6 +350,29 @@ public class Herbalism
 		    		}
 	    		}
 	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mflower, player);
+	    	}
+	    	//Lily Pads
+	    	if(type == 111)
+	    	{
+	    		mat = Material.getMaterial(block.getTypeId());
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+	    		if(player != null){
+		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
+		    			m.mcDropItem(loc, is);
+		    		}
+	    		}
+	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mlilypad, player);
+	    	}
+	    	//Vines
+	    	if(type == 106){
+	    		mat = Material.getMaterial(block.getTypeId());
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+	    		if(player != null){
+		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
+		    			m.mcDropItem(loc, is);
+		    		}
+	    		}
+	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mvines, player);
 	    	}
     	}
     	Skills.XpCheckSkill(SkillType.HERBALISM, player);
