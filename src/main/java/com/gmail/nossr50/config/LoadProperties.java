@@ -107,34 +107,23 @@ public class LoadProperties {
 		loadKeys();
 	}
 
-	private void writeDefault(String root, Object x) {
-		config.addDefault(root, x);
-	}
-
 	private Boolean readBoolean(String root, Boolean def) {
-		// Configuration config = load();
 		Boolean result = config.getBoolean(root, def);
-		saveConfig();	// Why?
 		return result;
 	}
 
 	private Double readDouble(String root, Double def) {
 		Double result = config.getDouble(root, def);
-		saveConfig();	// Why?
 		return result;
 	}
 
 	private Integer readInteger(String root, Integer def) {
-		// Configuration config = load();
 		Integer result = config.getInt(root, def);
-		saveConfig();	// Why?
 		return result;
 	}
 
 	public static String readString(String root, String def) {
-		// Configuration config = load();
 		String result = config.getString(root, def);
-		saveConfig();	// Why?
 		return result;
 	}
 
@@ -149,278 +138,6 @@ public class LoadProperties {
 	private void addDefaults() {
 		// Load from included config.yml
 		config.options().copyDefaults(true);
-
-		// Put in defaults
-		writeDefault("Spout.HUD.Default", "STANDARD");
-		writeDefault("Spout.XP.Bar.Enabled", true);
-		writeDefault("Spout.Images.URL_DIR", "http://mcmmo.rycochet.net/mcmmo/");
-		writeDefault("Spout.XP.Icon.Enabled", true);
-		writeDefault("Spout.XP.Bar.X_POS", 95);
-		writeDefault("Spout.XP.Bar.Y_POS", 6);
-		writeDefault("Spout.XP.Icon.X_POS", 78);
-		writeDefault("Spout.XP.Icon.Y_POS", 2);
-		writeDefault("Spout.Party.HUD.Enabled", true);
-		writeDefault("Spout.Party.HUD.Show_Faces", true);
-		writeDefault("Spout.Party.HUD.Show_Display_Name", false);
-		writeDefault("Spout.Menu.Key", "KEY_M");
-		writeDefault("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Acrobatics.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Archery.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Archery.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Archery.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Axes.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Axes.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Axes.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Excavation.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Excavation.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Excavation.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Herbalism.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Herbalism.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Herbalism.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Mining.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Mining.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Mining.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Repair.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Repair.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Repair.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Swords.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Swords.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Swords.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Taming.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Taming.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Taming.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Unarmed.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Unarmed.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Unarmed.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Woodcutting.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Woodcutting.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Woodcutting.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Fishing.RED", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Fishing.GREEN", 0.3);
-		writeDefault("Spout.HUD.Retro.Colors.Fishing.BLUE", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Border.RED", 0.0);
-		writeDefault("Spout.HUD.Retro.Colors.Border.GREEN", 0.0);
-		writeDefault("Spout.HUD.Retro.Colors.Border.BLUE", 0.0);
-		writeDefault("Spout.HUD.Retro.Colors.Background.RED", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Background.GREEN", 0.75);
-		writeDefault("Spout.HUD.Retro.Colors.Background.BLUE", 0.75);
-
-		writeDefault("MySQL.Enabled", false);
-		writeDefault("MySQL.Server.Address", "localhost");
-		writeDefault("MySQL.Server.Port", 3306);
-		writeDefault("MySQL.Database.Name", "DataBaseName");
-		writeDefault("MySQL.Database.User.Name", "UserName");
-		writeDefault("MySQL.Database.TablePrefix", "mcmmo_");
-		writeDefault("MySQL.Database.User.Password", "UserPassword");
-
-		writeDefault("General.Locale", "en_us");
-		writeDefault("General.MOTD.Enabled", true);
-		writeDefault("General.MySpawn.Enabled", true);
-		writeDefault("General.HP_Regeneration.Enabled", true);
-
-		writeDefault("Items.Chimaera_Wing.Enabled", true);
-		writeDefault("Items.Chimaera_Wing.Feather_Cost", 10);
-		writeDefault("Items.Chimaera_Wing.Item_ID", 288);
-
-		writeDefault("Experience.PVP.Rewards", true);
-		writeDefault("Experience.Gains.Multiplier.PVP", 1);
-		writeDefault("Experience.Gains.Mobspawners.Enabled", false);
-		writeDefault("Experience.Gains.Multiplier.Global", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Taming", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Mining", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Repair", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Woodcutting", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Unarmed", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Herbalism", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Excavation", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Swords", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Archery", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Axes", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Sorcery", 1.0);
-		writeDefault("Experience.Formula.Multiplier.Acrobatics", 1.0);
-
-		// Mining XP values
-		writeDefault("Experience.Mining.Gold", 350);
-		writeDefault("Experience.Mining.Diamond", 750);
-		writeDefault("Experience.Mining.Iron", 250);
-		writeDefault("Experience.Mining.Redstone", 150);
-		writeDefault("Experience.Mining.Lapis", 400);
-		writeDefault("Experience.Mining.Obsidian", 150);
-		writeDefault("Experience.Mining.Netherrack", 30);
-		writeDefault("Experience.Mining.Glowstone", 30);
-		writeDefault("Experience.Mining.Coal", 100);
-		writeDefault("Experience.Mining.Stone", 30);
-		writeDefault("Experience.Mining.Sandstone", 30);
-
-		// Herbalism XP values
-		writeDefault("Experience.Herbalism.Sugar_Cane", 30);
-		writeDefault("Experience.Herbalism.Cactus", 30);
-		writeDefault("Experience.Herbalism.Pumpkin", 20);
-		writeDefault("Experience.Herbalism.Flowers", 100);
-		writeDefault("Experience.Herbalism.Wheat", 50);
-		writeDefault("Experience.Herbalism.Mushrooms", 150);
-		writeDefault("Experience.Herbalism.Melon", 20);
-		writeDefault("Experience.Herbalism.Nether_Wart", 50);
-		writeDefault("Experience.Herbalism.Lily_Pads", 100);
-		writeDefault("Experience.Herbalism.Vines", 10);
-
-		// Woodcutting XP values
-		writeDefault("Experience.Woodcutting.Pine", 90);
-		writeDefault("Experience.Woodcutting.Birch", 70);
-		writeDefault("Experience.Woodcutting.Spruce", 80);
-
-		// Excavation XP values
-		writeDefault("Experience.Excavation.Base", 40);
-		writeDefault("Experience.Excavation.Mushroom", 80);
-		writeDefault("Experience.Excavation.Sulphur", 30);
-		writeDefault("Experience.Excavation.Slowsand", 80);
-		writeDefault("Experience.Excavation.Glowstone", 80);
-		writeDefault("Experience.Excavation.Music", 3000);
-		writeDefault("Experience.Excavation.Bones", 30);
-		writeDefault("Experience.Excavation.Diamond", 1000);
-		writeDefault("Experience.Excavation.Apple", 100);
-		writeDefault("Experience.Excavation.Eggs", 100);
-		writeDefault("Experience.Excavation.Cake", 3000);
-		writeDefault("Experience.Excavation.Slimeballs", 100);
-		writeDefault("Experience.Excavation.Cocoa_Beans", 100);
-		writeDefault("Experience.Excavation.Map", 200);
-		writeDefault("Experience.Excavation.String", 200);
-		writeDefault("Experience.Excavation.Bucket", 100);
-		writeDefault("Experience.Excavation.Web", 150);
-
-		// Fishing XP values
-		writeDefault("Experience.Fishing.Base", 800);
-
-		// writeDefault("Sorcery.Spells.Water.Thunder", 75);
-		// writeDefault("Sorcery.Spells.Curative.Cure_Self.Mana_Cost", 5);
-		// writeDefault("Sorcery.Spells.Curative.Cure_Other.Mana_Cost", 5);
-
-		writeDefault("Excavation.Drops.Cocoa_Beans", true);
-		writeDefault("Excavation.Drops.Mushrooms", true);
-		writeDefault("Excavation.Drops.Glowstone", true);
-		writeDefault("Excavation.Drops.Eggs", true);
-		writeDefault("Excavation.Drops.Apples", true);
-		writeDefault("Excavation.Drops.Cake", true);
-		writeDefault("Excavation.Drops.Music", true);
-		writeDefault("Excavation.Drops.Diamond", true);
-		writeDefault("Excavation.Drops.Slowsand", true);
-		writeDefault("Excavation.Drops.Sulphur", true);
-		writeDefault("Excavation.Drops.Netherrack", true);
-		writeDefault("Excavation.Drops.Bones", true);
-		writeDefault("Excavation.Drops.Slimeballs", true);
-		writeDefault("Excavation.Drops.Map", true);
-		writeDefault("Excavation.Drops.String", true);
-		writeDefault("Excavation.Drops.Bucket", true);
-		writeDefault("Excavation.Drops.Web", true);
-
-		writeDefault("Commands.xprate.Name", "xprate");
-		writeDefault("Commands.xprate.Enabled", true);
-		writeDefault("Commands.mctop.Name", "mctop");
-		writeDefault("Commands.mctop.Enabled", true);
-		writeDefault("Commands.addxp.Name", "addxp");
-		writeDefault("Commands.addxp.Enabled", true);
-		writeDefault("Commands.mcability.Name", "mcability");
-		writeDefault("Commands.mcability.Enabled", true);
-		writeDefault("Commands.mcrefresh.Name", "mcrefresh");
-		writeDefault("Commands.mcrefresh.Enabled", true);
-		writeDefault("Commands.mcmmo.Name", "mcmmo");
-		writeDefault("Commands.mcmmo.Donate_Message", true);
-		writeDefault("Commands.mcmmo.Enabled", true);
-		writeDefault("Commands.mcc.Name", "mcc");
-		writeDefault("Commands.mcc.Enabled", true);
-		writeDefault("Commands.mcgod.Name", "mcgod");
-		writeDefault("Commands.mcgod.Enabled", true);
-		writeDefault("Commands.stats.Name", "stats");
-		writeDefault("Commands.stats.Enabled", true);
-		writeDefault("Commands.mmoedit.Name", "mmoedit");
-		writeDefault("Commands.mmoedit.Enabled", true);
-		writeDefault("Commands.ptp.Name", "ptp");
-		writeDefault("Commands.ptp.Enabled", true);
-		writeDefault("Commands.party.Name", "party");
-		writeDefault("Commands.party.Enabled", true);
-		writeDefault("Commands.myspawn.Name", "myspawn");
-		writeDefault("Commands.myspawn.Enabled", true);
-		writeDefault("Commands.whois.Name", "whois");
-		writeDefault("Commands.whois.Enabled", true);
-		writeDefault("Commands.invite.Name", "invite");
-		writeDefault("Commands.invite.Enabled", true);
-		writeDefault("Commands.accept.Name", "accept");
-		writeDefault("Commands.accept.Enabled", true);
-		writeDefault("Commands.clearmyspawn.Name", "clearmyspawn");
-		writeDefault("Commands.clearmyspawn.Enabled", true);
-		writeDefault("Commands.xplock.Enabled", true);
-		writeDefault("Commands.xplock.Name", "xplock");
-
-		writeDefault("Abilities.Tools.Durability_Loss_Enabled", true);
-		writeDefault("Abilities.Tools.Durability_Loss", 2);
-		writeDefault("Abilities.Activation.Only_Activate_When_Sneaking", false);
-		writeDefault("Abilities.Cooldowns.Green_Terra", 240);
-		writeDefault("Abilities.Cooldowns.Super_Breaker", 240);
-		writeDefault("Abilities.Cooldowns.Giga_Drill_Breaker", 240);
-		writeDefault("Abilities.Cooldowns.Tree_Feller", 240);
-		writeDefault("Abilities.Cooldowns.Berserk", 240);
-		writeDefault("Abilities.Cooldowns.Serrated_Strikes", 240);
-		writeDefault("Abilities.Cooldowns.Skull_Splitter", 240);
-		writeDefault("Abilities.Messages", true);
-		writeDefault("Abilities.Enabled", true);
-
-		writeDefault("Skills.Repair.Anvil_Messages", true);
-		writeDefault("Skills.Repair.Gold.ID", 266);
-		writeDefault("Skills.Repair.Gold.Name", "Gold Bars");
-		writeDefault("Skills.Repair.Stone.ID", 4);
-		writeDefault("Skills.Repair.Stone.Name", "Cobblestone");
-		writeDefault("Skills.Repair.Wood.ID", 5);
-		writeDefault("Skills.Repair.Wood.Name", "Wood Planks");
-		writeDefault("Skills.Repair.Diamond.ID", 264);
-		writeDefault("Skills.Repair.Diamond.Name", "Diamond");
-		writeDefault("Skills.Repair.Diamond.Level_Required", 50);
-		writeDefault("Skills.Repair.Iron.ID", 265);
-		writeDefault("Skills.Repair.Iron.Name", "Iron Bars");
-		writeDefault("Skills.Repair.String.ID", 287);
-		writeDefault("Skills.Repair.String.Name", "String");
-		writeDefault("Skills.Repair.Leather.ID", 334);
-		writeDefault("Skills.Repair.String.Name", "Leather");
-		writeDefault("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
-		writeDefault("Skills.Excavation.Requires_Shovel", true);
-		writeDefault("Skills.Mining.Requires_Pickaxe", true);
-		writeDefault("Skills.Woodcutting.Requires_Axe", true);
-		writeDefault("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
-
-		// Arcane Forging Config Options
-		writeDefault("Arcane_Forging.Downgrades.Enabled", true);
-		writeDefault("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
-		writeDefault("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
-		writeDefault("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
-		writeDefault("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
-		writeDefault("Arcane_Forging.May_Lose_Enchants.Enabled", true);
-		writeDefault("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
-		writeDefault("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
-		writeDefault("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
-		writeDefault("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
-
-		// Fishing Config Options
-		writeDefault("Fishing.Drops.Item_Drops_Enabled", true);
-		writeDefault("Fishing.Drops.Drop_Chance.Tier_1", 20);
-		writeDefault("Fishing.Drops.Drop_Chance.Tier_2", 25);
-		writeDefault("Fishing.Drops.Drop_Chance.Tier_3", 30);
-		writeDefault("Fishing.Drops.Drop_Chance.Tier_4", 35);
-		writeDefault("Fishing.Drops.Drop_Chance.Tier_5", 40);
-		writeDefault("Fishing.Drops.Leather_Armor", true);
-		writeDefault("Fishing.Drops.Iron_Armor", true);
-		writeDefault("Fishing.Drops.Gold_Armor", true);
-		writeDefault("Fishing.Drops.Diamond_Armor", true);
-		writeDefault("Fishing.Drops.Wooden_Tools", true);
-		writeDefault("Fishing.Drops.Stone_Tools", true);
-		writeDefault("Fishing.Drops.Iron_Tools", true);
-		writeDefault("Fishing.Drops.Gold_Tools", true);
-		writeDefault("Fishing.Drops.Diamond_Tools", true);
-		writeDefault("Fishing.Drops.Ender_Pearl", true);
-		writeDefault("Fishing.Drops.Blaze_Rod", true);
-		writeDefault("Fishing.Drops.Records", true);
-		writeDefault("Fishing.Drops.Glowstone_Dust", true);
-		writeDefault("Fishing.Drops.Diamonds", true);
-
 		saveConfig();
 	}
 
@@ -671,58 +388,23 @@ public class LoadProperties {
 		glowstoneDust = readBoolean("Fishing.Drops.Glowstone_Dust", true);
 		fishingDiamonds = readBoolean("Fishing.Drops.Diamonds", true);
 
-		xprate = readString("Commands.xprate.Name", "xprate");
 		xprateEnable = readBoolean("Commands.xprate.Enabled", true);
-
-		mctop = readString("Commands.mctop.Name", "mctop");
 		mctopEnable = readBoolean("Commands.mctop.Enabled", true);
-
-		addxp = readString("Commands.addxp.Name", "addxp");
 		addxpEnable = readBoolean("Commands.addxp.Enabled", true);
-
-		mcability = readString("Commands.mcability.Name", "mcability");
 		mcabilityEnable = readBoolean("Commands.mcability.Enabled", true);
-
-		mcrefresh = readString("Commands.mcrefresh.Name", "mcrefresh");
 		mcrefreshEnable = readBoolean("Commands.mcrefresh.Enabled", true);
-
-		mcmmo = readString("Commands.mcmmo.Name", "mcmmo");
 		mcmmoEnable = readBoolean("Commands.mcmmo.Enabled", true);
-
-		mcc = readString("Commands.mcc.Name", "mcc");
 		mccEnable = readBoolean("Commands.mcc.Enabled", true);
-
-		mcgod = readString("Commands.mcgod.Name", "mcgod");
 		mcgodEnable = readBoolean("Commands.mcgod.Enabled", true);
-
-		stats = readString("Commands.stats.Name", "stats");
 		statsEnable = readBoolean("Commands.stats.Enabled", true);
-
-		mmoedit = readString("Commands.mmoedit.Name", "mmoedit");
 		mmoeditEnable = readBoolean("Commands.mmoedit.Enabled", true);
-
-		ptp = readString("Commands.ptp.Name", "ptp");
 		ptpEnable = readBoolean("Commands.ptp.Enabled", true);
-
-		party = readString("Commands.party.Name", "party");
 		partyEnable = readBoolean("Commands.party.Enabled", true);
-
-		myspawn = readString("Commands.myspawn.Name", "myspawn");
 		myspawnEnable = readBoolean("Commands.myspawn.Enabled", true);
-
-		whois = readString("Commands.whois.Name", "whois");
 		whoisEnable = readBoolean("Commands.whois.Enabled", true);
-
-		invite = readString("Commands.invite.Name", "invite");
 		inviteEnable = readBoolean("Commands.invite.Enabled", true);
-
-		accept = readString("Commands.accept.Name", "accept");
 		acceptEnable = readBoolean("Commands.accept.Enabled", true);
-
-		clearmyspawn = readString("Commands.clearmyspawn.Name", "clearmyspawn");
 		clearmyspawnEnable = readBoolean("Commands.clearmyspawn.Enabled", true);
-
-		xplockEnable = readBoolean("Commands.xplock.Enabled", true);
 		xplock = readString("Commands.xplock.Name", "xplock");
 	}
 }

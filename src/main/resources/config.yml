@@ -292,57 +292,39 @@ Abilities:
         Durability_Loss_Enabled: true
 Commands:
     invite:
-        Name: invite
         Enabled: true
     mctop:
-        Name: mctop
         Enabled: true
     xplock:
-        Name: xplock
         Enabled: true
     whois:
-        Name: whois
         Enabled: true
     mcc:
-        Name: mcc
         Enabled: true
     mmoedit:
-        Name: mmoedit
         Enabled: true
     accept:
-        Name: accept
         Enabled: true
     stats:
-        Name: stats
         Enabled: true
     mcability:
-        Name: mcability
         Enabled: true
     party:
-        Name: party
         Enabled: true
     xprate:
-        Name: xprate
         Enabled: true
     mcgod:
-        Name: mcgod
         Enabled: true
     mcmmo:
-        Name: mcmmo
         Enabled: true
         Donate_Message: true
     mcrefresh:
-        Name: mcrefresh
         Enabled: true
     myspawn:
-        Name: myspawn
         Enabled: true
     addxp:
-        Name: addxp
         Enabled: true
     clearmyspawn:
-        Name: clearmyspawn
         Enabled: true
     ptp:
-        Name: ptp
         Enabled: true
