@@ -48,7 +48,7 @@ public class InviteCommand implements CommandExecutor {
 			return true;
 		}
 		if (args.length < 1) {
-			player.sendMessage(ChatColor.RED + "Usage is /" + LoadProperties.invite + " <playername>");
+			player.sendMessage(ChatColor.RED + "Usage is /invite <playername>");
 			return true;
 		}
 		if (PP.inParty() && args.length >= 1 && (plugin.getServer().getPlayer(args[0]) != null)) {
@@ -61,7 +61,7 @@ public class InviteCommand implements CommandExecutor {
 				// target.sendMessage(ChatColor.RED+"ALERT: "+ChatColor.GREEN+"You have received a party invite for "+PPt.getInvite()+" from "+player.getName());
 				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite1", new Object[] { PPt.getInvite(), player.getName() }));
 				// target.sendMessage(ChatColor.YELLOW+"Type "+ChatColor.GREEN+LoadProperties.accept+ChatColor.YELLOW+" to accept the invite");
-				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite2", new Object[] { LoadProperties.accept }));
+				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite2", new Object[] { "/accept" }));
 			} else {
 				player.sendMessage(mcLocale.getString("Party.Locked"));
 				return true;

@@ -97,7 +97,7 @@ public class mcMMO extends JavaPlugin
 	public Misc misc = new Misc(this);
 
 	//Config file stuff
-	LoadProperties config = new LoadProperties(this);
+	LoadProperties config;
 	//Jar stuff
 	public static File mcmmo;
 	
@@ -127,8 +127,8 @@ public class mcMMO extends JavaPlugin
 		
 		mcPermissions.initialize(getServer());
 		
-		System.out.println("[mcMMO]Checking config file at: " + this.getDataFolder().toString() + File.separator + "config.yml");
-		config.configCheck();
+		this.config = new LoadProperties(this);
+		this.config.load();
 		
 		Party.getInstance().loadParties();
 		new Party(this);
@@ -275,36 +275,6 @@ public class mcMMO extends JavaPlugin
 		aliasMap.put(mcLocale.getString("m.SkillUnarmed").toLowerCase(), "unarmed");
 		aliasMap.put(mcLocale.getString("m.SkillWoodCutting").toLowerCase(), "woodcutting");
 		
-		//Mc* commands
-		aliasMap.put(LoadProperties.mcability, "mcability");
-		aliasMap.put(LoadProperties.mcc, "mcc");
-		aliasMap.put(LoadProperties.mcgod, "mcgod");
-		aliasMap.put(LoadProperties.mcmmo, "mcmmo");
-		aliasMap.put(LoadProperties.mcrefresh, "mcrefresh");
-		aliasMap.put(LoadProperties.mctop, "mctop");
-		
-		//Party commands
-		aliasMap.put(LoadProperties.accept, "accept");
-		//aliasMap.put(null, "a");
-		aliasMap.put(LoadProperties.invite, "invite");
-		aliasMap.put(LoadProperties.party, "party");
-		//aliasMap.put(null, "p");
-		aliasMap.put(LoadProperties.ptp, "ptp");
-		
-		//Other commands
-		aliasMap.put(LoadProperties.addxp, "addxp");
-		aliasMap.put(LoadProperties.clearmyspawn, "clearmyspawn");
-		aliasMap.put(LoadProperties.mmoedit, "mmoedit");
-		//aliasMap.put(key, "mmoupdate");
-		aliasMap.put(LoadProperties.myspawn, "myspawn");
-		aliasMap.put(LoadProperties.stats, "stats");
-		aliasMap.put(LoadProperties.whois, "whois");
-		aliasMap.put(LoadProperties.xprate, "xprate");
-		
-		//Spout commands
-		//aliasMap.put(null, "mchud");
-		aliasMap.put(LoadProperties.xplock, "xplock");
-		
 		
 		//Register commands
 		//Skills commands
@@ -322,34 +292,34 @@ public class mcMMO extends JavaPlugin
 		getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
 		
 		//Mc* commands
-		getCommand("mcability").setExecutor(new McabilityCommand());
-		getCommand("mcc").setExecutor(new MccCommand());
-		getCommand("mcgod").setExecutor(new McgodCommand());
-		getCommand("mcmmo").setExecutor(new McmmoCommand());
-		getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
-		getCommand("mctop").setExecutor(new MctopCommand());
+		if(LoadProperties.mcabilityEnable) getCommand("mcability").setExecutor(new McabilityCommand());
+		if(LoadProperties.mccEnable) getCommand("mcc").setExecutor(new MccCommand());
+		if(LoadProperties.mcgodEnable) getCommand("mcgod").setExecutor(new McgodCommand());
+		if(LoadProperties.mcmmoEnable) getCommand("mcmmo").setExecutor(new McmmoCommand());
+		if(LoadProperties.mcrefreshEnable) getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
+		if(LoadProperties.mctopEnable) getCommand("mctop").setExecutor(new MctopCommand());
 		
 		//Party commands
-		getCommand("accept").setExecutor(new AcceptCommand());
+		if(LoadProperties.acceptEnable) getCommand("accept").setExecutor(new AcceptCommand());
 		getCommand("a").setExecutor(new ACommand());
-		getCommand("invite").setExecutor(new InviteCommand(this));
-		getCommand("party").setExecutor(new PartyCommand());
+		if(LoadProperties.inviteEnable) getCommand("invite").setExecutor(new InviteCommand(this));
+		if(LoadProperties.partyEnable) getCommand("party").setExecutor(new PartyCommand());
 		getCommand("p").setExecutor(new PCommand());
-		getCommand("ptp").setExecutor(new PtpCommand(this));
+		if(LoadProperties.ptpEnable) getCommand("ptp").setExecutor(new PtpCommand(this));
 		
 		//Other commands
-		getCommand("addxp").setExecutor(new AddxpCommand(this));
-		getCommand("clearmyspawn").setExecutor(new ClearmyspawnCommand());
-		getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
+		if(LoadProperties.addxpEnable) getCommand("addxp").setExecutor(new AddxpCommand(this));
+		if(LoadProperties.clearmyspawnEnable) getCommand("clearmyspawn").setExecutor(new ClearmyspawnCommand());
+		if(LoadProperties.mmoeditEnable) getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
 		getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
-		getCommand("myspawn").setExecutor(new MyspawnCommand());
-		getCommand("stats").setExecutor(new StatsCommand());
-		getCommand("whois").setExecutor(new WhoisCommand(this));
-		getCommand("xprate").setExecutor(new XprateCommand());
+		if(LoadProperties.myspawnEnable) getCommand("myspawn").setExecutor(new MyspawnCommand());
+		if(LoadProperties.statsEnable) getCommand("stats").setExecutor(new StatsCommand());
+		if(LoadProperties.whoisEnable) getCommand("whois").setExecutor(new WhoisCommand(this));
+		if(LoadProperties.xprateEnable) getCommand("xprate").setExecutor(new XprateCommand());
 		
 		//Spout commands
 		getCommand("mchud").setExecutor(new MchudCommand());
-		getCommand("xplock").setExecutor(new XplockCommand());
+		if(LoadProperties.xplockEnable) getCommand("xplock").setExecutor(new XplockCommand());
 		
 	}
 

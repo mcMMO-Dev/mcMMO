@@ -27,8 +27,8 @@ public class XprateCommand implements CommandExecutor {
 		if (!(sender instanceof Player)) {
 			if(args.length <= 0)
 			{
-				System.out.println(mcLocale.getString("Commands.xprate.proper", new Object[] {LoadProperties.xprate}));
-				System.out.println(mcLocale.getString("Commands.xprate.proper2", new Object[] {LoadProperties.xprate}));
+				System.out.println(mcLocale.getString("Commands.xprate.proper", new Object[] {"/xprate"}));
+				System.out.println(mcLocale.getString("Commands.xprate.proper2", new Object[] {"/xprate"}));
 			}
 			
 			if(args.length == 1 && args[0].equalsIgnoreCase("reset"))
@@ -81,8 +81,8 @@ public class XprateCommand implements CommandExecutor {
 		}
 		if(args.length <= 0)
 		{
-			player.sendMessage(mcLocale.getString("Commands.xprate.proper", new Object[] {LoadProperties.xprate}));
-			player.sendMessage(mcLocale.getString("Commands.xprate.proper2", new Object[] {LoadProperties.xprate}));
+			player.sendMessage(mcLocale.getString("Commands.xprate.proper", new Object[] {"/xprate"}));
+			player.sendMessage(mcLocale.getString("Commands.xprate.proper2", new Object[] {"/xprate"}));
 		}
 		if(args.length == 1 && args[0].equalsIgnoreCase("reset"))
 		{

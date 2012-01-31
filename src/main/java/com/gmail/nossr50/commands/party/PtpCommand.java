@@ -40,7 +40,7 @@ public class PtpCommand implements CommandExecutor {
 			return true;
 		}
 		if (args.length < 1) {
-			player.sendMessage(ChatColor.RED + "Usage is /" + LoadProperties.ptp + " <playername>");
+			player.sendMessage(ChatColor.RED + "Usage is /ptp <playername>");
 			return true;
 		}
 		if (plugin.getServer().getPlayer(args[0]) == null) {

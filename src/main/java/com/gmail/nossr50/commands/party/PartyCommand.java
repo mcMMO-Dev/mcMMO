@@ -42,9 +42,9 @@ public class PartyCommand implements CommandExecutor {
 		}
 
 		if (args.length == 0 && !PP.inParty()) {
-			player.sendMessage(mcLocale.getString("Party.Help1", new Object[] { LoadProperties.party }));
-			player.sendMessage(mcLocale.getString("Party.Help2", new Object[] { LoadProperties.party }));
-			player.sendMessage(mcLocale.getString("Party.Help3", new Object[] { LoadProperties.party }));
+			player.sendMessage(mcLocale.getString("Party.Help1", new Object[] { "/party "}));
+			player.sendMessage(mcLocale.getString("Party.Help2", new Object[] { "/party "}));
+			player.sendMessage(mcLocale.getString("Party.Help3", new Object[] { "/party " }));
 			return true;
 		} else if (args.length == 0 && PP.inParty()) {
 			String tempList = "";
@@ -81,13 +81,13 @@ public class PartyCommand implements CommandExecutor {
 				player.sendMessage(mcLocale.getString("mcPlayerListener.LeftParty"));
 				return true;
 			} else if (args[0].equalsIgnoreCase("?")) {
-				player.sendMessage(mcLocale.getString("Party.Help4", new Object[] { LoadProperties.party }));
-				player.sendMessage(mcLocale.getString("Party.Help2", new Object[] { LoadProperties.party }));
-				player.sendMessage(mcLocale.getString("Party.Help5", new Object[] { LoadProperties.party }));
-				player.sendMessage(mcLocale.getString("Party.Help6", new Object[] { LoadProperties.party }));
-				player.sendMessage(mcLocale.getString("Party.Help7", new Object[] { LoadProperties.party }));
-				player.sendMessage(mcLocale.getString("Party.Help8", new Object[] { LoadProperties.party }));
-				player.sendMessage(mcLocale.getString("Party.Help9", new Object[] { LoadProperties.party }));
+				player.sendMessage(mcLocale.getString("Party.Help4", new Object[] { "/party " }));
+				player.sendMessage(mcLocale.getString("Party.Help2", new Object[] { "/party " }));
+				player.sendMessage(mcLocale.getString("Party.Help5", new Object[] { "/party " }));
+				player.sendMessage(mcLocale.getString("Party.Help6", new Object[] { "/party " }));
+				player.sendMessage(mcLocale.getString("Party.Help7", new Object[] { "/party " }));
+				player.sendMessage(mcLocale.getString("Party.Help8", new Object[] { "/party " }));
+				player.sendMessage(mcLocale.getString("Party.Help9", new Object[] { "/party " }));
 			} else if (args[0].equalsIgnoreCase("lock")) {
 				if (PP.inParty()) {
 					if (Pinstance.isPartyLeader(player.getName(), PP.getParty())) {
