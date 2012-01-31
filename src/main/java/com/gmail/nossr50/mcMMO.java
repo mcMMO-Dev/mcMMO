@@ -275,36 +275,6 @@ public class mcMMO extends JavaPlugin
 		aliasMap.put(mcLocale.getString("m.SkillUnarmed").toLowerCase(), "unarmed");
 		aliasMap.put(mcLocale.getString("m.SkillWoodCutting").toLowerCase(), "woodcutting");
 		
-		//Mc* commands
-		aliasMap.put(LoadProperties.mcability, "mcability");
-		aliasMap.put(LoadProperties.mcc, "mcc");
-		aliasMap.put(LoadProperties.mcgod, "mcgod");
-		aliasMap.put(LoadProperties.mcmmo, "mcmmo");
-		aliasMap.put(LoadProperties.mcrefresh, "mcrefresh");
-		aliasMap.put(LoadProperties.mctop, "mctop");
-		
-		//Party commands
-		aliasMap.put(LoadProperties.accept, "accept");
-		//aliasMap.put(null, "a");
-		aliasMap.put(LoadProperties.invite, "invite");
-		aliasMap.put(LoadProperties.party, "party");
-		//aliasMap.put(null, "p");
-		aliasMap.put(LoadProperties.ptp, "ptp");
-		
-		//Other commands
-		aliasMap.put(LoadProperties.addxp, "addxp");
-		aliasMap.put(LoadProperties.clearmyspawn, "clearmyspawn");
-		aliasMap.put(LoadProperties.mmoedit, "mmoedit");
-		//aliasMap.put(key, "mmoupdate");
-		aliasMap.put(LoadProperties.myspawn, "myspawn");
-		aliasMap.put(LoadProperties.stats, "stats");
-		aliasMap.put(LoadProperties.whois, "whois");
-		aliasMap.put(LoadProperties.xprate, "xprate");
-		
-		//Spout commands
-		//aliasMap.put(null, "mchud");
-		aliasMap.put(LoadProperties.xplock, "xplock");
-		
 		
 		//Register commands
 		//Skills commands

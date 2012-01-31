@@ -44,10 +44,8 @@ public class LoadProperties {
 			diamondTools, enderPearl, blazeRod, records, glowstoneDust,
 			fishingDiamonds;
 
-	public static String xplock, MySQLtablePrefix, MySQLuserName,
-			MySQLserverName, MySQLdbName, MySQLdbPass, mctop, addxp, xprate,
-			mcability, mcmmo, mcc, mcrefresh, mcgod, stats, mmoedit, ptp,
-			party, myspawn, whois, invite, accept, clearmyspawn, nWood, nStone,
+	public static String MySQLtablePrefix, MySQLuserName,
+			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
 			nIron, nGold, nDiamond, locale, nString, nLeather;
 
 	public static int mfishing, mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y,
@@ -405,6 +403,5 @@ public class LoadProperties {
 		inviteEnable = readBoolean("Commands.invite.Enabled", true);
 		acceptEnable = readBoolean("Commands.accept.Enabled", true);
 		clearmyspawnEnable = readBoolean("Commands.clearmyspawn.Enabled", true);
-		xplock = readString("Commands.xplock.Name", "xplock");
 	}
 }

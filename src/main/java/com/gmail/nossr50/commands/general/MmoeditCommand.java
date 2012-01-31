@@ -36,7 +36,7 @@ public class MmoeditCommand implements CommandExecutor {
 
 		if (!(sender instanceof Player)) {
 			if (args.length < 2) {
-				System.out.println("Usage is /" + LoadProperties.mmoedit + " playername skillname newvalue");
+				System.out.println("Usage is /mmoedit playername skillname newvalue");
 				return true;
 			} else if (args.length == 3) {
 				if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
@@ -45,7 +45,7 @@ public class MmoeditCommand implements CommandExecutor {
 					System.out.println(args[1] + " has been modified for " + plugin.getServer().getPlayer(args[0]).getName() + ".");
 				}
 			} else {
-				System.out.println("Usage is /" + LoadProperties.mmoedit + " playername skillname newvalue");
+				System.out.println("Usage is /mmoedit playername skillname newvalue");
 			}
 
 			return true;
@@ -59,7 +59,7 @@ public class MmoeditCommand implements CommandExecutor {
 			return true;
 		}
 		if (args.length < 2) {
-			player.sendMessage(ChatColor.RED + "Usage is /" + LoadProperties.mmoedit + " playername skillname newvalue");
+			player.sendMessage(ChatColor.RED + "Usage is /mmoedit playername skillname newvalue");
 			return true;
 		}
 		if (args.length == 3) {
@@ -75,7 +75,7 @@ public class MmoeditCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + args[0] + " has been modified.");
 			}
 		} else {
-			player.sendMessage(ChatColor.RED + "Usage is /" + LoadProperties.mmoedit + " playername skillname newvalue");
+			player.sendMessage(ChatColor.RED + "Usage is /mmoedit playername skillname newvalue");
 		}
 
 		return true;

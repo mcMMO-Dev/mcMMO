@@ -246,7 +246,7 @@ public class Party
 	    			if(password == null) 
 	    			{
 	    				//TODO: Needs more locale.
-	    				player.sendMessage("This party requires a password. Use "+LoadProperties.party+" <party> <password> to join it.");
+	    				player.sendMessage("This party requires a password. Use /party <party> <password> to join it.");
 	    				return;
 	    			} else if(!password.equalsIgnoreCase(getPartyPassword(newParty))) 
 	    			{

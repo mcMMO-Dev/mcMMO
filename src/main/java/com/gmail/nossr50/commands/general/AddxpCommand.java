@@ -62,7 +62,7 @@ public class AddxpCommand implements CommandExecutor {
 			return true;
 		}
 		if (args.length < 2) {
-			player.sendMessage(ChatColor.RED + "Usage is /" + LoadProperties.addxp + " playername skillname xp");
+			player.sendMessage(ChatColor.RED + "Usage is /addxp playername skillname xp");
 			return true;
 		}
 		if (args.length == 3) {
@@ -78,7 +78,7 @@ public class AddxpCommand implements CommandExecutor {
 			Users.getProfile(player).addXP(Skills.getSkillType(args[0]), newvalue, player);
 			player.sendMessage(ChatColor.RED + args[0] + " has been modified.");
 		} else {
-			player.sendMessage(ChatColor.RED + "Usage is /" + LoadProperties.addxp + " playername skillname xp");
+			player.sendMessage(ChatColor.RED + "Usage is /addxp playername skillname xp");
 		}
 
 		return true;

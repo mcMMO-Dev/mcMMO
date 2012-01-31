@@ -38,7 +38,7 @@ public class WhoisCommand implements CommandExecutor {
 		}
 
 		if (args.length < 1) {
-			player.sendMessage(ChatColor.RED + "Proper usage is /" + LoadProperties.whois + " <playername>");
+			player.sendMessage(ChatColor.RED + "Proper usage is /whois <playername>");
 			return true;
 		}
 		// if split[1] is a player

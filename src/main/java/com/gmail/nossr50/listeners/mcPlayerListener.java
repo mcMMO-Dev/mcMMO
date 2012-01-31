@@ -164,7 +164,7 @@ public class mcPlayerListener implements Listener
 		Player player = event.getPlayer();
 		if(mcPermissions.getInstance().motd(player) && LoadProperties.enableMotd)
 		{
-			player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), LoadProperties.mcmmo}));
+			player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), "/mcmmo"}));
 			player.sendMessage(mcLocale.getString("mcPlayerListener.WIKI"));
 		}
 		//THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
