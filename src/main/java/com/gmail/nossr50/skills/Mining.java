@@ -79,10 +79,10 @@ public class Mining
 	public static void blockProcSimulate(Block block)
 	{
     	Location loc = block.getLocation();
-    	Material mat = Material.getMaterial(block.getTypeId());
+    	int id = block.getTypeId();
+    	Material mat = Material.getMaterial(id);
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-		int id = block.getTypeId();
 		
 		if(id != 89 && id != 73 && id != 74 && id != 56 && id != 21 && id != 1 && id != 16) {
 			m.mcDropItem(loc, item);
@@ -108,7 +108,7 @@ public class Mining
 				m.mcDropItem(loc, item);
 			}
 		}
-		//LAPUS
+		//LAPIS
 		else if(id == 21)
 		{
 			mat = Material.getMaterial(351);
@@ -220,11 +220,8 @@ public class Mining
      */
     public static Boolean canBeSuperBroken(Block block)
     {
-    	int t = block.getTypeId();
-    	if(t == 49 || t == 87 || t == 89 || t == 73 || t == 74 || t == 56 || t == 21 || t == 1 || t == 16 || t == 14 || t == 15 || t == 112)
-    		return true;
-    	else
-    		return false;
+    	int id = block.getTypeId();
+    	return id == 1 || id == 14 || id == 15 || id == 16 || id == 21 || id == 24 || id == 49 || id == 56 || id == 73 || id == 74 || id == 87 || id == 89;
     }
     
     public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin)
@@ -241,12 +238,11 @@ public class Mining
     	
     	//Pre-processing
     	Location loc = block.getLocation();
-    	Material mat = Material.getMaterial(block.getTypeId());
+    	int id = block.getTypeId();
+    	Material mat = Material.getMaterial(id);
     	int xp = 0;
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-		int id = block.getTypeId();
-		
 		
     	if(id == 1 || id == 24)
     	{

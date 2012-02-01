@@ -76,9 +76,11 @@ public class mcBlockListener implements Listener
     	if(m.shouldBeWatched(block))
     	{
     		int id = block.getTypeId();
-    		if (id == 17 || id == 39 || id == 40 || id == 91 || id == 86 || id == 73 || id == 74) {
+    		
+    		//Only needed for blocks that use their block data (wood, pumpkins, etc.)
+    		if (id == 17 || id == 81 || id == 83 || id == 86 || id == 91)
     			plugin.misc.blockWatchList.add(block);
-    		} else {
+    		else {
     			//block.setData((byte) 5); //Change the byte
     			//The following is a method to get around a breakage in 1.1-R2 and onward
     			//it should be removed as soon as functionality to change a block
