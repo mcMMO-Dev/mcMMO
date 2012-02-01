@@ -152,7 +152,7 @@ public class Mining
     	}	
 	}
     
-    public static void miningBlockCheck(Boolean smelt, Player player, Block block, mcMMO plugin)
+    public static void miningBlockCheck(Player player, Block block, mcMMO plugin)
     {
     	PlayerProfile PP = Users.getProfile(player);
     	if(plugin.misc.blockWatchList.contains(block) || block.getData() == (byte) 5)
@@ -160,110 +160,71 @@ public class Mining
     	int xp = 0;
 		int id = block.getTypeId();
 		
-    	if(id == 1 || id == 24)
-    	{
-    		xp += LoadProperties.mstone;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
-    	//OBSIDIAN
-    	else if(id == 49)
-    	{
-    		xp += LoadProperties.mobsidian;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
-    	//NETHERRACK
-    	else if(id == 87)
-    	{
-    		xp += LoadProperties.mnetherrack;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
-    	//GLOWSTONE
-    	else if(id == 89)
-    	{
-    		xp += LoadProperties.mglowstone;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
-    	//COAL
-    	else if(id == 16)
-    	{
-    		xp += LoadProperties.mcoal;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
-    	//GOLD
-    	else if(id == 14)
-    	{
-    		xp += LoadProperties.mgold;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
-    	//DIAMOND
-    	else if(id == 56)
-    	{
-    		xp += LoadProperties.mdiamond;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
-    	//IRON
-    	else if(id == 15)
-    	{
-    		xp += LoadProperties.miron;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
-    	//REDSTONE
-    	else if(id == 73 || id == 74)
-    	{
-    		xp += LoadProperties.mredstone;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
-    	//LAPUS
-    	else if(id == 21)
-    	{
-    		xp += LoadProperties.mlapis;
-    		if(smelt = false)
-    			blockProcCheck(block, player);
-    		else
-    			blockProcCheck(block, player);
-    	}
+		switch (id) {
+			//STONE
+			case 1: 
+				xp += LoadProperties.mstone;
+				break;
+			//SANDSTONE
+			case 24:
+				xp += LoadProperties.msandstone;
+				break;
+			//OBSIDIAN
+			case 49:
+				xp += LoadProperties.mobsidian;
+				break;
+			//NETHERRACK
+			case 87:
+				xp += LoadProperties.mnetherrack;
+				break;
+			//GLOWSTONE
+			case 89:
+				xp += LoadProperties.mglowstone;
+				break;
+			//COAL
+			case 16:
+				xp += LoadProperties.mcoal;
+				break;
+			//GOLD
+			case 14:
+				xp += LoadProperties.mgold;
+				break;
+			//DIAMOND
+			case 56:
+				xp += LoadProperties.mdiamond;
+				break;
+			//IRON
+			case 15:
+				xp += LoadProperties.miron;
+				break;
+			//REDSTONE
+			case 73:
+				xp += LoadProperties.mredstone;
+				break;
+			case 74:
+				xp += LoadProperties.mredstone;
+				break;
+			//LAPIS
+			case 21:
+				xp += LoadProperties.mlapis;
+				break;
+		}
+		
+    	blockProcCheck(block, player);
     	PP.addXP(SkillType.MINING, xp, player);
     	Skills.XpCheckSkill(SkillType.MINING, player);
     }
+    
     /*
      * Handling SuperBreaker stuff
      */
     public static Boolean canBeSuperBroken(Block block)
     {
     	int t = block.getTypeId();
-    	if(t == 49 || t == 87 || t == 89 || t == 73 || t == 74 || t == 56 || t == 21 || t == 1 || t == 16 || t == 14 || t == 15)
-    	{
+    	if(t == 49 || t == 87 || t == 89 || t == 73 || t == 74 || t == 56 || t == 21 || t == 1 || t == 16 || t == 14 || t == 15 || t == 112)
     		return true;
-    	} else {
+    	else
     		return false;
-    	}
     }
     
     public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin)
@@ -278,12 +239,14 @@ public class Mining
     		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     	}
     	
+    	//Pre-processing
     	Location loc = block.getLocation();
     	Material mat = Material.getMaterial(block.getTypeId());
     	int xp = 0;
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
 		int id = block.getTypeId();
+		
 		
     	if(id == 1 || id == 24)
     	{

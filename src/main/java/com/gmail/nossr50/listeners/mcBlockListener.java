@@ -76,7 +76,7 @@ public class mcBlockListener implements Listener
     	if(m.shouldBeWatched(block))
     	{
     		int id = block.getTypeId();
-    		if (id == 17 || id == 39 || id == 40 || id == 91 || id == 86 || id == 73) {
+    		if (id == 17 || id == 39 || id == 40 || id == 91 || id == 86 || id == 73 || id == 74) {
     			plugin.misc.blockWatchList.add(block);
     		} else {
     			//block.setData((byte) 5); //Change the byte
@@ -160,11 +160,11 @@ public class mcBlockListener implements Listener
     		{
     			if(m.isMiningPick(inhand))
     			{
-    				Mining.miningBlockCheck(false, player, block, plugin);
+    				Mining.miningBlockCheck(player, block, plugin);
     			}
     		} else 
     		{
-    			Mining.miningBlockCheck(false, player, block, plugin);
+    			Mining.miningBlockCheck(player, block, plugin);
     		}
     	}
     	/*
