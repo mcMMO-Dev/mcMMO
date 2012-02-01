@@ -84,7 +84,7 @@ public class Mining
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
 		
-		if(id != 89 && id != 73 && id != 74 && id != 56 && id != 21 && id != 1 && id != 16) {
+		if(id != 89 && id != 73 && id != 74 && id != 56 && id != 21 && id != 1 && id != 16 && id != 112 && id != 121 && id != 48) {
 			m.mcDropItem(loc, item);
 			return;
 		}
@@ -222,6 +222,22 @@ public class Mining
 			case 21:
 				xp += LoadProperties.mlapis;
 				break;
+			//NETHER BRICK
+			case 112:
+				xp += LoadProperties.mnetherbrick;
+				break;
+			//END STONE
+			case 121:
+				xp += LoadProperties.mendstone;
+				break;
+			//MOSS STONE
+			case 48:
+				xp += LoadProperties.mmossstone;
+				break;
+			//STONE BRICK
+			case 98:
+				xp += LoadProperties.mstonebrick;
+				break;
 		}
 		
     	blockProcCheck(block, player);
@@ -235,7 +251,7 @@ public class Mining
     public static Boolean canBeSuperBroken(Block block)
     {
     	int id = block.getTypeId();
-    	return id == 1 || id == 14 || id == 15 || id == 16 || id == 21 || id == 24 || id == 49 || id == 56 || id == 73 || id == 74 || id == 87 || id == 89;
+    	return id == 1 || id == 14 || id == 15 || id == 16 || id == 21 || id == 24 || id == 49 || id == 56 || id == 73 || id == 74 || id == 87 || id == 89 || id == 112 || id == 121 || id == 48 || id == 98;
     }
     
     public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin)
@@ -258,7 +274,7 @@ public class Mining
 		//STONE
     	if(id == 1)
     	{
-    		if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
+    		if(block.getData() != (byte) 5)
     		{
     			xp += LoadProperties.mstone;
     			blockProcCheck(block, player);
@@ -273,7 +289,7 @@ public class Mining
     	//SANDSTONE
     	else if(id == 24)
     	{
-			if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
+			if(block.getData() != (byte) 5)
     		{
     			xp += LoadProperties.msandstone;
     			blockProcCheck(block, player);
@@ -286,7 +302,7 @@ public class Mining
     	//NETHERRACK
     	else if(id == 87)
     	{
-    		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
+    		if(block.getData() != (byte) 5){
     			xp += LoadProperties.mnetherrack;
     			blockProcCheck(block, player);
     			blockProcCheck(block, player);
@@ -298,7 +314,7 @@ public class Mining
     	//GLOWSTONE
     	else if(id == 89)
     	{
-    		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
+    		if(block.getData() != (byte) 5){
     			xp += LoadProperties.mglowstone;
     			blockProcCheck(block, player);
     			blockProcCheck(block, player);
@@ -312,7 +328,7 @@ public class Mining
     	//COAL
     	else if(id == 16)
     	{
-    		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
+    		if(block.getData() != (byte) 5){
     			xp += LoadProperties.mcoal;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
@@ -326,7 +342,7 @@ public class Mining
     	//GOLD
     	else if(id == 14 && m.getTier(player) >= 3)
     	{
-    		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
+    		if(block.getData() != (byte) 5){
     			xp += LoadProperties.mgold;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
@@ -338,7 +354,7 @@ public class Mining
     	//OBSIDIAN
     	else if(id == 49 && m.getTier(player) >= 4)
     	{
-    		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
+    		if(block.getData() != (byte) 5){
     			xp += LoadProperties.mobsidian;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
@@ -350,7 +366,7 @@ public class Mining
     	//DIAMOND
     	else if(id == 56 && m.getTier(player) >= 3)
     	{
-    		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
+    		if(block.getData() != (byte) 5){
     			xp += LoadProperties.mdiamond;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
@@ -364,7 +380,7 @@ public class Mining
     	//IRON
     	else if(id == 15 && m.getTier(player) >= 2)
     	{
-    		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
+    		if(block.getData() != (byte) 5){
     			xp += LoadProperties.miron;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
@@ -376,7 +392,7 @@ public class Mining
     	//REDSTONE
     	else if((id == 73 || id == 74) && m.getTier(player) >= 3)
     	{
-    		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5)
+    		if(!plugin.misc.blockWatchList.contains(block))
     		{
     			xp += LoadProperties.mredstone;
         		blockProcCheck(block, player);
@@ -395,7 +411,7 @@ public class Mining
     	}
     	//LAPIS
     	else if(id == 21 && m.getTier(player) >= 3){
-    		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
+    		if(block.getData() != (byte) 5){
     			xp += LoadProperties.mlapis;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
@@ -417,8 +433,52 @@ public class Mining
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
+    	//NETHER BRICK
+    	else if(id == 112){
+    		if(block.getData() != (byte) 5){
+    			xp += LoadProperties.mnetherbrick;
+        		blockProcCheck(block, player);
+        		blockProcCheck(block, player);
+        	}
+    		m.mcDropItem(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+    		block.setType(Material.AIR);
+    	}
+    	//END STONE
+    	else if(id == 121){
+    		if(block.getData() != (byte) 5){
+    			xp += LoadProperties.mendstone;
+        		blockProcCheck(block, player);
+        		blockProcCheck(block, player);
+        	}
+    		m.mcDropItem(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+    		block.setType(Material.AIR);
+    	}
+    	//MOSS STONE
+    	else if(id == 48){
+    		if(block.getData() != (byte) 5){
+    			xp += LoadProperties.mmossstone;
+        		blockProcCheck(block, player);
+        		blockProcCheck(block, player);
+        	}
+    		m.mcDropItem(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+    		block.setType(Material.AIR);
+    	}
+    	//STONE BRICK
+    	else if(id == 98){
+    		if(!plugin.misc.blockWatchList.contains(block)){
+    			xp += LoadProperties.mstonebrick;
+        		blockProcCheck(block, player);
+        		blockProcCheck(block, player);
+        	}
+    		m.mcDropItem(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+    		block.setType(Material.AIR);
+    	}
     	
-    	if(block.getData() != (byte) 5)
+    	if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
     		PP.addXP(SkillType.MINING, xp, player);
     	if(LoadProperties.spoutEnabled)
     		SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
