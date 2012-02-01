@@ -79,65 +79,79 @@ public class Mining
 	public static void blockProcSimulate(Block block)
 	{
     	Location loc = block.getLocation();
-    	Material mat = Material.getMaterial(block.getTypeId());
+    	int id = block.getTypeId();
+    	Material mat = Material.getMaterial(id);
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-		int id = block.getTypeId();
 		
 		if(id != 89 && id != 73 && id != 74 && id != 56 && id != 21 && id != 1 && id != 16) {
 			m.mcDropItem(loc, item);
 			return;
 		}
 		
-		//GLOWSTONE
-		if(id == 89)
-		{
-			mat = Material.getMaterial(348);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-		}
-		//REDSTONE
-		else if(id == 73 || id == 74)
-		{
-			mat = Material.getMaterial(331);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5){
+		switch (id){
+			//GLOWSTONE
+			case 89:
+				mat = Material.getMaterial(348);
+				item = new ItemStack(mat, 1, (byte)0, damage);
 				m.mcDropItem(loc, item);
-			}
-		}
-		//LAPUS
-		else if(id == 21)
-		{
-			mat = Material.getMaterial(351);
-			item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-		}
-		//DIAMOND
-		else if(id == 56)
-		{
-			mat = Material.getMaterial(264);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-		}
-		//STONE
-		else if(id == 1)
-		{
-			mat = Material.getMaterial(4);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-		}
-		//COAL
-		else if(id == 16)
-		{
-			mat = Material.getMaterial(263);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
+				break;
+			//REDSTONE
+			case 73:
+				mat = Material.getMaterial(331);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				break;
+			case 74:
+				mat = Material.getMaterial(331);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				break;
+			//LAPIS
+			case 21:
+				mat = Material.getMaterial(351);
+				item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				break;
+			//DIAMOND
+			case 56:
+				mat = Material.getMaterial(264);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				break;
+			//STONE
+			case 1:
+				mat = Material.getMaterial(4);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				break;
+			//COAL
+			case 16:
+				mat = Material.getMaterial(263);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				break;
 		}
     }
 
@@ -220,11 +234,8 @@ public class Mining
      */
     public static Boolean canBeSuperBroken(Block block)
     {
-    	int t = block.getTypeId();
-    	if(t == 49 || t == 87 || t == 89 || t == 73 || t == 74 || t == 56 || t == 21 || t == 1 || t == 16 || t == 14 || t == 15 || t == 112)
-    		return true;
-    	else
-    		return false;
+    	int id = block.getTypeId();
+    	return id == 1 || id == 14 || id == 15 || id == 16 || id == 21 || id == 24 || id == 49 || id == 56 || id == 73 || id == 74 || id == 87 || id == 89;
     }
     
     public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin)
@@ -232,44 +243,42 @@ public class Mining
     	PlayerProfile PP = Users.getProfile(player);
     	if(LoadProperties.toolsLoseDurabilityFromAbilities)
     	{
-    		if(player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
-    		{
-    			
-    		}
-    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+    		if(!player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
+    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     	}
     	
     	//Pre-processing
     	Location loc = block.getLocation();
-    	Material mat = Material.getMaterial(block.getTypeId());
+    	int id = block.getTypeId();
+    	Material mat = Material.getMaterial(id);
     	int xp = 0;
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-		int id = block.getTypeId();
 		
-		
-    	if(id == 1 || id == 24)
+		//STONE
+    	if(id == 1)
     	{
-    		if(id == 1)
+    		if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
     		{
-    			mat = Material.COBBLESTONE;
-    			if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
-        		{
-        			xp += LoadProperties.mstone;
-        			blockProcCheck(block, player);
-        			blockProcCheck(block, player);
-        		}
-    		} else 
-    		{
-    			mat = Material.SANDSTONE;
-    			if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
-        		{
-        			xp += LoadProperties.msandstone;
-        			blockProcCheck(block, player);
-        			blockProcCheck(block, player);
-        		}
+    			xp += LoadProperties.mstone;
+    			blockProcCheck(block, player);
+    			blockProcCheck(block, player);
     		}
+    		mat = Material.getMaterial(4);
 			item = new ItemStack(mat, 1, (byte)0, damage);
+			m.mcDropItem(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+    		block.setType(Material.AIR);
+    	}
+    	//SANDSTONE
+    	else if(id == 24)
+    	{
+			if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
+    		{
+    			xp += LoadProperties.msandstone;
+    			blockProcCheck(block, player);
+    			blockProcCheck(block, player);
+    		}
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -282,8 +291,6 @@ public class Mining
     			blockProcCheck(block, player);
     			blockProcCheck(block, player);
     		}
-    		mat = Material.getMaterial(87);
-			item = new ItemStack(mat, 1, (byte)0, damage);
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -324,7 +331,6 @@ public class Mining
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         		}
-    		item = new ItemStack(mat, 1, (byte)0, damage);
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -332,15 +338,11 @@ public class Mining
     	//OBSIDIAN
     	else if(id == 49 && m.getTier(player) >= 4)
     	{
-    		if(LoadProperties.toolsLoseDurabilityFromAbilities)
-        		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
     			xp += LoadProperties.mobsidian;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
-    		mat = Material.getMaterial(49);
-			item = new ItemStack(mat, 1, (byte)0, damage);
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -367,7 +369,6 @@ public class Mining
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
-    		item = new ItemStack(mat, 1, (byte)0, damage);
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -386,14 +387,13 @@ public class Mining
 			m.mcDropItem(loc, item);
 			m.mcDropItem(loc, item);
 			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
 			if(Math.random() * 10 > 5)
-			{
 				m.mcDropItem(loc, item);
-			}
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
-    	//LAPUS
+    	//LAPIS
     	else if(id == 21 && m.getTier(player) >= 3){
     		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
     			xp += LoadProperties.mlapis;
@@ -406,14 +406,22 @@ public class Mining
 			m.mcDropItem(loc, item);
 			m.mcDropItem(loc, item);
 			m.mcDropItem(loc, item);
+			if(Math.random() * 10 > 5)
+				m.mcDropItem(loc, item);
+			if(Math.random() * 10 > 5)
+				m.mcDropItem(loc, item);
+			if(Math.random() * 10 > 5)
+				m.mcDropItem(loc, item);
+			if(Math.random() * 10 > 5)
+				m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
+    	
     	if(block.getData() != (byte) 5)
     		PP.addXP(SkillType.MINING, xp, player);
     	if(LoadProperties.spoutEnabled)
     		SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-    	
     	Skills.XpCheckSkill(SkillType.MINING, player);
     }
 }
