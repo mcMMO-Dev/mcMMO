@@ -114,11 +114,7 @@ public class Herbalism
 	
 	public static Boolean canBeGreenTerra(Block block){
     	int t = block.getTypeId();
-    	if(t == 103 || t == 4 || t == 3 || t == 59 || t == 81 || t == 83 || t == 91 || t == 86 || t == 39 || t == 46 || t == 37 || t == 38){
-    		return true;
-    	} else {
-    		return false;
-    	}
+    	return t == 103 || t == 4 || t == 3 || t == 59 || t == 81 || t == 83 || t == 91 || t == 86 || t == 39 || t == 46 || t == 37 || t == 38;
     }
 	public static boolean hasSeeds(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();

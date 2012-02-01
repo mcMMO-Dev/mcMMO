@@ -78,7 +78,7 @@ public class mcBlockListener implements Listener
     		int id = block.getTypeId();
     		
     		//Only needed for blocks that use their block data (wood, pumpkins, etc.)
-    		if (id == 17 || id == 73 || id == 74 || id == 81 || id == 83 || id == 86 || id == 91 || id == 106)
+    		if (id == 17 || id == 73 || id == 74 || id == 81 || id == 83 || id == 86 || id == 91 || id == 106 || id == 98)
     			plugin.misc.blockWatchList.add(block);
     		else {
     			//block.setData((byte) 5); //Change the byte
