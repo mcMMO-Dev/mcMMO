@@ -215,11 +215,11 @@ public class Herbalism
 	    			m.mcDropItem(loc, is);
 	    			m.mcDropItem(loc, is);
 					if(Math.random() * 10 > 5)
-						m.mcDropItem(loc, item);
+						m.mcDropItem(loc, is);
 					if(Math.random() * 10 > 5)
-						m.mcDropItem(loc, item);
+						m.mcDropItem(loc, is);
 					if(Math.random() * 10 > 5)
-						m.mcDropItem(loc, item);
+						m.mcDropItem(loc, is);
 	    		}
     		}
     	}
@@ -333,13 +333,13 @@ public class Herbalism
 						m.mcDropItem(loc, is);
 						m.mcDropItem(loc, is);
 						if(Math.random() * 10 > 5)
-							m.mcDropItem(loc, item);
+							m.mcDropItem(loc, is);
 						if(Math.random() * 10 > 5)
-							m.mcDropItem(loc, item);
+							m.mcDropItem(loc, is);
 						if(Math.random() * 10 > 5)
-							m.mcDropItem(loc, item);
+							m.mcDropItem(loc, is);
 						if(Math.random() * 10 > 5)
-							m.mcDropItem(loc, item);
+							m.mcDropItem(loc, is);
 		    		}
 	    		}
 				PP.addXP(SkillType.HERBALISM, LoadProperties.mmelon, player);
