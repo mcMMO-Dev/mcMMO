@@ -93,7 +93,7 @@ public class m
 	}
 	public static boolean shouldBeWatched(int id) {
 		return id == 2 || id == 3 || id == 12 || id == 13 || id == 82 || //Excavation
-				id == 1 || id == 14 || id == 15 || id == 16 || id == 21 || id == 24 || id == 49 || id == 56 || id == 73 || id == 74 || id == 87 || id == 89 || //Mining
+				id == 1 || id == 14 || id == 15 || id == 16 || id == 21 || id == 24 || id == 49 || id == 56 || id == 73 || id == 74 || id == 87 || id == 89 || id == 112 || id == 121 || id == 48 || id == 98 || //Mining
 				id == 17 || id == 37 || id == 38 || id == 39 || id == 40 || id == 81 || id == 83 || id == 86 || id == 91 || id == 103 || id == 106 || id == 111 || //Woodcutting & Herbalism
 				id == 42; //Anvil
 	}
