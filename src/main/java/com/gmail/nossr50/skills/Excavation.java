@@ -30,7 +30,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
 
-public class Excavation 
+public class Excavation
 {
 	public static void gigaDrillBreakerActivationCheck(Player player, Block block)
 	{
@@ -71,7 +71,7 @@ public class Excavation
 	}
 	public static boolean canBeGigaDrillBroken(Block block)
 	{
-		t = block.getType();
+		Material t = block.getType();
 		return t == Material.DIRT || t == Material.GRASS || t == Material.SAND || t == Material.GRAVEL || t == Material.CLAY || t == Material.MYCEL || t == Material.SOUL_SAND;
 	}
 	public static void excavationProcCheck(byte data, Material type, Location loc, Player player)
