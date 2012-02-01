@@ -16,8 +16,9 @@
 */
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
-import org.getspout.spoutapi.event.spout.SpoutListener;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Users;
@@ -25,7 +26,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.spout.SpoutStuff;
 
-public class mcSpoutListener extends SpoutListener
+public class mcSpoutListener implements Listener
 {
 	mcMMO plugin = null;
 	
@@ -34,6 +35,7 @@ public class mcSpoutListener extends SpoutListener
 		plugin = pluginx;
 	}
 	
+	@EventHandler
 	public void onSpoutCraftEnable(SpoutCraftEnableEvent event) 
 	{
 		SpoutPlayer sPlayer = event.getPlayer();

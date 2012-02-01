@@ -33,8 +33,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.Event.Priority;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.keyboard.Keyboard;
@@ -209,9 +207,9 @@ public class SpoutStuff
 	}
 	public static void registerCustomEvent()
 	{
-		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutListener, Priority.Normal, plugin);
-		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutInputListener, Priority.Normal, plugin);
-		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CUSTOM_EVENT, spoutScreenListener, Priority.Normal, plugin);
+		Bukkit.getServer().getPluginManager().registerEvents(spoutListener, plugin);
+		Bukkit.getServer().getPluginManager().registerEvents(spoutInputListener, plugin);
+		Bukkit.getServer().getPluginManager().registerEvents(spoutScreenListener, plugin);
 	}
 	
 	public static Color getRetroColor(SkillType type)

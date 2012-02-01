@@ -16,7 +16,8 @@
 */
 package com.gmail.nossr50.listeners;
 
-import org.getspout.spoutapi.event.input.InputListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -26,7 +27,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.spout.SpoutStuff;
 
-public class mcSpoutInputListener extends InputListener
+public class mcSpoutInputListener implements Listener
 {
 	mcMMO plugin = null;
 	
@@ -35,6 +36,7 @@ public class mcSpoutInputListener extends InputListener
 		plugin = pluginx;
 	}
 	
+	@EventHandler
 	public void onKeyPressedEvent(KeyPressedEvent event) 
 	{
 		if(!event.getPlayer().isSpoutCraftEnabled() || event.getPlayer().getMainScreen().getActivePopup() != null)

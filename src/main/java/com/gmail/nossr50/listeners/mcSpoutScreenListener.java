@@ -16,9 +16,10 @@
 */
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.event.screen.ScreenCloseEvent;
-import org.getspout.spoutapi.event.screen.ScreenListener;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Users;
@@ -32,13 +33,15 @@ import com.gmail.nossr50.datatypes.buttons.ButtonPartyToggle;
 import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.spout.SpoutStuff;
 
-public class mcSpoutScreenListener extends ScreenListener
+public class mcSpoutScreenListener implements Listener
 {
 	mcMMO plugin = null;
 	public mcSpoutScreenListener(mcMMO pluginx)
 	{
 		plugin = pluginx;
 	}
+	
+	@EventHandler
 	public void onButtonClick(ButtonClickEvent event) 
 	{
 		SpoutPlayer sPlayer = event.getPlayer();
@@ -83,6 +86,7 @@ public class mcSpoutScreenListener extends ScreenListener
 		}
 	}
 	
+	@EventHandler
 	public void onScreenClose(ScreenCloseEvent event) 
 	{
 		if(event.getScreen() instanceof PopupMMO)
