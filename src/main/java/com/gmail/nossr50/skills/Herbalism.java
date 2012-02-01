@@ -213,6 +213,13 @@ public class Herbalism
 	    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
 	    		{
 	    			m.mcDropItem(loc, is);
+	    			m.mcDropItem(loc, is);
+					if(Math.random() * 10 > 5)
+						m.mcDropItem(loc, is);
+					if(Math.random() * 10 > 5)
+						m.mcDropItem(loc, is);
+					if(Math.random() * 10 > 5)
+						m.mcDropItem(loc, is);
 	    		}
     		}
     	}
@@ -317,12 +324,23 @@ public class Herbalism
 	    	if(type == 103)
 	    	{
 	    		mat = Material.getMaterial(360);
-	    		int slices = (int) ((Math.random() + 3) + (int)(Math.random() * 4)); //drop 3-7 melon slices rather than melon blocks
-				is = new ItemStack(mat, slices, (byte)0, (byte)0);
-				
-				if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				if(player != null)
 	    		{
-					m.mcDropItem(loc, is);
+					if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+		    		{
+						m.mcDropItem(loc, is);
+						m.mcDropItem(loc, is);
+						m.mcDropItem(loc, is);
+						if(Math.random() * 10 > 5)
+							m.mcDropItem(loc, is);
+						if(Math.random() * 10 > 5)
+							m.mcDropItem(loc, is);
+						if(Math.random() * 10 > 5)
+							m.mcDropItem(loc, is);
+						if(Math.random() * 10 > 5)
+							m.mcDropItem(loc, is);
+		    		}
 	    		}
 				PP.addXP(SkillType.HERBALISM, LoadProperties.mmelon, player);
 	    	}
