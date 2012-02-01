@@ -89,55 +89,69 @@ public class Mining
 			return;
 		}
 		
-		//GLOWSTONE
-		if(id == 89)
-		{
-			mat = Material.getMaterial(348);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-		}
-		//REDSTONE
-		else if(id == 73 || id == 74)
-		{
-			mat = Material.getMaterial(331);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5){
+		switch (id){
+			//GLOWSTONE
+			case 89:
+				mat = Material.getMaterial(348);
+				item = new ItemStack(mat, 1, (byte)0, damage);
 				m.mcDropItem(loc, item);
-			}
-		}
-		//LAPIS
-		else if(id == 21)
-		{
-			mat = Material.getMaterial(351);
-			item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-		}
-		//DIAMOND
-		else if(id == 56)
-		{
-			mat = Material.getMaterial(264);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-		}
-		//STONE
-		else if(id == 1)
-		{
-			mat = Material.getMaterial(4);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-		}
-		//COAL
-		else if(id == 16)
-		{
-			mat = Material.getMaterial(263);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
+				break;
+			//REDSTONE
+			case 73:
+				mat = Material.getMaterial(331);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				break;
+			case 74:
+				mat = Material.getMaterial(331);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				break;
+			//LAPIS
+			case 21:
+				mat = Material.getMaterial(351);
+				item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				break;
+			//DIAMOND
+			case 56:
+				mat = Material.getMaterial(264);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				break;
+			//STONE
+			case 1:
+				mat = Material.getMaterial(4);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				break;
+			//COAL
+			case 16:
+				mat = Material.getMaterial(263);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+				m.mcDropItem(loc, item);
+				break;
 		}
     }
 
@@ -229,11 +243,8 @@ public class Mining
     	PlayerProfile PP = Users.getProfile(player);
     	if(LoadProperties.toolsLoseDurabilityFromAbilities)
     	{
-    		if(player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
-    		{
-    			
-    		}
-    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+    		if(!player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
+    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     	}
     	
     	//Pre-processing
@@ -244,28 +255,30 @@ public class Mining
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
 		
-    	if(id == 1 || id == 24)
+		//STONE
+    	if(id == 1)
     	{
-    		if(id == 1)
+    		if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
     		{
-    			mat = Material.COBBLESTONE;
-    			if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
-        		{
-        			xp += LoadProperties.mstone;
-        			blockProcCheck(block, player);
-        			blockProcCheck(block, player);
-        		}
-    		} else 
-    		{
-    			mat = Material.SANDSTONE;
-    			if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
-        		{
-        			xp += LoadProperties.msandstone;
-        			blockProcCheck(block, player);
-        			blockProcCheck(block, player);
-        		}
+    			xp += LoadProperties.mstone;
+    			blockProcCheck(block, player);
+    			blockProcCheck(block, player);
     		}
+    		mat = Material.getMaterial(4);
 			item = new ItemStack(mat, 1, (byte)0, damage);
+			m.mcDropItem(loc, item);
+			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+    		block.setType(Material.AIR);
+    	}
+    	//SANDSTONE
+    	else if(id == 24)
+    	{
+			if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
+    		{
+    			xp += LoadProperties.msandstone;
+    			blockProcCheck(block, player);
+    			blockProcCheck(block, player);
+    		}
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -278,8 +291,6 @@ public class Mining
     			blockProcCheck(block, player);
     			blockProcCheck(block, player);
     		}
-    		mat = Material.getMaterial(87);
-			item = new ItemStack(mat, 1, (byte)0, damage);
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -320,7 +331,6 @@ public class Mining
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         		}
-    		item = new ItemStack(mat, 1, (byte)0, damage);
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -328,15 +338,11 @@ public class Mining
     	//OBSIDIAN
     	else if(id == 49 && m.getTier(player) >= 4)
     	{
-    		if(LoadProperties.toolsLoseDurabilityFromAbilities)
-        		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
     			xp += LoadProperties.mobsidian;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
-    		mat = Material.getMaterial(49);
-			item = new ItemStack(mat, 1, (byte)0, damage);
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -363,7 +369,6 @@ public class Mining
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
-    		item = new ItemStack(mat, 1, (byte)0, damage);
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -382,14 +387,13 @@ public class Mining
 			m.mcDropItem(loc, item);
 			m.mcDropItem(loc, item);
 			m.mcDropItem(loc, item);
+			m.mcDropItem(loc, item);
 			if(Math.random() * 10 > 5)
-			{
 				m.mcDropItem(loc, item);
-			}
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
-    	//LAPUS
+    	//LAPIS
     	else if(id == 21 && m.getTier(player) >= 3){
     		if(!plugin.misc.blockWatchList.contains(block)&& block.getData() != (byte) 5){
     			xp += LoadProperties.mlapis;
@@ -402,14 +406,22 @@ public class Mining
 			m.mcDropItem(loc, item);
 			m.mcDropItem(loc, item);
 			m.mcDropItem(loc, item);
+			if(Math.random() * 10 > 5)
+				m.mcDropItem(loc, item);
+			if(Math.random() * 10 > 5)
+				m.mcDropItem(loc, item);
+			if(Math.random() * 10 > 5)
+				m.mcDropItem(loc, item);
+			if(Math.random() * 10 > 5)
+				m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
+    	
     	if(block.getData() != (byte) 5)
     		PP.addXP(SkillType.MINING, xp, player);
     	if(LoadProperties.spoutEnabled)
     		SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-    	
     	Skills.XpCheckSkill(SkillType.MINING, player);
     }
 }
