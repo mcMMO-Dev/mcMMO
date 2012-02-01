@@ -71,7 +71,8 @@ public class Excavation
 	}
 	public static boolean canBeGigaDrillBroken(Block block)
 	{
-		return block.getType() == Material.DIRT || block.getType() == Material.GRASS || block.getType() == Material.SAND || block.getType() == Material.GRAVEL || block.getType() == Material.CLAY;
+		t = block.getType();
+		return t == Material.DIRT || t == Material.GRASS || t == Material.SAND || t == Material.GRAVEL || t == Material.CLAY || t == Material.MYCEL || t == Material.SOUL_SAND;
 	}
 	public static void excavationProcCheck(byte data, Material type, Location loc, Player player)
 	{
@@ -79,23 +80,23 @@ public class Excavation
 			return;
 		
 		PlayerProfile PP = Users.getProfile(player);
+		int skillLevel = PP.getSkillLevel(SkillType.EXCAVATION);
     	ArrayList<ItemStack> is = new ArrayList<ItemStack>();
-    	
     	int xp = 0;
     	
     	switch(type)
     	{
     	case GRASS:
-    		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 250)
+    		if(skillLevel >= 250)
     		{
 	    		//CHANCE TO GET EGGS
-	    		if(LoadProperties.eggs == true && Math.random() * 100 > 99)
+	    		if(LoadProperties.eggs && Math.random() * 100 > 99)
 	    		{
 	    			xp+= LoadProperties.meggs;
 					is.add(new ItemStack(Material.EGG, 1, (byte)0, (byte)0));
 	    		}
 	    		//CHANCE TO GET APPLES
-	    		if(LoadProperties.apples == true && Math.random() * 100 > 99)
+	    		if(LoadProperties.apples && Math.random() * 100 > 99)
 	    		{
 	    			xp+= LoadProperties.mapple;
 					is.add(new ItemStack(Material.APPLE, 1, (byte)0, (byte)0));
@@ -104,149 +105,125 @@ public class Excavation
     		break;
     	case GRAVEL:
     		//CHANCE TO GET NETHERRACK
-    		if(LoadProperties.netherrack == true && PP.getSkillLevel(SkillType.EXCAVATION) >= 850 && Math.random() * 200 > 199)
+    		if(LoadProperties.netherrack && skillLevel >= 850 && Math.random() * 200 > 199)
     		{
     			xp+= LoadProperties.mnetherrack;
 				is.add(new ItemStack(Material.NETHERRACK, 1, (byte)0, (byte)0));
 				
     		}
     		//CHANCE TO GET SULPHUR
-    		if(LoadProperties.sulphur == true && PP.getSkillLevel(SkillType.EXCAVATION) >= 75)
+    		if(LoadProperties.sulphur && skillLevel >= 75 && Math.random() * 10 > 9)
     		{
-	    		if(Math.random() * 10 > 9)
-	    		{
-	    			xp+= LoadProperties.msulphur;
-					is.add(new ItemStack(Material.SULPHUR, 1, (byte)0, (byte)0));
-	    		}
+    			xp+= LoadProperties.msulphur;
+				is.add(new ItemStack(Material.SULPHUR, 1, (byte)0, (byte)0));
     		}
     		//CHANCE TO GET BONES
-    		if(LoadProperties.bones == true && PP.getSkillLevel(SkillType.EXCAVATION) >= 175)
+    		if(LoadProperties.bones && skillLevel >= 175 && Math.random() * 10 > 9)
     		{
-        		if(Math.random() * 10 > 9)
-        		{
-        			xp+= LoadProperties.mbones;
-    				is.add(new ItemStack(Material.BONE, 1, (byte)0, (byte)0));
-        		}
+        		xp+= LoadProperties.mbones;
+    			is.add(new ItemStack(Material.BONE, 1, (byte)0, (byte)0));
         	}
     		break;
     	case SAND:
     		//CHANCE TO GET GLOWSTONE
-    		if(LoadProperties.glowstone == true && PP.getSkillLevel(SkillType.EXCAVATION) >= 50 && Math.random() * 100 > 95)
+    		if(LoadProperties.glowstone && skillLevel >= 50 && Math.random() * 100 > 95)
     		{
     			xp+= LoadProperties.mglowstone2;
 				is.add(new ItemStack(Material.GLOWSTONE_DUST, 1, (byte)0, (byte)0));
 				
     		}
     		//CHANCE TO GET SOUL SAND
-    		if(LoadProperties.slowsand == true && PP.getSkillLevel(SkillType.EXCAVATION) >= 650 && Math.random() * 200 > 199)
+    		if(LoadProperties.slowsand && skillLevel >= 650 && Math.random() * 200 > 199)
     		{
     			xp+= LoadProperties.mslowsand;
 				is.add(new ItemStack(Material.SOUL_SAND, 1, (byte)0, (byte)0));
     		}
     		break;
     	case CLAY:
-    		if(LoadProperties.slimeballs && PP.getSkillLevel(SkillType.EXCAVATION) >= 50)
+    		//CHANCE TO GET SLIMEBALLS
+    		if(LoadProperties.slimeballs && skillLevel >= 50 && Math.random() * 20 > 19)
     		{
-    			if(Math.random() * 20 > 19)
-    			{
-    				xp+= LoadProperties.mslimeballs;
-    				is.add(new ItemStack(Material.SLIME_BALL, 1, (byte)0, (byte)0));
-    			}
+   				xp+= LoadProperties.mslimeballs;
+   				is.add(new ItemStack(Material.SLIME_BALL, 1, (byte)0, (byte)0));
+      		}
+    		//CHANCE TO GET STRING
+    		if(LoadProperties.string && skillLevel >= 250 && Math.random() * 20 > 19)
+    		{
+    			xp+= LoadProperties.mstring;
+    			is.add(new ItemStack(Material.STRING, 1, (byte)0, (byte)0));
     		}
-    		if(LoadProperties.string && PP.getSkillLevel(SkillType.EXCAVATION) >= 250)
+    		if(skillLevel >= 500)
     		{
-    			if(Math.random() * 20 > 19)
-    			{
-    				xp+= LoadProperties.mstring;
-    				is.add(new ItemStack(Material.STRING, 1, (byte)0, (byte)0));
-    			}
+    			//CHANCE TO GET CLOCK
+        		if(LoadProperties.watch && Math.random() * 100 > 99)
+        		{
+        			xp+= LoadProperties.mwatch;
+        			is.add(new ItemStack(Material.WATCH, 1, (byte)0));
+        		
+        		}
+        		//CHANCE TO GET BUCKET
+        		if(LoadProperties.bucket && Math.random() * 100 > 99)
+        		{
+       				xp+= LoadProperties.mbucket;
+       				is.add(new ItemStack(Material.BUCKET, 1, (byte)0, (byte)0));
+        		}
     		}
-    		if(LoadProperties.watch && PP.getSkillLevel(SkillType.EXCAVATION) >= 500)
+    		//CHANCE TO GET COBWEB
+    		if(LoadProperties.web && skillLevel >= 750 && Math.random() * 20 > 19)
     		{
-    			if(Math.random() * 100 > 99)
-    			{
-    				xp+= LoadProperties.mwatch;
-    				is.add(new ItemStack(Material.WATCH, 1, (byte)0));
-    			}
-    		}
-    		if(LoadProperties.bucket && PP.getSkillLevel(SkillType.EXCAVATION) >= 500)
-    		{
-    			if(Math.random() * 100 > 99)
-    			{
-    				xp+= LoadProperties.mbucket;
-    				is.add(new ItemStack(Material.BUCKET, 1, (byte)0, (byte)0));
-    			}
-    		}
-    		if(LoadProperties.web && PP.getSkillLevel(SkillType.EXCAVATION) >= 750)
-    		{
-    			if(Math.random() * 20 > 19)
-    			{
-    				xp+= LoadProperties.mweb;
-    				is.add(new ItemStack(Material.WEB, 1, (byte)0, (byte)0));
-    			}
+   				xp+= LoadProperties.mweb;
+   				is.add(new ItemStack(Material.WEB, 1, (byte)0, (byte)0));
     		}
     		break;
     	}
     	
-    	//DIRT SAND OR GRAVEL
-    	if(type == Material.GRASS || type == Material.DIRT || type == Material.GRAVEL || type == Material.SAND || type == Material.CLAY)
+    	//ALL MATERIALS
+    	if(type == Material.GRASS || type == Material.DIRT || type == Material.GRAVEL || type == Material.SAND || type == Material.CLAY || type == Material.MYCEL || type == Material.SOUL_SAND)
     	{
     		xp+= LoadProperties.mbase;
-    		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 750)
-    		{
-    			//CHANCE TO GET CAKE
-    			if(LoadProperties.cake == true && Math.random() * 2000 > 1999)
-    			{
-    				xp+= LoadProperties.mcake;
-    				is.add(new ItemStack(Material.CAKE, 1, (byte)0, (byte)0));
-    			}
-    		}
-    		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 350)
+			//CHANCE TO GET CAKE
+			if(LoadProperties.cake && skillLevel >= 750 && Math.random() * 2000 > 1999)
+			{
+				xp+= LoadProperties.mcake;
+				is.add(new ItemStack(Material.CAKE, 1, (byte)0, (byte)0));
+			}
+    		if(skillLevel >= 350)
     		{
     			//CHANCE TO GET DIAMOND
-    			if(LoadProperties.diamond == true && Math.random() * 750 > 749)
+    			if(LoadProperties.diamond && Math.random() * 750 > 749)
     			{
-    					xp+= LoadProperties.mdiamond2;
-        				is.add(new ItemStack(Material.DIAMOND, 1, (byte)0, (byte)0));
+    				xp+= LoadProperties.mdiamond2;
+        			is.add(new ItemStack(Material.DIAMOND, 1, (byte)0, (byte)0));
     			}
-    		}
-    		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 250)
-    		{
-    			//CHANCE TO GET YELLOW MUSIC
-    			if(LoadProperties.music == true && Math.random() * 2000 > 1999)
-    			{
-    				xp+= LoadProperties.mmusic;
-    				is.add(new ItemStack(Material.GOLD_RECORD, 1, (byte)0, (byte)0));
-    			}
-    		}
-    		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 350)
-    		{
     			//CHANCE TO GET GREEN MUSIC
-    			if(LoadProperties.music == true && Math.random() * 2000 > 1999)
+    			if(LoadProperties.music && Math.random() * 2000 > 1999)
     			{
     				xp+= LoadProperties.mmusic;
     				is.add(new ItemStack(Material.GREEN_RECORD, 1, (byte)0, (byte)0));
     			}
     		}
+			//CHANCE TO GET YELLOW MUSIC
+			if(LoadProperties.music && skillLevel >= 250 && Math.random() * 2000 > 1999)
+			{
+				xp+= LoadProperties.mmusic;
+				is.add(new ItemStack(Material.GOLD_RECORD, 1, (byte)0, (byte)0));
+			}
     	}
     	
-    	//GRASS OR DIRT
-    	if(type == Material.DIRT || type == Material.GRASS)
+    	//GRASS OR DIRT OR MYCEL
+    	if(type == Material.DIRT || type == Material.GRASS || type == Material.MYCEL)
     	{
-    		if(PP.getSkillLevel(SkillType.EXCAVATION) >= 50)
+    		//CHANCE FOR COCOA BEANS
+    		if(LoadProperties.cocoabeans && skillLevel >= 50 && Math.random() * 75 > 74)
     		{
-    			//CHANCE FOR COCOA BEANS
-    			if(LoadProperties.cocoabeans == true && Math.random() * 75 > 74)
-    			{
-    				xp+= LoadProperties.mcocoa;
-					is.add(new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)3));
-    			}
+    			xp+= LoadProperties.mcocoa;
+				is.add(new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)3));
     		}
     		//CHANCE FOR SHROOMS
-    		if(LoadProperties.mushrooms == true && PP.getSkillLevel(SkillType.EXCAVATION) >= 500 && Math.random() * 200 > 199)
+    		if(LoadProperties.mushrooms && skillLevel >= 500 && Math.random() * 200 > 199)
     		{
     			xp+= LoadProperties.mmushroom2;
-    			switch((int) Math.random() * 1)
+    			switch((int)(Math.random() * 2))
     			{
     			case 0:
     				is.add(new ItemStack(Material.BROWN_MUSHROOM, 1, (byte)0, (byte)0));
@@ -258,7 +235,7 @@ public class Excavation
 				
     		}
     		//CHANCE TO GET GLOWSTONE
-    		if(LoadProperties.glowstone == true && PP.getSkillLevel(SkillType.EXCAVATION) >= 25 && Math.random() * 100 > 95)
+    		if(LoadProperties.glowstone == true && skillLevel >= 25 && Math.random() * 100 > 95)
     		{
     			xp+= LoadProperties.mglowstone2;
 				is.add(new ItemStack(Material.GLOWSTONE_DUST, 1, (byte)0, (byte)0));
