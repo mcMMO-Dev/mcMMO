@@ -31,7 +31,7 @@ public class Misc
     protected static final Logger log = Logger.getLogger("Minecraft");
     
     public ArrayList<Entity> mobSpawnerList = new ArrayList<Entity>();
-    public ArrayList<Block> blockWatchList = new ArrayList<Block>();
+    public HashSet<Block> blockWatchList = new HashSet<Block>();
     public ArrayList<Block> treeFeller = new ArrayList<Block>();
     public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     public ArrayList<LivingEntity> bleedTracker = new ArrayList<LivingEntity>();
