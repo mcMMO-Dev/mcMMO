@@ -390,6 +390,7 @@ public class LoadProperties {
 		glowstoneDust = readBoolean("Fishing.Drops.Glowstone_Dust", true);
 		fishingDiamonds = readBoolean("Fishing.Drops.Diamonds", true);
 
+		xplockEnable = readBoolean("Commands.xplock.Enabled", true);
 		xprateEnable = readBoolean("Commands.xprate.Enabled", true);
 		mctopEnable = readBoolean("Commands.mctop.Enabled", true);
 		addxpEnable = readBoolean("Commands.addxp.Enabled", true);
