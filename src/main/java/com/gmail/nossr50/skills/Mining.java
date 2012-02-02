@@ -76,7 +76,7 @@ public class Mining
 	    	
 	    }
 	}
-	public static void blockProcSimulate(Block block)
+	public static void blockProcSimulate(Block block, Player player)
 	{
     	Location loc = block.getLocation();
     	int id = block.getTypeId();
@@ -172,7 +172,7 @@ public class Mining
 
     	if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))
     	{
-	    	blockProcSimulate(block);
+	    	blockProcSimulate(block, player);
 			return;
     	}	
 	}
