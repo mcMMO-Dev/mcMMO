@@ -69,9 +69,10 @@ public class PCommand implements CommandExecutor {
 			for (int i = 1; i <= args.length - 1; i++) {
 				pMessage = pMessage + " " + args[i];
 			}
-			String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getDisplayName() + ChatColor.GREEN + ") ";
 
-			log.log(Level.INFO, "[P](" + PP.getParty() + ")" + "<" + player.getDisplayName() + "> " + pMessage);
+			String name = (LoadProperties.pDisplayNames) ? player.getDisplayName() : player.getName();
+			String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + name + ChatColor.GREEN + ") ";
+			log.log(Level.INFO, "[P](" + PP.getParty() + ")" + "<" + name + "> " + pMessage);
 
 			for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
 				if (Users.getProfile(herp).inParty()) {

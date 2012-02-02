@@ -301,10 +301,10 @@ public class mcMMO extends JavaPlugin
 		
 		//Party commands
 		if(LoadProperties.acceptEnable) getCommand("accept").setExecutor(new AcceptCommand());
-		getCommand("a").setExecutor(new ACommand());
+		if(LoadProperties.aEnable) getCommand("a").setExecutor(new ACommand());
 		if(LoadProperties.inviteEnable) getCommand("invite").setExecutor(new InviteCommand(this));
 		if(LoadProperties.partyEnable) getCommand("party").setExecutor(new PartyCommand());
-		getCommand("p").setExecutor(new PCommand());
+		if(LoadProperties.pEnable) getCommand("p").setExecutor(new PCommand());
 		if(LoadProperties.ptpEnable) getCommand("ptp").setExecutor(new PtpCommand(this));
 		
 		//Other commands

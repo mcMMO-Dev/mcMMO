@@ -33,8 +33,8 @@ public class LoadProperties {
 			mcmmoEnable, partyEnable, inviteEnable, acceptEnable, whoisEnable,
 			statsEnable, addxpEnable, ptpEnable, mmoeditEnable,
 			clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable,
-			mcrefreshEnable, enableMotd, enableMySpawn, enableRegen,
-			enableCobbleToMossy, useMySQL, cocoabeans, mushrooms,
+			mcrefreshEnable, aEnable, pEnable, enableMotd, enableMySpawn,
+			enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, mushrooms,
 			toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe,
 			excavationRequiresShovel, woodcuttingrequiresaxe, eggs, apples,
 			cake, music, diamond, glowstone, slowsand, sulphur, netherrack,
@@ -42,7 +42,7 @@ public class LoadProperties {
 			mayLoseEnchants, fishingDrops, leatherArmor, ironArmor, goldArmor,
 			diamondArmor, woodenTools, stoneTools, ironTools, goldTools,
 			diamondTools, enderPearl, blazeRod, records, glowstoneDust,
-			fishingDiamonds;
+			fishingDiamonds, aDisplayNames, pDisplayNames;
 
 	public static String MySQLtablePrefix, MySQLuserName,
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
@@ -66,7 +66,11 @@ public class LoadProperties {
 			keepEnchantsRank3, keepEnchantsRank4, fishingDropChanceTier1,
 			fishingDropChanceTier2, fishingDropChanceTier3,
 			fishingDropChanceTier4, fishingDropChanceTier5, mnetherwart,
-			mvines, mlilypad, mnetherbrick, mendstone, mmossstone, mstonebrick;
+			mvines, mlilypad, mnetherbrick, mendstone, mmossstone, mstonebrick,
+			
+			levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
+			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
+			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -339,6 +343,19 @@ public class LoadProperties {
 		nString = readString("Skills.Repair.String.Name", "String");
 		rLeather = readInteger("Skills.Repair.Leather.ID", 334);
 		nLeather = readString("Skills.Repair.String.Name", "Leather");
+		
+		levelCapAcrobatics = readInteger("Skills.Acrobatics.Level_Cap", 0);
+		levelCapArchery = readInteger("Skills.Archery.Level_Cap", 0);
+		levelCapAxes = readInteger("Skills.Axes.Level_Cap", 0);
+		levelCapExcavation = readInteger("Skills.Excavation.Level_Cap", 0);
+		levelCapFishing = readInteger("Skills.Fishing.Level_Cap", 0);
+		levelCapHerbalism = readInteger("Skills.Herbalism.Level_Cap", 0);
+		levelCapMining = readInteger("Skills.Mining.Level_Cap", 0);
+		levelCapRepair = readInteger("Skills.Repair.Level_Cap", 0);
+		levelCapSwords = readInteger("Skills.Swords.Level_Cap", 0);
+		levelCapTaming = readInteger("Skills.Taming.Level_Cap", 0);
+		levelCapUnarmed = readInteger("Skills.Unarmed.Level_Cap", 0);
+		levelCapWoodcutting  = readInteger("Skills.Woodcutting.Level_Cap", 0);
 
 		mayDowngradeEnchants = readBoolean("Arcane_Forging.Downgrades.Enabled", true);
 		downgradeRank1 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
@@ -408,5 +425,10 @@ public class LoadProperties {
 		inviteEnable = readBoolean("Commands.invite.Enabled", true);
 		acceptEnable = readBoolean("Commands.accept.Enabled", true);
 		clearmyspawnEnable = readBoolean("Commands.clearmyspawn.Enabled", true);
+		aEnable = readBoolean("Commands.a.Enabled", true);
+		pEnable = readBoolean("Commands.p.Enabled", true);
+		
+		aDisplayNames = readBoolean("Commands.a.Display_Names", true);
+		pDisplayNames = readBoolean("Commands.p.Display_Names", true);
 	}
 }

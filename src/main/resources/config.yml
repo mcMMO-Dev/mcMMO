@@ -106,19 +106,26 @@ Fishing:
         Ender_Pearl: true
         Wooden_Tools: true
 Skills:
-    Taming:
-        Call_Of_The_Wild:
-            Bones_Required: 10
+    Acrobatics:
+	    Level_Cap: 0    #Level cap of 0 for no limit
+    Archery:
+	    Level_Cap: 0
+    Axes:
+	    Level_Cap: 0
     Excavation:
+        Level_Cap: 0
         Requires_Shovel: true
-    Woodcutting:
-        Requires_Axe: true
+    Fishing:
+        Level_Cap: 0
     Herbalism:
+        Level_Cap: 0
         Green_Thumb:
             Cobble_To_Mossy: true
     Mining:
+        Level_Cap: 0
         Requires_Pickaxe: true
     Repair:
+        Level_Cap: 0
         Leather:
             ID: 334
         String:
@@ -141,6 +148,17 @@ Skills:
         Iron:
             Name: Iron Bars
             ID: 265
+    Swords:
+        Level_Cap: 0
+    Taming:
+        Level_Cap: 0
+        Call_Of_The_Wild:
+            Bones_Required: 10
+    Unarmed:
+        Level_Cap: 0
+    Woodcutting:
+        Level_Cap: 0
+        Requires_Axe: true
 Experience:
     Fishing:
         Base: 800
@@ -328,3 +346,9 @@ Commands:
         Enabled: true
     ptp:
         Enabled: true
+    p:
+        Enabled: true
+        Display_Names: true
+    a:
+        Enabled: true
+        Display_Names: true
