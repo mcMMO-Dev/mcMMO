@@ -37,7 +37,7 @@ public class Archery
 			pluginx.misc.arrowTracker.put(x, 0);
 			if(attacker != null)
 			{
-				if(Math.random() * 1000 <= PPa.getSkillLevel(SkillType.ARCHERY))
+				if( (Math.random() * 1000 <= PPa.getSkillLevel(SkillType.ARCHERY)) || PPa.getSkillLevel(SkillType.ARCHERY) > 1000)
 				{
 					pluginx.misc.arrowTracker.put(x, 1);
 				}
@@ -48,7 +48,7 @@ public class Archery
 			{
 				if(attacker != null)
 				{
-					if(Math.random() * 1000 <= PPa.getSkillLevel(SkillType.ARCHERY))
+					if( (Math.random() * 1000 <= PPa.getSkillLevel(SkillType.ARCHERY)) || PPa.getSkillLevel(SkillType.ARCHERY) > 1000)
 					{
 						pluginx.misc.arrowTracker.put(x, 1);
 					}

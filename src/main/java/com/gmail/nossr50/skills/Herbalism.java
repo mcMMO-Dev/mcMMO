@@ -144,6 +144,7 @@ public class Herbalism
 	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event, mcMMO plugin)
 	{
 		PlayerProfile PP = Users.getProfile(player);
+		int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
     	int type = block.getTypeId();
     	Location loc = block.getLocation();
     	ItemStack is = null;
@@ -162,13 +163,11 @@ public class Herbalism
     		PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat, player);
     		if(player != null)
     		{
-	    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
-	    		{
+	    		if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000) 
 	    			m.mcDropItem(loc, is);
-	    		}
     		}
     		//GREEN THUMB
-    		if(Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM))
+    		if((Math.random() * 1500 <= herbLevel) || herbLevel > 1500)
     		{
     			event.setCancelled(true);
     			m.mcDropItem(loc, is);
@@ -206,7 +205,7 @@ public class Herbalism
     		PP.addXP(SkillType.HERBALISM, LoadProperties.mnetherwart, player);
     		if(player != null)
     		{
-	    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+    			if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000)
 	    		{
 	    			m.mcDropItem(loc, is);
 	    			m.mcDropItem(loc, is);
@@ -252,7 +251,7 @@ public class Herbalism
 	    				is = new ItemStack(Material.CACTUS, 1, (byte)0, (byte)0);
 	    				if(byteArray[x] != (byte) 5)
 	    				{
-		    		    	if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+	    					if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000)
 		    		    	{
 		    		    		m.mcDropItem(target.getLocation(), is);
 		    		    	}
@@ -291,7 +290,7 @@ public class Herbalism
 	    				//Check for being placed by the player
 	    				if(byteArray[x] != (byte) 5)
 	    				{
-		    		    	if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+	    					if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000)
 		    		    	{
 		    		    		m.mcDropItem(target.getLocation(), is);
 		    		    	}
@@ -309,7 +308,7 @@ public class Herbalism
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null)
 	    		{
-		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+	    			if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000)
 		    		{
 		    			m.mcDropItem(loc, is);
 		    		}
@@ -323,7 +322,7 @@ public class Herbalism
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 				if(player != null)
 	    		{
-					if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+					if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000)
 		    		{
 						m.mcDropItem(loc, is);
 						m.mcDropItem(loc, is);
@@ -347,7 +346,7 @@ public class Herbalism
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null)
 	    		{
-		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM))
+	    			if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000)
 		    		{
 		    			m.mcDropItem(loc, is);
 		    		}
@@ -359,9 +358,8 @@ public class Herbalism
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
+	    			if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000)
 		    			m.mcDropItem(loc, is);
-		    		}
 	    		}
 	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mflower, player);
 	    	}
@@ -371,9 +369,8 @@ public class Herbalism
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
+	    			if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000)
 		    			m.mcDropItem(loc, is);
-		    		}
 	    		}
 	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mlilypad, player);
 	    	}
@@ -382,9 +379,8 @@ public class Herbalism
 	    		mat = Material.getMaterial(block.getTypeId());
 				is = new ItemStack(mat, 1, (byte)0, (byte)0);
 	    		if(player != null){
-		    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.HERBALISM)){
+	    			if((Math.random() * 1000 <= herbLevel) || herbLevel > 1000)
 		    			m.mcDropItem(loc, is);
-		    		}
 	    		}
 	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mvines, player);
 	    	}

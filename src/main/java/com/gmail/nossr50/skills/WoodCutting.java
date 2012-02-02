@@ -45,7 +45,7 @@ public class WoodCutting
     	Material mat = Material.getMaterial(block.getTypeId());
     	if(player != null)
     	{
-    		if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.WOODCUTTING))
+    		if((Math.random() * 1000 <= PP.getSkillLevel(SkillType.WOODCUTTING)) || PP.getSkillLevel(SkillType.WOODCUTTING) > 1000)
     		{
     			ItemStack item = new ItemStack(mat, 1, (short) 0, type);
     			m.mcDropItem(block.getLocation(), item);

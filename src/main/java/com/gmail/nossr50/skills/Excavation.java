@@ -235,7 +235,7 @@ public class Excavation
 				
     		}
     		//CHANCE TO GET GLOWSTONE
-    		if(LoadProperties.glowstone == true && skillLevel >= 25 && Math.random() * 100 > 95)
+    		if(LoadProperties.glowstone && skillLevel >= 25 && Math.random() * 100 > 95)
     		{
     			xp+= LoadProperties.mglowstone2;
 				is.add(new ItemStack(Material.GLOWSTONE_DUST, 1, (byte)0, (byte)0));

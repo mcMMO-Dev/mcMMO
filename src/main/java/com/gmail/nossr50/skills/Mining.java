@@ -170,7 +170,7 @@ public class Mining
     {
     	PlayerProfile PP = Users.getProfile(player);
 
-    	if(Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))
+    	if((Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING)) || PP.getSkillLevel(SkillType.MINING) > 1000) 
     	{
 	    	blockProcSimulate(block, player);
 			return;
