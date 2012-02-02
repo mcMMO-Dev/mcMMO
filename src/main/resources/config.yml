@@ -107,11 +107,11 @@ Fishing:
         Wooden_Tools: true
 Skills:
     Acrobatics:
-	    Level_Cap: 0    #Level cap of 0 for no limit
+        Level_Cap: 0    #Level cap of 0 for no limit
     Archery:
-	    Level_Cap: 0
+        Level_Cap: 0
     Axes:
-	    Level_Cap: 0
+        Level_Cap: 0
     Excavation:
         Level_Cap: 0
         Requires_Shovel: true

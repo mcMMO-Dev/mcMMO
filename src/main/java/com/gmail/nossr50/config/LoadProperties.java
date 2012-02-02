@@ -67,7 +67,6 @@ public class LoadProperties {
 			fishingDropChanceTier2, fishingDropChanceTier3,
 			fishingDropChanceTier4, fishingDropChanceTier5, mnetherwart,
 			mvines, mlilypad, mnetherbrick, mendstone, mmossstone, mstonebrick,
-			
 			levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
 			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
 			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting;
@@ -355,7 +354,7 @@ public class LoadProperties {
 		levelCapSwords = readInteger("Skills.Swords.Level_Cap", 0);
 		levelCapTaming = readInteger("Skills.Taming.Level_Cap", 0);
 		levelCapUnarmed = readInteger("Skills.Unarmed.Level_Cap", 0);
-		levelCapWoodcutting  = readInteger("Skills.Woodcutting.Level_Cap", 0);
+		levelCapWoodcutting = readInteger("Skills.Woodcutting.Level_Cap", 0);
 
 		mayDowngradeEnchants = readBoolean("Arcane_Forging.Downgrades.Enabled", true);
 		downgradeRank1 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
