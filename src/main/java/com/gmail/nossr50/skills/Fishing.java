@@ -1077,12 +1077,10 @@ public class Fishing {
 								if(Math.random() * 15 < Fishing.getFishingLootTier(PP))
 								{
 									enchanted = true;
-									int randomEnchantLevel = (int)(Math.random() * x.getMaxLevel());
+									int randomEnchantLevel = (int)(Math.random() * x.getMaxLevel()) + 1;
 									
 									if(randomEnchantLevel == 0)
 										randomEnchantLevel = 1;
-									if(randomEnchantLevel > x.getMaxLevel())
-										randomEnchantLevel = x.getMaxLevel();
 
 									fishingResults.addEnchantment(x, randomEnchantLevel);
 								}
