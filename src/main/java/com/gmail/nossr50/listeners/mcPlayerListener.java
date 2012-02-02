@@ -315,7 +315,8 @@ public class mcPlayerListener implements Listener
 		if(PP.getPartyChatMode())
 		{
 			event.setCancelled(true);
-			String format = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getDisplayName() + ChatColor.GREEN + ") "+event.getMessage();
+			String name = (LoadProperties.pDisplayNames) ? player.getDisplayName() : player.getName();
+			String format = ChatColor.GREEN + "(" + ChatColor.WHITE + name + ChatColor.GREEN + ") "+event.getMessage();
 			for(Player x : Bukkit.getServer().getOnlinePlayers())
 			{
 				if(Party.getInstance().inSameParty(player, x))
@@ -328,7 +329,8 @@ public class mcPlayerListener implements Listener
 			}
 		} else if (PP.getAdminChatMode()) {
 			event.setCancelled(true);
-			String format = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getDisplayName() + ChatColor.AQUA + "} "+event.getMessage();
+			String name = (LoadProperties.aDisplayNames) ? player.getDisplayName() : player.getName();
+			String format = ChatColor.AQUA + "{" + ChatColor.WHITE + name + ChatColor.AQUA + "} "+event.getMessage();
 			for(Player x : Bukkit.getServer().getOnlinePlayers())
 			{
 				if(x.isOp() || mcPermissions.getInstance().adminChat(x))

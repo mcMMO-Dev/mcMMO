@@ -315,6 +315,11 @@ public class Skills
 	
 	public static void XpCheckSkill(SkillType skillType, Player player)
 	{
+		if(skillType == SkillType.ALL) {
+			XpCheckAll(player);
+			return;
+		}
+		
 		PlayerProfile PP = Users.getProfile(player);
 		
 		if(PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType))
@@ -323,12 +328,14 @@ public class Skills
 			
 			while(PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType))
 			{
-				skillups++;
+				if(getSkillMaxLevel(skillType) >= PP.getSkillLevel(skillType) + 1) {
+					skillups++;
+					PP.skillUp(skillType, 1);
+					
+					McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
+					Bukkit.getPluginManager().callEvent(eventToFire);
+				}
 				PP.removeXP(skillType, PP.getXpToLevel(skillType));
-				PP.skillUp(skillType, 1);
-				
-				McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
-				Bukkit.getPluginManager().callEvent(eventToFire);
 			}
 			
 			if(!LoadProperties.useMySQL)
@@ -374,6 +381,36 @@ public class Skills
 				continue;
 			
 			XpCheckSkill(x, player);
+		}
+	}
+	public static int getSkillMaxLevel(SkillType skillType) {
+		switch(skillType) {
+			case ACROBATICS:
+				return (LoadProperties.levelCapAcrobatics > 0) ? LoadProperties.levelCapAcrobatics : Integer.MAX_VALUE;
+			case ARCHERY:
+				return (LoadProperties.levelCapArchery > 0) ? LoadProperties.levelCapArchery : Integer.MAX_VALUE;
+			case AXES:
+				return (LoadProperties.levelCapAxes > 0) ? LoadProperties.levelCapAxes : Integer.MAX_VALUE;
+			case EXCAVATION:
+				return (LoadProperties.levelCapExcavation > 0) ? LoadProperties.levelCapExcavation : Integer.MAX_VALUE;
+			case FISHING:
+				return (LoadProperties.levelCapFishing > 0) ? LoadProperties.levelCapFishing : Integer.MAX_VALUE;
+			case HERBALISM:
+				return (LoadProperties.levelCapHerbalism > 0) ? LoadProperties.levelCapHerbalism : Integer.MAX_VALUE;
+			case MINING:
+				return (LoadProperties.levelCapMining > 0) ? LoadProperties.levelCapMining : Integer.MAX_VALUE;
+			case REPAIR:
+				return (LoadProperties.levelCapRepair > 0) ? LoadProperties.levelCapRepair : Integer.MAX_VALUE;
+			case SWORDS:
+				return (LoadProperties.levelCapSwords > 0) ? LoadProperties.levelCapSwords : Integer.MAX_VALUE;
+			case TAMING:
+				return (LoadProperties.levelCapTaming > 0) ? LoadProperties.levelCapTaming : Integer.MAX_VALUE;
+			case UNARMED:
+				return (LoadProperties.levelCapUnarmed > 0) ? LoadProperties.levelCapUnarmed : Integer.MAX_VALUE;
+			case WOODCUTTING:
+				return (LoadProperties.levelCapWoodcutting > 0) ? LoadProperties.levelCapWoodcutting : Integer.MAX_VALUE;
+			default:
+				return Integer.MAX_VALUE;
 		}
 	}
     public static SkillType getSkillType(String skillName)
