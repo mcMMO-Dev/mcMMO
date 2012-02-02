@@ -251,7 +251,8 @@ public class Mining
 				break;
 		}
 		
-    	blockProcCheck(block, player);
+		if(canBeSuperBroken(block))
+			blockProcCheck(block, player);
     	PP.addXP(SkillType.MINING, xp, player);
     	Skills.XpCheckSkill(SkillType.MINING, player);
     }
