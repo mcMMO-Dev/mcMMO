@@ -89,12 +89,23 @@ public class Mining
 			return;
 		}
 		
+		//Drop natural block with Silk Touch
+		if(player.getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)){
+			m.mcDropItem(loc, item);
+			return;
+		}
+			
 		switch (id){
 			//GLOWSTONE
 			case 89:
 				mat = Material.getMaterial(348);
 				item = new ItemStack(mat, 1, (byte)0, damage);
 				m.mcDropItem(loc, item);
+				m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
 				break;
 			//REDSTONE
 			case 73:
@@ -270,6 +281,7 @@ public class Mining
     	int xp = 0;
 		byte damage = 0;
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+		boolean silkTouch = player.getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH);
 		
 		//STONE
     	if(id == 1)
@@ -280,8 +292,12 @@ public class Mining
     			blockProcCheck(block, player);
     			blockProcCheck(block, player);
     		}
-    		mat = Material.getMaterial(4);
-			item = new ItemStack(mat, 1, (byte)0, damage);
+    		
+    		if(!silkTouch)
+    		{
+    			mat = Material.getMaterial(4);
+				item = new ItemStack(mat, 1, (byte)0, damage);
+    		}
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -319,9 +335,20 @@ public class Mining
     			blockProcCheck(block, player);
     			blockProcCheck(block, player);
     		}
-    		mat = Material.getMaterial(348);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
+    		
+    		if(!silkTouch)
+    		{
+    			mat = Material.getMaterial(348);
+    			item = new ItemStack(mat, 1, (byte)0, damage);
+    			m.mcDropItem(loc, item);
+    			m.mcDropItem(loc, item);
+    			if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+    			if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+    		}
+    		else
+    			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -332,9 +359,13 @@ public class Mining
     			xp += LoadProperties.mcoal;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
-        		}
-    		mat = Material.getMaterial(263);
-			item = new ItemStack(mat, 1, (byte)0, damage);
+        	}
+    		
+    		if(!silkTouch)
+    		{
+    			mat = Material.getMaterial(263);
+    			item = new ItemStack(mat, 1, (byte)0, damage);
+    		}
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -346,7 +377,7 @@ public class Mining
     			xp += LoadProperties.mgold;
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
-        		}
+        	}
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -371,8 +402,12 @@ public class Mining
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
-    		mat = Material.getMaterial(264);
-			item = new ItemStack(mat, 1, (byte)0, damage);
+    		
+    		if(!silkTouch)
+    		{
+    			mat = Material.getMaterial(264);
+    			item = new ItemStack(mat, 1, (byte)0, damage);
+    		}
 			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
@@ -398,14 +433,21 @@ public class Mining
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
-    		mat = Material.getMaterial(331);
-			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
-				m.mcDropItem(loc, item);
+    		
+    		if(!silkTouch)
+    		{
+    			mat = Material.getMaterial(331);
+    			item = new ItemStack(mat, 1, (byte)0, damage);
+    			m.mcDropItem(loc, item);
+    			m.mcDropItem(loc, item);
+    			m.mcDropItem(loc, item);
+    			m.mcDropItem(loc, item);
+    			if(Math.random() * 10 > 5)
+    				m.mcDropItem(loc, item);
+    		}
+    		else
+    			m.mcDropItem(loc, item);
+			
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
@@ -416,20 +458,26 @@ public class Mining
         		blockProcCheck(block, player);
         		blockProcCheck(block, player);
         	}
-    		mat = Material.getMaterial(351);
-			item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
+    		
+    		if(!silkTouch)
+    		{
+    			mat = Material.getMaterial(351);
+				item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
 				m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
 				m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
 				m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
 				m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+				if(Math.random() * 10 > 5)
+					m.mcDropItem(loc, item);
+    		}
+    		else
+    			m.mcDropItem(loc, item);
 			player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
     		block.setType(Material.AIR);
     	}
