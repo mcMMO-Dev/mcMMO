@@ -45,6 +45,7 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.*;
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 
+import net.minecraft.server.Enchantment;
 
 public class mcBlockListener implements Listener 
 {
@@ -360,7 +361,7 @@ public class mcBlockListener implements Listener
 			
 			if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    	{
-	    		if(!player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
+	    		if(inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
 	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
 	    	}
 			
