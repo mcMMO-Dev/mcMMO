@@ -247,7 +247,7 @@ public class mcBlockListener implements Listener
     					{
     						mat = Material.SAPLING;
     						
-    						item = new ItemStack(mat, 1, (short)0, blockx.getData());
+    						item = new ItemStack(mat, 1, (short)0, (byte)(blockx.getData()-8));
     						
     						if(Math.random() * 10 > 9)
     							m.mcDropItem(blockx.getLocation(), item);
@@ -455,7 +455,7 @@ public class mcBlockListener implements Listener
     		
     		if(Math.random() * 10 > 9)
     		{
-    			ItemStack x = new ItemStack(Material.SAPLING, 1, (short)0, block.getData());
+    			ItemStack x = new ItemStack(Material.SAPLING, 1, (short)0, (byte)(block.getData()-8));
     			m.mcDropItem(block.getLocation(), x);
     		}
     		block.setType(Material.AIR);
