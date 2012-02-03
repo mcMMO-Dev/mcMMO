@@ -258,7 +258,10 @@ public class mcBlockListener implements Listener
     				}
     			}
     			if(LoadProperties.toolsLoseDurabilityFromAbilities)
-    		    	m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+    	    	{
+    	    		if(inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
+    	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+    	    	}
     			plugin.misc.treeFeller.clear();
     		}
     	}
@@ -396,6 +399,8 @@ public class mcBlockListener implements Listener
 		   		mat = Material.SNOW_BALL;
 		   	if(block.getTypeId() == 82)
 		   		mat = Material.CLAY_BALL;
+		   	if(block.getTypeId() == 110)
+		   		mat = Material.DIRT;
 		   	
 			byte type = block.getData();
 			
@@ -440,8 +445,14 @@ public class mcBlockListener implements Listener
     	 * LEAF BLOWER
     	 */
     	if(block.getTypeId() == 18 && mcPermissions.getInstance().woodcutting(player) && PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 && m.isAxes(player.getItemInHand()) && m.blockBreakSimulate(block, player))
-    	{
-    		m.damageTool(player, (short)1);
+    	{	
+    		
+    		if(LoadProperties.toolsLoseDurabilityFromAbilities)
+	    	{
+	    		if(inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
+	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+	    	}
+    		
     		if(Math.random() * 10 > 9)
     		{
     			ItemStack x = new ItemStack(Material.SAPLING, 1, (short)0, block.getData());
