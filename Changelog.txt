@@ -1,7 +1,7 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 
-Version 1.2.09-dev
+Version 1.2.09
  - Fixed issue with Repair Mastery (Issue #47)
  - Made Arcane Forging fully configurable (Pull Request #52)
  - Made Fishing configurable (Pull Request #60)
@@ -19,6 +19,7 @@ Version 1.2.09-dev
  - Initial command alias framework added
  - Fixed abilities not handling Unbreaking items
  - Fix for treefeller glitch
+ - Super secret anniversary easter egg!
 
 Version 1.2.08
  - Changed Bukkit events to new event system
