@@ -1,6 +1,36 @@
-/bin
-/.project
+# Eclipse stuff
 /.classpath
-/target
+/.project
 /.settings
+
+# netbeans
+/nbproject
+
+# we use maven!
+/build.xml
+
+# maven
+/target
+
+# vim
+.*.sw[a-p]
+
+# various other potential build files
+/build
+/bin
+/dist
+/manifest.mf
+
+/world
+
+# Mac filesystem dust
+/.DS_Store
+
+# intellij
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Project Stuff
 /src/main/resources/mcMMO
