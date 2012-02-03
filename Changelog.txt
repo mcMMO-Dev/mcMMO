@@ -11,6 +11,13 @@ Version 1.2.09-dev
  - New custom event for developers McMMOItemSpawnEvent
  - Changed LoadProperties from the old Configuration to FileConfiguration
  - Removed aliasing from config.yml
+ - Fixed mining procs from Super Break & Silk Touch
+ - Unused smelt property removed
+ - Minor optimizations
+ - Fix for setting properly block damage values
+ - Initial skill level capping added
+ - Initial command alias framework added
+ 
 
 Version 1.2.08
  - Changed Bukkit events to new event system
