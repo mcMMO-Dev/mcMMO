@@ -295,7 +295,7 @@ public class mcBlockListener implements Listener
     	Player player = event.getPlayer();
     	PlayerProfile PP = Users.getProfile(player);
     	ItemStack inhand = player.getItemInHand();
-    	Block block = event.getBlock();
+    	sun.org.mozilla.javascript.internal.ast.Block block = event.getBlock();
     	
     	Skills.monitorSkills(player, PP);
 
@@ -348,6 +348,8 @@ public class mcBlockListener implements Listener
     			mat = Material.DIRT;
     		if(block.getType() == Material.CLAY)
     			mat = Material.CLAY_BALL;
+    		if(block.getType() == Material.MYCEL)
+    			mat = Material.DIRT;
     		
 			byte type = block.getData();
 			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
@@ -356,8 +358,11 @@ public class mcBlockListener implements Listener
 			
 			player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
 			
-			if(LoadProperties.toolsLoseDurabilityFromAbilities)
-	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+	    	if(LoadProperties.toolsLoseDurabilityFromAbilities)
+	    	{
+	    		if(!player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
+	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+	    	}
 			
 			if(item.getType() == Material.CLAY_BALL)
 			{
