@@ -295,7 +295,7 @@ public class mcBlockListener implements Listener
     	Player player = event.getPlayer();
     	PlayerProfile PP = Users.getProfile(player);
     	ItemStack inhand = player.getItemInHand();
-    	sun.org.mozilla.javascript.internal.ast.Block block = event.getBlock();
+    	Block block = event.getBlock();
     	
     	Skills.monitorSkills(player, PP);
 
@@ -358,7 +358,7 @@ public class mcBlockListener implements Listener
 			
 			player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
 			
-	    	if(LoadProperties.toolsLoseDurabilityFromAbilities)
+			if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    	{
 	    		if(!player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
 	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
