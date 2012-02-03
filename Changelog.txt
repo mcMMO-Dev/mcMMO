@@ -17,7 +17,8 @@ Version 1.2.09-dev
  - Fix for setting properly block damage values
  - Initial skill level capping added
  - Initial command alias framework added
- 
+ - Fixed abilities not handling Unbreaking items
+ - Fix for treefeller glitch
 
 Version 1.2.08
  - Changed Bukkit events to new event system
