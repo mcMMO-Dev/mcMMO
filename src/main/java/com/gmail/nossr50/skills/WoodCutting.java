@@ -17,7 +17,6 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
-import net.minecraft.server.Enchantment;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,10 +24,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Statistic;
+import org.bukkit.enchantments.Enchantment;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -203,7 +202,7 @@ public class WoodCutting
     public static void leafBlower(Player player, Block block){
 		if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    {
-	    	if(!player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
+	    	if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
 	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
 	    }
 		
@@ -212,9 +211,6 @@ public class WoodCutting
 			ItemStack x = new ItemStack(Material.SAPLING, 1, (short)0, (byte)(block.getData()-8));
 			m.mcDropItem(block.getLocation(), x);
 		}
-		
-		block.setType(Material.AIR);
-		player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
 		
 		if(LoadProperties.spoutEnabled)
 			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());

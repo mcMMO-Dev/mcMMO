@@ -247,7 +247,7 @@ public class mcBlockListener implements Listener
     	 * EXCAVATION
     	 */
     	if(Excavation.canBeGigaDrillBroken(block) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
-    		Excavation.excavationProcCheck(block.getData(), block.getType(), block.getLocation(), player);
+    		Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);
     	/*
     	 * HERBALISM
     	 */
@@ -312,54 +312,21 @@ public class mcBlockListener implements Listener
     	/*
     	 * GIGA DRILL BREAKER CHECKS
     	 */
-    	if(PP.getGigaDrillBreakerMode() && m.blockBreakSimulate(block, player) 
-    			&& Excavation.canBeGigaDrillBroken(block) && m.isShovel(inhand))
-    	{
-    		int x = 0;
-    		
-    		while(x < 3)
+    	if(PP.getGigaDrillBreakerMode()
+    		&& Excavation.canBeGigaDrillBroken(block)
+    		&& m.blockBreakSimulate(block, player) 
+    		&& mcPermissions.getInstance().excavationAbility(player))
+    	{	
+    		if(LoadProperties.excavationRequiresShovel)
     		{
-    			if(block.getData() != (byte)5)
-    				Excavation.excavationProcCheck(block.getData(), block.getType(), block.getLocation(), player);
-    			x++;
+    			if(m.isShovel(inhand)){
+    				event.setInstaBreak(true);
+    				Excavation.gigaDrillBreaker(player, block);
+    			}
+    		} else {
+    			event.setInstaBreak(true);
+    			Excavation.gigaDrillBreaker(player, block);
     		}
-    		
-    		Material mat = Material.getMaterial(block.getTypeId());
-    		
-    		if(block.getType() == Material.GRASS)
-    			mat = Material.DIRT;
-    		if(block.getType() == Material.CLAY)
-    			mat = Material.CLAY_BALL;
-    		if(block.getType() == Material.MYCEL)
-    			mat = Material.DIRT;
-    		
-			byte type = block.getData();
-			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
-			
-			block.setType(Material.AIR);
-			
-			player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
-			
-			if(LoadProperties.toolsLoseDurabilityFromAbilities)
-	    	{
-	    		if(!inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
-	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
-	    	}
-			
-			if(item.getType() == Material.CLAY_BALL)
-			{
-				m.mcDropItem(block.getLocation(), item);
-				m.mcDropItem(block.getLocation(), item);
-				m.mcDropItem(block.getLocation(), item);
-				m.mcDropItem(block.getLocation(), item);
-			} else
-			{
-				m.mcDropItem(block.getLocation(), item);
-			}
-			
-			//Spout stuff
-			if(LoadProperties.spoutEnabled)
-				SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	/*
     	 * BERSERK MODE CHECKS
@@ -367,7 +334,8 @@ public class mcBlockListener implements Listener
     	if(PP.getBerserkMode() 
     		&& m.blockBreakSimulate(block, player) 
     		&& player.getItemInHand().getTypeId() == 0 
-    		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
+    		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78)
+    		&& mcPermissions.getInstance().unarmedAbility(player))
     	{
     		event.setInstaBreak(true);
     		if(LoadProperties.spoutEnabled)
@@ -380,14 +348,14 @@ public class mcBlockListener implements Listener
     	if(PP.getSuperBreakerMode() 
     		&& Mining.canBeSuperBroken(block)
     		&& m.blockBreakSimulate(block, player)
-    		&& mcPermissions.getInstance().mining(player))
+    		&& mcPermissions.getInstance().miningAbility(player))
     	{
-    		
     		if(LoadProperties.miningrequirespickaxe)
     		{
-    			if(m.isMiningPick(inhand))
+    			if(m.isMiningPick(inhand)){
     				event.setInstaBreak(true);
     				Mining.SuperBreakerBlockCheck(player, block, plugin);
+    			}
     		} else {
     			event.setInstaBreak(true);
     			Mining.SuperBreakerBlockCheck(player, block, plugin);
@@ -398,16 +366,18 @@ public class mcBlockListener implements Listener
     	 * LEAF BLOWER CHECKS
     	 */
     	if(block.getTypeId() == 18 
-    		&& mcPermissions.getInstance().woodcutting(player) 
+    		&& mcPermissions.getInstance().woodcuttingAbility(player) 
     		&& PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 
     		&& m.blockBreakSimulate(block, player))
     	{	
     		if(LoadProperties.woodcuttingrequiresaxe)
     		{
     			if(m.isAxes(inhand))
+    				event.setInstaBreak(true);
     				WoodCutting.leafBlower(player, block);
     		}
     		else{
+    			event.setInstaBreak(true);
     			WoodCutting.leafBlower(player, block);
     		}
     		
