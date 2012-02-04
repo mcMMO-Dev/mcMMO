@@ -137,6 +137,8 @@ public class mcMMO extends JavaPlugin
             }
         }
 
+        new File(getDataFolder() + File.separator + "players").mkdir();
+
         gotCake = new ArrayList<String>();
 
         try {
@@ -154,8 +156,6 @@ public class mcMMO extends JavaPlugin
 		catch (Exception ex) {
 			System.out.println(ex);
 		}
-
-		mcPermissions.initialize(getServer());
 		
 		this.config = new LoadProperties(this);
 		this.config.load();
