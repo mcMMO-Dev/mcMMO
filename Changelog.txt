@@ -1,6 +1,8 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 
+Version 1.2.10
+
 Version 1.2.09
  - Fixed issue with Repair Mastery (Issue #47)
  - Made Arcane Forging fully configurable (Pull Request #52)
