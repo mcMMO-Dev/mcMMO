@@ -237,7 +237,7 @@ public class mcBlockListener implements Listener
     			}
     			if(LoadProperties.toolsLoseDurabilityFromAbilities)
     	    	{
-    	    		if(inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
+    	    		if(!inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
     	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     	    	}
     			plugin.misc.treeFeller.clear();
@@ -342,7 +342,7 @@ public class mcBlockListener implements Listener
 			
 			if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    	{
-	    		if(inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
+	    		if(!inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
 	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
 	    	}
 			
@@ -369,45 +369,17 @@ public class mcBlockListener implements Listener
     		&& player.getItemInHand().getTypeId() == 0 
     		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
     	{
-		   	Material mat = Material.getMaterial(block.getTypeId());
-		   	
-		   	if(block.getTypeId() == 2)
-		   		mat = Material.DIRT;
-		   	if(block.getTypeId() == 78)
-		   		mat = Material.SNOW_BALL;
-		   	if(block.getTypeId() == 82)
-		   		mat = Material.CLAY_BALL;
-		   	if(block.getTypeId() == 110)
-		   		mat = Material.DIRT;
-		   	
-			byte type = block.getData();
-			
-			ItemStack item = new ItemStack(mat, 1, (byte)0, type);
-			player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
-			
-			block.setType(Material.AIR);
-			
-			if(item.getType() == Material.CLAY_BALL)
-			{
-				m.mcDropItem(block.getLocation(), item);
-				m.mcDropItem(block.getLocation(), item);
-				m.mcDropItem(block.getLocation(), item);
-				m.mcDropItem(block.getLocation(), item);
-			} else
-			{
-				m.mcDropItem(block.getLocation(), item);
-			}
-			
-			if(LoadProperties.spoutEnabled)
-				SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+    		event.setInstaBreak(true);
+    		Unarmed.berserk(player, block);
     	}
     	
     	/*
     	 * SUPER BREAKER CHECKS
     	 */
     	if(PP.getSuperBreakerMode() 
-    			&& Mining.canBeSuperBroken(block)
-    			&& m.blockBreakSimulate(block, player))
+    		&& Mining.canBeSuperBroken(block)
+    		&& m.blockBreakSimulate(block, player)
+    		&& mcPermissions.getInstance().mining(player))
     	{
     		
     		if(LoadProperties.miningrequirespickaxe)
@@ -420,26 +392,22 @@ public class mcBlockListener implements Listener
     	}
     	
     	/*
-    	 * LEAF BLOWER
+    	 * LEAF BLOWER CHECKS
     	 */
-    	if(block.getTypeId() == 18 && mcPermissions.getInstance().woodcutting(player) && PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 && m.isAxes(player.getItemInHand()) && m.blockBreakSimulate(block, player))
+    	if(block.getTypeId() == 18 
+    		&& mcPermissions.getInstance().woodcutting(player) 
+    		&& PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 
+    		&& m.blockBreakSimulate(block, player))
     	{	
-    		
-    		if(LoadProperties.toolsLoseDurabilityFromAbilities)
-	    	{
-	    		if(inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
-	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
-	    	}
-    		
-    		if(Math.random() * 10 > 9)
+    		if(LoadProperties.woodcuttingrequiresaxe)
     		{
-    			ItemStack x = new ItemStack(Material.SAPLING, 1, (short)0, (byte)(block.getData()-8));
-    			m.mcDropItem(block.getLocation(), x);
+    			if(m.isAxes(inhand))
+    				WoodCutting.leafBlower(player, block);
     		}
-    		block.setType(Material.AIR);
-    		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
-    		if(LoadProperties.spoutEnabled)
-    			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+    		else{
+    			WoodCutting.leafBlower(player, block);
+    		}
+    		
     	}
     	if(block.getType() == Material.AIR && plugin.misc.blockWatchList.contains(block))
     	{

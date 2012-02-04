@@ -25,7 +25,9 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.listeners.Material;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.spout.SpoutStuff;
 
 public class Unarmed {
 	public static void berserkActivationCheck(Player player)
@@ -107,5 +109,37 @@ public class Unarmed {
 	    		}
 	    	}
 		}
+	}
+	
+	public static void berserk(Player player, Block block){
+		
+		Material mat = Material.getMaterial(block.getTypeId());
+		byte damage = 0;
+		
+	   	if(block.getTypeId() == 2 || block.getTypeId() == 110)
+	   		mat = Material.DIRT;
+	   	if(block.getTypeId() == 78)
+	   		mat = Material.SNOW_BALL;
+	   	if(block.getTypeId() == 82)
+	   		mat = Material.CLAY_BALL;
+		
+		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
+		
+//		block.setType(Material.AIR);
+		
+		if(item.getType() == Material.CLAY_BALL)
+		{
+			m.mcDropItem(block.getLocation(), item);
+			m.mcDropItem(block.getLocation(), item);
+			m.mcDropItem(block.getLocation(), item);
+			m.mcDropItem(block.getLocation(), item);
+		} else
+		{
+			m.mcDropItem(block.getLocation(), item);
+		}
+		
+		if(LoadProperties.spoutEnabled)
+			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
 	}
 }

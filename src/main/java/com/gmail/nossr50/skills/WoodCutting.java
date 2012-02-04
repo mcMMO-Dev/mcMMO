@@ -27,9 +27,11 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.config.*;
 
 
@@ -194,5 +196,25 @@ public class WoodCutting
     	
     	PP.addXP(SkillType.WOODCUTTING, xp, player);
     	Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
+    }
+    
+    public static void leafBlower(Player player, Block block){
+		if(LoadProperties.toolsLoseDurabilityFromAbilities)
+	    {
+	    	if(!player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
+	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+	    }
+		
+		if(Math.random() * 10 > 9)
+		{
+			ItemStack x = new ItemStack(Material.SAPLING, 1, (short)0, (byte)(block.getData()-8));
+			m.mcDropItem(block.getLocation(), x);
+		}
+		
+		block.setType(Material.AIR);
+		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
+		
+		if(LoadProperties.spoutEnabled)
+			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     }
 }
