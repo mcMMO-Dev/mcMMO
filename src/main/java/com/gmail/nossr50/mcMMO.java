@@ -137,7 +137,7 @@ public class mcMMO extends JavaPlugin
             }
         }
 
-        new File(getDataFolder() + File.separator + "players").mkdir();
+        new File(getDataFolder().getAbsolutePath() + File.separator + "players").mkdir();
 
         gotCake = new ArrayList<String>();
 
