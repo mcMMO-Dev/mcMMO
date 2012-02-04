@@ -17,13 +17,14 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
-
+import net.minecraft.server.Enchantment;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.Statistic;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -33,6 +34,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.config.*;
+import org.getspout.spoutapi.sound.SoundEffect;
 
 
 public class WoodCutting 
@@ -212,7 +214,7 @@ public class WoodCutting
 		}
 		
 		block.setType(Material.AIR);
-		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
+		player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
 		
 		if(LoadProperties.spoutEnabled)
 			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());

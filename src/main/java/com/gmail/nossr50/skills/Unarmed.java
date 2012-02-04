@@ -18,16 +18,19 @@ package com.gmail.nossr50.skills;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.block.Block;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
+import org.bukkit.Statistic;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.listeners.Material;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutStuff;
+import org.getspout.spoutapi.sound.SoundEffect;
 
 public class Unarmed {
 	public static void berserkActivationCheck(Player player)
@@ -124,7 +127,7 @@ public class Unarmed {
 	   		mat = Material.CLAY_BALL;
 		
 		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-		player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
+		player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
 		
 //		block.setType(Material.AIR);
 		
