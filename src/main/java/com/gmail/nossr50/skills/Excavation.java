@@ -22,6 +22,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.enchantments.Enchantment;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.Users;
@@ -29,6 +30,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import org.getspout.spoutapi.sound.SoundEffect;
 
 
 public class Excavation
@@ -259,7 +261,7 @@ public class Excavation
 	{
 		if(LoadProperties.toolsLoseDurabilityFromAbilities)
     	{
-    		if(!player.getItemInHand.containsEnchantment(Enchantment.DURABILITY))
+			if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
     			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     	}
 		

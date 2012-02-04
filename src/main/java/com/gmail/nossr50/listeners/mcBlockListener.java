@@ -366,7 +366,7 @@ public class mcBlockListener implements Listener
     	 * LEAF BLOWER CHECKS
     	 */
     	if(block.getTypeId() == 18 
-    		&& mcPermissions.getInstance().woodcuttingAbility(player) 
+    		&& mcPermissions.getInstance().woodCuttingAbility(player) 
     		&& PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 
     		&& m.blockBreakSimulate(block, player))
     	{	
