@@ -194,6 +194,5 @@ public class WoodCutting
     	
     	PP.addXP(SkillType.WOODCUTTING, xp, player);
     	Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
-		}
     }
 }
