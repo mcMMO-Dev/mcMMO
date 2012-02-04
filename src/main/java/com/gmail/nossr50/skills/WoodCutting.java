@@ -166,4 +166,34 @@ public class WoodCutting
     		isdone = false;
     	}
     }
+    
+    public static void woodcuttingBlockCheck(Player player, Block block, mcMMO plugin)
+    {
+    	PlayerProfile PP = Users.getProfile(player);    	
+    	int xp = 0;
+		byte data = block.getData();
+		
+    	if(plugin.misc.blockWatchList.contains(block))
+    		return;
+    	
+    	switch(data)
+    	{
+    		case 0:
+    			xp += LoadProperties.mpine;
+    			break;
+    		case 1:
+    			xp += LoadProperties.mspruce;
+    			break;
+    		case 2:
+    			xp += LoadProperties.mbirch;
+    			break;
+    	}
+    	
+    	if(block.getTypeId() == 17)
+    		WoodCutting.woodCuttingProcCheck(player, block);
+    	
+    	PP.addXP(SkillType.WOODCUTTING, xp, player);
+    	Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
+		}
+    }
 }

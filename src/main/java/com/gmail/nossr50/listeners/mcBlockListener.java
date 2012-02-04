@@ -157,6 +157,7 @@ public class mcBlockListener implements Listener
     	/*
     	 * MINING
     	 */
+   		
     	if(mcPermissions.getInstance().mining(player))
     	{
     		if(LoadProperties.miningrequirespickaxe)
@@ -170,47 +171,24 @@ public class mcBlockListener implements Listener
     			Mining.miningBlockCheck(player, block, plugin);
     		}
     	}
+    	
+    	
     	/*
    		 * WOOD CUTTING
    		 */
     	
-   		if(player != null && block.getTypeId() == 17 && mcPermissions.getInstance().woodcutting(player))
+   		if(mcPermissions.getInstance().woodcutting(player))
    		{
    			if(LoadProperties.woodcuttingrequiresaxe)
    			{
 				if(m.isAxes(inhand))
 				{
-					if(!plugin.misc.blockWatchList.contains(block))
-					{
-	    				WoodCutting.woodCuttingProcCheck(player, block);
-	    				//Default
-	    				if(block.getData() == (byte)0)
-	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine, player);
-	    				//Spruce
-	    				if(block.getData() == (byte)1)
-	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce, player);
-	    				//Birch
-	    				if(block.getData() == (byte)2)
-	    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch, player);
-					}
+					WoodCutting.woodcuttingBlockCheck(player, block, plugin);
     			}
     		} else 
     		{
-    			if(!plugin.misc.blockWatchList.contains(block))
-    			{
-	    			WoodCutting.woodCuttingProcCheck(player, block);
-	    			//Default
-    				if(block.getData() == (byte)0)
-    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine, player);
-    				//Spruce
-    				if(block.getData() == (byte)1)
-    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mspruce, player);
-    				//Birch
-    				if(block.getData() == (byte)2)
-    					PP.addXP(SkillType.WOODCUTTING, LoadProperties.mbirch, player);
-    			}
+    			WoodCutting.woodcuttingBlockCheck(player, block, plugin);
    			}
-    		Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
     			
     		/*
     		 * IF PLAYER IS USING TREEFELLER
