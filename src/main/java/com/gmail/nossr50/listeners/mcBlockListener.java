@@ -370,7 +370,8 @@ public class mcBlockListener implements Listener
     		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
     	{
     		event.setInstaBreak(true);
-    		Unarmed.berserk(player, block);
+    		if(LoadProperties.spoutEnabled)
+    			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}
     	
     	/*
@@ -385,8 +386,10 @@ public class mcBlockListener implements Listener
     		if(LoadProperties.miningrequirespickaxe)
     		{
     			if(m.isMiningPick(inhand))
+    				event.setInstaBreak(true);
     				Mining.SuperBreakerBlockCheck(player, block, plugin);
     		} else {
+    			event.setInstaBreak(true);
     			Mining.SuperBreakerBlockCheck(player, block, plugin);
     		}
     	}
