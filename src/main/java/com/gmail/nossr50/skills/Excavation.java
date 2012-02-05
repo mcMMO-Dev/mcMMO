@@ -22,12 +22,15 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.enchantments.Enchantment;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import org.getspout.spoutapi.sound.SoundEffect;
 
 
 public class Excavation
@@ -74,7 +77,7 @@ public class Excavation
 		Material t = block.getType();
 		return t == Material.DIRT || t == Material.GRASS || t == Material.SAND || t == Material.GRAVEL || t == Material.CLAY || t == Material.MYCEL || t == Material.SOUL_SAND;
 	}
-	public static void excavationProcCheck(byte data, Material type, Location loc, Player player)
+	public static void excavationProcCheck(Material type, Location loc, Player player)
 	{
 		if(LoadProperties.excavationRequiresShovel && !m.isShovel(player.getItemInHand()))
 			return;
@@ -253,4 +256,23 @@ public class Excavation
     	PP.addXP(SkillType.EXCAVATION, xp, player);
     	Skills.XpCheckSkill(SkillType.EXCAVATION, player);
     }
+	
+	public static void gigaDrillBreaker(Player player, Block block)
+	{
+		if(LoadProperties.toolsLoseDurabilityFromAbilities)
+    	{
+			if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
+    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+    	}
+		
+		if(block.getData() != (byte)5)
+		{
+			Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);	
+			Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);
+			Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);
+		}
+		
+		if(LoadProperties.spoutEnabled)
+			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+	}
 }

@@ -16,8 +16,6 @@
 */
 package com.gmail.nossr50.skills;
 
-import net.minecraft.server.Enchantment;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -25,6 +23,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
+import org.bukkit.enchantments.Enchantment;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -90,7 +89,7 @@ public class Mining
 		}
 		
 		//Drop natural block with Silk Touch
-		if(player.getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)){
+		if(player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)){
 			m.mcDropItem(loc, item);
 			return;
 		}
@@ -271,7 +270,7 @@ public class Mining
     	PlayerProfile PP = Users.getProfile(player);
     	if(LoadProperties.toolsLoseDurabilityFromAbilities)
     	{
-    		if(!player.getItemInHand().getEnchantments().containsKey(Enchantment.DURABILITY))
+    		if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
     			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     	}
     	
@@ -322,7 +321,7 @@ public class Mining
         	blockProcCheck(block, player);
     	}
     	//OBSIDIAN
-    	else if(id == 49 && block.getData() != (byte) 5)
+    	else if(id == 49 && m.getTier(player) >= 4 && block.getData() != (byte) 5)
     	{
     		xp += LoadProperties.mobsidian;
         	blockProcCheck(block, player);
