@@ -23,7 +23,7 @@
             </resource>
             <resource>
                 <targetPath>resources</targetPath>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources/xpbar/</directory>
                 <includes>
                     <include>xpbar*.png</include>
@@ -31,7 +31,7 @@
             </resource>
             <resource>
                 <targetPath>resources</targetPath>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources/healthbar/</directory>
                 <includes>
                     <include>health*.png</include>
@@ -39,7 +39,7 @@
             </resource>
             <resource>
                 <targetPath>resources</targetPath>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources/skillicon/</directory>
                 <includes>
                     <include>*.png</include>
@@ -47,7 +47,7 @@
             </resource>
             <resource>
                 <targetPath>resources</targetPath>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources/sound/</directory>
                 <includes>
                     <include>*.wav</include>

@@ -1,6 +1,6 @@
 name: mcMMO
 main: com.gmail.nossr50.mcMMO
-version: 2.0-dev
+version: ${project.version}-b${BUILD_NUMBER}
 softdepend: [Spout]
 authors:
   - TheYeti
