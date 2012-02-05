@@ -17,7 +17,6 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -175,11 +174,11 @@ public class Swords
     
     public static void counterAttackChecks(EntityDamageByEntityEvent event)
     {
-    	//Don't want to counter attack arrows
+    	//Don't want to counter attack stuff not alive
     	
-    	if(event.getDamager() instanceof Arrow)
+    	if(!(event.getDamager() instanceof LivingEntity))
     		return;
-    	
+
 	    if(event instanceof EntityDamageByEntityEvent)
 	    {
 	    	Entity f = ((EntityDamageByEntityEvent) event).getDamager();
