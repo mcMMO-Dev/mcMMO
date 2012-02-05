@@ -69,7 +69,8 @@ public class LoadProperties {
 			mvines, mlilypad, mnetherbrick, mendstone, mmossstone, mstonebrick,
 			levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
 			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
-			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting;
+			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
+			anvilID;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -327,6 +328,7 @@ public class LoadProperties {
 		acrobaticsxpmodifier = readDouble("Experience.Formula.Multiplier.Acrobatics", 1.0);
 
 		anvilmessages = readBoolean("Skills.Repair.Anvil_Messages", true);
+		anvilID = readInteger("Skills.Repair.Anvil_ID", 42);
 
 		rGold = readInteger("Skills.Repair.Gold.ID", 266);
 		nGold = readString("Skills.Repair.Gold.Name", "Gold Bars");
@@ -341,7 +343,7 @@ public class LoadProperties {
 		rString = readInteger("Skills.Repair.String.ID", 287);
 		nString = readString("Skills.Repair.String.Name", "String");
 		rLeather = readInteger("Skills.Repair.Leather.ID", 334);
-		nLeather = readString("Skills.Repair.String.Name", "Leather");
+		nLeather = readString("Skills.Repair.Leather.Name", "Leather");
 		
 		levelCapAcrobatics = readInteger("Skills.Acrobatics.Level_Cap", 0);
 		levelCapArchery = readInteger("Skills.Archery.Level_Cap", 0);

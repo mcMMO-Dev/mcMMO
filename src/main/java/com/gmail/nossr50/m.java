@@ -95,7 +95,7 @@ public class m
 		return id == 2 || id == 3 || id == 12 || id == 13 || id == 82 || //Excavation
 				id == 1 || id == 14 || id == 15 || id == 16 || id == 21 || id == 24 || id == 49 || id == 56 || id == 73 || id == 74 || id == 87 || id == 89 || id == 112 || id == 121 || id == 48 || id == 98 || //Mining
 				id == 17 || id == 37 || id == 38 || id == 39 || id == 40 || id == 81 || id == 83 || id == 86 || id == 91 || id == 103 || id == 106 || id == 111 || //Woodcutting & Herbalism
-				id == 42; //Anvil
+				id == LoadProperties.anvilID; //Anvil
 	}
 	
 	public static int getPowerLevel(Player player)
@@ -210,7 +210,7 @@ public class m
 	public static boolean abilityBlockCheck(Block block)
 	{
 		int i = block.getTypeId();
-		if(i == 107 ||i == 117 || i == 116 || i == 96 || i == 68 || i == 355 || i == 26 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == 42 || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
+		if(i == 107 ||i == 117 || i == 116 || i == 96 || i == 68 || i == 355 || i == 26 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == LoadProperties.anvilID || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
 			return false;
 		} else {
 			return true;

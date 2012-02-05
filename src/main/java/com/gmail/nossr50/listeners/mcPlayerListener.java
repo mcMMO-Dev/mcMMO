@@ -199,7 +199,7 @@ public class mcPlayerListener implements Listener
 			}
 
 			if(block != null && player != null && mcPermissions.getInstance().repair(player) 
-					&& event.getClickedBlock().getTypeId() == 42 && (Repair.isTools(player.getItemInHand()) || Repair.isArmor(player.getItemInHand())))
+					&& event.getClickedBlock().getTypeId() == LoadProperties.anvilID && (Repair.isTools(player.getItemInHand()) || Repair.isArmor(player.getItemInHand())))
 			{
 				Repair.repairCheck(player, is, event.getClickedBlock());
 				event.setCancelled(true);

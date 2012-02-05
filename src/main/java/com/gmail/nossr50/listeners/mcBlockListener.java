@@ -92,7 +92,7 @@ public class mcBlockListener implements Listener
     		}
     	}
     	
-    	if(block.getTypeId() == 42 && LoadProperties.anvilmessages)
+    	if(block.getTypeId() == LoadProperties.anvilID && LoadProperties.anvilmessages)
     	{
     		PlayerProfile PP = Users.getProfile(player);
     		if(LoadProperties.spoutEnabled)

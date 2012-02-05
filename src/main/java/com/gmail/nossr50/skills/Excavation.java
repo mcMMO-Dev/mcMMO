@@ -32,7 +32,6 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import org.getspout.spoutapi.sound.SoundEffect;
 
-
 public class Excavation
 {
 	public static void gigaDrillBreakerActivationCheck(Player player, Block block)
