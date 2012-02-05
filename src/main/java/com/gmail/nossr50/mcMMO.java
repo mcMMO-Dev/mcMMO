@@ -96,8 +96,6 @@ public class mcMMO extends JavaPlugin
 	public static Database database = null;
 	public Misc misc = new Misc(this);
 
-    public static ArrayList<String> gotCake;
-
 	//Config file stuff
 	LoadProperties config;
 	//Jar stuff
@@ -126,36 +124,6 @@ public class mcMMO extends JavaPlugin
 			//Catch all for versions not matching and no specific code being needed
 			else if(!vnum.equalsIgnoreCase(this.getDescription().getVersion())) updateFrom(-1);
 		}
-		File cakeFile = new File(getDataFolder().getAbsolutePath() + File.separator + "cake");
-
-        if (!cakeFile.exists()) {
-            try {
-                cakeFile.createNewFile();
-            }
-            catch (IOException ex) {
-                System.out.println(ex);
-            }
-        }
-
-        new File(getDataFolder().getAbsolutePath() + File.separator + "players").mkdir();
-
-        gotCake = new ArrayList<String>();
-
-        try {
-			gotCake.clear();
-			BufferedReader reader = new BufferedReader(new FileReader(getDataFolder().getAbsolutePath() + File.separator + "players"));
-			String line = reader.readLine();
-
-			while(line != null) {
-				gotCake.add(line);
-				line = reader.readLine();
-			}
-
-			reader.close();
-			}
-		catch (Exception ex) {
-			System.out.println(ex);
-		}
 		
 		this.config = new LoadProperties(this);
 		this.config.load();
@@ -170,7 +138,7 @@ public class mcMMO extends JavaPlugin
 		 */
 
 		PluginManager pm = getServer().getPluginManager();
-		
+
 		if(pm.getPlugin("Spout") != null)
 			LoadProperties.spoutEnabled = true;
 		else
@@ -285,18 +253,6 @@ public class mcMMO extends JavaPlugin
 		return permissions;
 	}
 	public void onDisable() {
-        try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(getDataFolder().getAbsolutePath() + File.separator + "cake"));
-			for (String player : gotCake) {
-				writer.write(player);
-				writer.newLine();
-			}
-			writer.close();
-		}
-		catch (Exception ex) {
-			System.out.println(ex);
-		}
-
 		Bukkit.getServer().getScheduler().cancelTasks(this);
 		System.out.println("mcMMO was disabled."); 
 	}

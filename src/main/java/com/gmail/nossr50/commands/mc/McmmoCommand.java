@@ -51,33 +51,6 @@ public class McmmoCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.GREEN + "If you like my work you can donate via Paypal: theno1yeti@gmail.com");
 		}
 
-        GregorianCalendar cakedayStart =  new GregorianCalendar(2012, Calendar.FEBRUARY, 3);
-        GregorianCalendar cakedayEnd = new GregorianCalendar(2012, Calendar.FEBRUARY, 6);
-        GregorianCalendar day = new GregorianCalendar();
-        int cakeCheck = 0;
-
-        for (String cake : mcMMO.gotCake)
-        {
-            if (player.getName().equalsIgnoreCase(cake)) {
-                cakeCheck = 1;
-            }
-        }
-
-        if (cakeCheck == 0) {
-             if (getDateRange(day.getTime(), cakedayStart.getTime(), cakedayEnd.getTime()))
-            {
-                player.sendMessage(ChatColor.BLUE + "Happy 1 Year Anniversary!  In honor of all of");
-                player.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, have some cake!");
-            }
-            mcMMO.gotCake.add(player.getName());
-            player.getInventory().addItem(new ItemStack(Material.CAKE_BLOCK, 1));
-        }
-
 		return true;
 	}
-
-    private boolean getDateRange(Date date, Date start, Date end)
-    {
-        return !(date.before(start) || date.after(end));
-    }
 }
