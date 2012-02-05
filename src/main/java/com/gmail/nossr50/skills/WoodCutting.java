@@ -193,10 +193,11 @@ public class WoodCutting
     	}
     	
     	if(block.getTypeId() == 17)
+    	{
     		WoodCutting.woodCuttingProcCheck(player, block);
-    	
-    	PP.addXP(SkillType.WOODCUTTING, xp, player);
-    	Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
+    		PP.addXP(SkillType.WOODCUTTING, xp, player);
+    		Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
+    	}
     }
     
     public static void leafBlower(Player player, Block block){
