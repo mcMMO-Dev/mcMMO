@@ -56,9 +56,11 @@ public class mcBlockListener implements Listener
         this.plugin = plugin;
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPlace(BlockPlaceEvent event) 
     {
+    	if(event.isCancelled()) return;
+
     	//Setup some basic vars
     	Block block;
     	Player player = event.getPlayer();
