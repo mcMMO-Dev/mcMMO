@@ -2,6 +2,14 @@ Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 
 Version 2.0-dev
+ - Fixed issue with receiving Woodcutting XP for all blocks broken (Issue #103)
+ - Fixed issue with Spout images & sounds not working (Issue #93)
+ - Fixed typo with repairing Leather Armor & Bows
+ - Fixed issue with Silk Touch & Double/Triple drops not working properly
+ - Fixed conflict with NoCheat plugin & Super Breaker/Giga Drill Breaker/Berserk/Leaf Blower (Issue #104)
+ - Fixed counter-attacking non-LivingEntity (Issue #100 & Issue #107)
+ - Added Monitor & ignoreCancelledEvents to onBlockPlace
+ - Made Anvil ID configurable
 
 Version 1.2.09
  - Fixed issue with Repair Mastery (Issue #47)

@@ -25,6 +25,7 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.block.Block;
@@ -36,6 +37,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -58,7 +60,7 @@ public class mcBlockListener implements Listener
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPlace(BlockPlaceEvent event) 
-    {
+    { 
     	if(event.isCancelled()) return;
 
     	//Setup some basic vars
@@ -340,6 +342,9 @@ public class mcBlockListener implements Listener
     		&& mcPermissions.getInstance().unarmedAbility(player))
     	{
     		event.setInstaBreak(true);
+			PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+			Bukkit.getPluginManager().callEvent(armswing);
+			
     		if(LoadProperties.spoutEnabled)
     			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     	}

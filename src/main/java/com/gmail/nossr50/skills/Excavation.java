@@ -17,12 +17,16 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.player.PlayerAnimationEvent;
+
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.Users;
@@ -266,6 +270,8 @@ public class Excavation
 		
 		if(block.getData() != (byte)5)
 		{
+			PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+			Bukkit.getPluginManager().callEvent(armswing);
 			Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);	
 			Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);
 			Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);

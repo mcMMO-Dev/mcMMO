@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.skills;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -24,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.player.PlayerAnimationEvent;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -277,10 +279,12 @@ public class Mining
     	//Pre-processing
     	int id = block.getTypeId();
     	int xp = 0;
+		PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
 		
 		//STONE
     	if(id == 1 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mstone;
     		blockProcCheck(block, player);
     		blockProcCheck(block, player);
@@ -288,6 +292,7 @@ public class Mining
     	//SANDSTONE
     	else if(id == 24 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.msandstone;
    			blockProcCheck(block, player);
    			blockProcCheck(block, player);
@@ -295,6 +300,7 @@ public class Mining
     	//NETHERRACK
     	else if(id == 87 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.mnetherrack;
    			blockProcCheck(block, player);
    			blockProcCheck(block, player);
@@ -302,6 +308,7 @@ public class Mining
     	//GLOWSTONE
     	else if(id == 89 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mglowstone;
     		blockProcCheck(block, player);
     		blockProcCheck(block, player); 
@@ -309,6 +316,7 @@ public class Mining
     	//COAL
     	else if(id == 16 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mcoal;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
@@ -316,6 +324,7 @@ public class Mining
     	//GOLD
     	else if(id == 14 && m.getTier(player) >= 3 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mgold;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
@@ -323,6 +332,7 @@ public class Mining
     	//OBSIDIAN
     	else if(id == 49 && m.getTier(player) >= 4 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mobsidian;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
@@ -330,6 +340,7 @@ public class Mining
     	//DIAMOND
     	else if(id == 56 && m.getTier(player) >= 3 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mdiamond;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
@@ -337,6 +348,7 @@ public class Mining
     	//IRON
     	else if(id == 15 && m.getTier(player) >= 2 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.miron;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
@@ -344,6 +356,7 @@ public class Mining
     	//REDSTONE
     	else if((id == 73 || id == 74) && m.getTier(player) >= 3 && !plugin.misc.blockWatchList.contains(block))
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mredstone;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
@@ -351,6 +364,7 @@ public class Mining
     	//LAPIS
     	else if(id == 21 && m.getTier(player) >= 3 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.mlapis;
        		blockProcCheck(block, player);
       		blockProcCheck(block, player);
@@ -358,6 +372,7 @@ public class Mining
     	//NETHER BRICK
     	else if(id == 112 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.mnetherbrick;
        		blockProcCheck(block, player);
        		blockProcCheck(block, player);
@@ -365,18 +380,23 @@ public class Mining
     	//END STONE
     	else if(id == 121 && block.getData() != (byte) 5)
     	{
+    		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mendstone;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
     	}
     	//MOSS STONE
-    	else if(id == 48 && block.getData() != (byte) 5){
+    	else if(id == 48 && block.getData() != (byte) 5)
+    	{
+    		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.mmossstone;
        		blockProcCheck(block, player);
        		blockProcCheck(block, player);
     	}
     	//STONE BRICK
-    	else if(id == 98 && !plugin.misc.blockWatchList.contains(block)){
+    	else if(id == 98 && !plugin.misc.blockWatchList.contains(block))
+    	{
+    		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.mstonebrick;
        		blockProcCheck(block, player);
        		blockProcCheck(block, player);

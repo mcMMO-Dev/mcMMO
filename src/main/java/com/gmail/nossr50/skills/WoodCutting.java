@@ -25,6 +25,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Statistic;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.Bukkit;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -201,7 +203,11 @@ public class WoodCutting
     }
     
     public static void leafBlower(Player player, Block block){
-		if(LoadProperties.toolsLoseDurabilityFromAbilities)
+		
+    	PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+    	Bukkit.getPluginManager().callEvent(armswing);
+    	
+    	if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    {
 	    	if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
 	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
