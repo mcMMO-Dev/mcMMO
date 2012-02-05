@@ -14,7 +14,7 @@ import com.gmail.nossr50.locale.mcLocale;
 public class McabilityCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!mcPermissions.permissionsEnabled) {
+		if (!mcPermissions.isEnabled()) {
 			sender.sendMessage("This command requires permissions.");
 			return true;
 		}

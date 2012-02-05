@@ -256,6 +256,8 @@ General:
         Enabled: true
     MOTD:
         Enabled: true
+    Disabled_Worlds:
+        - this_world_has_no_mcmmo
 Excavation:
     Drops:
         Cake: true

@@ -28,7 +28,7 @@ public class McgodCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		PlayerProfile PP = Users.getProfile(player);
 
-		if (mcPermissions.permissionsEnabled) {
+		if (mcPermissions.isEnabled()) {
 			if (!mcPermissions.getInstance().mcgod(player)) {
 				player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
 				return true;
