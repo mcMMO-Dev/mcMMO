@@ -146,7 +146,6 @@ public class mcMMO extends JavaPlugin
 		pm.registerEvents(entityListener, this);
 
 		PluginDescriptionFile pdfFile = this.getDescription();
-		mcPermissions.initialize(getServer());
 
 		if(LoadProperties.useMySQL)
 		{
