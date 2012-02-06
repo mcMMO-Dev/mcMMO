@@ -1,6 +1,8 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 
+Version 2.0-dev
+
 Version 1.2.10
  - Fixed issue with receiving Woodcutting XP for all blocks broken (Issue #103)
  - Fixed issue with Spout images & sounds not working (Issue #93)
