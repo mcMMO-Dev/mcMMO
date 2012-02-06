@@ -17,8 +17,10 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -86,6 +88,8 @@ public class LoadProperties {
 			excavationxpmodifier, archeryxpmodifier, swordsxpmodifier,
 			axesxpmodifier, acrobaticsxpmodifier;
 
+	public static ArrayList<String> disabledWorlds;
+
 	public static HUDType defaulthud;
 	protected static File configFile;
 	protected static File dataFolder;
@@ -126,6 +130,12 @@ public class LoadProperties {
 
 	public static String readString(String root, String def) {
 		String result = config.getString(root, def);
+		return result;
+	}
+	
+	public static ArrayList<String> readList(String root, ArrayList<String> def) {
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		ArrayList<String> result = (ArrayList) config.getList(root, def);
 		return result;
 	}
 
@@ -296,6 +306,8 @@ public class LoadProperties {
 		enableMotd = readBoolean("General.MOTD.Enabled", true);
 		enableMySpawn = readBoolean("General.MySpawn.Enabled", true);
 		enableRegen = readBoolean("General.HP_Regeneration.Enabled", true);
+		
+		disabledWorlds = readList("General.Disabled_Worlds", new ArrayList<String>());
 
 		enableCobbleToMossy = readBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
 
@@ -431,5 +443,7 @@ public class LoadProperties {
 		
 		aDisplayNames = readBoolean("Commands.a.Display_Names", true);
 		pDisplayNames = readBoolean("Commands.p.Display_Names", true);
+		
+		
 	}
 }
