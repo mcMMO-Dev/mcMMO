@@ -35,7 +35,7 @@ public class McmmoCommand implements CommandExecutor {
 		Player player = (Player) sender;
 
 		player.sendMessage(ChatColor.RED + "-----[]" + ChatColor.GREEN + "mcMMO" + ChatColor.RED + "[]-----");
-		String description = mcLocale.getString("mcMMO.Description", new Object[] { "/mcc" });
+		String description = mcLocale.getString("mcMMO.Description", new Object[] { "mcc" });
 		String[] mcSplit = description.split(",");
 
 		for (String x : mcSplit) {
