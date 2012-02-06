@@ -24,11 +24,9 @@ import org.bukkit.entity.Player;
 public class mcPermissions 
 {
     private static volatile mcPermissions instance;
-
-
-    public static void initialize(Server server) 
-    {
-        Logger log = Logger.getLogger("Minecraft");
+    
+    public boolean permission(Player player, String perm) {
+        return player.hasPermission(perm);
     }
 
     public boolean admin(Player player){

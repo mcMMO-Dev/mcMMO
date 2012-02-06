@@ -31,7 +31,7 @@ public class XplockCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		PlayerProfile PP = Users.getProfile(player);
 
-		if (args.length >= 1 && Skills.isSkill(args[0]) && mcPermissions.permission(player, "mcmmo.skills." + Skills.getSkillType(args[0]).toString().toLowerCase())) {
+		if (args.length >= 1 && Skills.isSkill(args[0]) && mcPermissions.getInstance().permission(player, "mcmmo.skills." + Skills.getSkillType(args[0]).toString().toLowerCase())) {
 			if (PP.getXpBarLocked()) {
 				PP.setSkillLock(Skills.getSkillType(args[0]));
 				player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] { m.getCapitalized(PP.getSkillLock().toString()) }));
@@ -52,7 +52,7 @@ public class XplockCommand implements CommandExecutor {
 			}
 		} else if (args.length >= 1 && !Skills.isSkill(args[0])) {
 			player.sendMessage("Commands.xplock.invalid");
-		} else if (args.length >= 2 && Skills.isSkill(args[0]) && !mcPermissions.permission(player, "mcmmo.skills." + Skills.getSkillType(args[0]).toString().toLowerCase())) {
+		} else if (args.length >= 2 && Skills.isSkill(args[0]) && !mcPermissions.getInstance().permission(player, "mcmmo.skills." + Skills.getSkillType(args[0]).toString().toLowerCase())) {
 			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
 			return true;
 		}

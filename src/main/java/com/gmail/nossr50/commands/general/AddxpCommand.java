@@ -23,7 +23,12 @@ public class AddxpCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!mcPermissions.permissionsEnabled) {
+		Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
+        
+        if (player != null && !mcPermissions.getInstance().mmoedit(player)) {
 			sender.sendMessage("This command requires permissions.");
 			return true;
 		}
@@ -54,8 +59,6 @@ public class AddxpCommand implements CommandExecutor {
 			}
 			return true;
 		}
-
-		Player player = (Player) sender;
 
 		if (!mcPermissions.getInstance().mmoedit(player)) {
 			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));

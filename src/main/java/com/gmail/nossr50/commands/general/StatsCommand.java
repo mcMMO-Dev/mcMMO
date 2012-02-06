@@ -33,8 +33,7 @@ public class StatsCommand implements CommandExecutor {
 
 		player.sendMessage(mcLocale.getString("mcPlayerListener.YourStats"));
 
-		if (mcPermissions.getEnabled())
-			player.sendMessage(mcLocale.getString("mcPlayerListener.NoSkillNote"));
+		player.sendMessage(mcLocale.getString("mcPlayerListener.NoSkillNote"));
 
 		ChatColor header = ChatColor.GOLD;
 

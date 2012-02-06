@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
@@ -14,7 +13,12 @@ import com.gmail.nossr50.locale.mcLocale;
 public class McabilityCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!mcPermissions.permissionsEnabled) {
+        Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
+
+		if (player != null && player.hasPermission("mcmmo.commands.ability")) {
 			sender.sendMessage("This command requires permissions.");
 			return true;
 		}
@@ -29,7 +33,6 @@ public class McabilityCommand implements CommandExecutor {
 			return true;
 		}
 
-		Player player = (Player) sender;
 		PlayerProfile PP = Users.getProfile(player);
 
 		if (PP.getAbilityUse()) {
