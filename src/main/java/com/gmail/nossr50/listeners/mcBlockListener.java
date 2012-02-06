@@ -379,9 +379,10 @@ public class mcBlockListener implements Listener
     	{	
     		if(LoadProperties.woodcuttingrequiresaxe)
     		{
-    			if(m.isAxes(inhand))
+    			if(m.isAxes(inhand)){
     				event.setInstaBreak(true);
     				WoodCutting.leafBlower(player, block);
+    			}
     		}
     		else{
     			event.setInstaBreak(true);
@@ -389,6 +390,7 @@ public class mcBlockListener implements Listener
     		}
     		
     	}
+    	
     	if(block.getType() == Material.AIR && plugin.misc.blockWatchList.contains(block))
     	{
     		plugin.misc.blockWatchList.remove(block);

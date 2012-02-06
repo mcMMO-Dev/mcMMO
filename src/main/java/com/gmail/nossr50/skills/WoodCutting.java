@@ -213,12 +213,6 @@ public class WoodCutting
 	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
 	    }
 		
-		if(Math.random() * 10 > 9)
-		{
-			ItemStack x = new ItemStack(Material.SAPLING, 1, (short)0, (byte)(block.getData()-8));
-			m.mcDropItem(block.getLocation(), x);
-		}
-		
 		if(LoadProperties.spoutEnabled)
 			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     }
