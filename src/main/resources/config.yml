@@ -20,8 +20,6 @@ Spout:
             Show_Faces: true
             Enabled: true
             Show_Display_Name: false
-    Images:
-        URL_DIR: http://mcmmo.rycochet.net/mcmmo/
     HUD:
         Default: STANDARD
         Retro:
@@ -127,9 +125,10 @@ Skills:
     Repair:
         Level_Cap: 0
         Leather:
+            Name: Leather
             ID: 334
         String:
-            Name: Leather
+            Name: String
             ID: 287
         Stone:
             Name: Cobblestone
@@ -141,6 +140,7 @@ Skills:
             Name: Gold Bars
             ID: 266
         Anvil_Messages: true
+        Anvil_ID: 42
         Diamond:
             Name: Diamond
             Level_Required: 50
@@ -229,7 +229,6 @@ Experience:
         Redstone: 150
         Coal: 100
         Diamond: 750
-        lapis: 400
         Iron: 250
 MySQL:
     Enabled: false

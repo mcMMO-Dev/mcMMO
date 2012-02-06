@@ -8,6 +8,7 @@ Version 2.0-dev
  - Fixed issue with Silk Touch & Double/Triple drops not working properly
  - Fixed conflict with NoCheat plugin & Super Breaker/Giga Drill Breaker/Berserk/Leaf Blower (Issue #104)
  - Fixed counter-attacking non-LivingEntity (Issue #100 & Issue #107)
+ - Fixed various bugs with Leaf Blower
  - Added Monitor & ignoreCancelledEvents to onBlockPlace
  - Made Anvil ID configurable
 

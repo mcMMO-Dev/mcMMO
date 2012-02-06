@@ -256,7 +256,7 @@ public class LoadProperties {
 		mdiamond = readInteger("Experience.Mining.Diamond", 750);
 		miron = readInteger("Experience.Mining.Iron", 250);
 		mredstone = readInteger("Experience.Mining.Redstone", 150);
-		mlapis = readInteger("Experience.Mining.lapis", 400);
+		mlapis = readInteger("Experience.Mining.Lapis", 400);
 		mobsidian = readInteger("Experience.Mining.Obsidian", 150);
 		mnetherrack = readInteger("Experience.Mining.Netherrack", 30);
 		mglowstone = readInteger("Experience.Mining.Glowstone", 30);
