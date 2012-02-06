@@ -1,22 +1,14 @@
 package com.gmail.nossr50.commands.mc;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.mcMMO;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class McmmoCommand implements CommandExecutor {
 
@@ -45,7 +37,7 @@ public class McmmoCommand implements CommandExecutor {
 		if (LoadProperties.spoutEnabled && player instanceof SpoutPlayer) {
 			SpoutPlayer sPlayer = (SpoutPlayer) player;
 			if (LoadProperties.donateMessage)
-				player.sendMessage(ChatColor.GREEN + "[mcMMO] Donate! Paypal theno1yeti@gmail.com");
+				sPlayer.sendMessage(ChatColor.GREEN + "[mcMMO] Donate! Paypal theno1yeti@gmail.com");
 		} else {
 			if (LoadProperties.donateMessage)
 				player.sendMessage(ChatColor.GREEN + "If you like my work you can donate via Paypal: theno1yeti@gmail.com");

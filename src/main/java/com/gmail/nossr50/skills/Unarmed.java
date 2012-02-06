@@ -18,7 +18,6 @@ package com.gmail.nossr50.skills;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.block.Block;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.Users;

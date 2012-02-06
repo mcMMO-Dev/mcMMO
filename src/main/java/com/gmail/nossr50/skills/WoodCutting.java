@@ -23,7 +23,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.Statistic;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.Bukkit;

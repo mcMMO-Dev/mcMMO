@@ -32,7 +32,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.util.ArrayListString;
@@ -118,7 +117,6 @@ public class Party
 	
     public void informPartyMembers(Player player, Player[] players)
     {
-        int x = 0;
         for(Player p : players)
         {
         	if(player != null && p != null)
@@ -126,7 +124,6 @@ public class Party
                 if(inSameParty(player, p) && !p.getName().equals(player.getName()))
                 {
                 	p.sendMessage(mcLocale.getString("Party.InformedOnJoin", new Object[] {player.getName()}));
-                	x++;
                 }
             }
         }
@@ -171,14 +168,12 @@ public class Party
     }
     
     public void informPartyMembersOwnerChange(Player newOwner, Player[] players) {
-        int x = 0;
         for(Player p : players){
         	if(newOwner != null && p != null){
         		if(inSameParty(newOwner, p))
         		{
         			//TODO: Needs more locale.
         			p.sendMessage(newOwner.getName()+" is the new party owner.");
-        			x++;
                 }
         	}
         }
@@ -191,13 +186,11 @@ public class Party
     
     public void informPartyMembersQuit(Player player, Player[] players)
     {
-        int x = 0;
         for(Player p : players){
         	if(player != null && p != null){
         		if(inSameParty(player, p) && !p.getName().equals(player.getName()))
         		{
         			p.sendMessage(mcLocale.getString("Party.InformedOnQuit", new Object[] {player.getName()}));
-        			x++;
                 }
         	}
         }

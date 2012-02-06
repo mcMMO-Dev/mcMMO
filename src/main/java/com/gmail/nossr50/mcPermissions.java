@@ -16,9 +16,6 @@
 */
 package com.gmail.nossr50;
 
-import java.util.logging.Logger;
-
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 public class mcPermissions 
