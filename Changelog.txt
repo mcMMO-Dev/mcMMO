@@ -2,6 +2,7 @@ Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 
 Version 2.0-dev
+ - Removed legacy Permission & PEX support.  SuperPerms support only now.
 
 Version 1.2.10
  - Fixed issue with receiving Woodcutting XP for all blocks broken (Issue #103)

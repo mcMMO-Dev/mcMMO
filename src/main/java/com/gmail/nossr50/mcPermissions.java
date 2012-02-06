@@ -20,333 +20,134 @@ import java.util.logging.Logger;
 
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-
-import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class mcPermissions 
 {
     private static volatile mcPermissions instance;
-    
-	private enum PermissionType {
-		PEX, PERMISSIONS, BUKKIT
-	}
-	
-	private static PermissionType permissionType;
-	private static Object PHandle;
-	public static boolean permissionsEnabled = false;
+
 
     public static void initialize(Server server) 
     {
         Logger log = Logger.getLogger("Minecraft");
-        
-		if(permissionsEnabled && permissionType != PermissionType.PERMISSIONS) return;
-		
-		Plugin PEXtest = server.getPluginManager().getPlugin("PermissionsEx");
-		Plugin test = server.getPluginManager().getPlugin("Permissions");
-		if(PEXtest != null) {
-			PHandle = (PermissionManager) PermissionsEx.getPermissionManager();
-			permissionType = PermissionType.PEX;
-			permissionsEnabled = true;
-			log.info("[mcMMO] PermissionsEx found, using PermissionsEx.");
-		} else if(test != null) {
-			PHandle = (PermissionHandler) ((Permissions) test).getHandler();
-			permissionType = PermissionType.PERMISSIONS;
-			permissionsEnabled = true;
-			log.info("[mcMMO] Permissions version "+test.getDescription().getVersion()+" found, using Permissions.");
-		} else {
-			permissionType = PermissionType.BUKKIT;
-			permissionsEnabled = true;
-			log.info("[mcMMO] Using Bukkit Permissions.");
-		}
     }
-    
-    public static boolean getEnabled()
-    {
-    	return permissionsEnabled;
-    }
-  
-    public static boolean permission(Player player, String permission) 
-    {
-		if(!permissionsEnabled) return player.isOp();
-		switch(permissionType) {
-			case PEX:
-				return ((PermissionManager) PHandle).has(player, permission);
-			case PERMISSIONS:
-				return ((PermissionHandler) PHandle).has(player, permission);
-			case BUKKIT:
-				return player.hasPermission(permission);
-			default:
-				return true;
-		}
-	}
+
     public boolean admin(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.admin");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.admin");
     }
     public boolean mcrefresh(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.tools.mcrefresh");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.tools.mcrefresh");
     }
     public boolean mmoedit(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.tools.mmoedit");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.tools.mmoedit");
     }
     public boolean herbalismAbility(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.ability.herbalism");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.ability.herbalism");
     }
     public boolean excavationAbility(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.ability.excavation");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.ability.excavation");
     }
     public boolean unarmedAbility(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.ability.unarmed");
-        } else {
-            return true;
-        }
+    	return player.hasPermission("mcmmo.ability.unarmed");
     }
     public boolean chimaeraWing(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.item.chimaerawing");
-        } else {
-            return true;
-        }
+    	return player.hasPermission("mcmmo.item.chimaerawing");
     }
     public boolean miningAbility(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.ability.mining");
-        } else {
-            return true;
-        }
+    	return player.hasPermission("mcmmo.ability.mining");
     }
     public boolean axesAbility(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.ability.axes");
-        } else {
-            return true;
-        }
+    	return player.hasPermission("mcmmo.ability.axes");
     }
+
     public boolean swordsAbility(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.ability.swords");
-        } else {
-            return true;
-        }
+    	return player.hasPermission("mcmmo.ability.swords");
     }
     public boolean woodCuttingAbility(Player player) {
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.ability.woodcutting");
-        } else {
-            return true;
-        }
+    	return player.hasPermission("mcmmo.ability.woodcutting");
     }
     public boolean mcgod(Player player) {
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.tools.mcgod");
-        } else {
-            return true;
-        }
+    	return player.hasPermission("mcmmo.tools.mcgod");
     }
     public boolean regeneration(Player player){
-    	if (permissionsEnabled) {
-            return permission(player, "mcmmo.regeneration");
-        } else {
-            return true;
-        }
+    	return player.hasPermission("mcmmo.regeneration");
     }
     public boolean motd(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.motd");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.motd");
     }
     public boolean mcAbility(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.commands.ability");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.commands.ability");
     }
     public boolean mySpawn(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.commands.myspawn");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.commands.myspawn");
     }
     public boolean setMySpawn(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.commands.setmyspawn");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.commands.setmyspawn");
     }
     public boolean partyChat(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.chat.partychat");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.chat.partychat");
     }
     public boolean partyLock(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.chat.partylock");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.chat.partylock");
     }
     public boolean partyTeleport(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.commands.ptp");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.commands.ptp");
     }
     public boolean whois(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.commands.whois");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.commands.whois");
     }
     public boolean party(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.commands.party");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.commands.party");
     }
     public boolean adminChat(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.chat.adminchat");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.chat.adminchat");
     }
     public static mcPermissions getInstance() {
     	if (instance == null) {
-    	instance = new mcPermissions();
+    	    instance = new mcPermissions();
     	}
     	return instance;
-    	}
+    }
+
     public boolean taming(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.taming");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.taming");
     }
     public boolean mining(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.mining");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.mining");
     }
     public boolean fishing(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.fishing");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.fishing");
     }
     public boolean alchemy(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.alchemy");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.alchemy");
     }
     public boolean enchanting(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.enchanting");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.enchanting");
     }
     public boolean woodcutting(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.woodcutting");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.woodcutting");
     }
     public boolean repair(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.repair");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.repair");
     }
     public boolean unarmed(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.unarmed");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.unarmed");
     }
     public boolean archery(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.archery");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.archery");
     }
     public boolean herbalism(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.herbalism");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.herbalism");
     }
     public boolean excavation(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.excavation");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.excavation");
     }
     public boolean swords(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.swords");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.swords");
     }
     public boolean axes(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.axes");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.axes");
     }
     public boolean acrobatics(Player player) {
-        if (permissionsEnabled) {
-            return permission(player, "mcmmo.skills.acrobatics");
-        } else {
-            return true;
-        }
+        return player.hasPermission("mcmmo.skills.acrobatics");
     }
 }

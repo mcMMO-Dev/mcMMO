@@ -119,20 +119,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.nijikokun.bukkit</groupId>
-            <artifactId>Permissions</artifactId>
-            <version>3.1.6</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ru.tehkode.permissions</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.18</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.getspout</groupId>
             <artifactId>spoutpluginapi</artifactId>
             <version>dev-SNAPSHOT</version>

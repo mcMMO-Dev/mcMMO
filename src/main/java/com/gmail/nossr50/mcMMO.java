@@ -32,7 +32,6 @@ import com.gmail.nossr50.listeners.mcPlayerListener;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.*;
-import com.nijikokun.bukkit.Permissions.Permissions;
 
 import org.bukkit.Bukkit;
 
@@ -82,9 +81,6 @@ public class mcMMO extends JavaPlugin
 	private final mcPlayerListener playerListener = new mcPlayerListener(this);
 	private final mcBlockListener blockListener = new mcBlockListener(this);
 	private final mcEntityListener entityListener = new mcEntityListener(this);
-	
-	public static mcPermissions permissionHandler = new mcPermissions();
-	private Permissions permissions;
 
 	private Runnable mcMMO_Timer = new mcTimer(this); //BLEED AND REGENERATION
 	private Runnable ChangeDataValueTimer = new ChangeDataValueTimer(this);		//R2 block place workaround
@@ -249,9 +245,7 @@ public class mcMMO extends JavaPlugin
 		PlayerProfile PP = Users.getProfile(player);
 		return PP.inParty();
 	}
-	public Permissions getPermissions() {
-		return permissions;
-	}
+
 	public void onDisable() {
 		Bukkit.getServer().getScheduler().cancelTasks(this);
 		System.out.println("mcMMO was disabled."); 
