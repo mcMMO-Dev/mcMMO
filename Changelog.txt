@@ -4,6 +4,7 @@ Changelog:
 Version 2.0-dev
  - Removed legacy Permission & PEX support.  SuperPerms support only now.
  - Added framework for new Mining sub-skill: Blast Mining.
+ - Made Smooth Brick to Mossy Brick and Dirt to Grass for green thumb configurable (Issue #120)
 
 Version 1.2.10
  - Fixed issue with receiving Woodcutting XP for all blocks broken (Issue #103)

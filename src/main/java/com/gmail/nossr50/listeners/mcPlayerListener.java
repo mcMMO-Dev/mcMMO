@@ -229,19 +229,22 @@ public class mcPlayerListener implements Listener
 							switch(block.getType())
 							{
 							case COBBLESTONE:
-								if(LoadProperties.enableCobbleToMossy)
-								{
+								if(LoadProperties.enableCobbleToMossy) {
 									block.setType(Material.MOSSY_COBBLESTONE);
 									pass = true;
 								}
 								break;
 							case DIRT:
-								pass = true;
-								block.setType(Material.GRASS);
+								if(LoadProperties.enableDirtToGrass) {
+									pass = true;
+									block.setType(Material.GRASS);
+								}
 								break;
 							case SMOOTH_BRICK:
-								pass = true;
-								block.setData((byte)1);
+								if(LoadProperties.enableSmoothToMossy) {
+									pass = true;
+									block.setData((byte)1);
+								}
 								break;
 							}
 							if(pass == false)
