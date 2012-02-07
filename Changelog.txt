@@ -3,6 +3,7 @@ Changelog:
 
 Version 2.0-dev
  - Removed legacy Permission & PEX support.  SuperPerms support only now.
+ - Added framework for new Mining sub-skill: Blast Mining.
 
 Version 1.2.10
  - Fixed issue with receiving Woodcutting XP for all blocks broken (Issue #103)

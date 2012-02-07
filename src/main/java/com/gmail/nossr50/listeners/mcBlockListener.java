@@ -67,6 +67,7 @@ public class mcBlockListener implements Listener
     	Block block;
     	Player player = event.getPlayer();
     	
+    	
     	//When blocks are placed on snow this event reports the wrong block.
     	if (event.getBlockReplacedState() != null && event.getBlockReplacedState().getTypeId() == 78) 
     	{
@@ -75,6 +76,14 @@ public class mcBlockListener implements Listener
     	else 
     	{
     		block = event.getBlock();
+    	}
+    	
+    	//TNT placement checks - needed for Blast Mining
+    	if(block.getTypeId() == 46)
+    	{
+    		PlayerProfile PP = Users.getProfile(player);
+    		int skill = PP.getSkillLevel(SkillType.MINING);
+    		plugin.misc.tntTracker.put(block.getLocation(), skill);
     	}
     	
     	//Check if the blocks placed should be monitored so they do not give out XP in the future

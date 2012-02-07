@@ -18,6 +18,8 @@ package com.gmail.nossr50.config;
 
 import java.util.*;
 import java.util.logging.Logger;
+
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -35,6 +37,7 @@ public class Misc
     public ArrayList<Block> treeFeller = new ArrayList<Block>();
     public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     public ArrayList<LivingEntity> bleedTracker = new ArrayList<LivingEntity>();
+    public HashMap<Location, Integer> tntTracker = new HashMap<Location, Integer>();
     mcMMO plugin = null;
     
     //BLEED QUE STUFF

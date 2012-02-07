@@ -20,6 +20,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,6 +30,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
@@ -40,6 +43,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
+import com.gmail.nossr50.skills.BlastMining;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
 
@@ -52,7 +56,7 @@ public class mcEntityListener implements Listener
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.LOW)
     public void onEntityDamage(EntityDamageEvent event) 
     {
     	if(event.isCancelled())
@@ -75,6 +79,18 @@ public class mcEntityListener implements Listener
     			event.setCancelled(true);
     		if(PPd == null)
     			Users.addUser(defender);
+    	}
+    	
+    	/*
+    	 * Demolitions Expert
+    	 */
+    	if(event.getCause() == DamageCause.BLOCK_EXPLOSION)
+    	{
+    		if(event.getEntity() instanceof Player)
+    		{
+    			Player player = (Player)event.getEntity();
+    			BlastMining.demolitionsExpertise(player, event);
+    		}
     	}
     	
     	if(event.getEntity() instanceof LivingEntity)
@@ -196,6 +212,27 @@ public class mcEntityListener implements Listener
     	}
     }
     
+	@EventHandler (priority = EventPriority.LOW)
+	public void onExplosionPrime(ExplosionPrimeEvent event)
+	{
+		if(event.getEntity() instanceof TNTPrimed)
+		{
+			int skillLevel = plugin.misc.tntTracker.get(event.getEntity().getLocation());
+			BlastMining.biggerBombs(skillLevel, event);
+		}
+			
+	}
+	
+	@EventHandler (priority = EventPriority.LOW)
+	public void onEnitityExplode(EntityExplodeEvent event)
+	{
+		if(event.getEntity() instanceof TNTPrimed)
+		{
+			int skillLevel = plugin.misc.tntTracker.get(event.getEntity().getLocation());
+			BlastMining.dropProcessing(skillLevel, event, plugin);
+		}
+	}
+	
 	public boolean isBow(ItemStack is){
 		if (is.getTypeId() == 261){
 			return true;
