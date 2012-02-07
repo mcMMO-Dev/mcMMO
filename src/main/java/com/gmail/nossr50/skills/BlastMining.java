@@ -151,7 +151,7 @@ public class BlastMining{
 		if(skillLevel < 125)
 			return;
 		
-		//Drop 10% more ores
+		//+5% ores
 		if(skillLevel >= 125 && skillLevel < 250)
 		{
 			event.setYield(0);
@@ -160,7 +160,7 @@ public class BlastMining{
 			while(iterator2.hasNext())
 			{
 				Block temp = iterator2.next();
-				if(Math.random() * 100 < (yield + 10))
+				if(Math.random() < (yield + .05))
 				{
 					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
@@ -169,7 +169,7 @@ public class BlastMining{
 			while(iterator3.hasNext())
 			{
 				Block temp = iterator3.next();
-				if(Math.random() * 100 < yield)
+				if(Math.random() < yield)
 				{
 					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
@@ -177,7 +177,7 @@ public class BlastMining{
 			}
 		}
 		
-		//Drop 20% more ores
+		//+10% ores
 		if(skillLevel >= 250 && skillLevel < 375)
 		{
 			event.setYield(0);
@@ -186,7 +186,7 @@ public class BlastMining{
 			while(iterator2.hasNext())
 			{
 				Block temp = iterator2.next();
-				if(Math.random() * 100 < (yield + 20))
+				if(Math.random() < (yield + .10))
 				{
 					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
@@ -195,7 +195,7 @@ public class BlastMining{
 			while(iterator3.hasNext())
 			{
 				Block temp = iterator3.next();
-				if(Math.random() * 100 < yield)
+				if(Math.random() < yield)
 				{
 					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
@@ -203,8 +203,8 @@ public class BlastMining{
 			}
 		}
 		
-		//No debris
-		if(skillLevel >= 375 && skillLevel < 625)
+		//No debris, +15% ores
+		if(skillLevel >= 375 && skillLevel < 500)
 		{
 			event.setYield(0);
 			Iterator<Block> iterator2 = ores.iterator();
@@ -212,7 +212,7 @@ public class BlastMining{
 			while(iterator2.hasNext())
 			{
 				Block temp = iterator2.next();
-				if(Math.random() * 100 < yield + 20)
+				if(Math.random() < (yield + .15))
 				{
 					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
@@ -220,8 +220,8 @@ public class BlastMining{
 			}
 		}
 		
-		//Double Drops
-		if(skillLevel >= 625 && skillLevel < 875)
+		//No debris, +20% ores
+		if(skillLevel >= 500 && skillLevel < 625)
 		{
 			event.setYield(0);
 			Iterator<Block> iterator2 = ores.iterator();
@@ -229,7 +229,24 @@ public class BlastMining{
 			while(iterator2.hasNext())
 			{
 				Block temp = iterator2.next();
-				if(Math.random() * 100 < yield + 20)
+				if(Math.random() < (yield + .20))
+				{
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+						explosionBlockDrops(temp, event.getLocation());
+				}
+			}
+		}
+		
+		//Double Drops, No Debris, +25% ores
+		if(skillLevel >= 625 && skillLevel < 750)
+		{
+			event.setYield(0);
+			Iterator<Block> iterator2 = ores.iterator();
+
+			while(iterator2.hasNext())
+			{
+				Block temp = iterator2.next();
+				if(Math.random() < (yield + .25))
 				{
 					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
@@ -242,8 +259,8 @@ public class BlastMining{
 			}
 		}
 		
-		//Triple Drops
-		if(skillLevel >= 875)
+		//Double Drops, No Debris, +30% ores
+		if(skillLevel >= 750 && skillLevel < 875)
 		{
 			event.setYield(0);
 			Iterator<Block> iterator2 = ores.iterator();
@@ -251,7 +268,56 @@ public class BlastMining{
 			while(iterator2.hasNext())
 			{
 				Block temp = iterator2.next();
-				if(Math.random() * 100 < yield + 20)
+				if(Math.random() < (yield + .30))
+				{
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+						explosionBlockDrops(temp, event.getLocation());
+					if(Math.random() * 1000 <= skillLevel)
+					{
+						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+							explosionBlockDrops(temp, event.getLocation());
+					}
+				}
+			}
+		}
+				
+		//Triple Drops, No debris, +35% ores
+		if(skillLevel >= 875 && skillLevel < 1000)		
+		{
+			event.setYield(0);
+			Iterator<Block> iterator2 = ores.iterator();
+
+			while(iterator2.hasNext())
+			{
+				Block temp = iterator2.next();
+				if(Math.random() * 100 < (yield + .35))
+				{
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+						explosionBlockDrops(temp, event.getLocation());
+					if(Math.random() * 1000 <= skillLevel || skillLevel > 1000) 
+					{
+						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+						explosionBlockDrops(temp, event.getLocation());
+					}
+					if(Math.random() * 1000 <= skillLevel || skillLevel > 1000)
+					{
+						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+							explosionBlockDrops(temp, event.getLocation());
+					}
+				}
+			}
+		}
+
+		//Triple Drops, No debris, +40% ores
+		if(skillLevel >= 1000)
+		{
+			event.setYield(0);
+			Iterator<Block> iterator2 = ores.iterator();
+
+			while(iterator2.hasNext())
+			{
+				Block temp = iterator2.next();
+				if(Math.random() * 100 < (yield + .40))
 				{
 					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
@@ -269,7 +335,6 @@ public class BlastMining{
 			}
 		}
 	}
-	
 	
 	/*
 	 * Bigger Bombs (Unlocked at Mining 250)

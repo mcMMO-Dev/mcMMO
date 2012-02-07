@@ -83,7 +83,7 @@ public class mcBlockListener implements Listener
     	{
     		PlayerProfile PP = Users.getProfile(player);
     		int skill = PP.getSkillLevel(SkillType.MINING);
-    		plugin.misc.tntTracker.put(block.getLocation(), skill);
+    		plugin.misc.tntTracker.put(block, skill);
     	}
     	
     	//Check if the blocks placed should be monitored so they do not give out XP in the future

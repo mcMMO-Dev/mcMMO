@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -217,8 +218,13 @@ public class mcEntityListener implements Listener
 	{
 		if(event.getEntity() instanceof TNTPrimed)
 		{
-			int skillLevel = plugin.misc.tntTracker.get(event.getEntity().getLocation());
-			BlastMining.biggerBombs(skillLevel, event);
+			Block block = event.getEntity().getLocation().getBlock();
+			
+			if(plugin.misc.tntTracker.get(block) != null)
+			{
+				int skillLevel = plugin.misc.tntTracker.get(block);
+				BlastMining.biggerBombs(skillLevel, event);
+			}
 		}
 			
 	}
@@ -228,8 +234,13 @@ public class mcEntityListener implements Listener
 	{
 		if(event.getEntity() instanceof TNTPrimed)
 		{
-			int skillLevel = plugin.misc.tntTracker.get(event.getEntity().getLocation());
-			BlastMining.dropProcessing(skillLevel, event, plugin);
+			Block block = event.getLocation().getBlock();;
+			
+			if(plugin.misc.tntTracker.get(block) != null)
+			{
+				int skillLevel = plugin.misc.tntTracker.get(block);
+				BlastMining.dropProcessing(skillLevel, event, plugin);
+			}
 		}
 	}
 	
