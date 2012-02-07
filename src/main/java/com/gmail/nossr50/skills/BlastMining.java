@@ -162,7 +162,8 @@ public class BlastMining{
 				Block temp = iterator2.next();
 				if(Math.random() * 100 < (yield + 10))
 				{
-					explosionBlockDrops(temp, event.getLocation());
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+						explosionBlockDrops(temp, event.getLocation());
 				}
 			}
 			while(iterator3.hasNext())
@@ -170,7 +171,8 @@ public class BlastMining{
 				Block temp = iterator3.next();
 				if(Math.random() * 100 < yield)
 				{
-					explosionBlockDrops(temp, event.getLocation());
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+						explosionBlockDrops(temp, event.getLocation());
 				}
 			}
 		}
@@ -186,7 +188,8 @@ public class BlastMining{
 				Block temp = iterator2.next();
 				if(Math.random() * 100 < (yield + 20))
 				{
-					explosionBlockDrops(temp, event.getLocation());
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+						explosionBlockDrops(temp, event.getLocation());
 				}
 			}
 			while(iterator3.hasNext())
@@ -194,7 +197,8 @@ public class BlastMining{
 				Block temp = iterator3.next();
 				if(Math.random() * 100 < yield)
 				{
-					explosionBlockDrops(temp, event.getLocation());
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+						explosionBlockDrops(temp, event.getLocation());
 				}
 			}
 		}
@@ -210,7 +214,8 @@ public class BlastMining{
 				Block temp = iterator2.next();
 				if(Math.random() * 100 < yield + 20)
 				{
-					explosionBlockDrops(temp, event.getLocation());
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+						explosionBlockDrops(temp, event.getLocation());
 				}
 			}
 		}
@@ -226,9 +231,13 @@ public class BlastMining{
 				Block temp = iterator2.next();
 				if(Math.random() * 100 < yield + 20)
 				{
-					explosionBlockDrops(temp, event.getLocation());
-					if(Math.random() * 1000 <= skillLevel) 
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
+					if(Math.random() * 1000 <= skillLevel)
+					{
+						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+							explosionBlockDrops(temp, event.getLocation());
+					}
 				}
 			}
 		}
@@ -244,11 +253,18 @@ public class BlastMining{
 				Block temp = iterator2.next();
 				if(Math.random() * 100 < yield + 20)
 				{
-					explosionBlockDrops(temp, event.getLocation());
-					if(Math.random() * 1000 <= skillLevel || skillLevel > 1000) 
+					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
 					if(Math.random() * 1000 <= skillLevel || skillLevel > 1000) 
+					{
+						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
 						explosionBlockDrops(temp, event.getLocation());
+					}
+					if(Math.random() * 1000 <= skillLevel || skillLevel > 1000)
+					{
+						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
+							explosionBlockDrops(temp, event.getLocation());
+					}
 				}
 			}
 		}
