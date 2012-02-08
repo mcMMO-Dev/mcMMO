@@ -361,7 +361,7 @@ public class Combat
      * @param dmg Amount of damage to attempt to do
      */
     public static void dealDamage(LivingEntity target, int dmg){
-    	dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM);
+    	dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM, null);
     }
     
     /**
@@ -372,11 +372,7 @@ public class Combat
      * @param cause DamageCause to pass to damage event
      */
     public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
-    	EntityDamageEvent ede = new EntityDamageEvent(target, cause, dmg);
-    	Bukkit.getPluginManager().callEvent(ede);
-    	if(ede.isCancelled()) return;
-    	
-    	target.damage(ede.getDamage());
+    	dealDamage(target, dmg, cause, null);
     }
     
     /**
@@ -387,19 +383,30 @@ public class Combat
      * @param attacker Player to pass to event as damager
      */
     public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
-    	EntityDamageEvent ede = new EntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
+    	dealDamage(target, dmg, EntityDamageEvent.DamageCause.ENTITY_ATTACK, attacker);
+    }
+    
+    /**
+     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
+     * 
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     * @param cause DamageCause to pass to damage event
+     * @param attacker Entity to pass to event as damager
+     */
+    public static void dealDamage(LivingEntity target, int dmg, DamageCause cause, Entity attacker) {
+    	EntityDamageEvent ede = new EntityDamageByEntityEvent(attacker, target, cause, dmg);
     	Bukkit.getPluginManager().callEvent(ede);
-    	
     	target.damage(ede.getDamage());
     }
     
     public static boolean pvpAllowed(EntityDamageByEntityEvent event, World world)
     {
-    	if(!event.getEntity().getWorld().getPVP())
-    		return false;
+    	if(!((world == null)?event.getEntity().getWorld():world).getPVP()) { return false; }
     	//If it made it this far, pvp is enabled
     	return true;
     }
+    
     public static int getXp(Entity entity, EntityDamageEvent event)
     {
     	int xp = 0;
