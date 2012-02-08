@@ -443,6 +443,8 @@ public class Combat
 		    		xp = (xpinc * 3);
 		    	else if(entity instanceof EnderDragon)
 		    		xp = (xpinc * 8);
+		    	else if(entity instanceof MagmaCube)
+					xp = (xpinc * 2);
 	    	}
     	}
     	return xp;
