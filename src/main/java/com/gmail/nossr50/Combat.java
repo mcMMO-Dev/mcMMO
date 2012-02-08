@@ -395,13 +395,17 @@ public class Combat
      * @param attacker Entity to pass to event as damager
      */
     public static void dealDamage(LivingEntity target, int dmg, DamageCause cause, Entity attacker) {
-    	EntityDamageEvent ede = new EntityDamageByEntityEvent(attacker, target, cause, dmg);
-    	Bukkit.getPluginManager().callEvent(ede);
-    	target.damage(ede.getDamage());
+    	EntityDamageEvent event;
+    	if (attacker == null) {
+    		event = new EntityDamageEvent(target, cause, dmg);
+    	} else {
+    		event = new EntityDamageByEntityEvent(attacker, target, cause, dmg);
+    	}
+    	Bukkit.getPluginManager().callEvent(event);
+    	target.damage(event.getDamage());
     }
     
-    public static boolean pvpAllowed(EntityDamageByEntityEvent event, World world)
-    {
+    public static boolean pvpAllowed(EntityDamageByEntityEvent event, World world) {
     	if(!((world == null)?event.getEntity().getWorld():world).getPVP()) { return false; }
     	//If it made it this far, pvp is enabled
     	return true;
