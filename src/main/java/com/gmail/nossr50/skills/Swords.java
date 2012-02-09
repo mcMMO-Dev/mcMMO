@@ -84,7 +84,7 @@ public class Swords
     	if(mcPermissions.getInstance().swords(attacker) && m.isSwords(attacker.getItemInHand())){
 			if(PPa.getSkillLevel(SkillType.SWORDS) >= 750)
 			{
-				if(Math.random() * 1000 >= 750)
+				if(Math.random() * 1000 <= 750)
 				{
 					if(!(x instanceof Player))
 						pluginx.misc.addToBleedQue(x);
@@ -118,59 +118,54 @@ public class Swords
     		LivingEntity x = (LivingEntity) event.getEntity();
 	    	targets = m.getTier(attacker);
 	    	
-	    	for(Entity derp : x.getWorld().getEntities())
+	    	for(Entity derp : x.getNearbyEntities(2.5, 2.5, 2.5))
 	    	{
-	    		if(m.getDistance(x.getLocation(), derp.getLocation()) < 5)
-	    		{
-	    			
-	    			
-	    			//Make sure the Wolf is not friendly
-	    			if(derp instanceof Wolf)
+    			//Make sure the Wolf is not friendly
+    			if(derp instanceof Wolf)
+    			{
+					Wolf hurrDurr = (Wolf)derp;
+					if(Taming.getOwner(hurrDurr, pluginx) == attacker)
+						continue;
+					if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
+						continue;
+				}
+    			//Damage nearby LivingEntities
+    			if(derp instanceof LivingEntity && targets >= 1)
+    			{
+    				if(derp instanceof Player)
 	    			{
-						Wolf hurrDurr = (Wolf)derp;
-						if(Taming.getOwner(hurrDurr, pluginx) == attacker)
-							continue;
-						if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
-							continue;
-					}
-	    			//Damage nearby LivingEntities
-	    			if(derp instanceof LivingEntity && targets >= 1)
-	    			{
-	    				if(derp instanceof Player)
-		    			{
-		    				Player target = (Player)derp;
-		    				
-		    				if(target.getName().equals(attacker.getName()))
-		    					continue;
-		    				
-		    				if(Users.getProfile(target).getGodMode())
-		    					continue;
-		    				
-		    				if(Party.getInstance().inSameParty(attacker, target))
-		    					continue;
-		    				if(targets >= 1 && derp.getWorld().getPVP())
-		    				{
-		    					Combat.dealDamage(target, event.getDamage() / 4, attacker);
-		    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
-		        				Users.getProfile(target).addBleedTicks(5);
-		    					targets--;
-		    					continue;
-		    				}
-		    			} 
-	    				else
-		    			{
-		    				if(!pluginx.misc.bleedTracker.contains(derp))
-		    					pluginx.misc.addToBleedQue((LivingEntity)derp);
-		    				
-		    				LivingEntity target = (LivingEntity)derp;
+	    				Player target = (Player)derp;
+	    				
+	    				if(target.getName().equals(attacker.getName()))
+	    					continue;
+	    				
+	    				if(Users.getProfile(target).getGodMode())
+	    					continue;
+	    				
+	    				if(Party.getInstance().inSameParty(attacker, target))
+	    					continue;
+	    				if(targets >= 1 && derp.getWorld().getPVP())
+	    				{
 	    					Combat.dealDamage(target, event.getDamage() / 4, attacker);
-		    				targets--;
-		    			}
+	    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
+	        				Users.getProfile(target).addBleedTicks(5);
+	    					targets--;
+	    					continue;
+	    				}
+	    			} 
+    				else
+	    			{
+	    				if(!pluginx.misc.bleedTracker.contains(derp))
+	    					pluginx.misc.addToBleedQue((LivingEntity)derp);
+	    				
+	    				LivingEntity target = (LivingEntity)derp;
+    					Combat.dealDamage(target, event.getDamage() / 4, attacker);
+	    				targets--;
 	    			}
-	    		}
-	    	}
+    			}
+    		}
     	}
-    }
+	}
     
     public static void counterAttackChecks(EntityDamageByEntityEvent event)
     {

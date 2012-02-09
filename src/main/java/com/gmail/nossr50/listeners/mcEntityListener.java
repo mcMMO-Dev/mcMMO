@@ -225,8 +225,7 @@ public class mcEntityListener implements Listener
 				int skillLevel = plugin.misc.tntTracker.get(block);
 				BlastMining.biggerBombs(skillLevel, event);
 			}
-		}
-			
+		}		
 	}
 	
 	@EventHandler (priority = EventPriority.LOW)
@@ -234,8 +233,8 @@ public class mcEntityListener implements Listener
 	{
 		if(event.getEntity() instanceof TNTPrimed)
 		{
-			Block block = event.getLocation().getBlock();;
-			
+			Block block = event.getLocation().getBlock();
+
 			if(plugin.misc.tntTracker.get(block) != null)
 			{
 				int skillLevel = plugin.misc.tntTracker.get(block);

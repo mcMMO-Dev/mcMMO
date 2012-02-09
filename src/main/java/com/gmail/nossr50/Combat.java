@@ -60,7 +60,10 @@ public class Combat
 				if(mcPermissions.getInstance().unarmed(attacker) && attacker.getItemInHand().getTypeId() == 0) //Unarmed
 					Unarmed.unarmedBonus(attacker, eventb);
 				if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker) && Users.getProfile(attacker).getSkillLevel(SkillType.AXES) >= 500)
-				    event.setDamage(event.getDamage()+4);
+				{
+					int damage = event.getDamage()+4;
+				    event.setDamage(damage);
+				}
 				
 				//If there are any abilities to activate
 		    	combatAbilityChecks(attacker, PPa, pluginx);
@@ -69,7 +72,7 @@ public class Combat
 		    	if(!(((EntityDamageByEntityEvent) event).getDamager() instanceof Arrow))
 		    	{
 			    	if(mcPermissions.getInstance().axes(attacker))
-			    		Axes.axeCriticalCheck(attacker, eventb, pluginx); //Axe Criticals
+			    		Axes.axeCriticalCheck(attacker, eventb, pluginx); //Axe Critical Checks
 			    	
 			    	if(!pluginx.misc.bleedTracker.contains((LivingEntity) event.getEntity())) //Swords Bleed
 			   			Swords.bleedCheck(attacker, (LivingEntity)event.getEntity(), pluginx);
@@ -389,6 +392,7 @@ public class Combat
     public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
     	EntityDamageEvent ede = new EntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
     	Bukkit.getPluginManager().callEvent(ede);
+    	if(ede.isCancelled()) return;
     	
     	target.damage(ede.getDamage());
     }
