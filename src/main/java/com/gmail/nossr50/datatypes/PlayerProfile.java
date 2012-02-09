@@ -57,9 +57,7 @@ public class PlayerProfile
 	//TIMESTAMPS
 	//ATS = (Time of) Activation Time Stamp
 	//DATS = (Time of) Deactivation Time Stamp
-	private int xpGainATS = 0, recentlyHurt = 0, berserkATS = 0, berserkDATS = 0, gigaDrillBreakerATS = 0, gigaDrillBreakerDATS = 0,
-	respawnATS = 0, mySpawnATS = 0, greenTerraATS = 0, greenTerraDATS = 0, superBreakerATS = 0, superBreakerDATS = 0, serratedStrikesATS = 0, serratedStrikesDATS = 0, treeFellerATS = 0, treeFellerDATS = 0, 
-	skullSplitterATS = 0, skullSplitterDATS = 0, hoePreparationATS = 0, axePreparationATS = 0, pickaxePreparationATS = 0, fistsPreparationATS = 0, shovelPreparationATS = 0, swordsPreparationATS = 0;
+	private int xpGainATS = 0, recentlyHurt = 0, mySpawnATS, respawnATS, hoePreparationATS, shovelPreparationATS, swordsPreparationATS, fistsPreparationATS, axePreparationATS, pickaxePreparationATS;
 	
 	private SkillType lastgained = null, skillLock = null;
 	
@@ -71,6 +69,8 @@ public class PlayerProfile
 	//Time to HashMap this shiz
 	HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and XP
 	HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and XP
+	HashMap<AbilityType, Integer> skillsATS = new HashMap<AbilityType, Integer>(); //Skill ATS
+	HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); //Skill ATS
 	
     String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
         
@@ -151,13 +151,13 @@ public class PlayerProfile
 			}
 			else
 			{
-				superBreakerDATS = Integer.valueOf(cooldowns.get(1).get(0));
-				treeFellerDATS = Integer.valueOf(cooldowns.get(1).get(1));
-				berserkDATS = Integer.valueOf(cooldowns.get(1).get(2));
-				greenTerraDATS = Integer.valueOf(cooldowns.get(1).get(3));
-				gigaDrillBreakerDATS = Integer.valueOf(cooldowns.get(1).get(4));
-				serratedStrikesDATS = Integer.valueOf(cooldowns.get(1).get(5));
-				skullSplitterDATS = Integer.valueOf(cooldowns.get(1).get(6));
+				skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(cooldowns.get(1).get(0)));
+				skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(cooldowns.get(1).get(1)));
+				skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(cooldowns.get(1).get(2)));
+				skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(cooldowns.get(1).get(3)));
+				skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(cooldowns.get(1).get(4)));
+				skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(cooldowns.get(1).get(5)));
+				skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(cooldowns.get(1).get(6)));
 			}
 			HashMap<Integer, ArrayList<String>> stats = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
 				skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
@@ -271,19 +271,19 @@ public class PlayerProfile
     			if(character.length > 25 && m.isInt(character[25]))
     				skillsXp.put(SkillType.TAMING, Integer.valueOf(character[25]));
     			if(character.length > 26)
-    				berserkDATS = Integer.valueOf(character[26]);
+    				skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(character[26]));
     			if(character.length > 27)
-    				gigaDrillBreakerDATS = Integer.valueOf(character[27]);
+    			    skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[27]));
     			if(character.length > 28)
-    				treeFellerDATS = Integer.valueOf(character[28]);
+    			    skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(character[28]));
     			if(character.length > 29)
-    				greenTerraDATS = Integer.valueOf(character[29]);
+    			    skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(character[29]));
     			if(character.length > 30)
-    				serratedStrikesDATS = Integer.valueOf(character[30]);
+    			    skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(character[30]));
     			if(character.length > 31)
-    				skullSplitterDATS = Integer.valueOf(character[31]);
+    			    skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(character[31]));
     			if(character.length > 32)
-    				superBreakerDATS = Integer.valueOf(character[32]);
+    			    skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[32]));
     			if(character.length > 33)
     			{
     				for(HUDType x : HUDType.values())
@@ -321,13 +321,13 @@ public class PlayerProfile
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"cooldowns SET "
-    				+" mining = "+(superBreakerDATS)
-    				+", woodcutting = "+(treeFellerDATS)
-    				+", unarmed = "+(berserkDATS)
-    				+", herbalism = "+(greenTerraDATS)
-    				+", excavation = "+(gigaDrillBreakerDATS)
-    				+", swords = " +(serratedStrikesDATS)
-    				+", axes = "+(skullSplitterDATS)
+    				+" mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
+    				+", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
+    				+", unarmed = " + skillsDATS.get(AbilityType.BERSERK)
+    				+", herbalism = " + skillsDATS.get(AbilityType.GREEN_TERRA)
+    				+", excavation = " + skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER)
+    				+", swords = " + skillsDATS.get(AbilityType.SERRATED_STRIKES)
+    				+", axes = " + skillsDATS.get(AbilityType.SKULL_SPLIITER)
     				+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
     				+"  taming = "+skills.get(SkillType.TAMING)
@@ -406,13 +406,13 @@ public class PlayerProfile
 	        			writer.append(skillsXp.get(SkillType.TAMING) + ":");
 	        			//Need to store the DATS of abilities nao
 	        			//Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
-	        			writer.append(String.valueOf(berserkDATS)+":");
-	        			writer.append(String.valueOf(gigaDrillBreakerDATS)+":");
-	        			writer.append(String.valueOf(treeFellerDATS)+":");
-	        			writer.append(String.valueOf(greenTerraDATS)+":");
-	        			writer.append(String.valueOf(serratedStrikesDATS)+":");
-	        			writer.append(String.valueOf(skullSplitterDATS)+":");
-	        			writer.append(String.valueOf(superBreakerDATS)+":");
+	        			writer.append(String.valueOf(skillsDATS.get(AbilityType.BERSERK))+":");
+	        			writer.append(String.valueOf(skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER))+":");
+	        			writer.append(String.valueOf(skillsDATS.get(AbilityType.TREE_FELLER))+":");
+	        			writer.append(String.valueOf(skillsDATS.get(AbilityType.GREEN_TERRA))+":");
+	        			writer.append(String.valueOf(skillsDATS.get(AbilityType.SERRATED_STRIKES))+":");
+	        			writer.append(String.valueOf(skillsDATS.get(AbilityType.SKULL_SPLIITER))+":");
+	        			writer.append(String.valueOf(skillsDATS.get(AbilityType.SUPER_BREAKER))+":");
 	        			writer.append(hud.toString()+":");
 	        			writer.append(skills.get(SkillType.FISHING) + ":");
 	        			writer.append(skillsXp.get(SkillType.FISHING) + ":");
@@ -698,10 +698,10 @@ public class PlayerProfile
 		pickaxePreparationMode = bool;
 	}
 	public long getPickaxePreparationATS(){
-		return pickaxePreparationATS;
+	    return pickaxePreparationATS;
 	}
 	public void setPickaxePreparationATS(long newvalue){
-		pickaxePreparationATS = (int) (newvalue/1000);
+	   pickaxePreparationATS = (int) (newvalue/1000);
 	}
 	/*
 	 * GREEN TERRA MODE
@@ -716,14 +716,7 @@ public class PlayerProfile
 	public void setGreenTerraMode(Boolean bool){
 		greenTerraMode = bool;
 	}
-	public long getGreenTerraActivatedTimeStamp() {return greenTerraATS;}
-	public void setGreenTerraActivatedTimeStamp(Long newvalue){
-		greenTerraATS = (int) (newvalue/1000);
-	}
-	public long getGreenTerraDeactivatedTimeStamp() {return greenTerraDATS;}
-	public void setGreenTerraDeactivatedTimeStamp(Long newvalue){
-		greenTerraDATS = (int) (newvalue/1000);
-	}
+	
 	/*
 	 * BERSERK MODE
 	 */
@@ -736,14 +729,6 @@ public class PlayerProfile
 	}
 	public void setBerserkMode(Boolean bool){
 		berserkMode = bool;
-	}
-	public long getBerserkActivatedTimeStamp() {return berserkATS;}
-	public void setBerserkActivatedTimeStamp(Long newvalue){
-		berserkATS = (int) (newvalue/1000);
-	}
-	public long getBerserkDeactivatedTimeStamp() {return berserkDATS;}
-	public void setBerserkDeactivatedTimeStamp(Long newvalue){
-		berserkDATS = (int) (newvalue/1000);
 	}
 	/*
 	 * SKULL SPLITTER
@@ -758,14 +743,6 @@ public class PlayerProfile
 	public void setSkullSplitterMode(Boolean bool){
 		skullSplitterMode = bool;
 	}
-	public long getSkullSplitterActivatedTimeStamp() {return skullSplitterATS;}
-	public void setSkullSplitterActivatedTimeStamp(Long newvalue){
-		skullSplitterATS = (int) (newvalue/1000);
-	}
-	public long getSkullSplitterDeactivatedTimeStamp() {return skullSplitterDATS;}
-	public void setSkullSplitterDeactivatedTimeStamp(Long newvalue){
-		skullSplitterDATS = (int) (newvalue/1000);
-	}
 	/*
 	 * SERRATED STRIKES
 	 */
@@ -778,14 +755,6 @@ public class PlayerProfile
 	}
 	public void setSerratedStrikesMode(Boolean bool){
 		serratedStrikesMode = bool;
-	}
-	public long getSerratedStrikesActivatedTimeStamp() {return serratedStrikesATS;}
-	public void setSerratedStrikesActivatedTimeStamp(Long newvalue){
-		serratedStrikesATS = (int) (newvalue/1000);
-	}
-	public long getSerratedStrikesDeactivatedTimeStamp() {return serratedStrikesDATS;}
-	public void setSerratedStrikesDeactivatedTimeStamp(Long newvalue){
-		serratedStrikesDATS = (int) (newvalue/1000);
 	}
 	/*
 	 * GIGA DRILL BREAKER
@@ -800,14 +769,6 @@ public class PlayerProfile
 	public void setGigaDrillBreakerMode(Boolean bool){
 		gigaDrillBreakerMode = bool;
 	}
-	public long getGigaDrillBreakerActivatedTimeStamp() {return gigaDrillBreakerATS;}
-	public void setGigaDrillBreakerActivatedTimeStamp(Long newvalue){
-		gigaDrillBreakerATS = (int) (newvalue/1000);
-	}
-	public long getGigaDrillBreakerDeactivatedTimeStamp() {return gigaDrillBreakerDATS;}
-	public void setGigaDrillBreakerDeactivatedTimeStamp(Long newvalue){
-		gigaDrillBreakerDATS = (int) (newvalue/1000);
-	}
 	/*
 	 * TREE FELLER STUFF
 	 */
@@ -821,14 +782,6 @@ public class PlayerProfile
 	public void setTreeFellerMode(Boolean bool){
 		treeFellerMode = bool;
 	}
-	public long getTreeFellerActivatedTimeStamp() {return treeFellerATS;}
-	public void setTreeFellerActivatedTimeStamp(Long newvalue){
-		treeFellerATS = (int) (newvalue/1000);
-	}
-	public long getTreeFellerDeactivatedTimeStamp() {return treeFellerDATS;}
-	public void setTreeFellerDeactivatedTimeStamp(Long newvalue){
-		treeFellerDATS = (int) (newvalue/1000);
-	}
 	/*
 	 * MINING
 	 */
@@ -841,14 +794,6 @@ public class PlayerProfile
 	}
 	public void setSuperBreakerMode(Boolean bool){
 		superBreakerMode = bool;
-	}
-	public long getSuperBreakerActivatedTimeStamp() {return superBreakerATS;}
-	public void setSuperBreakerActivatedTimeStamp(Long newvalue){
-		superBreakerATS = (int) (newvalue/1000);
-	}
-	public long getSuperBreakerDeactivatedTimeStamp() {return superBreakerDATS;}
-	public void setSuperBreakerDeactivatedTimeStamp(Long newvalue){
-		superBreakerDATS = (int) (newvalue/1000);
 	}
 	public long getRecentlyHurt(){
 		return recentlyHurt;
@@ -872,7 +817,30 @@ public class PlayerProfile
 	{
 		skills.put(skillType, 0);
 	}
-	
+	public int getSkillATS(AbilityType abilityType)
+	{
+	    return skillsATS.get(abilityType);
+	}
+	public void setSkillATS(AbilityType abilityType, int ticks)
+	{
+	    skillsATS.put(abilityType, (int) System.currentTimeMillis()/1000);
+	    setSkillDATS(abilityType, ticks);
+	}
+	public int getSkillDATS(AbilityType abilityType)
+    {
+        return skillsDATS.get(abilityType);
+    }
+    private void setSkillDATS(AbilityType abilityType, int ticks)
+    {
+        skillsDATS.put(abilityType, (int) (System.currentTimeMillis() + (ticks * 1000))/1000);
+    }
+    public void resetCooldowns()
+    {
+        for(AbilityType x : skillsDATS.keySet())
+        {
+            skillsDATS.put(x, 0);
+        }
+    }
 	/**
 	 * Adds XP to the player, this ignores skill modifiers
 	 * @param skillType The skill to add XP to

@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -81,7 +82,7 @@ public class WoodCutting
     			ticks++;
     		}
 
-    		if(!PP.getTreeFellerMode() && Skills.cooldownOver(player, (PP.getTreeFellerDeactivatedTimeStamp()*1000), LoadProperties.treeFellerCooldown))
+    		if(!PP.getTreeFellerMode() && Skills.cooldownOver(player, (PP.getSkillDATS(AbilityType.TREE_FELLER)*1000), LoadProperties.treeFellerCooldown))
     		{
     			player.sendMessage(mcLocale.getString("Skills.TreeFellerOn"));
     			for(Player y : player.getWorld().getPlayers())
@@ -89,13 +90,12 @@ public class WoodCutting
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.TreeFellerPlayer", new Object[] {player.getName()}));
 	    		}
-    			PP.setTreeFellerActivatedTimeStamp(System.currentTimeMillis());
-    			PP.setTreeFellerDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
+    			PP.setSkillATS(AbilityType.TREE_FELLER, ticks);
     			PP.setTreeFellerMode(true);
     		}
-    		if(!PP.getTreeFellerMode() && !Skills.cooldownOver(player, (PP.getTreeFellerDeactivatedTimeStamp()*1000), LoadProperties.treeFellerCooldown)){
+    		if(!PP.getTreeFellerMode() && !Skills.cooldownOver(player, (PP.getSkillDATS(AbilityType.TREE_FELLER)*1000), LoadProperties.treeFellerCooldown)){
     			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
-    					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, (PP.getTreeFellerDeactivatedTimeStamp()*1000), LoadProperties.treeFellerCooldown)+"s)");
+    					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, (PP.getSkillDATS(AbilityType.TREE_FELLER)*1000), LoadProperties.treeFellerCooldown)+"s)");
     		}
     	}
     }
