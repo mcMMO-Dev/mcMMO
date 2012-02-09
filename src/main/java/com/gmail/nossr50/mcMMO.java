@@ -83,6 +83,7 @@ public class mcMMO extends JavaPlugin
 	private final mcEntityListener entityListener = new mcEntityListener(this);
 
 	private Runnable mcMMO_Timer = new mcTimer(this); //BLEED AND REGENERATION
+	private Runnable mcMMO_SaveTimer = new mcSaveTimer(this); //Periodic saving of Player Data
 	private Runnable ChangeDataValueTimer = new ChangeDataValueTimer(this);		//R2 block place workaround
 	//private Timer mcMMO_SpellTimer = new Timer(true);
 
@@ -156,6 +157,9 @@ public class mcMMO extends JavaPlugin
 
 		for(Player player : getServer().getOnlinePlayers()){Users.addUser(player);} //In case of reload add all users back into PlayerProfile   
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+		
+		//Periodic save timer (Saves every 10 minutes)
+		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_SaveTimer, 0, 12000);
 		
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_Timer, 0, 20);
 		//R2+ block place fix
