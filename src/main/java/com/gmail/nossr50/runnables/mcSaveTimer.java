@@ -1,5 +1,5 @@
 /*
-	This file is part of mcMMO.
+    This file is part of mcMMO.
 
     mcMMO is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,18 +23,18 @@ import com.gmail.nossr50.mcMMO;
 
 public class mcSaveTimer implements Runnable {
     private final mcMMO plugin;
-	
-	public mcSaveTimer(final mcMMO plugin) 
+    
+    public mcSaveTimer(final mcMMO plugin) 
     {
         this.plugin = plugin;
     }
-	
-	public void run() 
-	{
-	    //All player data will be saved periodically through this
-	    for(Player player : plugin.getServer().getOnlinePlayers())
-	    {
-	        Users.getProfile(player).save();
-	    }
-	}
+    
+    public void run() 
+    {
+        //All player data will be saved periodically through this
+        for(Player player : plugin.getServer().getOnlinePlayers())
+        {
+            Users.getProfile(player).save();
+        }
+    }
 }

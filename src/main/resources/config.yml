@@ -257,6 +257,8 @@ General:
         Enabled: true
     MOTD:
         Enabled: true
+    #Amount of time (in minutes) to wait between saves of player information
+    Save_Interval: 10
 Excavation:
     Drops:
         Cake: true

@@ -71,7 +71,7 @@ public class LoadProperties {
 			levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
 			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
 			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
-			anvilID;
+			anvilID, saveInterval;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -297,6 +297,7 @@ public class LoadProperties {
 		enableMotd = readBoolean("General.MOTD.Enabled", true);
 		enableMySpawn = readBoolean("General.MySpawn.Enabled", true);
 		enableRegen = readBoolean("General.HP_Regeneration.Enabled", true);
+		saveInterval = readInteger("General.Save_Interval", 10);
 
 		enableCobbleToMossy = readBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
 		enableSmoothToMossy = readBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true);

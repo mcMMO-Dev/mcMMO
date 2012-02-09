@@ -159,7 +159,7 @@ public class mcMMO extends JavaPlugin
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 		
 		//Periodic save timer (Saves every 10 minutes)
-		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_SaveTimer, 0, 12000);
+		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_SaveTimer, 0, LoadProperties.saveInterval * 1200);
 		
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_Timer, 0, 20);
 		//R2+ block place fix
