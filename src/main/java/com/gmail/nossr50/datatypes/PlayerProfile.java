@@ -66,11 +66,6 @@ public class PlayerProfile
 	//MySQL STUFF
 	private int xpbarinc=0, lastlogin=0, userid = 0, bleedticks = 0;
 	
-	//MAGIC STUFF
-	private int mana = 0;
-	private int greenDyeCycleSel = 0, greenDyeCycle = 0, blueDyeCycle = 0, blueDyeCycleSel = 0;
-	public boolean dyeChanged = false;
-	
 	private String playername;
 	
 	//Time to HashMap this shiz
@@ -576,56 +571,6 @@ public class PlayerProfile
     public void togglePartyChat()
     {
     	partyChatMode = !partyChatMode;
-    }
-    
-    public void setMana(int newvalue)
-    {
-    	mana = newvalue;
-    }
-
-    public int getCurrentMana()
-    {
-    	return mana;
-    }
-    public void setDyeChanged(Boolean bool)
-    {
-    	dyeChanged = bool;
-    }
-    public boolean getDyeChanged()
-    {
-    	return dyeChanged;
-    }
-    public void setBlueDyeCycle(int newvalue)
-    {
-    	blueDyeCycle = newvalue;
-    }
-    public int getBlueDyeCycle()
-    {
-    	return blueDyeCycle;
-    }
-    public void setBlueDyeCycleSel(int newvalue)
-    {
-    	blueDyeCycleSel = newvalue;
-    }
-    public int getBlueDyeCycleSel()
-    {
-    	return blueDyeCycleSel;
-    }
-    public void setGreenDyeCycle(int newvalue)
-    {
-    	greenDyeCycle = newvalue;
-    }
-    public int getGreenDyeCycle()
-    {
-    	return greenDyeCycle;
-    }
-    public void setGreenDyeCycleSel(int newvalue)
-    {
-    	greenDyeCycleSel = newvalue;
-    }
-    public int getGreenDyeCycleSel()
-    {
-    	return greenDyeCycleSel;
     }
 
 	public boolean isPlayer(String player)
