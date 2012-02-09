@@ -54,37 +54,16 @@ public class McrefreshCommand implements CommandExecutor {
 		PP.setFistsPreparationMode(false);
 		PP.setSwordsPreparationMode(false);
 		PP.setPickaxePreparationMode(false);
-		/*
-		 * GREEN TERRA
-		 */
-		PP.setGreenTerraMode(false);
-		PP.setGreenTerraDeactivatedTimeStamp((long) 0);
 
-		/*
-		 * GIGA DRILL BREAKER
-		 */
+
+		//RESET COOLDOWNS
+		PP.resetCooldowns();
+		PP.setGreenTerraMode(false);
 		PP.setGigaDrillBreakerMode(false);
-		PP.setGigaDrillBreakerDeactivatedTimeStamp((long) 0);
-		/*
-		 * SERRATED STRIKE
-		 */
 		PP.setSerratedStrikesMode(false);
-		PP.setSerratedStrikesDeactivatedTimeStamp((long) 0);
-		/*
-		 * SUPER BREAKER
-		 */
 		PP.setSuperBreakerMode(false);
-		PP.setSuperBreakerDeactivatedTimeStamp((long) 0);
-		/*
-		 * TREE FELLER
-		 */
 		PP.setTreeFellerMode(false);
-		PP.setTreeFellerDeactivatedTimeStamp((long) 0);
-		/*
-		 * BERSERK
-		 */
 		PP.setBerserkMode(false);
-		PP.setBerserkDeactivatedTimeStamp((long) 0);
 
 		player.sendMessage(mcLocale.getString("mcPlayerListener.AbilitiesRefreshed"));
 

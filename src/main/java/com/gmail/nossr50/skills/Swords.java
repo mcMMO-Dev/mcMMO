@@ -27,6 +27,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -50,7 +51,7 @@ public class Swords
     			ticks++;
     		}
     		
-	    	if(!PP.getSerratedStrikesMode() && PP.getSerratedStrikesDeactivatedTimeStamp() < System.currentTimeMillis())
+	    	if(!PP.getSerratedStrikesMode() && PP.getSkillDATS(AbilityType.SERRATED_STRIKES) < System.currentTimeMillis())
 	    	{
 	    		player.sendMessage(mcLocale.getString("Skills.SerratedStrikesOn"));
 	    		for(Player y : player.getWorld().getPlayers())
@@ -58,8 +59,7 @@ public class Swords
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.SerratedStrikesPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setSerratedStrikesActivatedTimeStamp(System.currentTimeMillis());
-	    		PP.setSerratedStrikesDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
+	    		PP.setSkillATS(AbilityType.SERRATED_STRIKES, ticks);
 	    		PP.setSerratedStrikesMode(true);
 	    	}
 	    	

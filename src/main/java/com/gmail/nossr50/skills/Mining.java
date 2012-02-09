@@ -31,6 +31,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -62,15 +63,14 @@ public class Mining
     			ticks++;
     		}
     		
-	    	if(!PP.getSuperBreakerMode() && Skills.cooldownOver(player, PP.getSuperBreakerDeactivatedTimeStamp(), LoadProperties.superBreakerCooldown)){
+	    	if(!PP.getSuperBreakerMode() && Skills.cooldownOver(player, PP.getSkillDATS(AbilityType.SUPER_BREAKER), LoadProperties.superBreakerCooldown)){
 	    		player.sendMessage(mcLocale.getString("Skills.SuperBreakerOn"));
 	    		for(Player y : player.getWorld().getPlayers())
 	    		{
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.SuperBreakerPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setSuperBreakerActivatedTimeStamp(System.currentTimeMillis());
-	    		PP.setSuperBreakerDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
+	    		PP.setSkillATS(AbilityType.SUPER_BREAKER, ticks);
 	    		PP.setSuperBreakerMode(true);
 	    	}
 	    	

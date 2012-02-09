@@ -32,6 +32,7 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import org.getspout.spoutapi.sound.SoundEffect;
@@ -60,7 +61,7 @@ public class Excavation
     			ticks++;
     		}
     		
-	    	if(!PP.getGigaDrillBreakerMode() && PP.getGigaDrillBreakerDeactivatedTimeStamp() < System.currentTimeMillis())
+	    	if(!PP.getGigaDrillBreakerMode() && PP.getSkillDATS(AbilityType.GIGA_DRILL_BREAKER) < System.currentTimeMillis())
 	    	{
 	    		player.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerOn"));
 	    		for(Player y : player.getWorld().getPlayers())
@@ -68,8 +69,7 @@ public class Excavation
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setGigaDrillBreakerActivatedTimeStamp(System.currentTimeMillis());
-	    		PP.setGigaDrillBreakerDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
+	    		PP.setSkillATS(AbilityType.GIGA_DRILL_BREAKER, ticks);
 	    		PP.setGigaDrillBreakerMode(true);
 	    	}
 	    	

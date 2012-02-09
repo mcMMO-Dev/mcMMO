@@ -30,6 +30,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.party.Party;
@@ -52,20 +53,19 @@ public class Axes {
     			ticks++;
     		}
 
-    		if(!PP.getSkullSplitterMode() && Skills.cooldownOver(player, (PP.getSkullSplitterDeactivatedTimeStamp()*1000), LoadProperties.skullSplitterCooldown))
+    		if(!PP.getSkullSplitterMode() && Skills.cooldownOver(player, (PP.getSkillDATS(AbilityType.SKULL_SPLIITER)*1000), LoadProperties.skullSplitterCooldown))
     		{
     			player.sendMessage(mcLocale.getString("Skills.SkullSplitterOn"));
     			for(Player y : player.getWorld().getPlayers()){
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.SkullSplitterPlayer", new Object[] {player.getName()}));
 	    		}
-    			PP.setSkullSplitterActivatedTimeStamp(System.currentTimeMillis());
-    			PP.setSkullSplitterDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
+    			PP.setSkillATS(AbilityType.SKULL_SPLIITER, ticks);
     			PP.setSkullSplitterMode(true);
     		}
-    		if(!PP.getSkullSplitterMode() && !Skills.cooldownOver(player, (PP.getSkullSplitterDeactivatedTimeStamp()*1000), LoadProperties.skullSplitterCooldown)){
+    		if(!PP.getSkullSplitterMode() && !Skills.cooldownOver(player, (PP.getSkillDATS(AbilityType.SKULL_SPLIITER)*1000), LoadProperties.skullSplitterCooldown)){
     			player.sendMessage(mcLocale.getString("Skills.TooTired")
-    					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, (PP.getSkullSplitterDeactivatedTimeStamp()*1000), LoadProperties.skullSplitterCooldown)+"s)");
+    					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, (PP.getSkillDATS(AbilityType.SKULL_SPLIITER)*1000), LoadProperties.skullSplitterCooldown)+"s)");
     		}
     	}
     }

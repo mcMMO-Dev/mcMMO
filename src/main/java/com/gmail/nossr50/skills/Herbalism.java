@@ -27,6 +27,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -57,7 +58,7 @@ public class Herbalism
 				ticks++;
 			}
 			
-	    	if(!PP.getGreenTerraMode() && Skills.cooldownOver(player, PP.getGreenTerraDeactivatedTimeStamp(), LoadProperties.greenTerraCooldown))
+	    	if(!PP.getGreenTerraMode() && Skills.cooldownOver(player, PP.getSkillDATS(AbilityType.GREEN_TERRA), LoadProperties.greenTerraCooldown))
 	    	{
 	    		player.sendMessage(mcLocale.getString("Skills.GreenTerraOn"));
 	    		for(Player y : player.getWorld().getPlayers())
@@ -65,8 +66,7 @@ public class Herbalism
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.GreenTerraPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setGreenTerraActivatedTimeStamp(System.currentTimeMillis());
-	    		PP.setGreenTerraDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
+	    		PP.setSkillATS(AbilityType.GREEN_TERRA, ticks);
 	    		PP.setGreenTerraMode(true);
 	    	}
 	    	
