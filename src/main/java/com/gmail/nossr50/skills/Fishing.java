@@ -18,7 +18,6 @@ package com.gmail.nossr50.skills;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -86,8 +85,7 @@ public class Fishing {
 	private static void getFishingResultsTier1(Player player, PlayerFishEvent event)
 	{
 		int randomNum = (int)(Math.random() * 15);
-		CraftItem theCatch = (CraftItem)event.getCaught();
-
+		Item theCatch = (Item)event.getCaught();
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier1)
 		{
 			switch(randomNum)
@@ -189,7 +187,7 @@ public class Fishing {
 	private static void getFishingResultsTier2(Player player, PlayerFishEvent event)
 	{
 		int randomNum = (int)(Math.random() * 20);
-		CraftItem theCatch = (CraftItem)event.getCaught();
+		Item theCatch = (Item)event.getCaught();
 
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier2)
 		{
@@ -322,7 +320,7 @@ public class Fishing {
 	private static void getFishingResultsTier3(Player player, PlayerFishEvent event)
 	{
 		int randomNum = (int)(Math.random() * 24);
-		CraftItem theCatch = (CraftItem)event.getCaught();
+		Item theCatch = (Item)event.getCaught();
 
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier3)
 		{
@@ -479,7 +477,7 @@ public class Fishing {
 	private static void getFishingResultsTier4(Player player, PlayerFishEvent event)
 	{
 		int randomNum = (int)(Math.random() * 41);
-		CraftItem theCatch = (CraftItem)event.getCaught();
+		Item theCatch = (Item)event.getCaught();
 
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier4)
 		{
@@ -737,7 +735,7 @@ public class Fishing {
 	private static void getFishingResultsTier5(Player player, PlayerFishEvent event)
 	{
 		int randomNum = (int)(Math.random() * 50);
-		CraftItem theCatch = (CraftItem)event.getCaught();
+		Item theCatch = (Item)event.getCaught();
 
 		if(Math.random() * 100 < LoadProperties.fishingDropChanceTier5)
 		{
@@ -1049,7 +1047,7 @@ public class Fishing {
 		PlayerProfile PP = Users.getProfile(player);
 
 		Fishing.getFishingResults(player, event);
-		CraftItem theCatch = (CraftItem)event.getCaught();
+		Item theCatch = (Item)event.getCaught();
 
 		if(theCatch.getItemStack().getType() != Material.RAW_FISH)
 		{

@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -39,6 +40,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
+
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
@@ -46,8 +48,6 @@ import org.getspout.spoutapi.sound.SoundEffect;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.*;
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
-
-import net.minecraft.server.Enchantment;
 
 public class mcBlockListener implements Listener 
 {
@@ -153,6 +153,12 @@ public class mcBlockListener implements Listener
    		 * HERBALISM
    		 */
     	
+    	//TNT removal checks - needed for Blast Mining
+    	if(block.getTypeId() == 46)
+    	{
+    		plugin.misc.tntTracker.remove(block);
+    	}
+    	
     	//Green Terra
    		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07)
    		{
@@ -250,7 +256,7 @@ public class mcBlockListener implements Listener
     			}
     			if(LoadProperties.toolsLoseDurabilityFromAbilities)
     	    	{
-    	    		if(!inhand.getEnchantments().containsKey(Enchantment.DURABILITY))
+    	    		if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
     	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     	    	}
     			plugin.misc.treeFeller.clear();

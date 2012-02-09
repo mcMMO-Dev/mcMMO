@@ -154,7 +154,7 @@ public class mcEntityListener implements Listener
 			    		/*
 			    		 * PARTY CHECKS
 			    		 */
-			    		if(event.getEntity() instanceof Player && f instanceof Player)
+			    		if(e instanceof Player && f instanceof Player)
 			    		{
 			        		Player defender = (Player)e;
 			        		Player attacker = (Player)f;
