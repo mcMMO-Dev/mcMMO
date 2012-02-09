@@ -742,7 +742,7 @@ public class Repair {
 		PlayerProfile PP = Users.getProfile(player);
 		if(player != null)
 		{
-			if((Math.random() * 1000 <= PP.getSkillLevel(SkillType.REPAIR)) || PP.getSkillLevel(SkillType.REPAIR) > 1000)
+			if(PP.getSkillLevel(SkillType.REPAIR) > 1000 || (Math.random() * 1000 <= PP.getSkillLevel(SkillType.REPAIR)))
 			{
 				player.sendMessage(mcLocale.getString("Skills.FeltEasy"));
 				return true;
