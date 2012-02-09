@@ -155,6 +155,10 @@ public class mcPlayerListener implements Listener
 				mmoHelper.containers.remove(player);
 		}
 		
+		//Save PlayerData to MySQL/FlatFile on player quit
+		Users.getProfile(player).save();
+		
+		//Remove PlayerProfile
 		Users.removeUser(event.getPlayer());
 	}
 

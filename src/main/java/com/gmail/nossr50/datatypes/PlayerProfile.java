@@ -778,7 +778,6 @@ public class PlayerProfile
 	public long getGreenTerraDeactivatedTimeStamp() {return greenTerraDATS;}
 	public void setGreenTerraDeactivatedTimeStamp(Long newvalue){
 		greenTerraDATS = (int) (newvalue/1000);
-		save();
 	}
 	/*
 	 * BERSERK MODE
@@ -800,7 +799,6 @@ public class PlayerProfile
 	public long getBerserkDeactivatedTimeStamp() {return berserkDATS;}
 	public void setBerserkDeactivatedTimeStamp(Long newvalue){
 		berserkDATS = (int) (newvalue/1000);
-		save();
 	}
 	/*
 	 * SKULL SPLITTER
@@ -822,7 +820,6 @@ public class PlayerProfile
 	public long getSkullSplitterDeactivatedTimeStamp() {return skullSplitterDATS;}
 	public void setSkullSplitterDeactivatedTimeStamp(Long newvalue){
 		skullSplitterDATS = (int) (newvalue/1000);
-		save();
 	}
 	/*
 	 * SERRATED STRIKES
@@ -844,7 +841,6 @@ public class PlayerProfile
 	public long getSerratedStrikesDeactivatedTimeStamp() {return serratedStrikesDATS;}
 	public void setSerratedStrikesDeactivatedTimeStamp(Long newvalue){
 		serratedStrikesDATS = (int) (newvalue/1000);
-		save();
 	}
 	/*
 	 * GIGA DRILL BREAKER
@@ -866,7 +862,6 @@ public class PlayerProfile
 	public long getGigaDrillBreakerDeactivatedTimeStamp() {return gigaDrillBreakerDATS;}
 	public void setGigaDrillBreakerDeactivatedTimeStamp(Long newvalue){
 		gigaDrillBreakerDATS = (int) (newvalue/1000);
-		save();
 	}
 	/*
 	 * TREE FELLER STUFF
@@ -888,7 +883,6 @@ public class PlayerProfile
 	public long getTreeFellerDeactivatedTimeStamp() {return treeFellerDATS;}
 	public void setTreeFellerDeactivatedTimeStamp(Long newvalue){
 		treeFellerDATS = (int) (newvalue/1000);
-		save();
 	}
 	/*
 	 * MINING
@@ -910,7 +904,6 @@ public class PlayerProfile
 	public long getSuperBreakerDeactivatedTimeStamp() {return superBreakerDATS;}
 	public void setSuperBreakerDeactivatedTimeStamp(Long newvalue){
 		superBreakerDATS = (int) (newvalue/1000);
-		save();
 	}
 	public long getRecentlyHurt(){
 		return recentlyHurt;
@@ -921,7 +914,6 @@ public class PlayerProfile
 	public void skillUp(SkillType skillType, int newvalue)
 	{
 		skills.put(skillType, skills.get(skillType)+newvalue);
-		save();
 	}
 	public Integer getSkillLevel(SkillType skillType)
 	{
@@ -1058,7 +1050,6 @@ public class PlayerProfile
 			skillsXp.put(skillType, skillsXp.get(skillType)+xp);
 			lastgained = skillType;
 		}
-		//save();
 	}
 	
 	public void removeXP(SkillType skillType, int newvalue)
@@ -1080,7 +1071,6 @@ public class PlayerProfile
 		} else {
 			skillsXp.put(skillType, skillsXp.get(skillType)-newvalue);
 		}
-		//save();
 	}
 	public void acceptInvite()
 	{
@@ -1126,7 +1116,6 @@ public class PlayerProfile
 			skills.put(skillType, newvalue);
 			skillsXp.put(skillType, newvalue);
 		}
-		save();
 	}
 	public Integer getXpToLevel(SkillType skillType)
 	{
@@ -1137,14 +1126,12 @@ public class PlayerProfile
     public void setParty(String newParty)
     {
     	party = newParty;
-    	save();
     }
     //Retrieve the player's party
     public String getParty() {return party;}
             //Remove party
     public void removeParty() {
     	party = null;
-    	save();
     }
     //Retrieve whether or not the player is in a party
     public boolean inParty() 
@@ -1176,7 +1163,6 @@ public class PlayerProfile
     public void setMySpawn(double x, double y, double z, String myspawnworldlocation){
     	myspawn = x+","+y+","+z;
     	myspawnworld = myspawnworldlocation;
-    	save();
     }
     public String getX(){
     	if(myspawn != null)
