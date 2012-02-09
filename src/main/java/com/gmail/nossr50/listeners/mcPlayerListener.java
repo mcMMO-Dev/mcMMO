@@ -25,7 +25,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.command.ColouredConsoleSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -328,11 +327,7 @@ public class mcPlayerListener implements Listener
 				if(Party.getInstance().inSameParty(player, x))
 					x.sendMessage(format);
 			}
-			if(Bukkit.getServer() instanceof ColouredConsoleSender)
-			{
-				ColouredConsoleSender ccs = (ColouredConsoleSender) Bukkit.getServer();
-				ccs.sendMessage(ChatColor.GREEN+"[P]"+format); //Colors, woot!
-			}
+			log.log(Level.INFO, "[P]"+format);
 		} else if (PP.getAdminChatMode()) {
 			event.setCancelled(true);
 			String name = (LoadProperties.aDisplayNames) ? player.getDisplayName() : player.getName();
@@ -342,13 +337,7 @@ public class mcPlayerListener implements Listener
 				if(x.isOp() || mcPermissions.getInstance().adminChat(x))
 					x.sendMessage(format);
 			}
-			if(Bukkit.getServer() instanceof ColouredConsoleSender)
-			{
-				ColouredConsoleSender ccs = (ColouredConsoleSender) Bukkit.getServer();
-				ccs.sendMessage(ChatColor.AQUA+"[A]"+format); //Colors, woot!
-			} else {
-				log.log(Level.INFO, "[A]"+format);
-			}
+			log.log(Level.INFO, "[A]"+format);
 		}
 	}
 
