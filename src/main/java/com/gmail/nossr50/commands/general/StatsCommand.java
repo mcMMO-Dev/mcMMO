@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -16,6 +17,12 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
 public class StatsCommand implements CommandExecutor {
+	private final mcMMO plugin;
+
+	public StatsCommand(mcMMO instance) {
+		this.plugin = instance;
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!LoadProperties.statsEnable) {
@@ -23,12 +30,23 @@ public class StatsCommand implements CommandExecutor {
 			return true;
 		}
 
+		Player player = (Player) sender;
+
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage.");
-			return true;
+			if(args.length != 1) {
+				sender.sendMessage("Usage: stats <username>");
+				return true;
+			} else {
+				Player temp = plugin.getServer().getPlayer(args[0]);
+				if(temp == null) {
+					sender.sendMessage("Could not find player: " + args[0]);
+					return true;
+				} else {
+					player = temp;
+				}
+			}
 		}
 
-		Player player = (Player) sender;
 		PlayerProfile PP = Users.getProfile(player);
 
 		player.sendMessage(mcLocale.getString("mcPlayerListener.YourStats"));
