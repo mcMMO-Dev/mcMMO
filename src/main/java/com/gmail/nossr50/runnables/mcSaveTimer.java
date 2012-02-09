@@ -34,7 +34,7 @@ public class mcSaveTimer implements Runnable {
 		//All player data will be saved periodically through this
 		for(Player player : plugin.getServer().getOnlinePlayers())
 		{
-			Users.getProfile(player).save();
+		    Users.getProfile(player).save();
 		}
 	}
 }
