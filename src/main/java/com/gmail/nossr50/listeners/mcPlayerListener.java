@@ -26,7 +26,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.command.ColouredConsoleSender;
-import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -84,7 +83,7 @@ public class mcPlayerListener implements Listener
 		{
 			if(event.getState() == State.CAUGHT_FISH)
 			{
-				if(event.getCaught() instanceof CraftItem)
+				if(event.getCaught() instanceof Item)
 				{
 					Fishing.processResults(event);
 				}
