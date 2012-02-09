@@ -69,7 +69,6 @@ public class PlayerProfile
 	//Time to HashMap this shiz
 	HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and XP
 	HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and XP
-	HashMap<AbilityType, Integer> skillsATS = new HashMap<AbilityType, Integer>(); //Skill ATS
 	HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); //Skill ATS
 	
     String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
@@ -77,6 +76,12 @@ public class PlayerProfile
 	public PlayerProfile(Player player)
 	{
 		hud = LoadProperties.defaulthud;
+		//Setup the HashMap for ability ATS & DATS
+		for(AbilityType abilityType : AbilityType.values())
+		{
+		    skillsDATS.put(abilityType, 0);
+		}
+		
 		//Setup the HashMap for the skills
 		for(SkillType skillType : SkillType.values())
 		{
@@ -817,22 +822,17 @@ public class PlayerProfile
 	{
 		skills.put(skillType, 0);
 	}
-	public int getSkillATS(AbilityType abilityType)
-	{
-	    return skillsATS.get(abilityType);
-	}
-	public void setSkillATS(AbilityType abilityType, int ticks)
-	{
-	    skillsATS.put(abilityType, (int) System.currentTimeMillis()/1000);
-	    setSkillDATS(abilityType, ticks);
-	}
 	public int getSkillDATS(AbilityType abilityType)
     {
         return skillsDATS.get(abilityType);
     }
-    private void setSkillDATS(AbilityType abilityType, int ticks)
+    public void setSkillDATS(AbilityType abilityType, long value)
     {
-        skillsDATS.put(abilityType, (int) (System.currentTimeMillis() + (ticks * 1000))/1000);
+        System.out.println("Storing to DATS: "+value);
+        int wearsOff = (int) (value * .001D);
+        System.out.println("After dividing by 1000: "+wearsOff);
+        skillsDATS.put(abilityType, wearsOff);
+        System.out.println("Should be the same as the above value: "+skillsDATS.get(abilityType));
     }
     public void resetCooldowns()
     {

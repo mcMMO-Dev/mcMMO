@@ -53,7 +53,8 @@ public class Unarmed {
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.BerserkPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setSkillATS(AbilityType.BERSERK, ticks);
+	    		PP.setSkillDATS(AbilityType.BERSERK, System.currentTimeMillis()+(ticks*1000));
+	    		System.out.println("getSkillDATS(): "+PP.getSkillDATS(AbilityType.BERSERK));
 	    		PP.setBerserkMode(true);
 	    	}
 	    }

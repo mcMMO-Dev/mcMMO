@@ -66,7 +66,7 @@ public class Herbalism
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.GreenTerraPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setSkillATS(AbilityType.GREEN_TERRA, ticks);
+	    		PP.setSkillDATS(AbilityType.GREEN_TERRA, System.currentTimeMillis()+(ticks*1000));
 	    		PP.setGreenTerraMode(true);
 	    	}
 	    	

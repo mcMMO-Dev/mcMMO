@@ -60,7 +60,7 @@ public class Axes {
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.SkullSplitterPlayer", new Object[] {player.getName()}));
 	    		}
-    			PP.setSkillATS(AbilityType.SKULL_SPLIITER, ticks);
+    			PP.setSkillDATS(AbilityType.SKULL_SPLIITER, System.currentTimeMillis()+(ticks*1000));
     			PP.setSkullSplitterMode(true);
     		}
     		if(!PP.getSkullSplitterMode() && !Skills.cooldownOver(player, (PP.getSkillDATS(AbilityType.SKULL_SPLIITER)*1000), LoadProperties.skullSplitterCooldown)){
