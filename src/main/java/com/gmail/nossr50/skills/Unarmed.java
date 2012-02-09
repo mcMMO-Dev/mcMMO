@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -44,7 +45,7 @@ public class Unarmed {
     			ticks++;
     		}
     		
-	    	if(!PP.getBerserkMode() && Skills.cooldownOver(player, PP.getBerserkDeactivatedTimeStamp(), LoadProperties.berserkCooldown))
+	    	if(!PP.getBerserkMode() && Skills.cooldownOver(player, PP.getSkillDATS(AbilityType.BERSERK), LoadProperties.berserkCooldown))
 	    	{
 	    		player.sendMessage(mcLocale.getString("Skills.BerserkOn"));
 	    		for(Player y : player.getWorld().getPlayers())
@@ -52,8 +53,7 @@ public class Unarmed {
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.BerserkPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setBerserkActivatedTimeStamp(System.currentTimeMillis());
-	    		PP.setBerserkDeactivatedTimeStamp(System.currentTimeMillis() + (ticks * 1000));
+	    		PP.setSkillATS(AbilityType.BERSERK, ticks);
 	    		PP.setBerserkMode(true);
 	    	}
 	    }
