@@ -18,8 +18,6 @@ Hearing that people enjoy mcMMO and seeing the daily youtube videos about my mod
 Required Libraries:
 * CraftBukkit
 * Spout API
-* Permissions
-* PermissionsEx
 
 Required to Run:
 * Bukkit
