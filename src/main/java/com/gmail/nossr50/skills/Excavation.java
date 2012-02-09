@@ -69,7 +69,7 @@ public class Excavation
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setSkillATS(AbilityType.GIGA_DRILL_BREAKER, ticks);
+	    		PP.setSkillDATS(AbilityType.GIGA_DRILL_BREAKER, System.currentTimeMillis()+(ticks*1000));
 	    		PP.setGigaDrillBreakerMode(true);
 	    	}
 	    	

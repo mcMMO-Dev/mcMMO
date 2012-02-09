@@ -90,7 +90,7 @@ public class WoodCutting
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.TreeFellerPlayer", new Object[] {player.getName()}));
 	    		}
-    			PP.setSkillATS(AbilityType.TREE_FELLER, ticks);
+    			PP.setSkillDATS(AbilityType.TREE_FELLER, System.currentTimeMillis()+(ticks*1000));
     			PP.setTreeFellerMode(true);
     		}
     		if(!PP.getTreeFellerMode() && !Skills.cooldownOver(player, (PP.getSkillDATS(AbilityType.TREE_FELLER)*1000), LoadProperties.treeFellerCooldown)){

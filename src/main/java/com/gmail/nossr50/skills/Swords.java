@@ -59,7 +59,7 @@ public class Swords
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.SerratedStrikesPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setSkillATS(AbilityType.SERRATED_STRIKES, ticks);
+	    		PP.setSkillDATS(AbilityType.SERRATED_STRIKES, System.currentTimeMillis()+(ticks*1000));
 	    		PP.setSerratedStrikesMode(true);
 	    	}
 	    	

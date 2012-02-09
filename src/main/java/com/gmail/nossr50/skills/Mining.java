@@ -70,7 +70,7 @@ public class Mining
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.SuperBreakerPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setSkillATS(AbilityType.SUPER_BREAKER, ticks);
+	    		PP.setSkillDATS(AbilityType.SUPER_BREAKER, System.currentTimeMillis()+(ticks*1000));
 	    		PP.setSuperBreakerMode(true);
 	    	}
 	    	
