@@ -22,7 +22,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 
 public class mcSaveTimer implements Runnable {
-	private final mcMMO plugin;
+    private final mcMMO plugin;
 	
 	public mcSaveTimer(final mcMMO plugin) 
     {
@@ -31,10 +31,10 @@ public class mcSaveTimer implements Runnable {
 	
 	public void run() 
 	{
-		//All player data will be saved periodically through this
-		for(Player player : plugin.getServer().getOnlinePlayers())
-		{
-		    Users.getProfile(player).save();
-		}
+	    //All player data will be saved periodically through this
+	    for(Player player : plugin.getServer().getOnlinePlayers())
+	    {
+	        Users.getProfile(player).save();
+	    }
 	}
 }
