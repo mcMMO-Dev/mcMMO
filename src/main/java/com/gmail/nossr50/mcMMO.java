@@ -1,18 +1,19 @@
 /*
-	This file is part of mcMMO.
+	Copyright (C) 2012  Matt 'The Yeti' Burnett & mcMMO Development
+	Copyright (C) 2010-2011 'nossr50'
 
-    mcMMO is free software: you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    mcMMO is distributed in the hope that it will be useful,
+    This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with mcMMO.  If not, see <http://www.gnu.org/licenses/>.
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.gmail.nossr50;
 
@@ -61,17 +62,6 @@ import org.getspout.spoutapi.player.FileManager;
 
 public class mcMMO extends JavaPlugin 
 {
-	/*
-	 * I never expected mcMMO to get so popular!
-	 * Thanks for all the support for the mod
-	 * Thanks to the people who have worked on the code
-	 * Thanks to the donators who helped me out financially
-	 * Thanks to the server admins who use my mod :)
-	 * 
-	 * This mod is open source, and its going to stay that way >:3
-	 * 
-	 * Donate via paypal to nossr50@gmail.com (A million thanks to anyone that does!)
-	 */
 	
 	public static String maindirectory = "plugins" + File.separator + "mcMMO";
 	File file = new File(maindirectory + File.separator + "config.yml");
