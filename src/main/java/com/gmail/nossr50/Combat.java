@@ -83,8 +83,6 @@ public class Combat
 				   		Unarmed.disarmProcCheck(attacker, defender);
 				    }
 			    	
-			    	
-			    	
 			    	//Modify the event damage if Attacker is Berserk
 			    	if(PPa.getBerserkMode())
 			    		event.setDamage(event.getDamage() + (event.getDamage() / 2));
@@ -110,11 +108,21 @@ public class Combat
 				      			int hpLeft = defender.getHealth(), xpinc = 0;
 				      			
 				      			if(hpLeft < event.getDamage())
-				      				xpinc = hpLeft;
-				      			else
+				      			{
+				      			    if(hpLeft > 0)
+				      			        xpinc = hpLeft;
+				      			    else
+				      			        xpinc = 0;
+				      			} else
 				      				xpinc = event.getDamage();
 				      			
 			    				int xp = (int) (xpinc * 2 * LoadProperties.pvpxprewardmodifier);
+			    				
+			    				if(xp < 0)
+			    				{
+			    				    //Debug messages here
+			    				    xp = Math.abs(xp); //Temporary fix
+			    				}
 			    				
 				    			if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
 				    				PPa.addXP(SkillType.AXES, xp*10, attacker);
@@ -411,12 +419,17 @@ public class Combat
     	{
     		LivingEntity le = (LivingEntity)entity;
 	    	//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the entity
-				int hpLeft = le.getHealth(), xpinc = 0;
+			int hpLeft = le.getHealth(), xpinc = 0;
 				
-				if(hpLeft < event.getDamage())
-					xpinc = hpLeft;
-				else
-					xpinc = event.getDamage();
+			if(hpLeft < event.getDamage())
+            {
+			    if(hpLeft > 0)
+			        xpinc = hpLeft;
+                else
+                    xpinc = 0;
+            } 
+			else
+			    xpinc = event.getDamage();
 			
 	    	if(entity instanceof Animals)
 	    	{
