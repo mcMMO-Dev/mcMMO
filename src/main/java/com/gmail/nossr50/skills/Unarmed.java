@@ -38,9 +38,12 @@ public class Unarmed {
 			{
     			PP.setFistsPreparationMode(false);
     		}
+			
 	    	int ticks = 2;
 	    	int x = PP.getSkillLevel(SkillType.UNARMED);
-    		while(x >= 50){
+	    	
+    		while(x >= 50)
+    		{
     			x-=50;
     			ticks++;
     		}

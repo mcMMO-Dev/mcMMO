@@ -297,8 +297,6 @@ public class mcBlockListener implements Listener
     	PlayerProfile PP = Users.getProfile(player);
     	ItemStack inhand = player.getItemInHand();
     	Block block = event.getBlock();
-    	
-    	Skills.monitorSkills(player, PP);
 
     	/*
     	 * ABILITY PREPARATION CHECKS

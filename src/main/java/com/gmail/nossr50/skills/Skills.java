@@ -95,7 +95,7 @@ public class Skills
 			PP.setSerratedStrikesInformed(true);
 			player.sendMessage(mcLocale.getString("Skills.YourSerratedStrikes"));
     	}
-    	if(!PP.getBerserkInformed() && curTime - (PP.getSkillDATS(AbilityType.BERSERK)*1000) >= (LoadProperties.berserkCooldown * 1000)){
+    	if(!PP.getBerserkInformed() && (curTime - (PP.getSkillDATS(AbilityType.BERSERK)*1000)) >= (LoadProperties.berserkCooldown * 1000)){
 			PP.setBerserkInformed(true);
 			player.sendMessage(mcLocale.getString("Skills.YourBerserk"));
     	}
@@ -126,9 +126,7 @@ public class Skills
 			PP.setHoePreparationMode(true);
     	}
     }
-    public static void monitorSkills(Player player, PlayerProfile PP) {
-    	monitorSkills(player, PP, System.currentTimeMillis());
-    }
+    
     public static void monitorSkills(Player player, PlayerProfile PP, long curTime){
 		if(PP.getHoePreparationMode() && curTime - (PP.getHoePreparationATS()*1000) >= 4000){
 			PP.setHoePreparationMode(false);
