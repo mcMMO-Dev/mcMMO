@@ -76,7 +76,7 @@ public class PlayerProfile
 	public PlayerProfile(Player player)
 	{
 		hud = LoadProperties.defaulthud;
-		//Setup the HashMap for ability ATS & DATS
+		//Setup the HashMap for ability DATS
 		for(AbilityType abilityType : AbilityType.values())
 		{
 		    skillsDATS.put(abilityType, 0);
@@ -822,17 +822,15 @@ public class PlayerProfile
 	{
 		skills.put(skillType, 0);
 	}
-	public int getSkillDATS(AbilityType abilityType)
+	public long getSkillDATS(AbilityType abilityType)
     {
+	    long convertedBack = skillsDATS.get(abilityType) * 1000;
         return skillsDATS.get(abilityType);
     }
     public void setSkillDATS(AbilityType abilityType, long value)
     {
-        System.out.println("Storing to DATS: "+value);
         int wearsOff = (int) (value * .001D);
-        System.out.println("After dividing by 1000: "+wearsOff);
         skillsDATS.put(abilityType, wearsOff);
-        System.out.println("Should be the same as the above value: "+skillsDATS.get(abilityType));
     }
     public void resetCooldowns()
     {
