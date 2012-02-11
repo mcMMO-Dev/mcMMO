@@ -32,6 +32,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.events.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -64,7 +65,7 @@ public class PlayerProfile
 	//MySQL STUFF
 	private int xpbarinc=0, lastlogin=0, userid = 0, bleedticks = 0;
 	
-	private String playername;
+	private String playerName;
 	
 	//Time to HashMap this shiz
 	HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and XP
@@ -92,7 +93,7 @@ public class PlayerProfile
 			}
 		}
 		
-		playername = player.getName();
+		playerName = player.getName();
 		if (LoadProperties.useMySQL) 
 		{
 			if(!loadMySQL(player)) {
@@ -219,7 +220,7 @@ public class PlayerProfile
         		//Find if the line contains the player we want.
         		String[] character = line.split(":");
 
-        		if(!character[0].equals(playername)){continue;}
+        		if(!character[0].equals(playerName)){continue;}
         		
     			//Get Mining
     			if(character.length > 1 && m.isInt(character[1]))
@@ -377,13 +378,13 @@ public class PlayerProfile
 	        	{
 	        		//Read the line in and copy it to the output it's not the player
 	        		//we want to edit
-	        		if(!line.split(":")[0].equalsIgnoreCase(playername))
+	        		if(!line.split(":")[0].equalsIgnoreCase(playerName))
 	        		{
 	                    writer.append(line).append("\r\n");
 	                    
 	                //Otherwise write the new player information
 	        		} else {
-	        			writer.append(playername + ":");
+	        			writer.append(playerName + ":");
 	        			writer.append(skills.get(SkillType.MINING) + ":");
 	        			writer.append(myspawn + ":");
 	        			writer.append(party+":");
@@ -442,7 +443,7 @@ public class PlayerProfile
             BufferedWriter out = new BufferedWriter(file);
             
             //Add the player to the end
-            out.append(playername + ":");
+            out.append(playerName + ":");
             out.append(0 + ":"); //mining
             out.append(myspawn+":");
             out.append(party+":");
@@ -580,7 +581,7 @@ public class PlayerProfile
 
 	public boolean isPlayer(String player)
 	{
-		return player.equals(playername);
+		return player.equals(Bukkit.getPlayer(playerName));
 	}
 	public boolean getPartyChatOnlyToggle(){return partyChatOnly;}
 	public void togglePartyChatOnly(){partyChatOnly = !partyChatOnly;}
@@ -852,12 +853,14 @@ public class PlayerProfile
 			{
 				if(x == SkillType.ALL)
 					continue;
+				Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(Bukkit.getPlayer(playerName), x, newvalue));
 				skillsXp.put(x, skillsXp.get(x)+newvalue);
 			}
 		} else {
 			int xp = newvalue;
 			
 			xp=xp*LoadProperties.xpGainMultiplier;
+			Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(Bukkit.getPlayer(playerName), skillType, xp));
 			skillsXp.put(skillType, skillsXp.get(skillType)+xp);
 			lastgained = skillType;
 		}
@@ -904,6 +907,7 @@ public class PlayerProfile
 			{
 				if(x == SkillType.ALL)
 					continue;
+				Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(Bukkit.getPlayer(playerName), x, newvalue));
 				skillsXp.put(x, skillsXp.get(x)+newvalue);
 			}
 		} else {
@@ -958,6 +962,7 @@ public class PlayerProfile
 				double percent = (trueBonus/oldxp)*100;
 				thisplayer.sendMessage(ChatColor.GREEN+"XP: "+oldxp+" Bonus XP: "+trueBonus+" Total: "+xp+ChatColor.GOLD+" [Master: "+leaderName+" " +" +"+(int)percent+"%]");
 			}
+			Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(Bukkit.getPlayer(playerName), skillType, xp));
 			skillsXp.put(skillType, skillsXp.get(skillType)+xp);
 			lastgained = skillType;
 		}
