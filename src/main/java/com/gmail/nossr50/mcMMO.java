@@ -170,20 +170,22 @@ public class mcMMO extends JavaPlugin
 			FM.addToPreLoginCache(this, SpoutStuff.getFiles());
 		}
 		
-		//Plugin Metrics running in a new thread
-		new Thread(new Runnable() {
-		    public void run() {
-		        try {
-		            // create a new metrics object
-		            Metrics metrics = new Metrics();
-    
-		            // 'this' in this context is the Plugin object
-		            metrics.beginMeasuringPlugin(thisPlugin);
-		        } catch (IOException e) {
-		            // Failed to submit the stats :-(
-		        }
-            }
-		}).start();
+		if(LoadProperties.statsTracking) {
+			//Plugin Metrics running in a new thread
+			new Thread(new Runnable() {
+			    public void run() {
+			        try {
+			            // create a new metrics object
+			            Metrics metrics = new Metrics();
+	    
+			            // 'this' in this context is the Plugin object
+			            metrics.beginMeasuringPlugin(thisPlugin);
+			        } catch (IOException e) {
+			            // Failed to submit the stats :-(
+			        }
+	            }
+			}).start();
+		}
 	}
 
 	public PlayerProfile getPlayerProfile(Player player)

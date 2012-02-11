@@ -43,7 +43,7 @@ public class LoadProperties {
 			diamondArmor, woodenTools, stoneTools, ironTools, goldTools,
 			diamondTools, enderPearl, blazeRod, records, glowstoneDust,
 			fishingDiamonds, aDisplayNames, pDisplayNames, enableSmoothToMossy,
-			enableDirtToGrass;
+			enableDirtToGrass, statsTracking;
 
 	public static String MySQLtablePrefix, MySQLuserName,
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
@@ -298,6 +298,7 @@ public class LoadProperties {
 		enableMySpawn = readBoolean("General.MySpawn.Enabled", true);
 		enableRegen = readBoolean("General.HP_Regeneration.Enabled", true);
 		saveInterval = readInteger("General.Save_Interval", 10);
+		statsTracking = readBoolean("General.Stats_Tracking", true);
 
 		enableCobbleToMossy = readBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
 		enableSmoothToMossy = readBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true);
