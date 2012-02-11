@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
@@ -93,6 +94,7 @@ public class mcMMO extends JavaPlugin
 
 	public void onEnable() 
 	{
+	    final Plugin thisPlugin = this;
 		mcmmo = this.getFile();
 		new File(maindirectory).mkdir();
 		
@@ -167,6 +169,21 @@ public class mcMMO extends JavaPlugin
 			FileManager FM = SpoutManager.getFileManager();
 			FM.addToPreLoginCache(this, SpoutStuff.getFiles());
 		}
+		
+		//Plugin Metrics running in a new thread
+		new Thread(new Runnable() {
+            public void run() {
+		try {
+		    // create a new metrics object
+		    Metrics metrics = new Metrics();
+
+		    // 'this' in this context is the Plugin object
+		    metrics.beginMeasuringPlugin(thisPlugin);
+		} catch (IOException e) {
+		    // Failed to submit the stats :-(
+		}
+            }
+		}).start();
 	}
 
 	public PlayerProfile getPlayerProfile(Player player)
