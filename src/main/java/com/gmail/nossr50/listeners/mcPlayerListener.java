@@ -45,6 +45,8 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Item;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -152,6 +154,9 @@ public class mcPlayerListener implements Listener
 			if(mmoHelper.containers.containsKey(player))
 				mmoHelper.containers.remove(player);
 		}
+		
+		//Bleed it out
+		if(Users.getProfile(player).getBleedTicks() > 0) Combat.dealDamage(player, Users.getProfile(player).getBleedTicks()*2);
 		
 		//Save PlayerData to MySQL/FlatFile on player quit
 		Users.getProfile(player).save();
