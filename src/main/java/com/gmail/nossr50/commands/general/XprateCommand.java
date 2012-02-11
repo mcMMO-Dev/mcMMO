@@ -67,6 +67,8 @@ public class XprateCommand implements CommandExecutor {
 						x.sendMessage(ChatColor.GOLD+"XP EVENT FOR mcMMO HAS STARTED!");
 						x.sendMessage(ChatColor.GOLD+"mcMMO XP RATE IS NOW "+LoadProperties.xpGainMultiplier+"x!!");
 					}
+				
+				System.out.println("The XP RATE was modified to "+LoadProperties.xpGainMultiplier);
 			}
 			
 			return true;
