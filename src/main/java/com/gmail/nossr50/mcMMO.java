@@ -172,16 +172,16 @@ public class mcMMO extends JavaPlugin
 		
 		//Plugin Metrics running in a new thread
 		new Thread(new Runnable() {
-            public void run() {
-		try {
-		    // create a new metrics object
-		    Metrics metrics = new Metrics();
-
-		    // 'this' in this context is the Plugin object
-		    metrics.beginMeasuringPlugin(thisPlugin);
-		} catch (IOException e) {
-		    // Failed to submit the stats :-(
-		}
+		    public void run() {
+		        try {
+		            // create a new metrics object
+		            Metrics metrics = new Metrics();
+    
+		            // 'this' in this context is the Plugin object
+		            metrics.beginMeasuringPlugin(thisPlugin);
+		        } catch (IOException e) {
+		            // Failed to submit the stats :-(
+		        }
             }
 		}).start();
 	}
