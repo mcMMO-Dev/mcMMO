@@ -24,7 +24,12 @@ public class MmoeditCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!mcPermissions.getInstance().mmoedit((Player) sender)) {
+		Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
+		
+        if (player != null && !mcPermissions.getInstance().mmoedit(player)) {
 			sender.sendMessage("This command requires permissions.");
 			return true;
 		}
@@ -51,7 +56,6 @@ public class MmoeditCommand implements CommandExecutor {
 			return true;
 		}
 
-		Player player = (Player) sender;
 		PlayerProfile PP = Users.getProfile(player);
 
 		if (!mcPermissions.getInstance().mmoedit(player)) {

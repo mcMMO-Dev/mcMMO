@@ -44,10 +44,12 @@ public class ACommand implements CommandExecutor {
 			return true;
 		}
 
-		Player player = (Player) sender;
-		PlayerProfile PP = Users.getProfile(player);
+		Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
 
-		if (!mcPermissions.getInstance().adminChat(player) && !player.isOp()) {
+		if (player != null && !mcPermissions.getInstance().adminChat(player) && !player.isOp()) {
 			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
 			return true;
 		}
@@ -70,19 +72,23 @@ public class ACommand implements CommandExecutor {
 			return true;
 		}
 
-		if (PP.getPartyChatMode())
-			PP.togglePartyChat();
-
-		PP.toggleAdminChat();
-
-		if (PP.getAdminChatMode()) {
-			player.sendMessage(mcLocale.getString("mcPlayerListener.AdminChatOn"));
-			// player.sendMessage(ChatColor.AQUA + "Admin chat toggled " + ChatColor.GREEN + "On");
-		} else {
-			player.sendMessage(mcLocale.getString("mcPlayerListener.AdminChatOff"));
-			// player.sendMessage(ChatColor.AQUA + "Admin chat toggled " + ChatColor.RED + "Off");
+		if(player != null)
+		{
+			PlayerProfile PP = Users.getProfile(player);
+			
+			if (PP.getPartyChatMode())
+				PP.togglePartyChat();
+	
+			PP.toggleAdminChat();
+	
+			if (PP.getAdminChatMode()) {
+				player.sendMessage(mcLocale.getString("mcPlayerListener.AdminChatOn"));
+				// player.sendMessage(ChatColor.AQUA + "Admin chat toggled " + ChatColor.GREEN + "On");
+			} else {
+				player.sendMessage(mcLocale.getString("mcPlayerListener.AdminChatOff"));
+				// player.sendMessage(ChatColor.AQUA + "Admin chat toggled " + ChatColor.RED + "Off");
+			}
 		}
-
 		return true;
 	}
 }

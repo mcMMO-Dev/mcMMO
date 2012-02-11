@@ -16,7 +16,6 @@ Hearing that people enjoy mcMMO and seeing the daily youtube videos about my mod
 === Compiling
 
 Required Libraries:
-* CraftBukkit
 * Spout API
 
 Required to Run:

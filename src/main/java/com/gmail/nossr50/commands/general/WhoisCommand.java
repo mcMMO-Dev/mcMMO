@@ -30,13 +30,21 @@ public class WhoisCommand implements CommandExecutor {
 			return true;
 		}
 
-		Player player = (Player) sender;
+		Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
 
-		if (!mcPermissions.getInstance().whois(player)) {
+		if (player != null  && !mcPermissions.getInstance().whois(player)) {
 			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
 			return true;
 		}
 
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("This command does not support console useage.");
+			return true;
+		}
+		
 		if (args.length < 1) {
 			player.sendMessage(ChatColor.RED + "Proper usage is /whois <playername>");
 			return true;

@@ -30,7 +30,10 @@ public class StatsCommand implements CommandExecutor {
 			return true;
 		}
 
-		Player player = (Player) sender;
+		Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
 
 		if (!(sender instanceof Player)) {
 			if(args.length != 1) {
