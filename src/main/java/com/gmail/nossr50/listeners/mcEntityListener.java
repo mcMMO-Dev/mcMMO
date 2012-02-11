@@ -84,7 +84,7 @@ public class mcEntityListener implements Listener
     	
     	/*
     	 * Demolitions Expert
-    	 */
+    	 
     	if(event.getCause() == DamageCause.BLOCK_EXPLOSION)
     	{
     		if(event.getEntity() instanceof Player)
@@ -93,6 +93,7 @@ public class mcEntityListener implements Listener
     			BlastMining.demolitionsExpertise(player, event);
     		}
     	}
+    	*/
     	
     	if(event.getEntity() instanceof LivingEntity)
     	{
@@ -213,6 +214,7 @@ public class mcEntityListener implements Listener
     	}
     }
     
+    /*
 	@EventHandler (priority = EventPriority.LOW)
 	public void onExplosionPrime(ExplosionPrimeEvent event)
 	{
@@ -228,6 +230,7 @@ public class mcEntityListener implements Listener
 		}		
 	}
 	
+	
 	@EventHandler (priority = EventPriority.LOW)
 	public void onEnitityExplode(EntityExplodeEvent event)
 	{
@@ -242,7 +245,8 @@ public class mcEntityListener implements Listener
 			}
 		}
 	}
-	
+	*/
+    
 	public boolean isBow(ItemStack is){
 		if (is.getTypeId() == 261){
 			return true;
