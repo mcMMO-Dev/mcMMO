@@ -166,17 +166,6 @@ public class mcMMO extends JavaPlugin
 			
 			FileManager FM = SpoutManager.getFileManager();
 			FM.addToPreLoginCache(this, SpoutStuff.getFiles());
-			
-			/*
-			Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					  new Runnable() {
-
-						  @Override
-						  public void run() {
-							  mmoHelper.updateAll();
-						  }
-					  }, 20, 20);
-			 */
 		}
 	}
 
@@ -239,9 +228,17 @@ public class mcMMO extends JavaPlugin
 		return PP.inParty();
 	}
 
-	public void onDisable() {
-		Bukkit.getServer().getScheduler().cancelTasks(this);
-		System.out.println("mcMMO was disabled."); 
+	public void onDisable() 
+	{
+	    //Make sure to save player information if the server shuts down
+		for(Player x : Bukkit.getServer().getOnlinePlayers())
+		{
+		    Users.getProfile(x).save();
+		}
+	    
+	    Bukkit.getServer().getScheduler().cancelTasks(this); //This removes our tasks
+		
+		System.out.println("mcMMO was disabled."); //How informative!
 	}
 	
 	private void registerCommands() {

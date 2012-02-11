@@ -118,12 +118,6 @@ public class Combat
 				      			
 			    				int xp = (int) (xpinc * 2 * LoadProperties.pvpxprewardmodifier);
 			    				
-			    				if(xp < 0)
-			    				{
-			    				    //Debug messages here
-			    				    xp = Math.abs(xp); //Temporary fix
-			    				}
-			    				
 				    			if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker))
 				    				PPa.addXP(SkillType.AXES, xp*10, attacker);
 				    			if(m.isSwords(attacker.getItemInHand()) && mcPermissions.getInstance().swords(attacker))
