@@ -2,7 +2,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
-    <version>1.2.11</version>
     <name>mcMMO</name>
     <url>https://github.com/TheYeti/mcMMO</url>
     <issueManagement>
@@ -122,4 +121,5 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <version>1.1.12-dev</version>
 </project>
