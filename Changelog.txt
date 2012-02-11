@@ -1,12 +1,17 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 
-Version 2.0-dev
+Version 1.2.11
  - Removed legacy Permission & PEX support.  SuperPerms support only now.
- - Added framework for new Mining sub-skill: Blast Mining.
  - Made Smooth Brick to Mossy Brick and Dirt to Grass for green thumb configurable (Issue #120)
- - Changed mcMMO to save data periodically to optimize performance with FlatFile & MySQL
+ - Added MagmaCube to XP tables
+ - Made optimizations to Skull Splitter/Serrated Strikes
+ - Made it so players take damage if they try to log out with Serrated Strikes stacked onto them (Issue #131)
+ - Changed mcMMO to save data periodically to optimize performance with FlatFile & MySQL (Issue #138)
  - Added a configurable save interval for the new save system
+ - Fixed a bug with the odds calculations for Serrated Strikes
+ - Fixed several commands not working from console (mmoedit, etc..) (Issue #150)
+ - Added a success message when executing xprate from console
 
 Version 1.2.10
  - Fixed issue with receiving Woodcutting XP for all blocks broken (Issue #103)
