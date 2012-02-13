@@ -1,6 +1,11 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 
+Version 1.2.12
+ - Changed priority of onEntityDamage to come dead last to respect other plugins event cancelling
+ - Fixed /mcgod, & /mmoedit defaulting to true
+ - Fixed Fishing not handing out any XP
+ 
 Version 1.2.11
  - Removed legacy Permission & PEX support.  SuperPerms support only now.
  - Made Smooth Brick to Mossy Brick and Dirt to Grass for green thumb configurable (Issue #120)
