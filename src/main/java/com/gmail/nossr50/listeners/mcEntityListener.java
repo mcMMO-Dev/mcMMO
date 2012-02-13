@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -52,9 +53,13 @@ public class mcEntityListener implements Listener
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.LOW)
     public void onEntityDamage(EntityDamageEvent event) 
     {
+        //Pass around a fake event to see if any plugins cancel it
+        if(!m.EntityDamageEventSimulate(event.getEntity(), event.getCause(), event.getDamage()))
+            return;
+        
     	if(event.isCancelled())
     		return;
     	

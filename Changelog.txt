@@ -2,7 +2,7 @@ Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 
 Version 1.2.12
- - Changed priority of onEntityDamage to come dead last to respect other plugins event cancelling
+ - Modified onEntityDamage to have better compatibility with other plugins
  - Fixed /mcgod, & /mmoedit defaulting to true
  - Fixed Fishing not handing out any XP
  
