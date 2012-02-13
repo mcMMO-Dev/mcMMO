@@ -26,10 +26,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.*;
-import com.gmail.nossr50.datatypes.FakeEntityDamageEvent;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -145,19 +143,6 @@ public class m
 		} else {
 			return false; //Return false if something went wrong
 		}
-	}
-	
-	public static boolean EntityDamageEventSimulate(Entity damagee, DamageCause cause, int damage)
-	{
-	    FakeEntityDamageEvent event = new FakeEntityDamageEvent(damagee, cause, damage);
-	    
-	    Bukkit.getServer().getPluginManager().callEvent(event);
-	    if(!event.isCancelled())
-        {
-            return true; //Return true if not cancelled
-        } else {
-            return false; //Return false if cancelled
-        }
 	}
 
 	public static void damageTool(Player player, short damage)

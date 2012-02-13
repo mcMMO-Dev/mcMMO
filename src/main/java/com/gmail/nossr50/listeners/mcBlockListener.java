@@ -146,6 +146,7 @@ public class mcBlockListener implements Listener
     	ItemStack inhand = player.getItemInHand();
     	if(event.isCancelled())
     		return;
+    	
     	if (event instanceof FakeBlockBreakEvent) 
     		return;
     	

@@ -53,13 +53,9 @@ public class mcEntityListener implements Listener
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) 
     {
-        //Pass around a fake event to see if any plugins cancel it
-        if(!m.EntityDamageEventSimulate(event.getEntity(), event.getCause(), event.getDamage()))
-            return;
-        
     	if(event.isCancelled())
     		return;
     	
@@ -70,6 +66,7 @@ public class mcEntityListener implements Listener
     		if(eventb.getEntity() instanceof Player && eventb.getDamager() instanceof Player && !event.getEntity().getWorld().getPVP())
     			return;
     	}
+    	
     	/*
     	 * CHECK FOR INVULNERABILITY
     	 */
