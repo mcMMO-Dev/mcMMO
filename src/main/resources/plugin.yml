@@ -112,14 +112,15 @@ permissions:
             mcmmo.commands.*: true 
             mcmmo.chat.partychat: true 
             mcmmo.skills.*: true
-            mcmmo.tools.*: false
         
     mcmmo.defaultsop:
         default: op
         description: mcmmo permissions that default to op
         children:
-            mcmmo.chat.adminchat: true 
-    
+            mcmmo.chat.adminchat: true
+            mcmmo.admin: true
+            mcmmo.tools.*: true
+
     mcmmo.admin:
         description:        
     mcmmo.tools.*:
