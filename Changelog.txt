@@ -8,7 +8,7 @@ Version 1.2.12
  - Fixed Fishing not handing out any XP
  
 Version 1.2.11
- - Removed legacy Permission & PEX support.  SuperPerms support only now.
+ - Removed legacy Permission & PEX dependency. (PEX still works fine with mcMMO)
  - Made Smooth Brick to Mossy Brick and Dirt to Grass for green thumb configurable (Issue #120)
  - Added MagmaCube to XP tables
  - Made optimizations to Skull Splitter/Serrated Strikes
