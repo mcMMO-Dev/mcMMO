@@ -170,7 +170,6 @@ public class mcBlockListener implements Listener
    		if(PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block))
    		{
    			Herbalism.herbalismProcCheck(block, player, event, plugin);
-   			Herbalism.greenTerraWheat(player, block, event, plugin);
    		}
    		
    		

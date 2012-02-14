@@ -74,35 +74,6 @@ public class Herbalism
 	    }
 	}
 	
-	public static void greenTerraWheat(Player player, final Block block, BlockBreakEvent event, mcMMO plugin)
-	{
-		if(block.getType() == Material.WHEAT && block.getData() == (byte) 0x07)
-		{
-			event.setCancelled(true);
-			PlayerProfile PP = Users.getProfile(player);
-			Material mat = Material.getMaterial(296);
-			Location loc = block.getLocation();
-			ItemStack is = new ItemStack(mat, 1, (byte)0, (byte)0);
-			PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat, player);
-			m.mcDropItem(loc, is);
-	    	
-	    	//DROP SOME SEEDS
-			mat = Material.SEEDS;
-			is = new ItemStack(mat, 1, (byte)0, (byte)0);
-			m.mcDropItem(loc, is);
-			
-	    	herbalismProcCheck(block, player, event, plugin);
-	    	herbalismProcCheck(block, player, event, plugin);
-			
-	    	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                public void run() {
-                    block.setType(Material.CROPS);
-                    block.setData((byte) 0x4);
-                }
-            }, 1);
-		}
-	}
-	
 	public static void greenTerra(Player player, Block block){
 		if(block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT){
 			if(!hasSeeds(player))
@@ -179,7 +150,7 @@ public class Herbalism
     		}
     		
     		//GREEN THUMB
-    		if(!PP.getGreenTerraMode() && (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel)))
+    		if(PP.getGreenTerraMode() || (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel)))
     		{
     			event.setCancelled(true);
     			m.mcDropItem(loc, is);
@@ -192,14 +163,18 @@ public class Herbalism
                     public void run() {
                         block.setType(Material.CROPS);
                         //This replants the wheat at a certain stage in development based on Herbalism Skill
-                        if (PP.getSkillLevel(SkillType.HERBALISM) >= 600)
+                        if(!PP.getGreenTerraMode())
+                        {
+                            if (PP.getSkillLevel(SkillType.HERBALISM) >= 600)
+                                block.setData((byte) 0x4);
+                            else if (PP.getSkillLevel(SkillType.HERBALISM) >= 400)
+                                block.setData((byte) 0x3);
+                            else if (PP.getSkillLevel(SkillType.HERBALISM) >= 200)
+                                block.setData((byte) 0x2);
+                            else
+                                block.setData((byte) 0x1);
+                        } else
                             block.setData((byte) 0x4);
-                        else if (PP.getSkillLevel(SkillType.HERBALISM) >= 400)
-                            block.setData((byte) 0x3);
-                        else if (PP.getSkillLevel(SkillType.HERBALISM) >= 200)
-                            block.setData((byte) 0x2);
-                        else
-                            block.setData((byte) 0x1);
                     }
                 }, 1);
     			
