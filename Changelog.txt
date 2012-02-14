@@ -3,9 +3,9 @@ Changelog:
 
 Version 1.2.12
  - Added anonymous usage statistics (you can opt out in plugins/PluginMetrics/config.yml)
- - Modified onEntityDamage to have better compatibility with other plugins
+ - Modified onEntityDamage priority to have better compatibility with other plugins (Factions, WorldGuard, etc...)
  - Fixed /mcgod, & /mmoedit defaulting to true
- - Fixed Fishing not handing out any XP
+ - Fixed Fishing not working or handing out XP
  
 Version 1.2.11
  - Removed legacy Permission & PEX dependency. (PEX still works fine with mcMMO)
