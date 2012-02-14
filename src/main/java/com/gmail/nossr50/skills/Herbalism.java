@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.skills;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -145,9 +146,9 @@ public class Herbalism
     	}
     }
 	
-	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event, mcMMO plugin)
+	public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin)
 	{
-		PlayerProfile PP = Users.getProfile(player);
+		final PlayerProfile PP = Users.getProfile(player);
 		int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
     	int type = block.getTypeId();
     	Location loc = block.getLocation();
@@ -182,15 +183,21 @@ public class Herbalism
     			is = new ItemStack(mat, 1, (byte)0, (byte)0);
     			m.mcDropItem(loc, is);
     			
-    			//This replants the wheat at a certain stage in development based on Herbalism Skill
-    			if(PP.getSkillLevel(SkillType.HERBALISM) >= 600)
-    			    block.setData((byte) 0x4);
-    			else if(PP.getSkillLevel(SkillType.HERBALISM) >= 400)
-    				block.setData((byte) 0x3);
-    			else if(PP.getSkillLevel(SkillType.HERBALISM) >= 200)
-    				block.setData((byte) 0x2);
-    			else
-    				block.setData((byte) 0x1);
+    			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                    public void run() {
+                        block.setType(Material.CROPS);
+                        //This replants the wheat at a certain stage in development based on Herbalism Skill
+                        if (PP.getSkillLevel(SkillType.HERBALISM) >= 600)
+                            block.setData((byte) 0x4);
+                        else if (PP.getSkillLevel(SkillType.HERBALISM) >= 400)
+                            block.setData((byte) 0x3);
+                        else if (PP.getSkillLevel(SkillType.HERBALISM) >= 200)
+                            block.setData((byte) 0x2);
+                        else
+                            block.setData((byte) 0x1);
+                    }
+                }, 1);
+    			
     		}
     	}
     	
