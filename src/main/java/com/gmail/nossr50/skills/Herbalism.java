@@ -90,8 +90,8 @@ public class Herbalism
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
 			m.mcDropItem(loc, is);
 			
-	    	herbalismProcCheck(block, player, event, plugin, true);
-	    	herbalismProcCheck(block, player, event, plugin, true);
+	    	herbalismProcCheck(block, player, event, plugin);
+	    	herbalismProcCheck(block, player, event, plugin);
 			block.setData((byte) 0x03);
 		}
 	}
@@ -145,7 +145,7 @@ public class Herbalism
     	}
     }
 	
-	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event, mcMMO plugin, boolean isGreenTerra)
+	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event, mcMMO plugin)
 	{
 		PlayerProfile PP = Users.getProfile(player);
 		int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
@@ -170,9 +170,11 @@ public class Herbalism
     		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
 	    			m.mcDropItem(loc, is);
     		}
+    		
     		//GREEN THUMB
-    		if(!isGreenTerra && (herbLevel > 1500 || (Math.random() * 1500 <= herbLevel)))
+    		if(!PP.getGreenTerraMode() && (herbLevel > 1500 || (Math.random() * 1500 <= herbLevel)))
     		{
+    		    System.out.println("DEBUG: GREEN THUMB ACTIVATED");
     			event.setCancelled(true);
     			m.mcDropItem(loc, is);
     			//DROP SOME SEEDS

@@ -169,7 +169,7 @@ public class mcBlockListener implements Listener
    		//Wheat && Triple drops
    		if(PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block))
    		{
-   			Herbalism.herbalismProcCheck(block, player, event, plugin, true);
+   			Herbalism.herbalismProcCheck(block, player, event, plugin);
    			Herbalism.greenTerraWheat(player, block, event, plugin);
    		}
    		
@@ -277,7 +277,7 @@ public class mcBlockListener implements Listener
     	}
     	
     	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
-			Herbalism.herbalismProcCheck(block, player, event, plugin, false);
+			Herbalism.herbalismProcCheck(block, player, event, plugin);
     	
     	//Change the byte back when broken
     	if(block.getData() == 5 && m.shouldBeWatched(block))
