@@ -181,7 +181,6 @@ public class Herbalism
     		//GREEN THUMB
     		if(!PP.getGreenTerraMode() && (herbLevel > 1500 || (Math.random() * 1500 <= herbLevel)))
     		{
-    		    System.out.println("DEBUG: GREEN THUMB ACTIVATED");
     			event.setCancelled(true);
     			m.mcDropItem(loc, is);
     			//DROP SOME SEEDS
