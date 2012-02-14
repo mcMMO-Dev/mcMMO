@@ -16,7 +16,6 @@
 */
 package com.gmail.nossr50;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -377,11 +376,7 @@ public class Combat
      * @param cause DamageCause to pass to damage event
      */
     public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
-    	EntityDamageEvent ede = new EntityDamageEvent(target, cause, dmg);
-    	Bukkit.getPluginManager().callEvent(ede);
-    	if(ede.isCancelled()) return;
-    	
-    	target.damage(ede.getDamage());
+    	target.damage(dmg);
     }
     
     /**
@@ -392,11 +387,7 @@ public class Combat
      * @param attacker Player to pass to event as damager
      */
     public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
-    	EntityDamageEvent ede = new EntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
-    	Bukkit.getPluginManager().callEvent(ede);
-    	if(ede.isCancelled()) return;
-    	
-    	target.damage(ede.getDamage());
+    	target.damage(dmg);
     }
     
     public static boolean pvpAllowed(EntityDamageByEntityEvent event, World world)

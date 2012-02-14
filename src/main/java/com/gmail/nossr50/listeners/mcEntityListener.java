@@ -33,7 +33,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
