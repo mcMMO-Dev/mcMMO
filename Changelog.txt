@@ -10,6 +10,7 @@ Version 1.2.12
  - Fixed Fishing not working or handing out XP
  - Fixed error with Skull Splitter / Serrated Strikes that caused server instability and log spam
  - Fixed config.yml not having values for End Stone & other new mining blocks
+ - Fixed Green Thumb/Green Terra not correctly planting wheat (Issue #133)
  
 Version 1.2.11
  - Removed legacy Permission & PEX dependency. (PEX still works fine with mcMMO)
