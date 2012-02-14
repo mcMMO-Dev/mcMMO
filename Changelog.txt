@@ -6,6 +6,7 @@ Version 1.2.12
  - Modified onEntityDamage priority to have better compatibility with other plugins (Factions, WorldGuard, etc...)
  - Fixed /mcgod, & /mmoedit defaulting to true
  - Fixed Fishing not working or handing out XP
+ - Fixed error with Skull Splitter / Serrated Strikes that caused server instability and log spam
  
 Version 1.2.11
  - Removed legacy Permission & PEX dependency. (PEX still works fine with mcMMO)
