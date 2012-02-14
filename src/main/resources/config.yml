@@ -263,7 +263,7 @@ General:
         Enabled: true
     #Amount of time (in minutes) to wait between saves of player information
     Save_Interval: 10
-    #Allow mcMMO to report on basic anonymous useage
+    #Allow mcMMO to report on basic anonymous usage
     Stats_Tracking: true
 Excavation:
     Drops:

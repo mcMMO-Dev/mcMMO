@@ -121,5 +121,5 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <version>1.1.12</version>
+    <version>1.2.12</version>
 </project>
