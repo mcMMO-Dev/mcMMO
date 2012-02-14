@@ -47,6 +47,7 @@ public class Database {
 			System.out.println("VendorError: " + e.getErrorCode());
 		}
 	}
+	
 	//Create the DB structure
 	public void createStructure() {
 		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "huds` (`user_id` int(10) unsigned NOT NULL,"

@@ -22,6 +22,7 @@ Version 1.2.11
  - Added a success message when executing xprate from console
 
 Version 1.2.10
+ - Fixed issue that caused negative XP on levelup
  - Fixed issue with receiving Woodcutting XP for all blocks broken (Issue #103)
  - Fixed issue with Spout images & sounds not working (Issue #93)
  - Fixed typo with repairing Leather Armor & Bows

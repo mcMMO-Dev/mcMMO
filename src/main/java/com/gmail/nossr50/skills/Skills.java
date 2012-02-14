@@ -327,14 +327,15 @@ public class Skills
 			
 			while(PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType))
 			{
-				if(getSkillMaxLevel(skillType) >= PP.getSkillLevel(skillType) + 1) {
+				if(getSkillMaxLevel(skillType) >= PP.getSkillLevel(skillType) + 1) 
+				{
 					skillups++;
+					PP.removeXP(skillType, PP.getXpToLevel(skillType));
 					PP.skillUp(skillType, 1);
 					
 					McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
 					Bukkit.getPluginManager().callEvent(eventToFire);
 				}
-				PP.removeXP(skillType, PP.getXpToLevel(skillType));
 			}
 			
 			if(!LoadProperties.useMySQL)
