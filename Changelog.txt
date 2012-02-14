@@ -11,7 +11,8 @@ Version 1.2.12
  - Fixed error with Skull Splitter / Serrated Strikes that caused server instability and log spam
  - Fixed config.yml not having values for End Stone & other new mining blocks
  - Fixed Green Thumb/Green Terra not correctly planting wheat (Issue #133)
- 
+ - Fixed /mcability not respecting permissions
+
 Version 1.2.11
  - Removed legacy Permission & PEX dependency. (PEX still works fine with mcMMO)
  - Made Smooth Brick to Mossy Brick and Dirt to Grass for green thumb configurable (Issue #120)
