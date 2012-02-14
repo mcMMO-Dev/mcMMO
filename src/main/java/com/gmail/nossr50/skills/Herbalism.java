@@ -74,7 +74,7 @@ public class Herbalism
 	    }
 	}
 	
-	public static void greenTerraWheat(Player player, Block block, BlockBreakEvent event, mcMMO plugin)
+	public static void greenTerraWheat(Player player, final Block block, BlockBreakEvent event, mcMMO plugin)
 	{
 		if(block.getType() == Material.WHEAT && block.getData() == (byte) 0x07)
 		{
@@ -93,7 +93,13 @@ public class Herbalism
 			
 	    	herbalismProcCheck(block, player, event, plugin);
 	    	herbalismProcCheck(block, player, event, plugin);
-			block.setData((byte) 0x03);
+			
+	    	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                public void run() {
+                    block.setType(Material.CROPS);
+                    block.setData((byte) 0x4);
+                }
+            }, 1);
 		}
 	}
 	
