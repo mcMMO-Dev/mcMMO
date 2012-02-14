@@ -22,6 +22,7 @@ Version 1.2.11
  - Added a success message when executing xprate from console
 
 Version 1.2.10
+ - Fixed addxp command taking xprate and skill modifiers into account
  - Fixed issue that caused negative XP on levelup (Issue #134)
  - Fixed issue with receiving Woodcutting XP for all blocks broken (Issue #103)
  - Fixed issue with Spout images & sounds not working (Issue #93)

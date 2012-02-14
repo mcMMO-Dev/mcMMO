@@ -47,7 +47,7 @@ public class AddxpCommand implements CommandExecutor {
 			} else if (args.length == 3) {
 				if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
 					int newvalue = Integer.valueOf(args[2]);
-					Users.getProfile(plugin.getServer().getPlayer(args[0])).addXP(Skills.getSkillType(args[1]), newvalue, plugin.getServer().getPlayer(args[0]));
+					Users.getProfile(plugin.getServer().getPlayer(args[0])).addXPOverrideNoBonus(Skills.getSkillType(args[1]), newvalue);
 					plugin.getServer().getPlayer(args[0]).sendMessage(ChatColor.GREEN + "Experience granted!");
 					System.out.println(args[1] + " has been modified for " + plugin.getServer().getPlayer(args[0]).getName() + ".");
 					Skills.XpCheckAll(plugin.getServer().getPlayer(args[0]));

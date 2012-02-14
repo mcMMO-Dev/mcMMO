@@ -840,6 +840,32 @@ public class PlayerProfile
             skillsDATS.put(x, 0);
         }
     }
+    
+    /**
+     * Adds XP to the player, doesn't calculate for XP Rate
+     * @param skillType The skill to add XP to
+     * @param newvalue The amount of XP to add
+     */
+    public void addXPOverrideNoBonus(SkillType skillType, int newvalue)
+    {
+        if(skillType == SkillType.ALL)
+        {
+            for(SkillType x : SkillType.values())
+            {
+                if(x == SkillType.ALL)
+                    continue;
+                Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(Bukkit.getPlayer(playerName), x, newvalue));
+                skillsXp.put(x, skillsXp.get(x)+newvalue);
+            }
+        } else {
+            int xp = newvalue;
+
+            Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(Bukkit.getPlayer(playerName), skillType, xp));
+            skillsXp.put(skillType, skillsXp.get(skillType)+xp);
+            lastgained = skillType;
+        }
+    }
+    
 	/**
 	 * Adds XP to the player, this ignores skill modifiers
 	 * @param skillType The skill to add XP to
@@ -865,6 +891,7 @@ public class PlayerProfile
 			lastgained = skillType;
 		}
 	}
+	
 	/**
 	 * Adds XP to the player, this is affected by skill modifiers
 	 * @param skillType The skill to add XP to
