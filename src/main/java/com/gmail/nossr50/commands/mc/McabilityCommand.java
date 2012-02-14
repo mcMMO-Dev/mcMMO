@@ -18,7 +18,7 @@ public class McabilityCommand implements CommandExecutor {
             player = (Player) sender;
         }
 
-		if (player != null && player.hasPermission("mcmmo.commands.ability")) {
+		if (player != null && !player.hasPermission("mcmmo.commands.ability")) {
 			sender.sendMessage("This command requires permissions.");
 			return true;
 		}
