@@ -6,7 +6,7 @@ Version 1.2.12
  - Fixed addxp command taking xprate and skill modifiers into account
  - Added anonymous usage statistics (you can opt out in plugins/PluginMetrics/config.yml)
  - Modified onEntityDamage priority to have better compatibility with other plugins (Factions, WorldGuard, etc...)
- - Fixed /mcgod & /mmoedit defaulting to true
+ - Fixed /mcgod & /mmoedit permissions defaulting to true
  - Fixed Fishing not working or handing out XP
  - Fixed error with Skull Splitter / Serrated Strikes that caused server instability and log spam
  - Fixed config.yml not having values for End Stone & other new mining blocks
