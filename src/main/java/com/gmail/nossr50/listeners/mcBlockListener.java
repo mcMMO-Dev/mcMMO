@@ -169,7 +169,7 @@ public class mcBlockListener implements Listener
    		//Wheat && Triple drops
    		if(PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block))
    		{
-   			Herbalism.herbalismProcCheck(block, player, event, plugin);
+   			Herbalism.herbalismProcCheck(block, player, event, plugin, true);
    			Herbalism.greenTerraWheat(player, block, event, plugin);
    		}
    		
@@ -275,8 +275,9 @@ public class mcBlockListener implements Listener
     	{
     		Herbalism.greenTerraCheck(player, block);
     	}
+    	
     	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
-			Herbalism.herbalismProcCheck(block, player, event, plugin);
+			Herbalism.herbalismProcCheck(block, player, event, plugin, false);
     	
     	//Change the byte back when broken
     	if(block.getData() == 5 && m.shouldBeWatched(block))
@@ -287,6 +288,8 @@ public class mcBlockListener implements Listener
     			plugin.misc.blockWatchList.remove(block);
     		}
     	}
+    	
+    	//System.out.println("DEBUG: "+event.isCancelled()+", BLOCK_TYPE: "+event.getBlock().getType().toString()+", BLOCK_DATA: "+event.getBlock().getData());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

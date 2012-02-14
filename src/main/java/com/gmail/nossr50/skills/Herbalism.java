@@ -72,6 +72,7 @@ public class Herbalism
 	    	
 	    }
 	}
+	
 	public static void greenTerraWheat(Player player, Block block, BlockBreakEvent event, mcMMO plugin)
 	{
 		if(block.getType() == Material.WHEAT && block.getData() == (byte) 0x07)
@@ -89,8 +90,8 @@ public class Herbalism
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
 			m.mcDropItem(loc, is);
 			
-	    	herbalismProcCheck(block, player, event, plugin);
-	    	herbalismProcCheck(block, player, event, plugin);
+	    	herbalismProcCheck(block, player, event, plugin, true);
+	    	herbalismProcCheck(block, player, event, plugin, true);
 			block.setData((byte) 0x03);
 		}
 	}
@@ -116,6 +117,7 @@ public class Herbalism
     	int t = block.getTypeId();
     	return t == 103 || t == 4 || t == 3 || t == 59 || t == 81 || t == 83 || t == 91 || t == 86 || t == 39 || t == 46 || t == 37 || t == 38;
     }
+	
 	public static boolean hasSeeds(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
@@ -125,6 +127,7 @@ public class Herbalism
     	}
     	return false;
     }
+	
 	public static void removeSeeds(Player player){
     	ItemStack[] inventory = player.getInventory().getContents();
     	for(ItemStack x : inventory){
@@ -141,7 +144,8 @@ public class Herbalism
     		}
     	}
     }
-	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event, mcMMO plugin)
+	
+	public static void herbalismProcCheck(Block block, Player player, BlockBreakEvent event, mcMMO plugin, boolean isGreenTerra)
 	{
 		PlayerProfile PP = Users.getProfile(player);
 		int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
@@ -167,7 +171,7 @@ public class Herbalism
 	    			m.mcDropItem(loc, is);
     		}
     		//GREEN THUMB
-    		if(herbLevel > 1500 || (Math.random() * 1500 <= herbLevel))
+    		if(!isGreenTerra && (herbLevel > 1500 || (Math.random() * 1500 <= herbLevel)))
     		{
     			event.setCancelled(true);
     			m.mcDropItem(loc, is);
