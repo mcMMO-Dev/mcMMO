@@ -358,35 +358,7 @@ public class Combat
     	}
     }
 	
-    /**
-     * Attempt to damage target for value dmg with reason CUSTOM
-     * 
-     * @param target LivingEntity which to attempt to damage
-     * @param dmg Amount of damage to attempt to do
-     */
-    public static void dealDamage(LivingEntity target, int dmg){
-    	dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM);
-    }
-    
-    /**
-     * Attempt to damage target for value dmg with reason cause
-     * 
-     * @param target LivingEntity which to attempt to damage
-     * @param dmg Amount of damage to attempt to do
-     * @param cause DamageCause to pass to damage event
-     */
-    public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
-    	target.damage(dmg);
-    }
-    
-    /**
-     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
-     * 
-     * @param target LivingEntity which to attempt to damage
-     * @param dmg Amount of damage to attempt to do
-     * @param attacker Player to pass to event as damager
-     */
-    public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
+    public static void dealDamage(LivingEntity target, int dmg) {
     	target.damage(dmg);
     }
     

@@ -164,6 +164,7 @@ public class m
 			}
 		}
 	}
+	
 	public static Integer getTier(Player player)
 	{
 		int i = player.getItemInHand().getTypeId();
@@ -181,6 +182,7 @@ public class m
 			return 1; //UNRECOGNIZED
 		}
 	}
+	
 	public static Integer getMaxDurability(Integer tier, ItemStack item)
 	{
 		int id = item.getTypeId();
@@ -250,6 +252,7 @@ public class m
 			return health-newvalue;
 		}
 	}
+	
 	public static boolean isInt(String string)
 	{
 		try 
@@ -262,6 +265,7 @@ public class m
 		}
 		return true;
 	}
+	
 	public static void mcDropItem(Location location, int id)
 	{
 		if(location == null) return;
@@ -270,6 +274,7 @@ public class m
 		ItemStack item = new ItemStack(mat, 1, (byte) 0, (byte) 0);
 		mcDropItem(location, item);
 	}
+	
 	public static void mcDropItem(Location location, ItemStack itemStack) {
 		// We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
 		McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
@@ -308,11 +313,7 @@ public class m
 		int id = is.getTypeId();
 		return id == 270 || id == 274 || id == 285 || id == 257 || id == 278;
 	}
-//	public boolean isGold(ItemStack is)
-//	{
-//		int id = is.getTypeId();
-//		return id == 283 || id == 284 || id == 285 || id == 286 || id == 294 || id == 314 || id == 315 || id == 316 || id == 317;
-//	}
+	
 	public static void convertToMySQL()
 	{
 		if(!LoadProperties.useMySQL)

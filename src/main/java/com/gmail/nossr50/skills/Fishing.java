@@ -1119,7 +1119,7 @@ public class Fishing {
 		if(le instanceof Player)
 			return;
 		
-		Combat.dealDamage(le, 1, event.getPlayer());
+		Combat.dealDamage(le, 1);
 		Location loc = le.getLocation();
 
 		/* Neutral Mobs */

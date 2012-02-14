@@ -69,6 +69,7 @@ public class Axes {
     		}
     	}
     }
+	
 	public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)
 	{
     	Entity x = event.getEntity();
@@ -118,6 +119,12 @@ public class Axes {
 	public static void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)
 	{
 		int targets = 0;
+		
+		int dmgAmount = (event.getDamage()/2);
+        
+        //Setup minimum damage
+        if(dmgAmount < 1)
+            dmgAmount = 1;
     	
     	if(event.getEntity() instanceof LivingEntity)
     	{
@@ -135,6 +142,7 @@ public class Axes {
 					if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
 						continue;
 				}
+    			
     			//Damage nearby LivingEntities
     			if(derp instanceof LivingEntity && targets >= 1)
     			{
@@ -154,18 +162,19 @@ public class Axes {
 	    				if(target.isDead())
 	    					continue;
 	    				
-	    				if(targets >= 1 && derp.getWorld().getPVP() && !target.isDead())
+	    				if(targets >= 1 && derp.getWorld().getPVP())
 	    				{
-	    					Combat.dealDamage(target, event.getDamage() / 2, attacker);
+	    				    Combat.dealDamage(target, dmgAmount);
 	    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
 	    					targets--;
 	    					continue;
 	    				}
-	    			} 
+	    			}
+    				
     				else
 	    			{			
 	    				LivingEntity target = (LivingEntity)derp;
-    					Combat.dealDamage(target, event.getDamage() / 2, attacker);
+    					Combat.dealDamage(target, dmgAmount);
 	    				targets--;
 	    			}
     			}

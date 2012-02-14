@@ -113,6 +113,12 @@ public class Swords
     {
     	int targets = 0;
     	
+    	int dmgAmount = (event.getDamage()/4);
+        
+        //Setup minimum damage
+        if(dmgAmount < 1)
+            dmgAmount = 1;
+    	
     	if(event.getEntity() instanceof LivingEntity)
     	{
     		LivingEntity x = (LivingEntity) event.getEntity();
@@ -146,7 +152,7 @@ public class Swords
 	    					continue;
 	    				if(targets >= 1 && derp.getWorld().getPVP())
 	    				{
-	    					Combat.dealDamage(target, event.getDamage() / 4, attacker);
+	    					Combat.dealDamage(target, dmgAmount);
 	    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
 	        				Users.getProfile(target).addBleedTicks(5);
 	    					targets--;
@@ -159,7 +165,7 @@ public class Swords
 	    					pluginx.misc.addToBleedQue((LivingEntity)derp);
 	    				
 	    				LivingEntity target = (LivingEntity)derp;
-    					Combat.dealDamage(target, event.getDamage() / 4, attacker);
+    					Combat.dealDamage(target, dmgAmount);
 	    				targets--;
 	    			}
     			}
