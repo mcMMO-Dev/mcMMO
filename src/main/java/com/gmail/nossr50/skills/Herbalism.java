@@ -103,12 +103,12 @@ public class Herbalism
 			if(hasSeeds(player) && block.getType() != Material.WHEAT)
 			{
 				removeSeeds(player);
-			if(block.getType() == Material.SMOOTH_BRICK)
-				block.setData((byte)1);
-			if(block.getType() == Material.DIRT)
-				block.setType(Material.GRASS);
-			if(LoadProperties.enableCobbleToMossy && block.getType() == Material.COBBLESTONE)
-				block.setType(Material.MOSSY_COBBLESTONE);
+				if(LoadProperties.enableSmoothToMossy && block.getType() == Material.SMOOTH_BRICK)
+					block.setData((byte)1);
+				if(LoadProperties.enableDirtToGrass && block.getType() == Material.DIRT)
+					block.setType(Material.GRASS);
+				if(LoadProperties.enableCobbleToMossy && block.getType() == Material.COBBLESTONE)
+					block.setType(Material.MOSSY_COBBLESTONE);
 			}
 		}
 	}
