@@ -16,9 +16,11 @@
 */
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,6 +31,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
@@ -40,6 +44,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
+import com.gmail.nossr50.skills.BlastMining;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
 
@@ -81,6 +86,7 @@ public class mcEntityListener implements Listener
     	
     	/*
     	 * Demolitions Expert
+    	 */
     	 
     	if(event.getCause() == DamageCause.BLOCK_EXPLOSION)
     	{
@@ -90,12 +96,10 @@ public class mcEntityListener implements Listener
     			BlastMining.demolitionsExpertise(player, event);
     		}
     	}
-    	*/
+
     	
     	if(event.getEntity() instanceof LivingEntity)
     	{
-    		//CraftEntity cEntity = (CraftEntity)event.getEntity();
-	    	//if(cEntity.getHandle() instanceof EntityLiving)
 	    	{
 		    	LivingEntity entityliving = (LivingEntity)event.getEntity();
 		    	if(entityliving.getNoDamageTicks() < entityliving.getMaximumNoDamageTicks()/2.0F)
@@ -188,11 +192,7 @@ public class mcEntityListener implements Listener
     		plugin.misc.addToBleedRemovalQue((LivingEntity)x);
     	
 		Skills.arrowRetrievalCheck(x, plugin);
-		/*
-		if(Config.getInstance().isMobSpawnTracked(x)){
-			Config.getInstance().removeMobSpawnTrack(x);
-		}
-		*/
+
     	if(x instanceof Player){
     		Player player = (Player)x;
     		Users.getProfile(player).setBleedTicks(0);
@@ -211,7 +211,6 @@ public class mcEntityListener implements Listener
     	}
     }
     
-    /*
 	@EventHandler (priority = EventPriority.LOW)
 	public void onExplosionPrime(ExplosionPrimeEvent event)
 	{
@@ -242,7 +241,6 @@ public class mcEntityListener implements Listener
 			}
 		}
 	}
-	*/
     
 	public boolean isBow(ItemStack is){
 		if (is.getTypeId() == 261){
