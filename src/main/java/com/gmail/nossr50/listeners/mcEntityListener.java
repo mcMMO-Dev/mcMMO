@@ -57,12 +57,9 @@ public class mcEntityListener implements Listener
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) 
     {
-    	if(event.isCancelled())
-    		return;
-    	
     	//Check for world pvp flag
     	if(event instanceof EntityDamageByEntityEvent)
     	{

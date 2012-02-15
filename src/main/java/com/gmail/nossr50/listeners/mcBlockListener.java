@@ -58,11 +58,9 @@ public class mcBlockListener implements Listener
         this.plugin = plugin;
     }
     
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) 
-    { 
-    	if(event.isCancelled()) return;
-
+    {
     	//Setup some basic vars
     	Block block;
     	Player player = event.getPlayer();
@@ -137,15 +135,13 @@ public class mcBlockListener implements Listener
     	}
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) 
     {
     	Player player = event.getPlayer();
     	PlayerProfile PP = Users.getProfile(player);
     	Block block = event.getBlock();
     	ItemStack inhand = player.getItemInHand();
-    	if(event.isCancelled())
-    		return;
     	
     	if (event instanceof FakeBlockBreakEvent) 
     		return;
@@ -291,11 +287,9 @@ public class mcBlockListener implements Listener
     	//System.out.println("DEBUG: "+event.isCancelled()+", BLOCK_TYPE: "+event.getBlock().getType().toString()+", BLOCK_DATA: "+event.getBlock().getData());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) 
     {
-    	if(event.isCancelled())
-    		return;
     	Player player = event.getPlayer();
     	PlayerProfile PP = Users.getProfile(player);
     	ItemStack inhand = player.getItemInHand();
