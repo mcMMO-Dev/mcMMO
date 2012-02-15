@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -26,6 +27,7 @@ import org.bukkit.plugin.Plugin;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
@@ -87,10 +89,12 @@ public class Combat
 			    		event.setDamage(event.getDamage() + (event.getDamage() / 2));
 		       	
 			   		//Handle Ability Interactions
-			   		if(PPa.getSkullSplitterMode() && m.isAxes(attacker.getItemInHand()))
-		       			Axes.applyAoeDamage(attacker, eventb, pluginx);
-		      		if(PPa.getSerratedStrikesMode() && m.isSwords(attacker.getItemInHand()))
-		       			Swords.applySerratedStrikes(attacker, eventb, pluginx);
+			    	if(!(event instanceof FakeEntityDamageByEntityEvent)) {
+			    		if(PPa.getSkullSplitterMode() && m.isAxes(attacker.getItemInHand()))
+			   				Axes.applyAoeDamage(attacker, eventb, pluginx);
+			   			if(PPa.getSerratedStrikesMode() && m.isSwords(attacker.getItemInHand()))
+		      				Swords.applySerratedStrikes(attacker, eventb, pluginx);
+			    	}
 		      		
 		      		//Experience
 		      		if(event.getEntity() instanceof Player)
@@ -358,8 +362,52 @@ public class Combat
     	}
     }
 	
-    public static void dealDamage(LivingEntity target, int dmg) {
-    	target.damage(dmg);
+    /**
+     * Attempt to damage target for value dmg with reason CUSTOM
+     * 
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     */
+    public static void dealDamage(LivingEntity target, int dmg){
+    	dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM);
+    }
+    
+    /**
+     * Attempt to damage target for value dmg with reason cause
+     * 
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     * @param cause DamageCause to pass to damage event
+     */
+    public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
+    	if(LoadProperties.eventCallback) {
+    		EntityDamageEvent ede = new EntityDamageEvent(target, cause, dmg);
+    		Bukkit.getPluginManager().callEvent(ede);
+    		if(ede.isCancelled()) return;
+        	
+        	target.damage(ede.getDamage());
+    	} else {
+    		target.damage(dmg);
+    	}
+    }
+    
+    /**
+     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
+     * 
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     * @param attacker Player to pass to event as damager
+     */
+    public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
+    	if(LoadProperties.eventCallback) {
+    		EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
+    		Bukkit.getPluginManager().callEvent(ede);
+    		if(ede.isCancelled()) return;
+
+    		target.damage(ede.getDamage());
+    	} else {
+			target.damage(dmg);
+		}
     }
     
     public static boolean pvpAllowed(EntityDamageByEntityEvent event, World world)

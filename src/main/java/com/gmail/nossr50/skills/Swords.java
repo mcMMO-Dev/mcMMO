@@ -152,7 +152,7 @@ public class Swords
 	    					continue;
 	    				if(targets >= 1 && derp.getWorld().getPVP())
 	    				{
-	    					Combat.dealDamage(target, dmgAmount);
+	    					Combat.dealDamage(target, dmgAmount, attacker);
 	    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
 	        				Users.getProfile(target).addBleedTicks(5);
 	    					targets--;
@@ -165,7 +165,7 @@ public class Swords
 	    					pluginx.misc.addToBleedQue((LivingEntity)derp);
 	    				
 	    				LivingEntity target = (LivingEntity)derp;
-    					Combat.dealDamage(target, dmgAmount);
+    					Combat.dealDamage(target, dmgAmount, attacker);
 	    				targets--;
 	    			}
     			}

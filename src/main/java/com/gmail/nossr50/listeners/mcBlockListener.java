@@ -47,7 +47,7 @@ import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.*;
-import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.FakeBlockBreakEvent;
 
 public class mcBlockListener implements Listener 
 {

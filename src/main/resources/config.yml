@@ -265,6 +265,8 @@ General:
     Save_Interval: 10
     #Allow mcMMO to report on basic anonymous usage
     Stats_Tracking: true
+    #Allow mcMMO to inform other plugins of damage being dealt
+    Event_Callback: true
 Excavation:
     Drops:
         Cake: true

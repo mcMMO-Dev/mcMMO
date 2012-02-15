@@ -29,8 +29,8 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.FakeBlockBreakEvent;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.McMMOItemSpawnEvent;
 
 public class m 

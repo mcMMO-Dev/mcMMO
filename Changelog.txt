@@ -2,6 +2,9 @@ Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
 Version 2.0-dev
  - Fixed /mcability not respecting permissions
+ - Changed to use Bukkit's built-in ignoreCancelledEvents system
+ - Re-added mcMMO reporting damage events
+ - Added configuration option to control mcMMO reporting damage events
  
 Version 1.2.12
  - Fixed issue that caused terrible MySQL performance and negative XP on levelup (Issue #134)

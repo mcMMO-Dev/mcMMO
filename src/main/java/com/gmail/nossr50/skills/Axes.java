@@ -164,7 +164,7 @@ public class Axes {
 	    				
 	    				if(targets >= 1 && derp.getWorld().getPVP())
 	    				{
-	    				    Combat.dealDamage(target, dmgAmount);
+	    				    Combat.dealDamage(target, dmgAmount, attacker);
 	    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
 	    					targets--;
 	    					continue;
@@ -174,7 +174,7 @@ public class Axes {
     				else
 	    			{			
 	    				LivingEntity target = (LivingEntity)derp;
-    					Combat.dealDamage(target, dmgAmount);
+    					Combat.dealDamage(target, dmgAmount, attacker);
 	    				targets--;
 	    			}
     			}
