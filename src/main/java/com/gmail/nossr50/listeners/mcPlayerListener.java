@@ -332,7 +332,7 @@ public class mcPlayerListener implements Listener
 				if(Party.getInstance().inSameParty(player, x))
 					x.sendMessage(format);
 			}
-			log.log(Level.INFO, "[P]"+format);
+			log.log(Level.INFO, "[P](" + PP.getParty() + ")<" + name + ">" + event.getMessage());
 		} else if (PP.getAdminChatMode()) {
 			event.setCancelled(true);
 			String name = (LoadProperties.aDisplayNames) ? player.getDisplayName() : player.getName();
@@ -342,7 +342,7 @@ public class mcPlayerListener implements Listener
 				if(x.isOp() || mcPermissions.getInstance().adminChat(x))
 					x.sendMessage(format);
 			}
-			log.log(Level.INFO, "[A]"+format);
+			log.log(Level.INFO, "[A]<" + name + ">" + event.getMessage());
 		}
 	}
 
