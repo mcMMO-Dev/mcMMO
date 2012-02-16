@@ -1,5 +1,6 @@
 Changelog:
 #Versions without changelogs probably had very small misc fixes, like tweaks to the source code
+
 Version 1.3.00-dev
  - Fixed /mcability not respecting permissions
  - Changed to use Bukkit's built-in ignoreCancelledEvents system
@@ -7,6 +8,8 @@ Version 1.3.00-dev
  - Added configuration option to control mcMMO reporting damage events
  - Added hunger regain bonuses to Herbalism skill
  - Changed chat logging for /p & /a
+ - Fixed Tree Feller not playing nice with NoCheat
+ - Added framework for new Blast Mining skill
  
 Version 1.2.12
  - Fixed issue that caused terrible MySQL performance and negative XP on levelup (Issue #134)
@@ -18,7 +21,6 @@ Version 1.2.12
  - Fixed error with Skull Splitter / Serrated Strikes that caused server instability and log spam
  - Fixed config.yml not having values for End Stone & other new mining blocks
  - Fixed Green Thumb/Green Terra not correctly planting wheat (Issue #133)
-
 
 Version 1.2.11
  - Removed legacy Permission & PEX dependency. (PEX still works fine with mcMMO)

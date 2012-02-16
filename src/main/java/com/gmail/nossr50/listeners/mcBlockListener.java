@@ -93,11 +93,11 @@ public class mcBlockListener implements Listener
     		if (id == 17 || id == 73 || id == 74 || id == 81 || id == 83 || id == 86 || id == 91 || id == 106 || id == 98)
     			plugin.misc.blockWatchList.add(block);
     		else {
-    			//block.setData((byte) 5); //Change the byte
+    			block.setData((byte) 5); //Change the byte
     			//The following is a method to get around a breakage in 1.1-R2 and onward
     			//it should be removed as soon as functionality to change a block
     			//in this event returns.
-    			plugin.changeQueue.push(block);
+//    			plugin.changeQueue.push(block);
     		}
     	}
     	
@@ -151,10 +151,10 @@ public class mcBlockListener implements Listener
    		 */
     	
     	//TNT removal checks - needed for Blast Mining
-    	if(block.getTypeId() == 46)
-    	{
-    		plugin.misc.tntTracker.remove(block);
-    	}
+//    	if(block.getTypeId() == 46 && inhand != )
+//    	{
+//    		plugin.misc.tntTracker.remove(block);
+//    	}
     	
     	//Green Terra
    		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07)
@@ -215,6 +215,9 @@ public class mcBlockListener implements Listener
    			{
    				if(LoadProperties.spoutEnabled)
    					SpoutStuff.playSoundForPlayer(SoundEffect.EXPLODE, player, block.getLocation());
+   				
+   				PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+   				Bukkit.getPluginManager().callEvent(armswing);
    				
     			WoodCutting.treeFeller(block, player, plugin);
     			for(Block blockx : plugin.misc.treeFeller)
@@ -283,8 +286,6 @@ public class mcBlockListener implements Listener
     			plugin.misc.blockWatchList.remove(block);
     		}
     	}
-    	
-    	//System.out.println("DEBUG: "+event.isCancelled()+", BLOCK_TYPE: "+event.getBlock().getType().toString()+", BLOCK_DATA: "+event.getBlock().getData());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -416,5 +417,5 @@ public class mcBlockListener implements Listener
         {
         	blockTo.setData((byte)5);
         }
-    }
+    }    
 }

@@ -3,10 +3,10 @@
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
     <name>mcMMO</name>
-    <url>https://github.com/TheYeti/mcMMO</url>
+    <url>https://github.com/mcMMO-Dev/mcMMO</url>
     <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/TheYeti/mcMMO/issues</url>
+        <url>http://issues.mcmmo.org</url>
+        <system>JIRA</system>
     </issueManagement>
     <build>
         <finalName>mcMMO</finalName>
@@ -121,5 +121,5 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <version>2.0.00-dev</version>
+    <version>1.3.00-dev</version>
 </project>
