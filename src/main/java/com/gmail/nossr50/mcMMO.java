@@ -72,10 +72,15 @@ public class mcMMO extends JavaPlugin
 	private final mcPlayerListener playerListener = new mcPlayerListener(this);
 	private final mcBlockListener blockListener = new mcBlockListener(this);
 	private final mcEntityListener entityListener = new mcEntityListener(this);
+	
+	//Queue for block data change for R2+ fix
+	public ArrayDeque<Block> changeQueue = new ArrayDeque<Block>();
+	public ArrayDeque<Block> fastChangeQueue = new ArrayDeque<Block>();
 
 	private Runnable mcMMO_Timer = new mcTimer(this); //BLEED AND REGENERATION
 	private Runnable mcMMO_SaveTimer = new mcSaveTimer(this); //Periodic saving of Player Data
-	private Runnable ChangeDataValueTimer = new ChangeDataValueTimer(this);		//R2 block place workaround
+	private Runnable ChangeDataValueTimer = new ChangeDataValueTimer(changeQueue);		//R2 block place workaround
+	private Runnable FastChangeDataValueTimer = new ChangeDataValueTimer(fastChangeQueue);
 	//private Timer mcMMO_SpellTimer = new Timer(true);
 
 	//Alias - Command
@@ -88,9 +93,6 @@ public class mcMMO extends JavaPlugin
 	LoadProperties config;
 	//Jar stuff
 	public static File mcmmo;
-	
-	//Queue for block data change for R2+ fix
-	public ArrayDeque<Block> changeQueue = new ArrayDeque<Block>();
 
 	public void onEnable() 
 	{
@@ -156,6 +158,7 @@ public class mcMMO extends JavaPlugin
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_Timer, 0, 20);
 		//R2+ block place fix
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, ChangeDataValueTimer, 0, 10);
+		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, FastChangeDataValueTimer, 0, 1);
 		
 		registerCommands();
 		

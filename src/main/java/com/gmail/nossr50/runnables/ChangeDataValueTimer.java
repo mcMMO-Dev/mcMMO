@@ -16,6 +16,8 @@
 */
 package com.gmail.nossr50.runnables;
 
+import java.util.ArrayDeque;
+
 import org.bukkit.block.Block;
 
 import com.gmail.nossr50.mcMMO;
@@ -25,21 +27,21 @@ import com.gmail.nossr50.mcMMO;
  * It should be removed afterwards if the breakage is removed.
  */
 public class ChangeDataValueTimer implements Runnable {
-	private mcMMO plugin;
+	private ArrayDeque<Block> queue;
 	
-	public ChangeDataValueTimer(mcMMO instance) {
-		this.plugin = instance;
+	public ChangeDataValueTimer(ArrayDeque<Block> queue) {
+		this.queue = queue;
 	}
 	
 	public void run() {
-		int size = plugin.changeQueue.size();
+		int size = queue.size();
 		if(size == 0) return;
 		if(size > 25) {
 			size = (int) Math.floor(size / 10);
 		}
 		
 		for(int i = 0; i < size; i++) {
-			Block change = plugin.changeQueue.poll();
+			Block change = queue.poll();
 			if(change == null) continue;
 			change.setData((byte) 5);
 		}

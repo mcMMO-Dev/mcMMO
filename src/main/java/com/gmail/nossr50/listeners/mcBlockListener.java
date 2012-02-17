@@ -93,11 +93,15 @@ public class mcBlockListener implements Listener
     		if (id == 17 || id == 73 || id == 74 || id == 81 || id == 83 || id == 86 || id == 91 || id == 106 || id == 98)
     			plugin.misc.blockWatchList.add(block);
     		else {
-    			block.setData((byte) 5); //Change the byte
+    			//block.setData((byte) 5); //Change the byte
     			//The following is a method to get around a breakage in 1.1-R2 and onward
     			//it should be removed as soon as functionality to change a block
     			//in this event returns.
-//    			plugin.changeQueue.push(block);
+    			if(id == 0) {	// ids of blocks that can be mined very quickly and need to be worked on fast
+    				plugin.fastChangeQueue.push(block);
+    			} else {
+    				plugin.changeQueue.push(block);
+    			}
     		}
     	}
     	
