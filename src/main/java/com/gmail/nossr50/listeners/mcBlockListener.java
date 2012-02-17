@@ -97,7 +97,7 @@ public class mcBlockListener implements Listener
     			//The following is a method to get around a breakage in 1.1-R2 and onward
     			//it should be removed as soon as functionality to change a block
     			//in this event returns.
-    			if(id == 0) {	// ids of blocks that can be mined very quickly and need to be worked on fast
+    			if(id == 39 || id == 40 || id == 37 || id == 38 || id == 111 || id == 106) {	// ids of blocks that can be mined very quickly and need to be worked on fast
     				plugin.fastChangeQueue.push(block);
     			} else {
     				plugin.changeQueue.push(block);
