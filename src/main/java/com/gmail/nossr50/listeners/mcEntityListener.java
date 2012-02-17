@@ -243,40 +243,43 @@ public class mcEntityListener implements Listener
 	@EventHandler (priority = EventPriority.LOW)
 	public void onFoodLevelChange(FoodLevelChangeEvent event)
 	{
-		if(event.getEntity() instanceof Player)
+		if(LoadProperties.herbalismHungerBonus)
 		{
-			Player player = (Player) event.getEntity();
-			PlayerProfile PP = Users.getProfile(player);
-			int currentFoodLevel = player.getFoodLevel();
-			int newFoodLevel = event.getFoodLevel();
-			
-			if(newFoodLevel > currentFoodLevel)
+			if(event.getEntity() instanceof Player)
 			{
-				int food = player.getItemInHand().getTypeId();
-
-				if(food == 297 || food == 357 || food == 360 || food == 282)
+				Player player = (Player) event.getEntity();
+				PlayerProfile PP = Users.getProfile(player);
+				int currentFoodLevel = player.getFoodLevel();
+				int newFoodLevel = event.getFoodLevel();
+				
+				if(newFoodLevel > currentFoodLevel)
 				{
-					int foodChange = newFoodLevel - currentFoodLevel;
-					int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
-					
-					if(herbLevel < 200)
-						foodChange = foodChange + 1;
-					if(herbLevel >= 200 && herbLevel < 400)
-						foodChange = foodChange + 2;
-					if(herbLevel >= 400 && herbLevel < 600)
-						foodChange = foodChange + 3;
-					if(herbLevel >= 600 && herbLevel < 800)
-						foodChange = foodChange + 4;
-					if(herbLevel >= 800 && herbLevel < 1000)
-						foodChange = foodChange + 5;
-					if(herbLevel >= 1000)
-						foodChange = foodChange + 6;
-					
-					newFoodLevel = currentFoodLevel + foodChange;
-					if(newFoodLevel > 20)
-						event.setFoodLevel(20);
-					if(newFoodLevel <= 20)
-						event.setFoodLevel(newFoodLevel);
+					int food = player.getItemInHand().getTypeId();
+	
+					if(food == 297 || food == 357 || food == 360 || food == 282)
+					{
+						int foodChange = newFoodLevel - currentFoodLevel;
+						int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
+						
+						if(herbLevel < 200)
+							foodChange = foodChange + 1;
+						if(herbLevel >= 200 && herbLevel < 400)
+							foodChange = foodChange + 2;
+						if(herbLevel >= 400 && herbLevel < 600)
+							foodChange = foodChange + 3;
+						if(herbLevel >= 600 && herbLevel < 800)
+							foodChange = foodChange + 4;
+						if(herbLevel >= 800 && herbLevel < 1000)
+							foodChange = foodChange + 5;
+						if(herbLevel >= 1000)
+							foodChange = foodChange + 6;
+						
+						newFoodLevel = currentFoodLevel + foodChange;
+						if(newFoodLevel > 20)
+							event.setFoodLevel(20);
+						if(newFoodLevel <= 20)
+							event.setFoodLevel(newFoodLevel);
+					}
 				}
 			}
 		}

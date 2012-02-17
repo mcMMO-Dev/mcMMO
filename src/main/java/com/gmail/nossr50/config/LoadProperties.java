@@ -43,7 +43,7 @@ public class LoadProperties {
 			diamondArmor, woodenTools, stoneTools, ironTools, goldTools,
 			diamondTools, enderPearl, blazeRod, records, glowstoneDust,
 			fishingDiamonds, aDisplayNames, pDisplayNames, enableSmoothToMossy,
-			enableDirtToGrass, statsTracking, eventCallback;
+			enableDirtToGrass, statsTracking, eventCallback, herbalismHungerBonus;
 
 	public static String MySQLtablePrefix, MySQLuserName,
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
@@ -248,6 +248,7 @@ public class LoadProperties {
 		mnetherwart = readInteger("Experience.Herbalism.Nether_Wart", 50);
 		mlilypad = readInteger("Experience.Herbalism.Lily_Pads", 100);
 		mvines = readInteger("Experience.Herbalism.Vines", 10);
+		herbalismHungerBonus = readBoolean("Skills.Herbalism.Hunger_Bonus", true);
 
 		mpine = readInteger("Experience.Woodcutting.Pine", 70);
 		mbirch = readInteger("Experience.Woodcutting.Birch", 80);
