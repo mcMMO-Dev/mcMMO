@@ -261,13 +261,13 @@ public class mcEntityListener implements Listener
 					
 					if(herbLevel < 200)
 						foodChange = foodChange + 1;
-					if(herbLevel >= 200 || herbLevel < 400)
+					if(herbLevel >= 200 && herbLevel < 400)
 						foodChange = foodChange + 2;
-					if(herbLevel >= 400 || herbLevel < 600)
+					if(herbLevel >= 400 && herbLevel < 600)
 						foodChange = foodChange + 3;
-					if(herbLevel >= 600 || herbLevel < 800)
+					if(herbLevel >= 600 && herbLevel < 800)
 						foodChange = foodChange + 4;
-					if(herbLevel >= 800 || herbLevel < 1000)
+					if(herbLevel >= 800 && herbLevel < 1000)
 						foodChange = foodChange + 5;
 					if(herbLevel >= 1000)
 						foodChange = foodChange + 6;
