@@ -29,6 +29,10 @@ public class HerbalismCommand implements CommandExecutor {
 			bonus++;
 		if (PP.getSkillLevel(SkillType.HERBALISM) >= 600)
 			bonus++;
+		if (PP.getSkillLevel(SkillType.HERBALISM) >= 800)
+			bonus++;
+		if (PP.getSkillLevel(SkillType.HERBALISM) >= 1000)
+			bonus++;
 
 		int ticks = 2;
 		int x = PP.getSkillLevel(SkillType.HERBALISM);
@@ -51,11 +55,13 @@ public class HerbalismCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsHerbalism1_0"), mcLocale.getString("m.EffectsHerbalism1_1") }));
 		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsHerbalism2_0"), mcLocale.getString("m.EffectsHerbalism2_1") }));
 		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsHerbalism3_0"), mcLocale.getString("m.EffectsHerbalism3_1") }));
+		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsHerbalism4_0"), mcLocale.getString("m.EffectsHerbalism4_1") }));
 		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsHerbalism5_0"), mcLocale.getString("m.EffectsHerbalism5_1") }));
 		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.YourStats") }));
 		player.sendMessage(mcLocale.getString("m.HerbalismGreenTerraLength", new Object[] { ticks }));
 		player.sendMessage(mcLocale.getString("m.HerbalismGreenThumbChance", new Object[] { gpercentage }));
 		player.sendMessage(mcLocale.getString("m.HerbalismGreenThumbStage", new Object[] { bonus }));
+		player.sendMessage(mcLocale.getString("m.HerbalismFoodPlus", new Object[] { bonus } ));
 		player.sendMessage(mcLocale.getString("m.HerbalismDoubleDropChance", new Object[] { percentage }));
 
 		return true;

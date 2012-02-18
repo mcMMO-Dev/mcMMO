@@ -261,18 +261,16 @@ public class mcEntityListener implements Listener
 						int foodChange = newFoodLevel - currentFoodLevel;
 						int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
 						
-						if(herbLevel < 200)
-							foodChange = foodChange + 1;
 						if(herbLevel >= 200 && herbLevel < 400)
 							foodChange = foodChange + 2;
 						if(herbLevel >= 400 && herbLevel < 600)
-							foodChange = foodChange + 3;
-						if(herbLevel >= 600 && herbLevel < 800)
 							foodChange = foodChange + 4;
-						if(herbLevel >= 800 && herbLevel < 1000)
-							foodChange = foodChange + 5;
-						if(herbLevel >= 1000)
+						if(herbLevel >= 600 && herbLevel < 800)
 							foodChange = foodChange + 6;
+						if(herbLevel >= 800 && herbLevel < 1000)
+							foodChange = foodChange + 8;
+						if(herbLevel >= 1000)
+							foodChange = foodChange + 10;
 						
 						newFoodLevel = currentFoodLevel + foodChange;
 						if(newFoodLevel > 20)
