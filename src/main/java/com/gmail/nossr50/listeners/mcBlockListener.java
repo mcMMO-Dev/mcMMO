@@ -155,10 +155,10 @@ public class mcBlockListener implements Listener
    		 */
     	
     	//TNT removal checks - needed for Blast Mining
-//    	if(block.getTypeId() == 46 && inhand != )
-//    	{
-//    		plugin.misc.tntTracker.remove(block);
-//    	}
+    	if(block.getTypeId() == 46 && inhand.getTypeId() != 259)
+    	{
+    		plugin.misc.tntTracker.remove(block);
+    	}
     	
     	//Green Terra
    		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07)
