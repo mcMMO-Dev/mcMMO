@@ -252,32 +252,83 @@ public class mcEntityListener implements Listener
 				int currentFoodLevel = player.getFoodLevel();
 				int newFoodLevel = event.getFoodLevel();
 				
+				//Some foods have 3 ranks
+				//Some foods have 5 ranks
+				//The number of ranks is based on how 'common' the item is
+				//We can adjust this quite easily if we find something is giving too much of a bonus
+				
 				if(newFoodLevel > currentFoodLevel)
 				{
 					int food = player.getItemInHand().getTypeId();
-	
-					if(food == 297 || food == 357 || food == 360 || food == 282)
+					int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
+					int foodChange = newFoodLevel - currentFoodLevel;
+					
+					switch(food)
 					{
-						int foodChange = newFoodLevel - currentFoodLevel;
-						int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
-						
-						if(herbLevel >= 200 && herbLevel < 400)
-							foodChange = foodChange + 2;
-						if(herbLevel >= 400 && herbLevel < 600)
-							foodChange = foodChange + 4;
-						if(herbLevel >= 600 && herbLevel < 800)
-							foodChange = foodChange + 6;
-						if(herbLevel >= 800 && herbLevel < 1000)
-							foodChange = foodChange + 8;
-						if(herbLevel >= 1000)
-							foodChange = foodChange + 10;
-						
-						newFoodLevel = currentFoodLevel + foodChange;
-						if(newFoodLevel > 20)
-							event.setFoodLevel(20);
-						if(newFoodLevel <= 20)
-							event.setFoodLevel(newFoodLevel);
+					case 297:
+					{
+					    //BREAD (297) RESTORES 2 1/2 HUNGER
+					    //Restores 5 HUNGER @ 1000
+					    if(herbLevel >= 200 && herbLevel < 400)
+                            foodChange = foodChange + 1;
+					    else if(herbLevel >= 400 && herbLevel < 600)
+                            foodChange = foodChange + 2;
+					    else if(herbLevel >= 600 && herbLevel < 800)
+                            foodChange = foodChange + 3;
+					    else if(herbLevel >= 800 && herbLevel < 1000)
+                            foodChange = foodChange + 4;
+					    else if(herbLevel >= 1000)
+                            foodChange = foodChange + 5;
+                        break;
 					}
+					case 357:
+					{
+					    //COOKIE (357) RESTORES 1/2 HUNGER
+					    //RESTORES 2 HUNGER @ 1000
+					    if(herbLevel >= 200 && herbLevel < 600)
+                            foodChange = foodChange + 1;
+                        else if(herbLevel >= 600 && herbLevel < 1000)
+                            foodChange = foodChange + 2;
+                        else if(herbLevel >= 1000)
+                            foodChange = foodChange + 3;
+                        break;
+					}
+					case 360:
+					{
+					    //MELON (360) RESTORES  1 HUNGER
+					    //RESTORES 2 1/2 HUNGER @ 1000
+                        if(herbLevel >= 200 && herbLevel < 600)
+                            foodChange = foodChange + 1;
+                        else if(herbLevel >= 600 && herbLevel < 1000)
+                            foodChange = foodChange + 2;
+                        else if(herbLevel >= 1000)
+                            foodChange = foodChange + 3;
+                        break;  
+					}
+					case 282:
+					{
+					    //STEW (282) RESTORES 4 HUNGER
+					    //RESTORES 6 1/2 HUNGER @ 1000
+					    if(herbLevel >= 200 && herbLevel < 400)
+                            foodChange = foodChange + 1;
+                        else if(herbLevel >= 400 && herbLevel < 600)
+                            foodChange = foodChange + 2;
+                        else if(herbLevel >= 600 && herbLevel < 800)
+                            foodChange = foodChange + 3;
+                        else if(herbLevel >= 800 && herbLevel < 1000)
+                            foodChange = foodChange + 4;
+                        else if(herbLevel >= 1000)
+                            foodChange = foodChange + 5;
+                        break;
+					}
+					}
+					
+					//Make sure we don't go over the max value
+					newFoodLevel = currentFoodLevel + foodChange;
+                    if(newFoodLevel > 20)
+                        event.setFoodLevel(20);
+                    if(newFoodLevel <= 20)
+                        event.setFoodLevel(newFoodLevel);
 				}
 			}
 		}
