@@ -16,6 +16,8 @@
 */
 package com.gmail.nossr50.listeners;
 
+import java.util.ArrayList;
+
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -223,8 +225,8 @@ public class mcBlockListener implements Listener
    				PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
    				Bukkit.getPluginManager().callEvent(armswing);
    				
-    			WoodCutting.treeFeller(block, player, plugin);
-    			for(Block blockx : plugin.misc.treeFeller)
+    			ArrayList<Block> fell = WoodCutting.treeFeller(block, player);
+    			for(Block blockx : fell)
     			{
     				if(blockx != null)
     				{
@@ -262,7 +264,6 @@ public class mcBlockListener implements Listener
     	    		if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
     	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
     	    	}
-    			plugin.misc.treeFeller.clear();
     		}
     	}
     	/*

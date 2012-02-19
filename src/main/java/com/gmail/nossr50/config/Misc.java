@@ -33,7 +33,6 @@ public class Misc
     
     public ArrayList<Entity> mobSpawnerList = new ArrayList<Entity>();
     public HashSet<Block> blockWatchList = new HashSet<Block>();
-    public ArrayList<Block> treeFeller = new ArrayList<Block>();
     public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     public ArrayList<LivingEntity> bleedTracker = new ArrayList<LivingEntity>();
     public HashMap<Block, Integer> tntTracker = new HashMap<Block, Integer>();

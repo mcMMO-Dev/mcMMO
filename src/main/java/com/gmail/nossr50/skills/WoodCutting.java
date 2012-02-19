@@ -40,8 +40,6 @@ import org.getspout.spoutapi.sound.SoundEffect;
 
 public class WoodCutting 
 {
-	static int w = 0;
-	private static boolean isdone = false;
 	
     public static void woodCuttingProcCheck(Player player, Block block)
     {
@@ -99,34 +97,29 @@ public class WoodCutting
     		}
     	}
     }
-    public static void treeFeller(Block block, Player player, mcMMO plugin){
+    public static ArrayList<Block> treeFeller(Block block, Player player) {
     	PlayerProfile PP = Users.getProfile(player);
+
     	int radius = 1;
     	if(PP.getSkillLevel(SkillType.WOODCUTTING) >= 500)
     		radius++;
     	if(PP.getSkillLevel(SkillType.WOODCUTTING) >= 950)
     		radius++;
-        ArrayList<Block> blocklist = new ArrayList<Block>();
-        ArrayList<Block> toAdd = new ArrayList<Block>();
+
+        ArrayList<Block> blockList = new ArrayList<Block>();
+        ArrayList<Block> returnList = new ArrayList<Block>();
+
         if(block != null)
-        	blocklist.add(block);
-        while(isdone == false){
-        	addBlocksToTreeFelling(blocklist, toAdd, radius);
+        	blockList.add(block);
+
+        boolean isDone = false;
+        while(isDone == false){
+        	isDone = addBlocksToTreeFelling(blockList, returnList, radius);
         }
-        //This needs to be a hashmap too!
-        isdone = false;
-        /*
-         * Add blocks from the temporary 'toAdd' array list into the 'treeFeller' array list
-         * We use this temporary list to prevent concurrent modification exceptions
-         */
-        for(Block x : toAdd)
-        {
-        	if(!plugin.misc.treeFeller.contains(x))
-        		plugin.misc.treeFeller.add(x);
-        }
-        toAdd.clear();
+
+        return returnList;
     }
-    public static void addBlocksToTreeFelling(ArrayList<Block> blocklist, ArrayList<Block> toAdd, Integer radius)
+    public static boolean addBlocksToTreeFelling(ArrayList<Block> blocklist, ArrayList<Block> toAdd, Integer radius)
     {
     	int u = 0;
     	for (Block x : blocklist)
@@ -134,7 +127,6 @@ public class WoodCutting
     		u++;
     		if(toAdd.contains(x))
     			continue;
-    		w = 0;
     		Location loc = x.getLocation();
     		int vx = x.getX();
             int vy = x.getY();
@@ -149,7 +141,6 @@ public class WoodCutting
 	                    Block blocktarget = loc.getWorld().getBlockAt(vx + cx, vy + cy, vz + cz);
 	                    if (!blocklist.contains(blocktarget) && !toAdd.contains(blocktarget) && (blocktarget.getTypeId() == 17 || blocktarget.getTypeId() == 18)) { 
 	                        toAdd.add(blocktarget);
-	                        w++;
 	                    }
 	                }
 	            }
@@ -165,9 +156,9 @@ public class WoodCutting
         }
     	if(u >= blocklist.size())
     	{
-    		isdone = true;
+    		return true;
     	} else {
-    		isdone = false;
+    		return false;
     	}
     }
     

@@ -8,8 +8,9 @@ Version 1.3.00-dev
  - Added configuration option to control mcMMO reporting damage events
  - Added hunger regain bonuses to Herbalism skill
  - Changed chat logging for /p & /a
- - Fixed Tree Feller not playing nice with NoCheat
+ - Fixed Tree Feller not playing nice with NoCheat (?)
  - Added framework for new Blast Mining skill
+ - Changed Tree Feller to use per-use ArrayList
  
 Version 1.2.12
  - Fixed issue that caused terrible MySQL performance and negative XP on levelup (Issue #134)
