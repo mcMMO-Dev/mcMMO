@@ -1,8 +1,335 @@
+#
+#  mcMMO configuration
+#    First generated on ${project.version}-b${BUILD_NUMBER}
+#
+#####
+
+#
+#  Settings for mcMMO in general
+###
+General:
+    HP_Regeneration:
+        Enabled: true
+    Locale: en_us
+    MySpawn:
+        Enabled: true
+    MOTD:
+        Enabled: true
+    #Amount of time (in minutes) to wait between saves of player information
+    Save_Interval: 10
+    #Allow mcMMO to report on basic anonymous usage
+    Stats_Tracking: true
+    #Allow mcMMO to inform other plugins of damage being dealt
+    Event_Callback: true
+
+#
+#  Settings for using a mySQL database
+###
+MySQL:
+    Enabled: false
+    Database:
+        User:
+            Name: UserName
+            Password: UserPassword
+        Name: DataBaseName
+        TablePrefix: mcmmo_
+    Server:
+        Port: 3306
+        Address: localhost
+
+#
+#  Settings for mcMMO items
+###
 Items:
     Chimaera_Wing:
         Enabled: true
         Feather_Cost: 10
         Item_ID: 288
+
+#
+#  Settings for Arcane Forging
+###
+Arcane_Forging:
+    Keep_Enchants:
+        Chance:
+            Rank_4: 40
+            Rank_3: 30
+            Rank_2: 20
+            Rank_1: 10
+    May_Lose_Enchants:
+        Enabled: true
+    Downgrades:
+        Enabled: true
+        Chance:
+            Rank_4: 15
+            Rank_3: 25
+            Rank_2: 50
+            Rank_1: 75
+
+#
+#  Settings for Abilities
+###
+Abilities:
+    Enabled: true
+    Messages: true
+    Activation:
+        Only_Activate_When_Sneaking: false
+    Cooldowns:
+        Giga_Drill_Breaker: 240
+        Berserk: 240
+        Green_Terra: 240
+        Skull_Splitter: 240
+        Serrated_Strikes: 240
+        Tree_Feller: 240
+        Super_Breaker: 240
+    Tools:
+        Durability_Loss_Enabled: true
+        Durability_Loss: 2
+
+#
+#  Settings for Skills
+###
+Skills:
+    Acrobatics:
+        Level_Cap: 0    #Level cap of 0 for no limit
+    Archery:
+        Level_Cap: 0
+    Axes:
+        Level_Cap: 0
+    Excavation:
+        Level_Cap: 0
+        Requires_Shovel: true
+    Fishing:
+        Level_Cap: 0
+    Herbalism:
+        Level_Cap: 0
+        Green_Thumb:
+            Cobble_To_Mossy: true
+            SmoothBrick_To_MossyBrick: true
+            Dirt_To_Grass: true
+        Hunger_Bonus: true
+    Mining:
+        Level_Cap: 0
+        Requires_Pickaxe: true
+    Repair:
+        Level_Cap: 0
+        Anvil_Messages: true
+        Anvil_ID: 42
+        Leather:
+            Name: Leather
+            ID: 334
+        String:
+            Name: String
+            ID: 287
+        Stone:
+            Name: Cobblestone
+            ID: 4
+        Wood:
+            Name: Wood Planks
+            ID: 5
+        Gold:
+            Name: Gold Bars
+            ID: 266
+        Iron:
+            Name: Iron Bars
+            ID: 265
+        Diamond:
+            Name: Diamond
+            Level_Required: 50
+            ID: 264
+    Swords:
+        Level_Cap: 0
+    Taming:
+        Level_Cap: 0
+        Call_Of_The_Wild:
+            Bones_Required: 10
+    Unarmed:
+        Level_Cap: 0
+    Woodcutting:
+        Level_Cap: 0
+        Requires_Axe: true
+
+#
+#  Settings for XP distribution
+###
+Experience:
+    Gains:
+        Mobspawners:
+            Enabled: false
+        Multiplier:
+            PVP: 1
+            Global: 1.0
+    PVP:
+        Rewards: true
+    Formula:
+        Multiplier:
+            Swords: 1.0
+            Taming: 1.0
+            Acrobatics: 1.0
+            Sorcery: 1.0
+            Excavation: 1.0
+            Herbalism: 1.0
+            Unarmed: 1.0
+            Woodcutting: 1.0
+            Mining: 1.0
+            Archery: 1.0
+            Axes: 1.0
+            Repair: 1.0
+    Fishing:
+        Base: 800
+    Excavation:
+        Base: 40
+        Cake: 3000
+        Sulphur: 30
+        Bones: 30
+        Map: 200
+        Slimeballs: 100
+        Bucket: 100
+        Apple: 100
+        Mushroom: 80
+        Eggs: 100
+        Slowsand: 80
+        Watch: 200
+        Web: 150
+        String: 200
+        Glowstone: 80
+        Music: 3000
+        Diamond: 1000
+        Cocoa_Beans: 100
+    Woodcutting:
+        Birch: 70
+        Spruce: 80
+        Pine: 90
+    Herbalism:
+        Sugar_Cane: 30
+        Cactus: 30
+        Flowers: 100
+        Pumpkin: 20
+        Mushrooms: 150
+        Wheat: 50
+        Melon: 20
+        Nether_Wart: 50
+        Lily_Pads: 100
+        Vines: 10
+    Mining:
+        Sandstone: 30
+        Glowstone: 30
+        Lapis: 400
+        Obsidian: 150
+        Stone: 30
+        Netherrack: 30
+        Gold: 350
+        Redstone: 150
+        Coal: 100
+        Diamond: 750
+        Iron: 250
+        Nether_Brick: 30
+        End_Stone: 150
+        Moss_Stone: 30
+        Stone_Brick: 30
+
+#
+#  Settings for Fishing
+###
+Fishing:
+    Drops:
+        Item_Drops_Enabled: true
+        Drop_Chance:
+            Tier_1: 20
+            Tier_2: 25
+            Tier_3: 30
+            Tier_4: 35
+            Tier_5: 40
+        Gold_Tools: true
+        Diamond_Armor: true
+        Stone_Tools: true
+        Diamonds: true
+        Iron_Armor: true
+        Iron_Tools: true
+        Diamond_Tools: true
+        Records: true
+        Blaze_Rod: true
+        Leather_Armor: true
+        Gold_Armor: true
+        Glowstone_Dust: true
+        Ender_Pearl: true
+        Wooden_Tools: true
+
+#
+#  Settings for Excavation
+###
+Excavation:
+    Drops:
+        Cake: true
+        Sulphur: true
+        Bones: true
+        Apples: true
+        Map: true
+        Slimeballs: true
+        Bucket: true
+        Netherrack: true
+        Mushrooms: true
+        Eggs: true
+        Slowsand: true
+        Watch: true
+        Web: true
+        String: true
+        Glowstone: true
+        Music: true
+        Diamond: true
+        Cocoa_Beans: true
+
+#
+#  Settings for commands
+###
+Commands:
+    invite:
+        Enabled: true
+    mctop:
+        Enabled: true
+    xplock:
+        Enabled: true
+    whois:
+        Enabled: true
+    mcc:
+        Enabled: true
+    mmoedit:
+        Enabled: true
+    accept:
+        Enabled: true
+    stats:
+        Enabled: true
+    mcability:
+        Enabled: true
+    party:
+        Enabled: true
+    xprate:
+        Enabled: true
+    mcgod:
+        Enabled: true
+    mcmmo:
+        Enabled: true
+        Donate_Message: true
+    mcrefresh:
+        Enabled: true
+    myspawn:
+        Enabled: true
+    addxp:
+        Enabled: true
+    clearmyspawn:
+        Enabled: true
+    ptp:
+        Enabled: true
+    p:
+        Enabled: true
+        Display_Names: true
+    a:
+        Enabled: true
+        Display_Names: true
+
+#
+#  Settings for Spout features
+###
 Spout:
     Menu:
         Key: KEY_M
@@ -80,287 +407,3 @@ Spout:
                     BLUE: 0.75
                     GREEN: 0.3
                     RED: 0.3
-Fishing:
-    Drops:
-        Gold_Tools: true
-        Diamond_Armor: true
-        Stone_Tools: true
-        Diamonds: true
-        Iron_Armor: true
-        Iron_Tools: true
-        Diamond_Tools: true
-        Item_Drops_Enabled: true
-        Records: true
-        Blaze_Rod: true
-        Leather_Armor: true
-        Drop_Chance:
-            Tier_1: 20
-            Tier_2: 25
-            Tier_3: 30
-            Tier_4: 35
-            Tier_5: 40
-        Gold_Armor: true
-        Glowstone_Dust: true
-        Ender_Pearl: true
-        Wooden_Tools: true
-Skills:
-    Acrobatics:
-        Level_Cap: 0    #Level cap of 0 for no limit
-    Archery:
-        Level_Cap: 0
-    Axes:
-        Level_Cap: 0
-    Excavation:
-        Level_Cap: 0
-        Requires_Shovel: true
-    Fishing:
-        Level_Cap: 0
-    Herbalism:
-        Level_Cap: 0
-        Green_Thumb:
-            Cobble_To_Mossy: true
-            SmoothBrick_To_MossyBrick: true
-            Dirt_To_Grass: true
-        Hunger_Bonus: true
-    Mining:
-        Level_Cap: 0
-        Requires_Pickaxe: true
-    Repair:
-        Level_Cap: 0
-        Leather:
-            Name: Leather
-            ID: 334
-        String:
-            Name: String
-            ID: 287
-        Stone:
-            Name: Cobblestone
-            ID: 4
-        Wood:
-            Name: Wood Planks
-            ID: 5
-        Gold:
-            Name: Gold Bars
-            ID: 266
-        Anvil_Messages: true
-        Anvil_ID: 42
-        Diamond:
-            Name: Diamond
-            Level_Required: 50
-            ID: 264
-        Iron:
-            Name: Iron Bars
-            ID: 265
-    Swords:
-        Level_Cap: 0
-    Taming:
-        Level_Cap: 0
-        Call_Of_The_Wild:
-            Bones_Required: 10
-    Unarmed:
-        Level_Cap: 0
-    Woodcutting:
-        Level_Cap: 0
-        Requires_Axe: true
-Experience:
-    Fishing:
-        Base: 800
-    Formula:
-        Multiplier:
-            Swords: 1.0
-            Taming: 1.0
-            Acrobatics: 1.0
-            Sorcery: 1.0
-            Excavation: 1.0
-            Herbalism: 1.0
-            Unarmed: 1.0
-            Woodcutting: 1.0
-            Mining: 1.0
-            Archery: 1.0
-            Axes: 1.0
-            Repair: 1.0
-    Gains:
-        Mobspawners:
-            Enabled: false
-        Multiplier:
-            PVP: 1
-            Global: 1.0
-    PVP:
-        Rewards: true
-    Excavation:
-        Base: 40
-        Cake: 3000
-        Sulphur: 30
-        Bones: 30
-        Map: 200
-        Slimeballs: 100
-        Bucket: 100
-        Apple: 100
-        Mushroom: 80
-        Eggs: 100
-        Slowsand: 80
-        Watch: 200
-        Web: 150
-        String: 200
-        Glowstone: 80
-        Music: 3000
-        Diamond: 1000
-        Cocoa_Beans: 100
-    Woodcutting:
-        Birch: 70
-        Spruce: 80
-        Pine: 90
-    Herbalism:
-        Sugar_Cane: 30
-        Cactus: 30
-        Flowers: 100
-        Pumpkin: 20
-        Mushrooms: 150
-        Wheat: 50
-        Melon: 20
-        Nether_Wart: 50
-        Lily_Pads: 100
-        Vines: 10
-    Mining:
-        Sandstone: 30
-        Glowstone: 30
-        Lapis: 400
-        Obsidian: 150
-        Stone: 30
-        Netherrack: 30
-        Gold: 350
-        Redstone: 150
-        Coal: 100
-        Diamond: 750
-        Iron: 250
-        Nether_Brick: 30
-        End_Stone: 150
-        Moss_Stone: 30
-        Stone_Brick: 30
-MySQL:
-    Enabled: false
-    Database:
-        User:
-            Name: UserName
-            Password: UserPassword
-        Name: DataBaseName
-        TablePrefix: mcmmo_
-    Server:
-        Port: 3306
-        Address: localhost
-XP:
-    Gains:
-        Mobspawners:
-            Enabled: false
-    PVP:
-        Rewards: true
-General:
-    HP_Regeneration:
-        Enabled: true
-    Locale: en_us
-    MySpawn:
-        Enabled: true
-    MOTD:
-        Enabled: true
-    #Amount of time (in minutes) to wait between saves of player information
-    Save_Interval: 10
-    #Allow mcMMO to report on basic anonymous usage
-    Stats_Tracking: true
-    #Allow mcMMO to inform other plugins of damage being dealt
-    Event_Callback: true
-Excavation:
-    Drops:
-        Cake: true
-        Sulphur: true
-        Bones: true
-        Apples: true
-        Map: true
-        Slimeballs: true
-        Bucket: true
-        Netherrack: true
-        Mushrooms: true
-        Eggs: true
-        Slowsand: true
-        Watch: true
-        Web: true
-        String: true
-        Glowstone: true
-        Music: true
-        Diamond: true
-        Cocoa_Beans: true
-Arcane_Forging:
-    Keep_Enchants:
-        Chance:
-            Rank_4: 40
-            Rank_3: 30
-            Rank_2: 20
-            Rank_1: 10
-    May_Lose_Enchants:
-        Enabled: true
-    Downgrades:
-        Enabled: true
-        Chance:
-            Rank_4: 15
-            Rank_3: 25
-            Rank_2: 50
-            Rank_1: 75
-Abilities:
-    Activation:
-        Only_Activate_When_Sneaking: false
-    Enabled: true
-    Messages: true
-    Cooldowns:
-        Giga_Drill_Breaker: 240
-        Berserk: 240
-        Green_Terra: 240
-        Skull_Splitter: 240
-        Serrated_Strikes: 240
-        Tree_Feller: 240
-        Super_Breaker: 240
-    Tools:
-        Durability_Loss: 2
-        Durability_Loss_Enabled: true
-Commands:
-    invite:
-        Enabled: true
-    mctop:
-        Enabled: true
-    xplock:
-        Enabled: true
-    whois:
-        Enabled: true
-    mcc:
-        Enabled: true
-    mmoedit:
-        Enabled: true
-    accept:
-        Enabled: true
-    stats:
-        Enabled: true
-    mcability:
-        Enabled: true
-    party:
-        Enabled: true
-    xprate:
-        Enabled: true
-    mcgod:
-        Enabled: true
-    mcmmo:
-        Enabled: true
-        Donate_Message: true
-    mcrefresh:
-        Enabled: true
-    myspawn:
-        Enabled: true
-    addxp:
-        Enabled: true
-    clearmyspawn:
-        Enabled: true
-    ptp:
-        Enabled: true
-    p:
-        Enabled: true
-        Display_Names: true
-    a:
-        Enabled: true
-        Display_Names: true

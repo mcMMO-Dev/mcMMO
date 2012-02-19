@@ -11,6 +11,8 @@ Version 1.3.00-dev
  - Fixed Tree Feller not playing nice with NoCheat (?)
  - Added framework for new Blast Mining skill
  - Changed Tree Feller to use per-use ArrayList
+ - Prettied up new config files
+ - Removed duplicate settings in config.yml
  
 Version 1.2.12
  - Fixed issue that caused terrible MySQL performance and negative XP on levelup (Issue #134)

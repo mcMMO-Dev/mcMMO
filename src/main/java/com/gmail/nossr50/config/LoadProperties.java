@@ -159,7 +159,7 @@ public class LoadProperties {
 		enableAbilities = readBoolean("Abilities.Enabled", true);
 
 		donateMessage = readBoolean("Commands.mcmmo.Donate_Message", true);
-		xpGainsMobSpawners = readBoolean("XP.Gains.Mobspawners.Enabled", false);
+		xpGainsMobSpawners = readBoolean("Experience.Gains.Mobspawners.Enabled", false);
 
 		bonesConsumedByCOTW = readInteger("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
 
@@ -314,8 +314,9 @@ public class LoadProperties {
 		chimaeraId = readInteger("Items.Chimaera_Wing.Item_ID", 288);
 		chimaeraWingEnable = readBoolean("Items.Chimaera_Wing.Enabled", true);
 
-		pvpxp = readBoolean("XP.PVP.Rewards", true);
+		pvpxp = readBoolean("Experience.PVP.Rewards", true);
 		pvpxprewardmodifier = readDouble("Experience.Gains.Multiplier.PVP", 1.0);
+
 		miningrequirespickaxe = readBoolean("Skills.Mining.Requires_Pickaxe", true);
 		excavationRequiresShovel = readBoolean("Skills.Excavation.Requires_Shovel", true);
 		woodcuttingrequiresaxe = readBoolean("Skills.Woodcutting.Requires_Axe", true);
