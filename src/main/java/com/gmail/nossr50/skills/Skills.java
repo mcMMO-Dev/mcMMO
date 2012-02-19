@@ -335,6 +335,9 @@ public class Skills
 					
 					McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
 					Bukkit.getPluginManager().callEvent(eventToFire);
+				} else
+				{
+					PP.removeXP(skillType, PP.getXpToLevel(skillType));
 				}
 			}
 			
