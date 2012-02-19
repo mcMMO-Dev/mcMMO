@@ -2,6 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
+    <version>1.3.00-dev</version>
     <name>mcMMO</name>
     <url>https://github.com/mcMMO-Dev/mcMMO</url>
     <issueManagement>
@@ -121,5 +122,4 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <version>1.3.00-dev</version>
 </project>
