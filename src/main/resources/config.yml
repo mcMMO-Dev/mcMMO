@@ -177,23 +177,6 @@ Experience:
         Base: 800
     Excavation:
         Base: 40
-        Cake: 3000
-        Sulphur: 30
-        Bones: 30
-        Map: 200
-        Slimeballs: 100
-        Bucket: 100
-        Apple: 100
-        Mushroom: 80
-        Eggs: 100
-        Slowsand: 80
-        Watch: 200
-        Web: 150
-        String: 200
-        Glowstone: 80
-        Music: 3000
-        Diamond: 1000
-        Cocoa_Beans: 100
     Woodcutting:
         Birch: 70
         Spruce: 80
