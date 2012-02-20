@@ -297,7 +297,6 @@ public class LoadProperties {
 		locale = readString("General.Locale", "en_us");
 		enableMotd = readBoolean("General.MOTD.Enabled", true);
 		enableMySpawn = readBoolean("General.MySpawn.Enabled", true);
-		enableRegen = readBoolean("General.HP_Regeneration.Enabled", true);
 		saveInterval = readInteger("General.Save_Interval", 10);
 		statsTracking = readBoolean("General.Stats_Tracking", true);
 		eventCallback = readBoolean("General.Event_Callback", true);
