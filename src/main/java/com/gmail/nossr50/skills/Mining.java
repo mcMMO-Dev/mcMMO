@@ -233,10 +233,6 @@ public class Mining
 			case 21:
 				xp += LoadProperties.mlapis;
 				break;
-			//NETHER BRICK
-			case 112:
-				xp += LoadProperties.mnetherbrick;
-				break;
 			//END STONE
 			case 121:
 				xp += LoadProperties.mendstone;
@@ -364,14 +360,6 @@ public class Mining
        		blockProcCheck(block, player);
       		blockProcCheck(block, player);
     	}
-    	//NETHER BRICK
-    	else if(id == 112 && block.getData() != (byte) 5)
-    	{
-    		Bukkit.getPluginManager().callEvent(armswing);
-   			xp += LoadProperties.mnetherbrick;
-       		blockProcCheck(block, player);
-       		blockProcCheck(block, player);
-    	}
     	//END STONE
     	else if(id == 121 && block.getData() != (byte) 5)
     	{
@@ -388,7 +376,6 @@ public class Mining
        		blockProcCheck(block, player);
        		blockProcCheck(block, player);
     	}
-    	
     	if(!plugin.misc.blockWatchList.contains(block) && block.getData() != (byte) 5)
     		PP.addXP(SkillType.MINING, xp, player);
     	if(LoadProperties.spoutEnabled)
