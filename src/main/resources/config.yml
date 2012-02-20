@@ -259,24 +259,6 @@ Fishing:
 #  Settings for Excavation
 ###
 Excavation:
-    Drops:
-        Cake: true
-        Sulphur: true
-        Bones: true
-        Apples: true
-        Slimeballs: true
-        Bucket: true
-        Netherrack: true
-        Mushrooms: true
-        Eggs: true
-        Slowsand: true
-        Watch: true
-        Web: true
-        String: true
-        Glowstone: true
-        Music: true
-        Diamond: true
-        Cocoa_Beans: true
     Treasure:
         - Cake
         - Gunpowder
@@ -297,7 +279,10 @@ Excavation:
         - Green_Music
         - Diamond
         - Cocoa_Beans
-        
+
+#
+#  Configuration to define Treasures
+###
 Treasures:
     Cake:
         ID: 354
@@ -322,13 +307,7 @@ Treasures:
         Drop_Chance: 10.0
         Drop_Level: 75
         Drops_From:
-            Dirt: false
-            Grass: false
-            Sand: false
             Gravel: true
-            Clay: false
-            Mycelium: false
-            Soul_Sand: false
     Bone:
         ID: 352
         Data: 0
@@ -337,13 +316,7 @@ Treasures:
         Drop_Chance: 10.0
         Drop_Level: 175
         Drops_From:
-            Dirt: false
-            Grass: false
-            Sand: false
             Gravel: true
-            Clay: false
-            Mycelium: false
-            Soul_Sand: false            
     Apple:
         ID: 260
         Data: 0
@@ -352,13 +325,8 @@ Treasures:
         Drop_Chance: 0.1
         Drop_Level: 250
         Drops_From:
-            Dirt: false
             Grass: true
-            Sand: false
-            Gravel: false
-            Clay: false
             Mycelium: true
-            Soul_Sand: false
     Slimeball:
         ID: 341
         Data: 0
@@ -367,13 +335,7 @@ Treasures:
         Drop_Chance: 5.0
         Drop_Level: 150
         Drops_From:
-            Dirt: false
-            Grass: false
-            Sand: false
-            Gravel: false
             Clay: true
-            Mycelium: false
-            Soul_Sand: false
     Bucket:
         ID: 325
         Data: 0
@@ -382,13 +344,7 @@ Treasures:
         Drop_Chance: 0.1
         Drop_Level: 500
         Drops_From:
-            Dirt: false
-            Grass: false
-            Sand: false
-            Gravel: false
             Clay: true
-            Mycelium: false
-            Soul_Sand: false
     Netherrack:
         ID: 87
         Data: 0
@@ -397,13 +353,7 @@ Treasures:
         Drop_Chance: 0.5
         Drop_Level: 850
         Drops_From:
-            Dirt: false
-            Grass: false
-            Sand: false
             Gravel: true
-            Clay: false
-            Mycelium: false
-            Soul_Sand: false
     Red_Mushroom:
         ID: 40
         Data: 0
@@ -414,11 +364,7 @@ Treasures:
         Drops_From:
             Dirt: true
             Grass: true
-            Sand: false
-            Gravel: false
-            Clay: false
             Mycelium: true
-            Soul_Sand: false
     Brown_Mushroom:
         ID: 39
         Data: 0
@@ -429,11 +375,7 @@ Treasures:
         Drops_From:
             Dirt: true
             Grass: true
-            Sand: false
-            Gravel: false
-            Clay: false
             Mycelium: true
-            Soul_Sand: false
     Egg:
         ID: 344
         Data: 0
@@ -442,13 +384,7 @@ Treasures:
         Drop_Chance: 1.0
         Drop_Level: 250
         Drops_From:
-            Dirt: false
             Grass: true
-            Sand: false
-            Gravel: false
-            Clay: false
-            Mycelium: false
-            Soul_Sand: false
     Soul_Sand:
         ID: 88
         Data: 0
@@ -457,13 +393,7 @@ Treasures:
         Drop_Chance: 0.5
         Drop_Level: 650
         Drops_From:
-            Dirt: false
-            Grass: false
             Sand: true
-            Gravel: false
-            Clay: false
-            Mycelium: false
-            Soul_Sand: false
     Clock:
         ID: 347
         Data: 0
@@ -472,13 +402,7 @@ Treasures:
         Drop_Chance: 0.1
         Drop_Level: 500
         Drops_From:
-            Dirt: false
-            Grass: false
-            Sand: false
-            Gravel: false
             Clay: true
-            Mycelium: false
-            Soul_Sand: false
     Cobweb:
         ID: 30
         Data: 0
@@ -487,13 +411,7 @@ Treasures:
         Drop_Chance: 5.0
         Drop_Level: 750
         Drops_From:
-            Dirt: false
-            Grass: false
-            Sand: false
-            Gravel: false
             Clay: true
-            Mycelium: false
-            Soul_Sand: false
     String:
         ID: 287
         Data: 0
@@ -502,13 +420,7 @@ Treasures:
         Drop_Chance: 5.0
         Drop_Level: 250
         Drops_From:
-            Dirt: false
-            Grass: false
-            Sand: false
-            Gravel: false
             Clay: true
-            Mycelium: false
-            Soul_Sand: false
     Glowstone_Dust:
         ID: 348
         Data: 0
@@ -520,10 +432,7 @@ Treasures:
             Dirt: true
             Grass: true
             Sand: true
-            Gravel: false
-            Clay: false
             Mycelium: true
-            Soul_Sand: false
     Gold_Music:
         ID: 2256
         Data: 0
@@ -584,6 +493,7 @@ Treasures:
             Clay: true
             Mycelium: true
             Soul_Sand: true
+
 #
 #  Settings for commands
 ###

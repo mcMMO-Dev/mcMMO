@@ -17,7 +17,6 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,6 +35,8 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
+
 import org.getspout.spoutapi.sound.SoundEffect;
 
 public class Excavation
@@ -90,132 +91,96 @@ public class Excavation
 		int skillLevel = PP.getSkillLevel(SkillType.EXCAVATION);
     	ArrayList<ItemStack> is = new ArrayList<ItemStack>();
     	int xp = 0;
-    	   	
-    	//Custom Excavation Drops
-    	List<Integer> idValues = LoadProperties.excavationIDs;
-    	List<Integer> dataValues = LoadProperties.excavationDatas;
-    	List<Integer> xpValues = LoadProperties.excavationXPs;
-    	List<Integer> amounts = LoadProperties.excavationAmounts;
-    	List<Double> dropChances = LoadProperties.excavationDropChances;
-    	List<Integer> dropLevels = LoadProperties.excavationDropLevels;
-    	List<Boolean> dirt = LoadProperties.excavationFromDirt;
-    	List<Boolean> grass = LoadProperties.excavationFromGrass;
-    	List<Boolean> sand = LoadProperties.excavationFromSand;
-    	List<Boolean> gravel = LoadProperties.excavationFromGravel;
-    	List<Boolean> clay = LoadProperties.excavationFromClay;
-    	List<Boolean> mycel = LoadProperties.excavationFromMycel;
-    	List<Boolean> soulSand = LoadProperties.excavationFromSoulSand;
     	
     	switch(type)
     	{
     	case DIRT:
-    		for(int i = 0; i < dirt.size(); i++)
+    		for(ExcavationTreasure treasure : LoadProperties.excavationFromDirt)
     		{
-    			if(dirt.get(i))
+    			if(skillLevel >= treasure.getDropLevel())
     			{
-    				if(skillLevel >= dropLevels.get(i))
+    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
     				{
-    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
-    					{
-    						xp += xpValues.get(i);
-    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
-    					}
+    					xp += treasure.getXp();
+    					is.add(treasure.getDrop());
     				}
     			}
     		}
     		break;
     	case GRASS:
-    		for(int i = 0; i < grass.size(); i++)
+    		for(ExcavationTreasure treasure : LoadProperties.excavationFromGrass)
     		{
-    			if(grass.get(i))
+    			if(skillLevel >= treasure.getDropLevel())
     			{
-    				if(skillLevel >= dropLevels.get(i))
+    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
     				{
-    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
-    					{
-    						xp += xpValues.get(i);
-    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
-    					}
+    					xp += treasure.getXp();
+    					is.add(treasure.getDrop());
     				}
     			}
     		}
     		break;
     	case SAND:
-    		for(int i = 0; i < sand.size(); i++)
+    		for(ExcavationTreasure treasure : LoadProperties.excavationFromSand)
     		{
-    			if(sand.get(i))
+    			if(skillLevel >= treasure.getDropLevel())
     			{
-    				if(skillLevel >= dropLevels.get(i))
+    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
     				{
-    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
-    					{
-    						xp += xpValues.get(i);
-    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
-    					}
+    					xp += treasure.getXp();
+    					is.add(treasure.getDrop());
     				}
     			}
     		}
     		break;
     	case GRAVEL:
-    		for(int i = 0; i < gravel.size(); i++)
+    		for(ExcavationTreasure treasure : LoadProperties.excavationFromGravel)
     		{
-    			if(gravel.get(i))
+    			if(skillLevel >= treasure.getDropLevel())
     			{
-    				if(skillLevel >= dropLevels.get(i))
+    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
     				{
-    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
-    					{
-    						xp += xpValues.get(i);
-    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
-    					}
+    					xp += treasure.getXp();
+    					is.add(treasure.getDrop());
     				}
     			}
     		}
     		break;
     	case CLAY:
-    		for(int i = 0; i < clay.size(); i++)
+    		for(ExcavationTreasure treasure : LoadProperties.excavationFromClay)
     		{
-    			if(clay.get(i))
+    			if(skillLevel >= treasure.getDropLevel())
     			{
-    				if(skillLevel >= dropLevels.get(i))
+    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
     				{
-    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
-    					{
-    						xp += xpValues.get(i);
-    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
-    					}
+    					xp += treasure.getXp();
+    					is.add(treasure.getDrop());
     				}
     			}
     		}
     		break;
     	case MYCEL:
-    		for(int i = 0; i < mycel.size(); i++)
+    		for(ExcavationTreasure treasure : LoadProperties.excavationFromMycel)
     		{
-    			if(mycel.get(i))
+    			if(skillLevel >= treasure.getDropLevel())
     			{
-    				if(skillLevel >= dropLevels.get(i))
+    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
     				{
-    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
-    					{
-    						xp += xpValues.get(i);
-    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
-    					}
+    					xp += treasure.getXp();
+    					is.add(treasure.getDrop());
     				}
     			}
     		}
     		break;
     	case SOUL_SAND:
-    		for(int i = 0; i < soulSand.size(); i++)
+    		for(ExcavationTreasure treasure : LoadProperties.excavationFromSoulSand)
     		{
-    			if(soulSand.get(i))
+    			if(skillLevel >= treasure.getDropLevel())
     			{
-    				if(skillLevel >= dropLevels.get(i))
+    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
     				{
-    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
-    					{
-    						xp += xpValues.get(i);
-    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
-    					}
+    					xp += treasure.getXp();
+    					is.add(treasure.getDrop());
     				}
     			}
     		}

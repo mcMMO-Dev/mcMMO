@@ -20,28 +20,33 @@ import com.gmail.nossr50.mcMMO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.datatypes.HUDType;
+import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
+import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
+import com.gmail.nossr50.datatypes.treasure.Treasure;
 
 public class LoadProperties {
 	public static Boolean enableOnlyActivateWhenSneaking,
 			enableAbilityMessages, enableAbilities, showDisplayName, showFaces,
-			watch, xplockEnable, xpbar, xpicon, partybar, string, bucket, web,
-			xprateEnable, slimeballs, spoutEnabled, donateMessage,
-			chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable, mccEnable,
-			mcmmoEnable, partyEnable, inviteEnable, acceptEnable, whoisEnable,
-			statsEnable, addxpEnable, ptpEnable, mmoeditEnable,
+			xplockEnable, xpbar, xpicon, partybar, xprateEnable, spoutEnabled,
+			donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable,
+			mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable,
+			whoisEnable, statsEnable, addxpEnable, ptpEnable, mmoeditEnable,
 			clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable,
 			mcrefreshEnable, aEnable, pEnable, enableMotd, enableMySpawn,
-			enableCobbleToMossy, useMySQL, cocoabeans, mushrooms,
-			toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe,
-			excavationRequiresShovel, woodcuttingrequiresaxe, eggs, apples,
-			cake, music, diamond, glowstone, slowsand, sulphur, netherrack,
-			bones, coal, clay, anvilmessages, mayDowngradeEnchants,
+			enableCobbleToMossy, useMySQL, toolsLoseDurabilityFromAbilities,
+			pvpxp, miningrequirespickaxe, excavationRequiresShovel,
+			woodcuttingrequiresaxe, anvilmessages, mayDowngradeEnchants,
 			mayLoseEnchants, fishingDrops, leatherArmor, ironArmor, goldArmor,
 			diamondArmor, woodenTools, stoneTools, ironTools, goldTools,
 			diamondTools, enderPearl, blazeRod, records, glowstoneDust,
@@ -89,21 +94,14 @@ public class LoadProperties {
 			sorceryxpmodifier, unarmedxpmodifier, herbalismxpmodifier,
 			excavationxpmodifier, archeryxpmodifier, swordsxpmodifier,
 			axesxpmodifier, acrobaticsxpmodifier;
-	
-	public static List<String> excavationTreasures = new ArrayList<String>();
-	public static List<Integer> excavationIDs = new ArrayList<Integer>();
-	public static List<Integer> excavationDatas = new ArrayList<Integer>();
-	public static List<Integer> excavationAmounts = new ArrayList<Integer>();
-	public static List<Integer> excavationXPs = new ArrayList<Integer>();
-	public static List<Double> excavationDropChances = new ArrayList<Double>();
-	public static List<Integer> excavationDropLevels = new ArrayList<Integer>();
-	public static List<Boolean> excavationFromDirt = new ArrayList<Boolean>();
-	public static List<Boolean> excavationFromGrass = new ArrayList<Boolean>();
-	public static List<Boolean> excavationFromSand = new ArrayList<Boolean>();
-	public static List<Boolean> excavationFromGravel = new ArrayList<Boolean>();
-	public static List<Boolean> excavationFromClay = new ArrayList<Boolean>();
-	public static List<Boolean> excavationFromMycel = new ArrayList<Boolean>();
-	public static List<Boolean> excavationFromSoulSand = new ArrayList<Boolean>();
+
+	public static List<ExcavationTreasure> excavationFromDirt = new ArrayList<ExcavationTreasure>();
+	public static List<ExcavationTreasure> excavationFromGrass = new ArrayList<ExcavationTreasure>();
+	public static List<ExcavationTreasure> excavationFromSand = new ArrayList<ExcavationTreasure>();
+	public static List<ExcavationTreasure> excavationFromGravel = new ArrayList<ExcavationTreasure>();
+	public static List<ExcavationTreasure> excavationFromClay = new ArrayList<ExcavationTreasure>();
+	public static List<ExcavationTreasure> excavationFromMycel = new ArrayList<ExcavationTreasure>();
+	public static List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
 
 	public static HUDType defaulthud;
 	protected static File configFile;
@@ -394,24 +392,6 @@ public class LoadProperties {
 		keepEnchantsRank3 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
 		keepEnchantsRank4 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
 
-		cocoabeans = readBoolean("Excavation.Drops.Cocoa_Beans", true);
-		mushrooms = readBoolean("Excavation.Drops.Mushrooms", true);
-		glowstone = readBoolean("Excavation.Drops.Glowstone", true);
-		eggs = readBoolean("Excavation.Drops.Eggs", true);
-		apples = readBoolean("Excavation.Drops.Apples", true);
-		cake = readBoolean("Excavation.Drops.Cake", true);
-		music = readBoolean("Excavation.Drops.Music", true);
-		diamond = readBoolean("Excavation.Drops.Diamond", true);
-		slowsand = readBoolean("Excavation.Drops.Slowsand", true);
-		sulphur = readBoolean("Excavation.Drops.Sulphur", true);
-		netherrack = readBoolean("Excavation.Drops.Netherrack", true);
-		bones = readBoolean("Excavation.Drops.Bones", true);
-		slimeballs = readBoolean("Excavation.Drops.Slimeballs", true);
-		watch = readBoolean("Excavation.Drops.Watch", true);
-		string = readBoolean("Excavation.Drops.String", true);
-		bucket = readBoolean("Excavation.Drops.Bucket", true);
-		web = readBoolean("Excavation.Drops.Web", true);
-
 		fishingDrops = readBoolean("Fishing.Drops.Item_Drops_Enabled", true);
 		fishingDropChanceTier1 = readInteger("Fishing.Drops.Drop_Chance.Tier_1", 20);
 		fishingDropChanceTier2 = readInteger("Fishing.Drops.Drop_Chance.Tier_2", 25);
@@ -457,25 +437,77 @@ public class LoadProperties {
 		aDisplayNames = readBoolean("Commands.a.Display_Names", true);
 		pDisplayNames = readBoolean("Commands.p.Display_Names", true);
 		
-		//Custom Excavation Drops
-		excavationTreasures = config.getStringList("Excavation.Treasure");
-		Iterator<String> iterator = excavationTreasures.iterator();
+		// Load treasures
+		Map<String, Treasure> treasures = new HashMap<String, Treasure>();
+
+		ConfigurationSection treasureSection = config.getConfigurationSection("Treasures");
+		Set<String> treasureConfigSet = treasureSection.getKeys(false);
+		Iterator<String> iterator = treasureConfigSet.iterator();
 		while(iterator.hasNext())
 		{
-			String temp2 = iterator.next();
-			excavationIDs.add(config.getInt("Treasures." + temp2 + ".ID"));
-			excavationDatas.add(config.getInt("Treasures." + temp2 + ".Data"));
-			excavationXPs.add(config.getInt("Treasures." + temp2 + ".XP"));
-			excavationAmounts.add(config.getInt("Treasures." + temp2 + ".Amount"));
-			excavationDropChances.add(config.getDouble("Treasures." + temp2 + ".Drop_Chance"));
-			excavationDropLevels.add(config.getInt("Treasures." + temp2 + ".Drop_Level"));
-			excavationFromDirt.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Dirt"));
-			excavationFromGrass.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Grass"));
-			excavationFromSand.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Sand"));
-			excavationFromGravel.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Gravel"));
-			excavationFromClay.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Clay"));
-			excavationFromMycel.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Mycelium"));
-			excavationFromSoulSand.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Soul_Sand"));
+			String treasureName = iterator.next();
+
+			int id = config.getInt("Treasures." + treasureName + ".ID");
+			int amount = config.getInt("Treasures." + treasureName + ".Amount");
+			int data = config.getInt("Treasures." + treasureName + ".Data");
+
+			int xp = config.getInt("Treasures." + treasureName + ".XP");
+			Double dropChance = config.getDouble("Treasures." + treasureName + ".Drop_Chance");
+			int dropLevel = config.getInt("Treasures." + treasureName + ".Drop_Level");
+
+			ItemStack item = new ItemStack(id, amount, (byte) 0, (byte) data);
+
+			if(readBoolean("Treasures." + treasureName + ".Drops_From.Fishing", false)) {
+				// TODO: Fishing
+			} else {
+				ExcavationTreasure eTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
+				if(readBoolean("Treasures." + treasureName + ".Drops_From.Dirt", false))
+					eTreasure.setDropsFromDirt();
+				if(readBoolean("Treasures." + treasureName + ".Drops_From.Grass", false))
+					eTreasure.setDropsFromGrass();
+				if(readBoolean("Treasures." + treasureName + ".Drops_From.Sand", false))
+					eTreasure.setDropsFromSand();
+				if(readBoolean("Treasures." + treasureName + ".Drops_From.Gravel", false))
+					eTreasure.setDropsFromGravel();
+				if(readBoolean("Treasures." + treasureName + ".Drops_From.Clay", false))
+					eTreasure.setDropsFromClay();
+				if(readBoolean("Treasures." + treasureName + ".Drops_From.Mycelium", false))
+					eTreasure.setDropsFromMycel();
+				if(readBoolean("Treasures." + treasureName + ".Drops_From.Soul_Sand", false))
+					eTreasure.setDropsFromSoulSand();
+
+				treasures.put(treasureName, eTreasure);
+			}
+		}
+
+		List<String> excavationTreasures = config.getStringList("Excavation.Treasure");
+
+		Iterator<String> treasureIterator = treasures.keySet().iterator();
+		while(treasureIterator.hasNext()) {
+			String treasureKey = treasureIterator.next();
+			Treasure treasure = treasures.get(treasureKey);
+
+			if(treasure instanceof FishingTreasure) {
+				// TODO: Fishing
+			} else if(treasure instanceof ExcavationTreasure) {
+				if(!excavationTreasures.contains(treasureKey)) continue;
+
+				ExcavationTreasure eTreasure = (ExcavationTreasure) treasure;
+				if(eTreasure.getDropsFromDirt())
+					excavationFromDirt.add(eTreasure);
+				if(eTreasure.getDropsFromGrass())
+					excavationFromGrass.add(eTreasure);
+				if(eTreasure.getDropsFromSand())
+					excavationFromSand.add(eTreasure);
+				if(eTreasure.getDropsFromGravel())
+					excavationFromGravel.add(eTreasure);
+				if(eTreasure.getDropsFromClay())
+					excavationFromClay.add(eTreasure);
+				if(eTreasure.getDropsFromMycel())
+					excavationFromMycel.add(eTreasure);
+				if(eTreasure.getDropsFromSoulSand())
+					excavationFromSoulSand.add(eTreasure);
+			}
 		}
 	}
 }
