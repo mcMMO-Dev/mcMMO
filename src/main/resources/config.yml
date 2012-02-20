@@ -8,8 +8,6 @@
 #  Settings for mcMMO in general
 ###
 General:
-    HP_Regeneration:
-        Enabled: true
     Locale: en_us
     MySpawn:
         Enabled: true
