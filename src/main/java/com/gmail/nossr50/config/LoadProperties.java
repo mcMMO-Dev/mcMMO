@@ -72,7 +72,7 @@ public class LoadProperties {
 			keepEnchantsRank3, keepEnchantsRank4, fishingDropChanceTier1,
 			fishingDropChanceTier2, fishingDropChanceTier3,
 			fishingDropChanceTier4, fishingDropChanceTier5, mnetherwart,
-			mvines, mlilypad, mnetherbrick, mendstone, mmossstone, mstonebrick,
+			mvines, mlilypad, mnetherbrick, mendstone, mmossstone,
 			levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
 			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
 			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
@@ -265,7 +265,6 @@ public class LoadProperties {
 		mnetherbrick = readInteger("Experience.Mining.Nether_Brick", 30);
 		mendstone = readInteger("Experience.Mining.End_Stone", 150);
 		mmossstone = readInteger("Experience.Mining.Moss_Stone", 30);
-		mstonebrick = readInteger("Experience.Mining.Stone_Brick", 30);
 
 		mfishing = readInteger("Experience.Fishing.Base", 800);
 

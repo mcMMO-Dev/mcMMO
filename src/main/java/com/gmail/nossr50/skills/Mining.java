@@ -245,10 +245,6 @@ public class Mining
 			case 48:
 				xp += LoadProperties.mmossstone;
 				break;
-			//STONE BRICK
-			case 98:
-				xp += LoadProperties.mstonebrick;
-				break;
 		}
 		
 		if(canBeSuperBroken(block))
@@ -389,14 +385,6 @@ public class Mining
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.mmossstone;
-       		blockProcCheck(block, player);
-       		blockProcCheck(block, player);
-    	}
-    	//STONE BRICK
-    	else if(id == 98 && !plugin.misc.blockWatchList.contains(block))
-    	{
-    		Bukkit.getPluginManager().callEvent(armswing);
-   			xp += LoadProperties.mstonebrick;
        		blockProcCheck(block, player);
        		blockProcCheck(block, player);
     	}
