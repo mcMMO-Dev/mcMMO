@@ -1144,7 +1144,7 @@ public class Fishing {
 		
 		else if(le instanceof Cow)
 		{
-			if(Math.random() * 100 < 99){
+			if(Math.random() * 100 >= 99){
 				m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
 			}
 			else if(Math.random() * 10 < 5){
@@ -1173,7 +1173,7 @@ public class Fishing {
 		//need to implement new shearing method
 		else if(le instanceof MushroomCow)
 		{
-			if(Math.random() * 100 < 99){
+			if(Math.random() * 100 >= 99){
 				if(Math.random() * 10 < 5){
 					m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
 				}
@@ -1201,7 +1201,7 @@ public class Fishing {
 		}
 		
 		else if(le instanceof Snowman){
-			if(Math.random() * 100 < 99){
+			if(Math.random() * 100 >= 99){
 				m.mcDropItem(loc, new ItemStack(Material.PUMPKIN, 1)); //rare chance to drop pumpkin
 			}
 			else{
