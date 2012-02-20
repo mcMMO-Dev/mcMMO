@@ -57,11 +57,8 @@ public class LoadProperties {
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
 			nIron, nGold, nDiamond, locale, nString, nLeather;
 
-	public static int mfishing, mwatch, xpbar_x, xpbar_y, xpicon_x, xpicon_y,
-			mstring, mbucket, mweb, chimaeraId, msandstone, mcocoa,
-			water_thunder, cure_self, cure_other, mslimeballs, mbones,
-			msulphur, mslowsand, mmushroom2, mglowstone2, mmelon, mmusic,
-			mdiamond2, mbase, mapple, meggs, mcake, mpine, mbirch, mspruce,
+	public static int mfishing, xpbar_x, xpbar_y, xpicon_x, xpicon_y,
+			chimaeraId, msandstone, mbase, mpine, mbirch, mspruce, mmelon,
 			mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold,
 			mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack,
 			mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier,
@@ -236,23 +233,7 @@ public class LoadProperties {
 		xpbackground_g = readDouble("Spout.HUD.Retro.Colors.Background.GREEN", 0.75);
 		xpbackground_b = readDouble("Spout.HUD.Retro.Colors.Background.BLUE", 0.75);
 
-		msulphur = readInteger("Experience.Excavation.Sulphur", 30);
-		mbones = readInteger("Experience.Excavation.Bones", 30);
 		mbase = readInteger("Experience.Excavation.Base", 40);
-		mmushroom2 = readInteger("Experience.Excavation.Mushroom", 80);
-		mslowsand = readInteger("Experience.Excavation.Slowsand", 80);
-		mglowstone2 = readInteger("Experience.Excavation.Glowstone", 80);
-		mmusic = readInteger("Experience.Excavation.Music", 3000);
-		mdiamond2 = readInteger("Experience.Excavation.Diamond", 1000);
-		mapple = readInteger("Experience.Excavation.Apple", 100);
-		meggs = readInteger("Experience.Excavation.Eggs", 100);
-		mcake = readInteger("Experience.Excavation.Cake", 3000);
-		mcocoa = readInteger("Experience.Excavation.Cocoa_Beans", 100);
-		mslimeballs = readInteger("Experience.Excavation.Slimeballs", 100);
-		mstring = readInteger("Experience.Excavation.String", 200);
-		mbucket = readInteger("Experience.Excavation.Bucket", 100);
-		mweb = readInteger("Experience.Excavation.Web", 150);
-		mwatch = readInteger("Experience.Excavation.Watch", 200);
 
 		msugar = readInteger("Experience.Herbalism.Sugar_Cane", 30);
 		mwheat = readInteger("Experience.Herbalism.Wheat", 50);
