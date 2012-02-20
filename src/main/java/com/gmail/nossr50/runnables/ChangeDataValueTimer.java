@@ -20,8 +20,6 @@ import java.util.ArrayDeque;
 
 import org.bukkit.block.Block;
 
-import com.gmail.nossr50.mcMMO;
-
 /*
  * This file was created for a breakage introduced in 1.1-R2
  * It should be removed afterwards if the breakage is removed.
