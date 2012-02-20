@@ -11,6 +11,7 @@ Version 1.3.00-dev
  - Re-added mcMMO reporting damage events
  - Fixed /mcability not respecting permissions
  - Changed Swords Bleeding effect to never kill
+ - Changed Bleeding to never go beyond 10 ticks
  - Changed to use Bukkit's built-in ignoreCancelledEvents system
  - Changed chat logging for /p & /a
  - Changed Tree Feller to use per-use ArrayList
