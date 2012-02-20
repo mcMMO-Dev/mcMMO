@@ -21,6 +21,7 @@ import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Swords;
 
@@ -62,8 +63,18 @@ public class mcTimer implements Runnable
 			 */
 			if(thecount % 2 == 0 && PP.getBleedTicks() >= 1)
 			{
-        		Combat.dealDamage(player, 2);
+			    //Never kill with Bleeding
+			    if(player.getHealth() - 2 < 0)
+			    {
+			        if(player.getHealth() - 1 > 0)
+			            Combat.dealDamage(player, 1);
+			    } else
+			        Combat.dealDamage(player, 2);
+			    
         		PP.decreaseBleedTicks();
+        		
+        		if(PP.getBleedTicks() == 0)
+        		    player.sendMessage(mcLocale.getString("Swords.StoppedBleeding"));
         	}
 		
 			/*

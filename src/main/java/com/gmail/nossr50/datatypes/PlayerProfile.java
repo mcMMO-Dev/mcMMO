@@ -608,9 +608,17 @@ public class PlayerProfile
 	}
 	public void setBleedTicks(Integer newvalue){
 		bleedticks = newvalue;
+		
+		//Cap maximum ticks at 10
+        if(bleedticks > 10)
+            bleedticks = 10;
 	}
 	public void addBleedTicks(Integer newvalue){
 		bleedticks+=newvalue;
+		
+		//Cap maximum ticks at 10
+		if(bleedticks > 10)
+		    bleedticks = 10;
 	}
 	/*
 	 * EXPLOIT PREVENTION
