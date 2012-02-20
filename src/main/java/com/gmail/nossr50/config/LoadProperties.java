@@ -34,7 +34,7 @@ public class LoadProperties {
 			statsEnable, addxpEnable, ptpEnable, mmoeditEnable,
 			clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable,
 			mcrefreshEnable, aEnable, pEnable, enableMotd, enableMySpawn,
-			enableRegen, enableCobbleToMossy, useMySQL, cocoabeans, mushrooms,
+			enableCobbleToMossy, useMySQL, cocoabeans, mushrooms,
 			toolsLoseDurabilityFromAbilities, pvpxp, miningrequirespickaxe,
 			excavationRequiresShovel, woodcuttingrequiresaxe, eggs, apples,
 			cake, music, diamond, glowstone, slowsand, sulphur, netherrack,
