@@ -153,14 +153,14 @@ public class Combat
 		      				event.setCancelled(true);
 		      				if(theWolf.isTamed())
 		      				{
-		      				attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
-		      						mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(theWolf)})+" "+
-		      						mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {theWolf.getHealth()}));
+		      				    attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
+		      				            mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(theWolf)})+" "+
+		      				            mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {theWolf.getHealth()}));
 		      				} 
 		      				else
 		      				{
 		      					attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
-		      							mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {theWolf.getHealth()}));
+		      					        mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {theWolf.getHealth()}));
 		      				}
 		      			}
 		      		}
@@ -184,6 +184,21 @@ public class Combat
 				
 				if(mcPermissions.getInstance().taming(master))
 				{
+				    //Fast Food Service
+				    if(PPo.getSkillLevel(SkillType.TAMING) >= 50)
+                    {
+                        if(theWolf.getHealth() < theWolf.getMaxHealth())
+                        {
+                            if(Math.random() * 10 > 5)
+                            {
+                                theWolf.setHealth(theWolf.getHealth()+event.getDamage());
+                                
+                                if(theWolf.getHealth() > theWolf.getMaxHealth())
+                                    theWolf.setHealth(theWolf.getMaxHealth());
+                            }
+                        }
+                    }
+				    
 					//Sharpened Claws
 					if(PPo.getSkillLevel(SkillType.TAMING) >= 750)
 					{

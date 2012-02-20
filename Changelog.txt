@@ -6,6 +6,7 @@ Version 1.3.00-dev
  - Added configuration option to control mcMMO reporting damage events
  - Added hunger regain bonuses to Herbalism skill
  - Added framework for new Blast Mining skill
+ - Added Fast Food Service subskill to Taming
  - Re-added mcMMO reporting damage events
  - Fixed /mcability not respecting permissions
  - Changed to use Bukkit's built-in ignoreCancelledEvents system
