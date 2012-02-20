@@ -264,7 +264,6 @@ Excavation:
         Sulphur: true
         Bones: true
         Apples: true
-        Map: true
         Slimeballs: true
         Bucket: true
         Netherrack: true
@@ -278,7 +277,313 @@ Excavation:
         Music: true
         Diamond: true
         Cocoa_Beans: true
-
+    Treasure:
+        - Cake
+        - Gunpowder
+        - Bone
+        - Apple
+        - Slimeball
+        - Bucket
+        - Netherrack
+        - Red_Mushroom
+        - Brown_Mushroom
+        - Egg
+        - Soul_Sand
+        - Clock
+        - Cobweb
+        - String
+        - Glowstone_Dust
+        - Gold_Music
+        - Green_Music
+        - Diamond
+        - Cocoa_Beans
+        
+Treasures:
+    Cake:
+        ID: 354
+        Data: 0
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 750
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: true
+            Clay: true
+            Mycelium: true
+            Soul_Sand: true
+    Gunpowder:
+        ID: 289
+        Data: 0
+        Amount: 1
+        XP: 30
+        Drop_Chance: 10.0
+        Drop_Level: 75
+        Drops_From:
+            Dirt: false
+            Grass: false
+            Sand: false
+            Gravel: true
+            Clay: false
+            Mycelium: false
+            Soul_Sand: false
+    Bone:
+        ID: 352
+        Data: 0
+        Amount: 1
+        XP: 30
+        Drop_Chance: 10.0
+        Drop_Level: 175
+        Drops_From:
+            Dirt: false
+            Grass: false
+            Sand: false
+            Gravel: true
+            Clay: false
+            Mycelium: false
+            Soul_Sand: false            
+    Apple:
+        ID: 260
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 250
+        Drops_From:
+            Dirt: false
+            Grass: true
+            Sand: false
+            Gravel: false
+            Clay: false
+            Mycelium: true
+            Soul_Sand: false
+    Slimeball:
+        ID: 341
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 5.0
+        Drop_Level: 150
+        Drops_From:
+            Dirt: false
+            Grass: false
+            Sand: false
+            Gravel: false
+            Clay: true
+            Mycelium: false
+            Soul_Sand: false
+    Bucket:
+        ID: 325
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 500
+        Drops_From:
+            Dirt: false
+            Grass: false
+            Sand: false
+            Gravel: false
+            Clay: true
+            Mycelium: false
+            Soul_Sand: false
+    Netherrack:
+        ID: 87
+        Data: 0
+        Amount: 1
+        XP: 30
+        Drop_Chance: 0.5
+        Drop_Level: 850
+        Drops_From:
+            Dirt: false
+            Grass: false
+            Sand: false
+            Gravel: true
+            Clay: false
+            Mycelium: false
+            Soul_Sand: false
+    Red_Mushroom:
+        ID: 40
+        Data: 0
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 500
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: false
+            Gravel: false
+            Clay: false
+            Mycelium: true
+            Soul_Sand: false
+    Brown_Mushroom:
+        ID: 39
+        Data: 0
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 500
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: false
+            Gravel: false
+            Clay: false
+            Mycelium: true
+            Soul_Sand: false
+    Egg:
+        ID: 344
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 1.0
+        Drop_Level: 250
+        Drops_From:
+            Dirt: false
+            Grass: true
+            Sand: false
+            Gravel: false
+            Clay: false
+            Mycelium: false
+            Soul_Sand: false
+    Soul_Sand:
+        ID: 88
+        Data: 0
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 650
+        Drops_From:
+            Dirt: false
+            Grass: false
+            Sand: true
+            Gravel: false
+            Clay: false
+            Mycelium: false
+            Soul_Sand: false
+    Clock:
+        ID: 347
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 500
+        Drops_From:
+            Dirt: false
+            Grass: false
+            Sand: false
+            Gravel: false
+            Clay: true
+            Mycelium: false
+            Soul_Sand: false
+    Cobweb:
+        ID: 30
+        Data: 0
+        Amount: 1
+        XP: 150
+        Drop_Chance: 5.0
+        Drop_Level: 750
+        Drops_From:
+            Dirt: false
+            Grass: false
+            Sand: false
+            Gravel: false
+            Clay: true
+            Mycelium: false
+            Soul_Sand: false
+    String:
+        ID: 287
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 5.0
+        Drop_Level: 250
+        Drops_From:
+            Dirt: false
+            Grass: false
+            Sand: false
+            Gravel: false
+            Clay: true
+            Mycelium: false
+            Soul_Sand: false
+    Glowstone_Dust:
+        ID: 348
+        Data: 0
+        Amount: 1
+        XP: 80
+        Drop_Chance: 5.0
+        Drop_Level: 25
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: false
+            Clay: false
+            Mycelium: true
+            Soul_Sand: false
+    Gold_Music:
+        ID: 2256
+        Data: 0
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 250
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: true
+            Clay: true
+            Mycelium: true
+            Soul_Sand: true
+    Green_Music:
+        ID: 2257
+        Data: 0
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 250
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: true
+            Clay: true
+            Mycelium: true
+            Soul_Sand: true
+    Diamond:
+        ID: 264
+        Data: 0
+        Amount: 1
+        XP: 1000
+        Drop_Chance: 0.13
+        Drop_Level: 350
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: true
+            Clay: true
+            Mycelium: true
+            Soul_Sand: true
+    Cocoa_Beans:
+        ID: 351
+        Data: 3
+        Amount: 1
+        XP: 100
+        Drop_Chance: 1.33
+        Drop_Level: 350
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: true
+            Clay: true
+            Mycelium: true
+            Soul_Sand: true
 #
 #  Settings for commands
 ###

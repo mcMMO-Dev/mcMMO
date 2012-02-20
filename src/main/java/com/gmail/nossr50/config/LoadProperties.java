@@ -19,6 +19,9 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -86,6 +89,21 @@ public class LoadProperties {
 			sorceryxpmodifier, unarmedxpmodifier, herbalismxpmodifier,
 			excavationxpmodifier, archeryxpmodifier, swordsxpmodifier,
 			axesxpmodifier, acrobaticsxpmodifier;
+	
+	public static List<String> excavationTreasures = new ArrayList<String>();
+	public static List<Integer> excavationIDs = new ArrayList<Integer>();
+	public static List<Integer> excavationDatas = new ArrayList<Integer>();
+	public static List<Integer> excavationAmounts = new ArrayList<Integer>();
+	public static List<Integer> excavationXPs = new ArrayList<Integer>();
+	public static List<Double> excavationDropChances = new ArrayList<Double>();
+	public static List<Integer> excavationDropLevels = new ArrayList<Integer>();
+	public static List<Boolean> excavationFromDirt = new ArrayList<Boolean>();
+	public static List<Boolean> excavationFromGrass = new ArrayList<Boolean>();
+	public static List<Boolean> excavationFromSand = new ArrayList<Boolean>();
+	public static List<Boolean> excavationFromGravel = new ArrayList<Boolean>();
+	public static List<Boolean> excavationFromClay = new ArrayList<Boolean>();
+	public static List<Boolean> excavationFromMycel = new ArrayList<Boolean>();
+	public static List<Boolean> excavationFromSoulSand = new ArrayList<Boolean>();
 
 	public static HUDType defaulthud;
 	protected static File configFile;
@@ -438,5 +456,26 @@ public class LoadProperties {
 		
 		aDisplayNames = readBoolean("Commands.a.Display_Names", true);
 		pDisplayNames = readBoolean("Commands.p.Display_Names", true);
+		
+		//Custom Excavation Drops
+		excavationTreasures = config.getStringList("Excavation.Treasure");
+		Iterator<String> iterator = excavationTreasures.iterator();
+		while(iterator.hasNext())
+		{
+			String temp2 = iterator.next();
+			excavationIDs.add(config.getInt("Treasures." + temp2 + ".ID"));
+			excavationDatas.add(config.getInt("Treasures." + temp2 + ".Data"));
+			excavationXPs.add(config.getInt("Treasures." + temp2 + ".XP"));
+			excavationAmounts.add(config.getInt("Treasures." + temp2 + ".Amount"));
+			excavationDropChances.add(config.getDouble("Treasures." + temp2 + ".Drop_Chance"));
+			excavationDropLevels.add(config.getInt("Treasures." + temp2 + ".Drop_Level"));
+			excavationFromDirt.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Dirt"));
+			excavationFromGrass.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Grass"));
+			excavationFromSand.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Sand"));
+			excavationFromGravel.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Gravel"));
+			excavationFromClay.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Clay"));
+			excavationFromMycel.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Mycelium"));
+			excavationFromSoulSand.add(config.getBoolean("Treasures." + temp2 + ".Drops_From.Soul_Sand"));
+		}
 	}
 }

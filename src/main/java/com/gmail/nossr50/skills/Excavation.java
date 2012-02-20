@@ -17,6 +17,7 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -89,164 +90,296 @@ public class Excavation
 		int skillLevel = PP.getSkillLevel(SkillType.EXCAVATION);
     	ArrayList<ItemStack> is = new ArrayList<ItemStack>();
     	int xp = 0;
+    	   	
+    	//Custom Excavation Drops
+    	List<Integer> idValues = LoadProperties.excavationIDs;
+    	List<Integer> dataValues = LoadProperties.excavationDatas;
+    	List<Integer> xpValues = LoadProperties.excavationXPs;
+    	List<Integer> amounts = LoadProperties.excavationAmounts;
+    	List<Double> dropChances = LoadProperties.excavationDropChances;
+    	List<Integer> dropLevels = LoadProperties.excavationDropLevels;
+    	List<Boolean> dirt = LoadProperties.excavationFromDirt;
+    	List<Boolean> grass = LoadProperties.excavationFromGrass;
+    	List<Boolean> sand = LoadProperties.excavationFromSand;
+    	List<Boolean> gravel = LoadProperties.excavationFromGravel;
+    	List<Boolean> clay = LoadProperties.excavationFromClay;
+    	List<Boolean> mycel = LoadProperties.excavationFromMycel;
+    	List<Boolean> soulSand = LoadProperties.excavationFromSoulSand;
     	
     	switch(type)
     	{
-    	case GRASS:
-    		if(skillLevel >= 250)
+    	case DIRT:
+    		for(int i = 0; i < dirt.size(); i++)
     		{
-	    		//CHANCE TO GET EGGS
-	    		if(LoadProperties.eggs && Math.random() * 100 > 99)
-	    		{
-	    			xp+= LoadProperties.meggs;
-					is.add(new ItemStack(Material.EGG, 1, (byte)0, (byte)0));
-	    		}
-	    		//CHANCE TO GET APPLES
-	    		if(LoadProperties.apples && Math.random() * 100 > 99)
-	    		{
-	    			xp+= LoadProperties.mapple;
-					is.add(new ItemStack(Material.APPLE, 1, (byte)0, (byte)0));
-	    		}
+    			if(dirt.get(i))
+    			{
+    				if(skillLevel >= dropLevels.get(i))
+    				{
+    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
+    					{
+    						xp += xpValues.get(i);
+    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
+    					}
+    				}
+    			}
+    		}
+    		break;
+    	case GRASS:
+    		for(int i = 0; i < grass.size(); i++)
+    		{
+    			if(grass.get(i))
+    			{
+    				if(skillLevel >= dropLevels.get(i))
+    				{
+    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
+    					{
+    						xp += xpValues.get(i);
+    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
+    					}
+    				}
+    			}
+    		}
+    		break;
+    	case SAND:
+    		for(int i = 0; i < sand.size(); i++)
+    		{
+    			if(sand.get(i))
+    			{
+    				if(skillLevel >= dropLevels.get(i))
+    				{
+    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
+    					{
+    						xp += xpValues.get(i);
+    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
+    					}
+    				}
+    			}
     		}
     		break;
     	case GRAVEL:
-    		//CHANCE TO GET NETHERRACK
-    		if(LoadProperties.netherrack && skillLevel >= 850 && Math.random() * 200 > 199)
+    		for(int i = 0; i < gravel.size(); i++)
     		{
-    			xp+= LoadProperties.mnetherrack;
-				is.add(new ItemStack(Material.NETHERRACK, 1, (byte)0, (byte)0));
-				
-    		}
-    		//CHANCE TO GET SULPHUR
-    		if(LoadProperties.sulphur && skillLevel >= 75 && Math.random() * 10 > 9)
-    		{
-    			xp+= LoadProperties.msulphur;
-				is.add(new ItemStack(Material.SULPHUR, 1, (byte)0, (byte)0));
-    		}
-    		//CHANCE TO GET BONES
-    		if(LoadProperties.bones && skillLevel >= 175 && Math.random() * 10 > 9)
-    		{
-        		xp+= LoadProperties.mbones;
-    			is.add(new ItemStack(Material.BONE, 1, (byte)0, (byte)0));
-        	}
-    		break;
-    	case SAND:
-    		//CHANCE TO GET GLOWSTONE
-    		if(LoadProperties.glowstone && skillLevel >= 50 && Math.random() * 100 > 95)
-    		{
-    			xp+= LoadProperties.mglowstone2;
-				is.add(new ItemStack(Material.GLOWSTONE_DUST, 1, (byte)0, (byte)0));
-				
-    		}
-    		//CHANCE TO GET SOUL SAND
-    		if(LoadProperties.slowsand && skillLevel >= 650 && Math.random() * 200 > 199)
-    		{
-    			xp+= LoadProperties.mslowsand;
-				is.add(new ItemStack(Material.SOUL_SAND, 1, (byte)0, (byte)0));
+    			if(gravel.get(i))
+    			{
+    				if(skillLevel >= dropLevels.get(i))
+    				{
+    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
+    					{
+    						xp += xpValues.get(i);
+    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
+    					}
+    				}
+    			}
     		}
     		break;
     	case CLAY:
-    		//CHANCE TO GET SLIMEBALLS
-    		if(LoadProperties.slimeballs && skillLevel >= 50 && Math.random() * 20 > 19)
+    		for(int i = 0; i < clay.size(); i++)
     		{
-   				xp+= LoadProperties.mslimeballs;
-   				is.add(new ItemStack(Material.SLIME_BALL, 1, (byte)0, (byte)0));
-      		}
-    		//CHANCE TO GET STRING
-    		if(LoadProperties.string && skillLevel >= 250 && Math.random() * 20 > 19)
-    		{
-    			xp+= LoadProperties.mstring;
-    			is.add(new ItemStack(Material.STRING, 1, (byte)0, (byte)0));
+    			if(clay.get(i))
+    			{
+    				if(skillLevel >= dropLevels.get(i))
+    				{
+    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
+    					{
+    						xp += xpValues.get(i);
+    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
+    					}
+    				}
+    			}
     		}
-    		if(skillLevel >= 500)
+    		break;
+    	case MYCEL:
+    		for(int i = 0; i < mycel.size(); i++)
     		{
-    			//CHANCE TO GET CLOCK
-        		if(LoadProperties.watch && Math.random() * 100 > 99)
-        		{
-        			xp+= LoadProperties.mwatch;
-        			is.add(new ItemStack(Material.WATCH, 1, (byte)0));
-        		
-        		}
-        		//CHANCE TO GET BUCKET
-        		if(LoadProperties.bucket && Math.random() * 100 > 99)
-        		{
-       				xp+= LoadProperties.mbucket;
-       				is.add(new ItemStack(Material.BUCKET, 1, (byte)0, (byte)0));
-        		}
+    			if(mycel.get(i))
+    			{
+    				if(skillLevel >= dropLevels.get(i))
+    				{
+    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
+    					{
+    						xp += xpValues.get(i);
+    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
+    					}
+    				}
+    			}
     		}
-    		//CHANCE TO GET COBWEB
-    		if(LoadProperties.web && skillLevel >= 750 && Math.random() * 20 > 19)
+    		break;
+    	case SOUL_SAND:
+    		for(int i = 0; i < soulSand.size(); i++)
     		{
-   				xp+= LoadProperties.mweb;
-   				is.add(new ItemStack(Material.WEB, 1, (byte)0, (byte)0));
+    			if(soulSand.get(i))
+    			{
+    				if(skillLevel >= dropLevels.get(i))
+    				{
+    					if(Math.random() * 100 > (100.00 - dropChances.get(i)))
+    					{
+    						xp += xpValues.get(i);
+    						is.add(new ItemStack(idValues.get(i), amounts.get(i),  (byte)0, dataValues.get(i).byteValue()));
+    					}
+    				}
+    			}
     		}
     		break;
     	}
     	
-    	//ALL MATERIALS
-    	if(type == Material.GRASS || type == Material.DIRT || type == Material.GRAVEL || type == Material.SAND || type == Material.CLAY || type == Material.MYCEL || type == Material.SOUL_SAND)
-    	{
-    		xp+= LoadProperties.mbase;
-			//CHANCE TO GET CAKE
-			if(LoadProperties.cake && skillLevel >= 750 && Math.random() * 2000 > 1999)
-			{
-				xp+= LoadProperties.mcake;
-				is.add(new ItemStack(Material.CAKE, 1, (byte)0, (byte)0));
-			}
-    		if(skillLevel >= 350)
-    		{
-    			//CHANCE TO GET DIAMOND
-    			if(LoadProperties.diamond && Math.random() * 750 > 749)
-    			{
-    				xp+= LoadProperties.mdiamond2;
-        			is.add(new ItemStack(Material.DIAMOND, 1, (byte)0, (byte)0));
-    			}
-    			//CHANCE TO GET GREEN MUSIC
-    			if(LoadProperties.music && Math.random() * 2000 > 1999)
-    			{
-    				xp+= LoadProperties.mmusic;
-    				is.add(new ItemStack(Material.GREEN_RECORD, 1, (byte)0, (byte)0));
-    			}
-    		}
-			//CHANCE TO GET YELLOW MUSIC
-			if(LoadProperties.music && skillLevel >= 250 && Math.random() * 2000 > 1999)
-			{
-				xp+= LoadProperties.mmusic;
-				is.add(new ItemStack(Material.GOLD_RECORD, 1, (byte)0, (byte)0));
-			}
-    	}
     	
-    	//GRASS OR DIRT OR MYCEL
-    	if(type == Material.DIRT || type == Material.GRASS || type == Material.MYCEL)
-    	{
-    		//CHANCE FOR COCOA BEANS
-    		if(LoadProperties.cocoabeans && skillLevel >= 50 && Math.random() * 75 > 74)
-    		{
-    			xp+= LoadProperties.mcocoa;
-				is.add(new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)3));
-    		}
-    		//CHANCE FOR SHROOMS
-    		if(LoadProperties.mushrooms && skillLevel >= 500 && Math.random() * 200 > 199)
-    		{
-    			xp+= LoadProperties.mmushroom2;
-    			switch((int)(Math.random() * 2))
-    			{
-    			case 0:
-    				is.add(new ItemStack(Material.BROWN_MUSHROOM, 1, (byte)0, (byte)0));
-    				break;
-    			case 1:
-    				is.add(new ItemStack(Material.RED_MUSHROOM, 1, (byte)0, (byte)0));
-    				break;
-    			}
-				
-    		}
-    		//CHANCE TO GET GLOWSTONE
-    		if(LoadProperties.glowstone && skillLevel >= 25 && Math.random() * 100 > 95)
-    		{
-    			xp+= LoadProperties.mglowstone2;
-				is.add(new ItemStack(Material.GLOWSTONE_DUST, 1, (byte)0, (byte)0));
-    		}
-    	}
+//    	switch(type)
+//    	{
+//    	case GRASS:
+//    		if(skillLevel >= 250)
+//    		{
+//	    		//CHANCE TO GET EGGS
+//	    		if(LoadProperties.eggs && Math.random() * 100 > 99)
+//	    		{
+//	    			xp+= LoadProperties.meggs;
+//					is.add(new ItemStack(Material.EGG, 1, (byte)0, (byte)0));
+//	    		}
+//	    		//CHANCE TO GET APPLES
+//	    		if(LoadProperties.apples && Math.random() * 100 > 99)
+//	    		{
+//	    			xp+= LoadProperties.mapple;
+//					is.add(new ItemStack(Material.APPLE, 1, (byte)0, (byte)0));
+//	    		}
+//    		}
+//    		break;
+//    	case GRAVEL:
+//    		//CHANCE TO GET NETHERRACK
+//    		if(LoadProperties.netherrack && skillLevel >= 850 && Math.random() * 200 > 199)
+//    		{
+//    			xp+= LoadProperties.mnetherrack;
+//				is.add(new ItemStack(Material.NETHERRACK, 1, (byte)0, (byte)0));
+//				
+//    		}
+//    		//CHANCE TO GET SULPHUR
+//    		if(LoadProperties.sulphur && skillLevel >= 75 && Math.random() * 10 > 9)
+//    		{
+//    			xp+= LoadProperties.msulphur;
+//				is.add(new ItemStack(Material.SULPHUR, 1, (byte)0, (byte)0));
+//    		}
+//    		//CHANCE TO GET BONES
+//    		if(LoadProperties.bones && skillLevel >= 175 && Math.random() * 10 > 9)
+//    		{
+//        		xp+= LoadProperties.mbones;
+//    			is.add(new ItemStack(Material.BONE, 1, (byte)0, (byte)0));
+//        	}
+//    		break;
+//    	case SAND:
+//    		//CHANCE TO GET GLOWSTONE
+//    		if(LoadProperties.glowstone && skillLevel >= 50 && Math.random() * 100 > 95)
+//    		{
+//    			xp+= LoadProperties.mglowstone2;
+//				is.add(new ItemStack(Material.GLOWSTONE_DUST, 1, (byte)0, (byte)0));
+//				
+//    		}
+//    		//CHANCE TO GET SOUL SAND
+//    		if(LoadProperties.slowsand && skillLevel >= 650 && Math.random() * 200 > 199)
+//    		{
+//    			xp+= LoadProperties.mslowsand;
+//				is.add(new ItemStack(Material.SOUL_SAND, 1, (byte)0, (byte)0));
+//    		}
+//    		break;
+//    	case CLAY:
+//    		//CHANCE TO GET SLIMEBALLS
+//    		if(LoadProperties.slimeballs && skillLevel >= 50 && Math.random() * 20 > 19)
+//    		{
+//   				xp+= LoadProperties.mslimeballs;
+//   				is.add(new ItemStack(Material.SLIME_BALL, 1, (byte)0, (byte)0));
+//      		}
+//    		//CHANCE TO GET STRING
+//    		if(LoadProperties.string && skillLevel >= 250 && Math.random() * 20 > 19)
+//    		{
+//    			xp+= LoadProperties.mstring;
+//    			is.add(new ItemStack(Material.STRING, 1, (byte)0, (byte)0));
+//    		}
+//    		if(skillLevel >= 500)
+//    		{
+//    			//CHANCE TO GET CLOCK
+//        		if(LoadProperties.watch && Math.random() * 100 > 99)
+//        		{
+//        			xp+= LoadProperties.mwatch;
+//        			is.add(new ItemStack(Material.WATCH, 1, (byte)0));
+//        		
+//        		}
+//        		//CHANCE TO GET BUCKET
+//        		if(LoadProperties.bucket && Math.random() * 100 > 99)
+//        		{
+//       				xp+= LoadProperties.mbucket;
+//       				is.add(new ItemStack(Material.BUCKET, 1, (byte)0, (byte)0));
+//        		}
+//    		}
+//    		//CHANCE TO GET COBWEB
+//    		if(LoadProperties.web && skillLevel >= 750 && Math.random() * 20 > 19)
+//    		{
+//   				xp+= LoadProperties.mweb;
+//   				is.add(new ItemStack(Material.WEB, 1, (byte)0, (byte)0));
+//    		}
+//    		break;
+//    	}
+//    	
+//    	//ALL MATERIALS
+//    	if(type == Material.GRASS || type == Material.DIRT || type == Material.GRAVEL || type == Material.SAND || type == Material.CLAY || type == Material.MYCEL || type == Material.SOUL_SAND)
+//    	{
+//    		xp+= LoadProperties.mbase;
+//			//CHANCE TO GET CAKE
+//			if(LoadProperties.cake && skillLevel >= 750 && Math.random() * 2000 > 1999)
+//			{
+//				xp+= LoadProperties.mcake;
+//				is.add(new ItemStack(Material.CAKE, 1, (byte)0, (byte)0));
+//			}
+//    		if(skillLevel >= 350)
+//    		{
+//    			//CHANCE TO GET DIAMOND
+//    			if(LoadProperties.diamond && Math.random() * 750 > 749)
+//    			{
+//    				xp+= LoadProperties.mdiamond2;
+//        			is.add(new ItemStack(Material.DIAMOND, 1, (byte)0, (byte)0));
+//    			}
+//    			//CHANCE TO GET GREEN MUSIC
+//    			if(LoadProperties.music && Math.random() * 2000 > 1999)
+//    			{
+//    				xp+= LoadProperties.mmusic;
+//    				is.add(new ItemStack(Material.GREEN_RECORD, 1, (byte)0, (byte)0));
+//    			}
+//    		}
+//			//CHANCE TO GET YELLOW MUSIC
+//			if(LoadProperties.music && skillLevel >= 250 && Math.random() * 2000 > 1999)
+//			{
+//				xp+= LoadProperties.mmusic;
+//				is.add(new ItemStack(Material.GOLD_RECORD, 1, (byte)0, (byte)0));
+//			}
+//    	}
+//    	
+//    	//GRASS OR DIRT OR MYCEL
+//    	if(type == Material.DIRT || type == Material.GRASS || type == Material.MYCEL)
+//    	{
+//    		//CHANCE FOR COCOA BEANS
+//    		if(LoadProperties.cocoabeans && skillLevel >= 50 && Math.random() * 75 > 74)
+//    		{
+//    			xp+= LoadProperties.mcocoa;
+//				is.add(new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)3));
+//    		}
+//    		//CHANCE FOR SHROOMS
+//    		if(LoadProperties.mushrooms && skillLevel >= 500 && Math.random() * 200 > 199)
+//    		{
+//    			xp+= LoadProperties.mmushroom2;
+//    			switch((int)(Math.random() * 2))
+//    			{
+//    			case 0:
+//    				is.add(new ItemStack(Material.BROWN_MUSHROOM, 1, (byte)0, (byte)0));
+//    				break;
+//    			case 1:
+//    				is.add(new ItemStack(Material.RED_MUSHROOM, 1, (byte)0, (byte)0));
+//    				break;
+//    			}
+//				
+//    		}
+//    		//CHANCE TO GET GLOWSTONE
+//    		if(LoadProperties.glowstone && skillLevel >= 25 && Math.random() * 100 > 95)
+//    		{
+//    			xp+= LoadProperties.mglowstone2;
+//				is.add(new ItemStack(Material.GLOWSTONE_DUST, 1, (byte)0, (byte)0));
+//    		}
+//    	}
     	
     	//Drop items
     	for(ItemStack x : is)
