@@ -834,7 +834,8 @@ public class PlayerProfile
 	public long getSkillDATS(AbilityType abilityType)
     {
 	    //Is this actually unused, or should it actually be returning the convertedBack variable?
-		long convertedBack = skillsDATS.get(abilityType) * 1000;
+	    //It *is* unused, I don't think I put this here so I'm going to comment it out - nossr50
+		//long convertedBack = skillsDATS.get(abilityType) * 1000;
         return skillsDATS.get(abilityType);
     }
     public void setSkillDATS(AbilityType abilityType, long value)
