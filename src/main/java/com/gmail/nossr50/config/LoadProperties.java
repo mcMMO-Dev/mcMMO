@@ -77,7 +77,7 @@ public class LoadProperties {
 			levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
 			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
 			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
-			anvilID, saveInterval;
+			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -100,7 +100,10 @@ public class LoadProperties {
 	public static List<ExcavationTreasure> excavationFromClay = new ArrayList<ExcavationTreasure>();
 	public static List<ExcavationTreasure> excavationFromMycel = new ArrayList<ExcavationTreasure>();
 	public static List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
-	public static List<FishingTreasure> fishingRewards = new ArrayList<FishingTreasure>();
+	public static List<FishingTreasure> fishingRewardsTier1 = new ArrayList<FishingTreasure>();
+	public static List<FishingTreasure> fishingRewardsTier2 = new ArrayList<FishingTreasure>();
+	public static List<FishingTreasure> fishingRewardsTier3 = new ArrayList<FishingTreasure>();
+	public static List<FishingTreasure> fishingRewardsTier4 = new ArrayList<FishingTreasure>();
 
 	public static HUDType defaulthud;
 	protected static File configFile;
@@ -377,6 +380,10 @@ public class LoadProperties {
 		keepEnchantsRank4 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
 
 		fishingDrops = readBoolean("Fishing.Drops.Item_Drops_Enabled", true);
+		fishingTier1 = readInteger("Fishing.Drop_Level.Tier1", 200);
+		fishingTier2 = readInteger("Fishing.Drop_Level.Tier1", 400);
+		fishingTier3 = readInteger("Fishing.Drop_Level.Tier1", 600);
+		fishingTier4 = readInteger("Fishing.Drop_Level.Tier1", 800);
 		fishingDropChanceTier1 = readInteger("Fishing.Drops.Drop_Chance.Tier_1", 20);
 		fishingDropChanceTier2 = readInteger("Fishing.Drops.Drop_Chance.Tier_2", 25);
 		fishingDropChanceTier3 = readInteger("Fishing.Drops.Drop_Chance.Tier_3", 30);
@@ -513,7 +520,17 @@ public class LoadProperties {
 				if(!fishingTreasures.contains(treasureKey)) continue;
 				
 				FishingTreasure fTreasure = (FishingTreasure) treasure;
-				fishingRewards.add(fTreasure);
+				int dropLevel = fTreasure.getDropLevel();
+				int maxLevel = fTreasure.getMaxLevel();
+				
+				if(dropLevel <= fishingTier1 && maxLevel >= fishingTier1)
+					fishingRewardsTier1.add(fTreasure);
+				if(dropLevel <= fishingTier2 && maxLevel >= fishingTier2)
+					fishingRewardsTier2.add(fTreasure);
+				if(dropLevel <= fishingTier3 && maxLevel >= fishingTier3)
+					fishingRewardsTier3.add(fTreasure);
+				if(dropLevel <= fishingTier4 && maxLevel >= fishingTier4)
+					fishingRewardsTier4.add(fTreasure);
 				
 			} else if(treasure instanceof ExcavationTreasure) {
 				if(!excavationTreasures.contains(treasureKey)) continue;

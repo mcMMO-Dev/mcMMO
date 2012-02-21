@@ -39,21 +39,18 @@ public class Fishing {
 	{
 		int lvl = PP.getSkillLevel(SkillType.FISHING);
 
-		if(lvl < 100)
+		if(lvl >= LoadProperties.fishingTier1 && lvl < LoadProperties.fishingTier2)
 		{
 			return 1;
-		} else if (lvl >= 100 && lvl < 300)
+		} else if (lvl >= LoadProperties.fishingTier2 && lvl < LoadProperties.fishingTier3)
 		{
 			return 2;
-		} else if (lvl >= 300 && lvl < 600)
+		} else if (lvl >= LoadProperties.fishingTier3 && lvl < LoadProperties.fishingTier4)
 		{
 			return 3;
-		} else if (lvl >= 600 && lvl < 900)
-		{
-			return 4;
 		} else
 		{
-			return 5;
+			return 4;
 		}
 	}
 
@@ -72,9 +69,6 @@ public class Fishing {
 			break;
 		case 4:
 			getFishingResultsTier4(player, event);
-			break;
-		case 5:
-			getFishingResultsTier5(player, event);
 			break;
 		}
 		m.mcDropItem(player.getLocation(), new ItemStack(Material.RAW_FISH, 1));
