@@ -8,6 +8,8 @@ Version 1.3.00-dev
  - Added hunger regain bonuses to Herbalism skill
  - Added framework for new Blast Mining skill
  - Added Fast Food Service subskill to Taming
+ - Added Wolf Taming XP to Taming
+ - Added Sheep Shearing XP to Taming
  - Re-added mcMMO reporting damage events
  - Fixed /mcability not respecting permissions
  - Changed Taming to also gain XP from shearing

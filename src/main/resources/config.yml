@@ -208,6 +208,8 @@ Experience:
         Moss_Stone: 30
     Taming:
         Shearing: 250
+        Animal_Taming:
+            Wolf: 250
 
 #
 #  Settings for Fishing

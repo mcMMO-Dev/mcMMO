@@ -32,6 +32,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -39,6 +40,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -223,8 +225,7 @@ public class mcEntityListener implements Listener
 			}
 		}		
 	}
-	
-	
+		
 	@EventHandler (priority = EventPriority.LOW)
 	public void onEnitityExplode(EntityExplodeEvent event)
 	{
@@ -332,6 +333,20 @@ public class mcEntityListener implements Listener
 				}
 			}
 		}
+	}
+	
+	@EventHandler (priority = EventPriority.MONITOR)
+	public void onEntityTame(EntityTameEvent event)
+	{
+		Player player = (Player) event.getOwner();
+	    if(mcPermissions.getInstance().taming(player))
+	    {
+	        PlayerProfile PP = Users.getProfile(player);
+	        if(event.getEntity() instanceof Wolf)
+	        {
+	        	PP.addXP(SkillType.TAMING, LoadProperties.mtameWolf, player);
+	        }
+	    }
 	}
 	
 	public boolean isBow(ItemStack is){
