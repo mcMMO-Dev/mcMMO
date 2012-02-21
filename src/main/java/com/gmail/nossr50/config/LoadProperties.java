@@ -99,6 +99,7 @@ public class LoadProperties {
 	public static List<ExcavationTreasure> excavationFromClay = new ArrayList<ExcavationTreasure>();
 	public static List<ExcavationTreasure> excavationFromMycel = new ArrayList<ExcavationTreasure>();
 	public static List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
+	public static List<FishingTreasure> fishingRewards = new ArrayList<FishingTreasure>();
 
 	public static HUDType defaulthud;
 	protected static File configFile;
@@ -439,7 +440,9 @@ public class LoadProperties {
 			ItemStack item = new ItemStack(id, amount, (byte) 0, (byte) data);
 
 			if(readBoolean("Treasures." + treasureName + ".Drops_From.Fishing", false)) {
-				// TODO: Fishing
+				int maxLevel = config.getInt("Treasures." + treasureName + ".Max_Levels");
+				FishingTreasure fTreasure = new FishingTreasure(item, xp, dropChance, dropLevel, maxLevel);
+				treasures.put(treasureName, fTreasure);
 			} else {
 				ExcavationTreasure eTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
 				if(readBoolean("Treasures." + treasureName + ".Drops_From.Dirt", false))
@@ -462,6 +465,7 @@ public class LoadProperties {
 		}
 
 		List<String> excavationTreasures = config.getStringList("Excavation.Treasure");
+		List<String> fishingTreasures = config.getStringList("Excavation.Treasure");
 
 		Iterator<String> treasureIterator = treasures.keySet().iterator();
 		while(treasureIterator.hasNext()) {
@@ -469,7 +473,11 @@ public class LoadProperties {
 			Treasure treasure = treasures.get(treasureKey);
 
 			if(treasure instanceof FishingTreasure) {
-				// TODO: Fishing
+				if(!fishingTreasures.contains(treasureKey)) continue;
+				
+				FishingTreasure fTreasure = (FishingTreasure) treasure;
+				fishingRewards.add(fTreasure);
+				
 			} else if(treasure instanceof ExcavationTreasure) {
 				if(!excavationTreasures.contains(treasureKey)) continue;
 
