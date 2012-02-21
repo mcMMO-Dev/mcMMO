@@ -78,7 +78,7 @@ public class mcPlayerListener implements Listener
 		plugin = instance;
 	}
 	
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onSheepUndressing(PlayerShearEntityEvent event)
 	{
 	    Player player = event.getPlayer();
