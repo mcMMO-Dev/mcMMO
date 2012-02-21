@@ -44,6 +44,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
@@ -77,6 +78,18 @@ public class mcPlayerListener implements Listener
 		plugin = instance;
 	}
 
+	
+	@EventHandler(ignoreCancelled = true)
+	public void onSheepUndressing(PlayerShearEntityEvent event)
+	{
+	    Player player = event.getPlayer();
+	    if(mcPermissions.getInstance().taming(player))
+	    {
+	        PlayerProfile PP = Users.getProfile(player);
+	        PP.addXP(SkillType.TAMING, 100, player);
+	    }
+	}
+	
 	@EventHandler
 	public void onPlayerFish(PlayerFishEvent event) 
 	{

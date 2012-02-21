@@ -206,6 +206,8 @@ Experience:
         Iron: 250
         End_Stone: 150
         Moss_Stone: 30
+    Taming:
+        Shearing: 250
 
 #
 #  Settings for Fishing
