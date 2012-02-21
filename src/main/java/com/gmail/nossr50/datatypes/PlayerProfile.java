@@ -985,6 +985,9 @@ public class PlayerProfile
 			case AXES:
 				xp=(int) (xp/LoadProperties.axesxpmodifier);
 				break;
+			case FISHING:
+				xp=(int) (xp/LoadProperties.fishingxpmodifier);
+				break;
 			}
 			xp=xp*LoadProperties.xpGainMultiplier;
 			
