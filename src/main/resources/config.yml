@@ -215,6 +215,11 @@ Experience:
 #  Settings for Fishing
 ###
 Fishing:
+    Drop_Level:
+        Tier1: 200
+        Tier2: 400
+        Tier3: 600
+        Tier4: 800
     Drops:
         Item_Drops_Enabled: true
         Drop_Chance:
