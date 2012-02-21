@@ -48,11 +48,9 @@ public class LoadProperties {
 			enableCobbleToMossy, useMySQL, toolsLoseDurabilityFromAbilities,
 			pvpxp, miningrequirespickaxe, excavationRequiresShovel,
 			woodcuttingrequiresaxe, anvilmessages, mayDowngradeEnchants,
-			mayLoseEnchants, fishingDrops, leatherArmor, ironArmor, goldArmor,
-			diamondArmor, woodenTools, stoneTools, ironTools, goldTools,
-			diamondTools, enderPearl, blazeRod, records, glowstoneDust,
-			fishingDiamonds, aDisplayNames, pDisplayNames, enableSmoothToMossy,
-			enableDirtToGrass, statsTracking, eventCallback, herbalismHungerBonus;
+			mayLoseEnchants, fishingDrops, aDisplayNames, pDisplayNames, enableSmoothToMossy,
+			enableDirtToGrass, statsTracking, eventCallback, herbalismHungerBonus,
+			repairArmor, repairTools;
 
 	public static String MySQLtablePrefix, MySQLuserName,
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
@@ -70,14 +68,13 @@ public class LoadProperties {
 			repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond, rString,
 			rLeather, downgradeRank1, downgradeRank2, downgradeRank3,
 			downgradeRank4, keepEnchantsRank1, keepEnchantsRank2,
-			keepEnchantsRank3, keepEnchantsRank4, fishingDropChanceTier1,
-			fishingDropChanceTier2, fishingDropChanceTier3,
-			fishingDropChanceTier4, fishingDropChanceTier5, mnetherwart,
+			keepEnchantsRank3, keepEnchantsRank4, mnetherwart,
 			mvines, mlilypad, mendstone, mmossstone,
 			levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
 			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
 			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
-			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5;
+			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5,
+			repairStoneLevel, repairIronLevel, repairGoldLevel, arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -89,7 +86,7 @@ public class LoadProperties {
 			unarmed_r, unarmed_g, unarmed_b, woodcutting_r, woodcutting_g,
 			woodcutting_b, pvpxprewardmodifier, tamingxpmodifier,
 			miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier,
-			sorceryxpmodifier, unarmedxpmodifier, herbalismxpmodifier,
+			fishingxpmodifier, unarmedxpmodifier, herbalismxpmodifier,
 			excavationxpmodifier, archeryxpmodifier, swordsxpmodifier,
 			axesxpmodifier, acrobaticsxpmodifier;
 
@@ -323,9 +320,13 @@ public class LoadProperties {
 		miningrequirespickaxe = readBoolean("Skills.Mining.Requires_Pickaxe", true);
 		excavationRequiresShovel = readBoolean("Skills.Excavation.Requires_Shovel", true);
 		woodcuttingrequiresaxe = readBoolean("Skills.Woodcutting.Requires_Axe", true);
+		repairArmor = readBoolean("Skills.Repair.Can_Repair_Armor", true);
+		repairTools = readBoolean("Skills.Repair.Can_Repair_Tools", true);
 		repairdiamondlevel = readInteger("Skills.Repair.Diamond.Level_Required", 50);
+		repairIronLevel = readInteger("Skills.Repair.Iron.Level_Required", 0);
+		repairGoldLevel = readInteger("Skills.Repair.Gold.Level_Required", 0);
+		repairStoneLevel = readInteger("Skills.Repair.Stone.Level_Required", 0);
 
-		sorceryxpmodifier = readDouble("Experience.Formula.Multiplier.Sorcery", 1.0);
 		tamingxpmodifier = readDouble("Experience.Formula.Multiplier.Taming", 1.0);
 		miningxpmodifier = readDouble("Experience.Formula.Multiplier.Mining", 1.0);
 		repairxpmodifier = readDouble("Experience.Formula.Multiplier.Repair", 1.0);
@@ -337,6 +338,7 @@ public class LoadProperties {
 		swordsxpmodifier = readDouble("Experience.Formula.Multiplier.Swords", 1.0);
 		axesxpmodifier = readDouble("Experience.Formula.Multiplier.Axes", 1.0);
 		acrobaticsxpmodifier = readDouble("Experience.Formula.Multiplier.Acrobatics", 1.0);
+		fishingxpmodifier = readDouble("Experience.Forumla.Multiplier.Fishing", 1.0);
 
 		anvilmessages = readBoolean("Skills.Repair.Anvil_Messages", true);
 		anvilID = readInteger("Skills.Repair.Anvil_ID", 42);
@@ -374,37 +376,22 @@ public class LoadProperties {
 		downgradeRank2 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
 		downgradeRank3 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
 		downgradeRank4 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
-		mayLoseEnchants = readBoolean("Arcane_Forging.May_Lose_Enchants.Enabled", true);
+		mayLoseEnchants = readBoolean("Arcane_Forging.May_Lose_Enchants", true);
 		keepEnchantsRank1 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
 		keepEnchantsRank2 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
 		keepEnchantsRank3 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
 		keepEnchantsRank4 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
+		arcaneRank1 = readInteger("Arcane_Forging.Rank_Levels.Rank_1", 100);
+		arcaneRank2 = readInteger("Arcane_Forging.Rank_Levels.Rank_2", 250);
+		arcaneRank3 = readInteger("Arcane_Forging.Rank_Levels.Rank_3", 500);
+		arcaneRank4 = readInteger("Arcane_Forging.Rank_Levels.Rank_4", 750);
 
-		fishingDrops = readBoolean("Fishing.Drops.Item_Drops_Enabled", true);
-		fishingTier1 = readInteger("Fishing.Drop_Level.Tier1", 0);
-		fishingTier2 = readInteger("Fishing.Drop_Level.Tier2", 200);
-		fishingTier3 = readInteger("Fishing.Drop_Level.Tier3", 400);
-		fishingTier4 = readInteger("Fishing.Drop_Level.Tier4", 600);
-		fishingTier5 = readInteger("Fishing.Drop_Level.Tier5", 800);
-		fishingDropChanceTier1 = readInteger("Fishing.Drops.Drop_Chance.Tier_1", 20);
-		fishingDropChanceTier2 = readInteger("Fishing.Drops.Drop_Chance.Tier_2", 25);
-		fishingDropChanceTier3 = readInteger("Fishing.Drops.Drop_Chance.Tier_3", 30);
-		fishingDropChanceTier4 = readInteger("Fishing.Drops.Drop_Chance.Tier_4", 35);
-		fishingDropChanceTier5 = readInteger("Fishing.Drops.Drop_Chance.Tier_5", 40);
-		leatherArmor = readBoolean("Fishing.Drops.Leather_Armor", true);
-		ironArmor = readBoolean("Fishing.Drops.Iron_Armor", true);
-		goldArmor = readBoolean("Fishing.Drops.Gold_Armor", true);
-		diamondArmor = readBoolean("Fishing.Drops.Diamond_Armor", true);
-		woodenTools = readBoolean("Fishing.Drops.Wooden_Tools", true);
-		stoneTools = readBoolean("Fishing.Drops.Stone_Tools", true);
-		ironTools = readBoolean("Fishing.Drops.Iron_Tools", true);
-		goldTools = readBoolean("Fishing.Drops.Gold_Tools", true);
-		diamondTools = readBoolean("Fishing.Drops.Diamond_Tools", true);
-		enderPearl = readBoolean("Fishing.Drops.Ender_Pearl", true);
-		blazeRod = readBoolean("Fishing.Drops.Blaze_Rod", true);
-		records = readBoolean("Fishing.Drops.Records", true);
-		glowstoneDust = readBoolean("Fishing.Drops.Glowstone_Dust", true);
-		fishingDiamonds = readBoolean("Fishing.Drops.Diamonds", true);
+		fishingDrops = readBoolean("Fishing.Drops_Enabled", true);
+		fishingTier1 = readInteger("Fishing.Tier_Levels.Tier1", 0);
+		fishingTier2 = readInteger("Fishing.Tier_Levels.Tier2", 200);
+		fishingTier3 = readInteger("Fishing.Tier_Levels.Tier3", 400);
+		fishingTier4 = readInteger("Fishing.Tier_Levels.Tier4", 600);
+		fishingTier5 = readInteger("Fishing.Tier_Levels.Tier5", 800);
 
 		xplockEnable = readBoolean("Commands.xplock.Enabled", true);
 		xprateEnable = readBoolean("Commands.xprate.Enabled", true);
@@ -473,11 +460,10 @@ public class LoadProperties {
 				if(config.getConfigurationSection("Treasures." + treasureName + ".Drops_From").getKeys(false).size() != 1)
 					reason.add("Fishing drops cannot also be excavation drops");
 
-				if(!config.contains("Treasures." + treasureName + ".Max_Levels")) reason.add("Missing Max_Levels");
+				if(!config.contains("Treasures." + treasureName + ".Max_Level")) reason.add("Missing Max_Level");
+				int maxLevel = config.getInt("Treasures." + treasureName + ".Max_Level");
 
-				int maxLevel = config.getInt("Treasures." + treasureName + ".Max_Levels");
-
-				if(maxLevel < 0) reason.add("Invalid Max_Levels: " + maxLevel);
+				if(maxLevel < 0) reason.add("Invalid Max_Level: " + maxLevel);
 
 				if(noErrorsInTreasure(reason)) {
 					FishingTreasure fTreasure = new FishingTreasure(item, xp, dropChance, dropLevel, maxLevel);
@@ -511,7 +497,7 @@ public class LoadProperties {
 		}
 
 		List<String> excavationTreasures = config.getStringList("Excavation.Treasure");
-		List<String> fishingTreasures = config.getStringList("Excavation.Treasure");
+		List<String> fishingTreasures = config.getStringList("Fishing.Treasure");
 
 		Iterator<String> treasureIterator = treasures.keySet().iterator();
 		while(treasureIterator.hasNext()) {
