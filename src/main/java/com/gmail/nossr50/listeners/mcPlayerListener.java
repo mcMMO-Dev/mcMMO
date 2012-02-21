@@ -86,6 +86,7 @@ public class mcPlayerListener implements Listener
 	    {
 	        PlayerProfile PP = Users.getProfile(player);
 	        PP.addXP(SkillType.TAMING, LoadProperties.mshearing, player);
+	        Skills.XpCheckSkill(SkillType.TAMING, player);
 	    }
 	}
 	

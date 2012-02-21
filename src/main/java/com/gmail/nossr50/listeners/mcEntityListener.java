@@ -345,6 +345,7 @@ public class mcEntityListener implements Listener
 	        if(event.getEntity() instanceof Wolf)
 	        {
 	        	PP.addXP(SkillType.TAMING, LoadProperties.mtameWolf, player);
+	        	Skills.XpCheckSkill(SkillType.TAMING, player);
 	        }
 	    }
 	}
