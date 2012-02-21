@@ -90,7 +90,7 @@ public class Excavation
 		PlayerProfile PP = Users.getProfile(player);
 		int skillLevel = PP.getSkillLevel(SkillType.EXCAVATION);
     	ArrayList<ItemStack> is = new ArrayList<ItemStack>();
-    	int xp = 0;
+    	int xp = LoadProperties.mbase;
     	
     	switch(type)
     	{
