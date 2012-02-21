@@ -11,6 +11,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
@@ -73,6 +74,43 @@ public class PartyCommand implements CommandExecutor {
 			}
 			player.sendMessage(mcLocale.getString("mcPlayerListener.YouAreInParty", new Object[] { PP.getParty() }));
 			player.sendMessage(mcLocale.getString("mcPlayerListener.PartyMembers") + " (" + tempList + ChatColor.GREEN + ")");
+			
+			//Master Apprentice Stuff
+			//Show the player all their bonuses when they type /party
+			for(Player a : Party.getInstance().getPartyMembers(player))
+			{
+			    if(Party.getInstance().isPartyLeader(a.getName(), PP.getParty()) && !a.getName().equals(player.getName()))
+			    {
+			        PlayerProfile LP = Users.getProfile(a);
+			        for(SkillType type : SkillType.values())
+			        {
+			            //Skip this one
+			            if(type == SkillType.ALL)
+			                continue;
+			            
+			            if(LP.getSkillLevel(type) > PP.getSkillLevel(type))
+			            {
+			                //Tell them what their skill bonus is for this skill
+        			        int leaderLevel = LP.getSkillLevel(type); 
+        		            int difference = leaderLevel - PP.getSkillLevel(type);
+        		            
+        		            double bonusModifier = (difference*0.75D)/100D;
+        		            double trueBonus = bonusModifier * 100;
+        		            player.sendMessage("You get "+trueBonus+"% more XP from "+type.toString());
+        		            //double percent = (trueBonus/100)*100;
+			            } else
+			            {
+			                //Tell them they have no bonus.. or not
+			            }
+			        }
+			    } else if(Party.getInstance().isPartyLeader(a.getName(), PP.getParty()) && a.getName().equals(player.getName()))
+			    {
+			        //Tell them they are providing bonuses
+			    }
+			}
+			
+            
+            
 			return true;
 		} else if (args.length == 1) {
 			if (args[0].equals("q") && PP.inParty()) {

@@ -903,7 +903,7 @@ public class PlayerProfile
 	}
 	
 	/**
-	 * Adds XP to the player, this is affected by skill modifiers
+	 * Adds XP to the player, this is affected by skill modifiers and xp rate
 	 * @param skillType The skill to add XP to
 	 * @param newvalue The amount of XP to add
 	 */
@@ -997,7 +997,7 @@ public class PlayerProfile
 				double oldxp = xp;
 				xp+=trueBonus;
 				double percent = (trueBonus/oldxp)*100;
-				thisplayer.sendMessage(ChatColor.GREEN+"XP: "+oldxp+" Bonus XP: "+trueBonus+" Total: "+xp+ChatColor.GOLD+" [Master: "+leaderName+" " +" +"+(int)percent+"%]");
+				//thisplayer.sendMessage(ChatColor.GREEN+"XP: "+oldxp+" Bonus XP: "+trueBonus+" Total: "+xp+ChatColor.GOLD+" [Master: "+leaderName+" " +" +"+(int)percent+"%]");
 			}
 			Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(Bukkit.getPlayer(playerName), skillType, xp));
 			skillsXp.put(skillType, skillsXp.get(skillType)+xp);
