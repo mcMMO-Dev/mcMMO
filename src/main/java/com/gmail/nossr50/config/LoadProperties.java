@@ -385,7 +385,7 @@ public class LoadProperties {
 		fishingTier2 = readInteger("Fishing.Drop_Level.Tier2", 200);
 		fishingTier3 = readInteger("Fishing.Drop_Level.Tier3", 400);
 		fishingTier4 = readInteger("Fishing.Drop_Level.Tier4", 600);
-		fishingTier5 = readInteger("Fishing.Drop_Level.Tier4", 800);
+		fishingTier5 = readInteger("Fishing.Drop_Level.Tier5", 800);
 		fishingDropChanceTier1 = readInteger("Fishing.Drops.Drop_Chance.Tier_1", 20);
 		fishingDropChanceTier2 = readInteger("Fishing.Drops.Drop_Chance.Tier_2", 25);
 		fishingDropChanceTier3 = readInteger("Fishing.Drops.Drop_Chance.Tier_3", 30);
