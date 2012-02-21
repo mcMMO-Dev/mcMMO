@@ -77,7 +77,6 @@ public class mcPlayerListener implements Listener
 	{
 		plugin = instance;
 	}
-
 	
 	@EventHandler(ignoreCancelled = true)
 	public void onSheepUndressing(PlayerShearEntityEvent event)
@@ -86,7 +85,7 @@ public class mcPlayerListener implements Listener
 	    if(mcPermissions.getInstance().taming(player))
 	    {
 	        PlayerProfile PP = Users.getProfile(player);
-	        PP.addXP(SkillType.TAMING, 100, player);
+	        PP.addXP(SkillType.TAMING, LoadProperties.mshearing, player);
 	    }
 	}
 	
