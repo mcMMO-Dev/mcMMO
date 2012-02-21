@@ -45,8 +45,6 @@ public class RepairCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.ArcaneForgingRank", new Object[] { Repair.getArcaneForgingRank(PP) }));
 		player.sendMessage(mcLocale.getString("m.ArcaneEnchantKeepChance", new Object[] { Repair.getEnchantChance(Repair.getArcaneForgingRank(PP)) }));
 		player.sendMessage(mcLocale.getString("m.ArcaneEnchantDowngradeChance", new Object[] { Repair.getDowngradeChance(Repair.getArcaneForgingRank(PP)) }));
-		player.sendMessage(mcLocale.getString("m.ArcaneForgingMilestones"));
-		player.sendMessage(mcLocale.getString("m.ArcaneForgingMilestones2"));
 
 		return true;
 	}

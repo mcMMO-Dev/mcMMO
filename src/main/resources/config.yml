@@ -48,14 +48,18 @@ Items:
 #  Settings for Arcane Forging
 ###
 Arcane_Forging:
+    May_Lose_Enchants: true
+    Rank_Levels:
+        Rank_1: 100
+        Rank_2: 250
+        Rank_3: 500
+        Rank_4: 750
     Keep_Enchants:
         Chance:
             Rank_4: 40
             Rank_3: 30
             Rank_2: 20
             Rank_1: 10
-    May_Lose_Enchants:
-        Enabled: true
     Downgrades:
         Enabled: true
         Chance:
@@ -113,6 +117,8 @@ Skills:
         Level_Cap: 0
         Anvil_Messages: true
         Anvil_ID: 42
+        Can_Repair_Armor: true
+        Can_Repair_Tools: true
         Leather:
             Name: Leather
             ID: 334
@@ -121,15 +127,18 @@ Skills:
             ID: 287
         Stone:
             Name: Cobblestone
+            Level_Required: 0
             ID: 4
         Wood:
             Name: Wood Planks
             ID: 5
         Gold:
             Name: Gold Bars
+            Level_Required: 0
             ID: 266
         Iron:
             Name: Iron Bars
+            Level_Required: 0
             ID: 265
         Diamond:
             Name: Diamond
@@ -216,7 +225,7 @@ Experience:
 ###
 Fishing:
     Drops_Enabled: true
-    Tier_Level2:
+    Tier_Levels:
         Tier1: 0
         Tier2: 200
         Tier3: 400

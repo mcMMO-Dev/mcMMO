@@ -49,7 +49,8 @@ public class LoadProperties {
 			pvpxp, miningrequirespickaxe, excavationRequiresShovel,
 			woodcuttingrequiresaxe, anvilmessages, mayDowngradeEnchants,
 			mayLoseEnchants, fishingDrops, aDisplayNames, pDisplayNames, enableSmoothToMossy,
-			enableDirtToGrass, statsTracking, eventCallback, herbalismHungerBonus;
+			enableDirtToGrass, statsTracking, eventCallback, herbalismHungerBonus,
+			repairArmor, repairTools;
 
 	public static String MySQLtablePrefix, MySQLuserName,
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
@@ -72,7 +73,8 @@ public class LoadProperties {
 			levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
 			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
 			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
-			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5;
+			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5,
+			repairStoneLevel, repairIronLevel, repairGoldLevel, arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -318,7 +320,12 @@ public class LoadProperties {
 		miningrequirespickaxe = readBoolean("Skills.Mining.Requires_Pickaxe", true);
 		excavationRequiresShovel = readBoolean("Skills.Excavation.Requires_Shovel", true);
 		woodcuttingrequiresaxe = readBoolean("Skills.Woodcutting.Requires_Axe", true);
+		repairArmor = readBoolean("Skills.Repair.Can_Repair_Armor", true);
+		repairTools = readBoolean("Skills.Repair.Can_Repair_Tools", true);
 		repairdiamondlevel = readInteger("Skills.Repair.Diamond.Level_Required", 50);
+		repairIronLevel = readInteger("Skills.Repair.Iron.Level_Required", 0);
+		repairGoldLevel = readInteger("Skills.Repair.Gold.Level_Required", 0);
+		repairStoneLevel = readInteger("Skills.Repair.Stone.Level_Required", 0);
 
 		tamingxpmodifier = readDouble("Experience.Formula.Multiplier.Taming", 1.0);
 		miningxpmodifier = readDouble("Experience.Formula.Multiplier.Mining", 1.0);
@@ -369,11 +376,15 @@ public class LoadProperties {
 		downgradeRank2 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
 		downgradeRank3 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
 		downgradeRank4 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
-		mayLoseEnchants = readBoolean("Arcane_Forging.May_Lose_Enchants.Enabled", true);
+		mayLoseEnchants = readBoolean("Arcane_Forging.May_Lose_Enchants", true);
 		keepEnchantsRank1 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
 		keepEnchantsRank2 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
 		keepEnchantsRank3 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
 		keepEnchantsRank4 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
+		arcaneRank1 = readInteger("Arcane_Forging.Rank_Levels.Rank_1", 100);
+		arcaneRank2 = readInteger("Arcane_Forging.Rank_Levels.Rank_2", 250);
+		arcaneRank3 = readInteger("Arcane_Forging.Rank_Levels.Rank_3", 500);
+		arcaneRank4 = readInteger("Arcane_Forging.Rank_Levels.Rank_4", 750);
 
 		fishingDrops = readBoolean("Fishing.Drops_Enabled", true);
 		fishingTier1 = readInteger("Fishing.Tier_Levels.Tier1", 0);

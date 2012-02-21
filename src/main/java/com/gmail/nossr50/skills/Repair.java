@@ -76,7 +76,7 @@ public class Repair {
 				/*
 				 * REPAIR ARMOR
 				 */
-				if(isArmor(is)){
+				if(isArmor(is) && LoadProperties.repairArmor){
 
 					//DIAMOND ARMOR
 					if(isDiamondArmor(is) && hasItem(player, rDiamond) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairdiamondlevel){
@@ -94,7 +94,7 @@ public class Repair {
 					}
 
 					//IRON ARMOR
-					else if (isIronArmor(is) && hasItem(player, rIron)){
+					else if (isIronArmor(is) && hasItem(player, rIron) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairIronLevel){
 						removeItem(player, rIron);
 						repairItem(player, enchants, enchantsLevel);
 
@@ -109,7 +109,7 @@ public class Repair {
 					}
 
 					//GOLD ARMOR
-					else if (isGoldArmor(is) && hasItem(player, rGold)){
+					else if (isGoldArmor(is) && hasItem(player, rGold) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairGoldLevel){
 						removeItem(player, rGold);
 						repairItem(player, enchants, enchantsLevel);
 
@@ -147,10 +147,10 @@ public class Repair {
 				/*
 				 * REPAIR TOOLS
 				 */
-				if(isTools(is)){
+				if(isTools(is) && LoadProperties.repairTools){
 
 					//STONE TOOLS
-					if(isStoneTools(is) && hasItem(player, rStone)){
+					if(isStoneTools(is) && hasItem(player, rStone) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairStoneLevel){
 						removeItem(player, rStone);
 						repairItem(player, enchants, enchantsLevel);
 
@@ -188,7 +188,7 @@ public class Repair {
 					}
 
 					//IRON TOOLS
-					else if(isIronTools(is) && hasItem(player, rIron)){
+					else if(isIronTools(is) && hasItem(player, rIron) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairIronLevel){
 						removeItem(player, rIron);
 						repairItem(player, enchants, enchantsLevel);
 
@@ -231,7 +231,7 @@ public class Repair {
 					}
 					
 					//GOLD TOOLS
-					else if(isGoldTools(is) && hasItem(player, rGold)){
+					else if(isGoldTools(is) && hasItem(player, rGold) && PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.repairGoldLevel){
 						removeItem(player, rGold);
 						repairItem(player, enchants, enchantsLevel);
 
@@ -291,16 +291,16 @@ public class Repair {
 	public static int getArcaneForgingRank(PlayerProfile PP){
 		int rank = 0;
 
-		if(PP.getSkillLevel(SkillType.REPAIR) >= 750)
+		if(PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.arcaneRank4)
 			rank = 4;
 		
-		else if (PP.getSkillLevel(SkillType.REPAIR) >= 500)
+		else if (PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.arcaneRank3)
 			rank = 3;
 		
-		else if(PP.getSkillLevel(SkillType.REPAIR) >= 250)
+		else if(PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.arcaneRank2)
 			rank = 2;
 		
-		else if (PP.getSkillLevel(SkillType.REPAIR) >= 100)
+		else if (PP.getSkillLevel(SkillType.REPAIR) >= LoadProperties.arcaneRank1)
 			rank = 1;
 		
 		return rank;
