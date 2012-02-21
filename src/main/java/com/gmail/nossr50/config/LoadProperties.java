@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -430,20 +431,49 @@ public class LoadProperties {
 		{
 			String treasureName = iterator.next();
 
+			// Validate all the things!
+			List<String> reason = new ArrayList<String>();
+
+			if(!config.contains("Treasures." + treasureName + ".ID")) reason.add("Missing ID");
+			if(!config.contains("Treasures." + treasureName + ".Amount")) reason.add("Missing Amount");
+			if(!config.contains("Treasures." + treasureName + ".Data")) reason.add("Missing Data");
+
 			int id = config.getInt("Treasures." + treasureName + ".ID");
 			int amount = config.getInt("Treasures." + treasureName + ".Amount");
 			int data = config.getInt("Treasures." + treasureName + ".Data");
+
+			if(Material.getMaterial(id) == null) reason.add("Invlid id: " + id);
+			if(amount < 1) reason.add("Invalid amount: " + amount);
+			if(data > 127 || data < -128) reason.add("Invalid data: " + data);
+
+			if(!config.contains("Treasures." + treasureName + ".XP")) reason.add("Missing XP");
+			if(!config.contains("Treasures." + treasureName + ".Drop_Chance")) reason.add("Missing Drop_Chance");
+			if(!config.contains("Treasures." + treasureName + ".Drop_Level")) reason.add("Missing Drop_Level");
 
 			int xp = config.getInt("Treasures." + treasureName + ".XP");
 			Double dropChance = config.getDouble("Treasures." + treasureName + ".Drop_Chance");
 			int dropLevel = config.getInt("Treasures." + treasureName + ".Drop_Level");
 
+			if(xp < 0) reason.add("Invalid xp: " + xp);
+			if(dropChance < 0) reason.add("Invalid Drop_Chance: " + dropChance);
+			if(dropLevel < 0) reason.add("Invalid Drop_Level: " + dropLevel);
+
 			ItemStack item = new ItemStack(id, amount, (byte) 0, (byte) data);
 
 			if(readBoolean("Treasures." + treasureName + ".Drops_From.Fishing", false)) {
+				if(config.getConfigurationSection("Treasures." + treasureName + ".Drops_From").getKeys(false).size() != 1)
+					reason.add("Fishing drops cannot also be excavation drops");
+
+				if(!config.contains("Treasures." + treasureName + ".Max_Levels")) reason.add("Missing Max_Levels");
+
 				int maxLevel = config.getInt("Treasures." + treasureName + ".Max_Levels");
-				FishingTreasure fTreasure = new FishingTreasure(item, xp, dropChance, dropLevel, maxLevel);
-				treasures.put(treasureName, fTreasure);
+
+				if(maxLevel < 0) reason.add("Invalid Max_Levels: " + maxLevel);
+
+				if(noErrorsInTreasure(reason)) {
+					FishingTreasure fTreasure = new FishingTreasure(item, xp, dropChance, dropLevel, maxLevel);
+					treasures.put(treasureName, fTreasure);
+				}
 			} else {
 				ExcavationTreasure eTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
 				if(readBoolean("Treasures." + treasureName + ".Drops_From.Dirt", false))
@@ -461,7 +491,13 @@ public class LoadProperties {
 				if(readBoolean("Treasures." + treasureName + ".Drops_From.Soul_Sand", false))
 					eTreasure.setDropsFromSoulSand();
 
-				treasures.put(treasureName, eTreasure);
+				if(readBoolean("Treasures." + treasureName + ".Drops_From.Fishing", false)) {
+					reason.add("Excavation drops cannot also be fishing drops");
+				}
+
+				if(noErrorsInTreasure(reason)) {
+					treasures.put(treasureName, eTreasure);
+				}
 			}
 		}
 
@@ -499,5 +535,15 @@ public class LoadProperties {
 					excavationFromSoulSand.add(eTreasure);
 			}
 		}
+	}
+
+	private boolean noErrorsInTreasure(List<String> issues) {
+		if(issues.isEmpty()) return true;
+
+		for(String issue : issues) {
+			plugin.getLogger().warning(issue);
+		}
+
+		return false;
 	}
 }
