@@ -16,16 +16,16 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
-public class StatsCommand implements CommandExecutor {
+public class McstatsCommand implements CommandExecutor {
 	private final mcMMO plugin;
 
-	public StatsCommand(mcMMO instance) {
+	public McstatsCommand(mcMMO instance) {
 		this.plugin = instance;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!LoadProperties.statsEnable) {
+		if (!LoadProperties.mcstatsEnable) {
 			sender.sendMessage("This command is not enabled.");
 			return true;
 		}

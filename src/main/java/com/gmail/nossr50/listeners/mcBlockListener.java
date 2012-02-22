@@ -79,7 +79,7 @@ public class mcBlockListener implements Listener
     	}
     	
     	//TNT placement checks - needed for Blast Mining
-    	if(block.getTypeId() == 46)
+    	if(block.getTypeId() == 46 && mcPermissions.getInstance().blastmining(player))
     	{
     		PlayerProfile PP = Users.getProfile(player);
     		int skill = PP.getSkillLevel(SkillType.MINING);
@@ -157,7 +157,7 @@ public class mcBlockListener implements Listener
    		 */
     	
     	//TNT removal checks - needed for Blast Mining
-    	if(block.getTypeId() == 46 && inhand.getTypeId() != 259)
+    	if(block.getTypeId() == 46 && inhand.getTypeId() != 259 && mcPermissions.getInstance().blastmining(player))
     	{
     		plugin.misc.tntTracker.remove(block);
     	}
