@@ -213,6 +213,7 @@ permissions:
             mcmmo.skills.swords: true 
             mcmmo.skills.axes: true 
             mcmmo.skills.acrobatics: true
+            mcmmo.skills.blastmining: true
     mcmmo.skills.taming:
         description:
     mcmmo.skills.mining:
@@ -234,4 +235,6 @@ permissions:
     mcmmo.skills.axes:
         description:
     mcmmo.skills.acrobatics:
+        description:
+    mcmmo.skills.blastmining:
         description:

@@ -1,11 +1,13 @@
 package com.gmail.nossr50.commands.mc;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
@@ -18,8 +20,8 @@ public class McabilityCommand implements CommandExecutor {
             player = (Player) sender;
         }
 
-		if (player != null && !player.hasPermission("mcmmo.commands.ability")) {
-			sender.sendMessage("This command requires permissions.");
+		if (player != null && !mcPermissions.getInstance().mcAbility(player)) {
+			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
 			return true;
 		}
 

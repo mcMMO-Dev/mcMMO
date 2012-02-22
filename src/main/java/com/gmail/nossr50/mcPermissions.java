@@ -47,7 +47,7 @@ public class mcPermissions
     	return player.hasPermission("mcmmo.item.chimaerawing");
     }
     public boolean miningAbility(Player player){
-    	return player.hasPermission("mcmmo.ability.mining");
+    	return player.hasPermission("mcmmo.ability.mining");    	
     }
     public boolean axesAbility(Player player){
     	return player.hasPermission("mcmmo.ability.axes");
@@ -102,6 +102,9 @@ public class mcPermissions
     }
     public boolean mining(Player player) {
         return player.hasPermission("mcmmo.skills.mining");
+    }
+    public boolean blastmining(Player player) {
+        return player.hasPermission("mcmmo.skills.blastmining");
     }
     public boolean fishing(Player player) {
         return player.hasPermission("mcmmo.skills.fishing");

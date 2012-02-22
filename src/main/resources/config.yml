@@ -1111,7 +1111,7 @@ Commands:
         Enabled: true
     accept:
         Enabled: true
-    stats:
+    mcstats:
         Enabled: true
     mcability:
         Enabled: true

@@ -42,7 +42,7 @@ public class MccCommand implements CommandExecutor {
 				player.sendMessage("/ptp " + mcLocale.getString("m.mccPartyTeleport"));
 		}
 		player.sendMessage(mcLocale.getString("m.mccOtherCommands"));
-		player.sendMessage("/stats " + ChatColor.RED + " " + mcLocale.getString("m.mccStats"));
+		player.sendMessage("/mcstats " + ChatColor.RED + " " + mcLocale.getString("m.mccStats"));
 		player.sendMessage("/mctop <skillname> <page> " + ChatColor.RED + mcLocale.getString("m.mccLeaderboards"));
 
 		if (mcPermissions.getInstance().mySpawn(player)) {

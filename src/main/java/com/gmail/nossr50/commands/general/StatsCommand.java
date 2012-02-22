@@ -37,7 +37,7 @@ public class StatsCommand implements CommandExecutor {
 
 		if (!(sender instanceof Player)) {
 			if(args.length != 1) {
-				sender.sendMessage("Usage: stats <username>");
+				sender.sendMessage("Usage: mcstats <username>");
 				return true;
 			} else {
 				Player temp = plugin.getServer().getPlayer(args[0]);
