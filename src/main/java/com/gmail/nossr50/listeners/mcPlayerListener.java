@@ -34,6 +34,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -209,6 +210,7 @@ public class mcPlayerListener implements Listener
 			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) 
 	{
@@ -374,6 +376,21 @@ public class mcPlayerListener implements Listener
 			}
 			log.log(Level.INFO, "[A]<" + name + ">" + event.getMessage());
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.LOW)
+	public void onCowMilking(PlayerBucketFillEvent event){
+		Player player = event.getPlayer();
+		
+	    if(mcPermissions.getInstance().taming(player))
+	    {
+	        if(event.getItemStack().getTypeId() == 335)
+	        {
+		        PlayerProfile PP = Users.getProfile(player);
+	        	PP.addXP(SkillType.TAMING, LoadProperties.mmilkCow, player);
+	        	Skills.XpCheckSkill(SkillType.TAMING, player);
+	        }
+	    }
 	}
 
 	// Dynamically aliasing commands need to be re-done.
