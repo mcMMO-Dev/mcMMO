@@ -79,7 +79,7 @@ public class mcPlayerListener implements Listener
 		plugin = instance;
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event)
 	{
 	    Player player = event.getPlayer();

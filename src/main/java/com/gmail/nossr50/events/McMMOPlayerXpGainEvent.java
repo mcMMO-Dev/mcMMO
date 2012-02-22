@@ -22,7 +22,6 @@ import org.bukkit.event.HandlerList;
 
 import com.gmail.nossr50.datatypes.SkillType;
 
-@SuppressWarnings("serial")
 public class McMMOPlayerXpGainEvent extends Event {
 	private Player player;
 	private SkillType skill;

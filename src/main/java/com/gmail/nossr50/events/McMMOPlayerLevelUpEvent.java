@@ -25,7 +25,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 /**
  * Called when a user levels up in a skill
  */
-@SuppressWarnings("serial")
 public class McMMOPlayerLevelUpEvent extends Event {
 	private Player player;
 	private SkillType skill;

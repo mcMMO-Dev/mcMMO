@@ -25,7 +25,6 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Called when mcMMO is preparing to drop an item
  */
-@SuppressWarnings("serial")
 public class McMMOItemSpawnEvent extends Event implements Cancellable {
 	private Location location;
 	private ItemStack itemStack;
