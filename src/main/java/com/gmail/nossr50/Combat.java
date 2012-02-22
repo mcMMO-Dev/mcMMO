@@ -191,7 +191,7 @@ public class Combat
                         {
                             if(Math.random() * 10 > 5)
                             {
-                            	if(theWolf.getHealth() + event.getDamage() <= 20)
+                            	if(theWolf.getHealth() + event.getDamage() <= theWolf.getMaxHealth())
                             		theWolf.setHealth(theWolf.getHealth()+event.getDamage());
                             	else
                             		theWolf.setHealth(theWolf.getMaxHealth());
