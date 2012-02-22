@@ -33,7 +33,7 @@ commands:
     mcgod:
         description: Make yourself invulnerable
         permission: mcmmo.tools.mcgod        
-    stats:
+    mcstats:
         description: Shows your mcMMO stats and xp
     mmoedit:
         description: Edit the skill values for a user
