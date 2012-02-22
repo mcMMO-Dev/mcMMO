@@ -34,6 +34,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -76,6 +77,22 @@ public class mcPlayerListener implements Listener
 	public mcPlayerListener(mcMMO instance) 
 	{
 		plugin = instance;
+	}
+	
+	@EventHandler
+	public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event)
+	{
+	    Player player = event.getPlayer();
+	    PlayerProfile PP = Users.getProfile(player);
+	    
+	    if(PP.getGodMode())
+	    {
+	        if(!mcPermissions.getInstance().mcgod(player))
+	        {
+	            PP.toggleGodMode();
+	            player.sendMessage("[mcMMO] God Mode not permitted on this world (See Permissions)");
+	        }
+	    }
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
