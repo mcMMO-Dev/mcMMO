@@ -125,7 +125,7 @@ public class SpoutStuff
 		
 		for(SkillType y : SkillType.values())
 		{
-			if(y == SkillType.ALL || y == SkillType.ENCHANTING || y == SkillType.ALCHEMY)
+			if(y == SkillType.ALL)
 				continue;
 			
 			String theFileNameA = m.getCapitalized(y.toString())+".png";
@@ -189,7 +189,7 @@ public class SpoutStuff
 		//Standard XP Icons
 		for(SkillType y : SkillType.values())
 		{
-			if(y == SkillType.ALL || y == SkillType.ENCHANTING || y == SkillType.ALCHEMY)
+			if(y == SkillType.ALL)
 				continue;
 			files.add(new File(dir+"HUD/Standard/"+m.getCapitalized(y.toString())+".png"));
 			files.add(new File(dir+"HUD/Retro/"+m.getCapitalized(y.toString())+"_r.png"));

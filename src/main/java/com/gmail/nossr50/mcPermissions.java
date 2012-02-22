@@ -25,7 +25,6 @@ public class mcPermissions
     public boolean permission(Player player, String perm) {
         return player.hasPermission(perm);
     }
-
     public boolean admin(Player player){
         return player.hasPermission("mcmmo.admin");
     }
@@ -53,7 +52,6 @@ public class mcPermissions
     public boolean axesAbility(Player player){
     	return player.hasPermission("mcmmo.ability.axes");
     }
-
     public boolean swordsAbility(Player player){
     	return player.hasPermission("mcmmo.ability.swords");
     }
@@ -62,9 +60,6 @@ public class mcPermissions
     }
     public boolean mcgod(Player player) {
     	return player.hasPermission("mcmmo.tools.mcgod");
-    }
-    public boolean regeneration(Player player){
-    	return player.hasPermission("mcmmo.regeneration");
     }
     public boolean motd(Player player) {
         return player.hasPermission("mcmmo.motd");
@@ -102,7 +97,6 @@ public class mcPermissions
     	}
     	return instance;
     }
-
     public boolean taming(Player player) {
         return player.hasPermission("mcmmo.skills.taming");
     }
@@ -111,12 +105,6 @@ public class mcPermissions
     }
     public boolean fishing(Player player) {
         return player.hasPermission("mcmmo.skills.fishing");
-    }
-    public boolean alchemy(Player player) {
-        return player.hasPermission("mcmmo.skills.alchemy");
-    }
-    public boolean enchanting(Player player) {
-        return player.hasPermission("mcmmo.skills.enchanting");
     }
     public boolean woodcutting(Player player) {
         return player.hasPermission("mcmmo.skills.woodcutting");

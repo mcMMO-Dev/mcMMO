@@ -79,8 +79,6 @@ public class WhoisCommand implements CommandExecutor {
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AxesSkill"), PPt.getSkillLevel(SkillType.AXES), PPt.getSkillXpLevel(SkillType.AXES), PPt.getXpToLevel(SkillType.AXES)));
 			if (mcPermissions.getInstance().archery(player))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ArcherySkill"), PPt.getSkillLevel(SkillType.ARCHERY), PPt.getSkillXpLevel(SkillType.ARCHERY), PPt.getXpToLevel(SkillType.ARCHERY)));
-			// if(mcPermissions.getInstance().sorcery(target))
-			// player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SorcerySkill"), PPt.getSkill("sorcery"), PPt.getSkill("sorceryXP"), PPt.getXpToLevel("excavation")));
 			if (mcPermissions.getInstance().swords(target))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SwordsSkill"), PPt.getSkillLevel(SkillType.SWORDS), PPt.getSkillXpLevel(SkillType.SWORDS), PPt.getXpToLevel(SkillType.SWORDS)));
 			if (mcPermissions.getInstance().taming(target))
@@ -91,10 +89,6 @@ public class WhoisCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.GOLD + "-=MISC SKILLS=-");
 			if (mcPermissions.getInstance().acrobatics(target))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PPt.getSkillLevel(SkillType.ACROBATICS), PPt.getSkillXpLevel(SkillType.ACROBATICS), PPt.getXpToLevel(SkillType.ACROBATICS)));
-			// if(mcPermissions.getInstance().alchemy(target))
-			// player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AlchemySkill"), PPt.getSkillLevel(SkillType.ALCHEMY), PPt.getSkillXpLevel(SkillType.ALCHEMY), PPt.getXpToLevel(SkillType.ALCHEMY)));
-			// if(mcPermissions.getInstance().enchanting(target))
-			// player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.EnchantingSkill"), PPt.getSkillLevel(SkillType.ENCHANTING), PPt.getSkillXpLevel(SkillType.ENCHANTING), PPt.getXpToLevel(SkillType.ENCHANTING)));
 			if (mcPermissions.getInstance().repair(target))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PPt.getSkillLevel(SkillType.REPAIR), PPt.getSkillXpLevel(SkillType.REPAIR), PPt.getXpToLevel(SkillType.REPAIR)));
 

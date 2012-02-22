@@ -201,8 +201,6 @@ permissions:
     mcmmo.skills.*:
         description: Implies all mcmmo.skills permissions.
         children:
-            mcmmo.skills.alchemy: true
-            mcmmo.skills.enchanting: true
             mcmmo.skills.fishing: true
             mcmmo.skills.taming: true 
             mcmmo.skills.mining: true 

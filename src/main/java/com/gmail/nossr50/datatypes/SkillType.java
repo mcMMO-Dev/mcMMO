@@ -19,12 +19,10 @@ package com.gmail.nossr50.datatypes;
 public enum SkillType 
 {
 	ACROBATICS,
-	ALCHEMY,
 	ALL, //This one is just for convenience
 	ARCHERY,
 	AXES,
 	EXCAVATION,
-	ENCHANTING,
 	FISHING,
 	HERBALISM,
 	MINING,

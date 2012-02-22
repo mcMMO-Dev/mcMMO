@@ -77,8 +77,6 @@ public class StatsCommand implements CommandExecutor {
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AxesSkill"), PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES)));
 			if (mcPermissions.getInstance().archery(player))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ArcherySkill"), PP.getSkillLevel(SkillType.ARCHERY), PP.getSkillXpLevel(SkillType.ARCHERY), PP.getXpToLevel(SkillType.ARCHERY)));
-			// if(mcPermissions.getInstance().sorcery(player))
-			// player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SorcerySkill"), PP.getSkill("sorcery"), PP.getSkill("sorceryXP"), PP.getXpToLevel("excavation")));
 			if (mcPermissions.getInstance().swords(player))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SwordsSkill"), PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS)));
 			if (mcPermissions.getInstance().taming(player))
@@ -91,10 +89,6 @@ public class StatsCommand implements CommandExecutor {
 			player.sendMessage(header + "-=MISC SKILLS=-");
 			if (mcPermissions.getInstance().acrobatics(player))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS)));
-			// if(mcPermissions.getInstance().alchemy(player))
-			// player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AlchemySkill"), PP.getSkillLevel(SkillType.ALCHEMY), PP.getSkillXpLevel(SkillType.ALCHEMY), PP.getXpToLevel(SkillType.ALCHEMY)));
-			// if(mcPermissions.getInstance().enchanting(player))
-			// player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.EnchantingSkill"), PP.getSkillLevel(SkillType.ENCHANTING), PP.getSkillXpLevel(SkillType.ENCHANTING), PP.getXpToLevel(SkillType.ENCHANTING)));
 			if (mcPermissions.getInstance().repair(player))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR)));
 		}
