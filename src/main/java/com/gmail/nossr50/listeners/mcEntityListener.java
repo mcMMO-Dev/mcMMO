@@ -93,7 +93,8 @@ public class mcEntityListener implements Listener
     		if(event.getEntity() instanceof Player)
     		{
     			Player player = (Player)event.getEntity();
-    			BlastMining.demolitionsExpertise(player, event);
+    			if(mcPermissions.getInstance().blastmining(player))
+    				BlastMining.demolitionsExpertise(player, event);
     		}
     	}
 
