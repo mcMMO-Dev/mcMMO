@@ -131,7 +131,7 @@ public class Combat
 			    		}
 		      		}
 		      		
-		      		if(!pluginx.misc.mobSpawnerList.contains(event.getEntity()))
+		      		if(!pluginx.misc.mobSpawnerList.contains(event.getEntity().getEntityId()))
 		      		{
 		      			int xp = getXp(event.getEntity(), event);
 
@@ -221,7 +221,7 @@ public class Combat
 						
 						master.sendMessage(mcLocale.getString("Combat.Gore")); //$NON-NLS-1$
 					}
-					if(!event.getEntity().isDead() && !pluginx.misc.mobSpawnerList.contains(event.getEntity()))
+					if(!event.getEntity().isDead() && !pluginx.misc.mobSpawnerList.contains(event.getEntity().getEntityId()))
 					{
 						int xp = getXp(event.getEntity(), event);
 						Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
@@ -336,7 +336,7 @@ public class Combat
     		/*
     		 * Defender is Monster
     		 */
-    		if(!pluginx.misc.mobSpawnerList.contains(x))
+    		if(!pluginx.misc.mobSpawnerList.contains(x.getEntityId()))
     		{
     			int xp = getXp(event.getEntity(), event);
 				PPa.addXP(SkillType.ARCHERY, xp*10, attacker);

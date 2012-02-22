@@ -207,7 +207,7 @@ public class mcEntityListener implements Listener
     	
     	if(reason == SpawnReason.SPAWNER && !LoadProperties.xpGainsMobSpawners)
     	{
-    		plugin.misc.mobSpawnerList.add(event.getEntity());
+    		plugin.misc.mobSpawnerList.add(event.getEntity().getEntityId());
     	}
     }
     
