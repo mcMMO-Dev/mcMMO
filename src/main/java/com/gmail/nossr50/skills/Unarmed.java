@@ -66,10 +66,13 @@ public class Unarmed {
 	{
 		PlayerProfile PPa = Users.getProfile(attacker);
 		int bonus = 0;
-		if (PPa.getSkillLevel(SkillType.UNARMED) >= 250)
-			bonus+=2;
-		if (PPa.getSkillLevel(SkillType.UNARMED) >= 500)
-			bonus+=4;
+		
+		//Add 1 DMG for every 50 skill levels
+		bonus = PPa.getSkillLevel(SkillType.UNARMED)/50;
+		
+		if(bonus > 6)
+		    bonus = 6;
+        
 		event.setDamage(event.getDamage()+bonus);
 	}
 	public static void disarmProcCheck(Player attacker, Player defender)

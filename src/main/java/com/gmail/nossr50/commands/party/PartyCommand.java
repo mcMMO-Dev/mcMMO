@@ -11,7 +11,6 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
@@ -77,6 +76,8 @@ public class PartyCommand implements CommandExecutor {
 			
 			//Master Apprentice Stuff
 			//Show the player all their bonuses when they type /party
+			
+			/*
 			for(Player a : Party.getInstance().getPartyMembers(player))
 			{
 			    if(Party.getInstance().isPartyLeader(a.getName(), PP.getParty()) && !a.getName().equals(player.getName()))
@@ -108,8 +109,7 @@ public class PartyCommand implements CommandExecutor {
 			        //Tell them they are providing bonuses
 			    }
 			}
-			
-            
+			*/
             
 			return true;
 		} else if (args.length == 1) {

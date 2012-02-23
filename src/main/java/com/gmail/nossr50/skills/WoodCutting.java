@@ -135,7 +135,6 @@ public class WoodCutting
                 player.getItemInHand().setDurability(durability);
             }
         }
-        
     }
     private static boolean treeFellerCompatible(Block block)
     {
