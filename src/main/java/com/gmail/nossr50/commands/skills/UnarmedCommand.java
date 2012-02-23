@@ -42,10 +42,10 @@ public class UnarmedCommand implements CommandExecutor {
 			ticks++;
 		}
 		
-		int bonus = PP.getSkillLevel(SkillType.UNARMED)/50;
+		int bonus = 3 + (PP.getSkillLevel(SkillType.UNARMED)/50);
 		
-		if(bonus > 6)
-		    bonus = 6;
+		if(bonus > 8)
+		    bonus = 8;
 
 		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.SkillUnarmed") }));
 		player.sendMessage(mcLocale.getString("m.XPGain", new Object[] { mcLocale.getString("m.XPGainUnarmed") }));

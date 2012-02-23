@@ -25,7 +25,9 @@ Version 1.3.00-dev
  = Prettied up new config files
  ! Changed mcMMO user information to be stored for 2 minutes after log out to reduce lag on rejoins
  ! Changed the name of Unarmed Apprentice/Mastery to Iron Arm Style
- ! Changed Unarmed to gain bonus damage every 50 skill levels, capping out at what Unarmed Mastery was before
+ ! Changed Unarmed to start with a +3 DMG bonus from Iron Arm Style to make leveling it more viable
+ ! Changed Unarmed to gain bonus damage every 50 skill levels
+ ! Changed Unarmed to gain more bonus damage total than before
  ! Changed Tree Feller to take down entire trees
  ! Changed mob spawn tracking to use Unique Entity ID instead of Entity Object
  ! Changed stats command name to mcstats for better plugin compatibility

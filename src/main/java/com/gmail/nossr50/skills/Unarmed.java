@@ -65,13 +65,13 @@ public class Unarmed {
 	public static void unarmedBonus(Player attacker, EntityDamageByEntityEvent event)
 	{
 		PlayerProfile PPa = Users.getProfile(attacker);
-		int bonus = 0;
+		int bonus = 3;
 		
 		//Add 1 DMG for every 50 skill levels
-		bonus = PPa.getSkillLevel(SkillType.UNARMED)/50;
+		bonus += PPa.getSkillLevel(SkillType.UNARMED)/50;
 		
-		if(bonus > 6)
-		    bonus = 6;
+		if(bonus > 8)
+		    bonus = 8;
         
 		event.setDamage(event.getDamage()+bonus);
 	}
