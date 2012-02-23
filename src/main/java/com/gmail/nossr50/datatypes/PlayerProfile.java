@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -916,7 +915,7 @@ public class PlayerProfile
 		xpGainATS = (int) (System.currentTimeMillis()/1000);
 		
 		double bonusModifier = 0;
-		String leaderName = "";
+		//String leaderName = "";
 		
 		if(inParty())
 		{
@@ -924,7 +923,7 @@ public class PlayerProfile
 			{
 				if(x.isOnline() && !x.getName().equals(thisplayer.getName()) && Party.getInstance().isPartyLeader(x.getName(), this.getParty()))
 				{
-					leaderName = x.getName();
+					//leaderName = x.getName();
 					if(m.getDistance(thisplayer.getLocation(), x.getLocation()) < 25)
 					{
 						PlayerProfile PartyLeader = Users.getProfile(x);
@@ -997,9 +996,9 @@ public class PlayerProfile
 					bonusModifier = 2;
 				
 				double trueBonus = bonusModifier * xp;
-				double oldxp = xp;
+				//double oldxp = xp;
 				xp+=trueBonus;
-				double percent = (trueBonus/oldxp)*100;
+				//double percent = (trueBonus/oldxp)*100;
 				//thisplayer.sendMessage(ChatColor.GREEN+"XP: "+oldxp+" Bonus XP: "+trueBonus+" Total: "+xp+ChatColor.GOLD+" [Master: "+leaderName+" " +" +"+(int)percent+"%]");
 			}
 			Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(Bukkit.getPlayer(playerName), skillType, xp));

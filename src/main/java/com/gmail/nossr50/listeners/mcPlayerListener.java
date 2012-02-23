@@ -108,7 +108,7 @@ public class mcPlayerListener implements Listener
 	    }
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerFish(PlayerFishEvent event) 
 	{
 		if(mcPermissions.getInstance().fishing(event.getPlayer()))
@@ -129,7 +129,7 @@ public class mcPlayerListener implements Listener
 		}
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) 
 	{
 		if(Users.getProfile(event.getPlayer()).getBerserkMode())
@@ -162,13 +162,13 @@ public class mcPlayerListener implements Listener
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerLogin(PlayerLoginEvent event) 
 	{
 		Users.addUser(event.getPlayer());
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) 
 	{
 		
@@ -196,7 +196,7 @@ public class mcPlayerListener implements Listener
 		Users.removeUser(event.getPlayer());
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerJoin(PlayerJoinEvent event) 
 	{
 		Player player = event.getPlayer();
@@ -210,8 +210,7 @@ public class mcPlayerListener implements Listener
 			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
 	}
 
-	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) 
 	{
 		Player player = event.getPlayer();
@@ -349,7 +348,7 @@ public class mcPlayerListener implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlayerChat(PlayerChatEvent event) 
 	{
 		Player player = event.getPlayer();
@@ -378,7 +377,7 @@ public class mcPlayerListener implements Listener
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onCowMilking(PlayerBucketFillEvent event){
 		Player player = event.getPlayer();
 		
