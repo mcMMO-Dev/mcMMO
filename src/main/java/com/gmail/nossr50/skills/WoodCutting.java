@@ -60,7 +60,7 @@ public class WoodCutting
     
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP, mcMMO plugin)
     {
-        int durabilityLoss = 0;
+        int durabilityLoss = 0, xp = 0;
         
         for(Block x : toBeFelled)
         {
@@ -78,7 +78,7 @@ public class WoodCutting
                     if(!plugin.misc.blockWatchList.contains(x))
                     {
                         WoodCutting.woodCuttingProcCheck(player, x);
-                        int xp = 0;
+                        
                             
                         switch(x.getData())
                         {
@@ -92,8 +92,6 @@ public class WoodCutting
                                 xp += LoadProperties.mbirch;
                                 break;
                         }
-                            
-                        PP.addXP(SkillType.WOODCUTTING, xp, player);
                     }
                         
                     //Drop the block
@@ -124,6 +122,9 @@ public class WoodCutting
                 }
             }
         }
+        
+        PP.addXP(SkillType.WOODCUTTING, xp, player);
+        Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
         
         if(LoadProperties.toolsLoseDurabilityFromAbilities)
         {

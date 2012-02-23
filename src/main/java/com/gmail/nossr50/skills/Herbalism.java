@@ -143,6 +143,7 @@ public class Herbalism
     		mat = Material.getMaterial(296);
 			is = new ItemStack(mat, 1, (byte)0, (byte)0);
     		PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat, player);
+    		
     		if(player != null)
     		{
     		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
