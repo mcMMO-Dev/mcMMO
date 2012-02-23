@@ -263,13 +263,9 @@ public class WoodCutting
 	    {
 	    	if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
 	    	{
-	    		System.out.println("BEFORE");
-	    		System.out.println(player.getItemInHand().getDurability());
 				short durability = player.getItemInHand().getDurability();
-				durability -= LoadProperties.abilityDurabilityLoss;
+				durability += LoadProperties.abilityDurabilityLoss;
 				player.getItemInHand().setDurability(durability);
-				System.out.println("AFTER");
-				System.out.println(player.getItemInHand().getDurability());
 	    	}
 	    }
 		

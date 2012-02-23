@@ -266,7 +266,7 @@ public class Mining
     		if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
     		{
 				short durability = player.getItemInHand().getDurability();
-				durability -= LoadProperties.abilityDurabilityLoss;
+				durability += LoadProperties.abilityDurabilityLoss;
 				player.getItemInHand().setDurability(durability);
     		}
     	}
