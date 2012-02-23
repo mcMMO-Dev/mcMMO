@@ -194,12 +194,12 @@ public class mcPlayerListener implements Listener
 		
 		//Schedule PlayerProfile removal 2 minutes after quitting
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
-		new Runnable() {
-            public void run() {
-                //Remove PlayerProfile
-                Users.removeUser(event.getPlayer());
-            }
-        }, 2400);
+    		new Runnable() {
+                public void run() {
+                    //Remove PlayerProfile
+                    Users.removeUser(event.getPlayer());
+                }
+            }, 2400);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
