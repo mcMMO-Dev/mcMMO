@@ -228,6 +228,30 @@ public class m
 		return id == 270 || id == 274 || id == 285 || id == 257 || id == 278;
 	}
 	
+	public static boolean isHelmet(ItemStack is)
+	{
+		int id = is.getTypeId();
+		return id == 298 || id == 306 || id == 310 || id == 314;
+	}
+	
+	public static boolean isChestplate(ItemStack is)
+	{
+		int id = is.getTypeId();
+		return id == 299 || id == 307 || id == 311 || id == 315;
+	}
+	
+	public static boolean isPants(ItemStack is)
+	{
+		int id = is.getTypeId();
+		return id == 300 || id == 308 || id == 312 || id == 316;
+	}
+	
+	public static boolean isBoots(ItemStack is)
+	{
+		int id = is.getTypeId();
+		return id == 301 || id == 305 || id == 313 || id == 317;
+	}
+	
 	public static void convertToMySQL()
 	{
 		if(!LoadProperties.useMySQL)

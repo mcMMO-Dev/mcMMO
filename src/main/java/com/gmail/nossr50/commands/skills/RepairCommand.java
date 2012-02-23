@@ -42,9 +42,9 @@ public class RepairCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.YourStats") }));
 		player.sendMessage(mcLocale.getString("m.RepairRepairMastery", new Object[] { repairmastery }));
 		player.sendMessage(mcLocale.getString("m.RepairSuperRepairChance", new Object[] { percentage }));
-		player.sendMessage(mcLocale.getString("m.ArcaneForgingRank", new Object[] { Repair.getArcaneForgingRank(PP) }));
-		player.sendMessage(mcLocale.getString("m.ArcaneEnchantKeepChance", new Object[] { Repair.getEnchantChance(Repair.getArcaneForgingRank(PP)) }));
-		player.sendMessage(mcLocale.getString("m.ArcaneEnchantDowngradeChance", new Object[] { Repair.getDowngradeChance(Repair.getArcaneForgingRank(PP)) }));
+		player.sendMessage(mcLocale.getString("m.ArcaneForgingRank", new Object[] { Repair.getArcaneForgingRank(PP.getSkillLevel(SkillType.REPAIR)) }));
+		player.sendMessage(mcLocale.getString("m.ArcaneEnchantKeepChance", new Object[] { Repair.getEnchantChance(Repair.getArcaneForgingRank(PP.getSkillLevel(SkillType.REPAIR))) }));
+		player.sendMessage(mcLocale.getString("m.ArcaneEnchantDowngradeChance", new Object[] { Repair.getDowngradeChance(Repair.getArcaneForgingRank(PP.getSkillLevel(SkillType.REPAIR))) }));
 
 		return true;
 	}

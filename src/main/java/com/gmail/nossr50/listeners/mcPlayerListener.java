@@ -241,7 +241,7 @@ public class mcPlayerListener implements Listener
 			{
 				Repair.repairCheck(player, is, event.getClickedBlock());
 				event.setCancelled(true);
-				player.updateInventory();
+//				player.updateInventory();
 			}
 
 			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
@@ -312,7 +312,7 @@ public class mcPlayerListener implements Listener
 		
 		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK))
 		{
-			if(player.getItemInHand().getType() == Material.BONE && player.getItemInHand().getAmount() > 9)
+			if(player.getItemInHand().getType() == Material.BONE && player.getItemInHand().getAmount() > LoadProperties.bonesConsumedByCOTW)
 			{
 				for(Entity x : player.getNearbyEntities(40, 40, 40))
 				{
@@ -325,24 +325,27 @@ public class mcPlayerListener implements Listener
 				World world = player.getWorld();
 				world.spawnCreature(player.getLocation(), EntityType.WOLF);
 				
-				ItemStack[] inventory = player.getInventory().getContents();
-    	    	for(ItemStack x : inventory){
-    	    		if(x != null && x.getAmount() > LoadProperties.bonesConsumedByCOTW-1 && x.getType() == Material.BONE){
-    	    			if(x.getAmount() >= LoadProperties.bonesConsumedByCOTW)
-    	    			{
-    	    				x.setAmount(x.getAmount() - LoadProperties.bonesConsumedByCOTW);
-    	    				player.getInventory().setContents(inventory);
-        	    			player.updateInventory();
-        	    			break;
-    	    			} else {
-    	    				x.setAmount(0);
-    	    				x.setTypeId(0);
-    	    				player.getInventory().setContents(inventory);
-        	    			player.updateInventory();
-        	    			break;
-    	    			}
-    	    		}
-    	    	}
+				int bones = player.getItemInHand().getAmount();
+				bones = bones - LoadProperties.bonesConsumedByCOTW;
+				player.setItemInHand(new ItemStack(Material.BONE, bones));
+//				ItemStack[] inventory = player.getInventory().getContents();
+//    	    	for(ItemStack x : inventory){
+//    	    		if(x != null && x.getAmount() > LoadProperties.bonesConsumedByCOTW-1 && x.getType() == Material.BONE){
+//    	    			if(x.getAmount() >= LoadProperties.bonesConsumedByCOTW)
+//    	    			{
+//    	    				x.setAmount(x.getAmount() - LoadProperties.bonesConsumedByCOTW);
+//    	    				player.getInventory().setContents(inventory);
+//        	    			player.updateInventory();
+//        	    			break;
+//    	    			} else {
+//    	    				x.setAmount(0);
+//    	    				x.setTypeId(0);
+//    	    				player.getInventory().setContents(inventory);
+//        	    			player.updateInventory();
+//        	    			break;
+//    	    			}
+//    	    		}
+//    	    	}
     	    	player.sendMessage(mcLocale.getString("m.TamingSummon"));
 			}
 		}
