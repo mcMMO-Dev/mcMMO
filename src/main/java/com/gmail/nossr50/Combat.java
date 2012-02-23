@@ -169,73 +169,38 @@ public class Combat
 		}
 		
 		/*
-		 * OFFENSIVE CHECKS FOR WOLVES VERSUS ENTITIES
+		 * TAMING (WOLVES VERSUS ENTITIES)
 		 */
 		if(event instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) event).getDamager() instanceof Wolf)
 		{
 			EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent) event;
 			Wolf theWolf = (Wolf) eventb.getDamager();
+			
 			if(theWolf.isTamed() && Taming.ownerOnline(theWolf, pluginx))
 			{
 				if(Taming.getOwner(theWolf, pluginx) == null)
 					return;
+				
 				Player master = Taming.getOwner(theWolf, pluginx);
 				PlayerProfile PPo = Users.getProfile(master);
 				
 				if(mcPermissions.getInstance().taming(master))
 				{
 				    //Fast Food Service
-				    if(PPo.getSkillLevel(SkillType.TAMING) >= 50)
-                    {
-                        if(theWolf.getHealth() < theWolf.getMaxHealth())
-                        {
-                            if(Math.random() * 10 > 5)
-                            {
-                            	if(theWolf.getHealth() + event.getDamage() <= theWolf.getMaxHealth())
-                            		theWolf.setHealth(theWolf.getHealth()+event.getDamage());
-                            	else
-                            		theWolf.setHealth(theWolf.getMaxHealth());
-                            }
-                        }
-                    }
+				    Taming.fastFoodService(PPo, theWolf, event);
 				    
 					//Sharpened Claws
-					if(PPo.getSkillLevel(SkillType.TAMING) >= 750)
-					{
-						event.setDamage(event.getDamage() + 2);
-					}
+					Taming.sharpenedClaws(PPo, event);
 					
 					//Gore
-					if(Math.random() * 1000 <= PPo.getSkillLevel(SkillType.TAMING))
-					{
-						event.setDamage(event.getDamage() * 2);
-						
-						if(event.getEntity() instanceof Player)
-						{
-							Player target = (Player)event.getEntity();
-							target.sendMessage(mcLocale.getString("Combat.StruckByGore")); //$NON-NLS-1$
-							Users.getProfile(target).setBleedTicks(2);
-						}
-						else
-							pluginx.misc.addToBleedQue((LivingEntity) event.getEntity());
-						
-						master.sendMessage(mcLocale.getString("Combat.Gore")); //$NON-NLS-1$
-					}
-					if(!event.getEntity().isDead() && !pluginx.misc.mobSpawnerList.contains(event.getEntity().getEntityId()))
-					{
-						int xp = getXp(event.getEntity(), event);
-						Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
-						
-						if(event.getEntity() instanceof Player)
-						{
-							xp = (event.getDamage() * 2);
-							Users.getProfile(master).addXP(SkillType.TAMING, (int)((xp*10)*1.5), master);
-						}
-						Skills.XpCheckSkill(SkillType.TAMING, master);
-					}
+					Taming.gore(PPo, event, master, pluginx);
+					
+					//Reward XP
+					Taming.rewardXp(event, pluginx, master);
 				}
 			}
 		}
+		
 		//Another offensive check for Archery
 		if(event instanceof EntityDamageByEntityEvent && event.getCause() == DamageCause.PROJECTILE && ((EntityDamageByEntityEvent) event).getDamager() instanceof Arrow)
 			archeryCheck((EntityDamageByEntityEvent)event, pluginx);
