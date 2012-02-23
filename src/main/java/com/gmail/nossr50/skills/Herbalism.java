@@ -150,7 +150,7 @@ public class Herbalism
     		}
     		
     		//GREEN THUMB
-    		if(PP.getGreenTerraMode() || (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel)))
+    		if(hasSeeds(player) && PP.getGreenTerraMode() || hasSeeds(player) && (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel)))
     		{
     			event.setCancelled(true);
     			m.mcDropItem(loc, is);
@@ -178,6 +178,7 @@ public class Herbalism
                     }
                 }, 1);
     			
+    			removeSeeds(player);
     		}
     	}
     	
