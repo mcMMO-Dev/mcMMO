@@ -16,8 +16,6 @@
 */
 package com.gmail.nossr50.listeners;
 
-import java.util.ArrayList;
-
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -29,9 +27,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Statistic;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -198,7 +194,7 @@ public class mcBlockListener implements Listener
    		 * WOOD CUTTING
    		 */
     	
-   		if(mcPermissions.getInstance().woodcutting(player))
+   		if(mcPermissions.getInstance().woodcutting(player) && block.getTypeId() == 17)
    		{
    			if(LoadProperties.woodcuttingrequiresaxe)
    			{
@@ -210,62 +206,13 @@ public class mcBlockListener implements Listener
     		{
     			WoodCutting.woodcuttingBlockCheck(player, block, plugin);
    			}
-    			
-    		/*
-    		 * IF PLAYER IS USING TREEFELLER
-    		 */
-   			if(mcPermissions.getInstance().woodCuttingAbility(player) 
-   					&& PP.getTreeFellerMode() 
-   					&& block.getTypeId() == 17
-   					&& m.blockBreakSimulate(block, player))
+   			
+   			if(PP.getTreeFellerMode())
    			{
-   				if(LoadProperties.spoutEnabled)
-   					SpoutStuff.playSoundForPlayer(SoundEffect.EXPLODE, player, block.getLocation());
-   				
-   				PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
-   				Bukkit.getPluginManager().callEvent(armswing);
-   				
-    			ArrayList<Block> fell = WoodCutting.treeFeller(block, player);
-    			for(Block blockx : fell)
-    			{
-    				if(blockx != null)
-    				{
-    					Material mat = Material.getMaterial(block.getTypeId());
-    					byte type = 0;
-    					if(block.getTypeId() == 17)
-    						type = block.getData();
-    					ItemStack item = new ItemStack(mat, 1, (byte)0, type);
-    					if(blockx.getTypeId() == 17)
-    					{
-    						m.mcDropItem(blockx.getLocation(), item);
-    						//XP WOODCUTTING
-    						if(!plugin.misc.blockWatchList.contains(block))
-    						{
-	    						WoodCutting.woodCuttingProcCheck(player, blockx);
-	    						PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine, player);
-    						}
-    					}
-    					if(blockx.getTypeId() == 18)
-    					{
-    						mat = Material.SAPLING;
-    						
-    						item = new ItemStack(mat, 1, (short)0, (byte)(blockx.getData()-8));
-    						
-    						if(Math.random() * 10 > 9)
-    							m.mcDropItem(blockx.getLocation(), item);
-    					}
-    					if(blockx.getType() != Material.AIR)
-    						player.incrementStatistic(Statistic.MINE_BLOCK, event.getBlock().getType());
-    					blockx.setType(Material.AIR);
-    				}
-    			}
-    			if(LoadProperties.toolsLoseDurabilityFromAbilities)
-    	    	{
-    	    		if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
-    	    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
-    	    	}
-    		}
+   			    WoodCutting.treeFeller(event, plugin);
+   			}
     	}
+   		
     	/*
     	 * EXCAVATION
     	 */

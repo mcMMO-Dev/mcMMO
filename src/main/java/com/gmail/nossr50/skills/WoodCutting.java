@@ -18,12 +18,13 @@ package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.Bukkit;
 import com.gmail.nossr50.Users;
@@ -40,7 +41,108 @@ import org.getspout.spoutapi.sound.SoundEffect;
 
 public class WoodCutting 
 {
-	
+    public static void treeFeller(BlockBreakEvent event, mcMMO plugin)
+    {
+        //Setup vars
+        Player player = event.getPlayer();
+        Block firstBlock = event.getBlock();
+        PlayerProfile PP = Users.getProfile(player);
+        World world = firstBlock.getWorld();
+        
+        //Prepare array
+        ArrayList<Block> toBeFelled = new ArrayList<Block>();
+        
+        //NOTE: Tree Feller will cut upwards like how you actually fell trees
+        processTreeFelling(firstBlock, world, toBeFelled);
+        removeBlocks(toBeFelled, player, PP, plugin);
+    }
+    
+    private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP, mcMMO plugin)
+    {
+        for(Block x : toBeFelled)
+        {
+            //Stupid NoCheat compatibility stuff
+            PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+            Bukkit.getPluginManager().callEvent(armswing);
+            
+            if(m.blockBreakSimulate(x, player))
+            {
+                if(x.getType() == Material.LOG || x.getType() == Material.LEAVES)
+                {
+                    if(x.getType() == Material.LOG)
+                    {
+                        byte type = x.getData();
+                        ItemStack item = new ItemStack(x.getType(), 1, (byte)0, type);
+                        
+                        if(!plugin.misc.blockWatchList.contains(x))
+                        {
+                            WoodCutting.woodCuttingProcCheck(player, x);
+                            PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine, player);
+                        }
+                        
+                        //Drop the block
+                        x.getWorld().dropItemNaturally(x.getLocation(), item);
+                        
+                        //Remove the block
+                        x.setData((byte) 0);
+                        x.setType(Material.AIR);
+                        
+                    } else if(x.getType() == Material.LEAVES) 
+                    {
+                        Material mat = Material.SAPLING;
+                        ItemStack item = new ItemStack(mat, 1, (short)0, (byte)(x.getData()-8));
+                        
+                        //1 in 10 chance to drop sapling
+                        if(Math.random() * 10 > 9)
+                            m.mcDropItem(x.getLocation(), item);
+                        
+                        //Remove the block
+                        x.setData((byte) 0);
+                        x.setType(Material.AIR);
+                    }
+                }
+            }
+        }
+    }
+    private static boolean treeFellerCompatible(Block block)
+    {
+        return block.getType() == Material.LOG || block.getType() == Material.LEAVES;
+    }
+    
+    private static void processTreeFelling(Block currentBlock, World world, ArrayList<Block> toBeFelled)
+    {
+        int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+        
+        
+       toBeFelled.add(currentBlock);
+        
+        //ORDER = X+, Z+, Z-, X-
+        Block xPositive = world.getBlockAt(x+1, y, z);
+        Block xNegative = world.getBlockAt(x-1, y, z);
+        Block zPositive = world.getBlockAt(x, y, z+1);
+        Block zNegative = world.getBlockAt(x, y, z-1);
+        
+        if(treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive))
+            processTreeFelling(xPositive, world, toBeFelled);
+        if(treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative))
+            processTreeFelling(xNegative, world, toBeFelled);
+        if(treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive))
+            processTreeFelling(zPositive, world, toBeFelled);
+        if(treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative))
+            processTreeFelling(zNegative, world, toBeFelled);
+        
+        //Finally go Y+
+        Block yPositive = world.getBlockAt(x, y+1, z);
+        
+        if(treeFellerCompatible(yPositive))
+        {
+            if(!toBeFelled.contains(yPositive))
+            {
+                processTreeFelling(yPositive, world, toBeFelled);
+            }
+        }
+    }
+    
     public static void woodCuttingProcCheck(Player player, Block block)
     {
     	PlayerProfile PP = Users.getProfile(player);
@@ -55,6 +157,7 @@ public class WoodCutting
     		}
     	}
     }
+    
     public static void treeFellerCheck(Player player, Block block)
     {
     	PlayerProfile PP = Users.getProfile(player);
@@ -72,8 +175,10 @@ public class WoodCutting
     		{
     			PP.setAxePreparationMode(false);
     		}
+    		
     		int ticks = 2;
     		int x = PP.getSkillLevel(SkillType.WOODCUTTING);
+    		
     		while(x >= 50)
     		{
     			x-=50;
@@ -95,70 +200,6 @@ public class WoodCutting
     			player.sendMessage(ChatColor.RED+"You are too tired to use that ability again."
     					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, (PP.getSkillDATS(AbilityType.TREE_FELLER)*1000), LoadProperties.treeFellerCooldown)+"s)");
     		}
-    	}
-    }
-    public static ArrayList<Block> treeFeller(Block block, Player player) {
-    	PlayerProfile PP = Users.getProfile(player);
-
-    	int radius = 1;
-    	if(PP.getSkillLevel(SkillType.WOODCUTTING) >= 500)
-    		radius++;
-    	if(PP.getSkillLevel(SkillType.WOODCUTTING) >= 950)
-    		radius++;
-
-        ArrayList<Block> blockList = new ArrayList<Block>();
-        ArrayList<Block> returnList = new ArrayList<Block>();
-
-        if(block != null)
-        	blockList.add(block);
-
-        boolean isDone = false;
-        while(isDone == false){
-        	isDone = addBlocksToTreeFelling(blockList, returnList, radius);
-        }
-
-        return returnList;
-    }
-    public static boolean addBlocksToTreeFelling(ArrayList<Block> blocklist, ArrayList<Block> toAdd, Integer radius)
-    {
-    	int u = 0;
-    	for (Block x : blocklist)
-    	{
-    		u++;
-    		if(toAdd.contains(x))
-    			continue;
-    		Location loc = x.getLocation();
-    		int vx = x.getX();
-            int vy = x.getY();
-            int vz = x.getZ();
-            
-            /*
-             * Run through the blocks around the broken block to see if they qualify to be 'felled'
-             */
-    		for (int cx = -radius; cx <= radius; cx++) {
-	            for (int cy = -radius; cy <= radius; cy++) {
-	                for (int cz = -radius; cz <= radius; cz++) {
-	                    Block blocktarget = loc.getWorld().getBlockAt(vx + cx, vy + cy, vz + cz);
-	                    if (!blocklist.contains(blocktarget) && !toAdd.contains(blocktarget) && (blocktarget.getTypeId() == 17 || blocktarget.getTypeId() == 18)) { 
-	                        toAdd.add(blocktarget);
-	                    }
-	                }
-	            }
-	        }
-    	}
-    	/*
-		 * Add more blocks to blocklist so they can be 'felled'
-		 */
-		for(Block xx : toAdd)
-		{
-    		if(!blocklist.contains(xx))
-        	blocklist.add(xx);
-        }
-    	if(u >= blocklist.size())
-    	{
-    		return true;
-    	} else {
-    		return false;
     	}
     }
     

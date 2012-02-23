@@ -170,7 +170,6 @@ public class Axes {
 	    					continue;
 	    				}
 	    			}
-    				
     				else
 	    			{			
 	    				LivingEntity target = (LivingEntity)derp;
