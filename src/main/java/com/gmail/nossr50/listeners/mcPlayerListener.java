@@ -169,7 +169,7 @@ public class mcPlayerListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerQuit(PlayerQuitEvent event) 
+	public void onPlayerQuit(final PlayerQuitEvent event) 
 	{
 		
 		/*
@@ -192,8 +192,14 @@ public class mcPlayerListener implements Listener
 		//Save PlayerData to MySQL/FlatFile on player quit
 		Users.getProfile(player).save();
 		
-		//Remove PlayerProfile
-		Users.removeUser(event.getPlayer());
+		//Schedule PlayerProfile removal 2 minutes after quitting
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
+		new Runnable() {
+            public void run() {
+                //Remove PlayerProfile
+                Users.removeUser(event.getPlayer());
+            }
+        }, 2400);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

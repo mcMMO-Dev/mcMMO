@@ -84,7 +84,8 @@ public class Users {
     {    	
     	PlayerProfile PP = Users.getProfile(player);
     	
-    	if(PP != null)
+    	//Only remove PlayerProfile if user is offline
+    	if(!player.isOnline())
     	{
 	    	PP.save();
 	    	if(players.containsKey(player))

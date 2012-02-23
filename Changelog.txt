@@ -23,6 +23,7 @@ Version 1.3.00-dev
  = Fixed memory leak with mob spawner tracking
  = Fixed /mcability not respecting permissions
  = Prettied up new config files
+ ! Changed mcMMO user information to be stored for 2 minutes after log out to reduce lag on rejoins
  ! Changed the name of Unarmed Apprentice/Mastery to Iron Arm Style
  ! Changed Unarmed to gain bonus damage every 50 skill levels, capping out at what Unarmed Mastery was before
  ! Changed Tree Feller to take down entire trees
