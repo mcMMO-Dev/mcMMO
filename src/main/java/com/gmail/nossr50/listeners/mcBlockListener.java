@@ -28,6 +28,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -287,10 +288,22 @@ public class mcBlockListener implements Listener
     		if(LoadProperties.excavationRequiresShovel)
     		{
     			if(m.isShovel(inhand)){
+    			    
     				event.setInstaBreak(true);
     				Excavation.gigaDrillBreaker(player, block);
     			}
     		} else {
+    		    
+    		    if(LoadProperties.toolsLoseDurabilityFromAbilities)
+    	        {
+    	            if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
+    	            {
+    	                short durability = player.getItemInHand().getDurability();
+    	                durability += (LoadProperties.abilityDurabilityLoss);
+    	                player.getItemInHand().setDurability(durability);
+    	            }
+    	        }
+    		    
     			event.setInstaBreak(true);
     			Excavation.gigaDrillBreaker(player, block);
     		}
@@ -323,6 +336,17 @@ public class mcBlockListener implements Listener
     		if(LoadProperties.miningrequirespickaxe)
     		{
     			if(m.isMiningPick(inhand)){
+    			    
+    			    if(LoadProperties.toolsLoseDurabilityFromAbilities)
+    		        {
+    		            if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
+    		            {
+    		                short durability = player.getItemInHand().getDurability();
+    		                durability += (LoadProperties.abilityDurabilityLoss);
+    		                player.getItemInHand().setDurability(durability);
+    		            }
+    		        }
+    			    
     				event.setInstaBreak(true);
     				Mining.SuperBreakerBlockCheck(player, block, plugin);
     			}
