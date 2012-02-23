@@ -25,8 +25,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
@@ -323,7 +323,7 @@ public class mcPlayerListener implements Listener
 					}
 				}
 				World world = player.getWorld();
-				world.spawnCreature(player.getLocation(), CreatureType.WOLF);
+				world.spawnCreature(player.getLocation(), EntityType.WOLF);
 				
 				ItemStack[] inventory = player.getInventory().getContents();
     	    	for(ItemStack x : inventory){
