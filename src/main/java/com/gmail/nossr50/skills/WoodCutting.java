@@ -121,29 +121,29 @@ public class WoodCutting
     }
     private static boolean treeFellerCompatible(Block block)
     {
-        return block.getType() == Material.LOG || block.getType() == Material.LEAVES;
+        return block.getType() == Material.LOG || block.getType() == Material.LEAVES || block.getType() == Material.AIR;
     }
     
     private static void processTreeFelling(Block currentBlock, World world, ArrayList<Block> toBeFelled)
     {
         int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+        toBeFelled.add(currentBlock);
         
+        //These 2 are to make sure that Tree Feller isn't so aggressive
+        boolean isAirOrLeaves = currentBlock.getType() == Material.LEAVES || currentBlock.getType() == Material.AIR;
         
-       toBeFelled.add(currentBlock);
-        
-        //ORDER = X+, Z+, Z-, X-
         Block xPositive = world.getBlockAt(x+1, y, z);
         Block xNegative = world.getBlockAt(x-1, y, z);
         Block zPositive = world.getBlockAt(x, y, z+1);
         Block zNegative = world.getBlockAt(x, y, z-1);
         
-        if(treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive))
+        if(!isTooAgressive(isAirOrLeaves, xPositive) && treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive))
             processTreeFelling(xPositive, world, toBeFelled);
-        if(treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative))
+        if(!isTooAgressive(isAirOrLeaves, xNegative) && treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative))
             processTreeFelling(xNegative, world, toBeFelled);
-        if(treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive))
+        if(!isTooAgressive(isAirOrLeaves, zPositive) && treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive))
             processTreeFelling(zPositive, world, toBeFelled);
-        if(treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative))
+        if(!isTooAgressive(isAirOrLeaves, zNegative) && treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative))
             processTreeFelling(zNegative, world, toBeFelled);
         
         //Finally go Y+
@@ -156,6 +156,11 @@ public class WoodCutting
                 processTreeFelling(yPositive, world, toBeFelled);
             }
         }
+    }
+    
+    private static boolean isTooAgressive(boolean bool, Block block)
+    {
+        return bool && (block.getType() == Material.AIR || block.getType() == Material.LEAVES);
     }
     
     public static void woodCuttingProcCheck(Player player, Block block)
