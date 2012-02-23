@@ -65,18 +65,11 @@ public class Archery
 		PlayerProfile PPa = Users.getProfile(attacker);
 		if(Math.random() * 100 >= 75)
 		{
+			int ignition = 20;
+			ignition += (PPa.getSkillLevel(SkillType.ARCHERY)/200)*20;
 			
-			int ignition = 20;	
-			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 200)
-				ignition+=20;
-			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 400)
-				ignition+=20;
-			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 600)
-				ignition+=20;
-			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 800)
-				ignition+=20;
-			if(PPa.getSkillLevel(SkillType.ARCHERY) >= 1000)
-				ignition+=20;
+			if(ignition > 120)
+			    ignition = 120;
 			
 			if(x instanceof Player)
 			{
