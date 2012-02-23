@@ -77,7 +77,22 @@ public class WoodCutting
                         if(!plugin.misc.blockWatchList.contains(x))
                         {
                             WoodCutting.woodCuttingProcCheck(player, x);
-                            PP.addXP(SkillType.WOODCUTTING, LoadProperties.mpine, player);
+                            int xp = 0;
+                            
+                            switch(x.getData())
+                            {
+                                case 0:
+                                    xp += LoadProperties.mpine;
+                                    break;
+                                case 1:
+                                    xp += LoadProperties.mspruce;
+                                    break;
+                                case 2:
+                                    xp += LoadProperties.mbirch;
+                                    break;
+                            }
+                            
+                            PP.addXP(SkillType.WOODCUTTING, xp, player);
                         }
                         
                         //Drop the block
