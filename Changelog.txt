@@ -23,7 +23,7 @@ Version 1.3.00-dev
  = Fixed memory leak with mob spawner tracking
  = Fixed /mcability not respecting permissions
  = Prettied up new config files
- ! Changed the name of Unarmed Apprentice/Master to Iron Arm Style
+ ! Changed the name of Unarmed Apprentice/Mastery to Iron Arm Style
  ! Changed Unarmed to gain bonus damage every 50 skill levels, capping out at what Unarmed Mastery was before
  ! Changed Tree Feller to take down entire trees
  ! Changed mob spawn tracking to use Unique Entity ID instead of Entity Object
