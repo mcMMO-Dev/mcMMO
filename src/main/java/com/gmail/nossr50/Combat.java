@@ -42,7 +42,7 @@ public class Combat
 {
 	public static void combatChecks(EntityDamageEvent event, mcMMO pluginx)
 	{
-		if(event.isCancelled() || event.getDamage() == 0)
+		if(event.isCancelled() || event.getDamage() == 0 || event.getEntity().isDead())
 			return;
 		
 		if(event instanceof EntityDamageByEntityEvent)

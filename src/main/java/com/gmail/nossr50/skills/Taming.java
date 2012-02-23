@@ -35,7 +35,7 @@ public class Taming
 {
     public static void rewardXp(EntityDamageEvent event, mcMMO pluginx, Player master)
     {
-        if(!event.getEntity().isDead() && !pluginx.misc.mobSpawnerList.contains(event.getEntity().getEntityId()))
+        if(!pluginx.misc.mobSpawnerList.contains(event.getEntity().getEntityId()))
         {
             int xp = Combat.getXp(event.getEntity(), event);
             Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
@@ -51,7 +51,6 @@ public class Taming
     
     public static void fastFoodService(PlayerProfile PPo, Wolf theWolf, EntityDamageEvent event)
     {
-        //Fast Food Service
         if(PPo.getSkillLevel(SkillType.TAMING) >= 50)
         {
             if(theWolf.getHealth() < theWolf.getMaxHealth())
