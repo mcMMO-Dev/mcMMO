@@ -191,9 +191,7 @@ public class mcEntityListener implements Listener
     	//Remove mob from mob spawner list
     	if(plugin.misc.mobSpawnerList.contains(x.getEntityId()))
     	{
-    	    System.out.println("DEBUG SIZE BEFORE: "+plugin.misc.mobSpawnerList.size());
     	    plugin.misc.mobSpawnerList.remove((Object)x.getEntityId());
-    	    System.out.println("DEBUG SIZE AFTER: "+plugin.misc.mobSpawnerList.size());
     	}
     	
     	//Remove bleed track
