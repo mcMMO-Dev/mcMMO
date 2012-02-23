@@ -94,7 +94,7 @@
         </plugins>
     </build>
     <repositories>
-        <repository>
+        <repository>                      
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
