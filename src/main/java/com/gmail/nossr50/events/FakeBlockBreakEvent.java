@@ -26,4 +26,8 @@ public class FakeBlockBreakEvent extends BlockBreakEvent {
 	public FakeBlockBreakEvent(Block theBlock, Player player) {
 		super(theBlock, player);
 	}
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 }
