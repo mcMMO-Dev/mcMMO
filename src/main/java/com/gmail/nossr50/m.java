@@ -62,18 +62,6 @@ public class m
 		}
 	}
 	
-	public static Double getDouble(String string)
-	{
-		if(isDouble(string))
-		{
-			return Double.parseDouble(string);
-		}
-		else
-		{
-			return (double) 0;
-		}
-	}
-	
 	public static boolean isDouble(String string)
 	{
 		try 
@@ -176,40 +164,6 @@ public class m
 			return false;
 		} else {
 			return true;
-		}
-	}
-
-	public static boolean isBlockAround(Location loc, Integer radius, Integer typeid)
-	{
-		Block blockx = loc.getBlock();
-		int ox = blockx.getX();
-		int oy = blockx.getY();
-		int oz = blockx.getZ();
-		for (int cx = -radius; cx <= radius; cx++) {
-			for (int cy = -radius; cy <= radius; cy++) {
-				for (int cz = -radius; cz <= radius; cz++) {
-					Block block = loc.getWorld().getBlockAt(ox + cx, oy + cy, oz + cz);
-					if (block.getTypeId() == typeid) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	public static Integer calculateHealth(Integer health, Integer newvalue){
-		if((health + newvalue) > 20){
-			return 20;
-		} else {
-			return health+newvalue;
-		}
-	}
-	public Integer calculateMinusHealth(Integer health, Integer newvalue){
-		if((health - newvalue) < 1){
-			return 0;
-		} else {
-			return health-newvalue;
 		}
 	}
 	
