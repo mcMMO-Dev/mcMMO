@@ -372,8 +372,10 @@ public class mcBlockListener implements Listener
     			}
     		}
     		else{
-    			event.setInstaBreak(true);
-    			WoodCutting.leafBlower(player, block);
+    			if(inhand.getTypeId() != 359){
+	    			event.setInstaBreak(true);
+	    			WoodCutting.leafBlower(player, block);
+    			}
     		}
     		
     	}
