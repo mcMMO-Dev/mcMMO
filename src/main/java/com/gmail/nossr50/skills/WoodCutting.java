@@ -70,56 +70,57 @@ public class WoodCutting
             
             if(m.blockBreakSimulate(x, player))
             {
-                if(x.getType() == Material.LOG || x.getType() == Material.LEAVES)
+                if(x.getType() == Material.LOG)
                 {
-                    durabilityLoss++; //Damage the tool more if the Tree is larger
-                    
-                    if(x.getType() == Material.LOG)
-                    {
-                        byte type = x.getData();
-                        ItemStack item = new ItemStack(x.getType(), 1, (byte)0, type);
+                    byte type = x.getData();
+                    ItemStack item = new ItemStack(x.getType(), 1, (byte)0, type);
                         
-                        if(!plugin.misc.blockWatchList.contains(x))
+                    if(!plugin.misc.blockWatchList.contains(x))
+                    {
+                        WoodCutting.woodCuttingProcCheck(player, x);
+                        int xp = 0;
+                            
+                        switch(x.getData())
                         {
-                            WoodCutting.woodCuttingProcCheck(player, x);
-                            int xp = 0;
-                            
-                            switch(x.getData())
-                            {
-                                case 0:
-                                    xp += LoadProperties.mpine;
-                                    break;
-                                case 1:
-                                    xp += LoadProperties.mspruce;
-                                    break;
-                                case 2:
-                                    xp += LoadProperties.mbirch;
-                                    break;
-                            }
-                            
-                            PP.addXP(SkillType.WOODCUTTING, xp, player);
+                            case 0:
+                                xp += LoadProperties.mpine;
+                                break;
+                            case 1:
+                                xp += LoadProperties.mspruce;
+                                break;
+                            case 2:
+                                xp += LoadProperties.mbirch;
+                                break;
                         }
-                        
-                        //Drop the block
-                        x.getWorld().dropItemNaturally(x.getLocation(), item);
-                        
-                        //Remove the block
-                        x.setData((byte) 0);
-                        x.setType(Material.AIR);
-                        
-                    } else if(x.getType() == Material.LEAVES) 
-                    {
-                        Material mat = Material.SAPLING;
-                        ItemStack item = new ItemStack(mat, 1, (short)0, (byte)(x.getData()-8));
-                        
-                        //1 in 10 chance to drop sapling
-                        if(Math.random() * 10 > 9)
-                            m.mcDropItem(x.getLocation(), item);
-                        
-                        //Remove the block
-                        x.setData((byte) 0);
-                        x.setType(Material.AIR);
+                            
+                        PP.addXP(SkillType.WOODCUTTING, xp, player);
                     }
+                        
+                    //Drop the block
+                    x.getWorld().dropItemNaturally(x.getLocation(), item);
+                        
+                    //Remove the block
+                    x.setData((byte) 0);
+                    x.setType(Material.AIR);
+                        
+                    //Damage the tool more if the Tree is larger
+                    durabilityLoss++;
+                        
+                } else if(x.getType() == Material.LEAVES) 
+                {
+                    Material mat = Material.SAPLING;
+                    ItemStack item = new ItemStack(mat, 1, (short)0, (byte)(x.getData()-8));
+                        
+                    //1 in 10 chance to drop sapling
+                    if(Math.random() * 10 > 9)
+                        m.mcDropItem(x.getLocation(), item);
+                        
+                    //Remove the block
+                    x.setData((byte) 0);
+                    x.setType(Material.AIR);
+                        
+                    //Damage the tool more if the Tree is larger
+                    durabilityLoss++;
                 }
             }
         }
