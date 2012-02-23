@@ -36,6 +36,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.config.*;
+
 import org.getspout.spoutapi.sound.SoundEffect;
 
 
@@ -261,7 +262,15 @@ public class WoodCutting
     	if(LoadProperties.toolsLoseDurabilityFromAbilities)
 	    {
 	    	if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
-	    		m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+	    	{
+	    		System.out.println("BEFORE");
+	    		System.out.println(player.getItemInHand().getDurability());
+				short durability = player.getItemInHand().getDurability();
+				durability -= LoadProperties.abilityDurabilityLoss;
+				player.getItemInHand().setDurability(durability);
+				System.out.println("AFTER");
+				System.out.println(player.getItemInHand().getDurability());
+	    	}
 	    }
 		
 		if(LoadProperties.spoutEnabled)

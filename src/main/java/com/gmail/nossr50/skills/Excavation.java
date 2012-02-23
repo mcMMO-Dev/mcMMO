@@ -204,7 +204,11 @@ public class Excavation
 		if(LoadProperties.toolsLoseDurabilityFromAbilities)
     	{
 			if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
-    			m.damageTool(player, (short) LoadProperties.abilityDurabilityLoss);
+			{
+				short durability = player.getItemInHand().getDurability();
+				durability -= LoadProperties.abilityDurabilityLoss;
+				player.getItemInHand().setDurability(durability);
+			}
     	}
 		
 		if(block.getData() != (byte)5)

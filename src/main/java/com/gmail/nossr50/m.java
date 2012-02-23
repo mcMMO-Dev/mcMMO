@@ -144,26 +144,6 @@ public class m
 			return false; //Return false if something went wrong
 		}
 	}
-
-	public static void damageTool(Player player, short damage)
-	{
-		if(player.getItemInHand().getTypeId() == 0)
-			return;
-		player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability() + damage));
-		if(player.getItemInHand().getDurability() >= getMaxDurability(getTier(player), player.getItemInHand()))
-		{
-			ItemStack[] inventory = player.getInventory().getContents();
-			for(ItemStack x : inventory)
-			{
-				if(x != null && x.getTypeId() == player.getItemInHand().getTypeId() && x.getDurability() == player.getItemInHand().getDurability()){
-					x.setTypeId(0);
-					x.setAmount(0);
-					player.getInventory().setContents(inventory);
-					return;
-				}
-			}
-		}
-	}
 	
 	public static Integer getTier(Player player)
 	{
@@ -180,26 +160,6 @@ public class m
 			return 4; //DIAMOND
 		} else {
 			return 1; //UNRECOGNIZED
-		}
-	}
-	
-	public static Integer getMaxDurability(Integer tier, ItemStack item)
-	{
-		int id = item.getTypeId();
-		if(tier == 1){
-			if((id == 283 || id == 284 || id == 285 || id == 286 || id == 294)){
-				return 33; //GOLD
-			} else {
-				return 60; //WOOD
-			}
-		} else if (tier == 2){
-			return 132;
-		} else if (tier == 3){
-			return 251;
-		} else if (tier == 4){
-			return 1562;
-		} else {
-			return 0;
 		}
 	}
 
