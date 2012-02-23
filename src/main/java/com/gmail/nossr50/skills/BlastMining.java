@@ -365,7 +365,8 @@ public class BlastMining{
 	 * Demolitions Expertise (Unlocked at Mining 500) 
 	 * 
 	 * Reduces explosion damage to 1/4 of normal at 500.
-	 * Reduces explosion damage to 1/2 of normal at 1000.
+	 * Reduces explosion damage to 1/2 of normal at 750.
+	 * Reduces explosion damage to 0 at 1000.
 	 */
 	public static void demolitionsExpertise(Player player, EntityDamageEvent event)
 	{
@@ -374,10 +375,12 @@ public class BlastMining{
 		int damage = event.getDamage();
 		if(skill < 500)
 			return;
-		if(skill >= 500 && skill < 1000)
+		if(skill >= 500 && skill < 750)
 			damage = damage/4;
-		if(skill >= 1000)
+		if(skill >= 750 && skill < 1000)
 			damage = damage/2;
+		if(skill >= 1000)
+			damage = 0;
 		
 		event.setDamage(damage);
 	}
