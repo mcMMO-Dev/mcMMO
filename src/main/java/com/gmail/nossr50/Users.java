@@ -70,7 +70,8 @@ public class Users {
 	
     public static void addUser(Player player)
     {
-    	players.put(player, new PlayerProfile(player));
+    	if(!players.containsKey(player)) 
+    		players.put(player, new PlayerProfile(player));
     }
     public static void clearUsers()
     {
@@ -82,14 +83,11 @@ public class Users {
     
     public static void removeUser(Player player)
     {    	
-    	PlayerProfile PP = Users.getProfile(player);
-    	
-    	//Only remove PlayerProfile if user is offline
-    	if(!player.isOnline())
+    	//Only remove PlayerProfile if user is offline and we have it in memory
+    	if(!player.isOnline() && players.containsKey(player))
     	{
-	    	PP.save();
-	    	if(players.containsKey(player))
-	    		players.remove(player);
+	    	players.get(player).save();
+	    	players.remove(player);
     	}
     }
 

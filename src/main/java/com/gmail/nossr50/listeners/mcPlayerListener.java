@@ -57,6 +57,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.spout.mmoHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -169,9 +170,8 @@ public class mcPlayerListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerQuit(final PlayerQuitEvent event) 
+	public void onPlayerQuit(PlayerQuitEvent event) 
 	{
-		
 		/*
 		 * GARBAGE COLLECTION
 		 */
@@ -193,13 +193,7 @@ public class mcPlayerListener implements Listener
 		Users.getProfile(player).save();
 		
 		//Schedule PlayerProfile removal 2 minutes after quitting
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
-    		new Runnable() {
-                public void run() {
-                    //Remove PlayerProfile
-                    Users.removeUser(event.getPlayer());
-                }
-            }, 2400);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player), 2400);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
