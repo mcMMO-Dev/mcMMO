@@ -94,11 +94,21 @@
         </plugins>
     </build>
     <repositories>
-        <repository>                      
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots> 
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
         <repository>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots> 
         	<id>spout-repo</id>
         	<url>http://nexus.getspout.org/content/groups/public/</url>
         </repository>
