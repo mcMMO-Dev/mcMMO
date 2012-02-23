@@ -60,6 +60,8 @@ public class WoodCutting
     
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP, mcMMO plugin)
     {
+        int durabilityLoss = 0;
+        
         for(Block x : toBeFelled)
         {
             //Stupid NoCheat compatibility stuff
@@ -70,6 +72,8 @@ public class WoodCutting
             {
                 if(x.getType() == Material.LOG || x.getType() == Material.LEAVES)
                 {
+                    durabilityLoss++; //Damage the tool more if the Tree is larger
+                    
                     if(x.getType() == Material.LOG)
                     {
                         byte type = x.getData();
@@ -119,6 +123,17 @@ public class WoodCutting
                 }
             }
         }
+        
+        if(LoadProperties.toolsLoseDurabilityFromAbilities)
+        {
+            if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
+            {
+                short durability = player.getItemInHand().getDurability();
+                durability += (LoadProperties.abilityDurabilityLoss * durabilityLoss);
+                player.getItemInHand().setDurability(durability);
+            }
+        }
+        
     }
     private static boolean treeFellerCompatible(Block block)
     {
