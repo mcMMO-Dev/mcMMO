@@ -39,12 +39,15 @@ public class Acrobatics {
 		if(Math.random() * 1000 <= acrovar && !event.isCancelled())
 		{
 			int threshold = 7;
+			
 			if(player.isSneaking())
 				threshold = 14;
 			
 			int newDamage = event.getDamage() - threshold;
+			
 			if(newDamage < 0)
 				newDamage = 0;
+			
 			/*
 			 * Check for death
 			 */
