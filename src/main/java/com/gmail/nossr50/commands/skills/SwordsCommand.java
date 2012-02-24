@@ -61,7 +61,7 @@ public class SwordsCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.SwordsCounterAttChance", new Object[] { counterattackpercentage }));
 		player.sendMessage(mcLocale.getString("m.SwordsBleedLength", new Object[] { bleedrank }));
 		player.sendMessage(mcLocale.getString("m.SwordsTickNote"));
-		player.sendMessage(mcLocale.getString("m.SwordsBleedLength", new Object[] { percentage }));
+		player.sendMessage(mcLocale.getString("m.SwordsBleedChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.SwordsSSLength", new Object[] { ticks }));
 
 		return true;
