@@ -193,14 +193,8 @@ public class Herbalism
     		{
     			if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
 	    		{
-	    			m.mcDropItem(loc, is);
-	    			m.mcDropItem(loc, is);
-					if(Math.random() * 10 > 5)
-						m.mcDropItem(loc, is);
-					if(Math.random() * 10 > 5)
-						m.mcDropItem(loc, is);
-					if(Math.random() * 10 > 5)
-						m.mcDropItem(loc, is);
+	    			m.mcDropItems(loc, is, 2);
+	    			m.mcRandomDropItems(loc, is, 50, 3);
 	    		}
     		}
     	}
@@ -310,17 +304,8 @@ public class Herbalism
 	    		{
 				    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
 		    		{
-						m.mcDropItem(loc, is);
-						m.mcDropItem(loc, is);
-						m.mcDropItem(loc, is);
-						if(Math.random() * 10 > 5)
-							m.mcDropItem(loc, is);
-						if(Math.random() * 10 > 5)
-							m.mcDropItem(loc, is);
-						if(Math.random() * 10 > 5)
-							m.mcDropItem(loc, is);
-						if(Math.random() * 10 > 5)
-							m.mcDropItem(loc, is);
+						m.mcDropItems(loc, is, 3);
+						m.mcRandomDropItems(loc, is, 50, 4);
 		    		}
 	    		}
 				PP.addXP(SkillType.HERBALISM, LoadProperties.mmelon, player);

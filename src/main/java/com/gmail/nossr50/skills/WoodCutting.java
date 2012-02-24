@@ -109,9 +109,8 @@ public class WoodCutting
                     Material mat = Material.SAPLING;
                     ItemStack item = new ItemStack(mat, 1, (short)0, (byte)(x.getData()-8));
                         
-                    //1 in 10 chance to drop sapling
-                    if(Math.random() * 10 > 9)
-                        m.mcDropItem(x.getLocation(), item);
+                    //90% chance to drop sapling
+                    m.mcRandomDropItem(x.getLocation(), item, 90);
                         
                     //Remove the block
                     x.setData((byte) 0);

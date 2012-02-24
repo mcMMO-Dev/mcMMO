@@ -441,7 +441,7 @@ public class Skills
     		Integer x = 0;
     		while(x < plugin.misc.arrowTracker.get(entity))
     		{
-	    		m.mcDropItem(entity.getLocation(), 262);
+	    		m.mcDropItem(entity.getLocation(), new ItemStack(262, 1));
 	    		x++;
     		}
     	}

@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -180,15 +179,21 @@ public class m
 		return true;
 	}
 	
-	public static void mcDropItem(Location location, int id)
+	public static void mcDropItems(Location location, ItemStack is, int quantity)
 	{
-		if(location == null) return;
-		
-		Material mat = Material.getMaterial(id);
-		ItemStack item = new ItemStack(mat, 1, (byte) 0, (byte) 0);
-		mcDropItem(location, item);
+		for(int i = 0; i < quantity; i++)
+			mcDropItem(location, is);
 	}
-	
+	public static void mcRandomDropItem(Location location, ItemStack is, int chance)
+	{
+		if(Math.random() * 100 < chance)
+			mcDropItem(location, is);
+	}
+	public static void mcRandomDropItems(Location location, ItemStack is, int chance, int quantity)
+	{
+		for(int i = 0; i < quantity; i++)
+			mcRandomDropItem(location, is, chance);
+	}
 	public static void mcDropItem(Location location, ItemStack itemStack) {
 		// We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
 		McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);

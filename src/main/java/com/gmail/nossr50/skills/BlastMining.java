@@ -49,56 +49,33 @@ public class BlastMining{
 			return;
 		}
 			
-		switch (id)
-		{
+		switch (id){
 		//GLOWSTONE
 		case 89:
 			mat = Material.getMaterial(348);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
-				m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
-				m.mcDropItem(loc, item);
+			m.mcDropItems(loc, item, 2);
+			m.mcRandomDropItems(loc, item, 50, 2);
 			break;
 		//REDSTONE
 		case 73:
 			mat = Material.getMaterial(331);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
-				m.mcDropItem(loc, item);
+			m.mcDropItems(loc, item, 4);
+			m.mcRandomDropItem(loc, item, 50);
 			break;
 		case 74:
 			mat = Material.getMaterial(331);
 			item = new ItemStack(mat, 1, (byte)0, damage);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
-				m.mcDropItem(loc, item);
+			m.mcDropItems(loc, item, 4);
+			m.mcRandomDropItem(loc, item, 50);
 			break;
 		//LAPIS
 		case 21:
 			mat = Material.getMaterial(351);
 			item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
-				m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
-				m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
-				m.mcDropItem(loc, item);
-			if(Math.random() * 10 > 5)
-				m.mcDropItem(loc, item);
+			m.mcDropItems(loc, item, 4);
+			m.mcRandomDropItems(loc, item, 50, 4);
 			break;
 		//DIAMOND
 		case 56:
@@ -118,7 +95,7 @@ public class BlastMining{
 			item = new ItemStack(mat, 1, (byte)0, damage);
 			m.mcDropItem(loc, item);
 			break;
-		}
+	}
 	}
 	
 	/*
