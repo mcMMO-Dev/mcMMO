@@ -60,7 +60,18 @@ public class WoodCutting
     
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP, mcMMO plugin)
     {
+        if(toBeFelled.size() > LoadProperties.treeFellerThreshold)
+        {
+            player.sendMessage(mcLocale.getString("Skills.Woodcutting.TreeFellerThreshold"));
+            return;
+        }
         int durabilityLoss = 0, xp = 0;
+        //Prepare ItemStacks
+        ItemStack item;
+        ItemStack oak = new ItemStack(Material.LOG, 1, (byte)0, (byte)0);
+        ItemStack spruce = new ItemStack(Material.LOG, 1, (byte)0, (byte)1);
+        ItemStack birch = new ItemStack(Material.LOG, 1, (byte)0, (byte)2);
+        ItemStack jungle = new ItemStack(Material.LOG, 1, (byte)0, (byte)3);
         
         for(Block x : toBeFelled)
         {
@@ -72,18 +83,35 @@ public class WoodCutting
             {
                 if(x.getType() == Material.LOG)
                 {
-                    byte type = x.getData();
-                    ItemStack item = new ItemStack(x.getType(), 1, (byte)0, type);
+                    switch(x.getData())
+                    {
+                    case 0:
+                        item = oak;
+                        break;
+                    case 1:
+                        item = spruce;
+                        break;
+                    case 2:
+                        item = birch;
+                        break;
+                    case 3:
+                        item = jungle;
+                        break;
+                    default:
+                        item = oak;
+                        break;
+                    }
+                    
+                    //ItemStack item = new ItemStack(x.getType(), 1, (byte)0, type);
                         
                     if(!plugin.misc.blockWatchList.contains(x))
                     {
                         WoodCutting.woodCuttingProcCheck(player, x);
-                        
                             
                         switch(x.getData())
                         {
                             case 0:
-                                xp += LoadProperties.mpine;
+                                xp += LoadProperties.moak;
                                 break;
                             case 1:
                                 xp += LoadProperties.mspruce;
@@ -91,15 +119,17 @@ public class WoodCutting
                             case 2:
                                 xp += LoadProperties.mbirch;
                                 break;
+                            case 3:
+                                xp += LoadProperties.mjungle;
+                                break;
                         }
                     }
-                        
+                    
+                    //Remove the block
+                    x.setType(Material.AIR);
+                    
                     //Drop the block
                     x.getWorld().dropItemNaturally(x.getLocation(), item);
-                        
-                    //Remove the block
-                    x.setData((byte) 0);
-                    x.setType(Material.AIR);
                         
                     //Damage the tool more if the Tree is larger
                     durabilityLoss++;
@@ -107,7 +137,7 @@ public class WoodCutting
                 } else if(x.getType() == Material.LEAVES) 
                 {
                     Material mat = Material.SAPLING;
-                    ItemStack item = new ItemStack(mat, 1, (short)0, (byte)(x.getData()-8));
+                    item = new ItemStack(mat, 1, (short)0, (byte)(x.getData()-8));
                         
                     //90% chance to drop sapling
                     m.mcRandomDropItem(x.getLocation(), item, 90);
@@ -135,6 +165,7 @@ public class WoodCutting
             }
         }
     }
+    
     private static boolean treeFellerCompatible(Block block)
     {
         return block.getType() == Material.LOG || block.getType() == Material.LEAVES || block.getType() == Material.AIR;
@@ -143,7 +174,9 @@ public class WoodCutting
     private static void processTreeFelling(Block currentBlock, World world, ArrayList<Block> toBeFelled)
     {
         int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
-        toBeFelled.add(currentBlock);
+        
+        if(currentBlock.getType() == Material.LOG || currentBlock.getType() == Material.LEAVES)
+            toBeFelled.add(currentBlock);
         
         //These 2 are to make sure that Tree Feller isn't so aggressive
         boolean isAirOrLeaves = currentBlock.getType() == Material.LEAVES || currentBlock.getType() == Material.AIR;
@@ -244,7 +277,7 @@ public class WoodCutting
     	switch(data)
     	{
     		case 0:
-    			xp += LoadProperties.mpine;
+    			xp += LoadProperties.moak;
     			break;
     		case 1:
     			xp += LoadProperties.mspruce;
@@ -252,6 +285,9 @@ public class WoodCutting
     		case 2:
     			xp += LoadProperties.mbirch;
     			break;
+    		case 3:
+    		    xp += LoadProperties.mjungle;
+    		    break;
     	}
     	
     	if(block.getTypeId() == 17)

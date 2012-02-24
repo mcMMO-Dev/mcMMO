@@ -84,6 +84,8 @@ Abilities:
         Serrated_Strikes: 240
         Tree_Feller: 240
         Super_Breaker: 240
+    Limits:
+       Tree_Feller_Threshold: 500
     Tools:
         Durability_Loss_Enabled: true
         Durability_Loss: 2
@@ -187,9 +189,10 @@ Experience:
     Excavation:
         Base: 40
     Woodcutting:
-        Birch: 70
+        Oak: 70
         Spruce: 80
-        Pine: 90
+        Birch: 90
+        Jungle: 100
     Herbalism:
         Sugar_Cane: 30
         Cactus: 30

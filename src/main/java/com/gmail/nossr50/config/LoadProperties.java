@@ -56,8 +56,8 @@ public class LoadProperties {
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
 			nIron, nGold, nDiamond, locale, nString, nLeather;
 
-	public static int mtameWolf, mshearing, mmilkCow, mfishing, xpbar_x, xpbar_y, xpicon_x, xpicon_y,
-			chimaeraId, msandstone, mbase, mpine, mbirch, mspruce, mmelon,
+	public static int treeFellerThreshold, mjungle, mtameWolf, mshearing, mmilkCow, mfishing, xpbar_x, xpbar_y, xpicon_x, xpicon_y,
+			chimaeraId, msandstone, mbase, moak, mbirch, mspruce, mmelon,
 			mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold,
 			mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack,
 			mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier,
@@ -250,9 +250,10 @@ public class LoadProperties {
 		mvines = readInteger("Experience.Herbalism.Vines", 10);
 		herbalismHungerBonus = readBoolean("Skills.Herbalism.Hunger_Bonus", true);
 
-		mpine = readInteger("Experience.Woodcutting.Pine", 70);
-		mbirch = readInteger("Experience.Woodcutting.Birch", 80);
-		mspruce = readInteger("Experience.Woodcutting.Spruce", 90);
+		moak = readInteger("Experience.Woodcutting.Oak", 70);
+		mbirch = readInteger("Experience.Woodcutting.Birch", 90);
+		mspruce = readInteger("Experience.Woodcutting.Spruce", 80);
+		mjungle = readInteger("Experience.Woodcutting.Jungle", 100);
 
 		mgold = readInteger("Experience.Mining.Gold", 250);
 		mdiamond = readInteger("Experience.Mining.Diamond", 750);
@@ -279,6 +280,7 @@ public class LoadProperties {
 		greenTerraCooldown = readInteger("Abilities.Cooldowns.Green_Terra", 240);
 		superBreakerCooldown = readInteger("Abilities.Cooldowns.Super_Breaker", 240);
 		gigaDrillBreakerCooldown = readInteger("Abilities.Cooldowns.Giga_Drill_Breaker", 240);
+		treeFellerThreshold = readInteger("Abilities.Limits.Tree_Feller_Threshold", 500);
 		treeFellerCooldown = readInteger("Abilities.Cooldowns.Tree_Feller", 240);
 		berserkCooldown = readInteger("Abilities.Cooldowns.Berserk", 240);
 		serratedStrikeCooldown = readInteger("Abilities.Cooldowns.Serrated_Strikes", 240);

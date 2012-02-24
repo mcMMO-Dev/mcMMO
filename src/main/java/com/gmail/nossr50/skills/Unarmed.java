@@ -62,6 +62,7 @@ public class Unarmed {
 	    	}
 	    }
 	}
+	
 	public static void unarmedBonus(Player attacker, EntityDamageByEntityEvent event)
 	{
 		PlayerProfile PPa = Users.getProfile(attacker);
@@ -75,6 +76,7 @@ public class Unarmed {
         
 		event.setDamage(event.getDamage()+bonus);
 	}
+	
 	public static void disarmProcCheck(Player attacker, Player defender)
 	{
 		PlayerProfile PP = Users.getProfile(attacker);
