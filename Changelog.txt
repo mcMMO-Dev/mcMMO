@@ -31,6 +31,7 @@ Version 1.3.00-dev
  = Prettied up new config files
  = Various skill function optimizations
  ! Changed mcMMO user information to be stored for 2 minutes after log out to reduce lag on rejoins
+ ! Changed Food+ to be named Farmer's Diet in Herbalism
  ! Changed default values of Woodcutting XP tables
  ! Changed 'Pine' to be renamed 'Oak' in Woodcutting XP tables
  ! Changed the name of Unarmed Apprentice/Mastery to Iron Arm Style

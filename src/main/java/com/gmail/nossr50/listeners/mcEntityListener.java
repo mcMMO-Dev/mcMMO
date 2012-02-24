@@ -59,7 +59,7 @@ public class mcEntityListener implements Listener
     public mcEntityListener(final mcMMO plugin) {
         this.plugin = plugin;
     }
-
+    
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) 
     {
