@@ -37,20 +37,13 @@ import com.gmail.nossr50.locale.mcLocale;
 public class Herbalism 
 {
 	
-	public static void greenTerraCheck(Player player, Block block)
+	public static void greenTerraCheck(Player player)
 	{
 		PlayerProfile PP = Users.getProfile(player);
 	    if(m.isHoe(player.getItemInHand()))
 	    {
-	    	if(block != null)
-	    	{
-		    	if(!m.abilityBlockCheck(block))
-		    		return;
-	    	}
 	    	if(PP.getHoePreparationMode())
-	    	{
 				PP.setHoePreparationMode(false);
-			}
 	    	int ticks = 2;
 	    	int x = PP.getSkillLevel(SkillType.HERBALISM);
 			while(x >= 50)

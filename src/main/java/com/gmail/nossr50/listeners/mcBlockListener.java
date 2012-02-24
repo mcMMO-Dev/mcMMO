@@ -162,7 +162,7 @@ public class mcBlockListener implements Listener
     	//Green Terra
    		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07)
    		{
-   			Herbalism.greenTerraCheck(player, block);
+   			Herbalism.greenTerraCheck(player);
    		}
    		
    		//Wheat && Triple drops
@@ -224,7 +224,7 @@ public class mcBlockListener implements Listener
     	 */
     	if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalism(player) && Herbalism.canBeGreenTerra(block))
     	{
-    		Herbalism.greenTerraCheck(player, block);
+    		Herbalism.greenTerraCheck(player);
     	}
     	
     	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
@@ -252,19 +252,22 @@ public class mcBlockListener implements Listener
     	/*
     	 * ABILITY PREPARATION CHECKS
     	 */
-   		if(PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block))
-    		Herbalism.greenTerraCheck(player, block);
-    	if(PP.getAxePreparationMode() && block.getTypeId() == 17)
-    		WoodCutting.treeFellerCheck(player, block);
-    	if(PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block))
-    		Mining.superBreakerCheck(player, block);
-    	if(PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block))
-    		Excavation.gigaDrillBreakerActivationCheck(player, block);
+    	if(m.abilityBlockCheck(block))
+    	{
+	   		if(PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block))
+	    		Herbalism.greenTerraCheck(player);
+	    	if(PP.getAxePreparationMode() && block.getTypeId() == 17)
+	    		WoodCutting.treeFellerCheck(player);
+	    	if(PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block))
+	    		Mining.superBreakerCheck(player);
+	    	if(PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block))
+	    		Excavation.gigaDrillBreakerActivationCheck(player);
+    	}
     	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
     		Unarmed.berserkActivationCheck(player);
     	
     	/*
-    	 * TREE FELLAN STUFF
+    	 * TREE FELLER STUFF
     	 */
     	if(LoadProperties.spoutEnabled && block.getTypeId() == 17 && Users.getProfile(player).getTreeFellerMode())
     		SpoutStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
@@ -273,9 +276,7 @@ public class mcBlockListener implements Listener
     	 * GREEN TERRA STUFF
     	 */
     	if(PP.getGreenTerraMode() && mcPermissions.getInstance().herbalismAbility(player) && PP.getGreenTerraMode())
-    	{
    			Herbalism.greenTerra(player, block);
-   		}
     	
     	/*
     	 * GIGA DRILL BREAKER CHECKS
@@ -296,11 +297,11 @@ public class mcBlockListener implements Listener
     		    
     		    if(LoadProperties.toolsLoseDurabilityFromAbilities)
     	        {
-    	            if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
+    	            if(!inhand.containsEnchantment(Enchantment.DURABILITY))
     	            {
-    	                short durability = player.getItemInHand().getDurability();
+    	                short durability = inhand.getDurability();
     	                durability += (LoadProperties.abilityDurabilityLoss);
-    	                player.getItemInHand().setDurability(durability);
+    	                inhand.setDurability(durability);
     	            }
     	        }
     		    
@@ -337,15 +338,15 @@ public class mcBlockListener implements Listener
     		{
     			if(m.isMiningPick(inhand)){
     			    
-    			    if(LoadProperties.toolsLoseDurabilityFromAbilities)
-    		        {
-    		            if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
-    		            {
-    		                short durability = player.getItemInHand().getDurability();
-    		                durability += (LoadProperties.abilityDurabilityLoss);
-    		                player.getItemInHand().setDurability(durability);
-    		            }
-    		        }
+    				if(LoadProperties.toolsLoseDurabilityFromAbilities)
+        	        {
+        	            if(!inhand.containsEnchantment(Enchantment.DURABILITY))
+        	            {
+        	                short durability = inhand.getDurability();
+        	                durability += (LoadProperties.abilityDurabilityLoss);
+        	                inhand.setDurability(durability);
+        	            }
+        	        }
     			    
     				event.setInstaBreak(true);
     				Mining.SuperBreakerBlockCheck(player, block, plugin);

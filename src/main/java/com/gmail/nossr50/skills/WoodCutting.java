@@ -194,23 +194,16 @@ public class WoodCutting
     	}
     }
     
-    public static void treeFellerCheck(Player player, Block block)
+    public static void treeFellerCheck(Player player)
     {
     	PlayerProfile PP = Users.getProfile(player);
     	if(m.isAxes(player.getItemInHand()))
     	{
-    		if(block != null)
-    		{
-        		if(!m.abilityBlockCheck(block))
-        			return;
-        	}
     		/*
     		 * CHECK FOR AXE PREP MODE
     		 */
     		if(PP.getAxePreparationMode())
-    		{
     			PP.setAxePreparationMode(false);
-    		}
     		
     		int ticks = 2;
     		int x = PP.getSkillLevel(SkillType.WOODCUTTING);

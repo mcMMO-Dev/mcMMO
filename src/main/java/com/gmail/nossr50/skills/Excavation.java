@@ -41,20 +41,14 @@ import org.getspout.spoutapi.sound.SoundEffect;
 
 public class Excavation
 {
-	public static void gigaDrillBreakerActivationCheck(Player player, Block block)
+	public static void gigaDrillBreakerActivationCheck(Player player)
 	{
 		PlayerProfile PP = Users.getProfile(player);
 		if(m.isShovel(player.getItemInHand()))
 		{
-	    	if(block != null)
-	    	{
-		    	if(!m.abilityBlockCheck(block))
-		    		return;
-	    	}
 	    	if(PP.getShovelPreparationMode())
-	    	{
     			PP.setShovelPreparationMode(false);
-    		}
+	    	
 	    	int ticks = 2;
 	    	int x = PP.getSkillLevel(SkillType.EXCAVATION);
     		while(x >= 50)

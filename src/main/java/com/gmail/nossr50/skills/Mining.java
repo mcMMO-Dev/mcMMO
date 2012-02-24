@@ -39,20 +39,13 @@ import com.gmail.nossr50.locale.mcLocale;
 
 public class Mining 
 {	
-	public static void superBreakerCheck(Player player, Block block)
+	public static void superBreakerCheck(Player player)
 	{
 		PlayerProfile PP = Users.getProfile(player);
 	    if(m.isMiningPick(player.getItemInHand()))
 	    {
-	    	if(block != null)
-	    	{
-		    	if(!m.abilityBlockCheck(block))
-		    		return;
-	    	}
 	    	if(PP.getPickaxePreparationMode())
-	    	{
     			PP.setPickaxePreparationMode(false);
-    		}
 	    	
 	    	int ticks = 2;
 	    	int x = PP.getSkillLevel(SkillType.MINING);
