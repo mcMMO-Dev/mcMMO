@@ -21,27 +21,20 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
 
 public class BlastMining{
 	
 	public static void explosionBlockDrops(Block block, Location loc)
 	{
     	int id = block.getTypeId();
-    	Material mat = Material.getMaterial(id);
-		byte damage = 0;
-		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
+		ItemStack item = new ItemStack(id, 1);
 		
 		if(id != 89 && id != 73 && id != 74 && id != 56 && id != 21 && id != 1 && id != 16 && id != 112 && id != 121 && id != 48)
 		{
@@ -52,50 +45,71 @@ public class BlastMining{
 		switch (id){
 		//GLOWSTONE
 		case 89:
-			mat = Material.getMaterial(348);
-			item = new ItemStack(mat, 1, (byte)0, damage);
+			item = new ItemStack(348, 1);
 			m.mcDropItems(loc, item, 2);
 			m.mcRandomDropItems(loc, item, 50, 2);
 			break;
 		//REDSTONE
 		case 73:
-			mat = Material.getMaterial(331);
-			item = new ItemStack(mat, 1, (byte)0, damage);
+			item = new ItemStack(331, 1);
 			m.mcDropItems(loc, item, 4);
 			m.mcRandomDropItem(loc, item, 50);
 			break;
 		case 74:
-			mat = Material.getMaterial(331);
-			item = new ItemStack(mat, 1, (byte)0, damage);
+			item = new ItemStack(331, 1);
 			m.mcDropItems(loc, item, 4);
 			m.mcRandomDropItem(loc, item, 50);
 			break;
 		//LAPIS
 		case 21:
-			mat = Material.getMaterial(351);
-			item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
+			item = new ItemStack(351, 1, (byte)0,(byte)0x4);
 			m.mcDropItems(loc, item, 4);
 			m.mcRandomDropItems(loc, item, 50, 4);
 			break;
 		//DIAMOND
 		case 56:
-			mat = Material.getMaterial(264);
-			item = new ItemStack(mat, 1, (byte)0, damage);
+			item = new ItemStack(264, 1);
 			m.mcDropItem(loc, item);
 			break;
 		//STONE
 		case 1:
-			mat = Material.getMaterial(4);
-			item = new ItemStack(mat, 1, (byte)0, damage);
+			item = new ItemStack(4, 1);
 			m.mcDropItem(loc, item);
 			break;
 		//COAL
 		case 16:
-			mat = Material.getMaterial(263);
-			item = new ItemStack(mat, 1, (byte)0, damage);
+			item = new ItemStack(263, 1);
 			m.mcDropItem(loc, item);
 			break;
+		}
 	}
+	
+	public static void explosionYields(List<Block> ores, List<Block> debris, float yield, float oreBonus, float debrisReduction, Location location, int extraDrops)
+	{
+		Iterator<Block> iterator2 = ores.iterator();
+		while(iterator2.hasNext())
+		{
+			Block temp = iterator2.next();
+			if((float)Math.random() < (yield + oreBonus))
+			{
+				explosionBlockDrops(temp, location);
+				if(extraDrops == 2)
+					explosionBlockDrops(temp, location);
+				if(extraDrops == 3)
+					explosionBlockDrops(temp, location);
+			}
+		}
+		
+		if(yield - debrisReduction != 0)
+		{
+			Iterator<Block> iterator3 = debris.iterator();
+			while(iterator3.hasNext())
+			{
+				Block temp = iterator3.next();
+				if((float)Math.random() < (yield - debrisReduction))
+					explosionBlockDrops(temp, location);
+			}
+		}
 	}
 	
 	/*
@@ -104,6 +118,7 @@ public class BlastMining{
 	public static void dropProcessing(int skillLevel, EntityExplodeEvent event, mcMMO plugin)
 	{
 		float yield = event.getYield(); 
+		Location location = event.getLocation();
 		List<Block> blocks = event.blockList();
 		Iterator<Block> iterator = blocks.iterator();
 		
@@ -114,13 +129,12 @@ public class BlastMining{
 		{
 			Block temp = iterator.next();
 			int id = temp.getTypeId();
-			if(id == 14 || id == 15 || id == 16 || id == 21 || id == 56 || id == 73 || id == 74)
+			if(temp.getData() != 5 && !plugin.misc.blockWatchList.contains(temp))
 			{
-				ores.add(temp);
-			}
-			else
-			{
-				debris.add(temp);
+				if(id == 14 || id == 15 || id == 16 || id == 21 || id == 56 || id == 73 || id == 74)
+					ores.add(temp);
+				else
+					debris.add(temp);
 			}
 		}
 		
@@ -128,189 +142,38 @@ public class BlastMining{
 		if(skillLevel < 125)
 			return;
 		
-		//+5% ores
+		event.setYield(0);
+		//+35% ores, -10% debris
 		if(skillLevel >= 125 && skillLevel < 250)
-		{
-			event.setYield(0);
-			Iterator<Block> iterator2 = ores.iterator();
-			Iterator<Block> iterator3 = debris.iterator();
-			while(iterator2.hasNext())
-			{
-				Block temp = iterator2.next();
-				if(Math.random() < (yield + .05))
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-				}
-			}
-			while(iterator3.hasNext())
-			{
-				Block temp = iterator3.next();
-				if(Math.random() < yield)
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-				}
-			}
-		}
+			explosionYields(ores, debris, yield, .35f, .10f, location, 1);
 		
-		//+10% ores
+		//+40% ores, -20% debris
 		if(skillLevel >= 250 && skillLevel < 375)
-		{
-			event.setYield(0);
-			Iterator<Block> iterator2 = ores.iterator();
-			Iterator<Block> iterator3 = debris.iterator();
-			while(iterator2.hasNext())
-			{
-				Block temp = iterator2.next();
-				if(Math.random() < (yield + .10))
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-				}
-			}
-			while(iterator3.hasNext())
-			{
-				Block temp = iterator3.next();
-				if(Math.random() < yield)
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-				}
-			}
-		}
+			explosionYields(ores, debris, yield, .40f, .20f, location, 1);
 		
-		//No debris, +15% ores
+		//No debris, +45% ores
 		if(skillLevel >= 375 && skillLevel < 500)
-		{
-			event.setYield(0);
-			Iterator<Block> iterator2 = ores.iterator();
-
-			while(iterator2.hasNext())
-			{
-				Block temp = iterator2.next();
-				if(Math.random() < (yield + .15))
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-				}
-			}
-		}
+			explosionYields(ores, debris, yield, .45f, .30f, location, 1);
 		
-		//No debris, +20% ores
+		//No debris, +50% ores
 		if(skillLevel >= 500 && skillLevel < 625)
-		{
-			event.setYield(0);
-			Iterator<Block> iterator2 = ores.iterator();
-
-			while(iterator2.hasNext())
-			{
-				Block temp = iterator2.next();
-				if(Math.random() < (yield + .20))
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-				}
-			}
-		}
+			explosionYields(ores, debris, yield, .50f, .30f, location, 1);
 		
-		//Double Drops, No Debris, +25% ores
+		//Double Drops, No Debris, +55% ores
 		if(skillLevel >= 625 && skillLevel < 750)
-		{
-			event.setYield(0);
-			Iterator<Block> iterator2 = ores.iterator();
-
-			while(iterator2.hasNext())
-			{
-				Block temp = iterator2.next();
-				if(Math.random() < (yield + .25))
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-					if(Math.random() * 1000 <= skillLevel)
-					{
-						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-							explosionBlockDrops(temp, event.getLocation());
-					}
-				}
-			}
-		}
+			explosionYields(ores, debris, yield, .55f, .30f, location, 2);
 		
-		//Double Drops, No Debris, +30% ores
+		//Double Drops, No Debris, +60% ores
 		if(skillLevel >= 750 && skillLevel < 875)
-		{
-			event.setYield(0);
-			Iterator<Block> iterator2 = ores.iterator();
-
-			while(iterator2.hasNext())
-			{
-				Block temp = iterator2.next();
-				if(Math.random() < (yield + .30))
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-					if(Math.random() * 1000 <= skillLevel)
-					{
-						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-							explosionBlockDrops(temp, event.getLocation());
-					}
-				}
-			}
-		}
+			explosionYields(ores, debris, yield, .60f, .30f, location, 2);
 				
-		//Triple Drops, No debris, +35% ores
-		if(skillLevel >= 875 && skillLevel < 1000)		
-		{
-			event.setYield(0);
-			Iterator<Block> iterator2 = ores.iterator();
+		//Triple Drops, No debris, +65% ores
+		if(skillLevel >= 875 && skillLevel < 1000)
+			explosionYields(ores, debris, yield, .65f, .30f, location, 3);
 
-			while(iterator2.hasNext())
-			{
-				Block temp = iterator2.next();
-				if(Math.random() * 100 < (yield + .35))
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-					if(Math.random() * 1000 <= skillLevel || skillLevel > 1000) 
-					{
-						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-					}
-					if(Math.random() * 1000 <= skillLevel || skillLevel > 1000)
-					{
-						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-							explosionBlockDrops(temp, event.getLocation());
-					}
-				}
-			}
-		}
-
-		//Triple Drops, No debris, +40% ores
+		//Triple Drops, No debris, +70% ores
 		if(skillLevel >= 1000)
-		{
-			event.setYield(0);
-			Iterator<Block> iterator2 = ores.iterator();
-
-			while(iterator2.hasNext())
-			{
-				Block temp = iterator2.next();
-				if(Math.random() * 100 < (yield + .40))
-				{
-					if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-					if(Math.random() * 1000 <= skillLevel || skillLevel > 1000) 
-					{
-						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-						explosionBlockDrops(temp, event.getLocation());
-					}
-					if(Math.random() * 1000 <= skillLevel || skillLevel > 1000)
-					{
-						if(temp.getData() != 5 && plugin.misc.blockWatchList.contains(temp));
-							explosionBlockDrops(temp, event.getLocation());
-					}
-				}
-			}
-		}
+			explosionYields(ores, debris, yield, .70f, .30f, location, 3);
 	}
 	
 	/*
@@ -345,10 +208,8 @@ public class BlastMining{
 	 * Reduces explosion damage to 1/2 of normal at 750.
 	 * Reduces explosion damage to 0 at 1000.
 	 */
-	public static void demolitionsExpertise(Player player, EntityDamageEvent event)
+	public static void demolitionsExpertise(int skill, EntityDamageEvent event)
 	{
-		PlayerProfile PP = Users.getProfile(player);
-		int skill = PP.getSkillLevel(SkillType.MINING);
 		int damage = event.getDamage();
 		if(skill < 500)
 			return;

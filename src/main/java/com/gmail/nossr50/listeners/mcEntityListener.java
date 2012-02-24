@@ -132,7 +132,7 @@ public class mcEntityListener implements Listener
 				    	 * Demolitions Expert
 				    	 */
 		    			if(cause == DamageCause.BLOCK_EXPLOSION && mcPermissions.getInstance().blastmining(player))
-		    				BlastMining.demolitionsExpertise(player, event);
+		    				BlastMining.demolitionsExpertise(Users.getProfile(player).getSkillLevel(SkillType.MINING), event);
 			    	}
 			    	
 			    	/*
