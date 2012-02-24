@@ -48,6 +48,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Item;
@@ -65,7 +66,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Fishing;
-import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
 
@@ -217,6 +217,7 @@ public class mcPlayerListener implements Listener
 		PlayerProfile PP = Users.getProfile(player);
 		Action action = event.getAction();
 		Block block = event.getClickedBlock();
+		PlayerInventory inventory = player.getInventory();
 
 		/*
 		 * Ability checks
@@ -256,9 +257,9 @@ public class mcPlayerListener implements Listener
 			if(block != null && mcPermissions.getInstance().herbalism(player) && (block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT || block.getType() == Material.SMOOTH_BRICK) && player.getItemInHand().getType() == Material.SEEDS)
 			{
 				boolean pass = false;
-				if(Herbalism.hasSeeds(player))
+				if(inventory.contains(Material.SEEDS))
 				{
-					Herbalism.removeSeeds(player);
+					inventory.removeItem(new ItemStack(Material.SEEDS, 1));
 					
 					if(block.getType() == Material.DIRT || block.getType() == Material.COBBLESTONE || block.getType() == Material.SMOOTH_BRICK)
 					{
@@ -312,7 +313,7 @@ public class mcPlayerListener implements Listener
 		
 		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK))
 		{
-			if(player.getItemInHand().getType() == Material.BONE && player.getItemInHand().getAmount() > LoadProperties.bonesConsumedByCOTW)
+			if(player.getItemInHand().getType() == Material.BONE && player.getItemInHand().getAmount() >= LoadProperties.bonesConsumedByCOTW)
 			{
 				for(Entity x : player.getNearbyEntities(40, 40, 40))
 				{
@@ -328,24 +329,6 @@ public class mcPlayerListener implements Listener
 				int bones = player.getItemInHand().getAmount();
 				bones = bones - LoadProperties.bonesConsumedByCOTW;
 				player.setItemInHand(new ItemStack(Material.BONE, bones));
-//				ItemStack[] inventory = player.getInventory().getContents();
-//    	    	for(ItemStack x : inventory){
-//    	    		if(x != null && x.getAmount() > LoadProperties.bonesConsumedByCOTW-1 && x.getType() == Material.BONE){
-//    	    			if(x.getAmount() >= LoadProperties.bonesConsumedByCOTW)
-//    	    			{
-//    	    				x.setAmount(x.getAmount() - LoadProperties.bonesConsumedByCOTW);
-//    	    				player.getInventory().setContents(inventory);
-//        	    			player.updateInventory();
-//        	    			break;
-//    	    			} else {
-//    	    				x.setAmount(0);
-//    	    				x.setTypeId(0);
-//    	    				player.getInventory().setContents(inventory);
-//        	    			player.updateInventory();
-//        	    			break;
-//    	    			}
-//    	    		}
-//    	    	}
     	    	player.sendMessage(mcLocale.getString("m.TamingSummon"));
 			}
 		}

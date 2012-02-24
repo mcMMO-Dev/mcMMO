@@ -91,47 +91,40 @@ public class Mining
 		switch (id){
 			//GLOWSTONE
 			case 89:
-				mat = Material.getMaterial(348);
-				item = new ItemStack(mat, 1, (byte)0, damage);
+				item = new ItemStack(348, 1, (byte)0, damage);
 				m.mcDropItems(loc, item, 2);
 				m.mcRandomDropItems(loc, item, 50, 2);
 				break;
 			//REDSTONE
 			case 73:
-				mat = Material.getMaterial(331);
-				item = new ItemStack(mat, 1, (byte)0, damage);
+				item = new ItemStack(331, 1, (byte)0, damage);
 				m.mcDropItems(loc, item, 4);
 				m.mcRandomDropItem(loc, item, 50);
 				break;
 			case 74:
-				mat = Material.getMaterial(331);
-				item = new ItemStack(mat, 1, (byte)0, damage);
+				item = new ItemStack(331, 1, (byte)0, damage);
 				m.mcDropItems(loc, item, 4);
 				m.mcRandomDropItem(loc, item, 50);
 				break;
 			//LAPIS
 			case 21:
-				mat = Material.getMaterial(351);
-				item = new ItemStack(mat, 1, (byte)0,(byte)0x4);
+				item = new ItemStack(351, 1, (byte)0,(byte)0x4);
 				m.mcDropItems(loc, item, 4);
 				m.mcRandomDropItems(loc, item, 50, 4);
 				break;
 			//DIAMOND
 			case 56:
-				mat = Material.getMaterial(264);
-				item = new ItemStack(mat, 1, (byte)0, damage);
+				item = new ItemStack(264, 1, (byte)0, damage);
 				m.mcDropItem(loc, item);
 				break;
 			//STONE
 			case 1:
-				mat = Material.getMaterial(4);
-				item = new ItemStack(mat, 1, (byte)0, damage);
+				item = new ItemStack(4, 1, (byte)0, damage);
 				m.mcDropItem(loc, item);
 				break;
 			//COAL
 			case 16:
-				mat = Material.getMaterial(263);
-				item = new ItemStack(mat, 1, (byte)0, damage);
+				item = new ItemStack(263, 1, (byte)0, damage);
 				m.mcDropItem(loc, item);
 				break;
 		}
@@ -139,13 +132,10 @@ public class Mining
 
     public static void blockProcCheck(Block block, Player player)
     {
-    	PlayerProfile PP = Users.getProfile(player);
+    	int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 
-    	if(PP.getSkillLevel(SkillType.MINING) > 1000 || (Math.random() * 1000 <= PP.getSkillLevel(SkillType.MINING))) 
-    	{
+    	if(skillLevel > 1000 || (Math.random() * 1000 <= skillLevel)) 
 	    	blockProcSimulate(block, player);
-			return;
-    	}	
 	}
     
     public static void miningBlockCheck(Player player, Block block, mcMMO plugin)

@@ -56,22 +56,6 @@ public class Skills
 			return false;
 		}
 	}
-    public boolean hasArrows(Player player){
-    	for(ItemStack x : player.getInventory().getContents()){
-    		if (x.getTypeId() == 262){
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-    public void addArrows(Player player){
-    	for(ItemStack x : player.getInventory().getContents()){
-    		if (x.getTypeId() == 262){
-    			x.setAmount(x.getAmount() + 1);
-    			return;
-    		}
-    	}
-    }
     
     public static int calculateTimeLeft(Player player, long deactivatedTimeStamp, int cooldown)
     {	

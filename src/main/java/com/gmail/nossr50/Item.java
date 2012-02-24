@@ -39,36 +39,21 @@ public class Item {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void chimaerawing(Player player, Plugin plugin)
 	{
 		PlayerProfile PP = Users.getProfile(player);
 		ItemStack is = player.getItemInHand();
 		Block block = player.getLocation().getBlock();
-		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == LoadProperties.chimaeraId)
+		int chimaeraID = LoadProperties.chimaeraId;
+		int itemsUsed = LoadProperties.feathersConsumedByChimaeraWing;
+		if(mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == chimaeraID)
 		{
-    		if(Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= LoadProperties.feathersConsumedByChimaeraWing)
+    		if(Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= itemsUsed)
     		{
     			Block derp = player.getLocation().getBlock();
     			int y = derp.getY();
-    			ItemStack[] inventory = player.getInventory().getContents();
-    	    	for(ItemStack x : inventory){
-    	    		if(x != null && x.getTypeId() == LoadProperties.chimaeraId){
-    	    			if(x.getAmount() >= LoadProperties.feathersConsumedByChimaeraWing + 1)
-    	    			{
-    	    				x.setAmount(x.getAmount() - LoadProperties.feathersConsumedByChimaeraWing);
-    	    				player.getInventory().setContents(inventory);
-        	    			player.updateInventory();
-        	    			break;
-    	    			} else {
-    	    				x.setAmount(0);
-    	    				x.setTypeId(0);
-    	    				player.getInventory().setContents(inventory);
-        	    			player.updateInventory();
-        	    			break;
-    	    			}
-    	    		}
-    	    	}
+    			player.setItemInHand(new ItemStack(chimaeraID, is.getAmount() - itemsUsed));
+    
     			while(y < 127)
     			{
     				y++;

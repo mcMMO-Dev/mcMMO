@@ -24,6 +24,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -68,12 +70,14 @@ public class Herbalism
 	}
 	
 	public static void greenTerra(Player player, Block block){
+		PlayerInventory inventory = player.getInventory();
+		boolean hasSeeds = inventory.contains(Material.SEEDS);
 		if(block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT){
-			if(!hasSeeds(player))
+			if(!hasSeeds)
 				player.sendMessage("You need more seeds to spread Green Terra");
-			if(hasSeeds(player) && block.getType() != Material.WHEAT)
+			if(hasSeeds && block.getType() != Material.WHEAT)
 			{
-				removeSeeds(player);
+				inventory.removeItem(new ItemStack(Material.SEEDS, 1));
 				if(LoadProperties.enableSmoothToMossy && block.getType() == Material.SMOOTH_BRICK)
 					block.setData((byte)1);
 				if(LoadProperties.enableDirtToGrass && block.getType() == Material.DIRT)
@@ -89,33 +93,6 @@ public class Herbalism
     	return t == 103 || t == 4 || t == 3 || t == 59 || t == 81 || t == 83 || t == 91 || t == 86 || t == 39 || t == 46 || t == 37 || t == 38;
     }
 	
-	public static boolean hasSeeds(Player player){
-    	ItemStack[] inventory = player.getInventory().getContents();
-    	for(ItemStack x : inventory){
-    		if(x != null && x.getTypeId() == 295){
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-	
-	public static void removeSeeds(Player player){
-    	ItemStack[] inventory = player.getInventory().getContents();
-    	for(ItemStack x : inventory){
-    		if(x != null && x.getTypeId() == 295){
-    			if(x.getAmount() == 1){
-    				x.setTypeId(0);
-    				x.setAmount(0);
-    				player.getInventory().setContents(inventory);
-    			} else{
-    			x.setAmount(x.getAmount() - 1);
-    			player.getInventory().setContents(inventory);
-    			}
-    			return;
-    		}
-    	}
-    }
-	
 	public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin)
 	{
 		final PlayerProfile PP = Users.getProfile(player);
@@ -124,6 +101,8 @@ public class Herbalism
     	Location loc = block.getLocation();
     	ItemStack is = null;
     	Material mat = null;
+    	PlayerInventory inventory = player.getInventory();
+    	boolean hasSeeds = inventory.contains(Material.SEEDS);
     	
     	if(plugin.misc.blockWatchList.contains(block))
     	{
@@ -144,7 +123,7 @@ public class Herbalism
     		}
     		
     		//GREEN THUMB
-    		if(hasSeeds(player) && PP.getGreenTerraMode() || hasSeeds(player) && (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel)))
+    		if(hasSeeds && PP.getGreenTerraMode() || hasSeeds && (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel)))
     		{
     			event.setCancelled(true);
     			m.mcDropItem(loc, is);
@@ -172,7 +151,7 @@ public class Herbalism
                     }
                 }, 1);
     			
-    			removeSeeds(player);
+    			inventory.removeItem(new ItemStack(Material.SEEDS, 1));
     		}
     	}
     	
