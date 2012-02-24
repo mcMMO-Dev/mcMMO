@@ -76,10 +76,10 @@ public class Excavation
 		Material t = block.getType();
 		return t == Material.DIRT || t == Material.GRASS || t == Material.SAND || t == Material.GRAVEL || t == Material.CLAY || t == Material.MYCEL || t == Material.SOUL_SAND;
 	}
-	public static void excavationProcCheck(Material type, Location loc, Player player)
+	public static void excavationProcCheck(Block block, Player player)
 	{
-		if(LoadProperties.excavationRequiresShovel && !m.isShovel(player.getItemInHand()))
-			return;
+		Material type = block.getType();
+		Location loc = block.getLocation();
 		
 		PlayerProfile PP = Users.getProfile(player);
 		int skillLevel = PP.getSkillLevel(SkillType.EXCAVATION);
@@ -209,9 +209,9 @@ public class Excavation
 		{
 			PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
 			Bukkit.getPluginManager().callEvent(armswing);
-			Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);	
-			Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);
-			Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);
+			Excavation.excavationProcCheck(block, player);	
+			Excavation.excavationProcCheck(block, player);
+			Excavation.excavationProcCheck(block, player);
 		}
 		
 		if(LoadProperties.spoutEnabled)

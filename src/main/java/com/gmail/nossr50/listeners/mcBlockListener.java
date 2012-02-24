@@ -60,80 +60,59 @@ public class mcBlockListener implements Listener
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) 
     {
-    	//Setup some basic vars
+    	//Setup some basic variables
     	Block block;
     	Player player = event.getPlayer();
     	
-    	
     	//When blocks are placed on snow this event reports the wrong block.
     	if (event.getBlockReplacedState() != null && event.getBlockReplacedState().getTypeId() == 78) 
-    	{
     		block = event.getBlockAgainst();
-    	}
     	else 
-    	{
     		block = event.getBlock();
-    	}
+    	
+    	int id = block.getTypeId();
     	
     	//TNT placement checks - needed for Blast Mining
-    	if(block.getTypeId() == 46 && mcPermissions.getInstance().blastmining(player))
+    	if(id == 46 && mcPermissions.getInstance().blastmining(player))
     	{
-    		PlayerProfile PP = Users.getProfile(player);
-    		int skill = PP.getSkillLevel(SkillType.MINING);
+    		int skill = Users.getProfile(player).getSkillLevel(SkillType.MINING);
     		plugin.misc.tntTracker.put(block, skill);
     	}
     	
     	//Check if the blocks placed should be monitored so they do not give out XP in the future
     	if(m.shouldBeWatched(block))
-    	{
-    		int id = block.getTypeId();
-    		
+    	{	
     		//Only needed for blocks that use their block data (wood, pumpkins, etc.)
     		if (id == 17 || id == 73 || id == 74 || id == 81 || id == 83 || id == 86 || id == 91 || id == 106 || id == 98)
     			plugin.misc.blockWatchList.add(block);
-    		else {
+    		else
+    		{
     			//block.setData((byte) 5); //Change the byte
     			//The following is a method to get around a breakage in 1.1-R2 and onward
     			//it should be removed as soon as functionality to change a block
     			//in this event returns.
-    			if(id == 39 || id == 40 || id == 37 || id == 38 || id == 111 || id == 106) {	// ids of blocks that can be mined very quickly and need to be worked on fast
+    			if(id == 39 || id == 40 || id == 37 || id == 38 || id == 111 || id == 106)	// ids of blocks that can be mined very quickly and need to be worked on fast
     				plugin.fastChangeQueue.push(block);
-    			} else {
+    			else
     				plugin.changeQueue.push(block);
-    			}
     		}
     	}
     	
-    	if(block.getTypeId() == LoadProperties.anvilID && LoadProperties.anvilmessages)
+    	if(id == LoadProperties.anvilID && LoadProperties.anvilmessages)
     	{
     		PlayerProfile PP = Users.getProfile(player);
-    		if(LoadProperties.spoutEnabled)
+    		if(!PP.getPlacedAnvil())
     		{
-    			SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-	    		if(sPlayer.isSpoutCraftEnabled())
-	    		{
-	    			if(!PP.getPlacedAnvil())
-	    			{
-	    				sPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.IRON_BLOCK);
-	    				PP.togglePlacedAnvil();
-	    			}
+    			if(LoadProperties.spoutEnabled)
+    			{
+    				SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+    				if(sPlayer.isSpoutCraftEnabled())
+    					sPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.IRON_BLOCK);
 	    		}
 	    		else
-	    		{
-	    			if(!PP.getPlacedAnvil())
-	    			{
-	    				event.getPlayer().sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil")); //$NON-NLS-1$
-	    				PP.togglePlacedAnvil();
-	    			}
-	    		}
-    		}
-    		else
-    		{
-    			if(!PP.getPlacedAnvil())
-    			{
-    				event.getPlayer().sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil")); //$NON-NLS-1$
-    				PP.togglePlacedAnvil();
-    			}
+	    			event.getPlayer().sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil")); //$NON-NLS-1$
+    			
+    			PP.togglePlacedAnvil();
     		}
     	}
     }
@@ -144,91 +123,68 @@ public class mcBlockListener implements Listener
     	Player player = event.getPlayer();
     	PlayerProfile PP = Users.getProfile(player);
     	Block block = event.getBlock();
+    	int id = block.getTypeId();
     	ItemStack inhand = player.getItemInHand();
     	
     	if (event instanceof FakeBlockBreakEvent) 
     		return;
     	
-   		/*
-   		 * HERBALISM
-   		 */
-    	
-    	//TNT removal checks - needed for Blast Mining
-    	if(block.getTypeId() == 46 && inhand.getTypeId() != 259 && mcPermissions.getInstance().blastmining(player))
-    	{
-    		plugin.misc.tntTracker.remove(block);
-    	}
+    	/*
+    	 * HERBALISM
+    	 */
     	
     	//Green Terra
-   		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && block.getTypeId() == 59 && block.getData() == (byte) 0x07)
-   		{
+   		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && ((id == 59 && block.getData() == (byte) 0x07) || Herbalism.canBeGreenTerra(block)))
    			Herbalism.greenTerraCheck(player);
-   		}
    		
    		//Wheat && Triple drops
    		if(PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block))
-   		{
    			Herbalism.herbalismProcCheck(block, player, event, plugin);
-   		}
-   		
-   		
+    	
+    	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
+			Herbalism.herbalismProcCheck(block, player, event, plugin);
+    	
     	/*
     	 * MINING
     	 */
    		
+    	//TNT removal checks - needed for Blast Mining
+    	if(id == 46 && inhand.getTypeId() != 259 && mcPermissions.getInstance().blastmining(player))
+    		plugin.misc.tntTracker.remove(block);
+    	
     	if(mcPermissions.getInstance().mining(player))
     	{
-    		if(LoadProperties.miningrequirespickaxe)
-    		{
-    			if(m.isMiningPick(inhand))
-    			{
-    				Mining.miningBlockCheck(player, block, plugin);
-    			}
-    		} else 
-    		{
+    		if(LoadProperties.miningrequirespickaxe && m.isMiningPick(inhand))
     			Mining.miningBlockCheck(player, block, plugin);
-    		}
+    		else if(!LoadProperties.miningrequirespickaxe)
+    			Mining.miningBlockCheck(player, block, plugin);
     	}
-    	
     	
     	/*
    		 * WOOD CUTTING
    		 */
     	
-   		if(mcPermissions.getInstance().woodcutting(player) && block.getTypeId() == 17)
+   		if(mcPermissions.getInstance().woodcutting(player) && id == 17)
    		{
-   			if(LoadProperties.woodcuttingrequiresaxe)
-   			{
-				if(m.isAxes(inhand))
-				{
-					WoodCutting.woodcuttingBlockCheck(player, block, plugin);
-    			}
-    		} else 
-    		{
+   			if(LoadProperties.woodcuttingrequiresaxe && m.isAxes(inhand))
+				WoodCutting.woodcuttingBlockCheck(player, block, plugin);
+   			else if(!LoadProperties.woodcuttingrequiresaxe)
     			WoodCutting.woodcuttingBlockCheck(player, block, plugin);
-   			}
    			
    			if(PP.getTreeFellerMode())
-   			{
    			    WoodCutting.treeFeller(event, plugin);
-   			}
     	}
    		
     	/*
     	 * EXCAVATION
     	 */
     	if(Excavation.canBeGigaDrillBroken(block) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
-    		Excavation.excavationProcCheck(block.getType(), block.getLocation(), player);
-    	/*
-    	 * HERBALISM
-    	 */
-    	if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalism(player) && Herbalism.canBeGreenTerra(block))
     	{
-    		Herbalism.greenTerraCheck(player);
+    		if(LoadProperties.excavationRequiresShovel && m.isShovel(inhand))
+    			Excavation.excavationProcCheck(block, player);
+    		else if(!LoadProperties.excavationRequiresShovel)
+    			Excavation.excavationProcCheck(block, player);
     	}
-    	
-    	if(mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5)
-			Herbalism.herbalismProcCheck(block, player, event, plugin);
     	
     	//Change the byte back when broken
     	if(block.getData() == 5 && m.shouldBeWatched(block))
@@ -248,6 +204,7 @@ public class mcBlockListener implements Listener
     	PlayerProfile PP = Users.getProfile(player);
     	ItemStack inhand = player.getItemInHand();
     	Block block = event.getBlock();
+    	int id = block.getTypeId();
 
     	/*
     	 * ABILITY PREPARATION CHECKS
@@ -256,44 +213,39 @@ public class mcBlockListener implements Listener
     	{
 	   		if(PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block))
 	    		Herbalism.greenTerraCheck(player);
-	    	if(PP.getAxePreparationMode() && block.getTypeId() == 17 && mcPermissions.getInstance().woodCuttingAbility(player))
+	    	if(PP.getAxePreparationMode() && id == 17 && mcPermissions.getInstance().woodCuttingAbility(player))
 	    		WoodCutting.treeFellerCheck(player);
 	    	if(PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block))
 	    		Mining.superBreakerCheck(player);
 	    	if(PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block))
 	    		Excavation.gigaDrillBreakerActivationCheck(player);
     	}
-    	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78))
+    	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || id == 78))
     		Unarmed.berserkActivationCheck(player);
     	
     	/*
     	 * TREE FELLER STUFF
     	 */
-    	if(LoadProperties.spoutEnabled && block.getTypeId() == 17 && Users.getProfile(player).getTreeFellerMode())
+    	if(LoadProperties.spoutEnabled && id == 17 && PP.getTreeFellerMode())
     		SpoutStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
     	
     	/*
     	 * GREEN TERRA STUFF
     	 */
-    	if(PP.getGreenTerraMode() && mcPermissions.getInstance().herbalismAbility(player) && PP.getGreenTerraMode())
+    	if(PP.getGreenTerraMode() && mcPermissions.getInstance().herbalismAbility(player))
    			Herbalism.greenTerra(player, block);
     	
     	/*
     	 * GIGA DRILL BREAKER CHECKS
     	 */
-    	if(PP.getGigaDrillBreakerMode()
-    		&& Excavation.canBeGigaDrillBroken(block)
-    		&& m.blockBreakSimulate(block, player) 
-    		&& mcPermissions.getInstance().excavationAbility(player))
+    	if(PP.getGigaDrillBreakerMode() && Excavation.canBeGigaDrillBroken(block) && m.blockBreakSimulate(block, player) && mcPermissions.getInstance().excavationAbility(player))
     	{	
-    		if(LoadProperties.excavationRequiresShovel)
+    		if(LoadProperties.excavationRequiresShovel && m.isShovel(inhand))
     		{
-    			if(m.isShovel(inhand)){
-    			    
     				event.setInstaBreak(true);
     				Excavation.gigaDrillBreaker(player, block);
-    			}
-    		} else {
+    		} 
+    		else if(!LoadProperties.excavationRequiresShovel){
     		    
     		    if(LoadProperties.toolsLoseDurabilityFromAbilities)
     	        {
@@ -315,7 +267,7 @@ public class mcBlockListener implements Listener
     	if(PP.getBerserkMode() 
     		&& m.blockBreakSimulate(block, player) 
     		&& player.getItemInHand().getTypeId() == 0 
-    		&& (Excavation.canBeGigaDrillBroken(block) || block.getTypeId() == 78)
+    		&& (Excavation.canBeGigaDrillBroken(block) || id == 78)
     		&& mcPermissions.getInstance().unarmedAbility(player))
     	{
     		event.setInstaBreak(true);
@@ -360,7 +312,7 @@ public class mcBlockListener implements Listener
     	/*
     	 * LEAF BLOWER CHECKS
     	 */
-    	if(block.getTypeId() == 18 
+    	if(id == 18 
     		&& mcPermissions.getInstance().woodcutting(player) 
     		&& PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 
     		&& m.blockBreakSimulate(block, player))
@@ -379,11 +331,6 @@ public class mcBlockListener implements Listener
     			}
     		}
     		
-    	}
-    	
-    	if(block.getType() == Material.AIR && plugin.misc.blockWatchList.contains(block))
-    	{
-    		plugin.misc.blockWatchList.remove(block);
     	}
     }
     
