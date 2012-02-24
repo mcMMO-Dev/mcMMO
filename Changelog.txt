@@ -13,9 +13,10 @@ Version 1.3.00-dev
  + Added player notification for when they stop Bleeding
  + Added configuration option to control mcMMO reporting damage events
  + Added hunger regain bonuses to Herbalism skill
- + Added framework for new Blast Mining skill
+ + Added Blast Mining subskills to Mining
  + Added Fast Food Service subskill to Taming
  + Re-added mcMMO reporting damage events
+ = Fixed Leaf Blower preventing the use of shears to collect leaves
  = Fixed Green Thumb & Green Terra not consuming or requiring seeds to replant Wheat
  = Fixed Super Breaker & Giga Drill Breaker failing to damage tools
  = Fixed Tree Feller not giving proper XP for different kinds of trees
@@ -23,6 +24,7 @@ Version 1.3.00-dev
  = Fixed memory leak with mob spawner tracking
  = Fixed /mcability not respecting permissions
  = Prettied up new config files
+ = Optimized repair functions
  ! Changed mcMMO user information to be stored for 2 minutes after log out to reduce lag on rejoins
  ! Changed the name of Unarmed Apprentice/Mastery to Iron Arm Style
  ! Changed Unarmed to start with a +3 DMG bonus from Iron Arm Style to make leveling it more viable
