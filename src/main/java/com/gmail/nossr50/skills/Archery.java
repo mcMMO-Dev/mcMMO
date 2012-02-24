@@ -19,7 +19,6 @@ package com.gmail.nossr50.skills;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -29,34 +28,16 @@ import com.gmail.nossr50.party.Party;
 
 public class Archery 
 {
-	public static void trackArrows(mcMMO pluginx, Entity x, EntityDamageByEntityEvent event, Player attacker)
+	public static void trackArrows(mcMMO pluginx, Entity x, PlayerProfile PPa)
 	{
-		PlayerProfile PPa = Users.getProfile(attacker);
-		if(!pluginx.misc.arrowTracker.containsKey(x) && event.getDamage() > 0)
-		{
+		int skillLevel = PPa.getSkillLevel(SkillType.ARCHERY);
+		if(!pluginx.misc.arrowTracker.containsKey(x))
 			pluginx.misc.arrowTracker.put(x, 0);
-			if(attacker != null)
-			{
-				if(PPa.getSkillLevel(SkillType.ARCHERY) > 1000 || (Math.random() * 1000 <= PPa.getSkillLevel(SkillType.ARCHERY)))
-				{
-					pluginx.misc.arrowTracker.put(x, 1);
-				}
-			}
-		} else 
-		{
-			if(event.getDamage() > 0)
-			{
-				if(attacker != null)
-				{
-				    if(PPa.getSkillLevel(SkillType.ARCHERY) > 1000 || (Math.random() * 1000 <= PPa.getSkillLevel(SkillType.ARCHERY)))
-					{
-						pluginx.misc.arrowTracker.put(x, 1);
-					}
-				}
-			}
-		}
+		if(skillLevel > 1000 || (Math.random() * 1000 <= skillLevel))
+			pluginx.misc.arrowTracker.put(x, 1);
 	}
-	public static void ignitionCheck(Entity x, EntityDamageByEntityEvent event, Player attacker)
+	
+	public static void ignitionCheck(Entity x, Player attacker)
 	{
 		//Check to see if PVP for this world is disabled before executing
 		if(!x.getWorld().getPVP())
@@ -73,37 +54,43 @@ public class Archery
 			
 			if(x instanceof Player)
 			{
-				Player Defender = (Player)x;
-				if(!Party.getInstance().inSameParty(attacker, Defender))
+				Player defender = (Player)x;
+				if(!Party.getInstance().inSameParty(attacker, defender))
 				{
-					event.getEntity().setFireTicks(ignition);
+					defender.setFireTicks(ignition);
 					attacker.sendMessage(mcLocale.getString("Combat.Ignition")); //$NON-NLS-1$
-					Defender.sendMessage(mcLocale.getString("Combat.BurningArrowHit")); //$NON-NLS-1$
+					defender.sendMessage(mcLocale.getString("Combat.BurningArrowHit")); //$NON-NLS-1$
 				}
-			} else {
-			event.getEntity().setFireTicks(ignition);
-			attacker.sendMessage(mcLocale.getString("Combat.Ignition")); //$NON-NLS-1$
+			} 
+			else 
+			{
+				x.setFireTicks(ignition);
+				attacker.sendMessage(mcLocale.getString("Combat.Ignition")); //$NON-NLS-1$
 			}
 		}
 	}
+	
 	public static void dazeCheck(Player defender, Player attacker)
 	{
-		PlayerProfile PPa = Users.getProfile(attacker);
+		int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
 		
 		Location loc = defender.getLocation();
 		if(Math.random() * 10 > 5)
-		{
-		loc.setPitch(90);
-		} else {
+			loc.setPitch(90);
+		else
 			loc.setPitch(-90);
-		}
-		if(PPa.getSkillLevel(SkillType.ARCHERY) >= 1000){
-			if(Math.random() * 1000 <= 500){
+		
+		if(skillLevel >= 1000)
+		{
+			if(Math.random() * 1000 <= 500)
+			{
 				defender.teleport(loc);
 				defender.sendMessage(mcLocale.getString("Combat.TouchedFuzzy")); //$NON-NLS-1$
 				attacker.sendMessage(mcLocale.getString("Combat.TargetDazed")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-		} else if(Math.random() * 2000 <= PPa.getSkillLevel(SkillType.ARCHERY)){
+		} 
+		else if(Math.random() * 2000 <= skillLevel)
+		{
 			defender.teleport(loc);
 			defender.sendMessage(mcLocale.getString("Combat.TouchedFuzzy")); //$NON-NLS-1$
 			attacker.sendMessage(mcLocale.getString("Combat.TargetDazed")); //$NON-NLS-1$ //$NON-NLS-2$

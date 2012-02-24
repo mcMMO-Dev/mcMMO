@@ -17,7 +17,6 @@
 package com.gmail.nossr50;
 
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -254,6 +253,7 @@ public class Combat
 		if(PPa.getFistsPreparationMode())
 			Unarmed.berserkActivationCheck(attacker);
 	}
+	
 	public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx)
 	{
 		Arrow arrow = (Arrow)event.getDamager();
@@ -290,20 +290,21 @@ public class Combat
     	{
     		Player attacker = (Player)y;
     		PlayerProfile PPa = Users.getProfile(attacker);
-    		if(mcPermissions.getInstance().archery(attacker))
+    		int damage = event.getDamage();
+    		if(mcPermissions.getInstance().archery(attacker) && damage > 0)
     		{
-    			Archery.trackArrows(pluginx, x, event, attacker);
+    			Archery.trackArrows(pluginx, x, PPa);
     			
     			/*
     			 * IGNITION
     			 */
-    			Archery.ignitionCheck(x, event, attacker);
+    			Archery.ignitionCheck(x, attacker);
     		/*
     		 * Defender is Monster
     		 */
     		if(!pluginx.misc.mobSpawnerList.contains(x.getEntityId()))
     		{
-    			int xp = getXp(event.getEntity(), event);
+    			int xp = getXp(x, event);
 				PPa.addXP(SkillType.ARCHERY, xp*10, attacker);
     		}
     		/*
@@ -326,10 +327,9 @@ public class Combat
     	    		/*
     	    		 * PVP XP
     	    		 */
-    	    		if(LoadProperties.pvpxp && !Party.getInstance().inSameParty(attacker, defender) 
-    	    				&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis() && !attacker.getName().equals(defender.getName()))
+    	    		if(LoadProperties.pvpxp && ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis() && !attacker.getName().equals(defender.getName()))
     	    		{
-    	    			int xp = (int) ((event.getDamage() * 2) * 10);
+    	    			int xp = (int) ((damage * 2) * 10);
     	    			PPa.addXP(SkillType.ARCHERY, xp, attacker);
     	    		}
     				/*
@@ -390,13 +390,6 @@ public class Combat
 		}
     }
     
-    public static boolean pvpAllowed(EntityDamageByEntityEvent event, World world)
-    {
-    	if(!event.getEntity().getWorld().getPVP())
-    		return false;
-    	//If it made it this far, pvp is enabled
-    	return true;
-    }
     public static int getXp(Entity entity, EntityDamageEvent event)
     {
     	int xp = 0;
