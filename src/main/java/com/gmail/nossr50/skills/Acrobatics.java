@@ -30,46 +30,43 @@ import com.gmail.nossr50.datatypes.SkillType;
 public class Acrobatics {
 	public static void acrobaticsCheck(Player player, EntityDamageEvent event)
 	{
-    	if(player != null && mcPermissions.getInstance().acrobatics(player))
-    	{
-    		PlayerProfile PP = Users.getProfile(player);
-    		int acrovar = PP.getSkillLevel(SkillType.ACROBATICS);
-    		
-    		if(player.isSneaking())
-    			acrovar = acrovar * 2;
-    		
-			if(Math.random() * 1000 <= acrovar && !event.isCancelled())
-			{
-				int threshold = 7;
-				if(player.isSneaking())
-					threshold = 14;
-				
-				int newDamage = event.getDamage() - threshold;
-				if(newDamage < 0)
-					newDamage = 0;
-				/*
-				 * Check for death
-				 */
-				if(player.getHealth() - newDamage >= 1){
-					if(!event.isCancelled())
-						PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 8)*10, player);
-					Skills.XpCheckSkill(SkillType.ACROBATICS, player);
-					event.setDamage(newDamage);
-					if(event.getDamage() <= 0)
-						event.setCancelled(true);
-					if(player.isSneaking()){
-						player.sendMessage(ChatColor.GREEN+"**GRACEFUL ROLL**");
-					} else {
-						player.sendMessage("**ROLL**");
-					}
-				}
-			} else if (!event.isCancelled()){
-				if(player.getHealth() - event.getDamage() >= 1){
-					PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 12)*10, player);
-					Skills.XpCheckSkill(SkillType.ACROBATICS, player);
+		PlayerProfile PP = Users.getProfile(player);
+		int acrovar = PP.getSkillLevel(SkillType.ACROBATICS);
+		
+		if(player.isSneaking())
+			acrovar = acrovar * 2;
+		
+		if(Math.random() * 1000 <= acrovar && !event.isCancelled())
+		{
+			int threshold = 7;
+			if(player.isSneaking())
+				threshold = 14;
+			
+			int newDamage = event.getDamage() - threshold;
+			if(newDamage < 0)
+				newDamage = 0;
+			/*
+			 * Check for death
+			 */
+			if(player.getHealth() - newDamage >= 1){
+				if(!event.isCancelled())
+					PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 8)*10, player);
+				Skills.XpCheckSkill(SkillType.ACROBATICS, player);
+				event.setDamage(newDamage);
+				if(event.getDamage() <= 0)
+					event.setCancelled(true);
+				if(player.isSneaking()){
+					player.sendMessage(ChatColor.GREEN+"**GRACEFUL ROLL**");
+				} else {
+					player.sendMessage("**ROLL**");
 				}
 			}
-    	}
+		} else if (!event.isCancelled()){
+			if(player.getHealth() - event.getDamage() >= 1){
+				PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 12)*10, player);
+				Skills.XpCheckSkill(SkillType.ACROBATICS, player);
+			}
+		}
     }
 	public static void dodgeChecks(EntityDamageByEntityEvent event){
 		Player defender = (Player) event.getEntity();

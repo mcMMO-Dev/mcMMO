@@ -63,18 +63,21 @@ public class mcEntityListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) 
     {
+    	Entity entity = event.getEntity();
+    	DamageCause cause = event.getCause();
+    	
     	//Check for world pvp flag
     	if(event instanceof EntityDamageByEntityEvent)
     	{
     		EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent)event;
-    		if(eventb.getEntity() instanceof Player && eventb.getDamager() instanceof Player && !event.getEntity().getWorld().getPVP())
+    		if(eventb.getEntity() instanceof Player && eventb.getDamager() instanceof Player && !entity.getWorld().getPVP())
     			return;
     	}
     	
     	/*
     	 * CHECK FOR INVULNERABILITY
     	 */
-    	if(event.getEntity() instanceof Player)
+    	if(entity instanceof Player)
     	{
     		Player defender = (Player)event.getEntity();
     		PlayerProfile PPd = Users.getProfile(defender);
@@ -84,66 +87,52 @@ public class mcEntityListener implements Listener
     			Users.addUser(defender);
     	}
     	
-    	/*
-    	 * Demolitions Expert
-    	 */
-    	 
-    	if(event.getCause() == DamageCause.BLOCK_EXPLOSION)
-    	{
-    		if(event.getEntity() instanceof Player)
-    		{
-    			Player player = (Player)event.getEntity();
-    			if(mcPermissions.getInstance().blastmining(player))
-    				BlastMining.demolitionsExpertise(player, event);
-    		}
-    	}
-
-    	
-    	if(event.getEntity() instanceof LivingEntity)
+    	if(entity instanceof LivingEntity)
     	{
 	    	{
-		    	LivingEntity entityliving = (LivingEntity)event.getEntity();
+		    	LivingEntity entityliving = (LivingEntity)entity;
 		    	if(entityliving.getNoDamageTicks() < entityliving.getMaximumNoDamageTicks()/2.0F)
 		    	{
-			    	Entity x = event.getEntity();
-			    	DamageCause type = event.getCause();
-			    	if(event.getEntity() instanceof Wolf && ((Wolf)event.getEntity()).isTamed() && Taming.getOwner(((Wolf)event.getEntity()), plugin) != null)
+			    	if(entity instanceof Wolf && ((Wolf)entity).isTamed() && Taming.getOwner(((Wolf)entity), plugin) != null)
 			    	{
 			    		Wolf theWolf = (Wolf) event.getEntity();
 				    	Player master = Taming.getOwner(theWolf, plugin);
 				    	PlayerProfile PPo = Users.getProfile(master);
+				    	int skillLevel = PPo.getSkillLevel(SkillType.TAMING);
+				    	
 				    	if(master == null || PPo == null)
 				    		return;
 			    		//Environmentally Aware
-						if((event.getCause() == DamageCause.CONTACT || event.getCause() == DamageCause.LAVA || event.getCause() == DamageCause.FIRE) && PPo.getSkillLevel(SkillType.TAMING) >= 100)
+						if((cause == DamageCause.CONTACT || cause == DamageCause.LAVA || cause == DamageCause.FIRE) && skillLevel >= 100)
 						{
-							if(event.getDamage() < ((Wolf) event.getEntity()).getHealth())
+							if(event.getDamage() < theWolf.getHealth())
 							{
-								event.getEntity().teleport(Taming.getOwner(theWolf, plugin).getLocation());
+								entity.teleport(Taming.getOwner(theWolf, plugin).getLocation());
 								master.sendMessage(mcLocale.getString("mcEntityListener.WolfComesBack")); //$NON-NLS-1$
-								event.getEntity().setFireTicks(0);
+								entity.setFireTicks(0);
 							}
 						}
-						if(event.getCause() == DamageCause.FALL && PPo.getSkillLevel(SkillType.TAMING) >= 100)
-						{
+						if(cause == DamageCause.FALL && skillLevel >= 100)
 							event.setCancelled(true);
-						}
 						
 						//Thick Fur
-						if(event.getCause() == DamageCause.FIRE_TICK)
-						{
+						if(cause == DamageCause.FIRE_TICK)
 							event.getEntity().setFireTicks(0);
-						}
 			    	}
 			    	
-			    	/*
-			    	 * ACROBATICS
-			    	 */
-			    	if(x instanceof Player){
-				    	Player player = (Player)x;
-				    	if(type == DamageCause.FALL){
+
+			    	if(entity instanceof Player){
+				    	Player player = (Player)entity;
+				    	/*
+				    	 * ACROBATICS
+				    	 */
+				    	if(cause == DamageCause.FALL && mcPermissions.getInstance().acrobatics(player))
 				    		Acrobatics.acrobaticsCheck(player, event);
-				    	}
+				    	/*
+				    	 * Demolitions Expert
+				    	 */
+		    			if(cause == DamageCause.BLOCK_EXPLOSION && mcPermissions.getInstance().blastmining(player))
+		    				BlastMining.demolitionsExpertise(player, event);
 			    	}
 			    	
 			    	/*
@@ -153,13 +142,12 @@ public class mcEntityListener implements Listener
 			    	{
 			    		EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent) event;
 			    		Entity f = eventb.getDamager();
-			    		Entity e = event.getEntity();
 			    		/*
 			    		 * PARTY CHECKS
 			    		 */
-			    		if(e instanceof Player && f instanceof Player)
+			    		if(entity instanceof Player && f instanceof Player)
 			    		{
-			        		Player defender = (Player)e;
+			        		Player defender = (Player)entity;
 			        		Player attacker = (Player)f;
 			        		if(Party.getInstance().inSameParty(defender, attacker))
 			        			event.setCancelled(true);
@@ -169,9 +157,9 @@ public class mcEntityListener implements Listener
 			    	/*
 			    	 * Check to see if the defender took damage so we can apply recently hurt
 			    	 */
-			    	if(event.getEntity() instanceof Player)
+			    	if(entity instanceof Player)
 			    	{
-			    		Player herpderp = (Player)event.getEntity();
+			    		Player herpderp = (Player)entity;
 			    		if(!event.isCancelled() && event.getDamage() >= 1)
 			    		{
 			    			Users.getProfile(herpderp).setRecentlyHurt(System.currentTimeMillis());
