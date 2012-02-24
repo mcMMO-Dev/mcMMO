@@ -128,7 +128,6 @@ public class WoodCutting
                     //Remove the block
                     x.setData((byte) 0);
                     x.setType(Material.AIR);
-                    plugin.misc.blockWatchList.remove(x);
                     
                     //Drop the block
                     m.mcDropItem(x.getLocation(), item);
@@ -148,7 +147,6 @@ public class WoodCutting
                     //Remove the block
                     x.setData((byte) 0);
                     x.setType(Material.AIR);
-                    plugin.misc.blockWatchList.remove(x);
                         
                     //Damage the tool more if the Tree is larger
                     durabilityLoss++;
