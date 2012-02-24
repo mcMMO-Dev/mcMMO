@@ -256,7 +256,7 @@ public class mcBlockListener implements Listener
     	{
 	   		if(PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block))
 	    		Herbalism.greenTerraCheck(player);
-	    	if(PP.getAxePreparationMode() && block.getTypeId() == 17)
+	    	if(PP.getAxePreparationMode() && block.getTypeId() == 17 && mcPermissions.getInstance().woodCuttingAbility(player))
 	    		WoodCutting.treeFellerCheck(player);
 	    	if(PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block))
 	    		Mining.superBreakerCheck(player);
@@ -361,7 +361,7 @@ public class mcBlockListener implements Listener
     	 * LEAF BLOWER CHECKS
     	 */
     	if(block.getTypeId() == 18 
-    		&& mcPermissions.getInstance().woodCuttingAbility(player) 
+    		&& mcPermissions.getInstance().woodcutting(player) 
     		&& PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 
     		&& m.blockBreakSimulate(block, player))
     	{	

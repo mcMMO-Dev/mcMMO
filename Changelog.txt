@@ -18,6 +18,8 @@ Version 1.3.00-dev
  + Added Fast Food Service subskill to Taming
  + Added size limit to Tree Feller in config as Tree Feller Threshold
  + Re-added mcMMO reporting damage events
+ = Fixed bug where Tree Feller wasn't checking for Tree Feller permission
+ = Fixed bug where Leaf Blower required Tree Feller permissions rather than Woodcutting permissions
  = Fixed Leaf Blower preventing the use of shears to collect leaves
  = Fixed Green Thumb & Green Terra not consuming or requiring seeds to replant Wheat
  = Fixed Super Breaker & Giga Drill Breaker failing to damage tools
