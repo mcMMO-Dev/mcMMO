@@ -54,7 +54,7 @@ public class WoodCutting
         ArrayList<Block> toBeFelled = new ArrayList<Block>();
         
         //NOTE: Tree Feller will cut upwards like how you actually fell trees
-        processTreeFelling(firstBlock, world, toBeFelled);
+        processTreeFelling(firstBlock, world, toBeFelled, plugin);
         removeBlocks(toBeFelled, player, PP, plugin);
     }
     
@@ -172,7 +172,7 @@ public class WoodCutting
         return block.getType() == Material.LOG || block.getType() == Material.LEAVES || block.getType() == Material.AIR;
     }
     
-    private static void processTreeFelling(Block currentBlock, World world, ArrayList<Block> toBeFelled)
+    private static void processTreeFelling(Block currentBlock, World world, ArrayList<Block> toBeFelled, mcMMO plugin)
     {
         int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
         
@@ -187,23 +187,27 @@ public class WoodCutting
         Block zPositive = world.getBlockAt(x, y, z+1);
         Block zNegative = world.getBlockAt(x, y, z-1);
         
-        if(!isTooAgressive(isAirOrLeaves, xPositive) && treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive))
-            processTreeFelling(xPositive, world, toBeFelled);
-        if(!isTooAgressive(isAirOrLeaves, xNegative) && treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative))
-            processTreeFelling(xNegative, world, toBeFelled);
-        if(!isTooAgressive(isAirOrLeaves, zPositive) && treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive))
-            processTreeFelling(zPositive, world, toBeFelled);
-        if(!isTooAgressive(isAirOrLeaves, zNegative) && treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative))
-            processTreeFelling(zNegative, world, toBeFelled);
+        if(!plugin.misc.blockWatchList.contains(currentBlock) &&
+                !isTooAgressive(isAirOrLeaves, xPositive) && treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive))
+            processTreeFelling(xPositive, world, toBeFelled, plugin);
+        if(!plugin.misc.blockWatchList.contains(currentBlock) &&
+                !isTooAgressive(isAirOrLeaves, xNegative) && treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative))
+            processTreeFelling(xNegative, world, toBeFelled, plugin);
+        if(!plugin.misc.blockWatchList.contains(currentBlock) &&
+                !isTooAgressive(isAirOrLeaves, zPositive) && treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive))
+            processTreeFelling(zPositive, world, toBeFelled, plugin);
+        if(!plugin.misc.blockWatchList.contains(currentBlock) &&
+                !isTooAgressive(isAirOrLeaves, zNegative) && treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative))
+            processTreeFelling(zNegative, world, toBeFelled, plugin);
         
         //Finally go Y+
         Block yPositive = world.getBlockAt(x, y+1, z);
         
         if(treeFellerCompatible(yPositive))
         {
-            if(!toBeFelled.contains(yPositive))
+            if(!plugin.misc.blockWatchList.contains(currentBlock) && !toBeFelled.contains(yPositive))
             {
-                processTreeFelling(yPositive, world, toBeFelled);
+                processTreeFelling(yPositive, world, toBeFelled, plugin);
             }
         }
     }
