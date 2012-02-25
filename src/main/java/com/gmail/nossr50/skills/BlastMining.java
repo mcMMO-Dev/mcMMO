@@ -35,12 +35,6 @@ public class BlastMining{
 	{
     	int id = block.getTypeId();
 		ItemStack item = new ItemStack(id, 1);
-		
-		if(id != 89 && id != 73 && id != 74 && id != 56 && id != 21 && id != 1 && id != 16 && id != 112 && id != 121 && id != 48)
-		{
-			m.mcDropItem(loc, item);
-			return;
-		}
 			
 		switch (id){
 		//GLOWSTONE
@@ -81,6 +75,9 @@ public class BlastMining{
 			item = new ItemStack(263, 1);
 			m.mcDropItem(loc, item);
 			break;
+		default:
+			m.mcDropItem(loc, item);
+			break;	
 		}
 	}
 	
@@ -128,10 +125,9 @@ public class BlastMining{
 		while(iterator.hasNext())
 		{
 			Block temp = iterator.next();
-			int id = temp.getTypeId();
 			if(temp.getData() != 5 && !plugin.misc.blockWatchList.contains(temp))
 			{
-				if(id == 14 || id == 15 || id == 16 || id == 21 || id == 56 || id == 73 || id == 74)
+				if(m.isOre(temp))
 					ores.add(temp);
 				else
 					debris.add(temp);

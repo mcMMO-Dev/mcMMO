@@ -89,8 +89,25 @@ public class Herbalism
 	}
 	
 	public static Boolean canBeGreenTerra(Block block){
-    	int t = block.getTypeId();
-    	return t == 103 || t == 4 || t == 3 || t == 59 || t == 81 || t == 83 || t == 91 || t == 86 || t == 39 || t == 46 || t == 37 || t == 38;
+    	switch(block.getType()){
+    	case BROWN_MUSHROOM:
+    	case CACTUS:
+    	case COBBLESTONE:
+    	case CROPS:
+    	case DIRT:
+    	case JACK_O_LANTERN:
+    	case MELON_BLOCK:
+    	case PUMPKIN:
+    	case RED_MUSHROOM:
+    	case RED_ROSE:
+    	case SMOOTH_BRICK:
+    	case SUGAR_CANE_BLOCK:
+    	case VINE:
+    	case WATER_LILY:
+    	case YELLOW_FLOWER:
+    		return true;
+    	}
+    	return false;
     }
 	
 	public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin)
@@ -112,8 +129,7 @@ public class Herbalism
     	//Wheat
     	if(type == 59 && block.getData() == (byte) 0x7)
     	{
-    		mat = Material.getMaterial(296);
-			is = new ItemStack(mat, 1, (byte)0, (byte)0);
+			is = new ItemStack(Material.WHEAT, 1);
     		PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat, player);
     		
     		if(player != null)
@@ -128,8 +144,7 @@ public class Herbalism
     			event.setCancelled(true);
     			m.mcDropItem(loc, is);
     			//DROP SOME SEEDS
-    			mat = Material.SEEDS;
-    			is = new ItemStack(mat, 1, (byte)0, (byte)0);
+    			is = new ItemStack(Material.SEEDS, 1);
     			m.mcDropItem(loc, is);
     			
     			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -158,8 +173,7 @@ public class Herbalism
     	//Nether Wart
     	if(type == 115 && block.getData() == (byte) 0x3)
     	{
-    		mat = Material.getMaterial(372);
-			is = new ItemStack(mat, 1, (byte)0, (byte)0);
+			is = new ItemStack(Material.NETHER_STALK, 1);
     		PP.addXP(SkillType.HERBALISM, LoadProperties.mnetherwart, player);
     		if(player != null)
     		{
@@ -200,7 +214,7 @@ public class Herbalism
 	    		{
 	    			if(materialArray[x] == Material.CACTUS)
 	    			{
-	    				is = new ItemStack(Material.CACTUS, 1, (byte)0, (byte)0);
+	    				is = new ItemStack(Material.CACTUS, 1);
 	    				if(byteArray[x] != (byte) 5)
 	    				{
 	    					if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
@@ -238,7 +252,7 @@ public class Herbalism
 	    		{
 	    			if(materialArray[x] == Material.SUGAR_CANE_BLOCK)
 	    			{
-	    				is = new ItemStack(Material.SUGAR_CANE, 1, (byte)0, (byte)0);
+	    				is = new ItemStack(Material.SUGAR_CANE, 1);
 	    				//Check for being placed by the player
 	    				if(byteArray[x] != (byte) 5)
 	    				{
@@ -257,7 +271,7 @@ public class Herbalism
 	    	if((type == 91 || type == 86))
 	    	{
 	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				is = new ItemStack(mat, 1);
 	    		if(player != null)
 	    		{
 	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
@@ -270,8 +284,7 @@ public class Herbalism
 	    	//Melon
 	    	if(type == 103)
 	    	{
-	    		mat = Material.getMaterial(360);
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				is = new ItemStack(Material.MELON, 1);
 				if(player != null)
 	    		{
 				    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
@@ -286,7 +299,7 @@ public class Herbalism
 	    	if(type == 39 || type == 40)
 	    	{
 	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				is = new ItemStack(mat, 1);
 	    		if(player != null)
 	    		{
 	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
@@ -299,7 +312,7 @@ public class Herbalism
 	    	//Flower
 	    	if(type == 37 || type == 38){
 	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				is = new ItemStack(mat, 1);
 	    		if(player != null){
 	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
 		    			m.mcDropItem(loc, is);
@@ -309,8 +322,7 @@ public class Herbalism
 	    	//Lily Pads
 	    	if(type == 111)
 	    	{
-	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				is = new ItemStack(Material.WATER_LILY, 1);
 	    		if(player != null){
 	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
 		    			m.mcDropItem(loc, is);
@@ -319,8 +331,7 @@ public class Herbalism
 	    	}
 	    	//Vines
 	    	if(type == 106){
-	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1, (byte)0, (byte)0);
+				is = new ItemStack(Material.VINE, 1, (byte)0, (byte)0);
 	    		if(player != null){
 	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
 		    			m.mcDropItem(loc, is);
