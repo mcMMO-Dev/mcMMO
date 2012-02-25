@@ -84,6 +84,8 @@ public class mcBlockListener implements Listener
     	if(m.shouldBeWatched(mat))
     	{	
     		//Only needed for blocks that use their block data (wood, pumpkins, etc.)
+    	    boolean shouldBeChanged = true;
+    	    
     		switch(mat){
     		case CACTUS:
     		case GLOWING_REDSTONE_ORE:
@@ -93,6 +95,7 @@ public class mcBlockListener implements Listener
     		case REDSTONE_ORE:
     		case SUGAR_CANE_BLOCK:
     		case VINE:
+    		    shouldBeChanged = false;
     			plugin.misc.blockWatchList.add(block);
     			break;
     		case BROWN_MUSHROOM:
@@ -103,7 +106,9 @@ public class mcBlockListener implements Listener
     			plugin.fastChangeQueue.push(block);
     			break;
     		}
-    		plugin.changeQueue.push(block); 			
+    		
+    		if(shouldBeChanged)
+    		    plugin.changeQueue.push(block); 			
     	}
     	
     	if(id == LoadProperties.anvilID && LoadProperties.anvilmessages)
