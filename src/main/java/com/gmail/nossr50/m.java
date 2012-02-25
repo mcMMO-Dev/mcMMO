@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -31,6 +32,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.McMMOItemSpawnEvent;
+import com.gmail.nossr50.skills.Repair;
 
 public class m 
 {
@@ -52,13 +54,9 @@ public class m
 	public static int getInt(String string)
 	{
 		if(isInt(string))
-		{
 			return Integer.parseInt(string);
-		}
 		else
-		{
 			return 0;
-		}
 	}
 	
 	public static boolean isDouble(String string)
@@ -73,16 +71,51 @@ public class m
 		return true;
 	}
 	
-	public static boolean shouldBeWatched(Block block)
+	/**
+	 * Checks to see if a block type awards XP.
+	 * 
+	 * @param material Block type to check
+	 * @return true if the block type awards XP, false otherwise
+	 */
+	public static boolean shouldBeWatched(Material material)
 	{
-		int id = block.getTypeId();
-		return shouldBeWatched(id);
-	}
-	public static boolean shouldBeWatched(int id) {
-		return id == 2 || id == 3 || id == 12 || id == 13 || id == 82 || //Excavation
-				id == 1 || id == 14 || id == 15 || id == 16 || id == 21 || id == 24 || id == 49 || id == 56 || id == 73 || id == 74 || id == 87 || id == 89 || id == 112 || id == 121 || id == 48 || id == 98 || //Mining
-				id == 17 || id == 37 || id == 38 || id == 39 || id == 40 || id == 81 || id == 83 || id == 86 || id == 91 || id == 103 || id == 106 || id == 111 || //Woodcutting & Herbalism
-				id == LoadProperties.anvilID; //Anvil
+		switch(material){
+		case BROWN_MUSHROOM:
+		case CACTUS:
+		case CLAY:
+		case COAL_ORE:
+		case DIAMOND_ORE:
+		case DIRT:
+		case ENDER_STONE:
+		case GLOWING_REDSTONE_ORE:
+		case GLOWSTONE:
+		case GOLD_ORE:
+		case GRASS:
+		case GRAVEL:
+		case IRON_ORE:
+		case JACK_O_LANTERN:
+		case LAPIS_ORE:
+		case LOG:
+		case MELON_BLOCK:
+		case MOSSY_COBBLESTONE:
+		case MYCEL:
+		case NETHERRACK:
+		case OBSIDIAN:
+		case PUMPKIN:
+		case RED_MUSHROOM:
+		case RED_ROSE:
+		case REDSTONE_ORE:
+		case SAND:
+		case SANDSTONE:
+		case SOUL_SAND:
+		case STONE:
+		case SUGAR_CANE_BLOCK:
+		case VINE:
+		case WATER_LILY:
+		case YELLOW_FLOWER:
+			return true;
+		}
+		return false;
 	}
 	
 	public static int getPowerLevel(Player player)
@@ -134,20 +167,19 @@ public class m
 	
 	public static Integer getTier(Player player)
 	{
-		int i = player.getItemInHand().getTypeId();
-		if(i == 268 || i == 269 || i == 270 || i == 271 || i == 290){
-			return 1; //WOOD
-		} else if (i == 272 || i == 273 || i == 274 || i == 275 || i == 291){
-			return 2; //STONE
-		} else if (i == 256 || i == 257 || i == 258 || i == 267 || i == 292){
-			return 3; //IRON
-		} else if (i == 283 || i == 284 || i == 285 || i == 286 || i == 294){
-			return 1; //GOLD
-		} else if (i == 276 || i == 277 || i == 278 || i == 279 || i == 293){
-			return 4; //DIAMOND
-		} else {
-			return 1; //UNRECOGNIZED
-		}
+		ItemStack is = player.getItemInHand();
+		if(Repair.isWoodTools(is))
+			return 1;
+		if(Repair.isStoneTools(is))
+			return 2;
+		if(Repair.isIronTools(is))
+			return 3;
+		if(Repair.isGoldTools(is))
+			return 1;
+		if(Repair.isDiamondTools(is))
+			return 4;
+		
+		return 1;
 	}
 
 	public static double getDistance(Location loca, Location locb)
@@ -158,12 +190,32 @@ public class m
 
 	public static boolean abilityBlockCheck(Block block)
 	{
-		int i = block.getTypeId();
-		if(i == 107 ||i == 117 || i == 116 || i == 96 || i == 68 || i == 355 || i == 26 || i == 323 || i == 25 || i == 54 || i == 69 || i == 92 || i == 77 || i == 58 || i == 61 || i == 62 || i == LoadProperties.anvilID || i == 71 || i == 64 || i == 84 || i == 324 || i == 330){
+		switch(block.getType()){
+		case BED_BLOCK:
+		case BREWING_STAND:
+		case BURNING_FURNACE:
+		case CAKE_BLOCK:
+		case CHEST:
+		case DISPENSER:
+		case ENCHANTMENT_TABLE:
+		case FENCE_GATE:
+		case FURNACE:
+		case IRON_DOOR_BLOCK:
+		case JUKEBOX:
+		case LEVER:
+		case NOTE_BLOCK:
+		case STONE_BUTTON:
+		case TRAP_DOOR:
+		case WALL_SIGN:
+		case WOODEN_DOOR:
+		case WORKBENCH:
 			return false;
-		} else {
-			return true;
 		}
+		
+		if(block.getTypeId() == LoadProperties.anvilID)
+			return false;
+		
+		return true;
 	}
 	
 	public static boolean isInt(String string)
@@ -208,56 +260,130 @@ public class m
 
 	public static boolean isSwords(ItemStack is)
 	{
-		int id = is.getTypeId();
-		return id == 268 || id == 267 || id == 272 || id == 283 || id == 276;
+		switch(is.getType()){
+		case DIAMOND_SWORD:
+		case GOLD_SWORD:
+		case IRON_SWORD:
+		case STONE_SWORD:
+		case WOOD_SWORD:
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean isHoe(ItemStack is)
 	{
-		int id = is.getTypeId();
-		return id == 290 || id == 291 || id == 292 || id == 293 || id == 294;
+		switch(is.getType()){
+		case DIAMOND_HOE:
+		case GOLD_HOE:
+		case IRON_HOE:
+		case STONE_HOE:
+		case WOOD_HOE:
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean isShovel(ItemStack is)
 	{	
-		int id = is.getTypeId();
-		return id == 269 || id == 273 || id == 277 || id == 284 || id == 256;
+		switch(is.getType()){
+		case DIAMOND_SPADE:
+		case GOLD_SPADE:
+		case IRON_SPADE:
+		case STONE_SPADE:
+		case WOOD_SPADE:
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean isAxes(ItemStack is)
 	{	
-		int id = is.getTypeId();
-		return id == 271 || id == 258 || id == 286 || id == 279 || id == 275;
+		switch(is.getType()){
+		case DIAMOND_AXE:
+		case GOLD_AXE:
+		case IRON_AXE:
+		case STONE_AXE:
+		case WOOD_AXE:
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean isMiningPick(ItemStack is)
 	{
-		int id = is.getTypeId();
-		return id == 270 || id == 274 || id == 285 || id == 257 || id == 278;
+		switch(is.getType()){
+		case DIAMOND_PICKAXE:
+		case GOLD_PICKAXE:
+		case IRON_PICKAXE:
+		case STONE_PICKAXE:
+		case WOOD_PICKAXE:
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean isHelmet(ItemStack is)
 	{
-		int id = is.getTypeId();
-		return id == 298 || id == 306 || id == 310 || id == 314;
+		switch(is.getType()){
+		case DIAMOND_HELMET:
+		case GOLD_HELMET:
+		case IRON_HELMET:
+		case LEATHER_HELMET:
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean isChestplate(ItemStack is)
 	{
-		int id = is.getTypeId();
-		return id == 299 || id == 307 || id == 311 || id == 315;
+		switch(is.getType()){
+		case DIAMOND_CHESTPLATE:
+		case GOLD_CHESTPLATE:
+		case IRON_CHESTPLATE:
+		case LEATHER_CHESTPLATE:
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean isPants(ItemStack is)
 	{
-		int id = is.getTypeId();
-		return id == 300 || id == 308 || id == 312 || id == 316;
+		switch(is.getType()){
+		case DIAMOND_LEGGINGS:
+		case GOLD_LEGGINGS:
+		case IRON_LEGGINGS:
+		case LEATHER_LEGGINGS:
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean isBoots(ItemStack is)
 	{
-		int id = is.getTypeId();
-		return id == 301 || id == 305 || id == 313 || id == 317;
+		switch(is.getType()){
+		case DIAMOND_BOOTS:
+		case GOLD_BOOTS:
+		case IRON_BOOTS:
+		case LEATHER_BOOTS:
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isOre(Block block)
+	{
+		switch (block.getType()) {
+		case COAL_ORE:
+		case DIAMOND_ORE:
+		case GLOWING_REDSTONE_ORE:
+		case GOLD_ORE:
+		case IRON_ORE:
+		case LAPIS_ORE:
+		case REDSTONE_ORE:
+			return true;
+		}
+		return false;
 	}
 	
 	public static void convertToMySQL()

@@ -18,7 +18,6 @@ package com.gmail.nossr50.skills;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -73,14 +72,7 @@ public class Mining
 	{
     	Location loc = block.getLocation();
     	int id = block.getTypeId();
-    	Material mat = Material.getMaterial(id);
-		byte damage = 0;
-		ItemStack item = new ItemStack(mat, 1, (byte)0, damage);
-		
-		if(id != 89 && id != 73 && id != 74 && id != 56 && id != 21 && id != 1 && id != 16 && id != 112 && id != 121 && id != 48) {
-			m.mcDropItem(loc, item);
-			return;
-		}
+		ItemStack item = new ItemStack(id, 1);
 		
 		//Drop natural block with Silk Touch
 		if(player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)){
@@ -91,18 +83,18 @@ public class Mining
 		switch (id){
 			//GLOWSTONE
 			case 89:
-				item = new ItemStack(348, 1, (byte)0, damage);
+				item = new ItemStack(348, 1);
 				m.mcDropItems(loc, item, 2);
 				m.mcRandomDropItems(loc, item, 50, 2);
 				break;
 			//REDSTONE
 			case 73:
-				item = new ItemStack(331, 1, (byte)0, damage);
+				item = new ItemStack(331, 1);
 				m.mcDropItems(loc, item, 4);
 				m.mcRandomDropItem(loc, item, 50);
 				break;
 			case 74:
-				item = new ItemStack(331, 1, (byte)0, damage);
+				item = new ItemStack(331, 1);
 				m.mcDropItems(loc, item, 4);
 				m.mcRandomDropItem(loc, item, 50);
 				break;
@@ -114,17 +106,20 @@ public class Mining
 				break;
 			//DIAMOND
 			case 56:
-				item = new ItemStack(264, 1, (byte)0, damage);
+				item = new ItemStack(264, 1);
 				m.mcDropItem(loc, item);
 				break;
 			//STONE
 			case 1:
-				item = new ItemStack(4, 1, (byte)0, damage);
+				item = new ItemStack(4, 1);
 				m.mcDropItem(loc, item);
 				break;
 			//COAL
 			case 16:
-				item = new ItemStack(263, 1, (byte)0, damage);
+				item = new ItemStack(263, 1);
+				m.mcDropItem(loc, item);
+				break;
+			default:
 				m.mcDropItem(loc, item);
 				break;
 		}
@@ -215,8 +210,24 @@ public class Mining
      */
     public static Boolean canBeSuperBroken(Block block)
     {
-    	int id = block.getTypeId();
-    	return id == 1 || id == 14 || id == 15 || id == 16 || id == 21 || id == 24 || id == 49 || id == 56 || id == 73 || id == 74 || id == 87 || id == 89 || id == 112 || id == 121 || id == 48 || id == 98;
+    	switch(block.getType()){
+    	case COAL_ORE:
+    	case DIAMOND_ORE:
+    	case ENDER_STONE:
+    	case GLOWING_REDSTONE_ORE:
+    	case GLOWSTONE:
+    	case GOLD_ORE:
+    	case IRON_ORE:
+    	case LAPIS_ORE:
+    	case MOSSY_COBBLESTONE:
+    	case NETHERRACK:
+    	case OBSIDIAN:
+    	case REDSTONE_ORE:
+    	case SANDSTONE:
+    	case STONE:
+    		return true;
+    	}
+    	return false;
     }
     
     public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin)

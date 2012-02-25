@@ -17,6 +17,7 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -341,39 +342,114 @@ public class Repair {
 	public static boolean isArmor(ItemStack is){
 		return isLeatherArmor(is) || isGoldArmor(is) || isIronArmor(is) || isDiamondArmor(is);
 	}
+	
 	public static boolean isLeatherArmor(ItemStack is){
-		return is.getTypeId() == 298 || is.getTypeId() == 299 || is.getTypeId() == 300 || is.getTypeId() == 301;
+		switch(is.getType()){
+		case LEATHER_BOOTS:
+		case LEATHER_CHESTPLATE:
+		case LEATHER_HELMET:
+		case LEATHER_LEGGINGS:
+			return true;
+		}
+		return false;
 	}
+	
 	public static boolean isGoldArmor(ItemStack is){
-		return is.getTypeId() == 314 || is.getTypeId() == 315 || is.getTypeId() == 316 || is.getTypeId() == 317;
+		switch(is.getType()){
+		case GOLD_BOOTS:
+		case GOLD_CHESTPLATE:
+		case GOLD_HELMET:
+		case GOLD_LEGGINGS:
+			return true;
+		}
+		return false;
 	}
+	
 	public static boolean isIronArmor(ItemStack is){
-		return is.getTypeId() == 306 || is.getTypeId() == 307 || is.getTypeId() == 308 || is.getTypeId() == 309;
+		switch(is.getType()){
+		case IRON_BOOTS:
+		case IRON_CHESTPLATE:
+		case IRON_HELMET:
+		case IRON_LEGGINGS:
+			return true;
+		}
+		return false;
 	}
+	
 	public static boolean isDiamondArmor(ItemStack is){
-		return is.getTypeId() == 310 || is.getTypeId() == 311 || is.getTypeId() == 312 || is.getTypeId() == 313;
+		switch(is.getType()){
+		case DIAMOND_BOOTS:
+		case DIAMOND_CHESTPLATE:
+		case DIAMOND_HELMET:
+		case DIAMOND_LEGGINGS:
+			return true;
+		}
+		return false;
 	}
+	
 	public static boolean isTools(ItemStack is)
 	{
 		return isStoneTools(is) || isWoodTools(is) || isGoldTools(is) || isIronTools(is) || isDiamondTools(is) || isBow(is);
 	}
+	
 	public static boolean isStoneTools(ItemStack is){
-		return is.getTypeId() == 272 || is.getTypeId() == 273 || is.getTypeId() == 274 || is.getTypeId() == 275 || is.getTypeId() == 291;
+		switch(is.getType()){
+		case STONE_AXE:
+		case STONE_HOE:
+		case STONE_PICKAXE:
+		case STONE_SPADE:
+		case STONE_SWORD:
+			return true;
+		}
+		return false;
 	}
 	public static boolean isWoodTools(ItemStack is){
-		return is.getTypeId() == 268 || is.getTypeId() == 269 || is.getTypeId() == 270 || is.getTypeId() == 271 || is.getTypeId() == 290;
+		switch(is.getType()){
+		case WOOD_AXE:
+		case WOOD_HOE:
+		case WOOD_PICKAXE:
+		case WOOD_SPADE:
+		case WOOD_SWORD:
+			return true;
+		}
+		return false;
 	}
 	public static boolean isGoldTools(ItemStack is){
-		return is.getTypeId() == 283 || is.getTypeId() == 285 || is.getTypeId() == 286 || is.getTypeId() == 284 || is.getTypeId() == 294;
+		switch(is.getType()){
+		case GOLD_AXE:
+		case GOLD_HOE:
+		case GOLD_PICKAXE:
+		case GOLD_SPADE:
+		case GOLD_SWORD:
+			return true;
+		}
+		return false;
 	}
 	public static boolean isIronTools(ItemStack is){
-		return is.getTypeId() == 359 || is.getTypeId() == 256 || is.getTypeId() == 257 || is.getTypeId() == 258 || is.getTypeId() == 267 || is.getTypeId() == 292;
+		switch(is.getType()){
+		case IRON_AXE:
+		case IRON_HOE:
+		case IRON_PICKAXE:
+		case IRON_SPADE:
+		case IRON_SWORD:
+		case SHEARS:
+			return true;
+		}
+		return false;
 	}
 	public static boolean isDiamondTools(ItemStack is){
-		return is.getTypeId() == 276 || is.getTypeId() == 277 || is.getTypeId() == 278 || is.getTypeId() == 279 || is.getTypeId() == 293;
+		switch(is.getType()){
+		case DIAMOND_AXE:
+		case DIAMOND_HOE:
+		case DIAMOND_PICKAXE:
+		case DIAMOND_SPADE:
+		case DIAMOND_SWORD:
+			return true;
+		}
+		return false;
 	}
 	public static boolean isBow(ItemStack is){
-		return is.getTypeId() == 261;
+		return is.getType() == Material.BOW;
 	}
 	
 	/**

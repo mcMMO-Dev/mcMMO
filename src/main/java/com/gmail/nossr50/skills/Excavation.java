@@ -71,11 +71,22 @@ public class Excavation
 	    	
 	    }
 	}
+	
 	public static boolean canBeGigaDrillBroken(Block block)
 	{
-		Material t = block.getType();
-		return t == Material.DIRT || t == Material.GRASS || t == Material.SAND || t == Material.GRAVEL || t == Material.CLAY || t == Material.MYCEL || t == Material.SOUL_SAND;
+		switch(block.getType()){
+		case CLAY:
+		case DIRT:
+		case GRASS:
+		case GRAVEL:
+		case MYCEL:
+		case SAND:
+		case SOUL_SAND:
+			return true;
+		}
+		return false;
 	}
+	
 	public static void excavationProcCheck(Block block, Player player)
 	{
 		Material type = block.getType();

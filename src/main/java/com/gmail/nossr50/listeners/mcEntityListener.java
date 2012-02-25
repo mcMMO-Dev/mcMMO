@@ -35,7 +35,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
@@ -345,13 +344,6 @@ public class mcEntityListener implements Listener
 	    }
 	}
 	
-	public boolean isBow(ItemStack is){
-		if (is.getTypeId() == 261){
-			return true;
-		} else {
-			return false;
-		}
-	}
 	public boolean isPlayer(Entity entity){
     	if (entity instanceof Player) {
     	    return true;

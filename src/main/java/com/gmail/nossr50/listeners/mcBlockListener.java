@@ -71,6 +71,7 @@ public class mcBlockListener implements Listener
     		block = event.getBlock();
     	
     	int id = block.getTypeId();
+    	Material mat = block.getType();
     	
     	//TNT placement checks - needed for Blast Mining
     	if(id == 46 && mcPermissions.getInstance().blastmining(player))
@@ -80,22 +81,29 @@ public class mcBlockListener implements Listener
     	}
     	
     	//Check if the blocks placed should be monitored so they do not give out XP in the future
-    	if(m.shouldBeWatched(block))
+    	if(m.shouldBeWatched(mat))
     	{	
     		//Only needed for blocks that use their block data (wood, pumpkins, etc.)
-    		if (id == 17 || id == 73 || id == 74 || id == 81 || id == 83 || id == 86 || id == 91 || id == 106 || id == 98)
+    		switch(mat){
+    		case CACTUS:
+    		case GLOWING_REDSTONE_ORE:
+    		case JACK_O_LANTERN:
+    		case LOG:
+    		case PUMPKIN:
+    		case REDSTONE_ORE:
+    		case SUGAR_CANE_BLOCK:
+    		case VINE:
     			plugin.misc.blockWatchList.add(block);
-    		else
-    		{
-    			//block.setData((byte) 5); //Change the byte
-    			//The following is a method to get around a breakage in 1.1-R2 and onward
-    			//it should be removed as soon as functionality to change a block
-    			//in this event returns.
-    			if(id == 39 || id == 40 || id == 37 || id == 38 || id == 111 || id == 106)	// ids of blocks that can be mined very quickly and need to be worked on fast
-    				plugin.fastChangeQueue.push(block);
-    			else
-    				plugin.changeQueue.push(block);
+    			break;
+    		case BROWN_MUSHROOM:
+    		case RED_MUSHROOM:
+    		case RED_ROSE:
+    		case YELLOW_FLOWER:
+    		case WATER_LILY:
+    			plugin.fastChangeQueue.push(block);
+    			break;
     		}
+    		plugin.changeQueue.push(block); 			
     	}
     	
     	if(id == LoadProperties.anvilID && LoadProperties.anvilmessages)
@@ -187,7 +195,7 @@ public class mcBlockListener implements Listener
     	}
     	
     	//Change the byte back when broken
-    	if(block.getData() == 5 && m.shouldBeWatched(block))
+    	if(block.getData() == 5 && m.shouldBeWatched(block.getType()))
     	{
     		block.setData((byte) 0);
     		if(plugin.misc.blockWatchList.contains(block))
@@ -339,7 +347,7 @@ public class mcBlockListener implements Listener
     {
         Block blockFrom = event.getBlock();
         Block blockTo = event.getToBlock();
-        if(m.shouldBeWatched(blockFrom) && blockFrom.getData() == (byte)5)
+        if(m.shouldBeWatched(blockFrom.getType()) && blockFrom.getData() == (byte)5)
         {
         	blockTo.setData((byte)5);
         }
