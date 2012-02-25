@@ -34,7 +34,6 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.spout.util.ArrayListString;
 
 
 public class Party 
@@ -140,22 +139,6 @@ public class Party
                 if(inSameParty(player, p) && !p.getName().equals(player.getName()))
                 {
                 	players.add(p);
-                }
-            }
-        }
-    	return players;
-    }
-    public ArrayListString getPartyMembersByName(Player player)
-    {
-    	ArrayListString players = new ArrayListString();
-    	
-    	for(Player p : Bukkit.getServer().getOnlinePlayers())
-        {
-        	if(p.isOnline())
-        	{
-                if(inSameParty(player, p))
-                {
-                	players.add(p.getName());
                 }
             }
         }

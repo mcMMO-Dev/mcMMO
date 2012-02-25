@@ -60,7 +60,6 @@ import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
 import com.gmail.nossr50.spout.SpoutStuff;
-import com.gmail.nossr50.spout.mmoHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -182,8 +181,6 @@ public class mcPlayerListener implements Listener
 		{
 			if(SpoutStuff.playerHUDs.containsKey(player))
 				SpoutStuff.playerHUDs.remove(player);
-			if(mmoHelper.containers.containsKey(player))
-				mmoHelper.containers.remove(player);
 		}
 		
 		//Bleed it out
