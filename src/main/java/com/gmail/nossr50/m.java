@@ -26,6 +26,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
+import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -149,8 +150,15 @@ public class m
 		return x;
 	}
 
-	public static boolean blockBreakSimulate(Block block, Player player)
+	public static boolean blockBreakSimulate(Block block, Player player, Boolean shouldArmSwing)
 	{
+	    //Support for NoCheat
+	    if(shouldArmSwing)
+	    {
+	        PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+            Bukkit.getPluginManager().callEvent(armswing);
+	    }
+	    
 		FakeBlockBreakEvent event = new FakeBlockBreakEvent(block, player);
 		if(block != null && player != null){
 			Bukkit.getServer().getPluginManager().callEvent(event);

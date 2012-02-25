@@ -260,7 +260,7 @@ public class mcPlayerListener implements Listener
 					
 					if(block.getType() == Material.DIRT || block.getType() == Material.COBBLESTONE || block.getType() == Material.SMOOTH_BRICK)
 					{
-						if(Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM) && m.blockBreakSimulate(block, player))
+						if(Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM) && m.blockBreakSimulate(block, player, false))
 						{
 							switch(block.getType())
 							{

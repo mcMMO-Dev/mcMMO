@@ -25,7 +25,6 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -37,7 +36,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 
 import org.getspout.spoutapi.SpoutManager;
@@ -86,7 +84,8 @@ public class mcBlockListener implements Listener
     		//Only needed for blocks that use their block data (wood, pumpkins, etc.)
     	    boolean shouldBeChanged = true;
     	    
-    		switch(mat){
+    		switch(mat)
+    		{
     		case CACTUS:
     		case GLOWING_REDSTONE_ORE:
     		case JACK_O_LANTERN:
@@ -95,7 +94,7 @@ public class mcBlockListener implements Listener
     		case REDSTONE_ORE:
     		case SUGAR_CANE_BLOCK:
     		case VINE:
-    		    shouldBeChanged = false;
+    		    shouldBeChanged = false; //We don't want these added to changeQueue
     			plugin.misc.blockWatchList.add(block);
     			break;
     		case BROWN_MUSHROOM:
@@ -251,7 +250,7 @@ public class mcBlockListener implements Listener
     	/*
     	 * GIGA DRILL BREAKER CHECKS
     	 */
-    	if(PP.getGigaDrillBreakerMode() && Excavation.canBeGigaDrillBroken(block) && m.blockBreakSimulate(block, player) && mcPermissions.getInstance().excavationAbility(player))
+    	if(PP.getGigaDrillBreakerMode() && Excavation.canBeGigaDrillBroken(block) && m.blockBreakSimulate(block, player, true) && mcPermissions.getInstance().excavationAbility(player))
     	{	
     		if(LoadProperties.excavationRequiresShovel && m.isShovel(inhand))
     		{
@@ -278,14 +277,12 @@ public class mcBlockListener implements Listener
     	 * BERSERK MODE CHECKS
     	 */
     	if(PP.getBerserkMode() 
-    		&& m.blockBreakSimulate(block, player) 
+    		&& m.blockBreakSimulate(block, player, true) 
     		&& player.getItemInHand().getTypeId() == 0 
     		&& (Excavation.canBeGigaDrillBroken(block) || id == 78)
     		&& mcPermissions.getInstance().unarmedAbility(player))
     	{
     		event.setInstaBreak(true);
-			PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
-			Bukkit.getPluginManager().callEvent(armswing);
 			
     		if(LoadProperties.spoutEnabled)
     			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
@@ -296,7 +293,7 @@ public class mcBlockListener implements Listener
     	 */
     	if(PP.getSuperBreakerMode() 
     		&& Mining.canBeSuperBroken(block)
-    		&& m.blockBreakSimulate(block, player)
+    		&& m.blockBreakSimulate(block, player, true)
     		&& mcPermissions.getInstance().miningAbility(player))
     	{
     		if(LoadProperties.miningrequirespickaxe)
@@ -328,7 +325,7 @@ public class mcBlockListener implements Listener
     	if(id == 18 
     		&& mcPermissions.getInstance().woodcutting(player) 
     		&& PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 
-    		&& m.blockBreakSimulate(block, player))
+    		&& m.blockBreakSimulate(block, player, true))
     	{	
     		if(LoadProperties.woodcuttingrequiresaxe)
     		{

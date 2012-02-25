@@ -75,11 +75,7 @@ public class WoodCutting
         
         for(Block x : toBeFelled)
         {
-            //Stupid NoCheat compatibility stuff
-            PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
-            Bukkit.getPluginManager().callEvent(armswing);
-            
-            if(m.blockBreakSimulate(x, player))
+            if(m.blockBreakSimulate(x, player, true))
             {
                 if(x.getType() == Material.LOG)
                 {
