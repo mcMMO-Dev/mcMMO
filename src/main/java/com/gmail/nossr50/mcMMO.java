@@ -313,6 +313,7 @@ public class mcMMO extends JavaPlugin
 		
 		//Other commands
 		if(LoadProperties.addxpEnable) getCommand("addxp").setExecutor(new AddxpCommand(this));
+		if(LoadProperties.addlevelsEnable) getCommand("addlevels").setExecutor(new AddlevelsCommand(this));
 		if(LoadProperties.clearmyspawnEnable) getCommand("clearmyspawn").setExecutor(new ClearmyspawnCommand());
 		if(LoadProperties.mmoeditEnable) getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
 		getCommand("mmoupdate").setExecutor(new MmoupdateCommand());

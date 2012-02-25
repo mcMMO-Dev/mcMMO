@@ -1134,6 +1134,8 @@ Commands:
         Enabled: true
     addxp:
         Enabled: true
+    addlevels:
+        Enabled: true
     clearmyspawn:
         Enabled: true
     ptp:

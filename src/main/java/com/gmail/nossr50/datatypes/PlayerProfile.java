@@ -1069,9 +1069,45 @@ public class PlayerProfile
 			skillsXp.put(SkillType.FISHING, 0);
 		} else {
 			skills.put(skillType, newvalue);
-			skillsXp.put(skillType, newvalue);
+			skillsXp.put(skillType, 0);
 		}
 	}
+	
+	public void addLevels(SkillType skillType, int levels)
+	{
+		if(skillType == SkillType.ALL)
+		{
+			skills.put(SkillType.TAMING, skills.get(SkillType.TAMING)+levels);
+			skills.put(SkillType.MINING, skills.get(SkillType.MINING)+levels);
+			skills.put(SkillType.WOODCUTTING, skills.get(SkillType.WOODCUTTING)+levels);
+			skills.put(SkillType.REPAIR, skills.get(SkillType.REPAIR)+levels);
+			skills.put(SkillType.HERBALISM, skills.get(SkillType.HERBALISM)+levels);
+			skills.put(SkillType.ACROBATICS, skills.get(SkillType.ACROBATICS)+levels);
+			skills.put(SkillType.SWORDS, skills.get(SkillType.SWORDS)+levels);
+			skills.put(SkillType.ARCHERY, skills.get(SkillType.ARCHERY)+levels);
+			skills.put(SkillType.UNARMED, skills.get(SkillType.UNARMED)+levels);
+			skills.put(SkillType.EXCAVATION, skills.get(SkillType.EXCAVATION)+levels);
+			skills.put(SkillType.AXES, skills.get(SkillType.AXES)+levels);
+			skills.put(SkillType.FISHING, skills.get(SkillType.FISHING)+levels);
+			
+			skillsXp.put(SkillType.TAMING, 0);
+			skillsXp.put(SkillType.MINING, 0);
+			skillsXp.put(SkillType.WOODCUTTING, 0);
+			skillsXp.put(SkillType.REPAIR, 0);
+			skillsXp.put(SkillType.HERBALISM, 0);
+			skillsXp.put(SkillType.ACROBATICS, 0);
+			skillsXp.put(SkillType.SWORDS, 0);
+			skillsXp.put(SkillType.ARCHERY, 0);
+			skillsXp.put(SkillType.UNARMED, 0);
+			skillsXp.put(SkillType.EXCAVATION, 0);
+			skillsXp.put(SkillType.AXES, 0);
+			skillsXp.put(SkillType.FISHING, 0);
+		} else {
+			skills.put(skillType, skills.get(skillType)+levels);
+			skillsXp.put(skillType, 0);
+		}
+	}
+	
 	public Integer getXpToLevel(SkillType skillType)
 	{
 		return (int) ((1020+(skills.get(skillType) *  20)));

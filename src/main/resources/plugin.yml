@@ -24,6 +24,9 @@ commands:
     addxp:
         description: Add XP to a user
         permission: mcmmo.tools.mmoedit
+    addlevels:
+        description: Add levels to a user
+        permission: mcmmo.tools.mmoedit
     mcability:
         description: Toggle whether or not abilities get readied on right click
         permission: mcmmo.commands.ability

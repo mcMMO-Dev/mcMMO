@@ -44,7 +44,7 @@ public class LoadProperties {
 			mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable,
 			whoisEnable, mcstatsEnable, addxpEnable, ptpEnable, mmoeditEnable,
 			clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable,
-			mcrefreshEnable, aEnable, pEnable, enableMotd, enableMySpawn,
+			addlevelsEnable, mcrefreshEnable, aEnable, pEnable, enableMotd, enableMySpawn,
 			enableCobbleToMossy, useMySQL, toolsLoseDurabilityFromAbilities,
 			pvpxp, miningrequirespickaxe, excavationRequiresShovel,
 			woodcuttingrequiresaxe, anvilmessages, mayDowngradeEnchants,
@@ -400,6 +400,7 @@ public class LoadProperties {
 		xprateEnable = readBoolean("Commands.xprate.Enabled", true);
 		mctopEnable = readBoolean("Commands.mctop.Enabled", true);
 		addxpEnable = readBoolean("Commands.addxp.Enabled", true);
+		addlevelsEnable = readBoolean("Commands.addlevels.Enabled", true);
 		mcabilityEnable = readBoolean("Commands.mcability.Enabled", true);
 		mcrefreshEnable = readBoolean("Commands.mcrefresh.Enabled", true);
 		mcmmoEnable = readBoolean("Commands.mcmmo.Enabled", true);
