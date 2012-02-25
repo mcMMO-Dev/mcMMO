@@ -26,7 +26,7 @@ Version 1.3.00-dev
  = Fixed Green Thumb & Green Terra not consuming or requiring seeds to replant Wheat
  = Fixed Super Breaker & Giga Drill Breaker failing to damage tools
  = Fixed Tree Feller not giving proper XP for different kinds of trees
- = Fixed Tree Feller conflicting with NoCheat
+ = Fixed Skill Abilities conflicting with NoCheat
  = Fixed memory leak with mob spawner tracking
  = Fixed /mcability not respecting permissions
  = Prettied up new config files
