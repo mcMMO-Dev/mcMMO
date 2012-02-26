@@ -381,38 +381,54 @@ public class Combat
 			else
 				xpinc = damage;
 			
-			if(entity instanceof Animals)
-				xp = (int) (xpinc * LoadProperties.animalXP);
-			else
-			{
-				if(entity instanceof Enderman)
-					xp = (int) (xpinc * LoadProperties.endermanXP);
-				else if(entity instanceof Creeper)
-					xp = (int) (xpinc * LoadProperties.creeperXP);
-				else if(entity instanceof Silverfish)
-					xp = (int) (xpinc * LoadProperties.silverfishXP);
-				else if(entity instanceof CaveSpider)
-					xp = (int) (xpinc * LoadProperties.cavespiderXP);
-				else if(entity instanceof Spider)
-					xp = (int) (xpinc * LoadProperties.spiderXP);
-				else if(entity instanceof Skeleton)
-					xp = (int) (xpinc * LoadProperties.skeletonXP);
-				else if(entity instanceof Zombie)
-					xp = (int) (xpinc * LoadProperties.zombieXP);
-				else if(entity instanceof PigZombie)
-					xp = (int) (xpinc * LoadProperties.pigzombieXP);
-				else if(entity instanceof Slime)
-					xp = (int) (xpinc * LoadProperties.slimeXP);
-				else if(entity instanceof Ghast)
-					xp = (int) (xpinc * LoadProperties.ghastXP);
-				else if(entity instanceof Blaze)
-					xp = (int) (xpinc * LoadProperties.blazeXP);
-				else if(entity instanceof EnderDragon)
-					xp = (int) (xpinc * LoadProperties.enderdragonXP);
-				else if(entity instanceof MagmaCube)
-					xp = (int) (xpinc * LoadProperties.magmacubeXP);
-			}
-		}
-		return xp;
+	    	if(entity instanceof Animals)
+		    	xp = (int) (xpinc * LoadProperties.animalXP);
+	    	else
+	    	{
+	    		EntityType type = entity.getType();
+	    		switch(type){
+	    		case BLAZE:
+	    			xp = (int) (xpinc * LoadProperties.blazeXP);
+	    			break;
+	    		case CAVE_SPIDER:
+	    			xp = (int) (xpinc * LoadProperties.cavespiderXP);
+	    			break;
+	    		case CREEPER:
+	    			xp = (int) (xpinc * LoadProperties.creeperXP);
+	    			break;
+	    		case ENDER_DRAGON:
+	    			xp = (int) (xpinc * LoadProperties.enderdragonXP);
+	    			break;
+	    		case ENDERMAN:
+	    			xp = (int) (xpinc * LoadProperties.endermanXP);
+	    			break;
+	    		case GHAST:
+	    			xp = (int) (xpinc * LoadProperties.ghastXP);
+	    			break;
+	    		case MAGMA_CUBE:
+	    			xp = (int) (xpinc * LoadProperties.magmacubeXP);
+	    			break;
+	    		case PIG_ZOMBIE:
+	    			xp = (int) (xpinc * LoadProperties.pigzombieXP);
+	    			break;
+	    		case SILVERFISH:
+	    			xp = (int) (xpinc * LoadProperties.silverfishXP);
+	    			break;
+	    		case SKELETON:
+	    			xp = (int) (xpinc * LoadProperties.skeletonXP);
+	    			break;
+	    		case SLIME:
+	    			xp = (int) (xpinc * LoadProperties.slimeXP);
+	    			break;
+	    		case SPIDER:
+	    			xp = (int) (xpinc * LoadProperties.spiderXP);
+	    			break;
+	    		case ZOMBIE:
+	    			xp = (int) (xpinc * LoadProperties.zombieXP);
+	    			break;
+	    		}
+	    	}
+    	}
+    	return xp;
 	}
 }
