@@ -275,15 +275,14 @@ public class Skills
      * @param player The player activating the ability
      * @param type The skill the ability is based on
      */
-    public static void abilityCheck(Player player, SkillType type)
-    {    	
-    	PlayerProfile PP = Users.getProfile(player);
-    	AbilityType ability = type.getAbility();
-    	if(type.getTool().inHand(player.getItemInHand()))
-    	{
-    		if(type.getTool().getToolMode(PP))
-    			type.getTool().setToolMode(PP, false);
-    		
+	public static void abilityCheck(Player player, PlayerProfile PP, SkillType type)
+	{
+		AbilityType ability = type.getAbility();
+		if(type.getTool().inHand(player.getItemInHand()))
+		{
+			if(type.getTool().getToolMode(PP))
+				type.getTool().setToolMode(PP, false);
+			
     		//Axes and Woodcutting are odd because they share the same tool so we show them the too tired message when they take action
     		if(type == SkillType.WOODCUTTING || type == SkillType.AXES)
     		{
@@ -293,19 +292,19 @@ public class Skills
                     return;
                 }
     		}
-    		
-    		int ticks = 2 + (PP.getSkillLevel(type) / 50);
-    		if(!ability.getMode(PP) && cooldownOver(player, PP.getSkillDATS(ability), ability.getCooldown()))
-    		{
-    			player.sendMessage(ability.getAbilityOn());
-    			for(Player y : player.getWorld().getPlayers())
-	    		{
-    				if(y != player && m.isNear(player.getLocation(), y.getLocation(), 10))
-	    				y.sendMessage(ability.getAbilityPlayer(player));
-	    		}
-    			PP.setSkillDATS(ability, System.currentTimeMillis()+(ticks*1000));
-    			ability.setMode(PP, true);
-    		}
-    	}
-    }
+			
+			int ticks = 2 + (PP.getSkillLevel(type) / 50);
+			if(!ability.getMode(PP) && cooldownOver(player, PP.getSkillDATS(ability), ability.getCooldown()))
+			{
+				player.sendMessage(ability.getAbilityOn());
+				for(Player y : player.getWorld().getPlayers())
+				{
+					if(y != player && m.isNear(player.getLocation(), y.getLocation(), 10))
+						y.sendMessage(ability.getAbilityPlayer(player));
+				}
+				PP.setSkillDATS(ability, System.currentTimeMillis()+(ticks*1000));
+				ability.setMode(PP, true);
+			}
+		}
+	}
 }
