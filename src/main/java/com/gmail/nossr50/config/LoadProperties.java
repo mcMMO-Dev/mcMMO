@@ -88,7 +88,8 @@ public class LoadProperties {
 			miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier,
 			fishingxpmodifier, unarmedxpmodifier, herbalismxpmodifier,
 			excavationxpmodifier, archeryxpmodifier, swordsxpmodifier,
-			axesxpmodifier, acrobaticsxpmodifier;
+			axesxpmodifier, acrobaticsxpmodifier, animalXP, creeperXP, skeletonXP, spiderXP, ghastXP, slimeXP,
+			zombieXP, pigzombieXP, endermanXP, cavespiderXP, silverfishXP, blazeXP, magmacubeXP, enderdragonXP;
 
 	public static List<ExcavationTreasure> excavationFromDirt = new ArrayList<ExcavationTreasure>();
 	public static List<ExcavationTreasure> excavationFromGrass = new ArrayList<ExcavationTreasure>();
@@ -420,6 +421,21 @@ public class LoadProperties {
 		
 		aDisplayNames = readBoolean("Commands.a.Display_Names", true);
 		pDisplayNames = readBoolean("Commands.p.Display_Names", true);
+		
+		animalXP = readDouble("Experience.Combat.Multiplier.Animals", 1.0);
+		creeperXP = readDouble("Experience.Combat.Multiplier.Creeper", 4.0);
+		skeletonXP = readDouble("Experience.Combat.Multiplier.Skeleton", 2.0);
+		spiderXP = readDouble("Experience.Combat.Multiplier.Spider", 3.0);
+		ghastXP = readDouble("Experience.Combat.Multiplier.Ghast", 3.0);
+		slimeXP = readDouble("Experience.Combat.Multiplier.Slime", 2.0);
+		zombieXP = readDouble("Experience.Combat.Multiplier.Zombie", 2.0);
+		pigzombieXP = readDouble("Experience.Combat.Multiplier.Pig_Zombie", 3.0);
+		endermanXP = readDouble("Experience.Combat.Multiplier.Enderman", 2.0);
+		cavespiderXP = readDouble("Experience.Combat.Multiplier.Cave_Spider", 3.0);
+		silverfishXP = readDouble("Experience.Combat.Multiplier.Silverfish", 3.0);
+		blazeXP = readDouble("Experience.Combat.Multiplier.Blaze", 3.0);
+		magmacubeXP = readDouble("Experience.Combat.Multiplier.Magma_Cube", 2.0);
+		enderdragonXP = readDouble("Experience.Combat.Multiplier.Ender_Dragon", 8.0);
 		
 		// Load treasures
 		Map<String, Treasure> treasures = new HashMap<String, Treasure>();

@@ -395,11 +395,13 @@ public class Combat
     	int xp = 0;
     	if(entity instanceof LivingEntity)
     	{
-    		LivingEntity le = (LivingEntity)entity;
+    		LivingEntity le = (LivingEntity) entity;
 	    	//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the entity
-			int hpLeft = le.getHealth(), xpinc = 0;
-				
-			if(hpLeft < event.getDamage())
+			int hpLeft = le.getHealth();
+			int xpinc = 0;
+			int damage = event.getDamage();
+			
+			if(hpLeft < damage)
             {
 			    if(hpLeft > 0)
 			        xpinc = hpLeft;
@@ -407,39 +409,38 @@ public class Combat
                     xpinc = 0;
             } 
 			else
-			    xpinc = event.getDamage();
+			    xpinc = damage;
 			
 	    	if(entity instanceof Animals)
-	    	{
-		    	xp = (int) (xpinc * 1);
-	    	} else
+		    	xp = (int) (xpinc * LoadProperties.animalXP);
+	    	else
 	    	{
 	    		if(entity instanceof Enderman)
-					xp = (xpinc * 2);
-		    	else if(entity instanceof Creeper)
-					xp = (xpinc * 4);
+	    			xp = (int) (xpinc * LoadProperties.endermanXP);
+	    		else if(entity instanceof Creeper)
+					xp = (int) (xpinc * LoadProperties.creeperXP);
 		    	else if(entity instanceof Silverfish)
-					xp = (xpinc * 3);
+					xp = (int) (xpinc * LoadProperties.silverfishXP);
 		    	else if(entity instanceof CaveSpider)
-					xp = (xpinc * 3);
+					xp = (int) (xpinc * LoadProperties.cavespiderXP);
 		    	else if(entity instanceof Spider)
-					xp = (xpinc * 3);
+					xp = (int) (xpinc * LoadProperties.spiderXP);
 		    	else if(entity instanceof Skeleton)
-					xp = (xpinc * 2);
+					xp = (int) (xpinc * LoadProperties.skeletonXP);
 		    	else if(entity instanceof Zombie)
-					xp = (xpinc * 2);
+					xp = (int) (xpinc * LoadProperties.zombieXP);
 		    	else if(entity instanceof PigZombie)
-					xp = (xpinc * 3);
+					xp = (int) (xpinc * LoadProperties.pigzombieXP);
 		    	else if(entity instanceof Slime)
-					xp = (xpinc * 2);
+					xp = (int) (xpinc * LoadProperties.slimeXP);
 		    	else if(entity instanceof Ghast)
-					xp = (xpinc * 3);
+					xp = (int) (xpinc * LoadProperties.ghastXP);
 		    	else if(entity instanceof Blaze)
-		    		xp = (xpinc * 3);
+		    		xp = (int) (xpinc * LoadProperties.blazeXP);
 		    	else if(entity instanceof EnderDragon)
-		    		xp = (xpinc * 8);
+		    		xp = (int) (xpinc * LoadProperties.enderdragonXP);
 		    	else if(entity instanceof MagmaCube)
-					xp = (xpinc * 2);
+					xp = (int) (xpinc * LoadProperties.magmacubeXP);
 	    	}
     	}
     	return xp;

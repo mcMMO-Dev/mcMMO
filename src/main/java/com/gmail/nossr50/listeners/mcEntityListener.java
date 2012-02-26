@@ -343,12 +343,4 @@ public class mcEntityListener implements Listener
 	        }
 	    }
 	}
-	
-	public boolean isPlayer(Entity entity){
-    	if (entity instanceof Player) {
-    	    return true;
-    	} else{
-    		return false;
-    	}
-    }
 }
