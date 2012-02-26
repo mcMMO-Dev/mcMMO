@@ -31,6 +31,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.party.Party;
 
 public class Taming 
 {
@@ -168,5 +169,12 @@ public class Taming
 		//Thick Fur
 		if(cause == DamageCause.FIRE_TICK)
 			event.getEntity().setFireTicks(0);
+	}
+	
+	public static boolean isFriendlyWolf(Player player, Wolf wolf, mcMMO pluginx)
+	{
+   		if(getOwner(wolf, pluginx) == player || Party.getInstance().inSameParty(player, getOwner(wolf, pluginx)))
+   			return true;
+   		return false;
 	}
 }
