@@ -48,7 +48,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Item;
@@ -111,20 +110,21 @@ public class mcPlayerListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerFish(PlayerFishEvent event) 
 	{
-		if(mcPermissions.getInstance().fishing(event.getPlayer()))
+		Player player = event.getPlayer();
+		if(mcPermissions.getInstance().fishing(player))
 		{
-			if(event.getState() == State.CAUGHT_FISH)
+			State state = event.getState();
+			Entity caught = event.getCaught();
+			if(state== State.CAUGHT_FISH)
 			{
-				if(event.getCaught() instanceof org.bukkit.entity.Item)
-				{
+				if(caught instanceof org.bukkit.entity.Item)
 					Fishing.processResults(event);
-				}
-			} else if (event.getState() == State.CAUGHT_ENTITY)
+			} 
+			else if (state == State.CAUGHT_ENTITY)
 			{
-				if(Users.getProfile(event.getPlayer()).getSkillLevel(SkillType.FISHING) >= 150 && event.getCaught() instanceof LivingEntity)
-				{
+				int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.FISHING);
+				if(skillLevel >= 150 && caught instanceof LivingEntity)
 					Fishing.shakeMob(event);
-				}
 			}
 		}
 	}
@@ -133,32 +133,20 @@ public class mcPlayerListener implements Listener
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) 
 	{
 		if(Users.getProfile(event.getPlayer()).getBerserkMode())
-		{
 			 event.setCancelled(true);
-		}
 	}
 
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) 
 	{
-		
 		Player player = event.getPlayer();
 		PlayerProfile PP = Users.getProfile(player);
 		if(LoadProperties.enableMySpawn && mcPermissions.getInstance().mySpawn(player))
 		{
-			if(player != null && PP != null)
-			{
-				PP.setRespawnATS(System.currentTimeMillis());
-				
-				Location mySpawn = PP.getMySpawn(player);
-				
-				if(mySpawn != null)
-				{
-					{
-						event.setRespawnLocation(mySpawn);
-					}
-				}
-			}
+			PP.setRespawnATS(System.currentTimeMillis());
+			Location mySpawn = PP.getMySpawn(player);
+			if(mySpawn != null)
+				event.setRespawnLocation(mySpawn);
 		}
 	}
 	
@@ -176,18 +164,16 @@ public class mcPlayerListener implements Listener
 		 */
 		//Discard the PlayerProfile object
 		Player player = event.getPlayer();
-		
-		if(LoadProperties.spoutEnabled)
-		{
-			if(SpoutStuff.playerHUDs.containsKey(player))
-				SpoutStuff.playerHUDs.remove(player);
-		}
+		PlayerProfile PP = Users.getProfile(player);
+		if(LoadProperties.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player))
+			SpoutStuff.playerHUDs.remove(player);
 		
 		//Bleed it out
-		if(Users.getProfile(player).getBleedTicks() > 0) Combat.dealDamage(player, Users.getProfile(player).getBleedTicks()*2);
+		if(PP.getBleedTicks() > 0)
+			Combat.dealDamage(player, PP.getBleedTicks()*2);
 		
 		//Save PlayerData to MySQL/FlatFile on player quit
-		Users.getProfile(player).save();
+		PP.save();
 		
 		//Schedule PlayerProfile removal 2 minutes after quitting
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player), 2400);
@@ -214,28 +200,24 @@ public class mcPlayerListener implements Listener
 		PlayerProfile PP = Users.getProfile(player);
 		Action action = event.getAction();
 		Block block = event.getClickedBlock();
-		PlayerInventory inventory = player.getInventory();
-
+		Material mat = block.getType();
+		ItemStack is = player.getItemInHand();
+		
 		/*
 		 * Ability checks
 		 */
 		if(action == Action.RIGHT_CLICK_BLOCK)
 		{
-			ItemStack is = player.getItemInHand();
-			if(LoadProperties.enableMySpawn && block != null && player != null)
+			if(LoadProperties.enableMySpawn && block != null)
 			{
-				if(block.getTypeId() == 26 && mcPermissions.getInstance().setMySpawn(player))
+				if(mat.equals(Material.BED_BLOCK) && mcPermissions.getInstance().setMySpawn(player))
 				{
 					Location loc = player.getLocation();
-					if(mcPermissions.getInstance().setMySpawn(player)){
-						PP.setMySpawn(loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName());
-					}
-					//player.sendMessage(mcLocale.getString("mcPlayerListener.MyspawnSet"));
+					PP.setMySpawn(loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName());
 				}
 			}
 
-			if(block != null && player != null && mcPermissions.getInstance().repair(player) 
-					&& event.getClickedBlock().getTypeId() == LoadProperties.anvilID && (Repair.isTools(player.getItemInHand()) || Repair.isArmor(player.getItemInHand())))
+			if(block != null && mcPermissions.getInstance().repair(player) && block.getTypeId() == LoadProperties.anvilID && (Repair.isTools(is) || Repair.isArmor(is)))
 			{
 				Repair.repairCheck(player, is, event.getClickedBlock());
 				event.setCancelled(true);
@@ -244,53 +226,52 @@ public class mcPlayerListener implements Listener
 
 			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
 			{
-				if(block != null && m.isHoe(player.getItemInHand()) && block.getTypeId() != 3 && block.getTypeId() != 2 && block.getTypeId() != 60)
+				if(block != null && m.isHoe(is) && !mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL))
 					Skills.hoeReadinessCheck(player);
 				Skills.abilityActivationCheck(player);
 			}
 
 			//GREEN THUMB
-			if(block != null && mcPermissions.getInstance().herbalism(player) && (block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT || block.getType() == Material.SMOOTH_BRICK) && player.getItemInHand().getType() == Material.SEEDS)
+			if(block != null && mcPermissions.getInstance().herbalism(player) && (mat.equals(Material.COBBLESTONE) || mat.equals(Material.DIRT) || mat.equals(Material.SMOOTH_BRICK)) && is.getType().equals(Material.SEEDS))
 			{
 				boolean pass = false;
-				if(inventory.contains(Material.SEEDS))
-				{
-					inventory.removeItem(new ItemStack(Material.SEEDS, 1));
-					player.updateInventory();
+				int seeds = is.getAmount();
+				player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
 					
-					if(block.getType() == Material.DIRT || block.getType() == Material.COBBLESTONE || block.getType() == Material.SMOOTH_BRICK)
+				if(Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM) && m.blockBreakSimulate(block, player, false))
+				{
+					switch(mat)
 					{
-						if(Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM) && m.blockBreakSimulate(block, player, false))
+					case COBBLESTONE:
+						if(LoadProperties.enableCobbleToMossy)
 						{
-							switch(block.getType())
-							{
-							case COBBLESTONE:
-								if(LoadProperties.enableCobbleToMossy) {
-									block.setType(Material.MOSSY_COBBLESTONE);
-									pass = true;
-								}
-								break;
-							case DIRT:
-								if(LoadProperties.enableDirtToGrass) {
-									pass = true;
-									block.setType(Material.GRASS);
-								}
-								break;
-							case SMOOTH_BRICK:
-								if(LoadProperties.enableSmoothToMossy) {
-									pass = true;
-									block.setData((byte)1);
-								}
-								break;
-							}
-							if(pass == false)
-								player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumbFail"));
+							block.setType(Material.MOSSY_COBBLESTONE);
+							pass = true;
 						}
+						break;
+					case DIRT:
+						if(LoadProperties.enableDirtToGrass)
+						{
+							block.setType(Material.GRASS);
+							pass = true;
+						}
+						break;
+					case SMOOTH_BRICK:
+						if(LoadProperties.enableSmoothToMossy)
+						{
+							pass = true;
+							block.setData((byte)1);
+						}
+						break;
 					}
+					
+					if(pass == false)
+						player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumbFail"));
 				}
 				return;
 			}
 		}
+		
 		if(LoadProperties.enableAbilities && action == Action.RIGHT_CLICK_AIR)
 		{
 			Skills.hoeReadinessCheck(player);
@@ -302,15 +283,12 @@ public class mcPlayerListener implements Listener
 		 */
 		if(action == Action.RIGHT_CLICK_AIR)
 			Item.itemchecks(player, plugin);
-		if(action == Action.RIGHT_CLICK_BLOCK)
-		{
-			if(m.abilityBlockCheck(event.getClickedBlock()))
-				Item.itemchecks(player, plugin);
-		}
+		if(action == Action.RIGHT_CLICK_BLOCK && m.abilityBlockCheck(block))
+			Item.itemchecks(player, plugin);
 		
 		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK))
 		{
-			if(player.getItemInHand().getType() == Material.BONE && player.getItemInHand().getAmount() >= LoadProperties.bonesConsumedByCOTW)
+			if(mat.equals(Material.BONE) && is.getAmount() >= LoadProperties.bonesConsumedByCOTW)
 			{
 				for(Entity x : player.getNearbyEntities(40, 40, 40))
 				{
@@ -320,10 +298,11 @@ public class mcPlayerListener implements Listener
 						return;
 					}
 				}
+				
 				World world = player.getWorld();
 				world.spawnCreature(player.getLocation(), EntityType.WOLF);
 				
-				int bones = player.getItemInHand().getAmount();
+				int bones = is.getAmount();
 				bones = bones - LoadProperties.bonesConsumedByCOTW;
 				player.setItemInHand(new ItemStack(Material.BONE, bones));
     	    	player.sendMessage(mcLocale.getString("m.TamingSummon"));
