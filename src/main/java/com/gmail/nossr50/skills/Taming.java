@@ -22,6 +22,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.Combat;
@@ -35,12 +36,13 @@ public class Taming
 {
     public static void rewardXp(EntityDamageEvent event, mcMMO pluginx, Player master)
     {
-        if(!pluginx.misc.mobSpawnerList.contains(event.getEntity().getEntityId()))
+    	Entity entity = event.getEntity();
+        if(!pluginx.misc.mobSpawnerList.contains(entity.getEntityId()))
         {
-            int xp = Combat.getXp(event.getEntity(), event);
+            int xp = Combat.getXp(entity, event);
             Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
             
-            if(event.getEntity() instanceof Player)
+            if(entity instanceof Player)
             {
                 xp = (event.getDamage() * 2);
                 Users.getProfile(master).addXP(SkillType.TAMING, (int)((xp*10)*1.5), master);
@@ -51,16 +53,19 @@ public class Taming
     
     public static void fastFoodService(PlayerProfile PPo, Wolf theWolf, EntityDamageEvent event)
     {
+    	int health = theWolf.getHealth();
+    	int maxHealth = theWolf.getMaxHealth();
+    	int damage = event.getDamage();
         if(PPo.getSkillLevel(SkillType.TAMING) >= 50)
         {
-            if(theWolf.getHealth() < theWolf.getMaxHealth())
+            if(health < maxHealth)
             {
                 if(Math.random() * 10 > 5)
                 {
-                    if(theWolf.getHealth() + event.getDamage() <= theWolf.getMaxHealth())
-                        theWolf.setHealth(theWolf.getHealth()+event.getDamage());
+                    if(health + damage <= maxHealth)
+                        theWolf.setHealth(health + damage);
                     else
-                        theWolf.setHealth(theWolf.getMaxHealth());
+                        theWolf.setHealth(maxHealth);
                 }
             }
         }
@@ -78,16 +83,17 @@ public class Taming
     {
         if(Math.random() * 1000 <= PPo.getSkillLevel(SkillType.TAMING))
         {
+        	Entity entity = event.getEntity();
             event.setDamage(event.getDamage() * 2);
             
-            if(event.getEntity() instanceof Player)
+            if(entity instanceof Player)
             {
-                Player target = (Player)event.getEntity();
+                Player target = (Player)entity;
                 target.sendMessage(mcLocale.getString("Combat.StruckByGore")); //$NON-NLS-1$
                 Users.getProfile(target).setBleedTicks(2);
             }
             else
-                pluginx.misc.addToBleedQue((LivingEntity) event.getEntity());
+                pluginx.misc.addToBleedQue((LivingEntity)entity);
             
             master.sendMessage(mcLocale.getString("Combat.Gore")); //$NON-NLS-1$
         }
@@ -131,15 +137,36 @@ public class Taming
 		Player owner = null;
 		
 		if (theWolf.getOwner() instanceof Player)
-		{
 			owner = (Player)theWolf.getOwner();
-		}
-		
 		if(owner != null)
-		{
 			return owner.getName();
-		}
 		else
 			return "Offline Master";
+	}
+	
+	public static void preventDamage(EntityDamageEvent event, mcMMO plugin)
+	{
+		DamageCause cause = event.getCause();
+		Entity entity = event.getEntity();
+		Wolf theWolf = (Wolf)entity;
+		Player master = getOwner(theWolf, plugin);
+		int skillLevel = Users.getProfile(master).getSkillLevel(SkillType.TAMING);
+		
+		//Environmentally Aware
+		if((cause == DamageCause.CONTACT || cause == DamageCause.LAVA || cause == DamageCause.FIRE) && skillLevel >= 100)
+		{
+			if(event.getDamage() < theWolf.getHealth())
+			{
+				entity.teleport(Taming.getOwner(theWolf, plugin).getLocation());
+				master.sendMessage(mcLocale.getString("mcEntityListener.WolfComesBack")); //$NON-NLS-1$
+				entity.setFireTicks(0);
+			}
+		}
+		if(cause == DamageCause.FALL && skillLevel >= 100)
+			event.setCancelled(true);
+		
+		//Thick Fur
+		if(cause == DamageCause.FIRE_TICK)
+			event.getEntity().setFireTicks(0);
 	}
 }

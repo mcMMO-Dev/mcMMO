@@ -43,7 +43,6 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.BlastMining;
@@ -93,33 +92,8 @@ public class mcEntityListener implements Listener
 		    	if(entityliving.getNoDamageTicks() < entityliving.getMaximumNoDamageTicks()/2.0F)
 		    	{
 			    	if(entity instanceof Wolf && ((Wolf)entity).isTamed() && Taming.getOwner(((Wolf)entity), plugin) != null)
-			    	{
-			    		Wolf theWolf = (Wolf) event.getEntity();
-				    	Player master = Taming.getOwner(theWolf, plugin);
-				    	PlayerProfile PPo = Users.getProfile(master);
-				    	int skillLevel = PPo.getSkillLevel(SkillType.TAMING);
-				    	
-				    	if(master == null || PPo == null)
-				    		return;
-			    		//Environmentally Aware
-						if((cause == DamageCause.CONTACT || cause == DamageCause.LAVA || cause == DamageCause.FIRE) && skillLevel >= 100)
-						{
-							if(event.getDamage() < theWolf.getHealth())
-							{
-								entity.teleport(Taming.getOwner(theWolf, plugin).getLocation());
-								master.sendMessage(mcLocale.getString("mcEntityListener.WolfComesBack")); //$NON-NLS-1$
-								entity.setFireTicks(0);
-							}
-						}
-						if(cause == DamageCause.FALL && skillLevel >= 100)
-							event.setCancelled(true);
-						
-						//Thick Fur
-						if(cause == DamageCause.FIRE_TICK)
-							event.getEntity().setFireTicks(0);
-			    	}
+			    		Taming.preventDamage(event, plugin);
 			    	
-
 			    	if(entity instanceof Player){
 				    	Player player = (Player)entity;
 				    	/*
