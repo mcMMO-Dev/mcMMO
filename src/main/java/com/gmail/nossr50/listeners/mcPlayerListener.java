@@ -239,14 +239,13 @@ public class mcPlayerListener implements Listener
 			{
 				Repair.repairCheck(player, is, event.getClickedBlock());
 				event.setCancelled(true);
-//				player.updateInventory();
+				player.updateInventory();
 			}
 
 			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
 			{
-				if(block != null && m.isHoe(player.getItemInHand()) && block.getTypeId() != 3 && block.getTypeId() != 2 && block.getTypeId() != 60){
+				if(block != null && m.isHoe(player.getItemInHand()) && block.getTypeId() != 3 && block.getTypeId() != 2 && block.getTypeId() != 60)
 					Skills.hoeReadinessCheck(player);
-				}
 				Skills.abilityActivationCheck(player);
 			}
 
@@ -257,6 +256,7 @@ public class mcPlayerListener implements Listener
 				if(inventory.contains(Material.SEEDS))
 				{
 					inventory.removeItem(new ItemStack(Material.SEEDS, 1));
+					player.updateInventory();
 					
 					if(block.getType() == Material.DIRT || block.getType() == Material.COBBLESTONE || block.getType() == Material.SMOOTH_BRICK)
 					{

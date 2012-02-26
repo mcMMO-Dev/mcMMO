@@ -78,6 +78,7 @@ public class Herbalism
 			if(hasSeeds && block.getType() != Material.WHEAT)
 			{
 				inventory.removeItem(new ItemStack(Material.SEEDS, 1));
+				player.updateInventory();
 				if(LoadProperties.enableSmoothToMossy && block.getType() == Material.SMOOTH_BRICK)
 					block.setData((byte)1);
 				if(LoadProperties.enableDirtToGrass && block.getType() == Material.DIRT)
@@ -167,6 +168,7 @@ public class Herbalism
                 }, 1);
     			
     			inventory.removeItem(new ItemStack(Material.SEEDS, 1));
+    			player.updateInventory();
     		}
     	}
     	
