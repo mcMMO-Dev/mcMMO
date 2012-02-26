@@ -125,7 +125,7 @@ public class mcEntityListener implements Listener
 			        		if(Party.getInstance().inSameParty(defender, attacker))
 			        			event.setCancelled(true);
 			    		}
-			    		Combat.combatChecks(event, plugin);	
+			    		Combat.combatChecks(eventb, plugin);	
 			        }
 			    	/*
 			    	 * Check to see if the defender took damage so we can apply recently hurt
