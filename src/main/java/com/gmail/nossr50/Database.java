@@ -50,6 +50,11 @@ public class Database {
 	        System.out.println("VendorError: " + ex.getErrorCode());
 	    }
 	}
+	
+	public boolean isConnected()
+	{
+	    return isConnected;
+	}
 
 	public Database(mcMMO instance) {
 	    connect(); //Connect to MySQL
