@@ -38,17 +38,17 @@ public enum ToolType
 		switch(this)
 		{
 		case AXE:
-			 PP.getAxePreparationMode();
+			return PP.getAxePreparationMode();
 		case FISTS:
-			 PP.getFistsPreparationMode();
+			return PP.getFistsPreparationMode();
 		case HOE:
-			 PP.getHoePreparationMode();
+			return PP.getHoePreparationMode();
 		case PICKAXE:
-			 PP.getPickaxePreparationMode();
+			return PP.getPickaxePreparationMode();
 		case SHOVEL:
-			 PP.getShovelPreparationMode();
+			return PP.getShovelPreparationMode();
 		case SWORD:
-			PP.getSwordsPreparationMode();
+			return PP.getSwordsPreparationMode();
 		}
 		return false;
 	}
