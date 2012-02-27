@@ -16,7 +16,6 @@
 */
 package com.gmail.nossr50.skills;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
@@ -32,12 +31,11 @@ public class Unarmed {
 	public static void berserkActivationCheck(Player player)
 	{
     	PlayerProfile PP = Users.getProfile(player);
-		if(player.getItemInHand().getTypeId() == 0)
+    	AbilityType ability = AbilityType.BERSERK;
+		if(player.getItemInHand() == null)
 		{
 			if(PP.getFistsPreparationMode())
-			{
     			PP.setFistsPreparationMode(false);
-    		}
 			
 	    	int ticks = 2;
 	    	int x = PP.getSkillLevel(SkillType.UNARMED);
@@ -48,16 +46,16 @@ public class Unarmed {
     			ticks++;
     		}
     		
-	    	if(!PP.getBerserkMode() && Skills.cooldownOver(player, PP.getSkillDATS(AbilityType.BERSERK), LoadProperties.berserkCooldown))
+	    	if(!PP.getBerserkMode() && Skills.cooldownOver(player, PP.getSkillDATS(ability), LoadProperties.berserkCooldown))
 	    	{
+	    		
 	    		player.sendMessage(mcLocale.getString("Skills.BerserkOn"));
 	    		for(Player y : player.getWorld().getPlayers())
 	    		{
 	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
 	    				y.sendMessage(mcLocale.getString("Skills.BerserkPlayer", new Object[] {player.getName()}));
 	    		}
-	    		PP.setSkillDATS(AbilityType.BERSERK, System.currentTimeMillis()+(ticks*1000));
-	    		System.out.println("getSkillDATS(): "+PP.getSkillDATS(AbilityType.BERSERK));
+	    		PP.setSkillDATS(ability, System.currentTimeMillis()+(ticks*1000));
 	    		PP.setBerserkMode(true);
 	    	}
 	    }
@@ -65,56 +63,48 @@ public class Unarmed {
 	
 	public static void unarmedBonus(Player attacker, EntityDamageByEntityEvent event)
 	{
-		PlayerProfile PPa = Users.getProfile(attacker);
 		int bonus = 3;
 		
 		//Add 1 DMG for every 50 skill levels
-		bonus += PPa.getSkillLevel(SkillType.UNARMED)/50;
+		bonus += Users.getProfile(attacker).getSkillLevel(SkillType.UNARMED)/50;
 		
 		if(bonus > 8)
 		    bonus = 8;
         
-		event.setDamage(event.getDamage()+bonus);
+		event.setDamage(event.getDamage() + bonus);
 	}
 	
 	public static void disarmProcCheck(Player attacker, Player defender)
 	{
-		PlayerProfile PP = Users.getProfile(attacker);
-		if(attacker.getItemInHand().getTypeId() == 0)
+		int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.UNARMED);
+		if(attacker.getItemInHand() == null)
 		{
-			if(PP.getSkillLevel(SkillType.UNARMED) >= 1000)
+			if(skillLevel >= 1000)
 			{
-	    		if(Math.random() * 4000 <= 1000)
-	    		{
-	    			Location loc = defender.getLocation();
-	    			if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0)
+				if(Math.random() * 4000 <= 1000)
+				{
+	    			ItemStack item = defender.getItemInHand();
+	    			if(item != null)
 	    			{
 	    				defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
-	    				ItemStack item = defender.getItemInHand();
-		    			if(item != null)
-		    			{
-		    				m.mcDropItem(loc, item);
-		    				ItemStack itemx = null;
-		    				defender.setItemInHand(itemx);
-		    			}
+		    			m.mcDropItem(defender.getLocation(), item);
+		    			defender.setItemInHand(null);
 	    			}
-	    		}
-	    	} else {
-	    		if(Math.random() * 4000 <= PP.getSkillLevel(SkillType.UNARMED)){
-	    			Location loc = defender.getLocation();
-	    			if(defender.getItemInHand() != null && defender.getItemInHand().getTypeId() != 0)
+				}
+	    	} 
+			else
+    		{
+				if(Math.random() * 4000 <= skillLevel)
+				{
+	    			ItemStack item = defender.getItemInHand();
+	    			if(item != null)
 	    			{
 	    				defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
-	    				ItemStack item = defender.getItemInHand();
-		    			if(item != null)
-		    			{
-		    				m.mcDropItem(loc, item);
-		    				ItemStack itemx = null;
-		    				defender.setItemInHand(itemx);
-	    				}
+		    			m.mcDropItem(defender.getLocation(), item);
+		    			defender.setItemInHand(null);
 	    			}
-	    		}
-	    	}
+				}
+    		}
 		}
 	}
 }
