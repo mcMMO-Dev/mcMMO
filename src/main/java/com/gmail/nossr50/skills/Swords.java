@@ -237,9 +237,7 @@ public class Swords
     	//Bleed monsters/animals
         for(LivingEntity x : plugin.misc.bleedTracker)
         {
-        	if(x == null){continue;}
-        	
-        	if(x.getHealth() <= 0)
+        	if(x.isDead())
         	{
         		plugin.misc.addToBleedRemovalQue(x);
         		continue;
