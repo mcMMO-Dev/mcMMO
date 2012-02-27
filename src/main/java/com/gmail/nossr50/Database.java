@@ -29,11 +29,31 @@ import com.gmail.nossr50.config.LoadProperties;
 public class Database {
 
 	private mcMMO plugin;
-	private String connectionString;
+	private String connectionString = "jdbc:mysql://" + LoadProperties.MySQLserverName + ":" + LoadProperties.MySQLport + "/" + LoadProperties.MySQLdbName + "?user=" + LoadProperties.MySQLuserName + "&password=" + LoadProperties.MySQLdbPass;
+	private boolean isConnected = false;
+	private Connection conn = null;
+	
+	public void connect()
+	{
+	    try 
+	    {
+	        System.out.println("[mcMMO] Attempting connection to MySQL...");
+	        conn = DriverManager.getConnection(connectionString);
+	        isConnected = true;
+	        System.out.println("[mcMMO] Connection to MySQL established!");
+	    } catch (SQLException ex) 
+	    {
+	        isConnected = false;
+	        ex.printStackTrace();
+	        System.out.println("SQLException: " + ex.getMessage());
+	        System.out.println("SQLState: " + ex.getSQLState());
+	        System.out.println("VendorError: " + ex.getErrorCode());
+	    }
+	}
 
 	public Database(mcMMO instance) {
+	    connect(); //Connect to MySQL
 		this.plugin = instance;
-		this.connectionString = "jdbc:mysql://" + LoadProperties.MySQLserverName + ":" + LoadProperties.MySQLport + "/" + LoadProperties.MySQLdbName + "?user=" + LoadProperties.MySQLuserName + "&password=" + LoadProperties.MySQLdbPass;
 		// Load the driver instance
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -118,7 +138,6 @@ public class Database {
 		ResultSet rs = null;
 		HashMap<Integer, ArrayList<String>> Rows = new HashMap<Integer, ArrayList<String>>();
 		try {
-			Connection conn = DriverManager.getConnection(connectionString);
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			if (stmt.executeQuery() != null) {
 				stmt.executeQuery();
@@ -131,7 +150,6 @@ public class Database {
 					Rows.put(rs.getRow(), Col);
 				}
 			}
-			conn.close();
 		} catch (SQLException ex) {
 			System.out.println("Updating mcMMO MySQL tables...");
 			Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
@@ -141,18 +159,30 @@ public class Database {
 	
 	// write query
 	public boolean Write(String sql) {
-		try {
-			Connection conn = DriverManager.getConnection(connectionString);
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.executeUpdate();
-			conn.close();
-			return true;
-		} catch (SQLException ex) {
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-			return false;
-		}
+	    if(conn != null)
+	    {
+    		try {
+    			PreparedStatement stmt = conn.prepareStatement(sql);
+    			stmt.executeUpdate();
+    			return true;
+    		} catch (SQLException ex) {
+    			System.out.println("SQLException: " + ex.getMessage());
+    			System.out.println("SQLState: " + ex.getSQLState());
+    			System.out.println("VendorError: " + ex.getErrorCode());
+    			return false;
+    		}
+	    } else
+	    {
+	        isConnected = false;
+	        connect(); //Attempt to reconnect
+	        if(isConnected = true)
+	        {
+	            Write(sql); //Try the same operation again now that we are connected
+	        } else {
+	            System.out.println("[mcMMO] Unable to connect to MySQL! Make sure the SQL server is online!");
+	        }
+	    }
+	    return false;
 	}
 
 	// Get Int
@@ -160,26 +190,35 @@ public class Database {
 	public Integer GetInt(String sql) {
 		ResultSet rs = null;
 		Integer result = 0;
-		try {
-			Connection conn = DriverManager.getConnection(connectionString);
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt = conn.prepareStatement(sql);
-			if (stmt.executeQuery() != null) {
-				stmt.executeQuery();
-				rs = stmt.getResultSet();
-				if (rs.next()) {
-					result = rs.getInt(1);
-				} else {
-					result = 0;
-				}
-			}
-			conn.close();
-		} catch (SQLException ex) {
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
+		if(conn != null)
+		{
+    		try {
+    			PreparedStatement stmt = conn.prepareStatement(sql);
+    			stmt = conn.prepareStatement(sql);
+    			if (stmt.executeQuery() != null) {
+    				stmt.executeQuery();
+    				rs = stmt.getResultSet();
+    				if (rs.next()) {
+    					result = rs.getInt(1);
+    				} else {
+    					result = 0;
+    				}
+    			}
+    		} catch (SQLException ex) {
+    			System.out.println("SQLException: " + ex.getMessage());
+    			System.out.println("SQLState: " + ex.getSQLState());
+    			System.out.println("VendorError: " + ex.getErrorCode());
+    		}
+		} else {
+		    isConnected = false;
+            connect(); //Attempt to reconnect
+            if(isConnected = true)
+            {
+                GetInt(sql); //Try the same operation again now that we are connected
+            } else {
+                System.out.println("[mcMMO] Unable to connect to MySQL! Make sure the SQL server is online!");
+            }
 		}
-
 		return result;
 	}
 
@@ -187,25 +226,35 @@ public class Database {
 	public HashMap<Integer, ArrayList<String>> Read(String sql) {
 		ResultSet rs = null;
 		HashMap<Integer, ArrayList<String>> Rows = new HashMap<Integer, ArrayList<String>>();
-		try {
-			Connection conn = DriverManager.getConnection(connectionString);
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			if (stmt.executeQuery() != null) {
-				stmt.executeQuery();
-				rs = stmt.getResultSet();
-				while (rs.next()) {
-					ArrayList<String> Col = new ArrayList<String>();
-					for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-						Col.add(rs.getString(i));
-					}
-					Rows.put(rs.getRow(), Col);
-				}
-			}
-			conn.close();
-		} catch (SQLException ex) {
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
+		if(conn != null)
+		{
+    		try {
+    			PreparedStatement stmt = conn.prepareStatement(sql);
+    			if (stmt.executeQuery() != null) {
+    				stmt.executeQuery();
+    				rs = stmt.getResultSet();
+    				while (rs.next()) {
+    					ArrayList<String> Col = new ArrayList<String>();
+    					for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+    						Col.add(rs.getString(i));
+    					}
+    					Rows.put(rs.getRow(), Col);
+    				}
+    			}
+    		} catch (SQLException ex) {
+    			System.out.println("SQLException: " + ex.getMessage());
+    			System.out.println("SQLState: " + ex.getSQLState());
+    			System.out.println("VendorError: " + ex.getErrorCode());
+    		}
+		} else {
+		    isConnected = false;
+            connect(); //Attempt to reconnect
+            if(isConnected = true)
+            {
+                Read(sql); //Attempt the same operation again now that we are connected
+            } else {
+                System.out.println("[mcMMO] Unable to connect to MySQL! Make sure the SQL server is online!");
+            }
 		}
 		return Rows;
 	}
