@@ -27,12 +27,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.player.PlayerAnimationEvent;
 
-import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
@@ -41,37 +39,6 @@ import org.getspout.spoutapi.sound.SoundEffect;
 
 public class Excavation
 {
-	public static void gigaDrillBreakerActivationCheck(Player player)
-	{
-		PlayerProfile PP = Users.getProfile(player);
-		if(m.isShovel(player.getItemInHand()))
-		{
-	    	if(PP.getShovelPreparationMode())
-    			PP.setShovelPreparationMode(false);
-	    	
-	    	int ticks = 2;
-	    	int x = PP.getSkillLevel(SkillType.EXCAVATION);
-    		while(x >= 50)
-    		{
-    			x-=50;
-    			ticks++;
-    		}
-    		
-	    	if(!PP.getGigaDrillBreakerMode() && PP.getSkillDATS(AbilityType.GIGA_DRILL_BREAKER) < System.currentTimeMillis())
-	    	{
-	    		player.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerOn"));
-	    		for(Player y : player.getWorld().getPlayers())
-	    		{
-	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(mcLocale.getString("Skills.GigaDrillBreakerPlayer", new Object[] {player.getName()}));
-	    		}
-	    		PP.setSkillDATS(AbilityType.GIGA_DRILL_BREAKER, System.currentTimeMillis()+(ticks*1000));
-	    		PP.setGigaDrillBreakerMode(true);
-	    	}
-	    	
-	    }
-	}
-	
 	public static boolean canBeGigaDrillBroken(Block block)
 	{
 		switch(block.getType()){

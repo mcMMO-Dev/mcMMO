@@ -24,51 +24,15 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.party.Party;
 
 public class Axes {
-	public static void skullSplitterCheck(Player player){
-    	PlayerProfile PP = Users.getProfile(player);
-    	if(m.isAxes(player.getItemInHand()) && mcPermissions.getInstance().axesAbility(player)){
-    		/*
-    		 * CHECK FOR AXE PREP MODE
-    		 */
-    		if(PP.getAxePreparationMode())
-    		{
-    			PP.setAxePreparationMode(false);
-    		}
-    		int ticks = 2;
-    		int x = PP.getSkillLevel(SkillType.AXES);
-    		while(x >= 50){
-    			x-=50;
-    			ticks++;
-    		}
-
-    		if(!PP.getSkullSplitterMode() && Skills.cooldownOver(player, (PP.getSkillDATS(AbilityType.SKULL_SPLIITER)*1000), LoadProperties.skullSplitterCooldown))
-    		{
-    			player.sendMessage(mcLocale.getString("Skills.SkullSplitterOn"));
-    			for(Player y : player.getWorld().getPlayers()){
-	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(mcLocale.getString("Skills.SkullSplitterPlayer", new Object[] {player.getName()}));
-	    		}
-    			PP.setSkillDATS(AbilityType.SKULL_SPLIITER, System.currentTimeMillis()+(ticks*1000));
-    			PP.setSkullSplitterMode(true);
-    		}
-    		if(!PP.getSkullSplitterMode() && !Skills.cooldownOver(player, (PP.getSkillDATS(AbilityType.SKULL_SPLIITER)*1000), LoadProperties.skullSplitterCooldown)){
-    			player.sendMessage(mcLocale.getString("Skills.TooTired")
-    					+ChatColor.YELLOW+" ("+Skills.calculateTimeLeft(player, (PP.getSkillDATS(AbilityType.SKULL_SPLIITER)*1000), LoadProperties.skullSplitterCooldown)+"s)");
-    		}
-    	}
-    }
 	
 	public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)
 	{

@@ -45,6 +45,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
+import com.gmail.nossr50.skills.Archery;
 import com.gmail.nossr50.skills.BlastMining;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
@@ -159,7 +160,7 @@ public class mcEntityListener implements Listener
     	if(plugin.misc.bleedTracker.contains((LivingEntity)x))
     		plugin.misc.addToBleedRemovalQue((LivingEntity)x);
     	
-		Skills.arrowRetrievalCheck(x, plugin);
+		Archery.arrowRetrievalCheck(x, plugin);
 
     	if(x instanceof Player){
     		Player player = (Player)x;

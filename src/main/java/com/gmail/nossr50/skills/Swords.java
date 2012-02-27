@@ -27,45 +27,12 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class Swords 
 {
-	public static void serratedStrikesActivationCheck(Player player){
-    	PlayerProfile PP = Users.getProfile(player);
-		if(m.isSwords(player.getItemInHand()))
-		{
-			if(PP.getSwordsPreparationMode())
-			{
-    			PP.setSwordsPreparationMode(false);
-    		}
-	    	int ticks = 2;
-	    	int x = PP.getSkillLevel(SkillType.SWORDS);
-    		while(x >= 50)
-    		{
-    			x-=50;
-    			ticks++;
-    		}
-    		
-	    	if(!PP.getSerratedStrikesMode() && PP.getSkillDATS(AbilityType.SERRATED_STRIKES) < System.currentTimeMillis())
-	    	{
-	    		player.sendMessage(mcLocale.getString("Skills.SerratedStrikesOn"));
-	    		for(Player y : player.getWorld().getPlayers())
-	    		{
-	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(mcLocale.getString("Skills.SerratedStrikesPlayer", new Object[] {player.getName()}));
-	    		}
-	    		PP.setSkillDATS(AbilityType.SERRATED_STRIKES, System.currentTimeMillis()+(ticks*1000));
-	    		PP.setSerratedStrikesMode(true);
-	    	}
-	    	
-	    }
-	}
-
 	public static void bleedCheck(Player attacker, LivingEntity x, mcMMO pluginx)
 	{
     	PlayerProfile PPa = Users.getProfile(attacker);

@@ -22,7 +22,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -60,7 +59,7 @@ public class Combat
 			PlayerProfile PPa = Users.getProfile(attacker);
 			
 			//If there are any abilities to activate
-			combatAbilityChecks(attacker, PPa, pluginx);
+			combatAbilityChecks(attacker, PPa);
 			
 			//Damage modifiers and proc checks
 			if(m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker))
@@ -179,15 +178,15 @@ public class Combat
 		}
 	}
 	
-	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa, Plugin pluginx)
+	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa)
 	{
 		//Check to see if any abilities need to be activated
-		if(PPa.getAxePreparationMode())
-			Axes.skullSplitterCheck(attacker);
+		if(PPa.getAxePreparationMode() && mcPermissions.getInstance().axesAbility(attacker))
+			Skills.abilityCheck(attacker, SkillType.AXES);
 		if(PPa.getSwordsPreparationMode())
-			Swords.serratedStrikesActivationCheck(attacker);
+			Skills.abilityCheck(attacker, SkillType.SWORDS);
 		if(PPa.getFistsPreparationMode())
-			Unarmed.berserkActivationCheck(attacker);
+			Skills.abilityCheck(attacker, SkillType.UNARMED);
 	}
 	
 	public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx)

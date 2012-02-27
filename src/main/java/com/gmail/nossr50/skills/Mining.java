@@ -30,44 +30,13 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
 
 
 public class Mining 
 {	
-	public static void superBreakerCheck(Player player)
-	{
-		PlayerProfile PP = Users.getProfile(player);
-	    if(m.isMiningPick(player.getItemInHand()))
-	    {
-	    	if(PP.getPickaxePreparationMode())
-    			PP.setPickaxePreparationMode(false);
-	    	
-	    	int ticks = 2;
-	    	int x = PP.getSkillLevel(SkillType.MINING);
-	    	
-    		while(x >= 50)
-    		{
-    			x-=50;
-    			ticks++;
-    		}
-    		
-	    	if(!PP.getSuperBreakerMode() && Skills.cooldownOver(player, PP.getSkillDATS(AbilityType.SUPER_BREAKER), LoadProperties.superBreakerCooldown)){
-	    		player.sendMessage(mcLocale.getString("Skills.SuperBreakerOn"));
-	    		for(Player y : player.getWorld().getPlayers())
-	    		{
-	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(mcLocale.getString("Skills.SuperBreakerPlayer", new Object[] {player.getName()}));
-	    		}
-	    		PP.setSkillDATS(AbilityType.SUPER_BREAKER, System.currentTimeMillis()+(ticks*1000));
-	    		PP.setSuperBreakerMode(true);
-	    	}
-	    	
-	    }
-	}
+
 	public static void blockProcSimulate(Block block, Player player)
 	{
     	Location loc = block.getLocation();

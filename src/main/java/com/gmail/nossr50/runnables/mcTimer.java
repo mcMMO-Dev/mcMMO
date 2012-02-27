@@ -21,6 +21,7 @@ import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Swords;
@@ -51,12 +52,24 @@ public class mcTimer implements Runnable
 			/*
 			 * MONITOR SKILLS
 			 */
-			Skills.monitorSkills(player, PP, curTime);
+			Skills.monitorSkill(player, PP, curTime, SkillType.AXES);
+			Skills.monitorSkill(player, PP, curTime, SkillType.EXCAVATION);
+			Skills.monitorSkill(player, PP, curTime, SkillType.HERBALISM);
+			Skills.monitorSkill(player, PP, curTime, SkillType.MINING);
+			Skills.monitorSkill(player, PP, curTime, SkillType.SWORDS);
+			Skills.monitorSkill(player, PP, curTime, SkillType.UNARMED);
+			Skills.monitorSkill(player, PP, curTime, SkillType.WOODCUTTING);
 			
 			/*
 			 * COOLDOWN MONITORING
 			 */
-			Skills.watchCooldowns(player, PP, curTime);
+			Skills.watchCooldown(player, PP, curTime, SkillType.AXES);
+			Skills.watchCooldown(player, PP, curTime, SkillType.EXCAVATION);
+			Skills.watchCooldown(player, PP, curTime, SkillType.HERBALISM);
+			Skills.watchCooldown(player, PP, curTime, SkillType.MINING);
+			Skills.watchCooldown(player, PP, curTime, SkillType.SWORDS);
+			Skills.watchCooldown(player, PP, curTime, SkillType.UNARMED);
+			Skills.watchCooldown(player, PP, curTime, SkillType.WOODCUTTING);
 			
 			/*
 			 * PLAYER BLEED MONITORING

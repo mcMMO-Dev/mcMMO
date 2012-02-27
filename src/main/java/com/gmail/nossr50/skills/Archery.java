@@ -19,7 +19,10 @@ package com.gmail.nossr50.skills;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -96,4 +99,18 @@ public class Archery
 			attacker.sendMessage(mcLocale.getString("Combat.TargetDazed")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
+	
+	public static void arrowRetrievalCheck(Entity entity, mcMMO plugin)
+    {
+    	if(plugin.misc.arrowTracker.containsKey(entity))
+    	{
+    		Integer x = 0;
+    		while(x < plugin.misc.arrowTracker.get(entity))
+    		{
+	    		m.mcDropItem(entity.getLocation(), new ItemStack(262, 1));
+	    		x++;
+    		}
+    	}
+    	plugin.misc.arrowTracker.remove(entity);
+    }
 }

@@ -227,8 +227,14 @@ public class mcPlayerListener implements Listener
 			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
 			{
 				if(block != null && m.isHoe(is) && !mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL))
-					Skills.hoeReadinessCheck(player);
-				Skills.abilityActivationCheck(player);
+					Skills.activationCheck(player, SkillType.HERBALISM);
+				
+				Skills.activationCheck(player, SkillType.AXES);
+				Skills.activationCheck(player, SkillType.EXCAVATION);
+				Skills.activationCheck(player, SkillType.MINING);
+				Skills.activationCheck(player, SkillType.SWORDS);
+				Skills.activationCheck(player, SkillType.UNARMED);
+				Skills.activationCheck(player, SkillType.WOODCUTTING);
 			}
 
 			//GREEN THUMB
@@ -274,8 +280,13 @@ public class mcPlayerListener implements Listener
 		
 		if(LoadProperties.enableAbilities && action == Action.RIGHT_CLICK_AIR)
 		{
-			Skills.hoeReadinessCheck(player);
-			Skills.abilityActivationCheck(player);
+			Skills.activationCheck(player, SkillType.AXES);
+			Skills.activationCheck(player, SkillType.EXCAVATION);
+			Skills.activationCheck(player, SkillType.HERBALISM);
+			Skills.activationCheck(player, SkillType.MINING);
+			Skills.activationCheck(player, SkillType.SWORDS);
+			Skills.activationCheck(player, SkillType.UNARMED);
+			Skills.activationCheck(player, SkillType.WOODCUTTING);
 		}
 		
 		/*

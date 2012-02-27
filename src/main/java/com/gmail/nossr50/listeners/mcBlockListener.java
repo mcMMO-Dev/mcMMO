@@ -147,7 +147,7 @@ public class mcBlockListener implements Listener
     	
     	//Green Terra
    		if(PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && ((id == 59 && block.getData() == (byte) 0x07) || Herbalism.canBeGreenTerra(block)))
-   			Herbalism.greenTerraCheck(player);
+   			Skills.abilityCheck(player, SkillType.HERBALISM);
    		
    		//Wheat && Triple drops
    		if(PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block))
@@ -224,16 +224,17 @@ public class mcBlockListener implements Listener
     	if(m.abilityBlockCheck(block))
     	{
 	   		if(PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block))
-	    		Herbalism.greenTerraCheck(player);
+	   			Skills.abilityCheck(player, SkillType.HERBALISM);
 	    	if(PP.getAxePreparationMode() && id == 17 && mcPermissions.getInstance().woodCuttingAbility(player))
-	    		WoodCutting.treeFellerCheck(player);
+	    		Skills.abilityCheck(player, SkillType.WOODCUTTING);
 	    	if(PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block))
-	    		Mining.superBreakerCheck(player);
+	    		Skills.abilityCheck(player, SkillType.MINING);
 	    	if(PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block))
-	    		Excavation.gigaDrillBreakerActivationCheck(player);
+	    		Skills.abilityCheck(player, SkillType.EXCAVATION);
     	}
+    	
     	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || id == 78))
-    		Unarmed.berserkActivationCheck(player);
+    		Skills.abilityCheck(player, SkillType.UNARMED);
     	
     	/*
     	 * TREE FELLER STUFF
@@ -323,7 +324,7 @@ public class mcBlockListener implements Listener
     	 * LEAF BLOWER CHECKS
     	 */
     	if(id == 18 
-    		&& mcPermissions.getInstance().woodcutting(player) 
+    		&& mcPermissions.getInstance().woodCuttingAbility(player) 
     		&& PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 
     		&& m.blockBreakSimulate(block, player, true))
     	{	

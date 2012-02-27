@@ -30,45 +30,12 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
 
 
 public class Herbalism 
-{
-	
-	public static void greenTerraCheck(Player player)
-	{
-		PlayerProfile PP = Users.getProfile(player);
-	    if(m.isHoe(player.getItemInHand()))
-	    {
-	    	if(PP.getHoePreparationMode())
-				PP.setHoePreparationMode(false);
-	    	int ticks = 2;
-	    	int x = PP.getSkillLevel(SkillType.HERBALISM);
-			while(x >= 50)
-			{
-				x-=50;
-				ticks++;
-			}
-			
-	    	if(!PP.getGreenTerraMode() && Skills.cooldownOver(player, PP.getSkillDATS(AbilityType.GREEN_TERRA), LoadProperties.greenTerraCooldown))
-	    	{
-	    		player.sendMessage(mcLocale.getString("Skills.GreenTerraOn"));
-	    		for(Player y : player.getWorld().getPlayers())
-	    		{
-	    			if(y != null && y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
-	    				y.sendMessage(mcLocale.getString("Skills.GreenTerraPlayer", new Object[] {player.getName()}));
-	    		}
-	    		PP.setSkillDATS(AbilityType.GREEN_TERRA, System.currentTimeMillis()+(ticks*1000));
-	    		PP.setGreenTerraMode(true);
-	    	}
-	    	
-	    }
-	}
-	
+{	
 	public static void greenTerra(Player player, Block block){
 		PlayerInventory inventory = player.getInventory();
 		boolean hasSeeds = inventory.contains(Material.SEEDS);
