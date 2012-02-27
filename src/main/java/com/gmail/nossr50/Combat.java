@@ -101,7 +101,7 @@ public class Combat
 					if(PPa.getFistsPreparationMode())
 						Unarmed.berserkActivationCheck(attacker, PPa);
 					
-					damage += Unarmed.unarmedBonus(PPa);
+					damage += Unarmed.unarmedBonus(PPa.getSkillLevel(SkillType.UNARMED));
 					
 					if(PPa.getBerserkMode())
 						damage *= 1.5;

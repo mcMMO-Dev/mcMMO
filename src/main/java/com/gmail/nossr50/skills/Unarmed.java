@@ -54,12 +54,12 @@ public class Unarmed
 		}
 	}
 	
-	public static int unarmedBonus(PlayerProfile PPa)
+	public static int unarmedBonus(int skillLevel)
 	{
 		int bonus = 3;
 		
 		//Add 1 DMG for every 50 skill levels
-		bonus += PPa.getSkillLevel(SkillType.UNARMED)/50;
+		bonus += skillLevel / 50;
 		
 		if(bonus > 8)
 			bonus = 8;
