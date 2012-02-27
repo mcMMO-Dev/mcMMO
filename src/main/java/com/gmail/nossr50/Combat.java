@@ -22,7 +22,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -65,21 +64,63 @@ public class Combat
 			//Damage modifiers and proc checks
 			if(m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker))
 			{
-				if(!pluginx.misc.bleedTracker.contains(target)) //Bleed
-					Swords.bleedCheck(attacker, target, pluginx);
+				Player attacker = (Player) eEvent.getDamager();
+				ItemStack itemInHand = attacker.getItemInHand();
+				PlayerProfile PPa = Users.getProfile(attacker);
+				
+				//Damage modifiers and proc checks
+				if(m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker))
+				{
+					if(PPa.getSwordsPreparationMode())
+						Swords.serratedStrikesActivationCheck(attacker, PPa);
 					
-				if (!(event instanceof FakeEntityDamageByEntityEvent) && PPa.getSerratedStrikesMode())
-					Swords.applySerratedStrikes(attacker, event, pluginx);
+					if(!pluginx.misc.bleedTracker.contains(target)) //Bleed
+						Swords.bleedCheck(attacker, PPa.getSkillLevel(SkillType.SWORDS), target, pluginx);
 					
-				if(target instanceof Player)
-					PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.SWORDS);
-				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
-					PvEExperienceGain(attacker, PPa, target, damage, SkillType.SWORDS); 
-			}
-			else if(m.isAxes(itemInHand) && mcPermissions.getInstance().axes(attacker))
-			{
-				if(Users.getProfile(attacker).getSkillLevel(SkillType.AXES) >= 500)
-					event.setDamage(damage + 4);
+					if (!(event instanceof FakeEntityDamageByEntityEvent) && PPa.getSerratedStrikesMode())
+						Swords.applySerratedStrikes(attacker, target, damage, pluginx);
+					
+					if(target instanceof Player)
+						PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.SWORDS);
+					else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+						PvEExperienceGain(attacker, PPa, target, damage, SkillType.SWORDS); 
+				}
+				else if(m.isAxes(itemInHand) && mcPermissions.getInstance().axes(attacker))
+				{
+					if(PPa.getAxePreparationMode())
+						Axes.skullSplitterActivationCheck(attacker, PPa);
+					
+					if(PPa.getSkillLevel(SkillType.AXES) >= 500)
+						damage += 4;
+					
+					damage = Axes.axeCriticalCheck(attacker, PPa.getSkillLevel(SkillType.AXES), target, damage, pluginx); //Critical hit
+					
+					if (!(event instanceof FakeEntityDamageByEntityEvent) && PPa.getSkullSplitterMode())
+						Axes.applyAoeDamage(attacker, target, damage, pluginx);
+					
+					if(target instanceof Player)
+						PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.AXES);
+					else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+						PvEExperienceGain(attacker, PPa, target, damage, SkillType.AXES);
+				}
+				else if(itemInHand.getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker)) //Unarmed
+				{
+					if(PPa.getFistsPreparationMode())
+						Unarmed.berserkActivationCheck(attacker, PPa);
+					
+					damage += Unarmed.unarmedBonus(PPa.getSkillLevel(SkillType.UNARMED));
+					
+					if(PPa.getBerserkMode())
+						damage *= 1.5;
+					
+					if(target instanceof Player)
+						Unarmed.disarmProcCheck(attacker, PPa.getSkillLevel(SkillType.UNARMED), (Player) target); //Disarm
+					
+					if(target instanceof Player)
+						PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.UNARMED);
+					else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+						PvEExperienceGain(attacker, PPa, target, damage, SkillType.UNARMED);
+				}
 				
 				Axes.axeCriticalCheck(attacker, event, pluginx); //Critical hit
 				
@@ -90,6 +131,8 @@ public class Combat
 					PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.AXES);
 				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
 					PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.AXES);
+				
+				eEvent.setDamage(damage);
 			}
 			else if(itemInHand.getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker)) //Unarmed
 			{
@@ -177,17 +220,6 @@ public class Combat
 			if(wolf.isTamed() && Taming.ownerOnline(wolf, pluginx))
 				Taming.preventDamage(event, pluginx);
 		}
-	}
-	
-	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa, Plugin pluginx)
-	{
-		//Check to see if any abilities need to be activated
-		if(PPa.getAxePreparationMode())
-			Axes.skullSplitterCheck(attacker);
-		if(PPa.getSwordsPreparationMode())
-			Swords.serratedStrikesActivationCheck(attacker);
-		if(PPa.getFistsPreparationMode())
-			Unarmed.berserkActivationCheck(attacker);
 	}
 	
 	public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx)

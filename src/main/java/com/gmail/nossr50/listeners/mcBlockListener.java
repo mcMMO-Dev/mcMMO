@@ -233,7 +233,7 @@ public class mcBlockListener implements Listener
 	    		Excavation.gigaDrillBreakerActivationCheck(player);
     	}
     	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || id == 78))
-    		Unarmed.berserkActivationCheck(player);
+    		Unarmed.berserkActivationCheck(player, PP);
     	
     	/*
     	 * TREE FELLER STUFF
