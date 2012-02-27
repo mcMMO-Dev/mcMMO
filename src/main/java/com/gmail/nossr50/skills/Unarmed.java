@@ -16,7 +16,6 @@
 */
 package com.gmail.nossr50.skills;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.m;
@@ -49,7 +48,6 @@ public class Unarmed
 					y.sendMessage(mcLocale.getString("Skills.BerserkPlayer", new Object[] {player.getName()}));
 			}
 			PPa.setSkillDATS(AbilityType.BERSERK, System.currentTimeMillis()+(ticks*1000));
-			//System.out.println("getSkillDATS(): "+PPa.getSkillDATS(AbilityType.BERSERK));
 			PPa.setBerserkMode(true);
 		}
 	}

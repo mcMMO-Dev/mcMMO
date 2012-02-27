@@ -39,23 +39,30 @@ import com.gmail.nossr50.skills.Unarmed;
 
 public class Combat 
 {
-	public static void combatChecks(EntityDamageEvent event, mcMMO pluginx)
+	public static void combatChecks(EntityDamageByEntityEvent event, mcMMO pluginx)
 	{
 		if(event.isCancelled() || event.getDamage() == 0 || event.getEntity().isDead())
 			return;
 		
-		if(event instanceof EntityDamageByEntityEvent)
-		{	
-			//Declare Things
-			EntityDamageByEntityEvent eEvent = (EntityDamageByEntityEvent) event;
-			Entity damager = eEvent.getDamager();
-			LivingEntity target = (LivingEntity) eEvent.getEntity();
-			int damage = eEvent.getDamage();
+		//Declare Things
+		Entity damager = event.getDamager();
+		LivingEntity target = (LivingEntity) event.getEntity();
+		int damage = event.getDamage();
+
+		/*
+		 * PLAYER VERSUS ENTITIES
+		 */
+		if(damager instanceof Player)
+		{
+			Player attacker = (Player) event.getDamager();
+			ItemStack itemInHand = attacker.getItemInHand();
+			PlayerProfile PPa = Users.getProfile(attacker);
 			
-			/*
-			 * PLAYER VERSUS ENTITIES
-			 */
-			if(damager instanceof Player)
+			//If there are any abilities to activate
+			combatAbilityChecks(attacker, PPa, pluginx);
+			
+			//Damage modifiers and proc checks
+			if(m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker))
 			{
 				Player attacker = (Player) eEvent.getDamager();
 				ItemStack itemInHand = attacker.getItemInHand();
@@ -115,80 +122,103 @@ public class Combat
 						PvEExperienceGain(attacker, PPa, target, damage, SkillType.UNARMED);
 				}
 				
-				//Player use bone on wolf.
-				else if(target instanceof Wolf)
-				{
-					Wolf wolf = (Wolf) target;
+				Axes.axeCriticalCheck(attacker, event, pluginx); //Critical hit
 				
-					if(itemInHand.getTypeId() == 352 && mcPermissions.getInstance().taming(attacker))
-					{
-						event.setCancelled(true);
-						if(wolf.isTamed())
-							attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
-									mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(wolf)})+" "+
-									mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {wolf.getHealth()}));
-						else
-							attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
-									mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {wolf.getHealth()}));
-					}
-				}
+				if (!(event instanceof FakeEntityDamageByEntityEvent) && PPa.getSkullSplitterMode())
+					Axes.applyAoeDamage(attacker, event, pluginx);
+				
+				if(target instanceof Player)
+					PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.AXES);
+				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+					PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.AXES);
 				
 				eEvent.setDamage(damage);
 			}
-			
-			/*
-			 * TAMING (WOLVES VERSUS ENTITIES)
-			 */
-			else if(damager instanceof Wolf)
+			else if(itemInHand.getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker)) //Unarmed
 			{
-				Wolf wolf = (Wolf) damager;
+				Unarmed.unarmedBonus(attacker, event);
+				if(PPa.getBerserkMode())
+					event.setDamage(event.getDamage() + (event.getDamage() / 2));
+				if(target instanceof Player)
+					Unarmed.disarmProcCheck(attacker, (Player) target);	//Disarm
 				
-				if (wolf.isTamed() && Taming.ownerOnline(wolf, pluginx))
-				{
-					Player master = Taming.getOwner(wolf, pluginx);
-					if (master == null) //Can it really happen?
-						return;
-					
-					PlayerProfile PPo = Users.getProfile(master);
-					if(mcPermissions.getInstance().taming(master))
-					{
-						//Fast Food Service
-						Taming.fastFoodService(PPo, wolf, event);
-						
-						//Sharpened Claws
-						Taming.sharpenedClaws(PPo, event);
-						
-						//Gore
-						Taming.gore(PPo, event, master, pluginx);
-						
-						//Reward XP
-						Taming.rewardXp(event, pluginx, master);
-					}
-				}
+				if(target instanceof Player)
+					PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.UNARMED);
+				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+					PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.UNARMED);
 			}
 			
-			//Another offensive check for Archery
-			else if(damager instanceof Arrow)
-				archeryCheck((EntityDamageByEntityEvent)event, pluginx);
-			
-			/*
-			 * DEFENSIVE CHECKS
-			 */
-			if(target instanceof Player)
-			{
-				Swords.counterAttackChecks(eEvent);
-				Acrobatics.dodgeChecks(eEvent);
-			}
-			
-			/*
-			 * DEFENSIVE CHECKS FOR WOLVES
-			 */
+			//Player use bone on wolf.
 			else if(target instanceof Wolf)
 			{
 				Wolf wolf = (Wolf) target;
-				if(wolf.isTamed() && Taming.ownerOnline(wolf, pluginx))
-					Taming.preventDamage(eEvent, pluginx);
+			
+				if(itemInHand.getTypeId() == 352 && mcPermissions.getInstance().taming(attacker))
+				{
+					event.setCancelled(true);
+					if(wolf.isTamed())
+						attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
+							mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(wolf)})+" "+
+							mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {wolf.getHealth()}));
+					else
+						attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
+							mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {wolf.getHealth()}));
+				}
 			}
+		}
+			
+		/*
+		 * TAMING (WOLVES VERSUS ENTITIES)
+		 */
+		else if(damager instanceof Wolf)
+		{
+			Wolf wolf = (Wolf) damager;
+			
+			if (wolf.isTamed() && Taming.ownerOnline(wolf, pluginx))
+			{
+				Player master = Taming.getOwner(wolf, pluginx);
+				if (master == null) //Can it really happen?
+					return;
+				
+				PlayerProfile PPo = Users.getProfile(master);
+				if(mcPermissions.getInstance().taming(master))
+				{
+					//Fast Food Service
+					Taming.fastFoodService(PPo, wolf, event);
+					
+					//Sharpened Claws
+					Taming.sharpenedClaws(PPo, event);
+					
+					//Gore
+					Taming.gore(PPo, event, master, pluginx);
+					
+					//Reward XP
+					Taming.rewardXp(event, pluginx, master);
+				}
+			}
+		}
+		
+		//Another offensive check for Archery
+		else if(damager instanceof Arrow)
+			archeryCheck((EntityDamageByEntityEvent)event, pluginx);
+		
+		/*
+		 * DEFENSIVE CHECKS
+		 */
+		if(target instanceof Player)
+		{
+			Swords.counterAttackChecks(event);
+			Acrobatics.dodgeChecks(event);
+		}
+	
+		/*			 
+		 * DEFENSIVE CHECKS FOR WOLVES
+		 */
+		else if(target instanceof Wolf)
+		{
+			Wolf wolf = (Wolf) target;
+			if(wolf.isTamed() && Taming.ownerOnline(wolf, pluginx))
+				Taming.preventDamage(event, pluginx);
 		}
 	}
 	
@@ -383,38 +413,54 @@ public class Combat
 			else
 				xpinc = damage;
 			
-			if(entity instanceof Animals)
-				xp = (int) (xpinc * LoadProperties.animalXP);
-			else
-			{
-				if(entity instanceof Enderman)
-					xp = (int) (xpinc * LoadProperties.endermanXP);
-				else if(entity instanceof Creeper)
-					xp = (int) (xpinc * LoadProperties.creeperXP);
-				else if(entity instanceof Silverfish)
-					xp = (int) (xpinc * LoadProperties.silverfishXP);
-				else if(entity instanceof CaveSpider)
-					xp = (int) (xpinc * LoadProperties.cavespiderXP);
-				else if(entity instanceof Spider)
-					xp = (int) (xpinc * LoadProperties.spiderXP);
-				else if(entity instanceof Skeleton)
-					xp = (int) (xpinc * LoadProperties.skeletonXP);
-				else if(entity instanceof Zombie)
-					xp = (int) (xpinc * LoadProperties.zombieXP);
-				else if(entity instanceof PigZombie)
-					xp = (int) (xpinc * LoadProperties.pigzombieXP);
-				else if(entity instanceof Slime)
-					xp = (int) (xpinc * LoadProperties.slimeXP);
-				else if(entity instanceof Ghast)
-					xp = (int) (xpinc * LoadProperties.ghastXP);
-				else if(entity instanceof Blaze)
-					xp = (int) (xpinc * LoadProperties.blazeXP);
-				else if(entity instanceof EnderDragon)
-					xp = (int) (xpinc * LoadProperties.enderdragonXP);
-				else if(entity instanceof MagmaCube)
-					xp = (int) (xpinc * LoadProperties.magmacubeXP);
-			}
-		}
-		return xp;
+	    	if(entity instanceof Animals)
+		    	xp = (int) (xpinc * LoadProperties.animalXP);
+	    	else
+	    	{
+	    		EntityType type = entity.getType();
+	    		switch(type){
+	    		case BLAZE:
+	    			xp = (int) (xpinc * LoadProperties.blazeXP);
+	    			break;
+	    		case CAVE_SPIDER:
+	    			xp = (int) (xpinc * LoadProperties.cavespiderXP);
+	    			break;
+	    		case CREEPER:
+	    			xp = (int) (xpinc * LoadProperties.creeperXP);
+	    			break;
+	    		case ENDER_DRAGON:
+	    			xp = (int) (xpinc * LoadProperties.enderdragonXP);
+	    			break;
+	    		case ENDERMAN:
+	    			xp = (int) (xpinc * LoadProperties.endermanXP);
+	    			break;
+	    		case GHAST:
+	    			xp = (int) (xpinc * LoadProperties.ghastXP);
+	    			break;
+	    		case MAGMA_CUBE:
+	    			xp = (int) (xpinc * LoadProperties.magmacubeXP);
+	    			break;
+	    		case PIG_ZOMBIE:
+	    			xp = (int) (xpinc * LoadProperties.pigzombieXP);
+	    			break;
+	    		case SILVERFISH:
+	    			xp = (int) (xpinc * LoadProperties.silverfishXP);
+	    			break;
+	    		case SKELETON:
+	    			xp = (int) (xpinc * LoadProperties.skeletonXP);
+	    			break;
+	    		case SLIME:
+	    			xp = (int) (xpinc * LoadProperties.slimeXP);
+	    			break;
+	    		case SPIDER:
+	    			xp = (int) (xpinc * LoadProperties.spiderXP);
+	    			break;
+	    		case ZOMBIE:
+	    			xp = (int) (xpinc * LoadProperties.zombieXP);
+	    			break;
+	    		}
+	    	}
+    	}
+    	return xp;
 	}
 }
