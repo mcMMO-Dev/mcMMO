@@ -84,18 +84,25 @@ public enum AbilityType
 		{
 		case BERSERK:
 			PP.setBerserkMode(bool);
+			break;
 		case SUPER_BREAKER:
 			PP.setSuperBreakerMode(bool);
+			break;
 		case GIGA_DRILL_BREAKER:
 			PP.setGigaDrillBreakerMode(bool);
+			break;
 		case GREEN_TERRA:
 			PP.setGreenTerraMode(bool);
+			break;
 		case SKULL_SPLIITER:
 			PP.setSkullSplitterMode(bool);
+			break;
 		case TREE_FELLER:
 			PP.setTreeFellerMode(bool);
+			break;
 		case SERRATED_STRIKES:
 			PP.setSerratedStrikesMode(bool);
+			break;
 		}
 	}
 	
@@ -127,18 +134,25 @@ public enum AbilityType
 		{
 		case BERSERK:
 			PP.setBerserkInformed(bool);
+			break;
 		case SUPER_BREAKER:
 			PP.setSuperBreakerInformed(bool);
+			break;
 		case GIGA_DRILL_BREAKER:
 			PP.setGigaDrillBreakerInformed(bool);
+			break;
 		case GREEN_TERRA:
 			PP.setGreenTerraInformed(bool);
+			break;
 		case SKULL_SPLIITER:
 			PP.setSkullSplitterInformed(bool);
+			break;
 		case TREE_FELLER:
 			PP.setTreeFellerInformed(bool);
+			break;
 		case SERRATED_STRIKES:
 			PP.setSerratedStrikesInformed(bool);
+			break;
 		}
 	}
 	

@@ -60,16 +60,22 @@ public enum ToolType
 		{
 		case AXE:
 			 PP.setAxePreparationMode(bool);
+			 break;
 		case FISTS:
 			 PP.setFistsPreparationMode(bool);
+			 break;
 		case HOE:
 			 PP.setHoePreparationMode(bool);
+			 break;
 		case PICKAXE:
 			 PP.setPickaxePreparationMode(bool);
+			 break;
 		case SHOVEL:
 			 PP.setShovelPreparationMode(bool);
+			 break;
 		case SWORD:
 			PP.setSwordsPreparationMode(bool);
+			break;
 		}
 	}
 	
@@ -99,16 +105,22 @@ public enum ToolType
 		{
 		case AXE:
 			PP.setAxePreparationATS(ats);
+			break;
 		case FISTS:
 			PP.setFistsPreparationATS(ats);
+			break;
 		case HOE:
 			PP.setHoePreparationATS(ats);
+			break;
 		case PICKAXE:
 			PP.setPickaxePreparationATS(ats);
+			break;
 		case SHOVEL:
 			PP.setShovelPreparationATS(ats);
+			break;
 		case SWORD:
 			PP.setSwordsPreparationATS(ats);
+			break;
 		}
 	}
 	
@@ -119,7 +131,7 @@ public enum ToolType
 		case AXE:
 			return m.isAxes(is);
 		case FISTS:
-			return is.equals(Material.AIR);
+			return is.getType().equals(Material.AIR);
 		case HOE:
 			return m.isHoe(is);
 		case PICKAXE:
