@@ -1210,4 +1210,8 @@ public class PlayerProfile
     		return null;
     	}
     }
+    public String getPlayerName()
+    {
+        return playerName;
+    }
 }	

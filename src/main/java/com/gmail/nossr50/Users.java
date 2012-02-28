@@ -90,6 +90,21 @@ public class Users {
 	    	players.remove(player);
     	}
     }
+    
+    public static void removeUserByName(String playerName)
+    {
+        Player target = null;
+        for(Player player : players.keySet())
+        {
+            PlayerProfile PP = players.get(player);
+            if(PP.getPlayerName().equals(playerName))
+            {
+                target = player;
+            }
+        }
+        
+        players.remove(target);
+    }
 
     public static PlayerProfile getProfile(Player player){
     	if(players.get(player) != null)

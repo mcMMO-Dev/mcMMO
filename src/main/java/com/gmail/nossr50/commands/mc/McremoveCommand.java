@@ -1,11 +1,14 @@
 package com.gmail.nossr50.commands.mc;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.Users;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
@@ -23,15 +26,11 @@ public class McremoveCommand implements CommandExecutor {
             player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
             return true;
         }
-
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("This command does not support console useage.");
-            return true;
-        }
         
         if(args.length == 0)
         {
             sender.sendMessage("Correct usage is /mcremove [Player Name]");
+            return true;
         }
         
         String playerName = args[0]; //Player that we are going to remove
@@ -39,10 +38,56 @@ public class McremoveCommand implements CommandExecutor {
         //If the server is using MySQL
         if(LoadProperties.useMySQL)
         {
+            int userId = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
             
+            //Remove user from tables
+            mcMMO.database.Write("DELETE FROM "
+                    +LoadProperties.MySQLdbName+"."
+                    +LoadProperties.MySQLtablePrefix+"users WHERE "
+                    +LoadProperties.MySQLtablePrefix+"users.id="+userId);
             
+            mcMMO.database.Write("DELETE FROM "
+                    +LoadProperties.MySQLdbName+"."
+                    +LoadProperties.MySQLtablePrefix+"cooldowns WHERE "
+                    +LoadProperties.MySQLtablePrefix+"cooldowns.user_id="+userId);
+            
+            mcMMO.database.Write("DELETE FROM "
+                    +LoadProperties.MySQLdbName+"."
+                    +LoadProperties.MySQLtablePrefix+"huds WHERE "
+                    +LoadProperties.MySQLtablePrefix+"huds.user_id="+userId);
+            
+            mcMMO.database.Write("DELETE FROM "
+                    +LoadProperties.MySQLdbName+"."
+                    +LoadProperties.MySQLtablePrefix+"spawn WHERE "
+                    +LoadProperties.MySQLtablePrefix+"spawn.user_id="+userId);
+            
+            mcMMO.database.Write("DELETE FROM "
+                    +LoadProperties.MySQLdbName+"."
+                    +LoadProperties.MySQLtablePrefix+"skills WHERE "
+                    +LoadProperties.MySQLtablePrefix+"skills.user_id="+userId);
+            
+            mcMMO.database.Write("DELETE FROM "
+            +LoadProperties.MySQLdbName+"."
+            +LoadProperties.MySQLtablePrefix+"experience WHERE "
+            +LoadProperties.MySQLtablePrefix+"experience.user_id="+userId);
+
+            System.out.println("User "+playerName+" removed from MySQL DB!");
         } else {
             
+        }
+        
+        if(Bukkit.getServer().getPlayer(playerName) != null)
+        {
+            Player targetPlayer = Bukkit.getServer().getPlayer(playerName);
+            if(targetPlayer.isOnline())
+            {
+                targetPlayer.kickPlayer("[mcMMO] Stats have been reset! Rejoin!");
+                Users.removeUserByName(playerName);
+            } else {
+                Users.removeUser(targetPlayer);
+            }
+        } else {
+            Users.removeUserByName(playerName);
         }
         
         return true;
