@@ -73,9 +73,25 @@ public class McremoveCommand implements CommandExecutor {
 
             System.out.println("User "+playerName+" removed from MySQL DB!");
         } else {
-            
+            //FlatFile removal
+            //TODO: Properly remove users from FlatFile, it's going to be a huge bitch with how our FlatFile system works. Let's adopt SQLite support.
+            if(Bukkit.getServer().getPlayer(playerName) != null)
+            {
+                Player targetPlayer = Bukkit.getServer().getPlayer(playerName);
+                if(targetPlayer.isOnline()) 
+                {
+                    Users.getProfile(targetPlayer).resetAllData();
+                } else {
+                    sender.sendMessage("[mcMMO] This command is not fully functional for FlatFile yet, the player needs to be online.");
+                    return true;
+                }
+            } else {
+                sender.sendMessage("[mcMMO] This command is not fully functional for FlatFile yet, the player needs to be online.");
+                return true;
+            }
         }
         
+        //Force PlayerProfile stuff to update
         if(Bukkit.getServer().getPlayer(playerName) != null)
         {
             Player targetPlayer = Bukkit.getServer().getPlayer(playerName);

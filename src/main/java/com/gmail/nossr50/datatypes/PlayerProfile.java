@@ -434,6 +434,31 @@ public class PlayerProfile
 	        }
     	}
 	}
+
+    public void resetAllData()
+    {
+        //This will reset everything to default values and then save the information to FlatFile/MySQL
+        for(SkillType skillType : SkillType.values())
+        {
+            if(skillType == SkillType.ALL)
+                continue;
+            skills.put(skillType, 0);
+            skillsXp.put(skillType, 0);
+        }
+        
+        for(AbilityType abilityType : AbilityType.values())
+        {
+            skillsDATS.put(abilityType, 0);
+        }
+        
+        //Misc stuff
+        myspawn = "";
+        party = "";
+        myspawnworld = "";
+        
+        save();
+    }
+    
     public void addPlayer()
     {
         try {
