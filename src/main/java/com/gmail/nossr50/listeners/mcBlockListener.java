@@ -25,6 +25,7 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -138,9 +139,18 @@ public class mcBlockListener implements Listener
     	int id = block.getTypeId();
     	ItemStack inhand = player.getItemInHand();
     	
-    	if (event instanceof FakeBlockBreakEvent) 
+    	if(event instanceof FakeBlockBreakEvent) 
     		return;
     	
+    	//Reset player spawn back to world spawn if their bed is destroyed.
+    	if(block.getType().equals(Material.BED_BLOCK) && LoadProperties.enableMySpawn && PP.getMySpawn(player) != null)
+    	{
+    		double x = Bukkit.getServer().getWorlds().get(0).getSpawnLocation().getX();
+    		double y = Bukkit.getServer().getWorlds().get(0).getSpawnLocation().getY();
+    		double z = Bukkit.getServer().getWorlds().get(0).getSpawnLocation().getZ();
+    		String worldname = Bukkit.getServer().getWorlds().get(0).getName();
+    		PP.setMySpawn(x, y, z, worldname);
+    	}
     	/*
     	 * HERBALISM
     	 */

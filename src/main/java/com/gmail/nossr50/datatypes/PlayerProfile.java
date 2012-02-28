@@ -1220,7 +1220,7 @@ public class PlayerProfile
     		else
     			return null;
     	} else
-    		return null;
+     		return null;
     	
     	loc.setYaw(0);
     	loc.setPitch(0);
