@@ -16,10 +16,6 @@ import com.gmail.nossr50.party.Party;
 public class AcceptCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!LoadProperties.acceptEnable) {
-			sender.sendMessage("This command is not enabled.");
-			return true;
-		}
 
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("This command does not support console useage.");

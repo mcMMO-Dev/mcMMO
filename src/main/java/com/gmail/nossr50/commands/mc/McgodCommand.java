@@ -15,10 +15,6 @@ import com.gmail.nossr50.locale.mcLocale;
 public class McgodCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!LoadProperties.mcgodEnable) {
-			sender.sendMessage("This command is not enabled.");
-			return true;
-		}
 
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("This command does not support console useage.");

@@ -19,10 +19,6 @@ public class XprateCommand implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!LoadProperties.xprateEnable) {
-			sender.sendMessage("This command is not enabled.");
-			return true;
-		}
 
 		if (!(sender instanceof Player)) {
 			if(args.length <= 0)

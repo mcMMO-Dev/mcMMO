@@ -34,11 +34,6 @@ public class MmoeditCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (!LoadProperties.mmoeditEnable) {
-			sender.sendMessage("This command is not enabled.");
-			return true;
-		}
-
 		if (!(sender instanceof Player)) {
 			if (args.length < 2) {
 				System.out.println("Usage is /mmoedit playername skillname newvalue");

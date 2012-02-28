@@ -33,11 +33,6 @@ public class AddxpCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (!LoadProperties.addxpEnable) {
-			sender.sendMessage("This command is not enabled.");
-			return true;
-		}
-
 		if (!(sender instanceof Player)) {
 			if (args.length < 2) {
 				// No console aliasing yet

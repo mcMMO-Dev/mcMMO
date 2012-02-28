@@ -14,10 +14,6 @@ public class McmmoCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!LoadProperties.mcmmoEnable) {
-			sender.sendMessage("This command is not enabled.");
-			return true;
-		}
 
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("This command does not support console useage.");

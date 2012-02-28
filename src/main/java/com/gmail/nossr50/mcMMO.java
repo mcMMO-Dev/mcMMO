@@ -296,6 +296,7 @@ public class mcMMO extends JavaPlugin
 		getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
 		
 		//Mc* commands
+		if(LoadProperties.mcremoveEnable) getCommand("mcremove").setExecutor(new McremoveCommand());
 		if(LoadProperties.mcabilityEnable) getCommand("mcability").setExecutor(new McabilityCommand());
 		if(LoadProperties.mccEnable) getCommand("mcc").setExecutor(new MccCommand());
 		if(LoadProperties.mcgodEnable) getCommand("mcgod").setExecutor(new McgodCommand());

@@ -26,10 +26,6 @@ public class PCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!LoadProperties.partyEnable) {
-			sender.sendMessage("This command is not enabled.");
-			return true;
-		}
 
 		// Console message?
 		if (!(sender instanceof Player)) {

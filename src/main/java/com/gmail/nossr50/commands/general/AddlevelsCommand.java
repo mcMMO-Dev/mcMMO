@@ -34,11 +34,6 @@ public class AddlevelsCommand implements CommandExecutor{
 			return true;
 		}
 
-		if (!LoadProperties.addlevelsEnable) {
-			sender.sendMessage("This command is not enabled.");
-			return true;
-		}
-
 		if (!(sender instanceof Player)) {
 			if (args.length < 2) {
 				System.out.println("Usage is /addlevels playername skillname levels");

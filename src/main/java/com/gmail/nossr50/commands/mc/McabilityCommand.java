@@ -25,11 +25,6 @@ public class McabilityCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (!LoadProperties.mcabilityEnable) {
-			sender.sendMessage("This command is not enabled.");
-			return true;
-		}
-
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("This command does not support console useage.");
 			return true;
