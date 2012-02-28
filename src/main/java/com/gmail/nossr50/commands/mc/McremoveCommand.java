@@ -58,11 +58,6 @@ public class McremoveCommand implements CommandExecutor {
             
             mcMMO.database.Write("DELETE FROM "
                     +LoadProperties.MySQLdbName+"."
-                    +LoadProperties.MySQLtablePrefix+"spawn WHERE "
-                    +LoadProperties.MySQLtablePrefix+"spawn.user_id="+userId);
-            
-            mcMMO.database.Write("DELETE FROM "
-                    +LoadProperties.MySQLdbName+"."
                     +LoadProperties.MySQLtablePrefix+"skills WHERE "
                     +LoadProperties.MySQLtablePrefix+"skills.user_id="+userId);
             

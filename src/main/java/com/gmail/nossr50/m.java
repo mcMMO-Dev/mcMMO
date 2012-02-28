@@ -486,8 +486,6 @@ public class m
 									+ LoadProperties.MySQLtablePrefix
 									+ "users SET lastlogin = " + 0
 									+ " WHERE id = " + id);
-							//if(getDouble(x) > 0 && getDouble(y) > 0 && getDouble(z) > 0)
-							//mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + myspawnworld + "', x = " +getDouble(x)+", y = "+getDouble(y)+", z = "+getDouble(z)+" WHERE user_id = "+id);
 							mcMMO.database.Write("UPDATE "
 									+ LoadProperties.MySQLtablePrefix
 									+ "skills SET " + "  taming = taming+"
@@ -539,9 +537,6 @@ public class m
 											+ playerName + "'");
 							mcMMO.database.Write("INSERT INTO "
 									+ LoadProperties.MySQLtablePrefix
-									+ "spawn (user_id) VALUES (" + id + ")");
-							mcMMO.database.Write("INSERT INTO "
-									+ LoadProperties.MySQLtablePrefix
 									+ "skills (user_id) VALUES (" + id + ")");
 							mcMMO.database.Write("INSERT INTO "
 									+ LoadProperties.MySQLtablePrefix
@@ -556,10 +551,6 @@ public class m
 									+ LoadProperties.MySQLtablePrefix
 									+ "users SET party = '" + party
 									+ "' WHERE id = " + id);
-							/*
-							if(getDouble(x) > 0 && getDouble(y) > 0 && getDouble(z) > 0)
-								mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + myspawnworld + "', x = " +getDouble(x)+", y = "+getDouble(y)+", z = "+getDouble(z)+" WHERE user_id = "+id);
-							 */
 							mcMMO.database.Write("UPDATE "
 									+ LoadProperties.MySQLtablePrefix
 									+ "skills SET " + "  taming = "

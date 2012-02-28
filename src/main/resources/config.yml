@@ -9,8 +9,6 @@
 ###
 General:
     Locale: en_us
-    MySpawn:
-        Enabled: true
     MOTD:
         Enabled: true
     #Amount of time (in minutes) to wait between saves of player information
@@ -1147,13 +1145,9 @@ Commands:
         Donate_Message: true
     mcrefresh:
         Enabled: true
-    myspawn:
-        Enabled: true
     addxp:
         Enabled: true
     addlevels:
-        Enabled: true
-    clearmyspawn:
         Enabled: true
     ptp:
         Enabled: true

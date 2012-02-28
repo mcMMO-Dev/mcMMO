@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -45,7 +44,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -71,7 +69,6 @@ import com.gmail.nossr50.skills.Skills;
 public class mcPlayerListener implements Listener 
 {
 	protected static final Logger log = Logger.getLogger("Minecraft"); //$NON-NLS-1$
-	public Location spawn = null;
 	private mcMMO plugin;
 
 	public mcPlayerListener(mcMMO instance) 
@@ -135,20 +132,6 @@ public class mcPlayerListener implements Listener
 		if(Users.getProfile(event.getPlayer()).getBerserkMode())
 			 event.setCancelled(true);
 	}
-
-	@EventHandler
-	public void onPlayerRespawn(PlayerRespawnEvent event) 
-	{
-		Player player = event.getPlayer();
-		PlayerProfile PP = Users.getProfile(player);
-		if(LoadProperties.enableMySpawn && mcPermissions.getInstance().mySpawn(player))
-		{
-			PP.setRespawnATS(System.currentTimeMillis());
-			Location mySpawn = PP.getMySpawn(player);
-			if(mySpawn != null)
-				event.setRespawnLocation(mySpawn);
-		}
-	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerLogin(PlayerLoginEvent event) 
@@ -208,14 +191,6 @@ public class mcPlayerListener implements Listener
 		if(action == Action.RIGHT_CLICK_BLOCK)
 		{
 			Material mat = block.getType();
-			if(LoadProperties.enableMySpawn && block != null)
-			{
-				if(mat.equals(Material.BED_BLOCK) && mcPermissions.getInstance().setMySpawn(player))
-				{
-					Location loc = player.getLocation();
-					PP.setMySpawn(loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName());
-				}
-			}
 
 			if(block != null && mcPermissions.getInstance().repair(player) && block.getTypeId() == LoadProperties.anvilID && (Repair.isTools(is) || Repair.isArmor(is)))
 			{

@@ -40,11 +40,6 @@ public class MccCommand implements CommandExecutor {
 		player.sendMessage("/mcstats " + ChatColor.RED + " " + mcLocale.getString("m.mccStats"));
 		player.sendMessage("/mctop <skillname> <page> " + ChatColor.RED + mcLocale.getString("m.mccLeaderboards"));
 
-		if (mcPermissions.getInstance().mySpawn(player)) {
-			player.sendMessage("/myspawn " + ChatColor.RED + mcLocale.getString("m.mccMySpawn"));
-			player.sendMessage("/clearmyspawn " + ChatColor.RED + mcLocale.getString("m.mccClearMySpawn"));
-		}
-
 		if (mcPermissions.getInstance().mcAbility(player))
 			player.sendMessage("/mcability" + ChatColor.RED + " " + mcLocale.getString("m.mccToggleAbility"));
 

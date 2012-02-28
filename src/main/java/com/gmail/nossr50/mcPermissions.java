@@ -70,12 +70,6 @@ public class mcPermissions
     public boolean mcAbility(Player player) {
         return player.hasPermission("mcmmo.commands.ability");
     }
-    public boolean mySpawn(Player player) {
-        return player.hasPermission("mcmmo.commands.myspawn");
-    }
-    public boolean setMySpawn(Player player) {
-        return player.hasPermission("mcmmo.commands.setmyspawn");
-    }
     public boolean partyChat(Player player) {
         return player.hasPermission("mcmmo.chat.partychat");
     }

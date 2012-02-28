@@ -16,16 +16,15 @@
 */
 package com.gmail.nossr50;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import com.gmail.nossr50.config.*;
-import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.skills.*;
 
+import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Item {
@@ -67,23 +66,18 @@ public class Item {
     					}
     				}
     			}
-    			if(PP.getMySpawn(player) != null)
-    			{
-    				Location mySpawn = PP.getMySpawn(player);
-    				if(mySpawn != null){
-	    				player.teleport(mySpawn); //Do it twice to prevent weird stuff
-	    				player.teleport(mySpawn);
-    				}
-    			} else {
+    			
+    			if(player.getBedSpawnLocation() != null)
+	    			player.teleport(player.getBedSpawnLocation());
+    			else
     				player.teleport(player.getWorld().getSpawnLocation());
-    			}
+    			
     			player.sendMessage(mcLocale.getString("Item.ChimaeraWingPass")); //$NON-NLS-1$
-    		} else if (!Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= 10) 
-    		{
-    			player.sendMessage(mcLocale.getString("Item.InjuredWait", new Object[] {Skills.calculateTimeLeft(player, PP.getRecentlyHurt(), 60)})); //$NON-NLS-1$
-    		} else if (is.getTypeId() == LoadProperties.chimaeraId && is.getAmount() <= 9){
-    			player.sendMessage(mcLocale.getString("Item.NeedFeathers")); //$NON-NLS-1$
     		}
+    		else if (!Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= itemsUsed) 
+    			player.sendMessage(mcLocale.getString("Item.InjuredWait", new Object[] {Skills.calculateTimeLeft(player, PP.getRecentlyHurt(), 60)})); //$NON-NLS-1$
+    		else if (is.getTypeId() == LoadProperties.chimaeraId && is.getAmount() <= itemsUsed)
+    			player.sendMessage(mcLocale.getString("Item.NeedFeathers")); //$NON-NLS-1$
     	}
 	}
 }

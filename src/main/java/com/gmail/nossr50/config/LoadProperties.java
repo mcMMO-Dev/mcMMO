@@ -40,11 +40,11 @@ public class LoadProperties {
 	public static Boolean enableOnlyActivateWhenSneaking,
 			enableAbilityMessages, enableAbilities, showDisplayName, showFaces,
 			xplockEnable, xpbar, xpicon, partybar, xprateEnable, spoutEnabled,
-			donateMessage, chimaeraWingEnable, xpGainsMobSpawners, myspawnEnable,
+			donateMessage, chimaeraWingEnable, xpGainsMobSpawners,
 			mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable,
 			whoisEnable, mcstatsEnable, addxpEnable, ptpEnable, mmoeditEnable, mcremoveEnable,
-			clearmyspawnEnable, mcgodEnable, mcabilityEnable, mctopEnable,
-			addlevelsEnable, mcrefreshEnable, aEnable, pEnable, enableMotd, enableMySpawn,
+			mcgodEnable, mcabilityEnable, mctopEnable,
+			addlevelsEnable, mcrefreshEnable, aEnable, pEnable, enableMotd,
 			enableCobbleToMossy, useMySQL, toolsLoseDurabilityFromAbilities,
 			pvpxp, miningrequirespickaxe, excavationRequiresShovel,
 			woodcuttingrequiresaxe, anvilmessages, mayDowngradeEnchants,
@@ -301,7 +301,6 @@ public class LoadProperties {
 
 		locale = readString("General.Locale", "en_us");
 		enableMotd = readBoolean("General.MOTD.Enabled", true);
-		enableMySpawn = readBoolean("General.MySpawn.Enabled", true);
 		saveInterval = readInteger("General.Save_Interval", 10);
 		statsTracking = readBoolean("General.Stats_Tracking", true);
 		eventCallback = readBoolean("General.Event_Callback", true);
@@ -412,11 +411,9 @@ public class LoadProperties {
 		mcremoveEnable = readBoolean("Commands.mcremove.Enable", true);
 		ptpEnable = readBoolean("Commands.ptp.Enabled", true);
 		partyEnable = readBoolean("Commands.party.Enabled", true);
-		myspawnEnable = readBoolean("Commands.myspawn.Enabled", true);
 		whoisEnable = readBoolean("Commands.whois.Enabled", true);
 		inviteEnable = readBoolean("Commands.invite.Enabled", true);
 		acceptEnable = readBoolean("Commands.accept.Enabled", true);
-		clearmyspawnEnable = readBoolean("Commands.clearmyspawn.Enabled", true);
 		aEnable = readBoolean("Commands.a.Enabled", true);
 		pEnable = readBoolean("Commands.p.Enabled", true);
 		

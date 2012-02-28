@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.events.McMMOPlayerXpGainEvent;
@@ -47,7 +46,7 @@ public class PlayerProfile
     private HUDType hud;
     
     //MISC
-	private String party, myspawn, myspawnworld, invite;
+	private String party, invite;
 	
 	//TOGGLES
 	private boolean partyhud = true, spoutcraft = false, filling = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
@@ -57,7 +56,7 @@ public class PlayerProfile
 	//TIMESTAMPS
 	//ATS = (Time of) Activation Time Stamp
 	//DATS = (Time of) Deactivation Time Stamp
-	private int xpGainATS = 0, recentlyHurt = 0, mySpawnATS, respawnATS, hoePreparationATS, shovelPreparationATS, swordsPreparationATS, fistsPreparationATS, axePreparationATS, pickaxePreparationATS;
+	private int xpGainATS = 0, recentlyHurt = 0, respawnATS, hoePreparationATS, shovelPreparationATS, swordsPreparationATS, fistsPreparationATS, axePreparationATS, pickaxePreparationATS;
 	
 	private SkillType lastgained = null, skillLock = null;
 	
@@ -141,10 +140,7 @@ public class PlayerProfile
 			}
 			HashMap<Integer, ArrayList<String>> users = mcMMO.database.Read("SELECT lastlogin, party FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = " + id);
 				//lastlogin = Integer.parseInt(users.get(1).get(0));
-				party = users.get(1).get(1);
-			HashMap<Integer, ArrayList<String>> spawn = mcMMO.database.Read("SELECT world, x, y, z FROM "+LoadProperties.MySQLtablePrefix+"spawn WHERE user_id = " + id);
-				myspawnworld = spawn.get(1).get(0);
-				myspawn = spawn.get(1).get(1) + "," + spawn.get(1).get(2) + "," + spawn.get(1).get(3);				
+				party = users.get(1).get(1);				
 			HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.Read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes FROM "+LoadProperties.MySQLtablePrefix+"cooldowns WHERE user_id = " + id);
 			/*
 			 * I'm still learning MySQL, this is a fix for adding a new table
@@ -224,9 +220,6 @@ public class PlayerProfile
     			//Get Mining
     			if(character.length > 1 && m.isInt(character[1]))
     				skills.put(SkillType.MINING, Integer.valueOf(character[1]));
-    			//Myspawn
-    			if(character.length > 2)
-    				myspawn = character[2];
     			//Party
     			if(character.length > 3)
     				party = character[3];
@@ -269,8 +262,6 @@ public class PlayerProfile
     				skillsXp.put(SkillType.AXES, Integer.valueOf(character[21]));
     			if(character.length > 22 && m.isInt(character[22]))
     				skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(character[22]));
-    			if(character.length > 23 && m.isInt(character[23]))
-    				myspawnworld = character[23];
     			if(character.length > 24 && m.isInt(character[24]))
     				skills.put(SkillType.TAMING, Integer.valueOf(character[24]));
     			if(character.length > 25 && m.isInt(character[25]))
@@ -324,7 +315,6 @@ public class PlayerProfile
     				+" hudtype = '"+hud.toString()+"' WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
-    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"spawn SET world = '" + this.myspawnworld + "', x = " +getX()+", y = "+getY()+", z = "+getZ()+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"cooldowns SET "
     				+" mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
     				+", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
@@ -385,7 +375,7 @@ public class PlayerProfile
 	        		} else {
 	        			writer.append(playerName + ":");
 	        			writer.append(skills.get(SkillType.MINING) + ":");
-	        			writer.append(myspawn + ":");
+	        			writer.append("" + ":");
 	        			writer.append(party+":");
 	        			writer.append(skillsXp.get(SkillType.MINING) + ":");
 	        			writer.append(skills.get(SkillType.WOODCUTTING) + ":");
@@ -406,7 +396,7 @@ public class PlayerProfile
 	        			writer.append(skillsXp.get(SkillType.SWORDS) + ":");
 	        			writer.append(skillsXp.get(SkillType.AXES) + ":");
 	        			writer.append(skillsXp.get(SkillType.ACROBATICS) + ":");
-	        			writer.append(myspawnworld+":");
+	        			writer.append(""+":");
 	        			writer.append(skills.get(SkillType.TAMING) + ":");
 	        			writer.append(skillsXp.get(SkillType.TAMING) + ":");
 	        			//Need to store the DATS of abilities nao
@@ -452,9 +442,7 @@ public class PlayerProfile
         }
         
         //Misc stuff
-        myspawn = "";
         party = "";
-        myspawnworld = "";
         
         save();
     }
@@ -469,7 +457,7 @@ public class PlayerProfile
             //Add the player to the end
             out.append(playerName + ":");
             out.append(0 + ":"); //mining
-            out.append(myspawn+":");
+            out.append(""+":");
             out.append(party+":");
             out.append(0+":"); //XP
             out.append(0+":"); //woodcutting
@@ -490,7 +478,7 @@ public class PlayerProfile
             out.append(0+":"); //swordsXP
             out.append(0+":"); //axesXP
             out.append(0+":"); //acrobaticsXP
-            out.append(myspawnworld+":");
+            out.append(""+":");
             out.append(0+":"); //taming
             out.append(0+":"); //tamingXP
             out.append(0+":"); //DATS
@@ -615,13 +603,6 @@ public class PlayerProfile
 	public void toggleAbilityUse()
 	{
 		abilityuse = !abilityuse;
-	}
-	public long getMySpawnATS(){
-		return mySpawnATS;
-	}
-	public void setMySpawnATS(long newvalue)
-	{
-		mySpawnATS = (int) (newvalue/1000);
 	}
 	public void decreaseBleedTicks()
 	{
@@ -1167,74 +1148,11 @@ public class PlayerProfile
     		return false;
     	}
     }
-    public String getMySpawnWorld()
-    {
-    	if(myspawnworld != null && !myspawnworld.equals("") && !myspawnworld.equals("null")){
-    		return myspawnworld;
-    	} else {
-    		return Bukkit.getServer().getWorlds().get(0).toString();
-    	}
-    }
-    //Save a users spawn location
-    public void setMySpawn(double x, double y, double z, String myspawnworldlocation){
-    	myspawn = x+","+y+","+z;
-    	myspawnworld = myspawnworldlocation;
-    }
-    public String getX(){
-    	if(myspawn != null)
-    	{
-    	String[] split = myspawn.split(",");
-    	return split[0];
-    	} 
-    	else
-    		return null;
-    }
-    public String getY(){
-    	if(myspawn != null)
-    	{
-    	String[] split = myspawn.split(",");
-    	return split[1];
-    	} 
-    	else
-    		return null;
-    }
-    public String getZ(){
-    	if(myspawn != null)
-    	{
-    	String[] split = myspawn.split(",");
-    	return split[2];
-    	} 
-    	else
-    		return null;
-    }
+    
     public boolean isDead(){
     	return dead;
     }
-    public Location getMySpawn(Player player)
-    {
-    	Location loc = null;
-    	if(myspawn != null)
-    	{
-    		if(m.isDouble(getX()) && m.isDouble(getY()) && m.isDouble(getZ()))
-    				loc = new Location(player.getWorld(),(Double.parseDouble(getX())), Double.parseDouble(getY()), Double.parseDouble(getZ()));
-    		else
-    			return null;
-    	} else
-     		return null;
-    	
-    	loc.setYaw(0);
-    	loc.setPitch(0);
-    	if(loc.getX() != 0 && loc.getY() != 0 && loc.getZ() != 0 && loc.getWorld() != null)
-    	{
-    		if(Bukkit.getServer().getWorld(this.getMySpawnWorld()) != null)
-    			loc.setWorld(Bukkit.getServer().getWorld(this.getMySpawnWorld()));
-    		else
-    			loc.setWorld(Bukkit.getServer().getWorlds().get(0));
-    		return loc;
-    	} else {
-    		return null;
-    	}
-    }
+
     public String getPlayerName()
     {
         return playerName;

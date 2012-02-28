@@ -49,9 +49,6 @@ commands:
     party:
         description: Create/join a party
         permission: mcmmo.commands.party
-    myspawn:
-        description: Teleport to your MySpawn
-        permission: mcmmo.commands.myspawn
     whois:
         description: View mcMMO stats of another player
     invite:
@@ -60,9 +57,6 @@ commands:
     accept:
         description: Accept a party invite
         permission: mcmmo.chat.partychat
-    clearmyspawn:
-        description: Clear your MySpawn location
-        permission: mcmmo.commands.myspawn
     mmoupdate:
         description: Convert from Flat File to MySQL
         permission: mcmmo.admin
@@ -176,17 +170,11 @@ permissions:
     mcmmo.commands.*:
         description: Implies all mcmmo.commands permissions.
         children:
-            mcmmo.commands.ability: true 
-            mcmmo.commands.myspawn: true 
-            mcmmo.commands.setmyspawn: true 
+            mcmmo.commands.ability: true  
             mcmmo.commands.ptp: true 
             mcmmo.commands.whois: true 
             mcmmo.commands.party: true 
     mcmmo.commands.ability:
-        description:
-    mcmmo.commands.myspawn:
-        description:
-    mcmmo.commands.setmyspawn:
         description:
     mcmmo.commands.ptp:
         description:
