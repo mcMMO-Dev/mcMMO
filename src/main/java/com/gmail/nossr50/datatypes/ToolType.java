@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.m;
@@ -118,7 +119,7 @@ public enum ToolType
 		case AXE:
 			return m.isAxes(is);
 		case FISTS:
-			return is == null;
+			return is.equals(Material.AIR);
 		case HOE:
 			return m.isHoe(is);
 		case PICKAXE:

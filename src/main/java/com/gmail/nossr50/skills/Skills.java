@@ -94,7 +94,8 @@ public class Skills
     	}
     }
     
-    public static void monitorSkill(Player player, PlayerProfile PP, long curTime, SkillType skill){
+    public static void monitorSkill(Player player, PlayerProfile PP, long curTime, SkillType skill)
+    {
     	ToolType tool = skill.getTool();
     	AbilityType ability = skill.getAbility();
     	if(tool.getToolMode(PP) && curTime - (tool.getToolATS(PP) * 1000) >= 4000)

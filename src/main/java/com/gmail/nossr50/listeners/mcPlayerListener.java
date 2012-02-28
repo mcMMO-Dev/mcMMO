@@ -224,7 +224,7 @@ public class mcPlayerListener implements Listener
 				player.updateInventory();
 			}
 
-			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
+			if(LoadProperties.enableAbilities && (m.abilityBlockCheck(block) || block.getType() == Material.AIR))
 			{
 				if(block != null && m.isHoe(is) && !mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL))
 					Skills.activationCheck(player, SkillType.HERBALISM);

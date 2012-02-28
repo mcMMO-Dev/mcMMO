@@ -181,7 +181,7 @@ public class Combat
 	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa)
 	{
 		//Check to see if any abilities need to be activated
-		if(PPa.getAxePreparationMode() && mcPermissions.getInstance().axesAbility(attacker))
+		if(PPa.getAxePreparationMode())
 			Skills.abilityCheck(attacker, SkillType.AXES);
 		if(PPa.getSwordsPreparationMode())
 			Skills.abilityCheck(attacker, SkillType.SWORDS);
