@@ -145,11 +145,14 @@ public class mcBlockListener implements Listener
     	//Reset player spawn back to world spawn if their bed is destroyed.
     	if(block.getType().equals(Material.BED_BLOCK) && LoadProperties.enableMySpawn && PP.getMySpawn(player) != null)
     	{
-    		double x = Bukkit.getServer().getWorlds().get(0).getSpawnLocation().getX();
-    		double y = Bukkit.getServer().getWorlds().get(0).getSpawnLocation().getY();
-    		double z = Bukkit.getServer().getWorlds().get(0).getSpawnLocation().getZ();
-    		String worldname = Bukkit.getServer().getWorlds().get(0).getName();
-    		PP.setMySpawn(x, y, z, worldname);
+    		if(PP.getMySpawn(player).getBlock().getType() != Material.BED_BLOCK)
+    		{
+	    		double x = Bukkit.getServer().getWorlds().get(0).getSpawnLocation().getX();
+	    		double y = Bukkit.getServer().getWorlds().get(0).getSpawnLocation().getY();
+	    		double z = Bukkit.getServer().getWorlds().get(0).getSpawnLocation().getZ();
+	    		String worldname = Bukkit.getServer().getWorlds().get(0).getName();
+	    		PP.setMySpawn(x, y, z, worldname);
+    		}
     	}
     	/*
     	 * HERBALISM
