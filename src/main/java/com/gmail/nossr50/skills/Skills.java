@@ -80,15 +80,18 @@ public class Skills
     	
     	if(ability.getPermissions(player) && tool.inHand(player.getItemInHand()) && !tool.getToolMode(PP))
     	{
-    		player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()) + "s)");
-    		return;
+    		if(!ability.getMode(PP) && !cooldownOver(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()))
+    		{
+    			player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()) + "s)");
+    			return;
+    		}
+    		
+        	if(LoadProperties.enableAbilityMessages)
+        		player.sendMessage(tool.getRaiseTool());
+        	
+        	tool.setToolATS(PP, System.currentTimeMillis());
+        	tool.setToolMode(PP, true);
     	}
-    	
-    	if(LoadProperties.enableAbilityMessages)
-    		player.sendMessage(tool.getRaiseTool());
-    	
-    	tool.setToolATS(PP, System.currentTimeMillis());
-    	tool.setToolMode(PP, true);
     }
     
     public static void monitorSkill(Player player, PlayerProfile PP, long curTime, SkillType skill){
