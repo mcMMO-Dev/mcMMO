@@ -126,6 +126,7 @@ public class Database {
 		
 		Write("DROP TABLE IF EXISTS `"+LoadProperties.MySQLtablePrefix+"skills2`");
 		Write("DROP TABLE IF EXISTS `"+LoadProperties.MySQLtablePrefix+"experience2`");
+		Write("DROP TABLE IF EXISTS `"+LoadProperties.MySQLtablePrefix+"spawn`");
 		
 		checkDatabaseStructure();
 	}
