@@ -19,6 +19,7 @@ Version 1.3.00-dev
  + Added size limit to Tree Feller in config as Tree Feller Threshold
  + Added /addlevels command 
  + Added config values for XP multipliers for different hostile mobs
+ + Added mcremove commands
  + Re-added mcMMO reporting damage events
  = Fixed bug where Swords command showed Bleed Length twice instead of Bleed Chance
  = Fixed bug where Tree Feller wasn't checking for Tree Feller permission

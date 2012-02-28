@@ -31,6 +31,9 @@ public class mcPermissions
     public boolean mcrefresh(Player player) {
         return player.hasPermission("mcmmo.tools.mcrefresh");
     }
+    public boolean mcremove(Player player) {
+        return player.hasPermission("mcmmo.tools.mcremove");
+    }
     public boolean mmoedit(Player player) {
         return player.hasPermission("mcmmo.tools.mmoedit");
     }

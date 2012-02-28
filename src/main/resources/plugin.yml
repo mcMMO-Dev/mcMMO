@@ -38,6 +38,8 @@ commands:
         permission: mcmmo.tools.mcgod        
     mcstats:
         description: Shows your mcMMO stats and xp
+    mcremove:
+        description: Remove a user from the database
     mmoedit:
         description: Edit the skill values for a user
         permission: mcmmo.tools.mmoedit

@@ -1126,6 +1126,8 @@ Commands:
         Enabled: true
     mcc:
         Enabled: true
+    mcremove:
+        Enabled: true
     mmoedit:
         Enabled: true
     accept:
