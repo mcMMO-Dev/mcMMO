@@ -193,14 +193,13 @@ public class mcPlayerListener implements Listener
 			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) 
 	{
 		Player player = event.getPlayer();
 		PlayerProfile PP = Users.getProfile(player);
 		Action action = event.getAction();
 		Block block = event.getClickedBlock();
-		Material mat = block.getType();
 		ItemStack is = player.getItemInHand();
 		
 		/*
@@ -208,6 +207,7 @@ public class mcPlayerListener implements Listener
 		 */
 		if(action == Action.RIGHT_CLICK_BLOCK)
 		{
+			Material mat = block.getType();
 			if(LoadProperties.enableMySpawn && block != null)
 			{
 				if(mat.equals(Material.BED_BLOCK) && mcPermissions.getInstance().setMySpawn(player))
@@ -224,7 +224,7 @@ public class mcPlayerListener implements Listener
 				player.updateInventory();
 			}
 
-			if(LoadProperties.enableAbilities && (m.abilityBlockCheck(block) || block.getType().equals(Material.AIR)))
+			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
 			{
 				if(block != null && m.isHoe(is) && !mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL))
 					Skills.activationCheck(player, SkillType.HERBALISM);
@@ -299,7 +299,7 @@ public class mcPlayerListener implements Listener
 		
 		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK))
 		{
-			if(mat.equals(Material.BONE) && is.getAmount() >= LoadProperties.bonesConsumedByCOTW)
+			if(is.getType().equals(Material.BONE) && is.getAmount() >= LoadProperties.bonesConsumedByCOTW)
 			{
 				for(Entity x : player.getNearbyEntities(40, 40, 40))
 				{
