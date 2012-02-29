@@ -147,7 +147,7 @@ public class mcEntityListener implements Listener
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) 
     {
-    	LivingEntity x = event.getEntity();
+    	LivingEntity x = (LivingEntity) event.getEntity();
     	x.setFireTicks(0);
     	
     	//Remove mob from mob spawner list
