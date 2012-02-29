@@ -37,7 +37,18 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.party.Party;
 
 public class Axes {
-	
+    public static void axesBonus(Player attacker, EntityDamageByEntityEvent event)
+    {
+        int bonus = 0;
+        
+        //Add 1 DMG for every 50 skill levels
+        bonus += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/50;
+        
+        if(bonus > 4)
+            bonus = 4;
+        
+        event.setDamage(event.getDamage() + bonus);
+    }
 	public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)
 	{
     	Entity x = event.getEntity();
@@ -93,6 +104,11 @@ public class Axes {
 	    {
 	        Player targetPlayer = (Player) target;
 	        int emptySlots = 0;
+	        short durDmg = 5; //Start with 5 durability dmg
+	        
+	        durDmg+=Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/30; //Every 30 Skill Levels you gain 1 durability dmg
+	        
+	        System.out.println(durDmg);
 	        
 	        for(ItemStack x : targetPlayer.getInventory().getArmorContents())
 	        {
@@ -100,7 +116,7 @@ public class Axes {
 	            {
 	                emptySlots++;
 	            } else {
-	                x.setDurability((short) (x.getDurability()+30)); //Damage armor piece
+	                x.setDurability((short) (x.getDurability()+durDmg)); //Damage armor piece
 	            }
 	        }
 	        
