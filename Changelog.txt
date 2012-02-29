@@ -55,6 +55,7 @@ Version 1.3.00-dev
  ! Changed chat logging for /p & /a
  ! Changed Tree Feller to use per-use ArrayList
  - Removed Master/Apprentice chat notifications to reduce spam
+ - Removed MySpawn system (You can still use Chimaera Wings) due to being outdated and unwanted
  - Removed duplicate settings in config.yml
  - Removed unused settings from config.yml (HP Regen)
  - Removed Nether Brick from Mining XP Tables
