@@ -325,7 +325,7 @@ public class mcMMO extends JavaPlugin
 		if(LoadProperties.mmoeditEnable) getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
 		getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
 		if(LoadProperties.mcstatsEnable) getCommand("mcstats").setExecutor(new McstatsCommand(this));
-		if(LoadProperties.whoisEnable) getCommand("whois").setExecutor(new WhoisCommand(this));
+		if(LoadProperties.inspectEnable) getCommand("inspect").setExecutor(new InspectCommand(this));
 		if(LoadProperties.xprateEnable) getCommand("xprate").setExecutor(new XprateCommand());
 		
 		//Spout commands

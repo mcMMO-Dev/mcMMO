@@ -259,7 +259,7 @@ Commands:
         Enabled: true
     xplock:
         Enabled: true
-    whois:
+    inspect:
         Enabled: true
     mcc:
         Enabled: true

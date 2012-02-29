@@ -49,7 +49,7 @@ commands:
     party:
         description: Create/join a party
         permission: mcmmo.commands.party
-    whois:
+    inspect:
         description: View mcMMO stats of another player
     invite:
         description: Invite a player into your party
@@ -172,13 +172,13 @@ permissions:
         children:
             mcmmo.commands.ability: true  
             mcmmo.commands.ptp: true 
-            mcmmo.commands.whois: true 
+            mcmmo.commands.inspect: true 
             mcmmo.commands.party: true 
     mcmmo.commands.ability:
         description:
     mcmmo.commands.ptp:
         description:
-    mcmmo.commands.whois:
+    mcmmo.commands.inspect:
         description:
     mcmmo.commands.party:
         description:        

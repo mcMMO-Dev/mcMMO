@@ -28,7 +28,7 @@ public class LoadProperties {
 			xplockEnable, xpbar, xpicon, partybar, xprateEnable, spoutEnabled,
 			donateMessage, chimaeraWingEnable, xpGainsMobSpawners,
 			mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable,
-			whoisEnable, mcstatsEnable, addxpEnable, ptpEnable, mmoeditEnable, mcremoveEnable,
+			inspectEnable, mcstatsEnable, addxpEnable, ptpEnable, mmoeditEnable, mcremoveEnable,
 			mcgodEnable, mcabilityEnable, mctopEnable,
 			addlevelsEnable, mcrefreshEnable, aEnable, pEnable, enableMotd,
 			enableCobbleToMossy, useMySQL, toolsLoseDurabilityFromAbilities,
@@ -381,7 +381,7 @@ public class LoadProperties {
 		mcremoveEnable = readBoolean("Commands.mcremove.Enable", true);
 		ptpEnable = readBoolean("Commands.ptp.Enabled", true);
 		partyEnable = readBoolean("Commands.party.Enabled", true);
-		whoisEnable = readBoolean("Commands.whois.Enabled", true);
+		inspectEnable = readBoolean("Commands.inspect.Enabled", true);
 		inviteEnable = readBoolean("Commands.invite.Enabled", true);
 		acceptEnable = readBoolean("Commands.accept.Enabled", true);
 		aEnable = readBoolean("Commands.a.Enabled", true);
