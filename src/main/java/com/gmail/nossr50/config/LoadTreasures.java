@@ -43,14 +43,14 @@ public class LoadTreasures {
 		this.plugin = plugin;
 		dataFolder = plugin.getDataFolder();
 		configFile = new File(dataFolder, File.separator + "treasures.yml");
-		config = plugin.getCustomConfig();
+		config = plugin.getTreasuresConfig();
 	}
 
 	public void load() {
 		// If not exist, copy from the jar
 		if (!configFile.exists()) {
 			dataFolder.mkdir();
-			plugin.saveCustomConfig();
+			config.options().copyDefaults();
 		}
 		addDefaults();
 		loadKeys();
@@ -77,14 +77,14 @@ public class LoadTreasures {
 	
 	private void loadKeys()
 	{
-		plugin.getLogger().info("Loading Config File...");
+		plugin.getLogger().info("Loading mcMMO treasures.yml File...");
 		
 		// Load treasures
 		Map<String, Treasure> treasures = new HashMap<String, Treasure>();
 
 		ConfigurationSection treasureSection = config.getConfigurationSection("Treasures");
-		Set<String> treasureConfigSet = treasureSection.getKeys(true);
-		Iterator<String> iterator = treasureConfigSet.iterator();
+        Set<String> treasureConfigSet = treasureSection.getKeys(false);
+        Iterator<String> iterator = treasureConfigSet.iterator();
 		while(iterator.hasNext())
 		{
 			String treasureName = iterator.next();

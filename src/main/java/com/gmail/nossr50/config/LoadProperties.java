@@ -19,22 +19,8 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
-
 import com.gmail.nossr50.datatypes.HUDType;
-import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
-import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
-import com.gmail.nossr50.datatypes.treasure.Treasure;
 
 public class LoadProperties {
 	public static Boolean enableOnlyActivateWhenSneaking,
@@ -162,7 +148,7 @@ public class LoadProperties {
 	}
 
 	private void loadKeys() {
-		plugin.getLogger().info("Loading Config File...");
+		plugin.getLogger().info("Loading mcMMO config.yml File...");
 
 		// Setup default HUD
 		String temp = readString("Spout.HUD.Default", "STANDARD");

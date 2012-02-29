@@ -392,38 +392,38 @@ public class mcMMO extends JavaPlugin
 	 * Boilerplate Custom Config Stuff
 	 */
 	
-	private FileConfiguration customConfig = null;
-	private File customConfigFile = null;
+	private FileConfiguration treasuresConfig = null;
+	private File treasuresConfigFile = null;
 	
-	public void reloadCustomConfig() {
-	    if (customConfigFile == null) {
-	    customConfigFile = new File(getDataFolder(), "customConfig.yml");
+	public void reloadTreasuresConfig() {
+	    if (treasuresConfigFile == null) {
+	    treasuresConfigFile = new File(getDataFolder(), "treasures.yml");
 	    }
-	    customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
+	    treasuresConfig = YamlConfiguration.loadConfiguration(treasuresConfigFile);
 	 
 	    // Look for defaults in the jar
-	    InputStream defConfigStream = getResource("customConfig.yml");
+	    InputStream defConfigStream = getResource("treasures.yml");
 	    if (defConfigStream != null) {
 	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        customConfig.setDefaults(defConfig);
+	        treasuresConfig.setDefaults(defConfig);
 	    }
 	}
 	
-	public FileConfiguration getCustomConfig() {
-	    if (customConfig == null) {
-	        reloadCustomConfig();
+	public FileConfiguration getTreasuresConfig() {
+	    if (treasuresConfig == null) {
+	        reloadTreasuresConfig();
 	    }
-	    return customConfig;
+	    return treasuresConfig;
 	}
 	
-	public void saveCustomConfig() {
-	    if (customConfig == null || customConfigFile == null) {
+	public void saveTreasuresConfig() {
+	    if (treasuresConfig == null || treasuresConfigFile == null) {
 	    return;
 	    }
 	    try {
-	        customConfig.save(customConfigFile);
+	        treasuresConfig.save(treasuresConfigFile);
 	    } catch (IOException ex) {
-	        Logger.getLogger(JavaPlugin.class.getName()).log(Level.SEVERE, "Could not save config to " + customConfigFile, ex);
+	        Logger.getLogger(JavaPlugin.class.getName()).log(Level.SEVERE, "Could not save config to " + treasuresConfigFile, ex);
 	    }
 	}
 }

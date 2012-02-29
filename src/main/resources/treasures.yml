@@ -1,0 +1,873 @@
+#
+#  Settings for Fishing
+###
+Fishing:
+    Drops_Enabled: true
+    Tier_Levels:
+        Tier1: 0
+        Tier2: 200
+        Tier3: 400
+        Tier4: 600
+        Tier5: 800
+    Treasure:
+        - Leather_Boots
+        - Leather_Helmet
+        - Leather_Leggings
+        - Leather_Chestplate
+        - Wooden_Sword
+        - Wooden_Shovel
+        - Wooden_Pickaxe
+        - Wooden_Axe
+        - Wooden_Hoe
+        - Stone_Sword
+        - Stone_Shovel
+        - Stone_Pickaxe
+        - Stone_Axe
+        - Stone_Hoe
+        - Iron_Sword
+        - Iron_Shovel
+        - Iron_Pickaxe
+        - Iron_Axe
+        - Iron_Hoe
+        - Iron_Boots
+        - Iron_Helmet
+        - Iron_Leggings
+        - Iron_Chestplate
+        - Ender_Pearl
+        - Gold_Sword
+        - Gold_Shovel
+        - Gold_Pickaxe
+        - Gold_Axe
+        - Gold_Hoe
+        - Gold_Boots
+        - Gold_Helmet
+        - Gold_Leggings
+        - Gold_Chestplate
+        - Blaze_Rod
+        - Record_3
+        - Record_4
+        - Record_5
+        - Record_6
+        - Record_7
+        - Record_8
+        - Record_9
+        - Record_10
+        - Record_11
+        - Diamond_Sword
+        - Diamond_Shovel
+        - Diamond_Pickaxe
+        - Diamond_Axe
+        - Diamond_Hoe
+        - Diamond_Boots
+        - Diamond_Helmet
+        - Diamond_Leggings
+        - Diamond_Chestplate
+        - Ghast_Tear
+        - Diamonds
+        - Iron_Ingots
+        - Gold_Ingots
+        - Lapis_Lazuli
+#
+#  Settings for Excavation
+###
+Excavation:
+    Treasure:
+        - Cake
+        - Gunpowder
+        - Bone
+        - Apple
+        - Slimeball
+        - Bucket
+        - Netherrack
+        - Red_Mushroom
+        - Brown_Mushroom
+        - Egg
+        - Soul_Sand
+        - Clock
+        - Cobweb
+        - String
+        - Glowstone_Dust
+        - Gold_Music
+        - Green_Music
+        - Diamond
+        - Cocoa_Beans
+
+#
+#  Configuration to define Treasures
+###
+Treasures:
+    Cake:
+        ID: 354
+        Data: 0
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 750
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: true
+            Clay: true
+            Mycelium: true
+            Soul_Sand: true
+    Gunpowder:
+        ID: 289
+        Data: 0
+        Amount: 1
+        XP: 30
+        Drop_Chance: 10.0
+        Drop_Level: 75
+        Drops_From:
+            Gravel: true
+    Bone:
+        ID: 352
+        Data: 0
+        Amount: 1
+        XP: 30
+        Drop_Chance: 10.0
+        Drop_Level: 175
+        Drops_From:
+            Gravel: true
+    Apple:
+        ID: 260
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 250
+        Drops_From:
+            Grass: true
+            Mycelium: true
+    Slimeball:
+        ID: 341
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 5.0
+        Drop_Level: 150
+        Drops_From:
+            Clay: true
+    Bucket:
+        ID: 325
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 500
+        Drops_From:
+            Clay: true
+    Netherrack:
+        ID: 87
+        Data: 0
+        Amount: 1
+        XP: 30
+        Drop_Chance: 0.5
+        Drop_Level: 850
+        Drops_From:
+            Gravel: true
+    Red_Mushroom:
+        ID: 40
+        Data: 0
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 500
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Mycelium: true
+    Brown_Mushroom:
+        ID: 39
+        Data: 0
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 500
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Mycelium: true
+    Egg:
+        ID: 344
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 1.0
+        Drop_Level: 250
+        Drops_From:
+            Grass: true
+    Soul_Sand:
+        ID: 88
+        Data: 0
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 650
+        Drops_From:
+            Sand: true
+    Clock:
+        ID: 347
+        Data: 0
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 500
+        Drops_From:
+            Clay: true
+    Cobweb:
+        ID: 30
+        Data: 0
+        Amount: 1
+        XP: 150
+        Drop_Chance: 5.0
+        Drop_Level: 750
+        Drops_From:
+            Clay: true
+    String:
+        ID: 287
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 5.0
+        Drop_Level: 250
+        Drops_From:
+            Clay: true
+    Glowstone_Dust:
+        ID: 348
+        Data: 0
+        Amount: 1
+        XP: 80
+        Drop_Chance: 5.0
+        Drop_Level: 25
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Mycelium: true
+    Gold_Music:
+        ID: 2256
+        Data: 0
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 250
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: true
+            Clay: true
+            Mycelium: true
+            Soul_Sand: true
+    Green_Music:
+        ID: 2257
+        Data: 0
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 250
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: true
+            Clay: true
+            Mycelium: true
+            Soul_Sand: true
+    Diamond:
+        ID: 264
+        Data: 0
+        Amount: 1
+        XP: 1000
+        Drop_Chance: 0.13
+        Drop_Level: 350
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Sand: true
+            Gravel: true
+            Clay: true
+            Mycelium: true
+            Soul_Sand: true
+    Cocoa_Beans:
+        ID: 351
+        Data: 3
+        Amount: 1
+        XP: 100
+        Drop_Chance: 1.33
+        Drop_Level: 350
+        Drops_From:
+            Dirt: true
+            Grass: true
+            Mycelium: true
+    Leather_Boots:
+        ID: 301
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 400
+        Drops_From:
+            Fishing: true
+    Leather_Helmet:
+        ID: 298
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 400
+        Drops_From:
+            Fishing: true
+    Leather_Leggings:
+        ID: 300
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 400
+        Drops_From:
+            Fishing: true
+    Leather_Chestplate:
+        ID: 299
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 400
+        Drops_From:
+            Fishing: true
+    Wooden_Sword:
+        ID: 268
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 200
+        Drops_From:
+            Fishing: true
+    Wooden_Shovel:
+        ID: 269
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 200
+        Drops_From:
+            Fishing: true
+    Wooden_Pickaxe:
+        ID: 270
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 200
+        Drops_From:
+            Fishing: true
+    Wooden_Axe:
+        ID: 271
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 200
+        Drops_From:
+            Fishing: true
+    Wooden_Hoe:
+        ID: 290
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 200
+        Drops_From:
+            Fishing: true
+    Stone_Sword:
+        ID: 272
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 400
+        Drops_From:
+            Fishing: true
+    Stone_Shovel:
+        ID: 273
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 400
+        Drops_From:
+            Fishing: true
+    Stone_Pickaxe:
+        ID: 274
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 400
+        Drops_From:
+            Fishing: true
+    Stone_Axe:
+        ID: 275
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 400
+        Drops_From:
+            Fishing: true
+    Stone_Hoe:
+        ID: 291
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 20.0
+        Drop_Level: 0
+        Max_Level: 400
+        Drops_From:
+            Fishing: true
+    Iron_Sword:
+        ID: 267
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Iron_Shovel:
+        ID: 256
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Iron_Pickaxe:
+        ID: 257
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Iron_Axe:
+        ID: 258
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Iron_Hoe:
+        ID: 292
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Iron_Boots:
+        ID: 309
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Iron_Helmet:
+        ID: 306
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Iron_Leggings:
+        ID: 308
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Iron_Chestplate:
+        ID: 307
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Ender_Pearl:
+        ID: 368
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 25.0
+        Drop_Level: 200
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Sword:
+        ID: 283
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Shovel:
+        ID: 284
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Pickaxe:
+        ID: 285
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Axe:
+        ID: 286
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Hoe:
+        ID: 294
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Boots:
+        ID: 317
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Helmet:
+        ID: 314
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Leggings:
+        ID: 316
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Chestplate:
+        ID: 315
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Blaze_Rod:
+        ID: 369
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Record_3:
+        ID: 2258
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Record_4:
+        ID: 2259
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Record_5:
+        ID: 2260
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 30.0
+        Drop_Level: 400
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamond_Sword:
+        ID: 276
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamond_Shovel:
+        ID: 277
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamond_Pickaxe:
+        ID: 278
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamond_Axe:
+        ID: 279
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamond_Hoe:
+        ID: 293
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamond_Boots:
+        ID: 313
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamond_Helmet:
+        ID: 310
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamond_Leggings:
+        ID: 312
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamond_Chestplate:
+        ID: 311
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Record_6:
+        ID: 2261
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Record_7:
+        ID: 2262
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Record_8:
+        ID: 2263
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Record_9:
+        ID: 2264
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Record_10:
+        ID: 2265
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Record_11:
+        ID: 2266
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Ghast_Tear:
+        ID: 370
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Diamonds:
+        ID: 264
+        Data: 0
+        Amount: 5
+        XP: 200
+        Drop_Chance: 40.0
+        Drop_Level: 800
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Iron_Ingots:
+        ID: 265
+        Data: 0
+        Amount: 5
+        XP: 200
+        Drop_Chance: 40.0
+        Drop_Level: 800
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Gold_Ingots:
+        ID: 266
+        Data: 0
+        Amount: 5
+        XP: 200
+        Drop_Chance: 40.0
+        Drop_Level: 800
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
+    Lapis_Lazuli:
+        ID: 351
+        Data: 4
+        Amount: 20
+        XP: 200
+        Drop_Chance: 40.0
+        Drop_Level: 800
+        Max_Level: 1000
+        Drops_From:
+            Fishing: true
