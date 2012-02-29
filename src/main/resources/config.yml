@@ -67,6 +67,18 @@ Arcane_Forging:
             Rank_1: 75
 
 #
+#  Settings for Fishing
+###
+Fishing:
+  Drops_Enabled: true
+  Tier_Levels:
+    Tier1: 0
+    Tier2: 200
+    Tier3: 400
+    Tier4: 600
+    Tier5: 800
+	
+#
 #  Settings for Abilities
 ###
 Abilities:
