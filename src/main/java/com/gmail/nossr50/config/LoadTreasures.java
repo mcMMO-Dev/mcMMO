@@ -50,7 +50,7 @@ public class LoadTreasures {
 		// If not exist, copy from the jar
 		if (!configFile.exists()) {
 			dataFolder.mkdir();
-			config.options().copyDefaults();
+			plugin.saveTreasuresConfig();
 		}
 		addDefaults();
 		loadKeys();

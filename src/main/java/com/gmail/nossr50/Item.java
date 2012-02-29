@@ -33,9 +33,7 @@ public class Item {
 	{
 		ItemStack inhand = player.getItemInHand();
 		if(LoadProperties.chimaeraWingEnable && inhand.getTypeId() == LoadProperties.chimaeraId)
-		{
 			chimaerawing(player, plugin);
-		}
 	}
 	
 	public static void chimaerawing(Player player, Plugin plugin)
@@ -67,7 +65,7 @@ public class Item {
     				}
     			}
     			
-    			if(player.getBedSpawnLocation() != null)
+    			if(player.getBedSpawnLocation() != null && player.getBedSpawnLocation().getBlock().getType().equals(Material.BED_BLOCK))
 	    			player.teleport(player.getBedSpawnLocation());
     			else
     				player.teleport(player.getWorld().getSpawnLocation());
