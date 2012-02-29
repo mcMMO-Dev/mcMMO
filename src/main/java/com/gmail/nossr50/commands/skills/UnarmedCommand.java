@@ -26,7 +26,7 @@ public class UnarmedCommand implements CommandExecutor {
 		float skillvalue = (float) PP.getSkillLevel(SkillType.UNARMED);
 
 		if (PP.getSkillLevel(SkillType.UNARMED) < 1000)
-			percentage = String.valueOf((skillvalue / 4000) * 100);
+			percentage = String.valueOf((skillvalue / 2000) * 100);
 		else
 			percentage = "25";
 

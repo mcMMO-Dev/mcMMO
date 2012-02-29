@@ -17,6 +17,7 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -25,6 +26,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
@@ -94,7 +96,6 @@ public class Axes {
 	        
 	        for(ItemStack x : targetPlayer.getInventory().getArmorContents())
 	        {
-	            System.out.println("[mcMMO] DEBUG: "+x.getType().toString());
 	            if(x.getType() == Material.AIR)
 	            {
 	                emptySlots++;
@@ -105,12 +106,13 @@ public class Axes {
 	        
 	        if(emptySlots == 4)
 	        {
-	            targetPlayer.sendMessage("**HIT BY IMPACT**");
-	            didImpact = applyImpact(target);
+	            didImpact = applyImpact(attacker, target);
+	            if(didImpact)
+	                targetPlayer.sendMessage("**HIT BY IMPACT**");
 	        }
 	    } else {
 	        //Since mobs are technically unarmored this will always trigger
-	        didImpact = applyImpact(target);
+	        didImpact = applyImpact(attacker, target);
 	    }
 	    
 	    if(didImpact)
@@ -119,12 +121,12 @@ public class Axes {
 	    }
 	}
 	
-	public static boolean applyImpact(LivingEntity target)
+	public static boolean applyImpact(Player attacker, LivingEntity target)
 	{
 	    if(Math.random() * 100 > 75)
         {
-            target.teleport(target.getLocation());
             target.damage(2);
+            target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(1.5D));
             return true;
         }
 	    return false;

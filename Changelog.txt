@@ -45,6 +45,7 @@ Version 1.3.00-dev
  ! Changed Unarmed to start with a +3 DMG (1 Heart = 2 DMG) bonus from Iron Arm Style to make leveling it more viable
  ! Changed Unarmed to gain bonus damage every 50 skill levels
  ! Changed Unarmed to gain more bonus damage total than before
+ ! Changed Unarmed to disarm twice as often as before
  ! Changed Tree Feller to take down entire trees
  ! Changed mob spawn tracking to use Unique Entity ID instead of Entity Object
  ! Changed stats command name to mcstats for better plugin compatibility
