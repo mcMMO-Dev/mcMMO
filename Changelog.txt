@@ -8,8 +8,8 @@ Key:
   - Removal
 
 Version 1.3.00-dev
- + Added ability to customize drops for Excavation skill
- + Added ability to customize drops for Fishing skill
+ + Added ability to customize drops for Excavation skill (treasures.yml)
+ + Added ability to customize drops for Fishing skill (treasures.yml)
  + Added jungle trees to Woodcutting XP tables
  + Added player notification for when they stop Bleeding
  + Added configuration option to control mcMMO reporting damage events
@@ -20,6 +20,7 @@ Version 1.3.00-dev
  + Added /addlevels commands
  + Added /mcremove command which lets you remove users from MySQL or FlatFile
  + Added config values for XP multipliers for different hostile mobs
+ + Added 'mcmmo.commands.inspect' permission node for the new /inspect command
  + Re-added mcMMO reporting damage events
  = Fixed bug where Swords command showed Bleed Length twice instead of Bleed Chance
  = Fixed bug where Tree Feller wasn't checking for Tree Feller permission
@@ -55,6 +56,7 @@ Version 1.3.00-dev
  ! Changed to use Bukkit's built-in ignoreCancelledEvents system
  ! Changed chat logging for /p & /a
  ! Changed Tree Feller to use per-use ArrayList
+ - Removed /whois command (replaced with /inspect which has similar functionality)
  - Removed Master/Apprentice chat notifications to reduce spam
  - Removed MySpawn system (You can still use Chimaera Wings) due to being outdated and unwanted
  - Removed duplicate settings in config.yml
