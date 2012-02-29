@@ -77,8 +77,7 @@ public class Combat
 			}
 			else if(m.isAxes(itemInHand) && mcPermissions.getInstance().axes(attacker))
 			{
-				if(Users.getProfile(attacker).getSkillLevel(SkillType.AXES) >= 500)
-					event.setDamage(damage + 4);
+				Axes.axesBonus(attacker, event);
 				
 				Axes.axeCriticalCheck(attacker, event, pluginx); //Critical hit
 				
