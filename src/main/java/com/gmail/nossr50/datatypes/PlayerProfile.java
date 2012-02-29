@@ -69,7 +69,7 @@ public class PlayerProfile
 	
     String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
         
-	public PlayerProfile(Player player)
+	public PlayerProfile(String name)
 	{
 		hud = LoadProperties.defaulthud;
 		//Setup the HashMap for ability DATS
@@ -88,12 +88,12 @@ public class PlayerProfile
 			}
 		}
 		
-		playerName = player.getName();
+		playerName = name;
 		if (LoadProperties.useMySQL) 
 		{
-			if(!loadMySQL(player)) {
-				addMySQLPlayer(player);
-				loadMySQL(player);//This is probably not needed anymore, could just delete
+			if(!loadMySQL()) {
+				addMySQLPlayer();
+				loadMySQL();//This is probably not needed anymore, could just delete
 			}
 		} else {
 			if(!load()) { addPlayer(); }			
@@ -109,10 +109,10 @@ public class PlayerProfile
 		return userid;
 	}
 	
-	public boolean loadMySQL(Player p) 
+	public boolean loadMySQL() 
 	{
 		Integer id = 0;
-		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + p.getName() + "'");
+		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
 		if(id == 0)
 			return false;
 		this.userid = id;
@@ -189,10 +189,10 @@ public class PlayerProfile
 			return false;
 		}		
 	}
-	public void addMySQLPlayer(Player p) {
+	public void addMySQLPlayer() {
 		Integer id = 0;
-		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + p.getName() + "'," + System.currentTimeMillis() / 1000 +")");
-		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + p.getName() + "'");
+		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
+		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"cooldowns (user_id) VALUES ("+id+")");
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills (user_id) VALUES ("+id+")");
 		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")");

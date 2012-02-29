@@ -71,7 +71,7 @@ public class Users {
     public static void addUser(Player player)
     {
     	if(!players.containsKey(player)) 
-    		players.put(player, new PlayerProfile(player));
+    		players.put(player, new PlayerProfile(player.getName()));
     }
     public static void clearUsers()
     {
@@ -111,9 +111,13 @@ public class Users {
     		return players.get(player);
     	else
     	{
-    		players.put(player, new PlayerProfile(player));
+    		players.put(player, new PlayerProfile(player.getName()));
     		return players.get(player);
     	}
+    }
+    
+    public static PlayerProfile getOfflineProfile(String playerName){
+        return new PlayerProfile(playerName);
     }
     
     public static Users getInstance() {

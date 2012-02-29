@@ -56,6 +56,7 @@ Version 1.3.00-dev
  ! Changed to use Bukkit's built-in ignoreCancelledEvents system
  ! Changed chat logging for /p & /a
  ! Changed Tree Feller to use per-use ArrayList
+ - Removed /mcstats console functionality
  - Removed /whois command (replaced with /inspect which has similar functionality)
  - Removed Master/Apprentice chat notifications to reduce spam
  - Removed MySpawn system (You can still use Chimaera Wings) due to being outdated and unwanted
