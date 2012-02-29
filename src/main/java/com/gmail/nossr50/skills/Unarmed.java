@@ -46,7 +46,7 @@ public class Unarmed {
 		{
 			if(skillLevel >= 1000)
 			{
-				if(Math.random() * 2000 <= 1000)
+				if(Math.random() * 3000 <= 1000)
 				{
 	    			ItemStack item = defender.getItemInHand();
 	    			if(item != null)
@@ -59,7 +59,7 @@ public class Unarmed {
 	    	} 
 			else
     		{
-				if(Math.random() * 2000 <= skillLevel)
+				if(Math.random() * 3000 <= skillLevel)
 				{
 	    			ItemStack item = defender.getItemInHand();
 	    			if(item != null)
