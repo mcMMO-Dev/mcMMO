@@ -33,6 +33,7 @@ Version 1.3.00-dev
  = Fixed /mcability not respecting permissions
  = Prettied up new config files
  = Various skill function optimizations
+ ! Changed how mcMMO calculates distance between two points (optimizations)
  ! Changed how mcMMO handles MySQL connections (optimizations)
  ! Changed mcMMO user information to be stored for 2 minutes after log out to reduce lag on rejoins
  ! Changed Food+ to be named Farmer's Diet in Herbalism
