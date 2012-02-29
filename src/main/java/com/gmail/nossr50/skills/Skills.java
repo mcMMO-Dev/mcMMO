@@ -274,7 +274,7 @@ public class Skills
     			player.sendMessage(ability.getAbilityOn());
     			for(Player y : player.getWorld().getPlayers())
 	    		{
-	    			if(y != player && m.getDistance(player.getLocation(), y.getLocation()) < 10)
+    				if(y != player && m.isNear(player.getLocation(), y.getLocation(), 10))
 	    				y.sendMessage(ability.getAbilityPlayer(player));
 	    		}
     			PP.setSkillDATS(ability, System.currentTimeMillis()+(ticks*1000));

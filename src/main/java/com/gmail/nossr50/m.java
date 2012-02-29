@@ -189,13 +189,19 @@ public class m
 		
 		return 1;
 	}
-
-	public static double getDistance(Location loca, Location locb)
-	{
-		return Math.sqrt(Math.pow(loca.getX() - locb.getX(), 2) + Math.pow(loca.getY() - locb.getY(), 2)
-				+ Math.pow(loca.getZ() - locb.getZ(), 2));
+	
+	public static boolean isNear(Location first, Location second, int maxDistance) {
+		double relX = first.getX() - second.getX();
+		double relY = first.getY() - second.getY();
+		double relZ = first.getZ() - second.getZ();
+		double dist = relX * relX + relY * relY + relZ * relZ;
+		
+		if (dist < maxDistance * maxDistance)
+			return true;
+		
+		return false;
 	}
-
+	
 	public static boolean abilityBlockCheck(Block block)
 	{
 		switch(block.getType()){
