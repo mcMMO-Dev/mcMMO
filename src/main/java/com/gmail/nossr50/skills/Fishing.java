@@ -30,6 +30,7 @@ import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.LoadTreasures;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
@@ -94,7 +95,7 @@ public class Fishing {
 		Item theCatch = (Item)event.getCaught();
 		if(LoadProperties.fishingDrops)
 		{
-			List<FishingTreasure> rewards = LoadProperties.fishingRewardsTier1;
+			List<FishingTreasure> rewards = LoadTreasures.fishingRewardsTier1;
 			FishingTreasure treasure = rewards.get((int)(Math.random() * rewards.size()));
 			
 			if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
@@ -116,7 +117,7 @@ public class Fishing {
 		Item theCatch = (Item)event.getCaught();
 		if(LoadProperties.fishingDrops)
 		{
-			List<FishingTreasure> rewards = LoadProperties.fishingRewardsTier2;
+			List<FishingTreasure> rewards = LoadTreasures.fishingRewardsTier2;
 			FishingTreasure treasure = rewards.get((int)(Math.random() * rewards.size()));
 			
 			if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
@@ -138,7 +139,7 @@ public class Fishing {
 		Item theCatch = (Item)event.getCaught();
 		if(LoadProperties.fishingDrops)
 		{
-			List<FishingTreasure> rewards = LoadProperties.fishingRewardsTier3;
+			List<FishingTreasure> rewards = LoadTreasures.fishingRewardsTier3;
 			FishingTreasure treasure = rewards.get((int)(Math.random() * rewards.size()));
 			
 			if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
@@ -160,7 +161,7 @@ public class Fishing {
 		Item theCatch = (Item)event.getCaught();
 		if(LoadProperties.fishingDrops)
 		{
-			List<FishingTreasure> rewards = LoadProperties.fishingRewardsTier4;
+			List<FishingTreasure> rewards = LoadTreasures.fishingRewardsTier4;
 			FishingTreasure treasure = rewards.get((int)(Math.random() * rewards.size()));
 			
 			if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
@@ -182,7 +183,7 @@ public class Fishing {
 		Item theCatch = (Item)event.getCaught();
 		if(LoadProperties.fishingDrops)
 		{
-			List<FishingTreasure> rewards = LoadProperties.fishingRewardsTier5;
+			List<FishingTreasure> rewards = LoadTreasures.fishingRewardsTier5;
 			FishingTreasure treasure = rewards.get((int)(Math.random() * rewards.size()));
 			
 			if(Math.random() * 100 > (100.00 - treasure.getDropChance()))

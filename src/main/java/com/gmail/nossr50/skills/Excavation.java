@@ -31,6 +31,7 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.LoadTreasures;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
@@ -67,7 +68,7 @@ public class Excavation
     	switch(type)
     	{
     	case DIRT:
-    		for(ExcavationTreasure treasure : LoadProperties.excavationFromDirt)
+    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromDirt)
     		{
     			if(skillLevel >= treasure.getDropLevel())
     			{
@@ -80,7 +81,7 @@ public class Excavation
     		}
     		break;
     	case GRASS:
-    		for(ExcavationTreasure treasure : LoadProperties.excavationFromGrass)
+    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromGrass)
     		{
     			if(skillLevel >= treasure.getDropLevel())
     			{
@@ -93,7 +94,7 @@ public class Excavation
     		}
     		break;
     	case SAND:
-    		for(ExcavationTreasure treasure : LoadProperties.excavationFromSand)
+    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromSand)
     		{
     			if(skillLevel >= treasure.getDropLevel())
     			{
@@ -106,7 +107,7 @@ public class Excavation
     		}
     		break;
     	case GRAVEL:
-    		for(ExcavationTreasure treasure : LoadProperties.excavationFromGravel)
+    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromGravel)
     		{
     			if(skillLevel >= treasure.getDropLevel())
     			{
@@ -119,7 +120,7 @@ public class Excavation
     		}
     		break;
     	case CLAY:
-    		for(ExcavationTreasure treasure : LoadProperties.excavationFromClay)
+    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromClay)
     		{
     			if(skillLevel >= treasure.getDropLevel())
     			{
@@ -132,7 +133,7 @@ public class Excavation
     		}
     		break;
     	case MYCEL:
-    		for(ExcavationTreasure treasure : LoadProperties.excavationFromMycel)
+    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromMycel)
     		{
     			if(skillLevel >= treasure.getDropLevel())
     			{
@@ -145,7 +146,7 @@ public class Excavation
     		}
     		break;
     	case SOUL_SAND:
-    		for(ExcavationTreasure treasure : LoadProperties.excavationFromSoulSand)
+    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromSoulSand)
     		{
     			if(skillLevel >= treasure.getDropLevel())
     			{

@@ -45,6 +45,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +57,8 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.FileManager;
@@ -81,7 +84,6 @@ public class mcMMO extends JavaPlugin
 	private Runnable mcMMO_SaveTimer = new mcSaveTimer(this); //Periodic saving of Player Data
 	private Runnable ChangeDataValueTimer = new ChangeDataValueTimer(changeQueue);		//R2 block place workaround
 	private Runnable FastChangeDataValueTimer = new ChangeDataValueTimer(fastChangeQueue);
-	//private Timer mcMMO_SpellTimer = new Timer(true);
 
 	//Alias - Command
 	public HashMap<String, String> aliasMap = new HashMap<String, String>();
@@ -91,6 +93,8 @@ public class mcMMO extends JavaPlugin
 
 	//Config file stuff
 	LoadProperties config;
+	LoadTreasures config2;
+	
 	//Jar stuff
 	public static File mcmmo;
 
@@ -118,6 +122,9 @@ public class mcMMO extends JavaPlugin
 		
 		this.config = new LoadProperties(this);
 		this.config.load();
+		
+		this.config2 = new LoadTreasures(this);
+		this.config2.load();
 		
 		Party.getInstance().loadParties();
 		new Party(this);
@@ -379,5 +386,44 @@ public class mcMMO extends JavaPlugin
 		}
 		
 		return new String(buffer);
+	}
+	
+	/*
+	 * Boilerplate Custom Config Stuff
+	 */
+	
+	private FileConfiguration customConfig = null;
+	private File customConfigFile = null;
+	
+	public void reloadCustomConfig() {
+	    if (customConfigFile == null) {
+	    customConfigFile = new File(getDataFolder(), "customConfig.yml");
+	    }
+	    customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
+	 
+	    // Look for defaults in the jar
+	    InputStream defConfigStream = getResource("customConfig.yml");
+	    if (defConfigStream != null) {
+	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	        customConfig.setDefaults(defConfig);
+	    }
+	}
+	
+	public FileConfiguration getCustomConfig() {
+	    if (customConfig == null) {
+	        reloadCustomConfig();
+	    }
+	    return customConfig;
+	}
+	
+	public void saveCustomConfig() {
+	    if (customConfig == null || customConfigFile == null) {
+	    return;
+	    }
+	    try {
+	        customConfig.save(customConfigFile);
+	    } catch (IOException ex) {
+	        Logger.getLogger(JavaPlugin.class.getName()).log(Level.SEVERE, "Could not save config to " + customConfigFile, ex);
+	    }
 	}
 }
