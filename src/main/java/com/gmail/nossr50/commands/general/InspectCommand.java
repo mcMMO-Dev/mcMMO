@@ -93,6 +93,15 @@ public class InspectCommand implements CommandExecutor {
             }
             
             PlayerProfile PPt = Users.getOfflineProfile(args[0]);
+            
+            if(!PPt.isLoaded())
+            {
+                sender.sendMessage("Player does not exist in the database!");
+                return true;
+            }
+            
+            System.out.println(PPt.isLoaded());
+            
             sender.sendMessage(ChatColor.GREEN + "mcMMO Stats for Offline Player " + ChatColor.YELLOW + args[0]);
 
             sender.sendMessage(ChatColor.GOLD + "-=GATHERING SKILLS=-");

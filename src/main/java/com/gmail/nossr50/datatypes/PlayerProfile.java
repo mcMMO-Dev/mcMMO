@@ -46,7 +46,7 @@ public class PlayerProfile
 	private String party, invite;
 	
 	//TOGGLES
-	private boolean partyhud = true, spoutcraft = false, filling = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
+	private boolean loaded = false, partyhud = true, spoutcraft = false, filling = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
 	superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
 	serratedStrikesMode, hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false, pickaxePreparationMode = false, axePreparationMode = false, skullSplitterMode, berserkMode;
 	
@@ -96,10 +96,43 @@ public class PlayerProfile
 				loadMySQL();//This is probably not needed anymore, could just delete
 			}
 		} else {
-			if(!load()) { addPlayer(); }			
+			if(!load()) { addPlayer();}
 		}
 		lastlogin = ((Long) (System.currentTimeMillis()/1000)).intValue();
 	}
+	
+	public PlayerProfile(String name, boolean addNew)
+    {
+        hud = LoadProperties.defaulthud;
+        //Setup the HashMap for ability DATS
+        for(AbilityType abilityType : AbilityType.values())
+        {
+            skillsDATS.put(abilityType, 0);
+        }
+        
+        //Setup the HashMap for the skills
+        for(SkillType skillType : SkillType.values())
+        {
+            if(skillType != SkillType.ALL)
+            {
+                skills.put(skillType, 0);
+                skillsXp.put(skillType, 0);
+            }
+        }
+        
+        playerName = name;
+        if (LoadProperties.useMySQL) 
+        {
+            if(!loadMySQL() && addNew) {
+                addMySQLPlayer();
+                loadMySQL();//This is probably not needed anymore, could just delete
+            }
+        } else {
+            if(!load() && addNew) { addPlayer(); loaded = true; }
+        }
+        lastlogin = ((Long) (System.currentTimeMillis()/1000)).intValue();
+    }
+	
 	public int getLastLogin()
 	{
 		return lastlogin;
@@ -183,6 +216,7 @@ public class PlayerProfile
 				skillsXp.put(SkillType.AXES, Integer.valueOf(experience.get(1).get(9)));
 				skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(experience.get(1).get(10)));
 				skillsXp.put(SkillType.FISHING, Integer.valueOf(experience.get(1).get(11)));
+			loaded = true;
 			return true;
 		}
 		else {
@@ -291,6 +325,7 @@ public class PlayerProfile
     			if(character.length > 35)
     				skillsXp.put(SkillType.FISHING, Integer.valueOf(character[35]));
             	in.close();
+            	loaded = true;
     			return true;
         	}
         	in.close();
@@ -499,6 +534,10 @@ public class PlayerProfile
     public void togglePartyHUD()
     {
     	partyhud = !partyhud;
+    }
+    public boolean isLoaded()
+    {
+        return loaded;
     }
     public boolean getPartyHUD()
     {

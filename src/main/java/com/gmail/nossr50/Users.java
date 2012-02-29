@@ -117,7 +117,7 @@ public class Users {
     }
     
     public static PlayerProfile getOfflineProfile(String playerName){
-        return new PlayerProfile(playerName);
+        return new PlayerProfile(playerName, false);
     }
     
     public static Users getInstance() {
