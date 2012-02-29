@@ -929,7 +929,7 @@ public class PlayerProfile
 				if(x.isOnline() && !x.getName().equals(thisplayer.getName()) && Party.getInstance().isPartyLeader(x.getName(), this.getParty()))
 				{
 					//leaderName = x.getName();
-					if(m.getDistance(thisplayer.getLocation(), x.getLocation()) < 25)
+					if(m.isNear(thisplayer.getLocation(), x.getLocation(), 25))
 					{
 						PlayerProfile PartyLeader = Users.getProfile(x);
 						if(PartyLeader.getSkillLevel(skillType) >= this.getSkillLevel(skillType))
