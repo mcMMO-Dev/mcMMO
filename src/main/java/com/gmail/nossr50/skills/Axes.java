@@ -84,6 +84,7 @@ public class Axes {
 	
 	public static void impact(Player attacker, LivingEntity target)
 	{
+	    //TODO: Finish this skill, the idea is you will greatly damage an opponents armor and when they are armor less you have a proc that will stun them and deal additional damage.
 	    boolean didImpact = false;
 	    
 	    if(target instanceof Player)
