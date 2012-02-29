@@ -147,7 +147,7 @@ public class mcEntityListener implements Listener
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) 
     {
-    	Entity x = event.getEntity();
+    	LivingEntity x = event.getEntity();
     	x.setFireTicks(0);
     	
     	//Remove mob from mob spawner list
@@ -157,16 +157,13 @@ public class mcEntityListener implements Listener
     	}
     	
     	//Remove bleed track
-    	if(plugin.misc.bleedTracker.contains((LivingEntity)x))
-    		plugin.misc.addToBleedRemovalQue((LivingEntity)x);
+    	if(plugin.misc.bleedTracker.contains(x))
+    		plugin.misc.addToBleedRemovalQue(x);
     	
 		Archery.arrowRetrievalCheck(x, plugin);
 
-    	if(x instanceof Player){
-    		Player player = (Player)x;
-    		Users.getProfile(player).setBleedTicks(0);
-    	}
-    	
+    	if(x instanceof Player)
+    		Users.getProfile((Player)x).setBleedTicks(0);
     }
 
     @EventHandler
@@ -175,9 +172,7 @@ public class mcEntityListener implements Listener
     	SpawnReason reason = event.getSpawnReason();
     	
     	if(reason == SpawnReason.SPAWNER && !LoadProperties.xpGainsMobSpawners)
-    	{
     		plugin.misc.mobSpawnerList.add(event.getEntity().getEntityId());
-    	}
     }
     
 	@EventHandler (priority = EventPriority.LOW)
