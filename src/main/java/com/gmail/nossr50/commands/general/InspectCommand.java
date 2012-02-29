@@ -30,7 +30,7 @@ public class InspectCommand implements CommandExecutor {
             player = (Player) sender;
         }
 
-        if (player != null  && !mcPermissions.getInstance().whois(player)) {
+        if (player != null  && !mcPermissions.getInstance().inspect(player)) {
             sender.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
             return true;
         }

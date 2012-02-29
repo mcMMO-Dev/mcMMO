@@ -79,8 +79,8 @@ public class mcPermissions
     public boolean partyTeleport(Player player) {
         return player.hasPermission("mcmmo.commands.ptp");
     }
-    public boolean whois(Player player) {
-        return player.hasPermission("mcmmo.commands.whois");
+    public boolean inspect(Player player) {
+        return player.hasPermission("mcmmo.commands.inspect");
     }
     public boolean party(Player player) {
         return player.hasPermission("mcmmo.commands.party");

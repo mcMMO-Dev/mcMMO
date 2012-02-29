@@ -46,8 +46,8 @@ public class MccCommand implements CommandExecutor {
 		if (mcPermissions.getInstance().adminChat(player))
 			player.sendMessage("/a " + ChatColor.RED + mcLocale.getString("m.mccAdminToggle"));
 
-		if (mcPermissions.getInstance().whois(player))
-			player.sendMessage("/whois " + mcLocale.getString("m.mccWhois"));
+		if (mcPermissions.getInstance().inspect(player))
+			player.sendMessage("/inspect " + mcLocale.getString("m.mccInspect"));
 
 		if (mcPermissions.getInstance().mmoedit(player))
 			player.sendMessage("/mmoedit" + mcLocale.getString("m.mccMmoedit"));
