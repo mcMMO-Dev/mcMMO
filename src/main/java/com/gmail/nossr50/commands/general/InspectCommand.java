@@ -30,7 +30,7 @@ public class InspectCommand implements CommandExecutor {
             player = (Player) sender;
         }
 
-        if (player != null  && !mcPermissions.getInstance().inspect(player)) {
+        if (sender instanceof Player  && !mcPermissions.getInstance().inspect(player)) {
             sender.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
             return true;
         }
@@ -39,6 +39,7 @@ public class InspectCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Proper usage is /whois <playername>");
             return true;
         }
+        
         // if split[1] is a player
         if (plugin.getServer().getPlayer(args[0]) != null) 
         {
@@ -68,7 +69,7 @@ public class InspectCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.GOLD + "-=COMBAT SKILLS=-");
             if (mcPermissions.getInstance().axes(target))
                 sender.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AxesSkill"), PPt.getSkillLevel(SkillType.AXES), PPt.getSkillXpLevel(SkillType.AXES), PPt.getXpToLevel(SkillType.AXES)));
-            if (mcPermissions.getInstance().archery(player))
+            if (mcPermissions.getInstance().archery(target))
                 sender.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ArcherySkill"), PPt.getSkillLevel(SkillType.ARCHERY), PPt.getSkillXpLevel(SkillType.ARCHERY), PPt.getXpToLevel(SkillType.ARCHERY)));
             if (mcPermissions.getInstance().swords(target))
                 sender.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.SwordsSkill"), PPt.getSkillLevel(SkillType.SWORDS), PPt.getSkillXpLevel(SkillType.SWORDS), PPt.getXpToLevel(SkillType.SWORDS)));
