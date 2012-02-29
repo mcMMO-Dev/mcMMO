@@ -82,6 +82,10 @@ public class Combat
 				
 				Axes.axeCriticalCheck(attacker, event, pluginx); //Critical hit
 				
+				//Impact
+				if(event.getEntity() instanceof LivingEntity)
+				    Axes.impact(attacker, (LivingEntity)event.getEntity());
+				
 				if (!(event instanceof FakeEntityDamageByEntityEvent) && PPa.getSkullSplitterMode())
 					Axes.applyAoeDamage(attacker, event, pluginx);
 				
