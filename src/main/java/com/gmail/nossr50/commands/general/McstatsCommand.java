@@ -30,20 +30,10 @@ public class McstatsCommand implements CommandExecutor {
             player = (Player) sender;
         }
 
-		if (!(sender instanceof Player)) {
-			if(args.length != 1) {
-				sender.sendMessage("Usage: mcstats <username>");
-				return true;
-			} else {
-				Player temp = plugin.getServer().getPlayer(args[0]);
-				if(temp == null) {
-					sender.sendMessage("Could not find player: " + args[0]);
-					return true;
-				} else {
-					player = temp;
-				}
-			}
-		}
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("This command does not support console useage.");
+            return true;
+        }
 
 		PlayerProfile PP = Users.getProfile(player);
 
