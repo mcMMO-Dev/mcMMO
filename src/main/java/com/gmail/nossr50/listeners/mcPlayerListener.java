@@ -287,7 +287,7 @@ public class mcPlayerListener implements Listener
 		if((action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) && is.getTypeId() == LoadProperties.detonatorID)
 		{
 			Block b = player.getTargetBlock(null, 100);
-			if(b.getType().equals(Material.TNT))
+			if(b.getType().equals(Material.TNT) && mcPermissions.getInstance().blastMining(player) && m.blockBreakSimulate(b, player, true) && Users.getProfile(player).getSkillLevel(SkillType.MINING) >= 125)
 			{
 			    AbilityType ability = AbilityType.BLAST_MINING;
 			    //Check cooldown
@@ -302,6 +302,8 @@ public class mcPlayerListener implements Listener
                     if(y != player && m.isNear(player.getLocation(), y.getLocation(), 10))
                         y.sendMessage(ability.getAbilityPlayer(player));
                 }
+	            
+	            player.sendMessage(ChatColor.GRAY+"**BOOM**");
 	            
 				TNTPrimed tnt = player.getWorld().spawn(b.getLocation(), TNTPrimed.class);
 				b.setType(Material.AIR);
