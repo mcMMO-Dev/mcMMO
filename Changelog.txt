@@ -10,6 +10,7 @@ Key:
 Version 1.3.00-dev
  + Added ability to customize drops for Excavation skill (treasures.yml)
  + Added ability to customize drops for Fishing skill (treasures.yml)
+ + Added messages to nearby players when your abilities wear off
  + Added jungle trees to Woodcutting XP tables
  + Added player notification for when they stop Bleeding
  + Added configuration option to control mcMMO reporting damage events
@@ -22,6 +23,7 @@ Version 1.3.00-dev
  + Added /mcremove command which lets you remove users from MySQL or FlatFile
  + Added config values for XP multipliers for different hostile mobs
  + Added 'mcmmo.commands.inspect' permission node for the new /inspect command
+ + Added Impact & Greater Impact subskills to Axes
  + Re-added mcMMO reporting damage events
  = Fixed bug where Swords command showed Bleed Length twice instead of Bleed Chance
  = Fixed bug where Tree Feller wasn't checking for Tree Feller permission
@@ -42,6 +44,7 @@ Version 1.3.00-dev
  ! Changed default values of Woodcutting XP tables
  ! Changed 'Pine' to be renamed 'Oak' in Woodcutting XP tables
  ! Changed the name of Unarmed Apprentice/Mastery to Iron Arm Style
+ ! Changed Axes to gain bonus damage every 50 skill levels
  ! Changed Unarmed to start with a +3 DMG (1 Heart = 2 DMG) bonus from Iron Arm Style to make leveling it more viable
  ! Changed Unarmed to gain bonus damage every 50 skill levels
  ! Changed Unarmed to gain more bonus damage total than before

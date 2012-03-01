@@ -17,7 +17,6 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -26,14 +25,13 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Vector;
-
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class Axes {
@@ -124,7 +122,7 @@ public class Axes {
 	        {
 	            didImpact = applyImpact(attacker, target);
 	            if(didImpact)
-	                targetPlayer.sendMessage("**HIT BY IMPACT**");
+	                targetPlayer.sendMessage(mcLocale.getString("Axes.GreaterImpactOnSelf"));
 	        }
 	    } else {
 	        //Since mobs are technically unarmored this will always trigger
@@ -133,7 +131,7 @@ public class Axes {
 	    
 	    if(didImpact)
 	    {
-	        attacker.sendMessage("STRUCK WITH GREAT FORCE!");
+	        attacker.sendMessage(mcLocale.getString("Axes.GreaterImpactOnEnemy"));
 	    }
 	}
 	

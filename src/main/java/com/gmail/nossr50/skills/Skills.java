@@ -111,6 +111,12 @@ public class Skills
     			ability.setMode(PP, false);
     			ability.setInformed(PP, false);
     			player.sendMessage(ability.getAbilityOff());
+    			
+    			for(Player y : player.getWorld().getPlayers())
+                {
+                    if(y != player && m.isNear(player.getLocation(), y.getLocation(), 10))
+                        y.sendMessage(ability.getAbilityPlayerOff(player));
+                }
     		}
     	}
 	}
