@@ -117,7 +117,7 @@ permissions:
             mcmmo.admin: true
             mcmmo.tools.*: true
     mcmmo.admin:
-        description:        
+        description: Allows access to mmoupdate and other sensitive commands        
     mcmmo.tools.*:
         description: Implies all mcmmo.tools permissions.
         children:
@@ -125,11 +125,11 @@ permissions:
             mcmmo.tools.mmoedit: true 
             mcmmo.tools.mcgod: true 
     mcmmo.tools.mcrefresh:
-        description:
+        description: Allows access to mcrefresh command
     mcmmo.tools.mmoedit:
-        description:
+        description: Allows access to mmoedit command
     mcmmo.tools.mcgod:
-        description:        
+        description: Allows access to mcgod command        
     mcmmo.ability.*:
         description: Implies all mcmmo.ability permissions.
         children:
@@ -141,29 +141,27 @@ permissions:
             mcmmo.ability.swords: true 
             mcmmo.ability.woodcutting: true 
     mcmmo.ability.herbalism:
-        description:
+        description: Allows access to Green Terra ability
     mcmmo.ability.excavation:
-        description:
+        description: Allows access to Giga Drill Breaker ability
     mcmmo.ability.unarmed:
-        description:
+        description: Allows access to Berserker ability
     mcmmo.ability.mining:
-        description:
+        description: Allows access to Super Breaker ability
     mcmmo.ability.axes:
-        description:
+        description: Allows access to Skull Splitter ability
     mcmmo.ability.swords:
-        description:
+        description: Allows access to Serrated Strikes ability
     mcmmo.ability.woodcutting:
-        description:        
+        description: Allows access to Tree Feller ability        
     mcmmo.item.*:
         description: Implies all mcmmo.item permissions.
         children:
             mcmmo.item.chimaerawing: true 
     mcmmo.item.chimaerawing:
-        description:        
-    mcmmo.regeneration:
-        description:        
+        description: Allows use of Chimaera Wing item            
     mcmmo.motd:
-        description:        
+        description: Allows access to the motd        
     mcmmo.commands.*:
         description: Implies all mcmmo.commands permissions.
         children:
@@ -172,13 +170,13 @@ permissions:
             mcmmo.commands.inspect: true 
             mcmmo.commands.party: true 
     mcmmo.commands.ability:
-        description:
+        description: Allows access to the mcability command
     mcmmo.commands.ptp:
-        description:
+        description: Allows access to the ptp command
     mcmmo.commands.inspect:
-        description:
+        description: Allows access to the inspect command
     mcmmo.commands.party:
-        description:        
+        description: Allows acces to the party command        
     mcmmo.chat.*:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
@@ -205,26 +203,26 @@ permissions:
             mcmmo.skills.acrobatics: true
             mcmmo.skills.blastmining: true
     mcmmo.skills.taming:
-        description:
+        description: Allows access to the Taming skill
     mcmmo.skills.mining:
-        description:
+        description: Allows access to the Mining skill
     mcmmo.skills.woodcutting:
-        description:
+        description: Allows access to the Woodcutting skill
     mcmmo.skills.repair:
-        description:
+        description: Allows access to the Repair skill
     mcmmo.skills.unarmed:
-        description:
+        description: Allows access to the Unarmed skill
     mcmmo.skills.archery:
-        description:
+        description: Allows access to the Archery skill
     mcmmo.skills.herbalism:
-        description:
+        description: Allows access to the Herbalism skill
     mcmmo.skills.excavation:
-        description:
+        description: Allows access to the Excavation skill
     mcmmo.skills.swords:
-        description:
+        description: Allows access to the Swords skill
     mcmmo.skills.axes:
-        description:
+        description: Allows access to the Axes skill
     mcmmo.skills.acrobatics:
-        description:
+        description: Allows access to the Acrobatics skill
     mcmmo.skills.blastmining:
-        description:
+        description: Allows access to the Blast Mining subskill for Mining
