@@ -37,7 +37,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 
 public class BlastMining{
 	
-	public static Block explosionBlockDrops(Block block, Location loc)
+	public static void explosionBlockDrops(Block block, Location loc)
 	{
     	int id = block.getTypeId();
 		ItemStack item = new ItemStack(id, 1);
@@ -85,7 +85,6 @@ public class BlastMining{
 			m.mcDropItem(loc, item);
 			break;	
 		}
-		return block;
 	}
 	
 	public static List<Block> explosionYields(List<Block> ores, List<Block> debris, float yield, float oreBonus, float debrisReduction, Location location, int extraDrops)
