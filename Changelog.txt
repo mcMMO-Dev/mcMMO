@@ -7,6 +7,10 @@ Key:
   ! Change
   - Removal
 
+Version 1.3.01
+ = Fixed bug where Tree Feller had no cooldown
+ = Fixed bug with activating Skull Splitter after using Tree Feller
+ 
 Version 1.3.00
  + Added ability to customize drops for Excavation skill (treasures.yml)
  + Added ability to customize drops for Fishing skill (treasures.yml)

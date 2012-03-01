@@ -76,7 +76,19 @@ public class Skills
     	if(!PP.getAbilityUse() || PP.getSuperBreakerMode() || PP.getSerratedStrikesMode() || PP.getTreeFellerMode() || PP.getGreenTerraMode() || PP.getBerserkMode() || PP.getGigaDrillBreakerMode())
     		return;
     	
-    	if(ability.getPermissions(player) && tool.inHand(player.getItemInHand()) && !tool.getToolMode(PP))
+    	//Woodcutting & Axes need to be treated differently
+    	//Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
+    	if(skill == SkillType.WOODCUTTING || skill == SkillType.AXES)
+    	{
+    	    if(tool.inHand(player.getItemInHand()) && !tool.getToolMode(PP))
+    	    {
+    	        if(LoadProperties.enableAbilityMessages)
+                    player.sendMessage(tool.getRaiseTool());
+                
+                tool.setToolATS(PP, System.currentTimeMillis());
+                tool.setToolMode(PP, true);
+    	    }
+    	} else if(ability.getPermissions(player) && tool.inHand(player.getItemInHand()) && !tool.getToolMode(PP))
     	{
     		if(!ability.getMode(PP) && !cooldownOver(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()))
     		{
@@ -271,6 +283,16 @@ public class Skills
     	{
     		if(type.getTool().getToolMode(PP))
     			type.getTool().setToolMode(PP, false);
+    		
+    		//Axes and Woodcutting are odd because they share the same tool so we show them the too tired message when they take action
+    		if(type == SkillType.WOODCUTTING || type == SkillType.AXES)
+    		{
+        		if(!ability.getMode(PP) && !cooldownOver(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()))
+                {
+                    player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()) + "s)");
+                    return;
+                }
+    		}
     		
     		int ticks = 2 + (PP.getSkillLevel(type) / 50);
     		if(!ability.getMode(PP) && cooldownOver(player, PP.getSkillDATS(ability), ability.getCooldown()))
