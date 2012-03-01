@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.skills;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +43,7 @@ public class Unarmed {
 	public static void disarmProcCheck(Player attacker, Player defender)
 	{
 		int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.UNARMED);
-		if(defender.getItemInHand() != null)
+		if(defender.getItemInHand() != null && defender.getItemInHand().getType() != Material.AIR)
 		{
 			if(skillLevel >= 1000)
 			{
