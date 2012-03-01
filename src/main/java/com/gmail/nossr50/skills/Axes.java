@@ -139,7 +139,7 @@ public class Axes {
 	{
 	    if(Math.random() * 100 > 75)
         {
-            target.damage(2);
+            Combat.dealDamage(target, 2, attacker);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(1.5D));
             return true;
         }
