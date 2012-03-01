@@ -47,7 +47,7 @@ public class PlayerProfile
 	
 	//TOGGLES
 	private boolean loaded = false, partyhud = true, spoutcraft = false, filling = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
-	superBreakerInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
+	superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
 	serratedStrikesMode, hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false, pickaxePreparationMode = false, axePreparationMode = false, skullSplitterMode, berserkMode;
 	
 	//TIMESTAMPS
@@ -189,6 +189,7 @@ public class PlayerProfile
 				skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(cooldowns.get(1).get(4)));
 				skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(cooldowns.get(1).get(5)));
 				skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(cooldowns.get(1).get(6)));
+				skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(cooldowns.get(1).get(7)));
 			}
 			HashMap<Integer, ArrayList<String>> stats = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
 				skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
@@ -324,6 +325,8 @@ public class PlayerProfile
     				skills.put(SkillType.FISHING, Integer.valueOf(character[34]));
     			if(character.length > 35)
     				skillsXp.put(SkillType.FISHING, Integer.valueOf(character[35]));
+    			if(character.length > 36)
+    			    skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[36]));
             	in.close();
             	loaded = true;
     			return true;
@@ -354,6 +357,7 @@ public class PlayerProfile
     				+", excavation = " + skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER)
     				+", swords = " + skillsDATS.get(AbilityType.SERRATED_STRIKES)
     				+", axes = " + skillsDATS.get(AbilityType.SKULL_SPLIITER)
+    				+", blast_mining = " + skillsDATS.get(AbilityType.BLAST_MINING)
     				+" WHERE user_id = "+this.userid);
     		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
     				+"  taming = "+skills.get(SkillType.TAMING)
@@ -442,6 +446,7 @@ public class PlayerProfile
 	        			writer.append(hud.toString()+":");
 	        			writer.append(skills.get(SkillType.FISHING) + ":");
 	        			writer.append(skillsXp.get(SkillType.FISHING) + ":");
+	        			writer.append(String.valueOf(skillsDATS.get(AbilityType.BLAST_MINING)) + ":");
 	        			writer.append("\r\n");                   			
 	        		}
 	        	}
@@ -522,6 +527,7 @@ public class PlayerProfile
             out.append(LoadProperties.defaulthud.toString()+":");//HUD
             out.append(0+":"); //Fishing
             out.append(0+":"); //FishingXP
+            out.append(0+":"); //Blast Mining
 
             //Add more in the same format as the line above
             
@@ -672,7 +678,7 @@ public class PlayerProfile
 	public boolean getHoePreparationMode(){
 		return hoePreparationMode;
 	}
-	public void setHoePreparationMode(Boolean bool){
+	public void setHoePreparationMode(boolean bool){
 		hoePreparationMode = bool;
 	}
 	public long getHoePreparationATS(){
@@ -688,7 +694,7 @@ public class PlayerProfile
 	public boolean getSwordsPreparationMode(){
 		return swordsPreparationMode;
 	}
-	public void setSwordsPreparationMode(Boolean bool){
+	public void setSwordsPreparationMode(boolean bool){
 		swordsPreparationMode = bool;
 	}
 	public long getSwordsPreparationATS(){
@@ -703,7 +709,7 @@ public class PlayerProfile
 	public boolean getShovelPreparationMode(){
 		return shovelPreparationMode;
 	}
-	public void setShovelPreparationMode(Boolean bool){
+	public void setShovelPreparationMode(boolean bool){
 		shovelPreparationMode = bool;
 	}
 	public long getShovelPreparationATS(){
@@ -718,7 +724,7 @@ public class PlayerProfile
 	public boolean getFistsPreparationMode(){
 		return fistsPreparationMode;
 	}
-	public void setFistsPreparationMode(Boolean bool){
+	public void setFistsPreparationMode(boolean bool){
 		fistsPreparationMode = bool;
 	}
 	public long getFistsPreparationATS(){
@@ -733,7 +739,7 @@ public class PlayerProfile
 	public boolean getAxePreparationMode(){
 		return axePreparationMode;
 	}
-	public void setAxePreparationMode(Boolean bool){
+	public void setAxePreparationMode(boolean bool){
 		axePreparationMode = bool;
 	}
 	public long getAxePreparationATS(){
@@ -748,7 +754,7 @@ public class PlayerProfile
 	public boolean getPickaxePreparationMode(){
 		return pickaxePreparationMode;
 	}
-	public void setPickaxePreparationMode(Boolean bool){
+	public void setPickaxePreparationMode(boolean bool){
 		pickaxePreparationMode = bool;
 	}
 	public long getPickaxePreparationATS(){
@@ -761,13 +767,13 @@ public class PlayerProfile
 	 * GREEN TERRA MODE
 	 */
 	public boolean getGreenTerraInformed() {return greenTerraInformed;}
-	public void setGreenTerraInformed(Boolean bool){
+	public void setGreenTerraInformed(boolean bool){
 		greenTerraInformed = bool;
 	}
 	public boolean getGreenTerraMode(){
 		return greenTerraMode;
 	}
-	public void setGreenTerraMode(Boolean bool){
+	public void setGreenTerraMode(boolean bool){
 		greenTerraMode = bool;
 	}
 	
@@ -775,78 +781,82 @@ public class PlayerProfile
 	 * BERSERK MODE
 	 */
 	public boolean getBerserkInformed() {return berserkInformed;}
-	public void setBerserkInformed(Boolean bool){
+	public void setBerserkInformed(boolean bool){
 		berserkInformed = bool;
 	}
 	public boolean getBerserkMode(){
 		return berserkMode;
 	}
-	public void setBerserkMode(Boolean bool){
+	public void setBerserkMode(boolean bool){
 		berserkMode = bool;
 	}
 	/*
 	 * SKULL SPLITTER
 	 */
 	public boolean getSkullSplitterInformed() {return skullSplitterInformed;}
-	public void setSkullSplitterInformed(Boolean bool){
+	public void setSkullSplitterInformed(boolean bool){
 		skullSplitterInformed = bool;
 	}
 	public boolean getSkullSplitterMode(){
 		return skullSplitterMode;
 	}
-	public void setSkullSplitterMode(Boolean bool){
+	public void setSkullSplitterMode(boolean bool){
 		skullSplitterMode = bool;
 	}
 	/*
 	 * SERRATED STRIKES
 	 */
 	public boolean getSerratedStrikesInformed() {return serratedStrikesInformed;}
-	public void setSerratedStrikesInformed(Boolean bool){
+	public void setSerratedStrikesInformed(boolean bool){
 		serratedStrikesInformed = bool;
 	}
 	public boolean getSerratedStrikesMode(){
 		return serratedStrikesMode;
 	}
-	public void setSerratedStrikesMode(Boolean bool){
+	public void setSerratedStrikesMode(boolean bool){
 		serratedStrikesMode = bool;
 	}
 	/*
 	 * GIGA DRILL BREAKER
 	 */
 	public boolean getGigaDrillBreakerInformed() {return gigaDrillBreakerInformed;}
-	public void setGigaDrillBreakerInformed(Boolean bool){
+	public void setGigaDrillBreakerInformed(boolean bool){
 		gigaDrillBreakerInformed = bool;
 	}
 	public boolean getGigaDrillBreakerMode(){
 		return gigaDrillBreakerMode;
 	}
-	public void setGigaDrillBreakerMode(Boolean bool){
+	public void setGigaDrillBreakerMode(boolean bool){
 		gigaDrillBreakerMode = bool;
 	}
 	/*
 	 * TREE FELLER STUFF
 	 */
 	public boolean getTreeFellerInformed() {return treeFellerInformed;}
-	public void setTreeFellerInformed(Boolean bool){
+	public void setTreeFellerInformed(boolean bool){
 		treeFellerInformed = bool;
 	}
 	public boolean getTreeFellerMode(){
 		return treeFellerMode;
 	}
-	public void setTreeFellerMode(Boolean bool){
+	public void setTreeFellerMode(boolean bool){
 		treeFellerMode = bool;
 	}
 	/*
 	 * MINING
 	 */
 	public boolean getSuperBreakerInformed() {return superBreakerInformed;}
-	public void setSuperBreakerInformed(Boolean bool){
+	public void setSuperBreakerInformed(boolean bool){
 		superBreakerInformed = bool;
+	}
+	public boolean getBlastMiningInformed() {return blastMiningInformed;}
+	public void setBlastMiningInformed(boolean bool){
+	    blastMiningInformed = bool;
 	}
 	public boolean getSuperBreakerMode(){
 		return superBreakerMode;
 	}
-	public void setSuperBreakerMode(Boolean bool){
+	public void setSuperBreakerMode(boolean bool){
 		superBreakerMode = bool;
 	}
 	public long getRecentlyHurt(){

@@ -87,6 +87,7 @@ Abilities:
     Activation:
         Only_Activate_When_Sneaking: false
     Cooldowns:
+        Blast_Mining: 60
         Giga_Drill_Breaker: 240
         Berserk: 240
         Green_Terra: 240

@@ -100,7 +100,7 @@ public class mcPermissions
     public boolean mining(Player player) {
         return player.hasPermission("mcmmo.skills.mining");
     }
-    public boolean blastmining(Player player) {
+    public boolean blastMining(Player player) {
         return player.hasPermission("mcmmo.skills.blastmining");
     }
     public boolean fishing(Player player) {

@@ -47,7 +47,7 @@ public class LoadProperties {
 			mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold,
 			mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack,
 			mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier,
-			superBreakerCooldown, greenTerraCooldown, gigaDrillBreakerCooldown,
+			superBreakerCooldown, blastMiningCooldown, greenTerraCooldown, gigaDrillBreakerCooldown,
 			treeFellerCooldown, berserkCooldown, serratedStrikeCooldown,
 			skullSplitterCooldown, abilityDurabilityLoss,
 			feathersConsumedByChimaeraWing, bonesConsumedByCOTW,
@@ -254,6 +254,7 @@ public class LoadProperties {
 		berserkCooldown = readInteger("Abilities.Cooldowns.Berserk", 240);
 		serratedStrikeCooldown = readInteger("Abilities.Cooldowns.Serrated_Strikes", 240);
 		skullSplitterCooldown = readInteger("Abilities.Cooldowns.Skull_Splitter", 240);
+		blastMiningCooldown = readInteger("Abilities.Cooldowns.Blast_Mining", 60);
 
 		MySQLserverName = readString("MySQL.Server.Address", "localhost");
 		if (readString("MySQL.Database.User.Password", null) != null)

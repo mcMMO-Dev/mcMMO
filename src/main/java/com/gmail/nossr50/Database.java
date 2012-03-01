@@ -133,7 +133,7 @@ public class Database {
 
 	public void checkDatabaseStructure()
 	{
-		String sql = "SELECT * FROM  `mcmmo_experience` ORDER BY  `"+LoadProperties.MySQLtablePrefix+"experience`.`fishing` ASC LIMIT 0 , 30";
+		String sql = "SELECT * FROM  `"+LoadProperties.MySQLtablePrefix+"experience` ORDER BY  `"+LoadProperties.MySQLtablePrefix+"experience`.`fishing` ASC LIMIT 0 , 30";
 		
 		ResultSet rs = null;
 		HashMap<Integer, ArrayList<String>> Rows = new HashMap<Integer, ArrayList<String>>();
@@ -155,6 +155,31 @@ public class Database {
 			Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
 			Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
 		}
+	}
+	
+	public void checkDatabaseStructureForBlastMining()
+	{
+	    String sql = "SELECT * FROM  `"+LoadProperties.MySQLtablePrefix+"cooldowns` ORDER BY  `"+LoadProperties.MySQLtablePrefix+"cooldowns`.`blast_mining` ASC LIMIT 0 , 30";
+        
+        ResultSet rs = null;
+        HashMap<Integer, ArrayList<String>> Rows = new HashMap<Integer, ArrayList<String>>();
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            if (stmt.executeQuery() != null) {
+                stmt.executeQuery();
+                rs = stmt.getResultSet();
+                while (rs.next()) {
+                    ArrayList<String> Col = new ArrayList<String>();
+                    for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                        Col.add(rs.getString(i));
+                    }
+                    Rows.put(rs.getRow(), Col);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Updating mcMMO MySQL tables...");
+            Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "cooldowns` ADD `blast_mining` int(10) NOT NULL DEFAULT '0' ;");
+        }
 	}
 	
 	// write query

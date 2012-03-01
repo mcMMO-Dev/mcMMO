@@ -292,7 +292,6 @@ public class mcPlayerListener implements Listener
 				tnt.setFuseTicks(0);
 				if(plugin.misc.tntTracker.get(tnt.getLocation()) != null)
 					System.out.println(tnt.getLocation().toString());
-	//			plugin.misc.tntTracker.remove(block);
 			}
 		}
 	}

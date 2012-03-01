@@ -25,6 +25,7 @@ Version 1.3.00-dev
  + Added 'mcmmo.commands.inspect' permission node for the new /inspect command
  + Added Impact & Greater Impact subskills to Axes
  + Re-added mcMMO reporting damage events
+ = Fixed bug with updating MySQL tables to include fishing on servers using custom table prefixes
  = Fixed bug where Disarm didn't work at all ever
  = Fixed bug where Swords command showed Bleed Length twice instead of Bleed Chance
  = Fixed bug where Tree Feller wasn't checking for Tree Feller permission

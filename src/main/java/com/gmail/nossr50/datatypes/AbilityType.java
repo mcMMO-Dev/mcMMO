@@ -14,8 +14,9 @@ public enum AbilityType
 	GREEN_TERRA(LoadProperties.greenTerraCooldown, mcLocale.getString("Skills.GreenTerraOn"), mcLocale.getString("Skills.GreenTerraOff"), "Skills.GreenTerraPlayer", mcLocale.getString("Skills.YourGreenTerra"), mcLocale.getString("Skills.GreenTerraPlayerOff")),
 	SKULL_SPLIITER(LoadProperties.skullSplitterCooldown, mcLocale.getString("Skills.SkullSplitterOn"), mcLocale.getString("Skills.SkullSplitterOff"), "Skills.SkullSplitterPlayer", mcLocale.getString("Skills.YourSkullSplitter"), "Skills.SkullSplitterPlayerOff"),
 	TREE_FELLER(LoadProperties.treeFellerCooldown, mcLocale.getString("Skills.TreeFellerOn"), mcLocale.getString("Skills.TreeFellerOff"), "Skills.TreeFellerPlayer", mcLocale.getString("Skills.YourTreeFeller"), "Skills.TreeFellerPlayerOff"),
-	SERRATED_STRIKES(LoadProperties.skullSplitterCooldown, mcLocale.getString("Skills.SerratedStrikesOn"), mcLocale.getString("Skills.SerratedStrikesOff"), "Skills.SerratedStrikesPlayer", mcLocale.getString("Skills.YourSerratedStrikes"), "Skills.SerratedStrikesPlayerOff");
-	
+	SERRATED_STRIKES(LoadProperties.skullSplitterCooldown, mcLocale.getString("Skills.SerratedStrikesOn"), mcLocale.getString("Skills.SerratedStrikesOff"), "Skills.SerratedStrikesPlayer", mcLocale.getString("Skills.YourSerratedStrikes"), "Skills.SerratedStrikesPlayerOff"),
+	BLAST_MINING(LoadProperties.blastMiningCooldown, mcLocale.getString("Skills.BlastMiningOn"), mcLocale.getString("Skills.BlastMiningOff"), "Skills.BlastMiningPlayer", mcLocale.getString("Skills.YourBlastMining"), "Skills.BlastMiningPlayerOff");
+
 	private int cooldown;
 	private String abilityOn;
 	private String abilityOff;
@@ -181,6 +182,8 @@ public enum AbilityType
 			return mcPermissions.getInstance().miningAbility(player);
 		case TREE_FELLER:
 			return mcPermissions.getInstance().woodCuttingAbility(player);
+		case BLAST_MINING:
+		    return mcPermissions.getInstance().blastMining(player);
 		}
 		return false;
 	}

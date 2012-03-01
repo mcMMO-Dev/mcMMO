@@ -17,7 +17,6 @@
 package com.gmail.nossr50.listeners;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -106,7 +105,7 @@ public class mcEntityListener implements Listener
 				    	/*
 				    	 * Demolitions Expert
 				    	 */
-		    			if(cause == DamageCause.BLOCK_EXPLOSION && mcPermissions.getInstance().blastmining(player))
+		    			if(cause == DamageCause.BLOCK_EXPLOSION && mcPermissions.getInstance().blastMining(player))
 		    				BlastMining.demolitionsExpertise(Users.getProfile(player).getSkillLevel(SkillType.MINING), event);
 			    	}
 			    	
