@@ -22,7 +22,6 @@ public class McmmoCommand implements CommandExecutor {
 
 		Player player = (Player) sender;
 
-		player.sendMessage(ChatColor.RED + "-----[]" + ChatColor.GREEN + "mcMMO" + ChatColor.RED + "[]-----");
 		String description = mcLocale.getString("mcMMO.Description", new Object[] { "mcc" });
 		String[] mcSplit = description.split(",");
 
@@ -33,10 +32,10 @@ public class McmmoCommand implements CommandExecutor {
 		if (LoadProperties.spoutEnabled && player instanceof SpoutPlayer) {
 			SpoutPlayer sPlayer = (SpoutPlayer) player;
 			if (LoadProperties.donateMessage)
-				sPlayer.sendMessage(ChatColor.GREEN + "[mcMMO] Donate! Paypal theno1yeti@gmail.com");
+				sPlayer.sendMessage(ChatColor.YELLOW + "[mcMMO]"+ChatColor.GOLD+" Donate! Paypal "+ChatColor.GREEN+"theno1yeti@gmail.com");
 		} else {
 			if (LoadProperties.donateMessage)
-				player.sendMessage(ChatColor.GREEN + "If you like my work you can donate via Paypal: theno1yeti@gmail.com");
+			    player.sendMessage(ChatColor.YELLOW + "[mcMMO]"+ChatColor.GOLD+" Donate! Paypal "+ChatColor.GREEN+"theno1yeti@gmail.com");
 		}
 
 		return true;
