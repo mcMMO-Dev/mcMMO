@@ -244,34 +244,30 @@ public class BlastMining{
     	if(plugin.misc.blockWatchList.contains(block) || block.getData() == (byte) 5)
     		return;
     	int xp = 0;
-		int id = block.getTypeId();
 		
-		switch (id) {
+		switch (block.getType()) {
 			//COAL
-			case 16:
+			case COAL_ORE:
 				xp += LoadProperties.mcoal;
 				break;
 			//GOLD
-			case 14:
+			case GOLD_ORE:
 				xp += LoadProperties.mgold;
 				break;
 			//DIAMOND
-			case 56:
+			case DIAMOND_ORE:
 				xp += LoadProperties.mdiamond;
 				break;
 			//IRON
-			case 15:
+			case IRON_ORE:
 				xp += LoadProperties.miron;
 				break;
 			//REDSTONE
-			case 73:
-				xp += LoadProperties.mredstone;
-				break;
-			case 74:
+			case REDSTONE_ORE:
 				xp += LoadProperties.mredstone;
 				break;
 			//LAPIS
-			case 21:
+			case LAPIS_ORE:
 				xp += LoadProperties.mlapis;
 				break;
 		}
