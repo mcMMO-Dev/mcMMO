@@ -185,11 +185,9 @@ public class BlastMining{
 		if(skillLevel >= 1000)
 			xp = explosionYields(ores, debris, yield, .70f, .30f, location, 3);
 		
-		Iterator<Block> xpGain = xp.iterator();
-		
-		while(xpGain.hasNext())
+		for(Block block : xp)
 		{
-			blastMiningXP(player, xpGain.next(), plugin);
+			blastMiningXP(player, block, plugin);
 		}
 	}
 	
