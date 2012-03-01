@@ -96,6 +96,7 @@ public class Database {
 				+ "`swords` int(32) unsigned NOT NULL DEFAULT '0',"
 				+ "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
 				+ "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
+				+ "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
 				+ "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 		Write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "skills` (`user_id` int(10) unsigned NOT NULL,"
 				+ "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -129,6 +130,7 @@ public class Database {
 		Write("DROP TABLE IF EXISTS `"+LoadProperties.MySQLtablePrefix+"spawn`");
 		
 		checkDatabaseStructure();
+		checkDatabaseStructureForBlastMining();
 	}
 
 	public void checkDatabaseStructure()
@@ -151,7 +153,7 @@ public class Database {
 				}
 			}
 		} catch (SQLException ex) {
-			System.out.println("Updating mcMMO MySQL tables...");
+			System.out.println("Updating mcMMO MySQL tables for Fishing...");
 			Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
 			Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
 		}
@@ -177,8 +179,8 @@ public class Database {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Updating mcMMO MySQL tables...");
-            Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "cooldowns` ADD `blast_mining` int(10) NOT NULL DEFAULT '0' ;");
+            System.out.println("Updating mcMMO MySQL tables for Blast Mining...");
+            Write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0' ;");
         }
 	}
 	

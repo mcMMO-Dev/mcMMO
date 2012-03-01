@@ -56,6 +56,7 @@ import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -282,14 +283,31 @@ public class mcPlayerListener implements Listener
 			}
 		}
 		
-		if(action == Action.RIGHT_CLICK_AIR && is.getTypeId() == LoadProperties.detonatorID)
+		//BLAST MINING
+		if((action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) && is.getTypeId() == LoadProperties.detonatorID)
 		{
 			Block b = player.getTargetBlock(null, 100);
 			if(b.getType().equals(Material.TNT))
 			{
+			    AbilityType ability = AbilityType.BLAST_MINING;
+			    //Check cooldown
+	            if(!Skills.cooldownOver(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()))
+	            {
+	                player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()) + "s)");
+	                return;
+	            }
+	            //Send message to nearby players
+	            for(Player y : player.getWorld().getPlayers())
+                {
+                    if(y != player && m.isNear(player.getLocation(), y.getLocation(), 10))
+                        y.sendMessage(ability.getAbilityPlayer(player));
+                }
+	            
 				TNTPrimed tnt = player.getWorld().spawn(b.getLocation(), TNTPrimed.class);
 				b.setType(Material.AIR);
 				tnt.setFuseTicks(0);
+				PP.setSkillDATS(ability, System.currentTimeMillis()); //Save DATS for Blast Mining
+				PP.setBlastMiningInformed(false);
 			}
 		}
 	}

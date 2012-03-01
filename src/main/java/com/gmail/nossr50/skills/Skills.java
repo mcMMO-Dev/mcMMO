@@ -55,10 +55,8 @@ public class Skills
     	return (int) (((deactivatedTimeStamp + (cooldown * 1000)) - System.currentTimeMillis())/1000);
     }
     
-    public static void watchCooldown(Player player, PlayerProfile PP, long curTime, SkillType skill)
+    public static void watchCooldown(Player player, PlayerProfile PP, long curTime, AbilityType ability)
     {
-    	AbilityType ability = skill.getAbility();
-    	
     	if(!ability.getInformed(PP) && curTime - (PP.getSkillDATS(ability) * 1000) >= (ability.getCooldown() * 1000))
     	{
     		ability.setInformed(PP, true);

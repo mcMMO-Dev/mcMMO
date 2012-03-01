@@ -20,6 +20,7 @@ import org.bukkit.entity.*;
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -63,13 +64,14 @@ public class mcTimer implements Runnable
 			/*
 			 * COOLDOWN MONITORING
 			 */
-			Skills.watchCooldown(player, PP, curTime, SkillType.AXES);
-			Skills.watchCooldown(player, PP, curTime, SkillType.EXCAVATION);
-			Skills.watchCooldown(player, PP, curTime, SkillType.HERBALISM);
-			Skills.watchCooldown(player, PP, curTime, SkillType.MINING);
-			Skills.watchCooldown(player, PP, curTime, SkillType.SWORDS);
-			Skills.watchCooldown(player, PP, curTime, SkillType.UNARMED);
-			Skills.watchCooldown(player, PP, curTime, SkillType.WOODCUTTING);
+			Skills.watchCooldown(player, PP, curTime, AbilityType.SKULL_SPLIITER);
+			Skills.watchCooldown(player, PP, curTime, AbilityType.GIGA_DRILL_BREAKER);
+			Skills.watchCooldown(player, PP, curTime, AbilityType.GREEN_TERRA);
+			Skills.watchCooldown(player, PP, curTime, AbilityType.SUPER_BREAKER);
+			Skills.watchCooldown(player, PP, curTime, AbilityType.SERRATED_STRIKES);
+			Skills.watchCooldown(player, PP, curTime, AbilityType.BERSERK);
+			Skills.watchCooldown(player, PP, curTime, AbilityType.TREE_FELLER);
+			Skills.watchCooldown(player, PP, curTime, AbilityType.BLAST_MINING);
 			
 			/*
 			 * PLAYER BLEED MONITORING
