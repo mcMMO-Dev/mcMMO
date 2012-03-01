@@ -210,7 +210,7 @@ public class mcEntityListener implements Listener
 			if(plugin.misc.tntTracker.containsKey(location))
 			{
 				Player player = plugin.misc.tntTracker.get(location);
-				BlastMining.dropProcessing(Users.getProfile(player).getSkillLevel(SkillType.MINING), event, plugin);
+				BlastMining.dropProcessing(player, event, plugin);
 				plugin.misc.tntTracker.remove(location);
 			}
 		}

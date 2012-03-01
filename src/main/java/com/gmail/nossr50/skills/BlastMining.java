@@ -23,15 +23,21 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
+
+import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 
 public class BlastMining{
 	
-	public static void explosionBlockDrops(Block block, Location loc)
+	public static Block explosionBlockDrops(Block block, Location loc)
 	{
     	int id = block.getTypeId();
 		ItemStack item = new ItemStack(id, 1);
@@ -79,20 +85,25 @@ public class BlastMining{
 			m.mcDropItem(loc, item);
 			break;	
 		}
+		return block;
 	}
 	
-	public static void explosionYields(List<Block> ores, List<Block> debris, float yield, float oreBonus, float debrisReduction, Location location, int extraDrops)
+	public static List<Block> explosionYields(List<Block> ores, List<Block> debris, float yield, float oreBonus, float debrisReduction, Location location, int extraDrops)
 	{
 		Iterator<Block> iterator2 = ores.iterator();
+		List<Block> blocksDropped = new ArrayList<Block>();
 		while(iterator2.hasNext())
 		{
 			Block temp = iterator2.next();
 			if((float)Math.random() < (yield + oreBonus))
 			{
+				blocksDropped.add(temp);
 				explosionBlockDrops(temp, location);
 				if(extraDrops == 2)
+					blocksDropped.add(temp);
 					explosionBlockDrops(temp, location);
 				if(extraDrops == 3)
+					blocksDropped.add(temp);
 					explosionBlockDrops(temp, location);
 			}
 		}
@@ -107,13 +118,15 @@ public class BlastMining{
 					explosionBlockDrops(temp, location);
 			}
 		}
+		return blocksDropped;
 	}
 	
 	/*
 	 * Process the drops from the explosion
 	 */
-	public static void dropProcessing(int skillLevel, EntityExplodeEvent event, mcMMO plugin)
+	public static void dropProcessing(Player player, EntityExplodeEvent event, mcMMO plugin)
 	{
+		int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 		float yield = event.getYield(); 
 		Location location = event.getLocation();
 		List<Block> blocks = event.blockList();
@@ -121,6 +134,9 @@ public class BlastMining{
 		
 		List<Block> ores = new ArrayList<Block>();
 		List<Block> debris = new ArrayList<Block>();
+		
+		List<Block> xp = new ArrayList<Block>();
+		Iterator<Block> xpGain = xp.iterator();
 		
 		while(iterator.hasNext())
 		{
@@ -141,35 +157,40 @@ public class BlastMining{
 		event.setYield(0);
 		//+35% ores, -10% debris
 		if(skillLevel >= 125 && skillLevel < 250)
-			explosionYields(ores, debris, yield, .35f, .10f, location, 1);
+			xp = explosionYields(ores, debris, yield, .35f, .10f, location, 1);
 		
 		//+40% ores, -20% debris
 		if(skillLevel >= 250 && skillLevel < 375)
-			explosionYields(ores, debris, yield, .40f, .20f, location, 1);
+			xp = explosionYields(ores, debris, yield, .40f, .20f, location, 1);
 		
 		//No debris, +45% ores
 		if(skillLevel >= 375 && skillLevel < 500)
-			explosionYields(ores, debris, yield, .45f, .30f, location, 1);
+			xp = explosionYields(ores, debris, yield, .45f, .30f, location, 1);
 		
 		//No debris, +50% ores
 		if(skillLevel >= 500 && skillLevel < 625)
-			explosionYields(ores, debris, yield, .50f, .30f, location, 1);
+			xp = explosionYields(ores, debris, yield, .50f, .30f, location, 1);
 		
 		//Double Drops, No Debris, +55% ores
 		if(skillLevel >= 625 && skillLevel < 750)
-			explosionYields(ores, debris, yield, .55f, .30f, location, 2);
+			xp = explosionYields(ores, debris, yield, .55f, .30f, location, 2);
 		
 		//Double Drops, No Debris, +60% ores
 		if(skillLevel >= 750 && skillLevel < 875)
-			explosionYields(ores, debris, yield, .60f, .30f, location, 2);
+			xp = explosionYields(ores, debris, yield, .60f, .30f, location, 2);
 				
 		//Triple Drops, No debris, +65% ores
 		if(skillLevel >= 875 && skillLevel < 1000)
-			explosionYields(ores, debris, yield, .65f, .30f, location, 3);
+			xp = explosionYields(ores, debris, yield, .65f, .30f, location, 3);
 
 		//Triple Drops, No debris, +70% ores
 		if(skillLevel >= 1000)
-			explosionYields(ores, debris, yield, .70f, .30f, location, 3);
+			xp = explosionYields(ores, debris, yield, .70f, .30f, location, 3);
+		
+		while(xpGain.hasNext())
+		{
+			blastMiningXP(player, xpGain.next(), plugin);
+		}
 	}
 	
 	/*
@@ -219,4 +240,46 @@ public class BlastMining{
 		event.setDamage(damage);
 	}
 
+	public static void blastMiningXP(Player player, Block block, mcMMO plugin)
+    {
+    	PlayerProfile PP = Users.getProfile(player);
+    	if(plugin.misc.blockWatchList.contains(block) || block.getData() == (byte) 5)
+    		return;
+    	int xp = 0;
+		int id = block.getTypeId();
+		
+		switch (id) {
+			//COAL
+			case 16:
+				xp += LoadProperties.mcoal;
+				break;
+			//GOLD
+			case 14:
+				xp += LoadProperties.mgold;
+				break;
+			//DIAMOND
+			case 56:
+				xp += LoadProperties.mdiamond;
+				break;
+			//IRON
+			case 15:
+				xp += LoadProperties.miron;
+				break;
+			//REDSTONE
+			case 73:
+				xp += LoadProperties.mredstone;
+				break;
+			case 74:
+				xp += LoadProperties.mredstone;
+				break;
+			//LAPIS
+			case 21:
+				xp += LoadProperties.mlapis;
+				break;
+		}
+		
+    	PP.addXP(SkillType.MINING, xp, player);
+    	Skills.XpCheckSkill(SkillType.MINING, player);
+    }
+	
 }
