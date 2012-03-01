@@ -136,7 +136,6 @@ public class BlastMining{
 		List<Block> debris = new ArrayList<Block>();
 		
 		List<Block> xp = new ArrayList<Block>();
-		Iterator<Block> xpGain = xp.iterator();
 		
 		while(iterator.hasNext())
 		{
@@ -186,6 +185,8 @@ public class BlastMining{
 		//Triple Drops, No debris, +70% ores
 		if(skillLevel >= 1000)
 			xp = explosionYields(ores, debris, yield, .70f, .30f, location, 3);
+		
+		Iterator<Block> xpGain = xp.iterator();
 		
 		while(xpGain.hasNext())
 		{
