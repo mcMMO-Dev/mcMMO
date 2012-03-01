@@ -42,7 +42,7 @@ public class Unarmed {
 	public static void disarmProcCheck(Player attacker, Player defender)
 	{
 		int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.UNARMED);
-		if(attacker.getItemInHand() != null)
+		if(defender.getItemInHand() != null)
 		{
 			if(skillLevel >= 1000)
 			{
