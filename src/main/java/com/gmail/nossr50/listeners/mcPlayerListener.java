@@ -185,14 +185,6 @@ public class mcPlayerListener implements Listener
 				event.setCancelled(true);
 				player.updateInventory();
 			}
-			
-			if(mat.equals(Material.TNT))
-			{
-				TNTPrimed tnt = player.getWorld().spawn(block.getLocation(), TNTPrimed.class);
-				block.setType(Material.AIR);
-				tnt.setFuseTicks(0);
-//				plugin.misc.tntTracker.remove(block);
-			}
 
 			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
 			{
@@ -287,6 +279,20 @@ public class mcPlayerListener implements Listener
 				bones = bones - LoadProperties.bonesConsumedByCOTW;
 				player.setItemInHand(new ItemStack(Material.BONE, bones));
     	    	player.sendMessage(mcLocale.getString("m.TamingSummon"));
+			}
+		}
+		
+		if(action == Action.RIGHT_CLICK_AIR)
+		{
+			Block b = player.getTargetBlock(null, 100);
+			if(b.getType().equals(Material.TNT))
+			{
+				TNTPrimed tnt = player.getWorld().spawn(b.getLocation(), TNTPrimed.class);
+				b.setType(Material.AIR);
+				tnt.setFuseTicks(0);
+				if(plugin.misc.tntTracker.get(tnt.getLocation()) != null)
+					System.out.println(tnt.getLocation().toString());
+	//			plugin.misc.tntTracker.remove(block);
 			}
 		}
 	}

@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -180,12 +181,21 @@ public class mcEntityListener implements Listener
 	{
 		if(event.getEntity() instanceof TNTPrimed)
 		{
-			Block block = event.getEntity().getLocation().getBlock();
+			Location location = event.getEntity().getLocation();
+			System.out.println("TNT Primed.");
 			
-			if(plugin.misc.tntTracker.get(block) != null)
+			//Ugly code to make it recognize the location
+			location.setX(location.getBlockX()+1);
+			location.setY(location.getBlockY());
+			location.setZ(location.getBlockZ()+1);
+			System.out.println(location.toString());
+			
+			if(plugin.misc.tntTracker.get(location) != null)
 			{
-				int skillLevel = plugin.misc.tntTracker.get(block);
-				BlastMining.biggerBombs(skillLevel, event);
+				System.out.println("Being Tracked.");
+				Player player = plugin.misc.tntTracker.get(location);
+				
+				BlastMining.biggerBombs(Users.getProfile(player).getSkillLevel(SkillType.MINING), event);
 			}
 		}		
 	}
@@ -195,12 +205,20 @@ public class mcEntityListener implements Listener
 	{
 		if(event.getEntity() instanceof TNTPrimed)
 		{
-			Block block = event.getLocation().getBlock();
+			Location location = event.getEntity().getLocation();
+			System.out.println("TNT Explode.");
+			
+			//Ugly code to make it recognize the location
+			location.setX(location.getBlockX()+1);
+			location.setY(location.getBlockY());
+			location.setZ(location.getBlockZ()+1);
+			System.out.println(location.toString());
 
-			if(plugin.misc.tntTracker.get(block) != null)
+			if(plugin.misc.tntTracker.get(location) != null)
 			{
-				int skillLevel = plugin.misc.tntTracker.get(block);
-				BlastMining.dropProcessing(skillLevel, event, plugin);
+				System.out.println("Being Tracked.");
+				Player player = plugin.misc.tntTracker.get(location);
+				BlastMining.dropProcessing(Users.getProfile(player).getSkillLevel(SkillType.MINING), event, plugin);
 			}
 		}
 	}

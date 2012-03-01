@@ -75,7 +75,7 @@ public class mcBlockListener implements Listener
     	if(id == 46 && mcPermissions.getInstance().blastmining(player))
     	{
     		int skill = Users.getProfile(player).getSkillLevel(SkillType.MINING);
-    		plugin.misc.tntTracker.put(block, skill);
+    		plugin.misc.tntTracker.put(block.getLocation(), player);
     	}
     	
     	//Check if the blocks placed should be monitored so they do not give out XP in the future
