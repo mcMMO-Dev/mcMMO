@@ -60,7 +60,8 @@ public class LoadProperties {
 			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
 			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
 			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5,
-			repairStoneLevel, repairIronLevel, repairGoldLevel, arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4;
+			repairStoneLevel, repairIronLevel, repairGoldLevel, arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4,
+			detonatorID;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -403,5 +404,7 @@ public class LoadProperties {
 		blazeXP = readDouble("Experience.Combat.Multiplier.Blaze", 3.0);
 		magmacubeXP = readDouble("Experience.Combat.Multiplier.Magma_Cube", 2.0);
 		enderdragonXP = readDouble("Experience.Combat.Multiplier.Ender_Dragon", 8.0);
+		
+		detonatorID = readInteger("Skills.Mining.Detonator_ID", 259);
 	}
 }

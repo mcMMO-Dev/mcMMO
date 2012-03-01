@@ -282,7 +282,7 @@ public class mcPlayerListener implements Listener
 			}
 		}
 		
-		if(action == Action.RIGHT_CLICK_AIR)
+		if(action == Action.RIGHT_CLICK_AIR && is.getTypeId() == LoadProperties.detonatorID)
 		{
 			Block b = player.getTargetBlock(null, 100);
 			if(b.getType().equals(Material.TNT))
@@ -290,8 +290,6 @@ public class mcPlayerListener implements Listener
 				TNTPrimed tnt = player.getWorld().spawn(b.getLocation(), TNTPrimed.class);
 				b.setType(Material.AIR);
 				tnt.setFuseTicks(0);
-				if(plugin.misc.tntTracker.get(tnt.getLocation()) != null)
-					System.out.println(tnt.getLocation().toString());
 			}
 		}
 	}

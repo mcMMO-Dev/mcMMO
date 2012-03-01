@@ -181,19 +181,15 @@ public class mcEntityListener implements Listener
 		if(event.getEntity() instanceof TNTPrimed)
 		{
 			Location location = event.getEntity().getLocation();
-			System.out.println("TNT Primed.");
 			
 			//Ugly code to make it recognize the location
 			location.setX(location.getBlockX()+1);
 			location.setY(location.getBlockY());
 			location.setZ(location.getBlockZ()+1);
-			System.out.println(location.toString());
 			
-			if(plugin.misc.tntTracker.get(location) != null)
+			if(plugin.misc.tntTracker.containsKey(location))
 			{
-				System.out.println("Being Tracked.");
 				Player player = plugin.misc.tntTracker.get(location);
-				
 				BlastMining.biggerBombs(Users.getProfile(player).getSkillLevel(SkillType.MINING), event);
 			}
 		}		
@@ -205,19 +201,17 @@ public class mcEntityListener implements Listener
 		if(event.getEntity() instanceof TNTPrimed)
 		{
 			Location location = event.getEntity().getLocation();
-			System.out.println("TNT Explode.");
 			
 			//Ugly code to make it recognize the location
 			location.setX(location.getBlockX()+1);
 			location.setY(location.getBlockY());
 			location.setZ(location.getBlockZ()+1);
-			System.out.println(location.toString());
 
-			if(plugin.misc.tntTracker.get(location) != null)
+			if(plugin.misc.tntTracker.containsKey(location))
 			{
-				System.out.println("Being Tracked.");
 				Player player = plugin.misc.tntTracker.get(location);
 				BlastMining.dropProcessing(Users.getProfile(player).getSkillLevel(SkillType.MINING), event, plugin);
+				plugin.misc.tntTracker.remove(location);
 			}
 		}
 	}

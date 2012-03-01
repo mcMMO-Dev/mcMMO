@@ -126,6 +126,7 @@ Skills:
     Mining:
         Level_Cap: 0
         Requires_Pickaxe: true
+        Detonator_ID: 259
     Repair:
         Level_Cap: 0
         Anvil_Messages: true
