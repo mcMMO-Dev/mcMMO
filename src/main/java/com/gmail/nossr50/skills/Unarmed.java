@@ -42,19 +42,16 @@ public class Unarmed {
 	public static void disarmProcCheck(Player attacker, Player defender)
 	{
 		int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.UNARMED);
-		if(attacker.getItemInHand() == null)
+		if(attacker.getItemInHand() != null)
 		{
 			if(skillLevel >= 1000)
 			{
 				if(Math.random() * 3000 <= 1000)
 				{
 	    			ItemStack item = defender.getItemInHand();
-	    			if(item != null)
-	    			{
-	    				defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
-		    			m.mcDropItem(defender.getLocation(), item);
-		    			defender.setItemInHand(null);
-	    			}
+	    			defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
+		    		m.mcDropItem(defender.getLocation(), item);
+		    		defender.setItemInHand(null);
 				}
 	    	} 
 			else
@@ -62,12 +59,9 @@ public class Unarmed {
 				if(Math.random() * 3000 <= skillLevel)
 				{
 	    			ItemStack item = defender.getItemInHand();
-	    			if(item != null)
-	    			{
-	    				defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
-		    			m.mcDropItem(defender.getLocation(), item);
-		    			defender.setItemInHand(null);
-	    			}
+	    			defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
+		    		m.mcDropItem(defender.getLocation(), item);
+		    		defender.setItemInHand(null);
 				}
     		}
 		}
