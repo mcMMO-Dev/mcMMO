@@ -42,7 +42,7 @@ public class LoadProperties {
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
 			nIron, nGold, nDiamond, locale, nString, nLeather;
 
-	public static int treeFellerThreshold, mjungle, mtameWolf, mshearing, mmilkCow, mfishing, xpbar_x, xpbar_y, xpicon_x, xpicon_y,
+	public static int treeFellerThreshold, mjungle, mtameWolf, mfishing, xpbar_x, xpbar_y, xpicon_x, xpicon_y,
 			chimaeraId, msandstone, mbase, moak, mbirch, mspruce, mmelon,
 			mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold,
 			mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack,
@@ -240,9 +240,7 @@ public class LoadProperties {
 		mendstone = readInteger("Experience.Mining.End_Stone", 150);
 		mmossstone = readInteger("Experience.Mining.Moss_Stone", 30);
 		
-		mshearing = readInteger("Experience.Taming.Shearing", 250);
 		mtameWolf = readInteger("Experience.Taming.Animal_Taming.Wolf", 250);
-		mmilkCow = readInteger("Experience.Taming.Milking", 50);
 
 		mfishing = readInteger("Experience.Fishing.Base", 800);
 

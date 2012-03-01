@@ -229,10 +229,8 @@ Experience:
         End_Stone: 150
         Moss_Stone: 30
     Taming:
-        Shearing: 250
         Animal_Taming:
             Wolf: 250
-        Milking: 50
     Combat:
         Multiplier:
             Animals: 1.0
