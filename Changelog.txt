@@ -7,7 +7,7 @@ Key:
   ! Change
   - Removal
 
-Version 1.3.00-dev
+Version 1.3.00
  + Added ability to customize drops for Excavation skill (treasures.yml)
  + Added ability to customize drops for Fishing skill (treasures.yml)
  + Added messages to nearby players when your abilities wear off
