@@ -28,7 +28,7 @@ public class UnarmedCommand implements CommandExecutor {
 		if (PP.getSkillLevel(SkillType.UNARMED) < 1000)
 			percentage = String.valueOf((skillvalue / 3000) * 100);
 		else
-			percentage = String.valueOf((1000/3000)*100);
+			percentage = String.valueOf((1000 / 3000) * 100);
 
 		if (PP.getSkillLevel(SkillType.UNARMED) < 1000)
 			arrowpercentage = String.valueOf(((skillvalue / 1000) * 100) / 2);
