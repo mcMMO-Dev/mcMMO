@@ -28,12 +28,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -44,7 +44,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
@@ -89,18 +88,6 @@ public class mcPlayerListener implements Listener
 	            PP.toggleGodMode();
 	            player.sendMessage("[mcMMO] God Mode not permitted on this world (See Permissions)");
 	        }
-	    }
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onSheepUndressing(PlayerShearEntityEvent event)
-	{
-	    Player player = event.getPlayer();
-	    if(mcPermissions.getInstance().taming(player))
-	    {
-	        PlayerProfile PP = Users.getProfile(player);
-	        PP.addXP(SkillType.TAMING, LoadProperties.mshearing, player);
-	        Skills.XpCheckSkill(SkillType.TAMING, player);
 	    }
 	}
 	
@@ -197,6 +184,14 @@ public class mcPlayerListener implements Listener
 				Repair.repairCheck(player, is, event.getClickedBlock());
 				event.setCancelled(true);
 				player.updateInventory();
+			}
+			
+			if(mat.equals(Material.TNT))
+			{
+				TNTPrimed tnt = player.getWorld().spawn(block.getLocation(), TNTPrimed.class);
+				block.setType(Material.AIR);
+				tnt.setFuseTicks(0);
+//				plugin.misc.tntTracker.remove(block);
 			}
 
 			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
@@ -325,21 +320,6 @@ public class mcPlayerListener implements Listener
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onCowMilking(PlayerBucketFillEvent event){
-		Player player = event.getPlayer();
-		
-	    if(mcPermissions.getInstance().taming(player))
-	    {
-	        if(event.getItemStack().getTypeId() == 335)
-	        {
-		        PlayerProfile PP = Users.getProfile(player);
-	        	PP.addXP(SkillType.TAMING, LoadProperties.mmilkCow, player);
-	        	Skills.XpCheckSkill(SkillType.TAMING, player);
-	        }
-	    }
-	}
-
 	// Dynamically aliasing commands need to be re-done.
 	// For now, using a command with an alias will send both the original command, and the mcMMO command
 	@EventHandler(priority = EventPriority.LOWEST)
