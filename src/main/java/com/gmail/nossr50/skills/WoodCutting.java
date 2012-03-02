@@ -73,7 +73,7 @@ public class WoodCutting
         player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability()+durabilityLoss));
         
         //This is to prevent using wood axes everytime you tree fell
-        if(player.getItemInHand().getDurability() >= Repair.getMaxDurability(player.getItemInHand()) 
+        if((player.getItemInHand().getDurability() >= player.getItemInHand().getType().getMaxDurability()) 
                 || player.getItemInHand().getType() == Material.AIR || player.getItemInHand() == null)
         {
             player.sendMessage(ChatColor.RED+"YOUR AXE SPLINTERS INTO DOZENS OF PIECES");
