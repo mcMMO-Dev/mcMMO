@@ -302,9 +302,11 @@ public class mcEntityListener implements Listener
 	        case WOLF:
 	        	xp = LoadProperties.mtameWolf;
 	        	break;
+	        	/*
 	        case OCELOT:
 	        	xp = LoadProperties.mtameOcelot;
 	        	break;
+	        	*/
 	        }
 	        
 	        PP.addXP(SkillType.TAMING, xp, player);
