@@ -76,7 +76,7 @@ public class WoodCutting
         if((player.getItemInHand().getDurability() + durabilityLoss >= player.getItemInHand().getType().getMaxDurability()) 
                 || player.getItemInHand().getType() == Material.AIR || player.getItemInHand() == null)
         {
-            player.sendMessage(ChatColor.RED+"YOUR AXE SPLINTERS INTO DOZENS OF PIECES");
+            player.sendMessage(mcLocale.getString("TreeFeller.AxeSplinters"));
             
             if(player.getHealth() >= 2)
                 Combat.dealDamage(player, (int)(Math.random() * (player.getHealth()-1)));
