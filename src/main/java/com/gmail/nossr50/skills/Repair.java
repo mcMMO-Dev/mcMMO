@@ -448,6 +448,23 @@ public class Repair {
 		}
 		return false;
 	}
+	
+	public static short getMaxDurability(ItemStack is)
+	{
+	    if(isDiamondTools(is))
+	        return (short) 1562;
+	    else if(isIronTools(is))
+	        return (short) 251;
+	    else if(isGoldTools(is))
+	        return (short) 33;
+	    else if(isStoneTools(is))
+	        return (short) 132;
+	    else if(isWoodTools(is))
+	        return (short) 66;
+	    else
+	        return 0;
+	}
+	
 	public static boolean isBow(ItemStack is){
 		return is.getType() == Material.BOW;
 	}

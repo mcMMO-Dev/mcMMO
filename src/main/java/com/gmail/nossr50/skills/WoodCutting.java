@@ -17,6 +17,8 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -37,7 +39,6 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.config.*;
 
-import org.getspout.commons.ChatColor;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 
@@ -70,10 +71,10 @@ public class WoodCutting
         
         //Damage the tool
         player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability()+durabilityLoss));
-        player.updateInventory(); //Silly deprecated methods
         
         //This is to prevent using wood axes everytime you tree fell
-        if(player.getItemInHand().getType() == Material.AIR || player.getItemInHand() == null)
+        if(player.getItemInHand().getDurability() >= Repair.getMaxDurability(player.getItemInHand()) 
+                || player.getItemInHand().getType() == Material.AIR || player.getItemInHand() == null)
         {
             player.sendMessage(ChatColor.RED+"YOUR AXE SPLINTERS INTO DOZENS OF PIECES");
             
