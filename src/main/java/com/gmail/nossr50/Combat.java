@@ -1,18 +1,18 @@
 /*
 	This file is part of mcMMO.
 
-	mcMMO is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
+    mcMMO is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-	mcMMO is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+    mcMMO is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with mcMMO.  If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with mcMMO.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.gmail.nossr50;
 
@@ -48,7 +48,7 @@ public class Combat
 		Entity damager = event.getDamager();
 		LivingEntity target = (LivingEntity) event.getEntity();
 		int damage = event.getDamage();
-
+		
 		/*
 		 * PLAYER VERSUS ENTITIES
 		 */
@@ -58,18 +58,18 @@ public class Combat
 			ItemStack itemInHand = attacker.getItemInHand();
 			PlayerProfile PPa = Users.getProfile(attacker);
 			
-			//If there are any abilities to activate
-			combatAbilityChecks(attacker, PPa);
-			
 			//Damage modifiers and proc checks
 			if(m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker))
 			{
+				if(PPa.getSwordsPreparationMode())
+					Skills.abilityCheck(attacker, PPa, SkillType.SWORDS);
+				
 				if(!pluginx.misc.bleedTracker.contains(target)) //Bleed
-					Swords.bleedCheck(attacker, target, pluginx);
+					Swords.bleedCheck(attacker, PPa.getSkillLevel(SkillType.SWORDS), target, pluginx);
 					
 				if (!(event instanceof FakeEntityDamageByEntityEvent) && PPa.getSerratedStrikesMode())
-					Swords.applySerratedStrikes(attacker, event, pluginx);
-					
+					Swords.applySerratedStrikes(attacker, target, damage, pluginx);
+				
 				if(target instanceof Player)
 					PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.SWORDS);
 				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
@@ -77,35 +77,41 @@ public class Combat
 			}
 			else if(m.isAxes(itemInHand) && mcPermissions.getInstance().axes(attacker))
 			{
-				Axes.axesBonus(attacker, event);
+				if(PPa.getAxePreparationMode())
+					Skills.abilityCheck(attacker, PPa, SkillType.AXES);
 				
-				Axes.axeCriticalCheck(attacker, event, pluginx); //Critical hit
+				damage += Axes.axesBonus(attacker, PPa);
+				
+				damage *= Axes.axeCriticalBonus(attacker, PPa.getSkillLevel(SkillType.AXES), target, pluginx); //Critical hit
 				
 				//Impact
-				if(event.getEntity() instanceof LivingEntity)
-				    Axes.impact(attacker, (LivingEntity)event.getEntity());
+				Axes.impact(attacker, target);
 				
 				if (!(event instanceof FakeEntityDamageByEntityEvent) && PPa.getSkullSplitterMode())
-					Axes.applyAoeDamage(attacker, event, pluginx);
+					Axes.applyAoeDamage(attacker, target, damage, pluginx);
 				
 				if(target instanceof Player)
-					PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.AXES);
+					PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.AXES);
 				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
-					PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.AXES);
+					PvEExperienceGain(attacker, PPa, target, damage, SkillType.AXES);
 			}
 			else if(itemInHand.getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker)) //Unarmed
 			{
-				Unarmed.unarmedBonus(attacker, event);
+				if(PPa.getFistsPreparationMode())
+					Skills.abilityCheck(attacker, PPa, SkillType.UNARMED);
+				
+				damage += Unarmed.unarmedBonus(PPa.getSkillLevel(SkillType.UNARMED));
+				
 				if(PPa.getBerserkMode())
-					event.setDamage(event.getDamage() + (event.getDamage() / 2));
+					damage *= 1.5;
 				
 				if(target instanceof Player)
-					Unarmed.disarmProcCheck(attacker, (Player) target);	//Disarm
+					Unarmed.disarmProcCheck(attacker, PPa.getSkillLevel(SkillType.UNARMED), (Player) target); //Disarm
 				
 				if(target instanceof Player)
-					PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.UNARMED);
+					PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.UNARMED);
 				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
-					PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.UNARMED);
+					PvEExperienceGain(attacker, PPa, target, damage, SkillType.UNARMED);
 			}
 			
 			//Player use bone on wolf.
@@ -116,6 +122,7 @@ public class Combat
 				if(itemInHand.getTypeId() == 352 && mcPermissions.getInstance().taming(attacker))
 				{
 					event.setCancelled(true);
+					
 					if(wolf.isTamed())
 						attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
 							mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(wolf)})+" "+
@@ -125,6 +132,8 @@ public class Combat
 							mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {wolf.getHealth()}));
 				}
 			}
+			
+			event.setDamage(damage);
 		}
 			
 		/*
@@ -170,7 +179,7 @@ public class Combat
 			Swords.counterAttackChecks(event);
 			Acrobatics.dodgeChecks(event);
 		}
-	
+		
 		/*			 
 		 * DEFENSIVE CHECKS FOR WOLVES
 		 */
@@ -180,17 +189,6 @@ public class Combat
 			if(wolf.isTamed() && Taming.ownerOnline(wolf, pluginx))
 				Taming.preventDamage(event, pluginx);
 		}
-	}
-	
-	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa)
-	{
-		//Check to see if any abilities need to be activated
-		if(PPa.getAxePreparationMode())
-			Skills.abilityCheck(attacker, SkillType.AXES);
-		if(PPa.getSwordsPreparationMode())
-			Skills.abilityCheck(attacker, SkillType.SWORDS);
-		if(PPa.getFistsPreparationMode())
-			Skills.abilityCheck(attacker, SkillType.UNARMED);
 	}
 	
 	public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx)
@@ -322,7 +320,6 @@ public class Combat
 			EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
 			Bukkit.getPluginManager().callEvent(ede);
 			if(ede.isCancelled()) return;
-
 			target.damage(ede.getDamage());
 		} else {
 			target.damage(dmg);
