@@ -16,14 +16,12 @@
 */
 package com.gmail.nossr50.skills;
 
-import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
@@ -99,47 +97,15 @@ public class Taming
 		}
 	}
 	
-	public static boolean ownerOnline(Wolf theWolf, Plugin pluginx)
-	{
-		for(Player x : pluginx.getServer().getOnlinePlayers())
-		{
-			if(x instanceof AnimalTamer)
-			{
-				AnimalTamer tamer = (AnimalTamer)x;
-				if(theWolf.getOwner() == tamer)
-					return true;
-			}
-		}
-		return false;
-	}
-	
-	public static Player getOwner(Entity wolf, Plugin pluginx)
-	{
-		if(wolf instanceof Wolf)
-		{
-			Wolf theWolf = (Wolf)wolf;
-			for(Player x : pluginx.getServer().getOnlinePlayers())
-			{
-				if(x instanceof AnimalTamer && x.isOnline())
-				{
-					AnimalTamer tamer = (AnimalTamer)x;
-					if(theWolf.getOwner() == tamer)
-						return x;
-				}
-			}
-			return null;
-		}
-		return null;
-	}
-	
 	public static String getOwnerName(Wolf theWolf)
 	{
 		Player owner = null;
 		
 		if (theWolf.getOwner() instanceof Player)
+		{
 			owner = (Player)theWolf.getOwner();
-		if(owner != null)
 			return owner.getName();
+		}
 		else
 			return "Offline Master";
 	}
@@ -149,7 +115,7 @@ public class Taming
 		DamageCause cause = event.getCause();
 		Entity entity = event.getEntity();
 		Wolf theWolf = (Wolf)entity;
-		Player master = getOwner(theWolf, plugin);
+		Player master = (Player)theWolf.getOwner();
 		int skillLevel = Users.getProfile(master).getSkillLevel(SkillType.TAMING);
 		
 		//Environmentally Aware
@@ -157,7 +123,7 @@ public class Taming
 		{
 			if(event.getDamage() < theWolf.getHealth())
 			{
-				entity.teleport(Taming.getOwner(theWolf, plugin).getLocation());
+				entity.teleport(master.getLocation());
 				master.sendMessage(mcLocale.getString("mcEntityListener.WolfComesBack")); //$NON-NLS-1$
 				entity.setFireTicks(0);
 			}

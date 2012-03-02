@@ -199,8 +199,9 @@ public class BlastMining{
 	 * Increases radius of explosion by 3 at 750.
 	 * Increases radius of explosion by 4 at 1000.
 	 */
-	public static void biggerBombs(int skillLevel, ExplosionPrimeEvent event)
+	public static void biggerBombs(Player player, ExplosionPrimeEvent event)
 	{
+		int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 		float radius = event.getRadius();
 		if(skillLevel < 250)
 			return;

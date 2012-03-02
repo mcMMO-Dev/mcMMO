@@ -134,12 +134,9 @@ public class Combat
 		{
 			Wolf wolf = (Wolf) damager;
 			
-			if (wolf.isTamed() && Taming.ownerOnline(wolf, pluginx))
+			if (wolf.isTamed() && (wolf.getOwner() instanceof Player))
 			{
-				Player master = Taming.getOwner(wolf, pluginx);
-				if (master == null) //Can it really happen?
-					return;
-				
+				Player master = (Player) wolf.getOwner();
 				PlayerProfile PPo = Users.getProfile(master);
 				if(mcPermissions.getInstance().taming(master))
 				{
@@ -177,7 +174,7 @@ public class Combat
 		else if(target instanceof Wolf)
 		{
 			Wolf wolf = (Wolf) target;
-			if(wolf.isTamed() && Taming.ownerOnline(wolf, pluginx))
+			if(wolf.isTamed() && (wolf.getOwner() instanceof Player))
 				Taming.preventDamage(event, pluginx);
 		}
 	}

@@ -167,7 +167,7 @@ public class mcEntityListener implements Listener
 			if(plugin.misc.tntTracker.containsKey(location))
 			{
 				Player player = plugin.misc.tntTracker.get(location);
-				BlastMining.biggerBombs(Users.getProfile(player).getSkillLevel(SkillType.MINING), event);
+				BlastMining.biggerBombs(player, event);
 			}
 		}		
 	}
