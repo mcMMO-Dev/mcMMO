@@ -75,7 +75,21 @@ public class mcEntityListener implements Listener
 				event.setCancelled(true);
 		}
 		
-		Combat.combatChecks(event, plugin);
+		//Check for mcgod mode
+		if(defender instanceof Player)
+		{
+		    Player playerDefender = (Player)defender;
+		    if(Users.getProfile(playerDefender).getGodMode())
+		        event.setCancelled(true);
+		}
+		
+		//Make sure defender is not invincible
+		if(defender instanceof LivingEntity)
+		{
+		    LivingEntity livingDefender = (LivingEntity)defender;
+		    if(livingDefender.getNoDamageTicks() < livingDefender.getMaximumNoDamageTicks()/2.0F)
+		        Combat.combatChecks(event, plugin);
+		}
     }
     
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
