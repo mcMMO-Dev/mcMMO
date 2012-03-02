@@ -223,8 +223,9 @@ public class BlastMining{
 	 * Reduces explosion damage to 1/2 of normal at 750.
 	 * Reduces explosion damage to 0 at 1000.
 	 */
-	public static void demolitionsExpertise(int skill, EntityDamageEvent event)
+	public static void demolitionsExpertise(Player player, EntityDamageEvent event)
 	{
+		int skill = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 		int damage = event.getDamage();
 		if(skill < 500)
 			return;
