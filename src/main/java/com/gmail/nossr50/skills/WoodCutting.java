@@ -26,6 +26,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.Bukkit;
+
+import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -35,6 +37,7 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.config.*;
 
+import org.getspout.commons.ChatColor;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 
@@ -63,7 +66,21 @@ public class WoodCutting
             player.sendMessage(mcLocale.getString("Skills.Woodcutting.TreeFellerThreshold"));
             return;
         }
-        int durabilityLoss = 0, xp = 0;
+        int durabilityLoss = toBeFelled.size(), xp = 0;
+        
+        //Damage the tool
+        player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability()+durabilityLoss));
+        
+        //This is to prevent using wood axes everytime you tree fell
+        if(player.getItemInHand().getType() == Material.AIR || player.getItemInHand() == null)
+        {
+            player.sendMessage(ChatColor.RED+"YOUR AXE SPLINTERS INTO DOZENS OF PIECES");
+            
+            if(player.getHealth() >= 2)
+                Combat.dealDamage(player, player.getHealth()-1);
+            return;
+        }
+        
         //Prepare ItemStacks
         ItemStack item;
         ItemStack oak = new ItemStack(Material.LOG, 1, (byte)0, (byte)0);
@@ -124,11 +141,7 @@ public class WoodCutting
                     x.setType(Material.AIR);
                     
                     //Drop the block
-                    m.mcDropItem(x.getLocation(), item);
-                        
-                    //Damage the tool more if the Tree is larger
-                    durabilityLoss++;
-                        
+                    m.mcDropItem(x.getLocation(), item);    
                 } else if(x.getType() == Material.LEAVES) 
                 {
                     Material mat = Material.SAPLING;
@@ -141,14 +154,11 @@ public class WoodCutting
                     //Remove the block
                     x.setData((byte) 0);
                     x.setType(Material.AIR);
-                        
-                    //Damage the tool more if the Tree is larger
-                    durabilityLoss++;
                 }
             }
         }
         
-        PP.addXP(SkillType.WOODCUTTING, xp, player);
+        PP.addXP(SkillType.WOODCUTTING, xp/3, player); //Tree Feller gives nerf'd XP
         Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
         
         if(LoadProperties.toolsLoseDurabilityFromAbilities)
