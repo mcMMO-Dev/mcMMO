@@ -17,7 +17,9 @@
 package com.gmail.nossr50.listeners;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -235,15 +237,15 @@ public class mcEntityListener implements Listener
 				
 				if(newFoodLevel > currentFoodLevel)
 				{
-					int food = player.getItemInHand().getTypeId();
+					Material food = player.getItemInHand().getType();
 					int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
 					int foodChange = newFoodLevel - currentFoodLevel;
 					
 					switch(food)
 					{
-					case 297:
+					case BREAD:
 					{
-					    //BREAD (297) RESTORES 2 1/2 HUNGER
+					    //BREAD RESTORES 2 1/2 HUNGER
 					    //Restores 5 HUNGER @ 1000
 					    if(herbLevel >= 200 && herbLevel < 400)
                             foodChange = foodChange + 1;
@@ -257,9 +259,9 @@ public class mcEntityListener implements Listener
                             foodChange = foodChange + 5;
                         break;
 					}
-					case 357:
+					case COOKIE:
 					{
-					    //COOKIE (357) RESTORES 1/2 HUNGER
+					    //COOKIE RESTORES 1/2 HUNGER
 					    //RESTORES 2 HUNGER @ 1000
 					    if(herbLevel >= 200 && herbLevel < 600)
                             foodChange = foodChange + 1;
@@ -269,9 +271,9 @@ public class mcEntityListener implements Listener
                             foodChange = foodChange + 3;
                         break;
 					}
-					case 360:
+					case MELON:
 					{
-					    //MELON (360) RESTORES  1 HUNGER
+					    //MELON RESTORES  1 HUNGER
 					    //RESTORES 2 1/2 HUNGER @ 1000
                         if(herbLevel >= 200 && herbLevel < 600)
                             foodChange = foodChange + 1;
@@ -281,9 +283,9 @@ public class mcEntityListener implements Listener
                             foodChange = foodChange + 3;
                         break;  
 					}
-					case 282:
+					case MUSHROOM_SOUP:
 					{
-					    //STEW (282) RESTORES 4 HUNGER
+					    //MUSHROOM SOUP RESTORES 4 HUNGER
 					    //RESTORES 6 1/2 HUNGER @ 1000
 					    if(herbLevel >= 200 && herbLevel < 400)
                             foodChange = foodChange + 1;
@@ -317,11 +319,21 @@ public class mcEntityListener implements Listener
 	    if(mcPermissions.getInstance().taming(player))
 	    {
 	        PlayerProfile PP = Users.getProfile(player);
-	        if(event.getEntity() instanceof Wolf)
+	        EntityType type = event.getEntityType();
+	        int xp = 0;
+	        
+	        switch(type)
 	        {
-	        	PP.addXP(SkillType.TAMING, LoadProperties.mtameWolf, player);
-	        	Skills.XpCheckSkill(SkillType.TAMING, player);
+	        case WOLF:
+	        	xp = LoadProperties.mtameWolf;
+	        	break;
+	        case OCELOT:
+	        	xp = LoadProperties.mtameOcelot;
+	        	break;
 	        }
+	        
+	        PP.addXP(SkillType.TAMING, xp, player);
+	        Skills.XpCheckSkill(SkillType.TAMING, player);
 	    }
 	}
 }
