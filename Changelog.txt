@@ -9,6 +9,8 @@ Key:
 
 Version 2.0.00-dev
  + Added Ocelots to Taming XP tables.
+ ! Changed Tree Feller to hand out 1/3 of normal XP for each LOG block it fells
+ ! Changed Tree Feller to only fell trees if you have enough durability
  ! Changed invincibility checks in EntityDamage listeners to accommodate for vanilla MC behaviour
  ! Changed Ignition to add fire ticks rather than replacing them.
 
