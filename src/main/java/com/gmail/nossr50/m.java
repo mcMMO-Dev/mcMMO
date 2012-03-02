@@ -65,14 +65,10 @@ public class m
 	{
 	    //So apparently if you do more damage to a LivingEntity than its last damage int you bypass the invincibility
 	    //So yeah, this is for that
-	    if(le.getNoDamageTicks() < le.getMaximumNoDamageTicks()/2.0F)
-	    {
-	        if(event.getDamage() <= le.getLastDamage())
-	            return true;
-	        else
-	            return false;
-	    }
-	    return true;
+	    if(le.getNoDamageTicks() > le.getMaximumNoDamageTicks() / 2.0F && event.getDamage() <= le.getLastDamage())
+	        return true;
+	    else
+	        return false;
 	}
 	
 	public static boolean isDouble(String string)
