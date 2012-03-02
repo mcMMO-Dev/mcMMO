@@ -53,7 +53,10 @@ public class Archery
 			ignition += (PPa.getSkillLevel(SkillType.ARCHERY)/200)*20;
 			
 			if(ignition > 120)
-			    ignition = 120;
+				ignition = 120;
+			
+			if(x.getFireTicks() > ignition)
+				return;
 			
 			if(x instanceof Player)
 			{
