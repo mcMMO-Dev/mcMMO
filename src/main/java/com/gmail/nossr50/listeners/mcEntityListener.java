@@ -40,6 +40,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
@@ -79,7 +80,7 @@ public class mcEntityListener implements Listener
 		if(defender instanceof LivingEntity)
 		{
 		    LivingEntity livingDefender = (LivingEntity)defender;
-		    if(livingDefender.getNoDamageTicks() < livingDefender.getMaximumNoDamageTicks()/2.0F)
+		    if(!m.isInvincible(livingDefender, event))
 		        Combat.combatChecks(event, plugin);
 		}
     }
@@ -102,7 +103,7 @@ public class mcEntityListener implements Listener
     		if(PP.getGodMode())
     			event.setCancelled(true);
     		
-    		if(player.getNoDamageTicks() < player.getMaximumNoDamageTicks()/2.0F)
+    		if(!m.isInvincible(player, event))
     		{
     			if(cause == DamageCause.FALL && mcPermissions.getInstance().acrobatics(player))
     				Acrobatics.acrobaticsCheck(player, event);
@@ -114,7 +115,7 @@ public class mcEntityListener implements Listener
     		break;
     	case WOLF:
     		Wolf wolf = (Wolf) entity;
-    		if((wolf.getNoDamageTicks() < wolf.getMaximumNoDamageTicks()/2.0F) && wolf.isTamed() && wolf.getOwner() != null)
+    		if((!m.isInvincible(wolf, event)) && wolf.isTamed() && wolf.getOwner() != null)
     			Taming.preventDamage(event, plugin);
     		break;
     	}

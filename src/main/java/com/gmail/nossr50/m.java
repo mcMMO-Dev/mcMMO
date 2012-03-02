@@ -26,6 +26,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.*;
@@ -58,6 +59,20 @@ public class m
 			return Integer.parseInt(string);
 		else
 			return 0;
+	}
+	
+	public static boolean isInvincible(LivingEntity le, EntityDamageEvent event)
+	{
+	    //So apparently if you do more damage to a LivingEntity than its last damage int you bypass the invincibility
+	    //So yeah, this is for that
+	    if(le.getNoDamageTicks() < le.getMaximumNoDamageTicks()/2.0F)
+	    {
+	        if(event.getDamage() <= le.getLastDamage())
+	            return true;
+	        else
+	            return false;
+	    }
+	    return true;
 	}
 	
 	public static boolean isDouble(String string)
