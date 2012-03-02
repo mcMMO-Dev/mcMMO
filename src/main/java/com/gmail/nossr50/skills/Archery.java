@@ -60,14 +60,14 @@ public class Archery
 				Player defender = (Player)x;
 				if(!Party.getInstance().inSameParty(attacker, defender))
 				{
-					defender.setFireTicks(ignition);
+					defender.setFireTicks(defender.getFireTicks() + ignition);
 					attacker.sendMessage(mcLocale.getString("Combat.Ignition")); //$NON-NLS-1$
 					defender.sendMessage(mcLocale.getString("Combat.BurningArrowHit")); //$NON-NLS-1$
 				}
 			} 
 			else 
 			{
-				x.setFireTicks(ignition);
+				x.setFireTicks(x.getFireTicks() + ignition);
 				attacker.sendMessage(mcLocale.getString("Combat.Ignition")); //$NON-NLS-1$
 			}
 		}
