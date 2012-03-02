@@ -62,29 +62,28 @@ public class mcEntityListener implements Listener
     }
     
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
+    {
+    	Entity defender = event.getEntity();
+		Entity attacker = event.getDamager();
+		
+		if(attacker instanceof Player && defender instanceof Player)
+		{
+			if(!defender.getWorld().getPVP())
+				return;
+			if(Party.getInstance().inSameParty((Player)defender, (Player)attacker))
+				event.setCancelled(true);
+		}
+		
+		Combat.combatChecks(event, plugin);
+    }
+    
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) 
     {
     	Entity entity = event.getEntity();
     	EntityType type = entity.getType();
     	DamageCause cause = event.getCause();
-    	
-    	//Check for world pvp flag
-    	if(event instanceof EntityDamageByEntityEvent && !event.isCancelled())
-    	{
-    		EntityDamageByEntityEvent eventb = (EntityDamageByEntityEvent)event;
-    		Entity defender = eventb.getEntity();
-    		Entity attacker = eventb.getDamager();
-    		
-    		if(attacker instanceof Player && defender instanceof Player)
-    		{
-    			if(!entity.getWorld().getPVP())
-    				return;
-    			if(Party.getInstance().inSameParty((Player)defender, (Player)attacker))
-    				event.setCancelled(true);
-    		}
-    		
-    		Combat.combatChecks(eventb, plugin);
-    	}
     	
     	switch(type)
     	{
@@ -106,6 +105,7 @@ public class mcEntityListener implements Listener
     			if(!event.isCancelled() && event.getDamage() >= 1)
     				PP.setRecentlyHurt(System.currentTimeMillis());
     		}
+    		
     	case WOLF:
     		Wolf wolf = (Wolf) entity;
     		if((wolf.getNoDamageTicks() < wolf.getMaximumNoDamageTicks()/2.0F) && wolf.isTamed() && wolf.getOwner() != null)
