@@ -70,6 +70,7 @@ public class WoodCutting
         
         //Damage the tool
         player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability()+durabilityLoss));
+        player.updateInventory(); //Silly deprecated methods
         
         //This is to prevent using wood axes everytime you tree fell
         if(player.getItemInHand().getType() == Material.AIR || player.getItemInHand() == null)
