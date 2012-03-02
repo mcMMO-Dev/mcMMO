@@ -40,11 +40,12 @@ public class Swords
     	if(x instanceof Wolf)
     	{
     		Wolf wolf = (Wolf)x;
-    		if(Taming.getOwner(wolf, pluginx) != null)
+    		if(wolf.getOwner() instanceof Player)
     		{
-	    		if(Taming.getOwner(wolf, pluginx) == attacker)
+    			Player owner = (Player) wolf.getOwner();
+	    		if(owner == attacker)
 	    			return;
-	    		if(Party.getInstance().inSameParty(attacker, Taming.getOwner(wolf, pluginx)))
+	    		if(Party.getInstance().inSameParty(attacker, owner))
 	    			return;
     		}
     	}
@@ -97,10 +98,14 @@ public class Swords
     			if(derp instanceof Wolf)
     			{
 					Wolf hurrDurr = (Wolf)derp;
-					if(Taming.getOwner(hurrDurr, pluginx) == attacker)
-						continue;
-					if(Party.getInstance().inSameParty(attacker, Taming.getOwner(hurrDurr, pluginx)))
-						continue;
+					if(hurrDurr.getOwner() instanceof Player)
+		    		{
+		    			Player owner = (Player) hurrDurr.getOwner();
+			    		if(owner == attacker)
+			    			return;
+			    		if(Party.getInstance().inSameParty(attacker, owner))
+			    			return;
+		    		}
 				}
     			//Damage nearby LivingEntities
     			if(derp instanceof LivingEntity && targets >= 1)
