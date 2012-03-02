@@ -68,20 +68,21 @@ public class WoodCutting
             return;
         }
         int durabilityLoss = toBeFelled.size(), xp = 0;
-        
-        //Damage the tool
-        player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability()+durabilityLoss));
-        
+
         //This is to prevent using wood axes everytime you tree fell
-        if((player.getItemInHand().getDurability() >= player.getItemInHand().getType().getMaxDurability()) 
+        if((player.getItemInHand().getDurability() + durabilityLoss >= player.getItemInHand().getType().getMaxDurability()) 
                 || player.getItemInHand().getType() == Material.AIR || player.getItemInHand() == null)
         {
             player.sendMessage(ChatColor.RED+"YOUR AXE SPLINTERS INTO DOZENS OF PIECES");
             
             if(player.getHealth() >= 2)
                 Combat.dealDamage(player, player.getHealth()-1);
+            player.updateInventory(); //Not sure if needed
             return;
         }
+        
+        //Damage the tool
+        player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability()+durabilityLoss));
         
         //Prepare ItemStacks
         ItemStack item;
