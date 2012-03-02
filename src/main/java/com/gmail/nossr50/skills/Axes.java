@@ -97,8 +97,6 @@ public class Axes {
 	public static void impact(Player attacker, LivingEntity target)
 	{
 	    //TODO: Finish this skill, the idea is you will greatly damage an opponents armor and when they are armor less you have a proc that will stun them and deal additional damage.
-	    boolean didImpact = false;
-	    
 	    if(target instanceof Player)
 	    {
 	        Player targetPlayer = (Player) target;
@@ -120,31 +118,21 @@ public class Axes {
 	        }
 	        
 	        if(emptySlots == 4)
-	        {
-	            didImpact = applyImpact(attacker, target);
-	            if(didImpact)
-	                targetPlayer.sendMessage(mcLocale.getString("Axes.GreaterImpactOnSelf"));
-	        }
-	    } else {
+	            applyImpact(attacker, target);
+	    }
+	    else
 	        //Since mobs are technically unarmored this will always trigger
-	        didImpact = applyImpact(attacker, target);
-	    }
-	    
-	    if(didImpact)
-	    {
-	        attacker.sendMessage(mcLocale.getString("Axes.GreaterImpactOnEnemy"));
-	    }
+	        applyImpact(attacker, target);
 	}
 	
-	public static boolean applyImpact(Player attacker, LivingEntity target)
+	public static void applyImpact(Player attacker, LivingEntity target)
 	{
 	    if(Math.random() * 100 > 75)
         {
             Combat.dealDamage(target, 2, attacker);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(1.5D));
-            return true;
+            attacker.sendMessage(mcLocale.getString("Axes.GreaterImpactOnEnemy"));
         }
-	    return false;
 	}
 	
 	public static void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)

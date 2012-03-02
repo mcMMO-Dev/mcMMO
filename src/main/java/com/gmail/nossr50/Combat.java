@@ -82,11 +82,13 @@ public class Combat
 				Axes.axeCriticalCheck(attacker, event, pluginx); //Critical hit
 				
 				//Impact
-				if(event.getEntity() instanceof LivingEntity)
-				    Axes.impact(attacker, (LivingEntity)event.getEntity());
-				
-				if (!(event instanceof FakeEntityDamageByEntityEvent) && PPa.getSkullSplitterMode())
-					Axes.applyAoeDamage(attacker, event, pluginx);
+				if(!(event instanceof FakeEntityDamageByEntityEvent))
+				{
+					Axes.impact(attacker, target);
+					
+					if (PPa.getSkullSplitterMode())
+						Axes.applyAoeDamage(attacker, event, pluginx);
+				}
 				
 				if(target instanceof Player)
 					PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.AXES);
