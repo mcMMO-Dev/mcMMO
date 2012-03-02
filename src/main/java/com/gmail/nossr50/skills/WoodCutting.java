@@ -68,7 +68,10 @@ public class WoodCutting
             return;
         }
         int durabilityLoss = toBeFelled.size(), xp = 0;
-
+        
+        //Damage the tool
+        player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability()+durabilityLoss));
+        
         //This is to prevent using wood axes everytime you tree fell
         if((player.getItemInHand().getDurability() + durabilityLoss >= player.getItemInHand().getType().getMaxDurability()) 
                 || player.getItemInHand().getType() == Material.AIR || player.getItemInHand() == null)
@@ -80,9 +83,6 @@ public class WoodCutting
             player.updateInventory(); //Not sure if needed
             return;
         }
-        
-        //Damage the tool
-        player.getItemInHand().setDurability((short) (player.getItemInHand().getDurability()+durabilityLoss));
         
         //Prepare ItemStacks
         ItemStack item;
@@ -134,7 +134,7 @@ public class WoodCutting
                                 xp += LoadProperties.mbirch;
                                 break;
                             case 3:
-                                xp += LoadProperties.mjungle;
+                                xp += LoadProperties.mjungle/4;
                                 break;
                         }
                     }
@@ -161,7 +161,7 @@ public class WoodCutting
             }
         }
         
-        PP.addXP(SkillType.WOODCUTTING, xp/3, player); //Tree Feller gives nerf'd XP
+        PP.addXP(SkillType.WOODCUTTING, xp, player); //Tree Feller gives nerf'd XP
         Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
         
         if(LoadProperties.toolsLoseDurabilityFromAbilities)
