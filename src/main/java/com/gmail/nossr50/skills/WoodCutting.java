@@ -79,7 +79,7 @@ public class WoodCutting
             player.sendMessage(ChatColor.RED+"YOUR AXE SPLINTERS INTO DOZENS OF PIECES");
             
             if(player.getHealth() >= 2)
-                Combat.dealDamage(player, player.getHealth()-1);
+                Combat.dealDamage(player, (int)(Math.random() * (player.getHealth()-1)));
             player.updateInventory(); //Not sure if needed
             return;
         }
