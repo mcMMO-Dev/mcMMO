@@ -119,11 +119,12 @@ public class mcEntityListener implements Listener
     			if(!event.isCancelled() && event.getDamage() >= 1)
     				PP.setRecentlyHurt(System.currentTimeMillis());
     		}
-    		
+    		break;
     	case WOLF:
     		Wolf wolf = (Wolf) entity;
     		if((wolf.getNoDamageTicks() < wolf.getMaximumNoDamageTicks()/2.0F) && wolf.isTamed() && wolf.getOwner() != null)
     			Taming.preventDamage(event, plugin);
+    		break;
     	}
     }
 
