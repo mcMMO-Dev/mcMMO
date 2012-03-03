@@ -14,7 +14,8 @@ import com.gmail.nossr50.locale.mcLocale;
 public class AcrobaticsCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) {
+		if (!(sender instanceof Player))
+		{
 			sender.sendMessage("This command does not support console useage.");
 			return true;
 		}
@@ -46,7 +47,6 @@ public class AcrobaticsCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.AcrobaticsRollChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.AcrobaticsGracefulRollChance", new Object[] { gracepercentage }));
 		player.sendMessage(mcLocale.getString("m.AcrobaticsDodgeChance", new Object[] { dodgepercentage }));
-
 		return true;
 	}
 }
