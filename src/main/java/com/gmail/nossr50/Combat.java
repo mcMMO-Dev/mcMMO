@@ -27,6 +27,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.FakeEntityDamageByEntityEvent;
+import com.gmail.nossr50.events.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
@@ -296,7 +297,7 @@ public class Combat
 	 */
 	public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
 		if(LoadProperties.eventCallback) {
-			EntityDamageEvent ede = new EntityDamageEvent(target, cause, dmg);
+			EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
 			Bukkit.getPluginManager().callEvent(ede);
 			if(ede.isCancelled()) return;
 			

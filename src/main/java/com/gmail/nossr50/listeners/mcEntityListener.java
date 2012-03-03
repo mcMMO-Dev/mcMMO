@@ -47,6 +47,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.FakeEntityDamageByEntityEvent;
+import com.gmail.nossr50.events.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.Archery;
@@ -93,6 +94,9 @@ public class mcEntityListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) 
     {
+        if(event instanceof FakeEntityDamageEvent)
+            return;
+        
     	Entity entity = event.getEntity();
     	EntityType type = entity.getType();
     	DamageCause cause = event.getCause();
