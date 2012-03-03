@@ -44,25 +44,15 @@ public class Fishing {
 		int lvl = PP.getSkillLevel(SkillType.FISHING);
 
 		if(lvl >= LoadProperties.fishingTier1 && lvl < LoadProperties.fishingTier2)
-		{
 			return 1;
-		} 
 		else if (lvl >= LoadProperties.fishingTier2 && lvl < LoadProperties.fishingTier3)
-		{
-			return 2;
-		} 
+			return 2; 
 		else if (lvl >= LoadProperties.fishingTier3 && lvl < LoadProperties.fishingTier4)
-		{
-			return 3;
-		} 
+			return 3; 
 		else if (lvl >= LoadProperties.fishingTier4 && lvl < LoadProperties.fishingTier5)
-		{
 			return 4;
-		}
 		else
-		{
 			return 5;
-		}
 	}
 
 	public static void getFishingResults(Player player, PlayerFishEvent event)
@@ -105,9 +95,8 @@ public class Fishing {
 			}
 		} 
 		else
-		{
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
-		}
+		
 		//Change durability to random value
 		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value		
 	}
@@ -127,9 +116,8 @@ public class Fishing {
 			}
 		} 
 		else
-		{
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
-		}
+		
 		//Change durability to random value
 		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
@@ -149,9 +137,8 @@ public class Fishing {
 			}
 		} 
 		else
-		{
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
-		}
+		
 		//Change durability to random value
 		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
@@ -171,9 +158,8 @@ public class Fishing {
 			}
 		} 
 		else
-		{
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
-		}
+		
 		//Change durability to random value
 		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
@@ -193,9 +179,8 @@ public class Fishing {
 			}
 		} 
 		else
-		{
 			theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
-		}
+		
 		//Change durability to random value
 		theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change the damage value
 	}
@@ -272,18 +257,76 @@ public class Fishing {
 	}
 	public static void shakeMob(PlayerFishEvent event)
 	{
-		LivingEntity le = (LivingEntity)event.getCaught();
 		
-		//Do nothing to players
-		if(le instanceof Player)
-			return;
-		
-		Combat.dealDamage(le, 1);
+		LivingEntity le = (LivingEntity) event.getCaught();
+		EntityType type = le.getType();
 		Location loc = le.getLocation();
-
-		/* Neutral Mobs */
-		if(le instanceof Sheep)
+		
+		switch(type)
 		{
+		case BLAZE:
+			m.mcDropItem(loc, new ItemStack(Material.BLAZE_ROD, 1));
+		case CAVE_SPIDER:
+			if(Math.random() * 10 < 5)
+				m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
+			else
+				m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
+		case CHICKEN:
+			if(Math.random() * 10 <= 7)
+			{
+				if(Math.random() * 10 < 5)
+					m.mcDropItem(loc, new ItemStack(Material.FEATHER, 1));
+				else
+					m.mcDropItem(loc, new ItemStack(Material.RAW_CHICKEN, 1));
+			}
+			else
+				m.mcDropItem(loc, new ItemStack(Material.EGG, 1));
+		case COW:
+			if(Math.random() * 100 >= 99)
+				m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
+			else if(Math.random() * 10 < 5)
+				m.mcDropItem(loc, new ItemStack(Material.LEATHER, 1));
+			else
+				m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF, 1));
+		case CREEPER:
+			m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
+		case ENDERMAN:
+			m.mcDropItem(loc, new ItemStack(Material.ENDER_PEARL, 1));
+		case GHAST:
+			if(Math.random() * 10 < 5)
+				m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
+			else
+				m.mcDropItem(loc, new ItemStack(Material.GHAST_TEAR, 1));
+		case MAGMA_CUBE:
+			m.mcDropItem(loc, new ItemStack(Material.MAGMA_CREAM, 1));
+		case MUSHROOM_COW:
+			if(Math.random() * 100 >= 99)
+			{
+				if(Math.random() * 10 < 5)
+					m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
+				else
+					m.mcDropItem(loc, new ItemStack(Material.MUSHROOM_SOUP, 1)); //rare chance to drop soup
+			}
+			else if(Math.random() * 10 <= 7)
+			{
+				if(Math.random() * 10 < 5)
+					m.mcDropItem(loc, new ItemStack(Material.LEATHER, 1));
+				else
+					m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF, 1));
+			}
+			else
+				m.mcDropItem(loc, new ItemStack(Material.RED_MUSHROOM, 3));
+				//need some way to remove MushroomCow & replace with regular cow when sheared
+		case PIG:
+			m.mcDropItem(loc, new ItemStack(Material.PORK, 1));
+		case PIG_ZOMBIE:
+			if(Math.random() * 10 < 5)
+				m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH, 1));
+			else
+				m.mcDropItem(loc, new ItemStack(Material.GOLD_NUGGET, 1));
+		case PLAYER:
+			return;
+		case SHEEP:
 			Sheep sheep = (Sheep)le;
 			if(!sheep.isSheared())
 			{
@@ -294,149 +337,29 @@ public class Fishing {
 				m.mcDropItem(loc, theWool);
 				sheep.setSheared(true);
 			}
-		} 
-		
-		else if(le instanceof Pig)
-		{
-			m.mcDropItem(loc, new ItemStack(Material.PORK, 1));
-		} 
-		
-		else if(le instanceof Cow)
-		{
-			if(Math.random() * 100 >= 99){
-				m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
-			}
-			else if(Math.random() * 10 < 5){
-				m.mcDropItem(loc, new ItemStack(Material.LEATHER, 1));
-			}
-			else{
-				m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF, 1));
-			}
-		}
-		
-		else if(le instanceof Chicken)
-		{
-			if(Math.random() * 10 <= 7){
-				if(Math.random() * 10 < 5){
-					m.mcDropItem(loc, new ItemStack(Material.FEATHER, 1));
-				}
-				else{
-					m.mcDropItem(loc, new ItemStack(Material.RAW_CHICKEN, 1));
-				}
-			}
-			else{
-				m.mcDropItem(loc, new ItemStack(Material.EGG, 1));
-			}
-		}
-		
-		//need to implement new shearing method
-		else if(le instanceof MushroomCow)
-		{
-			if(Math.random() * 100 >= 99){
-				if(Math.random() * 10 < 5){
-					m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
-				}
-				else{
-					m.mcDropItem(loc, new ItemStack(Material.MUSHROOM_SOUP, 1)); //rare chance to drop soup
-				}
-			}
-			else if(Math.random() * 10 <= 7){
-				if(Math.random() * 10 < 5){
-					m.mcDropItem(loc, new ItemStack(Material.LEATHER, 1));
-				}
-				else{
-					m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF, 1));
-				}
-			}
-			else{
-				m.mcDropItem(loc, new ItemStack(Material.RED_MUSHROOM, 3));
-				//need some way to remove MushroomCow & replace with regular cow when sheared
-			}
-		}
-		
-		else if(le instanceof Squid)
-		{
-			m.mcDropItem(loc, new ItemStack(Material.getMaterial(351), 1, (byte)0, (byte)0));
-		}
-		
-		else if(le instanceof Snowman){
-			if(Math.random() * 100 >= 99){
-				m.mcDropItem(loc, new ItemStack(Material.PUMPKIN, 1)); //rare chance to drop pumpkin
-			}
-			else{
-				m.mcDropItem(loc, new ItemStack(Material.SNOW_BALL, 5));
-			}
-		}
-		
-		/* Hostile Mobs */
-		else if(le instanceof Skeleton)
-		{
+		case SKELETON:
 			if(Math.random() * 10 < 5)
 				m.mcDropItem(loc, new ItemStack(Material.BONE, 1));
 			else
 				m.mcDropItem(loc, new ItemStack(Material.ARROW, 3));
-		} 
-		
-		else if(le instanceof Spider)
-		{
-			if(Math.random() * 10 < 5)
-				m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
-			else
-				m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
-		} 
-		
-		else if(le instanceof Creeper)
-		{
-			m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
-		}
-		
-		else if(le instanceof Enderman)
-		{
-			m.mcDropItem(loc, new ItemStack(Material.ENDER_PEARL, 1));
-		}
-		
-		else if(le instanceof PigZombie)
-		{
-			if(Math.random() * 10 < 5)
-				m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH, 1));
-			else
-				m.mcDropItem(loc, new ItemStack(Material.GOLD_NUGGET, 1));
-		}
-		
-		else if(le instanceof Blaze)
-		{
-			m.mcDropItem(loc, new ItemStack(Material.BLAZE_ROD, 1));
-		}
-		
-		else if(le instanceof CaveSpider)
-		{
-			if(Math.random() * 10 < 5)
-				m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
-			else
-				m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
-		}
-		
-		else if(le instanceof Ghast)
-		{
-			if(Math.random() * 10 < 5)
-				m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
-			else
-				m.mcDropItem(loc, new ItemStack(Material.GHAST_TEAR, 1));
-		}
-		
-		else if(le instanceof MagmaCube)
-		{
-			m.mcDropItem(loc, new ItemStack(Material.MAGMA_CREAM, 1));
-		}
-		
-		else if(le instanceof Slime)
-		{
+		case SLIME:
 			m.mcDropItem(loc, new ItemStack(Material.SLIME_BALL, 1));
-		}
-		
-		else if(le instanceof Zombie)
-		{
+		case SNOWMAN:
+			if(Math.random() * 100 >= 99)
+				m.mcDropItem(loc, new ItemStack(Material.PUMPKIN, 1)); //rare chance to drop pumpkin
+			else
+				m.mcDropItem(loc, new ItemStack(Material.SNOW_BALL, 5));
+		case SPIDER:
+			if(Math.random() * 10 < 5)
+				m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
+			else
+				m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
+		case SQUID:
+			m.mcDropItem(loc, new ItemStack(Material.INK_SACK, 1, (byte)0, (byte)0));
+		case ZOMBIE:
 			m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH, 1));
 		}
+		
+		Combat.dealDamage(le, 1);
 	}
 }

@@ -26,7 +26,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wolf;
@@ -108,7 +107,7 @@ public class mcPlayerListener implements Listener
 			else if (state == State.CAUGHT_ENTITY)
 			{
 				int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.FISHING);
-				if(skillLevel >= 150 && caught instanceof LivingEntity)
+				if(skillLevel >= 150)
 					Fishing.shakeMob(event);
 			}
 		}
