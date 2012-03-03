@@ -51,12 +51,9 @@ public class Page {
     
     public static void clearChat(Player player)
     {
-        //Extremely ugly way of making the screen clear up
-        int x = 0;
-        while(x < 20)
+        for(int x = 0; x < 20; x++)
         {
             player.sendMessage("");
-            x++;
         }
     }
     
@@ -69,9 +66,9 @@ public class Page {
                 String capitalized = m.getCapitalized(skilltype.toString());
                 String address = "Guides."+capitalized;
                 
-                Page.clearChat(player);
                 if(args.length > 1 && m.isInt(args[1]) && m.getInt(args[1]) <= Page.getTotalPageNumber(address))
                 {
+                    Page.clearChat(player);
                     for(String target : Page.grabPageContents(capitalized+" Guide", address, m.getInt(args[1])))
                     {
                         player.sendMessage(target);
