@@ -30,7 +30,6 @@ public class ExcavationCommand implements CommandExecutor {
 			ticks++;
 		}
 
-
 		player.sendMessage("");
 		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.SkillExcavation") }));
 		player.sendMessage(mcLocale.getString("m.XPGain", new Object[] { mcLocale.getString("m.XPGainExcavation") }));

@@ -14,7 +14,7 @@ public class Page {
     public static int getTotalPageNumber(String address)
     {
         String[] addressSplit = mcLocale.getString(address).split("\n");
-        if(addressSplit.length < 8)
+        if(addressSplit.length <= 8)
             return 1;
         else
             return (addressSplit.length/8)+1;
@@ -31,7 +31,7 @@ public class Page {
         }
         
         ArrayList<String> allStrings = new ArrayList<String>();
-        String[] addressSplit = mcLocale.getString(address).split("\n");
+        String split[] = mcLocale.getString(address).split("\n");
         
         allStrings.add(ChatColor.GOLD+"-="+ChatColor.GREEN+header+ChatColor.GOLD+"=-"); //So stylish
         
@@ -39,10 +39,10 @@ public class Page {
         
         while(allStrings.size() < 9)
         {
-            if(pageIndexStart+allStrings.size() > addressSplit.length)
+            if(pageIndexStart+allStrings.size() > split.length)
                 allStrings.add("");
             else
-                allStrings.add(addressSplit[pageIndexStart+allStrings.size()-1]);
+                allStrings.add(split[pageIndexStart+allStrings.size()-1]);
         }
         
         allStrings.add("Page "+pagenum+" of "+getTotalPageNumber(address));

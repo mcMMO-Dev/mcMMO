@@ -10,6 +10,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Page;
 
 public class MiningCommand implements CommandExecutor {
 	@Override
@@ -123,7 +124,9 @@ public class MiningCommand implements CommandExecutor {
 			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockMining3") }));
 		else
 			player.sendMessage(mcLocale.getString("m.MiningDemolitionsExpertDamageDecrease", new Object[] { damage }));
-
+		
+		Page.grabGuidePageForSkill(SkillType.MINING, player, args);
+		
 		return true;
 	}
 }
