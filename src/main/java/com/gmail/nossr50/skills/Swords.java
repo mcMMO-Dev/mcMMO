@@ -16,7 +16,6 @@
 */
 package com.gmail.nossr50.skills;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -29,6 +28,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class Swords 
@@ -61,7 +61,7 @@ public class Swords
 						Player target = (Player)x;
 						Users.getProfile(target).addBleedTicks(3);
 					}
-					attacker.sendMessage(ChatColor.GREEN+"**ENEMY BLEEDING**");
+					attacker.sendMessage(mcLocale.getString("Swords.EnemyBleeding"));
 				}
 			} 
 			else if (Math.random() * 1000 <= PPa.getSkillLevel(SkillType.SWORDS))
@@ -73,7 +73,7 @@ public class Swords
 					Player target = (Player)x;
 					Users.getProfile(target).addBleedTicks(2);
 				}
-				attacker.sendMessage(ChatColor.GREEN+"**ENEMY BLEEDING**");
+				attacker.sendMessage(mcLocale.getString("Swords.EnemyBleeding"));
 			}
 		}
     }
@@ -125,7 +125,7 @@ public class Swords
 	    				if(targets >= 1 && derp.getWorld().getPVP())
 	    				{
 	    					Combat.dealDamage(target, dmgAmount, attacker);
-	    					target.sendMessage(ChatColor.DARK_RED+"Struck by Serrated Strikes!");
+	    					target.sendMessage(mcLocale.getString("Swords.HitBySerratedStrikes"));
 	        				Users.getProfile(target).addBleedTicks(5);
 	    					targets--;
 	    					continue;
@@ -166,17 +166,17 @@ public class Swords
 		    			if(Math.random() * 2000 <= 600)
 		    			{
 			    			Combat.dealDamage((LivingEntity) f, event.getDamage() / 2);
-		    				defender.sendMessage(ChatColor.GREEN+"**COUNTER-ATTACKED**");
+			    			defender.sendMessage(mcLocale.getString("Swords.CounterAttacked"));
 			    			if(f instanceof Player)
-		    				((Player) f).sendMessage(ChatColor.DARK_RED+"Hit with counterattack!");
+		    				((Player) f).sendMessage(mcLocale.getString("Swords.HitByCounterAttack"));
 		    			}
 		    		}
 		    		else if (Math.random() * 2000 <= PPd.getSkillLevel(SkillType.SWORDS))
 		    		{
 			    		Combat.dealDamage((LivingEntity) f, event.getDamage() / 2);
-			    		defender.sendMessage(ChatColor.GREEN+"**COUNTER-ATTACKED**");
+			    		defender.sendMessage(mcLocale.getString("Swords.CounterAttacked"));
 		    			if(f instanceof Player)
-		    				((Player) f).sendMessage(ChatColor.DARK_RED+"Hit with counterattack!");
+		    				((Player) f).sendMessage(mcLocale.getString("Swords.HitByCounterAttack"));
 		    		}
 		   		}
 		    }
