@@ -47,49 +47,8 @@ public class ExcavationCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.YourStats") }));
 		player.sendMessage(mcLocale.getString("m.ExcavationGigaDrillBreakerLength", new Object[] { ticks }));
 
-		if (args.length >= 1)
-		{
-			if(args[0].equals("?"))
-			{
-			    Page.clearChat(player);
-				if(args.length > 1 && m.isInt(args[1]))
-				{
-				    for(String target : Page.grabPageContents("Excavation Guide", "Guides.Excavation", m.getInt(args[1])))
-				    {
-				        player.sendMessage(target);
-				    }
-					
-				    /*
-					player.sendMessage("");
-					player.sendMessage("==XP Gain==");
-					player.sendMessage("Base XP: " + LoadProperties.mbase);
-					player.sendMessage(ChatColor.GRAY + "Awarded for digging Dirt, Grass, Sand, Gravel, ");
-					player.sendMessage(ChatColor.GRAY + "Soul Sand, Mycelium, and Clay.");
-					player.sendMessage("Treasures: Varies by item");
-					player.sendMessage(ChatColor.GRAY + "Awarded for finding items while digging.");
-					player.sendMessage("");
-					player.sendMessage("==Abilities==");
-					player.sendMessage("Giga Drill Breaker");
-					player.sendMessage(ChatColor.GRAY + "Right-click with a shovel in hand to prep this ability.");
-					player.sendMessage(ChatColor.GRAY + "Allows for instabreaking of associated blocks.");
-					player.sendMessage("");
-					player.sendMessage("==Subskills==");
-					player.sendMessage("Treasure Hunter");
-					player.sendMessage(ChatColor.GRAY + "Randomly find valuable items while digging.");
-					player.sendMessage(ChatColor.GRAY + "Items found vary depending on skill level.");
-					player.sendMessage("");
-					player.sendMessage("==PAGE 1 of 1==");
-					*/
-				} else if(args.length > 1 && !m.isInt(args[1]))
-				{
-				    player.sendMessage("Not a valid page number!");
-				}
-			}
-			else
-			{
-				player.sendMessage(ChatColor.RED + "Usage is /excavation ? [page]");
-			}
-		}
+		Page.grabGuidePageForSkill(SkillType.EXCAVATION, player, args);
+		
 		return true;
 	}
 }
