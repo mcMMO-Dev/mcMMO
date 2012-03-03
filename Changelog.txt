@@ -8,13 +8,13 @@ Key:
   - Removal
 
 Version 1.3.02
- + Added Ocelots to Taming XP tables.
  ! Changed Tree Feller to hand out 1/4 of normal XP for each JUNGLE LOG block it fells
  ! Changed Tree Feller to only fell trees if you have enough durability
  ! Changed Tree Feller to cause injury if your axe splinters from a failed Tree Feller attempt
  ! Changed invincibility checks in EntityDamage listeners to accommodate for vanilla MC behaviour
  ! Changed Ignition to add fire ticks rather than replacing them.
- ! Fixed Impact proccing multiple times in a row
+ = Fixed Impact proccing multiple times in a row
+ = Fixed bug where PVE skills didn't level
 
 Version 1.3.01
  = Fixed bug where Tree Feller had no cooldown

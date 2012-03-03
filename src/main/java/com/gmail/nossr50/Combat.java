@@ -361,6 +361,7 @@ public class Combat
 	{
    		int xp = getXp(target, damage);
 		PPa.addXP(skillType, xp*10, attacker);
+		Skills.XpCheckSkill(skillType, attacker);
 	}
 	
 	public static int getXp(Entity entity, int damage)
