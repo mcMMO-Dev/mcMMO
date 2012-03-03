@@ -16,7 +16,6 @@
 */
 package com.gmail.nossr50.skills;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -70,26 +69,26 @@ public class Axes {
     					int damage = (event.getDamage() * 2) - (event.getDamage() / 2);
     					event.setDamage(damage);
     					Player player = (Player)x;
-    					player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
+    					player.sendMessage(mcLocale.getString("Axes.HitCritically"));
     				}
     				else {
     					int damage = event.getDamage() * 2;
         				event.setDamage(damage);
         			}
-    				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
+    				attacker.sendMessage(mcLocale.getString("Axes.CriticalHit"));
     			}
     		} else if(Math.random() * 2000 <= PPa.getSkillLevel(SkillType.AXES) && !x.isDead()){
     			if(x instanceof Player){
     				int damage = (event.getDamage() * 2) - (event.getDamage() / 2);
 					event.setDamage(damage);
     				Player player = (Player)x;
-    				player.sendMessage(ChatColor.DARK_RED + "You were CRITICALLY hit!");
+    				player.sendMessage(mcLocale.getString("Axes.HitCritically"));
     			}
     			else {
     				int damage = event.getDamage() * 2;
     				event.setDamage(damage);
     			}
-				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
+				attacker.sendMessage(mcLocale.getString("Axes.CriticalHit"));
     		}
     	}
     }
@@ -186,7 +185,7 @@ public class Axes {
 	    				if(targets >= 1 && derp.getWorld().getPVP())
 	    				{
 	    				    Combat.dealDamage(target, dmgAmount, attacker);
-	    					target.sendMessage(ChatColor.DARK_RED+"Struck by CLEAVE!");
+	    					target.sendMessage(mcLocale.getString("Axes.HitByCleave"));
 	    					targets--;
 	    					continue;
 	    				}

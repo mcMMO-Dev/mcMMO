@@ -1047,10 +1047,7 @@ public class PlayerProfile
 					bonusModifier = 2;
 				
 				double trueBonus = bonusModifier * xp;
-				//double oldxp = xp;
 				xp+=trueBonus;
-				//double percent = (trueBonus/oldxp)*100;
-				//thisplayer.sendMessage(ChatColor.GREEN+"XP: "+oldxp+" Bonus XP: "+trueBonus+" Total: "+xp+ChatColor.GOLD+" [Master: "+leaderName+" " +" +"+(int)percent+"%]");
 			}
 			Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(Bukkit.getPlayer(playerName), skillType, xp));
 			skillsXp.put(skillType, skillsXp.get(skillType)+xp);

@@ -16,7 +16,6 @@
 */
 package com.gmail.nossr50.skills;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -25,6 +24,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.mcLocale;
 
 
 public class Acrobatics {
@@ -59,9 +59,9 @@ public class Acrobatics {
 				if(event.getDamage() <= 0)
 					event.setCancelled(true);
 				if(player.isSneaking()){
-					player.sendMessage(ChatColor.GREEN+"**GRACEFUL ROLL**");
+					player.sendMessage(mcLocale.getString("Acrobatics.GracefulRoll"));
 				} else {
-					player.sendMessage("**ROLL**");
+					player.sendMessage(mcLocale.getString("Acrobatics.Roll"));
 				}
 			}
 		} 
@@ -78,7 +78,7 @@ public class Acrobatics {
 		if(mcPermissions.getInstance().acrobatics(defender)){
 			if(PPd.getSkillLevel(SkillType.ACROBATICS) <= 800){
 	    		if(Math.random() * 4000 <= PPd.getSkillLevel(SkillType.ACROBATICS)){
-	    			defender.sendMessage(ChatColor.GREEN+"**DODGE**");
+	    			defender.sendMessage(mcLocale.getString("Acrobatics.Dodge"));
 	    			if(System.currentTimeMillis() >= 5000 + PPd.getRespawnATS() && defender.getHealth() >= 1){
 	    				PPd.addXP(SkillType.ACROBATICS, (event.getDamage() * 12)*1, defender);
 	    				Skills.XpCheckSkill(SkillType.ACROBATICS, defender);
@@ -89,7 +89,7 @@ public class Acrobatics {
 	    				event.setDamage(1);
 	    		}
 			} else if(Math.random() * 4000 <= 800) {
-				defender.sendMessage(ChatColor.GREEN+"**DODGE**");
+				defender.sendMessage(mcLocale.getString("Acrobatics.Dodge"));
 				if(System.currentTimeMillis() >= 5000 + PPd.getRespawnATS() && defender.getHealth() >= 1){
 					PPd.addXP(SkillType.ACROBATICS, (event.getDamage() * 12)*10, defender);
 					Skills.XpCheckSkill(SkillType.ACROBATICS, defender);
