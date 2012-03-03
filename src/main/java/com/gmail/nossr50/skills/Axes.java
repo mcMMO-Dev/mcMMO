@@ -105,8 +105,6 @@ public class Axes {
 	        
 	        durDmg+=Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/30; //Every 30 Skill Levels you gain 1 durability dmg
 	        
-	        System.out.println(durDmg);
-	        
 	        for(ItemStack x : targetPlayer.getInventory().getArmorContents())
 	        {
 	            if(x.getType() == Material.AIR)
