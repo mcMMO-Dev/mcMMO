@@ -171,12 +171,12 @@ public class Combat
 		/*			 
 		 * DEFENSIVE CHECKS FOR WOLVES
 		 */
-		else if(target instanceof Wolf)
-		{
-			Wolf wolf = (Wolf) target;
-			if(wolf.isTamed() && (wolf.getOwner() instanceof Player))
-				Taming.preventDamage(event, pluginx);
-		}
+		//else if(target instanceof Wolf)
+		//{
+		//	Wolf wolf = (Wolf) target;
+		//	if(wolf.isTamed() && (wolf.getOwner() instanceof Player))
+		//		Taming.preventDamage(event, pluginx);
+		//}
 	}
 	
 	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa)
