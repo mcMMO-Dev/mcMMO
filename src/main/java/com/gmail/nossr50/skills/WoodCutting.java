@@ -18,7 +18,6 @@ package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -80,7 +79,6 @@ public class WoodCutting
             
             if(player.getHealth() >= 2)
                 Combat.dealDamage(player, (int)(Math.random() * (player.getHealth()-1)));
-            player.updateInventory(); //Not sure if needed
             return;
         }
         
