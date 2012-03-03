@@ -7,11 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Page;
 
 public class ExcavationCommand implements CommandExecutor {
 	@Override
@@ -49,9 +51,15 @@ public class ExcavationCommand implements CommandExecutor {
 		{
 			if(args[0].equals("?"))
 			{
-				if(args[1].equals("1"))
+			    Page.clearChat(player);
+				if(args.length > 1 && m.isInt(args[1]))
 				{
-					player.sendMessage("==EXCAVATION==");
+				    for(String target : Page.grabPageContents("Excavation Guide", "Guides.Excavation", m.getInt(args[1])))
+				    {
+				        player.sendMessage(target);
+				    }
+					
+				    /*
 					player.sendMessage("");
 					player.sendMessage("==XP Gain==");
 					player.sendMessage("Base XP: " + LoadProperties.mbase);
@@ -71,16 +79,17 @@ public class ExcavationCommand implements CommandExecutor {
 					player.sendMessage(ChatColor.GRAY + "Items found vary depending on skill level.");
 					player.sendMessage("");
 					player.sendMessage("==PAGE 1 of 1==");
+					*/
+				} else if(args.length > 1 && !m.isInt(args[1]))
+				{
+				    player.sendMessage("Not a valid page number!");
 				}
-				
 			}
 			else
 			{
 				player.sendMessage(ChatColor.RED + "Usage is /excavation ? [page]");
 			}
-				
 		}
-		
 		return true;
 	}
 }
