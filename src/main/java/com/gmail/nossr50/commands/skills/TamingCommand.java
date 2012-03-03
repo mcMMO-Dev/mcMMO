@@ -11,6 +11,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Page;
 
 public class TamingCommand implements CommandExecutor {
 	@Override
@@ -69,6 +70,8 @@ public class TamingCommand implements CommandExecutor {
 	          player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] { mcLocale.getString("m.AbilBonusTaming5_0"), mcLocale.getString("m.AbilBonusTaming5_1") }));
 		
 		player.sendMessage(mcLocale.getString("m.TamingGoreChance", new Object[] { percentage }));
+		
+		Page.grabGuidePageForSkill(SkillType.TAMING, player, args);
 
 		return true;
 	}

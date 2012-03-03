@@ -12,6 +12,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Repair;
+import com.gmail.nossr50.util.Page;
 
 public class RepairCommand implements CommandExecutor {
 	@Override
@@ -45,7 +46,9 @@ public class RepairCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.ArcaneForgingRank", new Object[] { Repair.getArcaneForgingRank(PP.getSkillLevel(SkillType.REPAIR)) }));
 		player.sendMessage(mcLocale.getString("m.ArcaneEnchantKeepChance", new Object[] { Repair.getEnchantChance(Repair.getArcaneForgingRank(PP.getSkillLevel(SkillType.REPAIR))) }));
 		player.sendMessage(mcLocale.getString("m.ArcaneEnchantDowngradeChance", new Object[] { Repair.getDowngradeChance(Repair.getArcaneForgingRank(PP.getSkillLevel(SkillType.REPAIR))) }));
-
+		
+		Page.grabGuidePageForSkill(SkillType.REPAIR, player, args);
+		
 		return true;
 	}
 }

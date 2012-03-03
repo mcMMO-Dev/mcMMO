@@ -10,6 +10,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Page;
 
 public class UnarmedCommand implements CommandExecutor {
 	@Override
@@ -66,6 +67,8 @@ public class UnarmedCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] { mcLocale.getString("m.AbilBonusUnarmed2_0"), mcLocale.getString("m.AbilBonusUnarmed2_1", new Object[] {bonus}) }));
 
 		player.sendMessage(mcLocale.getString("m.UnarmedBerserkLength", new Object[] { ticks }));
+		
+		Page.grabGuidePageForSkill(SkillType.UNARMED, player, args);
 
 		return true;
 	}

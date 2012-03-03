@@ -10,6 +10,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Page;
 
 public class SwordsCommand implements CommandExecutor {
 	@Override
@@ -63,6 +64,8 @@ public class SwordsCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.SwordsTickNote"));
 		player.sendMessage(mcLocale.getString("m.SwordsBleedChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.SwordsSSLength", new Object[] { ticks }));
+		
+		Page.grabGuidePageForSkill(SkillType.SWORDS, player, args);
 
 		return true;
 	}

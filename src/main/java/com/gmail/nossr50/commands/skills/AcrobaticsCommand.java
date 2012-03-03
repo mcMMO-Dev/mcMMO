@@ -10,6 +10,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Page;
 
 public class AcrobaticsCommand implements CommandExecutor {
 	@Override
@@ -47,6 +48,9 @@ public class AcrobaticsCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.AcrobaticsRollChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.AcrobaticsGracefulRollChance", new Object[] { gracepercentage }));
 		player.sendMessage(mcLocale.getString("m.AcrobaticsDodgeChance", new Object[] { dodgepercentage }));
+		
+		Page.grabGuidePageForSkill(SkillType.ACROBATICS, player, args);
+		
 		return true;
 	}
 }

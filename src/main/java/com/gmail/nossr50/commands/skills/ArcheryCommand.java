@@ -10,6 +10,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Page;
 
 public class ArcheryCommand implements CommandExecutor {
 	@Override
@@ -57,6 +58,8 @@ public class ArcheryCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.ArcheryDazeChance", new Object[] { percentagedaze }));
 		player.sendMessage(mcLocale.getString("m.ArcheryRetrieveChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.ArcheryIgnitionLength", new Object[] { (ignition / 20) }));
+		
+		Page.grabGuidePageForSkill(SkillType.AXES, player, args);
 
 		return true;
 	}

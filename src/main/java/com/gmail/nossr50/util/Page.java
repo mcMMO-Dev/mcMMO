@@ -60,7 +60,7 @@ public class Page {
     public static void grabGuidePageForSkill(SkillType skilltype, Player player, String[] args)
     {
         String capitalized = m.getCapitalized(skilltype.toString());
-        player.sendMessage(ChatColor.DARK_AQUA+"To read a Guide about "+capitalized+" type /"+skilltype.toString().toLowerCase()+" ? [Page Number]");
+        player.sendMessage(ChatColor.DARK_AQUA+"Guide for "+capitalized+"available type /"+skilltype.toString().toLowerCase()+" ? [Page#]");
         if (args.length >= 1)
         {
             if(args[0].equals("?"))

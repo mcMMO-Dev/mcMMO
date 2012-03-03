@@ -10,6 +10,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Page;
 
 public class WoodcuttingCommand implements CommandExecutor {
 	@Override
@@ -50,6 +51,8 @@ public class WoodcuttingCommand implements CommandExecutor {
 		
 		player.sendMessage(mcLocale.getString("m.WoodCuttingDoubleDropChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.WoodCuttingTreeFellerLength", new Object[] { ticks }));
+		
+		Page.grabGuidePageForSkill(SkillType.WOODCUTTING, player, args);
 		
 		return true;
 	}

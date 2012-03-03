@@ -11,6 +11,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Fishing;
+import com.gmail.nossr50.util.Page;
 
 public class FishingCommand implements CommandExecutor {
 	@Override
@@ -41,6 +42,8 @@ public class FishingCommand implements CommandExecutor {
 			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockFishing1") }));
 		else
 			player.sendMessage(mcLocale.getString("m.ShakeInfo", new Object[] { Fishing.getFishingLootTier(PP) }));
+		
+		Page.grabGuidePageForSkill(SkillType.FISHING, player, args);
 
 		return true;
 	}

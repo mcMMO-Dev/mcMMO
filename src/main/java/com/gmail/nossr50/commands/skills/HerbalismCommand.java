@@ -10,6 +10,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Page;
 
 public class HerbalismCommand implements CommandExecutor {
 	@Override
@@ -63,6 +64,8 @@ public class HerbalismCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.HerbalismGreenThumbStage", new Object[] { bonus }));
 		player.sendMessage(mcLocale.getString("m.HerbalismFoodPlus", new Object[] { bonus } ));
 		player.sendMessage(mcLocale.getString("m.HerbalismDoubleDropChance", new Object[] { percentage }));
+		
+		Page.grabGuidePageForSkill(SkillType.HERBALISM, player, args);
 
 		return true;
 	}
