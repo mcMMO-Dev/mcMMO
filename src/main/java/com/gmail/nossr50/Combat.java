@@ -67,7 +67,7 @@ public class Combat
 				if(!pluginx.misc.bleedTracker.contains(target)) //Bleed
 					Swords.bleedCheck(attacker, target, pluginx);
 					
-				if (!(event instanceof FakeEntityDamageByEntityEvent) && PPa.getSerratedStrikesMode())
+				if (PPa.getSerratedStrikesMode())
 					Swords.applySerratedStrikes(attacker, event, pluginx);
 					
 				if(target instanceof Player)
@@ -82,13 +82,10 @@ public class Combat
 				Axes.axeCriticalCheck(attacker, event, pluginx); //Critical hit
 				
 				//Impact
-				if(!(event instanceof FakeEntityDamageByEntityEvent))
-				{
-					Axes.impact(attacker, target);
+				Axes.impact(attacker, target);
 					
-					if (PPa.getSkullSplitterMode())
-						Axes.applyAoeDamage(attacker, event, pluginx);
-				}
+				if (PPa.getSkullSplitterMode())
+					Axes.applyAoeDamage(attacker, event, pluginx);
 				
 				if(target instanceof Player)
 					PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.AXES);
