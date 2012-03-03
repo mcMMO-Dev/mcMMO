@@ -113,26 +113,47 @@ public class Taming
 	public static void preventDamage(EntityDamageEvent event, mcMMO plugin)
 	{
 		DamageCause cause = event.getCause();
-		Entity entity = event.getEntity();
-		Wolf theWolf = (Wolf)entity;
-		Player master = (Player)theWolf.getOwner();
+		Wolf wolf = (Wolf) event.getEntity();
+		Player master = (Player) wolf.getOwner();
 		int skillLevel = Users.getProfile(master).getSkillLevel(SkillType.TAMING);
 		
-		//Environmentally Aware
-		if((cause == DamageCause.CONTACT || cause == DamageCause.LAVA || cause == DamageCause.FIRE) && skillLevel >= 100)
+		switch(cause)
 		{
-			if(event.getDamage() < theWolf.getHealth())
+		//Environmentally Aware
+		case CONTACT:
+		case LAVA:
+		case FIRE:
+			if(skillLevel >= 100)
 			{
-				entity.teleport(master.getLocation());
+				if(event.getDamage() >= wolf.getHealth())
+					return;
+				
+				wolf.teleport(master.getLocation());
 				master.sendMessage(mcLocale.getString("mcEntityListener.WolfComesBack")); //$NON-NLS-1$
-				entity.setFireTicks(0);
 			}
-		}
-		if(cause == DamageCause.FALL && skillLevel >= 100)
-			event.setCancelled(true);
-		
+			break;
+		case FALL:
+			if(skillLevel >= 100)
+				event.setCancelled(true);
+			break;
+			
 		//Thick Fur
-		if(cause == DamageCause.FIRE_TICK)
-			event.getEntity().setFireTicks(0);
+		case FIRE_TICK:
+			if(skillLevel >= 250)
+				wolf.setFireTicks(0);
+			break;
+		case ENTITY_ATTACK:
+		case PROJECTILE:
+			if(skillLevel >= 250)
+				event.setDamage(event.getDamage() / 2);
+			break;
+			
+		//Shock Proof
+		case ENTITY_EXPLOSION:
+		case BLOCK_EXPLOSION:
+			if(skillLevel >= 500)
+				event.setDamage(event.getDamage() / 6);
+			break;
+		}
 	}
 }
