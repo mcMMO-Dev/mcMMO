@@ -14,6 +14,7 @@ Version 1.3.02
  ! Changed invincibility checks in EntityDamage listeners to accommodate for vanilla MC behaviour
  ! Changed Ignition to add fire ticks rather than replacing them.
  ! Changed Axes critical to have a max critical rate of 37.5% down from 75%
+ = Fixed Shake not working correctly
  = Fixed bug with Axes command displaying wrong Greater Impact bonus damage
  = Fixed bug where Impact didn't apply bonus damage
  = Fixed Impact proccing multiple times in a row

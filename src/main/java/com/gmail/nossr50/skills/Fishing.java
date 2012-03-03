@@ -266,11 +266,13 @@ public class Fishing {
 		{
 		case BLAZE:
 			m.mcDropItem(loc, new ItemStack(Material.BLAZE_ROD, 1));
+			break;
 		case CAVE_SPIDER:
 			if(Math.random() * 10 < 5)
 				m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
 			else
 				m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
+			break;
 		case CHICKEN:
 			if(Math.random() * 10 <= 7)
 			{
@@ -281,6 +283,7 @@ public class Fishing {
 			}
 			else
 				m.mcDropItem(loc, new ItemStack(Material.EGG, 1));
+			break;
 		case COW:
 			if(Math.random() * 100 >= 99)
 				m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1)); //rare chance to drop milk
@@ -288,17 +291,22 @@ public class Fishing {
 				m.mcDropItem(loc, new ItemStack(Material.LEATHER, 1));
 			else
 				m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF, 1));
+			break;
 		case CREEPER:
 			m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
+			break;
 		case ENDERMAN:
 			m.mcDropItem(loc, new ItemStack(Material.ENDER_PEARL, 1));
+			break;
 		case GHAST:
 			if(Math.random() * 10 < 5)
 				m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
 			else
 				m.mcDropItem(loc, new ItemStack(Material.GHAST_TEAR, 1));
+			break;
 		case MAGMA_CUBE:
 			m.mcDropItem(loc, new ItemStack(Material.MAGMA_CREAM, 1));
+			break;
 		case MUSHROOM_COW:
 			if(Math.random() * 100 >= 99)
 			{
@@ -317,15 +325,16 @@ public class Fishing {
 			else
 				m.mcDropItem(loc, new ItemStack(Material.RED_MUSHROOM, 3));
 				//need some way to remove MushroomCow & replace with regular cow when sheared
+			break;
 		case PIG:
 			m.mcDropItem(loc, new ItemStack(Material.PORK, 1));
+			break;
 		case PIG_ZOMBIE:
 			if(Math.random() * 10 < 5)
 				m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH, 1));
 			else
 				m.mcDropItem(loc, new ItemStack(Material.GOLD_NUGGET, 1));
-		case PLAYER:
-			return;
+			break;
 		case SHEEP:
 			Sheep sheep = (Sheep)le;
 			if(!sheep.isSheared())
@@ -337,27 +346,36 @@ public class Fishing {
 				m.mcDropItem(loc, theWool);
 				sheep.setSheared(true);
 			}
+			break;
 		case SKELETON:
 			if(Math.random() * 10 < 5)
 				m.mcDropItem(loc, new ItemStack(Material.BONE, 1));
 			else
 				m.mcDropItem(loc, new ItemStack(Material.ARROW, 3));
+			break;
 		case SLIME:
 			m.mcDropItem(loc, new ItemStack(Material.SLIME_BALL, 1));
+			break;
 		case SNOWMAN:
 			if(Math.random() * 100 >= 99)
 				m.mcDropItem(loc, new ItemStack(Material.PUMPKIN, 1)); //rare chance to drop pumpkin
 			else
 				m.mcDropItem(loc, new ItemStack(Material.SNOW_BALL, 5));
+			break;
 		case SPIDER:
 			if(Math.random() * 10 < 5)
 				m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
 			else
 				m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
+			break;
 		case SQUID:
 			m.mcDropItem(loc, new ItemStack(Material.INK_SACK, 1, (byte)0, (byte)0));
+			break;
 		case ZOMBIE:
 			m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH, 1));
+			break;
+		default:
+		    return;
 		}
 		
 		Combat.dealDamage(le, 1);
