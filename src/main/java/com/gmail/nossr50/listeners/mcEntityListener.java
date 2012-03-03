@@ -118,7 +118,7 @@ public class mcEntityListener implements Listener
     				Acrobatics.acrobaticsCheck(player, event);
     			if(cause == DamageCause.BLOCK_EXPLOSION && mcPermissions.getInstance().blastMining(player))
     				BlastMining.demolitionsExpertise(player, event);
-    			if(!event.isCancelled() && event.getDamage() >= 1)
+    			if(event.getDamage() >= 1)
     				PP.setRecentlyHurt(System.currentTimeMillis());
     		}
     		break;

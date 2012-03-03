@@ -36,7 +36,7 @@ public class Acrobatics {
 		if(player.isSneaking())
 			acrovar = acrovar * 2;
 		
-		if(Math.random() * 1000 <= acrovar && !event.isCancelled())
+		if(Math.random() * 1000 <= acrovar)
 		{
 			int threshold = 7;
 			
@@ -51,9 +51,9 @@ public class Acrobatics {
 			/*
 			 * Check for death
 			 */
-			if(player.getHealth() - newDamage >= 1){
-				if(!event.isCancelled())
-					PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 8)*10, player);
+			if(player.getHealth() - newDamage >= 1)
+			{
+				PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 8)*10, player);
 				Skills.XpCheckSkill(SkillType.ACROBATICS, player);
 				event.setDamage(newDamage);
 				if(event.getDamage() <= 0)
@@ -64,11 +64,11 @@ public class Acrobatics {
 					player.sendMessage("**ROLL**");
 				}
 			}
-		} else if (!event.isCancelled()){
-			if(player.getHealth() - event.getDamage() >= 1){
-				PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 12)*10, player);
-				Skills.XpCheckSkill(SkillType.ACROBATICS, player);
-			}
+		} 
+		else if(player.getHealth() - event.getDamage() >= 1)
+		{
+			PP.addXP(SkillType.ACROBATICS, (event.getDamage() * 12)*10, player);
+			Skills.XpCheckSkill(SkillType.ACROBATICS, player);
 		}
     }
 	public static void dodgeChecks(EntityDamageByEntityEvent event){
