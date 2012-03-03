@@ -73,7 +73,15 @@ public class Page {
                     {
                         player.sendMessage(target);
                     }
-                } else if(args.length > 1 && m.getInt(args[1]) > Page.getTotalPageNumber(address)) 
+                } else if(args.length == 1)
+                {
+                    Page.clearChat(player);
+                    for(String target : Page.grabPageContents(capitalized+" Guide", address, 1))
+                    {
+                        player.sendMessage(target);
+                    }
+                }
+                else if(args.length > 1 && m.getInt(args[1]) > Page.getTotalPageNumber(address)) 
                 {
                     player.sendMessage("That page doesn't exist, there are only "+Page.getTotalPageNumber(address)+" total pages");
                 }
