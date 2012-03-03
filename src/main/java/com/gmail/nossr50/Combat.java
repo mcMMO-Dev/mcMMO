@@ -82,7 +82,7 @@ public class Combat
 				Axes.axeCriticalCheck(attacker, event, pluginx); //Critical hit
 				
 				//Impact
-				Axes.impact(attacker, target);
+				Axes.impact(attacker, target, event);
 					
 				if (PPa.getSkullSplitterMode())
 					Axes.applyAoeDamage(attacker, event, pluginx);

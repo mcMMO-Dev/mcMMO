@@ -26,9 +26,9 @@ public class AxesCommand implements CommandExecutor {
 
 		float skillvalue = (float) PP.getSkillLevel(SkillType.AXES);
 		if (PP.getSkillLevel(SkillType.AXES) < 750)
-			percentage = String.valueOf((skillvalue / 1000) * 100);
+			percentage = String.valueOf((skillvalue / 2000) * 100);
 		else
-			percentage = "75";
+			percentage = "37.5";
 		
 		int bonusDmg = Users.getProfile(player).getSkillLevel(SkillType.AXES)/50;
 		if(bonusDmg > 4)
@@ -60,7 +60,7 @@ public class AxesCommand implements CommandExecutor {
 		
 		player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] { mcLocale.getString("m.AbilBonusAxes1_0"), mcLocale.getString("m.AbilBonusAxes1_1", new Object[] {bonusDmg}) }));
         player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] { mcLocale.getString("m.AbilBonusAxes2_0"), mcLocale.getString("m.AbilBonusAxes2_1", new Object[] {durDmg}) }));
-        player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] { mcLocale.getString("m.AbilBonusAxes3_0"), mcLocale.getString("m.AbilBonusAxes3_1", new Object[] {1}) }));
+        player.sendMessage(mcLocale.getString("m.AbilityBonusTemplate", new Object[] { mcLocale.getString("m.AbilBonusAxes3_0"), mcLocale.getString("m.AbilBonusAxes3_1", new Object[] {2}) }));
         player.sendMessage(mcLocale.getString("m.AxesSkullLength", new Object[] { ticks }));
 
 		return true;

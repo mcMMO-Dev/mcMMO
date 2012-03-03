@@ -65,7 +65,7 @@ public class Axes {
     	PlayerProfile PPa = Users.getProfile(attacker);
     	if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
     		if(PPa.getSkillLevel(SkillType.AXES) >= 750){
-    			if(Math.random() * 1000 <= 750 && !x.isDead()){
+    			if(Math.random() * 2000 <= 750 && !x.isDead()){
     				if(x instanceof Player){
     					int damage = (event.getDamage() * 2) - (event.getDamage() / 2);
     					event.setDamage(damage);
@@ -78,7 +78,7 @@ public class Axes {
         			}
     				attacker.sendMessage(ChatColor.RED+"CRITICAL HIT!");
     			}
-    		} else if(Math.random() * 1000 <= PPa.getSkillLevel(SkillType.AXES) && !x.isDead()){
+    		} else if(Math.random() * 2000 <= PPa.getSkillLevel(SkillType.AXES) && !x.isDead()){
     			if(x instanceof Player){
     				int damage = (event.getDamage() * 2) - (event.getDamage() / 2);
 					event.setDamage(damage);
@@ -94,7 +94,7 @@ public class Axes {
     	}
     }
 	
-	public static void impact(Player attacker, LivingEntity target)
+	public static void impact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event)
 	{
 	    //TODO: Finish this skill, the idea is you will greatly damage an opponents armor and when they are armor less you have a proc that will stun them and deal additional damage.
 	    if(target instanceof Player)
@@ -116,18 +116,18 @@ public class Axes {
 	        }
 	        
 	        if(emptySlots == 4)
-	            applyImpact(attacker, target);
+	            applyImpact(attacker, target, event);
 	    }
 	    else
 	        //Since mobs are technically unarmored this will always trigger
-	        applyImpact(attacker, target);
+	        applyImpact(attacker, target, event);
 	}
 	
-	public static void applyImpact(Player attacker, LivingEntity target)
+	public static void applyImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event)
 	{
 	    if(Math.random() * 100 > 75)
         {
-            Combat.dealDamage(target, 2, attacker);
+            event.setDamage(event.getDamage()+2);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(1.5D));
             attacker.sendMessage(mcLocale.getString("Axes.GreaterImpactOnEnemy"));
         }
