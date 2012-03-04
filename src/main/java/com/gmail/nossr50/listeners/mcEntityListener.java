@@ -138,9 +138,7 @@ public class mcEntityListener implements Listener
     	
     	//Remove mob from mob spawner list
     	if(plugin.misc.mobSpawnerList.contains(x.getEntityId()))
-    	{
     	    plugin.misc.mobSpawnerList.remove((Object)x.getEntityId());
-    	}
     	
     	//Remove bleed track
     	if(plugin.misc.bleedTracker.contains(x))
@@ -311,11 +309,9 @@ public class mcEntityListener implements Listener
 	        case WOLF:
 	        	xp = LoadProperties.mtameWolf;
 	        	break;
-	        	/*
 	        case OCELOT:
 	        	xp = LoadProperties.mtameOcelot;
 	        	break;
-	        	*/
 	        }
 	        
 	        PP.addXP(SkillType.TAMING, xp, player);

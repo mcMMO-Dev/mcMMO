@@ -243,7 +243,7 @@ public class LoadProperties {
 		mmossstone = readInteger("Experience.Mining.Moss_Stone", 30);
 		
 		mtameWolf = readInteger("Experience.Taming.Animal_Taming.Wolf", 250);
-		mtameOcelot = readInteger("Experience.Taming.Animal_Taming.Wolf", 500);
+		mtameOcelot = readInteger("Experience.Taming.Animal_Taming.Ocelot", 500);
 
 		mfishing = readInteger("Experience.Fishing.Base", 800);
 
