@@ -38,7 +38,10 @@ public class Database {
 	    try 
 	    {
 	        System.out.println("[mcMMO] Attempting connection to MySQL...");
-	        conn = DriverManager.getConnection(connectionString);
+	        java.util.Properties conProperties = new java.util.Properties();
+	        conProperties.put("autoReconnect", "true");
+	        conProperties.put("maxReconnects", "3");
+	        conn = DriverManager.getConnection(connectionString, conProperties);
 	        isConnected = true;
 	        System.out.println("[mcMMO] Connection to MySQL established!");
 	    } catch (SQLException ex) 
