@@ -16,6 +16,9 @@
  */
 package com.gmail.nossr50.skills;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -62,18 +65,6 @@ public class Repair {
 		short durabilityBefore = is.getDurability();
 		PlayerInventory inventory = player.getInventory();
 		int skillLevel = PP.getSkillLevel(SkillType.REPAIR);
-		
-		//Stuff for keeping enchants
-		Enchantment[] enchants = new Enchantment[is.getEnchantments().size()];
-		int[] enchantsLevel = new int[is.getEnchantments().size()];
-
-		int pos = 0;
-		for(Enchantment x : is.getEnchantments().keySet())
-		{
-			enchants[pos] = x;
-			enchantsLevel[pos] = is.getEnchantmentLevel(x);
-			pos++;
-		}
 
 		if(block != null && mcPermissions.getInstance().repair(player)){
 			if(durabilityBefore > 0 && is.getAmount() < 2){
@@ -86,28 +77,28 @@ public class Repair {
 					//DIAMOND ARMOR
 					if(isDiamondArmor(is) && inventory.contains(rDiamond) && skillLevel >= dLevel){
 						inventory.removeItem(new ItemStack(rDiamond, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 6, true);
 					}
 
 					//IRON ARMOR
 					else if (isIronArmor(is) && inventory.contains(rIron) && skillLevel >= iLevel){
 						inventory.removeItem(new ItemStack(rIron, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 2, true);
 					}
 
 					//GOLD ARMOR
 					else if (isGoldArmor(is) && inventory.contains(rGold) && skillLevel >= gLevel){
 						inventory.removeItem(new ItemStack(rGold, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 4, true);
 					} 
 
 					//LEATHER ARMOR
 					else if (isLeatherArmor(is) && inventory.contains(rLeather)){
 						inventory.removeItem(new ItemStack(rLeather, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 1, true);
 					} 
 
@@ -125,42 +116,42 @@ public class Repair {
 					//STONE TOOLS
 					if(isStoneTools(is) && inventory.contains(rStone) && skillLevel >= sLevel){
 						inventory.removeItem(new ItemStack(rStone, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 2, false);
 					} 
 
 					//WOOD TOOLS
 					else if(isWoodTools(is) && inventory.contains(rWood)){
 						inventory.removeItem(new ItemStack(rWood, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 2, false);
 					}
 
 					//IRON TOOLS
 					else if(isIronTools(is) && inventory.contains(rIron) && skillLevel >= iLevel){
 						inventory.removeItem(new ItemStack(rIron, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 1, true);
 					}
 
 					//DIAMOND TOOLS
 					else if (isDiamondTools(is) && inventory.contains(rDiamond) && skillLevel >= dLevel){
 						inventory.removeItem(new ItemStack(rDiamond, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 1, true);
 					}
 					
 					//GOLD TOOLS
 					else if(isGoldTools(is) && inventory.contains(rGold) && skillLevel >= gLevel){
 						inventory.removeItem(new ItemStack(rGold, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 8, true);
 					}
 					
 					//BOW
 					else if(isBow(is) && inventory.contains(rString)){
 						inventory.removeItem(new ItemStack(rString, 1));
-						repairItem(player, enchants, enchantsLevel);
+						repairItem(player, is);
 						xpHandler(player, PP, is, durabilityBefore, 2, false);
 					}
 
@@ -224,73 +215,48 @@ public class Repair {
 		return 0;
 	}
 	
-	public static void addEnchants(ItemStack is, Enchantment[] enchants, int[] enchantsLvl, PlayerProfile PP, Player player){
-		if(is.getEnchantments().keySet().size() == 0)
+	public static void addEnchants(Player player, ItemStack is)
+	{
+		Map<Enchantment, Integer> enchants = is.getEnchantments();
+		if(enchants.size() == 0)
 			return;
-
-		int pos = 0;
-		int rank = getArcaneForgingRank(PP.getSkillLevel(SkillType.REPAIR));
-
+		
+		int rank = getArcaneForgingRank(Users.getProfile(player).getSkillLevel(SkillType.REPAIR));
 		if(rank == 0)
 		{
-			if(LoadProperties.mayLoseEnchants)
-			{
-				player.sendMessage(mcLocale.getString("Repair.LostEnchants"));
-				for(Enchantment x : enchants)
-				{
-					is.removeEnchantment(x);
-				}
-			}
+			for(Enchantment x : enchants.keySet())
+				is.removeEnchantment(x);
+			player.sendMessage(mcLocale.getString("Repair.LostEnchants"));
 			return;
 		}
-
-		boolean failure = false, downgrade = false;
-
-		if(LoadProperties.mayLoseEnchants)
+		
+		boolean downgraded = false;
+		for(Entry<Enchantment, Integer> enchant : enchants.entrySet())
 		{
-			for(Enchantment x : enchants)
+			if(Math.random() * 100 <= getEnchantChance(rank))
 			{
-				//Remove enchant
-				is.removeEnchantment(x);
-	
-				if(x.canEnchantItem(is))
+				int enchantLevel = enchant.getValue();
+				if(LoadProperties.mayDowngradeEnchants && enchantLevel > 1)
 				{
-					if(Math.random() * 100 <= getEnchantChance(rank))
+					if(Math.random() * 100 <= getDowngradeChance(rank))
 					{
-						if(enchantsLvl[pos] > 1)
-						{
-							if(LoadProperties.mayDowngradeEnchants)
-							{
-								if(Math.random() * 100 <= getDowngradeChance(rank))
-								{
-									is.addEnchantment(x, enchantsLvl[pos]-1);
-									downgrade = true;
-								} else
-								{
-									is.addEnchantment(x, enchantsLvl[pos]);
-								}
-							}
-						}
-						else {
-							is.addEnchantment(x, enchantsLvl[pos]);
-						}
-					} else {
-						failure = true;	
+						is.addEnchantment(enchant.getKey(), enchantLevel--);
+						downgraded = true;
 					}
 				}
-				pos++;
 			}
+			else
+				is.removeEnchantment(enchant.getKey());
 		}
-
-		if(failure == false && downgrade == false)
-		{
+		
+		Map<Enchantment, Integer> newEnchants = is.getEnchantments();
+		if(newEnchants.isEmpty())
+			player.sendMessage(mcLocale.getString("Repair.ArcaneFailed"));
+		else if(downgraded || newEnchants.size() < enchants.size())
+			player.sendMessage(mcLocale.getString("Repair.Downgraded"));
+		else
 			player.sendMessage(mcLocale.getString("Repair.ArcanePerfect"));
-		} else {
-			if(failure == true)
-				player.sendMessage(mcLocale.getString("Repair.ArcaneFailed"));
-			if(downgrade == true)
-				player.sendMessage(mcLocale.getString("Repair.Downgraded"));
-		}
+
 	}
 	
 	/**
@@ -579,12 +545,11 @@ public class Repair {
 	 * @param enchants The enchantments on the item
 	 * @param enchantsLevel The level of the enchantments on the item
 	 */
-	public static void repairItem(Player player, Enchantment[] enchants, int[] enchantsLevel)
+	public static void repairItem(Player player, ItemStack is)
 	{
-		PlayerProfile PP = Users.getProfile(player);
-		ItemStack is = player.getItemInHand();
 		//Handle the enchantments
-		addEnchants(is, enchants, enchantsLevel, PP, player);
+		if(LoadProperties.mayLoseEnchants)
+			addEnchants(player, is);
 		is.setDurability(getRepairAmount(is, player));
 	}
 }
