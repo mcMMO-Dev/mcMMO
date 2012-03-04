@@ -271,15 +271,13 @@ public class Skills
     		return false;
     }
     
-    public static void abilityDurabilityLoss(ItemStack inhand)
+    public static void abilityDurabilityLoss(ItemStack inhand, int durabilityLoss)
     {
     	if(LoadProperties.toolsLoseDurabilityFromAbilities)
         {
             if(!inhand.containsEnchantment(Enchantment.DURABILITY))
             {
-                short durability = inhand.getDurability();
-                durability += (LoadProperties.abilityDurabilityLoss);
-                inhand.setDurability(durability);
+                inhand.setDurability((short)(inhand.getDurability()+durabilityLoss));
             }
         }
     }

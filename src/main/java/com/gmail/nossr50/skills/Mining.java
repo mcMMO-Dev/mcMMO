@@ -177,10 +177,15 @@ public class Mining
     public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin)
     {
     	PlayerProfile PP = Users.getProfile(player);
-		Skills.abilityDurabilityLoss(player.getItemInHand());
+    	Material type = block.getType();
+    	
+    	//Obsidian needs to do more damage than normal
+    	if(type != Material.OBSIDIAN)
+    	    Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
+    	else
+    	    Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss*5);
     	
     	//Pre-processing
-    	Material type = block.getType();
     	int xp = 0;
 		PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
 		

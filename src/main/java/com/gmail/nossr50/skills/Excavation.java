@@ -173,7 +173,7 @@ public class Excavation
 	
 	public static void gigaDrillBreaker(Player player, Block block)
 	{
-		Skills.abilityDurabilityLoss(player.getItemInHand());
+		Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
 		if(block.getData() != (byte)5)
 		{
 			PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);

@@ -160,7 +160,6 @@ public class WoodCutting
         
         PP.addXP(SkillType.WOODCUTTING, xp, player); //Tree Feller gives nerf'd XP
         Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
-		Skills.abilityDurabilityLoss(player.getItemInHand());
     }
     
     private static boolean treeFellerCompatible(Block block)
@@ -265,7 +264,7 @@ public class WoodCutting
 		
     	PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
     	Bukkit.getPluginManager().callEvent(armswing);
-		Skills.abilityDurabilityLoss(player.getItemInHand());
+		Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
 		if(LoadProperties.spoutEnabled)
 			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     }
