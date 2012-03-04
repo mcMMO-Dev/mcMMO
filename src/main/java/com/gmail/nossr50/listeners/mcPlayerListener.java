@@ -99,7 +99,7 @@ public class mcPlayerListener implements Listener
 		{
 			State state = event.getState();
 			Entity caught = event.getCaught();
-			if(state== State.CAUGHT_FISH)
+			if(state == State.CAUGHT_FISH)
 			{
 				if(caught instanceof org.bukkit.entity.Item)
 					Fishing.processResults(event);

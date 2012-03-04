@@ -24,7 +24,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.player.PlayerAnimationEvent;
 
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -174,16 +173,7 @@ public class Excavation
 	
 	public static void gigaDrillBreaker(Player player, Block block)
 	{
-		if(LoadProperties.toolsLoseDurabilityFromAbilities)
-    	{
-			if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
-			{
-				short durability = player.getItemInHand().getDurability();
-				durability += LoadProperties.abilityDurabilityLoss;
-				player.getItemInHand().setDurability(durability);
-			}
-    	}
-		
+		Skills.abilityDurabilityLoss(player.getItemInHand());
 		if(block.getData() != (byte)5)
 		{
 			PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);

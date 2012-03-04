@@ -23,7 +23,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.Bukkit;
@@ -161,16 +160,7 @@ public class WoodCutting
         
         PP.addXP(SkillType.WOODCUTTING, xp, player); //Tree Feller gives nerf'd XP
         Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
-        
-        if(LoadProperties.toolsLoseDurabilityFromAbilities)
-        {
-            if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
-            {
-                short durability = player.getItemInHand().getDurability();
-                durability += (LoadProperties.abilityDurabilityLoss * durabilityLoss);
-                player.getItemInHand().setDurability(durability);
-            }
-        }
+		Skills.abilityDurabilityLoss(player.getItemInHand());
     }
     
     private static boolean treeFellerCompatible(Block block)
@@ -275,17 +265,7 @@ public class WoodCutting
 		
     	PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
     	Bukkit.getPluginManager().callEvent(armswing);
-    	
-    	if(LoadProperties.toolsLoseDurabilityFromAbilities)
-	    {
-	    	if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
-	    	{
-				short durability = player.getItemInHand().getDurability();
-				durability += LoadProperties.abilityDurabilityLoss;
-				player.getItemInHand().setDurability(durability);
-	    	}
-	    }
-		
+		Skills.abilityDurabilityLoss(player.getItemInHand());
 		if(LoadProperties.spoutEnabled)
 			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     }

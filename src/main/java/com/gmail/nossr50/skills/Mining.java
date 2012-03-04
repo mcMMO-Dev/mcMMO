@@ -18,6 +18,7 @@ package com.gmail.nossr50.skills;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -40,8 +41,8 @@ public class Mining
 	public static void blockProcSimulate(Block block, Player player)
 	{
     	Location loc = block.getLocation();
-    	int id = block.getTypeId();
-		ItemStack item = new ItemStack(id, 1);
+    	Material type = block.getType();
+		ItemStack item = new ItemStack(type, 1);
 		
 		//Drop natural block with Silk Touch
 		if(player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)){
@@ -49,43 +50,33 @@ public class Mining
 			return;
 		}
 			
-		switch (id){
-			//GLOWSTONE
-			case 89:
-				item = new ItemStack(348, 1);
+		switch (type){
+			case GLOWSTONE:
+				item = new ItemStack(Material.GLOWSTONE_DUST, 1);
 				m.mcDropItems(loc, item, 2);
 				m.mcRandomDropItems(loc, item, 50, 2);
 				break;
-			//REDSTONE
-			case 73:
-				item = new ItemStack(331, 1);
+			case GLOWING_REDSTONE_ORE:
+			case REDSTONE_ORE:
+				item = new ItemStack(Material.REDSTONE, 1);
 				m.mcDropItems(loc, item, 4);
 				m.mcRandomDropItem(loc, item, 50);
 				break;
-			case 74:
-				item = new ItemStack(331, 1);
-				m.mcDropItems(loc, item, 4);
-				m.mcRandomDropItem(loc, item, 50);
-				break;
-			//LAPIS
-			case 21:
-				item = new ItemStack(351, 1, (byte)0,(byte)0x4);
+			case LAPIS_ORE:
+				item = new ItemStack(Material.INK_SACK, 1, (byte)0, (byte)0x4);
 				m.mcDropItems(loc, item, 4);
 				m.mcRandomDropItems(loc, item, 50, 4);
 				break;
-			//DIAMOND
-			case 56:
-				item = new ItemStack(264, 1);
+			case DIAMOND_ORE:
+				item = new ItemStack(Material.DIAMOND, 1);
 				m.mcDropItem(loc, item);
 				break;
-			//STONE
-			case 1:
-				item = new ItemStack(4, 1);
+			case STONE:
+				item = new ItemStack(Material.COBBLESTONE, 1);
 				m.mcDropItem(loc, item);
 				break;
-			//COAL
-			case 16:
-				item = new ItemStack(263, 1);
+			case COAL_ORE:
+				item = new ItemStack(Material.COAL, 1, (byte)0, (byte)0x0);
 				m.mcDropItem(loc, item);
 				break;
 			default:
@@ -108,66 +99,50 @@ public class Mining
     	if(plugin.misc.blockWatchList.contains(block) || block.getData() == (byte) 5)
     		return;
     	int xp = 0;
-		int id = block.getTypeId();
+		Material type = block.getType();
 		
-		switch (id) {
-			//STONE
-			case 1: 
+		switch (type) {
+			case STONE: 
 				xp += LoadProperties.mstone;
 				break;
-			//SANDSTONE
-			case 24:
+			case SANDSTONE:
 				xp += LoadProperties.msandstone;
 				break;
-			//OBSIDIAN
-			case 49:
+			case OBSIDIAN:
 				xp += LoadProperties.mobsidian;
 				break;
-			//NETHERRACK
-			case 87:
+			case NETHERRACK:
 				xp += LoadProperties.mnetherrack;
 				break;
-			//GLOWSTONE
-			case 89:
+			case GLOWSTONE:
 				xp += LoadProperties.mglowstone;
 				break;
-			//COAL
-			case 16:
+			case COAL_ORE:
 				xp += LoadProperties.mcoal;
 				break;
-			//GOLD
-			case 14:
+			case GOLD_ORE:
 				xp += LoadProperties.mgold;
 				break;
-			//DIAMOND
-			case 56:
+			case DIAMOND_ORE:
 				xp += LoadProperties.mdiamond;
 				break;
-			//IRON
-			case 15:
+			case IRON_ORE:
 				xp += LoadProperties.miron;
 				break;
-			//REDSTONE
-			case 73:
+			case GLOWING_REDSTONE_ORE:
+			case REDSTONE_ORE:
 				xp += LoadProperties.mredstone;
 				break;
-			case 74:
-				xp += LoadProperties.mredstone;
-				break;
-			//LAPIS
-			case 21:
+			case LAPIS_ORE:
 				xp += LoadProperties.mlapis;
 				break;
-			//END STONE
-			case 121:
+			case ENDER_STONE:
 				xp += LoadProperties.mendstone;
 				break;
-			//MOSS STONE
-			case 48:
+			case MOSSY_COBBLESTONE:
 				xp += LoadProperties.mmossstone;
 				break;
 		}
-		
 		if(canBeSuperBroken(block))
 			blockProcCheck(block, player);
     	PP.addXP(SkillType.MINING, xp, player);
@@ -202,119 +177,98 @@ public class Mining
     public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin)
     {
     	PlayerProfile PP = Users.getProfile(player);
-    	if(LoadProperties.toolsLoseDurabilityFromAbilities)
-    	{
-    		if(!player.getItemInHand().containsEnchantment(Enchantment.DURABILITY))
-    		{
-				short durability = player.getItemInHand().getDurability();
-				durability += LoadProperties.abilityDurabilityLoss;
-				player.getItemInHand().setDurability(durability);
-    		}
-    	}
+		Skills.abilityDurabilityLoss(player.getItemInHand());
     	
     	//Pre-processing
-    	int id = block.getTypeId();
+    	Material type = block.getType();
     	int xp = 0;
 		PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
 		
-		//STONE
-    	if(id == 1 && block.getData() != (byte) 5)
+    	if(type.equals(Material.STONE) && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mstone;
     		blockProcCheck(block, player);
     		blockProcCheck(block, player);
     	}
-    	//SANDSTONE
-    	else if(id == 24 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.SANDSTONE) && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.msandstone;
    			blockProcCheck(block, player);
    			blockProcCheck(block, player);
     	}
-    	//NETHERRACK
-    	else if(id == 87 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.NETHERRACK) && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.mnetherrack;
    			blockProcCheck(block, player);
    			blockProcCheck(block, player);
     	}
-    	//GLOWSTONE
-    	else if(id == 89 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.GLOWSTONE) && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mglowstone;
     		blockProcCheck(block, player);
     		blockProcCheck(block, player); 
     	}
-    	//COAL
-    	else if(id == 16 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.COAL_ORE) && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mcoal;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
     	}
-    	//GOLD
-    	else if(id == 14 && m.getTier(player) >= 3 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.GOLD_ORE) && m.getTier(player) >= 3 && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mgold;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
     	}
-    	//OBSIDIAN
-    	else if(id == 49 && m.getTier(player) >= 4 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.OBSIDIAN) && m.getTier(player) >= 4 && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mobsidian;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
     	}
-    	//DIAMOND
-    	else if(id == 56 && m.getTier(player) >= 3 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.DIAMOND_ORE) && m.getTier(player) >= 3 && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mdiamond;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
     	}
-    	//IRON
-    	else if(id == 15 && m.getTier(player) >= 2 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.IRON_ORE) && m.getTier(player) >= 2 && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.miron;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
     	}
-    	//REDSTONE
-    	else if((id == 73 || id == 74) && m.getTier(player) >= 3 && !plugin.misc.blockWatchList.contains(block))
+    	else if((type.equals(Material.GLOWING_REDSTONE_ORE) || type.equals(Material.REDSTONE_ORE)) && m.getTier(player) >= 3 && !plugin.misc.blockWatchList.contains(block))
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mredstone;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
     	}
-    	//LAPIS
-    	else if(id == 21 && m.getTier(player) >= 3 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.LAPIS_ORE) && m.getTier(player) >= 3 && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.mlapis;
        		blockProcCheck(block, player);
       		blockProcCheck(block, player);
     	}
-    	//END STONE
-    	else if(id == 121 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.ENDER_STONE) && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
     		xp += LoadProperties.mendstone;
         	blockProcCheck(block, player);
         	blockProcCheck(block, player);
     	}
-    	//MOSS STONE
-    	else if(id == 48 && block.getData() != (byte) 5)
+    	else if(type.equals(Material.MOSSY_COBBLESTONE) && block.getData() != (byte) 5)
     	{
     		Bukkit.getPluginManager().callEvent(armswing);
    			xp += LoadProperties.mmossstone;

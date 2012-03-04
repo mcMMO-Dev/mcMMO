@@ -27,7 +27,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -63,7 +62,7 @@ public class mcBlockListener implements Listener
     	Player player = event.getPlayer();
     	
     	//When blocks are placed on snow this event reports the wrong block.
-    	if (event.getBlockReplacedState() != null && event.getBlockReplacedState().getTypeId() == 78) 
+    	if (event.getBlockReplacedState() != null && event.getBlockReplacedState().getType().equals(Material.SNOW)) 
     		block = event.getBlockAgainst();
     	else 
     		block = event.getBlock();
@@ -72,7 +71,7 @@ public class mcBlockListener implements Listener
     	Material mat = block.getType();
     	
     	//TNT placement checks - needed for Blast Mining
-    	if(id == 46 && mcPermissions.getInstance().blastMining(player))
+    	if(mat.equals(Material.TNT) && mcPermissions.getInstance().blastMining(player))
     		plugin.misc.tntTracker.put(block.getLocation(), player);
     	
     	//Check if the blocks placed should be monitored so they do not give out XP in the future
@@ -199,9 +198,7 @@ public class mcBlockListener implements Listener
     	{
     		block.setData((byte) 0);
     		if(plugin.misc.blockWatchList.contains(block))
-    		{
     			plugin.misc.blockWatchList.remove(block);
-    		}
     	}
     }
 
@@ -213,6 +210,7 @@ public class mcBlockListener implements Listener
     	ItemStack inhand = player.getItemInHand();
     	Block block = event.getBlock();
     	int id = block.getTypeId();
+    	Material mat = block.getType();
 
     	/*
     	 * ABILITY PREPARATION CHECKS
@@ -221,7 +219,7 @@ public class mcBlockListener implements Listener
     	{
 	   		if(PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block))
 	   			Skills.abilityCheck(player, SkillType.HERBALISM);
-	    	if(PP.getAxePreparationMode() && id == 17 && mcPermissions.getInstance().woodCuttingAbility(player))
+	    	if(PP.getAxePreparationMode() && mat.equals(Material.LOG) && mcPermissions.getInstance().woodCuttingAbility(player))
 	    		Skills.abilityCheck(player, SkillType.WOODCUTTING);
 	    	if(PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block))
 	    		Skills.abilityCheck(player, SkillType.MINING);
@@ -229,13 +227,13 @@ public class mcBlockListener implements Listener
 	    		Skills.abilityCheck(player, SkillType.EXCAVATION);
     	}
     	
-    	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || id == 78))
+    	if(PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || mat.equals(Material.SNOW)))
     		Skills.abilityCheck(player, SkillType.UNARMED);
     	
     	/*
     	 * TREE FELLER STUFF
     	 */
-    	if(LoadProperties.spoutEnabled && id == 17 && PP.getTreeFellerMode())
+    	if(LoadProperties.spoutEnabled && mat.equals(Material.LOG) && PP.getTreeFellerMode())
     		SpoutStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
     	
     	/*
@@ -251,21 +249,11 @@ public class mcBlockListener implements Listener
     	{	
     		if(LoadProperties.excavationRequiresShovel && m.isShovel(inhand))
     		{
-    				event.setInstaBreak(true);
-    				Excavation.gigaDrillBreaker(player, block);
-    		} 
-    		else if(!LoadProperties.excavationRequiresShovel){
-    		    
-    		    if(LoadProperties.toolsLoseDurabilityFromAbilities)
-    	        {
-    	            if(!inhand.containsEnchantment(Enchantment.DURABILITY))
-    	            {
-    	                short durability = inhand.getDurability();
-    	                durability += (LoadProperties.abilityDurabilityLoss);
-    	                inhand.setDurability(durability);
-    	            }
-    	        }
-    		    
+    			event.setInstaBreak(true);
+    			Excavation.gigaDrillBreaker(player, block);
+    		}
+    		else if(!LoadProperties.excavationRequiresShovel)
+    		{
     			event.setInstaBreak(true);
     			Excavation.gigaDrillBreaker(player, block);
     		}
@@ -296,16 +284,6 @@ public class mcBlockListener implements Listener
     		if(LoadProperties.miningrequirespickaxe)
     		{
     			if(m.isMiningPick(inhand)){
-    			    
-    				if(LoadProperties.toolsLoseDurabilityFromAbilities)
-        	        {
-        	            if(!inhand.containsEnchantment(Enchantment.DURABILITY))
-        	            {
-        	                short durability = inhand.getDurability();
-        	                durability += (LoadProperties.abilityDurabilityLoss);
-        	                inhand.setDurability(durability);
-        	            }
-        	        }
     			    
     				event.setInstaBreak(true);
     				Mining.SuperBreakerBlockCheck(player, block, plugin);
@@ -347,8 +325,6 @@ public class mcBlockListener implements Listener
         Block blockFrom = event.getBlock();
         Block blockTo = event.getToBlock();
         if(m.shouldBeWatched(blockFrom.getType()) && blockFrom.getData() == (byte)5)
-        {
         	blockTo.setData((byte)5);
-        }
     }    
 }

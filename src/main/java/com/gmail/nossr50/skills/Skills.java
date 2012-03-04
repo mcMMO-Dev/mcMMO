@@ -20,7 +20,9 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -267,6 +269,19 @@ public class Skills
     		return true;
     	else
     		return false;
+    }
+    
+    public static void abilityDurabilityLoss(ItemStack inhand)
+    {
+    	if(LoadProperties.toolsLoseDurabilityFromAbilities)
+        {
+            if(!inhand.containsEnchantment(Enchantment.DURABILITY))
+            {
+                short durability = inhand.getDurability();
+                durability += (LoadProperties.abilityDurabilityLoss);
+                inhand.setDurability(durability);
+            }
+        }
     }
     
     /**
