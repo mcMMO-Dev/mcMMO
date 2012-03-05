@@ -124,7 +124,7 @@ public class mcEntityListener implements Listener
     		break;
     	case WOLF:
     		Wolf wolf = (Wolf) entity;
-    		if((!m.isInvincible(wolf, event)) && wolf.isTamed() && wolf.getOwner() != null)
+    		if((!m.isInvincible(wolf, event)) && wolf.isTamed() && (wolf.getOwner() instanceof Player))
     			Taming.preventDamage(event, plugin);
     		break;
     	}

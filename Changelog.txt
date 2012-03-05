@@ -10,6 +10,7 @@ Key:
 Version 2.0.00-dev
  + Added Ocelots to Taming XP tables
  + Added ability to summon Ocelots with Call of the Wild
+ = Fixed ClassCastException from Taming preventDamage checks
 
 Version 1.3.02
  + Added in game guides for Mining, Excavation, and Acrobatics. Simply type /skillname ? to access them

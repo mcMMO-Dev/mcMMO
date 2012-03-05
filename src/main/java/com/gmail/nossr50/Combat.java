@@ -167,16 +167,6 @@ public class Combat
 			Swords.counterAttackChecks(event);
 			Acrobatics.dodgeChecks(event);
 		}
-	
-		/*			 
-		 * DEFENSIVE CHECKS FOR WOLVES
-		 */
-		//else if(target instanceof Wolf)
-		//{
-		//	Wolf wolf = (Wolf) target;
-		//	if(wolf.isTamed() && (wolf.getOwner() instanceof Player))
-		//		Taming.preventDamage(event, pluginx);
-		//}
 	}
 	
 	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa)
