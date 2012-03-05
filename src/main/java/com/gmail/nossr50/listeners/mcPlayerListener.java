@@ -260,8 +260,8 @@ public class mcPlayerListener implements Listener
 		
 		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK))
 		{
-			Taming.animalSummon(EntityType.WOLF, player);
 			Taming.animalSummon(EntityType.OCELOT, player);
+			Taming.animalSummon(EntityType.WOLF, player);
 		}
 		
 		//BLAST MINING

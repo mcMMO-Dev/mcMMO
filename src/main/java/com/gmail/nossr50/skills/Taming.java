@@ -173,9 +173,11 @@ public class Taming
 		case WOLF:
 			summonItem = Material.BONE;
 			summonAmount = LoadProperties.bonesConsumedByCOTW;
+			break;
 		case OCELOT:
 			summonItem = Material.RAW_FISH;
 			summonAmount = LoadProperties.fishConsumedByCOTW;
+			break;
 		}
 		
 		if(item.getType().equals(summonItem) && item.getAmount() >= summonAmount)
@@ -193,7 +195,7 @@ public class Taming
 			world.spawnCreature(player.getLocation(), type);
 			
 			int amount = item.getAmount();
-			amount =- summonAmount;
+			amount = amount - summonAmount;
 			player.setItemInHand(new ItemStack(summonItem, amount));
 	    	player.sendMessage(mcLocale.getString("m.TamingSummon"));
 		}
