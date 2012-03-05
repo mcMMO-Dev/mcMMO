@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.listeners;
 
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -269,7 +270,12 @@ public class mcPlayerListener implements Listener
 		//BLAST MINING
 		if((action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) && is.getTypeId() == LoadProperties.detonatorID)
 		{
-			Block b = player.getTargetBlock(null, 100);
+			//Gotta make snow transparent...
+			HashSet<Byte> transparent = new HashSet<Byte>();
+			transparent.add((byte) 78);
+			transparent.add((byte) 0);
+			
+			Block b = player.getTargetBlock(transparent, 100);
 			if(b.getType().equals(Material.TNT) && mcPermissions.getInstance().blastMining(player) && m.blockBreakSimulate(b, player, true) && Users.getProfile(player).getSkillLevel(SkillType.MINING) >= 125)
 			{
 			    AbilityType ability = AbilityType.BLAST_MINING;

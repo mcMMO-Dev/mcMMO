@@ -73,7 +73,6 @@ public class mcBlockListener implements Listener
     	//TNT placement checks - needed for Blast Mining
     	if(mat.equals(Material.TNT) && mcPermissions.getInstance().blastMining(player))
     		plugin.misc.tntTracker.put(block.getLocation(), player);
-    	
     	//Check if the blocks placed should be monitored so they do not give out XP in the future
     	if(m.shouldBeWatched(mat))
     	{	

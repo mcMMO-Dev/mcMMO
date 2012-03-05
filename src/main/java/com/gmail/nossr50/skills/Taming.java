@@ -195,7 +195,9 @@ public class Taming
 			world.spawnCreature(player.getLocation(), type);
 			
 			int amount = item.getAmount();
+			System.out.println(amount);
 			amount = amount - summonAmount;
+			System.out.println(amount);
 			player.setItemInHand(new ItemStack(summonItem, amount));
 	    	player.sendMessage(mcLocale.getString("m.TamingSummon"));
 		}

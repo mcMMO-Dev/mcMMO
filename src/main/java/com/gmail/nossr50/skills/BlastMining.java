@@ -212,8 +212,7 @@ public class BlastMining{
 		if(skillLevel >= 750)
 			radius++;
 		if(skillLevel >= 1000)
-			radius++;
-		
+			radius++;	
 		event.setRadius(radius);
 	}
 	

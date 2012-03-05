@@ -165,11 +165,14 @@ public class mcEntityListener implements Listener
 		if(event.getEntity() instanceof TNTPrimed)
 		{
 			Location location = event.getEntity().getLocation();
-			
+			System.out.println("UNNORMALIZED LOCATION");
+			System.out.println(location);
 			//Ugly code to make it recognize the location
 			location.setX(location.getBlockX()+1);
 			location.setY(location.getBlockY());
 			location.setZ(location.getBlockZ()+1);
+			System.out.println("NORMALIZED LOCATION");
+			System.out.println(location);
 			
 			if(plugin.misc.tntTracker.containsKey(location))
 			{
@@ -190,7 +193,7 @@ public class mcEntityListener implements Listener
 			location.setX(location.getBlockX()+1);
 			location.setY(location.getBlockY());
 			location.setZ(location.getBlockZ()+1);
-
+			
 			if(plugin.misc.tntTracker.containsKey(location))
 			{
 				Player player = plugin.misc.tntTracker.get(location);
