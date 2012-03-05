@@ -16,16 +16,21 @@
 */
 package com.gmail.nossr50.skills;
 
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -154,6 +159,43 @@ public class Taming
 			if(skillLevel >= 500)
 				event.setDamage(event.getDamage() / 6);
 			break;
+		}
+	}
+	
+	public static void animalSummon(EntityType type, Player player)
+	{
+		ItemStack item = player.getItemInHand();
+		Material summonItem = null;
+		int summonAmount = 0;
+		
+		switch(type)
+		{
+		case WOLF:
+			summonItem = Material.BONE;
+			summonAmount = LoadProperties.bonesConsumedByCOTW;
+		case OCELOT:
+			summonItem = Material.RAW_FISH;
+			summonAmount = LoadProperties.fishConsumedByCOTW;
+		}
+		
+		if(item.getType().equals(summonItem) && item.getAmount() >= summonAmount)
+		{
+			for(Entity x : player.getNearbyEntities(40, 40, 40))
+			{
+				if(x.getType().equals(type))
+				{
+					player.sendMessage(mcLocale.getString("m.TamingSummonFailed"));
+					return;
+				}
+			}
+			
+			World world = player.getWorld();
+			world.spawnCreature(player.getLocation(), type);
+			
+			int amount = item.getAmount();
+			amount =- summonAmount;
+			player.setItemInHand(new ItemStack(summonItem, amount));
+	    	player.sendMessage(mcLocale.getString("m.TamingSummon"));
 		}
 	}
 }

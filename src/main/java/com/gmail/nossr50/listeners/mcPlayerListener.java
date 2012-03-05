@@ -22,13 +22,11 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -63,6 +61,7 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.Fishing;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.Taming;
 
 
 public class mcPlayerListener implements Listener 
@@ -261,25 +260,8 @@ public class mcPlayerListener implements Listener
 		
 		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK))
 		{
-			if(is.getType().equals(Material.BONE) && is.getAmount() >= LoadProperties.bonesConsumedByCOTW)
-			{
-				for(Entity x : player.getNearbyEntities(40, 40, 40))
-				{
-					if(x instanceof Wolf)
-					{
-						player.sendMessage(mcLocale.getString("m.TamingSummonFailed"));
-						return;
-					}
-				}
-				
-				World world = player.getWorld();
-				world.spawnCreature(player.getLocation(), EntityType.WOLF);
-				
-				int bones = is.getAmount();
-				bones = bones - LoadProperties.bonesConsumedByCOTW;
-				player.setItemInHand(new ItemStack(Material.BONE, bones));
-    	    	player.sendMessage(mcLocale.getString("m.TamingSummon"));
-			}
+			Taming.animalSummon(EntityType.WOLF, player);
+			Taming.animalSummon(EntityType.OCELOT, player);
 		}
 		
 		//BLAST MINING

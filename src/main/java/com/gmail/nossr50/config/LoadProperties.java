@@ -62,7 +62,7 @@ public class LoadProperties {
 			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
 			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5,
 			repairStoneLevel, repairIronLevel, repairGoldLevel, arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4,
-			detonatorID;
+			detonatorID, fishConsumedByCOTW;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -153,6 +153,7 @@ public class LoadProperties {
 		xpGainsMobSpawners = readBoolean("Experience.Gains.Mobspawners.Enabled", false);
 
 		bonesConsumedByCOTW = readInteger("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
+		fishConsumedByCOTW = readInteger("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10);
 
 		xpbar = readBoolean("Spout.XP.Bar.Enabled", true);
 		xpicon = readBoolean("Spout.XP.Icon.Enabled", true);

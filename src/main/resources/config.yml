@@ -164,6 +164,7 @@ Skills:
         Level_Cap: 0
         Call_Of_The_Wild:
             Bones_Required: 10
+            Fish_Required: 10
     Unarmed:
         Level_Cap: 0
     Woodcutting:
