@@ -1,22 +1,25 @@
 /*
-	This file is part of mcMMO.
-
-	mcMMO is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	mcMMO is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with mcMMO.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2012 Matt 'The Yeti' Burnett & mcMMO Development
+ * Copyright (C) 2010-2011 'nossr50'
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package com.gmail.nossr50;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -40,135 +43,115 @@ import com.gmail.nossr50.skills.Unarmed;
 
 public class Combat 
 {
-	public static void combatChecks(EntityDamageByEntityEvent event, mcMMO pluginx)
-	{
-		if(event.getDamage() == 0 || event.getEntity().isDead())
-			return;
-		
-		//Declare Things
-		Entity damager = event.getDamager();
-		LivingEntity target = (LivingEntity) event.getEntity();
-		int damage = event.getDamage();
+    public static void combatChecks(EntityDamageByEntityEvent event, mcMMO pluginx)
+    {
+        if (event.getDamage() == 0 || event.getEntity().isDead())
+            return;
 
-		/*
-		 * PLAYER VERSUS ENTITIES
-		 */
-		if(damager instanceof Player)
-		{
-			Player attacker = (Player) event.getDamager();
-			ItemStack itemInHand = attacker.getItemInHand();
-			PlayerProfile PPa = Users.getProfile(attacker);
-			
-			//If there are any abilities to activate
-			combatAbilityChecks(attacker, PPa);
-			
-			//Damage modifiers and proc checks
-			if(m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker))
-			{
-				if(!pluginx.misc.bleedTracker.contains(target)) //Bleed
-					Swords.bleedCheck(attacker, target, pluginx);
-					
-				if (PPa.getSerratedStrikesMode())
-					Swords.applySerratedStrikes(attacker, event, pluginx);
-					
-				if(target instanceof Player)
-					PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.SWORDS);
-				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
-					PvEExperienceGain(attacker, PPa, target, damage, SkillType.SWORDS); 
-			}
-			else if(m.isAxes(itemInHand) && mcPermissions.getInstance().axes(attacker))
-			{
-				Axes.axesBonus(attacker, event);
-				
-				Axes.axeCriticalCheck(attacker, event, pluginx); //Critical hit
-				
-				//Impact
-				Axes.impact(attacker, target, event);
-					
-				if (PPa.getSkullSplitterMode())
-					Axes.applyAoeDamage(attacker, event, pluginx);
-				
-				if(target instanceof Player)
-					PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.AXES);
-				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
-					PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.AXES);
-			}
-			else if(itemInHand.getTypeId() == 0 && mcPermissions.getInstance().unarmed(attacker)) //Unarmed
-			{
-				Unarmed.unarmedBonus(attacker, event);
-				if(PPa.getBerserkMode())
-					event.setDamage(event.getDamage() + (event.getDamage() / 2));
-				
-				if(target instanceof Player)
-					Unarmed.disarmProcCheck(attacker, (Player) target);	//Disarm
-				
-				if(target instanceof Player)
-					PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.UNARMED);
-				else if(!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
-					PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.UNARMED);
-			}
-			
-			//Player use bone on wolf.
-			else if(target instanceof Wolf)
-			{
-				Wolf wolf = (Wolf) target;
-			
-				if(itemInHand.getTypeId() == 352 && mcPermissions.getInstance().taming(attacker))
-				{
-					event.setCancelled(true);
-					if(wolf.isTamed())
-						attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
-							mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(wolf)})+" "+
-							mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {wolf.getHealth()}));
-					else
-						attacker.sendMessage(mcLocale.getString("Combat.BeastLore")+" "+
-							mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {wolf.getHealth()}));
-				}
-			}
-		}
-			
-		/*
-		 * TAMING (WOLVES VERSUS ENTITIES)
-		 */
-		else if(damager instanceof Wolf)
-		{
-			Wolf wolf = (Wolf) damager;
-			
-			if (wolf.isTamed() && (wolf.getOwner() instanceof Player))
-			{
-				Player master = (Player) wolf.getOwner();
-				PlayerProfile PPo = Users.getProfile(master);
-				if(mcPermissions.getInstance().taming(master))
-				{
-					//Fast Food Service
-					Taming.fastFoodService(PPo, wolf, event);
-					
-					//Sharpened Claws
-					Taming.sharpenedClaws(PPo, event);
-					
-					//Gore
-					Taming.gore(PPo, event, master, pluginx);
-					
-					//Reward XP
-					Taming.rewardXp(event, pluginx, master);
-				}
-			}
-		}
-		
-		//Another offensive check for Archery
-		else if(damager instanceof Arrow)
-			archeryCheck((EntityDamageByEntityEvent)event, pluginx);
-		
-		/*
-		 * DEFENSIVE CHECKS
-		 */
-		if(target instanceof Player)
-		{
-			Swords.counterAttackChecks(event);
-			Acrobatics.dodgeChecks(event);
-		}
-	}
-	
+        Entity damager = event.getDamager(); 
+        LivingEntity target = (LivingEntity) event.getEntity();
+        int damage = event.getDamage();
+        EntityType damagerType = damager.getType();
+        EntityType targetType = target.getType();
+
+        switch (damagerType)
+        {
+        case PLAYER:
+            Player attacker = (Player) event.getDamager();
+            ItemStack itemInHand = attacker.getItemInHand();
+            PlayerProfile PPa = Users.getProfile(attacker);
+
+            combatAbilityChecks(attacker, PPa);
+            
+            if (m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker))
+            {
+                if (!pluginx.misc.bleedTracker.contains(target))
+                    Swords.bleedCheck(attacker, target, pluginx);
+
+                if (PPa.getSerratedStrikesMode())
+                    Swords.applySerratedStrikes(attacker, event, pluginx);
+
+                if (targetType.equals(EntityType.PLAYER))
+                    PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.SWORDS);
+                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+                    PvEExperienceGain(attacker, PPa, target, damage, SkillType.SWORDS); 
+            }
+            else if (m.isAxes(itemInHand) && mcPermissions.getInstance().axes(attacker))
+            {
+                Axes.axesBonus(attacker, event);
+                Axes.axeCriticalCheck(attacker, event, pluginx);
+                Axes.impact(attacker, target, event);
+
+                if (PPa.getSkullSplitterMode())
+                    Axes.applyAoeDamage(attacker, event, pluginx);
+
+                if (targetType.equals(EntityType.PLAYER))
+                    PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.AXES); //use getDamage because damage is modified in earlier functions
+                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+                    PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.AXES); //use getDamage because damage is modified in earlier functions
+            }
+            else if (itemInHand.getType().equals(Material.AIR) && mcPermissions.getInstance().unarmed(attacker))
+            {
+                Unarmed.unarmedBonus(attacker, event);
+                
+                if (PPa.getBerserkMode())
+                    event.setDamage(damage + (damage / 2));
+
+                if (targetType.equals(EntityType.PLAYER))
+                {
+                    Unarmed.disarmProcCheck(attacker, (Player) target);
+                    PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.UNARMED); //use getDamage because damage is modified in earlier functions
+                }
+                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+                    PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.UNARMED); //use getDamage because damage is modified in earlier functions
+            }
+            else if (itemInHand.getType().equals(Material.BONE) && mcPermissions.getInstance().taming(attacker) && targetType.equals(EntityType.WOLF))
+            {
+                Wolf wolf = (Wolf) target;
+                String message = "Combat.BeastLore" + " ";
+                int health = wolf.getHealth();
+                event.setCancelled(true);
+
+                if (wolf.isTamed())
+                {
+                    message.concat(mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(wolf)}) + " ");
+                    message.concat(mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {health}));
+                }
+                else
+                    message.concat(mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {health}));
+
+                attacker.sendMessage(message);
+            }
+        case WOLF:
+        {
+            Wolf wolf = (Wolf) damager;
+
+            if (wolf.isTamed() && wolf.getOwner() instanceof Player)
+            {
+                Player master = (Player) wolf.getOwner();
+                PlayerProfile PPo = Users.getProfile(master);
+
+                if (mcPermissions.getInstance().taming(master))
+                {
+                    Taming.fastFoodService(PPo, wolf, event);
+                    Taming.sharpenedClaws(PPo, event);
+                    Taming.gore(PPo, event, master, pluginx);
+                    Taming.rewardXp(event, pluginx, master);
+                }
+            }
+        }
+
+        case ARROW:
+            archeryCheck((EntityDamageByEntityEvent)event, pluginx);
+        }
+
+        if (targetType.equals(EntityType.PLAYER))
+        {
+            Swords.counterAttackChecks(event);
+            Acrobatics.dodgeChecks(event);
+        }
+    }
+
 	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa)
 	{
 		//Check to see if any abilities need to be activated

@@ -178,7 +178,7 @@ public class Excavation
 		{
 			PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
 			Bukkit.getPluginManager().callEvent(armswing);
-			Excavation.excavationProcCheck(block, player);	
+			Excavation.excavationProcCheck(block, player);
 			Excavation.excavationProcCheck(block, player);
 			Excavation.excavationProcCheck(block, player);
 		}

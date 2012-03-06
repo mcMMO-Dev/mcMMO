@@ -36,7 +36,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 
 
 public class Mining
-{	
+{
 
 	public static void miningDrops(Block block)
 	{
@@ -125,7 +125,7 @@ public class Mining
 		case SANDSTONE:
 			xp += LoadProperties.msandstone;
 			break;
-		case STONE: 
+		case STONE:
 			xp += LoadProperties.mstone;
 			break;
 		}
@@ -135,7 +135,7 @@ public class Mining
 	}
 
 	public static void blockProcSimulate(Block block, Player player)
-	{	
+	{
 		//Drop natural block with Silk Touch
 		if(player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH))
 			m.mcDropItem(block.getLocation(), new ItemStack(block.getType(), 1));
@@ -186,7 +186,7 @@ public class Mining
     }
     
     public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin)
-    {    	
+    {
     	Material type = block.getType();
     	int tier = m.getTier(player);
     	int durabilityLoss = LoadProperties.abilityDurabilityLoss;
