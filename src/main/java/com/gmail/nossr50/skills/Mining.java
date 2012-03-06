@@ -38,51 +38,55 @@ import com.gmail.nossr50.datatypes.SkillType;
 public class Mining 
 {	
 
-	public static void blockProcSimulate(Block block, Player player)
+	public static void miningDrops(Block block)
 	{
-    	Location loc = block.getLocation();
+		Location loc = block.getLocation();
     	Material type = block.getType();
 		ItemStack item = new ItemStack(type, 1);
 		
-		//Drop natural block with Silk Touch
-		if(player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)){
+		switch (type)
+		{
+		case COAL_ORE:
+			item = new ItemStack(Material.COAL, 1, (byte)0, (byte)0x0);
 			m.mcDropItem(loc, item);
-			return;
+			break;
+		case DIAMOND_ORE:
+			item = new ItemStack(Material.DIAMOND, 1);
+			m.mcDropItem(loc, item);
+			break;
+		case GLOWING_REDSTONE_ORE:
+		case REDSTONE_ORE:
+			item = new ItemStack(Material.REDSTONE, 1);
+			m.mcDropItems(loc, item, 4);
+			m.mcRandomDropItem(loc, item, 50);
+			break;
+		case GLOWSTONE:
+			item = new ItemStack(Material.GLOWSTONE_DUST, 1);
+			m.mcDropItems(loc, item, 2);
+			m.mcRandomDropItems(loc, item, 50, 2);
+			break;
+		case LAPIS_ORE:
+			item = new ItemStack(Material.INK_SACK, 1, (byte)0, (byte)0x4);
+			m.mcDropItems(loc, item, 4);
+			m.mcRandomDropItems(loc, item, 50, 4);
+			break;
+		case STONE:
+			item = new ItemStack(Material.COBBLESTONE, 1);
+			m.mcDropItem(loc, item);
+			break;
+		default:
+			m.mcDropItem(loc, item);
+			break;
 		}
-			
-		switch (type){
-			case GLOWSTONE:
-				item = new ItemStack(Material.GLOWSTONE_DUST, 1);
-				m.mcDropItems(loc, item, 2);
-				m.mcRandomDropItems(loc, item, 50, 2);
-				break;
-			case GLOWING_REDSTONE_ORE:
-			case REDSTONE_ORE:
-				item = new ItemStack(Material.REDSTONE, 1);
-				m.mcDropItems(loc, item, 4);
-				m.mcRandomDropItem(loc, item, 50);
-				break;
-			case LAPIS_ORE:
-				item = new ItemStack(Material.INK_SACK, 1, (byte)0, (byte)0x4);
-				m.mcDropItems(loc, item, 4);
-				m.mcRandomDropItems(loc, item, 50, 4);
-				break;
-			case DIAMOND_ORE:
-				item = new ItemStack(Material.DIAMOND, 1);
-				m.mcDropItem(loc, item);
-				break;
-			case STONE:
-				item = new ItemStack(Material.COBBLESTONE, 1);
-				m.mcDropItem(loc, item);
-				break;
-			case COAL_ORE:
-				item = new ItemStack(Material.COAL, 1, (byte)0, (byte)0x0);
-				m.mcDropItem(loc, item);
-				break;
-			default:
-				m.mcDropItem(loc, item);
-				break;
-		}
+	}
+
+	public static void blockProcSimulate(Block block, Player player)
+	{	
+		//Drop natural block with Silk Touch
+		if(player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH))
+			m.mcDropItem(block.getLocation(), new ItemStack(block.getType(), 1));
+		else
+			miningDrops(block);
     }
 
     public static void blockProcCheck(Block block, Player player)

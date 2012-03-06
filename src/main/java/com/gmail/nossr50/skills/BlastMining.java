@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -37,56 +36,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 
 public class BlastMining{
 	
-	public static void explosionBlockDrops(Block block, Location loc)
-	{
-    	int id = block.getTypeId();
-		ItemStack item = new ItemStack(id, 1);
-			
-		switch (id){
-		//GLOWSTONE
-		case 89:
-			item = new ItemStack(348, 1);
-			m.mcDropItems(loc, item, 2);
-			m.mcRandomDropItems(loc, item, 50, 2);
-			break;
-		//REDSTONE
-		case 73:
-			item = new ItemStack(331, 1);
-			m.mcDropItems(loc, item, 4);
-			m.mcRandomDropItem(loc, item, 50);
-			break;
-		case 74:
-			item = new ItemStack(331, 1);
-			m.mcDropItems(loc, item, 4);
-			m.mcRandomDropItem(loc, item, 50);
-			break;
-		//LAPIS
-		case 21:
-			item = new ItemStack(351, 1, (byte)0,(byte)0x4);
-			m.mcDropItems(loc, item, 4);
-			m.mcRandomDropItems(loc, item, 50, 4);
-			break;
-		//DIAMOND
-		case 56:
-			item = new ItemStack(264, 1);
-			m.mcDropItem(loc, item);
-			break;
-		//STONE
-		case 1:
-			item = new ItemStack(4, 1);
-			m.mcDropItem(loc, item);
-			break;
-		//COAL
-		case 16:
-			item = new ItemStack(263, 1);
-			m.mcDropItem(loc, item);
-			break;
-		default:
-			m.mcDropItem(loc, item);
-			break;	
-		}
-	}
-	
 	public static List<Block> explosionYields(List<Block> ores, List<Block> debris, float yield, float oreBonus, float debrisReduction, Location location, int extraDrops)
 	{
 		Iterator<Block> iterator2 = ores.iterator();
@@ -97,13 +46,17 @@ public class BlastMining{
 			if((float)Math.random() < (yield + oreBonus))
 			{
 				blocksDropped.add(temp);
-				explosionBlockDrops(temp, location);
+				Mining.miningDrops(temp);
 				if(extraDrops == 2)
+				{
 					blocksDropped.add(temp);
-					explosionBlockDrops(temp, location);
+					Mining.miningDrops(temp);
+				}
 				if(extraDrops == 3)
+				{
 					blocksDropped.add(temp);
-					explosionBlockDrops(temp, location);
+					Mining.miningDrops(temp);
+				}
 			}
 		}
 		
@@ -114,7 +67,7 @@ public class BlastMining{
 			{
 				Block temp = iterator3.next();
 				if((float)Math.random() < (yield - debrisReduction))
-					explosionBlockDrops(temp, location);
+					Mining.miningDrops(temp);
 			}
 		}
 		return blocksDropped;
