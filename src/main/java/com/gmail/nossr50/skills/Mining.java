@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.skills;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.player.PlayerAnimationEvent;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -33,7 +35,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
 
-public class Mining 
+public class Mining
 {	
 
 	public static void miningDrops(Block block)
@@ -145,7 +147,7 @@ public class Mining
     {
     	int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 
-    	if(skillLevel > 1000 || (Math.random() * 1000 <= skillLevel)) 
+    	if(skillLevel > 1000 || (Math.random() * 1000 <= skillLevel))
 	    	blockProcSimulate(block, player);
 	}
     
@@ -188,7 +190,8 @@ public class Mining
     	Material type = block.getType();
     	int tier = m.getTier(player);
     	int durabilityLoss = LoadProperties.abilityDurabilityLoss;
-    	
+    	PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+		
 		switch(type)
 		{
 		case OBSIDIAN:
@@ -214,6 +217,7 @@ public class Mining
 		case STONE:
 			if((block.getData() == (byte) 5) || plugin.misc.blockWatchList.contains(block))
 				return;
+			Bukkit.getPluginManager().callEvent(armswing);
 			Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
 			blockProcCheck(block, player);
     		blockProcCheck(block, player);

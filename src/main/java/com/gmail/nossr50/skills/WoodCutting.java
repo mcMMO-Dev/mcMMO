@@ -264,7 +264,8 @@ public class WoodCutting
 		
     	PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
     	Bukkit.getPluginManager().callEvent(armswing);
-		Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
+    	if(LoadProperties.woodcuttingrequiresaxe)
+    		Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
 		if(LoadProperties.spoutEnabled)
 			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
     }
