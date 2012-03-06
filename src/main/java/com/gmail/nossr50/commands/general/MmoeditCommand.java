@@ -24,7 +24,8 @@ public class MmoeditCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		Player player = null;
-        if (sender instanceof Player) {
+        if (sender instanceof Player) 
+        {
             player = (Player) sender;
         }
 		
@@ -32,47 +33,73 @@ public class MmoeditCommand implements CommandExecutor {
 			sender.sendMessage("This command requires permissions.");
 			return true;
 		}
+        
+        PlayerProfile PPt = Users.getOfflineProfile(args[0]);
 
-		if (!(sender instanceof Player)) {
-			if (args.length < 2) {
+		if (!(sender instanceof Player)) 
+		{
+			if (args.length < 2) 
+			{
 				System.out.println("Usage is /mmoedit playername skillname newvalue");
 				return true;
-			} else if (args.length == 3) {
-				if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
+			} else if (args.length == 3)
+			{
+			    if(!PPt.isLoaded())
+		        {
+		            sender.sendMessage("Player does not exist in the database!");
+		            return true;
+		        }
+			    
+				if (m.isInt(args[2]) && Skills.isSkill(args[1])) 
+				{
 					int newvalue = Integer.valueOf(args[2]);
-					Users.getProfile(plugin.getServer().getPlayer(args[0])).modifyskill(Skills.getSkillType(args[1]), newvalue);
+					Users.getOfflineProfile(args[0]).modifyskill(Skills.getSkillType(args[1]), newvalue);
 					System.out.println(args[1] + " has been modified for " + plugin.getServer().getPlayer(args[0]).getName() + ".");
 				}
-			} else {
+			} else 
+			{
 				System.out.println("Usage is /mmoedit playername skillname newvalue");
 			}
 
 			return true;
 		}
 
-		PlayerProfile PP = Users.getProfile(player);
-
-		if (!mcPermissions.getInstance().mmoedit(player)) {
+		if (!mcPermissions.getInstance().mmoedit(player)) 
+		{
 			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
 			return true;
 		}
-		if (args.length < 2) {
+		
+		if (args.length < 2) 
+		{
 			player.sendMessage(ChatColor.RED + "Usage is /mmoedit playername skillname newvalue");
 			return true;
 		}
-		if (args.length == 3) {
-			if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
+		if (args.length == 3) 
+		{
+		    if(!PPt.isLoaded())
+	        {
+	            sender.sendMessage("Player does not exist in the database!");
+	            return true;
+	        }
+		    
+			if (m.isInt(args[2]) && Skills.isSkill(args[1])) 
+			{
 				int newvalue = Integer.valueOf(args[2]);
-				Users.getProfile(plugin.getServer().getPlayer(args[0])).modifyskill(Skills.getSkillType(args[1]), newvalue);
-				player.sendMessage(ChatColor.RED + args[1] + " has been modified.");
+				Users.getOfflineProfile(args[0]).modifyskill(Skills.getSkillType(args[1]), newvalue);
+				player.sendMessage(ChatColor.RED + args[1] + " has been modified for "+args[0]);
 			}
-		} else if (args.length == 2) {
-			if (m.isInt(args[1]) && Skills.isSkill(args[0])) {
+		} else if (args.length == 2) 
+		{
+			if (m.isInt(args[1]) && Skills.isSkill(args[0])) 
+			{
+			    PlayerProfile PP = Users.getProfile(player);
 				int newvalue = Integer.valueOf(args[1]);
 				PP.modifyskill(Skills.getSkillType(args[0]), newvalue);
 				player.sendMessage(ChatColor.RED + args[0] + " has been modified.");
 			}
-		} else {
+		} else 
+		{
 			player.sendMessage(ChatColor.RED + "Usage is /mmoedit playername skillname newvalue");
 		}
 
