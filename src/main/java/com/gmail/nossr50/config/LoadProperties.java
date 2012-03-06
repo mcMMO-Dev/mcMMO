@@ -36,7 +36,7 @@ public class LoadProperties {
 			woodcuttingrequiresaxe, anvilmessages, mayDowngradeEnchants,
 			mayLoseEnchants, fishingDrops, aDisplayNames, pDisplayNames, enableSmoothToMossy,
 			enableDirtToGrass, statsTracking, eventCallback, herbalismHungerBonus,
-			repairArmor, repairTools;
+			repairArmor, repairTools, perLevelTools;
 
 	public static String MySQLtablePrefix, MySQLuserName,
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
@@ -62,7 +62,8 @@ public class LoadProperties {
 			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
 			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5,
 			repairStoneLevel, repairIronLevel, repairGoldLevel, arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4,
-			detonatorID, fishConsumedByCOTW;
+			detonatorID, fishConsumedByCOTW, dAxe, dHoe, dShovel, dSword, dPickaxe, gAxe, gHoe, gShovel, gSword, gPickaxe,
+            iAxe, iHoe, iShovel, iSword, iPickaxe, wAxe, wHoe, wShovel, wSword, wPickaxe;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -277,6 +278,7 @@ public class LoadProperties {
 		saveInterval = readInteger("General.Save_Interval", 10);
 		statsTracking = readBoolean("General.Stats_Tracking", true);
 		eventCallback = readBoolean("General.Event_Callback", true);
+        perLevelTools = readBoolean("General.Per_Level_Tools", false);
 
 		enableCobbleToMossy = readBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
 		enableSmoothToMossy = readBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true);
@@ -289,6 +291,26 @@ public class LoadProperties {
 		feathersConsumedByChimaeraWing = readInteger("Items.Chimaera_Wing.Feather_Cost", 10);
 		chimaeraId = readInteger("Items.Chimaera_Wing.Item_ID", 288);
 		chimaeraWingEnable = readBoolean("Items.Chimaera_Wing.Enabled", true);
+        dAxe = readInteger("Items.Diamond.Axe", 750);
+        dHoe = readInteger("Items.Diamond.Hoe", 750);
+        dShovel = readInteger("Items.Diamond.Shovel", 750);                                      
+        dSword = readInteger("Items.Diamond.Sword", 750);
+        dPickaxe = readInteger("Items.Diamond.Pickaxe", 750);
+        gAxe = readInteger("Items.Gold.Axe", 500);
+        gHoe = readInteger("Items.Gold.Hoe", 500);
+        gShovel = readInteger("Items.Gold.Shovel", 500);
+        gSword = readInteger("Items.Gold.Sword", 500);
+        gPickaxe = readInteger("Items.Gold.Pickaxe", 500);
+        iAxe = readInteger("Items.Iron.Axe", 250);
+        iHoe = readInteger("Items.Iron.Hoe", 250);
+        iShovel = readInteger("Items.Iron.Shovel", 250);
+        iSword = readInteger("Items.Iron.Sword", 250);
+        iPickaxe = readInteger("Items.Iron.Pickaxe", 250);
+        wAxe = readInteger("Items.Wood.Axe", 0);
+        wHoe = readInteger("Items.Wood.Hoe", 0);
+        wShovel = readInteger("Items.Wood.Shovel", 0);
+        wSword = readInteger("Items.Wood.Sword", 0);
+        wPickaxe = readInteger("Items.Wood.Pickaxe", 0);
 
 		pvpxp = readBoolean("Experience.PVP.Rewards", true);
 		pvpxprewardmodifier = readDouble("Experience.Gains.Multiplier.PVP", 1.0);

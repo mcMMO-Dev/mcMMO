@@ -17,7 +17,7 @@ General:
     Stats_Tracking: true
     #Allow mcMMO to inform other plugins of damage being dealt
     Event_Callback: true
-
+    Per_Level_Tools: false
 #
 #  Settings for using a mySQL database
 ###
@@ -41,6 +41,30 @@ Items:
         Enabled: true
         Feather_Cost: 10
         Item_ID: 288
+    Diamond:
+        Axe: 750
+        Hoe: 750
+        Shovel: 750
+        Sword: 750
+        Pickaxe: 750
+    Gold:
+        Axe: 500
+        Hoe: 500
+        Shovel: 500
+        Sword: 500
+        Pickaxe: 500
+    Iron:
+        Axe: 250
+        Hoe: 250
+        Shovel: 250
+        Sword: 250
+        Pickaxe: 250
+    Wood:
+        Axe: 0
+        Hoe: 0
+        Shovel: 0
+        Sword: 0
+        Pickaxe: 0
 
 #
 #  Settings for Arcane Forging
