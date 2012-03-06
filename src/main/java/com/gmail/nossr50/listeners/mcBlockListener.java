@@ -70,9 +70,6 @@ public class mcBlockListener implements Listener
     	int id = block.getTypeId();
     	Material mat = block.getType();
     	
-    	//TNT placement checks - needed for Blast Mining
-    	if(mat.equals(Material.TNT) && mcPermissions.getInstance().blastMining(player))
-    		plugin.misc.tntTracker.put(block.getLocation(), player);
     	//Check if the blocks placed should be monitored so they do not give out XP in the future
     	if(m.shouldBeWatched(mat))
     	{	
@@ -154,10 +151,6 @@ public class mcBlockListener implements Listener
     	/*
     	 * MINING
     	 */
-    	//TNT removal checks - needed for Blast Mining
-    	if(id == 46 && plugin.misc.tntTracker.containsKey(block.getLocation()))
-    		plugin.misc.tntTracker.remove(block.getLocation());
-    	
     	if(mcPermissions.getInstance().mining(player))
     	{
     		if(LoadProperties.miningrequirespickaxe && m.isMiningPick(inhand))

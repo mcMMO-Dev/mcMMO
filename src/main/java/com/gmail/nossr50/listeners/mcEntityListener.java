@@ -16,7 +16,6 @@
 */
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -54,7 +53,6 @@ import com.gmail.nossr50.skills.Archery;
 import com.gmail.nossr50.skills.BlastMining;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
-
 
 public class mcEntityListener implements Listener 
 {
@@ -162,21 +160,13 @@ public class mcEntityListener implements Listener
 	@EventHandler (priority = EventPriority.LOW)
 	public void onExplosionPrime(ExplosionPrimeEvent event)
 	{
-		if(event.getEntity() instanceof TNTPrimed)
+		Entity entity = event.getEntity();
+		if(entity instanceof TNTPrimed)
 		{
-			Location location = event.getEntity().getLocation();
-			System.out.println("UNNORMALIZED LOCATION");
-			System.out.println(location);
-			//Ugly code to make it recognize the location
-			location.setX(location.getBlockX()+1);
-			location.setY(location.getBlockY());
-			location.setZ(location.getBlockZ()+1);
-			System.out.println("NORMALIZED LOCATION");
-			System.out.println(location);
-			
-			if(plugin.misc.tntTracker.containsKey(location))
+			int id = entity.getEntityId();
+			if(plugin.misc.tntTracker.containsKey(id))
 			{
-				Player player = plugin.misc.tntTracker.get(location);
+				Player player = plugin.misc.tntTracker.get(id);
 				BlastMining.biggerBombs(player, event);
 			}
 		}		
@@ -185,20 +175,15 @@ public class mcEntityListener implements Listener
 	@EventHandler (priority = EventPriority.LOW)
 	public void onEnitityExplode(EntityExplodeEvent event)
 	{
+		Entity entity = event.getEntity();
 		if(event.getEntity() instanceof TNTPrimed)
 		{
-			Location location = event.getEntity().getLocation();
-			
-			//Ugly code to make it recognize the location
-			location.setX(location.getBlockX()+1);
-			location.setY(location.getBlockY());
-			location.setZ(location.getBlockZ()+1);
-			
-			if(plugin.misc.tntTracker.containsKey(location))
+			int id = entity.getEntityId();
+			if(plugin.misc.tntTracker.containsKey(id))
 			{
-				Player player = plugin.misc.tntTracker.get(location);
+				Player player = plugin.misc.tntTracker.get(id);
 				BlastMining.dropProcessing(player, event, plugin);
-				plugin.misc.tntTracker.remove(location);
+				plugin.misc.tntTracker.remove(id);
 			}
 		}
 	}

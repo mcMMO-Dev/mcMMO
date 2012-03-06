@@ -259,7 +259,7 @@ public class mcPlayerListener implements Listener
 		if(action == Action.RIGHT_CLICK_BLOCK && m.abilityBlockCheck(block))
 			Item.itemchecks(player, plugin);
 		
-		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK))
+		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK))
 		{
 			if(is.getType().equals(Material.RAW_FISH))
 				Taming.animalSummon(EntityType.OCELOT, player);
@@ -294,7 +294,8 @@ public class mcPlayerListener implements Listener
 	            
 	            player.sendMessage(ChatColor.GRAY+"**BOOM**");
 	            
-				TNTPrimed tnt = player.getWorld().spawn(b.getLocation(), TNTPrimed.class);
+	            TNTPrimed tnt = player.getWorld().spawn(b.getLocation(), TNTPrimed.class);
+	            plugin.misc.tntTracker.put(tnt.getEntityId(), player);
 				b.setType(Material.AIR);
 				tnt.setFuseTicks(0);
 				PP.setSkillDATS(ability, System.currentTimeMillis()); //Save DATS for Blast Mining
