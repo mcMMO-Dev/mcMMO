@@ -22,8 +22,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import com.gmail.nossr50.Combat;
+import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -49,7 +49,7 @@ public class Swords
 	    			return;
     		}
     	}
-    	if(mcPermissions.getInstance().swords(attacker) && m.isSwords(attacker.getItemInHand())){
+    	if(mcPermissions.getInstance().swords(attacker) && ItemChecks.isSword(attacker.getItemInHand())){
 			if(PPa.getSkillLevel(SkillType.SWORDS) >= 750)
 			{
 				if(Math.random() * 1000 <= 750)
@@ -77,73 +77,6 @@ public class Swords
 			}
 		}
     }
-    public static void applySerratedStrikes(Player attacker, EntityDamageByEntityEvent event, mcMMO pluginx)
-    {
-    	int targets = 0;
-    	
-    	int dmgAmount = (event.getDamage()/4);
-        
-        //Setup minimum damage
-        if(dmgAmount < 1)
-            dmgAmount = 1;
-    	
-    	if(event.getEntity() instanceof LivingEntity)
-    	{
-    		LivingEntity x = (LivingEntity) event.getEntity();
-	    	targets = m.getTier(attacker);
-	    	
-	    	for(Entity derp : x.getNearbyEntities(2.5, 2.5, 2.5))
-	    	{
-    			//Make sure the Wolf is not friendly
-    			if(derp instanceof Wolf)
-    			{
-					Wolf hurrDurr = (Wolf)derp;
-					if(hurrDurr.getOwner() instanceof Player)
-		    		{
-		    			Player owner = (Player) hurrDurr.getOwner();
-			    		if(owner == attacker)
-			    			return;
-			    		if(Party.getInstance().inSameParty(attacker, owner))
-			    			return;
-		    		}
-				}
-    			//Damage nearby LivingEntities
-    			if(derp instanceof LivingEntity && targets >= 1)
-    			{
-    				if(derp instanceof Player)
-	    			{
-	    				Player target = (Player)derp;
-	    				
-	    				if(target.getName().equals(attacker.getName()))
-	    					continue;
-	    				
-	    				if(Users.getProfile(target).getGodMode())
-	    					continue;
-	    				
-	    				if(Party.getInstance().inSameParty(attacker, target))
-	    					continue;
-	    				if(targets >= 1 && derp.getWorld().getPVP())
-	    				{
-	    					Combat.dealDamage(target, dmgAmount, attacker);
-	    					target.sendMessage(mcLocale.getString("Swords.HitBySerratedStrikes"));
-	        				Users.getProfile(target).addBleedTicks(5);
-	    					targets--;
-	    					continue;
-	    				}
-	    			} 
-    				else
-	    			{
-	    				if(!pluginx.misc.bleedTracker.contains(derp))
-	    					pluginx.misc.addToBleedQue((LivingEntity)derp);
-	    				
-	    				LivingEntity target = (LivingEntity)derp;
-    					Combat.dealDamage(target, dmgAmount, attacker);
-	    				targets--;
-	    			}
-    			}
-    		}
-    	}
-	}
     
     public static void counterAttackChecks(EntityDamageByEntityEvent event)
     {
@@ -159,7 +92,7 @@ public class Swords
 		   	{
 		   		Player defender = (Player)event.getEntity();
 		   		PlayerProfile PPd = Users.getProfile(defender);
-		   		if(m.isSwords(defender.getItemInHand()) && mcPermissions.getInstance().swords(defender))
+		   		if(ItemChecks.isSword(defender.getItemInHand()) && mcPermissions.getInstance().swords(defender))
 		   		{
 		    		if(PPd.getSkillLevel(SkillType.SWORDS) >= 600)
 		    		{

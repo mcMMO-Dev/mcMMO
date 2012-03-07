@@ -141,7 +141,7 @@ public class Skills
 		if(skillType != SkillType.ALL)
 			ps.statVal = PP.getSkillLevel(skillType);
 		else
-			ps.statVal = m.getPowerLevel(player);
+			ps.statVal = m.getPowerLevel(player, PP);
 		ps.name = player.getName();
 		Leaderboard.updateLeaderboard(ps, skillType);
 	}

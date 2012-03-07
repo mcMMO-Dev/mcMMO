@@ -23,10 +23,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-import com.gmail.nossr50.Combat;
+
+import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -46,7 +45,7 @@ public class Axes {
         
         event.setDamage(event.getDamage() + bonus);
     }
-	public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)
+	public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event)
 	{
     	Entity x = event.getEntity();
     	
@@ -62,7 +61,7 @@ public class Axes {
     		}
     	}
     	PlayerProfile PPa = Users.getProfile(attacker);
-    	if(m.isAxes(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
+    	if(ItemChecks.isAxe(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
     		if(PPa.getSkillLevel(SkillType.AXES) >= 750){
     			if(Math.random() * 2000 <= 750 && !x.isDead()){
     				if(x instanceof Player){
@@ -132,72 +131,4 @@ public class Axes {
         }
 	}
 	
-	public static void applyAoeDamage(Player attacker, EntityDamageByEntityEvent event, Plugin pluginx)
-	{
-		int targets = 0;
-		
-		int dmgAmount = (event.getDamage()/2);
-        
-        //Setup minimum damage
-        if(dmgAmount < 1)
-            dmgAmount = 1;
-    	
-    	if(event.getEntity() instanceof LivingEntity)
-    	{
-    		LivingEntity x = (LivingEntity) event.getEntity();
-	    	targets = m.getTier(attacker);
-	    	
-    	for(Entity derp : x.getNearbyEntities(2.5, 2.5, 2.5))
-    	{
-    			//Make sure the Wolf is not friendly
-    			if(derp instanceof Wolf)
-    			{
-					Wolf hurrDurr = (Wolf)derp;
-					if(hurrDurr.getOwner() instanceof Player)
-		    		{
-		    			Player owner = (Player) hurrDurr.getOwner();
-			    		if(owner == attacker)
-			    			return;
-			    		if(Party.getInstance().inSameParty(attacker, owner))
-			    			return;
-		    		}
-				}
-    			
-    			//Damage nearby LivingEntities
-    			if(derp instanceof LivingEntity && targets >= 1)
-    			{
-    				if(derp instanceof Player)
-	    			{
-	    				Player target = (Player)derp;
-	    				
-	    				if(Users.getProfile(target).getGodMode())
-	    					continue;
-
-	    				if(target.getName().equals(attacker.getName()))
-	    					continue;
-	    				
-	    				if(Party.getInstance().inSameParty(attacker, target))
-	    					continue;
-	    				
-	    				if(target.isDead())
-	    					continue;
-	    				
-	    				if(targets >= 1 && derp.getWorld().getPVP())
-	    				{
-	    				    Combat.dealDamage(target, dmgAmount, attacker);
-	    					target.sendMessage(mcLocale.getString("Axes.HitByCleave"));
-	    					targets--;
-	    					continue;
-	    				}
-	    			}
-    				else
-	    			{			
-	    				LivingEntity target = (LivingEntity)derp;
-    					Combat.dealDamage(target, dmgAmount, attacker);
-	    				targets--;
-	    			}
-    			}
-    		}
-    	}
-	}
 }

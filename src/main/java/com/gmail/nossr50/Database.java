@@ -28,8 +28,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import com.gmail.nossr50.config.LoadProperties;
-
-import datatypes.DatabaseUpdate;
+import com.gmail.nossr50.datatypes.DatabaseUpdate;
 
 public class Database {
 

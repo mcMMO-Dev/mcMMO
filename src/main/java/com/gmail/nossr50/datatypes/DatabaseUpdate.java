@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package datatypes;
+package com.gmail.nossr50.datatypes;
 
 public enum DatabaseUpdate {
     FISHING,

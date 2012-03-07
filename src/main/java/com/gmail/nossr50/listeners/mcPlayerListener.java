@@ -46,6 +46,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Item;
+import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -171,13 +172,13 @@ public class mcPlayerListener implements Listener
 		Action action = event.getAction();
 		Block block = event.getClickedBlock();
 		ItemStack is = player.getItemInHand();
+		Material mat = block.getType();
 		
 		/*
 		 * Ability checks
 		 */
 		if(action == Action.RIGHT_CLICK_BLOCK)
 		{
-			Material mat = block.getType();
 
 			if(block != null && mcPermissions.getInstance().repair(player) && block.getTypeId() == LoadProperties.anvilID && (Repair.isTools(is) || Repair.isArmor(is)))
 			{
@@ -186,9 +187,9 @@ public class mcPlayerListener implements Listener
 				player.updateInventory();
 			}
 
-			if(LoadProperties.enableAbilities && m.abilityBlockCheck(block))
+			if(LoadProperties.enableAbilities && m.abilityBlockCheck(mat))
 			{
-				if(block != null && m.isHoe(is) && !mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL))
+				if(block != null && ItemChecks.isHoe(is) && !mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL))
 					Skills.activationCheck(player, SkillType.HERBALISM);
 				
 				Skills.activationCheck(player, SkillType.AXES);
@@ -256,7 +257,7 @@ public class mcPlayerListener implements Listener
 		 */
 		if(action == Action.RIGHT_CLICK_AIR)
 			Item.itemchecks(player);
-		if(action == Action.RIGHT_CLICK_BLOCK && m.abilityBlockCheck(block))
+		if(action == Action.RIGHT_CLICK_BLOCK && m.abilityBlockCheck(mat))
 			Item.itemchecks(player);
 		
 		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK))

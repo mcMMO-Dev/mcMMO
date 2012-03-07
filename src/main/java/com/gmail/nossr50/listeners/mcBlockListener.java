@@ -16,6 +16,7 @@
 */
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -153,7 +154,7 @@ public class mcBlockListener implements Listener
     	 */
     	if(mcPermissions.getInstance().mining(player))
     	{
-    		if(LoadProperties.miningrequirespickaxe && m.isMiningPick(inhand))
+    		if(LoadProperties.miningrequirespickaxe && ItemChecks.isMiningPick(inhand))
     			Mining.miningBlockCheck(player, block, plugin);
     		else if(!LoadProperties.miningrequirespickaxe)
     			Mining.miningBlockCheck(player, block, plugin);
@@ -165,7 +166,7 @@ public class mcBlockListener implements Listener
     	
    		if(mcPermissions.getInstance().woodcutting(player) && id == 17)
    		{
-   			if(LoadProperties.woodcuttingrequiresaxe && m.isAxes(inhand))
+   			if(LoadProperties.woodcuttingrequiresaxe && ItemChecks.isAxe(inhand))
 				WoodCutting.woodcuttingBlockCheck(player, block, plugin);
    			else if(!LoadProperties.woodcuttingrequiresaxe)
     			WoodCutting.woodcuttingBlockCheck(player, block, plugin);
@@ -179,7 +180,7 @@ public class mcBlockListener implements Listener
     	 */
     	if(Excavation.canBeGigaDrillBroken(block) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 5)
     	{
-    		if(LoadProperties.excavationRequiresShovel && m.isShovel(inhand))
+    		if(LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand))
     			Excavation.excavationProcCheck(block, player);
     		else if(!LoadProperties.excavationRequiresShovel)
     			Excavation.excavationProcCheck(block, player);
@@ -207,7 +208,7 @@ public class mcBlockListener implements Listener
     	/*
     	 * ABILITY PREPARATION CHECKS
     	 */
-    	if(m.abilityBlockCheck(block))
+    	if(m.abilityBlockCheck(mat))
     	{
 	   		if(PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block))
 	   			Skills.abilityCheck(player, SkillType.HERBALISM);
@@ -239,7 +240,7 @@ public class mcBlockListener implements Listener
     	 */
     	if(PP.getGigaDrillBreakerMode() && Excavation.canBeGigaDrillBroken(block) && m.blockBreakSimulate(block, player, true) && mcPermissions.getInstance().excavationAbility(player))
     	{	
-    		if(LoadProperties.excavationRequiresShovel && m.isShovel(inhand))
+    		if(LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand))
     		{
     			event.setInstaBreak(true);
     			Excavation.gigaDrillBreaker(player, block);
@@ -275,7 +276,7 @@ public class mcBlockListener implements Listener
     	{
     		if(LoadProperties.miningrequirespickaxe)
     		{
-    			if(m.isMiningPick(inhand)){
+    			if(ItemChecks.isMiningPick(inhand)){
     			    
     				event.setInstaBreak(true);
     				Mining.SuperBreakerBlockCheck(player, block, plugin);
@@ -296,7 +297,7 @@ public class mcBlockListener implements Listener
     	{	
     		if(LoadProperties.woodcuttingrequiresaxe)
     		{
-    			if(m.isAxes(inhand)){
+    			if(ItemChecks.isAxe(inhand)){
     				event.setInstaBreak(true);
     				WoodCutting.leafBlower(player, block);
     			}

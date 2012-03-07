@@ -27,8 +27,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -181,11 +181,11 @@ public class Repair {
 			dif = (short) (dif * modify);
 		if(!boost)
 			dif = (short) (dif / modify);
-		if(m.isShovel(is))
+		if(ItemChecks.isShovel(is))
 			dif = (short) (dif / 3);
-		if(m.isSwords(is))
+		if(ItemChecks.isSword(is))
 			dif = (short) (dif / 2);
-		if(m.isHoe(is))
+		if(ItemChecks.isHoe(is))
 			dif = (short) (dif / 2);
 		
 		PP.addXP(SkillType.REPAIR, dif*10, player);
@@ -452,19 +452,19 @@ public class Repair {
 		short maxDurability = is.getType().getMaxDurability();
 		int ramt = 0;
 		
-		if(m.isShovel(is))
+		if(ItemChecks.isShovel(is))
 			ramt = maxDurability;
-		else if(m.isHoe(is) || m.isSwords(is) || is.getTypeId() == 359)
+		else if(ItemChecks.isHoe(is) || ItemChecks.isSword(is) || is.getTypeId() == 359)
 			ramt = maxDurability / 2;
-		else if(m.isAxes(is) || m.isMiningPick(is) || isBow(is))
+		else if(ItemChecks.isAxe(is) || ItemChecks.isMiningPick(is) || isBow(is))
 			ramt = maxDurability / 3;
-		else if(m.isBoots(is))
+		else if(ItemChecks.isBoots(is))
 			ramt = maxDurability / 4;
-		else if(m.isHelmet(is))
+		else if(ItemChecks.isHelmet(is))
 			ramt = maxDurability / 5;
-		else if(m.isPants(is))
+		else if(ItemChecks.isPants(is))
 			ramt = maxDurability / 7;
-		else if(m.isChestplate(is))
+		else if(ItemChecks.isChestplate(is))
 			ramt = maxDurability / 8;
 				
 		return repairCalculate(player, durability, ramt);

@@ -68,13 +68,13 @@ public class Combat {
 
             combatAbilityChecks(attacker);
             
-            if (m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker)) {
+            if (ItemChecks.isSword(itemInHand) && mcPermissions.getInstance().swords(attacker)) {
                 if (!pluginx.misc.bleedTracker.contains(target)) {
                     Swords.bleedCheck(attacker, target, pluginx);
                 }
 
                 if (PPa.getSerratedStrikesMode()) {
-                    Swords.applySerratedStrikes(attacker, event, pluginx);
+                    applyAbilityAoE(attacker, target, damage, pluginx, SkillType.SWORDS);
                 }
 
                 if (targetType.equals(EntityType.PLAYER)) {
@@ -84,13 +84,13 @@ public class Combat {
                     PvEExperienceGain(attacker, PPa, target, damage, SkillType.SWORDS);
                 }
             }
-            else if (m.isAxes(itemInHand) && mcPermissions.getInstance().axes(attacker)) {
+            else if (ItemChecks.isAxe(itemInHand) && mcPermissions.getInstance().axes(attacker)) {
                 Axes.axesBonus(attacker, event);
-                Axes.axeCriticalCheck(attacker, event, pluginx);
+                Axes.axeCriticalCheck(attacker, event);
                 Axes.impact(attacker, target, event);
 
                 if (PPa.getSkullSplitterMode()) {
-                    Axes.applyAoeDamage(attacker, event, pluginx);
+                    applyAbilityAoE(attacker, target, damage, pluginx, SkillType.AXES);
                 }
                 
                 if (targetType.equals(EntityType.PLAYER)) {
@@ -270,7 +270,6 @@ public class Combat {
     public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
         if (LoadProperties.eventCallback) {
             EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
-
             Bukkit.getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {
@@ -294,7 +293,6 @@ public class Combat {
     public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
         if (LoadProperties.eventCallback) {
             EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
-
             Bukkit.getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {
@@ -308,6 +306,15 @@ public class Combat {
         }
     }
 
+    /**
+     * Process PVP experience gain.
+     *
+     * @param attacker The attacking player
+     * @param PPa The profile of the attacking player
+     * @param defender The defending player
+     * @param damage The initial damage amount
+     * @param skillType The skill being used
+     */
     private static void PvPExperienceGain(Player attacker, PlayerProfile PPa, Player defender, int damage, SkillType skillType) {
         if (!LoadProperties.pvpxp) {
             return;
@@ -325,6 +332,15 @@ public class Combat {
           }
     }
 
+    /**
+     * Process PVE experience gain.
+     *
+     * @param attacker The attacking player
+     * @param PPa The profile of the attacking player
+     * @param target The defending entity
+     * @param damage The initial damage amount
+     * @param skillType The skill being used
+     */
     private static void PvEExperienceGain(Player attacker, PlayerProfile PPa, LivingEntity target, int damage, SkillType skillType) {
         int xp = getXp(target, damage);
 
@@ -332,6 +348,13 @@ public class Combat {
         Skills.XpCheckSkill(skillType, attacker);
     }
 
+    /**
+     * Cap the XP based on the remaining health of an entity.
+     *
+     * @param hpLeft Amount of HP remaining
+     * @param damage Amount of damage being dealt
+     * @return the modified XP amount
+     */
     private static int capXP(int hpLeft, int damage) {
         int xp;
 
@@ -424,5 +447,107 @@ public class Combat {
             }
         }
         return xp;
+    }
+
+    /**
+     * Apply Area-of-Effect ability actions.
+     *
+     * @param attacker The attacking player
+     * @param target The defending entity
+     * @param damage The initial damage amount
+     * @param plugin mcMMO plugin instance
+     * @param type The type of skill being used
+     */
+    private static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, mcMMO plugin, SkillType type) {
+        int numberOfTargets = m.getTier(attacker.getItemInHand()); //The higher the weapon tier, the more targets you hit
+        int damageAmount = 0;
+
+        if (type.equals(SkillType.AXES)) {
+            damageAmount = damage / 2;
+        }
+        else if (type.equals(SkillType.SWORDS)) {
+            damageAmount = damage / 4;
+        }
+
+        if (damageAmount < 1) {
+            damageAmount = 1;
+        }
+
+        for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
+            EntityType entityType = entity.getType();
+
+            if (entityType.equals(EntityType.WOLF)) {
+                Wolf wolf = (Wolf) entity;
+                AnimalTamer tamer = wolf.getOwner();
+
+                if (tamer instanceof Player) {
+                    Player owner = (Player) tamer;
+
+                    //Reasons why the target shouldn't be hit
+                    if (owner.equals(attacker)) {
+                        continue;
+                    }
+
+                    if (Party.getInstance().inSameParty(attacker, owner)) {
+                        continue;
+                    }
+                }
+            }
+
+            if (entity instanceof LivingEntity && numberOfTargets >= 1) {
+                if (entityType.equals(EntityType.PLAYER)) {
+                    Player defender = (Player) entity;
+                    PlayerProfile PP = Users.getProfile(defender);
+
+                    //Reasons why the target shouldn't be hit
+                    if (PP.getGodMode()) {
+                        continue;
+                    }
+
+                    if (defender.getName().equals(attacker.getName())) { //Is this even possible?
+                        continue;
+                    }
+
+                    if (Party.getInstance().inSameParty(attacker, defender)) {
+                        continue;
+                    }
+
+                    if (defender.isDead()) {
+                        continue;
+                    }
+
+                    //Apply effect to players only if PVP is enabled
+                    if (target.getWorld().getPVP()) {
+                        String message = "";
+
+                        if (type.equals(SkillType.AXES)) {
+                            message = mcLocale.getString("Axes.HitByCleave");
+                        }
+                        else if (type.equals(SkillType.SWORDS)) {
+                            message = mcLocale.getString("Swords.HitBySerratedStrikes");
+                        }
+
+                        dealDamage(defender, damageAmount, attacker);
+                        defender.sendMessage(message);
+
+                        if (type.equals(SkillType.SWORDS)) {
+                            PP.addBleedTicks(5);
+                        }
+
+                        numberOfTargets--;
+                    }
+                }
+                else {
+                    LivingEntity livingEntity = (LivingEntity) entity;
+
+                    if (type.equals(SkillType.SWORDS) && !plugin.misc.bleedTracker.contains(entity)) {
+                        plugin.misc.addToBleedQue(livingEntity);
+                    }
+
+                    dealDamage(livingEntity, damageAmount, attacker);
+                    numberOfTargets--;
+                }
+            }
+        }
     }
 }

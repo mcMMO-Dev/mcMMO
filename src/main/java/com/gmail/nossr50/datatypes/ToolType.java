@@ -3,7 +3,7 @@ package com.gmail.nossr50.datatypes;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.m;
+import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.locale.mcLocale;
 
 public enum ToolType
@@ -129,17 +129,17 @@ public enum ToolType
 		switch(this)
 		{
 		case AXE:
-			return m.isAxes(is);
+			return ItemChecks.isAxe(is);
 		case FISTS:
 			return is.getType().equals(Material.AIR);
 		case HOE:
-			return m.isHoe(is);
+			return ItemChecks.isHoe(is);
 		case PICKAXE:
-			return m.isMiningPick(is);
+			return ItemChecks.isMiningPick(is);
 		case SHOVEL:
-			return m.isShovel(is);
+			return ItemChecks.isShovel(is);
 		case SWORD:
-			return m.isSwords(is);
+			return ItemChecks.isSword(is);
 		}
 		return false;
 	}
