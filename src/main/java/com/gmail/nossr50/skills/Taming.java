@@ -42,7 +42,7 @@ public class Taming
 		Entity entity = event.getEntity();
 		if(!pluginx.misc.mobSpawnerList.contains(entity.getEntityId()))
 		{
-			int xp = Combat.getXp(entity, event.getDamage());
+			int xp = Combat.getXp((LivingEntity) entity, event.getDamage());
 			Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
 			
 			if(entity instanceof Player)

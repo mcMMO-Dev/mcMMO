@@ -41,368 +41,388 @@ import com.gmail.nossr50.skills.Swords;
 import com.gmail.nossr50.skills.Taming;
 import com.gmail.nossr50.skills.Unarmed;
 
-public class Combat 
-{
-    public static void combatChecks(EntityDamageByEntityEvent event, mcMMO pluginx)
-    {
-        if (event.getDamage() == 0 || event.getEntity().isDead())
-            return;
+public class Combat {
 
-        Entity damager = event.getDamager(); 
+    /**
+     * Apply combat modifiers and process and XP gain.
+     *
+     * @param event The event to run the combat checks on.
+     * @param pluginx mcMMO plugin instance
+     */
+    public static void combatChecks(EntityDamageByEntityEvent event, mcMMO pluginx) {
+        if (event.getDamage() == 0 || event.getEntity().isDead()) {
+            return;
+        }
+
+        Entity damager = event.getDamager();
         LivingEntity target = (LivingEntity) event.getEntity();
         int damage = event.getDamage();
         EntityType damagerType = damager.getType();
         EntityType targetType = target.getType();
 
-        switch (damagerType)
-        {
+        switch (damagerType) {
         case PLAYER:
             Player attacker = (Player) event.getDamager();
             ItemStack itemInHand = attacker.getItemInHand();
             PlayerProfile PPa = Users.getProfile(attacker);
 
-            combatAbilityChecks(attacker, PPa);
+            combatAbilityChecks(attacker);
             
-            if (m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker))
-            {
-                if (!pluginx.misc.bleedTracker.contains(target))
+            if (m.isSwords(itemInHand) && mcPermissions.getInstance().swords(attacker)) {
+                if (!pluginx.misc.bleedTracker.contains(target)) {
                     Swords.bleedCheck(attacker, target, pluginx);
+                }
 
-                if (PPa.getSerratedStrikesMode())
+                if (PPa.getSerratedStrikesMode()) {
                     Swords.applySerratedStrikes(attacker, event, pluginx);
+                }
 
-                if (targetType.equals(EntityType.PLAYER))
+                if (targetType.equals(EntityType.PLAYER)) {
                     PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.SWORDS);
-                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
-                    PvEExperienceGain(attacker, PPa, target, damage, SkillType.SWORDS); 
+                }
+                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId())){
+                    PvEExperienceGain(attacker, PPa, target, damage, SkillType.SWORDS);
+                }
             }
-            else if (m.isAxes(itemInHand) && mcPermissions.getInstance().axes(attacker))
-            {
+            else if (m.isAxes(itemInHand) && mcPermissions.getInstance().axes(attacker)) {
                 Axes.axesBonus(attacker, event);
                 Axes.axeCriticalCheck(attacker, event, pluginx);
                 Axes.impact(attacker, target, event);
 
-                if (PPa.getSkullSplitterMode())
+                if (PPa.getSkullSplitterMode()) {
                     Axes.applyAoeDamage(attacker, event, pluginx);
-
-                if (targetType.equals(EntityType.PLAYER))
+                }
+                
+                if (targetType.equals(EntityType.PLAYER)) {
                     PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.AXES); //use getDamage because damage is modified in earlier functions
-                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+                }
+                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId())) {
                     PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.AXES); //use getDamage because damage is modified in earlier functions
+                }
             }
-            else if (itemInHand.getType().equals(Material.AIR) && mcPermissions.getInstance().unarmed(attacker))
-            {
+            else if (itemInHand.getType().equals(Material.AIR) && mcPermissions.getInstance().unarmed(attacker)) {
                 Unarmed.unarmedBonus(attacker, event);
                 
-                if (PPa.getBerserkMode())
+                if (PPa.getBerserkMode()) {
                     event.setDamage(damage + (damage / 2));
+                }
 
-                if (targetType.equals(EntityType.PLAYER))
-                {
+                if (targetType.equals(EntityType.PLAYER)) {
                     Unarmed.disarmProcCheck(attacker, (Player) target);
                     PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.UNARMED); //use getDamage because damage is modified in earlier functions
                 }
-                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId()))
+                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId())) {
                     PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.UNARMED); //use getDamage because damage is modified in earlier functions
+                }
             }
-            else if (itemInHand.getType().equals(Material.BONE) && mcPermissions.getInstance().taming(attacker) && targetType.equals(EntityType.WOLF))
-            {
+            else if (itemInHand.getType().equals(Material.BONE) && mcPermissions.getInstance().taming(attacker) && targetType.equals(EntityType.WOLF)) {
                 Wolf wolf = (Wolf) target;
                 String message = "Combat.BeastLore" + " ";
                 int health = wolf.getHealth();
                 event.setCancelled(true);
 
-                if (wolf.isTamed())
-                {
+                if (wolf.isTamed()) {
                     message.concat(mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(wolf)}) + " ");
                     message.concat(mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {health}));
                 }
-                else
+                else {
                     message.concat(mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {health}));
+                }
 
                 attacker.sendMessage(message);
             }
+            break;
+
         case WOLF:
-        {
             Wolf wolf = (Wolf) damager;
 
-            if (wolf.isTamed() && wolf.getOwner() instanceof Player)
-            {
+            if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
                 Player master = (Player) wolf.getOwner();
                 PlayerProfile PPo = Users.getProfile(master);
 
-                if (mcPermissions.getInstance().taming(master))
-                {
+                if (mcPermissions.getInstance().taming(master)) {
                     Taming.fastFoodService(PPo, wolf, event);
                     Taming.sharpenedClaws(PPo, event);
                     Taming.gore(PPo, event, master, pluginx);
                     Taming.rewardXp(event, pluginx, master);
                 }
             }
-        }
+            break;
 
         case ARROW:
             archeryCheck((EntityDamageByEntityEvent)event, pluginx);
+            break;
+
+        default:
+            break;
         }
 
-        if (targetType.equals(EntityType.PLAYER))
-        {
+        if (targetType.equals(EntityType.PLAYER)) {
             Swords.counterAttackChecks(event);
             Acrobatics.dodgeChecks(event);
         }
     }
 
-	public static void combatAbilityChecks(Player attacker, PlayerProfile PPa)
-	{
-		//Check to see if any abilities need to be activated
-		if(PPa.getAxePreparationMode())
-			Skills.abilityCheck(attacker, SkillType.AXES);
-		if(PPa.getSwordsPreparationMode())
-			Skills.abilityCheck(attacker, SkillType.SWORDS);
-		if(PPa.getFistsPreparationMode())
-			Skills.abilityCheck(attacker, SkillType.UNARMED);
-	}
-	
-	public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx)
-	{
-		Arrow arrow = (Arrow)event.getDamager();
-		Entity y = arrow.getShooter();
-		Entity x = event.getEntity();
-		if(x instanceof Player)
-		{
-			Player defender = (Player)x;
-			PlayerProfile PPd = Users.getProfile(defender);
-			if(PPd == null)
-				Users.addUser(defender);
-			if(mcPermissions.getInstance().unarmed(defender) && defender.getItemInHand().getTypeId() == 0)
-			{
-				if(defender != null && PPd.getSkillLevel(SkillType.UNARMED) >= 1000)
-				{
-					if(Math.random() * 1000 <= 500)
-					{
-						event.setCancelled(true);
-						defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect")); //$NON-NLS-1$
-						return;
-					}
-				} else if(defender != null && Math.random() * 1000 <= (PPd.getSkillLevel(SkillType.UNARMED) / 2))
-				{
-					event.setCancelled(true);
-					defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect")); //$NON-NLS-1$
-					return;
-				}
-			}
-		}
-		/*
-		 * If attacker is player
-		 */
-		if(y instanceof Player)
-		{
-			Player attacker = (Player)y;
-			PlayerProfile PPa = Users.getProfile(attacker);
-			int damage = event.getDamage();
-			if(mcPermissions.getInstance().archery(attacker) && damage > 0)
-			{
-				Archery.trackArrows(pluginx, x, PPa);
-				
-				/*
-				 * IGNITION
-				 */
-				Archery.ignitionCheck(x, attacker);
-			/*
-			 * Defender is Monster
-			 */
-			if(!pluginx.misc.mobSpawnerList.contains(x.getEntityId()))
-			{
-				int xp = getXp(x, damage);
-				PPa.addXP(SkillType.ARCHERY, xp*10, attacker);
-			}
-			/*
-			 * Attacker is Player
-			 */
-			if(x instanceof Player){
-				Player defender = (Player)x;
-				PlayerProfile PPd = Users.getProfile(defender);
-				/*
-				 * Stuff for the daze proc
-				 */
-					if(PPa.inParty() && PPd.inParty())
-					{
-						if(Party.getInstance().inSameParty(defender, attacker))
-						{
-							event.setCancelled(true);
-							return;
-						}
-					}
-					/*
-					 * PVP XP
-					 */
-					if(LoadProperties.pvpxp && ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis() && !attacker.getName().equals(defender.getName()))
-					{
-						int xp = (int) ((damage * 2) * 10);
-						PPa.addXP(SkillType.ARCHERY, xp, attacker);
-					}
-					/*
-					 * DAZE PROC
-					 */
-					Archery.dazeCheck(defender, attacker);
-				}
-			}
-			Skills.XpCheckSkill(SkillType.ARCHERY, attacker);
-		}
-	}
-	
-	/**
-	 * Attempt to damage target for value dmg with reason CUSTOM
-	 * 
-	 * @param target LivingEntity which to attempt to damage
-	 * @param dmg Amount of damage to attempt to do
-	 */
-	public static void dealDamage(LivingEntity target, int dmg){
-		dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM);
-	}
-	
-	/**
-	 * Attempt to damage target for value dmg with reason cause
-	 * 
-	 * @param target LivingEntity which to attempt to damage
-	 * @param dmg Amount of damage to attempt to do
-	 * @param cause DamageCause to pass to damage event
-	 */
-	public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
-		if(LoadProperties.eventCallback) {
-			EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
-			Bukkit.getPluginManager().callEvent(ede);
-			if(ede.isCancelled()) return;
-			
-			target.damage(ede.getDamage());
-		} else {
-			target.damage(dmg);
-		}
-	}
-	
-	/**
-	 * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
-	 * 
-	 * @param target LivingEntity which to attempt to damage
-	 * @param dmg Amount of damage to attempt to do
-	 * @param attacker Player to pass to event as damager
-	 */
-	public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
-		if(LoadProperties.eventCallback) {
-			EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
-			Bukkit.getPluginManager().callEvent(ede);
-			if(ede.isCancelled()) return;
+    /**
+     * Process combat abilities based on weapon preparation modes.
+     *
+     * @param attacker The player attacking
+     */
+    public static void combatAbilityChecks(Player attacker) {
+        PlayerProfile PPa = Users.getProfile(attacker);
 
-			target.damage(ede.getDamage());
-		} else {
-			target.damage(dmg);
-		}
-	}
-	
-	private static void PvPExperienceGain(Player attacker, PlayerProfile PPa, Player defender, int damage, SkillType skillType)
-	{
-		if (!LoadProperties.pvpxp)
-			return;
-		
-	  	PlayerProfile PPd = Users.getProfile(defender);
-	  	
-   		if(System.currentTimeMillis() >= (PPd.getRespawnATS()*1000) + 5000
-  				&& ((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis()
-   				&& defender.getHealth() >= 1)
-   		{
-			//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the mob
-			int hpLeft = defender.getHealth(), xpinc = 0;
-		   			
-			if(hpLeft < damage)
-			{
-				if(hpLeft > 0)
-					xpinc = hpLeft;
-				else
-					xpinc = 0;
-			} else
-				xpinc = damage;
-			
-			int xp = (int) (xpinc * 2 * LoadProperties.pvpxprewardmodifier);
-			PPa.addXP(skillType, xp*10, attacker);
-			Skills.XpCheckSkill(skillType, attacker);
-	  	}
-	}
-	
-	private static void PvEExperienceGain(Player attacker, PlayerProfile PPa, LivingEntity target, int damage, SkillType skillType)
-	{
-   		int xp = getXp(target, damage);
-		PPa.addXP(skillType, xp*10, attacker);
-		Skills.XpCheckSkill(skillType, attacker);
-	}
-	
-	public static int getXp(Entity entity, int damage)
-	{
-		int xp = 0;
-		if(entity instanceof LivingEntity)
-		{
-			LivingEntity le = (LivingEntity) entity;
-			//Prevent a ridiculous amount of XP being granted by capping it at the remaining health of the entity
-			int hpLeft = le.getHealth();
-			int xpinc = 0;
-			
-			if(hpLeft < damage)
-			{
-				if(hpLeft > 0)
-					xpinc = hpLeft;
-				else
-					xpinc = 0;
-			} 
-			else
-				xpinc = damage;
-			
-	    	if(entity instanceof Animals)
-		    	xp = (int) (xpinc * LoadProperties.animalXP);
-	    	else
-	    	{
-	    		EntityType type = entity.getType();
-	    		switch(type){
-	    		case BLAZE:
-	    			xp = (int) (xpinc * LoadProperties.blazeXP);
-	    			break;
-	    		case CAVE_SPIDER:
-	    			xp = (int) (xpinc * LoadProperties.cavespiderXP);
-	    			break;
-	    		case CREEPER:
-	    			xp = (int) (xpinc * LoadProperties.creeperXP);
-	    			break;
-	    		case ENDER_DRAGON:
-	    			xp = (int) (xpinc * LoadProperties.enderdragonXP);
-	    			break;
-	    		case ENDERMAN:
-	    			xp = (int) (xpinc * LoadProperties.endermanXP);
-	    			break;
-	    		case GHAST:
-	    			xp = (int) (xpinc * LoadProperties.ghastXP);
-	    			break;
-	    		case MAGMA_CUBE:
-	    			xp = (int) (xpinc * LoadProperties.magmacubeXP);
-	    			break;
-	    		case PIG_ZOMBIE:
-	    			xp = (int) (xpinc * LoadProperties.pigzombieXP);
-	    			break;
-	    		case SILVERFISH:
-	    			xp = (int) (xpinc * LoadProperties.silverfishXP);
-	    			break;
-	    		case SKELETON:
-	    			xp = (int) (xpinc * LoadProperties.skeletonXP);
-	    			break;
-	    		case SLIME:
-	    			xp = (int) (xpinc * LoadProperties.slimeXP);
-	    			break;
-	    		case SPIDER:
-	    			xp = (int) (xpinc * LoadProperties.spiderXP);
-	    			break;
-	    		case ZOMBIE:
-	    			xp = (int) (xpinc * LoadProperties.zombieXP);
-	    			break;
-	    		}
-	    	}
-    	}
-    	return xp;
-	}
+        if (PPa.getAxePreparationMode()) {
+            Skills.abilityCheck(attacker, SkillType.AXES);
+        }
+        else if (PPa.getSwordsPreparationMode()) {
+            Skills.abilityCheck(attacker, SkillType.SWORDS);
+        }
+        else if (PPa.getFistsPreparationMode()) {
+            Skills.abilityCheck(attacker, SkillType.UNARMED);
+        }
+    }
+
+    /**
+     * Process archery abilities.
+     *
+     * @param event The event to run the archery checks on.
+     * @param pluginx mcMMO plugin instance
+     */
+    public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx) {
+        Arrow arrow = (Arrow) event.getDamager();
+        LivingEntity shooter = arrow.getShooter();
+        Entity entity = event.getEntity();
+
+        if (entity instanceof Player) {
+            Player defender = (Player) entity;
+            PlayerProfile PPd = Users.getProfile(defender);
+            boolean deflect = false;
+
+            if (mcPermissions.getInstance().unarmed(defender) && defender.getItemInHand().getType().equals(Material.AIR)) {
+                if (PPd.getSkillLevel(SkillType.UNARMED) >= 1000 && (Math.random() * 1000 <= 500)) {
+                    deflect = true;
+                }
+                else if (Math.random() * 1000 <= (PPd.getSkillLevel(SkillType.UNARMED) / 2)) {
+                    deflect = true;
+                }
+                
+                if (deflect) {
+                    event.setCancelled(true);
+                    defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect"));
+                    return;
+                }
+            }
+        }
+
+        if (shooter instanceof Player) {
+            Player attacker = (Player) shooter;
+            PlayerProfile PPa = Users.getProfile(attacker);
+            int damage = event.getDamage();
+
+            if (mcPermissions.getInstance().archery(attacker) && damage > 0) {
+                Archery.trackArrows(pluginx, entity, PPa);
+                Archery.ignitionCheck(entity, attacker);
+
+                if (!pluginx.misc.mobSpawnerList.contains(entity.getEntityId())) {
+                    int xp = getXp((LivingEntity) entity, damage);
+                    PPa.addXP(SkillType.ARCHERY, xp*10, attacker);
+                }
+
+                if (entity instanceof Player) {
+                    Player defender = (Player) entity;
+                    PlayerProfile PPd = Users.getProfile(defender);
+
+                    if (PPa.inParty() && PPd.inParty() && Party.getInstance().inSameParty(defender, attacker)) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    if (LoadProperties.pvpxp && (((PPd.getLastLogin() + 5) * 1000) < System.currentTimeMillis()) && !attacker.getName().equals(defender.getName())) {
+                        int xp = (damage * 2) * 10; //What's the 2 for? Should this be a multiplier from file instead?
+                        PPa.addXP(SkillType.ARCHERY, xp, attacker);
+                    }
+
+                    Archery.dazeCheck(defender, attacker);
+                }
+            }
+
+            Skills.XpCheckSkill(SkillType.ARCHERY, attacker);
+        }
+    }
+
+    /**
+     * Attempt to damage target for value dmg with reason CUSTOM
+     *
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     */
+    public static void dealDamage(LivingEntity target, int dmg) {
+        dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM);
+    }
+
+    /**
+     * Attempt to damage target for value dmg with reason cause
+     *
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     * @param cause DamageCause to pass to damage event
+     */
+    public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
+        if (LoadProperties.eventCallback) {
+            EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
+
+            Bukkit.getPluginManager().callEvent(ede);
+
+            if (ede.isCancelled()) {
+                return;
+            }
+
+            target.damage(ede.getDamage());
+        }
+        else {
+            target.damage(dmg);
+        }
+    }
+
+    /**
+     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
+     *
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     * @param attacker Player to pass to event as damager
+     */
+    public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
+        if (LoadProperties.eventCallback) {
+            EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
+
+            Bukkit.getPluginManager().callEvent(ede);
+
+            if (ede.isCancelled()) {
+                return;
+            }
+
+            target.damage(ede.getDamage());
+        }
+        else {
+            target.damage(dmg);
+        }
+    }
+
+    private static void PvPExperienceGain(Player attacker, PlayerProfile PPa, Player defender, int damage, SkillType skillType) {
+        if (!LoadProperties.pvpxp) {
+            return;
+        }
+
+        PlayerProfile PPd = Users.getProfile(defender);
+        int health = defender.getHealth();
+
+        if ((System.currentTimeMillis() >= (PPd.getRespawnATS()*1000) + 5000) && (((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis()) && health >= 1) {
+            int xp = capXP(health, damage);
+
+            xp = (int) (xp * 2 * LoadProperties.pvpxprewardmodifier);
+            PPa.addXP(skillType, xp * 10, attacker);
+            Skills.XpCheckSkill(skillType, attacker);
+          }
+    }
+
+    private static void PvEExperienceGain(Player attacker, PlayerProfile PPa, LivingEntity target, int damage, SkillType skillType) {
+        int xp = getXp(target, damage);
+
+        PPa.addXP(skillType, xp * 10, attacker);
+        Skills.XpCheckSkill(skillType, attacker);
+    }
+
+    private static int capXP(int hpLeft, int damage) {
+        int xp;
+
+        if (hpLeft < damage) {
+            if (hpLeft > 0) {
+                xp = hpLeft;
+            }
+            else {
+                xp = 0;
+            }
+        }
+        else {
+            xp = damage;
+        }
+
+        return xp;
+    }
+
+    /**
+     * Get the XP gained from damaging a non-player mob
+     *
+     * @param entity Entity being damaged
+     * @param damage Damage to be dealt to the mob
+     * @return XP gained
+     */
+    public static int getXp(LivingEntity entity, int damage) {
+        int xp = capXP(entity.getHealth(), damage);
+
+        if (entity instanceof Animals) {
+            xp = (int) (xp * LoadProperties.animalXP);
+        }
+        else {
+            EntityType type = entity.getType();
+
+            switch (type) {
+            case BLAZE:
+                xp = (int) (xp * LoadProperties.blazeXP);
+                break;
+
+            case CAVE_SPIDER:
+                xp = (int) (xp * LoadProperties.cavespiderXP);
+                break;
+
+            case CREEPER:
+                xp = (int) (xp * LoadProperties.creeperXP);
+                break;
+
+            case ENDER_DRAGON:
+                xp = (int) (xp * LoadProperties.enderdragonXP);
+                break;
+
+            case ENDERMAN:
+                xp = (int) (xp * LoadProperties.endermanXP);
+                break;
+
+            case GHAST:
+                xp = (int) (xp * LoadProperties.ghastXP);
+                break;
+
+            case MAGMA_CUBE:
+                xp = (int) (xp * LoadProperties.magmacubeXP);
+                break;
+
+            case PIG_ZOMBIE:
+                xp = (int) (xp * LoadProperties.pigzombieXP);
+                break;
+
+            case SILVERFISH:
+                xp = (int) (xp * LoadProperties.silverfishXP);
+                break;
+
+            case SKELETON:
+                xp = (int) (xp * LoadProperties.skeletonXP);
+                break;
+
+            case SLIME:
+                xp = (int) (xp * LoadProperties.slimeXP);
+                break;
+
+            case SPIDER:
+                xp = (int) (xp * LoadProperties.spiderXP);
+                break;
+
+            case ZOMBIE:
+                xp = (int) (xp * LoadProperties.zombieXP);
+                break;
+
+            default:
+                break;
+            }
+        }
+        return xp;
+    }
 }
