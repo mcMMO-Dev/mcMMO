@@ -15,7 +15,7 @@ public enum AbilityType
 	SKULL_SPLIITER(LoadProperties.skullSplitterCooldown, mcLocale.getString("Skills.SkullSplitterOn"), mcLocale.getString("Skills.SkullSplitterOff"), "Skills.SkullSplitterPlayer", mcLocale.getString("Skills.YourSkullSplitter"), "Skills.SkullSplitterPlayerOff"),
 	TREE_FELLER(LoadProperties.treeFellerCooldown, mcLocale.getString("Skills.TreeFellerOn"), mcLocale.getString("Skills.TreeFellerOff"), "Skills.TreeFellerPlayer", mcLocale.getString("Skills.YourTreeFeller"), "Skills.TreeFellerPlayerOff"),
 	SERRATED_STRIKES(LoadProperties.skullSplitterCooldown, mcLocale.getString("Skills.SerratedStrikesOn"), mcLocale.getString("Skills.SerratedStrikesOff"), "Skills.SerratedStrikesPlayer", mcLocale.getString("Skills.YourSerratedStrikes"), "Skills.SerratedStrikesPlayerOff"),
-	BLAST_MINING(LoadProperties.blastMiningCooldown, "NOT NEEDED FOR BLAST MINING", "NOT NEEDED FOR BLAST MINING", "Skills.BlastMiningPlayer", mcLocale.getString("Skills.YourBlastMining"), "NOT NEEDED FOR BLAST MINING");
+	BLAST_MINING(LoadProperties.blastMiningCooldown, null, null, "Skills.BlastMiningPlayer", mcLocale.getString("Skills.YourBlastMining"), null);
 
 	private int cooldown;
 	private String abilityOn;

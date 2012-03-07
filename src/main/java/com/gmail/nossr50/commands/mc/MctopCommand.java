@@ -138,22 +138,22 @@ public class MctopCommand implements CommandExecutor {
 						n = n * (n2 - 1);
 					}
 					// If a page number is specified
-					HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT " + lowercase + ", user_id FROM " + LoadProperties.MySQLtablePrefix + "skills WHERE " + lowercase + " > 0 ORDER BY `" + LoadProperties.MySQLtablePrefix + "skills`.`" + lowercase + "` DESC ");
+					HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + lowercase + ", user_id FROM " + LoadProperties.MySQLtablePrefix + "skills WHERE " + lowercase + " > 0 ORDER BY `" + LoadProperties.MySQLtablePrefix + "skills`.`" + lowercase + "` DESC ");
 
 					for (int i = n; i <= n + 10; i++) {
-						if (i > userslist.size() || mcMMO.database.Read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
+						if (i > userslist.size() || mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
 							break;
-						HashMap<Integer, ArrayList<String>> username = mcMMO.database.Read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+						HashMap<Integer, ArrayList<String>> username = mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 						player.sendMessage(String.valueOf(i) + ". " + ChatColor.GREEN + userslist.get(i).get(0) + " - " + ChatColor.WHITE + username.get(1).get(0));
 					}
 					return true;
 				}
 				// If no page number is specified
-				HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT " + lowercase + ", user_id FROM " + LoadProperties.MySQLtablePrefix + "skills WHERE " + lowercase + " > 0 ORDER BY `" + LoadProperties.MySQLtablePrefix + "skills`.`" + lowercase + "` DESC ");
+				HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + lowercase + ", user_id FROM " + LoadProperties.MySQLtablePrefix + "skills WHERE " + lowercase + " > 0 ORDER BY `" + LoadProperties.MySQLtablePrefix + "skills`.`" + lowercase + "` DESC ");
 				for (int i = 1; i <= 10; i++) { // i<=userslist.size()
-					if (i > userslist.size() || mcMMO.database.Read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
+					if (i > userslist.size() || mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
 						break;
-					HashMap<Integer, ArrayList<String>> username = mcMMO.database.Read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+					HashMap<Integer, ArrayList<String>> username = mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 					player.sendMessage(String.valueOf(i) + ". " + ChatColor.GREEN + userslist.get(i).get(0) + " - " + ChatColor.WHITE + username.get(1).get(0));
 				}
 				return true;
@@ -169,20 +169,20 @@ public class MctopCommand implements CommandExecutor {
 						n = n * (n2 - 1);
 					}
 					// If a page number is specified
-					HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT " + powerlevel + ", user_id FROM " + LoadProperties.MySQLtablePrefix + "skills WHERE " + powerlevel + " > 0 ORDER BY " + powerlevel + " DESC ");
+					HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + powerlevel + ", user_id FROM " + LoadProperties.MySQLtablePrefix + "skills WHERE " + powerlevel + " > 0 ORDER BY " + powerlevel + " DESC ");
 					for (int i = n; i <= n + 10; i++) {
-						if (i > userslist.size() || mcMMO.database.Read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
+						if (i > userslist.size() || mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
 							break;
-						HashMap<Integer, ArrayList<String>> username = mcMMO.database.Read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+						HashMap<Integer, ArrayList<String>> username = mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 						player.sendMessage(String.valueOf(i) + ". " + ChatColor.GREEN + userslist.get(i).get(0) + " - " + ChatColor.WHITE + username.get(1).get(0));
 					}
 					return true;
 				}
-				HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.Read("SELECT " + powerlevel + ", user_id FROM " + LoadProperties.MySQLtablePrefix + "skills WHERE " + powerlevel + " > 0 ORDER BY " + powerlevel + " DESC ");
+				HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + powerlevel + ", user_id FROM " + LoadProperties.MySQLtablePrefix + "skills WHERE " + powerlevel + " > 0 ORDER BY " + powerlevel + " DESC ");
 				for (int i = 1; i <= 10; i++) {
-					if (i > userslist.size() || mcMMO.database.Read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
+					if (i > userslist.size() || mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null)
 						break;
-					HashMap<Integer, ArrayList<String>> username = mcMMO.database.Read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+					HashMap<Integer, ArrayList<String>> username = mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
 					player.sendMessage(String.valueOf(i) + ". " + ChatColor.GREEN + userslist.get(i).get(0) + " - " + ChatColor.WHITE + username.get(1).get(0));
 					// System.out.println(username.get(1).get(0));
 					// System.out.println("Mining : " + userslist.get(i).get(0) + ", User id : " + userslist.get(i).get(1));

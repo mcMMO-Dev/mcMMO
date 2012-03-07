@@ -145,15 +145,15 @@ public class PlayerProfile
 	public boolean loadMySQL() 
 	{
 		Integer id = 0;
-		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
+		id = mcMMO.database.getInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
 		if(id == 0)
 			return false;
 		this.userid = id;
 		if (id > 0) {
-			HashMap<Integer, ArrayList<String>> huds = mcMMO.database.Read("SELECT hudtype FROM "+LoadProperties.MySQLtablePrefix+"huds WHERE user_id = " + id);
+			HashMap<Integer, ArrayList<String>> huds = mcMMO.database.read("SELECT hudtype FROM "+LoadProperties.MySQLtablePrefix+"huds WHERE user_id = " + id);
 			if(huds.get(1) == null)
 			{
-				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"huds (user_id) VALUES ("+id+")");
+				mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"huds (user_id) VALUES ("+id+")");
 			} else {
 				if(huds.get(1).get(0) != null)
 				{
@@ -168,17 +168,17 @@ public class PlayerProfile
 					hud = LoadProperties.defaulthud;
 				}
 			}
-			HashMap<Integer, ArrayList<String>> users = mcMMO.database.Read("SELECT lastlogin, party FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = " + id);
+			HashMap<Integer, ArrayList<String>> users = mcMMO.database.read("SELECT lastlogin, party FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = " + id);
 				//lastlogin = Integer.parseInt(users.get(1).get(0));
 				party = users.get(1).get(1);				
-			HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.Read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM "+LoadProperties.MySQLtablePrefix+"cooldowns WHERE user_id = " + id);
+			HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM "+LoadProperties.MySQLtablePrefix+"cooldowns WHERE user_id = " + id);
 			/*
 			 * I'm still learning MySQL, this is a fix for adding a new table
 			 * its not pretty but it works
 			 */
 			if(cooldowns.get(1) == null)
 			{
-				mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"cooldowns (user_id) VALUES ("+id+")");
+				mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"cooldowns (user_id) VALUES ("+id+")");
 			}
 			else
 			{
@@ -191,7 +191,7 @@ public class PlayerProfile
 				skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(cooldowns.get(1).get(6)));
 				skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(cooldowns.get(1).get(7)));
 			}
-			HashMap<Integer, ArrayList<String>> stats = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
+			HashMap<Integer, ArrayList<String>> stats = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+LoadProperties.MySQLtablePrefix+"skills WHERE user_id = " + id);
 				skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
 				skills.put(SkillType.MINING, Integer.valueOf(stats.get(1).get(1)));
 				skills.put(SkillType.REPAIR, Integer.valueOf(stats.get(1).get(2)));
@@ -204,7 +204,7 @@ public class PlayerProfile
 				skills.put(SkillType.AXES, Integer.valueOf(stats.get(1).get(9)));
 				skills.put(SkillType.ACROBATICS, Integer.valueOf(stats.get(1).get(10)));
 				skills.put(SkillType.FISHING, Integer.valueOf(stats.get(1).get(11)));
-			HashMap<Integer, ArrayList<String>> experience = mcMMO.database.Read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+LoadProperties.MySQLtablePrefix+"experience WHERE user_id = " + id);
+			HashMap<Integer, ArrayList<String>> experience = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+LoadProperties.MySQLtablePrefix+"experience WHERE user_id = " + id);
 				skillsXp.put(SkillType.TAMING, Integer.valueOf(experience.get(1).get(0)));
 				skillsXp.put(SkillType.MINING, Integer.valueOf(experience.get(1).get(1)));
 				skillsXp.put(SkillType.REPAIR, Integer.valueOf(experience.get(1).get(2)));
@@ -226,11 +226,11 @@ public class PlayerProfile
 	}
 	public void addMySQLPlayer() {
 		Integer id = 0;
-		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
-		id = mcMMO.database.GetInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
-		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"cooldowns (user_id) VALUES ("+id+")");
-		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills (user_id) VALUES ("+id+")");
-		mcMMO.database.Write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")");
+		mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
+		id = mcMMO.database.getInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
+		mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"cooldowns (user_id) VALUES ("+id+")");
+		mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"skills (user_id) VALUES ("+id+")");
+		mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")");
 		this.userid = id;
 	}
 	
@@ -345,11 +345,11 @@ public class PlayerProfile
     	// if we are using mysql save to database
     	if (LoadProperties.useMySQL) 
     	{
-    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"huds SET "
+    		mcMMO.database.write("UPDATE "+LoadProperties.MySQLtablePrefix+"huds SET "
     				+" hudtype = '"+hud.toString()+"' WHERE user_id = "+this.userid);
-    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
-    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
-    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"cooldowns SET "
+    		mcMMO.database.write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
+    		mcMMO.database.write("UPDATE "+LoadProperties.MySQLtablePrefix+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
+    		mcMMO.database.write("UPDATE "+LoadProperties.MySQLtablePrefix+"cooldowns SET "
     				+" mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
     				+", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
     				+", unarmed = " + skillsDATS.get(AbilityType.BERSERK)
@@ -359,7 +359,7 @@ public class PlayerProfile
     				+", axes = " + skillsDATS.get(AbilityType.SKULL_SPLIITER)
     				+", blast_mining = " + skillsDATS.get(AbilityType.BLAST_MINING)
     				+" WHERE user_id = "+this.userid);
-    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
+    		mcMMO.database.write("UPDATE "+LoadProperties.MySQLtablePrefix+"skills SET "
     				+"  taming = "+skills.get(SkillType.TAMING)
     				+", mining = "+skills.get(SkillType.MINING)
     				+", repair = "+skills.get(SkillType.REPAIR)
@@ -373,7 +373,7 @@ public class PlayerProfile
     				+", acrobatics = "+skills.get(SkillType.ACROBATICS)
     				+", fishing = "+skills.get(SkillType.FISHING)
     				+" WHERE user_id = "+this.userid);
-    		mcMMO.database.Write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET "
+    		mcMMO.database.write("UPDATE "+LoadProperties.MySQLtablePrefix+"experience SET "
     				+"  taming = "+skillsXp.get(SkillType.TAMING)
     				+", mining = "+skillsXp.get(SkillType.MINING)
     				+", repair = "+skillsXp.get(SkillType.REPAIR)

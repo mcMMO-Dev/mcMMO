@@ -493,18 +493,18 @@ public class m
 							fishingXP = character[35];
 
 						//Check to see if the user is in the DB
-						id = mcMMO.database.GetInt("SELECT id FROM "
+						id = mcMMO.database.getInt("SELECT id FROM "
 								+ LoadProperties.MySQLtablePrefix
 								+ "users WHERE user = '" + playerName + "'");
 
 						if (id > 0) {
 							theCount++;
 							//Update the skill values
-							mcMMO.database.Write("UPDATE "
+							mcMMO.database.write("UPDATE "
 									+ LoadProperties.MySQLtablePrefix
 									+ "users SET lastlogin = " + 0
 									+ " WHERE id = " + id);
-							mcMMO.database.Write("UPDATE "
+							mcMMO.database.write("UPDATE "
 									+ LoadProperties.MySQLtablePrefix
 									+ "skills SET " + "  taming = taming+"
 									+ getInt(taming) + ", mining = mining+"
@@ -524,7 +524,7 @@ public class m
 									+ getInt(acrobatics)
 									+ ", fishing = fishing+" + getInt(fishing)
 									+ " WHERE user_id = " + id);
-							mcMMO.database.Write("UPDATE "
+							mcMMO.database.write("UPDATE "
 									+ LoadProperties.MySQLtablePrefix
 									+ "experience SET " + "  taming = "
 									+ getInt(tamingXP) + ", mining = "
@@ -543,33 +543,33 @@ public class m
 						} else {
 							theCount++;
 							//Create the user in the DB
-							mcMMO.database.Write("INSERT INTO "
+							mcMMO.database.write("INSERT INTO "
 									+ LoadProperties.MySQLtablePrefix
 									+ "users (user, lastlogin) VALUES ('"
 									+ playerName + "',"
 									+ System.currentTimeMillis() / 1000 + ")");
 							id = mcMMO.database
-									.GetInt("SELECT id FROM "
+									.getInt("SELECT id FROM "
 											+ LoadProperties.MySQLtablePrefix
 											+ "users WHERE user = '"
 											+ playerName + "'");
-							mcMMO.database.Write("INSERT INTO "
+							mcMMO.database.write("INSERT INTO "
 									+ LoadProperties.MySQLtablePrefix
 									+ "skills (user_id) VALUES (" + id + ")");
-							mcMMO.database.Write("INSERT INTO "
+							mcMMO.database.write("INSERT INTO "
 									+ LoadProperties.MySQLtablePrefix
 									+ "experience (user_id) VALUES (" + id
 									+ ")");
 							//Update the skill values
-							mcMMO.database.Write("UPDATE "
+							mcMMO.database.write("UPDATE "
 									+ LoadProperties.MySQLtablePrefix
 									+ "users SET lastlogin = " + 0
 									+ " WHERE id = " + id);
-							mcMMO.database.Write("UPDATE "
+							mcMMO.database.write("UPDATE "
 									+ LoadProperties.MySQLtablePrefix
 									+ "users SET party = '" + party
 									+ "' WHERE id = " + id);
-							mcMMO.database.Write("UPDATE "
+							mcMMO.database.write("UPDATE "
 									+ LoadProperties.MySQLtablePrefix
 									+ "skills SET " + "  taming = "
 									+ getInt(taming) + ", mining = "
@@ -585,7 +585,7 @@ public class m
 									+ getInt(acrobatics) + ", fishing = "
 									+ getInt(fishing) + " WHERE user_id = "
 									+ id);
-							mcMMO.database.Write("UPDATE "
+							mcMMO.database.write("UPDATE "
 									+ LoadProperties.MySQLtablePrefix
 									+ "experience SET " + "  taming = "
 									+ getInt(tamingXP) + ", mining = "
