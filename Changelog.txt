@@ -11,6 +11,7 @@ Version 2.0.00-dev
  + Added Ocelots to Taming XP tables
  + Added ability to summon Ocelots with Call of the Wild
  + Added offline user functionality to mmoedit
+ + Added bookshelves to list of blocks that don't trigger abilities.
  = Fixed ClassCastException from Taming preventDamage checks
  = Fixed issue with Blast Mining not seeing TNT for detonation due to snow
  ! Changed Call of the Wild to activate on left-click rather than right-click

@@ -218,6 +218,7 @@ public class m
 		switch(block.getType()){
 		case BED_BLOCK:
 		case BREWING_STAND:
+		case BOOKSHELF:
 		case BURNING_FURNACE:
 		case CAKE_BLOCK:
 		case CHEST:
