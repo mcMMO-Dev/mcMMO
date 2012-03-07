@@ -62,8 +62,7 @@ public class Leaderboard {
             String line = "";
             ArrayList<String> players = new ArrayList<String>();
 
-            while (in.readLine() != null) {
-                line = in.readLine();
+            while ((line = in.readLine()) != null) {
                 String[] character = line.split(":");
                 String p = character[0];
                 int powerLevel = 0;
