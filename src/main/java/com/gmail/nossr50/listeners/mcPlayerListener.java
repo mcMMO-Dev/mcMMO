@@ -255,9 +255,9 @@ public class mcPlayerListener implements Listener
 		 * ITEM CHECKS
 		 */
 		if(action == Action.RIGHT_CLICK_AIR)
-			Item.itemchecks(player, plugin);
+			Item.itemchecks(player);
 		if(action == Action.RIGHT_CLICK_BLOCK && m.abilityBlockCheck(block))
-			Item.itemchecks(player, plugin);
+			Item.itemchecks(player);
 		
 		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK))
 		{
