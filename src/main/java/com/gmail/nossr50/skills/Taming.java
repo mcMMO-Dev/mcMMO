@@ -104,14 +104,7 @@ public class Taming
 	{
 		DamageCause cause = event.getCause();
 		Wolf wolf = (Wolf) event.getEntity();
-        Player master;
-        if ( wolf.getOwner() instanceof Player ) {
-		    master = (Player) wolf.getOwner();
-        }
-        else {
-            OfflinePlayer oMaster = (OfflinePlayer) wolf.getOwner();
-            master = (Player) oMaster.getPlayer();
-        }
+        Player master = (Player) wolf.getOwner();
 		int skillLevel = Users.getProfile(master).getSkillLevel(SkillType.TAMING);
 		
 		switch(cause)

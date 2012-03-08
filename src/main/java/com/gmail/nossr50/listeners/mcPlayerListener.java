@@ -156,7 +156,13 @@ public class mcPlayerListener implements Listener
 		Action action = event.getAction();
 		Block block = event.getClickedBlock();
 		ItemStack is = player.getItemInHand();
-		Material mat = block.getType();
+		Material mat;
+        if (block.equals(null)) {
+            mat = Material.AIR;
+        }
+        else {
+            mat = block.getType();
+        }
 		
 		/*
 		 * Ability checks
