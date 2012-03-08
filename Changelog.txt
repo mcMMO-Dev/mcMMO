@@ -14,9 +14,11 @@ Version 2.0.00-dev
  + Added bookshelves to list of blocks that don't trigger abilities.
  = Fixed ClassCastException from Taming preventDamage checks
  = Fixed issue with Blast Mining not seeing TNT for detonation due to snow
+ = Fixed issue with block interaction returning NPEs
+ = Fixed issue where every block broken had a mining check applied
+ = Fixed issue where blocks weren't being removed from the watchlist
  ! Changed Call of the Wild to activate on left-click rather than right-click
  ! Changed Blast Mining to track based on Entity ID vs. Location
- = Attempted fix of block interaction returning NPE's
 
 Version 1.3.02
  + Added in game guides for Mining, Excavation, and Acrobatics. Simply type /skillname ? to access them
