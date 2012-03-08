@@ -313,16 +313,19 @@ public class mcMMO extends JavaPlugin {
     public void onDisable() {
 
         //Make sure to save player information if the server shuts down
-        for(Player x : Bukkit.getOnlinePlayers()) {
+        for (Player x : Bukkit.getOnlinePlayers()) {
             Users.getProfile(x).save();
         }
-        
+
         Bukkit.getServer().getScheduler().cancelTasks(this); //This removes our tasks
-        
         System.out.println("mcMMO was disabled."); //How informative!
     }
-    
+
+    /**
+     * Register the commands.
+     */
     private void registerCommands() {
+
         //Register aliases with the aliasmap (used in the playercommandpreprocessevent to ugly alias them to actual commands)
         //Skills commands
         aliasMap.put(mcLocale.getString("m.SkillAcrobatics").toLowerCase(), "acrobatics");
@@ -337,8 +340,7 @@ public class mcMMO extends JavaPlugin {
         aliasMap.put(mcLocale.getString("m.SkillTaming").toLowerCase(), "taming");
         aliasMap.put(mcLocale.getString("m.SkillUnarmed").toLowerCase(), "unarmed");
         aliasMap.put(mcLocale.getString("m.SkillWoodCutting").toLowerCase(), "woodcutting");
-        
-        
+
         //Register commands
         //Skills commands
         getCommand("acrobatics").setExecutor(new AcrobaticsCommand());
@@ -353,129 +355,224 @@ public class mcMMO extends JavaPlugin {
         getCommand("taming").setExecutor(new TamingCommand());
         getCommand("unarmed").setExecutor(new UnarmedCommand());
         getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
-        
-        //Mc* commands
-        if(LoadProperties.mcremoveEnable) getCommand("mcremove").setExecutor(new McremoveCommand());
-        if(LoadProperties.mcabilityEnable) getCommand("mcability").setExecutor(new McabilityCommand());
-        if(LoadProperties.mccEnable) getCommand("mcc").setExecutor(new MccCommand());
-        if(LoadProperties.mcgodEnable) getCommand("mcgod").setExecutor(new McgodCommand());
-        if(LoadProperties.mcmmoEnable) getCommand("mcmmo").setExecutor(new McmmoCommand());
-        if(LoadProperties.mcrefreshEnable) getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
-        if(LoadProperties.mctopEnable) getCommand("mctop").setExecutor(new MctopCommand());
-        
+
+        //mc* commands
+        if (LoadProperties.mcremoveEnable) {
+            getCommand("mcremove").setExecutor(new McremoveCommand());
+        }
+
+        if (LoadProperties.mcabilityEnable) {
+            getCommand("mcability").setExecutor(new McabilityCommand());
+        }
+
+        if (LoadProperties.mccEnable) {
+            getCommand("mcc").setExecutor(new MccCommand());
+        }
+
+        if (LoadProperties.mcgodEnable) {
+            getCommand("mcgod").setExecutor(new McgodCommand());
+        }
+
+        if (LoadProperties.mcmmoEnable) {
+            getCommand("mcmmo").setExecutor(new McmmoCommand());
+        }
+
+        if (LoadProperties.mcrefreshEnable) {
+            getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
+        }
+
+        if (LoadProperties.mctopEnable) {
+            getCommand("mctop").setExecutor(new MctopCommand());
+        }
+
+        if (LoadProperties.mcstatsEnable) {
+            getCommand("mcstats").setExecutor(new McstatsCommand());
+        }
+
         //Party commands
-        if(LoadProperties.acceptEnable) getCommand("accept").setExecutor(new AcceptCommand());
-        if(LoadProperties.aEnable) getCommand("a").setExecutor(new ACommand());
-        if(LoadProperties.inviteEnable) getCommand("invite").setExecutor(new InviteCommand(this));
-        if(LoadProperties.partyEnable) getCommand("party").setExecutor(new PartyCommand());
-        if(LoadProperties.pEnable) getCommand("p").setExecutor(new PCommand());
-        if(LoadProperties.ptpEnable) getCommand("ptp").setExecutor(new PtpCommand(this));
-        
+        if (LoadProperties.acceptEnable) {
+            getCommand("accept").setExecutor(new AcceptCommand());
+        }
+
+        if (LoadProperties.aEnable) {
+            getCommand("a").setExecutor(new ACommand());
+        }
+
+        if (LoadProperties.inviteEnable) {
+            getCommand("invite").setExecutor(new InviteCommand(this));
+        }
+
+        if (LoadProperties.partyEnable) {
+            getCommand("party").setExecutor(new PartyCommand());
+        }
+
+        if (LoadProperties.pEnable) {
+            getCommand("p").setExecutor(new PCommand());
+        }
+
+        if (LoadProperties.ptpEnable) {
+            getCommand("ptp").setExecutor(new PtpCommand(this));
+        }
+
         //Other commands
-        if(LoadProperties.addxpEnable) getCommand("addxp").setExecutor(new AddxpCommand(this));
-        if(LoadProperties.addlevelsEnable) getCommand("addlevels").setExecutor(new AddlevelsCommand(this));
-        if(LoadProperties.mmoeditEnable) getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
+        if (LoadProperties.addxpEnable) {
+            getCommand("addxp").setExecutor(new AddxpCommand(this));
+        }
+
+        if (LoadProperties.addlevelsEnable) {
+            getCommand("addlevels").setExecutor(new AddlevelsCommand(this));
+        }
+
+        if (LoadProperties.mmoeditEnable) {
+            getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
+        }
+
+        if (LoadProperties.inspectEnable) {
+            getCommand("inspect").setExecutor(new InspectCommand(this));
+        }
+
+        if (LoadProperties.xprateEnable) {
+            getCommand("xprate").setExecutor(new XprateCommand());
+        }
+
         getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
-        if(LoadProperties.mcstatsEnable) getCommand("mcstats").setExecutor(new McstatsCommand());
-        if(LoadProperties.inspectEnable) getCommand("inspect").setExecutor(new InspectCommand(this));
-        if(LoadProperties.xprateEnable) getCommand("xprate").setExecutor(new XprateCommand());
-        
+
         //Spout commands
+        if (LoadProperties.xplockEnable) {
+            getCommand("xplock").setExecutor(new XplockCommand());
+        }
+
         getCommand("mchud").setExecutor(new MchudCommand());
-        if(LoadProperties.xplockEnable) getCommand("xplock").setExecutor(new XplockCommand());
-        
     }
 
-    /*
+    /**
+     * Update mcMMO from a given version
+     * </p>
      * It is important to always assume that you are updating from the lowest possible version.
      * Thus, every block of updater code should be complete and self-contained; finishing all 
      * SQL transactions and closing all file handlers, such that the next block of updater code
      * if called will handle updating as expected.
+     *
+     * @param age Specifies which updater code to run
      */
     public void updateFrom(int age) {
+
         //No updater code needed, just update the version.
-        if(age == -1) {
+        if (age == -1) {
             updateVersion();
             return;
         }
+
         //Updater code from age 1 goes here
-        if(age <= 1) {
+        if (age <= 1) {
             //Since age 1 is an example for now, we will just let it do nothing.
-            
         }
+
         //If we are updating from age 1 but we need more to reach age 2, this will run too.
-        if(age <= 2) {
-            
+        if (age <= 2) {
+
         }
         updateVersion();
     }
-    
+
+    /**
+     * Update the version file.
+     */
     public void updateVersion() {
         try {
             versionFile.createNewFile();
             BufferedWriter vout = new BufferedWriter(new FileWriter(versionFile));
             vout.write(this.getDescription().getVersion());
             vout.close();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             ex.printStackTrace();
-        } catch (SecurityException ex) {
+        }
+        catch (SecurityException ex) {
             ex.printStackTrace();
         }
     }
 
+    /**
+     * Get the current mcMMO version.
+     *
+     * @return a String representing the current mcMMO version
+     */
     public String readVersion() {
         byte[] buffer = new byte[(int) versionFile.length()];
         BufferedInputStream f = null;
+
         try {
             f = new BufferedInputStream(new FileInputStream(versionFile));
             f.read(buffer);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (f != null) try { f.close(); } catch (IOException ignored) { }
         }
-        
+        catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            if (f != null) {
+                try {
+                    f.close();
+                    }
+                catch (IOException ignored) {}
+            }
+        }
         return new String(buffer);
     }
-    
+
     /*
      * Boilerplate Custom Config Stuff
      */
-    
+
     private FileConfiguration treasuresConfig = null;
     private File treasuresConfigFile = null;
-    
+
+    /**
+     * Reload the Treasures.yml file.
+     */
     public void reloadTreasuresConfig() {
         if (treasuresConfigFile == null) {
-        treasuresConfigFile = new File(getDataFolder(), "treasures.yml");
+            treasuresConfigFile = new File(getDataFolder(), "treasures.yml");
         }
+
         treasuresConfig = YamlConfiguration.loadConfiguration(treasuresConfigFile);
-     
-        // Look for defaults in the jar
-        InputStream defConfigStream = getResource("treasures.yml");
+        InputStream defConfigStream = getResource("treasures.yml"); // Look for defaults in the jar
+
         if (defConfigStream != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
             treasuresConfig.setDefaults(defConfig);
         }
     }
-    
+
+    /**
+     * Get the Treasures config information.
+     *
+     * @return the configuration object for treasures.yml
+     */
     public FileConfiguration getTreasuresConfig() {
         if (treasuresConfig == null) {
             reloadTreasuresConfig();
         }
+
         return treasuresConfig;
     }
-    
+
+    /**
+     * Save the Treasures config informtion.
+     */
     public void saveTreasuresConfig() {
         if (treasuresConfig == null || treasuresConfigFile == null) {
-        return;
+            return;
         }
+
         try {
             treasuresConfig.save(treasuresConfigFile);
-        } catch (IOException ex) {
-            Logger.getLogger(JavaPlugin.class.getName()).log(Level.SEVERE, "Could not save config to " + treasuresConfigFile, ex);
+        }
+        catch (IOException ex) {
+            log.log(Level.SEVERE, "Could not save config to " + treasuresConfigFile, ex);
         }
     }
 }
