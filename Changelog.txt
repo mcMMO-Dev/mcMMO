@@ -16,6 +16,7 @@ Version 2.0.00-dev
  = Fixed issue with Blast Mining not seeing TNT for detonation due to snow
  = Fixed issue with block interaction returning NPEs
  = Fixed issue where every block broken had a mining check applied
+ = Fixed issue where every block broken had a herbalism check applied
  = Fixed issue where blocks weren't being removed from the watchlist
  ! Changed Call of the Wild to activate on left-click rather than right-click
  ! Changed Blast Mining to track based on Entity ID vs. Location

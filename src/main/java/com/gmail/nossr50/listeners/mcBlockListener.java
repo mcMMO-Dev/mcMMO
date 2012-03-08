@@ -115,7 +115,7 @@ public class mcBlockListener implements Listener {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 
-        if (mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 5) {
+        if (mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 0x5 && Herbalism.canBeGreenTerra(block)) {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 
@@ -153,8 +153,7 @@ public class mcBlockListener implements Listener {
          * EXCAVATION
          */
 
-        if (Excavation.canBeGigaDrillBroken(block) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 0x5)
-        {
+        if (Excavation.canBeGigaDrillBroken(block) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 0x5) {
             if(LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand)) {
                 Excavation.excavationProcCheck(block, player);
             }
