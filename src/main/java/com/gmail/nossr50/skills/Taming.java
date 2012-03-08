@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -103,7 +104,14 @@ public class Taming
 	{
 		DamageCause cause = event.getCause();
 		Wolf wolf = (Wolf) event.getEntity();
-		Player master = (Player) wolf.getOwner();
+        Player master;
+        if ( wolf.getOwner() instanceof Player ) {
+		    master = (Player) wolf.getOwner();
+        }
+        else {
+            OfflinePlayer oMaster = (OfflinePlayer) wolf.getOwner();
+            master = (Player) oMaster.getPlayer();
+        }
 		int skillLevel = Users.getProfile(master).getSkillLevel(SkillType.TAMING);
 		
 		switch(cause)
