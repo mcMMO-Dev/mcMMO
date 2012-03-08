@@ -158,7 +158,7 @@ public class mcPlayerListener implements Listener
 		Block block = event.getClickedBlock();
 		ItemStack is = player.getItemInHand();
 		Material mat;
-        if (block.equals(null)) {
+        if (block == null) {
             mat = Material.AIR;
         }
         else {
