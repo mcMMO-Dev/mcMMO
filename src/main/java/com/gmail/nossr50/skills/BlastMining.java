@@ -10,8 +10,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 
+import com.gmail.nossr50.BlockChecks;
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.SkillType;
 
@@ -89,7 +89,7 @@ public class BlastMining{
 		while(iterator.hasNext())
 		{
 			Block temp = iterator.next();
-			if(m.isOre(temp))
+			if(BlockChecks.isOre(temp.getType()))
 				ores.add(temp);
 			else
 				debris.add(temp);

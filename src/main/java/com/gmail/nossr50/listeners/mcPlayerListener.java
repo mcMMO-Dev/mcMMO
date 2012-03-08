@@ -28,6 +28,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.BlockChecks;
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Item;
 import com.gmail.nossr50.ItemChecks;
@@ -177,7 +178,7 @@ public class mcPlayerListener implements Listener
 				player.updateInventory();
 			}
 
-			if(LoadProperties.enableAbilities && m.abilityBlockCheck(mat))
+			if(LoadProperties.enableAbilities && BlockChecks.abilityBlockCheck(mat))
 			{
 				if(block != null && ItemChecks.isHoe(is) && !mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL))
 					Skills.activationCheck(player, SkillType.HERBALISM);
@@ -247,7 +248,7 @@ public class mcPlayerListener implements Listener
 		 */
 		if(action == Action.RIGHT_CLICK_AIR)
 			Item.itemchecks(player);
-		if(action == Action.RIGHT_CLICK_BLOCK && m.abilityBlockCheck(mat))
+		if(action == Action.RIGHT_CLICK_BLOCK && BlockChecks.abilityBlockCheck(mat))
 			Item.itemchecks(player);
 		
 		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK))

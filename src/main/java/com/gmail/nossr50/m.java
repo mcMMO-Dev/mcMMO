@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -74,54 +73,6 @@ public class m {
     }
 
     /**
-     * Checks to see if a block type awards XP.
-     *
-     * @param material Block type to check
-     * @return true if the block type awards XP, false otherwise
-     */
-    public static boolean shouldBeWatched(Material material) {
-        switch (material) {
-        case BROWN_MUSHROOM:
-        case CACTUS:
-        case CLAY:
-        case COAL_ORE:
-        case DIAMOND_ORE:
-        case DIRT:
-        case ENDER_STONE:
-        case GLOWING_REDSTONE_ORE:
-        case GLOWSTONE:
-        case GOLD_ORE:
-        case GRASS:
-        case GRAVEL:
-        case IRON_ORE:
-        case JACK_O_LANTERN:
-        case LAPIS_ORE:
-        case LOG:
-        case MELON_BLOCK:
-        case MOSSY_COBBLESTONE:
-        case MYCEL:
-        case NETHERRACK:
-        case OBSIDIAN:
-        case PUMPKIN:
-        case RED_MUSHROOM:
-        case RED_ROSE:
-        case REDSTONE_ORE:
-        case SAND:
-        case SANDSTONE:
-        case SOUL_SAND:
-        case STONE:
-        case SUGAR_CANE_BLOCK:
-        case VINE:
-        case WATER_LILY:
-        case YELLOW_FLOWER:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
      * Gets the power level of a player.
      *
      * @param player The player to get the power level of
@@ -173,199 +124,282 @@ public class m {
      * @param inHand The item to check the tier of
      * @return the tier of the item
      */
-    public static Integer getTier(ItemStack inHand)
-    {
-        if(Repair.isWoodTools(inHand))
-            return 1;
-        if(Repair.isStoneTools(inHand))
-            return 2;
-        if(Repair.isIronTools(inHand))
-            return 3;
-        if(Repair.isGoldTools(inHand))
-            return 1;
-        if(Repair.isDiamondTools(inHand))
-            return 4;
-        
-        return 1;
+    public static Integer getTier(ItemStack inHand) {
+        int tier = 0;
+
+        if (Repair.isWoodTools(inHand)) {
+            tier = 1;
+        }
+        else if (Repair.isStoneTools(inHand)) {
+            tier = 2;
+        }
+        else if (Repair.isIronTools(inHand)) {
+            tier = 3;
+        }
+        else if(Repair.isGoldTools(inHand)) {
+            tier = 1;
+        }
+        else if(Repair.isDiamondTools(inHand))
+            tier = 4;
+
+        return tier;
     }
-    
+
+    /**
+     * Determine if two locations are near each other.
+     *
+     * @param first The first location
+     * @param second The second location
+     * @param maxDistance The max distance apart
+     * @return true if the distance between <code>first</code> and <code>second</code> is less than <code>maxDistance</code>, false otherwise
+     */
     public static boolean isNear(Location first, Location second, int maxDistance) {
         double relX = first.getX() - second.getX();
         double relY = first.getY() - second.getY();
         double relZ = first.getZ() - second.getZ();
-        double dist = relX * relX + relY * relY + relZ * relZ;
-        
-        if (dist < maxDistance * maxDistance)
+        double dist = (relX * relX) + (relY * relY) + (relZ * relZ);
+
+        if (dist < maxDistance * maxDistance) {
             return true;
-        
-        return false;
-    }
-    
-    public static boolean abilityBlockCheck(Material material)
-    {
-        switch(material){
-        case BED_BLOCK:
-        case BREWING_STAND:
-        case BOOKSHELF:
-        case BURNING_FURNACE:
-        case CAKE_BLOCK:
-        case CHEST:
-        case DISPENSER:
-        case ENCHANTMENT_TABLE:
-        case FENCE_GATE:
-        case FURNACE:
-        case IRON_DOOR_BLOCK:
-        case JUKEBOX:
-        case LEVER:
-        case NOTE_BLOCK:
-        case STONE_BUTTON:
-        case TRAP_DOOR:
-        case WALL_SIGN:
-        case WOODEN_DOOR:
-        case WORKBENCH:
+        }
+        else {
             return false;
         }
-        
-        if(Material.getMaterial(LoadProperties.anvilID).equals(material))
-            return false;
-        
-        return true;
     }
-    
-    public static boolean isInt(String string)
-    {
-        try 
-        {
+
+    /**
+     * Determine if a string represents an Integer
+     *
+     * @param string String to check
+     * @return true if the string is an Integer, false otherwise
+     */
+    public static boolean isInt(String string) {
+        try {
             Integer.parseInt(string);
+            return true;
         }
-        catch(NumberFormatException nFE) 
-        {
+        catch (NumberFormatException nFE) {
             return false;
         }
-        return true;
     }
-    
-    public static void mcDropItems(Location location, ItemStack is, int quantity)
-    {
-        for(int i = 0; i < quantity; i++)
+
+    /**
+     * Drop items at a given location.
+     *
+     * @param location The location to drop the items at
+     * @param is The items to drop
+     * @param quantity The amount of items to drop
+     */
+    public static void mcDropItems(Location location, ItemStack is, int quantity) {
+        for (int i = 0; i < quantity; i++) {
             mcDropItem(location, is);
+        }
     }
-    
-    public static void mcRandomDropItem(Location location, ItemStack is, int chance)
-    {
-        if(Math.random() * 100 < chance)
+
+    /**
+     * Randomly drop an item at a given location.
+     *
+     * @param location The location to drop the items at
+     * @param is The item to drop
+     * @param chance The percentage chance for the item to drop
+     */
+    public static void mcRandomDropItem(Location location, ItemStack is, double chance) {
+        if (Math.random() * 100 < chance) {
             mcDropItem(location, is);
+        }
     }
-    
-    public static void mcRandomDropItems(Location location, ItemStack is, int chance, int quantity)
-    {
-        for(int i = 0; i < quantity; i++)
+
+    /**
+     * Randomly drop items at a given location.
+     *
+     * @param location The location to drop the items at
+     * @param is The item to drop
+     * @param chance The percentage chance for the item to drop
+     * @param quantity The amount of items to drop
+     */
+    public static void mcRandomDropItems(Location location, ItemStack is, int chance, int quantity) {
+        for(int i = 0; i < quantity; i++) {
             mcRandomDropItem(location, is, chance);
+        }
     }
-    
+
+    /**
+     * Drop an item at a given location.
+     *
+     * @param location The location to drop the item at
+     * @param itemStack The item to drop
+     */
     public static void mcDropItem(Location location, ItemStack itemStack) {
+
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
-        
-        location.getWorld().dropItemNaturally(location, itemStack);
+
+        if (event.isCancelled()) {
+            return;
+        }
+        else {
+            location.getWorld().dropItemNaturally(location, itemStack);
+        }
     }
 
-    public static boolean isOre(Block block)
-    {
-        switch (block.getType()) {
-        case COAL_ORE:
-        case DIAMOND_ORE:
-        case GLOWING_REDSTONE_ORE:
-        case GOLD_ORE:
-        case IRON_ORE:
-        case LAPIS_ORE:
-        case REDSTONE_ORE:
-            return true;
-        }
-        return false;
-    }
-    
-    public static void convertToMySQL()
-    {
-        if(!LoadProperties.useMySQL)
+    /**
+     * Convert FlatFile data to MySQL data.
+     */
+    public static void convertToMySQL() {
+        if (!LoadProperties.useMySQL) {
             return;
-        
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), new Runnable(){
+        }
+
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(Bukkit.getPluginManager().getPlugin("mcMMO"), new Runnable() {
             public void run() {
                 String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+
                 try {
+
                     //Open the user file
                     FileReader file = new FileReader(location);
                     BufferedReader in = new BufferedReader(file);
                     String line = "";
-                    String playerName = null, mining = null, party = null, miningXP = null, woodcutting = null, woodCuttingXP = null, repair = null, unarmed = null, herbalism = null, excavation = null, archery = null, swords = null, axes = null, acrobatics = null, repairXP = null, unarmedXP = null, herbalismXP = null, excavationXP = null, archeryXP = null, swordsXP = null, axesXP = null, acrobaticsXP = null, taming = null, tamingXP = null, fishing = null, fishingXP = null;
-                    int id = 0, theCount = 0;
+                    String playerName = null;
+                    String party = null;
+                    String mining = null;
+                    String woodcutting = null;
+                    String repair = null;
+                    String unarmed = null;
+                    String herbalism = null;
+                    String excavation = null;
+                    String archery = null;
+                    String swords = null;
+                    String axes = null;
+                    String acrobatics = null;
+                    String taming = null;
+                    String fishing = null;
+                    String miningXP = null;
+                    String woodCuttingXP = null;
+                    String repairXP = null;
+                    String unarmedXP = null;
+                    String herbalismXP = null;
+                    String excavationXP = null;
+                    String archeryXP = null;
+                    String swordsXP = null;
+                    String axesXP = null;
+                    String acrobaticsXP = null;
+                    String tamingXP = null;
+                    String fishingXP = null;
+                    int id = 0;
+                    int theCount = 0;
+
                     while ((line = in.readLine()) != null) {
+
                         //Find if the line contains the player we want.
                         String[] character = line.split(":");
                         playerName = character[0];
-                        //Check for things we don't want put in the DB
-                        if (playerName == null
-                                || playerName.equals("null")
-                                || playerName
-                                        .equals("#Storage place for user information"))
-                            continue;
 
-                        //Get Mining
-                        if (character.length > 1)
+                        //Check for things we don't want put in the DB
+                        if (playerName == null || playerName.equals("null") || playerName.equals("#Storage place for user information")) {
+                            continue;
+                        }
+
+                        if (character.length > 1) {
                             mining = character[1];
-                        //Party
-                        if (character.length > 3)
+                        }
+
+                        if (character.length > 3) {
                             party = character[3];
-                        //Mining XP
-                        if (character.length > 4)
+                        }
+
+                        if (character.length > 4) {
                             miningXP = character[4];
-                        if (character.length > 5)
+                        }
+
+                        if (character.length > 5) {
                             woodcutting = character[5];
-                        if (character.length > 6)
+                        }
+
+                        if (character.length > 6) {
                             woodCuttingXP = character[6];
-                        if (character.length > 7)
+                        }
+
+                        if (character.length > 7) {
                             repair = character[7];
-                        if (character.length > 8)
+                        }
+
+                        if (character.length > 8) {
                             unarmed = character[8];
-                        if (character.length > 9)
+                        }
+
+                        if (character.length > 9) {
                             herbalism = character[9];
-                        if (character.length > 10)
+                        }
+
+                        if (character.length > 10) {
                             excavation = character[10];
-                        if (character.length > 11)
+                        }
+
+                        if (character.length > 11) {
                             archery = character[11];
-                        if (character.length > 12)
+                        }
+
+                        if (character.length > 12) {
                             swords = character[12];
-                        if (character.length > 13)
+                        }
+
+                        if (character.length > 13) {
                             axes = character[13];
-                        if (character.length > 14)
+                        }
+
+                        if (character.length > 14) {
                             acrobatics = character[14];
-                        if (character.length > 15)
+                        }
+
+                        if (character.length > 15) {
                             repairXP = character[15];
-                        if (character.length > 16)
+                        }
+
+                        if (character.length > 16) {
                             unarmedXP = character[16];
-                        if (character.length > 17)
+                        }
+
+                        if (character.length > 17) {
                             herbalismXP = character[17];
-                        if (character.length > 18)
+                        }
+
+                        if (character.length > 18) {
                             excavationXP = character[18];
-                        if (character.length > 19)
+                        }
+
+                        if (character.length > 19) {
                             archeryXP = character[19];
-                        if (character.length > 20)
+                        }
+
+                        if (character.length > 20) {
                             swordsXP = character[20];
-                        if (character.length > 21)
+                        }
+
+                        if (character.length > 21) {
                             axesXP = character[21];
-                        if (character.length > 22)
+                        }
+
+                        if (character.length > 22) {
                             acrobaticsXP = character[22];
-                        if (character.length > 24)
+                        }
+
+                        if (character.length > 24) {
                             taming = character[24];
-                        if (character.length > 25)
+                        }
+
+                        if (character.length > 25) {
                             tamingXP = character[25];
-                        if (character.length > 34)
+                        }
+
+                        if (character.length > 34) {
                             fishing = character[34];
-                        if (character.length > 35)
+                        }
+
+                        if (character.length > 35) {
                             fishingXP = character[35];
+                        }
 
                         //Check to see if the user is in the DB
                         id = mcMMO.database.getInt("SELECT id FROM "
@@ -374,6 +408,7 @@ public class m {
 
                         if (id > 0) {
                             theCount++;
+
                             //Update the skill values
                             mcMMO.database.write("UPDATE "
                                     + LoadProperties.MySQLtablePrefix
@@ -415,8 +450,10 @@ public class m {
                                     + getInt(acrobaticsXP) + ", fishing = "
                                     + getInt(fishingXP) + " WHERE user_id = "
                                     + id);
-                        } else {
+                        }
+                        else {
                             theCount++;
+
                             //Create the user in the DB
                             mcMMO.database.write("INSERT INTO "
                                     + LoadProperties.MySQLtablePrefix
@@ -478,14 +515,12 @@ public class m {
                                     + id);
                         }
                     }
-                    System.out
-                            .println("[mcMMO] MySQL Updated from users file, "
-                                    + theCount
-                                    + " items added/updated to MySQL DB");
+
+                    System.out.println("[mcMMO] MySQL Updated from users file, " + theCount + " items added/updated to MySQL DB");
                     in.close();
-                } catch (Exception e) {
-                    log.log(Level.SEVERE, "Exception while reading " + location
-                            + " (Are you sure you formatted it correctly?)", e);
+                }
+                catch (Exception e) {
+                    log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
                 }
             }
         }, 1);

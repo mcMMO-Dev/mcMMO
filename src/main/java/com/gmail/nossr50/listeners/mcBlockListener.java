@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.BlockChecks;
 import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -56,7 +57,7 @@ public class mcBlockListener implements Listener
     	Material mat = block.getType();
     	
     	//Check if the blocks placed should be monitored so they do not give out XP in the future
-    	if(m.shouldBeWatched(mat))
+    	if(BlockChecks.shouldBeWatched(mat))
     	{	
     		//Only needed for blocks that use their block data (wood, pumpkins, etc.)
     	    boolean shouldBeChanged = true;
@@ -171,7 +172,7 @@ public class mcBlockListener implements Listener
     	}
     	
     	//Change the byte back when broken
-    	if(block.getData() == 5 && m.shouldBeWatched(block.getType()))
+    	if(block.getData() == 5 && BlockChecks.shouldBeWatched(block.getType()))
     	{
     		block.setData((byte) 0);
     		if(plugin.misc.blockWatchList.contains(block))
@@ -192,7 +193,7 @@ public class mcBlockListener implements Listener
     	/*
     	 * ABILITY PREPARATION CHECKS
     	 */
-    	if(m.abilityBlockCheck(mat))
+    	if(BlockChecks.abilityBlockCheck(mat))
     	{
 	   		if(PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block))
 	   			Skills.abilityCheck(player, SkillType.HERBALISM);
@@ -300,7 +301,7 @@ public class mcBlockListener implements Listener
     {
         Block blockFrom = event.getBlock();
         Block blockTo = event.getToBlock();
-        if(m.shouldBeWatched(blockFrom.getType()) && blockFrom.getData() == (byte)5)
-        	blockTo.setData((byte)5);
-    }    
+        if(BlockChecks.shouldBeWatched(blockFrom.getType()) && blockFrom.getData() == (byte)5)
+            blockTo.setData((byte)5);
+    }
 }

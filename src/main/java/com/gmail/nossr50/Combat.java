@@ -84,7 +84,7 @@ public class Combat {
             }
             else if (itemInHand.getType().equals(Material.AIR) && mcPermissions.getInstance().unarmed(attacker)) {
                 Unarmed.unarmedBonus(attacker, event);
-                
+
                 if (PPa.getBerserkMode()) {
                     event.setDamage(damage + (damage / 2));
                 }
@@ -187,7 +187,7 @@ public class Combat {
                 else if (Math.random() * 1000 <= (PPd.getSkillLevel(SkillType.UNARMED) / 2)) {
                     deflect = true;
                 }
-                
+
                 if (deflect) {
                     event.setCancelled(true);
                     defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect"));
