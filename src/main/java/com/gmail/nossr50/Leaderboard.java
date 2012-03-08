@@ -239,8 +239,7 @@ public class Leaderboard {
             String line = "";
             String[] info = new String[10]; //what to return
 
-            while (in.readLine() != null && y < 10) {
-                line = in.readLine();
+            while ((line = in.readLine()) != null && y < 10) {
                 x++;
 
                 if (x >= destination && y < 10) {
@@ -279,8 +278,7 @@ public class Leaderboard {
             String line = "";
             Boolean inserted = false;
 
-            while (in.readLine() != null) {
-                line = in.readLine();
+            while ((line = in.readLine()) != null) {
 
                 //Insert the player into the line before it finds a smaller one
                 if (Integer.valueOf(line.split(":")[1]) < ps.statVal && !inserted) {
