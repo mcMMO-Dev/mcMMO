@@ -1103,6 +1103,7 @@ public class PlayerProfile
 			skills.put(skillType, newvalue);
 			skillsXp.put(skillType, 0);
 		}
+		save(); //This will make mctop update for MySQL
 	}
 	
 	public void addLevels(SkillType skillType, int levels)

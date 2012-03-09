@@ -14,6 +14,7 @@ Version 2.0.00-dev
  + Added bookshelves to list of blocks that don't trigger abilities.
  = Fixed ClassCastException from Taming preventDamage checks
  = Fixed issue with Blast Mining not seeing TNT for detonation due to snow
+ ! Changed mmoedit to save a profile when used (this will make mctop update)
  ! Changed Call of the Wild to activate on left-click rather than right-click
  ! Changed Blast Mining to track based on Entity ID vs. Location
 
