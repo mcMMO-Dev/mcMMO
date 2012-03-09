@@ -60,7 +60,21 @@ public class mcBlockListener implements Listener {
         int id = block.getTypeId();
         Material mat = block.getType();
 
-        //Check if the blocks placed should be monitored so they do not give out XP in the future
+        /* Code to prevent issues with placed falling Sand/Gravel not being tracked */
+        if (mat.equals(Material.SAND) || mat.equals(Material.GRAVEL)) {
+            for (int y = -1;  y + block.getY() >= 0 ; y--) {
+                if (block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
+                    continue;
+                }
+                else {
+                    Block newLocation = block.getRelative(0, y+1, 0);
+                    newLocation.setData((byte) 0x5);
+                    break;
+                }
+            }
+        }
+
+        /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(mat)) {
             BlockChecks.watchBlock(mat, block, plugin);
         }

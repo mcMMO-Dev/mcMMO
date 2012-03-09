@@ -37,7 +37,7 @@ public class Item {
             if (Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && amount >= itemsUsed) {
                 player.setItemInHand(new ItemStack(chimaeraID, amount - itemsUsed));
 
-                for (int blockY = block.getY(); blockY < 127; blockY++) {
+                for (int blockY = block.getY(); blockY < player.getWorld().getMaxHeight(); blockY++) {
                     if (player.getLocation().getWorld().getBlockAt(block.getX(), blockY, block.getZ()).getType() != Material.AIR) {
                         player.sendMessage(mcLocale.getString("Item.ChimaeraWingFail"));
                         player.teleport(player.getLocation().getWorld().getBlockAt(block.getX(), (blockY - 1), block.getZ()).getLocation());

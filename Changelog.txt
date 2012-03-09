@@ -23,6 +23,8 @@ Version 2.0.00-dev
  = Fixed exploit where you could use /ptp to teleport to anyone
  = Fixed bug where Green Terra didn't work on Stone Brick
  = Fixed bug where Tree Feller could be used without permissions
+ = Fixed exploit where falling sand & gravel weren't tracked
+ ! Changed Chimera Wing failure check to use the maxWorldHeight.
  ! Changed inspect failed message to say inspect rather than whois
  ! Changed Call of the Wild to activate on left-click rather than right-click
  ! Changed Blast Mining to track based on Entity ID vs. Location
