@@ -34,10 +34,17 @@ public class PtpCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
 			return true;
 		}
+		
+		if(PP.getParty() == null || PP.getParty() == "")
+		{
+		    player.sendMessage(ChatColor.RED+"You are not in a party!");
+		    return true;
+		}
 		if (args.length < 1) {
 			player.sendMessage(ChatColor.RED + "Usage is /ptp <playername>");
 			return true;
 		}
+		
 		if (plugin.getServer().getPlayer(args[0]) == null) {
 			player.sendMessage("That is not a valid player");
 		}
@@ -49,6 +56,8 @@ public class PtpCommand implements CommandExecutor {
 				player.teleport(target);
 				player.sendMessage(ChatColor.GREEN + "You have teleported to " + target.getName());
 				target.sendMessage(ChatColor.GREEN + player.getName() + " has teleported to you.");
+			} else {
+			    player.sendMessage(ChatColor.RED + "That player is in a different party than you.");
 			}
 		}
 
