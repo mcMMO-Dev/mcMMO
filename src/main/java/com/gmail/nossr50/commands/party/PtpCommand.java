@@ -11,6 +11,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.party.Party;
 
 public class PtpCommand implements CommandExecutor {
 	private final mcMMO plugin;
@@ -35,11 +36,12 @@ public class PtpCommand implements CommandExecutor {
 			return true;
 		}
 		
-		if(PP.getParty() == null || PP.getParty() == "")
+		if(Party.getInstance().isParty(PP.getParty()))
 		{
 		    player.sendMessage(ChatColor.RED+"You are not in a party!");
 		    return true;
 		}
+		
 		if (args.length < 1) {
 			player.sendMessage(ChatColor.RED + "Usage is /ptp <playername>");
 			return true;
