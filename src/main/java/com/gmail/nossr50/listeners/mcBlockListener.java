@@ -207,16 +207,16 @@ public class mcBlockListener implements Listener {
             if (PP.getHoePreparationMode() && Herbalism.canBeGreenTerra(block)) {
                 Skills.abilityCheck(player, SkillType.HERBALISM);
             }
-            if (PP.getAxePreparationMode() && mat.equals(Material.LOG) && mcPermissions.getInstance().woodCuttingAbility(player)) {  //Why are we checking the permissions here?
+            else if (PP.getAxePreparationMode() && mat.equals(Material.LOG) && mcPermissions.getInstance().woodCuttingAbility(player)) {  //Why are we checking the permissions here?
                 Skills.abilityCheck(player, SkillType.WOODCUTTING);
             }
-            if (PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block)) {
+            else if (PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block)) {
                 Skills.abilityCheck(player, SkillType.MINING);
             }
-            if (PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block)) {
+            else if (PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block)) {
                 Skills.abilityCheck(player, SkillType.EXCAVATION);
             }
-            if (PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || mat.equals(Material.SNOW))) {
+            else if (PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || mat.equals(Material.SNOW))) {
                 Skills.abilityCheck(player, SkillType.UNARMED);
             }
         }

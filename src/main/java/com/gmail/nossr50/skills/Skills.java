@@ -328,15 +328,14 @@ public class Skills
     	case GIGA_DRILL_BREAKER:
     	case SUPER_BREAKER:
     	case LEAF_BLOWER:
-    		if (!m.blockBreakSimulate(block, player, true)) {
-    			activate = false;
-    			break;
-    		}
     		if (!ability.blockCheck(block)) {
     			activate = false;
     			break;
     		}
+    		break;
+    		
     	default:
+    		activate = false;
     		break;
     	}
     	return activate;
