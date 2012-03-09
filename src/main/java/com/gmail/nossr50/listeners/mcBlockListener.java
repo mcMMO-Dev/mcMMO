@@ -114,9 +114,8 @@ public class mcBlockListener implements Listener {
 
         //Wheat && Triple drops
         if (PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block)) {
-            //Called twice for triple drop functionality
             Herbalism.herbalismProcCheck(block, player, event, plugin);
-            Herbalism.herbalismProcCheck(block, player, event, plugin);
+            Herbalism.herbalismProcCheck(block, player, event, plugin); //Called twice for triple drop functionality
         }
 
         if (mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 0x5 && Herbalism.canBeGreenTerra(block)) {
@@ -152,6 +151,7 @@ public class mcBlockListener implements Listener {
         if (PP.getTreeFellerMode() && mcPermissions.getInstance().woodCuttingAbility(player)) {
             WoodCutting.treeFeller(event, plugin);
         }
+
         /*
          * EXCAVATION
          */
@@ -262,13 +262,19 @@ public class mcBlockListener implements Listener {
             }
         }
     }
-    
+
+    /**
+     * Monitor BlockFromTo events.
+     *
+     * @param event The event to monitor
+     */
     @EventHandler
-    public void onBlockFromTo(BlockFromToEvent event) 
-    {
+    public void onBlockFromTo(BlockFromToEvent event) {
         Block blockFrom = event.getBlock();
         Block blockTo = event.getToBlock();
-        if(BlockChecks.shouldBeWatched(blockFrom.getType()) && blockFrom.getData() == (byte)5)
-            blockTo.setData((byte)5);
+
+        if (BlockChecks.shouldBeWatched(blockFrom.getType()) && blockFrom.getData() == (byte) 5) {
+            blockTo.setData((byte) 5);
+        }
     }
 }
