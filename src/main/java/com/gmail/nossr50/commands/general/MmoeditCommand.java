@@ -33,8 +33,6 @@ public class MmoeditCommand implements CommandExecutor {
 			sender.sendMessage("This command requires permissions.");
 			return true;
 		}
-        
-        PlayerProfile PPt = Users.getOfflineProfile(args[0]);
 
 		if (!(sender instanceof Player)) 
 		{
@@ -44,6 +42,7 @@ public class MmoeditCommand implements CommandExecutor {
 				return true;
 			} else if (args.length == 3)
 			{
+			    PlayerProfile PPt = Users.getOfflineProfile(args[0]);
 			    if(!PPt.isLoaded())
 		        {
 		            sender.sendMessage("Player does not exist in the database!");
@@ -77,6 +76,7 @@ public class MmoeditCommand implements CommandExecutor {
 		}
 		if (args.length == 3) 
 		{
+		    PlayerProfile PPt = Users.getOfflineProfile(args[0]);
 		    if(!PPt.isLoaded())
 	        {
 	            sender.sendMessage("Player does not exist in the database!");
