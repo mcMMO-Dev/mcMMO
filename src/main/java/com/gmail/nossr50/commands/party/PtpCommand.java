@@ -36,7 +36,7 @@ public class PtpCommand implements CommandExecutor {
 			return true;
 		}
 		
-		if(Party.getInstance().isParty(PP.getParty()))
+		if(!Party.getInstance().isParty(PP.getParty()))
 		{
 		    player.sendMessage(ChatColor.RED+"You are not in a party!");
 		    return true;
