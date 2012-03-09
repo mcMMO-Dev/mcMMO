@@ -124,6 +124,10 @@ public class mcPermissions {
     public boolean repair(Player player) {
         return player.hasPermission("mcmmo.skills.repair");
     }
+    
+    public boolean repairArcaneBypass(Player player) {
+        return player.hasPermission(("mcmmo.skills.repair.arcanebypass"));
+    }
 
     public boolean unarmed(Player player) {
         return player.hasPermission("mcmmo.skills.unarmed");

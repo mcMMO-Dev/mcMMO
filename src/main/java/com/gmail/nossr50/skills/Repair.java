@@ -240,7 +240,6 @@ public class Repair {
 			player.sendMessage(mcLocale.getString("Repair.Downgraded"));
 		else
 			player.sendMessage(mcLocale.getString("Repair.ArcanePerfect"));
-
 	}
 	
 	/**
@@ -532,7 +531,7 @@ public class Repair {
 	public static void repairItem(Player player, ItemStack is)
 	{
 		//Handle the enchantments
-		if(LoadProperties.mayLoseEnchants)
+		if(LoadProperties.mayLoseEnchants && !mcPermissions.getInstance().repairArcaneBypass(player))
 			addEnchants(player, is);
 		is.setDurability(getRepairAmount(is, player));
 	}

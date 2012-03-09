@@ -210,6 +210,8 @@ permissions:
         description: Allows access to the Woodcutting skill
     mcmmo.skills.repair:
         description: Allows access to the Repair skill
+    mcmmo.skills.repair.arcanebypass:
+        description: Allows user to bypass Arcane Repair so he will never lose enchantments
     mcmmo.skills.unarmed:
         description: Allows access to the Unarmed skill
     mcmmo.skills.archery:
