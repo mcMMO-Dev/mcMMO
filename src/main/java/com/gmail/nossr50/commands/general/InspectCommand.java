@@ -36,7 +36,7 @@ public class InspectCommand implements CommandExecutor {
         }
         
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.RED + "Proper usage is /whois <playername>");
+            sender.sendMessage(ChatColor.RED + "Proper usage is /inspect <playername>");
             return true;
         }
         
