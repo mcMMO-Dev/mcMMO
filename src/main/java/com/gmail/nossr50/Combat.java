@@ -84,7 +84,7 @@ public class Combat {
             }
             else if (itemInHand.getType().equals(Material.AIR) && mcPermissions.getInstance().unarmed(attacker)) {
                 Unarmed.unarmedBonus(attacker, event);
-                
+
                 if (PPa.getBerserkMode()) {
                     event.setDamage(damage + (damage / 2));
                 }
@@ -99,16 +99,16 @@ public class Combat {
             }
             else if (itemInHand.getType().equals(Material.BONE) && mcPermissions.getInstance().taming(attacker) && targetType.equals(EntityType.WOLF)) {
                 Wolf wolf = (Wolf) target;
-                String message = "Combat.BeastLore" + " ";
+                String message = mcLocale.getString("Combat.BeastLore") + " ";
                 int health = wolf.getHealth();
                 event.setCancelled(true);
 
                 if (wolf.isTamed()) {
-                    message.concat(mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(wolf)}) + " ");
-                    message.concat(mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {health}));
+                    message = message.concat(mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(wolf)}) + " ");
+                    message = message.concat(mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {health}));
                 }
                 else {
-                    message.concat(mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {health}));
+                    message = message.concat(mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {health}));
                 }
 
                 attacker.sendMessage(message);
@@ -187,7 +187,7 @@ public class Combat {
                 else if (Math.random() * 1000 <= (PPd.getSkillLevel(SkillType.UNARMED) / 2)) {
                     deflect = true;
                 }
-                
+
                 if (deflect) {
                     event.setCancelled(true);
                     defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect"));

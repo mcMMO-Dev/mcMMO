@@ -60,8 +60,10 @@ public class mcEntityListener implements Listener
 		{
 			if(!defender.getWorld().getPVP())
 				return;
-			if(Party.getInstance().inSameParty((Player)defender, (Player)attacker))
+			if(Party.getInstance().inSameParty((Player)defender, (Player)attacker)) {
 				event.setCancelled(true);
+				return;
+			}
 		}
 		
 		//Make sure defender is not invincible
@@ -91,8 +93,10 @@ public class mcEntityListener implements Listener
     		 */
     		Player player = (Player) entity;
     		PlayerProfile PP = Users.getProfile(player);
-    		if(PP.getGodMode())
-    			event.setCancelled(true);
+            if(PP.getGodMode()) {
+                event.setCancelled(true);
+                return;
+            }
     		
     		if(!m.isInvincible(player, event))
     		{
