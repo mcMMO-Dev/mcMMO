@@ -22,7 +22,7 @@ public class Herbalism
 	public static void greenTerra(Player player, Block block){
 		PlayerInventory inventory = player.getInventory();
 		boolean hasSeeds = inventory.contains(Material.SEEDS);
-		if(block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT){
+		if(block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT || block.getType() == Material.SMOOTH_BRICK){
 			if(!hasSeeds)
 				player.sendMessage("You need more seeds to spread Green Terra");
 			if(hasSeeds && block.getType() != Material.WHEAT)

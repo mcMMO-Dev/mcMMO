@@ -1,10 +1,15 @@
 package com.gmail.nossr50.datatypes;
 
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.skills.Excavation;
+import com.gmail.nossr50.skills.Herbalism;
+import com.gmail.nossr50.skills.Mining;
 
 public enum AbilityType
 {
@@ -15,7 +20,8 @@ public enum AbilityType
 	SKULL_SPLIITER(LoadProperties.skullSplitterCooldown, mcLocale.getString("Skills.SkullSplitterOn"), mcLocale.getString("Skills.SkullSplitterOff"), "Skills.SkullSplitterPlayer", mcLocale.getString("Skills.YourSkullSplitter"), "Skills.SkullSplitterPlayerOff"),
 	TREE_FELLER(LoadProperties.treeFellerCooldown, mcLocale.getString("Skills.TreeFellerOn"), mcLocale.getString("Skills.TreeFellerOff"), "Skills.TreeFellerPlayer", mcLocale.getString("Skills.YourTreeFeller"), "Skills.TreeFellerPlayerOff"),
 	SERRATED_STRIKES(LoadProperties.skullSplitterCooldown, mcLocale.getString("Skills.SerratedStrikesOn"), mcLocale.getString("Skills.SerratedStrikesOff"), "Skills.SerratedStrikesPlayer", mcLocale.getString("Skills.YourSerratedStrikes"), "Skills.SerratedStrikesPlayerOff"),
-	BLAST_MINING(LoadProperties.blastMiningCooldown, null, null, "Skills.BlastMiningPlayer", mcLocale.getString("Skills.YourBlastMining"), null);
+	BLAST_MINING(LoadProperties.blastMiningCooldown, null, null, "Skills.BlastMiningPlayer", mcLocale.getString("Skills.YourBlastMining"), null),
+	LEAF_BLOWER(0, null, null, null, null, null);
 
 	private int cooldown;
 	private String abilityOn;
@@ -118,10 +124,10 @@ public enum AbilityType
 	{
 		switch(this)
 		{
-		case BLAST_MINING:
-		    return PP.getBlastMiningInformed();
 		case BERSERK:
 			return PP.getBerserkInformed();
+		case BLAST_MINING:
+		    return PP.getBlastMiningInformed();
 		case SUPER_BREAKER:
 			return PP.getSuperBreakerInformed();
 		case GIGA_DRILL_BREAKER:
@@ -142,12 +148,12 @@ public enum AbilityType
 	{
 		switch(this)
 		{
-		case BLAST_MINING:
-		    PP.setBlastMiningInformed(bool);
-		    break;
 		case BERSERK:
 			PP.setBerserkInformed(bool);
 			break;
+		case BLAST_MINING:
+		    PP.setBlastMiningInformed(bool);
+		    break;
 		case SUPER_BREAKER:
 			PP.setSuperBreakerInformed(bool);
 			break;
@@ -175,10 +181,14 @@ public enum AbilityType
 		{
 		case BERSERK:
 			return mcPermissions.getInstance().unarmedAbility(player);
+		case BLAST_MINING:
+		    return mcPermissions.getInstance().blastMining(player);
 		case GIGA_DRILL_BREAKER:
 			return mcPermissions.getInstance().excavationAbility(player);
 		case GREEN_TERRA:
 			return mcPermissions.getInstance().herbalismAbility(player);
+		case LEAF_BLOWER:
+			return mcPermissions.getInstance().woodcutting(player);
 		case SERRATED_STRIKES:
 			return mcPermissions.getInstance().swordsAbility(player);
 		case SKULL_SPLIITER:
@@ -187,9 +197,26 @@ public enum AbilityType
 			return mcPermissions.getInstance().miningAbility(player);
 		case TREE_FELLER:
 			return mcPermissions.getInstance().woodCuttingAbility(player);
-		case BLAST_MINING:
-		    return mcPermissions.getInstance().blastMining(player);
 		}
 		return false;
+	}
+	
+	public boolean blockCheck(Block block) {
+		switch (this) {
+		case BERSERK:
+			return (Excavation.canBeGigaDrillBroken(block) || block.getType().equals(Material.SNOW));
+		case GIGA_DRILL_BREAKER:
+			return Excavation.canBeGigaDrillBroken(block);
+		case GREEN_TERRA:
+			return Herbalism.canBeGreenTerra(block);
+		case LEAF_BLOWER:
+			return block.getType().equals(Material.LEAVES);
+		case SUPER_BREAKER:
+			return Mining.canBeSuperBroken(block);
+		case TREE_FELLER:
+			return block.getType().equals(Material.LOG);
+		default:
+			return false;
+		}
 	}
 }

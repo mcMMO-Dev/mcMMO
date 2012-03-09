@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -304,5 +305,40 @@ public class Skills
     			ability.setMode(PP, true);
     		}
     	}
+    }
+    
+    public static boolean triggerCheck(Player player, Block block, AbilityType ability) {
+    	boolean activate = true;
+    	PlayerProfile PP = Users.getProfile(player);
+    	
+    	if (!ability.getPermissions(player)) {
+    		activate = false;
+    		return activate;
+    	}
+    	
+    	if (!ability.equals(AbilityType.LEAF_BLOWER)) {
+        	if (!ability.getMode(PP)) {
+        		activate = false;
+        		return activate;
+        	}
+    	}
+    	
+    	switch (ability) {
+    	case BERSERK:
+    	case GIGA_DRILL_BREAKER:
+    	case SUPER_BREAKER:
+    	case LEAF_BLOWER:
+    		if (!m.blockBreakSimulate(block, player, true)) {
+    			activate = false;
+    			break;
+    		}
+    		if (!ability.blockCheck(block)) {
+    			activate = false;
+    			break;
+    		}
+    	default:
+    		break;
+    	}
+    	return activate;
     }
 }
