@@ -13,6 +13,7 @@ Version 2.0.00-dev
  + Added offline user functionality to mmoedit
  + Added bookshelves to list of blocks that don't trigger abilities.
  + Added 'mcmmo.skills.repair.arcanebypass' permission node to bypass Arcane Repair and keep your enchantments
+ = Fixed Green Terra not awarding Triple Drops
  = Fixed ClassCastException from Taming preventDamage checks
  = Fixed issue with Blast Mining not seeing TNT for detonation due to snow
  = Fixed issue with block interaction returning NPEs

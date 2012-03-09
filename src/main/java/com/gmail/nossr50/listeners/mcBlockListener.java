@@ -112,6 +112,8 @@ public class mcBlockListener implements Listener {
 
         //Wheat && Triple drops
         if (PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(block)) {
+            //Called twice for triple drop functionality
+            Herbalism.herbalismProcCheck(block, player, event, plugin);
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 
