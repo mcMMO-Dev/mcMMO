@@ -229,10 +229,10 @@ public class mcBlockListener implements Listener {
         /*
          * ABILITY TRIGGER CHECKS
          */
-        if (Skills.triggerCheck(player, block, AbilityType.GREEN_TERRA)) {
+        if (PP.getGreenTerraMode() && Skills.triggerCheck(player, block, AbilityType.GREEN_TERRA)) {
             Herbalism.greenTerra(player, block);
         }
-        if (Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
+        if (PP.getGigaDrillBreakerMode() && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
             if (LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand)) {
                 event.setInstaBreak(true);
                 Excavation.gigaDrillBreaker(player, block);
@@ -242,7 +242,7 @@ public class mcBlockListener implements Listener {
                 Excavation.gigaDrillBreaker(player, block);
             }
         }
-        if (Skills.triggerCheck(player, block, AbilityType.BERSERK)) {
+        if (PP.getBerserkMode() && Skills.triggerCheck(player, block, AbilityType.BERSERK)) {
             if (inhand.getType().equals(Material.AIR)) {
                 PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
                 Bukkit.getPluginManager().callEvent(armswing);
@@ -254,7 +254,7 @@ public class mcBlockListener implements Listener {
                 SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }
-        if (Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
+        if (PP.getSuperBreakerMode() && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
             if (LoadProperties.miningrequirespickaxe && ItemChecks.isMiningPick(inhand)) {
                 event.setInstaBreak(true);
                 Mining.SuperBreakerBlockCheck(player, block, plugin);
@@ -264,14 +264,18 @@ public class mcBlockListener implements Listener {
                 Mining.SuperBreakerBlockCheck(player, block, plugin);
             }
         }
-        if (Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER) && PP.getSkillLevel(SkillType.WOODCUTTING) >= 100) {
+        if (PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 && event.getBlock().getType() == Material.LEAVES) {
             if (LoadProperties.woodcuttingrequiresaxe && ItemChecks.isAxe(inhand)) {
-                event.setInstaBreak(true);
-                WoodCutting.leafBlower(player, block);
+                if(Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
+                    event.setInstaBreak(true);
+                    WoodCutting.leafBlower(player, block);
+                }
             }
             else if (!LoadProperties.woodcuttingrequiresaxe && !inhand.getType().equals(Material.SHEARS)) {
-                event.setInstaBreak(true);
-                WoodCutting.leafBlower(player, block);
+                if(Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
+                    event.setInstaBreak(true);
+                    WoodCutting.leafBlower(player, block);
+                }
             }
         }
     }
