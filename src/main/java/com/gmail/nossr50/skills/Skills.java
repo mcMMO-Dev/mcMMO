@@ -309,18 +309,10 @@ public class Skills
     
     public static boolean triggerCheck(Player player, Block block, AbilityType ability) {
     	boolean activate = true;
-    	PlayerProfile PP = Users.getProfile(player);
     	
     	if (!ability.getPermissions(player)) {
     		activate = false;
     		return activate;
-    	}
-    	
-    	if (!ability.equals(AbilityType.LEAF_BLOWER)) {
-        	if (!ability.getMode(PP)) {
-        		activate = false;
-        		return activate;
-        	}
     	}
     	
     	switch (ability) {
@@ -328,6 +320,10 @@ public class Skills
     	case GIGA_DRILL_BREAKER:
     	case SUPER_BREAKER:
     	case LEAF_BLOWER:
+    		if (!m.blockBreakSimulate(block, player, true)) {
+    			activate = false;
+    			break;
+    		}
     		if (!ability.blockCheck(block)) {
     			activate = false;
     			break;
