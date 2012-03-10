@@ -316,6 +316,7 @@ Commands:
         Enabled: true
     ptp:
         Enabled: true
+        Cooldown: 30
     p:
         Enabled: true
         Display_Names: true

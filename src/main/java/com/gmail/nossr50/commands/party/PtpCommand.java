@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
@@ -42,9 +43,9 @@ public class PtpCommand implements CommandExecutor {
 		    return true;
 		}
 		
-		if(PP.getRecentlyHurt()+(30*1000) > System.currentTimeMillis())
+		if(PP.getRecentlyHurt()+(LoadProperties.ptpCommandCooldown*1000) > System.currentTimeMillis())
 		{
-		    player.sendMessage(ChatColor.RED+"You've been hurt in the last 30 seconds and cannnot teleport.");
+		    player.sendMessage(ChatColor.RED+"You've been hurt in the last " + LoadProperties.ptpCommandCooldown + " seconds and cannnot teleport.");
 		    return true;
 		}
 		

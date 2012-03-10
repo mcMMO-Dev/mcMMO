@@ -47,7 +47,8 @@ public class LoadProperties {
 			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5,
 			repairStoneLevel, repairIronLevel, repairGoldLevel, arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4,
 			detonatorID, fishConsumedByCOTW, dAxe, dHoe, dShovel, dSword, dPickaxe, gAxe, gHoe, gShovel, gSword, gPickaxe,
-            iAxe, iHoe, iShovel, iSword, iPickaxe, wAxe, wHoe, wShovel, wSword, wPickaxe;
+            iAxe, iHoe, iShovel, iSword, iPickaxe, wAxe, wHoe, wShovel, wSword, wPickaxe,
+            ptpCommandCooldown;
 
 	public static double xpbackground_r, xpbackground_g, xpbackground_b,
 			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
@@ -398,6 +399,8 @@ public class LoadProperties {
 		
 		aDisplayNames = readBoolean("Commands.a.Display_Names", true);
 		pDisplayNames = readBoolean("Commands.p.Display_Names", true);
+		
+		ptpCommandCooldown = readInteger("Commands.ptp.Cooldown", 30);
 		
 		animalXP = readDouble("Experience.Combat.Multiplier.Animals", 1.0);
 		creeperXP = readDouble("Experience.Combat.Multiplier.Creeper", 4.0);
