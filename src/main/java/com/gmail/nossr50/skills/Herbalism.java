@@ -106,6 +106,7 @@ public class Herbalism {
         int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
         int id = block.getTypeId();
         Material type = block.getType();
+
         Byte data = block.getData();
         Location loc = block.getLocation();
         Material mat = null;
@@ -208,30 +209,35 @@ public class Herbalism {
             break;
         }
 
-        ItemStack is = new ItemStack(mat);
-
-        if (herbLevel > 1000 || (Math.random() * 1000 <= herbLevel)) {
-            if (type.equals(Material.CACTUS)) {
-                m.mcDropItems(loc, is, catciDrops);
-            }
-            else if (type.equals(Material.MELON_BLOCK)) {
-                m.mcDropItems(loc, is, 3);
-                m.mcRandomDropItems(loc, is, 50, 4);
-            }
-            else if (type.equals(Material.NETHER_WARTS)) {
-                m.mcDropItems(loc, is, 2);
-                m.mcRandomDropItems(loc, is, 50, 3);
-            }
-            else if (type.equals(Material.SUGAR_CANE_BLOCK)) {
-                m.mcDropItems(loc, is, caneDrops);
-            }
-            else {
-                m.mcDropItem(loc, is);
-            }
+        if (mat == null) {
+            return;
         }
+        else {
+            ItemStack is = new ItemStack(mat);
 
-        PP.addXP(SkillType.HERBALISM, xp, player);
-        Skills.XpCheckSkill(SkillType.HERBALISM, player);
+            if (herbLevel > 1000 || (Math.random() * 1000 <= herbLevel)) {
+                if (type.equals(Material.CACTUS)) {
+                    m.mcDropItems(loc, is, catciDrops);
+                }
+                else if (type.equals(Material.MELON_BLOCK)) {
+                    m.mcDropItems(loc, is, 3);
+                    m.mcRandomDropItems(loc, is, 50, 4);
+                }
+                else if (type.equals(Material.NETHER_WARTS)) {
+                    m.mcDropItems(loc, is, 2);
+                    m.mcRandomDropItems(loc, is, 50, 3);
+                }
+                else if (type.equals(Material.SUGAR_CANE_BLOCK)) {
+                    m.mcDropItems(loc, is, caneDrops);
+                }
+                else {
+                    m.mcDropItem(loc, is);
+                }
+            }
+
+            PP.addXP(SkillType.HERBALISM, xp, player);
+            Skills.XpCheckSkill(SkillType.HERBALISM, player);
+        }
     }
 
     /**
