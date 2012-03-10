@@ -208,7 +208,7 @@ public enum AbilityType
 		case GIGA_DRILL_BREAKER:
 			return Excavation.canBeGigaDrillBroken(block);
 		case GREEN_TERRA:
-			return Herbalism.canBeGreenTerra(block);
+			return Herbalism.makeMossy(block.getType());
 		case LEAF_BLOWER:
 			return block.getType().equals(Material.LEAVES);
 		case SUPER_BREAKER:

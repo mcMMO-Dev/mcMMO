@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -17,280 +16,266 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
-public class Herbalism 
-{	
-	public static void greenTerra(Player player, Block block){
-		PlayerInventory inventory = player.getInventory();
-		boolean hasSeeds = inventory.contains(Material.SEEDS);
-		if(block.getType().equals(Material.COBBLESTONE) || block.getType().equals(Material.DIRT) || block.getType().equals(Material.SMOOTH_BRICK)){
-			if(!hasSeeds)
-				player.sendMessage("You need more seeds to spread Green Terra");
-			if(hasSeeds && !block.getType().equals(Material.WHEAT))
-			{
-				inventory.removeItem(new ItemStack(Material.SEEDS, 1));
-				player.updateInventory();
-				if(LoadProperties.enableSmoothToMossy && block.getType().equals(Material.SMOOTH_BRICK))
-					block.setData((byte) 0x1);
-				if(LoadProperties.enableDirtToGrass && block.getType().equals(Material.DIRT))
-					block.setType(Material.GRASS);
-				if(LoadProperties.enableCobbleToMossy && block.getType().equals(Material.COBBLESTONE))
-					block.setType(Material.MOSSY_COBBLESTONE);
-			}
-		}
-	}
-	
-	public static Boolean canBeGreenTerra(Block block){
-    	switch(block.getType()){
-    	case BROWN_MUSHROOM:
-    	case CACTUS:
-    	case COBBLESTONE:
-    	case CROPS:
-    	case DIRT:
-    	case JACK_O_LANTERN:
-    	case MELON_BLOCK:
-    	case PUMPKIN:
-    	case RED_MUSHROOM:
-    	case RED_ROSE:
-    	case SMOOTH_BRICK:
-    	case SUGAR_CANE_BLOCK:
-    	case VINE:
-    	case WATER_LILY:
-    	case YELLOW_FLOWER:
-    		return true;
-    	}
-    	return false;
+public class Herbalism {
+
+    /**
+     * Activate the Green Terra ability.
+     *
+     * @param player The player activating the ability
+     * @param block The block to be changed by Green Terra
+     */
+    public static void greenTerra(Player player, Block block) {
+        PlayerInventory inventory = player.getInventory();
+        boolean hasSeeds = inventory.contains(Material.SEEDS);
+        Material type = block.getType();
+
+        if (!hasSeeds) {
+            player.sendMessage("You need more seeds to spread Green Terra");
+        }
+        else if (hasSeeds && !block.getType().equals(Material.WHEAT)) {
+            inventory.removeItem(new ItemStack(Material.SEEDS, 1));
+            player.updateInventory();
+
+            if (LoadProperties.enableSmoothToMossy && type.equals(Material.SMOOTH_BRICK)) {
+                block.setData((byte) 0x1);
+            }
+            else if (LoadProperties.enableDirtToGrass && type.equals(Material.DIRT)) {
+                block.setType(Material.GRASS);
+            }
+            else if (LoadProperties.enableCobbleToMossy && type.equals(Material.COBBLESTONE)) {
+                block.setType(Material.MOSSY_COBBLESTONE);
+            }
+        }
     }
-	
-	public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin)
-	{
-		final PlayerProfile PP = Users.getProfile(player);
-		int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
-    	int type = block.getTypeId();
-    	Location loc = block.getLocation();
-    	ItemStack is = null;
-    	Material mat = null;
-    	PlayerInventory inventory = player.getInventory();
-    	boolean hasSeeds = inventory.contains(Material.SEEDS);
-    	
-    	if(plugin.misc.blockWatchList.contains(block))
-    	{
-    		return;
-    	}
-    	
-    	//Wheat
-    	if(type == 59 && block.getData() == (byte) 0x7)
-    	{
-			is = new ItemStack(Material.WHEAT, 1);
-    		PP.addXP(SkillType.HERBALISM, LoadProperties.mwheat, player);
-    		
-    		if(player != null)
-    		{
-    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-	    			m.mcDropItem(loc, is);
-    		}
-    		
-    		//GREEN THUMB
-    		if(hasSeeds && PP.getGreenTerraMode() || hasSeeds && (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel)))
-    		{
-    			event.setCancelled(true);
-    			m.mcDropItem(loc, is);
-    			//DROP SOME SEEDS
-    			is = new ItemStack(Material.SEEDS, 1);
-    			m.mcDropItem(loc, is);
-    			
-    			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    public void run() {
-                        block.setType(Material.CROPS);
-                        //This replants the wheat at a certain stage in development based on Herbalism Skill
-                        if(!PP.getGreenTerraMode())
-                        {
-                            if (PP.getSkillLevel(SkillType.HERBALISM) >= 600)
-                                block.setData((byte) 0x4);
-                            else if (PP.getSkillLevel(SkillType.HERBALISM) >= 400)
-                                block.setData((byte) 0x3);
-                            else if (PP.getSkillLevel(SkillType.HERBALISM) >= 200)
-                                block.setData((byte) 0x2);
-                            else
-                                block.setData((byte) 0x1);
-                        } else
-                            block.setData((byte) 0x4);
+
+    /**
+     * Check if a block can be made mossy.
+     *
+     * @param material The type of Block to check
+     * @return true if the block can be made mossy, false otherwise
+     */
+    public static Boolean makeMossy(Material type) {
+        switch (type) {
+        case COBBLESTONE:
+        case DIRT:
+        case SMOOTH_BRICK:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * Check if a block is affected by Herbalism abilities.
+     *
+     * @param type The type of Block to check
+     * @return true if the block is affected, false otherwise
+     */
+    public static Boolean canBeGreenTerra(Material type){
+        switch (type) {
+        case BROWN_MUSHROOM:
+        case CACTUS:
+        case CROPS:
+        case JACK_O_LANTERN:
+        case MELON_BLOCK:
+        case PUMPKIN:
+        case RED_MUSHROOM:
+        case RED_ROSE:
+        case SUGAR_CANE_BLOCK:
+        case VINE:
+        case WATER_LILY:
+        case YELLOW_FLOWER:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * Check for extra Herbalism drops.
+     *
+     * @param block The block to check for extra drops
+     * @param player The player getting extra drops
+     * @param event The event to use for Green Thumb
+     * @param plugin mcMMO plugin instance
+     */
+    public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
+        final PlayerProfile PP = Users.getProfile(player);
+        int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
+        int id = block.getTypeId();
+        Material type = block.getType();
+        Byte data = block.getData();
+        Location loc = block.getLocation();
+        Material mat = null;
+        int xp = 0;
+        int catciDrops = 0;
+        int caneDrops = 0;
+
+        switch (type) {
+        case BROWN_MUSHROOM:
+        case RED_MUSHROOM:
+            if (data != (byte) 0x5) {
+                mat = Material.getMaterial(id);
+                xp = LoadProperties.mmushroom;
+            }
+            break;
+
+        case CACTUS:
+            for (int y = 0;  y <= 2; y++) {
+                Block b = block.getRelative(0, y, 0);
+                if (b.getType().equals(Material.CACTUS)) {
+                    mat = Material.CACTUS;
+                    if (!plugin.misc.blockWatchList.contains(b)) {
+                        if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel)) {
+                            catciDrops++;
+                        }
+                        xp += LoadProperties.mcactus;
                     }
-                }, 1);
-    			
-    			inventory.removeItem(new ItemStack(Material.SEEDS, 1));
-    			player.updateInventory();
-    		}
-    	}
-    	
-    	//Nether Wart
-    	if(type == 115 && block.getData() == (byte) 0x3)
-    	{
-			is = new ItemStack(Material.NETHER_STALK, 1);
-    		PP.addXP(SkillType.HERBALISM, LoadProperties.mnetherwart, player);
-    		if(player != null)
-    		{
-    			if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-	    		{
-	    			m.mcDropItems(loc, is, 2);
-	    			m.mcRandomDropItems(loc, is, 50, 3);
-	    		}
-    		}
-    	}
-    	
-    	/*
-    	 * We need to check not-wheat and not-netherwart stuff for if it was placed by the player or not
-    	 */
-    	if(block.getData() != (byte) 5)
-    	{
-    		//Cactus
-	    	if(type == 81){
-	    		//Setup the loop
-	    		World world = block.getWorld();
-	    		Block[] blockArray = new Block[3];
-	    		blockArray[0] = block;
-	    		blockArray[1] = world.getBlockAt(block.getX(), block.getY()+1, block.getZ());
-	    		blockArray[2] = world.getBlockAt(block.getX(), block.getY()+2, block.getZ());
-	    		
-	    		Material[] materialArray = new Material[3];
-	    		materialArray[0] = blockArray[0].getType();
-	    		materialArray[1] = blockArray[1].getType();
-	    		materialArray[2] = blockArray[2].getType();
-	    		
-	    		byte[] byteArray = new byte[3];
-	    		byteArray[0] = blockArray[0].getData();
-	    		byteArray[1] = blockArray[0].getData();
-	    		byteArray[2] = blockArray[0].getData();
-	    		
-	    		int x = 0;
-	    		for(Block target : blockArray)
-	    		{
-	    			if(materialArray[x] == Material.CACTUS)
-	    			{
-	    				is = new ItemStack(Material.CACTUS, 1);
-	    				if(byteArray[x] != (byte) 5)
-	    				{
-	    					if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-		    		    	{
-		    		    		m.mcDropItem(target.getLocation(), is);
-		    		    	}
-		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.mcactus, player);
-	    				}
-	    			}
-	    			x++;
-	    		}
-	    	}
-    		//Sugar Canes
-	    	if(type == 83)
-	    	{
-	    		//Setup the loop
-	    		World world = block.getWorld();
-	    		Block[] blockArray = new Block[3];
-	    		blockArray[0] = block;
-	    		blockArray[1] = world.getBlockAt(block.getX(), block.getY()+1, block.getZ());
-	    		blockArray[2] = world.getBlockAt(block.getX(), block.getY()+2, block.getZ());
-	    		
-	    		Material[] materialArray = new Material[3];
-	    		materialArray[0] = blockArray[0].getType();
-	    		materialArray[1] = blockArray[1].getType();
-	    		materialArray[2] = blockArray[2].getType();
-	    		
-	    		byte[] byteArray = new byte[3];
-	    		byteArray[0] = blockArray[0].getData();
-	    		byteArray[1] = blockArray[0].getData();
-	    		byteArray[2] = blockArray[0].getData();
-	    		
-	    		int x = 0;
-	    		for(Block target : blockArray)
-	    		{
-	    			if(materialArray[x] == Material.SUGAR_CANE_BLOCK)
-	    			{
-	    				is = new ItemStack(Material.SUGAR_CANE, 1);
-	    				//Check for being placed by the player
-	    				if(byteArray[x] != (byte) 5)
-	    				{
-	    					if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-		    		    	{
-		    		    		m.mcDropItem(target.getLocation(), is);
-		    		    	}
-		    		    	PP.addXP(SkillType.HERBALISM, LoadProperties.msugar, player);
-	    				}
-	    			}
-	    			x++;
-	    		}
-	    	}
-	    	
-    		//Pumpkins
-	    	if((type == 91 || type == 86))
-	    	{
-	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1);
-	    		if(player != null)
-	    		{
-	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-		    		{
-		    			m.mcDropItem(loc, is);
-		    		}
-	    		}
-	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mpumpkin, player);
-	    	}
-	    	//Melon
-	    	if(type == 103)
-	    	{
-				is = new ItemStack(Material.MELON, 1);
-				if(player != null)
-	    		{
-				    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-		    		{
-						m.mcDropItems(loc, is, 3);
-						m.mcRandomDropItems(loc, is, 50, 4);
-		    		}
-	    		}
-				PP.addXP(SkillType.HERBALISM, LoadProperties.mmelon, player);
-	    	}
-    		//Mushroom
-	    	if(type == 39 || type == 40)
-	    	{
-	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1);
-	    		if(player != null)
-	    		{
-	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-		    		{
-		    			m.mcDropItem(loc, is);
-		    		}
-	    		}
-	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mmushroom, player);
-	    	}
-	    	//Flower
-	    	if(type == 37 || type == 38){
-	    		mat = Material.getMaterial(block.getTypeId());
-				is = new ItemStack(mat, 1);
-	    		if(player != null){
-	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-		    			m.mcDropItem(loc, is);
-	    		}
-	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mflower, player);
-	    	}
-	    	//Lily Pads
-	    	if(type == 111)
-	    	{
-				is = new ItemStack(Material.WATER_LILY, 1);
-	    		if(player != null){
-	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-		    			m.mcDropItem(loc, is);
-	    		}
-	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mlilypad, player);
-	    	}
-	    	//Vines
-	    	if(type == 106){
-				is = new ItemStack(Material.VINE, 1, (byte)0, (byte)0);
-	    		if(player != null){
-	    		    if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel))
-		    			m.mcDropItem(loc, is);
-	    		}
-	    		PP.addXP(SkillType.HERBALISM, LoadProperties.mvines, player);
-	    	}
-    	}
-    	Skills.XpCheckSkill(SkillType.HERBALISM, player);
+                }
+            }
+            break;
+
+        case CROPS:
+            if (data == (byte) 0x7) {
+                mat = Material.WHEAT;
+                xp = LoadProperties.mwheat;
+                greenThumb(block, player, event, plugin);
+            }
+            break;
+
+        case MELON_BLOCK:
+            if (data != (byte) 0x5) {
+                mat = Material.MELON;
+                xp = LoadProperties.mmelon;
+            }
+            break;
+
+        case NETHER_WARTS:
+            if (data == (byte) 0x3) {
+                mat = Material.NETHER_STALK;
+                xp = LoadProperties.mnetherwart;
+            }
+            break;
+
+        case PUMPKIN:
+        case JACK_O_LANTERN:
+            if (!plugin.misc.blockWatchList.contains(block)) {
+                mat = Material.getMaterial(id);
+                xp = LoadProperties.mpumpkin;
+            }
+            break;
+
+        case RED_ROSE:
+        case YELLOW_FLOWER:
+            if (!plugin.misc.blockWatchList.contains(block)) {
+                mat = Material.getMaterial(id);
+                xp = LoadProperties.mflower;
+            }
+            break;
+
+        case SUGAR_CANE_BLOCK:
+            for (int y = 0;  y <= 2; y++) {
+                Block b = block.getRelative(0, y, 0);
+                if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
+                    mat = Material.SUGAR_CANE;
+                    if (!plugin.misc.blockWatchList.contains(b)) {
+                        if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel)) {
+                            caneDrops++;
+                        }
+                        xp += LoadProperties.msugar;
+                    }
+                }
+            }
+            break;
+
+        case VINE:
+            if (!plugin.misc.blockWatchList.contains(block)) {
+                mat = type;
+                xp = LoadProperties.mvines;
+            }
+            break;
+
+        case WATER_LILY:
+            if (data != (byte) 0x5) {
+                mat = type;
+                xp = LoadProperties.mlilypad;
+            }
+            break;
+
+        default:
+            break;
+        }
+
+        ItemStack is = new ItemStack(mat);
+
+        if (herbLevel > 1000 || (Math.random() * 1000 <= herbLevel)) {
+            if (type.equals(Material.CACTUS)) {
+                m.mcDropItems(loc, is, catciDrops);
+            }
+            else if (type.equals(Material.MELON_BLOCK)) {
+                m.mcDropItems(loc, is, 3);
+                m.mcRandomDropItems(loc, is, 50, 4);
+            }
+            else if (type.equals(Material.NETHER_WARTS)) {
+                m.mcDropItems(loc, is, 2);
+                m.mcRandomDropItems(loc, is, 50, 3);
+            }
+            else if (type.equals(Material.SUGAR_CANE_BLOCK)) {
+                m.mcDropItems(loc, is, caneDrops);
+            }
+            else {
+                m.mcDropItem(loc, is);
+            }
+        }
+
+        PP.addXP(SkillType.HERBALISM, xp, player);
+        Skills.XpCheckSkill(SkillType.HERBALISM, player);
+    }
+
+    /**
+     * Apply the Green Thumb ability.
+     *
+     * @param block The block to apply the ability to
+     * @param player The player using the ability
+     * @param event The event triggering the ability
+     * @param plugin mcMMO plugin instance
+     */
+    private static void greenThumb(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
+        final PlayerProfile PP = Users.getProfile(player);
+        int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
+        PlayerInventory inventory = player.getInventory();
+        boolean hasSeeds = inventory.contains(Material.SEEDS);
+        Location loc = block.getLocation();
+
+        if (hasSeeds && PP.getGreenTerraMode() || hasSeeds && (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel))) {
+            event.setCancelled(true);
+            m.mcDropItem(loc, new ItemStack(Material.WHEAT, 1));
+            m.mcDropItems(loc, new ItemStack(Material.SEEDS, 1), 3);
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                public void run() {
+                    block.setType(Material.CROPS);
+
+                    //This replants the wheat at a certain stage in development based on Herbalism Skill
+                    if (!PP.getGreenTerraMode()) {
+                        if (PP.getSkillLevel(SkillType.HERBALISM) >= 600)
+                            block.setData((byte) 0x4);
+                        else if (PP.getSkillLevel(SkillType.HERBALISM) >= 400)
+                            block.setData((byte) 0x3);
+                        else if (PP.getSkillLevel(SkillType.HERBALISM) >= 200)
+                            block.setData((byte) 0x2);
+                        else
+                            block.setData((byte) 0x1);
+                    }
+                    else
+                        block.setData((byte) 0x4);
+                }
+            }, 1);
+
+            inventory.removeItem(new ItemStack(Material.SEEDS, 1));
+            player.updateInventory();
+        }
     }
 }

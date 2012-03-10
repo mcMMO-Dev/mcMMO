@@ -324,6 +324,8 @@ public class Skills
     			activate = false;
     			break;
     		}
+
+    	case GREEN_TERRA:
     		if (!ability.blockCheck(block)) {
     			activate = false;
     			break;

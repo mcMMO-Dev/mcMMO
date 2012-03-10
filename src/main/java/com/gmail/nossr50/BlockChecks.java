@@ -147,7 +147,7 @@ public class BlockChecks {
         case RED_ROSE:
         case YELLOW_FLOWER:
         case WATER_LILY:
-            addToChangeQueue = false; //We don't want these added to chaneQueue - they're already being added to the fast queue
+            addToChangeQueue = false; //We don't want these added to changeQueue - they're already being added to the fast queue
             plugin.fastChangeQueue.push(block);
             break;
 
