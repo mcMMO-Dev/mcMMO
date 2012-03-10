@@ -61,6 +61,11 @@ public class PCommand implements CommandExecutor {
 		// Not a toggle, a message
 
 		if (args.length >= 1) {
+			if(!PP.inParty()) {
+				player.sendMessage("You're not in a party."); //TODO: Use mcLocale
+				return true;
+			}
+			
 			String pMessage = args[0];
 			for (int i = 1; i <= args.length - 1; i++) {
 				pMessage = pMessage + " " + args[i];
