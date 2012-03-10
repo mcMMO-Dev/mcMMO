@@ -44,7 +44,7 @@ public class PtpCommand implements CommandExecutor {
 		
 		if(PP.getRecentlyHurt()+(30*1000) > System.currentTimeMillis())
 		{
-		    player.sendMessage("You've been hurt in the last 30 seconds and cannnot teleport.");
+		    player.sendMessage(ChatColor.RED+"You've been hurt in the last 30 seconds and cannnot teleport.");
 		    return true;
 		}
 		
