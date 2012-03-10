@@ -22,18 +22,18 @@ public class Herbalism
 	public static void greenTerra(Player player, Block block){
 		PlayerInventory inventory = player.getInventory();
 		boolean hasSeeds = inventory.contains(Material.SEEDS);
-		if(block.getType() == Material.COBBLESTONE || block.getType() == Material.DIRT || block.getType() == Material.SMOOTH_BRICK){
+		if(block.getType().equals(Material.COBBLESTONE) || block.getType().equals(Material.DIRT) || block.getType().equals(Material.SMOOTH_BRICK)){
 			if(!hasSeeds)
 				player.sendMessage("You need more seeds to spread Green Terra");
-			if(hasSeeds && block.getType() != Material.WHEAT)
+			if(hasSeeds && !block.getType().equals(Material.WHEAT))
 			{
 				inventory.removeItem(new ItemStack(Material.SEEDS, 1));
 				player.updateInventory();
-				if(LoadProperties.enableSmoothToMossy && block.getType() == Material.SMOOTH_BRICK)
-					block.setData((byte)1);
-				if(LoadProperties.enableDirtToGrass && block.getType() == Material.DIRT)
+				if(LoadProperties.enableSmoothToMossy && block.getType().equals(Material.SMOOTH_BRICK))
+					block.setData((byte) 0x1);
+				if(LoadProperties.enableDirtToGrass && block.getType().equals(Material.DIRT))
 					block.setType(Material.GRASS);
-				if(LoadProperties.enableCobbleToMossy && block.getType() == Material.COBBLESTONE)
+				if(LoadProperties.enableCobbleToMossy && block.getType().equals(Material.COBBLESTONE))
 					block.setType(Material.MOSSY_COBBLESTONE);
 			}
 		}

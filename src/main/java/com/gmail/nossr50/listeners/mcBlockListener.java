@@ -229,9 +229,10 @@ public class mcBlockListener implements Listener {
         /*
          * ABILITY TRIGGER CHECKS
          */
-        if (PP.getGreenTerraMode() && Skills.triggerCheck(player, block, AbilityType.GREEN_TERRA)) {
+        if (PP.getGreenTerraMode() && mcPermissions.getInstance().herbalismAbility(player)) {
             Herbalism.greenTerra(player, block);
         }
+
         if (PP.getGigaDrillBreakerMode() && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
             if (LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand)) {
                 event.setInstaBreak(true);
