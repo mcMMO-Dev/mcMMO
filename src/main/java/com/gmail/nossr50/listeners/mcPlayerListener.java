@@ -304,6 +304,12 @@ public class mcPlayerListener implements Listener
 		if(PP.getPartyChatMode())
 		{
 			event.setCancelled(true);
+			
+			if(!PP.inParty()) {
+				player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
+				return;
+			}
+			
 			String name = (LoadProperties.pDisplayNames) ? player.getDisplayName() : player.getName();
 			String format = ChatColor.GREEN + "(" + ChatColor.WHITE + name + ChatColor.GREEN + ") "+event.getMessage();
 			for(Player x : Bukkit.getServer().getOnlinePlayers())
