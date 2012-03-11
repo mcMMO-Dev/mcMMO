@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,10 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -31,317 +28,339 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.BlockChecks;
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Item;
-import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
 import com.gmail.nossr50.spout.SpoutStuff;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.skills.BlastMining;
 import com.gmail.nossr50.skills.Fishing;
+import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
 
 
-public class mcPlayerListener implements Listener 
-{
-	protected static final Logger log = Logger.getLogger("Minecraft"); //$NON-NLS-1$
-	private mcMMO plugin;
+public class mcPlayerListener implements Listener {
+    protected static final Logger log = Logger.getLogger("Minecraft");
+    private mcMMO plugin;
 
-	public mcPlayerListener(mcMMO instance) 
-	{
-		plugin = instance;
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event)
-	{
-	    Player player = event.getPlayer();
-	    PlayerProfile PP = Users.getProfile(player);
-	    
-	    if(PP.getGodMode())
-	    {
-	        if(!mcPermissions.getInstance().mcgod(player))
-	        {
-	            PP.toggleGodMode();
-	            player.sendMessage("[mcMMO] God Mode not permitted on this world (See Permissions)");
-	        }
-	    }
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerFish(PlayerFishEvent event) 
-	{
-		Player player = event.getPlayer();
-		if(mcPermissions.getInstance().fishing(player))
-		{
-			State state = event.getState();
-			Entity caught = event.getCaught();
-			if(state == State.CAUGHT_FISH)
-			{
-				if(caught instanceof org.bukkit.entity.Item)
-					Fishing.processResults(event);
-			} 
-			else if (state == State.CAUGHT_ENTITY)
-			{
-				int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.FISHING);
-				if(skillLevel >= 150)
-					Fishing.shakeMob(event);
-			}
-		}
-	}
+    public mcPlayerListener(mcMMO instance) {
+        plugin = instance;
+    }
 
-	@EventHandler(ignoreCancelled = true)
-	public void onPlayerPickupItem(PlayerPickupItemEvent event) 
-	{
-		if(Users.getProfile(event.getPlayer()).getBerserkMode())
-			 event.setCancelled(true);
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerLogin(PlayerLoginEvent event) 
-	{
-		Users.addUser(event.getPlayer());
-	}
+    /**
+     * Monitor PlayerChangedWorld events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event) {
+        Player player = event.getPlayer();
+        PlayerProfile PP = Users.getProfile(player);
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerQuit(PlayerQuitEvent event) 
-	{
-		/*
-		 * GARBAGE COLLECTION
-		 */
-		//Discard the PlayerProfile object
-		Player player = event.getPlayer();
-		PlayerProfile PP = Users.getProfile(player);
-		if(LoadProperties.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player))
-			SpoutStuff.playerHUDs.remove(player);
-		
-		//Bleed it out
-		if(PP.getBleedTicks() > 0)
-			Combat.dealDamage(player, PP.getBleedTicks()*2);
-		
-		//Save PlayerData to MySQL/FlatFile on player quit
-		PP.save();
-		
-		//Schedule PlayerProfile removal 2 minutes after quitting
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player), 2400);
-	}
+        if (PP.getGodMode()) {
+            if (!mcPermissions.getInstance().mcgod(player)) {
+                PP.toggleGodMode();
+                player.sendMessage(mcLocale.getString("GodMode.Forbidden"));
+            }
+        }
+    }
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerJoin(PlayerJoinEvent event) 
-	{
-		Player player = event.getPlayer();
-		if(mcPermissions.getInstance().motd(player) && LoadProperties.enableMotd)
-		{
-			player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), "mcmmo"}));
-			player.sendMessage(mcLocale.getString("mcPlayerListener.WIKI"));
-		}
-		//THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
-		if(XprateCommand.xpevent)
-			player.sendMessage(ChatColor.GOLD+"mcMMO is currently in an XP rate event! XP rate is "+LoadProperties.xpGainMultiplier+"x!");
-	}
+    /**
+     * Monitor PlayerFish events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerFish(PlayerFishEvent event) {
+        Player player = event.getPlayer();
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerInteract(PlayerInteractEvent event) 
-	{
-		Player player = event.getPlayer();
-		PlayerProfile PP = Users.getProfile(player);
-		Action action = event.getAction();
-		Block block = event.getClickedBlock();
-		ItemStack is = player.getItemInHand();
-		Material mat;
+        if (mcPermissions.getInstance().fishing(player)) {
+            State state = event.getState();
+
+            switch (state) {
+            case CAUGHT_FISH:
+                Fishing.processResults(event);
+                break;
+
+            case CAUGHT_ENTITY:
+                if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) >= 150) {
+                    Fishing.shakeMob(event);
+                }
+                break;
+
+            default:
+                break;
+            }
+        }
+    }
+
+    /**
+     * Monitor PlaterPickupItem events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+        if (Users.getProfile(event.getPlayer()).getBerserkMode()) {
+             event.setCancelled(true);
+        }
+    }
+
+    /**
+     * Monitor PlayerLogin events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        Users.addUser(event.getPlayer());
+    }
+
+    /**
+     * Monitor PlayerQuit events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        PlayerProfile PP = Users.getProfile(player);
+
+        /* GARBAGE COLLECTION */
+
+        //Remove Spout Stuff
+        if(LoadProperties.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
+            SpoutStuff.playerHUDs.remove(player);
+        }
+
+        //Bleed it out
+        if(PP.getBleedTicks() > 0) {
+            Combat.dealDamage(player, PP.getBleedTicks()*2);
+        }
+
+        //Save PlayerData to MySQL/FlatFile on player quit
+        PP.save();
+
+        //Schedule PlayerProfile removal 2 minutes after quitting
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player), 2400);
+    }
+
+    /**
+     * Monitor PlayerJoin events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        if (mcPermissions.getInstance().motd(player) && LoadProperties.enableMotd) {
+            player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), "mcmmo"}));
+            player.sendMessage(mcLocale.getString("mcPlayerListener.WIKI"));
+        }
+
+        //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
+        if (XprateCommand.xpevent) {
+            player.sendMessage(mcLocale.getString("XPRate.Event", new Object[] {LoadProperties.xpGainMultiplier}));
+        }
+    }
+
+    /**
+     * Monitor PlayerInteract events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+
+        Action action = event.getAction();
+        Block block = event.getClickedBlock();
+        ItemStack is = player.getItemInHand();
+        Material mat;
+
+        /* Fix for NPE on interacting with air */
         if (block == null) {
             mat = Material.AIR;
         }
         else {
             mat = block.getType();
         }
-		
-		/*
-		 * Ability checks
-		 */
-		if(action == Action.RIGHT_CLICK_BLOCK)
-		{
 
-			if(block != null && mcPermissions.getInstance().repair(player) && block.getTypeId() == LoadProperties.anvilID && (Repair.isTools(is) || Repair.isArmor(is)))
-			{
-				Repair.repairCheck(player, is, event.getClickedBlock());
-				event.setCancelled(true);
-				player.updateInventory();
-			}
+        switch (action) {
+        case RIGHT_CLICK_BLOCK:
 
-			if(LoadProperties.enableAbilities && BlockChecks.abilityBlockCheck(mat))
-			{
-				if(block != null && ItemChecks.isHoe(is) && !mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL))
-					Skills.activationCheck(player, SkillType.HERBALISM);
-				
-				Skills.activationCheck(player, SkillType.AXES);
-				Skills.activationCheck(player, SkillType.EXCAVATION);
-				Skills.activationCheck(player, SkillType.MINING);
-				Skills.activationCheck(player, SkillType.SWORDS);
-				Skills.activationCheck(player, SkillType.UNARMED);
-				Skills.activationCheck(player, SkillType.WOODCUTTING);
-			}
+            /* REPAIR CHECKS */
+            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == LoadProperties.anvilID && (Repair.isTools(is) || Repair.isArmor(is))) {
+                Repair.repairCheck(player, is, event.getClickedBlock());
+                event.setCancelled(true);
+                player.updateInventory();
+            }
 
-			//GREEN THUMB
-			if(block != null && mcPermissions.getInstance().herbalism(player) && (mat.equals(Material.COBBLESTONE) || mat.equals(Material.DIRT) || mat.equals(Material.SMOOTH_BRICK)) && is.getType().equals(Material.SEEDS))
-			{
-				boolean pass = false;
-				int seeds = is.getAmount();
-				player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
-					
-				if(Math.random() * 1500 <= PP.getSkillLevel(SkillType.HERBALISM) && m.blockBreakSimulate(block, player, false))
-				{
-					switch(mat)
-					{
-					case COBBLESTONE:
-						if(LoadProperties.enableCobbleToMossy)
-						{
-							block.setType(Material.MOSSY_COBBLESTONE);
-							pass = true;
-						}
-						break;
-					case DIRT:
-						if(LoadProperties.enableDirtToGrass)
-						{
-							block.setType(Material.GRASS);
-							pass = true;
-						}
-						break;
-					case SMOOTH_BRICK:
-						if(LoadProperties.enableSmoothToMossy)
-						{
-							pass = true;
-							block.setData((byte)1);
-						}
-						break;
-					}
-					
-					if(pass == false)
-						player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumbFail"));
-				}
-				return;
-			}
-		}
-		
-		if(LoadProperties.enableAbilities && action == Action.RIGHT_CLICK_AIR)
-		{
-			Skills.activationCheck(player, SkillType.AXES);
-			Skills.activationCheck(player, SkillType.EXCAVATION);
-			Skills.activationCheck(player, SkillType.HERBALISM);
-			Skills.activationCheck(player, SkillType.MINING);
-			Skills.activationCheck(player, SkillType.SWORDS);
-			Skills.activationCheck(player, SkillType.UNARMED);
-			Skills.activationCheck(player, SkillType.WOODCUTTING);
-		}
-		
-		/*
-		 * ITEM CHECKS
-		 */
-		if(action == Action.RIGHT_CLICK_AIR)
-			Item.itemchecks(player);
-		if(action == Action.RIGHT_CLICK_BLOCK && BlockChecks.abilityBlockCheck(mat))
-			Item.itemchecks(player);
-		
-		if(player.isSneaking() && mcPermissions.getInstance().taming(player) && (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK))
-		{
-			if(is.getType().equals(Material.RAW_FISH))
-				Taming.animalSummon(EntityType.OCELOT, player);
-			if(is.getType().equals(Material.BONE))
-				Taming.animalSummon(EntityType.WOLF, player);
-		}
-		
-		//BLAST MINING
-		if((action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) && is.getTypeId() == LoadProperties.detonatorID)
-		{
-			//Gotta make snow transparent...
-			HashSet<Byte> transparent = new HashSet<Byte>();
-			transparent.add((byte) 78);
-			transparent.add((byte) 0);
-			
-			Block b = player.getTargetBlock(transparent, 100);
-			if(b.getType().equals(Material.TNT) && mcPermissions.getInstance().blastMining(player) && m.blockBreakSimulate(b, player, true) && Users.getProfile(player).getSkillLevel(SkillType.MINING) >= 125)
-			{
-			    AbilityType ability = AbilityType.BLAST_MINING;
-			    //Check cooldown
-	            if(!Skills.cooldownOver(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()))
-	            {
-	                player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()) + "s)");
-	                return;
-	            }
-	            //Send message to nearby players
-	            for(Player y : player.getWorld().getPlayers())
-                {
-                    if(y != player && m.isNear(player.getLocation(), y.getLocation(), 10))
-                        y.sendMessage(ability.getAbilityPlayer(player));
+            /* ACTIVATION CHECKS */
+            if (LoadProperties.enableAbilities && BlockChecks.abilityBlockCheck(mat)) {
+                if (!mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL)) {
+                    Skills.activationCheck(player, SkillType.HERBALISM);
                 }
-	            
-	            player.sendMessage(ChatColor.GRAY+"**BOOM**");
-	            
-	            TNTPrimed tnt = player.getWorld().spawn(b.getLocation(), TNTPrimed.class);
-	            plugin.misc.tntTracker.put(tnt.getEntityId(), player);
-				b.setType(Material.AIR);
-				tnt.setFuseTicks(0);
-				PP.setSkillDATS(ability, System.currentTimeMillis()); //Save DATS for Blast Mining
-				PP.setBlastMiningInformed(false);
-			}
-		}
-	}
 
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void onPlayerChat(PlayerChatEvent event) 
-	{
-		Player player = event.getPlayer();
-		PlayerProfile PP = Users.getProfile(player);
-		if(PP.getPartyChatMode())
-		{
-			event.setCancelled(true);
-			
-			if(!PP.inParty()) {
-				player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
-				return;
-			}
-			
-			String name = (LoadProperties.pDisplayNames) ? player.getDisplayName() : player.getName();
-			String format = ChatColor.GREEN + "(" + ChatColor.WHITE + name + ChatColor.GREEN + ") "+event.getMessage();
-			for(Player x : Bukkit.getServer().getOnlinePlayers())
-			{
-				if(Party.getInstance().inSameParty(player, x))
-					x.sendMessage(format);
-			}
-			log.log(Level.INFO, "[P](" + PP.getParty() + ")<" + name + ">" + event.getMessage());
-		} else if (PP.getAdminChatMode()) {
-			event.setCancelled(true);
-			String name = (LoadProperties.aDisplayNames) ? player.getDisplayName() : player.getName();
-			String format = ChatColor.AQUA + "{" + ChatColor.WHITE + name + ChatColor.AQUA + "} "+event.getMessage();
-			for(Player x : Bukkit.getServer().getOnlinePlayers())
-			{
-				if(x.isOp() || mcPermissions.getInstance().adminChat(x))
-					x.sendMessage(format);
-			}
-			log.log(Level.INFO, "[A]<" + name + ">" + event.getMessage());
-		}
-	}
-	
-	// Dynamically aliasing commands need to be re-done.
-	// For now, using a command with an alias will send both the original command, and the mcMMO command
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-		String message = event.getMessage();
-		if(!message.startsWith("/")) return;
-		String command = message.substring(1).split(" ")[0];
-		if(plugin.aliasMap.containsKey(command)) {
-			if(command.equalsIgnoreCase(plugin.aliasMap.get(command))) return;
-			//event.setCancelled(true);
-			event.getPlayer().chat(message.replaceFirst(command, plugin.aliasMap.get(command)));
-		}
-	}
+                Skills.activationCheck(player, SkillType.AXES);
+                Skills.activationCheck(player, SkillType.EXCAVATION);
+                Skills.activationCheck(player, SkillType.MINING);
+                Skills.activationCheck(player, SkillType.SWORDS);
+                Skills.activationCheck(player, SkillType.UNARMED);
+                Skills.activationCheck(player, SkillType.WOODCUTTING);
+            }
+
+            /* GREEN THUMB CHECK */
+            if (mcPermissions.getInstance().herbalism(player) && Herbalism.makeMossy(mat) && is.getType().equals(Material.SEEDS)) {
+                Herbalism.greenThumbBlocks(is, player, block);
+            }
+
+            /* ITEM CHECKS */
+            if (BlockChecks.abilityBlockCheck(mat)) {
+                Item.itemchecks(player);
+            }
+
+            /* BLAST MINING CHECK */
+            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == LoadProperties.detonatorID) {
+                BlastMining.remoteDetonation(player, plugin);
+            }
+
+            break;
+
+        case RIGHT_CLICK_AIR:
+
+            /* ACTIVATION CHECKS */
+            if (LoadProperties.enableAbilities) {
+                Skills.activationCheck(player, SkillType.AXES);
+                Skills.activationCheck(player, SkillType.EXCAVATION);
+                Skills.activationCheck(player, SkillType.HERBALISM);
+                Skills.activationCheck(player, SkillType.MINING);
+                Skills.activationCheck(player, SkillType.SWORDS);
+                Skills.activationCheck(player, SkillType.UNARMED);
+                Skills.activationCheck(player, SkillType.WOODCUTTING);
+            }
+
+            /* ITEM CHECKS */
+            Item.itemchecks(player);
+
+            /* BLAST MINING CHECK */
+            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == LoadProperties.detonatorID) {
+                BlastMining.remoteDetonation(player, plugin);
+            }
+
+            break;
+
+        case LEFT_CLICK_AIR:
+        case LEFT_CLICK_BLOCK:
+
+            /* CALL OF THE WILD CHECKS */
+            if (player.isSneaking() && mcPermissions.getInstance().taming(player)) {
+                if (is.getType().equals(Material.RAW_FISH)) {
+                    Taming.animalSummon(EntityType.OCELOT, player);
+                }
+                else if (is.getType().equals(Material.BONE)) {
+                    Taming.animalSummon(EntityType.WOLF, player);
+                }
+            }
+
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    /**
+     * Monitor PlayerChat events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onPlayerChat(PlayerChatEvent event) {
+        Player player = event.getPlayer();
+        PlayerProfile PP = Users.getProfile(player);
+        boolean partyChat = PP.getPartyChatMode();
+        boolean adminChat = PP.getAdminChatMode();
+
+        if (partyChat || adminChat) {
+            event.setCancelled(true);
+
+            String name = "";
+            boolean displayNames = false;
+            ChatColor color = ChatColor.WHITE;
+            String logHeader = "";
+
+            /* Set the pChat & aChat specific stuff */
+            if (partyChat) {
+                if (!PP.inParty()) {
+                    player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
+                    return;
+                }
+
+                displayNames = LoadProperties.pDisplayNames;
+                color = ChatColor.GREEN;
+                logHeader = "[P](" + PP.getParty() + ")<";
+            }
+            else if (adminChat) {
+                displayNames = LoadProperties.aDisplayNames;
+                color = ChatColor.AQUA;
+                logHeader = "[A]<";
+            }
+
+            /* Format & display */
+            if (displayNames) {
+                name = player.getDisplayName();
+            }
+            else {
+                name = player.getName();
+            }
+
+            String format = color + "(" + ChatColor.WHITE + name + color + ") " + event.getMessage();
+
+            for (Player x : Bukkit.getServer().getOnlinePlayers()) {
+                if (partyChat && Party.getInstance().inSameParty(player, x))
+                    x.sendMessage(format);
+                else if (adminChat && (x.isOp() || mcPermissions.getInstance().adminChat(x))) {
+                    x.sendMessage(format);
+                }
+            }
+
+            log.log(Level.INFO, logHeader + name + ">" + event.getMessage());
+        }
+    }
+
+    // Dynamically aliasing commands need to be re-done.
+    // For now, using a command with an alias will send both the original command, and the mcMMO command
+
+    /**
+     * Monitor PlayerCommandPreprocess events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        String message = event.getMessage();
+        
+        if (!message.startsWith("/")) {
+            return;
+        }
+
+        String command = message.substring(1).split(" ")[0];
+
+        if (plugin.aliasMap.containsKey(command)) {
+            if(command.equalsIgnoreCase(plugin.aliasMap.get(command))) {
+                return;
+            }
+            event.getPlayer().chat(message.replaceFirst(command, plugin.aliasMap.get(command)));
+        }
+    }
 }

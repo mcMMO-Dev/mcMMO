@@ -1,19 +1,27 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 
 import com.gmail.nossr50.BlockChecks;
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.AbilityType;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.mcLocale;
 
 public class BlastMining{
 	
@@ -160,7 +168,7 @@ public class BlastMining{
 		if(skillLevel >= 750)
 			radius++;
 		if(skillLevel >= 1000)
-			radius++;	
+			radius++;
 		event.setRadius(radius);
 	}
 	
@@ -185,5 +193,41 @@ public class BlastMining{
 		event.setDamage(damage);
 	}
 
-	
+    public static void remoteDetonation(Player player, mcMMO plugin) {
+        PlayerProfile PP = Users.getProfile(player);
+        HashSet<Byte> transparent = new HashSet<Byte>();
+
+        transparent.add((byte) 78); //SNOW
+        transparent.add((byte) 0); //AIR
+
+        Block b = player.getTargetBlock(transparent, 100);
+
+        if(b.getType().equals(Material.TNT) && m.blockBreakSimulate(b, player, true) && PP.getSkillLevel(SkillType.MINING) >= 125) {
+            AbilityType ability = AbilityType.BLAST_MINING;
+
+            /* Check Cooldown */
+            if(!Skills.cooldownOver(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown())) {
+                player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()) + "s)");
+                return;
+            }
+
+            /* Send message to nearby players */
+            for(Player y : player.getWorld().getPlayers()) {
+                if(y != player && m.isNear(player.getLocation(), y.getLocation(), 10)) {
+                    y.sendMessage(ability.getAbilityPlayer(player));
+                }
+            }
+
+            player.sendMessage(mcLocale.getString("BlastMining.Boom"));
+
+            /* Create the TNT entity */
+            TNTPrimed tnt = player.getWorld().spawn(b.getLocation(), TNTPrimed.class);
+            plugin.misc.tntTracker.put(tnt.getEntityId(), player);
+            b.setType(Material.AIR);
+            tnt.setFuseTicks(0);
+
+            PP.setSkillDATS(ability, System.currentTimeMillis()); //Save DATS for Blast Mining
+            PP.setBlastMiningInformed(false);
+        }
+    }
 }

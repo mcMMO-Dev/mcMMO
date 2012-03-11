@@ -15,6 +15,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.runnables.GreenThumbTimer;
 
 public class Herbalism {
 
@@ -36,14 +38,16 @@ public class Herbalism {
             inventory.removeItem(new ItemStack(Material.SEEDS, 1));
             player.updateInventory();
 
-            if (LoadProperties.enableSmoothToMossy && type.equals(Material.SMOOTH_BRICK)) {
-                block.setData((byte) 0x1);
-            }
-            else if (LoadProperties.enableDirtToGrass && type.equals(Material.DIRT)) {
-                block.setType(Material.GRASS);
-            }
-            else if (LoadProperties.enableCobbleToMossy && type.equals(Material.COBBLESTONE)) {
-                block.setType(Material.MOSSY_COBBLESTONE);
+            if (m.blockBreakSimulate(block, player, false)) {
+                if (LoadProperties.enableSmoothToMossy && type.equals(Material.SMOOTH_BRICK)) {
+                    block.setData((byte) 0x1);
+                }
+                else if (LoadProperties.enableDirtToGrass && type.equals(Material.DIRT)) {
+                    block.setType(Material.GRASS);
+                }
+                else if (LoadProperties.enableCobbleToMossy && type.equals(Material.COBBLESTONE)) {
+                    block.setType(Material.MOSSY_COBBLESTONE);
+                }
             }
         }
     }
@@ -142,7 +146,7 @@ public class Herbalism {
             if (data == (byte) 0x7) {
                 mat = Material.WHEAT;
                 xp = LoadProperties.mwheat;
-                greenThumb(block, player, event, plugin);
+                greenThumbWheat(block, player, event, plugin);
             }
             break;
 
@@ -241,15 +245,15 @@ public class Herbalism {
     }
 
     /**
-     * Apply the Green Thumb ability.
+     * Apply the Green Thumb ability to crops.
      *
      * @param block The block to apply the ability to
      * @param player The player using the ability
      * @param event The event triggering the ability
      * @param plugin mcMMO plugin instance
      */
-    private static void greenThumb(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        final PlayerProfile PP = Users.getProfile(player);
+    private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
+        PlayerProfile PP = Users.getProfile(player);
         int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
         PlayerInventory inventory = player.getInventory();
         boolean hasSeeds = inventory.contains(Material.SEEDS);
@@ -257,31 +261,36 @@ public class Herbalism {
 
         if (hasSeeds && PP.getGreenTerraMode() || hasSeeds && (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel))) {
             event.setCancelled(true);
+
             m.mcDropItem(loc, new ItemStack(Material.WHEAT, 1));
-            m.mcDropItems(loc, new ItemStack(Material.SEEDS, 1), 3);
+            m.mcRandomDropItems(loc, new ItemStack(Material.SEEDS, 1), 50, 3);
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                public void run() {
-                    block.setType(Material.CROPS);
-
-                    //This replants the wheat at a certain stage in development based on Herbalism Skill
-                    if (!PP.getGreenTerraMode()) {
-                        if (PP.getSkillLevel(SkillType.HERBALISM) >= 600)
-                            block.setData((byte) 0x4);
-                        else if (PP.getSkillLevel(SkillType.HERBALISM) >= 400)
-                            block.setData((byte) 0x3);
-                        else if (PP.getSkillLevel(SkillType.HERBALISM) >= 200)
-                            block.setData((byte) 0x2);
-                        else
-                            block.setData((byte) 0x1);
-                    }
-                    else
-                        block.setData((byte) 0x4);
-                }
-            }, 1);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, PP), 1);
 
             inventory.removeItem(new ItemStack(Material.SEEDS, 1));
             player.updateInventory();
+        }
+    }
+
+    /**
+     * Apply the Green Thumb ability to blocks.
+     *
+     * @param is The item in the player's hand
+     * @param player The player activating the ability
+     * @param block The block being used in the ability
+     */
+    public static void greenThumbBlocks(ItemStack is, Player player, Block block) {
+        PlayerProfile PP = Users.getProfile(player);
+        int skillLevel = PP.getSkillLevel(SkillType.HERBALISM);
+        int seeds = is.getAmount();
+
+        player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
+
+        if (skillLevel > 1500 || Math.random() * 1500 <= skillLevel) {
+            greenTerra(player, block);
+        }
+        else {
+            player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumbFail"));
         }
     }
 }
