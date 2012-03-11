@@ -46,7 +46,6 @@ import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
 
-
 public class mcPlayerListener implements Listener {
     protected static final Logger log = Logger.getLogger("Minecraft");
     private mcMMO plugin;
