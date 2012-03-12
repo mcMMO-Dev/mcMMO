@@ -78,13 +78,16 @@ public class Acrobatics {
     public static void dodgeChecks(EntityDamageByEntityEvent event) {
         final int DODGE_MODIFIER = 120;
 
-        Player attacker = (Player) event.getDamager();
         Player defender = (Player) event.getEntity();
         PlayerProfile PPd = Users.getProfile(defender);
 
         /* PARTY CHECK */
-        if (Party.getInstance().inSameParty(defender, attacker)) {
-            return;
+        if (event.getDamager() instanceof Player) {
+            Player attacker = (Player) event.getDamager();
+
+            if (Party.getInstance().inSameParty(defender, attacker)) {
+                return;
+            }
         }
 
         if (mcPermissions.getInstance().acrobatics(defender)) {
