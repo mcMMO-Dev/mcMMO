@@ -1,7 +1,5 @@
 package com.gmail.nossr50;
 
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -19,7 +17,6 @@ import com.gmail.nossr50.runnables.SQLConversionTask;
 import com.gmail.nossr50.skills.Repair;
 
 public class m {
-    public static final Logger log = Logger.getLogger("Minecraft");
 
     /**
      * Gets a capitalized version of the target string.
@@ -250,6 +247,15 @@ public class m {
             return;
         }
 
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(Bukkit.getPluginManager().getPlugin("mcMMO"), new SQLConversionTask(log), 1);
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(Bukkit.getPluginManager().getPlugin("mcMMO"), new SQLConversionTask(), 1);
+    }
+
+    public static int skillCheck(int skillLevel, int maxLevel) {
+        if (skillLevel > maxLevel) {
+            return maxLevel;
+        }
+        else {
+            return skillLevel;
+        }
     }
 }

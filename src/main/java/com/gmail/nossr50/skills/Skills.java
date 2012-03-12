@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills;
 
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -27,8 +25,6 @@ import com.gmail.nossr50.locale.mcLocale;
 
 public class Skills 
 {
-	protected static final Logger log = Logger.getLogger("Minecraft");
-	
 	public static boolean cooldownOver(Player player, long oldTime, int cooldown){
 		long currentTime = System.currentTimeMillis();
 		if(currentTime - oldTime >= (cooldown * 1000))

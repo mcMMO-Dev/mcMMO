@@ -1,118 +1,159 @@
 package com.gmail.nossr50.skills;
 
-import org.bukkit.Material;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
-import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class Axes {
-    public static void axesBonus(Player attacker, EntityDamageByEntityEvent event)
-    {
+
+    /**
+     * Apply bonus to damage done by axes.
+     *
+     * @param attacker The attacking player
+     * @param event The event to modify
+     */
+    public static void axesBonus(Player attacker, EntityDamageByEntityEvent event) {
+        final int MAX_BONUS = 4;
+
         int bonus = 0;
-        
-        //Add 1 DMG for every 50 skill levels
-        bonus += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/50;
-        
-        if(bonus > 4)
-            bonus = 4;
-        
+
+        /* Add 1 DMG for every 50 skill levels */
+        bonus += Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / 50;
+
+        if (bonus > MAX_BONUS) {
+            bonus = MAX_BONUS;
+        }
+
         event.setDamage(event.getDamage() + bonus);
     }
-	public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event)
-	{
-    	Entity x = event.getEntity();
-    	
-    	if(x instanceof Wolf){
-    		Wolf wolf = (Wolf)x;
-    		if(wolf.getOwner() instanceof Player)
-    		{
-    			Player owner = (Player) wolf.getOwner();
-	    		if(owner == attacker)
-	    			return;
-	    		if(Party.getInstance().inSameParty(attacker, owner))
-	    			return;
-    		}
-    	}
-    	PlayerProfile PPa = Users.getProfile(attacker);
-    	if(ItemChecks.isAxe(attacker.getItemInHand()) && mcPermissions.getInstance().axes(attacker)){
-    		if(PPa.getSkillLevel(SkillType.AXES) >= 750){
-    			if(Math.random() * 2000 <= 750 && !x.isDead()){
-    				if(x instanceof Player){
-    					int damage = (event.getDamage() * 2) - (event.getDamage() / 2);
-    					event.setDamage(damage);
-    					Player player = (Player)x;
-    					player.sendMessage(mcLocale.getString("Axes.HitCritically"));
-    				}
-    				else {
-    					int damage = event.getDamage() * 2;
-        				event.setDamage(damage);
-        			}
-    				attacker.sendMessage(mcLocale.getString("Axes.CriticalHit"));
-    			}
-    		} else if(Math.random() * 2000 <= PPa.getSkillLevel(SkillType.AXES) && !x.isDead()){
-    			if(x instanceof Player){
-    				int damage = (event.getDamage() * 2) - (event.getDamage() / 2);
-					event.setDamage(damage);
-    				Player player = (Player)x;
-    				player.sendMessage(mcLocale.getString("Axes.HitCritically"));
-    			}
-    			else {
-    				int damage = event.getDamage() * 2;
-    				event.setDamage(damage);
-    			}
-				attacker.sendMessage(mcLocale.getString("Axes.CriticalHit"));
-    		}
-    	}
+
+    /**
+     * Check for critical chances on axe damage.
+     *
+     * @param attacker The attacking player
+     * @param event The event to modify
+     */
+    public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event) {
+        Entity entity = event.getEntity();
+
+        if (entity instanceof Wolf) {
+            Wolf wolf = (Wolf) entity;
+
+            if (wolf.isTamed()) {
+                AnimalTamer tamer = wolf.getOwner();
+
+                if (tamer instanceof Player) {
+                    Player owner = (Player) tamer;
+
+                    if (owner == attacker || Party.getInstance().inSameParty(attacker, owner)) {
+                        return;
+                    }
+                }
+            }
+        }
+
+        final int MAX_BONUS_LEVEL = 750;
+        final double PVP_MODIFIER = 1.5;
+        final int PVE_MODIFIER = 2;
+
+        PlayerProfile PPa = Users.getProfile(attacker);
+        int skillLevel = PPa.getSkillLevel(SkillType.AXES);
+        int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+
+        if (Math.random() * 2000 <= skillCheck && !entity.isDead()){
+            int damage = event.getDamage();
+
+            if (entity instanceof Player){
+                event.setDamage((int) (damage * PVP_MODIFIER));
+                Player player = (Player) entity;
+                player.sendMessage(mcLocale.getString("Axes.HitCritically"));
+            }
+            else {
+                event.setDamage(damage * PVE_MODIFIER);
+            }
+            attacker.sendMessage(mcLocale.getString("Axes.CriticalHit"));
+        }
     }
-	
-	public static void impact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event)
-	{
-	    //TODO: Finish this skill, the idea is you will greatly damage an opponents armor and when they are armor less you have a proc that will stun them and deal additional damage.
-	    if(target instanceof Player)
-	    {
-	        Player targetPlayer = (Player) target;
-	        int emptySlots = 0;
-	        short durDmg = 5; //Start with 5 durability dmg
-	        
-	        durDmg+=Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/30; //Every 30 Skill Levels you gain 1 durability dmg
-	        
-	        for(ItemStack x : targetPlayer.getInventory().getArmorContents())
-	        {
-	            if(x.getType() == Material.AIR)
-	            {
-	                emptySlots++;
-	            } else {
-	                x.setDurability((short) (x.getDurability()+durDmg)); //Damage armor piece
-	            }
-	        }
-	        
-	        if(emptySlots == 4)
-	            applyImpact(attacker, target, event);
-	    }
-	    else
-	        //Since mobs are technically unarmored this will always trigger
-	        applyImpact(attacker, target, event);
-	}
-	
-	public static void applyImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event)
-	{
-	    if(Math.random() * 100 > 75)
-        {
-            event.setDamage(event.getDamage()+2);
-            target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(1.5D));
+
+    /**
+     * Check for Impact ability.
+     *
+     * @param attacker The attacking player
+     * @param target The defending entity
+     * @param event The event to modify
+     */
+    public static void impact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
+
+        /*
+         * TODO: Finish this skill. The idea is you will greatly damage an opponents armor.
+         * When they are unarmored, you have a proc that will stun them and deal additional damage.
+         */
+        if (target instanceof Player) {
+            Player targetPlayer = (Player) target;
+            short durabilityDamage = 5; //Start with 5 durability damage
+
+            /* Every 30 Skill Levels you gain 1 durability damage */
+            durabilityDamage += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/30;
+
+            if (!hasArmor(targetPlayer)) {
+                applyImpact(attacker, target, event);
+            }
+            else {
+                for (ItemStack armor : targetPlayer.getInventory().getArmorContents()) {
+                    armor.setDurability((short) (armor.getDurability() + durabilityDamage)); //Damage armor piece
+                }
+                targetPlayer.updateInventory();
+            }
+        }
+        else {
+            applyImpact(attacker, target, event); //Since mobs are technically unarmored, this will always trigger
+        }
+    }
+
+    /**
+     * Apply impact ability.
+     *
+     * @param attacker The attacking player
+     * @param target The defending entity
+     * @param event The event to modify
+     */
+    private static void applyImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
+        final int GREATER_IMPACT_CHANCE = 25;
+        final double GREATER_IMPACT_MULTIPLIER = 1.5;
+
+        if (Math.random() * 100 <= GREATER_IMPACT_CHANCE) {
+            event.setDamage(event.getDamage() + 2);
+            target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(GREATER_IMPACT_MULTIPLIER));
             attacker.sendMessage(mcLocale.getString("Axes.GreaterImpactOnEnemy"));
         }
-	}
-	
+    }
+
+    /**
+     * Check if a player has armor.
+     *
+     * @param player Player whose armor to check
+     * @return true if the player has armor, false otherwise
+     */
+    private static boolean hasArmor(Player player) {
+        PlayerInventory inventory = player.getInventory();
+
+        if (inventory.getBoots() != null || inventory.getChestplate() != null || inventory.getHelmet() != null || inventory.getLeggings() != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

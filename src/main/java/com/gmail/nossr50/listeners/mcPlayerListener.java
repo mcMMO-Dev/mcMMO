@@ -1,8 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -47,7 +44,6 @@ import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
 
 public class mcPlayerListener implements Listener {
-    protected static final Logger log = Logger.getLogger("Minecraft");
     private mcMMO plugin;
 
     public mcPlayerListener(mcMMO instance) {
@@ -333,7 +329,7 @@ public class mcPlayerListener implements Listener {
                 }
             }
 
-            log.log(Level.INFO, logHeader + name + ">" + event.getMessage());
+            Bukkit.getLogger().info(logHeader + name + ">" + event.getMessage());
         }
     }
 

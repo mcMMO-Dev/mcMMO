@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import java.io.File;
 import java.io.IOException;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import com.gmail.nossr50.datatypes.HUDType;
 
@@ -123,7 +124,7 @@ public class LoadProperties {
 	}
 
 	private void loadKeys() {
-		plugin.getLogger().info("Loading mcMMO config.yml File...");
+	    plugin.getLogger().info("Loading mcMMO config.yml File...");
 
 		// Setup default HUD
 		String temp = readString("Spout.HUD.Default", "STANDARD");

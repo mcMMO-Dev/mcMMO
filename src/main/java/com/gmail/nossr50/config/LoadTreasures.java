@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -210,7 +211,7 @@ public class LoadTreasures {
 		if(issues.isEmpty()) return true;
 
 		for(String issue : issues) {
-			plugin.getLogger().warning(issue);
+		    Bukkit.getLogger().warning(issue);
 		}
 
 		return false;

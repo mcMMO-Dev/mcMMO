@@ -377,7 +377,7 @@ public class Party
 				ObjectInputStream obj = new ObjectInputStream(new FileInputStream(partyPlayersFile));
 				this.partyPlayers = (HashMap<String, HashMap<String, Boolean>>)obj.readObject();
 			} catch (FileNotFoundException e) { e.printStackTrace();
-			} catch (EOFException e) { mcMMO.log.info("partyPlayersFile empty.");
+			} catch (EOFException e) { Bukkit.getLogger().info("partyPlayersFile empty.");
 			} catch (IOException e) { e.printStackTrace();
 			} catch (ClassNotFoundException e) { e.printStackTrace(); }
     	}
@@ -387,7 +387,7 @@ public class Party
 				ObjectInputStream obj = new ObjectInputStream(new FileInputStream(partyLocksFile));
 				this.partyLocks = (HashMap<String, Boolean>)obj.readObject();
 			} catch (FileNotFoundException e) { e.printStackTrace();
-			} catch (EOFException e) { mcMMO.log.info("partyLocksFile empty.");
+			} catch (EOFException e) { Bukkit.getLogger().info("partyLocksFile empty.");
 			} catch (IOException e) { e.printStackTrace();
 			} catch (ClassNotFoundException e) { e.printStackTrace(); }
     	}
@@ -397,7 +397,7 @@ public class Party
 				ObjectInputStream obj = new ObjectInputStream(new FileInputStream(partyPasswordsFile));
 				this.partyPasswords = (HashMap<String, String>)obj.readObject();
 			} catch (FileNotFoundException e) { e.printStackTrace();
-			} catch (EOFException e) { mcMMO.log.info("partyPasswordsFile empty.");
+			} catch (EOFException e) { Bukkit.getLogger().info("partyPasswordsFile empty.");
 			} catch (IOException e) { e.printStackTrace();
 			} catch (ClassNotFoundException e) { e.printStackTrace(); }
     	}

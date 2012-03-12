@@ -1,7 +1,8 @@
 package com.gmail.nossr50.config;
 
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -13,8 +14,6 @@ import com.gmail.nossr50.mcMMO;
 public class Misc 
 {
     String location = "mcmmo.properties";
-    
-    protected static final Logger log = Logger.getLogger("Minecraft");
     
     public ArrayList<Integer> mobSpawnerList = new ArrayList<Integer>();
     public HashSet<Block> blockWatchList = new HashSet<Block>();

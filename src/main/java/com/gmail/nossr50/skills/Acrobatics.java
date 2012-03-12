@@ -5,6 +5,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -96,11 +97,7 @@ public class Acrobatics {
 
         if (mcPermissions.getInstance().acrobatics(defender)) {
             int skillLevel = PPd.getSkillLevel(SkillType.ACROBATICS);
-            int skillCheck = skillLevel;
-
-            if (skillLevel > MAX_BONUS_LEVEL) {
-                skillCheck = MAX_BONUS_LEVEL;
-            }
+            int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
             if (Math.random() * 4000 <= skillCheck) {
                 defender.sendMessage(mcLocale.getString("Acrobatics.Dodge"));

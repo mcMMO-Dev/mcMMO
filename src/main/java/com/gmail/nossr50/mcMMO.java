@@ -30,8 +30,6 @@ import java.io.InputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -50,7 +48,6 @@ public class mcMMO extends JavaPlugin {
     public static String maindirectory = "plugins" + File.separator + "mcMMO";
     public static File file = new File(maindirectory + File.separator + "config.yml");
     public static File versionFile = new File(maindirectory + File.separator + "VERSION");
-    public static final Logger log = Logger.getLogger("Minecraft"); 
 
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
     private final mcBlockListener blockListener = new mcBlockListener(this);
@@ -276,7 +273,7 @@ public class mcMMO extends JavaPlugin {
             in.close();
         }
         catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
+            Bukkit.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
         return parties;
     }
@@ -572,7 +569,7 @@ public class mcMMO extends JavaPlugin {
             treasuresConfig.save(treasuresConfigFile);
         }
         catch (IOException ex) {
-            log.log(Level.SEVERE, "Could not save config to " + treasuresConfigFile, ex);
+            Bukkit.getLogger().severe("Could not save config to " + treasuresConfigFile + ex.toString());
         }
     }
 }

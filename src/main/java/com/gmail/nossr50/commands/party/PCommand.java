@@ -1,8 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,11 +15,7 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class PCommand implements CommandExecutor {
-	private Logger log;
-
-	public PCommand() {
-		this.log = Logger.getLogger("Minecraft");
-	}
+	public PCommand() {}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -38,7 +31,7 @@ public class PCommand implements CommandExecutor {
 
 			String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + "*Console*" + ChatColor.GREEN + ") ";
 
-			log.log(Level.INFO, "[P](" + args[0] + ")" + "<*Console*> " + pMessage);
+			Bukkit.getLogger().info("[P](" + args[0] + ")" + "<*Console*> " + pMessage);
 
 			for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
 				if (Users.getProfile(herp).inParty()) {
@@ -73,7 +66,7 @@ public class PCommand implements CommandExecutor {
 
 			String name = (LoadProperties.pDisplayNames) ? player.getDisplayName() : player.getName();
 			String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + name + ChatColor.GREEN + ") ";
-			log.log(Level.INFO, "[P](" + PP.getParty() + ")<" + name + "> " + pMessage);
+			Bukkit.getLogger().info("[P](" + PP.getParty() + ")<" + name + "> " + pMessage);
 
 			for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
 				if (Users.getProfile(herp).inParty()) {
@@ -91,10 +84,8 @@ public class PCommand implements CommandExecutor {
 		PP.togglePartyChat();
 
 		if (PP.getPartyChatMode()) {
-			// player.sendMessage(ChatColor.GREEN + "Party Chat Toggled On");
 			player.sendMessage(mcLocale.getString("mcPlayerListener.PartyChatOn"));
 		} else {
-			// player.sendMessage(ChatColor.GREEN + "Party Chat Toggled " + ChatColor.RED + "Off");
 			player.sendMessage(mcLocale.getString("mcPlayerListener.PartyChatOff"));
 		}
 

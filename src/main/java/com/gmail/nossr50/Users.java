@@ -1,7 +1,8 @@
 package com.gmail.nossr50;
 
-import java.io.*;
-import java.util.logging.Logger;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
@@ -9,7 +10,6 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Users {
     private static volatile Users instance;
-    protected static final Logger log = Logger.getLogger("Minecraft");
 
     String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
     String directory = "plugins/mcMMO/FlatFileStuff/";

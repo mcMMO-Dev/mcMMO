@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -21,8 +19,6 @@ import com.gmail.nossr50.mcMMO;
 
 public class PlayerProfile
 {
-    protected final Logger log = Logger.getLogger("Minecraft");
-    
     //HUD
     private HUDType hud;
     
@@ -317,8 +313,7 @@ public class PlayerProfile
         	}
         	in.close();
         } catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while reading "
-            		+ location + " (Are you sure you formatted it correctly?)", e);
+            Bukkit.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
         return false;
 	}
@@ -440,7 +435,7 @@ public class PlayerProfile
 	            out.write(writer.toString());
 	            out.close();
 	        } catch (Exception e) {
-	                log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
+	            Bukkit.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
 	        }
     	}
 	}
@@ -518,7 +513,7 @@ public class PlayerProfile
 			out.newLine();
 			out.close();
         } catch (Exception e) {
-                log.log(Level.SEVERE, "Exception while writing to " + location + " (Are you sure you formatted it correctly?)", e);
+            Bukkit.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
     }
     public void togglePartyHUD()

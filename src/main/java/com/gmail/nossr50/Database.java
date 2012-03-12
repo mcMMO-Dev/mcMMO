@@ -9,19 +9,19 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import org.bukkit.Bukkit;
+
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.DatabaseUpdate;
 
 public class Database {
 
-    private mcMMO plugin;
     private String connectionString = "jdbc:mysql://" + LoadProperties.MySQLserverName + ":" + LoadProperties.MySQLport + "/" + LoadProperties.MySQLdbName + "?user=" + LoadProperties.MySQLuserName + "&password=" + LoadProperties.MySQLdbPass;
     private boolean isConnected;
     private Connection conn = null;
 
     public Database(mcMMO instance) {
         connect(); //Connect to MySQL
-        this.plugin = instance;
 
         // Load the driver instance
         try {
@@ -29,10 +29,10 @@ public class Database {
             DriverManager.getConnection(connectionString);
         }
         catch (ClassNotFoundException e) {
-            plugin.getServer().getLogger().warning(e.getLocalizedMessage());
+            Bukkit.getLogger().warning(e.getLocalizedMessage());
         }
         catch (SQLException ex) {
-            plugin.getServer().getLogger().warning(ex.getLocalizedMessage());
+            Bukkit.getLogger().warning(ex.getLocalizedMessage());
             printErrors(ex);
         }
     }

@@ -56,6 +56,8 @@ public class Archery {
 
         if (Math.random() * 100 <= IGNITION_CHANCE) {
             int ignition = 20;
+
+            /* Add 20 ticks for every 200 skill levels */
             ignition += (PPa.getSkillLevel(SkillType.ARCHERY) / 200) * 20;
 
             if (ignition > MAX_IGNITION_TICKS) {
@@ -89,17 +91,13 @@ public class Archery {
 
         int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
         Location loc = defender.getLocation();
-        int skillCheck = skillLevel;
+        int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         if (Math.random() * 10 > 5) {
             loc.setPitch(90);
         }
         else {
             loc.setPitch(-90);
-        }
-
-        if (skillLevel > MAX_BONUS_LEVEL) {
-            skillCheck = MAX_BONUS_LEVEL;
         }
 
         if (Math.random() * 2000 <= skillCheck) {

@@ -2,19 +2,15 @@ package com.gmail.nossr50.runnables;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
 
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 
 public class SQLConversionTask implements Runnable {
-    private Logger log;
-    
-    public SQLConversionTask(Logger log) {
-        this.log = log;
-    }
+    public SQLConversionTask() {}
 
     @Override
     public void run() {
@@ -282,7 +278,7 @@ public class SQLConversionTask implements Runnable {
             in.close();
         }
         catch (Exception e) {
-            log.log(Level.SEVERE, "Exception while reading " + location + " (Are you sure you formatted it correctly?)", e);
+            Bukkit.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
     }
 }

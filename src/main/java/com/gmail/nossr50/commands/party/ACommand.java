@@ -1,8 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,11 +14,8 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class ACommand implements CommandExecutor {
-	private Logger log;
 
-	public ACommand() {
-		this.log = Logger.getLogger("Minecraft");
-	}
+	public ACommand() {}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -35,7 +29,7 @@ public class ACommand implements CommandExecutor {
 
 			String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + "*Console*" + ChatColor.AQUA + "} ";
 
-			log.log(Level.INFO, "[A]<*Console*> " + aMessage);
+			Bukkit.getLogger().info("[A]<*Console*> " + aMessage);
 
 			for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
 				if (mcPermissions.getInstance().adminChat(herp) || herp.isOp())
@@ -64,7 +58,7 @@ public class ACommand implements CommandExecutor {
 
 			String name = (LoadProperties.aDisplayNames) ? player.getDisplayName() : player.getName();
 			String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + name + ChatColor.AQUA + "} ";
-			log.log(Level.INFO, "[A]<" + name + "> " + aMessage);
+			Bukkit.getLogger().info("[A]<" + name + "> " + aMessage);
 			for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
 				if (mcPermissions.getInstance().adminChat(herp) || herp.isOp())
 					herp.sendMessage(aPrefix + aMessage);
@@ -83,10 +77,8 @@ public class ACommand implements CommandExecutor {
 	
 			if (PP.getAdminChatMode()) {
 				player.sendMessage(mcLocale.getString("mcPlayerListener.AdminChatOn"));
-				// player.sendMessage(ChatColor.AQUA + "Admin chat toggled " + ChatColor.GREEN + "On");
 			} else {
 				player.sendMessage(mcLocale.getString("mcPlayerListener.AdminChatOff"));
-				// player.sendMessage(ChatColor.AQUA + "Admin chat toggled " + ChatColor.RED + "Off");
 			}
 		}
 		return true;
