@@ -260,7 +260,7 @@ public class mcEntityListener implements Listener {
                         break;
 
                     default:
-                        break;
+                        return;
                     }
 
                     for (int i = 200; i <= 1000; i += rankChange) {
