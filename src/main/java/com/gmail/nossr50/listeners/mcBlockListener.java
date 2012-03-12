@@ -2,14 +2,20 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.BlockChecks;
 import com.gmail.nossr50.ItemChecks;
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.Users;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.Excavation;
+import com.gmail.nossr50.skills.Herbalism;
+import com.gmail.nossr50.skills.Mining;
+import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.WoodCutting;
+import com.gmail.nossr50.spout.SpoutStuff;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -29,7 +35,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.skills.*;
 import com.gmail.nossr50.events.FakeBlockBreakEvent;
 
 public class mcBlockListener implements Listener {
@@ -139,7 +144,7 @@ public class mcBlockListener implements Listener {
          * MINING
          */
 
-        if (mcPermissions.getInstance().mining(player) && Mining.canBeSuperBroken(block)) {
+        if (mcPermissions.getInstance().mining(player) && Mining.canBeSuperBroken(mat)) {
             if (LoadProperties.miningrequirespickaxe && ItemChecks.isMiningPick(inhand)) {
                 Mining.miningBlockCheck(player, block, plugin);
             }
@@ -169,7 +174,7 @@ public class mcBlockListener implements Listener {
          * EXCAVATION
          */
 
-        if (Excavation.canBeGigaDrillBroken(block) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 0x5) {
+        if (Excavation.canBeGigaDrillBroken(mat) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 0x5) {
             if (LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand)) {
                 Excavation.excavationProcCheck(block, player);
             }
@@ -210,13 +215,13 @@ public class mcBlockListener implements Listener {
             else if (PP.getAxePreparationMode() && mat.equals(Material.LOG) && mcPermissions.getInstance().woodCuttingAbility(player)) {  //Why are we checking the permissions here?
                 Skills.abilityCheck(player, SkillType.WOODCUTTING);
             }
-            else if (PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(block)) {
+            else if (PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(mat)) {
                 Skills.abilityCheck(player, SkillType.MINING);
             }
-            else if (PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(block)) {
+            else if (PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(mat)) {
                 Skills.abilityCheck(player, SkillType.EXCAVATION);
             }
-            else if (PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(block) || mat.equals(Material.SNOW))) {
+            else if (PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(mat) || mat.equals(Material.SNOW))) {
                 Skills.abilityCheck(player, SkillType.UNARMED);
             }
         }

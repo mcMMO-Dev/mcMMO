@@ -9,13 +9,13 @@ import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.runnables.*;
+import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.listeners.mcBlockListener;
 import com.gmail.nossr50.listeners.mcEntityListener;
 import com.gmail.nossr50.listeners.mcPlayerListener;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.skills.*;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

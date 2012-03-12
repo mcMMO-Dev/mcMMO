@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcPermissions;
@@ -201,20 +200,20 @@ public enum AbilityType
 		return false;
 	}
 	
-	public boolean blockCheck(Block block) {
+	public boolean blockCheck(Material material) {
 		switch (this) {
 		case BERSERK:
-			return (Excavation.canBeGigaDrillBroken(block) || block.getType().equals(Material.SNOW));
+			return (Excavation.canBeGigaDrillBroken(material) || material.equals(Material.SNOW));
 		case GIGA_DRILL_BREAKER:
-			return Excavation.canBeGigaDrillBroken(block);
+			return Excavation.canBeGigaDrillBroken(material);
 		case GREEN_TERRA:
-			return Herbalism.makeMossy(block.getType());
+			return Herbalism.makeMossy(material);
 		case LEAF_BLOWER:
-			return block.getType().equals(Material.LEAVES);
+			return material.equals(Material.LEAVES);
 		case SUPER_BREAKER:
-			return Mining.canBeSuperBroken(block);
+			return Mining.canBeSuperBroken(material);
 		case TREE_FELLER:
-			return block.getType().equals(Material.LOG);
+			return material.equals(Material.LOG);
 		default:
 			return false;
 		}

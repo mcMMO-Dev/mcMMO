@@ -140,16 +140,16 @@ public class Mining
     	if(plugin.misc.blockWatchList.contains(block) || block.getData() == (byte) 5)
     		return;
     	miningXP(player, block);
-		if(canBeSuperBroken(block))
+		if(canBeSuperBroken(block.getType()))
 			blockProcCheck(block, player);
     }
     
     /*
      * Handling SuperBreaker stuff
      */
-    public static Boolean canBeSuperBroken(Block block)
+    public static Boolean canBeSuperBroken(Material type)
     {
-    	switch(block.getType()){
+    	switch(type){
     	case COAL_ORE:
     	case DIAMOND_ORE:
     	case ENDER_STONE:

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,153 +22,120 @@ import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 
 import org.getspout.spoutapi.sound.SoundEffect;
 
-public class Excavation
-{
-	public static boolean canBeGigaDrillBroken(Block block)
-	{
-		switch(block.getType()){
-		case CLAY:
-		case DIRT:
-		case GRASS:
-		case GRAVEL:
-		case MYCEL:
-		case SAND:
-		case SOUL_SAND:
-			return true;
-		}
-		return false;
-	}
-	
-	public static void excavationProcCheck(Block block, Player player)
-	{
-		Material type = block.getType();
-		Location loc = block.getLocation();
-		
-		PlayerProfile PP = Users.getProfile(player);
-		int skillLevel = PP.getSkillLevel(SkillType.EXCAVATION);
-    	ArrayList<ItemStack> is = new ArrayList<ItemStack>();
-    	int xp = LoadProperties.mbase;
-    	
-    	switch(type)
-    	{
-    	case DIRT:
-    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromDirt)
-    		{
-    			if(skillLevel >= treasure.getDropLevel())
-    			{
-    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
-    				{
-    					xp += treasure.getXp();
-    					is.add(treasure.getDrop());
-    				}
-    			}
-    		}
-    		break;
-    	case GRASS:
-    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromGrass)
-    		{
-    			if(skillLevel >= treasure.getDropLevel())
-    			{
-    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
-    				{
-    					xp += treasure.getXp();
-    					is.add(treasure.getDrop());
-    				}
-    			}
-    		}
-    		break;
-    	case SAND:
-    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromSand)
-    		{
-    			if(skillLevel >= treasure.getDropLevel())
-    			{
-    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
-    				{
-    					xp += treasure.getXp();
-    					is.add(treasure.getDrop());
-    				}
-    			}
-    		}
-    		break;
-    	case GRAVEL:
-    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromGravel)
-    		{
-    			if(skillLevel >= treasure.getDropLevel())
-    			{
-    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
-    				{
-    					xp += treasure.getXp();
-    					is.add(treasure.getDrop());
-    				}
-    			}
-    		}
-    		break;
-    	case CLAY:
-    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromClay)
-    		{
-    			if(skillLevel >= treasure.getDropLevel())
-    			{
-    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
-    				{
-    					xp += treasure.getXp();
-    					is.add(treasure.getDrop());
-    				}
-    			}
-    		}
-    		break;
-    	case MYCEL:
-    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromMycel)
-    		{
-    			if(skillLevel >= treasure.getDropLevel())
-    			{
-    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
-    				{
-    					xp += treasure.getXp();
-    					is.add(treasure.getDrop());
-    				}
-    			}
-    		}
-    		break;
-    	case SOUL_SAND:
-    		for(ExcavationTreasure treasure : LoadTreasures.excavationFromSoulSand)
-    		{
-    			if(skillLevel >= treasure.getDropLevel())
-    			{
-    				if(Math.random() * 100 > (100.00 - treasure.getDropChance()))
-    				{
-    					xp += treasure.getXp();
-    					is.add(treasure.getDrop());
-    				}
-    			}
-    		}
-    		break;
-    	}
-    	
-    	//Drop items
-    	for(ItemStack x : is)
-    	{
-    		if(x != null)
-    			m.mcDropItem(loc, x);
-    	}
-    	
-    	//Handle XP related tasks
-    	PP.addXP(SkillType.EXCAVATION, xp, player);
-    	Skills.XpCheckSkill(SkillType.EXCAVATION, player);
+public class Excavation {
+
+    /**
+     * Check to see if a block can be broken by Giga Drill Breaker.
+     *
+     * @param material The type of block to check
+     * @return
+     */
+    public static boolean canBeGigaDrillBroken(Material type) {
+        switch (type) {
+        case CLAY:
+        case DIRT:
+        case GRASS:
+        case GRAVEL:
+        case MYCEL:
+        case SAND:
+        case SOUL_SAND:
+            return true;
+        default:
+            return false;
+        }
     }
-	
-	public static void gigaDrillBreaker(Player player, Block block)
-	{
-		Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
-		if(block.getData() != (byte)5)
-		{
-			PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
-			Bukkit.getPluginManager().callEvent(armswing);
-			Excavation.excavationProcCheck(block, player);
-			Excavation.excavationProcCheck(block, player);
-			Excavation.excavationProcCheck(block, player);
-		}
-		
-		if(LoadProperties.spoutEnabled)
-			SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-	}
+
+    /**
+     * Check to see if treasures were found.
+     *
+     * @param block The block to check
+     * @param player The player who broke the block
+     */
+    public static void excavationProcCheck(Block block, Player player) {
+        Material type = block.getType();
+        Location loc = block.getLocation();
+
+        PlayerProfile PP = Users.getProfile(player);
+        int skillLevel = PP.getSkillLevel(SkillType.EXCAVATION);
+        ArrayList<ItemStack> is = new ArrayList<ItemStack>();
+
+        List<ExcavationTreasure> treasures = new ArrayList<ExcavationTreasure>();
+        
+        int xp = LoadProperties.mbase;
+
+        switch (type) {
+        case DIRT:
+            treasures = LoadTreasures.excavationFromDirt;
+            break;
+
+        case GRASS:
+            treasures = LoadTreasures.excavationFromGrass;
+            break;
+
+        case SAND:
+            treasures = LoadTreasures.excavationFromSand;
+            break;
+
+        case GRAVEL:
+            treasures = LoadTreasures.excavationFromGravel;
+            break;
+
+        case CLAY:
+            treasures = LoadTreasures.excavationFromClay;
+            break;
+
+        case MYCEL:
+            treasures = LoadTreasures.excavationFromMycel;
+            break;
+
+        case SOUL_SAND:
+            treasures = LoadTreasures.excavationFromSoulSand;
+            break;
+
+        default:
+            break;
+        }
+
+        for (ExcavationTreasure treasure : treasures) {
+            if (skillLevel >= treasure.getDropLevel()) {
+                if (Math.random() * 100 <= treasure.getDropChance()) {
+                    xp += treasure.getXp();
+                    is.add(treasure.getDrop());
+                }
+            }
+        }
+
+        //Drop items
+        for (ItemStack x : is) {
+            if (x != null) {
+                m.mcDropItem(loc, x);
+            }
+        }
+
+        //Handle XP related tasks
+        PP.addXP(SkillType.EXCAVATION, xp, player);
+        Skills.XpCheckSkill(SkillType.EXCAVATION, player);
+    }
+
+    /**
+     * Handle triple drops from Giga Drill Breaker.
+     *
+     * @param player The player using the ability
+     * @param block The block to check
+     */
+    public static void gigaDrillBreaker(Player player, Block block) {
+        Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
+
+        if (block.getData() != (byte) 0x5) {
+            PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+            Bukkit.getPluginManager().callEvent(armswing);
+
+            Excavation.excavationProcCheck(block, player);
+            Excavation.excavationProcCheck(block, player);
+        }
+
+        if (LoadProperties.spoutEnabled) {
+            SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+        }
+    }
 }
