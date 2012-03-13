@@ -26,8 +26,8 @@ public class PlayerProfile
 	private String party, invite;
 	
 	//TOGGLES
-	private boolean loaded = false, partyhud = true, spoutcraft = false, filling = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
-	superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, dead, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
+	private boolean loaded = false, partyhud = true, spoutcraft = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
+	superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
 	serratedStrikesMode, hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false, pickaxePreparationMode = false, axePreparationMode = false, skullSplitterMode, berserkMode;
 	
 	//TIMESTAMPS
@@ -531,15 +531,6 @@ public class PlayerProfile
     public void toggleSpoutEnabled()
     {
     	spoutcraft = !spoutcraft;
-    }
-    
-    public boolean isFilling()
-    {
-    	return filling;
-    }
-    public void toggleFilling()
-    {
-    	filling = !filling;
     }
     public HUDType getHUDType()
     {
@@ -1171,10 +1162,6 @@ public class PlayerProfile
     	}
     }
     
-    public boolean isDead(){
-    	return dead;
-    }
-
     public String getPlayerName()
     {
         return playerName;

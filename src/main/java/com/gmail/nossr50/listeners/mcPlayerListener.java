@@ -66,6 +66,13 @@ public class mcPlayerListener implements Listener {
                 player.sendMessage(mcLocale.getString("GodMode.Forbidden"));
             }
         }
+
+        if (PP.inParty()) {
+            if (!mcPermissions.getInstance().party(player)) {
+                PP.removeParty();
+                player.sendMessage(mcLocale.getString("Party.Forbidden"));
+            }
+        }
     }
 
     /**
