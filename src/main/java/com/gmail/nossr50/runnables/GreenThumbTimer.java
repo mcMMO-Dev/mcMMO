@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables;
 
+import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -22,20 +23,20 @@ public class GreenThumbTimer implements Runnable {
         //This replants the wheat at a certain stage in development based on Herbalism Skill
         if (!PP.getGreenTerraMode()) {
             if (PP.getSkillLevel(SkillType.HERBALISM) >= 600) {
-                block.setData((byte) 0x4);
+                block.setData(CropState.MEDIUM.getData());
             }
             else if (PP.getSkillLevel(SkillType.HERBALISM) >= 400) {
-                block.setData((byte) 0x3);
+                block.setData(CropState.SMALL.getData());
             }
             else if (PP.getSkillLevel(SkillType.HERBALISM) >= 200) {
-                block.setData((byte) 0x2);
+                block.setData(CropState.VERY_SMALL.getData());
             }
             else {
-                block.setData((byte) 0x1);
+                block.setData(CropState.GERMINATED.getData());
             }
         }
         else {
-            block.setData((byte) 0x4);
+            block.setData(CropState.MEDIUM.getData());
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills;
 
 import org.bukkit.Bukkit;
+import org.bukkit.CropState;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -143,7 +144,7 @@ public class Herbalism {
             break;
 
         case CROPS:
-            if (data == (byte) 0x7) {
+            if (data == CropState.RIPE.getData()) {
                 mat = Material.WHEAT;
                 xp = LoadProperties.mwheat;
                 greenThumbWheat(block, player, event, plugin);

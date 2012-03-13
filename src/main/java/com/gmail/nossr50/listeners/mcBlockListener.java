@@ -18,6 +18,7 @@ import com.gmail.nossr50.spout.SpoutStuff;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -126,7 +127,7 @@ public class mcBlockListener implements Listener {
          */
 
         //Green Terra
-        if (PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && ((mat.equals(Material.CROPS) && block.getData() == (byte) 0x7) || Herbalism.canBeGreenTerra(mat))) {
+        if (PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && ((mat.equals(Material.CROPS) && block.getData() == CropState.RIPE.getData()) || Herbalism.canBeGreenTerra(mat))) {
             Skills.abilityCheck(player, SkillType.HERBALISM);
         }
 
