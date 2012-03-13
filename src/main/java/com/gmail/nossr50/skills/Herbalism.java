@@ -41,7 +41,7 @@ public class Herbalism {
 
             if (m.blockBreakSimulate(block, player, false)) {
                 if (LoadProperties.enableSmoothToMossy && type.equals(Material.SMOOTH_BRICK)) {
-                    block.setData((byte) 0x1);
+                    block.setData((byte) 0x1); //Set type of the brick to mossy
                 }
                 else if (LoadProperties.enableDirtToGrass && type.equals(Material.DIRT)) {
                     block.setType(Material.GRASS);
@@ -108,6 +108,8 @@ public class Herbalism {
      */
     public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
         final PlayerProfile PP = Users.getProfile(player);
+        final int MAX_BONUS_LEVEL = 1000;
+
         int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
         int id = block.getTypeId();
         Material type = block.getType();
@@ -134,7 +136,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.CACTUS)) {
                     mat = Material.CACTUS;
                     if (!plugin.misc.blockWatchList.contains(b)) {
-                        if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel)) {
+                        if(herbLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= herbLevel)) {
                             catciDrops++;
                         }
                         xp += LoadProperties.mcactus;
@@ -187,7 +189,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
                     mat = Material.SUGAR_CANE;
                     if (!plugin.misc.blockWatchList.contains(b)) {
-                        if(herbLevel > 1000 || (Math.random() * 1000 <= herbLevel)) {
+                        if(herbLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= herbLevel)) {
                             caneDrops++;
                         }
                         xp += LoadProperties.msugar;
@@ -220,7 +222,7 @@ public class Herbalism {
         else {
             ItemStack is = new ItemStack(mat);
 
-            if (herbLevel > 1000 || (Math.random() * 1000 <= herbLevel)) {
+            if (herbLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= herbLevel)) {
                 if (type.equals(Material.CACTUS)) {
                     m.mcDropItems(loc, is, catciDrops);
                 }
@@ -254,13 +256,15 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
+        final int MAX_BONUS_LEVEL = 1500;
+
         PlayerProfile PP = Users.getProfile(player);
         int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
         PlayerInventory inventory = player.getInventory();
         boolean hasSeeds = inventory.contains(Material.SEEDS);
         Location loc = block.getLocation();
 
-        if (hasSeeds && PP.getGreenTerraMode() || hasSeeds && (herbLevel >= 1500 || (Math.random() * 1500 <= herbLevel))) {
+        if (hasSeeds && PP.getGreenTerraMode() || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || (Math.random() * 1500 <= herbLevel))) {
             event.setCancelled(true);
 
             m.mcDropItem(loc, new ItemStack(Material.WHEAT, 1));
@@ -281,13 +285,15 @@ public class Herbalism {
      * @param block The block being used in the ability
      */
     public static void greenThumbBlocks(ItemStack is, Player player, Block block) {
+        final int MAX_BONUS_LEVEL = 1500;
+
         PlayerProfile PP = Users.getProfile(player);
         int skillLevel = PP.getSkillLevel(SkillType.HERBALISM);
         int seeds = is.getAmount();
 
         player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
 
-        if (skillLevel > 1500 || Math.random() * 1500 <= skillLevel) {
+        if (skillLevel > MAX_BONUS_LEVEL || Math.random() * 1500 <= skillLevel) {
             greenTerra(player, block);
         }
         else {
