@@ -29,18 +29,16 @@ public class Item {
         PlayerProfile PP = Users.getProfile(player);
         ItemStack is = player.getItemInHand();
         Block block = player.getLocation().getBlock();
-        int chimaeraID = LoadProperties.chimaeraId;
-        int itemsUsed = LoadProperties.feathersConsumedByChimaeraWing;
         int amount = is.getAmount();
 
-        if (mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == chimaeraID) {
-            if (Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && amount >= itemsUsed) {
-                player.setItemInHand(new ItemStack(chimaeraID, amount - itemsUsed));
+        if (mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == LoadProperties.chimaeraId) {
+            if (Skills.cooldownOver(PP.getRecentlyHurt(), 60) && amount >= LoadProperties.feathersConsumedByChimaeraWing) {
+                player.setItemInHand(new ItemStack(LoadProperties.chimaeraId, amount - LoadProperties.feathersConsumedByChimaeraWing));
 
-                for (int blockY = block.getY(); blockY < player.getWorld().getMaxHeight(); blockY++) {
-                    if (player.getLocation().getWorld().getBlockAt(block.getX(), blockY, block.getZ()).getType() != Material.AIR) {
+                for (int y = 0; block.getY() + y < player.getWorld().getMaxHeight(); y++) {
+                    if (!block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
                         player.sendMessage(mcLocale.getString("Item.ChimaeraWingFail"));
-                        player.teleport(player.getLocation().getWorld().getBlockAt(block.getX(), (blockY - 1), block.getZ()).getLocation());
+                        player.teleport(block.getRelative(0, y - 1, 0).getLocation());
                         return;
                     }
                 }
@@ -54,10 +52,10 @@ public class Item {
 
                 player.sendMessage(mcLocale.getString("Item.ChimaeraWingPass"));
             }
-            else if (!Skills.cooldownOver(player, PP.getRecentlyHurt(), 60) && is.getAmount() >= itemsUsed) {
-                player.sendMessage(mcLocale.getString("Item.InjuredWait", new Object[] {Skills.calculateTimeLeft(player, PP.getRecentlyHurt(), 60)}));
+            else if (!Skills.cooldownOver(PP.getRecentlyHurt(), 60) && is.getAmount() >= LoadProperties.feathersConsumedByChimaeraWing) {
+                player.sendMessage(mcLocale.getString("Item.InjuredWait", new Object[] {Skills.calculateTimeLeft(PP.getRecentlyHurt(), 60)}));
             }
-            else if (is.getTypeId() == LoadProperties.chimaeraId && is.getAmount() <= itemsUsed) {
+            else if (is.getAmount() <= LoadProperties.feathersConsumedByChimaeraWing) {
                 player.sendMessage(mcLocale.getString("Item.NeedFeathers"));
             }
         }

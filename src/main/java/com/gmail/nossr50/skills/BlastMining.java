@@ -239,6 +239,7 @@ public class BlastMining {
         final byte SNOW = 78;
         final byte AIR = 0;
         final int BLOCKS_AWAY = 100;
+        final int TIME_CONVERSION_FACTOR = 1000;
 
         PlayerProfile PP = Users.getProfile(player);
         HashSet<Byte> transparent = new HashSet<Byte>();
@@ -253,8 +254,8 @@ public class BlastMining {
             AbilityType ability = AbilityType.BLAST_MINING;
 
             /* Check Cooldown */
-            if(!Skills.cooldownOver(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown())) {
-                player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(player, (PP.getSkillDATS(ability) * 1000), ability.getCooldown()) + "s)");
+            if(!Skills.cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
+                player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                 return;
             }
 
