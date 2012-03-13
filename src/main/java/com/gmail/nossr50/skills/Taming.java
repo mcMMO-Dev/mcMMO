@@ -11,7 +11,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
@@ -21,23 +20,6 @@ import com.gmail.nossr50.locale.mcLocale;
 
 public class Taming 
 {
-	public static void rewardXp(EntityDamageEvent event, mcMMO pluginx, Player master)
-	{
-		Entity entity = event.getEntity();
-		if(!pluginx.misc.mobSpawnerList.contains(entity.getEntityId()))
-		{
-			int xp = Combat.getXp((LivingEntity) entity, event.getDamage());
-			Users.getProfile(master).addXP(SkillType.TAMING, xp*10, master);
-			
-			if(entity instanceof Player)
-			{
-				xp = (event.getDamage() * 2);
-				Users.getProfile(master).addXP(SkillType.TAMING, (int)((xp*10)*1.5), master);
-			}
-			Skills.XpCheckSkill(SkillType.TAMING, master);
-		}
-	}
-	
 	public static void fastFoodService(PlayerProfile PPo, Wolf theWolf, EntityDamageEvent event)
 	{
 		int health = theWolf.getHealth();
