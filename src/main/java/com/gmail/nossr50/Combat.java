@@ -66,12 +66,7 @@ public class Combat {
                     applyAbilityAoE(attacker, target, damage, pluginx, SkillType.SWORDS);
                 }
 
-                if (targetType.equals(EntityType.PLAYER)) {
-                    PvPExperienceGain(attacker, PPa, (Player) target, damage, SkillType.SWORDS);
-                }
-                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId())){
-                    PvEExperienceGain(attacker, PPa, target, damage, SkillType.SWORDS);
-                }
+                startGainXp(attacker, PPa, target, SkillType.SWORDS, pluginx);
             }
             else if (ItemChecks.isAxe(itemInHand) && mcPermissions.getInstance().axes(attacker)) {
                 Axes.axesBonus(attacker, event);
@@ -81,13 +76,8 @@ public class Combat {
                 if (PPa.getSkullSplitterMode()) {
                     applyAbilityAoE(attacker, target, damage, pluginx, SkillType.AXES);
                 }
-                
-                if (targetType.equals(EntityType.PLAYER)) {
-                    PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.AXES); //use getDamage because damage is modified in earlier functions
-                }
-                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId())) {
-                    PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.AXES); //use getDamage because damage is modified in earlier functions
-                }
+
+                startGainXp(attacker, PPa, target, SkillType.AXES, pluginx);
             }
             else if (itemInHand.getType().equals(Material.AIR) && mcPermissions.getInstance().unarmed(attacker)) {
                 Unarmed.unarmedBonus(attacker, event);
@@ -98,11 +88,9 @@ public class Combat {
 
                 if (targetType.equals(EntityType.PLAYER)) {
                     Unarmed.disarmProcCheck(attacker, (Player) target);
-                    PvPExperienceGain(attacker, PPa, (Player) target, event.getDamage(), SkillType.UNARMED); //use getDamage because damage is modified in earlier functions
                 }
-                else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId())) {
-                    PvEExperienceGain(attacker, PPa, target, event.getDamage(), SkillType.UNARMED); //use getDamage because damage is modified in earlier functions
-                }
+                
+                startGainXp(attacker, PPa, target, SkillType.UNARMED, pluginx);
             }
             else if (itemInHand.getType().equals(Material.BONE) && mcPermissions.getInstance().taming(attacker) && targetType.equals(EntityType.WOLF)) {
                 Wolf wolf = (Wolf) target;
@@ -133,7 +121,8 @@ public class Combat {
                     Taming.fastFoodService(PPo, wolf, event);
                     Taming.sharpenedClaws(PPo, event);
                     Taming.gore(PPo, event, master, pluginx);
-                    Taming.rewardXp(event, pluginx, master);
+
+                    startGainXp(master, PPo, target, SkillType.TAMING, pluginx);
                 }
             }
             break;
@@ -180,10 +169,10 @@ public class Combat {
     public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx) {
         Arrow arrow = (Arrow) event.getDamager();
         LivingEntity shooter = arrow.getShooter();
-        Entity entity = event.getEntity();
+        LivingEntity target = (LivingEntity) event.getEntity();
 
-        if (entity instanceof Player) {
-            Player defender = (Player) entity;
+        if (target instanceof Player) {
+            Player defender = (Player) target;
             PlayerProfile PPd = Users.getProfile(defender);
             boolean deflect = false;
 
@@ -209,16 +198,13 @@ public class Combat {
             int damage = event.getDamage();
 
             if (mcPermissions.getInstance().archery(attacker) && damage > 0) {
-                Archery.trackArrows(pluginx, entity, PPa);
-                Archery.ignitionCheck(entity, attacker);
+                Archery.trackArrows(pluginx, target, PPa);
+                Archery.ignitionCheck(target, attacker);
 
-                if (!pluginx.misc.mobSpawnerList.contains(entity.getEntityId())) {
-                    int xp = getXp((LivingEntity) entity, damage);
-                    PPa.addXP(SkillType.ARCHERY, xp*10, attacker);
-                }
+                startGainXp(attacker, PPa, target, SkillType.ARCHERY, pluginx);
 
-                if (entity instanceof Player) {
-                    Player defender = (Player) entity;
+                if (target instanceof Player) {
+                    Player defender = (Player) target;
                     PlayerProfile PPd = Users.getProfile(defender);
 
                     if (PPa.inParty() && PPd.inParty() && Party.getInstance().inSameParty(defender, attacker)) {
@@ -226,16 +212,9 @@ public class Combat {
                         return;
                     }
 
-                    if (LoadProperties.pvpxp && (((PPd.getLastLogin() + 5) * 1000) < System.currentTimeMillis()) && !attacker.getName().equals(defender.getName())) {
-                        int xp = (damage * 2) * 10; //What's the 2 for? Should this be a multiplier from file instead?
-                        PPa.addXP(SkillType.ARCHERY, xp, attacker);
-                    }
-
                     Archery.dazeCheck(defender, attacker);
                 }
             }
-
-            Skills.XpCheckSkill(SkillType.ARCHERY, attacker);
         }
     }
 
@@ -293,149 +272,6 @@ public class Combat {
         else {
             target.damage(dmg);
         }
-    }
-
-    /**
-     * Process PVP experience gain.
-     *
-     * @param attacker The attacking player
-     * @param PPa The profile of the attacking player
-     * @param defender The defending player
-     * @param damage The initial damage amount
-     * @param skillType The skill being used
-     */
-    private static void PvPExperienceGain(Player attacker, PlayerProfile PPa, Player defender, int damage, SkillType skillType) {
-        if (!LoadProperties.pvpxp) {
-            return;
-        }
-
-        PlayerProfile PPd = Users.getProfile(defender);
-        int health = defender.getHealth();
-
-        if ((System.currentTimeMillis() >= (PPd.getRespawnATS()*1000) + 5000) && (((PPd.getLastLogin()+5)*1000) < System.currentTimeMillis()) && health >= 1) {
-            int xp = capXP(health, damage);
-
-            xp = (int) (xp * 2 * LoadProperties.pvpxprewardmodifier);
-            PPa.addXP(skillType, xp * 10, attacker);
-            Skills.XpCheckSkill(skillType, attacker);
-          }
-    }
-
-    /**
-     * Process PVE experience gain.
-     *
-     * @param attacker The attacking player
-     * @param PPa The profile of the attacking player
-     * @param target The defending entity
-     * @param damage The initial damage amount
-     * @param skillType The skill being used
-     */
-    private static void PvEExperienceGain(Player attacker, PlayerProfile PPa, LivingEntity target, int damage, SkillType skillType) {
-        int xp = getXp(target, damage);
-
-        PPa.addXP(skillType, xp * 10, attacker);
-        Skills.XpCheckSkill(skillType, attacker);
-    }
-
-    /**
-     * Cap the XP based on the remaining health of an entity.
-     *
-     * @param hpLeft Amount of HP remaining
-     * @param damage Amount of damage being dealt
-     * @return the modified XP amount
-     */
-    private static int capXP(int hpLeft, int damage) {
-        int xp;
-
-        if (hpLeft < damage) {
-            if (hpLeft > 0) {
-                xp = hpLeft;
-            }
-            else {
-                xp = 0;
-            }
-        }
-        else {
-            xp = damage;
-        }
-
-        return xp;
-    }
-
-    /**
-     * Get the XP gained from damaging a non-player mob
-     *
-     * @param entity Entity being damaged
-     * @param damage Damage to be dealt to the mob
-     * @return XP gained
-     */
-    public static int getXp(LivingEntity entity, int damage) {
-        int xp = capXP(entity.getHealth(), damage);
-
-        if (entity instanceof Animals) {
-            xp = (int) (xp * LoadProperties.animalXP);
-        }
-        else {
-            EntityType type = entity.getType();
-
-            switch (type) {
-            case BLAZE:
-                xp = (int) (xp * LoadProperties.blazeXP);
-                break;
-
-            case CAVE_SPIDER:
-                xp = (int) (xp * LoadProperties.cavespiderXP);
-                break;
-
-            case CREEPER:
-                xp = (int) (xp * LoadProperties.creeperXP);
-                break;
-
-            case ENDER_DRAGON:
-                xp = (int) (xp * LoadProperties.enderdragonXP);
-                break;
-
-            case ENDERMAN:
-                xp = (int) (xp * LoadProperties.endermanXP);
-                break;
-
-            case GHAST:
-                xp = (int) (xp * LoadProperties.ghastXP);
-                break;
-
-            case MAGMA_CUBE:
-                xp = (int) (xp * LoadProperties.magmacubeXP);
-                break;
-
-            case PIG_ZOMBIE:
-                xp = (int) (xp * LoadProperties.pigzombieXP);
-                break;
-
-            case SILVERFISH:
-                xp = (int) (xp * LoadProperties.silverfishXP);
-                break;
-
-            case SKELETON:
-                xp = (int) (xp * LoadProperties.skeletonXP);
-                break;
-
-            case SLIME:
-                xp = (int) (xp * LoadProperties.slimeXP);
-                break;
-
-            case SPIDER:
-                xp = (int) (xp * LoadProperties.spiderXP);
-                break;
-
-            case ZOMBIE:
-                xp = (int) (xp * LoadProperties.zombieXP);
-                break;
-
-            default:
-                break;
-            }
-        }
-        return xp;
     }
 
     /**
@@ -538,5 +374,129 @@ public class Combat {
                 }
             }
         }
+    }
+
+    /**
+     * Start the task that gives combat XP.
+     *
+     * @param attacker The attacking player
+     * @param PP The player's PlayerProfile
+     * @param target The defending entity
+     * @param skillType The skill being used
+     * @param plugin mcMMO plugin instance
+     */
+    public static void startGainXp(Player attacker, PlayerProfile PP, LivingEntity target, SkillType skillType, mcMMO pluginx)
+    {
+        double baseXP = 0;
+
+        if (target instanceof Player) {
+            if (!LoadProperties.pvpxp) {
+                return;
+            }
+
+            Player defender = (Player) target;
+            PlayerProfile PPd = Users.getProfile(defender);
+
+            if (System.currentTimeMillis() >= (PPd.getRespawnATS() * 1000) + 5000 &&
+               ((PPd.getLastLogin() + 5) * 1000) < System.currentTimeMillis() &&
+               defender.getHealth() >= 1) {
+                baseXP = 20 * LoadProperties.pvpxprewardmodifier;
+            }
+        }
+        else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId())) {
+            if (target instanceof Animals) {
+                baseXP = 10 * LoadProperties.animalXP;
+            }
+            else
+            {
+                EntityType type = target.getType();
+
+                switch (type) {
+                case BLAZE:
+                    baseXP = LoadProperties.blazeXP;
+                    break;
+                case CAVE_SPIDER:
+                    baseXP = LoadProperties.cavespiderXP;
+                    break;
+                case CREEPER:
+                    baseXP = LoadProperties.creeperXP;
+                    break;
+                case ENDER_DRAGON:
+                    baseXP = LoadProperties.enderdragonXP;
+                    break;
+                case ENDERMAN:
+                    baseXP = LoadProperties.endermanXP;
+                    break;
+                case GHAST:
+                    baseXP = LoadProperties.ghastXP;
+                    break;
+                case MAGMA_CUBE:
+                    baseXP = LoadProperties.magmacubeXP;
+                    break;
+                case PIG_ZOMBIE:
+                    baseXP = LoadProperties.pigzombieXP;
+                    break;
+                case SILVERFISH:
+                    baseXP = LoadProperties.silverfishXP;
+                    break;
+                case SKELETON:
+                    baseXP = LoadProperties.skeletonXP;
+                    break;
+                case SLIME:
+                    baseXP = LoadProperties.slimeXP;
+                    break;
+                case SPIDER:
+                    baseXP = LoadProperties.spiderXP;
+                    break;
+                case ZOMBIE:
+                    baseXP = LoadProperties.zombieXP;
+                    break;
+                }
+            }
+
+            baseXP *= 10;
+        }
+
+        if (baseXP != 0)
+            Bukkit.getScheduler().scheduleSyncDelayedTask(pluginx, new GainXp(attacker, PP, skillType, baseXP, target), 0);
+    }
+
+}
+
+class GainXp implements Runnable
+{
+    private Player player = null;
+    private PlayerProfile PP = null;
+    private double baseXp = 0;
+    private SkillType skillType = null;
+    private LivingEntity target = null;
+    private int baseHealth = 0;
+
+    public GainXp(Player player, PlayerProfile PP, SkillType skillType, double baseXp, LivingEntity target)
+    {
+        this.player = player;
+        this.PP = PP;
+        this.skillType = skillType;
+        this.baseXp = baseXp;
+        this.target = target;
+        baseHealth = target.getHealth();
+    }
+
+    @Override
+    public void run()
+    {
+        int health = target.getHealth();
+        int damage =  baseHealth - health;
+
+        //May avoid negative xp, we don't know what other plugins do with the entity health
+        if (damage <= 0)
+            return;
+
+        //Don't reward the player for overkills
+        if (health < 0)
+            damage += health;
+
+        PP.addXP(skillType, (int) (damage * baseXp), player);
+        Skills.XpCheckSkill(skillType, player);
     }
 }
