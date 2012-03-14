@@ -22,6 +22,7 @@ import com.gmail.nossr50.events.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.runnables.GainXp;
 import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.Archery;
 import com.gmail.nossr50.skills.Axes;
@@ -36,9 +37,9 @@ public class Combat {
      * Apply combat modifiers and process and XP gain.
      *
      * @param event The event to run the combat checks on.
-     * @param pluginx mcMMO plugin instance
+     * @param plugin mcMMO plugin instance
      */
-    public static void combatChecks(EntityDamageByEntityEvent event, mcMMO pluginx) {
+    public static void combatChecks(EntityDamageByEntityEvent event, mcMMO plugin) {
         if (event.getDamage() == 0 || event.getEntity().isDead()) {
             return;
         }
@@ -56,17 +57,17 @@ public class Combat {
             PlayerProfile PPa = Users.getProfile(attacker);
 
             combatAbilityChecks(attacker);
-            
+
             if (ItemChecks.isSword(itemInHand) && mcPermissions.getInstance().swords(attacker)) {
-                if (!pluginx.misc.bleedTracker.contains(target)) {
-                    Swords.bleedCheck(attacker, target, pluginx);
+                if (!plugin.misc.bleedTracker.contains(target)) {
+                    Swords.bleedCheck(attacker, target, plugin);
                 }
 
                 if (PPa.getSerratedStrikesMode()) {
-                    applyAbilityAoE(attacker, target, damage, pluginx, SkillType.SWORDS);
+                    applyAbilityAoE(attacker, target, damage, plugin, SkillType.SWORDS);
                 }
 
-                startGainXp(attacker, PPa, target, SkillType.SWORDS, pluginx);
+                startGainXp(attacker, PPa, target, SkillType.SWORDS, plugin);
             }
             else if (ItemChecks.isAxe(itemInHand) && mcPermissions.getInstance().axes(attacker)) {
                 Axes.axesBonus(attacker, event);
@@ -74,10 +75,10 @@ public class Combat {
                 Axes.impact(attacker, target, event);
 
                 if (PPa.getSkullSplitterMode()) {
-                    applyAbilityAoE(attacker, target, damage, pluginx, SkillType.AXES);
+                    applyAbilityAoE(attacker, target, damage, plugin, SkillType.AXES);
                 }
 
-                startGainXp(attacker, PPa, target, SkillType.AXES, pluginx);
+                startGainXp(attacker, PPa, target, SkillType.AXES, plugin);
             }
             else if (itemInHand.getType().equals(Material.AIR) && mcPermissions.getInstance().unarmed(attacker)) {
                 Unarmed.unarmedBonus(attacker, event);
@@ -89,8 +90,8 @@ public class Combat {
                 if (targetType.equals(EntityType.PLAYER)) {
                     Unarmed.disarmProcCheck(attacker, (Player) target);
                 }
-                
-                startGainXp(attacker, PPa, target, SkillType.UNARMED, pluginx);
+
+                startGainXp(attacker, PPa, target, SkillType.UNARMED, plugin);
             }
             else if (itemInHand.getType().equals(Material.BONE) && mcPermissions.getInstance().taming(attacker) && targetType.equals(EntityType.WOLF)) {
                 Wolf wolf = (Wolf) target;
@@ -120,15 +121,14 @@ public class Combat {
                 if (mcPermissions.getInstance().taming(master)) {
                     Taming.fastFoodService(PPo, wolf, event);
                     Taming.sharpenedClaws(PPo, event);
-                    Taming.gore(PPo, event, master, pluginx);
-
-                    startGainXp(master, PPo, target, SkillType.TAMING, pluginx);
+                    Taming.gore(PPo, event, master, plugin);
+                    startGainXp(master, PPo, target, SkillType.TAMING, plugin);
                 }
             }
             break;
 
         case ARROW:
-            archeryCheck((EntityDamageByEntityEvent)event, pluginx);
+            archeryCheck((EntityDamageByEntityEvent) event, plugin);
             break;
 
         default:
@@ -235,7 +235,7 @@ public class Combat {
      * @param dmg Amount of damage to attempt to do
      * @param cause DamageCause to pass to damage event
      */
-    public static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
+    private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
         if (LoadProperties.eventCallback) {
             EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
             Bukkit.getPluginManager().callEvent(ede);
@@ -308,12 +308,7 @@ public class Combat {
                 if (tamer instanceof Player) {
                     Player owner = (Player) tamer;
 
-                    //Reasons why the target shouldn't be hit
-                    if (owner.equals(attacker)) {
-                        continue;
-                    }
-
-                    if (Party.getInstance().inSameParty(attacker, owner)) {
+                    if (owner.equals(attacker) || Party.getInstance().inSameParty(attacker, owner)) {
                         continue;
                     }
                 }
@@ -405,7 +400,7 @@ public class Combat {
         }
         else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId())) {
             if (target instanceof Animals) {
-                baseXP = 10 * LoadProperties.animalXP;
+                baseXP = LoadProperties.animalXP; //I'm assuming the 10x multiplier here was accidental...
             }
             else
             {
@@ -415,41 +410,56 @@ public class Combat {
                 case BLAZE:
                     baseXP = LoadProperties.blazeXP;
                     break;
+
                 case CAVE_SPIDER:
                     baseXP = LoadProperties.cavespiderXP;
                     break;
+
                 case CREEPER:
                     baseXP = LoadProperties.creeperXP;
                     break;
+
                 case ENDER_DRAGON:
                     baseXP = LoadProperties.enderdragonXP;
                     break;
+
                 case ENDERMAN:
                     baseXP = LoadProperties.endermanXP;
                     break;
+
                 case GHAST:
                     baseXP = LoadProperties.ghastXP;
                     break;
+
                 case MAGMA_CUBE:
                     baseXP = LoadProperties.magmacubeXP;
                     break;
+
                 case PIG_ZOMBIE:
                     baseXP = LoadProperties.pigzombieXP;
                     break;
+
                 case SILVERFISH:
                     baseXP = LoadProperties.silverfishXP;
                     break;
+
                 case SKELETON:
                     baseXP = LoadProperties.skeletonXP;
                     break;
+
                 case SLIME:
                     baseXP = LoadProperties.slimeXP;
                     break;
+
                 case SPIDER:
                     baseXP = LoadProperties.spiderXP;
                     break;
+
                 case ZOMBIE:
                     baseXP = LoadProperties.zombieXP;
+                    break;
+
+                default:
                     break;
                 }
             }
@@ -457,46 +467,9 @@ public class Combat {
             baseXP *= 10;
         }
 
-        if (baseXP != 0)
+        if (baseXP != 0) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(pluginx, new GainXp(attacker, PP, skillType, baseXP, target), 0);
+        }
     }
 
-}
-
-class GainXp implements Runnable
-{
-    private Player player = null;
-    private PlayerProfile PP = null;
-    private double baseXp = 0;
-    private SkillType skillType = null;
-    private LivingEntity target = null;
-    private int baseHealth = 0;
-
-    public GainXp(Player player, PlayerProfile PP, SkillType skillType, double baseXp, LivingEntity target)
-    {
-        this.player = player;
-        this.PP = PP;
-        this.skillType = skillType;
-        this.baseXp = baseXp;
-        this.target = target;
-        baseHealth = target.getHealth();
-    }
-
-    @Override
-    public void run()
-    {
-        int health = target.getHealth();
-        int damage =  baseHealth - health;
-
-        //May avoid negative xp, we don't know what other plugins do with the entity health
-        if (damage <= 0)
-            return;
-
-        //Don't reward the player for overkills
-        if (health < 0)
-            damage += health;
-
-        PP.addXP(skillType, (int) (damage * baseXp), player);
-        Skills.XpCheckSkill(skillType, player);
-    }
 }
