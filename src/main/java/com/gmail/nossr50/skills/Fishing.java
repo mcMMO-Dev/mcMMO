@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -131,43 +132,27 @@ public class Fishing {
             
             player.sendMessage(mcLocale.getString("Fishing.ItemFound"));
             if (Repair.isArmor(fishingResults) || Repair.isTools(fishingResults)) {
-
                 if (Math.random() * 100 <= ENCHANTMENT_CHANCE) {
-                    for (Enchantment enchantment : Enchantment.values()) {
-                        if (enchantment.canEnchantItem(fishingResults)) {
+                    for (Enchantment newEnchant : Enchantment.values()) {
+                        if (newEnchant.canEnchantItem(fishingResults)) {
+                            Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();
 
-                            //TODO: Clean this up. It's ugly & unreadable.
-                            //Prevent impossible enchantment combinations
-                            if ((fishingResults.containsEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL) || fishingResults.containsEnchantment(Enchantment.PROTECTION_EXPLOSIONS) || 
-                                    fishingResults.containsEnchantment(Enchantment.PROTECTION_FIRE) || fishingResults.containsEnchantment(Enchantment.PROTECTION_PROJECTILE)) && 
-                                    (enchantment.equals(Enchantment.PROTECTION_EXPLOSIONS) || enchantment.equals(Enchantment.PROTECTION_PROJECTILE) || enchantment.equals(Enchantment.PROTECTION_FIRE) || enchantment.equals(Enchantment.PROTECTION_ENVIRONMENTAL))){
-                                return;
-                            }
-
-                            //More impossible enchantment combinations
-                            else if ((fishingResults.containsEnchantment(Enchantment.DAMAGE_ALL) || fishingResults.containsEnchantment(Enchantment.DAMAGE_ARTHROPODS) || fishingResults.containsEnchantment(Enchantment.DAMAGE_UNDEAD)) && 
-                                    (enchantment.equals(Enchantment.DAMAGE_ALL) || enchantment.equals(Enchantment.DAMAGE_ARTHROPODS) || enchantment.equals(Enchantment.DAMAGE_UNDEAD))){
-                                return;
-                            }
-
-                            //Even more impossible enchantment combinations
-                            else if ((fishingResults.containsEnchantment(Enchantment.SILK_TOUCH) || fishingResults.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) &&
-                                    (enchantment.equals(Enchantment.SILK_TOUCH) || enchantment.equals(Enchantment.LOOT_BONUS_BLOCKS))){
-                                return;
-                            }
-
-                            else {
-                                //Actual chance to have an enchantment is related to your fishing skill
-                                if (Math.random() * 15 < Fishing.getFishingLootTier(PP)) {
-                                    enchanted = true;
-                                    int randomEnchantLevel = (int)(Math.random() * enchantment.getMaxLevel()) + 1;
-
-                                    if (randomEnchantLevel == 0) {
-                                        randomEnchantLevel = 1;
-                                    }
-
-                                    fishingResults.addEnchantment(enchantment, randomEnchantLevel);
+                            for (Enchantment oldEnchant : resultEnchantments.keySet()) {
+                                if (oldEnchant.conflictsWith(newEnchant)) {
+                                    return;
                                 }
+                            }
+
+                            /* Actual chance to have an enchantment is related to your fishing skill */
+                            if (Math.random() * 15 < Fishing.getFishingLootTier(PP)) {
+                                enchanted = true;
+                                int randomEnchantLevel = (int) (Math.random() * newEnchant.getMaxLevel()) + 1;
+
+                                if (randomEnchantLevel == 0) {
+                                    randomEnchantLevel = 1;
+                                }
+
+                                fishingResults.addEnchantment(newEnchant, randomEnchantLevel);
                             }
                         }
                     }
