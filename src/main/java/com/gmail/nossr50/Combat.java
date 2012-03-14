@@ -258,7 +258,7 @@ public class Combat {
      * @param dmg Amount of damage to attempt to do
      * @param attacker Player to pass to event as damager
      */
-    public static void dealDamage(LivingEntity target, int dmg, Player attacker) {
+    private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
         if (LoadProperties.eventCallback) {
             EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
             Bukkit.getPluginManager().callEvent(ede);
@@ -380,8 +380,7 @@ public class Combat {
      * @param skillType The skill being used
      * @param plugin mcMMO plugin instance
      */
-    public static void startGainXp(Player attacker, PlayerProfile PP, LivingEntity target, SkillType skillType, mcMMO pluginx)
-    {
+    public static void startGainXp(Player attacker, PlayerProfile PP, LivingEntity target, SkillType skillType, mcMMO pluginx) {
         double baseXP = 0;
 
         if (target instanceof Player) {
@@ -392,18 +391,15 @@ public class Combat {
             Player defender = (Player) target;
             PlayerProfile PPd = Users.getProfile(defender);
 
-            if (System.currentTimeMillis() >= (PPd.getRespawnATS() * 1000) + 5000 &&
-               ((PPd.getLastLogin() + 5) * 1000) < System.currentTimeMillis() &&
-               defender.getHealth() >= 1) {
+            if (System.currentTimeMillis() >= (PPd.getRespawnATS() * 1000) + 5000 && ((PPd.getLastLogin() + 5) * 1000) < System.currentTimeMillis() && defender.getHealth() >= 1) {
                 baseXP = 20 * LoadProperties.pvpxprewardmodifier;
             }
         }
-        else if (!pluginx.misc.mobSpawnerList.contains(target.getEntityId())) {
-            if (target instanceof Animals) {
-                baseXP = LoadProperties.animalXP; //I'm assuming the 10x multiplier here was accidental...
+        else if (!target.hasMetadata("fromMobSpawner")) {
+            if (target instanceof Animals && !target.hasMetadata("summoned")) {
+                baseXP = LoadProperties.animalXP;
             }
-            else
-            {
+            else {
                 EntityType type = target.getType();
 
                 switch (type) {
@@ -471,5 +467,4 @@ public class Combat {
             Bukkit.getScheduler().scheduleSyncDelayedTask(pluginx, new GainXp(attacker, PP, skillType, baseXP, target), 0);
         }
     }
-
 }

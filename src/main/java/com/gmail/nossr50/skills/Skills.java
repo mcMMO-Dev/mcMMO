@@ -428,12 +428,14 @@ public class Skills {
                 activate = false;
                 break;
             }
+            /* FALLS THROUGH */
 
         case GREEN_TERRA:
             if (!ability.blockCheck(block.getType())) {
                 activate = false;
                 break;
             }
+            break;
 
         default:
             activate = false;

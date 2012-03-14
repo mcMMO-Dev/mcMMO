@@ -15,7 +15,6 @@ public class Misc
 {
     String location = "mcmmo.properties";
     
-    public ArrayList<Integer> mobSpawnerList = new ArrayList<Integer>();
     public HashSet<Block> blockWatchList = new HashSet<Block>();
     public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     public ArrayList<LivingEntity> bleedTracker = new ArrayList<LivingEntity>();

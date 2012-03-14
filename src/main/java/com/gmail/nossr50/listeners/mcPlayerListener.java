@@ -267,10 +267,10 @@ public class mcPlayerListener implements Listener {
             /* CALL OF THE WILD CHECKS */
             if (player.isSneaking() && mcPermissions.getInstance().taming(player)) {
                 if (is.getType().equals(Material.RAW_FISH)) {
-                    Taming.animalSummon(EntityType.OCELOT, player);
+                    Taming.animalSummon(EntityType.OCELOT, player, plugin);
                 }
                 else if (is.getType().equals(Material.BONE)) {
-                    Taming.animalSummon(EntityType.WOLF, player);
+                    Taming.animalSummon(EntityType.WOLF, player, plugin);
                 }
             }
 

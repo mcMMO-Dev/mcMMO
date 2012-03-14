@@ -129,7 +129,7 @@ public class Fishing {
             final int ENCHANTMENT_CHANCE = 10;
             boolean enchanted = false;
             ItemStack fishingResults = theCatch.getItemStack();
-            
+
             player.sendMessage(mcLocale.getString("Fishing.ItemFound"));
             if (Repair.isArmor(fishingResults) || Repair.isTools(fishingResults)) {
                 if (Math.random() * 100 <= ENCHANTMENT_CHANCE) {
@@ -148,8 +148,8 @@ public class Fishing {
                                 enchanted = true;
                                 int randomEnchantLevel = (int) (Math.random() * newEnchant.getMaxLevel()) + 1;
 
-                                if (randomEnchantLevel == 0) {
-                                    randomEnchantLevel = 1;
+                                if (randomEnchantLevel < newEnchant.getStartLevel()) {
+                                    randomEnchantLevel = newEnchant.getStartLevel();
                                 }
 
                                 fishingResults.addEnchantment(newEnchant, randomEnchantLevel);

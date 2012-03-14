@@ -20,6 +20,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
@@ -144,11 +145,6 @@ public class mcEntityListener implements Listener {
         LivingEntity x = event.getEntity();
         x.setFireTicks(0);
 
-        /* Remove mob from mob spawner list */
-        if (plugin.misc.mobSpawnerList.contains(x.getEntityId())) {
-            plugin.misc.mobSpawnerList.remove((Object)x.getEntityId());
-        }
-
         /* Remove bleed track */
         if(plugin.misc.bleedTracker.contains(x)) {
             plugin.misc.addToBleedRemovalQue(x);
@@ -169,7 +165,7 @@ public class mcEntityListener implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         if (event.getSpawnReason().equals(SpawnReason.SPAWNER) && !LoadProperties.xpGainsMobSpawners) {
-            plugin.misc.mobSpawnerList.add(event.getEntity().getEntityId());
+            event.getEntity().setMetadata("fromMobSpawner", new FixedMetadataValue(plugin, true));
         }
     }
 
@@ -291,7 +287,7 @@ public class mcEntityListener implements Listener {
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
 
-        if (mcPermissions.getInstance().taming(player)) {
+        if (mcPermissions.getInstance().taming(player) && !event.getEntity().hasMetadata("summoned")) {
             PlayerProfile PP = Users.getProfile(player);
             EntityType type = event.getEntityType();
             int xp = 0;

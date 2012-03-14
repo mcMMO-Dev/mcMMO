@@ -25,6 +25,7 @@ Version 2.0.00-dev
  = Fixed bug where Tree Feller could be used without permissions
  = Fixed exploit where falling sand & gravel weren't tracked
  = Fixed exploit where Acrobatics could be leveled via Dodge on party members.
+ = Fixed exploit where you could gain combat XP on animals summoned by Call of the Wild
  ! Changed PTP to prevent teleporting if you've been hurt in the last 30 seconds (configurable)
  ! Changed Chimera Wing failure check to use the maxWorldHeight.
  ! Changed inspect failed message to say inspect rather than whois
@@ -33,6 +34,8 @@ Version 2.0.00-dev
  ! Changed mmoedit to save a profile when used (this will make mctop update)
  ! Changed a few Runnable tasks to have their own classes
  ! Changed parties so that a player will leave their existing party if they enter a world where they don't have party permissions.
+ ! Changed Call of the Wild to summon animals already tamed.
+ ! Changed mob spawner tracking to use new Metadata API
 
 Version 1.3.02
  + Added in game guides for Mining, Excavation, and Acrobatics. Simply type /skillname ? to access them
