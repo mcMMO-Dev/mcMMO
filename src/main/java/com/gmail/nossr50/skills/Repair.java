@@ -21,14 +21,6 @@ import com.gmail.nossr50.locale.mcLocale;
 
 public class Repair {
 
-    private static String nGold =  LoadProperties.nGold;
-    private static String nStone =  LoadProperties.nStone;
-    private static String nWood =  LoadProperties.nWood;
-    private static String nDiamond =  LoadProperties.nDiamond;
-    private static String nIron =  LoadProperties.nIron;
-    private static String nString =  LoadProperties.nString;
-    private static String nLeather =  LoadProperties.nLeather;
-
     /**
      * Handle all the item repair checks.
      *
@@ -181,56 +173,64 @@ public class Repair {
     }
 
     /**
-     * 
-     * @param player
-     * @param is
+     * Handles removing & downgrading enchants.
+     *
+     * @param player Player repairing the item
+     * @param is Item being repaired
      */
-    public static void addEnchants(Player player, ItemStack is)
-    {
+    private static void addEnchants(Player player, ItemStack is) {
         Map<Enchantment, Integer> enchants = is.getEnchantments();
-        if(enchants.size() == 0)
+
+        if (enchants.size() == 0) {
             return;
-        
+        }
+
         int rank = getArcaneForgingRank(Users.getProfile(player).getSkillLevel(SkillType.REPAIR));
-        if(rank == 0)
-        {
-            for(Enchantment x : enchants.keySet())
+
+        if (rank == 0) {
+            for (Enchantment x : enchants.keySet()) {
                 is.removeEnchantment(x);
+            }
             player.sendMessage(mcLocale.getString("Repair.LostEnchants"));
             return;
         }
-        
+
         boolean downgraded = false;
-        for(Entry<Enchantment, Integer> enchant : enchants.entrySet())
-        {
-            if(Math.random() * 100 <= getEnchantChance(rank))
-            {
+
+        for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
+            Enchantment enchantment = enchant.getKey();
+
+            if (Math.random() * 100 <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
-                if(LoadProperties.mayDowngradeEnchants && enchantLevel > 1)
-                {
-                    if(Math.random() * 100 <= getDowngradeChance(rank))
-                    {
-                        is.addEnchantment(enchant.getKey(), enchantLevel--);
+
+                if (LoadProperties.mayDowngradeEnchants && enchantLevel > 1) {
+                    if (Math.random() * 100 <= getDowngradeChance(rank)) {
+                        is.addEnchantment(enchantment, enchantLevel--);
                         downgraded = true;
                     }
                 }
             }
-            else
-                is.removeEnchantment(enchant.getKey());
+            else {
+                is.removeEnchantment(enchantment);
+            }
         }
-        
+
         Map<Enchantment, Integer> newEnchants = is.getEnchantments();
-        if(newEnchants.isEmpty())
+
+        if (newEnchants.isEmpty()) {
             player.sendMessage(mcLocale.getString("Repair.ArcaneFailed"));
-        else if(downgraded || newEnchants.size() < enchants.size())
+        }
+        else if (downgraded || newEnchants.size() < enchants.size()) {
             player.sendMessage(mcLocale.getString("Repair.Downgraded"));
-        else
+        }
+        else {
             player.sendMessage(mcLocale.getString("Repair.ArcanePerfect"));
+        }
     }
-    
+
     /**
      * Gets chance of keeping enchantment during repair.
-     * 
+     *
      * @param rank Arcane Forging rank
      * @return The chance of keeping the enchantment
      */
@@ -255,12 +255,11 @@ public class Repair {
 
     /**
      * Gets chance of enchantment being downgraded during repair.
-     * 
+     *
      * @param rank Arcane Forging rank
      * @return The chance of the enchantment being downgraded
      */
-    public static int getDowngradeChance(int rank)
-    {
+    public static int getDowngradeChance(int rank) {
         switch (rank) {
         case 4:
             return LoadProperties.downgradeRank4;
@@ -281,109 +280,127 @@ public class Repair {
 
     /**
      * Computes repair bonuses.
-     * 
+     *
      * @param player The player repairing an item
      * @param durability The durability of the item being repaired
      * @param ramt The base amount of durability repaired to the item 
      * @return The final amount of durability repaired to the item
      */
-    public static short repairCalculate(Player player, short durability, int ramt){
+    private static short repairCalculate(Player player, short durability, int ramt) {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
-        float bonus = (float)(skillLevel/500);
+        float bonus = (float) skillLevel / 500;
+
         bonus = (ramt * bonus);
-        ramt+=bonus;
-        if(checkPlayerProcRepair(player))
+        ramt += bonus;
+
+        if (checkPlayerProcRepair(player)) {
             ramt = (short) (ramt * 2);
-        durability-=ramt;
-        if(durability < 0)
+        }
+
+        durability -= ramt;
+
+        if (durability < 0) {
             durability = 0;
+        }
         return durability;
     }
-    
+
     /**
      * Gets the base durability amount to repair an item.
-     * 
+     *
      * @param is The item being repaired
      * @param player The player repairing the item
      * @return The final amount of durability repaired to the item
      */
-    public static short getRepairAmount(ItemStack is, Player player){
-        short durability = is.getDurability();
+    private static short getRepairAmount(ItemStack is, Player player){
         short maxDurability = is.getType().getMaxDurability();
         int ramt = 0;
         
-        if(ItemChecks.isShovel(is))
+        if (ItemChecks.isShovel(is)) {
             ramt = maxDurability;
-        else if(ItemChecks.isHoe(is) || ItemChecks.isSword(is) || is.getType().equals(Material.SHEARS))
+        }
+        else if (ItemChecks.isHoe(is) || ItemChecks.isSword(is) || is.getType().equals(Material.SHEARS)) {
             ramt = maxDurability / 2;
-        else if(ItemChecks.isAxe(is) || ItemChecks.isMiningPick(is) || is.getType().equals(Material.BOW))
+        }
+        else if (ItemChecks.isAxe(is) || ItemChecks.isMiningPick(is) || is.getType().equals(Material.BOW)) {
             ramt = maxDurability / 3;
-        else if(ItemChecks.isBoots(is))
+        }
+        else if (ItemChecks.isBoots(is)) {
             ramt = maxDurability / 4;
-        else if(ItemChecks.isHelmet(is))
+        }
+        else if (ItemChecks.isHelmet(is)) {
             ramt = maxDurability / 5;
-        else if(ItemChecks.isPants(is))
+        }
+        else if (ItemChecks.isPants(is)) {
             ramt = maxDurability / 7;
-        else if(ItemChecks.isChestplate(is))
+        }
+        else if (ItemChecks.isChestplate(is)) {
             ramt = maxDurability / 8;
-                
-        return repairCalculate(player, durability, ramt);
+        }
+
+        return repairCalculate(player, is.getDurability(), ramt);
     }
-    
+
     /**
      * Informs a player that the repair has failed.
-     * 
+     *
      * @param is The item being repaired
      * @param player The player repairing the item
      */
-    public static void needMoreVespeneGas(ItemStack is, Player player)
-    {
+    private static void needMoreVespeneGas(ItemStack is, Player player) {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
-        
-        if(is.getAmount() > 1)
+
+        if (is.getAmount() != 1) {
             player.sendMessage(mcLocale.getString("Skills.StackedItems"));
-        else
-        {
-            if(ItemChecks.isDiamondTool(is) || ItemChecks.isDiamondArmor(is))
-            {
-                if(skillLevel < LoadProperties.repairdiamondlevel)
+        }
+        else {
+            if (ItemChecks.isDiamondTool(is) || ItemChecks.isDiamondArmor(is)) {
+                if (skillLevel < LoadProperties.repairdiamondlevel) {
                     player.sendMessage(mcLocale.getString("Skills.AdeptDiamond"));
-                else
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.BLUE+ nDiamond);
+                }
+                else {
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.BLUE + LoadProperties.nDiamond);
+                }
             }
-            else if(ItemChecks.isIronTool(is) || ItemChecks.isIronArmor(is))
-            {
-                if(skillLevel < LoadProperties.repairIronLevel)
+            else if (ItemChecks.isIronTool(is) || ItemChecks.isIronArmor(is)) {
+                if (skillLevel < LoadProperties.repairIronLevel) {
                     player.sendMessage(mcLocale.getString("Skills.AdeptIron"));
-                else
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GRAY+ nIron);
+                }
+                else {
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + LoadProperties.nIron);
+                }
             }
-            else if(ItemChecks.isGoldTool(is) || ItemChecks.isGoldArmor(is))
-            {
-                if(skillLevel < LoadProperties.repairGoldLevel)
+            else if (ItemChecks.isGoldTool(is) || ItemChecks.isGoldArmor(is)) {
+                if (skillLevel < LoadProperties.repairGoldLevel) {
                     player.sendMessage(mcLocale.getString("Skills.AdeptGold"));
-                else
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GOLD+nGold);
+                }
+                else {
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GOLD + LoadProperties.nGold);
+                }
             }
-            else if(ItemChecks.isStoneTool(is))
-            {
-                if(skillLevel < LoadProperties.repairStoneLevel)
+            else if (ItemChecks.isStoneTool(is)) {
+                if (skillLevel < LoadProperties.repairStoneLevel) {
                     player.sendMessage(mcLocale.getString("Skills.AdeptStone"));
-                else
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.GRAY+nStone);
+                }
+                else {
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GRAY + LoadProperties.nStone);
+                }
             }
-            else if(ItemChecks.isWoodTool(is))
-                player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.DARK_GREEN+ nWood);
-            else if (ItemChecks.isLeatherArmor(is))
-                player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.YELLOW+ nLeather);
-            else if (is.getType().equals(Material.BOW))
-                player.sendMessage(mcLocale.getString("Skills.NeedMore")+" "+ChatColor.YELLOW+ nString);
+            else if (ItemChecks.isWoodTool(is)) {
+                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.DARK_GREEN + LoadProperties.nWood);
+            }
+            else if (ItemChecks.isLeatherArmor(is)) {
+                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + LoadProperties.nLeather);
+            }
+            else if (is.getType().equals(Material.BOW)) {
+                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + LoadProperties.nString);
+            }
         }
     }
 
     /**
      * Checks for Super Repair bonus.
-     * 
+     *
      * @param player The player repairing an item
      * @return true if bonus granted, false otherwise
      */

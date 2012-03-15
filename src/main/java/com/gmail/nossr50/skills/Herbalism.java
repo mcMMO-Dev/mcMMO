@@ -223,7 +223,7 @@ public class Herbalism {
             return;
         }
         else {
-            ItemStack is = new ItemStack(mat);
+            ItemStack is = new ItemStack(mat, 1);
 
             if (herbLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= herbLevel)) {
                 if (type.equals(Material.CACTUS)) {
