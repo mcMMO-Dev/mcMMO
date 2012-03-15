@@ -215,7 +215,7 @@ public class Taming {
                 }
             }
             LivingEntity entity = player.getWorld().spawnCreature(player.getLocation(), type);
-            entity.setMetadata("summoned", new FixedMetadataValue(plugin, true));
+            entity.setMetadata("mcmmoSummoned", new FixedMetadataValue(plugin, true));
             ((Tameable) entity).setOwner(player);
 
             player.setItemInHand(new ItemStack(summonItem, item.getAmount() - summonAmount));

@@ -165,7 +165,7 @@ public class mcEntityListener implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         if (event.getSpawnReason().equals(SpawnReason.SPAWNER) && !LoadProperties.xpGainsMobSpawners) {
-            event.getEntity().setMetadata("fromMobSpawner", new FixedMetadataValue(plugin, true));
+            event.getEntity().setMetadata("mcmmoFromMobSpawner", new FixedMetadataValue(plugin, true));
         }
     }
 
@@ -287,7 +287,7 @@ public class mcEntityListener implements Listener {
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
 
-        if (mcPermissions.getInstance().taming(player) && !event.getEntity().hasMetadata("summoned")) {
+        if (mcPermissions.getInstance().taming(player) && !event.getEntity().hasMetadata("mcmmoSummoned")) {
             PlayerProfile PP = Users.getProfile(player);
             EntityType type = event.getEntityType();
             int xp = 0;

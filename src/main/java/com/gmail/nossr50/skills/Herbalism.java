@@ -135,7 +135,7 @@ public class Herbalism {
                 Block b = block.getRelative(0, y, 0);
                 if (b.getType().equals(Material.CACTUS)) {
                     mat = Material.CACTUS;
-                    if (!b.hasMetadata("placedBlock")) {
+                    if (!b.hasMetadata("mcmmoPlacedBlock")) {
                         if(herbLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= herbLevel)) {
                             catciDrops++;
                         }
@@ -154,7 +154,7 @@ public class Herbalism {
             break;
 
         case MELON_BLOCK:
-            if (!block.hasMetadata("placedBlock")) {
+            if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = Material.MELON;
                 xp = LoadProperties.mmelon;
             }
@@ -169,7 +169,7 @@ public class Herbalism {
 
         case PUMPKIN:
         case JACK_O_LANTERN:
-            if (!block.hasMetadata("placedBlock")) {
+            if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = Material.getMaterial(id);
                 xp = LoadProperties.mpumpkin;
             }
@@ -177,7 +177,7 @@ public class Herbalism {
 
         case RED_ROSE:
         case YELLOW_FLOWER:
-            if (!block.hasMetadata("placedBlock")) {
+            if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = Material.getMaterial(id);
                 xp = LoadProperties.mflower;
             }
@@ -188,7 +188,7 @@ public class Herbalism {
                 Block b = block.getRelative(0, y, 0);
                 if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
                     mat = Material.SUGAR_CANE;
-                    if (!b.hasMetadata("placedBlock")) {
+                    if (!b.hasMetadata("mcmmoPlacedBlock")) {
                         if(herbLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= herbLevel)) {
                             caneDrops++;
                         }
@@ -199,14 +199,14 @@ public class Herbalism {
             break;
 
         case VINE:
-            if (!block.hasMetadata("placedBlock")) {
+            if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = type;
                 xp = LoadProperties.mvines;
             }
             break;
 
         case WATER_LILY:
-            if (!block.hasMetadata("placedBlock")) {
+            if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = type;
                 xp = LoadProperties.mlilypad;
             }

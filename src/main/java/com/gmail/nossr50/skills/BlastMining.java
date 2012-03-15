@@ -48,7 +48,7 @@ public class BlastMining {
                 blocksDropped.add(temp);
                 Mining.miningDrops(temp);
 
-                if (!temp.hasMetadata("placedBlock")) {
+                if (!temp.hasMetadata("mcmmoPlacedBlock")) {
                     if (extraDrops == 2) {
                         blocksDropped.add(temp);
                         Mining.miningDrops(temp);
@@ -160,7 +160,7 @@ public class BlastMining {
         }
 
         for (Block block : xp) {
-            if (!block.hasMetadata("placedBlock")) {
+            if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 Mining.miningXP(player, block);
             }
         }

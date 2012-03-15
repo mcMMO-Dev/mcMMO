@@ -75,7 +75,7 @@ public class mcBlockListener implements Listener {
                 }
                 else {
                     Block newLocation = block.getRelative(0, y+1, 0);
-                    newLocation.setMetadata("placedBlock", new FixedMetadataValue(plugin, true));
+                    newLocation.setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
                     break;
                 }
             }
@@ -83,7 +83,7 @@ public class mcBlockListener implements Listener {
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(mat)) {
-            block.setMetadata("placedBlock", new FixedMetadataValue(plugin, true));
+            block.setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
         }
 
         if (id == LoadProperties.anvilID && LoadProperties.anvilmessages) {
@@ -176,7 +176,7 @@ public class mcBlockListener implements Listener {
          * EXCAVATION
          */
 
-        if (Excavation.canBeGigaDrillBroken(mat) && mcPermissions.getInstance().excavation(player) && !block.hasMetadata("placedBlock")) {
+        if (Excavation.canBeGigaDrillBroken(mat) && mcPermissions.getInstance().excavation(player) && !block.hasMetadata("mcmmoPlacedBlock")) {
             if (LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand)) {
                 Excavation.excavationProcCheck(block, player);
             }
@@ -186,8 +186,8 @@ public class mcBlockListener implements Listener {
         }
 
         //Remove metadata when broken
-        if (block.hasMetadata("placedBlock") && BlockChecks.shouldBeWatched(mat)) {
-            block.removeMetadata("placedBlock", plugin);
+        if (block.hasMetadata("mcmmoPlacedBlock") && BlockChecks.shouldBeWatched(mat)) {
+            block.removeMetadata("mcmmoPlacedBlock", plugin);
         }
     }
 

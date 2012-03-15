@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills;
 import java.util.ArrayList;
 
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,13 +31,12 @@ public class WoodCutting
         Player player = event.getPlayer();
         Block firstBlock = event.getBlock();
         PlayerProfile PP = Users.getProfile(player);
-        World world = firstBlock.getWorld();
         
         //Prepare array
         ArrayList<Block> toBeFelled = new ArrayList<Block>();
         
         //NOTE: Tree Feller will cut upwards like how you actually fell trees
-        processTreeFelling(firstBlock, world, toBeFelled, plugin);
+        processTreeFelling(firstBlock, toBeFelled, plugin);
         removeBlocks(toBeFelled, player, PP, plugin);
     }
     
@@ -97,7 +95,7 @@ public class WoodCutting
                         break;
                     }
                     
-                    if(!x.hasMetadata("placedBlock"))
+                    if(!x.hasMetadata("mcmmoPlacedBlock"))
                     {
                         WoodCutting.woodCuttingProcCheck(player, x);
                             
@@ -149,9 +147,8 @@ public class WoodCutting
         return block.getType() == Material.LOG || block.getType() == Material.LEAVES || block.getType() == Material.AIR;
     }
     
-    private static void processTreeFelling(Block currentBlock, World world, ArrayList<Block> toBeFelled, mcMMO plugin)
+    private static void processTreeFelling(Block currentBlock, ArrayList<Block> toBeFelled, mcMMO plugin)
     {
-        int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
         
         if(currentBlock.getType() == Material.LOG || currentBlock.getType() == Material.LEAVES)
             toBeFelled.add(currentBlock);
@@ -159,32 +156,32 @@ public class WoodCutting
         //These 2 are to make sure that Tree Feller isn't so aggressive
         boolean isAirOrLeaves = currentBlock.getType() == Material.LEAVES || currentBlock.getType() == Material.AIR;
         
-        Block xPositive = world.getBlockAt(x+1, y, z);
-        Block xNegative = world.getBlockAt(x-1, y, z);
-        Block zPositive = world.getBlockAt(x, y, z+1);
-        Block zNegative = world.getBlockAt(x, y, z-1);
+        Block xPositive = currentBlock.getRelative(1, 0, 0);
+        Block xNegative = currentBlock.getRelative(-1, 0, 0);
+        Block zPositive = currentBlock.getRelative(0, 0, 1);
+        Block zNegative = currentBlock.getRelative(0, 0, -1);
         
-        if(!currentBlock.hasMetadata("placedBlock") &&
+        if(!currentBlock.hasMetadata("mcmmoPlacedBlock") &&
                 !isTooAgressive(isAirOrLeaves, xPositive) && treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive))
-            processTreeFelling(xPositive, world, toBeFelled, plugin);
-        if(!currentBlock.hasMetadata("placedBlock") &&
+            processTreeFelling(xPositive, toBeFelled, plugin);
+        if(!currentBlock.hasMetadata("mcmmoPlacedBlock") &&
                 !isTooAgressive(isAirOrLeaves, xNegative) && treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative))
-            processTreeFelling(xNegative, world, toBeFelled, plugin);
-        if(!currentBlock.hasMetadata("placedBlock") &&
+            processTreeFelling(xNegative, toBeFelled, plugin);
+        if(!currentBlock.hasMetadata("mcmmoPlacedBlock") &&
                 !isTooAgressive(isAirOrLeaves, zPositive) && treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive))
-            processTreeFelling(zPositive, world, toBeFelled, plugin);
-        if(!currentBlock.hasMetadata("placedBlock") &&
+            processTreeFelling(zPositive, toBeFelled, plugin);
+        if(!currentBlock.hasMetadata("mcmmoPlacedBlock") &&
                 !isTooAgressive(isAirOrLeaves, zNegative) && treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative))
-            processTreeFelling(zNegative, world, toBeFelled, plugin);
+            processTreeFelling(zNegative, toBeFelled, plugin);
         
         //Finally go Y+
-        Block yPositive = world.getBlockAt(x, y+1, z);
+        Block yPositive = currentBlock.getRelative(0, 1, 0);
         
         if(treeFellerCompatible(yPositive))
         {
-            if(!currentBlock.hasMetadata("placedBlock") && !toBeFelled.contains(yPositive))
+            if(!currentBlock.hasMetadata("mcmmoPlacedBlock") && !toBeFelled.contains(yPositive))
             {
-                processTreeFelling(yPositive, world, toBeFelled, plugin);
+                processTreeFelling(yPositive, toBeFelled, plugin);
             }
         }
     }

@@ -395,8 +395,8 @@ public class Combat {
                 baseXP = 20 * LoadProperties.pvpxprewardmodifier;
             }
         }
-        else if (!target.hasMetadata("fromMobSpawner")) {
-            if (target instanceof Animals && !target.hasMetadata("summoned")) {
+        else if (!target.hasMetadata("mcmmoFromMobSpawner")) {
+            if (target instanceof Animals && !target.hasMetadata("mcmmoSummoned")) {
                 baseXP = LoadProperties.animalXP;
             }
             else {

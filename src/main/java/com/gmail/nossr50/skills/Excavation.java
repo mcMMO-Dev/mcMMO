@@ -126,7 +126,7 @@ public class Excavation {
     public static void gigaDrillBreaker(Player player, Block block) {
         Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
 
-        if (!block.hasMetadata("placedBlock")) {
+        if (!block.hasMetadata("mcmmoPlacedBlock")) {
             PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
             Bukkit.getPluginManager().callEvent(armswing);
 
