@@ -36,6 +36,7 @@ Version 2.0.00-dev
  ! Changed parties so that a player will leave their existing party if they enter a world where they don't have party permissions.
  ! Changed Call of the Wild to summon animals already tamed.
  ! Changed mob spawner tracking to use new Metadata API
+ ! Changed block watch list to use new Metadata API
 
 Version 1.3.02
  + Added in game guides for Mining, Excavation, and Acrobatics. Simply type /skillname ? to access them

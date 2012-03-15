@@ -30,6 +30,7 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -74,7 +75,7 @@ public class mcBlockListener implements Listener {
                 }
                 else {
                     Block newLocation = block.getRelative(0, y+1, 0);
-                    newLocation.setData((byte) 0x5);
+                    newLocation.setMetadata("placedBlock", new FixedMetadataValue(plugin, true));
                     break;
                 }
             }
@@ -82,7 +83,7 @@ public class mcBlockListener implements Listener {
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(mat)) {
-            BlockChecks.watchBlock(mat, block, plugin);
+            block.setMetadata("placedBlock", new FixedMetadataValue(plugin, true));
         }
 
         if (id == LoadProperties.anvilID && LoadProperties.anvilmessages) {
@@ -137,7 +138,7 @@ public class mcBlockListener implements Listener {
             Herbalism.herbalismProcCheck(block, player, event, plugin); //Called twice for triple drop functionality
         }
 
-        if (mcPermissions.getInstance().herbalism(player) && block.getData() != (byte) 0x5 && Herbalism.canBeGreenTerra(mat)) {
+        if (mcPermissions.getInstance().herbalism(player) && Herbalism.canBeGreenTerra(mat)) {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 
@@ -175,7 +176,7 @@ public class mcBlockListener implements Listener {
          * EXCAVATION
          */
 
-        if (Excavation.canBeGigaDrillBroken(mat) && mcPermissions.getInstance().excavation(player) && block.getData() != (byte) 0x5) {
+        if (Excavation.canBeGigaDrillBroken(mat) && mcPermissions.getInstance().excavation(player) && !block.hasMetadata("placedBlock")) {
             if (LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand)) {
                 Excavation.excavationProcCheck(block, player);
             }
@@ -184,12 +185,9 @@ public class mcBlockListener implements Listener {
             }
         }
 
-        //Change the byte back when broken
-        if (block.getData() == (byte) 0x5 && BlockChecks.shouldBeWatched(mat)) {
-            block.setData((byte) 0x0);
-        }
-        else if(plugin.misc.blockWatchList.contains(block)) {
-            plugin.misc.blockWatchList.remove(block);
+        //Remove metadata when broken
+        if (block.hasMetadata("placedBlock") && BlockChecks.shouldBeWatched(mat)) {
+            block.removeMetadata("placedBlock", plugin);
         }
     }
 

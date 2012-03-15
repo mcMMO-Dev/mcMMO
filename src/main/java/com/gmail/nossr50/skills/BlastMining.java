@@ -48,7 +48,7 @@ public class BlastMining {
                 blocksDropped.add(temp);
                 Mining.miningDrops(temp);
 
-                if (temp.getData() != (byte) 0x5 && !plugin.misc.blockWatchList.contains(temp)) {
+                if (!temp.hasMetadata("placedBlock")) {
                     if (extraDrops == 2) {
                         blocksDropped.add(temp);
                         Mining.miningDrops(temp);
@@ -160,7 +160,7 @@ public class BlastMining {
         }
 
         for (Block block : xp) {
-            if (block.getData() != (byte)5 && !plugin.misc.blockWatchList.contains(block)) {
+            if (!block.hasMetadata("placedBlock")) {
                 Mining.miningXP(player, block);
             }
         }

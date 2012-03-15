@@ -156,7 +156,7 @@ public class Mining
      * @param plugin mcMMO plugin instance
      */
     public static void miningBlockCheck(Player player, Block block, mcMMO plugin) {
-        if (plugin.misc.blockWatchList.contains(block) || block.getData() == (byte) 5) {
+        if (block.hasMetadata("placedBlock")) {
             return;
         }
 
@@ -251,7 +251,7 @@ public class Mining
         case NETHERRACK:
         case SANDSTONE:
         case STONE:
-            if ((block.getData() == (byte) 5) || plugin.misc.blockWatchList.contains(block)) {
+            if (!block.hasMetadata("placedBlock")) {
                 return;
             }
 

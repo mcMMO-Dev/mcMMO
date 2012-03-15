@@ -1,7 +1,6 @@
 package com.gmail.nossr50;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 
 import com.gmail.nossr50.config.LoadProperties;
 
@@ -116,46 +115,5 @@ public class BlockChecks {
         default:
             return false;
         }
-    }
-
-    /**
-     * Adds the block the the appropriate watchlist.
-     *
-     * @param material the type of Block to watch
-     * @param block the Block to watch
-     * @param plugin mcMMO plugin instance
-     */
-    public static void watchBlock(Material material, Block block, mcMMO plugin) {
-
-        boolean addToChangeQueue = true;
-        
-        switch (material) {
-        case CACTUS:
-        case GLOWING_REDSTONE_ORE:
-        case JACK_O_LANTERN:
-        case LOG:
-        case PUMPKIN:
-        case REDSTONE_ORE:
-        case SUGAR_CANE_BLOCK:
-        case VINE:
-            addToChangeQueue = false; //We don't want these added to changeQueue - these use their data
-            plugin.misc.blockWatchList.add(block);
-            break;
-
-        case BROWN_MUSHROOM:
-        case RED_MUSHROOM:
-        case RED_ROSE:
-        case YELLOW_FLOWER:
-        case WATER_LILY:
-            addToChangeQueue = false; //We don't want these added to changeQueue - they're already being added to the fast queue
-            plugin.fastChangeQueue.push(block);
-            break;
-
-        default:
-            break;
-        }
-
-        if(addToChangeQueue)
-            plugin.changeQueue.push(block);
     }
 }

@@ -59,8 +59,6 @@ public class mcMMO extends JavaPlugin {
 
     private Runnable mcMMO_Timer = new mcTimer(this); //BLEED AND REGENERATION
     private Runnable mcMMO_SaveTimer = new mcSaveTimer(this); //Periodic saving of Player Data
-    private Runnable ChangeDataValueTimer = new ChangeDataValueTimer(changeQueue); //R2 block place workaround
-    private Runnable FastChangeDataValueTimer = new ChangeDataValueTimer(fastChangeQueue); //R2 block place workaround for instant-break stuff
 
     //Alias - Command
     public HashMap<String, String> aliasMap = new HashMap<String, String>();
@@ -151,10 +149,6 @@ public class mcMMO extends JavaPlugin {
 
         //Bleed & Regen timer (Runs every 20 seconds)
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_Timer, 0, 20);
-
-        //R2+ block place fix
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, ChangeDataValueTimer, 0, 10);
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, FastChangeDataValueTimer, 0, 1);
 
         registerCommands();
 

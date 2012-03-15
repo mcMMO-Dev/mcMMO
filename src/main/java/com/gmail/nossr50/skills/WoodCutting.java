@@ -97,9 +97,7 @@ public class WoodCutting
                         break;
                     }
                     
-                    //ItemStack item = new ItemStack(x.getType(), 1, (byte)0, type);
-                        
-                    if(!plugin.misc.blockWatchList.contains(x))
+                    if(!x.hasMetadata("placedBlock"))
                     {
                         WoodCutting.woodCuttingProcCheck(player, x);
                             
@@ -166,16 +164,16 @@ public class WoodCutting
         Block zPositive = world.getBlockAt(x, y, z+1);
         Block zNegative = world.getBlockAt(x, y, z-1);
         
-        if(!plugin.misc.blockWatchList.contains(currentBlock) &&
+        if(!currentBlock.hasMetadata("placedBlock") &&
                 !isTooAgressive(isAirOrLeaves, xPositive) && treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive))
             processTreeFelling(xPositive, world, toBeFelled, plugin);
-        if(!plugin.misc.blockWatchList.contains(currentBlock) &&
+        if(!currentBlock.hasMetadata("placedBlock") &&
                 !isTooAgressive(isAirOrLeaves, xNegative) && treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative))
             processTreeFelling(xNegative, world, toBeFelled, plugin);
-        if(!plugin.misc.blockWatchList.contains(currentBlock) &&
+        if(!currentBlock.hasMetadata("placedBlock") &&
                 !isTooAgressive(isAirOrLeaves, zPositive) && treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive))
             processTreeFelling(zPositive, world, toBeFelled, plugin);
-        if(!plugin.misc.blockWatchList.contains(currentBlock) &&
+        if(!currentBlock.hasMetadata("placedBlock") &&
                 !isTooAgressive(isAirOrLeaves, zNegative) && treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative))
             processTreeFelling(zNegative, world, toBeFelled, plugin);
         
@@ -184,7 +182,7 @@ public class WoodCutting
         
         if(treeFellerCompatible(yPositive))
         {
-            if(!plugin.misc.blockWatchList.contains(currentBlock) && !toBeFelled.contains(yPositive))
+            if(!currentBlock.hasMetadata("placedBlock") && !toBeFelled.contains(yPositive))
             {
                 processTreeFelling(yPositive, world, toBeFelled, plugin);
             }
@@ -217,7 +215,7 @@ public class WoodCutting
     	int xp = 0;
 		byte data = block.getData();
 		
-    	if(plugin.misc.blockWatchList.contains(block))
+    	if(block.hasMetadata("placedBlock"))
     		return;
     	
     	switch(data)
