@@ -21,7 +21,7 @@ public class LoadProperties {
 			woodcuttingrequiresaxe, anvilmessages, mayDowngradeEnchants,
 			mayLoseEnchants, fishingDrops, aDisplayNames, pDisplayNames, enableSmoothToMossy,
 			enableDirtToGrass, statsTracking, eventCallback, herbalismHungerBonus,
-			repairArmor, repairTools, perLevelTools;
+			repairArmor, repairTools, perLevelTools, wheatRegrowth;
 
 	public static String MySQLtablePrefix, MySQLuserName,
 			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
@@ -210,6 +210,7 @@ public class LoadProperties {
 		mlilypad = readInteger("Experience.Herbalism.Lily_Pads", 100);
 		mvines = readInteger("Experience.Herbalism.Vines", 10);
 		herbalismHungerBonus = readBoolean("Skills.Herbalism.Hunger_Bonus", true);
+		wheatRegrowth = readBoolean("Skills.Herbalism.Instant_Wheat_Regrowth", true);
 
 		moak = readInteger("Experience.Woodcutting.Oak", 70);
 		mbirch = readInteger("Experience.Woodcutting.Birch", 90);
@@ -279,7 +280,7 @@ public class LoadProperties {
 		chimaeraWingEnable = readBoolean("Items.Chimaera_Wing.Enabled", true);
         dAxe = readInteger("Items.Diamond.Axe", 750);
         dHoe = readInteger("Items.Diamond.Hoe", 750);
-        dShovel = readInteger("Items.Diamond.Shovel", 750);                                      
+        dShovel = readInteger("Items.Diamond.Shovel", 750);
         dSword = readInteger("Items.Diamond.Sword", 750);
         dPickaxe = readInteger("Items.Diamond.Pickaxe", 750);
         gAxe = readInteger("Items.Gold.Axe", 500);

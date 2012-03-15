@@ -149,7 +149,10 @@ public class Herbalism {
             if (data == CropState.RIPE.getData()) {
                 mat = Material.WHEAT;
                 xp = LoadProperties.mwheat;
-                greenThumbWheat(block, player, event, plugin);
+
+                if (LoadProperties.wheatRegrowth) {
+                    greenThumbWheat(block, player, event, plugin);
+                }
             }
             break;
 
