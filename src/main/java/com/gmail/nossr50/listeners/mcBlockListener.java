@@ -148,10 +148,10 @@ public class mcBlockListener implements Listener {
 
         if (mcPermissions.getInstance().mining(player) && Mining.canBeSuperBroken(mat)) {
             if (LoadProperties.miningrequirespickaxe && ItemChecks.isMiningPick(inhand)) {
-                Mining.miningBlockCheck(player, block, plugin);
+                Mining.miningBlockCheck(player, block);
             }
             else if (!LoadProperties.miningrequirespickaxe) {
-                Mining.miningBlockCheck(player, block, plugin);
+                Mining.miningBlockCheck(player, block);
             }
         }
 
@@ -161,15 +161,15 @@ public class mcBlockListener implements Listener {
 
         if (mcPermissions.getInstance().woodcutting(player) && mat.equals(Material.LOG)) {
             if (LoadProperties.woodcuttingrequiresaxe && ItemChecks.isAxe(inhand)) {
-                WoodCutting.woodcuttingBlockCheck(player, block, plugin);
+                WoodCutting.woodcuttingBlockCheck(player, block);
             }
             else if (!LoadProperties.woodcuttingrequiresaxe) {
-                WoodCutting.woodcuttingBlockCheck(player, block, plugin);
+                WoodCutting.woodcuttingBlockCheck(player, block);
             }
         }
 
         if (PP.getTreeFellerMode() && mcPermissions.getInstance().woodCuttingAbility(player)) {
-            WoodCutting.treeFeller(event, plugin);
+            WoodCutting.treeFeller(event);
         }
 
         /*
@@ -261,11 +261,11 @@ public class mcBlockListener implements Listener {
         else if (PP.getSuperBreakerMode() && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
             if (LoadProperties.miningrequirespickaxe && ItemChecks.isMiningPick(inhand)) {
                 event.setInstaBreak(true);
-                Mining.SuperBreakerBlockCheck(player, block, plugin);
+                Mining.SuperBreakerBlockCheck(player, block);
             }
             else if (!LoadProperties.miningrequirespickaxe) {
                 event.setInstaBreak(true);
-                Mining.SuperBreakerBlockCheck(player, block, plugin);
+                Mining.SuperBreakerBlockCheck(player, block);
             }
         }
         else if (PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 && mat.equals(Material.LEAVES)) {

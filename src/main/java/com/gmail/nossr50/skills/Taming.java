@@ -117,9 +117,8 @@ public class Taming {
      * Prevent damage to wolves based on various skills.
      *
      * @param event The event to modify
-     * @param plugin mcMMO plugin instance
      */
-    public static void preventDamage(EntityDamageEvent event, mcMMO plugin) {
+    public static void preventDamage(EntityDamageEvent event) {
         final int ENVIRONMENTALLY_AWARE_LEVEL = 100;
         final int THICK_FUR_LEVEL = 250;
         final int SHOCK_PROOF_LEVEL = 500;

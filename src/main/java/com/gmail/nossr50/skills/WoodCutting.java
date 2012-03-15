@@ -13,20 +13,22 @@ import org.bukkit.Bukkit;
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutStuff;
-import com.gmail.nossr50.config.*;
 
 import org.getspout.spoutapi.sound.SoundEffect;
 
+public class WoodCutting {
 
-public class WoodCutting 
-{
-    public static void treeFeller(BlockBreakEvent event, mcMMO plugin)
-    {
+    /**
+     * Handle the Tree Feller ability.
+     *
+     * @param event Event to modify
+     */
+    public static void treeFeller(BlockBreakEvent event) {
         //Setup vars
         Player player = event.getPlayer();
         Block firstBlock = event.getBlock();
@@ -36,11 +38,11 @@ public class WoodCutting
         ArrayList<Block> toBeFelled = new ArrayList<Block>();
         
         //NOTE: Tree Feller will cut upwards like how you actually fell trees
-        processTreeFelling(firstBlock, toBeFelled, plugin);
-        removeBlocks(toBeFelled, player, PP, plugin);
+        processTreeFelling(firstBlock, toBeFelled);
+        removeBlocks(toBeFelled, player, PP);
     }
     
-    private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP, mcMMO plugin)
+    private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP)
     {
         if(toBeFelled.size() > LoadProperties.treeFellerThreshold)
         {
@@ -147,7 +149,7 @@ public class WoodCutting
         return block.getType() == Material.LOG || block.getType() == Material.LEAVES || block.getType() == Material.AIR;
     }
     
-    private static void processTreeFelling(Block currentBlock, ArrayList<Block> toBeFelled, mcMMO plugin)
+    private static void processTreeFelling(Block currentBlock, ArrayList<Block> toBeFelled)
     {
         
         if(currentBlock.getType() == Material.LOG || currentBlock.getType() == Material.LEAVES)
@@ -163,16 +165,16 @@ public class WoodCutting
         
         if(!currentBlock.hasMetadata("mcmmoPlacedBlock") &&
                 !isTooAgressive(isAirOrLeaves, xPositive) && treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive))
-            processTreeFelling(xPositive, toBeFelled, plugin);
+            processTreeFelling(xPositive, toBeFelled);
         if(!currentBlock.hasMetadata("mcmmoPlacedBlock") &&
                 !isTooAgressive(isAirOrLeaves, xNegative) && treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative))
-            processTreeFelling(xNegative, toBeFelled, plugin);
+            processTreeFelling(xNegative, toBeFelled);
         if(!currentBlock.hasMetadata("mcmmoPlacedBlock") &&
                 !isTooAgressive(isAirOrLeaves, zPositive) && treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive))
-            processTreeFelling(zPositive, toBeFelled, plugin);
+            processTreeFelling(zPositive, toBeFelled);
         if(!currentBlock.hasMetadata("mcmmoPlacedBlock") &&
                 !isTooAgressive(isAirOrLeaves, zNegative) && treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative))
-            processTreeFelling(zNegative, toBeFelled, plugin);
+            processTreeFelling(zNegative, toBeFelled);
         
         //Finally go Y+
         Block yPositive = currentBlock.getRelative(0, 1, 0);
@@ -181,7 +183,7 @@ public class WoodCutting
         {
             if(!currentBlock.hasMetadata("mcmmoPlacedBlock") && !toBeFelled.contains(yPositive))
             {
-                processTreeFelling(yPositive, toBeFelled, plugin);
+                processTreeFelling(yPositive, toBeFelled);
             }
         }
     }
@@ -206,7 +208,7 @@ public class WoodCutting
     	}
     }
     
-    public static void woodcuttingBlockCheck(Player player, Block block, mcMMO plugin)
+    public static void woodcuttingBlockCheck(Player player, Block block)
     {
     	PlayerProfile PP = Users.getProfile(player);    	
     	int xp = 0;

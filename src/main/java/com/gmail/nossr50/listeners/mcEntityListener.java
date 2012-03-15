@@ -126,7 +126,7 @@ public class mcEntityListener implements Listener {
             Wolf wolf = (Wolf) entity;
 
             if ((!m.isInvincible(wolf, event)) && wolf.isTamed() && (wolf.getOwner() instanceof Player)) {
-                Taming.preventDamage(event, plugin);
+                Taming.preventDamage(event);
             }
             break;
 
@@ -202,7 +202,7 @@ public class mcEntityListener implements Listener {
 
             if (plugin.misc.tntTracker.containsKey(id)) {
                 Player player = plugin.misc.tntTracker.get(id);
-                BlastMining.dropProcessing(player, event, plugin);
+                BlastMining.dropProcessing(player, event);
                 plugin.misc.tntTracker.remove(id);
             }
         }

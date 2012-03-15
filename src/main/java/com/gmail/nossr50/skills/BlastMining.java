@@ -34,10 +34,9 @@ public class BlastMining {
      * @param oreBonus Percentage bonus for ore drops
      * @param debrisReduction Percentage reduction for non-ore drops
      * @param extraDrops Number of times to drop each block
-     * @param plugin mcMMO plugin instance
      * @return A list of blocks dropped from the explosion
      */
-    private static List<Block> explosionYields(List<Block> ores, List<Block> debris, float yield, float oreBonus, float debrisReduction, int extraDrops, mcMMO plugin) {
+    private static List<Block> explosionYields(List<Block> ores, List<Block> debris, float yield, float oreBonus, float debrisReduction, int extraDrops) {
         Iterator<Block> iterator2 = ores.iterator();
         List<Block> blocksDropped = new ArrayList<Block>();
 
@@ -80,9 +79,8 @@ public class BlastMining {
      *
      * @param player Player triggering the explosion
      * @param event Event whose explosion is being processed
-     * @param plugin mcMMO plugin instance
      */
-    public static void dropProcessing(Player player, EntityExplodeEvent event, mcMMO plugin) {
+    public static void dropProcessing(Player player, EntityExplodeEvent event) {
         final int RANK_1_LEVEL = 125;
         final int RANK_2_LEVEL = 250;
         final int RANK_3_LEVEL = 375;
@@ -121,42 +119,42 @@ public class BlastMining {
 
         //Triple Drops, No debris, +70% ores
         if (skillLevel >= RANK_8_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .70f, .30f, 3, plugin);
+            xp = explosionYields(ores, debris, yield, .70f, .30f, 3);
         }
 
         //Triple Drops, No debris, +65% ores
         else if (skillLevel >= RANK_7_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .65f, .30f, 3, plugin);
+            xp = explosionYields(ores, debris, yield, .65f, .30f, 3);
         }
 
         //Double Drops, No Debris, +60% ores
         else if (skillLevel >= RANK_6_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .60f, .30f, 2, plugin);
+            xp = explosionYields(ores, debris, yield, .60f, .30f, 2);
         }
 
         //Double Drops, No Debris, +55% ores
         else if (skillLevel >= RANK_5_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .55f, .30f, 2, plugin);
+            xp = explosionYields(ores, debris, yield, .55f, .30f, 2);
         }
 
         //No debris, +50% ores
         else if (skillLevel >= RANK_4_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .50f, .30f, 1, plugin);
+            xp = explosionYields(ores, debris, yield, .50f, .30f, 1);
         }
 
         //No debris, +45% ores
         else if (skillLevel >= RANK_3_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .45f, .30f, 1, plugin);
+            xp = explosionYields(ores, debris, yield, .45f, .30f, 1);
         }
 
         //+40% ores, -20% debris
         else if (skillLevel >= RANK_2_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .40f, .20f, 1, plugin);
+            xp = explosionYields(ores, debris, yield, .40f, .20f, 1);
         }
 
         //+35% ores, -10% debris
         else if (skillLevel >= RANK_1_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .35f, .10f, 1, plugin);
+            xp = explosionYields(ores, debris, yield, .35f, .10f, 1);
         }
 
         for (Block block : xp) {

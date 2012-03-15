@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerAnimationEvent;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -153,9 +152,8 @@ public class Mining
      *
      * @param player The player mining the block
      * @param block The block being broken
-     * @param plugin mcMMO plugin instance
      */
-    public static void miningBlockCheck(Player player, Block block, mcMMO plugin) {
+    public static void miningBlockCheck(Player player, Block block) {
         if (block.hasMetadata("mcmmoPlacedBlock")) {
             return;
         }
@@ -212,9 +210,8 @@ public class Mining
      *
      * @param player The player using the ability
      * @param block The block being affected
-     * @param plugin mcMMO plugin instance
      */
-    public static void SuperBreakerBlockCheck(Player player, Block block, mcMMO plugin) {
+    public static void SuperBreakerBlockCheck(Player player, Block block) {
         Material type = block.getType();
         int tier = m.getTier(player.getItemInHand());
         int durabilityLoss = LoadProperties.abilityDurabilityLoss;
@@ -258,8 +255,8 @@ public class Mining
             Bukkit.getPluginManager().callEvent(armswing);
             Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
 
-            miningBlockCheck(player, block, plugin);
-            miningBlockCheck(player, block, plugin);
+            miningBlockCheck(player, block);
+            miningBlockCheck(player, block);
 
             if (LoadProperties.spoutEnabled) {
                 SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
