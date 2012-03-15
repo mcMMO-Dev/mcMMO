@@ -15,7 +15,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.McMMOItemSpawnEvent;
 import com.gmail.nossr50.runnables.SQLConversionTask;
-import com.gmail.nossr50.skills.Repair;
 
 public class m {
 
@@ -124,19 +123,19 @@ public class m {
     public static Integer getTier(ItemStack inHand) {
         int tier = 0;
 
-        if (Repair.isWoodTools(inHand)) {
+        if (ItemChecks.isWoodTool(inHand)) {
             tier = 1;
         }
-        else if (Repair.isStoneTools(inHand)) {
+        else if (ItemChecks.isStoneTool(inHand)) {
             tier = 2;
         }
-        else if (Repair.isIronTools(inHand)) {
+        else if (ItemChecks.isIronTool(inHand)) {
             tier = 3;
         }
-        else if(Repair.isGoldTools(inHand)) {
+        else if(ItemChecks.isGoldTool(inHand)) {
             tier = 1;
         }
-        else if(Repair.isDiamondTools(inHand))
+        else if(ItemChecks.isDiamondTool(inHand))
             tier = 4;
 
         return tier;

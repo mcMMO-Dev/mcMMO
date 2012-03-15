@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.BlockChecks;
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Item;
+import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
@@ -201,8 +202,8 @@ public class mcPlayerListener implements Listener {
         case RIGHT_CLICK_BLOCK:
 
             /* REPAIR CHECKS */
-            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == LoadProperties.anvilID && (Repair.isTools(is) || Repair.isArmor(is))) {
-                Repair.repairCheck(player, is, event.getClickedBlock());
+            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == LoadProperties.anvilID && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
+                Repair.repairCheck(player, is);
                 event.setCancelled(true);
                 player.updateInventory();
             }

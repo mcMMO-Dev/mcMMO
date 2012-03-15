@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
 import com.gmail.nossr50.Combat;
+import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.LoadProperties;
@@ -131,7 +132,7 @@ public class Fishing {
             ItemStack fishingResults = theCatch.getItemStack();
 
             player.sendMessage(mcLocale.getString("Fishing.ItemFound"));
-            if (Repair.isArmor(fishingResults) || Repair.isTools(fishingResults)) {
+            if (ItemChecks.isArmor(fishingResults) || ItemChecks.isTool(fishingResults)) {
                 if (Math.random() * 100 <= ENCHANTMENT_CHANCE) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
