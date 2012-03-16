@@ -7,6 +7,7 @@ import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Tree;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.Bukkit;
@@ -48,7 +49,7 @@ public class WoodCutting {
      * @param PP The PlayerProfile of the player
      */
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP) {
-        if(toBeFelled.size() > LoadProperties.treeFellerThreshold) {
+        if (toBeFelled.size() > LoadProperties.treeFellerThreshold) {
             player.sendMessage(mcLocale.getString("Skills.Woodcutting.TreeFellerThreshold"));
             return;
         }
@@ -82,7 +83,8 @@ public class WoodCutting {
         for (Block x : toBeFelled) {
             if (m.blockBreakSimulate(x, player, true)) {
                 if (x.getType() == Material.LOG) {
-                    TreeSpecies species = TreeSpecies.getByData(x.getData());
+                    Tree tree = (Tree) x.getState().getData();
+                    TreeSpecies species = tree.getSpecies();
 
                     switch (species) {
                     case GENERIC:
@@ -140,10 +142,8 @@ public class WoodCutting {
                 else if (x.getType() == Material.LEAVES) {
                     final int SAPLING_DROP_CHANCE = 90;
 
-                    item = new ItemStack(Material.SAPLING, 1, (short) 0, (byte) (x.getData() - 8)); //Drop the right type of sapling
-
-                    if(Math.random() * 100 <= 90)
-                        m.mcRandomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
+                    item = new ItemStack(Material.SAPLING, 1, (short) 0, (byte) (x.getData() & 3)); //Drop the right type of sapling
+                    m.mcRandomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
 
                     //Remove the block
                     x.setData((byte) 0);
