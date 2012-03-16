@@ -176,7 +176,7 @@ public class mcBlockListener implements Listener {
          * EXCAVATION
          */
 
-        if (Excavation.canBeGigaDrillBroken(mat) && mcPermissions.getInstance().excavation(player) && !block.hasMetadata("mcmmoPlacedBlock")) {
+        if (Excavation.canBeGigaDrillBroken(mat) && mcPermissions.getInstance().excavation(player) && block.hasMetadata("mcmmoPlacedBlock")) {
             if (LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand)) {
                 Excavation.excavationProcCheck(block, player);
             }
@@ -198,6 +198,8 @@ public class mcBlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
+        final int LEAF_BLOWER_LEVEL = 100;
+
         Player player = event.getPlayer();
         PlayerProfile PP = Users.getProfile(player);
         ItemStack inhand = player.getItemInHand();
@@ -268,15 +270,15 @@ public class mcBlockListener implements Listener {
                 Mining.SuperBreakerBlockCheck(player, block);
             }
         }
-        else if (PP.getSkillLevel(SkillType.WOODCUTTING) >= 100 && mat.equals(Material.LEAVES)) {
+        else if (PP.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && mat.equals(Material.LEAVES)) {
             if (LoadProperties.woodcuttingrequiresaxe && ItemChecks.isAxe(inhand)) {
-                if(Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
+                if (Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
                     event.setInstaBreak(true);
                     WoodCutting.leafBlower(player, block);
                 }
             }
             else if (!LoadProperties.woodcuttingrequiresaxe && !inhand.getType().equals(Material.SHEARS)) {
-                if(Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
+                if (Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
                     event.setInstaBreak(true);
                     WoodCutting.leafBlower(player, block);
                 }

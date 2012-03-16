@@ -35,7 +35,7 @@ public class Mining
 
         switch (type) {
         case COAL_ORE:
-            item = new ItemStack(Material.COAL, 1, (byte) 0x0, CoalType.COAL.getData());
+            item = new ItemStack(Material.COAL, 1, (short) 0, CoalType.COAL.getData());
             m.mcDropItem(loc, item);
             break;
 
@@ -58,7 +58,7 @@ public class Mining
             break;
 
         case LAPIS_ORE:
-            item = new ItemStack(Material.INK_SACK, 1, (byte) 0x0, DyeColor.BLUE.getData());
+            item = new ItemStack(Material.INK_SACK, 1, (short) 0, DyeColor.BLUE.getData());
             m.mcDropItems(loc, item, 4);
             m.mcRandomDropItems(loc, item, 50, 4);
             break;
