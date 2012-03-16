@@ -36,7 +36,7 @@ public class Herbalism {
             player.sendMessage("You need more seeds to spread Green Terra");
         }
         else if (hasSeeds && !block.getType().equals(Material.WHEAT)) {
-            inventory.removeItem(new ItemStack(Material.SEEDS, 1));
+            inventory.removeItem(new ItemStack(Material.SEEDS));
             player.updateInventory();
 
             if (m.blockBreakSimulate(block, player, false)) {
@@ -124,7 +124,7 @@ public class Herbalism {
         switch (type) {
         case BROWN_MUSHROOM:
         case RED_MUSHROOM:
-            if (data != (byte) 0x5) {
+            if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = Material.getMaterial(id);
                 xp = LoadProperties.mmushroom;
             }
@@ -223,7 +223,7 @@ public class Herbalism {
             return;
         }
         else {
-            ItemStack is = new ItemStack(mat, 1);
+            ItemStack is = new ItemStack(mat);
 
             if (herbLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= herbLevel)) {
                 if (type.equals(Material.CACTUS)) {
@@ -270,12 +270,12 @@ public class Herbalism {
         if (hasSeeds && PP.getGreenTerraMode() || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || (Math.random() * 1500 <= herbLevel))) {
             event.setCancelled(true);
 
-            m.mcDropItem(loc, new ItemStack(Material.WHEAT, 1));
-            m.mcRandomDropItems(loc, new ItemStack(Material.SEEDS, 1), 50, 3);
+            m.mcDropItem(loc, new ItemStack(Material.WHEAT));
+            m.mcRandomDropItems(loc, new ItemStack(Material.SEEDS), 50, 3);
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, PP), 1);
 
-            inventory.removeItem(new ItemStack(Material.SEEDS, 1));
+            inventory.removeItem(new ItemStack(Material.SEEDS));
             player.updateInventory();
         }
     }

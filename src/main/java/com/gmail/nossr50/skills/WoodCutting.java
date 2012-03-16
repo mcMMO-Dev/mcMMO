@@ -75,10 +75,10 @@ public class WoodCutting {
 
         //Prepare ItemStacks
         ItemStack item = null;
-        ItemStack oak = new ItemStack(Material.LOG, 1, (byte) 0x0, TreeSpecies.GENERIC.getData());
-        ItemStack spruce = new ItemStack(Material.LOG, 1, (byte) 0x0, TreeSpecies.REDWOOD.getData());
-        ItemStack birch = new ItemStack(Material.LOG, 1, (byte) 0x0, TreeSpecies.BIRCH.getData());
-        ItemStack jungle = new ItemStack(Material.LOG, 1, (byte)0, TreeSpecies.JUNGLE.getData());
+        ItemStack oak = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.GENERIC.getData());
+        ItemStack spruce = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.REDWOOD.getData());
+        ItemStack birch = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.BIRCH.getData());
+        ItemStack jungle = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.JUNGLE.getData());
         
         for (Block x : toBeFelled) {
             if (m.blockBreakSimulate(x, player, true)) {

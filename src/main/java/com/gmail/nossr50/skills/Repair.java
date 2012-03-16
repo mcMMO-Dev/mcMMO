@@ -40,22 +40,22 @@ public class Repair {
              */
             if (ItemChecks.isArmor(is) && LoadProperties.repairArmor) {
                 if (ItemChecks.isDiamondArmor(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairdiamondlevel) {
-                    inventory.removeItem(new ItemStack(LoadProperties.rDiamond, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rDiamond));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 6, true);
                 }
                 else if (ItemChecks.isIronArmor(is) && inventory.contains(LoadProperties.rIron) && skillLevel >= LoadProperties.repairIronLevel) {
-                    inventory.removeItem(new ItemStack(LoadProperties.rIron, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rIron));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 2, true);
                 }
                 else if (ItemChecks.isGoldArmor(is) && inventory.contains(LoadProperties.rGold) && skillLevel >= LoadProperties.repairGoldLevel) {
-                    inventory.removeItem(new ItemStack(LoadProperties.rGold, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rGold));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 4, true);
                 }
                 else if (ItemChecks.isLeatherArmor(is) && inventory.contains(LoadProperties.rLeather)) {
-                    inventory.removeItem(new ItemStack(LoadProperties.rLeather, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rLeather));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
@@ -69,32 +69,32 @@ public class Repair {
              */
             else if (ItemChecks.isTool(is) && LoadProperties.repairTools) {
                 if (ItemChecks.isStoneTool(is) && inventory.contains(LoadProperties.rStone) && skillLevel >= LoadProperties.repairStoneLevel) {
-                    inventory.removeItem(new ItemStack(LoadProperties.rStone, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rStone));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
                 else if (ItemChecks.isWoodTool(is) && inventory.contains(LoadProperties.rWood)) {
-                    inventory.removeItem(new ItemStack(LoadProperties.rWood, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rWood));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
                 else if (ItemChecks.isIronTool(is) && inventory.contains(LoadProperties.rIron) && skillLevel >= LoadProperties.repairIronLevel) {
-                    inventory.removeItem(new ItemStack(LoadProperties.rIron, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rIron));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
                 else if (ItemChecks.isDiamondTool(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairdiamondlevel) {
-                    inventory.removeItem(new ItemStack(LoadProperties.rDiamond, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rDiamond));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
                 else if (ItemChecks.isGoldTool(is) && inventory.contains(LoadProperties.rGold) && skillLevel >= LoadProperties.repairGoldLevel) {
-                    inventory.removeItem(new ItemStack(LoadProperties.rGold, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rGold));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 8, true);
                 }
                 else if (is.getType().equals(Material.BOW) && inventory.contains(LoadProperties.rString)){
-                    inventory.removeItem(new ItemStack(LoadProperties.rString, 1));
+                    inventory.removeItem(new ItemStack(LoadProperties.rString));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }

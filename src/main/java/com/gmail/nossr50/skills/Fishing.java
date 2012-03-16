@@ -180,91 +180,91 @@ public class Fishing {
 
         switch (type) {
         case BLAZE:
-            m.mcDropItem(loc, new ItemStack(Material.BLAZE_ROD, 1));
+            m.mcDropItem(loc, new ItemStack(Material.BLAZE_ROD));
             break;
 
         case CAVE_SPIDER:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
+                m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
+                m.mcDropItem(loc, new ItemStack(Material.STRING));
             }
             break;
 
         case CHICKEN:
             if (DROP_NUMBER > 66) {
-                m.mcDropItem(loc, new ItemStack(Material.FEATHER, 1));
+                m.mcDropItem(loc, new ItemStack(Material.FEATHER));
             }
             else if (DROP_NUMBER > 33) {
-                m.mcDropItem(loc, new ItemStack(Material.RAW_CHICKEN, 1));
+                m.mcDropItem(loc, new ItemStack(Material.RAW_CHICKEN));
                 }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.EGG, 1));
+                m.mcDropItem(loc, new ItemStack(Material.EGG));
             }
             break;
 
         case COW:
             if (DROP_NUMBER > 99) {
-                m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1));
+                m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET));
             }
             else if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.LEATHER, 1));
+                m.mcDropItem(loc, new ItemStack(Material.LEATHER));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF, 1));
+                m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF));
             }
             break;
 
         case CREEPER:
-            m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
+            m.mcDropItem(loc, new ItemStack(Material.SULPHUR));
             break;
 
         case ENDERMAN:
-            m.mcDropItem(loc, new ItemStack(Material.ENDER_PEARL, 1));
+            m.mcDropItem(loc, new ItemStack(Material.ENDER_PEARL));
             break;
 
         case GHAST:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.SULPHUR, 1));
+                m.mcDropItem(loc, new ItemStack(Material.SULPHUR));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.GHAST_TEAR, 1));
+                m.mcDropItem(loc, new ItemStack(Material.GHAST_TEAR));
             }
             break;
 
         case MAGMA_CUBE:
-            m.mcDropItem(loc, new ItemStack(Material.MAGMA_CREAM, 1));
+            m.mcDropItem(loc, new ItemStack(Material.MAGMA_CREAM));
             break;
 
         case MUSHROOM_COW:
             if (DROP_NUMBER > 99) {
-                m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET, 1));
+                m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET));
             }
             else if (DROP_NUMBER > 98) {
-                m.mcDropItem(loc, new ItemStack(Material.MUSHROOM_SOUP, 1));
+                m.mcDropItem(loc, new ItemStack(Material.MUSHROOM_SOUP));
             }
             else if (DROP_NUMBER > 66) {
-                m.mcDropItem(loc, new ItemStack(Material.LEATHER, 1));
+                m.mcDropItem(loc, new ItemStack(Material.LEATHER));
             }
             else if (DROP_NUMBER > 33) {
-                m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF, 1));
+                m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.RED_MUSHROOM, 3));
+                m.mcDropItems(loc, new ItemStack(Material.RED_MUSHROOM), 3);
             }
             break;
 
         case PIG:
-            m.mcDropItem(loc, new ItemStack(Material.PORK, 1));
+            m.mcDropItem(loc, new ItemStack(Material.PORK));
             break;
 
         case PIG_ZOMBIE:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH, 1));
+                m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.GOLD_NUGGET, 1));
+                m.mcDropItem(loc, new ItemStack(Material.GOLD_NUGGET));
             }
             break;
 
@@ -285,41 +285,41 @@ public class Fishing {
 
         case SKELETON:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.BONE, 1));
+                m.mcDropItem(loc, new ItemStack(Material.BONE));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.ARROW, 3));
+                m.mcDropItems(loc, new ItemStack(Material.ARROW), 3);
             }
             break;
 
         case SLIME:
-            m.mcDropItem(loc, new ItemStack(Material.SLIME_BALL, 1));
+            m.mcDropItem(loc, new ItemStack(Material.SLIME_BALL));
             break;
 
         case SNOWMAN:
             if (DROP_NUMBER > 99) {
-                m.mcDropItem(loc, new ItemStack(Material.PUMPKIN, 1));
+                m.mcDropItem(loc, new ItemStack(Material.PUMPKIN));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.SNOW_BALL, 5));
+                m.mcDropItems(loc, new ItemStack(Material.SNOW_BALL), 5);
             }
             break;
 
         case SPIDER:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE, 1));
+                m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.STRING, 1));
+                m.mcDropItem(loc, new ItemStack(Material.STRING));
             }
             break;
 
         case SQUID:
-            m.mcDropItem(loc, new ItemStack(Material.INK_SACK, 1, (byte) 0x0, DyeColor.BLACK.getData()));
+            m.mcDropItem(loc, new ItemStack(Material.INK_SACK, 1, (short) 0, DyeColor.BLACK.getData()));
             break;
 
         case ZOMBIE:
-            m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH, 1));
+            m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH));
             break;
 
         default:

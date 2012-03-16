@@ -31,7 +31,7 @@ public class Mining
     public static void miningDrops(Block block) {
         Location loc = block.getLocation();
         Material type = block.getType();
-        ItemStack item = new ItemStack(type, 1);
+        ItemStack item = new ItemStack(type);
 
         switch (type) {
         case COAL_ORE:
@@ -40,19 +40,19 @@ public class Mining
             break;
 
         case DIAMOND_ORE:
-            item = new ItemStack(Material.DIAMOND, 1);
+            item = new ItemStack(Material.DIAMOND);
             m.mcDropItem(loc, item);
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
-            item = new ItemStack(Material.REDSTONE, 1);
+            item = new ItemStack(Material.REDSTONE);
             m.mcDropItems(loc, item, 4);
             m.mcRandomDropItem(loc, item, 50);
             break;
 
         case GLOWSTONE:
-            item = new ItemStack(Material.GLOWSTONE_DUST, 1);
+            item = new ItemStack(Material.GLOWSTONE_DUST);
             m.mcDropItems(loc, item, 2);
             m.mcRandomDropItems(loc, item, 50, 2);
             break;
@@ -64,7 +64,7 @@ public class Mining
             break;
 
         case STONE:
-            item = new ItemStack(Material.COBBLESTONE, 1);
+            item = new ItemStack(Material.COBBLESTONE);
             m.mcDropItem(loc, item);
             break;
 
@@ -167,7 +167,7 @@ public class Mining
 
             if (MAX_BONUS_LEVEL > 1000 || (Math.random() * 1000 <= skillLevel)) {
                 if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
-                    m.mcDropItem(block.getLocation(), new ItemStack(block.getType(), 1));
+                    m.mcDropItem(block.getLocation(), new ItemStack(block.getType()));
                 }
                 else {
                     miningDrops(block);

@@ -117,7 +117,7 @@ public class LoadTreasures {
 			if(dropChance < 0) reason.add("Invalid Drop_Chance: " + dropChance);
 			if(dropLevel < 0) reason.add("Invalid Drop_Level: " + dropLevel);
 
-			ItemStack item = new ItemStack(id, amount, (byte) 0, (byte) data);
+			ItemStack item = new ItemStack(id, amount, (short) 0, (byte) data);
 
 			if(readBoolean("Treasures." + treasureName + ".Drops_From.Fishing", false)) {
 				if(config.getConfigurationSection("Treasures." + treasureName + ".Drops_From").getKeys(false).size() != 1)
