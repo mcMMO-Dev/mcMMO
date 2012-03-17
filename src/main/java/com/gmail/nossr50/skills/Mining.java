@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills;
 
 import org.bukkit.Bukkit;
 import org.bukkit.CoalType;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -58,7 +57,7 @@ public class Mining
             break;
 
         case LAPIS_ORE:
-            item = new ItemStack(Material.INK_SACK, 1, (short) 0, DyeColor.BLUE.getData());
+            item = new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x4);
             m.mcDropItems(loc, item, 4);
             m.mcRandomDropItems(loc, item, 50, 4);
             break;
