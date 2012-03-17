@@ -81,14 +81,14 @@ public class Combat {
                 startGainXp(attacker, PPa, target, SkillType.AXES, plugin);
             }
             else if (itemInHand.getType().equals(Material.AIR) && mcPermissions.getInstance().unarmed(attacker)) {
-                Unarmed.unarmedBonus(attacker, event);
+                Unarmed.unarmedBonus(PPa, event);
 
                 if (PPa.getBerserkMode()) {
                     event.setDamage(damage + (damage / 2));
                 }
 
                 if (targetType.equals(EntityType.PLAYER)) {
-                    Unarmed.disarmProcCheck(attacker, (Player) target);
+                    Unarmed.disarmProcCheck(PPa, (Player) target);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.UNARMED, plugin);
