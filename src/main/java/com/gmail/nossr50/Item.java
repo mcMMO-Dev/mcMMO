@@ -1,5 +1,6 @@
 package com.gmail.nossr50;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -56,7 +57,7 @@ public class Item {
                 player.sendMessage(mcLocale.getString("Item.InjuredWait", new Object[] {Skills.calculateTimeLeft(PP.getRecentlyHurt(), 60)}));
             }
             else if (is.getAmount() <= LoadProperties.feathersConsumedByChimaeraWing) {
-                player.sendMessage(mcLocale.getString("Item.NeedFeathers"));
+                player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(LoadProperties.chimaeraId));
             }
         }
     }

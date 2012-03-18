@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -207,18 +209,23 @@ public class Taming {
         }
 
         if (item.getType().equals(summonItem) && item.getAmount() >= summonAmount) {
-            for (Entity x : player.getNearbyEntities(40, 40, 40)) {
-                if (x.getType().equals(type)) {
-                    player.sendMessage(mcLocale.getString("m.TamingSummonFailed"));
-                    return;
+            if (item.getAmount() >= summonAmount) {
+                for (Entity x : player.getNearbyEntities(40, 40, 40)) {
+                    if (x.getType().equals(type)) {
+                        player.sendMessage(mcLocale.getString("m.TamingSummonFailed"));
+                        return;
+                    }
                 }
-            }
-            LivingEntity entity = player.getWorld().spawnCreature(player.getLocation(), type);
-            entity.setMetadata("mcmmoSummoned", new FixedMetadataValue(plugin, true));
-            ((Tameable) entity).setOwner(player);
+                LivingEntity entity = player.getWorld().spawnCreature(player.getLocation(), type);
+                entity.setMetadata("mcmmoSummoned", new FixedMetadataValue(plugin, true));
+                ((Tameable) entity).setOwner(player);
 
-            player.setItemInHand(new ItemStack(summonItem, item.getAmount() - summonAmount));
-            player.sendMessage(mcLocale.getString("m.TamingSummon"));
+                player.setItemInHand(new ItemStack(summonItem, item.getAmount() - summonAmount));
+                player.sendMessage(mcLocale.getString("m.TamingSummon"));
+            }
+            else {
+                player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(summonItem.getId()));
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.gmail.nossr50;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -30,6 +31,31 @@ public class m {
         String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
 
         return capitalized;
+    }
+
+    /**
+     * Gets a nicely formatted string version of an item name from a given item ID.
+     *
+     * @param itemID The ID of the item to convert to string.
+     * @return the nicely formatting string
+     */
+    public static String prettyItemString(int itemID) {
+        String baseString = Material.getMaterial(itemID).toString();
+        String[] substrings = baseString.split("_");
+        String prettyString = "";
+        int size = 1;
+
+        for (String s : substrings) {
+            prettyString = prettyString.concat(m.getCapitalized(s));
+
+            if (size < substrings.length) {
+                prettyString = prettyString.concat(" ");
+            }
+
+            size++;
+        }
+
+        return prettyString;
     }
 
     /**

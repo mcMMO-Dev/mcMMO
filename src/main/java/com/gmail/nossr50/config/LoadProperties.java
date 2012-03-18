@@ -8,417 +8,506 @@ import org.bukkit.configuration.file.FileConfiguration;
 import com.gmail.nossr50.datatypes.HUDType;
 
 public class LoadProperties {
-	public static Boolean enableOnlyActivateWhenSneaking,
-			enableAbilityMessages, enableAbilities, showDisplayName, showFaces,
-			xplockEnable, xpbar, xpicon, partybar, xprateEnable, spoutEnabled,
-			donateMessage, chimaeraWingEnable, xpGainsMobSpawners,
-			mccEnable, mcmmoEnable, partyEnable, inviteEnable, acceptEnable,
-			inspectEnable, mcstatsEnable, addxpEnable, ptpEnable, mmoeditEnable, mcremoveEnable,
-			mcgodEnable, mcabilityEnable, mctopEnable,
-			addlevelsEnable, mcrefreshEnable, aEnable, pEnable, enableMotd,
-			enableCobbleToMossy, useMySQL, toolsLoseDurabilityFromAbilities,
-			pvpxp, miningrequirespickaxe, excavationRequiresShovel,
-			woodcuttingrequiresaxe, anvilmessages, mayDowngradeEnchants,
-			mayLoseEnchants, fishingDrops, aDisplayNames, pDisplayNames, enableSmoothToMossy,
-			enableDirtToGrass, statsTracking, eventCallback, herbalismHungerBonus,
-			repairArmor, repairTools, perLevelTools, wheatRegrowth;
 
-	public static String MySQLtablePrefix, MySQLuserName,
-			MySQLserverName, MySQLdbName, MySQLdbPass, nWood, nStone, 
-			nIron, nGold, nDiamond, locale, nString, nLeather;
+    /*
+     * GENERAL SETTINGS
+     */
 
-	public static int treeFellerThreshold, mjungle, mtameWolf, mtameOcelot,
-			mfishing, xpbar_x, xpbar_y, xpicon_x, xpicon_y,
-			chimaeraId, msandstone, mbase, moak, mbirch, mspruce, mmelon,
-			mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mgold,
-			mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack,
-			mglowstone, mcoal, mstone, MySQLport, xpGainMultiplier,
-			superBreakerCooldown, blastMiningCooldown, greenTerraCooldown, gigaDrillBreakerCooldown,
-			treeFellerCooldown, berserkCooldown, serratedStrikeCooldown,
-			skullSplitterCooldown, abilityDurabilityLoss,
-			feathersConsumedByChimaeraWing, bonesConsumedByCOTW,
-			repairdiamondlevel, rWood, rStone, rIron, rGold, rDiamond, rString,
-			rLeather, downgradeRank1, downgradeRank2, downgradeRank3,
-			downgradeRank4, keepEnchantsRank1, keepEnchantsRank2,
-			keepEnchantsRank3, keepEnchantsRank4, mnetherwart,
-			mvines, mlilypad, mendstone, mmossstone,
-			levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
-			levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
-			levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
-			anvilID, saveInterval, fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5,
-			repairStoneLevel, repairIronLevel, repairGoldLevel, arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4,
-			detonatorID, fishConsumedByCOTW, dAxe, dHoe, dShovel, dSword, dPickaxe, gAxe, gHoe, gShovel, gSword, gPickaxe,
-            iAxe, iHoe, iShovel, iSword, iPickaxe, wAxe, wHoe, wShovel, wSword, wPickaxe,
-            ptpCommandCooldown;
+    public static String locale;
+    public static Boolean enableMotd, statsTracking, eventCallback;
+    public static int saveInterval;
 
-	public static double xpbackground_r, xpbackground_g, xpbackground_b,
-			xpborder_r, xpborder_g, xpborder_b, fishing_r, fishing_g,
-			fishing_b, acrobatics_r, acrobatics_g, acrobatics_b, archery_r,
-			archery_g, archery_b, axes_r, axes_g, axes_b, excavation_r,
-			excavation_g, excavation_b, herbalism_r, herbalism_g, herbalism_b,
-			mining_r, mining_g, mining_b, repair_r, repair_g, repair_b,
-			swords_r, swords_g, swords_b, taming_r, taming_g, taming_b,
-			unarmed_r, unarmed_g, unarmed_b, woodcutting_r, woodcutting_g,
-			woodcutting_b, pvpxprewardmodifier, tamingxpmodifier,
-			miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier,
-			fishingxpmodifier, unarmedxpmodifier, herbalismxpmodifier,
-			excavationxpmodifier, archeryxpmodifier, swordsxpmodifier,
-			axesxpmodifier, acrobaticsxpmodifier, animalXP, creeperXP, skeletonXP, spiderXP, ghastXP, slimeXP,
-			zombieXP, pigzombieXP, endermanXP, cavespiderXP, silverfishXP, blazeXP, magmacubeXP, enderdragonXP;
+    /* mySQL */
+    public static Boolean useMySQL;
+    public static String MySQLtablePrefix, MySQLuserName, MySQLserverName, MySQLdbName, MySQLdbPass;
+    public static int MySQLport;
 
-	public static HUDType defaulthud;
-	protected static File configFile;
-	protected static File dataFolder;
-	protected final mcMMO plugin;
-	protected static FileConfiguration config;
+    /* Commands */
+    public static Boolean xplockEnable, xprateEnable, mccEnable, mcmmoEnable,
+                          partyEnable, inviteEnable, acceptEnable, inspectEnable,
+                          mcstatsEnable, addxpEnable, ptpEnable, mmoeditEnable,
+                          mcremoveEnable, mcgodEnable, mcabilityEnable, mctopEnable,
+                          addlevelsEnable, mcrefreshEnable, aEnable, pEnable;
+    public static Boolean aDisplayNames, pDisplayNames;
+    public static int ptpCommandCooldown;
+    public static Boolean donateMessage;
 
-	public LoadProperties(mcMMO plugin) {
-		this.plugin = plugin;
-		dataFolder = plugin.getDataFolder();
-		configFile = new File(dataFolder, File.separator + "config.yml");
-		config = plugin.getConfig();
-	}
+    /* Tool Level Requirements */
+    public static Boolean perLevelTools;
+    public static int sAxe, sHoe, sShovel, sSword, sPickaxe;
+    public static int iAxe, iHoe, iShovel, iSword, iPickaxe;
+    public static int gAxe, gHoe, gShovel, gSword, gPickaxe;
+    public static int dAxe, dHoe, dShovel, dSword, dPickaxe;
 
-	public void load() {
-		// If not exist, copy from the jar
-		if (!configFile.exists()) {
-			dataFolder.mkdir();
-			plugin.saveDefaultConfig();
-		}
-		addDefaults();
-		loadKeys();
-	}
+    /* Items */
+    public static Boolean chimaeraWingEnable;
+    public static int chimaeraId, feathersConsumedByChimaeraWing;
 
-	private Boolean readBoolean(String root, Boolean def) {
-		Boolean result = config.getBoolean(root, def);
-		return result;
-	}
+    /*
+     * ABILITY SETTINGS
+     */
 
-	private Double readDouble(String root, Double def) {
-		Double result = config.getDouble(root, def);
-		return result;
-	}
+    /* General Settings */
+    public static Boolean enableOnlyActivateWhenSneaking, enableAbilityMessages, enableAbilities;
 
-	private Integer readInteger(String root, Integer def) {
-		Integer result = config.getInt(root, def);
-		return result;
-	}
+    /* Durability Settings */
+    public static Boolean toolsLoseDurabilityFromAbilities;
+    public static int abilityDurabilityLoss;
 
-	public static String readString(String root, String def) {
-		String result = config.getString(root, def);
-		return result;
-	}
+    /* Cooldowns */
+    public static int superBreakerCooldown, blastMiningCooldown, greenTerraCooldown,
+                      gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown,
+                      serratedStrikeCooldown, skullSplitterCooldown;
 
-	private static void saveConfig() {
-		try {
-			config.save(configFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    /* Thresholds */
+    public static int treeFellerThreshold;
 
-	private void addDefaults() {
-		// Load from included config.yml
-		config.options().copyDefaults(true);
-		saveConfig();
-	}
+    /*
+     * SKILL SETTINGS
+     */
 
-	private void loadKeys() {
-	    plugin.getLogger().info("Loading mcMMO config.yml File...");
+    /* Tool Requirements */
+    public static Boolean miningrequirespickaxe, excavationRequiresShovel, woodcuttingrequiresaxe;
 
-		// Setup default HUD
-		String temp = readString("Spout.HUD.Default", "STANDARD");
-		for (HUDType x : HUDType.values()) {
-			if (x.toString().equalsIgnoreCase(temp))
-				defaulthud = x;
-		}
+    /* Excavation */
+    public static int mbase;
 
-		enableAbilityMessages = readBoolean("Abilities.Messages", true);
-		enableAbilities = readBoolean("Abilities.Enabled", true);
+    /* Fishing */
+    public static Boolean fishingDrops;
+    public static int fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5;
+    public static int mfishing;
 
-		donateMessage = readBoolean("Commands.mcmmo.Donate_Message", true);
-		xpGainsMobSpawners = readBoolean("Experience.Gains.Mobspawners.Enabled", false);
+    /* Herbalism */
+    public static Boolean herbalismHungerBonus, wheatRegrowth;
+    public static int mmelon, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mvines, mlilypad, mnetherwart;
+    public static Boolean enableCobbleToMossy, enableSmoothToMossy, enableDirtToGrass;
 
-		bonesConsumedByCOTW = readInteger("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
-		fishConsumedByCOTW = readInteger("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10);
+    /* Mining */
+    public static int msandstone, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, mendstone, mmossstone;
+    public static int detonatorID;
 
-		xpbar = readBoolean("Spout.XP.Bar.Enabled", true);
-		xpicon = readBoolean("Spout.XP.Icon.Enabled", true);
-		xpbar_x = readInteger("Spout.XP.Bar.X_POS", 95);
-		xpbar_y = readInteger("Spout.XP.Bar.Y_POS", 6);
-		xpicon_x = readInteger("Spout.XP.Icon.X_POS", 78);
-		xpicon_y = readInteger("Spout.XP.Icon.Y_POS", 2);
+    /* Repair */
+    public static Boolean repairArmor, repairTools;
+    public static Boolean anvilmessages;
+    public static int rWood, rStone, rIron, rGold, rDiamond, rString, rLeather;
+    public static int anvilID;
+    public static int repairStoneLevel, repairIronLevel, repairGoldLevel, repairdiamondlevel;
 
-		showFaces = readBoolean("Spout.Party.HUD.Show_Faces", true);
-		showDisplayName = readBoolean("Spout.Party.HUD.Show_Display_Name", false);
-		partybar = readBoolean("Spout.Party.HUD.Enabled", true);
+    /* Taming */
+    public static int mtameWolf, mtameOcelot;
+    public static int bonesConsumedByCOTW, fishConsumedByCOTW;
 
-		acrobatics_r = readDouble("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
-		acrobatics_g = readDouble("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3);
-		acrobatics_b = readDouble("Spout.HUD.Retro.Colors.Acrobatics.BLUE", 0.75);
-		archery_r = readDouble("Spout.HUD.Retro.Colors.Archery.RED", 0.3);
-		archery_g = readDouble("Spout.HUD.Retro.Colors.Archery.GREEN", 0.3);
-		archery_b = readDouble("Spout.HUD.Retro.Colors.Archery.BLUE", 0.75);
-		axes_r = readDouble("Spout.HUD.Retro.Colors.Axes.RED", 0.3);
-		axes_g = readDouble("Spout.HUD.Retro.Colors.Axes.GREEN", 0.3);
-		axes_b = readDouble("Spout.HUD.Retro.Colors.Axes.BLUE", 0.75);
-		excavation_r = readDouble("Spout.HUD.Retro.Colors.Excavation.RED", 0.3);
-		excavation_g = readDouble("Spout.HUD.Retro.Colors.Excavation.GREEN", 0.3);
-		excavation_b = readDouble("Spout.HUD.Retro.Colors.Excavation.BLUE", 0.75);
-		herbalism_r = readDouble("Spout.HUD.Retro.Colors.Herbalism.RED", 0.3);
-		herbalism_g = readDouble("Spout.HUD.Retro.Colors.Herbalism.GREEN", 0.3);
-		herbalism_b = readDouble("Spout.HUD.Retro.Colors.Herbalism.BLUE", 0.75);
-		mining_r = readDouble("Spout.HUD.Retro.Colors.Mining.RED", 0.3);
-		mining_g = readDouble("Spout.HUD.Retro.Colors.Mining.GREEN", 0.3);
-		mining_b = readDouble("Spout.HUD.Retro.Colors.Mining.BLUE", 0.75);
-		repair_r = readDouble("Spout.HUD.Retro.Colors.Repair.RED", 0.3);
-		repair_g = readDouble("Spout.HUD.Retro.Colors.Repair.GREEN", 0.3);
-		repair_b = readDouble("Spout.HUD.Retro.Colors.Repair.BLUE", 0.75);
-		swords_r = readDouble("Spout.HUD.Retro.Colors.Swords.RED", 0.3);
-		swords_g = readDouble("Spout.HUD.Retro.Colors.Swords.GREEN", 0.3);
-		swords_b = readDouble("Spout.HUD.Retro.Colors.Swords.BLUE", 0.75);
-		taming_r = readDouble("Spout.HUD.Retro.Colors.Taming.RED", 0.3);
-		taming_g = readDouble("Spout.HUD.Retro.Colors.Taming.GREEN", 0.3);
-		taming_b = readDouble("Spout.HUD.Retro.Colors.Taming.BLUE", 0.75);
-		unarmed_r = readDouble("Spout.HUD.Retro.Colors.Unarmed.RED", 0.3);
-		unarmed_g = readDouble("Spout.HUD.Retro.Colors.Unarmed.GREEN", 0.3);
-		unarmed_b = readDouble("Spout.HUD.Retro.Colors.Unarmed.BLUE", 0.75);
-		woodcutting_r = readDouble("Spout.HUD.Retro.Colors.Woodcutting.RED", 0.3);
-		woodcutting_g = readDouble("Spout.HUD.Retro.Colors.Woodcutting.GREEN", 0.3);
-		woodcutting_b = readDouble("Spout.HUD.Retro.Colors.Woodcutting.BLUE", 0.75);
-		fishing_r = readDouble("Spout.HUD.Retro.Colors.Fishing.RED", 0.3);
-		fishing_g = readDouble("Spout.HUD.Retro.Colors.Fishing.GREEN", 0.3);
-		fishing_b = readDouble("Spout.HUD.Retro.Colors.Fishing.BLUE", 0.75);
+    /* Woodcutting */
+    public static int moak, mbirch, mspruce, mjungle;
 
-		xpborder_r = readDouble("Spout.HUD.Retro.Colors.Border.RED", 0.0);
-		xpborder_g = readDouble("Spout.HUD.Retro.Colors.Border.GREEN", 0.0);
-		xpborder_b = readDouble("Spout.HUD.Retro.Colors.Border.BLUE", 0.0);
-		xpbackground_r = readDouble("Spout.HUD.Retro.Colors.Background.RED", 0.75);
-		xpbackground_g = readDouble("Spout.HUD.Retro.Colors.Background.GREEN", 0.75);
-		xpbackground_b = readDouble("Spout.HUD.Retro.Colors.Background.BLUE", 0.75);
+    /* Arcane Forging */
+    public static Boolean mayDowngradeEnchants, mayLoseEnchants;
+    public static int arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4;
+    public static int downgradeRank1, downgradeRank2, downgradeRank3, downgradeRank4;
+    public static int keepEnchantsRank1, keepEnchantsRank2, keepEnchantsRank3, keepEnchantsRank4;
 
-		mbase = readInteger("Experience.Excavation.Base", 40);
+    /* Level Caps */
+    public static int levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
+                      levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
+                      levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting;
 
-		msugar = readInteger("Experience.Herbalism.Sugar_Cane", 30);
-		mwheat = readInteger("Experience.Herbalism.Wheat", 50);
-		mcactus = readInteger("Experience.Herbalism.Cactus", 30);
-		mpumpkin = readInteger("Experience.Herbalism.Pumpkin", 20);
-		mflower = readInteger("Experience.Herbalism.Flowers", 100);
-		mmushroom = readInteger("Experience.Herbalism.Mushrooms", 150);
-		mmelon = readInteger("Experience.Herbalism.Melon", 20);
-		mnetherwart = readInteger("Experience.Herbalism.Nether_Wart", 50);
-		mlilypad = readInteger("Experience.Herbalism.Lily_Pads", 100);
-		mvines = readInteger("Experience.Herbalism.Vines", 10);
-		herbalismHungerBonus = readBoolean("Skills.Herbalism.Hunger_Bonus", true);
-		wheatRegrowth = readBoolean("Skills.Herbalism.Instant_Wheat_Regrowth", true);
+    /*
+     * XP SETTINGS
+     */
 
-		moak = readInteger("Experience.Woodcutting.Oak", 70);
-		mbirch = readInteger("Experience.Woodcutting.Birch", 90);
-		mspruce = readInteger("Experience.Woodcutting.Spruce", 80);
-		mjungle = readInteger("Experience.Woodcutting.Jungle", 100);
+    public static Boolean xpGainsMobSpawners, pvpxp;
+    public static int xpGainMultiplier;
 
-		mgold = readInteger("Experience.Mining.Gold", 250);
-		mdiamond = readInteger("Experience.Mining.Diamond", 750);
-		miron = readInteger("Experience.Mining.Iron", 250);
-		mredstone = readInteger("Experience.Mining.Redstone", 150);
-		mlapis = readInteger("Experience.Mining.Lapis", 400);
-		mobsidian = readInteger("Experience.Mining.Obsidian", 150);
-		mnetherrack = readInteger("Experience.Mining.Netherrack", 30);
-		mglowstone = readInteger("Experience.Mining.Glowstone", 30);
-		mcoal = readInteger("Experience.Mining.Coal", 100);
-		mstone = readInteger("Experience.Mining.Stone", 30);
-		msandstone = readInteger("Experience.Mining.Sandstone", 30);
-		mendstone = readInteger("Experience.Mining.End_Stone", 150);
-		mmossstone = readInteger("Experience.Mining.Moss_Stone", 30);
-		
-		mtameWolf = readInteger("Experience.Taming.Animal_Taming.Wolf", 250);
-		mtameOcelot = readInteger("Experience.Taming.Animal_Taming.Ocelot", 500);
+    /* Combat XP Multipliers */
+    public static double pvpxprewardmodifier;
+    public static double animalXP, creeperXP, skeletonXP, spiderXP, ghastXP, slimeXP,
+                         zombieXP, pigzombieXP, endermanXP, cavespiderXP, silverfishXP,
+                         blazeXP, magmacubeXP, enderdragonXP;
 
-		mfishing = readInteger("Experience.Fishing.Base", 800);
+    /* XP Formula Multiplier */
+    public static double tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier,
+                         fishingxpmodifier, unarmedxpmodifier, herbalismxpmodifier, excavationxpmodifier,
+                         archeryxpmodifier, swordsxpmodifier, axesxpmodifier, acrobaticsxpmodifier;
 
-		enableOnlyActivateWhenSneaking = readBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false);
+    /*
+     * SPOUT SETTINGS
+     */
 
-		greenTerraCooldown = readInteger("Abilities.Cooldowns.Green_Terra", 240);
-		superBreakerCooldown = readInteger("Abilities.Cooldowns.Super_Breaker", 240);
-		gigaDrillBreakerCooldown = readInteger("Abilities.Cooldowns.Giga_Drill_Breaker", 240);
-		treeFellerThreshold = readInteger("Abilities.Limits.Tree_Feller_Threshold", 500);
-		treeFellerCooldown = readInteger("Abilities.Cooldowns.Tree_Feller", 240);
-		berserkCooldown = readInteger("Abilities.Cooldowns.Berserk", 240);
-		serratedStrikeCooldown = readInteger("Abilities.Cooldowns.Serrated_Strikes", 240);
-		skullSplitterCooldown = readInteger("Abilities.Cooldowns.Skull_Splitter", 240);
-		blastMiningCooldown = readInteger("Abilities.Cooldowns.Blast_Mining", 60);
+    public static Boolean spoutEnabled;
 
-		MySQLserverName = readString("MySQL.Server.Address", "localhost");
-		if (readString("MySQL.Database.User.Password", null) != null)
-			MySQLdbPass = readString("MySQL.Database.User.Password", null);
-		else
-			MySQLdbPass = "";
+    /* Spout Party HUD */
+    public static Boolean showDisplayName, showFaces, partybar;
 
-		MySQLdbName = readString("MySQL.Database.Name", "DatabaseName");
-		MySQLuserName = readString("MySQL.Database.User.Name", "UserName");
-		MySQLtablePrefix = readString("MySQL.Database.TablePrefix", "mcmmo_");
-		MySQLport = readInteger("MySQL.Server.Port", 3306);
-		useMySQL = readBoolean("MySQL.Enabled", false);
+    /* Spout XP Bar */
+    public static Boolean xpbar, xpicon;
+    public static int xpbar_x, xpbar_y, xpicon_x, xpicon_y;
 
-		locale = readString("General.Locale", "en_us");
-		enableMotd = readBoolean("General.MOTD.Enabled", true);
-		saveInterval = readInteger("General.Save_Interval", 10);
-		statsTracking = readBoolean("General.Stats_Tracking", true);
-		eventCallback = readBoolean("General.Event_Callback", true);
-        perLevelTools = readBoolean("General.Per_Level_Tools", false);
+    /* Spout HUD Colors */
+    public static double xpbackground_r, xpbackground_g, xpbackground_b;
+    public static double xpborder_r, xpborder_g, xpborder_b;
+    public static double fishing_r, fishing_g, fishing_b;
+    public static double acrobatics_r, acrobatics_g, acrobatics_b;
+    public static double archery_r, archery_g, archery_b;
+    public static double axes_r, axes_g, axes_b;
+    public static double excavation_r, excavation_g, excavation_b;
+    public static double herbalism_r, herbalism_g, herbalism_b;
+    public static double mining_r, mining_g, mining_b;
+    public static double repair_r, repair_g, repair_b;
+    public static double swords_r, swords_g, swords_b;
+    public static double taming_r, taming_g, taming_b;
+    public static double unarmed_r, unarmed_g, unarmed_b;
+    public static double woodcutting_r, woodcutting_g, woodcutting_b;
 
-		enableCobbleToMossy = readBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
-		enableSmoothToMossy = readBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true);
-		enableDirtToGrass = readBoolean("Skills.Herbalism.Green_Thumb.Dirt_To_Grass", true);
+    /*
+     * CONFIG LOADING
+     */
 
-		xpGainMultiplier = readInteger("Experience.Gains.Multiplier.Global", 1);
-		toolsLoseDurabilityFromAbilities = readBoolean("Abilities.Tools.Durability_Loss_Enabled", true);
-		abilityDurabilityLoss = readInteger("Abilities.Tools.Durability_Loss", 2);
+    public static HUDType defaulthud;
+    protected static File configFile;
+    protected static File dataFolder;
+    protected final mcMMO plugin;
+    protected static FileConfiguration config;
 
-		feathersConsumedByChimaeraWing = readInteger("Items.Chimaera_Wing.Feather_Cost", 10);
-		chimaeraId = readInteger("Items.Chimaera_Wing.Item_ID", 288);
-		chimaeraWingEnable = readBoolean("Items.Chimaera_Wing.Enabled", true);
-        dAxe = readInteger("Items.Diamond.Axe", 750);
-        dHoe = readInteger("Items.Diamond.Hoe", 750);
-        dShovel = readInteger("Items.Diamond.Shovel", 750);
-        dSword = readInteger("Items.Diamond.Sword", 750);
-        dPickaxe = readInteger("Items.Diamond.Pickaxe", 750);
-        gAxe = readInteger("Items.Gold.Axe", 500);
-        gHoe = readInteger("Items.Gold.Hoe", 500);
-        gShovel = readInteger("Items.Gold.Shovel", 500);
-        gSword = readInteger("Items.Gold.Sword", 500);
-        gPickaxe = readInteger("Items.Gold.Pickaxe", 500);
-        iAxe = readInteger("Items.Iron.Axe", 250);
-        iHoe = readInteger("Items.Iron.Hoe", 250);
-        iShovel = readInteger("Items.Iron.Shovel", 250);
-        iSword = readInteger("Items.Iron.Sword", 250);
-        iPickaxe = readInteger("Items.Iron.Pickaxe", 250);
-        wAxe = readInteger("Items.Wood.Axe", 0);
-        wHoe = readInteger("Items.Wood.Hoe", 0);
-        wShovel = readInteger("Items.Wood.Shovel", 0);
-        wSword = readInteger("Items.Wood.Sword", 0);
-        wPickaxe = readInteger("Items.Wood.Pickaxe", 0);
+    public LoadProperties(mcMMO plugin) {
+        this.plugin = plugin;
+        dataFolder = plugin.getDataFolder();
+        configFile = new File(dataFolder, File.separator + "config.yml");
+        config = plugin.getConfig();
+    }
 
-		pvpxp = readBoolean("Experience.PVP.Rewards", true);
-		pvpxprewardmodifier = readDouble("Experience.Gains.Multiplier.PVP", 1.0);
+    /**
+     * Load this config file.
+     */
+    public void load() {
 
-		miningrequirespickaxe = readBoolean("Skills.Mining.Requires_Pickaxe", true);
-		excavationRequiresShovel = readBoolean("Skills.Excavation.Requires_Shovel", true);
-		woodcuttingrequiresaxe = readBoolean("Skills.Woodcutting.Requires_Axe", true);
-		repairArmor = readBoolean("Skills.Repair.Can_Repair_Armor", true);
-		repairTools = readBoolean("Skills.Repair.Can_Repair_Tools", true);
-		repairdiamondlevel = readInteger("Skills.Repair.Diamond.Level_Required", 50);
-		repairIronLevel = readInteger("Skills.Repair.Iron.Level_Required", 0);
-		repairGoldLevel = readInteger("Skills.Repair.Gold.Level_Required", 0);
-		repairStoneLevel = readInteger("Skills.Repair.Stone.Level_Required", 0);
+        // If it doesn't exist, copy it from the .jar
+        if (!configFile.exists()) {
+            dataFolder.mkdir();
+            plugin.saveDefaultConfig();
+        }
 
-		tamingxpmodifier = readDouble("Experience.Formula.Multiplier.Taming", 1.0);
-		miningxpmodifier = readDouble("Experience.Formula.Multiplier.Mining", 1.0);
-		repairxpmodifier = readDouble("Experience.Formula.Multiplier.Repair", 1.0);
-		woodcuttingxpmodifier = readDouble("Experience.Formula.Multiplier.Woodcutting", 1.0);
-		unarmedxpmodifier = readDouble("Experience.Formula.Multiplier.Unarmed", 1.0);
-		herbalismxpmodifier = readDouble("Experience.Formula.Multiplier.Herbalism", 1.0);
-		excavationxpmodifier = readDouble("Experience.Formula.Multiplier.Excavation", 1.0);
-		archeryxpmodifier = readDouble("Experience.Formula.Multiplier.Archery", 1.0);
-		swordsxpmodifier = readDouble("Experience.Formula.Multiplier.Swords", 1.0);
-		axesxpmodifier = readDouble("Experience.Formula.Multiplier.Axes", 1.0);
-		acrobaticsxpmodifier = readDouble("Experience.Formula.Multiplier.Acrobatics", 1.0);
-		fishingxpmodifier = readDouble("Experience.Forumla.Multiplier.Fishing", 1.0);
+        addDefaults();
+        loadKeys();
+    }
 
-		anvilmessages = readBoolean("Skills.Repair.Anvil_Messages", true);
-		anvilID = readInteger("Skills.Repair.Anvil_ID", 42);
+    /**
+     * Save this config file.
+     */
+    private static void saveConfig() {
+        try {
+            config.save(configFile);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-		rGold = readInteger("Skills.Repair.Gold.ID", 266);
-		nGold = readString("Skills.Repair.Gold.Name", "Gold Bars");
-		rStone = readInteger("Skills.Repair.Stone.ID", 4);
-		nStone = readString("Skills.Repair.Stone.Name", "Cobblestone");
-		rWood = readInteger("Skills.Repair.Wood.ID", 5);
-		nWood = readString("Skills.Repair.Wood.Name", "Wood Planks");
-		rDiamond = readInteger("Skills.Repair.Diamond.ID", 264);
-		nDiamond = readString("Skills.Repair.Diamond.Name", "Diamond");
-		rIron = readInteger("Skills.Repair.Iron.ID", 265);
-		nIron = readString("Skills.Repair.Iron.Name", "Iron Bars");
-		rString = readInteger("Skills.Repair.String.ID", 287);
-		nString = readString("Skills.Repair.String.Name", "String");
-		rLeather = readInteger("Skills.Repair.Leather.ID", 334);
-		nLeather = readString("Skills.Repair.Leather.Name", "Leather");
-		
-		levelCapAcrobatics = readInteger("Skills.Acrobatics.Level_Cap", 0);
-		levelCapArchery = readInteger("Skills.Archery.Level_Cap", 0);
-		levelCapAxes = readInteger("Skills.Axes.Level_Cap", 0);
-		levelCapExcavation = readInteger("Skills.Excavation.Level_Cap", 0);
-		levelCapFishing = readInteger("Skills.Fishing.Level_Cap", 0);
-		levelCapHerbalism = readInteger("Skills.Herbalism.Level_Cap", 0);
-		levelCapMining = readInteger("Skills.Mining.Level_Cap", 0);
-		levelCapRepair = readInteger("Skills.Repair.Level_Cap", 0);
-		levelCapSwords = readInteger("Skills.Swords.Level_Cap", 0);
-		levelCapTaming = readInteger("Skills.Taming.Level_Cap", 0);
-		levelCapUnarmed = readInteger("Skills.Unarmed.Level_Cap", 0);
-		levelCapWoodcutting = readInteger("Skills.Woodcutting.Level_Cap", 0);
+    /**
+     * Add the defaults to this config file.
+     */
+    private void addDefaults() {
 
-		mayDowngradeEnchants = readBoolean("Arcane_Forging.Downgrades.Enabled", true);
-		downgradeRank1 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
-		downgradeRank2 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
-		downgradeRank3 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
-		downgradeRank4 = readInteger("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
-		mayLoseEnchants = readBoolean("Arcane_Forging.May_Lose_Enchants", true);
-		keepEnchantsRank1 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
-		keepEnchantsRank2 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
-		keepEnchantsRank3 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
-		keepEnchantsRank4 = readInteger("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
-		arcaneRank1 = readInteger("Arcane_Forging.Rank_Levels.Rank_1", 100);
-		arcaneRank2 = readInteger("Arcane_Forging.Rank_Levels.Rank_2", 250);
-		arcaneRank3 = readInteger("Arcane_Forging.Rank_Levels.Rank_3", 500);
-		arcaneRank4 = readInteger("Arcane_Forging.Rank_Levels.Rank_4", 750);
+        // Load from included config.yml
+        config.options().copyDefaults(true);
+        saveConfig();
+    }
 
-		fishingDrops = readBoolean("Fishing.Drops_Enabled", true);
-		fishingTier1 = readInteger("Fishing.Tier_Levels.Tier1", 0);
-		fishingTier2 = readInteger("Fishing.Tier_Levels.Tier2", 200);
-		fishingTier3 = readInteger("Fishing.Tier_Levels.Tier3", 400);
-		fishingTier4 = readInteger("Fishing.Tier_Levels.Tier4", 600);
-		fishingTier5 = readInteger("Fishing.Tier_Levels.Tier5", 800);
+    /**
+     * Load the keys from this config file.
+     */
+    private void loadKeys() {
+        plugin.getLogger().info("Loading mcMMO config.yml File...");
 
-		xplockEnable = readBoolean("Commands.xplock.Enabled", true);
-		xprateEnable = readBoolean("Commands.xprate.Enabled", true);
-		mctopEnable = readBoolean("Commands.mctop.Enabled", true);
-		addxpEnable = readBoolean("Commands.addxp.Enabled", true);
-		addlevelsEnable = readBoolean("Commands.addlevels.Enabled", true);
-		mcabilityEnable = readBoolean("Commands.mcability.Enabled", true);
-		mcrefreshEnable = readBoolean("Commands.mcrefresh.Enabled", true);
-		mcmmoEnable = readBoolean("Commands.mcmmo.Enabled", true);
-		mccEnable = readBoolean("Commands.mcc.Enabled", true);
-		mcgodEnable = readBoolean("Commands.mcgod.Enabled", true);
-		mcstatsEnable = readBoolean("Commands.mcstats.Enabled", true);
-		mmoeditEnable = readBoolean("Commands.mmoedit.Enabled", true);
-		mcremoveEnable = readBoolean("Commands.mcremove.Enable", true);
-		ptpEnable = readBoolean("Commands.ptp.Enabled", true);
-		partyEnable = readBoolean("Commands.party.Enabled", true);
-		inspectEnable = readBoolean("Commands.inspect.Enabled", true);
-		inviteEnable = readBoolean("Commands.invite.Enabled", true);
-		acceptEnable = readBoolean("Commands.accept.Enabled", true);
-		aEnable = readBoolean("Commands.a.Enabled", true);
-		pEnable = readBoolean("Commands.p.Enabled", true);
-		
-		aDisplayNames = readBoolean("Commands.a.Display_Names", true);
-		pDisplayNames = readBoolean("Commands.p.Display_Names", true);
-		
-		ptpCommandCooldown = readInteger("Commands.ptp.Cooldown", 30);
-		
-		animalXP = readDouble("Experience.Combat.Multiplier.Animals", 1.0);
-		creeperXP = readDouble("Experience.Combat.Multiplier.Creeper", 4.0);
-		skeletonXP = readDouble("Experience.Combat.Multiplier.Skeleton", 2.0);
-		spiderXP = readDouble("Experience.Combat.Multiplier.Spider", 3.0);
-		ghastXP = readDouble("Experience.Combat.Multiplier.Ghast", 3.0);
-		slimeXP = readDouble("Experience.Combat.Multiplier.Slime", 2.0);
-		zombieXP = readDouble("Experience.Combat.Multiplier.Zombie", 2.0);
-		pigzombieXP = readDouble("Experience.Combat.Multiplier.Pig_Zombie", 3.0);
-		endermanXP = readDouble("Experience.Combat.Multiplier.Enderman", 2.0);
-		cavespiderXP = readDouble("Experience.Combat.Multiplier.Cave_Spider", 3.0);
-		silverfishXP = readDouble("Experience.Combat.Multiplier.Silverfish", 3.0);
-		blazeXP = readDouble("Experience.Combat.Multiplier.Blaze", 3.0);
-		magmacubeXP = readDouble("Experience.Combat.Multiplier.Magma_Cube", 2.0);
-		enderdragonXP = readDouble("Experience.Combat.Multiplier.Ender_Dragon", 8.0);
-		
-		detonatorID = readInteger("Skills.Mining.Detonator_ID", 259);
-	}
+        // Setup default HUD
+        String temp = config.getString("Spout.HUD.Default", "STANDARD");
+        for (HUDType x : HUDType.values()) {
+            if (x.toString().equalsIgnoreCase(temp)) {
+                defaulthud = x;
+            }
+        }
+
+        enableAbilityMessages = config.getBoolean("Abilities.Messages", true);
+        enableAbilities = config.getBoolean("Abilities.Enabled", true);
+
+        donateMessage = config.getBoolean("Commands.mcmmo.Donate_Message", true);
+        xpGainsMobSpawners = config.getBoolean("Experience.Gains.Mobspawners.Enabled", false);
+
+        bonesConsumedByCOTW = config.getInt("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
+        fishConsumedByCOTW = config.getInt("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10);
+
+        xpbar = config.getBoolean("Spout.XP.Bar.Enabled", true);
+        xpicon = config.getBoolean("Spout.XP.Icon.Enabled", true);
+        xpbar_x = config.getInt("Spout.XP.Bar.X_POS", 95);
+        xpbar_y = config.getInt("Spout.XP.Bar.Y_POS", 6);
+        xpicon_x = config.getInt("Spout.XP.Icon.X_POS", 78);
+        xpicon_y = config.getInt("Spout.XP.Icon.Y_POS", 2);
+
+        showFaces = config.getBoolean("Spout.Party.HUD.Show_Faces", true);
+        showDisplayName = config.getBoolean("Spout.Party.HUD.Show_Display_Name", false);
+        partybar = config.getBoolean("Spout.Party.HUD.Enabled", true);
+
+        acrobatics_r = config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
+        acrobatics_g = config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3);
+        acrobatics_b = config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.BLUE", 0.75);
+        archery_r = config.getDouble("Spout.HUD.Retro.Colors.Archery.RED", 0.3);
+        archery_g = config.getDouble("Spout.HUD.Retro.Colors.Archery.GREEN", 0.3);
+        archery_b = config.getDouble("Spout.HUD.Retro.Colors.Archery.BLUE", 0.75);
+        axes_r = config.getDouble("Spout.HUD.Retro.Colors.Axes.RED", 0.3);
+        axes_g = config.getDouble("Spout.HUD.Retro.Colors.Axes.GREEN", 0.3);
+        axes_b = config.getDouble("Spout.HUD.Retro.Colors.Axes.BLUE", 0.75);
+        excavation_r = config.getDouble("Spout.HUD.Retro.Colors.Excavation.RED", 0.3);
+        excavation_g = config.getDouble("Spout.HUD.Retro.Colors.Excavation.GREEN", 0.3);
+        excavation_b = config.getDouble("Spout.HUD.Retro.Colors.Excavation.BLUE", 0.75);
+        herbalism_r = config.getDouble("Spout.HUD.Retro.Colors.Herbalism.RED", 0.3);
+        herbalism_g = config.getDouble("Spout.HUD.Retro.Colors.Herbalism.GREEN", 0.3);
+        herbalism_b = config.getDouble("Spout.HUD.Retro.Colors.Herbalism.BLUE", 0.75);
+        mining_r = config.getDouble("Spout.HUD.Retro.Colors.Mining.RED", 0.3);
+        mining_g = config.getDouble("Spout.HUD.Retro.Colors.Mining.GREEN", 0.3);
+        mining_b = config.getDouble("Spout.HUD.Retro.Colors.Mining.BLUE", 0.75);
+        repair_r = config.getDouble("Spout.HUD.Retro.Colors.Repair.RED", 0.3);
+        repair_g = config.getDouble("Spout.HUD.Retro.Colors.Repair.GREEN", 0.3);
+        repair_b = config.getDouble("Spout.HUD.Retro.Colors.Repair.BLUE", 0.75);
+        swords_r = config.getDouble("Spout.HUD.Retro.Colors.Swords.RED", 0.3);
+        swords_g = config.getDouble("Spout.HUD.Retro.Colors.Swords.GREEN", 0.3);
+        swords_b = config.getDouble("Spout.HUD.Retro.Colors.Swords.BLUE", 0.75);
+        taming_r = config.getDouble("Spout.HUD.Retro.Colors.Taming.RED", 0.3);
+        taming_g = config.getDouble("Spout.HUD.Retro.Colors.Taming.GREEN", 0.3);
+        taming_b = config.getDouble("Spout.HUD.Retro.Colors.Taming.BLUE", 0.75);
+        unarmed_r = config.getDouble("Spout.HUD.Retro.Colors.Unarmed.RED", 0.3);
+        unarmed_g = config.getDouble("Spout.HUD.Retro.Colors.Unarmed.GREEN", 0.3);
+        unarmed_b = config.getDouble("Spout.HUD.Retro.Colors.Unarmed.BLUE", 0.75);
+        woodcutting_r = config.getDouble("Spout.HUD.Retro.Colors.Woodcutting.RED", 0.3);
+        woodcutting_g = config.getDouble("Spout.HUD.Retro.Colors.Woodcutting.GREEN", 0.3);
+        woodcutting_b = config.getDouble("Spout.HUD.Retro.Colors.Woodcutting.BLUE", 0.75);
+        fishing_r = config.getDouble("Spout.HUD.Retro.Colors.Fishing.RED", 0.3);
+        fishing_g = config.getDouble("Spout.HUD.Retro.Colors.Fishing.GREEN", 0.3);
+        fishing_b = config.getDouble("Spout.HUD.Retro.Colors.Fishing.BLUE", 0.75);
+
+        xpborder_r = config.getDouble("Spout.HUD.Retro.Colors.Border.RED", 0.0);
+        xpborder_g = config.getDouble("Spout.HUD.Retro.Colors.Border.GREEN", 0.0);
+        xpborder_b = config.getDouble("Spout.HUD.Retro.Colors.Border.BLUE", 0.0);
+        xpbackground_r = config.getDouble("Spout.HUD.Retro.Colors.Background.RED", 0.75);
+        xpbackground_g = config.getDouble("Spout.HUD.Retro.Colors.Background.GREEN", 0.75);
+        xpbackground_b = config.getDouble("Spout.HUD.Retro.Colors.Background.BLUE", 0.75);
+
+        mbase = config.getInt("Experience.Excavation.Base", 40);
+
+        msugar = config.getInt("Experience.Herbalism.Sugar_Cane", 30);
+        mwheat = config.getInt("Experience.Herbalism.Wheat", 50);
+        mcactus = config.getInt("Experience.Herbalism.Cactus", 30);
+        mpumpkin = config.getInt("Experience.Herbalism.Pumpkin", 20);
+        mflower = config.getInt("Experience.Herbalism.Flowers", 100);
+        mmushroom = config.getInt("Experience.Herbalism.Mushrooms", 150);
+        mmelon = config.getInt("Experience.Herbalism.Melon", 20);
+        mnetherwart = config.getInt("Experience.Herbalism.Nether_Wart", 50);
+        mlilypad = config.getInt("Experience.Herbalism.Lily_Pads", 100);
+        mvines = config.getInt("Experience.Herbalism.Vines", 10);
+        herbalismHungerBonus = config.getBoolean("Skills.Herbalism.Hunger_Bonus", true);
+        wheatRegrowth = config.getBoolean("Skills.Herbalism.Instant_Wheat_Regrowth", true);
+
+        moak = config.getInt("Experience.Woodcutting.Oak", 70);
+        mbirch = config.getInt("Experience.Woodcutting.Birch", 90);
+        mspruce = config.getInt("Experience.Woodcutting.Spruce", 80);
+        mjungle = config.getInt("Experience.Woodcutting.Jungle", 100);
+
+        mgold = config.getInt("Experience.Mining.Gold", 250);
+        mdiamond = config.getInt("Experience.Mining.Diamond", 750);
+        miron = config.getInt("Experience.Mining.Iron", 250);
+        mredstone = config.getInt("Experience.Mining.Redstone", 150);
+        mlapis = config.getInt("Experience.Mining.Lapis", 400);
+        mobsidian = config.getInt("Experience.Mining.Obsidian", 150);
+        mnetherrack = config.getInt("Experience.Mining.Netherrack", 30);
+        mglowstone = config.getInt("Experience.Mining.Glowstone", 30);
+        mcoal = config.getInt("Experience.Mining.Coal", 100);
+        mstone = config.getInt("Experience.Mining.Stone", 30);
+        msandstone = config.getInt("Experience.Mining.Sandstone", 30);
+        mendstone = config.getInt("Experience.Mining.End_Stone", 150);
+        mmossstone = config.getInt("Experience.Mining.Moss_Stone", 30);
+
+        mtameWolf = config.getInt("Experience.Taming.Animal_Taming.Wolf", 250);
+        mtameOcelot = config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500);
+
+        mfishing = config.getInt("Experience.Fishing.Base", 800);
+
+        enableOnlyActivateWhenSneaking = config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false);
+
+        greenTerraCooldown = config.getInt("Abilities.Cooldowns.Green_Terra", 240);
+        superBreakerCooldown = config.getInt("Abilities.Cooldowns.Super_Breaker", 240);
+        gigaDrillBreakerCooldown = config.getInt("Abilities.Cooldowns.Giga_Drill_Breaker", 240);
+        treeFellerThreshold = config.getInt("Abilities.Limits.Tree_Feller_Threshold", 500);
+        treeFellerCooldown = config.getInt("Abilities.Cooldowns.Tree_Feller", 240);
+        berserkCooldown = config.getInt("Abilities.Cooldowns.Berserk", 240);
+        serratedStrikeCooldown = config.getInt("Abilities.Cooldowns.Serrated_Strikes", 240);
+        skullSplitterCooldown = config.getInt("Abilities.Cooldowns.Skull_Splitter", 240);
+        blastMiningCooldown = config.getInt("Abilities.Cooldowns.Blast_Mining", 60);
+
+        MySQLserverName = config.getString("MySQL.Server.Address", "localhost");
+
+        if (config.getString("MySQL.Database.User_Password", null) != null) {
+            MySQLdbPass = config.getString("MySQL.Database.User_Password", null);
+        }
+        else {
+            MySQLdbPass = "";
+        }
+
+        MySQLdbName = config.getString("MySQL.Database.Name", "DatabaseName");
+        MySQLuserName = config.getString("MySQL.Database.User_Name", "UserName");
+        MySQLtablePrefix = config.getString("MySQL.Database.TablePrefix", "mcmmo_");
+        MySQLport = config.getInt("MySQL.Server.Port", 3306);
+        useMySQL = config.getBoolean("MySQL.Enabled", false);
+
+        locale = config.getString("General.Locale", "en_us");
+        enableMotd = config.getBoolean("General.MOTD_Enabled", true);
+        saveInterval = config.getInt("General.Save_Interval", 10);
+        statsTracking = config.getBoolean("General.Stats_Tracking", true);
+        eventCallback = config.getBoolean("General.Event_Callback", true);
+        perLevelTools = config.getBoolean("General.Per_Level_Tools", false);
+
+        enableCobbleToMossy = config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
+        enableSmoothToMossy = config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true);
+        enableDirtToGrass = config.getBoolean("Skills.Herbalism.Green_Thumb.Dirt_To_Grass", true);
+
+        xpGainMultiplier = config.getInt("Experience.Gains.Multiplier.Global", 1);
+        toolsLoseDurabilityFromAbilities = config.getBoolean("Abilities.Tools.Durability_Loss_Enabled", true);
+        abilityDurabilityLoss = config.getInt("Abilities.Tools.Durability_Loss", 2);
+
+        feathersConsumedByChimaeraWing = config.getInt("Items.Chimaera_Wing.Feather_Cost", 10);
+        chimaeraId = config.getInt("Items.Chimaera_Wing.Item_ID", 288);
+        chimaeraWingEnable = config.getBoolean("Items.Chimaera_Wing.Enabled", true);
+        dAxe = config.getInt("Items.Diamond.Axe", 750);
+        dHoe = config.getInt("Items.Diamond.Hoe", 750);
+        dShovel = config.getInt("Items.Diamond.Shovel", 750);
+        dSword = config.getInt("Items.Diamond.Sword", 750);
+        dPickaxe = config.getInt("Items.Diamond.Pickaxe", 750);
+        gAxe = config.getInt("Items.Gold.Axe", 500);
+        gHoe = config.getInt("Items.Gold.Hoe", 500);
+        gShovel = config.getInt("Items.Gold.Shovel", 500);
+        gSword = config.getInt("Items.Gold.Sword", 500);
+        gPickaxe = config.getInt("Items.Gold.Pickaxe", 500);
+        iAxe = config.getInt("Items.Iron.Axe", 250);
+        iHoe = config.getInt("Items.Iron.Hoe", 250);
+        iShovel = config.getInt("Items.Iron.Shovel", 250);
+        iSword = config.getInt("Items.Iron.Sword", 250);
+        iPickaxe = config.getInt("Items.Iron.Pickaxe", 250);
+        sAxe = config.getInt("Items.Stone.Axe", 0);
+        sHoe = config.getInt("Items.Stone.Hoe", 0);
+        sShovel = config.getInt("Items.Stone.Shovel", 0);
+        sSword = config.getInt("Items.Stone.Sword", 0);
+        sPickaxe = config.getInt("Items.Stone.Pickaxe", 0);
+
+        pvpxp = config.getBoolean("Experience.PVP.Rewards", true);
+        pvpxprewardmodifier = config.getDouble("Experience.Gains.Multiplier.PVP", 1.0);
+
+        miningrequirespickaxe = config.getBoolean("Skills.Mining.Requires_Pickaxe", true);
+        excavationRequiresShovel = config.getBoolean("Skills.Excavation.Requires_Shovel", true);
+        woodcuttingrequiresaxe = config.getBoolean("Skills.Woodcutting.Requires_Axe", true);
+        repairArmor = config.getBoolean("Skills.Repair.Can_Repair_Armor", true);
+        repairTools = config.getBoolean("Skills.Repair.Can_Repair_Tools", true);
+        repairdiamondlevel = config.getInt("Skills.Repair.Diamond.Level_Required", 50);
+        repairIronLevel = config.getInt("Skills.Repair.Iron.Level_Required", 0);
+        repairGoldLevel = config.getInt("Skills.Repair.Gold.Level_Required", 0);
+        repairStoneLevel = config.getInt("Skills.Repair.Stone.Level_Required", 0);
+
+        tamingxpmodifier = config.getDouble("Experience.Formula.Multiplier.Taming", 1.0);
+        miningxpmodifier = config.getDouble("Experience.Formula.Multiplier.Mining", 1.0);
+        repairxpmodifier = config.getDouble("Experience.Formula.Multiplier.Repair", 1.0);
+        woodcuttingxpmodifier = config.getDouble("Experience.Formula.Multiplier.Woodcutting", 1.0);
+        unarmedxpmodifier = config.getDouble("Experience.Formula.Multiplier.Unarmed", 1.0);
+        herbalismxpmodifier = config.getDouble("Experience.Formula.Multiplier.Herbalism", 1.0);
+        excavationxpmodifier = config.getDouble("Experience.Formula.Multiplier.Excavation", 1.0);
+        archeryxpmodifier = config.getDouble("Experience.Formula.Multiplier.Archery", 1.0);
+        swordsxpmodifier = config.getDouble("Experience.Formula.Multiplier.Swords", 1.0);
+        axesxpmodifier = config.getDouble("Experience.Formula.Multiplier.Axes", 1.0);
+        acrobaticsxpmodifier = config.getDouble("Experience.Formula.Multiplier.Acrobatics", 1.0);
+        fishingxpmodifier = config.getDouble("Experience.Forumla.Multiplier.Fishing", 1.0);
+
+        anvilmessages = config.getBoolean("Skills.Repair.Anvil_Messages", true);
+        anvilID = config.getInt("Skills.Repair.Anvil_ID", 42);
+
+        rGold = config.getInt("Skills.Repair.Gold.ID", 266);
+        rStone = config.getInt("Skills.Repair.Stone.ID", 4);
+        rWood = config.getInt("Skills.Repair.Wood.ID", 5);
+        rDiamond = config.getInt("Skills.Repair.Diamond.ID", 264);
+        rIron = config.getInt("Skills.Repair.Iron.ID", 265);
+        rString = config.getInt("Skills.Repair.String.ID", 287);
+        rLeather = config.getInt("Skills.Repair.Leather.ID", 334);
+
+        levelCapAcrobatics = config.getInt("Skills.Acrobatics.Level_Cap", 0);
+        levelCapArchery = config.getInt("Skills.Archery.Level_Cap", 0);
+        levelCapAxes = config.getInt("Skills.Axes.Level_Cap", 0);
+        levelCapExcavation = config.getInt("Skills.Excavation.Level_Cap", 0);
+        levelCapFishing = config.getInt("Skills.Fishing.Level_Cap", 0);
+        levelCapHerbalism = config.getInt("Skills.Herbalism.Level_Cap", 0);
+        levelCapMining = config.getInt("Skills.Mining.Level_Cap", 0);
+        levelCapRepair = config.getInt("Skills.Repair.Level_Cap", 0);
+        levelCapSwords = config.getInt("Skills.Swords.Level_Cap", 0);
+        levelCapTaming = config.getInt("Skills.Taming.Level_Cap", 0);
+        levelCapUnarmed = config.getInt("Skills.Unarmed.Level_Cap", 0);
+        levelCapWoodcutting = config.getInt("Skills.Woodcutting.Level_Cap", 0);
+
+        mayDowngradeEnchants = config.getBoolean("Arcane_Forging.Downgrades.Enabled", true);
+        downgradeRank1 = config.getInt("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
+        downgradeRank2 = config.getInt("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
+        downgradeRank3 = config.getInt("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
+        downgradeRank4 = config.getInt("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
+        mayLoseEnchants = config.getBoolean("Arcane_Forging.May_Lose_Enchants", true);
+        keepEnchantsRank1 = config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
+        keepEnchantsRank2 = config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
+        keepEnchantsRank3 = config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
+        keepEnchantsRank4 = config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
+        arcaneRank1 = config.getInt("Arcane_Forging.Rank_Levels.Rank_1", 100);
+        arcaneRank2 = config.getInt("Arcane_Forging.Rank_Levels.Rank_2", 250);
+        arcaneRank3 = config.getInt("Arcane_Forging.Rank_Levels.Rank_3", 500);
+        arcaneRank4 = config.getInt("Arcane_Forging.Rank_Levels.Rank_4", 750);
+
+        fishingDrops = config.getBoolean("Fishing.Drops_Enabled", true);
+        fishingTier1 = config.getInt("Fishing.Tier_Levels.Tier1", 0);
+        fishingTier2 = config.getInt("Fishing.Tier_Levels.Tier2", 200);
+        fishingTier3 = config.getInt("Fishing.Tier_Levels.Tier3", 400);
+        fishingTier4 = config.getInt("Fishing.Tier_Levels.Tier4", 600);
+        fishingTier5 = config.getInt("Fishing.Tier_Levels.Tier5", 800);
+
+        xplockEnable = config.getBoolean("Commands.xplock.Enabled", true);
+        xprateEnable = config.getBoolean("Commands.xprate.Enabled", true);
+        mctopEnable = config.getBoolean("Commands.mctop.Enabled", true);
+        addxpEnable = config.getBoolean("Commands.addxp.Enabled", true);
+        addlevelsEnable = config.getBoolean("Commands.addlevels.Enabled", true);
+        mcabilityEnable = config.getBoolean("Commands.mcability.Enabled", true);
+        mcrefreshEnable = config.getBoolean("Commands.mcrefresh.Enabled", true);
+        mcmmoEnable = config.getBoolean("Commands.mcmmo.Enabled", true);
+        mccEnable = config.getBoolean("Commands.mcc.Enabled", true);
+        mcgodEnable = config.getBoolean("Commands.mcgod.Enabled", true);
+        mcstatsEnable = config.getBoolean("Commands.mcstats.Enabled", true);
+        mmoeditEnable = config.getBoolean("Commands.mmoedit.Enabled", true);
+        mcremoveEnable = config.getBoolean("Commands.mcremove.Enable", true);
+        ptpEnable = config.getBoolean("Commands.ptp.Enabled", true);
+        partyEnable = config.getBoolean("Commands.party.Enabled", true);
+        inspectEnable = config.getBoolean("Commands.inspect.Enabled", true);
+        inviteEnable = config.getBoolean("Commands.invite.Enabled", true);
+        acceptEnable = config.getBoolean("Commands.accept.Enabled", true);
+        aEnable = config.getBoolean("Commands.a.Enabled", true);
+        pEnable = config.getBoolean("Commands.p.Enabled", true);
+
+        aDisplayNames = config.getBoolean("Commands.a.Display_Names", true);
+        pDisplayNames = config.getBoolean("Commands.p.Display_Names", true);
+
+        ptpCommandCooldown = config.getInt("Commands.ptp.Cooldown", 30);
+
+        animalXP = config.getDouble("Experience.Combat.Multiplier.Animals", 1.0);
+        creeperXP = config.getDouble("Experience.Combat.Multiplier.Creeper", 4.0);
+        skeletonXP = config.getDouble("Experience.Combat.Multiplier.Skeleton", 2.0);
+        spiderXP = config.getDouble("Experience.Combat.Multiplier.Spider", 3.0);
+        ghastXP = config.getDouble("Experience.Combat.Multiplier.Ghast", 3.0);
+        slimeXP = config.getDouble("Experience.Combat.Multiplier.Slime", 2.0);
+        zombieXP = config.getDouble("Experience.Combat.Multiplier.Zombie", 2.0);
+        pigzombieXP = config.getDouble("Experience.Combat.Multiplier.Pig_Zombie", 3.0);
+        endermanXP = config.getDouble("Experience.Combat.Multiplier.Enderman", 2.0);
+        cavespiderXP = config.getDouble("Experience.Combat.Multiplier.Cave_Spider", 3.0);
+        silverfishXP = config.getDouble("Experience.Combat.Multiplier.Silverfish", 3.0);
+        blazeXP = config.getDouble("Experience.Combat.Multiplier.Blaze", 3.0);
+        magmacubeXP = config.getDouble("Experience.Combat.Multiplier.Magma_Cube", 2.0);
+        enderdragonXP = config.getDouble("Experience.Combat.Multiplier.Ender_Dragon", 8.0);
+
+        detonatorID = config.getInt("Skills.Mining.Detonator_ID", 259);
+    }
 }

@@ -132,7 +132,7 @@ public class SpoutStuff
 	
 	public static void setupSpoutConfigs()
 	{
-		 String temp = LoadProperties.readString("Spout.Menu.Key", "KEY_M");
+		 String temp = plugin.getConfig().getString("Spout.Menu.Key", "KEY_M");
 	        
 	        for(Keyboard x : Keyboard.values())
 	        {

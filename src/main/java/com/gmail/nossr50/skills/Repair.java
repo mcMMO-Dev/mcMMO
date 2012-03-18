@@ -12,6 +12,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -359,7 +360,7 @@ public class Repair {
                     player.sendMessage(mcLocale.getString("Skills.AdeptDiamond"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.BLUE + LoadProperties.nDiamond);
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.BLUE + m.prettyItemString(LoadProperties.rDiamond));
                 }
             }
             else if (ItemChecks.isIronTool(is) || ItemChecks.isIronArmor(is)) {
@@ -367,7 +368,7 @@ public class Repair {
                     player.sendMessage(mcLocale.getString("Skills.AdeptIron"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + LoadProperties.nIron);
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(LoadProperties.rIron));
                 }
             }
             else if (ItemChecks.isGoldTool(is) || ItemChecks.isGoldArmor(is)) {
@@ -375,7 +376,7 @@ public class Repair {
                     player.sendMessage(mcLocale.getString("Skills.AdeptGold"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GOLD + LoadProperties.nGold);
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GOLD + m.prettyItemString(LoadProperties.rGold));
                 }
             }
             else if (ItemChecks.isStoneTool(is)) {
@@ -383,17 +384,17 @@ public class Repair {
                     player.sendMessage(mcLocale.getString("Skills.AdeptStone"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GRAY + LoadProperties.nStone);
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GRAY + m.prettyItemString(LoadProperties.rStone));
                 }
             }
             else if (ItemChecks.isWoodTool(is)) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.DARK_GREEN + LoadProperties.nWood);
+                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.DARK_GREEN + m.prettyItemString(LoadProperties.rWood));
             }
             else if (ItemChecks.isLeatherArmor(is)) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + LoadProperties.nLeather);
+                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(LoadProperties.rLeather));
             }
             else if (is.getType().equals(Material.BOW)) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + LoadProperties.nString);
+                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(LoadProperties.rString));
             }
         }
     }

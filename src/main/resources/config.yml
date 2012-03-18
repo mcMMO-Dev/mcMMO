@@ -9,8 +9,7 @@
 ###
 General:
     Locale: en_us
-    MOTD:
-        Enabled: true
+    MOTD_Enabled: true
     #Amount of time (in minutes) to wait between saves of player information
     Save_Interval: 10
     #Allow mcMMO to report on basic anonymous usage
@@ -18,15 +17,15 @@ General:
     #Allow mcMMO to inform other plugins of damage being dealt
     Event_Callback: true
     Per_Level_Tools: false
+
 #
 #  Settings for using a mySQL database
 ###
 MySQL:
     Enabled: false
     Database:
-        User:
-            Name: UserName
-            Password: UserPassword
+        User_Name: UserName
+        User_Password: UserPassword
         Name: DataBaseName
         TablePrefix: mcmmo_
     Server:
@@ -59,7 +58,7 @@ Items:
         Shovel: 250
         Sword: 250
         Pickaxe: 250
-    Wood:
+    Stone:
         Axe: 0
         Hoe: 0
         Shovel: 0
@@ -159,28 +158,21 @@ Skills:
         Can_Repair_Armor: true
         Can_Repair_Tools: true
         Leather:
-            Name: Leather
             ID: 334
         String:
-            Name: String
             ID: 287
         Stone:
-            Name: Cobblestone
             Level_Required: 0
             ID: 4
         Wood:
-            Name: Wood Planks
             ID: 5
         Gold:
-            Name: Gold Bars
             Level_Required: 0
             ID: 266
         Iron:
-            Name: Iron Bars
             Level_Required: 0
             ID: 265
         Diamond:
-            Name: Diamond
             Level_Required: 50
             ID: 264
     Swords:
