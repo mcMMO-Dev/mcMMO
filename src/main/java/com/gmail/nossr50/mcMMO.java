@@ -27,7 +27,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -36,7 +35,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -52,10 +50,6 @@ public class mcMMO extends JavaPlugin {
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
     private final mcBlockListener blockListener = new mcBlockListener(this);
     private final mcEntityListener entityListener = new mcEntityListener(this);
-
-    //Queue for block data change for R2+ fix
-    public ArrayDeque<Block> changeQueue = new ArrayDeque<Block>();
-    public ArrayDeque<Block> fastChangeQueue = new ArrayDeque<Block>();
 
     private Runnable mcMMO_Timer = new mcTimer(this); //BLEED AND REGENERATION
     private Runnable mcMMO_SaveTimer = new mcSaveTimer(this); //Periodic saving of Player Data

@@ -1,18 +1,15 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
-import java.io.File;
-import java.io.IOException;
-
-import org.bukkit.configuration.file.FileConfiguration;
 import com.gmail.nossr50.datatypes.HUDType;
 
-public class LoadProperties {
+public class LoadProperties extends ConfigLoader{
 
     /*
      * GENERAL SETTINGS
      */
 
+    /* General Settings */
     public static String locale;
     public static Boolean enableMotd, statsTracking, eventCallback;
     public static int saveInterval;
@@ -115,6 +112,7 @@ public class LoadProperties {
      * XP SETTINGS
      */
 
+    /* General Settings */
     public static Boolean xpGainsMobSpawners, pvpxp;
     public static int xpGainMultiplier;
 
@@ -163,21 +161,13 @@ public class LoadProperties {
      */
 
     public static HUDType defaulthud;
-    protected static File configFile;
-    protected static File dataFolder;
-    protected final mcMMO plugin;
-    protected static FileConfiguration config;
 
     public LoadProperties(mcMMO plugin) {
-        this.plugin = plugin;
-        dataFolder = plugin.getDataFolder();
-        configFile = new File(dataFolder, File.separator + "config.yml");
+        super(plugin, "config.yml");
         config = plugin.getConfig();
     }
 
-    /**
-     * Load this config file.
-     */
+    @Override
     public void load() {
 
         // If it doesn't exist, copy it from the .jar
@@ -190,32 +180,8 @@ public class LoadProperties {
         loadKeys();
     }
 
-    /**
-     * Save this config file.
-     */
-    private static void saveConfig() {
-        try {
-            config.save(configFile);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Add the defaults to this config file.
-     */
-    private void addDefaults() {
-
-        // Load from included config.yml
-        config.options().copyDefaults(true);
-        saveConfig();
-    }
-
-    /**
-     * Load the keys from this config file.
-     */
-    private void loadKeys() {
+    @Override
+    protected void loadKeys() {
         plugin.getLogger().info("Loading mcMMO config.yml File...");
 
         // Setup default HUD
