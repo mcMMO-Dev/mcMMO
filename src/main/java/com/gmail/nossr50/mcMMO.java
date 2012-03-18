@@ -35,6 +35,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -50,9 +51,6 @@ public class mcMMO extends JavaPlugin {
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
     private final mcBlockListener blockListener = new mcBlockListener(this);
     private final mcEntityListener entityListener = new mcEntityListener(this);
-
-    private Runnable mcMMO_Timer = new mcTimer(this); //BLEED AND REGENERATION
-    private Runnable mcMMO_SaveTimer = new mcSaveTimer(this); //Periodic saving of Player Data
 
     //Alias - Command
     public HashMap<String, String> aliasMap = new HashMap<String, String>();
@@ -138,11 +136,14 @@ public class mcMMO extends JavaPlugin {
 
         System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 
-        //Periodic save timer (Saves every 10 minutes)
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_SaveTimer, 0, LoadProperties.saveInterval * 1200);
+        BukkitScheduler scheduler = getServer().getScheduler();
 
-        //Bleed & Regen timer (Runs every 20 seconds)
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, mcMMO_Timer, 0, 20);
+        //Periodic save timer (Saves every 10 minutes)
+        scheduler.scheduleSyncRepeatingTask(this, new mcSaveTimer(this), 0, LoadProperties.saveInterval * 1200);
+        //Regen & Cooldown timer (Runs every second)
+        scheduler.scheduleSyncRepeatingTask(this, new mcTimer(this), 0, 20);
+        //Bleed timer (Runs every two seconds)
+        scheduler.scheduleSyncRepeatingTask(this, new mcBleedTimer(this), 0, 40);
 
         registerCommands();
 

@@ -23,6 +23,7 @@ import com.gmail.nossr50.events.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.GainXp;
+import com.gmail.nossr50.runnables.mcBleedTimer;
 import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.Archery;
 import com.gmail.nossr50.skills.Axes;
@@ -59,7 +60,7 @@ public class Combat {
             combatAbilityChecks(attacker);
 
             if (ItemChecks.isSword(itemInHand) && mcPermissions.getInstance().swords(attacker)) {
-                if (!plugin.misc.bleedTracker.contains(target)) {
+                if (!mcBleedTimer.contains(target)) {
                     Swords.bleedCheck(attacker, target, plugin);
                 }
 
@@ -360,8 +361,8 @@ public class Combat {
                 else {
                     LivingEntity livingEntity = (LivingEntity) entity;
 
-                    if (type.equals(SkillType.SWORDS) && !plugin.misc.bleedTracker.contains(entity)) {
-                        plugin.misc.bleedQue.add(livingEntity);
+                    if (type.equals(SkillType.SWORDS)) {
+                        mcBleedTimer.add(livingEntity);
                     }
 
                     dealDamage(livingEntity, damageAmount, attacker);

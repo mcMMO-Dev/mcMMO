@@ -17,6 +17,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.runnables.mcBleedTimer;
 
 public class Swords {
 
@@ -66,7 +67,7 @@ public class Swords {
                 Users.getProfile(target).addBleedTicks(bleedTicks);
             }
             else {
-                plugin.misc.bleedQue.add(entity);
+                mcBleedTimer.add(entity);
             }
             attacker.sendMessage(mcLocale.getString("Swords.EnemyBleeding"));
         }

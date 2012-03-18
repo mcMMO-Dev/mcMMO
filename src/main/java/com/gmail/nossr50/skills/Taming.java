@@ -21,6 +21,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.runnables.mcBleedTimer;
 
 public class Taming {
 
@@ -90,7 +91,7 @@ public class Taming {
                 Users.getProfile(target).setBleedTicks(2);
             }
             else {
-                plugin.misc.bleedQue.add((LivingEntity) entity);
+                mcBleedTimer.add((LivingEntity) entity);
             }
 
             master.sendMessage(mcLocale.getString("Combat.Gore"));

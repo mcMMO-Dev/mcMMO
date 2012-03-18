@@ -33,6 +33,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.runnables.mcBleedTimer;
 import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.Archery;
 import com.gmail.nossr50.skills.BlastMining;
@@ -146,9 +147,7 @@ public class mcEntityListener implements Listener {
         x.setFireTicks(0);
 
         /* Remove bleed track */
-        if(plugin.misc.bleedTracker.contains(x)) {
-            plugin.misc.bleedRemovalQue.add(x);
-        }
+        mcBleedTimer.remove(x);
 
         Archery.arrowRetrievalCheck(x, plugin);
 

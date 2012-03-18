@@ -291,29 +291,4 @@ public class m {
             return skillLevel;
         }
     }
-
-    /**
-     * Simulate a bleed.
-     *
-     * @param plugin mcMMO plugin instance
-     */
-    public static void bleedSimulate(mcMMO plugin) {
-
-        /* Set up the tracker */
-        plugin.misc.bleedTracker.addAll(plugin.misc.bleedQue);
-        plugin.misc.bleedQue.clear();
-        plugin.misc.bleedTracker.removeAll(plugin.misc.bleedRemovalQue);
-        plugin.misc.bleedRemovalQue.clear();
-
-        /* Bleed monsters/animals */
-        for (LivingEntity entity : plugin.misc.bleedTracker) {
-            if ((entity == null || entity.isDead())) {
-                plugin.misc.bleedRemovalQue.add(entity);
-                continue;
-            }
-            else {
-                Combat.dealDamage(entity, 2);
-            }
-        }
-    }
 }
