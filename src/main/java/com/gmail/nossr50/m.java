@@ -301,9 +301,9 @@ public class m {
 
         /* Set up the tracker */
         plugin.misc.bleedTracker.addAll(plugin.misc.bleedQue);
-        plugin.misc.bleedQue.removeAll(plugin.misc.bleedQue);
+        plugin.misc.bleedQue.clear();
         plugin.misc.bleedTracker.removeAll(plugin.misc.bleedRemovalQue);
-        plugin.misc.bleedRemovalQue.removeAll(plugin.misc.bleedRemovalQue);
+        plugin.misc.bleedRemovalQue.clear();
 
         /* Bleed monsters/animals */
         for (LivingEntity entity : plugin.misc.bleedTracker) {
