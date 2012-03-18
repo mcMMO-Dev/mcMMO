@@ -147,7 +147,7 @@ public class mcEntityListener implements Listener {
 
         /* Remove bleed track */
         if(plugin.misc.bleedTracker.contains(x)) {
-            plugin.misc.addToBleedRemovalQue(x);
+            plugin.misc.bleedRemovalQue.add(x);
         }
 
         Archery.arrowRetrievalCheck(x, plugin);

@@ -90,7 +90,7 @@ public class Taming {
                 Users.getProfile(target).setBleedTicks(2);
             }
             else {
-                plugin.misc.addToBleedQue((LivingEntity)entity);
+                plugin.misc.bleedQue.add((LivingEntity) entity);
             }
 
             master.sendMessage(mcLocale.getString("Combat.Gore"));

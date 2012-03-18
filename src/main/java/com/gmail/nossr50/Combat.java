@@ -361,7 +361,7 @@ public class Combat {
                     LivingEntity livingEntity = (LivingEntity) entity;
 
                     if (type.equals(SkillType.SWORDS) && !plugin.misc.bleedTracker.contains(entity)) {
-                        plugin.misc.addToBleedQue(livingEntity);
+                        plugin.misc.bleedQue.add(livingEntity);
                     }
 
                     dealDamage(livingEntity, damageAmount, attacker);

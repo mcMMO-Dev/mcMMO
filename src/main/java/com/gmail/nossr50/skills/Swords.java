@@ -66,7 +66,7 @@ public class Swords {
                 Users.getProfile(target).addBleedTicks(bleedTicks);
             }
             else {
-                plugin.misc.addToBleedQue(entity);
+                plugin.misc.bleedQue.add(entity);
             }
             attacker.sendMessage(mcLocale.getString("Swords.EnemyBleeding"));
         }
@@ -105,43 +105,6 @@ public class Swords {
                         ((Player) attacker).sendMessage(mcLocale.getString("Swords.HitByCounterAttack"));
                     }
                 }
-            }
-        }
-    }
-
-    /**
-     * Simulate a bleed.
-     *
-     * @param plugin mcMMO plugin instance
-     */
-    public static void bleedSimulate(mcMMO plugin) {
-
-        /* Add items from Que list to BleedTrack list */
-        for (LivingEntity entity : plugin.misc.bleedQue) {
-            plugin.misc.bleedTracker.add(entity);
-        }
-
-        /* Clear the BleedQue list */
-        plugin.misc.bleedQue = new LivingEntity[plugin.misc.bleedQue.length];
-        plugin.misc.bleedQuePos = 0;
-
-        /* Cleanup any dead entities from the list */
-        for(LivingEntity entity : plugin.misc.bleedRemovalQue) {
-            plugin.misc.bleedTracker.remove(entity);
-        }
-
-        /* Clear bleed removal list */
-        plugin.misc.bleedRemovalQue = new LivingEntity[plugin.misc.bleedRemovalQue.length];
-        plugin.misc.bleedRemovalQuePos = 0;
-
-        /* Bleed monsters/animals */
-        for (LivingEntity entity : plugin.misc.bleedTracker) {
-            if (entity == null || entity.isDead()) {
-                plugin.misc.addToBleedRemovalQue(entity);
-                continue;
-            }
-            else {
-                Combat.dealDamage(entity, 2);
             }
         }
     }

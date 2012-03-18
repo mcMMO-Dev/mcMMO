@@ -276,12 +276,44 @@ public class m {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(Bukkit.getPluginManager().getPlugin("mcMMO"), new SQLConversionTask(), 1);
     }
 
+    /**
+     * Check if a skill level is higher than the max bonus level of the ability.
+     *
+     * @param skillLevel Skill level to check
+     * @param maxLevel Max level of the ability
+     * @return whichever value is lower
+     */
     public static int skillCheck(int skillLevel, int maxLevel) {
         if (skillLevel > maxLevel) {
             return maxLevel;
         }
         else {
             return skillLevel;
+        }
+    }
+
+    /**
+     * Simulate a bleed.
+     *
+     * @param plugin mcMMO plugin instance
+     */
+    public static void bleedSimulate(mcMMO plugin) {
+
+        /* Set up the tracker */
+        plugin.misc.bleedTracker.addAll(plugin.misc.bleedQue);
+        plugin.misc.bleedQue.removeAll(plugin.misc.bleedQue);
+        plugin.misc.bleedTracker.removeAll(plugin.misc.bleedRemovalQue);
+        plugin.misc.bleedRemovalQue.removeAll(plugin.misc.bleedRemovalQue);
+
+        /* Bleed monsters/animals */
+        for (LivingEntity entity : plugin.misc.bleedTracker) {
+            if ((entity == null || entity.isDead())) {
+                plugin.misc.bleedRemovalQue.add(entity);
+                continue;
+            }
+            else {
+                Combat.dealDamage(entity, 2);
+            }
         }
     }
 }

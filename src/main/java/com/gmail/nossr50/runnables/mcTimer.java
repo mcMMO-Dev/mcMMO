@@ -4,13 +4,13 @@ import org.bukkit.entity.*;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
-import com.gmail.nossr50.skills.Swords;
 
 public class mcTimer implements Runnable
 {
@@ -81,7 +81,7 @@ public class mcTimer implements Runnable
 			 */
 			
 			if(thecount % 2 == 0)
-				Swords.bleedSimulate(plugin);
+				m.bleedSimulate(plugin);
 			
 			//SETUP FOR HP REGEN/BLEED
 			thecount++;
