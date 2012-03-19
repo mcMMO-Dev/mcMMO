@@ -40,6 +40,7 @@ public class Excavation {
         case SAND:
         case SOUL_SAND:
             return true;
+
         default:
             return false;
         }
