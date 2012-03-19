@@ -10,8 +10,7 @@ import com.gmail.nossr50.skills.Excavation;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Mining;
 
-public enum AbilityType
-{
+public enum AbilityType {
     BERSERK(LoadProperties.berserkCooldown, mcLocale.getString("Skills.BerserkOn"), mcLocale.getString("Skills.BerserkOff"), "Skills.BerserkPlayer", mcLocale.getString("Skills.YourBerserk"), "Skills.BerserkPlayerOff"),
     SUPER_BREAKER(LoadProperties.superBreakerCooldown, mcLocale.getString("Skills.SuperBreakerOn"), mcLocale.getString("Skills.SuperBreakerOff"), "Skills.SuperBreakerPlayer", mcLocale.getString("Skills.YourSuperBreaker"), "Skills.SuperBreakerPlayerOff"),
     GIGA_DRILL_BREAKER(LoadProperties.gigaDrillBreakerCooldown, mcLocale.getString("Skills.GigaDrillBreakerOn"), mcLocale.getString("Skills.GigaDrillBreakerOff"), "Skills.GigaDrillBreakerPlayer", mcLocale.getString("Skills.YourGigaDrillBreaker"), "Skills.GigaDrillBreakerPlayerOff"),
