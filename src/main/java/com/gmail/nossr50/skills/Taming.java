@@ -209,7 +209,7 @@ public class Taming {
             break;
         }
 
-        if (item.getType().equals(summonItem) && item.getAmount() >= summonAmount) {
+        if (item.getType().equals(summonItem)) {
             if (item.getAmount() >= summonAmount) {
                 for (Entity x : player.getNearbyEntities(40, 40, 40)) {
                     if (x.getType().equals(type)) {
