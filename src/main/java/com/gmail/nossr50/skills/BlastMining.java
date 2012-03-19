@@ -261,14 +261,14 @@ public class BlastMining {
             AbilityType ability = AbilityType.BLAST_MINING;
 
             /* Check Cooldown */
-            if(!Skills.cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
+            if (!Skills.cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
                 player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                 return;
             }
 
             /* Send message to nearby players */
-            for(Player y : player.getWorld().getPlayers()) {
-                if(y != player && m.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
+            for (Player y : player.getWorld().getPlayers()) {
+                if (y != player && m.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
                     y.sendMessage(ability.getAbilityPlayer(player));
                 }
             }

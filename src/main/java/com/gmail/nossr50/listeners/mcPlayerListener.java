@@ -48,6 +48,7 @@ import com.gmail.nossr50.skills.Fishing;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.Staves;
 import com.gmail.nossr50.skills.Taming;
 
 public class mcPlayerListener implements Listener {
@@ -240,6 +241,9 @@ public class mcPlayerListener implements Listener {
                 BlastMining.remoteDetonation(player, plugin);
             }
 
+            /* STAFF CHECKS */
+            Staves.altFire(is.getType(), player);
+
             break;
 
         case RIGHT_CLICK_AIR:
@@ -262,6 +266,9 @@ public class mcPlayerListener implements Listener {
             if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == LoadProperties.detonatorID) {
                 BlastMining.remoteDetonation(player, plugin);
             }
+
+            /* STAFF CHECKS */
+            Staves.altFire(is.getType(), player);
 
             break;
 
