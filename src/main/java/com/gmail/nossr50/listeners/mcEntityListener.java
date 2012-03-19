@@ -20,6 +20,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.Combat;
@@ -311,6 +312,31 @@ public class mcEntityListener implements Listener {
 
             PP.addXP(SkillType.TAMING, xp);
             Skills.XpCheckSkill(SkillType.TAMING, player);
+        }
+    }
+
+    /**
+     * Monitor ProjectileHit events.
+     *
+     * @param event The event to monitor
+     */
+    public void onProjectileHit(ProjectileHitEvent event) {
+        if (!event.getEntity().hasMetadata("mcmmoFiredFromStaff")) {
+            return;
+        }
+
+        switch (event.getEntityType()) {
+        case EGG:
+            break;
+
+        case FIREBALL:
+            break;
+
+        case SNOWBALL:
+            break;
+
+        default:
+            break;
         }
     }
 }

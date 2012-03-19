@@ -1,52 +1,44 @@
 package com.gmail.nossr50.skills;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Egg;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Snowball;
+import org.bukkit.metadata.FixedMetadataValue;
 
-import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcMMO;
 
 public class Staves {
 
-    public static void altFire(Material type, Player attacker) {
+    /**
+     * Fire a projectile on alt-fire from a staff.
+     *
+     * @param type The type of staff
+     * @param attacker The attacking player
+     * @param plugin mcMMO plugin instance
+     */
+    public static void altFire(Material type, Player attacker, mcMMO plugin) {
+        Projectile projectile = null;
+
         switch (type) {
         case BLAZE_ROD:
-            attacker.launchProjectile(Fireball.class);
+            projectile = attacker.launchProjectile(Fireball.class);
             break;
 
         case BONE:
-            for (Player y : attacker.getWorld().getPlayers()) {
-                if (y != attacker && m.isNear(attacker.getLocation(), y.getLocation(), 10) && y.getLevel() > 0) {
-                    y.setLevel((int) (y.getLevel() * .75));
-                    attacker.sendMessage("You drained your opponent of XP!");
-                    y.sendMessage("You feel some of your power leave you...");
-
-                    for (int i = 0; i <= 100; i++) {
-                        Location dropLocation = y.getLocation();
-                        dropLocation.setX(dropLocation.getX() + (Math.random() * 2));
-                        dropLocation.setZ(dropLocation.getZ() + (Math.random() * 2));
-                        ExperienceOrb orb = y.getWorld().spawn(dropLocation, ExperienceOrb.class);
-                        orb.setExperience((int) (Math.random() * 5));
-                    }
-                }
-            }
+            projectile = attacker.launchProjectile(Snowball.class);
             break;
 
         case STICK:
-            for (Player y : attacker.getWorld().getPlayers()) {
-                if (y != attacker && m.isNear(attacker.getLocation(), y.getLocation(), 10)) {
-                    attacker.sendMessage("You slowed your opponent!");
-                    y.sendMessage("You were suddenly slowed...");
-
-                    y.setVelocity(y.getVelocity().multiply(0.5));
-                }
-            }
+            projectile = attacker.launchProjectile(Egg.class);
             break;
 
         default:
             break;
         }
+
+        projectile.setMetadata("mcmmoFiredFromStaff", new FixedMetadataValue(plugin, true));
     }
 }

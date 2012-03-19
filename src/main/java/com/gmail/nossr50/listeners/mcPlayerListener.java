@@ -242,7 +242,7 @@ public class mcPlayerListener implements Listener {
             }
 
             /* STAFF CHECKS */
-            Staves.altFire(is.getType(), player);
+            Staves.altFire(is.getType(), player, plugin);
 
             break;
 
@@ -268,7 +268,7 @@ public class mcPlayerListener implements Listener {
             }
 
             /* STAFF CHECKS */
-            Staves.altFire(is.getType(), player);
+            Staves.altFire(is.getType(), player, plugin);
 
             break;
 
