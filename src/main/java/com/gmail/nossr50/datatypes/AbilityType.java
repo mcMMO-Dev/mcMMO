@@ -227,31 +227,31 @@ public enum AbilityType {
     public boolean getPermissions(Player player) {
         switch (this) {
         case BERSERK:
-            return mcPermissions.getInstance().unarmedAbility(player);
+            return mcPermissions.getInstance().berserk(player);
 
         case BLAST_MINING:
             return mcPermissions.getInstance().blastMining(player);
 
         case GIGA_DRILL_BREAKER:
-            return mcPermissions.getInstance().excavationAbility(player);
+            return mcPermissions.getInstance().gigaDrillBreaker(player);
 
         case GREEN_TERRA:
-            return mcPermissions.getInstance().herbalismAbility(player);
+            return mcPermissions.getInstance().greenTerra(player);
 
         case LEAF_BLOWER:
-            return mcPermissions.getInstance().woodcutting(player);
+            return mcPermissions.getInstance().leafBlower(player);
 
         case SERRATED_STRIKES:
-            return mcPermissions.getInstance().swordsAbility(player);
+            return mcPermissions.getInstance().serratedStrikes(player);
 
         case SKULL_SPLIITER:
-            return mcPermissions.getInstance().axesAbility(player);
+            return mcPermissions.getInstance().skullSplitter(player);
 
         case SUPER_BREAKER:
-            return mcPermissions.getInstance().miningAbility(player);
+            return mcPermissions.getInstance().superBreaker(player);
 
         case TREE_FELLER:
-            return mcPermissions.getInstance().woodCuttingAbility(player);
+            return mcPermissions.getInstance().treeFeller(player);
 
         default:
             return false;

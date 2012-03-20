@@ -31,11 +31,15 @@ public class Acrobatics {
         int damage = event.getDamage();
         int health = player.getHealth();
 
+        if (!mcPermissions.getInstance().gracefulRoll(player)) {
+            gracefulRoll = false;
+        }
+
         if (gracefulRoll) {
             acrovar = acrovar * 2;
         }
 
-        if (acrovar > MAX_BONUS_LEVEL || Math.random() * 1000 <= acrovar) {
+        if ((acrovar > MAX_BONUS_LEVEL || Math.random() * 1000 <= acrovar) && mcPermissions.getInstance().roll(player)) {
             int threshold = 7;
 
             if (gracefulRoll) {
@@ -99,7 +103,7 @@ public class Acrobatics {
             int skillLevel = PPd.getSkillLevel(SkillType.ACROBATICS);
             int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-            if (Math.random() * 4000 <= skillCheck) {
+            if (Math.random() * 4000 <= skillCheck && mcPermissions.getInstance().dodge(defender)) {
                 defender.sendMessage(mcLocale.getString("Acrobatics.Dodge"));
 
                 if (System.currentTimeMillis() >= (5000 + PPd.getRespawnATS()) && defender.getHealth() >= 1) {

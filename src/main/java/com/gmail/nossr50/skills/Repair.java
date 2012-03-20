@@ -39,18 +39,18 @@ public class Repair {
             /*
              * REPAIR ARMOR
              */
-            if (ItemChecks.isArmor(is) && LoadProperties.repairArmor) {
-                if (ItemChecks.isDiamondArmor(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairdiamondlevel) {
+            if (ItemChecks.isArmor(is) && LoadProperties.repairArmor && mcPermissions.getInstance().armorRepair(player)) {
+                if (ItemChecks.isDiamondArmor(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairdiamondlevel && mcPermissions.getInstance().diamondRepair(player)) {
                     inventory.removeItem(new ItemStack(LoadProperties.rDiamond));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 6, true);
                 }
-                else if (ItemChecks.isIronArmor(is) && inventory.contains(LoadProperties.rIron) && skillLevel >= LoadProperties.repairIronLevel) {
+                else if (ItemChecks.isIronArmor(is) && inventory.contains(LoadProperties.rIron) && skillLevel >= LoadProperties.repairIronLevel && mcPermissions.getInstance().ironRepair(player)) {
                     inventory.removeItem(new ItemStack(LoadProperties.rIron));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 2, true);
                 }
-                else if (ItemChecks.isGoldArmor(is) && inventory.contains(LoadProperties.rGold) && skillLevel >= LoadProperties.repairGoldLevel) {
+                else if (ItemChecks.isGoldArmor(is) && inventory.contains(LoadProperties.rGold) && skillLevel >= LoadProperties.repairGoldLevel && mcPermissions.getInstance().goldRepair(player)) {
                     inventory.removeItem(new ItemStack(LoadProperties.rGold));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 4, true);
@@ -68,8 +68,8 @@ public class Repair {
             /*
              * REPAIR TOOLS
              */
-            else if (ItemChecks.isTool(is) && LoadProperties.repairTools) {
-                if (ItemChecks.isStoneTool(is) && inventory.contains(LoadProperties.rStone) && skillLevel >= LoadProperties.repairStoneLevel) {
+            else if (ItemChecks.isTool(is) && LoadProperties.repairTools && mcPermissions.getInstance().toolRepair(player)) {
+                if (ItemChecks.isStoneTool(is) && inventory.contains(LoadProperties.rStone) && skillLevel >= LoadProperties.repairStoneLevel && mcPermissions.getInstance().stoneRepair(player)) {
                     inventory.removeItem(new ItemStack(LoadProperties.rStone));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
@@ -79,17 +79,17 @@ public class Repair {
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
-                else if (ItemChecks.isIronTool(is) && inventory.contains(LoadProperties.rIron) && skillLevel >= LoadProperties.repairIronLevel) {
+                else if (ItemChecks.isIronTool(is) && inventory.contains(LoadProperties.rIron) && skillLevel >= LoadProperties.repairIronLevel && mcPermissions.getInstance().ironRepair(player)) {
                     inventory.removeItem(new ItemStack(LoadProperties.rIron));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
-                else if (ItemChecks.isDiamondTool(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairdiamondlevel) {
+                else if (ItemChecks.isDiamondTool(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairdiamondlevel && mcPermissions.getInstance().diamondRepair(player)) {
                     inventory.removeItem(new ItemStack(LoadProperties.rDiamond));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
-                else if (ItemChecks.isGoldTool(is) && inventory.contains(LoadProperties.rGold) && skillLevel >= LoadProperties.repairGoldLevel) {
+                else if (ItemChecks.isGoldTool(is) && inventory.contains(LoadProperties.rGold) && skillLevel >= LoadProperties.repairGoldLevel && mcPermissions.getInstance().goldRepair(player)) {
                     inventory.removeItem(new ItemStack(LoadProperties.rGold));
                     repairItem(player, is);
                     xpHandler(player, PP, is, durabilityBefore, 8, true);
@@ -188,7 +188,7 @@ public class Repair {
 
         int rank = getArcaneForgingRank(Users.getProfile(player).getSkillLevel(SkillType.REPAIR));
 
-        if (rank == 0) {
+        if (rank == 0 || !mcPermissions.getInstance().arcaneForging(player)) {
             for (Enchantment x : enchants.keySet()) {
                 is.removeEnchantment(x);
             }
@@ -410,7 +410,7 @@ public class Repair {
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
-        if(skillLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= skillLevel)) {
+        if ((skillLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= skillLevel)) && mcPermissions.getInstance().repairBonus(player)) {
             player.sendMessage(mcLocale.getString("Skills.FeltEasy"));
             return true;
         }
@@ -428,7 +428,7 @@ public class Repair {
     public static void repairItem(Player player, ItemStack is) {
 
         /* Handle the enchants */
-        if (LoadProperties.mayLoseEnchants && !mcPermissions.getInstance().repairArcaneBypass(player)) {
+        if (LoadProperties.mayLoseEnchants && !mcPermissions.getInstance().arcaneBypass(player)) {
             addEnchants(player, is);
         }
 

@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerAnimationEvent;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.config.LoadTreasures;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -61,55 +62,57 @@ public class Excavation {
         ArrayList<ItemStack> is = new ArrayList<ItemStack>();
 
         List<ExcavationTreasure> treasures = new ArrayList<ExcavationTreasure>();
-        
+
         int xp = LoadProperties.mbase;
 
-        switch (type) {
-        case DIRT:
-            treasures = LoadTreasures.excavationFromDirt;
-            break;
+        if (mcPermissions.getInstance().excavationTreasures(player)) {
+            switch (type) {
+            case DIRT:
+                treasures = LoadTreasures.excavationFromDirt;
+                break;
 
-        case GRASS:
-            treasures = LoadTreasures.excavationFromGrass;
-            break;
+            case GRASS:
+                treasures = LoadTreasures.excavationFromGrass;
+                break;
 
-        case SAND:
-            treasures = LoadTreasures.excavationFromSand;
-            break;
+            case SAND:
+                treasures = LoadTreasures.excavationFromSand;
+                break;
 
-        case GRAVEL:
-            treasures = LoadTreasures.excavationFromGravel;
-            break;
+            case GRAVEL:
+                treasures = LoadTreasures.excavationFromGravel;
+                break;
 
-        case CLAY:
-            treasures = LoadTreasures.excavationFromClay;
-            break;
+            case CLAY:
+                treasures = LoadTreasures.excavationFromClay;
+                break;
 
-        case MYCEL:
-            treasures = LoadTreasures.excavationFromMycel;
-            break;
+            case MYCEL:
+                treasures = LoadTreasures.excavationFromMycel;
+                break;
 
-        case SOUL_SAND:
-            treasures = LoadTreasures.excavationFromSoulSand;
-            break;
+            case SOUL_SAND:
+                treasures = LoadTreasures.excavationFromSoulSand;
+                break;
 
-        default:
-            break;
-        }
+            default:
+                break;
+            }
 
-        for (ExcavationTreasure treasure : treasures) {
-            if (skillLevel >= treasure.getDropLevel()) {
-                if (Math.random() * 100 <= treasure.getDropChance()) {
-                    xp += treasure.getXp();
-                    is.add(treasure.getDrop());
+            for (ExcavationTreasure treasure : treasures) {
+                if (skillLevel >= treasure.getDropLevel()) {
+                    if (Math.random() * 100 <= treasure.getDropChance()) {
+                        xp += treasure.getXp();
+                        is.add(treasure.getDrop());
+                    }
                 }
             }
-        }
 
-        //Drop items
-        for (ItemStack x : is) {
-            if (x != null) {
-                m.mcDropItem(loc, x);
+            //Drop items
+            for (ItemStack x : is) {
+                if (x != null) {
+                    m.mcDropItem(loc, x);
+                }
             }
         }
 

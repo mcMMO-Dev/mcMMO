@@ -60,7 +60,7 @@ public class Combat {
             combatAbilityChecks(attacker);
 
             if (ItemChecks.isSword(itemInHand) && mcPermissions.getInstance().swords(attacker)) {
-                if (!mcBleedTimer.contains(target)) {
+                if (!mcBleedTimer.contains(target) && mcPermissions.getInstance().swordsBleed(attacker)) {
                     Swords.bleedCheck(attacker, target, plugin);
                 }
 
@@ -71,9 +71,17 @@ public class Combat {
                 startGainXp(attacker, PPa, target, SkillType.SWORDS, plugin);
             }
             else if (ItemChecks.isAxe(itemInHand) && mcPermissions.getInstance().axes(attacker)) {
-                Axes.axesBonus(attacker, event);
-                Axes.axeCriticalCheck(attacker, event);
-                Axes.impact(attacker, target, event);
+                if (mcPermissions.getInstance().axeBonus(attacker)) {
+                    Axes.axesBonus(attacker, event);
+                }
+
+                if (mcPermissions.getInstance().criticalHit(attacker)) {
+                    Axes.axeCriticalCheck(attacker, event);
+                }
+
+                if (mcPermissions.getInstance().impact(attacker)) {
+                    Axes.impact(attacker, target, event);
+                }
 
                 if (PPa.getSkullSplitterMode()) {
                     applyAbilityAoE(attacker, target, damage, plugin, SkillType.AXES);
@@ -82,33 +90,22 @@ public class Combat {
                 startGainXp(attacker, PPa, target, SkillType.AXES, plugin);
             }
             else if (itemInHand.getType().equals(Material.AIR) && mcPermissions.getInstance().unarmed(attacker)) {
-                Unarmed.unarmedBonus(PPa, event);
-
-                if (PPa.getBerserkMode()) {
-                    event.setDamage(damage + (damage / 2));
+                if (mcPermissions.getInstance().unarmedBonus(attacker)) {
+                    Unarmed.unarmedBonus(PPa, event);
                 }
 
-                if (targetType.equals(EntityType.PLAYER)) {
+                if (PPa.getBerserkMode() && mcPermissions.getInstance().berserk(attacker)) {
+                    event.setDamage((int) (damage * 1.5));
+                }
+
+                if (targetType.equals(EntityType.PLAYER) && mcPermissions.getInstance().disarm(attacker)) {
                     Unarmed.disarmProcCheck(PPa, (Player) target);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.UNARMED, plugin);
             }
-            else if (itemInHand.getType().equals(Material.BONE) && mcPermissions.getInstance().taming(attacker) && targetType.equals(EntityType.WOLF)) {
-                Wolf wolf = (Wolf) target;
-                String message = mcLocale.getString("Combat.BeastLore") + " ";
-                int health = wolf.getHealth();
-                event.setCancelled(true);
-
-                if (wolf.isTamed()) {
-                    message = message.concat(mcLocale.getString("Combat.BeastLoreOwner", new Object[] {Taming.getOwnerName(wolf)}) + " ");
-                    message = message.concat(mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {health}));
-                }
-                else {
-                    message = message.concat(mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {health}));
-                }
-
-                attacker.sendMessage(message);
+            else if (itemInHand.getType().equals(Material.BONE) && mcPermissions.getInstance().beastLore(attacker)) {
+                Taming.beastLore(event, target, attacker);
             }
             break;
 
@@ -120,9 +117,18 @@ public class Combat {
                 PlayerProfile PPo = Users.getProfile(master);
 
                 if (mcPermissions.getInstance().taming(master)) {
-                    Taming.fastFoodService(PPo, wolf, event);
-                    Taming.sharpenedClaws(PPo, event);
-                    Taming.gore(PPo, event, master, plugin);
+                    if (mcPermissions.getInstance().fastFoodService(master)) {
+                        Taming.fastFoodService(PPo, wolf, event);
+                    }
+
+                    if (mcPermissions.getInstance().sharpenedclaws(master)) {
+                        Taming.sharpenedClaws(PPo, event);
+                    }
+
+                    if (mcPermissions.getInstance().gore(master)) {
+                        Taming.gore(PPo, event, master, plugin);
+                    }
+
                     startGainXp(master, PPo, target, SkillType.TAMING, plugin);
                 }
             }
@@ -174,22 +180,9 @@ public class Combat {
 
         if (target instanceof Player) {
             Player defender = (Player) target;
-            PlayerProfile PPd = Users.getProfile(defender);
-            boolean deflect = false;
 
             if (mcPermissions.getInstance().unarmed(defender) && defender.getItemInHand().getType().equals(Material.AIR)) {
-                if (PPd.getSkillLevel(SkillType.UNARMED) >= 1000 && (Math.random() * 1000 <= 500)) {
-                    deflect = true;
-                }
-                else if (Math.random() * 1000 <= (PPd.getSkillLevel(SkillType.UNARMED) / 2)) {
-                    deflect = true;
-                }
-
-                if (deflect) {
-                    event.setCancelled(true);
-                    defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect"));
-                    return;
-                }
+                Unarmed.deflectCheck(defender, event);
             }
         }
 
@@ -199,8 +192,13 @@ public class Combat {
             int damage = event.getDamage();
 
             if (mcPermissions.getInstance().archery(attacker) && damage > 0) {
-                Archery.trackArrows(pluginx, target, PPa);
-                Archery.ignitionCheck(target, attacker);
+                if (mcPermissions.getInstance().trackArrows(attacker)) {
+                    Archery.trackArrows(pluginx, target, PPa);
+                }
+
+                if (mcPermissions.getInstance().ignition(attacker)) {
+                    Archery.ignitionCheck(target, attacker);
+                }
 
                 startGainXp(attacker, PPa, target, SkillType.ARCHERY, pluginx);
 

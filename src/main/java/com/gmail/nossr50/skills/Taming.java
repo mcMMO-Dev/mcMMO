@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +18,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -104,7 +106,7 @@ public class Taming {
      * @param theWolf The wolf whose owner's name to get
      * @return the name of the wolf's owner, or "Offline Master" if the owner is offline
      */
-    public static String getOwnerName(Wolf theWolf) {
+    private static String getOwnerName(Wolf theWolf) {
         AnimalTamer tamer = theWolf.getOwner();
 
         if (tamer instanceof Player) {
@@ -140,41 +142,51 @@ public class Taming {
         case CONTACT:
         case LAVA:
         case FIRE:
-            if (skillLevel >= ENVIRONMENTALLY_AWARE_LEVEL) {
-                if (event.getDamage() >= wolf.getHealth()) {
-                    return;
-                }
+            if (mcPermissions.getInstance().environmentallyAware(master)) {
+                if (skillLevel >= ENVIRONMENTALLY_AWARE_LEVEL) {
+                    if (event.getDamage() >= wolf.getHealth()) {
+                        return;
+                    }
 
-                wolf.teleport(master.getLocation());
-                master.sendMessage(mcLocale.getString("mcEntityListener.WolfComesBack"));
+                    wolf.teleport(master.getLocation());
+                    master.sendMessage(mcLocale.getString("mcEntityListener.WolfComesBack"));
+                }
             }
             break;
 
         case FALL:
-            if (skillLevel >= ENVIRONMENTALLY_AWARE_LEVEL) {
-                event.setCancelled(true);
+            if (mcPermissions.getInstance().environmentallyAware(master)) {
+                if (skillLevel >= ENVIRONMENTALLY_AWARE_LEVEL) {
+                    event.setCancelled(true);
+                }
             }
             break;
 
         /* Thick Fur */
         case FIRE_TICK:
-            if(skillLevel >= THICK_FUR_LEVEL) {
-                wolf.setFireTicks(0);
+            if (mcPermissions.getInstance().thickFur(master)) {
+                if(skillLevel >= THICK_FUR_LEVEL) {
+                    wolf.setFireTicks(0);
+                }
             }
             break;
 
         case ENTITY_ATTACK:
         case PROJECTILE:
-            if (skillLevel >= THICK_FUR_LEVEL) {
-                event.setDamage(event.getDamage() / THICK_FUR_MODIFIER);
+            if (mcPermissions.getInstance().thickFur(master)) {
+                if (skillLevel >= THICK_FUR_LEVEL) {
+                    event.setDamage(event.getDamage() / THICK_FUR_MODIFIER);
+                }
             }
             break;
 
         /* Shock Proof */
         case ENTITY_EXPLOSION:
         case BLOCK_EXPLOSION:
-            if (skillLevel >= SHOCK_PROOF_LEVEL) {
-                event.setDamage(event.getDamage() / SHOCK_PROOF_MODIFIER);
+            if (mcPermissions.getInstance().shockProof(master)) {
+                if (skillLevel >= SHOCK_PROOF_LEVEL) {
+                    event.setDamage(event.getDamage() / SHOCK_PROOF_MODIFIER);
+                }
             }
             break;
 
@@ -227,6 +239,33 @@ public class Taming {
             else {
                 player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(summonItem.getId()));
             }
+        }
+    }
+
+    /**
+     * Inspect a tamed animal for details.
+     *
+     * @param event
+     * @param target
+     */
+    public static void beastLore(EntityDamageByEntityEvent event, LivingEntity target, Player attacker) {
+
+        //TODO: Make this work for Ocelots
+        if (target.getType().equals(EntityType.WOLF)) {
+            Wolf wolf = (Wolf) target;
+            String message = mcLocale.getString("Combat.BeastLore") + " ";
+            int health = wolf.getHealth();
+            event.setCancelled(true);
+
+            if (wolf.isTamed()) {
+                message = message.concat(mcLocale.getString("Combat.BeastLoreOwner", new Object[] {getOwnerName(wolf)}) + " ");
+                message = message.concat(mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {health}));
+            }
+            else {
+                message = message.concat(mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {health}));
+            }
+
+            attacker.sendMessage(message);
         }
     }
 }

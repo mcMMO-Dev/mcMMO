@@ -40,6 +40,7 @@ commands:
         description: Shows your mcMMO stats and xp
     mcremove:
         description: Remove a user from the database
+        permission: mcmmo.tools.mcremove
     mmoedit:
         description: Edit the skill values for a user
         permission: mcmmo.tools.mmoedit
@@ -98,7 +99,8 @@ permissions:
             #Instead of containing mcmmo.defaultsop on its own, it should specify each of mcmmo.defaultsop
             mcmmo.admin: true
             mcmmo.tools.*: true
-            mcmmo.chat.adminchat: true 
+            mcmmo.chat.adminchat: true
+            mcmmo.repair.arcanebypass: true
     mcmmo.defaults:
         default: true
         description: mcmmo permisions that default to true
@@ -116,50 +118,228 @@ permissions:
             mcmmo.chat.adminchat: true
             mcmmo.admin: true
             mcmmo.tools.*: true
+            mcmmo.repair.arcanebypass: true
     mcmmo.admin:
         description: Allows access to mmoupdate and other sensitive commands        
+    mcmmo.repair.arcanebypass:
+        description: Allows user to bypass Arcane Repair so he will never lose enchantments
     mcmmo.tools.*:
         description: Implies all mcmmo.tools permissions.
         children:
             mcmmo.tools.mcrefresh: true 
             mcmmo.tools.mmoedit: true 
-            mcmmo.tools.mcgod: true 
+            mcmmo.tools.mcgod: true
+            mcmmo.tools.mcremove: true
     mcmmo.tools.mcrefresh:
         description: Allows access to mcrefresh command
     mcmmo.tools.mmoedit:
         description: Allows access to mmoedit command
     mcmmo.tools.mcgod:
-        description: Allows access to mcgod command        
+        description: Allows access to mcgod command
+    mcmmo.tools.mcremove:
+        decription: Allows access to mcremove command
     mcmmo.ability.*:
         description: Implies all mcmmo.ability permissions.
         children:
-            mcmmo.ability.herbalism: true 
-            mcmmo.ability.excavation: true 
-            mcmmo.ability.unarmed: true 
-            mcmmo.ability.mining: true 
-            mcmmo.ability.axes: true 
-            mcmmo.ability.swords: true 
-            mcmmo.ability.woodcutting: true 
-    mcmmo.ability.herbalism:
-        description: Allows access to Green Terra ability
-    mcmmo.ability.excavation:
-        description: Allows access to Giga Drill Breaker ability
-    mcmmo.ability.unarmed:
-        description: Allows access to Berserker ability
-    mcmmo.ability.mining:
-        description: Allows access to Super Breaker ability
-    mcmmo.ability.axes:
-        description: Allows access to Skull Splitter ability
-    mcmmo.ability.swords:
-        description: Allows access to Serrated Strikes ability
-    mcmmo.ability.woodcutting:
-        description: Allows access to Tree Feller ability        
+            mcmmo.ability.taming.*: true
+            mcmmo.ability.fishing.*: true
+            mcmmo.ability.mining.*: true
+            mcmmo.ability.woodcutting.*: true
+            mcmmo.ability.repair.*: true
+            mcmmo.ability.unarmed.*: true
+            mcmmo.ability.archery.*: true
+            mcmmo.ability.herbalism.*: true
+            mcmmo.ability.excavation.*: true
+            mcmmo.ability.swords.*: true
+            mcmmo.ability.axes.*: true
+            mcmmo.ability.acrobatics.*: true
+            mcmmo.ability.blastmining.*: true
+    mcmmo.ability.taming.*:
+        description: Allows access to all Taming abilities
+        children:
+            mcmmo.ability.taming.fastfoodservice: true
+            mcmmo.ability.taming.sharpenedclaws: true
+            mcmmo.ability.taming.gore: true
+            mcmmo.ability.taming.callofthewild: true
+            mcmmo.ability.taming.environmentallyaware: true
+            mcmmo.ability.taming.thickfur: true
+            mcmmo.ability.taming.shockproof: true
+            mcmmo.ability.taming.beastlore: true
+    mcmmo.ability.taming.fastfoodservice:
+        description: Allows access to the Fast Food Service ability
+    mcmmo.ability.taming.sharpenedclaws:
+        description: Allows access to the Sharpened Claws ability
+    mcmmo.ability.taming.gore:
+        description: Allows access to the Gore ability
+    mcmmo.ability.taming.callofthewild:
+        description: Allows access to the Call of the Wild ability
+    mcmmo.ability.taming.environmentallyaware:
+        description: Allows access to the Environmentally Aware ability
+    mcmmo.ability.taming.thickfur:
+        description: Allows access to the Thick Fur ability
+    mcmmo.ability.taming.shockproof:
+        description: Allows access to the Shock Proof ability
+    mcmmo.ability.taming.beastlore:
+        description: Allows access to the Beast Lore ability
+    mcmmo.ability.fishing.*:
+        description: Allows access to all Fishing abilities
+        children:
+            mcmmo.ability.fishing.shakemob: true
+    mcmmo.ability.fishing.shakemob:
+        description: Allows access to the Shake Mob ability
+    mcmmo.ability.mining.*:
+        description: Allows access to all Mining abilities
+        children:
+            mcmmo.ability.mining.superbreaker: true
+            mcmmo.ability.mining.doubledrops: true
+    mcmmo.ability.mining.superbreaker:
+        description: Allows access to the Super Breaker ability
+    mcmmo.ability.mining.doubledrops:
+        description: Allows double drop chance when mining
+    mcmmo.ability.woodcutting.*:
+        description: Allows access to all Woodcutting abilities
+        children:
+            mcmmo.ability.woodcutting.treefeller: true
+            mcmmo.ability.woodcutting.leafblower: true
+            mcmmo.ability.woodcutting.doubledrops: true
+    mcmmo.ability.woodcutting.treefeller:
+        description: Allows access to Tree Feller ability
+    mcmmo.ability.woodcutting.leafblower:
+        description: Allows access to Leaf Blower ability
+    mcmmo.ability.woodcutting.doubledrops:
+        description: Allows double drop chance when woodcutting
+    mcmmo.ability.repair.*:
+        description: Allows access to all Repair abilities
+        children:
+            mcmmo.ability.repair.repairbonus: true
+            mcmmo.ability.repair.arcaneforging: true
+            mcmmo.ability.repair.stonerepair: true
+            mcmmo.ability.repair.ironrepair: true
+            mcmmo.ability.repair.goldrepair: true
+            mcmmo.ability.repair.diamondrepair: true
+            mcmmo.ability.repair.armorrepair: true
+            mcmmo.ability.repair.toolrepair: true
+    mcmmo.ability.repair.repairbonus:
+        description: Allows access to Super Repair bonus
+    mcmmo.ability.repair.arcaneforging:
+        description: Allows access to the Arcane Forging ability
+    mcmmo.ability.repair.stonerepair:
+        description: Allows ability to repair Stone tools
+    mcmmo.ability.repair.ironrepair:
+        description: Allows ability to repair Iron tools & armor
+    mcmmo.ability.repair.goldrepair:
+        description: Allows ability to repair Gold tools & armor
+    mcmmo.ability.repair.diamondrepair:
+        description: Allows ability to repair Diamond tools & armor
+    mcmmo.ability.repair.armorrepair:
+        description: Allows ability to repair armor
+    mcmmo.ability.repair.toolrepair:
+        description: Allows ability to repair tools
+    mcmmo.ability.unarmed.*:
+        description: Allows access to all Unarmed abilities
+        children:
+            mcmmo.ability.unarmed.bonusdamage: true
+            mcmmo.ability.unarmed.disarm: true
+            mcmmo.ability.unarmed.berserk: true
+            mcmmo.ability.unarmed.deflect: true
+    mcmmo.ability.unarmed.bonusdamage:
+        description: Allows bonus damage from Unarmed
+    mcmmo.ability.unarmed.disarm:
+        description: Allows access to the Disarm ability
+    mcmmo.ability.unarmed.berserk:
+        description: Allows access to the Berserker ability
+    mcmmo.ability.unarmed.deflect:
+        description: Allows access to the Deflect ability
+    mcmmo.ability.archery.*:
+        description: Allows access to all Archery abilities
+        children:
+            mcmmo.ability.archery.trackarrows: true
+            mcmmo.ability.archery.ignition: true
+            mcmmo.ability.archery.daze: true
+    mcmmo.ability.archery.trackarrows:
+        description: Allows tracking & retrieval of arrows
+    mcmmo.ability.archery.ignition:
+        description: Allows access to the Ignition ability
+    mcmmo.ability.archery.daze:
+        description: Allows access to the Daze ability
+    mcmmo.ability.herbalism.*:
+        description: Allows access to all Herbalism abilities
+        children:
+            mcmmo.ability.herbalism.doubledrops: true
+            mcmmo.ability.herbalism.greenterra: true
+            mcmmo.ability.herbalism.greenthumbblocks: true
+            mcmmo.ability.herbalism.greenthumbwheat: true
+    mcmmo.ability.herbalism.doubledrops:
+        description: Allows double drop chance from Herbalism
+    mcmmo.ability.herbalism.greenterra:
+        description: Allows access to the Green Terra ability
+    mcmmo.ability.herbalism.greenthumbblocks:
+        description: Allows access to the Green Thumb ability for blocks
+    mcmmo.ability.herbalism.greenthumbwheat:
+        description: Allows access to the Green Thumb ability for wheat
+    mcmmo.ability.excavation.*:
+        description: Allows access to all Excavation abilities
+        children:
+            mcmmo.ability.excavation.gigadrillbreaker: true
+            mcmmo.ability.excavation.treasures: true
+    mcmmo.ability.excavation.gigadrillbreaker:
+        description: Allows access to the Giga Drill Breaker ability
+    mcmmo.ability.excavation.treasures:
+        description: Allows treasure drops from Excavation
+    mcmmo.ability.swords.*:
+        description: Allows access to all Swords abilities
+        children:
+            mcmmo.ability.swords.bleed: true
+            mcmmo.ability.swords.serratedstrikes: true
+            mcmmo.ability.swords.counterattack: true
+    mcmmo.ability.swords.bleed:
+        description: Allows access to the Bleed ability
+    mcmmo.ability.swords.serratedstrikes:
+        description: Allows access to the Serrated Strikes ability
+    mcmmo.ability.swords.counterattack:
+        description: Allows access to the Counter Attack ability
+    mcmmo.ability.axes.*:
+        description: Allows access to all Axes abilities
+        children:
+            mcmmo.ability.axes.skullsplitter: true
+            mcmmo.ability.axes.bonusdamage: true
+            mcmmo.ability.axes.critalhit: true
+            mcmmo.ability.axes.impact: true
+    mcmmo.ability.axes.skullsplitter:
+        description: Allows access to the Skull Splitter ability
+    mcmmo.ability.axes.bonusdamage:
+        description: Allows bonus damage from Axes
+    mcmmo.ability.axes.criticalhit:
+        description: Allows access to the Critical Hit ability
+    mcmmo.ability.axes.skullsplitter:
+        description: Allows access to the Impact ability
+    mcmmo.ability.acrobatics.*:
+        description: Allows access to all Acrobatics abilities
+        children:
+            mcmmo.ability.acrobatics.roll: true
+            mcmmo.ability.acrobatics.gracefulroll: true
+            mcmmo.ability.acrobatics.dodge: true
+    mcmmo.ability.acrobatics.roll:
+        description: Allows access to the Roll ability
+    mcmmo.ability.acrobatics.gracefulroll:
+        description: Allows access to the Graceful Roll ability
+    mcmmo.ability.acrobatics.dodge:
+        description: Allows access to the Dodge ability
+    mcmmo.ability.blastmining.*:
+        description: Allows access to all Blast Mining abilities
+        children:
+            mcmmo.ability.blastmining.biggerbombs: true
+            mcmmo.ability.blastmining.demolitionsexpertise: true
+    mcmmo.ability.blastmining.biggerbombs:
+        description: Allows access to the Bigger Bombs ability
+    mcmmo.ability.blastmining.demolitionsexpertise:
+        description: Allows access to the Demolitions Expertise ability
     mcmmo.item.*:
         description: Implies all mcmmo.item permissions.
         children:
             mcmmo.item.chimaerawing: true 
     mcmmo.item.chimaerawing:
-        description: Allows use of Chimaera Wing item            
+        description: Allows use of Chimaera Wing item
     mcmmo.motd:
         description: Allows access to the motd        
     mcmmo.commands.*:
@@ -202,6 +382,8 @@ permissions:
             mcmmo.skills.axes: true 
             mcmmo.skills.acrobatics: true
             mcmmo.skills.blastmining: true
+    mcmmo.skills.fishing:
+        description: Allows access to the Fishing skill
     mcmmo.skills.taming:
         description: Allows access to the Taming skill
     mcmmo.skills.mining:
@@ -210,8 +392,6 @@ permissions:
         description: Allows access to the Woodcutting skill
     mcmmo.skills.repair:
         description: Allows access to the Repair skill
-    mcmmo.skills.repair.arcanebypass:
-        description: Allows user to bypass Arcane Repair so he will never lose enchantments
     mcmmo.skills.unarmed:
         description: Allows access to the Unarmed skill
     mcmmo.skills.archery:

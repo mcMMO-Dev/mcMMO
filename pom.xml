@@ -110,7 +110,7 @@
                 <checksumPolicy>fail</checksumPolicy>
             </snapshots> 
         	<id>spout-repo</id>
-        	<url>http://nexus.getspout.org/content/groups/public/</url>
+        	<url>http://nexus.spout.org/content/groups/public/</url>
         </repository>
     </repositories>
     <dependencies>

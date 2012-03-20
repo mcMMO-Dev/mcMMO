@@ -94,7 +94,7 @@ public class mcPlayerListener implements Listener {
                 break;
 
             case CAUGHT_ENTITY:
-                if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) >= 150) {
+                if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) >= 150 && mcPermissions.getInstance().shakeMob(player)) {
                     Fishing.shakeMob(event);
                 }
                 break;
@@ -223,7 +223,7 @@ public class mcPlayerListener implements Listener {
             }
 
             /* GREEN THUMB CHECK */
-            if (mcPermissions.getInstance().herbalism(player) && Herbalism.makeMossy(mat) && is.getType().equals(Material.SEEDS)) {
+            if (mcPermissions.getInstance().greenThumbBlocks(player) && Herbalism.makeMossy(mat) && is.getType().equals(Material.SEEDS)) {
                 Herbalism.greenThumbBlocks(is, player, block);
             }
 

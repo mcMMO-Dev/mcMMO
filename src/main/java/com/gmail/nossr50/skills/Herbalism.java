@@ -13,6 +13,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -150,7 +151,7 @@ public class Herbalism {
                 mat = Material.WHEAT;
                 xp = LoadProperties.mwheat;
 
-                if (LoadProperties.wheatRegrowth) {
+                if (LoadProperties.wheatRegrowth && mcPermissions.getInstance().greenThumbWheat(player)) {
                     greenThumbWheat(block, player, event, plugin);
                 }
             }

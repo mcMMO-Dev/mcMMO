@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -100,7 +101,7 @@ public class Archery {
             loc.setPitch(-90);
         }
 
-        if (Math.random() * 2000 <= skillCheck) {
+        if (Math.random() * 2000 <= skillCheck && mcPermissions.getInstance().daze(attacker)) {
             defender.teleport(loc);
             defender.sendMessage(mcLocale.getString("Combat.TouchedFuzzy"));
             attacker.sendMessage(mcLocale.getString("Combat.TargetDazed"));

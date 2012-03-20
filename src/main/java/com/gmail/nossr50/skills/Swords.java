@@ -91,7 +91,7 @@ public class Swords {
             Player defender = (Player) target;
             PlayerProfile PPd = Users.getProfile(defender);
 
-            if (ItemChecks.isSword(defender.getItemInHand()) && mcPermissions.getInstance().swords(defender)) {
+            if (ItemChecks.isSword(defender.getItemInHand()) && mcPermissions.getInstance().counterAttack(defender)) {
                 final int MAX_BONUS_LEVEL = 600;
                 final int COUNTER_ATTACK_MODIFIER = 2;
 

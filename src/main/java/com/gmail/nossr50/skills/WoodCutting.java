@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -248,7 +249,7 @@ public class WoodCutting {
         byte type = block.getData();
         Material mat = Material.getMaterial(block.getTypeId());
 
-        if (skillLevel > MAX_SKILL_LEVEL || Math.random() * 1000 <= skillLevel) {
+        if ((skillLevel > MAX_SKILL_LEVEL || Math.random() * 1000 <= skillLevel) && mcPermissions.getInstance().woodcuttingDoubleDrops(player)) {
             ItemStack item = new ItemStack(mat, 1, (short) 0, type);
             m.mcDropItem(block.getLocation(), item);
         }

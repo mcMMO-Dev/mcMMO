@@ -127,18 +127,18 @@ public class mcBlockListener implements Listener {
          * HERBALISM
          */
 
-        //Green Terra
-        if (PP.getHoePreparationMode() && mcPermissions.getInstance().herbalismAbility(player) && ((mat.equals(Material.CROPS) && block.getData() == CropState.RIPE.getData()) || Herbalism.canBeGreenTerra(mat))) {
+        /* Green Terra */
+        if (PP.getHoePreparationMode() && mcPermissions.getInstance().greenTerra(player) && ((mat.equals(Material.CROPS) && block.getData() == CropState.RIPE.getData()) || Herbalism.canBeGreenTerra(mat))) {
             Skills.abilityCheck(player, SkillType.HERBALISM);
         }
 
-        //Wheat && Triple drops
+        /* Triple drops */
         if (PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(mat)) {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
             Herbalism.herbalismProcCheck(block, player, event, plugin); //Called twice for triple drop functionality
         }
 
-        if (mcPermissions.getInstance().herbalism(player) && Herbalism.canBeGreenTerra(mat)) {
+        if (mcPermissions.getInstance().herbalismDoubleDrops(player) && Herbalism.canBeGreenTerra(mat)) {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 
@@ -168,7 +168,7 @@ public class mcBlockListener implements Listener {
             }
         }
 
-        if (PP.getTreeFellerMode() && mcPermissions.getInstance().woodCuttingAbility(player)) {
+        if (PP.getTreeFellerMode() && mcPermissions.getInstance().treeFeller(player)) {
             WoodCutting.treeFeller(event);
         }
 
@@ -213,7 +213,7 @@ public class mcBlockListener implements Listener {
             if (PP.getHoePreparationMode() && (Herbalism.canBeGreenTerra(mat) || Herbalism.makeMossy(mat))) {
                 Skills.abilityCheck(player, SkillType.HERBALISM);
             }
-            else if (PP.getAxePreparationMode() && mat.equals(Material.LOG) && mcPermissions.getInstance().woodCuttingAbility(player)) {  //Why are we checking the permissions here?
+            else if (PP.getAxePreparationMode() && mat.equals(Material.LOG) && mcPermissions.getInstance().treeFeller(player)) {  //Why are we checking the permissions here?
                 Skills.abilityCheck(player, SkillType.WOODCUTTING);
             }
             else if (PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(mat)) {
@@ -235,7 +235,7 @@ public class mcBlockListener implements Listener {
         /*
          * ABILITY TRIGGER CHECKS
          */
-        if (PP.getGreenTerraMode() && mcPermissions.getInstance().herbalismAbility(player) && Herbalism.makeMossy(mat)) {
+        if (PP.getGreenTerraMode() && mcPermissions.getInstance().greenTerra(player) && Herbalism.makeMossy(mat)) {
             Herbalism.greenTerra(player, block);
         }
         else if (PP.getGigaDrillBreakerMode() && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {

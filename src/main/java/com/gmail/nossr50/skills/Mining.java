@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerAnimationEvent;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -164,7 +165,7 @@ public class Mining
 
             int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 
-            if (MAX_BONUS_LEVEL > 1000 || (Math.random() * 1000 <= skillLevel)) {
+            if ((MAX_BONUS_LEVEL > 1000 || (Math.random() * 1000 <= skillLevel)) && mcPermissions.getInstance().miningDoubleDrops(player)) {
                 if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
                     m.mcDropItem(block.getLocation(), new ItemStack(block.getType()));
                 }

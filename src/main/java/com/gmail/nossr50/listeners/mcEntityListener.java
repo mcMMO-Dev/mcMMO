@@ -113,7 +113,7 @@ public class mcEntityListener implements Listener {
                 if (cause == DamageCause.FALL && mcPermissions.getInstance().acrobatics(player)) {
                     Acrobatics.acrobaticsCheck(player, event);
                 }
-                else if (cause == DamageCause.BLOCK_EXPLOSION && mcPermissions.getInstance().blastMining(player)) {
+                else if (cause == DamageCause.BLOCK_EXPLOSION && mcPermissions.getInstance().demolitionsExpertise(player)) {
                     BlastMining.demolitionsExpertise(player, event);
                 }
 
@@ -182,7 +182,10 @@ public class mcEntityListener implements Listener {
 
             if (plugin.misc.tntTracker.containsKey(id)) {
                 Player player = plugin.misc.tntTracker.get(id);
-                BlastMining.biggerBombs(player, event);
+
+                if (mcPermissions.getInstance().biggerBombs(player)) {
+                    BlastMining.biggerBombs(player, event);
+                }
             }
         }
     }

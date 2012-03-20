@@ -233,6 +233,12 @@ public class BlastMining {
         event.setDamage(damage);
     }
 
+    /**
+     * Remotely detonate TNT for Blast Mining.
+     *
+     * @param player Player detonating the TNT
+     * @param plugin mcMMO plugin instance
+     */
     public static void remoteDetonation(Player player, mcMMO plugin) {
         final byte SNOW = 78;
         final byte AIR = 0;

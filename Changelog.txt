@@ -12,8 +12,9 @@ Version 2.0.00-dev
  + Added ability to summon Ocelots with Call of the Wild
  + Added offline user functionality to mmoedit
  + Added bookshelves to list of blocks that don't trigger abilities.
- + Added 'mcmmo.skills.repair.arcanebypass' permission node to bypass Arcane Repair and keep your enchantments
+ + Added 'mcmmo.repair.arcanebypass' permission node to bypass Arcane Repair and keep your enchantments
  + Added config option to disable Herbalism's instant wheat replanting
+ + Added LOTS of new permissions nodes. *CHECK PLUGIN.YML FOR UPDATES*
  = Fixed Green Terra not awarding Triple Drops
  = Fixed ClassCastException from Taming preventDamage checks
  = Fixed issue with Blast Mining not seeing TNT for detonation due to snow
