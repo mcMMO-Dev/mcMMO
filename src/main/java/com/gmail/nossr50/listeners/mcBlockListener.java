@@ -1,5 +1,7 @@
 package com.gmail.nossr50.listeners;
 
+import java.util.List;
+
 import com.gmail.nossr50.BlockChecks;
 import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.mcMMO;
@@ -21,12 +23,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
@@ -44,6 +49,46 @@ public class mcBlockListener implements Listener {
 
     public mcBlockListener(final mcMMO plugin) {
         this.plugin = plugin;
+    }
+
+    /**
+     * Monitor BlockPistonExtend events.
+     *
+     * @param event The event to monitor
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+        List<Block> blocks = event.getBlocks();
+        BlockFace direction = event.getDirection();
+
+        for (Block b : blocks) {
+            if (b.hasMetadata("mcmmoPlacedBlock")) {
+                b.getRelative(direction).setMetadata("mcmmoNeedsTracking", new FixedMetadataValue(plugin, true));
+                b.removeMetadata("mcmmoPlacedBlock", plugin);
+                }
+        }
+
+        for (Block b : blocks) {
+            if (b.hasMetadata("mcmmoNeedsTracking")) {
+                b.setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
+                b.removeMetadata("mcmmoNeedsTracking", plugin);
+            }
+        }
+    }
+
+    /**
+     * Monitor BlockPistonRetract events.
+     *
+     * @param event The event to monitor
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+        Block block = event.getRetractLocation().getBlock();
+
+        if (block.hasMetadata("mcmmoPlacedBlock")) {
+            block.removeMetadata("mcmmoPlacedBlock", plugin);
+            event.getBlock().getRelative(event.getDirection(), 1).setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
+        }
     }
 
     /**
