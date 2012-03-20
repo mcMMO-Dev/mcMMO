@@ -47,7 +47,6 @@ public class Combat {
 
         Entity damager = event.getDamager();
         LivingEntity target = (LivingEntity) event.getEntity();
-        int damage = event.getDamage();
         EntityType damagerType = damager.getType();
         EntityType targetType = target.getType();
 
@@ -65,7 +64,7 @@ public class Combat {
                 }
 
                 if (PPa.getSerratedStrikesMode()) {
-                    applyAbilityAoE(attacker, target, damage, plugin, SkillType.SWORDS);
+                    applyAbilityAoE(attacker, target, event.getDamage(), plugin, SkillType.SWORDS);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.SWORDS, plugin);
@@ -84,7 +83,7 @@ public class Combat {
                 }
 
                 if (PPa.getSkullSplitterMode()) {
-                    applyAbilityAoE(attacker, target, damage, plugin, SkillType.AXES);
+                    applyAbilityAoE(attacker, target, event.getDamage(), plugin, SkillType.AXES);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.AXES, plugin);
@@ -95,7 +94,7 @@ public class Combat {
                 }
 
                 if (PPa.getBerserkMode() && mcPermissions.getInstance().berserk(attacker)) {
-                    event.setDamage((int) (damage * 1.5));
+                    event.setDamage((int) (event.getDamage() * 1.5));
                 }
 
                 if (targetType.equals(EntityType.PLAYER) && mcPermissions.getInstance().disarm(attacker)) {
