@@ -181,7 +181,7 @@ public class mcPlayerListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
