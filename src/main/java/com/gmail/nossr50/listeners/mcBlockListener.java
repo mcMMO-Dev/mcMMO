@@ -69,9 +69,9 @@ public class mcBlockListener implements Listener {
         }
 
         for (Block b : blocks) {
-            if (b.hasMetadata("mcmmoNeedsTracking")) {
-                b.setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
-                b.removeMetadata("mcmmoNeedsTracking", plugin);
+            if (b.getRelative(direction).hasMetadata("mcmmoNeedsTracking")) {
+                b.getRelative(direction).setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
+                b.getRelative(direction).removeMetadata("mcmmoNeedsTracking", plugin);
             }
         }
     }
@@ -87,7 +87,7 @@ public class mcBlockListener implements Listener {
 
         if (block.hasMetadata("mcmmoPlacedBlock")) {
             block.removeMetadata("mcmmoPlacedBlock", plugin);
-            event.getBlock().getRelative(event.getDirection(), 1).setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
+            event.getBlock().getRelative(event.getDirection()).setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
         }
     }
 
