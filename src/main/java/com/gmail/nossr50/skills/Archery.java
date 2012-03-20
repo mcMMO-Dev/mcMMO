@@ -28,12 +28,12 @@ public class Archery {
         final int MAX_BONUS_LEVEL = 1000;
         int skillLevel = PPa.getSkillLevel(SkillType.ARCHERY);
 
-        if (!plugin.misc.arrowTracker.containsKey(entity)) {
-            plugin.misc.arrowTracker.put(entity, 0);
+        if (!plugin.arrowTracker.containsKey(entity)) {
+            plugin.arrowTracker.put(entity, 0);
         }
 
         if (skillLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= skillLevel)) {
-            plugin.misc.arrowTracker.put(entity, 1);
+            plugin.arrowTracker.put(entity, 1);
         }
     }
 
@@ -115,10 +115,10 @@ public class Archery {
      * @param plugin mcMMO plugin instance
      */
     public static void arrowRetrievalCheck(Entity entity, mcMMO plugin) {
-        if (plugin.misc.arrowTracker.containsKey(entity)) {
-            m.mcDropItems(entity.getLocation(), new ItemStack(Material.ARROW), plugin.misc.arrowTracker.get(entity));
+        if (plugin.arrowTracker.containsKey(entity)) {
+            m.mcDropItems(entity.getLocation(), new ItemStack(Material.ARROW), plugin.arrowTracker.get(entity));
         }
 
-        plugin.misc.arrowTracker.remove(entity);
+        plugin.arrowTracker.remove(entity);
     }
 }

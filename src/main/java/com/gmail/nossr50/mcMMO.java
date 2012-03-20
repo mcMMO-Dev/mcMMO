@@ -38,6 +38,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.FileManager;
@@ -54,9 +55,10 @@ public class mcMMO extends JavaPlugin {
 
     //Alias - Command
     public HashMap<String, String> aliasMap = new HashMap<String, String>();
+    public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
+    public HashMap<Integer, Player> tntTracker = new HashMap<Integer, Player>();
 
     public static Database database = null;
-    public Misc misc = new Misc(this);
 
     //Config file stuff
     LoadProperties config;
