@@ -26,36 +26,34 @@ public class mcBleedTimer implements Runnable {
 
     @Override
     public void run() {
-        // Update bleedList with bleedRemoveList and bleedAddList
         updateBleedList();
 
         // Player bleed simulation
-        for (Player player : plugin.getServer().getOnlinePlayers())
-        {
-            if (player == null) continue;
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            if (player == null) {
+                continue;
+            }
 
             PlayerProfile PP = Users.getProfile(player);
-            if (PP == null) continue;
+            if (PP == null) {
+                continue;
+            }
 
-            if (PP.getBleedTicks() >= 1)
-            {
+            if (PP.getBleedTicks() >= 1) {
+
                 //Never kill with Bleeding
-                if (player.getHealth() - 2 < 0)
-                {
-                    if (player.getHealth() - 1 > 0)
-                    {
+                if (player.getHealth() - 2 < 0) {
+                    if (player.getHealth() - 1 > 0) {
                         Combat.dealDamage(player, 1);
                     }
                 }
-                else
-                {
+                else {
                     Combat.dealDamage(player, 2);
                 }
 
                 PP.decreaseBleedTicks();
                 
-                if (PP.getBleedTicks() == 0)
-                {
+                if (PP.getBleedTicks() == 0) {
                     player.sendMessage(mcLocale.getString("Swords.StoppedBleeding"));
                 }
             }
@@ -66,19 +64,15 @@ public class mcBleedTimer implements Runnable {
     }
 
     private void bleedSimulate() {
-        // Lock list for looping
         lock = true;
 
         // Bleed monsters/animals
-        for (LivingEntity entity : bleedList)
-        {
-            if ((entity == null || entity.isDead()))
-            {
+        for (LivingEntity entity : bleedList) {
+            if ((entity == null || entity.isDead())) {
                 remove(entity);
                 continue;
             }
-            else
-            {
+            else {
                 Combat.dealDamage(entity, 2);
             }
         }
@@ -88,17 +82,13 @@ public class mcBleedTimer implements Runnable {
     }
 
     private void updateBleedList() {
-        if (lock)
-        {
-            // We can't do anything when locked.
+        if (lock) {
             plugin.getLogger().warning("mcBleedTimer attempted to update the bleedList but the list was locked!");
         }
-        else
-        {
-            // Remove
+        else {
             bleedList.removeAll(bleedRemoveList);
             bleedRemoveList.clear();
-            // Add
+
             bleedList.addAll(bleedAddList);
             bleedAddList.clear();
         }
@@ -110,43 +100,31 @@ public class mcBleedTimer implements Runnable {
      * @param entity LivingEntity to remove
      */
     public static void remove(LivingEntity entity) {
-        if (lock)
-        {
-            // Cannot remove when locked, put into bleedRemoveList
-            if (!bleedRemoveList.contains(entity))
-            {
+        if (lock) {
+            if (!bleedRemoveList.contains(entity)) {
                 bleedRemoveList.add(entity);
             }
         }
-        else
-        {
-            // Remove as normal
-            if (bleedList.contains(entity))
-            {
+        else {
+            if (bleedList.contains(entity)) {
                 bleedList.remove(entity);
             }
         }
     }
 
     /**
-     * Add a LivingEntity to the bleedList if it is not in it
-     * 
+     * Add a LivingEntity to the bleedList if it is not in it.
+     *
      * @param entity LivingEntity to add
      */
     public static void add(LivingEntity entity) {
-        if (lock)
-        {
-            // Cannot add when locked, put into bleedAddList
-            if (!bleedAddList.contains(entity))
-            {
+        if (lock) {
+            if (!bleedAddList.contains(entity)) {
                 bleedAddList.add(entity);
             }
         }
-        else
-        {
-            // Add as normal
-            if (!bleedList.contains(entity))
-            {
+        else {
+            if (!bleedList.contains(entity)){
                 bleedList.add(entity);
             }
         }
