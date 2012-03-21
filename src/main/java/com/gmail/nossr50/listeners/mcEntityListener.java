@@ -5,7 +5,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
@@ -81,28 +80,7 @@ public class mcEntityListener implements Listener {
 
             if (!m.isInvincible(livingDefender, event)) {
                 Combat.combatChecks(event, plugin);
-            }
-
-            if (attacker.hasMetadata("mcmmoFiredFromStaff")) {
-                event.setDamage(0);
-
-                Projectile projectile = (Projectile) attacker;
-                Player shooter = (Player) projectile.getShooter();
-
-                switch (attacker.getType()) {
-                case EGG:
-                    Staves.eggEffect(livingDefender, shooter);
-                    break;
-
-                case FIREBALL:
-                    break;
-
-                case SNOWBALL:
-                    break;
-
-                default:
-                    break;
-                }
+                Staves.altFireCheck(event);
             }
         }
     }

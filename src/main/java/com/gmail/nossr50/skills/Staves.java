@@ -4,11 +4,13 @@ import java.util.Collection;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Egg;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -17,7 +19,36 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.Party;
 
 public class Staves {
+
+    public static void altFireCheck(EntityDamageByEntityEvent event) {
+        LivingEntity defender = (LivingEntity) event.getEntity();
+        Projectile attacker = (Projectile) event.getDamager();
+
+        if (attacker.hasMetadata("mcmmoFiredFromStaff")) {
+            event.setDamage(0);
+
+            Projectile projectile = (Projectile) attacker;
+            Player shooter = (Player) projectile.getShooter();
+
+            switch (attacker.getType()) {
+            case EGG:
+                eggEffect(defender, shooter);
+                break;
+
+            case FIREBALL:
+                break;
+
+            case SNOWBALL:
+                if (defender.getType().equals(EntityType.PLAYER)) {
+                    snowballEffect((Player) defender, shooter);
+                }
+                break;
     
+            default:
+                break;
+            }
+        }
+    }
 
     /**
      * Fire a projectile on alt-fire from a staff.
@@ -55,7 +86,7 @@ public class Staves {
      * @param target Entity hit by the projectile
      * @param shooter Player who fired the projectile
      */
-    public static void eggEffect(LivingEntity target, Player shooter) {
+    private static void eggEffect(LivingEntity target, Player shooter) {
         final int TICKS_PER_SECOND = 20;
         final int MAX_SLOW_DURATION_SECONDS = 240;
         final int MAX_SPEED_DURATION_SECONDS = 800;
@@ -97,6 +128,21 @@ public class Staves {
         }
     }
 
+    /**
+     * Handle the effects of the Bone's projectile.
+     *
+     * @param target Entity hit by the projectile
+     * @param shooter Player who fired the projectile
+     */
+    private static void snowballEffect(Player target, Player shooter) {
+        if (Party.getInstance().inSameParty(target, shooter)) {
+            
+        }
+        else {
+            
+        }
+    }
+
     private static int durationCalulate() {
         //TODO: Calculate duration based off time held
         return 80;
@@ -105,5 +151,15 @@ public class Staves {
     private static int amplifierCalulate() {
         //TODO: Calculate amplifier based off skill level
         return 10;
+    }
+
+    private static int levelLossCalculate() {
+        //TODO: Calculate levels lost based on time held
+        return 2;
+    }
+
+    private static int levelGainCalculate() {
+        //TODO: Calculate levels gained based on skill level
+        return 1;
     }
 }
