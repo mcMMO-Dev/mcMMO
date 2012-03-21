@@ -14,14 +14,14 @@ import java.util.Iterator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 
 
-public class Party 
-{
+public class Party {
 	/*
 	 * This file is part of mmoMinecraft (http://code.google.com/p/mmo-minecraft/).
 	 * 

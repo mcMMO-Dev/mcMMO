@@ -20,7 +20,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.SpoutSounds;
 
 import org.getspout.spoutapi.sound.SoundEffect;
 
@@ -311,7 +311,7 @@ public class WoodCutting {
         }
 
         if (LoadProperties.spoutEnabled) {
-            SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+            SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }
 }

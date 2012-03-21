@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.player.PlayerAnimationEvent;
 
-import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
@@ -139,7 +139,7 @@ public class Excavation {
         }
 
         if (LoadProperties.spoutEnabled) {
-            SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+            SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }
 }

@@ -16,8 +16,7 @@ import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Mining;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.WoodCutting;
-import com.gmail.nossr50.spout.SpoutStuff;
-
+import com.gmail.nossr50.spout.SpoutSounds;
 
 import org.bukkit.Bukkit;
 import org.bukkit.CropState;
@@ -274,7 +273,7 @@ public class mcBlockListener implements Listener {
 
         /* TREE FELLER SOUNDS */
         if (LoadProperties.spoutEnabled && mat.equals(Material.LOG) && PP.getTreeFellerMode()) {
-            SpoutStuff.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
+            SpoutSounds.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
         }
 
         /*
@@ -302,7 +301,7 @@ public class mcBlockListener implements Listener {
             }
 
             if (LoadProperties.spoutEnabled) {
-                SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+                SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }
         else if (PP.getSuperBreakerMode() && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {

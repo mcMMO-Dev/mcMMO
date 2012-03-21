@@ -236,7 +236,7 @@ public class HUDmmo
 		((GenericTexture) xpicon).setUrl(m.getCapitalized(theType.toString())+".png");
 		xpicon.setDirty(true);
 
-		((GenericTexture) xpbar).setUrl(SpoutStuff.getUrlBar(SpoutStuff.getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.STANDARD)));
+		((GenericTexture) xpbar).setUrl(getUrlBar(getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.STANDARD)));
 		xpbar.setDirty(true);
 		
 		SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
@@ -256,16 +256,82 @@ public class HUDmmo
 		if(theType == null)
 			return;
 		
-		Color color = SpoutStuff.getRetroColor(theType);
+		Color color = getRetroColor(theType);
 		
 		if(xpicon != null && theType != null)
 			xpicon.setUrl(m.getCapitalized(theType.toString())+"_r.png");
 		
 		if(theType != null)
-			xpfill.setBottomColor(color).setTopColor(color).setWidth(SpoutStuff.getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.RETRO)).setDirty(true);
+			xpfill.setBottomColor(color).setTopColor(color).setWidth(getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.RETRO)).setDirty(true);
 		else
 			System.out.println("theType was null!");
 		
 		SpoutManager.getPlayer(player).getMainScreen().setDirty(true);
 	}
+	
+    private static Color getRetroColor(SkillType type) {
+        switch (type) {
+            case ACROBATICS:
+                return new Color((float) LoadProperties.acrobatics_r, (float) LoadProperties.acrobatics_g, (float) LoadProperties.acrobatics_b, 1f);
+            case ARCHERY:
+                return new Color((float) LoadProperties.archery_r, (float)LoadProperties.archery_g, (float)LoadProperties.archery_b, 1f);
+            case AXES:
+                return new Color((float) LoadProperties.axes_r, (float)LoadProperties.axes_g, (float)LoadProperties.axes_b, 1f);
+            case EXCAVATION:
+                return new Color((float)LoadProperties.excavation_r, (float)LoadProperties.excavation_g, (float)LoadProperties.excavation_b, 1f);
+            case HERBALISM:
+                return new Color((float)LoadProperties.herbalism_r, (float)LoadProperties.herbalism_g, (float)LoadProperties.herbalism_b, 1f);
+            case MINING:
+                return new Color((float)LoadProperties.mining_r, (float)LoadProperties.mining_g, (float)LoadProperties.mining_b, 1f);
+            case REPAIR:
+                return new Color((float)LoadProperties.repair_r, (float)LoadProperties.repair_g, (float)LoadProperties.repair_b, 1f);
+            case SWORDS:
+                return new Color((float)LoadProperties.swords_r, (float)LoadProperties.swords_g, (float)LoadProperties.swords_b, 1f);
+            case TAMING:
+                return new Color((float)LoadProperties.taming_r, (float)LoadProperties.taming_g, (float)LoadProperties.taming_b, 1f);
+            case UNARMED:
+                return new Color((float)LoadProperties.unarmed_r, (float)LoadProperties.unarmed_g, (float)LoadProperties.unarmed_b, 1f);
+            case WOODCUTTING:
+                return new Color((float)LoadProperties.woodcutting_r, (float)LoadProperties.woodcutting_g, (float)LoadProperties.woodcutting_b, 1f);
+            case FISHING:
+                return new Color((float)LoadProperties.fishing_r, (float)LoadProperties.fishing_g, (float)LoadProperties.fishing_b, 1f);
+            default:
+                return new Color(0.3f, 0.3f, 0.75f, 1f);
+        }
+    }
+
+    private static String getUrlBar(Integer number) {
+        char[] num = number.toString().toCharArray();
+
+        switch (num.length) {
+        case 1:
+            return "xpbar_inc00"+number+".png";
+
+        case 2:
+            return "xpbar_inc0"+number+".png";
+
+        default:
+            return "xpbar_inc"+number+".png";
+        }
+    }
+
+    private static Integer getXpInc(int skillxp, int xptolevel, HUDType hud) {
+        double percentage = (double) skillxp / xptolevel;
+        double inc;
+
+        switch (hud) {
+        case RETRO:
+            inc = 0.0079365079365079;
+            break;
+
+        case STANDARD:
+            inc = 0.0039370078740157;
+            break;
+
+        default:
+            return 1;
+        }
+
+        return (int) (percentage / inc);
+    }
 }

@@ -15,7 +15,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -145,7 +145,7 @@ public class Repair {
 
         //CLANG CLANG
         if (LoadProperties.spoutEnabled) {
-            SpoutStuff.playRepairNoise(player);
+            SpoutSounds.playRepairNoise(player);
         }
     }
 

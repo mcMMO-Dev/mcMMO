@@ -15,7 +15,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
@@ -259,7 +259,7 @@ public class Mining
             miningBlockCheck(player, block);
 
             if (LoadProperties.spoutEnabled) {
-                SpoutStuff.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+                SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }
     }
