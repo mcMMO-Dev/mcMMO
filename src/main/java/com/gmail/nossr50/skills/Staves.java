@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Egg;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
@@ -22,7 +23,7 @@ public class Staves {
 
     public static void altFireCheck(EntityDamageByEntityEvent event) {
         LivingEntity defender = (LivingEntity) event.getEntity();
-        Projectile attacker = (Projectile) event.getDamager();
+        Entity attacker = event.getDamager();
 
         if (attacker.hasMetadata("mcmmoFiredFromStaff")) {
             event.setDamage(0);
@@ -43,7 +44,7 @@ public class Staves {
                     snowballEffect((Player) defender, shooter);
                 }
                 break;
-    
+
             default:
                 break;
             }
@@ -135,11 +136,16 @@ public class Staves {
      * @param shooter Player who fired the projectile
      */
     private static void snowballEffect(Player target, Player shooter) {
+        int expLost = expLossCalculate();
+        int expGained = expGainCalculate();
+
         if (Party.getInstance().inSameParty(target, shooter)) {
-            
+            target.giveExp(expGained);
         }
         else {
-            
+            System.out.println(shooter.getLevel());
+            shooter.setLevel(shooter.getLevel() - 2);
+            System.out.println(shooter.getLevel());
         }
     }
 
@@ -153,13 +159,13 @@ public class Staves {
         return 10;
     }
 
-    private static int levelLossCalculate() {
-        //TODO: Calculate levels lost based on time held
-        return 2;
+    private static int expLossCalculate() {
+        //TODO: Calculate exp lost based on time held
+        return 1000;
     }
 
-    private static int levelGainCalculate() {
-        //TODO: Calculate levels gained based on skill level
-        return 1;
+    private static int expGainCalculate() {
+        //TODO: Calculate exp gained based on skill level
+        return 500;
     }
 }
