@@ -100,8 +100,6 @@ public class InspectCommand implements CommandExecutor {
                 return true;
             }
             
-            System.out.println(PPt.isLoaded());
-            
             sender.sendMessage(ChatColor.GREEN + "mcMMO Stats for Offline Player " + ChatColor.YELLOW + args[0]);
 
             sender.sendMessage(ChatColor.GOLD + "-=GATHERING SKILLS=-");

@@ -44,6 +44,7 @@ Version 1.3.03-dev
  ! Changed mob spawner tracking to use new Metadata API
  ! Changed block watch list to use new Metadata API
  ! Changed around a few config options, including the ones for mySQL. *YOU NEED TO REDO YOUR CONFIG FILE*
+ - Removed 'true/false' debug message from Inspect command
 
 Version 1.3.02
  + Added in game guides for Mining, Excavation, and Acrobatics. Simply type /skillname ? to access them
