@@ -43,7 +43,7 @@ public class Users {
      */
     public static void addUser(Player player) {
         if (!players.containsKey(player.getName().toLowerCase())) {
-            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName().toLowerCase()));
+            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName()));
         }
     }
 
@@ -97,7 +97,7 @@ public class Users {
             return players.get(player.getName().toLowerCase());
         }
         else {
-            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName().toLowerCase()));
+            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName()));
             return players.get(player.getName().toLowerCase());
         }
     }
@@ -113,7 +113,7 @@ public class Users {
             return players.get(playerName.toLowerCase());
         }
         else {
-            players.put(playerName.toLowerCase(), new PlayerProfile(playerName.toLowerCase()));
+            players.put(playerName.toLowerCase(), new PlayerProfile(playerName));
             return players.get(playerName.toLowerCase());
         }
     }
