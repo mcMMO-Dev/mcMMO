@@ -10,12 +10,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.McMMOItemSpawnEvent;
-import com.gmail.nossr50.runnables.SQLConversionTask;
 
 public class m {
 
