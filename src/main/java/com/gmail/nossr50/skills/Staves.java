@@ -124,9 +124,13 @@ public class Staves {
 
         if (type.equals(PotionEffectType.SLOW)) {
             shooter.sendMessage("Your enemy was slowed!"); //TODO: Use mcLocale
+            if (target instanceof Player) {
+                ((Player) target).sendMessage("You were slowed!"); //TODO: Use mcLocale
+            }
         }
         else {
             shooter.sendMessage("Your ally's speed was boosted!"); //TODO: Use mcLocale
+            ((Player) target).sendMessage("Your speed was boosted!"); //TODO: Use mcLocale
         }
     }
 
@@ -137,16 +141,73 @@ public class Staves {
      * @param shooter Player who fired the projectile
      */
     private static void snowballEffect(Player target, Player shooter) {
-        int expLost = expLossCalculate();
-        int expGained = expGainCalculate();
+        float xpLost = expLossCalculate();
+        float xpGained = expGainCalculate();
+
+        float shooterXP = shooter.getExp();
+        float targetXP = target.getExp();
+        int shooterLevel = shooter.getLevel();
+        int targetLevel = target.getLevel();
 
         if (Party.getInstance().inSameParty(target, shooter)) {
-            target.giveExp(expGained);
+
+            //Drain XP
+            if (shooterXP - xpLost < 0f) {
+                if (shooterLevel != 0) {
+                    shooter.setLevel(shooterLevel - 1);
+                    shooter.setExp(1f - xpLost);
+                    shooter.sendMessage("You transfered some XP to your ally!"); //TODO: Use mcLocale
+                }
+                else {
+                    shooter.sendMessage("You don't have enough XP to transfer!"); //TODO: Use mcLocale
+                    return;
+                }
+            }
+            else {
+                shooter.setExp(shooterXP - xpLost);
+                shooter.sendMessage("You transfered some XP to your ally!"); //TODO: Use mcLocale
+            }
+
+            //Reward XP
+            if (targetXP + xpGained >= 1f) {
+                target.setLevel(targetLevel + 1);
+                target.setExp(0f + xpGained);
+                target.sendMessage("You were given XP from your ally!"); //TODO: Use mcLocale
+            }
+            else {
+                target.setExp(targetXP + xpGained);
+                target.sendMessage("You were given XP from your ally!"); //TODO: Use mcLocale
+            }
         }
         else {
-            System.out.println(shooter.getLevel());
-            shooter.setLevel(shooter.getLevel() - 2);
-            System.out.println(shooter.getLevel());
+
+            //Drain XP
+            if (targetXP - xpLost < 0f) {
+                if (targetLevel != 0) {
+                    target.setLevel(targetLevel - 1);
+                    target.setExp(1f - xpLost);
+                    target.sendMessage("You were drained of XP!"); //TODO: Use mcLocale
+                }
+                else {
+                    shooter.sendMessage("Your enemy doesn't have enough XP to drain!"); //TODO: Use mcLocale
+                    return;
+                }
+            }
+            else {
+                target.setExp(targetXP - xpLost);
+                target.sendMessage("You were drained of XP!"); //TODO: Use mcLocale
+            }
+
+            //Reward XP
+            if (shooterXP + xpGained >= 1f) {
+                shooter.setLevel(shooterLevel + 1);
+                shooter.setExp(0f + xpGained);
+                shooter.sendMessage("You gained XP from your enemy!"); //TODO: Use mcLocale
+            }
+            else {
+                shooter.setExp(shooterXP + xpGained);
+                shooter.sendMessage("You gained XP from your enemy!"); //TODO: Use mcLocale
+            }
         }
     }
 
@@ -160,13 +221,13 @@ public class Staves {
         return 10;
     }
 
-    private static int expLossCalculate() {
+    private static float expLossCalculate() {
         //TODO: Calculate exp lost based on time held
-        return 1000;
+        return 0.25f;
     }
 
-    private static int expGainCalculate() {
+    private static float expGainCalculate() {
         //TODO: Calculate exp gained based on skill level
-        return 500;
+        return 0.10f;
     }
 }
