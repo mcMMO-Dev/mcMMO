@@ -141,7 +141,7 @@ public class WoodCutting {
                     m.mcDropItem(x.getLocation(), item);
                 }
                 else if (x.getType() == Material.LEAVES) {
-                    final int SAPLING_DROP_CHANCE = 90;
+                    final int SAPLING_DROP_CHANCE = 10;
 
                     item = new ItemStack(Material.SAPLING, 1, (short) 0, (byte) (x.getData() & 3)); //Drop the right type of sapling
                     m.mcRandomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
