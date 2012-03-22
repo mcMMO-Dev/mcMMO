@@ -6,6 +6,7 @@ import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -30,6 +31,7 @@ public class mcSpoutListener implements Listener {
         if (sPlayer.isSpoutCraftEnabled()) {
             SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer)); //Setup Party HUD stuff
             Users.getProfile(sPlayer).toggleSpoutEnabled();
+            sPlayer.setTitle(String.valueOf(m.getPowerLevel(sPlayer, Users.getProfile(sPlayer))));
         }
     }
 }

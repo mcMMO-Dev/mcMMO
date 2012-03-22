@@ -301,8 +301,8 @@ public class mcMMO extends JavaPlugin {
     public void onDisable() {
 
         //Make sure to save player information if the server shuts down
-        for (Player x : Bukkit.getOnlinePlayers()) {
-            Users.getProfile(x).save();
+        for (PlayerProfile x : Users.getProfiles().values()) {
+            x.save();
         }
 
         Bukkit.getServer().getScheduler().cancelTasks(this); //This removes our tasks
