@@ -125,7 +125,7 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getOfflineProfile(String playerName) {
-        return new PlayerProfile(playerName.toLowerCase(), false);
+        return new PlayerProfile(playerName, false);
     }
 
     /**
