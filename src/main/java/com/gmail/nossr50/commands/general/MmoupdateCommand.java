@@ -8,9 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.runnables.SQLConversionTask;
 
 public class MmoupdateCommand implements CommandExecutor {
 	@Override
@@ -28,7 +29,7 @@ public class MmoupdateCommand implements CommandExecutor {
 		}
 		player.sendMessage(ChatColor.GRAY + "Starting conversion...");
 		Users.clearUsers();
-		m.convertToMySQL();
+		convertToMySQL();
 		for (Player x : Bukkit.getServer().getOnlinePlayers()) {
 			Users.addUser(x);
 		}
@@ -36,4 +37,15 @@ public class MmoupdateCommand implements CommandExecutor {
 
 		return true;
 	}
+	
+	/**
+     * Convert FlatFile data to MySQL data.
+     */
+    private void convertToMySQL() {
+        if (!LoadProperties.useMySQL) {
+            return;
+        }
+
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(Bukkit.getPluginManager().getPlugin("mcMMO"), new SQLConversionTask(), 1);
+    }
 }

@@ -266,17 +266,6 @@ public class m {
     }
 
     /**
-     * Convert FlatFile data to MySQL data.
-     */
-    public static void convertToMySQL() {
-        if (!LoadProperties.useMySQL) {
-            return;
-        }
-
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(Bukkit.getPluginManager().getPlugin("mcMMO"), new SQLConversionTask(), 1);
-    }
-
-    /**
      * Check if a skill level is higher than the max bonus level of the ability.
      *
      * @param skillLevel Skill level to check
