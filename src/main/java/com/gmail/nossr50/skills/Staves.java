@@ -120,7 +120,6 @@ public class Staves {
             duration = (TICKS_PER_SECOND * MAX_SPEED_DURATION_SECONDS);
         }
 
-        shooter.setLevel(shooter.getLevel() - 2);
         target.addPotionEffect(new PotionEffect(type, duration, amplifier));
 
         if (type.equals(PotionEffectType.SLOW)) {
