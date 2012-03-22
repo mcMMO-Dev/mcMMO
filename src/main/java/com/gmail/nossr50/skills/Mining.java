@@ -248,7 +248,7 @@ public class Mining
         case NETHERRACK:
         case SANDSTONE:
         case STONE:
-            if (!block.hasMetadata("mcmmoPlacedBlock")) {
+            if (block.hasMetadata("mcmmoPlacedBlock")) {
                 return;
             }
 
