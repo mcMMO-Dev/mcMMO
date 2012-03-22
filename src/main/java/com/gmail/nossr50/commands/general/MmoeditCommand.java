@@ -53,7 +53,7 @@ public class MmoeditCommand implements CommandExecutor {
 				{
 					int newvalue = Integer.valueOf(args[2]);
 					Users.getOfflineProfile(args[0]).modifyskill(Skills.getSkillType(args[1]), newvalue);
-					System.out.println(args[1] + " has been modified for " + plugin.getServer().getPlayer(args[0]).getName() + ".");
+					System.out.println(args[1] + " has been modified for " + args[0] + ".");
 				}
 			} else 
 			{
