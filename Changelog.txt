@@ -15,6 +15,8 @@ Version 2.0.00-dev
  + Added 'mcmmo.repair.arcanebypass' permission node to bypass Arcane Repair and keep your enchantments
  + Added config option to disable Herbalism's instant wheat replanting
  + Added LOTS of new permissions nodes. *CHECK PLUGIN.YML FOR UPDATES*
+ + Added Italian locale file - thanks Luxius96!
+ + Added ability to inspect Ocelots with Beast Lore
  = Fixed Green Terra not awarding Triple Drops
  = Fixed ClassCastException from Taming preventDamage checks
  = Fixed issue with Blast Mining not seeing TNT for detonation due to snow

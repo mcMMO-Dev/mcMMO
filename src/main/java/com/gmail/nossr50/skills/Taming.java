@@ -101,13 +101,13 @@ public class Taming {
     }
 
     /**
-     * Get the name of a wolf's owner.
+     * Get the name of a tameable animal's owner.
      *
-     * @param theWolf The wolf whose owner's name to get
-     * @return the name of the wolf's owner, or "Offline Master" if the owner is offline
+     * @param beast The animal whose owner's name to get
+     * @return the name of the animal's owner, or "Offline Master" if the owner is offline
      */
-    private static String getOwnerName(Wolf theWolf) {
-        AnimalTamer tamer = theWolf.getOwner();
+    private static String getOwnerName(Tameable beast) {
+        AnimalTamer tamer = beast.getOwner();
 
         if (tamer instanceof Player) {
             Player owner = (Player) tamer;
@@ -225,10 +225,20 @@ public class Taming {
             if (item.getAmount() >= summonAmount) {
                 for (Entity x : player.getNearbyEntities(40, 40, 40)) {
                     if (x.getType().equals(type)) {
-                        player.sendMessage(mcLocale.getString("m.TamingSummonFailed"));
-                        return;
+                        switch (type) {
+                        case WOLF:
+                            player.sendMessage(mcLocale.getString("m.TamingSummonWolfFailed"));
+                            return;
+
+                        case OCELOT:
+                            player.sendMessage(mcLocale.getString("m.TamingSummonOcelotFailed"));
+                            return;
+
+                        default:
+                            return;
+                        }
                     }
-                }
+                }   
                 LivingEntity entity = player.getWorld().spawnCreature(player.getLocation(), type);
                 entity.setMetadata("mcmmoSummoned", new FixedMetadataValue(plugin, true));
                 ((Tameable) entity).setOwner(player);
@@ -243,29 +253,25 @@ public class Taming {
     }
 
     /**
-     * Inspect a tamed animal for details.
+     * Inspect a tameable animal for details.
      *
-     * @param event
-     * @param target
+     * @param event Event to modify
+     * @param target Animal to inspect
+     * @param inspector Player inspecting the animal
      */
-    public static void beastLore(EntityDamageByEntityEvent event, LivingEntity target, Player attacker) {
-
-        //TODO: Make this work for Ocelots
-        if (target.getType().equals(EntityType.WOLF)) {
-            Wolf wolf = (Wolf) target;
+    public static void beastLore(EntityDamageByEntityEvent event, LivingEntity target, Player inspector) {
+        if (target instanceof Tameable) {
+            Tameable beast = (Tameable) target;
             String message = mcLocale.getString("Combat.BeastLore") + " ";
-            int health = wolf.getHealth();
+            int health = target.getHealth();
             event.setCancelled(true);
 
-            if (wolf.isTamed()) {
-                message = message.concat(mcLocale.getString("Combat.BeastLoreOwner", new Object[] {getOwnerName(wolf)}) + " ");
-                message = message.concat(mcLocale.getString("Combat.BeastLoreHealthWolfTamed", new Object[] {health}));
-            }
-            else {
-                message = message.concat(mcLocale.getString("Combat.BeastLoreHealthWolf", new Object[] {health}));
+            if (beast.isTamed()) {
+                message = message.concat(mcLocale.getString("Combat.BeastLoreOwner", new Object[] {getOwnerName(beast)}) + " ");
             }
 
-            attacker.sendMessage(message);
+            message = message.concat(mcLocale.getString("Combat.BeastLoreHealth", new Object[] {health, target.getMaxHealth()}));
+            inspector.sendMessage(message);
         }
     }
 }
