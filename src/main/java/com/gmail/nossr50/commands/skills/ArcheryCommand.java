@@ -59,7 +59,7 @@ public class ArcheryCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.ArcheryRetrieveChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.ArcheryIgnitionLength", new Object[] { (ignition / 20) }));
 		
-		Page.grabGuidePageForSkill(SkillType.AXES, player, args);
+		Page.grabGuidePageForSkill(SkillType.ARCHERY, player, args);
 
 		return true;
 	}
