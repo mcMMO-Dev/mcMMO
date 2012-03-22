@@ -31,6 +31,7 @@ Version 1.3.03-dev
  = Fixed exploit where falling sand & gravel weren't tracked
  = Fixed exploit where Acrobatics could be leveled via Dodge on party members.
  = Fixed exploit where you could gain combat XP on animals summoned by Call of the Wild
+ ! Changed mcMMO to save profiles only when the profile is about to be discarded rather than on player quit
  ! Changed MySQL to try to reconnect every 60 seconds rather than infinitely which caused server hangs
  ! Changed mcMMO to be better about saving player information on server shutdown
  ! Changed PTP to prevent teleporting if you've been hurt in the last 30 seconds (configurable)

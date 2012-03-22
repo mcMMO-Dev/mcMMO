@@ -13,6 +13,7 @@ public class RemoveProfileFromMemoryTask implements Runnable {
 
 	@Override
 	public void run() {
-		Users.removeUser(player);
+	    Users.getProfile(player.getName()).save(); //We save here so players don't quit/reconnect to cause lag
+		Users.removeUserByName(player.getName());
 	}
 }

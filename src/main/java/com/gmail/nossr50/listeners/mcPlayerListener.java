@@ -149,9 +149,6 @@ public class mcPlayerListener implements Listener {
             Combat.dealDamage(player, PP.getBleedTicks()*2);
         }
 
-        //Save PlayerData to MySQL/FlatFile on player quit
-        PP.save();
-
         //Schedule PlayerProfile removal 2 minutes after quitting
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player), 2400);
     }
