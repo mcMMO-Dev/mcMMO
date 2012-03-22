@@ -17,6 +17,7 @@ Version 1.3.03-dev
  + Added LOTS of new permissions nodes. *CHECK PLUGIN.YML FOR UPDATES*
  + Added Italian locale file - thanks Luxius96!
  + Added ability to inspect Ocelots with Beast Lore
+ + Added console functionality to mctop
  = Fixed Green Terra not awarding Triple Drops
  = Fixed ClassCastException from Taming preventDamage checks
  = Fixed issue with Blast Mining not seeing TNT for detonation due to snow
