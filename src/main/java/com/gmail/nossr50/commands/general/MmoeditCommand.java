@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.general;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,18 +8,12 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
 public class MmoeditCommand implements CommandExecutor {
-	private final mcMMO plugin;
-
-	public MmoeditCommand(mcMMO instance) {
-		this.plugin = instance;
-	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
