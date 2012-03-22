@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -164,12 +165,23 @@ public class mcEntityListener implements Listener {
      *
      * @param event The event to monitor
      */
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.LOW)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         SpawnReason reason = event.getSpawnReason();
 
         if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !LoadProperties.xpGainsMobSpawners) {
             event.getEntity().setMetadata("mcmmoFromMobSpawner", new FixedMetadataValue(plugin, true));
+        }
+        else if (event.getSpawnReason().equals(SpawnReason.EGG)) {
+            Location eLoc = event.getLocation();
+
+            for (Entity projectile : plugin.projectileTracker) {
+                Location pLoc = projectile.getLocation();
+
+                if (pLoc.getX() == eLoc.getX() && pLoc.getY() == eLoc.getY() && pLoc.getZ() == eLoc.getZ()) {
+                        event.setCancelled(true);
+                }
+            }
         }
     }
 
@@ -320,25 +332,13 @@ public class mcEntityListener implements Listener {
     /**
      * Monitor ProjectileHit events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onProjectileHit(ProjectileHitEvent event) {
-        if (!event.getEntity().hasMetadata("mcmmoFiredFromStaff")) {
-            return;
-        }
-
-        switch (event.getEntityType()) {
-        case EGG:
-            break;
-
-        case FIREBALL:
-            break;
-
-        case SNOWBALL:
-            break;
-
-        default:
-            break;
+        Entity projectile = event.getEntity();
+        if (plugin.projectileTracker.contains(projectile)) {
+            plugin.projectileTracker.remove(projectile);
         }
     }
 }

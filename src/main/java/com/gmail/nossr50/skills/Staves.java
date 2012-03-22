@@ -59,7 +59,7 @@ public class Staves {
      * @param plugin mcMMO plugin instance
      */
     public static void altFire(Material type, Player attacker, mcMMO plugin) {
-        Projectile projectile = null;
+        Projectile projectile;
 
         switch (type) {
         case BLAZE_ROD:
@@ -75,9 +75,10 @@ public class Staves {
             break;
 
         default:
-            break;
+            return;
         }
 
+        plugin.projectileTracker.add(projectile);
         projectile.setMetadata("mcmmoFiredFromStaff", new FixedMetadataValue(plugin, true));
     }
 
@@ -119,6 +120,7 @@ public class Staves {
             duration = (TICKS_PER_SECOND * MAX_SPEED_DURATION_SECONDS);
         }
 
+        shooter.setLevel(shooter.getLevel() - 2);
         target.addPotionEffect(new PotionEffect(type, duration, amplifier));
 
         if (type.equals(PotionEffectType.SLOW)) {
