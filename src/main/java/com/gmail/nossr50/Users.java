@@ -15,7 +15,7 @@ public class Users {
     String directory = "plugins/mcMMO/FlatFileStuff/";
     String directoryb = "plugins/mcMMO/FlatFileStuff/Leaderboards/";
 
-    public static HashMap<Player, PlayerProfile> players = new HashMap<Player, PlayerProfile>();
+    public static HashMap<String, PlayerProfile> players = new HashMap<String, PlayerProfile>();
 
     /**
      * Load users.
@@ -42,8 +42,8 @@ public class Users {
      * @param player The player to create a user record for
      */
     public static void addUser(Player player) {
-        if (!players.containsKey(player)) {
-            players.put(player, new PlayerProfile(player.getName()));
+        if (!players.containsKey(player.getName().toLowerCase())) {
+            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName().toLowerCase()));
         }
     }
 
@@ -59,7 +59,7 @@ public class Users {
      *
      * @return a HashMap containing the PlayerProfile of everyone in the database
      */
-    public static HashMap<Player, PlayerProfile> getProfiles() {
+    public static HashMap<String, PlayerProfile> getProfiles() {
         return players;
     }
 
@@ -71,9 +71,9 @@ public class Users {
     public static void removeUser(Player player) {
 
         //Only remove PlayerProfile if user is offline and we have it in memory
-        if (!player.isOnline() && players.containsKey(player)) {
-            players.get(player).save();
-            players.remove(player);
+        if (!player.isOnline() && players.containsKey(player.getName().toLowerCase())) {
+            players.get(player.getName().toLowerCase()).save();
+            players.remove(player.getName().toLowerCase());
         }
     }
 
@@ -83,17 +83,7 @@ public class Users {
      * @param playerName The name of the player to remove
      */
     public static void removeUserByName(String playerName) {
-        Player target = null;
-
-        for (Player player : players.keySet()) {
-            PlayerProfile PP = players.get(player);
-
-            if (PP.getPlayerName().equals(playerName)) {
-                target = player;
-            }
-        }
-
-        players.remove(target);
+        players.remove(playerName.toLowerCase());
     }
 
     /**
@@ -103,12 +93,28 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfile(Player player) {
-        if(players.get(player) != null) {
-            return players.get(player);
+        if(players.get(player.getName().toLowerCase()) != null) {
+            return players.get(player.getName().toLowerCase());
         }
         else {
-            players.put(player, new PlayerProfile(player.getName()));
-            return players.get(player);
+            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName().toLowerCase()));
+            return players.get(player.getName().toLowerCase());
+        }
+    }
+    
+    /**
+     * Get the profile of an online player.
+     *
+     * @param player The player whose profile to retrieve
+     * @return the player's profile
+     */
+    public static PlayerProfile getProfile(String playerName) {
+        if(players.get(playerName.toLowerCase()) != null) {
+            return players.get(playerName.toLowerCase());
+        }
+        else {
+            players.put(playerName.toLowerCase(), new PlayerProfile(playerName.toLowerCase()));
+            return players.get(playerName.toLowerCase());
         }
     }
 
@@ -119,7 +125,7 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getOfflineProfile(String playerName) {
-        return new PlayerProfile(playerName, false);
+        return new PlayerProfile(playerName.toLowerCase(), false);
     }
 
     /**

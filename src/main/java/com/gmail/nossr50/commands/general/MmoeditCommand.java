@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.general;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,7 +43,15 @@ public class MmoeditCommand implements CommandExecutor {
 				return true;
 			} else if (args.length == 3)
 			{
-			    PlayerProfile PPt = Users.getOfflineProfile(args[0]);
+			    PlayerProfile PPt = null;
+			    
+			    if(Users.players.containsKey(args[0].toLowerCase())) {
+			        PPt = Users.players.get(args[0].toLowerCase());
+			    }
+			    
+			    if(PPt == null)
+			        Users.getOfflineProfile(args[0]); //Only grab offline profile if the above failed
+			        
 			    if(!PPt.isLoaded())
 		        {
 		            sender.sendMessage("Player does not exist in the database!");
@@ -76,7 +85,15 @@ public class MmoeditCommand implements CommandExecutor {
 		}
 		if (args.length == 3) 
 		{
-		    PlayerProfile PPt = Users.getOfflineProfile(args[0]);
+		    PlayerProfile PPt = null;
+            
+            if(Users.players.containsKey(args[0].toLowerCase())) {
+                PPt = Users.players.get(args[0].toLowerCase());
+            }
+            
+            if(PPt == null)
+                Users.getOfflineProfile(args[0]); //Only grab offline profile if the above failed
+            
 		    if(!PPt.isLoaded())
 	        {
 	            sender.sendMessage("Player does not exist in the database!");
@@ -86,7 +103,7 @@ public class MmoeditCommand implements CommandExecutor {
 			if (m.isInt(args[2]) && Skills.isSkill(args[1])) 
 			{
 				int newvalue = Integer.valueOf(args[2]);
-				Users.getOfflineProfile(args[0]).modifyskill(Skills.getSkillType(args[1]), newvalue);
+				PPt.modifyskill(Skills.getSkillType(args[1]), newvalue);
 				player.sendMessage(ChatColor.RED + args[1] + " has been modified for "+args[0]);
 			}
 		} else if (args.length == 2) 
