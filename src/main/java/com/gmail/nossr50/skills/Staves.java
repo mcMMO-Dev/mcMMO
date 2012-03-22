@@ -61,6 +61,10 @@ public class Staves {
     public static void altFire(Material type, Player attacker, mcMMO plugin) {
         Projectile projectile;
 
+        if (attacker.getItemInHand().getAmount() > 1) {
+            return;
+        }
+
         switch (type) {
         case BLAZE_ROD:
             projectile = attacker.launchProjectile(Fireball.class);
