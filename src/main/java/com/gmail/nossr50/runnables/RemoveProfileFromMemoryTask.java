@@ -15,8 +15,8 @@ public class RemoveProfileFromMemoryTask implements Runnable {
 	public void run() {
 	    //Check if the profile still exists (stuff like MySQL reconnection removes profiles)
 	    if(Users.players.containsKey(player.getName().toLowerCase())) {
-    	    Users.getProfile(player.getName()).save(); //We save here so players don't quit/reconnect to cause lag
-    	    Users.removeUserByName(player.getName());
+	        Users.getProfile(player.getName()).save(); //We save here so players don't quit/reconnect to cause lag
+	        Users.removeUserByName(player.getName());
 	    }
 	}
 }
