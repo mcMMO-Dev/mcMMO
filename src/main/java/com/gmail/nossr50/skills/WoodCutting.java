@@ -266,7 +266,7 @@ public class WoodCutting {
         int xp = 0;
         TreeSpecies species = TreeSpecies.getByData(block.getData());
 
-        if (block.hasMetadata("mcmmpPlacedBlock")) {
+        if (block.hasMetadata("mcmmoPlacedBlock")) {
             return;
         }
 
