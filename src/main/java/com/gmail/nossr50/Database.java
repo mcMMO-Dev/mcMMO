@@ -256,9 +256,8 @@ public class Database {
                     if (!isConnected()) {
                         connect();
                         if(isConnected()) {
-                            //Save/Remove all profiles
                             for(PlayerProfile x : Users.players.values()) {
-                                x.save();
+                                x.save(); //Save all profiles
                             }
                             Users.players.clear(); //Clear the profiles
                             for(Player x : Bukkit.getOnlinePlayers()) {
