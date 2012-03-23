@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.DatabaseUpdate;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Database {
 
@@ -253,6 +255,16 @@ public class Database {
                 public void run() {
                     if (!isConnected()) {
                         connect();
+                        if(isConnected()) {
+                            //Save/Remove all profiles
+                            for(PlayerProfile x : Users.players.values()) {
+                                x.save();
+                            }
+                            Users.players.clear(); //Clear the profiles
+                            for(Player x : Bukkit.getOnlinePlayers()) {
+                                Users.addUser(x); //Add in new profiles, forcing them to 'load' again from MySQL
+                            }
+                        }
                     }
                 }
             }, 20*60);
