@@ -9,6 +9,7 @@ Key:
   
 Version 1.3.04-dev
  = Fixed Shake ability dropping bonemeal instead of ink for squids.
+ = Fixed Green Terra & Super Breaker awarding 4x drops at high levels.
  ! Changed MySQL to reload all player information on reconnection
  
 Version 1.3.03

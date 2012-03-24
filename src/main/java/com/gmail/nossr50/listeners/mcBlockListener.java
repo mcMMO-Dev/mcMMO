@@ -179,7 +179,6 @@ public class mcBlockListener implements Listener {
         /* Triple drops */
         if (PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(mat)) {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
-            Herbalism.herbalismProcCheck(block, player, event, plugin); //Called twice for triple drop functionality
         }
 
         if (mcPermissions.getInstance().herbalismDoubleDrops(player) && Herbalism.canBeGreenTerra(mat)) {

@@ -165,7 +165,7 @@ public class Mining
 
             int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 
-            if ((MAX_BONUS_LEVEL > 1000 || (Math.random() * 1000 <= skillLevel)) && mcPermissions.getInstance().miningDoubleDrops(player)) {
+            if ((skillLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= skillLevel)) && mcPermissions.getInstance().miningDoubleDrops(player)) {
                 if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
                     m.mcDropItem(block.getLocation(), new ItemStack(block.getType()));
                 }
@@ -255,7 +255,6 @@ public class Mining
             Bukkit.getPluginManager().callEvent(armswing);
             Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
 
-            miningBlockCheck(player, block);
             miningBlockCheck(player, block);
 
             if (LoadProperties.spoutEnabled) {
