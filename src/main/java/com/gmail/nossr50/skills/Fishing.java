@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -315,7 +314,7 @@ public class Fishing {
             break;
 
         case SQUID:
-            m.mcDropItem(loc, new ItemStack(Material.INK_SACK, 1, (short) 0, DyeColor.BLACK.getData()));
+            m.mcDropItem(loc, new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x0));
             break;
 
         case ZOMBIE:
