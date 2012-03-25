@@ -97,17 +97,8 @@ public class mcBlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        Block block;
+        Block block = event.getBlock();
         Player player = event.getPlayer();
-
-        //When blocks are placed on snow this event reports the wrong block.
-        if (event.getBlockReplacedState() != null && event.getBlockReplacedState().getType().equals(Material.SNOW)) {
-            block = event.getBlockAgainst();
-        }
-        else {
-            block = event.getBlock();
-        }
-
         int id = block.getTypeId();
         Material mat = block.getType();
 
