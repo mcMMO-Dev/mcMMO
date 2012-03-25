@@ -14,9 +14,11 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.skills.Excavation;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Mining;
+import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.WoodCutting;
 import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.events.FakeBlockBreakEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.CropState;
@@ -36,12 +38,9 @@ import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
 
-import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.events.FakeBlockBreakEvent;
+
 
 public class mcBlockListener implements Listener {
     private final mcMMO plugin;
@@ -109,7 +108,7 @@ public class mcBlockListener implements Listener {
                     continue;
                 }
                 else {
-                    Block newLocation = block.getRelative(0, y+1, 0);
+                    Block newLocation = block.getRelative(0, y + 1, 0);
                     newLocation.setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
                     break;
                 }
@@ -122,22 +121,7 @@ public class mcBlockListener implements Listener {
         }
 
         if (id == LoadProperties.anvilID && LoadProperties.anvilmessages) {
-            PlayerProfile PP = Users.getProfile(player);
-
-            if (!PP.getPlacedAnvil()) {
-                if (LoadProperties.spoutEnabled) {
-                    SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-
-                    if (sPlayer.isSpoutCraftEnabled()) {
-                        sPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.getMaterial(id));
-                    }
-                }
-                else {
-                    event.getPlayer().sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil"));
-                }
-
-                PP.togglePlacedAnvil();
-            }
+            Repair.placedAnvilCheck(player, id);
         }
     }
 
@@ -154,7 +138,7 @@ public class mcBlockListener implements Listener {
         Material mat = block.getType();
         ItemStack inhand = player.getItemInHand();
 
-        if(event instanceof FakeBlockBreakEvent) {
+        if (event instanceof FakeBlockBreakEvent) {
             return;
         }
 

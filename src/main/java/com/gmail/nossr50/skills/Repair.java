@@ -9,6 +9,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
@@ -433,5 +435,30 @@ public class Repair {
         }
 
         is.setDurability(getRepairAmount(is, player));
+    }
+
+    /**
+     * Handles notifications for placing an anvil.
+     *
+     * @param player The player placing the anvil
+     * @param anvilID The item ID of the anvil block
+     */
+    public static void placedAnvilCheck(Player player, int anvilID) {
+        PlayerProfile PP = Users.getProfile(player);
+
+        if (!PP.getPlacedAnvil()) {
+            if (LoadProperties.spoutEnabled) {
+                SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+
+                if (sPlayer.isSpoutCraftEnabled()) {
+                    sPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.getMaterial(anvilID)); //TODO: Use Locale
+                }
+            }
+            else {
+                player.sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil"));
+            }
+
+            PP.togglePlacedAnvil();
+        }
     }
 }
