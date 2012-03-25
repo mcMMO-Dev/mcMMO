@@ -18,6 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.runnables.mcBleedTimer;
 
 public class Staves {
 
@@ -79,78 +80,146 @@ public class Staves {
     }
 
     /**
-     * Handle the effects of the Bone's projectile.
+     * Handle the effects of the Bone's direct hit.
      *
-     * @param target Entity hit by the projectile
-     * @param shooter Player who fired the projectile
+     * @param defender The defending player
+     * @param attacker The attacking player
      */
-    private static void snowballEffect(Player target, Player shooter) {
+    public static void boneEffect(Player defender, Player attacker) {
         float xpLost = expLossCalculate();
         float xpGained = expGainCalculate();
 
-        float shooterXP = shooter.getExp();
-        float targetXP = target.getExp();
-        int shooterLevel = shooter.getLevel();
-        int targetLevel = target.getLevel();
+        float attackerXP = attacker.getExp();
+        float defenderXP = defender.getExp();
+        int attackerLevel = attacker.getLevel();
+        int defenderLevel = defender.getLevel();
 
-        if (Party.getInstance().inSameParty(target, shooter)) {
+        if (Party.getInstance().inSameParty(defender, attacker)) {
 
             //Drain XP
-            if (shooterXP - xpLost < 0f) {
-                if (shooterLevel != 0) {
-                    shooter.setLevel(shooterLevel - 1);
-                    shooter.setExp(1f - xpLost);
-                    shooter.sendMessage("You transfered some XP to your ally!"); //TODO: Use mcLocale
+            if (attackerXP - xpLost < 0f) {
+                if (attackerLevel != 0) {
+                    attacker.setLevel(attackerLevel - 1);
+                    attacker.setExp(1f - xpLost);
+                    attacker.sendMessage("You transfered some XP to your ally!"); //TODO: Use mcLocale
                 }
                 else {
-                    shooter.sendMessage("You don't have enough XP to transfer!"); //TODO: Use mcLocale
+                    attacker.sendMessage("You don't have enough XP to transfer!"); //TODO: Use mcLocale
                     return;
                 }
             }
             else {
-                shooter.setExp(shooterXP - xpLost);
-                shooter.sendMessage("You transfered some XP to your ally!"); //TODO: Use mcLocale
+                attacker.setExp(attackerXP - xpLost);
+                attacker.sendMessage("You transfered some XP to your ally!"); //TODO: Use mcLocale
             }
 
             //Reward XP
-            if (targetXP + xpGained >= 1f) {
-                target.setLevel(targetLevel + 1);
-                target.setExp(0f + xpGained);
-                target.sendMessage("You were given XP from your ally!"); //TODO: Use mcLocale
+            if (defenderXP + xpGained >= 1f) {
+                defender.setLevel(defenderLevel + 1);
+                defender.setExp(0f + xpGained);
+                defender.sendMessage("You were given XP from your ally!"); //TODO: Use mcLocale
             }
             else {
-                target.setExp(targetXP + xpGained);
-                target.sendMessage("You were given XP from your ally!"); //TODO: Use mcLocale
+                defender.setExp(defenderXP + xpGained);
+                defender.sendMessage("You were given XP from your ally!"); //TODO: Use mcLocale
             }
         }
         else {
 
             //Drain XP
-            if (targetXP - xpLost < 0f) {
-                if (targetLevel != 0) {
-                    target.setLevel(targetLevel - 1);
-                    target.setExp(1f - xpLost);
-                    target.sendMessage("You were drained of XP!"); //TODO: Use mcLocale
+            if (defenderXP - xpLost < 0f) {
+                if (defenderLevel != 0) {
+                    defender.setLevel(defenderLevel - 1);
+                    defender.setExp(1f - xpLost);
+                    defender.sendMessage("You were drained of XP!"); //TODO: Use mcLocale
                 }
                 else {
-                    shooter.sendMessage("Your enemy doesn't have enough XP to drain!"); //TODO: Use mcLocale
+                    attacker.sendMessage("Your enemy doesn't have enough XP to drain!"); //TODO: Use mcLocale
                     return;
                 }
             }
             else {
-                target.setExp(targetXP - xpLost);
-                target.sendMessage("You were drained of XP!"); //TODO: Use mcLocale
+                defender.setExp(defenderXP - xpLost);
+                defender.sendMessage("You were drained of XP!"); //TODO: Use mcLocale
             }
 
             //Reward XP
-            if (shooterXP + xpGained >= 1f) {
-                shooter.setLevel(shooterLevel + 1);
-                shooter.setExp(0f + xpGained);
-                shooter.sendMessage("You gained XP from your enemy!"); //TODO: Use mcLocale
+            if (attackerXP + xpGained >= 1f) {
+                attacker.setLevel(attackerLevel + 1);
+                attacker.setExp(0f + xpGained);
+                attacker.sendMessage("You gained XP from your enemy!"); //TODO: Use mcLocale
             }
             else {
-                shooter.setExp(shooterXP + xpGained);
-                shooter.sendMessage("You gained XP from your enemy!"); //TODO: Use mcLocale
+                attacker.setExp(attackerXP + xpGained);
+                attacker.sendMessage("You gained XP from your enemy!"); //TODO: Use mcLocale
+            }
+        }
+    }
+
+    /**
+     * Handle the effects of the Blaze Rod's direct hit.
+     *
+     * @param target The defending entity
+     * @param attacker The attacking player
+     */
+    public static void blazeRodEffect(LivingEntity target, Player attacker) {
+        if (target instanceof Player && Party.getInstance().inSameParty((Player) target, attacker)) {
+            target.setFireTicks(0);
+            mcBleedTimer.remove(target);
+
+            for (PotionEffect effect : target.getActivePotionEffects()) {
+                if (effect.getType().equals(PotionEffectType.POISON) || effect.getType().equals(PotionEffectType.WEAKNESS) || effect.getType().equals(PotionEffectType.SLOW)) {
+                    target.removePotionEffect(effect.getType());
+                }
+            }
+
+            attacker.sendMessage("Your ally was cured of all status effects!"); //TODO: Use locale
+            ((Player) target).sendMessage("You were cured of all status effects!"); //TODO: Use locale
+        }
+        else {
+            if (target.getFireTicks() + fireTicksCalculate() > target.getMaxFireTicks()) {
+                target.setFireTicks(target.getMaxFireTicks());
+            }
+            else {
+                target.setFireTicks(target.getFireTicks() + fireTicksCalculate());
+            }
+
+            attacker.sendMessage("You set your enemy on fire!"); //TODO: Use locale
+
+            if (target instanceof Player) {
+                ((Player) target).sendMessage("You were set on fire!"); //TODO: Use locale
+            }
+        }
+    }
+
+    /**
+     * Handle the effects of the Stick's direct hit.
+     *
+     * @param target The defending entity
+     * @param attacker The attacking player
+     */
+    public static void stickEffect(LivingEntity target, Player attacker) {
+        if (target instanceof Player && Party.getInstance().inSameParty((Player) target, attacker)) {
+            Player defender = (Player) target;
+            defender.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, amplifierCalulate()));
+
+            /* Do we WANT to heal food along with health? */
+            if (defender.getFoodLevel() + amplifierCalulate() > 20) {
+                defender.setFoodLevel(20);
+            }
+            else {
+                defender.setFoodLevel(defender.getFoodLevel() + amplifierCalulate());
+            }
+
+            attacker.sendMessage("Your ally was healed!"); //TODO: Use locale
+            defender.sendMessage("You were healed!"); //TODO: Use locale
+        }
+        else {
+            target.addPotionEffect(new PotionEffect(PotionEffectType.HARM, 1, amplifierCalulate()));
+
+            attacker.sendMessage("Your enemy was harmed!"); //TODO: Use locale
+            if (target instanceof Player) {
+                ((Player) target).sendMessage("You were harmed!"); //TODO: Use locale
             }
         }
     }
@@ -259,7 +328,7 @@ public class Staves {
             }
         }
         else if (potionType.equals(PotionEffectType.INCREASE_DAMAGE)) {
-            shooter.sendMessage("Your ally's was strengthened!"); //TODO: Use mcLocale
+            shooter.sendMessage("Your ally was strengthened!"); //TODO: Use mcLocale
             ((Player) target).sendMessage("You were strengthened!"); //TODO: Use mcLocale
         }
         else if (potionType.equals(PotionEffectType.POISON)) {
@@ -279,18 +348,26 @@ public class Staves {
         return 80;
     }
 
+
     private static int amplifierCalulate() {
         //TODO: Calculate amplifier based off skill level
         return 10;
     }
 
+
     private static float expLossCalculate() {
-        //TODO: Calculate exp lost based on time held
+        //TODO: Calculate exp lost based on skill level
         return 0.25f;
     }
+
 
     private static float expGainCalculate() {
         //TODO: Calculate exp gained based on skill level
         return 0.10f;
+    }
+
+    private static int fireTicksCalculate() {
+        //TODO: Calculate based on skill level
+        return 2;
     }
 }

@@ -30,6 +30,7 @@ import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.Archery;
 import com.gmail.nossr50.skills.Axes;
 import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.Staves;
 import com.gmail.nossr50.skills.Swords;
 import com.gmail.nossr50.skills.Taming;
 import com.gmail.nossr50.skills.Unarmed;
@@ -107,6 +108,18 @@ public class Combat {
             }
             else if (itemInHand.getType().equals(Material.BONE) && mcPermissions.getInstance().beastLore(attacker)) {
                 Taming.beastLore(event, target, attacker);
+            }
+            else if (itemInHand.getType().equals(Material.BONE)) {
+                event.setDamage(0);
+                Staves.boneEffect((Player) target, attacker);
+            }
+            else if (itemInHand.getType().equals(Material.BLAZE_ROD)) {
+                event.setDamage(0);
+                Staves.blazeRodEffect(target, attacker);
+            }
+            else if (itemInHand.getType().equals(Material.STICK)) {
+                event.setDamage(0);
+                Staves.stickEffect(target, attacker);
             }
             break;
 
