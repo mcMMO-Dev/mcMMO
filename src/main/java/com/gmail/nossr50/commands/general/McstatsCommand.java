@@ -25,7 +25,7 @@ public class McstatsCommand implements CommandExecutor {
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command does not support console useage.");
+            sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
             return true;
         }
 
@@ -38,7 +38,7 @@ public class McstatsCommand implements CommandExecutor {
 		ChatColor header = ChatColor.GOLD;
 
 		if (Skills.hasGatheringSkills(player)) {
-			player.sendMessage(header + "-=GATHERING SKILLS=-");
+			player.sendMessage(header + "-=GATHERING SKILLS=-"); //TODO: Needs more locale.
 			if (mcPermissions.getInstance().excavation(player))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.ExcavationSkill"), PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION)));
 			if (mcPermissions.getInstance().fishing(player))
@@ -51,7 +51,7 @@ public class McstatsCommand implements CommandExecutor {
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.WoodcuttingSkill"), PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING)));
 		}
 		if (Skills.hasCombatSkills(player)) {
-			player.sendMessage(header + "-=COMBAT SKILLS=-");
+			player.sendMessage(header + "-=COMBAT SKILLS=-"); //TODO: Needs more locale.
 			if (mcPermissions.getInstance().axes(player))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AxesSkill"), PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES)));
 			if (mcPermissions.getInstance().archery(player))
@@ -65,7 +65,7 @@ public class McstatsCommand implements CommandExecutor {
 		}
 
 		if (Skills.hasMiscSkills(player)) {
-			player.sendMessage(header + "-=MISC SKILLS=-");
+			player.sendMessage(header + "-=MISC SKILLS=-"); //TODO: Needs more locale.
 			if (mcPermissions.getInstance().acrobatics(player))
 				player.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS)));
 			if (mcPermissions.getInstance().repair(player))

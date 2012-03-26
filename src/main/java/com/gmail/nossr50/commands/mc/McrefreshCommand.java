@@ -23,7 +23,7 @@ public class McrefreshCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage.");
+			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
 			return true;
 		}
 
@@ -35,7 +35,7 @@ public class McrefreshCommand implements CommandExecutor {
 			return true;
 		}
 		if (args.length >= 1 && (plugin.getServer().getPlayer(args[0]) != null)) {
-			player.sendMessage("You have refreshed " + args[0] + "'s cooldowns!");
+			player.sendMessage("You have refreshed " + args[0] + "'s cooldowns!"); //TODO: Needs more locale.
 			player = plugin.getServer().getPlayer(args[0]);
 		}
 

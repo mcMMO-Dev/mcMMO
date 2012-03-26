@@ -29,13 +29,13 @@ public class AddlevelsCommand implements CommandExecutor{
         }
 		
         if (player != null && !mcPermissions.getInstance().mmoedit(player)) {
-			sender.sendMessage("This command requires permissions.");
+			sender.sendMessage("This command requires permissions."); //TODO: Needs more locale.
 			return true;
 		}
 
 		if (!(sender instanceof Player)) {
 			if (args.length < 2) {
-				System.out.println("Usage is /addlevels playername skillname levels");
+				System.out.println("Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
 				return true;
 			} else if (args.length == 3) {
 				if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
@@ -44,7 +44,7 @@ public class AddlevelsCommand implements CommandExecutor{
 					System.out.println(args[1] + " has been modified for " + plugin.getServer().getPlayer(args[0]).getName() + ".");
 				}
 			} else {
-				System.out.println("Usage is /addlevels playername skillname levels");
+				System.out.println("Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
 			}
 
 			return true;
@@ -57,23 +57,23 @@ public class AddlevelsCommand implements CommandExecutor{
 			return true;
 		}
 		if (args.length < 2) {
-			player.sendMessage(ChatColor.RED + "Usage is /addlevels playername skillname levels");
+			player.sendMessage(ChatColor.RED + "Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
 			return true;
 		}
 		if (args.length == 3) {
 			if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
 				int levels = Integer.valueOf(args[2]);
 				Users.getProfile(plugin.getServer().getPlayer(args[0])).addLevels(Skills.getSkillType(args[1]), levels);
-				player.sendMessage(ChatColor.RED + args[1] + " has been modified.");
+				player.sendMessage(ChatColor.RED + args[1] + " has been modified."); //TODO: Needs more locale.
 			}
 		} else if (args.length == 2) {
 			if (m.isInt(args[1]) && Skills.isSkill(args[0])) {
 				int levels = Integer.valueOf(args[1]);
 				PP.addLevels(Skills.getSkillType(args[0]), levels);
-				player.sendMessage(ChatColor.RED + args[0] + " has been modified.");
+				player.sendMessage(ChatColor.RED + args[0] + " has been modified."); //TODO: Needs more locale.
 			}
 		} else {
-			player.sendMessage(ChatColor.RED + "Usage is /addlevels playername skillname newvalue");
+			player.sendMessage(ChatColor.RED + "Usage is /addlevels playername skillname newvalue"); //TODO: Needs more locale.
 		}
 
 		return true;

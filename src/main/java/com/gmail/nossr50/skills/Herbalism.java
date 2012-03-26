@@ -38,7 +38,7 @@ public class Herbalism {
         Material type = block.getType();
 
         if (!hasSeeds) {
-            player.sendMessage("You need more seeds to spread Green Terra");
+            player.sendMessage("You need more seeds to spread Green Terra");  //TODO: Needs more locale.
         }
         else if (hasSeeds && !block.getType().equals(Material.WHEAT)) {
             inventory.removeItem(new ItemStack(Material.SEEDS));

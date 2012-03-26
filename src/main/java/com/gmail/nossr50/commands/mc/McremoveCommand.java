@@ -29,7 +29,7 @@ public class McremoveCommand implements CommandExecutor {
         
         if(args.length == 0)
         {
-            sender.sendMessage("Correct usage is /mcremove [Player Name]");
+            sender.sendMessage("Correct usage is /mcremove [Player Name]"); //TODO: Needs more locale.
             return true;
         }
         
@@ -66,7 +66,7 @@ public class McremoveCommand implements CommandExecutor {
             +LoadProperties.MySQLtablePrefix+"experience WHERE "
             +LoadProperties.MySQLtablePrefix+"experience.user_id="+userId);
 
-            sender.sendMessage("User "+playerName+" removed from MySQL DB!");
+            sender.sendMessage("User "+playerName+" removed from MySQL DB!"); //TODO: Needs more locale.
         } else {
             //FlatFile removal
             //TODO: Properly remove users from FlatFile, it's going to be a huge bitch with how our FlatFile system works. Let's adopt SQLite support.
@@ -76,13 +76,13 @@ public class McremoveCommand implements CommandExecutor {
                 if(targetPlayer.isOnline()) 
                 {
                     Users.getProfile(targetPlayer).resetAllData();
-                    sender.sendMessage("User "+playerName+" removed from FlatFile DB!");
+                    sender.sendMessage("User "+playerName+" removed from FlatFile DB!"); //TODO: Needs more locale.
                 } else {
-                    sender.sendMessage("[mcMMO] This command is not fully functional for FlatFile yet, the player needs to be online.");
+                    sender.sendMessage("[mcMMO] This command is not fully functional for FlatFile yet, the player needs to be online."); //TODO: Needs more locale.
                     return true;
                 }
             } else {
-                sender.sendMessage("[mcMMO] This command is not fully functional for FlatFile yet, the player needs to be online.");
+                sender.sendMessage("[mcMMO] This command is not fully functional for FlatFile yet, the player needs to be online."); //TODO: Needs more locale.
                 return true;
             }
         }
@@ -93,7 +93,7 @@ public class McremoveCommand implements CommandExecutor {
             Player targetPlayer = Bukkit.getServer().getPlayer(playerName);
             if(targetPlayer.isOnline())
             {
-                targetPlayer.kickPlayer("[mcMMO] Stats have been reset! Rejoin!");
+                targetPlayer.kickPlayer("[mcMMO] Stats have been reset! Rejoin!"); //TODO: Needs more locale.
                 Users.removeUserByName(playerName);
             } else {
                 Users.removeUser(targetPlayer);
@@ -102,7 +102,7 @@ public class McremoveCommand implements CommandExecutor {
             Users.removeUserByName(playerName);
         }
         
-        sender.sendMessage("[mcMMO] mcremove operation completed.");
+        sender.sendMessage("[mcMMO] mcremove operation completed."); //TODO: Needs more locale.
         
         return true;
     }

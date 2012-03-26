@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.events.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.Party;
@@ -17,8 +18,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 
-public class PlayerProfile
-{
+public class PlayerProfile {
     //HUD
     private HUDType hud;
     

@@ -40,8 +40,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import org.getspout.spoutapi.sound.SoundEffect;
 
-
-
 public class mcBlockListener implements Listener {
     private final mcMMO plugin;
 

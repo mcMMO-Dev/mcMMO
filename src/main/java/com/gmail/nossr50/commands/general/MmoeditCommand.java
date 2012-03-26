@@ -24,7 +24,7 @@ public class MmoeditCommand implements CommandExecutor {
         }
 		
         if (player != null && !mcPermissions.getInstance().mmoedit(player)) {
-			sender.sendMessage("This command requires permissions.");
+			sender.sendMessage("This command requires permissions."); //TODO: Needs more locale.
 			return true;
 		}
 
@@ -32,7 +32,7 @@ public class MmoeditCommand implements CommandExecutor {
 		{
 			if (args.length < 2) 
 			{
-				System.out.println("Usage is /mmoedit playername skillname newvalue");
+				System.out.println("Usage is /mmoedit playername skillname newvalue"); //TODO: Needs more locale.
 				return true;
 			} else if (args.length == 3)
 			{
@@ -47,7 +47,7 @@ public class MmoeditCommand implements CommandExecutor {
 			        
 			    if(!PPt.isLoaded())
 		        {
-		            sender.sendMessage("Player does not exist in the database!");
+		            sender.sendMessage("Player does not exist in the database!"); //TODO: Needs more locale.
 		            return true;
 		        }
 			    
@@ -55,11 +55,11 @@ public class MmoeditCommand implements CommandExecutor {
 				{
 					int newvalue = Integer.valueOf(args[2]);
 					Users.getOfflineProfile(args[0]).modifyskill(Skills.getSkillType(args[1]), newvalue);
-					System.out.println(args[1] + " has been modified for " + args[0] + ".");
+					System.out.println(args[1] + " has been modified for " + args[0] + "."); //TODO: Needs more locale.
 				}
 			} else 
 			{
-				System.out.println("Usage is /mmoedit playername skillname newvalue");
+				System.out.println("Usage is /mmoedit playername skillname newvalue"); //TODO: Needs more locale.
 			}
 
 			return true;
@@ -73,7 +73,7 @@ public class MmoeditCommand implements CommandExecutor {
 		
 		if (args.length < 2) 
 		{
-			player.sendMessage(ChatColor.RED + "Usage is /mmoedit playername skillname newvalue");
+			player.sendMessage(ChatColor.RED + "Usage is /mmoedit playername skillname newvalue"); //TODO: Needs more locale.
 			return true;
 		}
 		if (args.length == 3) 
@@ -89,7 +89,7 @@ public class MmoeditCommand implements CommandExecutor {
             
 		    if(!PPt.isLoaded())
 	        {
-	            sender.sendMessage("Player does not exist in the database!");
+	            sender.sendMessage("Player does not exist in the database!"); //TODO: Needs more locale.
 	            return true;
 	        }
 		    
@@ -97,7 +97,7 @@ public class MmoeditCommand implements CommandExecutor {
 			{
 				int newvalue = Integer.valueOf(args[2]);
 				PPt.modifyskill(Skills.getSkillType(args[1]), newvalue);
-				player.sendMessage(ChatColor.RED + args[1] + " has been modified for "+args[0]);
+				player.sendMessage(ChatColor.RED + args[1] + " has been modified for "+args[0]); //TODO: Needs more locale.
 			}
 		} else if (args.length == 2) 
 		{
@@ -106,11 +106,11 @@ public class MmoeditCommand implements CommandExecutor {
 			    PlayerProfile PP = Users.getProfile(player);
 				int newvalue = Integer.valueOf(args[1]);
 				PP.modifyskill(Skills.getSkillType(args[0]), newvalue);
-				player.sendMessage(ChatColor.RED + args[0] + " has been modified.");
+				player.sendMessage(ChatColor.RED + args[0] + " has been modified."); //TODO: Needs more locale.
 			}
 		} else 
 		{
-			player.sendMessage(ChatColor.RED + "Usage is /mmoedit playername skillname newvalue");
+			player.sendMessage(ChatColor.RED + "Usage is /mmoedit playername skillname newvalue"); //TODO: Needs more locale.
 		}
 
 		return true;

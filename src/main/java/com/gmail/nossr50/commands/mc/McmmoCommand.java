@@ -16,7 +16,7 @@ public class McmmoCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage.");
+			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
 			return true;
 		}
 
@@ -32,7 +32,7 @@ public class McmmoCommand implements CommandExecutor {
 		if (LoadProperties.spoutEnabled && player instanceof SpoutPlayer) {
 			SpoutPlayer sPlayer = (SpoutPlayer) player;
 			if (LoadProperties.donateMessage)
-				sPlayer.sendMessage(ChatColor.YELLOW + "[mcMMO]"+ChatColor.GOLD+" Donate! Paypal "+ChatColor.GREEN+"theno1yeti@gmail.com");
+				sPlayer.sendMessage(ChatColor.YELLOW + "[mcMMO]"+ChatColor.GOLD+" Donate! Paypal "+ChatColor.GREEN+"theno1yeti@gmail.com"); //Where'd our notification go?
 		} else {
 			if (LoadProperties.donateMessage)
 			    player.sendMessage(ChatColor.YELLOW + "[mcMMO]"+ChatColor.GOLD+" Donate! Paypal "+ChatColor.GREEN+"theno1yeti@gmail.com");

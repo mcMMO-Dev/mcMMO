@@ -139,8 +139,7 @@ public class Party {
         	if(newOwner != null && p != null){
         		if(inSameParty(newOwner, p))
         		{
-        			//TODO: Needs more locale.
-        			p.sendMessage(newOwner.getName()+" is the new party owner.");
+        			p.sendMessage(newOwner.getName()+" is the new party owner."); //TODO: Needs more locale
                 }
         	}
         }
@@ -205,19 +204,16 @@ public class Party {
     			{
 	    			if(password == null) 
 	    			{
-	    				//TODO: Needs more locale.
-	    				player.sendMessage("This party requires a password. Use /party <party> <password> to join it.");
+	    				player.sendMessage("This party requires a password. Use /party <party> <password> to join it."); //TODO: Needs more locale.
 	    				return;
 	    			} else if(!password.equalsIgnoreCase(getPartyPassword(newParty))) 
 	    			{
-	    				//TODO: Needs more locale.
-	    				player.sendMessage("Party password incorrect.");
+	    				player.sendMessage("Party password incorrect."); //TODO: Needs more locale.
 	    				return;
 	    			}
     			} else 
     			{
-    				//TODO: Needs more locale.
-    				player.sendMessage("Party is locked.");
+    				player.sendMessage("Party is locked."); //TODO: Needs more locale.
     				return;
     			}
     		}
@@ -319,13 +315,11 @@ public class Party {
     		if(playerKey.equalsIgnoreCase(playerName)) {
     			partyPlayers.get(partyName).put(playerName, true);
     			informPartyMembersOwnerChange(playerName);
-    			//TODO: Needs more locale.
-    			plugin.getServer().getPlayer(playerName).sendMessage("You are now the party owner.");
+    			plugin.getServer().getPlayer(playerName).sendMessage("You are now the party owner."); //TODO: Needs more locale.
     			continue;
     		}
     		if(partyPlayers.get(partyName).get(playerKey)) {
-    			//TODO: Needs more locale.
-    			plugin.getServer().getPlayer(playerKey).sendMessage("You are no longer party owner.");
+    			plugin.getServer().getPlayer(playerKey).sendMessage("You are no longer party owner."); //TODO: Needs more locale.
     			partyPlayers.get(partyName).put(playerKey, false);
     		}
     	}

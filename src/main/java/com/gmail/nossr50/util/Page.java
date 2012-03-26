@@ -60,7 +60,7 @@ public class Page {
     public static void grabGuidePageForSkill(SkillType skilltype, Player player, String[] args)
     {
         String capitalized = m.getCapitalized(skilltype.toString());
-        player.sendMessage(ChatColor.DARK_AQUA+"Guide for "+capitalized+" available type /"+skilltype.toString().toLowerCase()+" ? [Page#]");
+        player.sendMessage(ChatColor.DARK_AQUA+"Guide for "+capitalized+" available type /"+skilltype.toString().toLowerCase()+" ? [Page#]"); //TODO: Needs more locale.
         if (args.length >= 1)
         {
             if(args[0].equals("?"))
@@ -85,16 +85,16 @@ public class Page {
                 }
                 else if(args.length > 1 && m.getInt(args[1]) > Page.getTotalPageNumber(address)) 
                 {
-                    player.sendMessage("That page doesn't exist, there are only "+Page.getTotalPageNumber(address)+" total pages");
+                    player.sendMessage("That page doesn't exist, there are only "+Page.getTotalPageNumber(address)+" total pages"); //TODO: Needs more locale.
                 }
                 else if(args.length > 1 && !m.isInt(args[1]))
                 {
-                    player.sendMessage("Not a valid page number!");
+                    player.sendMessage("Not a valid page number!"); //TODO: Needs more locale.
                 }
             }
             else
             {
-                player.sendMessage(ChatColor.RED + "Usage is /"+skilltype.toString().toLowerCase()+" ? [page]");
+                player.sendMessage(ChatColor.RED + "Usage is /"+skilltype.toString().toLowerCase()+" ? [page]"); //TODO: Needs more locale.
             }
         }
     }

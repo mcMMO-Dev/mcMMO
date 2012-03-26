@@ -25,7 +25,7 @@ public class McabilityCommand implements CommandExecutor {
 		}
 
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage.");
+			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
 			return true;
 		}
 

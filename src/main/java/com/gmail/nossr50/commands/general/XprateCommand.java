@@ -60,11 +60,11 @@ public class XprateCommand implements CommandExecutor {
 				if(xpevent = true)
 					for(Player x : Bukkit.getServer().getOnlinePlayers())
 					{
-						x.sendMessage(ChatColor.GOLD+"XP EVENT FOR mcMMO HAS STARTED!");
-						x.sendMessage(ChatColor.GOLD+"mcMMO XP RATE IS NOW "+LoadProperties.xpGainMultiplier+"x!!");
+						x.sendMessage(ChatColor.GOLD+"XP EVENT FOR mcMMO HAS STARTED!"); //TODO: Needs more locale.
+						x.sendMessage(ChatColor.GOLD+"mcMMO XP RATE IS NOW "+LoadProperties.xpGainMultiplier+"x!!"); //TODO: Needs more locale.
 					}
 				
-				System.out.println("The XP RATE was modified to "+LoadProperties.xpGainMultiplier);
+				System.out.println("The XP RATE was modified to "+LoadProperties.xpGainMultiplier); //TODO: Needs more locale.
 			}
 			
 			return true;

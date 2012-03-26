@@ -25,7 +25,7 @@ public class PtpCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage.");
+			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
 			return true;
 		}
 
@@ -39,23 +39,23 @@ public class PtpCommand implements CommandExecutor {
 		
 		if(!Party.getInstance().isParty(PP.getParty()))
 		{
-		    player.sendMessage(ChatColor.RED+"You are not in a party!");
+		    player.sendMessage(ChatColor.RED+"You are not in a party!"); //TODO: Needs more locale.
 		    return true;
 		}
 		
 		if(PP.getRecentlyHurt()+(LoadProperties.ptpCommandCooldown*1000) > System.currentTimeMillis())
 		{
-		    player.sendMessage(ChatColor.RED+"You've been hurt in the last " + LoadProperties.ptpCommandCooldown + " seconds and cannnot teleport.");
+		    player.sendMessage(ChatColor.RED+"You've been hurt in the last " + LoadProperties.ptpCommandCooldown + " seconds and cannnot teleport."); //TODO: Needs more locale.
 		    return true;
 		}
 		
 		if (args.length < 1) {
-			player.sendMessage(ChatColor.RED + "Usage is /ptp <playername>");
+			player.sendMessage(ChatColor.RED + "Usage is /ptp <playername>"); //TODO: Needs more locale.
 			return true;
 		}
 		
 		if (plugin.getServer().getPlayer(args[0]) == null) {
-			player.sendMessage("That is not a valid player");
+			player.sendMessage("That is not a valid player"); //TODO: Needs more locale.
 		}
 
 		if (plugin.getServer().getPlayer(args[0]) != null) {
@@ -63,10 +63,10 @@ public class PtpCommand implements CommandExecutor {
 			PlayerProfile PPt = Users.getProfile(target);
 			if (PP.getParty().equals(PPt.getParty())) {
 				player.teleport(target);
-				player.sendMessage(ChatColor.GREEN + "You have teleported to " + target.getName());
-				target.sendMessage(ChatColor.GREEN + player.getName() + " has teleported to you.");
+				player.sendMessage(ChatColor.GREEN + "You have teleported to " + target.getName()); //TODO: Needs more locale.
+				target.sendMessage(ChatColor.GREEN + player.getName() + " has teleported to you."); //TODO: Needs more locale.
 			} else {
-			    player.sendMessage(ChatColor.RED + "That player is in a different party than you.");
+			    player.sendMessage(ChatColor.RED + "That player is in a different party than you."); //TODO: Needs more locale.
 			}
 		}
 

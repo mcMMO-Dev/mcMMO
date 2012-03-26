@@ -17,7 +17,7 @@ public class MmoupdateCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage.");
+			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
 			return true;
 		}
 
@@ -27,13 +27,13 @@ public class MmoupdateCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
 			return true;
 		}
-		player.sendMessage(ChatColor.GRAY + "Starting conversion...");
+		player.sendMessage(ChatColor.GRAY + "Starting conversion..."); //TODO: Needs more locale.
 		Users.clearUsers();
 		convertToMySQL();
 		for (Player x : Bukkit.getServer().getOnlinePlayers()) {
 			Users.addUser(x);
 		}
-		player.sendMessage(ChatColor.GREEN + "Conversion finished!");
+		player.sendMessage(ChatColor.GREEN + "Conversion finished!"); //TODO: Needs more locale.
 
 		return true;
 	}

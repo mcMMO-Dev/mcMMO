@@ -20,7 +20,7 @@ public class MccCommand implements CommandExecutor {
 
 		Player player = (Player) sender;
 
-		player.sendMessage(ChatColor.RED + "---[]" + ChatColor.YELLOW + "mcMMO Commands" + ChatColor.RED + "[]---");
+		player.sendMessage(ChatColor.RED + "---[]" + ChatColor.YELLOW + "mcMMO Commands" + ChatColor.RED + "[]---"); //TODO: Needs more locale.
 
 		if (mcPermissions.getInstance().party(player)) {
 			player.sendMessage(mcLocale.getString("m.mccPartyCommands"));
