@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills;
 
+import java.util.Random;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -13,6 +15,8 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Unarmed {
+
+    private static Random random = new Random();
 
     /**
      * Apply bonus to Unarmed damage.
@@ -46,7 +50,7 @@ public class Unarmed {
         int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         if (defender.getItemInHand().getType().equals(Material.AIR)) {
-            if (Math.random() * 3000 <= skillCheck) {
+            if (random.nextInt(3000) <= skillCheck) {
                 ItemStack item = defender.getItemInHand();
 
                 defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
@@ -69,7 +73,7 @@ public class Unarmed {
         int skillLevel = Users.getProfile(defender).getSkillLevel(SkillType.UNARMED);
         int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        if (Math.random() * 2000 <= skillCheck && mcPermissions.getInstance().deflect(defender)) {
+        if (random.nextInt(2000) <= skillCheck && mcPermissions.getInstance().deflect(defender)) {
             event.setCancelled(true);
             defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect"));
         }

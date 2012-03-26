@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills;
 
+import java.util.Random;
+
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -17,6 +19,8 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class Axes {
+
+    private static Random random = new Random();
 
     /**
      * Apply bonus to damage done by axes.
@@ -72,7 +76,7 @@ public class Axes {
         int skillLevel = PPa.getSkillLevel(SkillType.AXES);
         int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        if (Math.random() * 2000 <= skillCheck && !entity.isDead()){
+        if (random.nextInt(2000) <= skillCheck && !entity.isDead()){
             int damage = event.getDamage();
 
             if (entity instanceof Player){
@@ -133,7 +137,7 @@ public class Axes {
         final int GREATER_IMPACT_CHANCE = 25;
         final double GREATER_IMPACT_MULTIPLIER = 1.5;
 
-        if (Math.random() * 100 <= GREATER_IMPACT_CHANCE) {
+        if (random.nextInt(100) <= GREATER_IMPACT_CHANCE) {
             event.setDamage(event.getDamage() + 2);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(GREATER_IMPACT_MULTIPLIER));
             attacker.sendMessage(mcLocale.getString("Axes.GreaterImpactOnEnemy"));

@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills;
 
+import java.util.Random;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
@@ -28,6 +30,8 @@ import com.gmail.nossr50.runnables.mcBleedTimer;
 
 public class Taming {
 
+    private static Random random = new Random();
+
     /**
      * Apply the Fast Food Service ability.
      *
@@ -45,7 +49,7 @@ public class Taming {
 
         if (PPo.getSkillLevel(SkillType.TAMING) >= SKILL_ACTIVATION_LEVEL) {
             if (health < maxHealth) {
-                if (Math.random() * 100 < ACTIVATION_CHANCE) {
+                if (random.nextInt(100) < ACTIVATION_CHANCE) {
                     if (health + damage <= maxHealth) {
                         theWolf.setHealth(health + damage);
                     }
@@ -83,7 +87,7 @@ public class Taming {
     public static void gore(PlayerProfile PPo, EntityDamageEvent event, Player master, mcMMO plugin) {
         final int GORE_MULTIPLIER = 2;
 
-        if (Math.random() * 1000 <= PPo.getSkillLevel(SkillType.TAMING)) {
+        if (random.nextInt(1000) <= PPo.getSkillLevel(SkillType.TAMING)) {
             Entity entity = event.getEntity();
             event.setDamage(event.getDamage() * GORE_MULTIPLIER);
 
@@ -245,7 +249,7 @@ public class Taming {
                 ((Tameable) entity).setOwner(player);
 
                 if (entity.getType().equals(EntityType.OCELOT)) {
-                    ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + (int) (Math.random() * 3)));
+                    ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + random.nextInt(3)));
                 }
 
                 player.setItemInHand(new ItemStack(summonItem, item.getAmount() - summonAmount));

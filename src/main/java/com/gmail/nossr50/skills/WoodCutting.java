@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -25,6 +26,8 @@ import com.gmail.nossr50.spout.SpoutSounds;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 public class WoodCutting {
+
+    private static Random random = new Random();
 
     /**
      * Handle the Tree Feller ability.
@@ -69,7 +72,7 @@ public class WoodCutting {
             int health = player.getHealth();
 
             if (health >= 2) {
-                Combat.dealDamage(player, (int)(Math.random() * (health - 1)));
+                Combat.dealDamage(player, random.nextInt(health - 1));
             }
             return;
         }
@@ -249,7 +252,7 @@ public class WoodCutting {
         byte type = block.getData();
         Material mat = Material.getMaterial(block.getTypeId());
 
-        if ((skillLevel > MAX_SKILL_LEVEL || Math.random() * 1000 <= skillLevel) && mcPermissions.getInstance().woodcuttingDoubleDrops(player)) {
+        if ((skillLevel > MAX_SKILL_LEVEL || random.nextInt(1000) <= skillLevel) && mcPermissions.getInstance().woodcuttingDoubleDrops(player)) {
             ItemStack item = new ItemStack(mat, 1, (short) 0, type);
             m.mcDropItem(block.getLocation(), item);
         }

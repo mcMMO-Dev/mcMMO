@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,6 +25,8 @@ import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 public class Excavation {
+
+    private static Random random = new Random();
 
     /**
      * Check to see if a block can be broken by Giga Drill Breaker.
@@ -101,7 +104,7 @@ public class Excavation {
 
             for (ExcavationTreasure treasure : treasures) {
                 if (skillLevel >= treasure.getDropLevel()) {
-                    if (Math.random() * 100 <= treasure.getDropChance()) {
+                    if (random.nextInt(100) <= treasure.getDropChance()) {
                         xp += treasure.getXp();
                         is.add(treasure.getDrop());
                     }

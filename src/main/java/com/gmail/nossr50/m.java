@@ -1,5 +1,7 @@
 package com.gmail.nossr50;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +18,8 @@ import com.gmail.nossr50.events.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.McMMOItemSpawnEvent;
 
 public class m {
+
+    private static Random random = new Random();
 
     /**
      * Gets a capitalized version of the target string.
@@ -224,7 +228,7 @@ public class m {
      * @param chance The percentage chance for the item to drop
      */
     public static void mcRandomDropItem(Location location, ItemStack is, double chance) {
-        if (Math.random() * 100 < chance) {
+        if (random.nextInt(100) < chance) {
             mcDropItem(location, is);
         }
     }

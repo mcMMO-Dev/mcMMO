@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills;
 
+import java.util.Random;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -13,6 +15,8 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class Acrobatics {
+
+    private static Random random = new Random();
 
     /**
      * Check for fall damage reduction.
@@ -39,7 +43,7 @@ public class Acrobatics {
             acrovar = acrovar * 2;
         }
 
-        if ((acrovar > MAX_BONUS_LEVEL || Math.random() * 1000 <= acrovar) && mcPermissions.getInstance().roll(player)) {
+        if ((acrovar > MAX_BONUS_LEVEL || random.nextInt(1000) <= acrovar) && mcPermissions.getInstance().roll(player)) {
             int threshold = 7;
 
             if (gracefulRoll) {
@@ -103,7 +107,7 @@ public class Acrobatics {
             int skillLevel = PPd.getSkillLevel(SkillType.ACROBATICS);
             int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-            if (Math.random() * 4000 <= skillCheck && mcPermissions.getInstance().dodge(defender)) {
+            if (random.nextInt(4000) <= skillCheck && mcPermissions.getInstance().dodge(defender)) {
                 defender.sendMessage(mcLocale.getString("Acrobatics.Dodge"));
 
                 if (System.currentTimeMillis() >= (5000 + PPd.getRespawnATS()) && defender.getHealth() >= 1) {

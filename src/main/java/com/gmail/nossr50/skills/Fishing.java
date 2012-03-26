@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,6 +29,8 @@ import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Fishing {
+
+    private static Random random = new Random();
 
     /**
      * Get the player's current fishing loot tier.
@@ -95,9 +98,9 @@ public class Fishing {
         }
 
         if (LoadProperties.fishingDrops) {
-            FishingTreasure treasure = rewards.get((int) (Math.random() * rewards.size()));
+            FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
-            if (Math.random() * 100 <= treasure.getDropChance()) {
+            if (random.nextInt(100) <= treasure.getDropChance()) {
                 Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp(), player);
                 theCatch.setItemStack(treasure.getDrop());
             }
@@ -106,7 +109,7 @@ public class Fishing {
             theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
         }
 
-        theCatch.getItemStack().setDurability((short) (Math.random() * theCatch.getItemStack().getType().getMaxDurability())); //Change durability to random value
+        theCatch.getItemStack().setDurability((short) (random.nextInt(theCatch.getItemStack().getType().getMaxDurability()))); //Change durability to random value
 
         m.mcDropItem(player.getLocation(), new ItemStack(Material.RAW_FISH)); //Always drop a fish
         PP.addXP(SkillType.FISHING, LoadProperties.mfishing, player);
@@ -132,7 +135,7 @@ public class Fishing {
 
             player.sendMessage(mcLocale.getString("Fishing.ItemFound"));
             if (ItemChecks.isArmor(fishingResults) || ItemChecks.isTool(fishingResults)) {
-                if (Math.random() * 100 <= ENCHANTMENT_CHANCE) {
+                if (random.nextInt(100) <= ENCHANTMENT_CHANCE) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
                             Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();
@@ -144,9 +147,9 @@ public class Fishing {
                             }
 
                             /* Actual chance to have an enchantment is related to your fishing skill */
-                            if (Math.random() * 15 < Fishing.getFishingLootTier(PP)) {
+                            if (random.nextInt(15) < Fishing.getFishingLootTier(PP)) {
                                 enchanted = true;
-                                int randomEnchantLevel = (int) (Math.random() * newEnchant.getMaxLevel()) + 1;
+                                int randomEnchantLevel = random.nextInt(newEnchant.getMaxLevel()) + 1;
 
                                 if (randomEnchantLevel < newEnchant.getStartLevel()) {
                                     randomEnchantLevel = newEnchant.getStartLevel();
@@ -171,7 +174,7 @@ public class Fishing {
      * @param event The event to modify
      */
     public static void shakeMob(PlayerFishEvent event) {
-        final int DROP_NUMBER = (int) (Math.random() * 101);
+        final int DROP_NUMBER = random.nextInt(100);
 
         LivingEntity le = (LivingEntity) event.getCaught();
         EntityType type = le.getType();
@@ -275,7 +278,7 @@ public class Fishing {
                 wool.setColor(sheep.getColor());
 
                 ItemStack theWool = wool.toItemStack();
-                theWool.setAmount((int)(Math.random() * 6));
+                theWool.setAmount(1 + random.nextInt(6));
 
                 m.mcDropItem(loc, theWool);
                 sheep.setSheared(true);

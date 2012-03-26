@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.CoalType;
 import org.bukkit.Location;
@@ -19,9 +21,9 @@ import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
+public class Mining {
 
-public class Mining
-{
+    private static Random random = new Random();
 
     /**
      * Drop items from Mining & Blast Mining skills.
@@ -165,7 +167,7 @@ public class Mining
 
             int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 
-            if ((skillLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= skillLevel)) && mcPermissions.getInstance().miningDoubleDrops(player)) {
+            if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && mcPermissions.getInstance().miningDoubleDrops(player)) {
                 if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
                     m.mcDropItem(block.getLocation(), new ItemStack(block.getType()));
                 }

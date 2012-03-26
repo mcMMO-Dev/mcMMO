@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
@@ -23,6 +24,8 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Repair {
+
+    private static Random random = new Random();
 
     /**
      * Handle all the item repair checks.
@@ -203,11 +206,11 @@ public class Repair {
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             Enchantment enchantment = enchant.getKey();
 
-            if (Math.random() * 100 <= getEnchantChance(rank)) {
+            if (random.nextInt(100) <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
 
                 if (LoadProperties.mayDowngradeEnchants && enchantLevel > 1) {
-                    if (Math.random() * 100 <= getDowngradeChance(rank)) {
+                    if (random.nextInt(100) <= getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, enchantLevel--);
                         downgraded = true;
                     }
@@ -412,7 +415,7 @@ public class Repair {
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
-        if ((skillLevel > MAX_BONUS_LEVEL || (Math.random() * 1000 <= skillLevel)) && mcPermissions.getInstance().repairBonus(player)) {
+        if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && mcPermissions.getInstance().repairBonus(player)) {
             player.sendMessage(mcLocale.getString("Skills.FeltEasy"));
             return true;
         }

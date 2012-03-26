@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,6 +26,8 @@ import com.gmail.nossr50.locale.mcLocale;
 
 public class BlastMining {
 
+    private static Random random = new Random();
+
     /**
      * Handler for what blocks drop from the explosion.
      *
@@ -43,7 +46,7 @@ public class BlastMining {
         while (iterator2.hasNext()) {
             Block temp = iterator2.next();
 
-            if ((float) Math.random() < (yield + oreBonus)) {
+            if (random.nextFloat() < (yield + oreBonus)) {
                 blocksDropped.add(temp);
                 Mining.miningDrops(temp);
 
@@ -66,7 +69,7 @@ public class BlastMining {
             while (iterator3.hasNext()) {
                 Block temp = iterator3.next();
 
-                if ((float) Math.random() < (yield - debrisReduction))
+                if (random.nextFloat() < (yield - debrisReduction))
                     Mining.miningDrops(temp);
             }
         }
