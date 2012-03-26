@@ -7,41 +7,44 @@ import com.gmail.nossr50.config.LoadProperties;
 
 public enum SkillType 
 {
-	ACROBATICS(LoadProperties.levelCapAcrobatics),
+	ACROBATICS(LoadProperties.levelCapAcrobatics, LoadProperties.acrobaticsxpmodifier),
 	ALL, //This one is just for convenience
-	ARCHERY(LoadProperties.levelCapArchery),
-	AXES(AbilityType.SKULL_SPLIITER, LoadProperties.levelCapAxes, ToolType.AXE),
-	EXCAVATION(AbilityType.GIGA_DRILL_BREAKER, LoadProperties.levelCapExcavation, ToolType.SHOVEL),
-	FISHING(LoadProperties.levelCapFishing),
-	HERBALISM(AbilityType.GREEN_TERRA, LoadProperties.levelCapHerbalism, ToolType.HOE),
-	MINING(AbilityType.SUPER_BREAKER, LoadProperties.levelCapMining, ToolType.PICKAXE),
-	REPAIR(LoadProperties.levelCapRepair),
-	SWORDS(AbilityType.SERRATED_STRIKES, LoadProperties.levelCapSwords, ToolType.SWORD),
-	TAMING(LoadProperties.levelCapTaming),
-	UNARMED(AbilityType.BERSERK, LoadProperties.levelCapUnarmed, ToolType.FISTS),
-	WOODCUTTING(AbilityType.TREE_FELLER, LoadProperties.levelCapWoodcutting, ToolType.AXE);
+	ARCHERY(LoadProperties.levelCapArchery, LoadProperties.archeryxpmodifier),
+	AXES(AbilityType.SKULL_SPLIITER, LoadProperties.levelCapAxes, ToolType.AXE, LoadProperties.axesxpmodifier),
+	EXCAVATION(AbilityType.GIGA_DRILL_BREAKER, LoadProperties.levelCapExcavation, ToolType.SHOVEL, LoadProperties.excavationxpmodifier),
+	FISHING(LoadProperties.levelCapFishing, LoadProperties.fishingxpmodifier),
+	HERBALISM(AbilityType.GREEN_TERRA, LoadProperties.levelCapHerbalism, ToolType.HOE, LoadProperties.herbalismxpmodifier),
+	MINING(AbilityType.SUPER_BREAKER, LoadProperties.levelCapMining, ToolType.PICKAXE, LoadProperties.miningxpmodifier),
+	REPAIR(LoadProperties.levelCapRepair, LoadProperties.repairxpmodifier),
+	SWORDS(AbilityType.SERRATED_STRIKES, LoadProperties.levelCapSwords, ToolType.SWORD, LoadProperties.swordsxpmodifier),
+	TAMING(LoadProperties.levelCapTaming, LoadProperties.tamingxpmodifier),
+	UNARMED(AbilityType.BERSERK, LoadProperties.levelCapUnarmed, ToolType.FISTS, LoadProperties.unarmedxpmodifier),
+	WOODCUTTING(AbilityType.TREE_FELLER, LoadProperties.levelCapWoodcutting, ToolType.AXE, LoadProperties.woodcuttingxpmodifier);
 	
 	private AbilityType ability;
 	private int maxLevel;
 	private ToolType tool;
+	private double xpModifier;
 	
 	private SkillType()
 	{
 		this.ability = null;
 		this.maxLevel = 0;
 		this.tool = null;
+		this.xpModifier = 0;
 	}
 	
-	private SkillType(AbilityType ability, int maxLevel, ToolType tool)
+	private SkillType(AbilityType ability, int maxLevel, ToolType tool, double xpModifier)
 	{
 		this.ability = ability;
 		this.maxLevel = maxLevel;
 		this.tool = tool;
+		this.xpModifier = xpModifier;
 	}
 	
-	private SkillType(int maxLevel)
+	private SkillType(int maxLevel, double xpModifier)
 	{
-		this(null, maxLevel, null);
+		this(null, maxLevel, null, xpModifier);
 	}
 	
 	public AbilityType getAbility()
@@ -57,9 +60,8 @@ public enum SkillType
 			return Integer.MAX_VALUE;
 	}
 	
-	public ToolType getTool()
-	{
-		return this.tool;
+	public ToolType getTool() {
+		return tool;
 	}
 	
 	public boolean getPermissions(Player player)
@@ -93,4 +95,8 @@ public enum SkillType
 		}
 		return false;
 	}
+
+    public double getXpModifier() {
+        return xpModifier;
+    }
 }
