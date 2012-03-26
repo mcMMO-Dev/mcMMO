@@ -140,7 +140,7 @@ public class mcPlayerListener implements Listener {
         /* GARBAGE COLLECTION */
 
         //Remove Spout Stuff
-        if(LoadProperties.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
+        if (LoadProperties.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
             SpoutStuff.playerHUDs.remove(player);
         }
 

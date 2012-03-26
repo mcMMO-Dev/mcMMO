@@ -581,6 +581,6 @@ public class SpoutStuff {
      * @param player The player whose bar to update
      */
     public static void updateXpBar(Player player) {
-        playerHUDs.get(player).updateXpBarDisplay(Users.getProfile(player).getHUDType(), player);
+        playerHUDs.get(player).updateXpBarDisplay(Users.getProfile(player).getHUDType(), player); //Is there a reason we can't just do HUDmmo.updateXpBarDisplay?
     }
 }
