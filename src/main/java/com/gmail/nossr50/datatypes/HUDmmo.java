@@ -18,7 +18,6 @@ import com.gmail.nossr50.spout.SpoutStuff;
 
 public class HUDmmo {
     private int center_x = 427/2;
-//    private int center_y = 240/2; //Any reason we can't just delete this?
 
     private String playerName = null;
 
@@ -42,13 +41,8 @@ public class HUDmmo {
      * @param player Player whose HUD to initialize
      */
     public void initializeHUD(Player player) {
-//        PlayerProfile PP = Users.getProfile(player);
         HUDType type = Users.getProfile(player).getHUDType();
         SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
-
-//        if (LoadProperties.partybar && PP.getPartyHUD()) {
-//            mmoHelper.initialize(sPlayer, plugin); //PARTY HUD
-//        }
 
         switch (type) {
             case RETRO:
@@ -106,7 +100,6 @@ public class HUDmmo {
      */
     public void resetHUD() {
         SpoutPlayer sPlayer = SpoutStuff.getSpoutPlayer(playerName);
-//        PlayerProfile PP = Users.getProfile(sPlayer);
 
         if (sPlayer != null) {
             sPlayer.getMainScreen().removeWidgets(plugin);
@@ -116,10 +109,6 @@ public class HUDmmo {
             xpfill = null;
             xpbg = null;
             xpicon = null;
-
-//            if (LoadProperties.partybar && PP.getPartyHUD()) {
-//                mmoHelper.initialize(sPlayer, plugin);
-//            }
 
             sPlayer.getMainScreen().setDirty(true);
         }
@@ -294,7 +283,7 @@ public class HUDmmo {
 
         SkillType theType = getType(PP);
 
-        if (theType == null) { //Can this ever actually BE null?
+        if (theType == null) { //Can this ever actually BE null? (Yes, it's null when the player has just logged in. It's not null when they gain XP in anything)
             return;
         }
 
@@ -320,7 +309,7 @@ public class HUDmmo {
 
         SkillType theType = getType(PP);
 
-        if (theType == null) { //Can this ever actually BE null?
+        if (theType == null) { //Can this ever actually BE null? (Yes, it's null when the player has just logged in. It's not null when they gain XP in anything)
             return;
         }
 
