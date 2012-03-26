@@ -6,6 +6,7 @@ import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
@@ -242,6 +243,10 @@ public class Taming {
                 LivingEntity entity = player.getWorld().spawnCreature(player.getLocation(), type);
                 entity.setMetadata("mcmmoSummoned", new FixedMetadataValue(plugin, true));
                 ((Tameable) entity).setOwner(player);
+
+                if (entity.getType().equals(EntityType.OCELOT)) {
+                    ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + (int) (Math.random() * 3)));
+                }
 
                 player.setItemInHand(new ItemStack(summonItem, item.getAmount() - summonAmount));
                 player.sendMessage(mcLocale.getString("m.TamingSummon"));
