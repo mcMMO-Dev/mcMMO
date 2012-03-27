@@ -18,7 +18,8 @@ import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.WoodCutting;
 import com.gmail.nossr50.spout.SpoutSounds;
-import com.gmail.nossr50.events.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.CropState;
@@ -34,7 +35,6 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -266,7 +266,7 @@ public class mcBlockListener implements Listener {
         }
         else if (PP.getBerserkMode() && Skills.triggerCheck(player, block, AbilityType.BERSERK)) {
             if (inhand.getType().equals(Material.AIR)) {
-                PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+                FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
                 Bukkit.getPluginManager().callEvent(armswing);
 
                 event.setInstaBreak(true);

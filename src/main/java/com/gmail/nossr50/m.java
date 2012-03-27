@@ -9,13 +9,13 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.events.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.McMMOItemSpawnEvent;
+import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 
 public class m {
 
@@ -127,7 +127,7 @@ public class m {
 
         //Support for NoCheat
         if (shouldArmSwing) {
-            PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+            FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
             Bukkit.getPluginManager().callEvent(armswing);
         }
 

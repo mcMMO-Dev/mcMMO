@@ -2,6 +2,7 @@ package com.gmail.nossr50.datatypes;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 
@@ -98,5 +99,9 @@ public enum SkillType
 
     public double getXpModifier() {
         return xpModifier;
+    }
+
+    public int getSkillLevel(Player player) {
+        return Users.getProfile(player).getSkillLevel(this);
     }
 }

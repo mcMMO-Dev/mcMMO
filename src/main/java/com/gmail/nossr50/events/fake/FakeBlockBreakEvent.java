@@ -1,4 +1,4 @@
-package com.gmail.nossr50.events;
+package com.gmail.nossr50.events.fake;
 
 import java.util.ArrayList;
 

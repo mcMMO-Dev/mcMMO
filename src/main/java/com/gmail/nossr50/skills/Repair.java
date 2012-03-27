@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -21,6 +22,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.McMMOPlayerRepairEvent;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Repair {
@@ -437,7 +439,11 @@ public class Repair {
             addEnchants(player, is);
         }
 
-        is.setDurability(getRepairAmount(is, player));
+        short repairAmount = getRepairAmount(is, player);
+        is.setDurability(repairAmount);
+
+        McMMOPlayerRepairEvent event = new McMMOPlayerRepairEvent(player, is, repairAmount);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     /**

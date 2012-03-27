@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.event.player.PlayerAnimationEvent;
 
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.Users;
@@ -21,6 +20,7 @@ import com.gmail.nossr50.config.LoadTreasures;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 
 import org.getspout.spoutapi.sound.SoundEffect;
 
@@ -134,7 +134,7 @@ public class Excavation {
         Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
 
         if (!block.hasMetadata("mcmmoPlacedBlock")) {
-            PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+            FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
             Bukkit.getPluginManager().callEvent(armswing);
 
             Excavation.excavationProcCheck(block, player);

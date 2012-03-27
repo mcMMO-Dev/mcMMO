@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.player.PlayerAnimationEvent;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
@@ -20,6 +19,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 
 public class Mining {
 
@@ -217,7 +217,7 @@ public class Mining {
         Material type = block.getType();
         int tier = m.getTier(player.getItemInHand());
         int durabilityLoss = LoadProperties.abilityDurabilityLoss;
-        PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+        FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 
         switch (type) {
         case OBSIDIAN:

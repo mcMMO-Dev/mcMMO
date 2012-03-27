@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.Bukkit;
 
 import com.gmail.nossr50.Combat;
@@ -20,6 +19,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.spout.SpoutSounds;
 
@@ -306,7 +306,7 @@ public class WoodCutting {
      * @param block Block being broken
      */
     public static void leafBlower(Player player, Block block) {
-        PlayerAnimationEvent armswing = new PlayerAnimationEvent(player);
+        FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
         Bukkit.getPluginManager().callEvent(armswing);
 
         if (LoadProperties.woodcuttingrequiresaxe) {
