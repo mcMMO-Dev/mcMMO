@@ -9,6 +9,7 @@ Key:
   
 Version 1.3.04-dev
  + Added McMMOPlayerRepairEvent for API usage - fires after completion of a repair.
+ + Added McMMOPlayerRepairCheckEvent for API usage - fires before repair process begins, can be cancelled.
  + Added ability to get skill level from McMMOPlayerExperience events
  = Fixed Shake ability dropping bonemeal instead of ink for squids.
  = Fixed Green Terra & Super Breaker awarding 4x drops at high levels.

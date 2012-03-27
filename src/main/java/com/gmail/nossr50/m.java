@@ -262,9 +262,8 @@ public class m {
         if (event.isCancelled()) {
             return;
         }
-        else {
-            location.getWorld().dropItemNaturally(location, itemStack);
-        }
+
+        location.getWorld().dropItemNaturally(location, itemStack);
     }
 
     /**
