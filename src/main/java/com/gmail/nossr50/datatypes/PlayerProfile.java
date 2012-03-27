@@ -48,7 +48,7 @@ public class PlayerProfile {
     HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); //Skill ATS
     
     String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
-        
+
     public PlayerProfile(String name)
     {
         hud = LoadProperties.defaulthud;
@@ -641,194 +641,312 @@ public class PlayerProfile {
      */
     public long getRespawnATS() {return respawnATS;}
     public void setRespawnATS(long newvalue) {respawnATS = (int) (newvalue/1000);}
-    
+
     /*
-     * HOE PREPARATION
+     * TOOLS
      */
-    public boolean getHoePreparationMode(){
-        return hoePreparationMode;
+
+    /**
+     * Get the current prep mode of a tool.
+     *
+     * @param tool Tool to get the mode for
+     * @return true if the tool is prepped, false otherwise
+     */
+    public boolean getToolPreparationMode(ToolType tool) {
+        switch (tool) {
+        case AXE:
+            return axePreparationMode;
+
+        case FISTS:
+            return fistsPreparationMode;
+
+        case HOE:
+            return hoePreparationMode;
+
+        case PICKAXE:
+            return pickaxePreparationMode;
+
+        case SHOVEL:
+            return shovelPreparationMode;
+
+        case SWORD:
+            return swordsPreparationMode;
+
+        default:
+            return false;
+        }
     }
-    public void setHoePreparationMode(boolean bool){
-        hoePreparationMode = bool;
+
+    /**
+     * Set the current prep mode of a tool.
+     *
+     * @param tool Tool to set the mode for
+     * @param bool true if the tool should be prepped, false otherwise
+     */
+    public void setToolPreparationMode(ToolType tool, boolean bool) {
+        switch (tool) {
+        case AXE:
+            axePreparationMode = bool;
+            break;
+
+        case FISTS:
+            fistsPreparationMode = bool;
+            break;
+
+        case HOE:
+            hoePreparationMode = bool;
+            break;
+
+        case PICKAXE:
+            pickaxePreparationMode = bool;
+            break;
+
+        case SHOVEL:
+            shovelPreparationMode = bool;
+            break;
+
+        case SWORD:
+            swordsPreparationMode = bool;
+            break;
+
+        default:
+            break;
+        }
     }
-    public long getHoePreparationATS(){
-        return hoePreparationATS;
+
+    /**
+     * Get the current prep ATS of a tool.
+     *
+     * @param tool Tool to get the ATS for
+     * @return the ATS for the tool
+     */
+    public long getToolPreparationATS(ToolType tool) {
+        switch (tool) {
+        case AXE:
+            return axePreparationATS;
+
+        case FISTS:
+            return fistsPreparationATS;
+
+        case HOE:
+            return hoePreparationATS;
+
+        case PICKAXE:
+            return pickaxePreparationATS;
+
+        case SHOVEL:
+            return shovelPreparationATS;
+
+        case SWORD:
+            return swordsPreparationATS;
+
+        default:
+            return 0;
+        }
     }
-    public void setHoePreparationATS(long newvalue){
-        hoePreparationATS = (int) (newvalue/1000);
+
+    /**
+     * Set the current prep ATS of a tool.
+     *
+     * @param tool Tool to set the ATS for
+     * @param ATS the ATS of the tool
+     */
+    public void setToolPreparationATS(ToolType tool, long ATS) {
+        switch (tool) {
+        case AXE:
+            axePreparationATS = (int) (ATS / 1000);
+            break;
+
+        case FISTS:
+            fistsPreparationATS = (int) (ATS / 1000);
+            break;
+
+        case HOE:
+            hoePreparationATS = (int) (ATS / 1000);
+            break;
+
+        case PICKAXE:
+            pickaxePreparationATS = (int) (ATS / 1000);
+            break;
+
+        case SHOVEL:
+            shovelPreparationATS = (int) (ATS / 1000);
+            break;
+
+        case SWORD:
+            swordsPreparationATS = (int) (ATS / 1000);
+            break;
+
+        default:
+            break;
+        }
     }
-    
+
     /*
-     * SWORDS PREPARATION
+     * ABILITIES
      */
-    public boolean getSwordsPreparationMode(){
-        return swordsPreparationMode;
+
+    /**
+     * Get the mode of an ability.
+     *
+     * @param ability The ability to check
+     * @return true if the ability is enabled, false otherwise
+     */
+    public boolean getAbilityMode(AbilityType ability) {
+        switch (ability) {
+        case BERSERK:
+            return berserkMode;
+
+        case SUPER_BREAKER:
+            return superBreakerMode;
+
+        case GIGA_DRILL_BREAKER:
+            return gigaDrillBreakerMode;
+
+        case GREEN_TERRA:
+            return greenTerraMode;
+
+        case SKULL_SPLIITER:
+            return skullSplitterMode;
+
+        case TREE_FELLER:
+            return treeFellerMode;
+
+        case SERRATED_STRIKES:
+            return serratedStrikesMode;
+
+        default:
+            return false;
+        }
     }
-    public void setSwordsPreparationMode(boolean bool){
-        swordsPreparationMode = bool;
+
+    /**
+     * Set the mode of an ability.
+     *
+     * @param ability The ability to check
+     * @param bool True if the ability is active, false otherwise
+     */
+    public void setAbilityMode(AbilityType ability, boolean bool) {
+        switch (ability) {
+        case BERSERK:
+            berserkMode = bool;
+            break;
+
+        case SUPER_BREAKER:
+            superBreakerMode = bool;
+            break;
+
+        case GIGA_DRILL_BREAKER:
+            gigaDrillBreakerMode = bool;
+            break;
+
+        case GREEN_TERRA:
+            greenTerraMode = bool;
+            break;
+
+        case SKULL_SPLIITER:
+            skullSplitterMode = bool;
+            break;
+
+        case TREE_FELLER:
+            treeFellerMode = bool;
+            break;
+
+        case SERRATED_STRIKES:
+            serratedStrikesMode = bool;
+            break;
+
+        default:
+            break;
+        }
     }
-    public long getSwordsPreparationATS(){
-        return swordsPreparationATS;
+
+    /**
+     * Get the informed state of an ability
+     *
+     * @param ability The ability to check
+     * @return true if the ability is informed, false otherwise
+     */
+    public boolean getAbilityInformed(AbilityType ability) {
+        switch (ability) {
+        case BERSERK:
+            return berserkInformed;
+
+        case BLAST_MINING:
+            return blastMiningInformed;
+
+        case SUPER_BREAKER:
+            return superBreakerInformed;
+
+        case GIGA_DRILL_BREAKER:
+            return gigaDrillBreakerInformed;
+
+        case GREEN_TERRA:
+            return greenTerraInformed;
+
+        case SKULL_SPLIITER:
+            return skullSplitterInformed;
+
+        case TREE_FELLER:
+            return treeFellerInformed;
+
+        case SERRATED_STRIKES:
+            return serratedStrikesInformed;
+
+        default:
+            return false;
+        }
     }
-    public void setSwordsPreparationATS(long newvalue){
-        swordsPreparationATS = (int) (newvalue/1000);
+
+    /**
+     * Set the informed state of an ability.
+     *
+     * @param ability The ability to check
+     * @param bool True if the ability is informed, false otherwise
+     */
+    public void setAbilityInformed(AbilityType ability, boolean bool) {
+        switch (ability) {
+        case BERSERK:
+            berserkInformed = bool;
+            break;
+
+        case BLAST_MINING:
+            blastMiningInformed = bool;
+            break;
+
+        case SUPER_BREAKER:
+            superBreakerInformed = bool;
+            break;
+
+        case GIGA_DRILL_BREAKER:
+            gigaDrillBreakerInformed = bool;
+            break;
+
+        case GREEN_TERRA:
+            greenTerraInformed = bool;
+            break;
+
+        case SKULL_SPLIITER:
+            skullSplitterInformed = bool;
+            break;
+
+        case TREE_FELLER:
+            treeFellerInformed = bool;
+            break;
+
+        case SERRATED_STRIKES:
+            serratedStrikesInformed = bool;
+            break;
+
+        default:
+            break;
+        }
     }
+
     /*
-     * SHOVEL PREPARATION
+     * RECENTLY HURT
      */
-    public boolean getShovelPreparationMode(){
-        return shovelPreparationMode;
-    }
-    public void setShovelPreparationMode(boolean bool){
-        shovelPreparationMode = bool;
-    }
-    public long getShovelPreparationATS(){
-        return shovelPreparationATS;
-    }
-    public void setShovelPreparationATS(long newvalue){
-        shovelPreparationATS = (int) (newvalue/1000);
-    }
-    /*
-     * FISTS PREPARATION
-     */
-    public boolean getFistsPreparationMode(){
-        return fistsPreparationMode;
-    }
-    public void setFistsPreparationMode(boolean bool){
-        fistsPreparationMode = bool;
-    }
-    public long getFistsPreparationATS(){
-        return fistsPreparationATS;
-    }
-    public void setFistsPreparationATS(long newvalue){
-        fistsPreparationATS = (int) (newvalue/1000);
-    }
-    /*
-     * AXE PREPARATION
-     */
-    public boolean getAxePreparationMode(){
-        return axePreparationMode;
-    }
-    public void setAxePreparationMode(boolean bool){
-        axePreparationMode = bool;
-    }
-    public long getAxePreparationATS(){
-        return axePreparationATS;
-    }
-    public void setAxePreparationATS(long newvalue){
-        axePreparationATS = (int) (newvalue/1000);
-    }
-    /*
-     * PICKAXE PREPARATION
-     */
-    public boolean getPickaxePreparationMode(){
-        return pickaxePreparationMode;
-    }
-    public void setPickaxePreparationMode(boolean bool){
-        pickaxePreparationMode = bool;
-    }
-    public long getPickaxePreparationATS(){
-        return pickaxePreparationATS;
-    }
-    public void setPickaxePreparationATS(long newvalue){
-       pickaxePreparationATS = (int) (newvalue/1000);
-    }
-    /*
-     * GREEN TERRA MODE
-     */
-    public boolean getGreenTerraInformed() {return greenTerraInformed;}
-    public void setGreenTerraInformed(boolean bool){
-        greenTerraInformed = bool;
-    }
-    public boolean getGreenTerraMode(){
-        return greenTerraMode;
-    }
-    public void setGreenTerraMode(boolean bool){
-        greenTerraMode = bool;
-    }
-    
-    /*
-     * BERSERK MODE
-     */
-    public boolean getBerserkInformed() {return berserkInformed;}
-    public void setBerserkInformed(boolean bool){
-        berserkInformed = bool;
-    }
-    public boolean getBerserkMode(){
-        return berserkMode;
-    }
-    public void setBerserkMode(boolean bool){
-        berserkMode = bool;
-    }
-    /*
-     * SKULL SPLITTER
-     */
-    public boolean getSkullSplitterInformed() {return skullSplitterInformed;}
-    public void setSkullSplitterInformed(boolean bool){
-        skullSplitterInformed = bool;
-    }
-    public boolean getSkullSplitterMode(){
-        return skullSplitterMode;
-    }
-    public void setSkullSplitterMode(boolean bool){
-        skullSplitterMode = bool;
-    }
-    /*
-     * SERRATED STRIKES
-     */
-    public boolean getSerratedStrikesInformed() {return serratedStrikesInformed;}
-    public void setSerratedStrikesInformed(boolean bool){
-        serratedStrikesInformed = bool;
-    }
-    public boolean getSerratedStrikesMode(){
-        return serratedStrikesMode;
-    }
-    public void setSerratedStrikesMode(boolean bool){
-        serratedStrikesMode = bool;
-    }
-    /*
-     * GIGA DRILL BREAKER
-     */
-    public boolean getGigaDrillBreakerInformed() {return gigaDrillBreakerInformed;}
-    public void setGigaDrillBreakerInformed(boolean bool){
-        gigaDrillBreakerInformed = bool;
-    }
-    public boolean getGigaDrillBreakerMode(){
-        return gigaDrillBreakerMode;
-    }
-    public void setGigaDrillBreakerMode(boolean bool){
-        gigaDrillBreakerMode = bool;
-    }
-    /*
-     * TREE FELLER STUFF
-     */
-    public boolean getTreeFellerInformed() {return treeFellerInformed;}
-    public void setTreeFellerInformed(boolean bool){
-        treeFellerInformed = bool;
-    }
-    public boolean getTreeFellerMode(){
-        return treeFellerMode;
-    }
-    public void setTreeFellerMode(boolean bool){
-        treeFellerMode = bool;
-    }
-    /*
-     * MINING
-     */
-    public boolean getSuperBreakerInformed() {return superBreakerInformed;}
-    public void setSuperBreakerInformed(boolean bool){
-        superBreakerInformed = bool;
-    }
-    public boolean getBlastMiningInformed() {return blastMiningInformed;}
-    public void setBlastMiningInformed(boolean bool){
-        blastMiningInformed = bool;
-    }
-    public boolean getSuperBreakerMode(){
-        return superBreakerMode;
-    }
-    public void setSuperBreakerMode(boolean bool){
-        superBreakerMode = bool;
-    }
+
     public long getRecentlyHurt(){
         return recentlyHurt;
     }

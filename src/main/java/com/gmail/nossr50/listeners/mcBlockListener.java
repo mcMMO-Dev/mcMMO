@@ -11,6 +11,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.skills.Excavation;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Mining;
@@ -145,12 +146,12 @@ public class mcBlockListener implements Listener {
          */
 
         /* Green Terra */
-        if (PP.getHoePreparationMode() && mcPermissions.getInstance().greenTerra(player) && ((mat.equals(Material.CROPS) && block.getData() == CropState.RIPE.getData()) || Herbalism.canBeGreenTerra(mat))) {
+        if (PP.getToolPreparationMode(ToolType.HOE) && mcPermissions.getInstance().greenTerra(player) && ((mat.equals(Material.CROPS) && block.getData() == CropState.RIPE.getData()) || Herbalism.canBeGreenTerra(mat))) {
             Skills.abilityCheck(player, SkillType.HERBALISM);
         }
 
         /* Triple drops */
-        if (PP.getGreenTerraMode() && Herbalism.canBeGreenTerra(mat)) {
+        if (PP.getAbilityMode(AbilityType.GREEN_TERRA) && Herbalism.canBeGreenTerra(mat)) {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 
@@ -184,7 +185,7 @@ public class mcBlockListener implements Listener {
             }
         }
 
-        if (PP.getTreeFellerMode() && mcPermissions.getInstance().treeFeller(player)) {
+        if (PP.getAbilityMode(AbilityType.TREE_FELLER) && mcPermissions.getInstance().treeFeller(player)) {
             WoodCutting.treeFeller(event);
         }
 
@@ -226,35 +227,35 @@ public class mcBlockListener implements Listener {
          * ABILITY PREPARATION CHECKS
          */
         if (BlockChecks.abilityBlockCheck(mat)) {
-            if (PP.getHoePreparationMode() && (Herbalism.canBeGreenTerra(mat) || Herbalism.makeMossy(mat))) {
+            if (PP.getToolPreparationMode(ToolType.HOE) && (Herbalism.canBeGreenTerra(mat) || Herbalism.makeMossy(mat))) {
                 Skills.abilityCheck(player, SkillType.HERBALISM);
             }
-            else if (PP.getAxePreparationMode() && mat.equals(Material.LOG) && mcPermissions.getInstance().treeFeller(player)) {  //Why are we checking the permissions here?
+            else if (PP.getToolPreparationMode(ToolType.AXE) && mat.equals(Material.LOG) && mcPermissions.getInstance().treeFeller(player)) {  //Why are we checking the permissions here?
                 Skills.abilityCheck(player, SkillType.WOODCUTTING);
             }
-            else if (PP.getPickaxePreparationMode() && Mining.canBeSuperBroken(mat)) {
+            else if (PP.getToolPreparationMode(ToolType.PICKAXE) && Mining.canBeSuperBroken(mat)) {
                 Skills.abilityCheck(player, SkillType.MINING);
             }
-            else if (PP.getShovelPreparationMode() && Excavation.canBeGigaDrillBroken(mat)) {
+            else if (PP.getToolPreparationMode(ToolType.SHOVEL) && Excavation.canBeGigaDrillBroken(mat)) {
                 Skills.abilityCheck(player, SkillType.EXCAVATION);
             }
-            else if (PP.getFistsPreparationMode() && (Excavation.canBeGigaDrillBroken(mat) || mat.equals(Material.SNOW))) {
+            else if (PP.getToolPreparationMode(ToolType.FISTS) && (Excavation.canBeGigaDrillBroken(mat) || mat.equals(Material.SNOW))) {
                 Skills.abilityCheck(player, SkillType.UNARMED);
             }
         }
 
         /* TREE FELLER SOUNDS */
-        if (LoadProperties.spoutEnabled && mat.equals(Material.LOG) && PP.getTreeFellerMode()) {
+        if (LoadProperties.spoutEnabled && mat.equals(Material.LOG) && PP.getAbilityMode(AbilityType.TREE_FELLER)) {
             SpoutSounds.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
         }
 
         /*
          * ABILITY TRIGGER CHECKS
          */
-        if (PP.getGreenTerraMode() && mcPermissions.getInstance().greenTerra(player) && Herbalism.makeMossy(mat)) {
+        if (PP.getAbilityMode(AbilityType.GREEN_TERRA) && mcPermissions.getInstance().greenTerra(player) && Herbalism.makeMossy(mat)) {
             Herbalism.greenTerra(player, block);
         }
-        else if (PP.getGigaDrillBreakerMode() && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
+        else if (PP.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
             if (LoadProperties.excavationRequiresShovel && ItemChecks.isShovel(inhand)) {
                 event.setInstaBreak(true);
                 Excavation.gigaDrillBreaker(player, block);
@@ -264,7 +265,7 @@ public class mcBlockListener implements Listener {
                 Excavation.gigaDrillBreaker(player, block);
             }
         }
-        else if (PP.getBerserkMode() && Skills.triggerCheck(player, block, AbilityType.BERSERK)) {
+        else if (PP.getAbilityMode(AbilityType.BERSERK) && Skills.triggerCheck(player, block, AbilityType.BERSERK)) {
             if (inhand.getType().equals(Material.AIR)) {
                 FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
                 Bukkit.getPluginManager().callEvent(armswing);
@@ -276,7 +277,7 @@ public class mcBlockListener implements Listener {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }
-        else if (PP.getSuperBreakerMode() && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
+        else if (PP.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
             if (LoadProperties.miningrequirespickaxe && ItemChecks.isMiningPick(inhand)) {
                 event.setInstaBreak(true);
                 Mining.SuperBreakerBlockCheck(player, block);

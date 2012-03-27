@@ -17,6 +17,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -272,7 +273,7 @@ public class Herbalism {
         boolean hasSeeds = inventory.contains(Material.SEEDS);
         Location loc = block.getLocation();
 
-        if (hasSeeds && PP.getGreenTerraMode() || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1500) <= herbLevel)) {
+        if (hasSeeds && PP.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1500) <= herbLevel)) {
             event.setCancelled(true);
 
             m.mcDropItem(loc, new ItemStack(Material.WHEAT));

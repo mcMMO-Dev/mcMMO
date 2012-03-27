@@ -33,6 +33,7 @@ import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -112,7 +113,7 @@ public class mcPlayerListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        if (Users.getProfile(event.getPlayer()).getBerserkMode()) {
+        if (Users.getProfile(event.getPlayer()).getAbilityMode(AbilityType.BERSERK)) {
              event.setCancelled(true);
         }
     }

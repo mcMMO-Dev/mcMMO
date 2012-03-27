@@ -66,8 +66,8 @@ public class Skills {
      * @param ability The ability to watch cooldowns for
      */
     public static void watchCooldown(Player player, PlayerProfile PP, long curTime, AbilityType ability) {
-        if (!ability.getInformed(PP) && curTime - (PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR) >= (ability.getCooldown() * TIME_CONVERSION_FACTOR)) {
-            ability.setInformed(PP, true);
+        if (!PP.getAbilityInformed(ability) && curTime - (PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR) >= (ability.getCooldown() * TIME_CONVERSION_FACTOR)) {
+            PP.setAbilityInformed(ability, true);
             player.sendMessage(ability.getAbilityRefresh());
         }
     }
@@ -89,25 +89,31 @@ public class Skills {
         ItemStack inHand = player.getItemInHand();
 
         /* Check if any abilities are active */
-        if (!PP.getAbilityUse() || PP.getSuperBreakerMode() || PP.getSerratedStrikesMode() || PP.getTreeFellerMode() || PP.getGreenTerraMode() || PP.getBerserkMode() || PP.getGigaDrillBreakerMode()) {
+        if (!PP.getAbilityUse()) {
             return;
+        }
+
+        for (AbilityType x : AbilityType.values()) {
+            if (PP.getAbilityMode(x)) {
+                return;
+            }
         }
 
         /* Woodcutting & Axes need to be treated differently.
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
         if (skill == SkillType.WOODCUTTING || skill == SkillType.AXES) {
-            if (tool.inHand(inHand) && !tool.getToolMode(PP)) {
+            if (tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
                 if (LoadProperties.enableAbilityMessages) {
                     player.sendMessage(tool.getRaiseTool());
                 }
 
-                tool.setToolATS(PP, System.currentTimeMillis());
-                tool.setToolMode(PP, true);
+                PP.setToolPreparationATS(tool, System.currentTimeMillis());
+                PP.setToolPreparationMode(tool, true);
             }
         }
-        else if (ability.getPermissions(player) && tool.inHand(inHand) && !tool.getToolMode(PP)) {
-            if (!ability.getMode(PP) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
+        else if (ability.getPermissions(player) && tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
+            if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
                 player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                 return;
             }
@@ -116,8 +122,8 @@ public class Skills {
                 player.sendMessage(tool.getRaiseTool());
             }
 
-            tool.setToolATS(PP, System.currentTimeMillis());
-            tool.setToolMode(PP, true);
+            PP.setToolPreparationATS(tool, System.currentTimeMillis());
+            PP.setToolPreparationMode(tool, true);
         }
     }
 
@@ -135,15 +141,15 @@ public class Skills {
         ToolType tool = skill.getTool();
         AbilityType ability = skill.getAbility();
 
-        if (tool.getToolMode(PP) && curTime - (tool.getToolATS(PP) * TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
-            tool.setToolMode(PP, false);
+        if (PP.getToolPreparationMode(tool) && curTime - (PP.getToolPreparationATS(tool) * TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
+            PP.setToolPreparationMode(tool, false);
             player.sendMessage(tool.getLowerTool());
         }
 
         if (ability.getPermissions(player)) {
-            if (ability.getMode(PP) && (PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR) <= curTime) {
-                ability.setMode(PP, false);
-                ability.setInformed(PP, false);
+            if (PP.getAbilityMode(ability) && (PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR) <= curTime) {
+                PP.setAbilityMode(ability, false);
+                PP.setAbilityInformed(ability, false);
                 player.sendMessage(ability.getAbilityOff());
 
                 for (Player y : player.getWorld().getPlayers()) {
@@ -370,17 +376,18 @@ public class Skills {
     public static void abilityCheck(Player player, SkillType type) {
         PlayerProfile PP = Users.getProfile(player);
         AbilityType ability = type.getAbility();
+        ToolType tool = type.getTool();
 
         if (type.getTool().inHand(player.getItemInHand())) {
-            if (type.getTool().getToolMode(PP)) {
-                type.getTool().setToolMode(PP, false);
+            if (PP.getToolPreparationMode(tool)) {
+                PP.setToolPreparationMode(tool, false);
             }
 
             /* Axes and Woodcutting are odd because they share the same tool.
              * We show them the too tired message when they take action.
              */
             if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
-                if (!ability.getMode(PP) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
+                if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
                     player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                     return;
                 }
@@ -388,7 +395,7 @@ public class Skills {
 
             int ticks = 2 + (PP.getSkillLevel(type) / 50);
 
-            if (!ability.getMode(PP) && cooldownOver(PP.getSkillDATS(ability), ability.getCooldown())) {
+            if (!PP.getAbilityMode(ability) && cooldownOver(PP.getSkillDATS(ability), ability.getCooldown())) {
                 player.sendMessage(ability.getAbilityOn());
 
                 for (Player y : player.getWorld().getPlayers()) {
@@ -398,7 +405,7 @@ public class Skills {
                 }
 
                 PP.setSkillDATS(ability, System.currentTimeMillis()+(ticks * TIME_CONVERSION_FACTOR));
-                ability.setMode(PP, true);
+                PP.setAbilityMode(ability, true);
             }
         }
     }

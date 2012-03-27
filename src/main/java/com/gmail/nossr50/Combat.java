@@ -16,8 +16,10 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.mcLocale;
@@ -63,7 +65,7 @@ public class Combat {
                     Swords.bleedCheck(attacker, target, plugin);
                 }
 
-                if (PPa.getSerratedStrikesMode()) {
+                if (PPa.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
                     applyAbilityAoE(attacker, target, event.getDamage(), plugin, SkillType.SWORDS);
                 }
 
@@ -82,7 +84,7 @@ public class Combat {
                     Axes.impact(attacker, target, event);
                 }
 
-                if (PPa.getSkullSplitterMode()) {
+                if (PPa.getAbilityMode(AbilityType.SKULL_SPLIITER)) {
                     applyAbilityAoE(attacker, target, event.getDamage(), plugin, SkillType.AXES);
                 }
 
@@ -93,7 +95,7 @@ public class Combat {
                     Unarmed.unarmedBonus(PPa, event);
                 }
 
-                if (PPa.getBerserkMode() && mcPermissions.getInstance().berserk(attacker)) {
+                if (PPa.getAbilityMode(AbilityType.BERSERK) && mcPermissions.getInstance().berserk(attacker)) {
                     event.setDamage((int) (event.getDamage() * 1.5));
                 }
 
@@ -155,13 +157,13 @@ public class Combat {
     public static void combatAbilityChecks(Player attacker) {
         PlayerProfile PPa = Users.getProfile(attacker);
 
-        if (PPa.getAxePreparationMode()) {
+        if (PPa.getToolPreparationMode(ToolType.AXE)) {
             Skills.abilityCheck(attacker, SkillType.AXES);
         }
-        else if (PPa.getSwordsPreparationMode()) {
+        else if (PPa.getToolPreparationMode(ToolType.SWORD)) {
             Skills.abilityCheck(attacker, SkillType.SWORDS);
         }
-        else if (PPa.getFistsPreparationMode()) {
+        else if (PPa.getToolPreparationMode(ToolType.FISTS)) {
             Skills.abilityCheck(attacker, SkillType.UNARMED);
         }
     }

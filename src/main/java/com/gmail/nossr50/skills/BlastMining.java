@@ -282,7 +282,7 @@ public class BlastMining {
             tnt.setFuseTicks(0);
 
             PP.setSkillDATS(ability, System.currentTimeMillis()); //Save DATS for Blast Mining
-            PP.setBlastMiningInformed(false);
+            PP.setAbilityInformed(ability, false);
         }
     }
 }
