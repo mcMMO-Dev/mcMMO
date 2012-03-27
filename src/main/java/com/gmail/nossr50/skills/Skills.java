@@ -190,13 +190,11 @@ public class Skills {
      */
     public static void XpCheckSkill(SkillType skillType, Player player) {
         PlayerProfile PP = Users.getProfile(player);
-        int skillXpLevel = PP.getSkillXpLevel(skillType);
-        int xpToNextLevel = PP.getXpToLevel(skillType);
 
-        if (skillXpLevel >= xpToNextLevel) {
+        if (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
             int skillups = 0;
             
-            while (skillXpLevel >= xpToNextLevel) {
+            while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
                 if (skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) {
                     skillups++;
                     PP.addLevels(skillType, 1);
