@@ -14,7 +14,11 @@ public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable{
 
     public McMMOPartyChangeEvent(Player player, String oldParty, String newParty, EventReason reason) {
         super(player);
-        newParty = newParty.replace(":", ".");
+
+        if (newParty != null) {
+            newParty = newParty.replace(":", ".");
+        }
+
         this.oldParty = oldParty;
         this.newParty = newParty;
         this.reason = reason;
