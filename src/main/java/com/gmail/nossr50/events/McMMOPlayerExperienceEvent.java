@@ -6,17 +6,23 @@ import org.bukkit.event.player.PlayerEvent;
 
 import com.gmail.nossr50.datatypes.SkillType;
 
-public class McMMOPlayerExperienceEvent extends PlayerEvent{
+public class McMMOPlayerExperienceEvent extends PlayerEvent {
 
     protected SkillType skill;
+    protected int skillLevel;
 
     public McMMOPlayerExperienceEvent(Player player, SkillType skill) {
         super(player);
         this.skill = skill;
+        this.skillLevel = skill.getSkillLevel(player);
     }
 
     public SkillType getSkill() {
         return skill;
+    }
+
+    public int getSkillLevel() {
+        return skillLevel;
     }
 
     /** Rest of file is required boilerplate for custom events **/
