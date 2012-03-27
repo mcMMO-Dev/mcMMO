@@ -433,16 +433,16 @@ public class Repair {
      * @param enchantsLevel The level of the enchantments on the item
      */
     public static void repairItem(Player player, ItemStack is) {
+        short initialDurability = is.getDurability();
 
         /* Handle the enchants */
         if (LoadProperties.mayLoseEnchants && !mcPermissions.getInstance().arcaneBypass(player)) {
             addEnchants(player, is);
         }
 
-        short repairAmount = getRepairAmount(is, player);
-        is.setDurability(repairAmount);
+        is.setDurability(getRepairAmount(is, player));
 
-        McMMOPlayerRepairEvent event = new McMMOPlayerRepairEvent(player, is, repairAmount);
+        McMMOPlayerRepairEvent event = new McMMOPlayerRepairEvent(player, is, (short) (initialDurability - is.getDurability()));
         Bukkit.getPluginManager().callEvent(event);
     }
 
