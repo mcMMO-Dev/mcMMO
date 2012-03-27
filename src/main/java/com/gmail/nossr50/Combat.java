@@ -100,7 +100,7 @@ public class Combat {
                 }
 
                 if (targetType.equals(EntityType.PLAYER) && mcPermissions.getInstance().disarm(attacker)) {
-                    Unarmed.disarmProcCheck(attacker, (Player) target);
+                    Unarmed.disarmProcCheck(PPa, (Player) target);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.UNARMED, plugin);

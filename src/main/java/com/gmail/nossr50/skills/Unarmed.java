@@ -43,19 +43,19 @@ public class Unarmed {
      * @param PPa Profile of the attacking player
      * @param defender The defending player
      */
-    public static void disarmProcCheck(Player attacker, Player defender) {
+    public static void disarmProcCheck(PlayerProfile PPa, Player defender) {
         final int MAX_BONUS_LEVEL = 1000;
 
-        int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.UNARMED);
+        int skillLevel = PPa.getSkillLevel(SkillType.UNARMED);
         int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        if (attacker.getItemInHand().equals(Material.AIR)) {
-            if (random.nextInt(3000) <= skillCheck) {
-                ItemStack item = defender.getItemInHand();
+        ItemStack inHand = defender.getItemInHand();
 
+        if (!inHand.getType().equals(Material.AIR)) {
+            if (random.nextInt(3000) <= skillCheck) {
                 defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
 
-                m.mcDropItem(defender.getLocation(), item);
+                m.mcDropItem(defender.getLocation(), inHand);
                 defender.setItemInHand(new ItemStack(Material.AIR));
             }
         }
