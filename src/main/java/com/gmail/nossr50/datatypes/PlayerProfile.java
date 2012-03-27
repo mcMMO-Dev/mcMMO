@@ -756,7 +756,7 @@ public class PlayerProfile {
      * @return the ATS for the tool
      */
     public long getToolPreparationATS(ToolType tool) {
-        return skillsDATS.get(tool);
+        return toolATS.get(tool);
     }
 
     /**
