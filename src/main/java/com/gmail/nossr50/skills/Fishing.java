@@ -109,7 +109,11 @@ public class Fishing {
             theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
         }
 
-        theCatch.getItemStack().setDurability((short) (random.nextInt(theCatch.getItemStack().getType().getMaxDurability()))); //Change durability to random value
+        short maxDurability = theCatch.getItemStack().getType().getMaxDurability();
+
+        if (maxDurability > 0) {
+            theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); //Change durability to random value
+        }
 
         m.mcDropItem(player.getLocation(), new ItemStack(Material.RAW_FISH)); //Always drop a fish
         PP.addXP(SkillType.FISHING, LoadProperties.mfishing, player);
