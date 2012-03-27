@@ -13,9 +13,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.events.McMMOItemSpawnEvent;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 
 public class m {
 

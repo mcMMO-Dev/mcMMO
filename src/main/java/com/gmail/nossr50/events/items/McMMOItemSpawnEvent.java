@@ -1,4 +1,4 @@
-package com.gmail.nossr50.events;
+package com.gmail.nossr50.events.items;
 
 import org.bukkit.Location;
 import org.bukkit.event.Cancellable;

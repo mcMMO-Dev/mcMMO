@@ -1,4 +1,4 @@
-package com.gmail.nossr50.events;
+package com.gmail.nossr50.events.skills;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -22,8 +22,8 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.events.McMMOPlayerRepairCheckEvent;
-import com.gmail.nossr50.events.McMMOPlayerRepairEvent;
+import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
+import com.gmail.nossr50.events.skills.McMMOPlayerRepairEvent;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Repair {

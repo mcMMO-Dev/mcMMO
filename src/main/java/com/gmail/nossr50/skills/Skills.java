@@ -20,7 +20,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.ToolType;
-import com.gmail.nossr50.events.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Skills {

@@ -3,7 +3,7 @@ package com.gmail.nossr50.listeners;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import com.gmail.nossr50.events.McMMOPlayerXpGainEvent;
+import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 
 /**
  * Listener for listening to our own events, only really useful for catching errors
