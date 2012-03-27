@@ -12,6 +12,7 @@ Version 1.3.04-dev
  + Added McMMOPlayerRepairCheckEvent for API usage - fires before repair process begins, can be cancelled.
  + Added ability to get skill level from McMMOPlayerExperience events
  + Added McMMOPartyTeleportEvent for API usage - fires before a successful teleportation would occur.
+ + Added McMMOPartyChangeEvent for API usage - fires whenever a player joins or leaves a party
  = Fixed Shake ability dropping bonemeal instead of ink for squids.
  = Fixed Green Terra & Super Breaker awarding 4x drops at high levels.
  = Fixed summoned ocelots never changing skins.
