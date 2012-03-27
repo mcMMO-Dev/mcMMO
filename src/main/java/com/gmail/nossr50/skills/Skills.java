@@ -190,21 +190,22 @@ public class Skills {
      */
     public static void XpCheckSkill(SkillType skillType, Player player) {
         PlayerProfile PP = Users.getProfile(player);
+        int skillXpLevel = PP.getSkillXpLevel(skillType);
+        int xpToNextLevel = PP.getXpToLevel(skillType);
 
-        if (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
+        if (skillXpLevel >= xpToNextLevel) {
             int skillups = 0;
             
-            while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
+            while (skillXpLevel >= xpToNextLevel) {
                 if (skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) {
                     skillups++;
-                    PP.removeXP(skillType, PP.getXpToLevel(skillType));
-                    PP.skillUp(skillType, 1);
+                    PP.addLevels(skillType, 1);
 
                     McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
                     Bukkit.getPluginManager().callEvent(eventToFire);
                 }
                 else {
-                    PP.removeXP(skillType, PP.getXpToLevel(skillType));
+                    PP.addLevels(skillType, 0);
                 }
             }
 

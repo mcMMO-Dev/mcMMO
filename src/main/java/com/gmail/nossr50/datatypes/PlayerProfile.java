@@ -19,111 +19,112 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 
 public class PlayerProfile {
-    //HUD
-    private HUDType hud;
-    
-    //MISC
-    private String party, invite;
-    
-    //TOGGLES
-    private boolean loaded = false, partyhud = true, spoutcraft = false, xpbarlocked = false, placedAnvil = false, partyChatMode = false, adminChatMode = false, godMode = false, greenTerraMode, partyChatOnly = false, greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true, 
-    superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true, abilityuse = true, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, 
-    serratedStrikesMode, hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false, pickaxePreparationMode = false, axePreparationMode = false, skullSplitterMode, berserkMode;
-    
-    //TIMESTAMPS
-    //ATS = (Time of) Activation Time Stamp
-    //DATS = (Time of) Deactivation Time Stamp
-    private int xpGainATS = 0, recentlyHurt = 0, respawnATS, hoePreparationATS, shovelPreparationATS, swordsPreparationATS, fistsPreparationATS, axePreparationATS, pickaxePreparationATS;
-    
-    private SkillType lastgained = null, skillLock = null;
-    
-    //MySQL STUFF
-    private int xpbarinc=0, lastlogin=0, userid = 0, bleedticks = 0;
-    
-    private String playerName;
-    
-    //Time to HashMap this shiz
-    HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and XP
-    HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and XP
-    HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); //Skill ATS
-    
-    String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
 
-    public PlayerProfile(String name)
-    {
+    final static int MAX_BLEED_TICKS = 10;
+
+    /* HUD */
+    private HUDType hud;
+    private int xpbarinc = 0;
+    private SkillType lastgained;
+    private SkillType skillLock;
+
+    /* Party Stuff */
+    private String party;
+    private String invite;
+
+    /* Toggles */
+    private boolean loaded = false;
+    private boolean partyhud = true, spoutcraft = false, xpbarlocked = false;
+    private boolean placedAnvil = false;
+    private boolean partyChatMode = false, partyChatOnly = false, adminChatMode = false;
+    private boolean godMode = false;
+    private boolean greenTerraMode, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, skullSplitterMode, berserkMode;
+    private boolean greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true,
+                    superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true;
+    private boolean hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false,
+                    pickaxePreparationMode = false, axePreparationMode = false;
+    private boolean abilityuse = true;
+
+    /* Timestamps */
+    private int xpGainATS = 0;
+    private int recentlyHurt = 0;
+    private int respawnATS;
+
+    /* mySQL STUFF */
+    private int lastlogin = 0;
+    private int userid = 0;
+    private int bleedticks = 0;
+
+    HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and Levels
+    HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and XP
+    HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>();
+    HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
+
+    private String playerName;
+    private String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+
+    public PlayerProfile(String name) {
         hud = LoadProperties.defaulthud;
-        //Setup the HashMap for ability DATS
-        for(AbilityType abilityType : AbilityType.values())
-        {
+        playerName = name;
+
+        for (AbilityType abilityType : AbilityType.values()) {
             skillsDATS.put(abilityType, 0);
         }
-        
-        //Setup the HashMap for the skills
-        for(SkillType skillType : SkillType.values())
-        {
-            if(skillType != SkillType.ALL)
-            {
+
+        for (SkillType skillType : SkillType.values()) {
+            if (skillType != SkillType.ALL) {
                 skills.put(skillType, 0);
                 skillsXp.put(skillType, 0);
             }
         }
-        
-        playerName = name;
-        if (LoadProperties.useMySQL) 
-        {
-            if(!loadMySQL()) {
+
+        if (LoadProperties.useMySQL) {
+            if (!loadMySQL()) {
                 addMySQLPlayer();
-                loadMySQL();//This is probably not needed anymore, could just delete
+                loadMySQL(); //This is probably not needed anymore, could just delete. // So can we remove this whole function, or just this line?
             }
-        } else {
-            if(!load()) { addPlayer();}
         }
-        lastlogin = ((Long) (System.currentTimeMillis()/1000)).intValue();
+        else if (!load()) {
+            addPlayer();
+        }
+
+        lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
     }
-    
-    public PlayerProfile(String name, boolean addNew)
-    {
+
+    /*
+     * Why do we even have this? The only time it's called, it's false.
+     * Why not combine the two?
+     */
+    public PlayerProfile(String name, boolean addNew) {
         hud = LoadProperties.defaulthud;
-        //Setup the HashMap for ability DATS
-        for(AbilityType abilityType : AbilityType.values())
-        {
+        playerName = name;
+
+        for (AbilityType abilityType : AbilityType.values()) {
             skillsDATS.put(abilityType, 0);
         }
-        
-        //Setup the HashMap for the skills
-        for(SkillType skillType : SkillType.values())
-        {
-            if(skillType != SkillType.ALL)
-            {
+
+        for (SkillType skillType : SkillType.values()) {
+            if (skillType != SkillType.ALL) {
                 skills.put(skillType, 0);
                 skillsXp.put(skillType, 0);
             }
         }
-        
-        playerName = name;
-        if (LoadProperties.useMySQL) 
-        {
-            if(!loadMySQL() && addNew) {
+
+        if (LoadProperties.useMySQL) {
+            if (!loadMySQL() && addNew) {
                 addMySQLPlayer();
-                loadMySQL();//This is probably not needed anymore, could just delete
+                loadMySQL(); //This is probably not needed anymore, could just delete. // So can we remove this whole function, or just this line?
             }
-        } else {
-            if(!load() && addNew) { addPlayer(); loaded = true; }
         }
-        lastlogin = ((Long) (System.currentTimeMillis()/1000)).intValue();
+        else if (!load() && addNew) {
+            addPlayer();
+            loaded = true;
+        }
+
+        lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
     }
-    
-    public int getLastLogin()
-    {
-        return lastlogin;
-    }
-    public int getMySQLuserId()
-    {
-        return userid;
-    }
-    
-    public boolean loadMySQL() 
-    {
+
+    public boolean loadMySQL() {
         Integer id = 0;
         id = mcMMO.database.getInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
         if(id == 0)
@@ -202,8 +203,9 @@ public class PlayerProfile {
         }
         else {
             return false;
-        }        
+        }
     }
+
     public void addMySQLPlayer() {
         Integer id = 0;
         mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
@@ -213,7 +215,7 @@ public class PlayerProfile {
         mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"experience (user_id) VALUES ("+id+")");
         this.userid = id;
     }
-    
+
     public boolean load()
     {
         try {
@@ -317,7 +319,7 @@ public class PlayerProfile {
         }
         return false;
     }
-    
+
     public void save()
     {
         Long timestamp = System.currentTimeMillis()/1000; //Convert to seconds
@@ -440,28 +442,25 @@ public class PlayerProfile {
         }
     }
 
-    public void resetAllData()
-    {
+    public void resetAllData() {
         //This will reset everything to default values and then save the information to FlatFile/MySQL
-        for(SkillType skillType : SkillType.values())
-        {
-            if(skillType == SkillType.ALL)
-                continue;
-            skills.put(skillType, 0);
-            skillsXp.put(skillType, 0);
+        for (SkillType skillType : SkillType.values()) {
+            if (skillType != SkillType.ALL) {
+                skills.put(skillType, 0);
+                skillsXp.put(skillType, 0);
+            }
         }
-        
-        for(AbilityType abilityType : AbilityType.values())
-        {
+
+        for (AbilityType abilityType : AbilityType.values()) {
             skillsDATS.put(abilityType, 0);
         }
-        
+
         //Misc stuff
         party = "";
-        
+
         save();
     }
-    
+
     public void addPlayer()
     {
         try {
@@ -516,134 +515,170 @@ public class PlayerProfile {
             Bukkit.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
     }
-    public void togglePartyHUD()
-    {
-        partyhud = !partyhud;
+
+    /*
+     * mySQL Stuff
+     */
+
+    public int getLastLogin() {
+        return lastlogin;
     }
-    public boolean isLoaded()
-    {
+
+    public int getMySQLuserId() {
+        return userid;
+    }
+
+    public boolean isLoaded() {
         return loaded;
     }
-    public boolean getPartyHUD()
-    {
+
+    /*
+     * God Mode
+     */
+
+    public boolean getGodMode() {
+        return godMode;
+    }
+
+    public void toggleGodMode() {
+        godMode = !godMode;
+    }
+
+    /*
+     * Anvil Placement
+     */
+
+    public void togglePlacedAnvil() {
+        placedAnvil = !placedAnvil;
+    }
+
+    public Boolean getPlacedAnvil() {
+        return placedAnvil;
+    }
+
+    /*
+     * HUD Stuff
+     */
+
+    public void togglePartyHUD() {
+        partyhud = !partyhud;
+    }
+
+    public boolean getPartyHUD() {
         return partyhud;
     }
-    public void toggleSpoutEnabled()
-    {
+
+    public void toggleSpoutEnabled() {
         spoutcraft = !spoutcraft;
     }
-    public HUDType getHUDType()
-    {
+
+    public HUDType getHUDType() {
         return hud;
     }
-    public void setHUDType(HUDType type)
-    {
+
+    public void setHUDType(HUDType type) {
         hud = type;
         save();
     }
-    public boolean getXpBarLocked()
-    {
+
+    public boolean getXpBarLocked() {
         return xpbarlocked;
     }
-    public void toggleXpBarLocked()
-    {
+
+    public void toggleXpBarLocked() {
         xpbarlocked = !xpbarlocked;
     }
-    public int getXpBarInc()
-    {
+
+    public int getXpBarInc() {
         return xpbarinc;
     }
-    public void setXpBarInc(int newvalue)
-    {
+
+    public void setXpBarInc(int newvalue) {
         xpbarinc = newvalue;
     }
-    public void setSkillLock(SkillType newvalue)
-    {
+
+    public void setSkillLock(SkillType newvalue) {
         skillLock = newvalue;
     }
-    public SkillType getSkillLock()
-    {
+
+    public SkillType getSkillLock() {
         return skillLock;
     }
-    public void setLastGained(SkillType newvalue)
-    {
+
+    public void setLastGained(SkillType newvalue) {
         lastgained = newvalue;
     }
-    public SkillType getLastGained()
-    {
+
+    public SkillType getLastGained() {
         return lastgained;
     }
-    
-    public boolean getAdminChatMode() {return adminChatMode;}
-    public boolean getPartyChatMode() {return partyChatMode;}
-    
-    public boolean getGodMode() {return godMode;}
-    
-    public void togglePlacedAnvil()
-    {
-        placedAnvil = !placedAnvil;
+
+    /*
+     * Chat Stuff
+     */
+
+    public boolean getAdminChatMode() {
+        return adminChatMode;
     }
-    public Boolean getPlacedAnvil()
-    {
-        return placedAnvil;
-    }
-    public void toggleAdminChat()
-    {
+
+    public void toggleAdminChat() {
         adminChatMode = !adminChatMode;
     }
-    
-    public void toggleGodMode()
-    {
-        godMode = !godMode;
+
+    public boolean getPartyChatMode() {
+        return partyChatMode;
     }
-    
-    public void togglePartyChat()
-    {
+
+    public void togglePartyChat() {
         partyChatMode = !partyChatMode;
     }
 
-    public boolean isPlayer(String player)
-    {
-        return player.equals(Bukkit.getPlayer(playerName));
+    public boolean getPartyChatOnlyToggle() {
+        return partyChatOnly;
     }
-    public boolean getPartyChatOnlyToggle(){return partyChatOnly;}
-    public void togglePartyChatOnly(){partyChatOnly = !partyChatOnly;}
-    public boolean getAbilityUse(){
-        return abilityuse;
+
+    public void togglePartyChatOnly() {
+        partyChatOnly = !partyChatOnly;
     }
-    public void toggleAbilityUse()
-    {
-        abilityuse = !abilityuse;
-    }
-    public void decreaseBleedTicks()
-    {
-        bleedticks--;
-    }
-    public Integer getBleedTicks(){
-        return bleedticks;
-    }
-    public void setBleedTicks(Integer newvalue){
-        bleedticks = newvalue;
-        
-        //Cap maximum ticks at 10
-        if(bleedticks > 10)
-            bleedticks = 10;
-    }
-    public void addBleedTicks(Integer newvalue){
-        bleedticks+=newvalue;
-        
-        //Cap maximum ticks at 10
-        if(bleedticks > 10)
-            bleedticks = 10;
-    }
-    /*
-     * EXPLOIT PREVENTION
-     */
-    public long getRespawnATS() {return respawnATS;}
-    public void setRespawnATS(long newvalue) {respawnATS = (int) (newvalue/1000);}
 
     /*
-     * TOOLS
+     * Bleed Stuff
+     */
+
+    public void decreaseBleedTicks() {
+        bleedticks--;
+    }
+
+    public int getBleedTicks() {
+        return bleedticks;
+    }
+
+    public void resetBleedTicks() {
+        bleedticks = 0;
+    }
+
+    public void addBleedTicks(int newvalue){
+        bleedticks += newvalue;
+
+        if (bleedticks > MAX_BLEED_TICKS) {
+            bleedticks = MAX_BLEED_TICKS;
+        }
+    }
+
+    /*
+     * Exploit Prevention
+     */
+
+    public long getRespawnATS() {
+        return respawnATS;
+    }
+
+    public void setRespawnATS(long newvalue) {
+        respawnATS = (int) (newvalue / 1000);
+    }
+
+    /*
+     * Tools
      */
 
     /**
@@ -721,28 +756,7 @@ public class PlayerProfile {
      * @return the ATS for the tool
      */
     public long getToolPreparationATS(ToolType tool) {
-        switch (tool) {
-        case AXE:
-            return axePreparationATS;
-
-        case FISTS:
-            return fistsPreparationATS;
-
-        case HOE:
-            return hoePreparationATS;
-
-        case PICKAXE:
-            return pickaxePreparationATS;
-
-        case SHOVEL:
-            return shovelPreparationATS;
-
-        case SWORD:
-            return swordsPreparationATS;
-
-        default:
-            return 0;
-        }
+        return skillsDATS.get(tool);
     }
 
     /**
@@ -752,38 +766,12 @@ public class PlayerProfile {
      * @param ATS the ATS of the tool
      */
     public void setToolPreparationATS(ToolType tool, long ATS) {
-        switch (tool) {
-        case AXE:
-            axePreparationATS = (int) (ATS / 1000);
-            break;
-
-        case FISTS:
-            fistsPreparationATS = (int) (ATS / 1000);
-            break;
-
-        case HOE:
-            hoePreparationATS = (int) (ATS / 1000);
-            break;
-
-        case PICKAXE:
-            pickaxePreparationATS = (int) (ATS / 1000);
-            break;
-
-        case SHOVEL:
-            shovelPreparationATS = (int) (ATS / 1000);
-            break;
-
-        case SWORD:
-            swordsPreparationATS = (int) (ATS / 1000);
-            break;
-
-        default:
-            break;
-        }
+        int startTime = (int) (ATS / 1000);
+        toolATS.put(tool, startTime);
     }
 
     /*
-     * ABILITIES
+     * Abilities
      */
 
     /**
@@ -943,50 +931,70 @@ public class PlayerProfile {
         }
     }
 
+    public boolean getAbilityUse() {
+        return abilityuse;
+    }
+
+    public void toggleAbilityUse() {
+        abilityuse = !abilityuse;
+    }
+
     /*
-     * RECENTLY HURT
+     * Recently Hurt
      */
 
-    public long getRecentlyHurt(){
+    public long getRecentlyHurt() {
         return recentlyHurt;
     }
-    public void setRecentlyHurt(long newvalue){
-        recentlyHurt = (int) (newvalue/1000);
+
+    public void setRecentlyHurt(long newvalue) {
+        recentlyHurt = (int) (newvalue / 1000);
     }
-    public void skillUp(SkillType skillType, int newvalue)
-    {
-        skills.put(skillType, skills.get(skillType)+newvalue);
-    }
-    public Integer getSkillLevel(SkillType skillType)
-    {
-        return skills.get(skillType);
-    }
-    public Integer getSkillXpLevel(SkillType skillType)
-    {
-        return skillsXp.get(skillType);
-    }
-    public void resetSkillXp(SkillType skillType)
-    {
-        skills.put(skillType, 0);
-    }
-    public long getSkillDATS(AbilityType abilityType)
-    {
-        //Is this actually unused, or should it actually be returning the convertedBack variable?
-        //It *is* unused, I don't think I put this here so I'm going to comment it out - nossr50
-        //long convertedBack = skillsDATS.get(abilityType) * 1000;
+
+    /*
+     * Cooldowns
+     */
+
+    /**
+     * Get the current DATS of a skill.
+     *
+     * @param abilityType Ability to get the DATS for
+     * @return the DATS for the ability
+     */
+    public long getSkillDATS(AbilityType abilityType) {
         return skillsDATS.get(abilityType);
     }
-    public void setSkillDATS(AbilityType abilityType, long value)
-    {
-        int wearsOff = (int) (value * .001D);
+
+    /**
+     * Set the current DATS of a skill.
+     *
+     * @param abilityType Ability to set the DATS for
+     * @param DATS the DATS of the ability
+     */
+    public void setSkillDATS(AbilityType abilityType, long DATS) {
+        int wearsOff = (int) (DATS * .001D);
         skillsDATS.put(abilityType, wearsOff);
     }
-    public void resetCooldowns()
-    {
-        for(AbilityType x : skillsDATS.keySet())
-        {
+
+    /**
+     * Reset all skill cooldowns.
+     */
+    public void resetCooldowns() {
+        for (AbilityType x : skillsDATS.keySet()) {
             skillsDATS.put(x, 0);
         }
+    }
+
+    /*
+     * XP Functions
+     */
+
+    public Integer getSkillLevel(SkillType skillType) {
+        return skills.get(skillType);
+    }
+
+    public Integer getSkillXpLevel(SkillType skillType) {
+        return skillsXp.get(skillType);
     }
 
     /**
@@ -1092,40 +1100,6 @@ public class PlayerProfile {
     }
 
     /**
-     * Remove XP from a skill.
-     *
-     * @param skillType Type of skill to modify
-     * @param xp Amount of xp to remove
-     */
-    public void removeXP(SkillType skillType, int xp) {
-        if (skillType.equals(SkillType.ALL)) {
-            for (SkillType skill : SkillType.values()) {
-                if (skill.equals(SkillType.ALL)) {
-                    continue;
-                }
-
-                skillsXp.put(skill, skillsXp.get(skill) - xp);
-            }
-        }
-        else {
-            skillsXp.put(skillType, skillsXp.get(skillType) - xp);
-        }
-    }
-
-    public void acceptInvite() {
-        party = invite;
-        invite = "";
-    }
-
-    public void modifyInvite(String invitename) {
-        invite = invitename;
-    }
-
-    public String getInvite() {
-        return invite;
-    }
-
-    /**
      * Modify a skill level.
      *
      * @param skillType Type of skill to modify
@@ -1149,8 +1123,6 @@ public class PlayerProfile {
 
         save();
     }
-
-
 
     /**
      * Add levels to a skill.
@@ -1177,8 +1149,6 @@ public class PlayerProfile {
         save();
     }
 
-
-
     /**
      * Get the amount of XP remaining before the next level.
      *
@@ -1189,39 +1159,50 @@ public class PlayerProfile {
         return (int) (1020 + (skills.get(skillType) *  20)); //Do we REALLY need to cast to int here?
     }
 
+    /*
+     * Party Stuff
+     */
 
-    //Store the player's party
+    public void acceptInvite() {
+        party = invite;
+        invite = "";
+    }
+
+    public void modifyInvite(String invitename) {
+        invite = invitename;
+    }
+
+    public String getInvite() {
+        return invite;
+    }
+
+    public boolean hasPartyInvite() {
+        if (invite != null && !invite.equals("") && !invite.equals("null")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public void setParty(String newParty) {
         party = newParty;
     }
 
-    //Retrieve the player's party
-    public String getParty() {return party;}
-            //Remove party
+    public String getParty() {
+        return party;
+    }
+
     public void removeParty() {
         party = null;
     }
-    //Retrieve whether or not the player is in a party
-    public boolean inParty() 
-    {
-        if(party != null && !party.equals("") && !party.equals("null")){
+
+    public boolean inParty() {
+        if (party != null && !party.equals("") && !party.equals("null")) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
-    
-    //Retrieve whether or not the player has an invite
-    public boolean hasPartyInvite() {
-        if(invite != null && !invite.equals("") && !invite.equals("null")){
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    public String getPlayerName()
-    {
-        return playerName;
-    }
-}    
+}

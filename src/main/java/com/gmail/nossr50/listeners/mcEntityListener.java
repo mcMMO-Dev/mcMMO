@@ -152,7 +152,7 @@ public class mcEntityListener implements Listener {
         Archery.arrowRetrievalCheck(x, plugin);
 
         if (x instanceof Player) {
-            Users.getProfile((Player)x).setBleedTicks(0);
+            Users.getProfile((Player)x).resetBleedTicks();
         }
     }
 

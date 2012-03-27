@@ -95,7 +95,7 @@ public class Taming {
                 Player target = (Player) entity;
 
                 target.sendMessage(mcLocale.getString("Combat.StruckByGore"));
-                Users.getProfile(target).setBleedTicks(2);
+                Users.getProfile(target).addBleedTicks(2);
             }
             else {
                 mcBleedTimer.add((LivingEntity) entity);
