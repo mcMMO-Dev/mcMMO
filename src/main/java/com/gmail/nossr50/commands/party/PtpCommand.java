@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,6 +12,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
@@ -61,10 +63,16 @@ public class PtpCommand implements CommandExecutor {
 		if (plugin.getServer().getPlayer(args[0]) != null) {
 			Player target = plugin.getServer().getPlayer(args[0]);
 			PlayerProfile PPt = Users.getProfile(target);
+			
 			if (PP.getParty().equals(PPt.getParty())) {
-				player.teleport(target);
-				player.sendMessage(ChatColor.GREEN + "You have teleported to " + target.getName()); //TODO: Needs more locale.
-				target.sendMessage(ChatColor.GREEN + player.getName() + " has teleported to you."); //TODO: Needs more locale.
+			    McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, PP.getParty());
+			    Bukkit.getPluginManager().callEvent(event);
+
+			    if (!event.isCancelled()) {
+    				player.teleport(target);
+    				player.sendMessage(ChatColor.GREEN + "You have teleported to " + target.getName()); //TODO: Needs more locale.
+    				target.sendMessage(ChatColor.GREEN + player.getName() + " has teleported to you."); //TODO: Needs more locale.
+			    }
 			} else {
 			    player.sendMessage(ChatColor.RED + "That player is in a different party than you."); //TODO: Needs more locale.
 			}

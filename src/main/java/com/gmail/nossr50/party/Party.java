@@ -295,7 +295,7 @@ public class Party {
     	savePartyLocks();
     }
     
-    public void deleteParty(String partyName) {
+    private void deleteParty(String partyName) {
     	this.partyPlayers.remove(partyName);
     	this.partyLocks.remove(partyName);
     	this.partyPasswords.remove(partyName);

@@ -21,14 +21,18 @@ public class McMMOPlayerSkillEvent extends PlayerEvent{
         return skill;
     }
 
+    public int getSkillLevel() {
+        return skillLevel;
+    }
+
     /** Rest of file is required boilerplate for custom events **/
     private static final HandlerList handlers = new HandlerList();
-    
+
     @Override
     public HandlerList getHandlers() {
         return handlers;
     }
-    
+
     public static HandlerList getHandlerList() {
         return handlers;
     }
