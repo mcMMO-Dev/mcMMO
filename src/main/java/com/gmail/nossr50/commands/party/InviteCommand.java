@@ -54,7 +54,7 @@ public class InviteCommand implements CommandExecutor {
 
 				player.sendMessage(mcLocale.getString("mcPlayerListener.InviteSuccess"));
 				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite1", new Object[] { PPt.getInvite(), player.getName() }));
-				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite2", new Object[] { "/accept" }));
+				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite2", new Object[] { "accept" }));
 			} else {
 				player.sendMessage(mcLocale.getString("Party.Locked"));
 				return true;
