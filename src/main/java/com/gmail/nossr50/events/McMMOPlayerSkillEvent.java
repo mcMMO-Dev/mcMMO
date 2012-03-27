@@ -14,6 +14,7 @@ public class McMMOPlayerSkillEvent extends PlayerEvent{
     public McMMOPlayerSkillEvent(Player player, SkillType skill) {
         super(player);
         this.skill = skill;
+        this.skillLevel = skill.getSkillLevel(player);
     }
 
     public SkillType getSkill() {
