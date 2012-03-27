@@ -37,11 +37,11 @@ public class MccCommand implements CommandExecutor {
 				player.sendMessage("/ptp " + mcLocale.getString("m.mccPartyTeleport"));
 		}
 		player.sendMessage(mcLocale.getString("m.mccOtherCommands"));
-		player.sendMessage("/mcstats " + ChatColor.RED + " " + mcLocale.getString("m.mccStats"));
+		player.sendMessage("/mcstats " + ChatColor.RED + mcLocale.getString("m.mccStats"));
 		player.sendMessage("/mctop <skillname> <page> " + ChatColor.RED + mcLocale.getString("m.mccLeaderboards"));
 
 		if (mcPermissions.getInstance().mcAbility(player))
-			player.sendMessage("/mcability" + ChatColor.RED + " " + mcLocale.getString("m.mccToggleAbility"));
+			player.sendMessage("/mcability " + ChatColor.RED + mcLocale.getString("m.mccToggleAbility"));
 
 		if (mcPermissions.getInstance().adminChat(player))
 			player.sendMessage("/a " + ChatColor.RED + mcLocale.getString("m.mccAdminToggle"));
@@ -50,10 +50,10 @@ public class MccCommand implements CommandExecutor {
 			player.sendMessage("/inspect " + mcLocale.getString("m.mccInspect"));
 
 		if (mcPermissions.getInstance().mmoedit(player))
-			player.sendMessage("/mmoedit" + mcLocale.getString("m.mccMmoedit"));
+			player.sendMessage("/mmoedit " + mcLocale.getString("m.mccMmoedit"));
 
 		if (mcPermissions.getInstance().mcgod(player))
-			player.sendMessage("/mcgod" + ChatColor.RED + " " + mcLocale.getString("m.mccMcGod"));
+			player.sendMessage("/mcgod " + ChatColor.RED + mcLocale.getString("m.mccMcGod"));
 
 		player.sendMessage(mcLocale.getString("m.mccSkillInfo"));
 		player.sendMessage("/mcmmo " + mcLocale.getString("m.mccModDescription"));
