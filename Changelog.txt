@@ -6,8 +6,11 @@ Key:
   = Fix
   ! Change
   - Removal
-  
-Version 1.3.04-dev
+
+Version 1.3.05-dev
+ +
+
+Version 1.3.04
  + Added McMMOPlayerRepairEvent for API usage - fires after completion of a repair.
  + Added McMMOPlayerRepairCheckEvent for API usage - fires before repair process begins, can be cancelled.
  + Added ability to get skill level from McMMOPlayerExperience events
@@ -21,7 +24,7 @@ Version 1.3.04-dev
  = Fixed bug where /ptp worked on dead party members
  ! Changed MySQL to reload all player information on reconnection
  ! Changed event package structure - be sure to update these if you're using the API in your plugin
- 
+
 Version 1.3.03
  + Added Ocelots to Taming XP tables
  + Added ability to summon Ocelots with Call of the Wild
