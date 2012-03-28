@@ -206,7 +206,7 @@ public class HUDmmo {
      *
      * @param sPlayer Player to initialize XP bar for
      */
-    private void initializeXpBarDisplayStandard(SpoutPlayer sPlayer) {
+    public void initializeXpBarDisplayStandard(SpoutPlayer sPlayer) {
         if (LoadProperties.xpbar) {
             xpbar = new GenericTexture();
 

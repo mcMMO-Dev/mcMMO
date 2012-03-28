@@ -426,6 +426,7 @@ public class Repair {
     public static void repairItem(Player player, ItemStack item, ItemStack repairMaterial) {
         short initialDurability = item.getDurability();
         short newDurability = getRepairAmount(item, player);
+        PlayerInventory inventory = player.getInventory();
 
         McMMOPlayerRepairCheckEvent preEvent = new McMMOPlayerRepairCheckEvent(player, (short) (initialDurability - newDurability), repairMaterial, item);
         Bukkit.getPluginManager().callEvent(preEvent);
@@ -434,7 +435,12 @@ public class Repair {
             return;
         }
 
-        player.getInventory().removeItem(repairMaterial);
+        if (repairMaterial.getType().equals(Material.WOOD)) {
+            removeWood(inventory);
+        }
+        else {
+            inventory.removeItem(repairMaterial);
+        }
 
         /* Handle the enchants */
         if (LoadProperties.mayLoseEnchants && !mcPermissions.getInstance().arcaneBypass(player)) {
@@ -471,5 +477,17 @@ public class Repair {
 
             PP.togglePlacedAnvil();
         }
+    }
+
+    /**
+     * Removes wood from a player's inventory on repair. Needed due to wood having multiple possible data values.
+     *
+     * @param inventory The inventory to remove wood from
+     */
+    private static void removeWood(PlayerInventory inventory) {
+        //TODO: Make this less hackish once there's a better way to do it...
+        int slot = inventory.first(Material.WOOD);
+        ItemStack item = inventory.getItem(slot);
+        item.setAmount(item.getAmount() - 1);
     }
 }
