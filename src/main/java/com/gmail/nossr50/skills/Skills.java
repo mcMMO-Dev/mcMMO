@@ -193,7 +193,7 @@ public class Skills {
 
         if (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
             int skillups = 0;
-            
+
             while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
                 if (skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) {
                     skillups++;

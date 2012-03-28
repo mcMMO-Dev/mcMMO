@@ -58,7 +58,7 @@ public class WoodCutting {
             return;
         }
 
-        int durabilityLoss = toBeFelled.size();
+        int durabilityLoss = durabilityLossCalulate(toBeFelled);
         int xp = 0;
         ItemStack inHand = player.getItemInHand();
 
@@ -213,8 +213,10 @@ public class WoodCutting {
             if (!isTooAggressive(currentBlock, zNegative) && treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative)) {
                 processTreeFelling(zNegative, toBeFelled);
             }
+        }
 
-            if (treeFellerCompatible(yPositive) && !toBeFelled.contains(yPositive)) {
+        if (treeFellerCompatible(yPositive)) {
+            if(!currentBlock.hasMetadata("mcmmoPlacedBlock") && !toBeFelled.contains(yPositive)) {
                 processTreeFelling(yPositive, toBeFelled);
             }
         }
@@ -316,5 +318,17 @@ public class WoodCutting {
         if (LoadProperties.spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
+    }
+
+    private static int durabilityLossCalulate(ArrayList<Block> toBeFelled) {
+        int durabilityLoss = 0;
+        for (Block x : toBeFelled) {
+            if (x.getType().equals(Material.LOG)) {
+                durabilityLoss++;
+                durabilityLoss = durabilityLoss + LoadProperties.abilityDurabilityLoss;
+            }
+        }
+
+        return durabilityLoss;
     }
 }

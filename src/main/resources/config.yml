@@ -126,10 +126,11 @@ Abilities:
 
 #
 #  Settings for Skills
+#  Level cap of 0 for no limit
 ###
 Skills:
     Acrobatics:
-        Level_Cap: 0    #Level cap of 0 for no limit
+        Level_Cap: 0 
     Archery:
         Level_Cap: 0
     Axes:
