@@ -186,7 +186,7 @@ public class mcMMO extends JavaPlugin {
      * @param player Player whose profile to get
      * @return the PlayerProfile object
      */
-    public PlayerProfile getPlayerProfile(Player player) {
+    public static PlayerProfile getPlayerProfile(Player player) {
         return Users.getProfile(player);
     }
 
@@ -198,7 +198,7 @@ public class mcMMO extends JavaPlugin {
      * @param player
      * @param skillType
      */
-    public void checkXp(Player player, SkillType skillType) {
+    public static void checkXp(Player player, SkillType skillType) {
         if (skillType == SkillType.ALL) {
             Skills.XpCheckAll(player);
         }
@@ -216,7 +216,7 @@ public class mcMMO extends JavaPlugin {
      * @param playerb The second player to check
      * @return true if the two players are in the same party, false otherwise
      */
-    public boolean inSameParty(Player playera, Player playerb) {
+    public static boolean inSameParty(Player playera, Player playerb) {
         if (Users.getProfile(playera).inParty() && Users.getProfile(playerb).inParty()) {
             if (Users.getProfile(playera).getParty().equals(Users.getProfile(playerb).getParty())) {
                 return true;
@@ -237,7 +237,7 @@ public class mcMMO extends JavaPlugin {
      *
      * @return the list of parties.
      */
-    public ArrayList<String> getParties() {
+    public static ArrayList<String> getParties() {
         String location = "plugins/mcMMO/mcmmo.users";
         ArrayList<String> parties = new ArrayList<String>();
 
