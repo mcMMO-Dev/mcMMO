@@ -23,7 +23,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -53,7 +52,6 @@ public class mcMMO extends JavaPlugin {
     //Various trackers
     public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     public HashMap<Integer, Player> tntTracker = new HashMap<Integer, Player>();
-    public HashSet<Entity> projectileTracker = new HashSet<Entity>();
 
     public static Database database = null;
 

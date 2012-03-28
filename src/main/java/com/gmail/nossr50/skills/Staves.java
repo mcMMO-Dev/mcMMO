@@ -75,7 +75,6 @@ public class Staves {
             return;
         }
 
-        plugin.projectileTracker.add(projectile);
         projectile.setMetadata("mcmmoFiredFromStaff", new FixedMetadataValue(plugin, true));
     }
 
