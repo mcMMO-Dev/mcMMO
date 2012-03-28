@@ -64,6 +64,11 @@ public class PtpCommand implements CommandExecutor {
 			Player target = plugin.getServer().getPlayer(args[0]);
 			PlayerProfile PPt = Users.getProfile(target);
 			
+			if (target.isDead()) {
+			    player.sendMessage(ChatColor.RED + "You can't teleport to dead players."); //TODO: Needs more locale.
+			    return true;
+			}
+			    
 			if (PP.getParty().equals(PPt.getParty())) {
 			    McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, PP.getParty());
 			    Bukkit.getPluginManager().callEvent(event);
