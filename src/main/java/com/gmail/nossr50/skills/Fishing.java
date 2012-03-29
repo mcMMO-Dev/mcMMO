@@ -101,7 +101,7 @@ public class Fishing {
             FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
             if (random.nextInt(100) <= treasure.getDropChance()) {
-                Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp(), player);
+                Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp());
                 theCatch.setItemStack(treasure.getDrop());
             }
         }
@@ -116,7 +116,7 @@ public class Fishing {
         }
 
         m.mcDropItem(player.getLocation(), new ItemStack(Material.RAW_FISH)); //Always drop a fish
-        PP.addXP(SkillType.FISHING, LoadProperties.mfishing, player);
+        PP.addXP(SkillType.FISHING, LoadProperties.mfishing);
         Skills.XpCheckSkill(SkillType.FISHING, player);
     }
 

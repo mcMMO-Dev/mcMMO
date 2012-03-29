@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class PartyAPI {
 
@@ -21,8 +20,7 @@ public class PartyAPI {
      * @return the name of the player's party
      */
     public static String getPartyName(Player player) {
-        PlayerProfile PP = Users.getProfile(player);
-        return PP.getParty();
+        return Users.getProfile(player).getParty();
     }
 
     /**
@@ -34,8 +32,7 @@ public class PartyAPI {
      * @return true if the player is in a party, false otherwise
      */
     public static boolean inParty(Player player) {
-        PlayerProfile PP = Users.getProfile(player);
-        return PP.inParty();
+        return Users.getProfile(player).inParty();
     }
 
     /**
@@ -48,13 +45,8 @@ public class PartyAPI {
      * @return true if the two players are in the same party, false otherwise
      */
     public static boolean inSameParty(Player playera, Player playerb) {
-        if (Users.getProfile(playera).inParty() && Users.getProfile(playerb).inParty()) {
-            if (Users.getProfile(playera).getParty().equals(Users.getProfile(playerb).getParty())) {
-                return true;
-            }
-            else {
-                return false;
-            }
+        if (inParty(playera) && inParty(playerb) && getPartyName(playera).equals(getPartyName(playerb))) {
+            return true;
         }
         else {
             return false;

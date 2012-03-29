@@ -257,7 +257,7 @@ public class BlastMining {
         Block block = player.getTargetBlock(transparent, BLOCKS_AWAY);
 
         if (block.getType().equals(Material.TNT) && m.blockBreakSimulate(block, player, true) && PP.getSkillLevel(SkillType.MINING) >= 125) {
-            final int MAX_DISTANCE_AWAY = 10;
+            final double MAX_DISTANCE_AWAY = 10.0;
             AbilityType ability = AbilityType.BLAST_MINING;
 
             /* Check Cooldown */

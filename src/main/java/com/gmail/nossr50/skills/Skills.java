@@ -26,7 +26,7 @@ import com.gmail.nossr50.locale.mcLocale;
 public class Skills {
 
     private final static int TIME_CONVERSION_FACTOR = 1000;
-    private final static int MAX_DISTANCE_AWAY = 10;
+    private final static double MAX_DISTANCE_AWAY = 10.0;
 
     /**
      * Checks to see if the cooldown for an item or ability is expired.

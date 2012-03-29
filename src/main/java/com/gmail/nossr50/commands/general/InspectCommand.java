@@ -47,7 +47,7 @@ public class InspectCommand implements CommandExecutor {
             PlayerProfile PPt = Users.getProfile(target);
             
             //If they are not an Op they have to be close
-            if(sender instanceof Player && !player.isOp() && !m.isNear(player.getLocation(), target.getLocation(), 5))
+            if(sender instanceof Player && !player.isOp() && !m.isNear(player.getLocation(), target.getLocation(), 5.0))
             {
                 sender.sendMessage("You are too far away to inspect that player!"); //TODO: Needs more locale.
             }

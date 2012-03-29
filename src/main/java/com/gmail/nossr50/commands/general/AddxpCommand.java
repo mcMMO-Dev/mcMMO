@@ -41,7 +41,7 @@ public class AddxpCommand implements CommandExecutor {
 			} else if (args.length == 3) {
 				if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
 					int newvalue = Integer.valueOf(args[2]);
-					Users.getProfile(plugin.getServer().getPlayer(args[0])).addXPOverrideNoBonus(Skills.getSkillType(args[1]), newvalue);
+					Users.getProfile(plugin.getServer().getPlayer(args[0])).addXPOverride(Skills.getSkillType(args[1]), newvalue);
 					plugin.getServer().getPlayer(args[0]).sendMessage(ChatColor.GREEN + "Experience granted!"); //TODO: Needs more locale.
 					System.out.println(args[1] + " has been modified for " + plugin.getServer().getPlayer(args[0]).getName() + ".");
 					Skills.XpCheckAll(plugin.getServer().getPlayer(args[0]));
@@ -65,14 +65,14 @@ public class AddxpCommand implements CommandExecutor {
 		if (args.length == 3) {
 			if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
 				int newvalue = Integer.valueOf(args[2]);
-				Users.getProfile(plugin.getServer().getPlayer(args[0])).addXP(Skills.getSkillType(args[1]), newvalue, plugin.getServer().getPlayer(args[0]));
+				Users.getProfile(plugin.getServer().getPlayer(args[0])).addXP(Skills.getSkillType(args[1]), newvalue);
 				plugin.getServer().getPlayer(args[0]).sendMessage(ChatColor.GREEN + "Experience granted!"); //TODO: Needs more locale.
 				player.sendMessage(ChatColor.RED + args[1] + " has been modified."); //TODO: Needs more locale.
 				Skills.XpCheckAll(plugin.getServer().getPlayer(args[0]));
 			}
 		} else if (args.length == 2 && m.isInt(args[1]) && Skills.isSkill(args[0])) {
 			int newvalue = Integer.valueOf(args[1]);
-			Users.getProfile(player).addXP(Skills.getSkillType(args[0]), newvalue, player);
+			Users.getProfile(player).addXP(Skills.getSkillType(args[0]), newvalue);
 			player.sendMessage(ChatColor.GREEN + "Experience granted!"); //TODO: Needs more locale.
 			player.sendMessage(ChatColor.RED + args[0] + " has been modified."); //TODO: Needs more locale.
 			Skills.XpCheckAll(plugin.getServer().getPlayer(args[0]));

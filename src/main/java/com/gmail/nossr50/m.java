@@ -177,13 +177,8 @@ public class m {
      * @param maxDistance The max distance apart
      * @return true if the distance between <code>first</code> and <code>second</code> is less than <code>maxDistance</code>, false otherwise
      */
-    public static boolean isNear(Location first, Location second, int maxDistance) {
-        double relX = first.getX() - second.getX();
-        double relY = first.getY() - second.getY();
-        double relZ = first.getZ() - second.getZ();
-        double dist = (relX * relX) + (relY * relY) + (relZ * relZ);
-
-        if (dist < maxDistance * maxDistance) {
+    public static boolean isNear(Location first, Location second, double maxDistance) {
+        if (first.distance(second) < maxDistance) {
             return true;
         }
         else {

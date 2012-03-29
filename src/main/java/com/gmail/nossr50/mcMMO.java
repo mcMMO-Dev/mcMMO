@@ -1,7 +1,6 @@
 package com.gmail.nossr50;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.commands.skills.*;
 import com.gmail.nossr50.commands.spout.*;
 import com.gmail.nossr50.commands.mc.*;
@@ -9,7 +8,6 @@ import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.runnables.*;
-import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.listeners.mcBlockListener;
 import com.gmail.nossr50.listeners.mcEntityListener;
@@ -185,23 +183,6 @@ public class mcMMO extends JavaPlugin {
      */
     public static PlayerProfile getPlayerProfile(Player player) {
         return Users.getProfile(player);
-    }
-
-    /**
-     * Check the XP of a player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player
-     * @param skillType
-     */
-    public static void checkXp(Player player, SkillType skillType) {
-        if (skillType == SkillType.ALL) {
-            Skills.XpCheckAll(player);
-        }
-        else {
-            Skills.XpCheckSkill(skillType, player);
-        }
     }
 
     /**

@@ -125,7 +125,7 @@ public class PlayerProfile {
     }
 
     public boolean loadMySQL() {
-        Integer id = 0;
+        int id = 0;
         id = mcMMO.database.getInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
         if(id == 0)
             return false;
@@ -207,7 +207,7 @@ public class PlayerProfile {
     }
 
     public void addMySQLPlayer() {
-        Integer id = 0;
+        int id = 0;
         mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
         id = mcMMO.database.getInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
         mcMMO.database.write("INSERT INTO "+LoadProperties.MySQLtablePrefix+"cooldowns (user_id) VALUES ("+id+")");
@@ -989,11 +989,11 @@ public class PlayerProfile {
      * XP Functions
      */
 
-    public Integer getSkillLevel(SkillType skillType) {
+    public int getSkillLevel(SkillType skillType) {
         return skills.get(skillType);
     }
 
-    public Integer getSkillXpLevel(SkillType skillType) {
+    public int getSkillXpLevel(SkillType skillType) {
         return skillsXp.get(skillType);
     }
 
@@ -1003,7 +1003,7 @@ public class PlayerProfile {
      * @param skillType The skill to add XP to
      * @param newValue The amount of XP to add
      */
-    public void addXPOverrideNoBonus(SkillType skillType, int newValue) {
+    public void addXPOverride(SkillType skillType, int newValue) {
         Player player = Bukkit.getPlayer(playerName);
 
         if (skillType.equals(SkillType.ALL)) {
@@ -1029,26 +1029,9 @@ public class PlayerProfile {
      * @param skillType The skill to add XP to
      * @param newValue The amount of XP to add
      */
-    public void addXPOverride(SkillType skillType, int newValue) {
-        Player player = Bukkit.getPlayer(playerName);
-
-        if (skillType.equals(SkillType.ALL)) {
-            for (SkillType x : SkillType.values()) {
-                if (x.equals(SkillType.ALL)) {
-                    continue;
-                }
-
-                Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, x, newValue));
-                skillsXp.put(x, skillsXp.get(x) + newValue);
-            }
-        }
-        else {
-            int xp = newValue * LoadProperties.xpGainMultiplier;
-
-            Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
-            skillsXp.put(skillType, skillsXp.get(skillType) + xp);
-            lastgained = skillType;
-        }
+    public void addXPOverrideBonus(SkillType skillType, int newValue) {
+        int xp = newValue * LoadProperties.xpGainMultiplier;
+        addXPOverride(skillType, xp);
     }
 
     /**
@@ -1058,7 +1041,9 @@ public class PlayerProfile {
      * @param newvalue The amount of XP to add
      * @param player The player to add XP to
      */
-    public void addXP(SkillType skillType, int newValue, Player player) {
+    public void addXP(SkillType skillType, int newValue) {
+        Player player = Bukkit.getPlayer(playerName);
+
         if (System.currentTimeMillis() < ((xpGainATS * 1000) + 250) || player.getGameMode().equals(GameMode.CREATIVE)) {
             return;
         }
@@ -1067,20 +1052,7 @@ public class PlayerProfile {
         double bonusModifier = 0;
 
         if (inParty()) {
-            for (Player x : Party.getInstance().getPartyMembers(player)) {
-                if (x.isOnline() && !x.getName().equals(player.getName()) && Party.getInstance().isPartyLeader(x.getName(), this.getParty())) {
-                    if (m.isNear(player.getLocation(), x.getLocation(), 25)) {
-                        PlayerProfile PartyLeader = Users.getProfile(x);
-
-                        if (PartyLeader.getSkillLevel(skillType) >= this.getSkillLevel(skillType)) {
-             
-                            int leaderLevel = PartyLeader.getSkillLevel(skillType);
-                            int difference = leaderLevel - this.getSkillLevel(skillType);
-                            bonusModifier = (difference * 0.75D) / 100D;
-                        }
-                    }
-                }
-            }
+            bonusModifier = partyModifier(skillType);
         }
 
         int xp = (int) (newValue / skillType.getXpModifier()) * LoadProperties.xpGainMultiplier;
@@ -1155,8 +1127,36 @@ public class PlayerProfile {
      * @param skillType Type of skill to check
      * @return the XP remaining until next level
      */
-    public Integer getXpToLevel(SkillType skillType) {
+    public int getXpToLevel(SkillType skillType) {
         return (int) (1020 + (skills.get(skillType) *  20)); //Do we REALLY need to cast to int here?
+    }
+
+    /**
+     * Calculate the party XP modifier.
+     *
+     * @param skillType Type of skill to check
+     * @return the party bonus multiplier
+     */
+    private double partyModifier(SkillType skillType) {
+        Player player = Bukkit.getPlayer(playerName);
+        double bonusModifier = 0.0;
+
+        for (Player x : Party.getInstance().getPartyMembers(player)) {
+            if (x.isOnline() && !x.getName().equals(player.getName()) && Party.getInstance().isPartyLeader(x.getName(), this.getParty())) {
+                if (m.isNear(player.getLocation(), x.getLocation(), 25.0)) {
+                    PlayerProfile PartyLeader = Users.getProfile(x);
+
+                    if (PartyLeader.getSkillLevel(skillType) >= this.getSkillLevel(skillType)) {
+
+                        int leaderLevel = PartyLeader.getSkillLevel(skillType);
+                        int difference = leaderLevel - this.getSkillLevel(skillType);
+                        bonusModifier = (difference * 0.75) / 100.0;
+                    }
+                }
+            }
+        }
+
+        return bonusModifier;
     }
 
     /*

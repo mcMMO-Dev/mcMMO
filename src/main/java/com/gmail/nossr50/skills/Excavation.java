@@ -120,7 +120,7 @@ public class Excavation {
         }
 
         //Handle XP related tasks
-        PP.addXP(SkillType.EXCAVATION, xp, player);
+        PP.addXP(SkillType.EXCAVATION, xp);
         Skills.XpCheckSkill(SkillType.EXCAVATION, player);
     }
 

@@ -307,7 +307,7 @@ public class mcEntityListener implements Listener {
                 break;
             }
 
-            PP.addXP(SkillType.TAMING, xp, player);
+            PP.addXP(SkillType.TAMING, xp);
             Skills.XpCheckSkill(SkillType.TAMING, player);
         }
     }

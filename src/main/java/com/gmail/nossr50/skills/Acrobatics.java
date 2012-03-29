@@ -58,7 +58,7 @@ public class Acrobatics {
 
             /* Check for death */
             if (health - damage >= 1) {
-                PP.addXP(SkillType.ACROBATICS, damage * ROLL_XP_MODIFIER, player);
+                PP.addXP(SkillType.ACROBATICS, damage * ROLL_XP_MODIFIER);
                 Skills.XpCheckSkill(SkillType.ACROBATICS, player);
 
                 event.setDamage(newDamage);
@@ -76,7 +76,7 @@ public class Acrobatics {
             }
         }
         else if (health - damage >= 1) {
-            PP.addXP(SkillType.ACROBATICS, event.getDamage() * FALL_XP_MODIFIER, player);
+            PP.addXP(SkillType.ACROBATICS, event.getDamage() * FALL_XP_MODIFIER);
             Skills.XpCheckSkill(SkillType.ACROBATICS, player);
         }
     }
@@ -111,7 +111,7 @@ public class Acrobatics {
                 defender.sendMessage(mcLocale.getString("Acrobatics.Dodge"));
 
                 if (System.currentTimeMillis() >= (5000 + PPd.getRespawnATS()) && defender.getHealth() >= 1) {
-                    PPd.addXP(SkillType.ACROBATICS, damage * DODGE_MODIFIER, defender);
+                    PPd.addXP(SkillType.ACROBATICS, damage * DODGE_MODIFIER);
                     Skills.XpCheckSkill(SkillType.ACROBATICS, defender);
                 }
 
