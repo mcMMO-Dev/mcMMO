@@ -9,6 +9,7 @@ Key:
 
 Version 1.3.05-dev
  = Fixed bug with repairing wooden tools
+ = Fixed bug where spawned wolves only had 8 health.
  ! Changed Tree Feller to account for ability durability loss but not leaves.
 
 Version 1.3.04

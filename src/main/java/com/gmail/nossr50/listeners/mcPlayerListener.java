@@ -358,7 +358,7 @@ public class mcPlayerListener implements Listener {
         String command = message.substring(1).split(" ")[0];
 
         if (plugin.aliasMap.containsKey(command)) {
-            if(command.equalsIgnoreCase(plugin.aliasMap.get(command))) {
+            if (command.equalsIgnoreCase(plugin.aliasMap.get(command))) {
                 return;
             }
             event.getPlayer().chat(message.replaceFirst(command, plugin.aliasMap.get(command)));

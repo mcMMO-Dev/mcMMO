@@ -243,13 +243,18 @@ public class Taming {
                             return;
                         }
                     }
-                }   
+                }
+
                 LivingEntity entity = player.getWorld().spawnCreature(player.getLocation(), type);
                 entity.setMetadata("mcmmoSummoned", new FixedMetadataValue(plugin, true));
                 ((Tameable) entity).setOwner(player);
 
                 if (entity.getType().equals(EntityType.OCELOT)) {
                     ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + random.nextInt(3)));
+                }
+
+                if (entity.getType().equals(EntityType.WOLF)) {
+                    entity.setHealth(entity.getMaxHealth());
                 }
 
                 player.setItemInHand(new ItemStack(summonItem, item.getAmount() - summonAmount));
