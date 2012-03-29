@@ -190,9 +190,9 @@ public class Skills {
      */
     public static void XpCheckSkill(SkillType skillType, Player player) {
         PlayerProfile PP = Users.getProfile(player);
-
+        int skillups = 0;
+        
         if (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
-            int skillups = 0;
 
             while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
                 if (skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) {
@@ -222,7 +222,7 @@ public class Skills {
                     if (LoadProperties.xpbar) {
                         SpoutStuff.updateXpBar(sPlayer);
                     }
-
+                    
                     SpoutStuff.levelUpNotification(skillType, sPlayer);
                 }
                 else {
@@ -231,6 +231,16 @@ public class Skills {
             }
             else {
                 player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+            }
+        }
+        
+        /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
+        if(skillups == 0 && player instanceof SpoutPlayer) {
+            SpoutPlayer sPlayer = (SpoutPlayer) player;
+            if (sPlayer.isSpoutCraftEnabled()) {
+                if (LoadProperties.xpbar) {
+                    SpoutStuff.updateXpBar(sPlayer);
+                }
             }
         }
     }
