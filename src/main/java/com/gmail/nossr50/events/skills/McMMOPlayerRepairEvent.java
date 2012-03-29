@@ -7,20 +7,20 @@ import com.gmail.nossr50.datatypes.SkillType;
 
 public class McMMOPlayerRepairEvent extends McMMOPlayerSkillEvent{
 
-    private ItemStack item;
+    private ItemStack repairedObject;
     private short repairAmount;
 
-    public McMMOPlayerRepairEvent(Player player, ItemStack item, short repairAmount) {
+    public McMMOPlayerRepairEvent(Player player, ItemStack repairedObject, short repairAmount) {
         super(player, SkillType.REPAIR);
-        this.item = item;
+        this.repairedObject = repairedObject;
         this.repairAmount = repairAmount;
     }
 
-    public ItemStack getItem() {
-        return item;
+    public ItemStack getRepairedObject() {
+        return repairedObject;
     }
 
-    public int getRepairAmount() {
+    public short getRepairAmount() {
         return repairAmount;
     }
 }

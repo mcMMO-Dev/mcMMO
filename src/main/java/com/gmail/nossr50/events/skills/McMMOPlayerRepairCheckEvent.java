@@ -8,12 +8,12 @@ import com.gmail.nossr50.datatypes.SkillType;
 
 public class McMMOPlayerRepairCheckEvent extends McMMOPlayerSkillEvent implements Cancellable{
 
-    private int repairAmount;
+    private short repairAmount;
     private ItemStack repairMaterial;
     private ItemStack repairedObject;
     private boolean cancelled;
 
-    public McMMOPlayerRepairCheckEvent(Player player, int repairAmount, ItemStack repairMaterial, ItemStack repairedObject) {
+    public McMMOPlayerRepairCheckEvent(Player player, short repairAmount, ItemStack repairMaterial, ItemStack repairedObject) {
         super(player, SkillType.REPAIR);
         this.repairAmount = repairAmount;
         this.repairMaterial = repairMaterial;
@@ -21,7 +21,7 @@ public class McMMOPlayerRepairCheckEvent extends McMMOPlayerSkillEvent implement
         this.cancelled = false;
     }
 
-    public int getRepairAmount() {
+    public short getRepairAmount() {
         return repairAmount;
     }
 
