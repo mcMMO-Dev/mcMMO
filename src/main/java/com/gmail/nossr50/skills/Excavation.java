@@ -104,7 +104,7 @@ public class Excavation {
 
             for (ExcavationTreasure treasure : treasures) {
                 if (skillLevel >= treasure.getDropLevel()) {
-                    if (random.nextDouble() * 100.0d <= treasure.getDropChance()) {
+                    if (random.nextDouble() * 100 <= treasure.getDropChance()) {
                         xp += treasure.getXp();
                         is.add(treasure.getDrop());
                     }

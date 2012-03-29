@@ -65,7 +65,7 @@ public class Combat {
                     Swords.bleedCheck(attacker, target, plugin);
                 }
 
-                if (PPa.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
+                if (PPa.getAbilityMode(AbilityType.SERRATED_STRIKES) && mcPermissions.getInstance().serratedStrikes(attacker)) {
                     applyAbilityAoE(attacker, target, event.getDamage(), plugin, SkillType.SWORDS);
                 }
 
@@ -84,7 +84,7 @@ public class Combat {
                     Axes.impact(attacker, target, event);
                 }
 
-                if (PPa.getAbilityMode(AbilityType.SKULL_SPLIITER)) {
+                if (PPa.getAbilityMode(AbilityType.SKULL_SPLIITER) && mcPermissions.getInstance().skullSplitter(attacker)) {
                     applyAbilityAoE(attacker, target, event.getDamage(), plugin, SkillType.AXES);
                 }
 

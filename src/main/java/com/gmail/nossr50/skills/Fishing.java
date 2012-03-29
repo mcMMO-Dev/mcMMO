@@ -100,7 +100,7 @@ public class Fishing {
         if (LoadProperties.fishingDrops) {
             FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
-            if (random.nextDouble() * 100.0d <= treasure.getDropChance()) {
+            if (random.nextDouble() * 100 <= treasure.getDropChance()) {
                 Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp());
                 theCatch.setItemStack(treasure.getDrop());
             }
