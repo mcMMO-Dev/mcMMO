@@ -73,7 +73,9 @@ public class AddxpCommand implements CommandExecutor {
 		} else if (args.length == 2 && m.isInt(args[1]) && Skills.isSkill(args[0])) {
 			int newvalue = Integer.valueOf(args[1]);
 			Users.getProfile(player).addXP(Skills.getSkillType(args[0]), newvalue, player);
-			player.sendMessage(ChatColor.RED + args[0] + " has been modified.");
+			player.sendMessage(ChatColor.GREEN + "Experience granted!"); //TODO: Needs more locale.
+			player.sendMessage(ChatColor.RED + args[0] + " has been modified."); //TODO: Needs more locale.
+			Skills.XpCheckAll(plugin.getServer().getPlayer(args[0]));
 		} else {
 			player.sendMessage(ChatColor.RED + "Usage is /addxp playername skillname xp"); //TODO: Needs more locale.
 		}
