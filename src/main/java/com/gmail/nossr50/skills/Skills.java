@@ -222,7 +222,7 @@ public class Skills {
                     if (LoadProperties.xpbar) {
                         SpoutStuff.updateXpBar(sPlayer);
                     }
-                    
+
                     SpoutStuff.levelUpNotification(skillType, sPlayer);
                 }
                 else {
@@ -233,9 +233,9 @@ public class Skills {
                 player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
             }
         }
-        
+
         /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
-        if(skillups == 0 && player instanceof SpoutPlayer) {
+        if (skillups == 0 && LoadProperties.spoutEnabled && player instanceof SpoutPlayer) {
             SpoutPlayer sPlayer = (SpoutPlayer) player;
             if (sPlayer.isSpoutCraftEnabled()) {
                 if (LoadProperties.xpbar) {
