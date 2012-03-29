@@ -100,7 +100,6 @@ permissions:
             mcmmo.admin: true
             mcmmo.tools.*: true
             mcmmo.chat.adminchat: true
-            mcmmo.repair.arcanebypass: true
     mcmmo.defaults:
         default: true
         description: mcmmo permisions that default to true
@@ -118,10 +117,9 @@ permissions:
             mcmmo.chat.adminchat: true
             mcmmo.admin: true
             mcmmo.tools.*: true
-            mcmmo.repair.arcanebypass: true
     mcmmo.admin:
         description: Allows access to mmoupdate and other sensitive commands        
-    mcmmo.repair.arcanebypass:
+    mcmmo.bypass.arcanebypass:
         description: Allows user to bypass Arcane Repair so he will never lose enchantments
     mcmmo.tools.*:
         description: Implies all mcmmo.tools permissions.
