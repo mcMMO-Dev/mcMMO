@@ -8,9 +8,11 @@ Key:
   - Removal
 
 Version 1.3.05-dev
+ + Added ExperienceAPI and PartyAPI classes for developer use
  = Fixed XP bar not updating when XP was gained
  = Fixed bug with repairing wooden tools
  = Fixed bug where spawned wolves only had 8 health.
+ = Fixed bug where rare Treasures from Excavation were dropping too often
  ! Changed Tree Feller to account for ability durability loss but not leaves.
  ! Changed bypass node for Arcane Forging to not default to true for OPs
 
