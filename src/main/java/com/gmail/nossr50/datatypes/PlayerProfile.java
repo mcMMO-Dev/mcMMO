@@ -1132,6 +1132,24 @@ public class PlayerProfile {
     }
 
     /**
+     * Gets the power level of a player.
+     *
+     * @return the power level of the player
+     */
+    public int getPowerLevel() {
+        Player player = Bukkit.getPlayer(playerName);
+        int powerLevel = 0;
+
+        for (SkillType type : SkillType.values()) {
+            if (type.getPermissions(player)) {
+                powerLevel += getSkillLevel(type);
+            }
+        }
+
+        return powerLevel;
+    }
+
+    /**
      * Calculate the party XP modifier.
      *
      * @param skillType Type of skill to check

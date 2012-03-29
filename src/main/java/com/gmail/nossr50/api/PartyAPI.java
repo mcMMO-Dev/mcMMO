@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.party.Party;
 
 public class PartyAPI {
 
@@ -45,12 +46,7 @@ public class PartyAPI {
      * @return true if the two players are in the same party, false otherwise
      */
     public static boolean inSameParty(Player playera, Player playerb) {
-        if (inParty(playera) && inParty(playerb) && getPartyName(playera).equals(getPartyName(playerb))) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return Party.getInstance().inSameParty(playera, playerb);
     }
 
     /**
@@ -91,4 +87,18 @@ public class PartyAPI {
         }
         return parties;
     }
+
+    /**
+     * Get a list of all players in this player's party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to check
+     * @return all the players in the player's party
+     */
+    public static ArrayList<Player> getPartyMembers(Player player) {
+        return Party.getInstance().getPartyMembers(player);
+    }
+
+    
 }

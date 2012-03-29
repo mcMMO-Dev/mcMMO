@@ -84,7 +84,7 @@ public class InspectCommand implements CommandExecutor {
             if (mcPermissions.getInstance().repair(target))
                 sender.sendMessage(Skills.getSkillStats(mcLocale.getString("mcPlayerListener.RepairSkill"), PPt.getSkillLevel(SkillType.REPAIR), PPt.getSkillXpLevel(SkillType.REPAIR), PPt.getXpToLevel(SkillType.REPAIR)));
 
-            sender.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel") + ChatColor.GREEN + (m.getPowerLevel(target, PPt)));
+            sender.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel") + ChatColor.GREEN + (PPt.getPowerLevel()));
         } else {
             if(sender instanceof Player && !player.isOp())
             {

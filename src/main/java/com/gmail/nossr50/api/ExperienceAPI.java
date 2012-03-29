@@ -96,6 +96,7 @@ public class ExperienceAPI {
      * </br>
      * This function is designed for API usage.
      *
+     * @param player The player to add levels to
      * @param skillType Type of skill to add levels to
      * @param levels Number of levels to add
      */
@@ -114,5 +115,17 @@ public class ExperienceAPI {
      */
     public static int getLevel(Player player, SkillType skillType) {
         return Users.getProfile(player).getSkillLevel(skillType);
+    }
+
+    /**
+     * Gets the power level of a player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to get the power level for
+     * @return the power level of the player
+     */
+    public static int getPowerLevel(Player player) {
+        return Users.getProfile(player).getPowerLevel();
     }
 }

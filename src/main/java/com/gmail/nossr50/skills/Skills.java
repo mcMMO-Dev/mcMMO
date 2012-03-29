@@ -175,7 +175,7 @@ public class Skills {
             ps.statVal = PP.getSkillLevel(skillType);
         }
         else {
-            ps.statVal = m.getPowerLevel(player, PP);
+            ps.statVal = PP.getPowerLevel();
         }
 
         ps.name = player.getName();

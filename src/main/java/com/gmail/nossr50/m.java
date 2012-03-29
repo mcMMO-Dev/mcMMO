@@ -11,8 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
@@ -97,25 +95,6 @@ public class m {
     }
 
     /**
-     * Gets the power level of a player.
-     *
-     * @param player The player to get the power level of
-     * @param PP The profile of the player
-     * @return the power level of the player
-     */
-    public static int getPowerLevel(Player player, PlayerProfile PP) {
-        int powerLevel = 0;
-
-        for (SkillType type : SkillType.values()) {
-            if (type.getPermissions(player)) {
-                powerLevel += PP.getSkillLevel(type);
-            }
-        }
-
-        return powerLevel;
-    }
-
-    /**
      * Simulate a block break event.
      *
      * @param block The block to break
@@ -148,7 +127,7 @@ public class m {
      * @param inHand The item to check the tier of
      * @return the tier of the item
      */
-    public static Integer getTier(ItemStack inHand) {
+    public static int getTier(ItemStack inHand) {
         int tier = 0;
 
         if (ItemChecks.isWoodTool(inHand)) {
