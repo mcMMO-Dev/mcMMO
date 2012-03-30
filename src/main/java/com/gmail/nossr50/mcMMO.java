@@ -104,12 +104,7 @@ public class mcMMO extends JavaPlugin {
 
         PluginManager pm = getServer().getPluginManager();
 
-        if (pm.getPlugin("Spout") != null) {
-            LoadProperties.spoutEnabled = true;
-        }
-        else {
-            LoadProperties.spoutEnabled = false;
-        }
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, new SpoutStart(this), 20); //Schedule Spout Activation 1 second after start-up
 
         //Register events
         pm.registerEvents(playerListener, this);
@@ -143,16 +138,6 @@ public class mcMMO extends JavaPlugin {
         scheduler.scheduleSyncRepeatingTask(this, new mcBleedTimer(this), 0, 40);
 
         registerCommands();
-
-        //Spout Stuff
-        if (LoadProperties.spoutEnabled) {
-            SpoutStuff.setupSpoutConfigs();
-            SpoutStuff.registerCustomEvent();
-            SpoutStuff.extractFiles(); //Extract source materials
-
-            FileManager FM = SpoutManager.getFileManager();
-            FM.addToPreLoginCache(this, SpoutStuff.getFiles());
-        }
 
         if (LoadProperties.statsTracking) {
             //Plugin Metrics running in a new thread
