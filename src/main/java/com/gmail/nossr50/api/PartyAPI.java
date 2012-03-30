@@ -20,7 +20,7 @@ public class PartyAPI {
      * @param player The player to check the party name of
      * @return the name of the player's party
      */
-    public static String getPartyName(Player player) {
+    public String getPartyName(Player player) {
         return Users.getProfile(player).getParty();
     }
 
@@ -32,7 +32,7 @@ public class PartyAPI {
      * @param player The player to check
      * @return true if the player is in a party, false otherwise
      */
-    public static boolean inParty(Player player) {
+    public boolean inParty(Player player) {
         return Users.getProfile(player).inParty();
     }
 
@@ -45,7 +45,7 @@ public class PartyAPI {
      * @param playerb The second player to check
      * @return true if the two players are in the same party, false otherwise
      */
-    public static boolean inSameParty(Player playera, Player playerb) {
+    public boolean inSameParty(Player playera, Player playerb) {
         return Party.getInstance().inSameParty(playera, playerb);
     }
 
@@ -56,7 +56,7 @@ public class PartyAPI {
      *
      * @return the list of parties.
      */
-    public static ArrayList<String> getParties() {
+    public ArrayList<String> getParties() {
         String location = "plugins/mcMMO/mcmmo.users";
         ArrayList<String> parties = new ArrayList<String>();
 
@@ -96,7 +96,7 @@ public class PartyAPI {
      * @param player The player to check
      * @return all the players in the player's party
      */
-    public static ArrayList<Player> getPartyMembers(Player player) {
+    public ArrayList<Player> getPartyMembers(Player player) {
         return Party.getInstance().getPartyMembers(player);
     }
 
