@@ -8,7 +8,6 @@ import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.runnables.*;
-import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.listeners.mcBlockListener;
 import com.gmail.nossr50.listeners.mcEntityListener;
 import com.gmail.nossr50.listeners.mcPlayerListener;
@@ -35,8 +34,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.FileManager;
 
 public class mcMMO extends JavaPlugin {
 

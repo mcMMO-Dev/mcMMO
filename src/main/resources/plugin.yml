@@ -301,7 +301,7 @@ permissions:
         children:
             mcmmo.ability.axes.skullsplitter: true
             mcmmo.ability.axes.bonusdamage: true
-            mcmmo.ability.axes.critalhit: true
+            mcmmo.ability.axes.criticalhit: true
             mcmmo.ability.axes.impact: true
     mcmmo.ability.axes.skullsplitter:
         description: Allows access to the Skull Splitter ability

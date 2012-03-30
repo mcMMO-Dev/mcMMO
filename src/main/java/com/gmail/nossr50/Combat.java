@@ -83,7 +83,7 @@ public class Combat {
                 if (mcPermissions.getInstance().impact(attacker)) {
                     Axes.impact(attacker, target, event);
                 }
-
+ 
                 if (PPa.getAbilityMode(AbilityType.SKULL_SPLIITER) && mcPermissions.getInstance().skullSplitter(attacker)) {
                     applyAbilityAoE(attacker, target, event.getDamage(), plugin, SkillType.AXES);
                 }
