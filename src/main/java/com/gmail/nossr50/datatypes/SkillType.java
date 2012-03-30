@@ -119,6 +119,12 @@ public enum SkillType {
         return xpModifier;
     }
 
+    /**
+     * Get the skill level for this skill.
+     *
+     * @param player The player to check
+     * @return
+     */
     public int getSkillLevel(Player player) {
         return Users.getProfile(player).getSkillLevel(this);
     }
