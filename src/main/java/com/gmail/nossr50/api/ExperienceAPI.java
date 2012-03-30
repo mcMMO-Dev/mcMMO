@@ -99,9 +99,14 @@ public class ExperienceAPI {
      * @param player The player to add levels to
      * @param skillType Type of skill to add levels to
      * @param levels Number of levels to add
+     * @param notify True if this should fire a level up notification, false otherwise.
      */
-    public void addLevel(Player player, SkillType skillType, int levels) {
+    public void addLevel(Player player, SkillType skillType, int levels, boolean notify) {
         Users.getProfile(player).addLevels(skillType, levels);
+
+        if (notify) {
+            checkXP(player, skillType);
+        }
     }
 
     /**
