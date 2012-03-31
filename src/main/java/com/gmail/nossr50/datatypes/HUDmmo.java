@@ -17,7 +17,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class HUDmmo {
-    private int center_x = 427/2;
+    private int center_x = 427 / 2;
 
     private String playerName = null;
 
