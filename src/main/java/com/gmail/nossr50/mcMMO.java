@@ -163,7 +163,7 @@ public class mcMMO extends JavaPlugin {
      * @param player Player whose profile to get
      * @return the PlayerProfile object
      */
-    public static PlayerProfile getPlayerProfile(Player player) {
+    public PlayerProfile getPlayerProfile(Player player) {
         return Users.getProfile(player);
     }
 
