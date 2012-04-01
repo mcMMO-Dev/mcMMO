@@ -4,8 +4,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+/**
+ * Called just before a player teleports using the /ptp command.
+ */
 public class McMMOPartyTeleportEvent extends PlayerTeleportEvent{
-
     private String party;
     private Player target;
 
@@ -15,10 +17,16 @@ public class McMMOPartyTeleportEvent extends PlayerTeleportEvent{
         this.target = target;
     }
 
+    /**
+     * @return The party the teleporting player is in
+     */
     public String getParty() {
         return party;
     }
 
+    /**
+     * @return The player being teleported to
+     */
     public Player getTarget() {
         return target;
     }

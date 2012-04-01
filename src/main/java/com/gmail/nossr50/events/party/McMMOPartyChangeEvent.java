@@ -5,6 +5,9 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
+/**
+ * Called when a player attempts to join, leave, or change parties.
+ */
 public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable{
 
     protected String oldParty;
@@ -25,16 +28,55 @@ public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable{
         this.cancelled = false;
     }
 
+    /**
+     * @return The party being left, or null if the player was not in a party
+     */
     public String getOldParty() {
         return oldParty;
     }
 
+    /**
+     * @return The party being joined, or null if the player is not joining a new party
+     */
     public String getNewParty() {
         return newParty;
     }
 
+    /**
+     * @return The reason for the event being fired
+     */
     public EventReason getReason() {
         return reason;
+    }
+
+    /**
+     * A list of reasons why the event may have been fired
+     */
+    public enum EventReason{
+        /**
+         * Joined a party for the first time.
+         */
+        JOINED_PARTY,
+
+        /**
+         * Left a party and did not join a new one.
+         */
+        LEFT_PARTY,
+
+        /**
+         * Was kicked from a party.
+         */
+        KICKED_FROM_PARTY,
+
+        /**
+         * Left one party to join another.
+         */
+        CHANGED_PARTIES,
+
+        /**
+         * Any reason that doesn't fit elsewhere.
+         */
+        CUSTOM;
     }
 
     /** Rest of file is required boilerplate for custom events **/
@@ -58,12 +100,5 @@ public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable{
     @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
-    }
-
-    public enum EventReason{
-        JOINED_PARTY,
-        LEFT_PARTY,
-        KICKED_FROM_PARTY,
-        CHANGED_PARTIES;
     }
 }

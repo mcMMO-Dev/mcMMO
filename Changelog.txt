@@ -18,6 +18,7 @@ Version 1.3.05-dev
  = Fixed bug where API functions were set to static
  ! Changed Tree Feller to account for ability durability loss but not leaves.
  ! Changed bypass node for Arcane Forging to not default to true for OPs
+ - Removed McMMOPlayerRepairEvent - was basically a duplicate of McMMOPlayerRepairCheck but couldn't be cancelled.
 
 Version 1.3.04
  + Added McMMOPlayerRepairEvent for API usage - fires after completion of a repair.

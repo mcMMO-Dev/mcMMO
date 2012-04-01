@@ -23,7 +23,6 @@ import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
-import com.gmail.nossr50.events.skills.McMMOPlayerRepairEvent;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Repair {
@@ -448,10 +447,6 @@ public class Repair {
         }
 
         item.setDurability(newDurability);
-
-        /* Post-repair Event */
-        McMMOPlayerRepairEvent postEvent = new McMMOPlayerRepairEvent(player, item, (short) (initialDurability - newDurability));
-        Bukkit.getPluginManager().callEvent(postEvent);
     }
 
     /**

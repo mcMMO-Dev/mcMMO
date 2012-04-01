@@ -6,8 +6,10 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.datatypes.SkillType;
 
+/**
+ * Called just before a player repairs an object with mcMMO.
+ */
 public class McMMOPlayerRepairCheckEvent extends McMMOPlayerSkillEvent implements Cancellable{
-
     private short repairAmount;
     private ItemStack repairMaterial;
     private ItemStack repairedObject;
@@ -21,14 +23,23 @@ public class McMMOPlayerRepairCheckEvent extends McMMOPlayerSkillEvent implement
         this.cancelled = false;
     }
 
+    /**
+     * @return The amount this item will be repaired.
+     */
     public short getRepairAmount() {
         return repairAmount;
     }
 
+    /**
+     * @return The material used to repair this item
+     */
     public ItemStack getRepairMaterial() {
         return repairMaterial;
     }
 
+    /**
+     * @return The item that was repaired
+     */
     public ItemStack getRepairedObject() {
         return repairedObject;
     }

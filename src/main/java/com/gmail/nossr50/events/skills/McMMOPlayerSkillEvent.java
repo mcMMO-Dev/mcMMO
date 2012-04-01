@@ -6,8 +6,10 @@ import org.bukkit.event.player.PlayerEvent;
 
 import com.gmail.nossr50.datatypes.SkillType;
 
-public class McMMOPlayerSkillEvent extends PlayerEvent{
-
+/**
+ * Generic event for mcMMO skill handling.
+ */
+public class McMMOPlayerSkillEvent extends PlayerEvent {
     protected SkillType skill;
     protected int skillLevel;
 
@@ -17,10 +19,16 @@ public class McMMOPlayerSkillEvent extends PlayerEvent{
         this.skillLevel = skill.getSkillLevel(player);
     }
 
+    /**
+     * @return The skill involved in this event
+     */
     public SkillType getSkill() {
         return skill;
     }
 
+    /**
+     * @return The level of the skill involved in this event
+     */
     public int getSkillLevel() {
         return skillLevel;
     }
@@ -37,4 +45,3 @@ public class McMMOPlayerSkillEvent extends PlayerEvent{
         return handlers;
     }
 }
-
