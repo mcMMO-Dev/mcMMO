@@ -9,13 +9,12 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class SpoutStart implements Runnable{
-    
-    mcMMO plugin;
-    
+    private final mcMMO plugin;
+
     public SpoutStart(mcMMO m) {
-        plugin = m;
+        this.plugin = m;
     }
-    
+
     @Override
     public void run() {
         if (Bukkit.getPluginManager().getPlugin("Spout") != null) {
@@ -24,7 +23,7 @@ public class SpoutStart implements Runnable{
         else {
             LoadProperties.spoutEnabled = false;
         }
-        
+
         //Spout Stuff
         if (LoadProperties.spoutEnabled) {
             SpoutStuff.setupSpoutConfigs();

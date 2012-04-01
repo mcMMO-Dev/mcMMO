@@ -10,7 +10,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 
 public class SQLConversionTask implements Runnable {
-    public SQLConversionTask() {}
 
     @Override
     public void run() {
@@ -175,40 +174,36 @@ public class SQLConversionTask implements Runnable {
                             + " WHERE id = " + id);
                     mcMMO.database.write("UPDATE "
                             + LoadProperties.MySQLtablePrefix
-                            + "skills SET " + "  taming = taming+"
-                            + m.getInt(taming) + ", mining = mining+"
-                            + m.getInt(mining) + ", repair = repair+"
-                            + m.getInt(repair)
-                            + ", woodcutting = woodcutting+"
-                            + m.getInt(woodcutting)
+                            + "skills SET "
+                            + "  taming = taming+" + m.getInt(taming)
+                            + ", mining = mining+" + m.getInt(mining)
+                            + ", repair = repair+" + m.getInt(repair)
+                            + ", woodcutting = woodcutting+" + m.getInt(woodcutting)
                             + ", unarmed = unarmed+" + m.getInt(unarmed)
-                            + ", herbalism = herbalism+"
-                            + m.getInt(herbalism)
-                            + ", excavation = excavation+"
-                            + m.getInt(excavation)
+                            + ", herbalism = herbalism+" + m.getInt(herbalism)
+                            + ", excavation = excavation+" + m.getInt(excavation)
                             + ", archery = archery+" + m.getInt(archery)
                             + ", swords = swords+" + m.getInt(swords)
                             + ", axes = axes+" + m.getInt(axes)
-                            + ", acrobatics = acrobatics+"
-                            + m.getInt(acrobatics)
+                            + ", acrobatics = acrobatics+" + m.getInt(acrobatics)
                             + ", fishing = fishing+" + m.getInt(fishing)
                             + " WHERE user_id = " + id);
                     mcMMO.database.write("UPDATE "
                             + LoadProperties.MySQLtablePrefix
-                            + "experience SET " + "  taming = "
-                            + m.getInt(tamingXP) + ", mining = "
-                            + m.getInt(miningXP) + ", repair = "
-                            + m.getInt(repairXP) + ", woodcutting = "
-                            + m.getInt(woodCuttingXP) + ", unarmed = "
-                            + m.getInt(unarmedXP) + ", herbalism = "
-                            + m.getInt(herbalismXP) + ", excavation = "
-                            + m.getInt(excavationXP) + ", archery = "
-                            + m.getInt(archeryXP) + ", swords = "
-                            + m.getInt(swordsXP) + ", axes = "
-                            + m.getInt(axesXP) + ", acrobatics = "
-                            + m.getInt(acrobaticsXP) + ", fishing = "
-                            + m.getInt(fishingXP) + " WHERE user_id = "
-                            + id);
+                            + "experience SET "
+                            + "  taming = " + m.getInt(tamingXP)
+                            + ", mining = " + m.getInt(miningXP)
+                            + ", repair = " + m.getInt(repairXP)
+                            + ", woodcutting = " + m.getInt(woodCuttingXP)
+                            + ", unarmed = " + m.getInt(unarmedXP)
+                            + ", herbalism = " + m.getInt(herbalismXP)
+                            + ", excavation = " + m.getInt(excavationXP)
+                            + ", archery = " + m.getInt(archeryXP)
+                            + ", swords = " + m.getInt(swordsXP)
+                            + ", axes = " + m.getInt(axesXP)
+                            + ", acrobatics = " + m.getInt(acrobaticsXP)
+                            + ", fishing = " + m.getInt(fishingXP)
+                            + " WHERE user_id = " + id);
                 }
                 else {
                     theCount++;
@@ -241,40 +236,40 @@ public class SQLConversionTask implements Runnable {
                             + "' WHERE id = " + id);
                     mcMMO.database.write("UPDATE "
                             + LoadProperties.MySQLtablePrefix
-                            + "skills SET " + "  taming = "
-                            + m.getInt(taming) + ", mining = "
-                            + m.getInt(mining) + ", repair = "
-                            + m.getInt(repair) + ", woodcutting = "
-                            + m.getInt(woodcutting) + ", unarmed = "
-                            + m.getInt(unarmed) + ", herbalism = "
-                            + m.getInt(herbalism) + ", excavation = "
-                            + m.getInt(excavation) + ", archery = "
-                            + m.getInt(archery) + ", swords = "
-                            + m.getInt(swords) + ", axes = "
-                            + m.getInt(axes) + ", acrobatics = "
-                            + m.getInt(acrobatics) + ", fishing = "
-                            + m.getInt(fishing) + " WHERE user_id = "
-                            + id);
+                            + "skills SET "
+                            + "  taming = taming+" + m.getInt(taming)
+                            + ", mining = mining+" + m.getInt(mining)
+                            + ", repair = repair+" + m.getInt(repair)
+                            + ", woodcutting = woodcutting+" + m.getInt(woodcutting)
+                            + ", unarmed = unarmed+" + m.getInt(unarmed)
+                            + ", herbalism = herbalism+" + m.getInt(herbalism)
+                            + ", excavation = excavation+" + m.getInt(excavation)
+                            + ", archery = archery+" + m.getInt(archery)
+                            + ", swords = swords+" + m.getInt(swords)
+                            + ", axes = axes+" + m.getInt(axes)
+                            + ", acrobatics = acrobatics+" + m.getInt(acrobatics)
+                            + ", fishing = fishing+" + m.getInt(fishing)
+                            + " WHERE user_id = " + id);
                     mcMMO.database.write("UPDATE "
                             + LoadProperties.MySQLtablePrefix
-                            + "experience SET " + "  taming = "
-                            + m.getInt(tamingXP) + ", mining = "
-                            + m.getInt(miningXP) + ", repair = "
-                            + m.getInt(repairXP) + ", woodcutting = "
-                            + m.getInt(woodCuttingXP) + ", unarmed = "
-                            + m.getInt(unarmedXP) + ", herbalism = "
-                            + m.getInt(herbalismXP) + ", excavation = "
-                            + m.getInt(excavationXP) + ", archery = "
-                            + m.getInt(archeryXP) + ", swords = "
-                            + m.getInt(swordsXP) + ", axes = "
-                            + m.getInt(axesXP) + ", acrobatics = "
-                            + m.getInt(acrobaticsXP) + ", fishing = "
-                            + m.getInt(fishingXP) + " WHERE user_id = "
-                            + id);
+                            + "experience SET "
+                            + "  taming = " + m.getInt(tamingXP)
+                            + ", mining = " + m.getInt(miningXP)
+                            + ", repair = " + m.getInt(repairXP)
+                            + ", woodcutting = " + m.getInt(woodCuttingXP)
+                            + ", unarmed = " + m.getInt(unarmedXP)
+                            + ", herbalism = " + m.getInt(herbalismXP)
+                            + ", excavation = " + m.getInt(excavationXP)
+                            + ", archery = " + m.getInt(archeryXP)
+                            + ", swords = " + m.getInt(swordsXP)
+                            + ", axes = " + m.getInt(axesXP)
+                            + ", acrobatics = " + m.getInt(acrobaticsXP)
+                            + ", fishing = " + m.getInt(fishingXP)
+                            + " WHERE user_id = " + id);
                 }
             }
 
-            System.out.println("[mcMMO] MySQL Updated from users file, " + theCount + " items added/updated to MySQL DB");
+            System.out.println("[mcMMO] MySQL Updated from users file, " + theCount + " items added/updated to MySQL DB"); //TODO: Locale
             in.close();
         }
         catch (Exception e) {

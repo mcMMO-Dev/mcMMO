@@ -7,18 +7,15 @@ import com.gmail.nossr50.mcMMO;
 
 public class mcSaveTimer implements Runnable {
     private final mcMMO plugin;
-    
-    public mcSaveTimer(final mcMMO plugin) 
-    {
+
+    public mcSaveTimer(final mcMMO plugin) {
         this.plugin = plugin;
     }
-    
+
     @Override
-    public void run() 
-    {
+    public void run() {
         //All player data will be saved periodically through this
-        for(Player player : plugin.getServer().getOnlinePlayers())
-        {
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
             Users.getProfile(player).save();
         }
     }

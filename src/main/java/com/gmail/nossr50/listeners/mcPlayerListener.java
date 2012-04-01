@@ -327,7 +327,7 @@ public class mcPlayerListener implements Listener {
 
             String format = color + "(" + ChatColor.WHITE + name + color + ") " + event.getMessage();
 
-            for (Player x : Bukkit.getServer().getOnlinePlayers()) {
+            for (Player x : plugin.getServer().getOnlinePlayers()) {
                 if (partyChat && Party.getInstance().inSameParty(player, x))
                     x.sendMessage(format);
                 else if (adminChat && (x.isOp() || mcPermissions.getInstance().adminChat(x))) {
