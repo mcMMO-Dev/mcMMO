@@ -106,7 +106,8 @@ public class LoadProperties extends ConfigLoader{
     /* Level Caps */
     public static int levelCapAcrobatics, levelCapArchery, levelCapAxes, levelCapExcavation,
                       levelCapFishing, levelCapHerbalism, levelCapMining, levelCapRepair,
-                      levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting;
+                      levelCapSwords, levelCapTaming, levelCapUnarmed, levelCapWoodcutting,
+                      powerLevelCap;
 
     /*
      * XP SETTINGS
@@ -328,6 +329,7 @@ public class LoadProperties extends ConfigLoader{
         statsTracking = config.getBoolean("General.Stats_Tracking", true);
         eventCallback = config.getBoolean("General.Event_Callback", true);
         perLevelTools = config.getBoolean("General.Per_Level_Tools", false);
+        powerLevelCap = config.getInt("General.Power_Level_Cap", 0);
 
         enableCobbleToMossy = config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
         enableSmoothToMossy = config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true);

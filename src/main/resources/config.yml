@@ -17,6 +17,7 @@ General:
     #Allow mcMMO to inform other plugins of damage being dealt
     Event_Callback: true
     Per_Level_Tools: false
+    Power_Level_Cap: 0
 
 #
 #  Settings for using a mySQL database
