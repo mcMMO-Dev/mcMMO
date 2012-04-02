@@ -195,7 +195,7 @@ public class Skills {
         if (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
 
             while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
-                if ((skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) && (LoadProperties.powerLevelCap >= PP.getPowerLevel() + 1)) {
+                if ((skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) && (m.getPowerLevelCap() >= PP.getPowerLevel() + 1)) {
                     skillups++;
                     PP.addLevels(skillType, 1);
 
