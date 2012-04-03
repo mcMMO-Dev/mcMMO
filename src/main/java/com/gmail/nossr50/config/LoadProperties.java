@@ -132,7 +132,8 @@ public class LoadProperties extends ConfigLoader{
      * SPOUT SETTINGS
      */
 
-    public static Boolean spoutEnabled;
+    public static boolean spoutEnabled;
+    public static boolean showPowerLevel;
 
     /* Spout Party HUD */
     public static Boolean showDisplayName, showFaces, partybar;
@@ -212,6 +213,8 @@ public class LoadProperties extends ConfigLoader{
         showFaces = config.getBoolean("Spout.Party.HUD.Show_Faces", true);
         showDisplayName = config.getBoolean("Spout.Party.HUD.Show_Display_Name", false);
         partybar = config.getBoolean("Spout.Party.HUD.Enabled", true);
+
+        showPowerLevel = config.getBoolean("Spout.HUD.Show_Power_Level", true);
 
         acrobatics_r = config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3);
         acrobatics_g = config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3);

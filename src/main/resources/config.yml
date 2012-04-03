@@ -340,6 +340,7 @@ Spout:
             Enabled: true
             Show_Display_Name: false
     HUD:
+        Show_Power_Level: true
         Default: STANDARD
         Retro:
             Colors:

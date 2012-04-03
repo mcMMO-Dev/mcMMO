@@ -7,6 +7,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -32,7 +33,10 @@ public class mcSpoutListener implements Listener {
             SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer)); //Setup Party HUD stuff
             PlayerProfile PPs = Users.getProfile(sPlayer);
             PPs.toggleSpoutEnabled();
-            sPlayer.setTitle(String.valueOf(PPs.getPowerLevel()));
+
+            if (LoadProperties.showPowerLevel) {
+                sPlayer.setTitle(String.valueOf(PPs.getPowerLevel()));
+            }
         }
     }
 }
