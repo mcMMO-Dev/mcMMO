@@ -224,6 +224,12 @@ public class Skills {
                     }
 
                     SpoutStuff.levelUpNotification(skillType, sPlayer);
+                    
+                    /* Update custom titles */
+                    if(LoadProperties.showPowerLevel) {
+                        sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" 
+                                + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(PP.getPowerLevel()));
+                    }
                 }
                 else {
                     player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));

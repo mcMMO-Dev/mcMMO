@@ -33,7 +33,7 @@ public class mcSpoutListener implements Listener {
         
         //TODO: Add custom titles based on skills
         if (LoadProperties.showPowerLevel) {
-            sPlayer.setTitle(sPlayer.getTitle() + "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" 
+            sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" 
         + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(PPs.getPowerLevel()));
         }
         
