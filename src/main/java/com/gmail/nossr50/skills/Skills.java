@@ -191,7 +191,7 @@ public class Skills {
     public static void XpCheckSkill(SkillType skillType, Player player) {
         PlayerProfile PP = Users.getProfile(player);
         int skillups = 0;
-        
+
         if (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
 
             while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
@@ -232,6 +232,12 @@ public class Skills {
             else {
                 player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
             }
+        }
+
+        /* DEBUG */
+        if (player == null) {
+            System.out.println("Why am I null?");
+            return;
         }
 
         /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
