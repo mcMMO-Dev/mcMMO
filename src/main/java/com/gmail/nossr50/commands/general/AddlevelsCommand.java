@@ -45,10 +45,16 @@ public class AddlevelsCommand implements CommandExecutor{
                     modifiedPlayer = (Player) sender;
                     levels = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
-                    skillName = m.getCapitalized(skill.toString());
+
+                    if (skill.equals(SkillType.ALL)) {
+                        skillName = "all skills";
+                    }
+                    else {
+                        skillName = m.getCapitalized(skill.toString());
+                    }
 
                     Users.getProfile(modifiedPlayer).addLevels(skill, levels);
-                    sender.sendMessage(ChatColor.RED + skillName + " has been modified."); //TODO: Needs more locale.
+                    sender.sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
                 }
             }
             else {
@@ -64,17 +70,24 @@ public class AddlevelsCommand implements CommandExecutor{
             if (modifiedPlayer != null && m.isInt(args[2]) && Skills.isSkill(args[1])) {
                 levels = Integer.valueOf(args[2]);
                 skill = Skills.getSkillType(args[1]);
-                skillName = m.getCapitalized(skill.toString());
+
+                if (skill.equals(SkillType.ALL)) {
+                    skillName = "all skills";
+                }
+                else {
+                    skillName = m.getCapitalized(skill.toString());
+                }
 
                 Users.getProfile(modifiedPlayer).addLevels(skill, levels);
 
                 if (sender instanceof Player) {
                     sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + playerName + "."); //TODO: Use locale
-                    modifiedPlayer.sendMessage(ChatColor.RED + skillName + " has been modified."); //TODO: Needs more locale.
                 }
                 else {
-                    System.out.println(m.getCapitalized(skill.toString()) + " has been modified for " + playerName + "."); //TODO: Use locale
+                    System.out.println(skillName + " has been modified for " + playerName + "."); //TODO: Use locale
                 }
+
+                modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
             }
 
             return true;
