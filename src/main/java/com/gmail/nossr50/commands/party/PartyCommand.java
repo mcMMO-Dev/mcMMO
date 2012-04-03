@@ -35,7 +35,7 @@ public class PartyCommand implements CommandExecutor {
 		Party Pinstance = Party.getInstance();
 
 		if (PP.inParty() && (!Pinstance.isParty(PP.getParty()) || !Pinstance.isInParty(player, PP))) {
-			Pinstance.addToParty(player, PP, PP.getParty(), false);
+			Pinstance.addToParty(player, PP, PP.getParty(), false, null);
 		}
 
 		if (args.length == 0 && !PP.inParty()) {
@@ -48,7 +48,7 @@ public class PartyCommand implements CommandExecutor {
 			int x = 0;
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 				if (PP.getParty().equals(Users.getProfile(p).getParty())) {
-					if (p != null && x + 1 >= Pinstance.partyCount(player, Bukkit.getServer().getOnlinePlayers())) {
+					if (p != null && x + 1 >= Pinstance.partyCount(player)) {
 						if (Pinstance.isPartyLeader(p.getName(), PP.getParty())) {
 							tempList += ChatColor.GOLD + p.getName();
 							x++;
@@ -57,7 +57,7 @@ public class PartyCommand implements CommandExecutor {
 							x++;
 						}
 					}
-					if (p != null && x < Pinstance.partyCount(player, Bukkit.getServer().getOnlinePlayers())) {
+					if (p != null && x < Pinstance.partyCount(player)) {
 						if (Pinstance.isPartyLeader(p.getName(), PP.getParty())) {
 							tempList += ChatColor.GOLD + p.getName() + ", ";
 							x++;
@@ -175,7 +175,7 @@ public class PartyCommand implements CommandExecutor {
                         return true;
                     }
 				}
-				Pinstance.addToParty(player, PP, args[0], false);
+				Pinstance.addToParty(player, PP, args[0], false, null);
 				return true;
 			}
 		} else if (args.length == 2 && PP.inParty()) {

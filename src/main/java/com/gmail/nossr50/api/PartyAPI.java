@@ -100,5 +100,26 @@ public class PartyAPI {
         return Party.getInstance().getPartyMembers(player);
     }
 
-    
+    /**
+     * Add a player to a party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to add to the party
+     * @param partyName The party to add the player to
+     */
+    public void addToParty(Player player, String partyName) {
+        Party.getInstance().addToParty(player, Users.getProfile(player), partyName, false, null);
+    }
+
+    /**
+     * Remove a player from a party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to remove
+     */
+    public void removeFromParty(Player player) {
+        Party.getInstance().removeFromParty(player, Users.getProfile(player));
+    }
 }

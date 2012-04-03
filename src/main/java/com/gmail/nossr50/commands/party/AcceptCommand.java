@@ -54,7 +54,7 @@ public class AcceptCommand implements CommandExecutor {
                 }
 			}
             PP.acceptInvite();
-            Pinstance.addToParty(player, PP, PP.getParty(), true);
+            Pinstance.addToParty(player, PP, PP.getParty(), true, null);
 
 		} else {
 			player.sendMessage(mcLocale.getString("mcPlayerListener.NoInvites"));
