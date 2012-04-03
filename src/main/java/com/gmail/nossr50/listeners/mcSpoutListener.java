@@ -35,7 +35,7 @@ public class mcSpoutListener implements Listener {
             PPs.toggleSpoutEnabled();
 
             if (LoadProperties.showPowerLevel) {
-                sPlayer.setTitle(String.valueOf(PPs.getPowerLevel()));
+                sPlayer.setTitle(sPlayer.getName() + "- Power: " + String.valueOf(PPs.getPowerLevel()));
             }
         }
     }
