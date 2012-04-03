@@ -21,23 +21,6 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Party {
-    /*
-     * This file is part of mmoMinecraft (http://code.google.com/p/mmo-minecraft/).
-     * 
-     * mmoMinecraft is free software: you can redistribute it and/or modify
-     * it under the terms of the GNU General Public License as published by
-     * the Free Software Foundation, either version 3 of the License, or
-     * (at your option) any later version.
-     *
-     * This program is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     * GNU General Public License for more details.
-
-     * You should have received a copy of the GNU General Public License
-     * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-     */
-
     public static String partyPlayersFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyPlayers";
     public static String partyLocksFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyLocks";
     public static String partyPasswordsFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyPasswords";
@@ -274,30 +257,6 @@ public class Party {
         }
 
         return nested.put(nestedKey, nestedValue);
-    }
-
-    /*
-     * Any reason why we need to keep this function around?
-     */
-    private void dump(Player player) {
-        player.sendMessage(partyPlayers.toString());
-        player.sendMessage(partyLocks.toString());
-        player.sendMessage(partyPasswords.toString());
-        Iterator<String> i = partyPlayers.keySet().iterator();
-        while(i.hasNext()) {
-            String nestkey = i.next();
-            player.sendMessage(nestkey);
-            Iterator<String> j = partyPlayers.get(nestkey).keySet().iterator();
-            while(j.hasNext()) {
-                String nestedkey = j.next();
-                player.sendMessage("."+nestedkey);
-                if(partyPlayers.get(nestkey).get(nestedkey)) {
-                    player.sendMessage("..True");
-                } else {
-                    player.sendMessage("..False");
-                }
-            }
-        }
     }
 
     /**
