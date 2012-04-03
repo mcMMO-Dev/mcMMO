@@ -427,10 +427,10 @@ public class Repair {
         short newDurability = getRepairAmount(item, player);
         PlayerInventory inventory = player.getInventory();
 
-        McMMOPlayerRepairCheckEvent preEvent = new McMMOPlayerRepairCheckEvent(player, (short) (initialDurability - newDurability), repairMaterial, item);
-        Bukkit.getPluginManager().callEvent(preEvent);
+        McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, (short) (initialDurability - newDurability), repairMaterial, item);
+        Bukkit.getPluginManager().callEvent(event);
 
-        if (preEvent.isCancelled()) {
+        if (event.isCancelled()) {
             return;
         }
 

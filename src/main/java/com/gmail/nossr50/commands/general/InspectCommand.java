@@ -82,6 +82,8 @@ public class InspectCommand implements CommandExecutor {
                 sender.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.RepairSkill"), PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR) }));
             }
 
+            return true;
+
         default:
             sender.sendMessage(usage);
             return true;
