@@ -163,7 +163,9 @@ public class mcEntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.MONITOR)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (event.getSpawnReason().equals(SpawnReason.SPAWNER) && !LoadProperties.xpGainsMobSpawners) {
+        SpawnReason reason = event.getSpawnReason();
+
+        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !LoadProperties.xpGainsMobSpawners) {
             event.getEntity().setMetadata("mcmmoFromMobSpawner", new FixedMetadataValue(plugin, true));
         }
     }
