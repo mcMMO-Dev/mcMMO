@@ -10,72 +10,84 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
 public class AddlevelsCommand implements CommandExecutor{
-	private final mcMMO plugin;
+    private final mcMMO plugin;
 
-	public AddlevelsCommand(mcMMO instance) {
-		this.plugin = instance;
-	}
+    public AddlevelsCommand(mcMMO instance) {
+        this.plugin = instance;
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		Player player = null;
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Player sendingPlayer;
+        Player modifiedPlayer;
+        int levels;
+        SkillType skill;
+        String skillName;
+
         if (sender instanceof Player) {
-            player = (Player) sender;
+            sendingPlayer = (Player) sender;
+
+            if (sendingPlayer != null && !mcPermissions.getInstance().mmoedit(sendingPlayer)) {
+                sendingPlayer.sendMessage(mcLocale.getString("mcPlayerListener.NoPermission"));
+                return true;
+            }
         }
-		
-        if (player != null && !mcPermissions.getInstance().mmoedit(player)) {
-			sender.sendMessage("This command requires permissions."); //TODO: Needs more locale.
-			return true;
-		}
 
-		if (!(sender instanceof Player)) {
-			if (args.length < 2) {
-				System.out.println("Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
-				return true;
-			} else if (args.length == 3) {
-				if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
-					int levels = Integer.valueOf(args[2]);
-					Users.getProfile(plugin.getServer().getPlayer(args[0])).addLevels(Skills.getSkillType(args[1]), levels);
-					System.out.println(args[1] + " has been modified for " + plugin.getServer().getPlayer(args[0]).getName() + ".");
-				}
-			} else {
-				System.out.println("Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
-			}
+        switch (args.length) {
+        case 2:
+            if (sender instanceof Player) {
+                if (m.isInt(args[1]) && Skills.isSkill(args[0])) {
+                    modifiedPlayer = (Player) sender;
+                    levels = Integer.valueOf(args[1]);
+                    skill = Skills.getSkillType(args[0]);
+                    skillName = m.getCapitalized(skill.toString());
 
-			return true;
-		}
+                    Users.getProfile(modifiedPlayer).addLevels(skill, levels);
+                    sender.sendMessage(ChatColor.RED + skillName + " has been modified."); //TODO: Needs more locale.
+                }
+            }
+            else {
+                System.out.println("Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
+            }
 
-		PlayerProfile PP = Users.getProfile(player);
+            return true;
 
-		if (!mcPermissions.getInstance().mmoedit(player)) {
-			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
-			return true;
-		}
-		if (args.length < 2) {
-			player.sendMessage(ChatColor.RED + "Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
-			return true;
-		}
-		if (args.length == 3) {
-			if ((plugin.getServer().getPlayer(args[0]) != null) && m.isInt(args[2]) && Skills.isSkill(args[1])) {
-				int levels = Integer.valueOf(args[2]);
-				Users.getProfile(plugin.getServer().getPlayer(args[0])).addLevels(Skills.getSkillType(args[1]), levels);
-				player.sendMessage(ChatColor.RED + args[1] + " has been modified."); //TODO: Needs more locale.
-			}
-		} else if (args.length == 2) {
-			if (m.isInt(args[1]) && Skills.isSkill(args[0])) {
-				int levels = Integer.valueOf(args[1]);
-				PP.addLevels(Skills.getSkillType(args[0]), levels);
-				player.sendMessage(ChatColor.RED + args[0] + " has been modified."); //TODO: Needs more locale.
-			}
-		} else {
-			player.sendMessage(ChatColor.RED + "Usage is /addlevels playername skillname newvalue"); //TODO: Needs more locale.
-		}
+        case 3:
+            modifiedPlayer = plugin.getServer().getPlayer(args[0]);
+            String playerName = modifiedPlayer.getName();
 
-		return true;
-	}
+            if (modifiedPlayer != null && m.isInt(args[2]) && Skills.isSkill(args[1])) {
+                levels = Integer.valueOf(args[2]);
+                skill = Skills.getSkillType(args[1]);
+                skillName = m.getCapitalized(skill.toString());
+
+                Users.getProfile(modifiedPlayer).addLevels(skill, levels);
+
+                if (sender instanceof Player) {
+                    sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + playerName + "."); //TODO: Use locale
+                    modifiedPlayer.sendMessage(ChatColor.RED + skillName + " has been modified."); //TODO: Needs more locale.
+                }
+                else {
+                    System.out.println(m.getCapitalized(skill.toString()) + " has been modified for " + playerName + "."); //TODO: Use locale
+                }
+            }
+
+            return true;
+
+        default:
+            if (sender instanceof Player) {
+                sender.sendMessage(ChatColor.RED + "Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
+            }
+            else {
+                System.out.println("Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
+            }
+
+            return true;
+        }
+    }
 }
