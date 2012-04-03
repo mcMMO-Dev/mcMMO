@@ -15,7 +15,6 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.party.Party;
 
 public class Archery {
 
@@ -38,50 +37,6 @@ public class Archery {
 
         if (skillLevel > MAX_BONUS_LEVEL || (random.nextInt(1000) <= skillLevel)) {
             plugin.arrowTracker.put(entity, 1);
-        }
-    }
-
-    /**
-     * Check for ignition on arrow hit.
-     *
-     * @param entity Entity damaged by the arrow
-     * @param attacker Player who fired the arrow
-     */
-    public static void ignitionCheck(Entity entity, Player attacker) {
-
-        //Check to see if PVP for this world is disabled before executing
-        if (!entity.getWorld().getPVP()) {
-            return;
-        }
-
-        final int IGNITION_CHANCE = 25;
-        final int MAX_IGNITION_TICKS = 120;
-
-        PlayerProfile PPa = Users.getProfile(attacker);
-
-        if (random.nextInt(100) <= IGNITION_CHANCE) {
-            int ignition = 20;
-
-            /* Add 20 ticks for every 200 skill levels */
-            ignition += (PPa.getSkillLevel(SkillType.ARCHERY) / 200) * 20;
-
-            if (ignition > MAX_IGNITION_TICKS) {
-                ignition = MAX_IGNITION_TICKS;
-            }
-
-            if (entity instanceof Player) {
-                Player defender = (Player) entity;
-
-                if (!Party.getInstance().inSameParty(attacker, defender)) {
-                    defender.setFireTicks(defender.getFireTicks() + ignition);
-                    attacker.sendMessage(mcLocale.getString("Combat.Ignition"));
-                    defender.sendMessage(mcLocale.getString("Combat.BurningArrowHit"));
-                }
-            }
-            else {
-                entity.setFireTicks(entity.getFireTicks() + ignition);
-                attacker.sendMessage(mcLocale.getString("Combat.Ignition"));
-            }
         }
     }
 

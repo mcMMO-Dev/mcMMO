@@ -198,7 +198,7 @@ public class Combat {
                 int skillLvl = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
                 double dmgBonusPercent = ((skillLvl / 50) * 0.1D);
                 
-                /* Cap maximum bonus at 100% */
+                /* Cap maximum bonus at 200% */
                 if(dmgBonusPercent > 2)
                     dmgBonusPercent = 2;
                 
@@ -211,10 +211,6 @@ public class Combat {
                 
                 if (mcPermissions.getInstance().trackArrows(attacker)) {
                     Archery.trackArrows(pluginx, target, PPa);
-                }
-
-                if (mcPermissions.getInstance().ignition(attacker)) {
-                    Archery.ignitionCheck(target, attacker);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.ARCHERY, pluginx);
