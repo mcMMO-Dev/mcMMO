@@ -59,7 +59,7 @@ public class Repair {
                     repairItem(player, is, new ItemStack(LoadProperties.rGold));
                     xpHandler(player, PP, is, durabilityBefore, 4, true);
                 }
-                else if (ItemChecks.isLeatherArmor(is) && inventory.contains(LoadProperties.rLeather)) {
+                else if (ItemChecks.isLeatherArmor(is) && inventory.contains(LoadProperties.rLeather) && mcPermissions.getInstance().leatherRepair(player)) {
                     repairItem(player, is, new ItemStack(LoadProperties.rLeather));
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
@@ -76,7 +76,7 @@ public class Repair {
                     repairItem(player, is, new ItemStack(LoadProperties.rStone));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
-                else if (ItemChecks.isWoodTool(is) && inventory.contains(LoadProperties.rWood)) {
+                else if (ItemChecks.isWoodTool(is) && inventory.contains(LoadProperties.rWood) && mcPermissions.getInstance().woodRepair(player)) {
                     repairItem(player, is, new ItemStack(LoadProperties.rWood));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
@@ -92,7 +92,7 @@ public class Repair {
                     repairItem(player, is, new ItemStack(LoadProperties.rGold));
                     xpHandler(player, PP, is, durabilityBefore, 8, true);
                 }
-                else if (is.getType().equals(Material.BOW) && inventory.contains(LoadProperties.rString)){
+                else if (is.getType().equals(Material.BOW) && inventory.contains(LoadProperties.rString) && skillLevel >= LoadProperties.repairBowLevel && mcPermissions.getInstance().bowRepair(player)){
                     repairItem(player, is, new ItemStack(LoadProperties.rString));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }

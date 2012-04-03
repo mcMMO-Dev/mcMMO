@@ -211,18 +211,25 @@ permissions:
         children:
             mcmmo.ability.repair.repairbonus: true
             mcmmo.ability.repair.arcaneforging: true
+            mcmmo.ability.repair.woodrepair: true
             mcmmo.ability.repair.stonerepair: true
+            mcmmo.ability.repair.leatherrepair: true
             mcmmo.ability.repair.ironrepair: true
             mcmmo.ability.repair.goldrepair: true
             mcmmo.ability.repair.diamondrepair: true
             mcmmo.ability.repair.armorrepair: true
             mcmmo.ability.repair.toolrepair: true
+            mcmmo.ability.repair.bowrepair: true
     mcmmo.ability.repair.repairbonus:
         description: Allows access to Super Repair bonus
     mcmmo.ability.repair.arcaneforging:
         description: Allows access to the Arcane Forging ability
+    mcmmo.ability.repair.woodrepair:
+        description: Allows ability to repair Wood tools
     mcmmo.ability.repair.stonerepair:
         description: Allows ability to repair Stone tools
+    mcmmo.ability.repair.leatherrepair:
+        description: Allows ability to repair Leather armor
     mcmmo.ability.repair.ironrepair:
         description: Allows ability to repair Iron tools & armor
     mcmmo.ability.repair.goldrepair:
@@ -233,6 +240,8 @@ permissions:
         description: Allows ability to repair armor
     mcmmo.ability.repair.toolrepair:
         description: Allows ability to repair tools
+    mcmmo.ability.repair.bowrepair:
+        description: Allows ability to repair bows
     mcmmo.ability.unarmed.*:
         description: Allows access to all Unarmed abilities
         children:

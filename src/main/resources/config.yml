@@ -162,6 +162,7 @@ Skills:
         Leather:
             ID: 334
         String:
+            Level_Required: 0
             ID: 287
         Stone:
             Level_Required: 0

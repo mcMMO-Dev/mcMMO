@@ -137,8 +137,16 @@ public class mcPermissions {
         return player.hasPermission("mcmmo.ability.repair.arcaneforging");
     }
 
+    public boolean woodRepair(Player player) {
+        return player.hasPermission("mcmmo.ability.repair.woodrepair");
+    }
+
     public boolean stoneRepair(Player player) {
         return player.hasPermission("mcmmo.ability.repair.stonerepair");
+    }
+
+    public boolean leatherRepair(Player player) {
+        return player.hasPermission("mcmmo.ability.repair.leatherrepair");
     }
 
     public boolean ironRepair(Player player) {
@@ -159,6 +167,10 @@ public class mcPermissions {
 
     public boolean toolRepair(Player player) {
         return player.hasPermission("mcmmo.ability.repair.toolrepair");
+    }
+
+    public boolean bowRepair(Player player) {
+        return player.hasPermission("mcmmo.ability.repair.bowrepair");
     }
 
     /*

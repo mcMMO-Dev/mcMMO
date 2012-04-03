@@ -88,7 +88,7 @@ public class LoadProperties extends ConfigLoader{
     public static Boolean anvilmessages;
     public static int rWood, rStone, rIron, rGold, rDiamond, rString, rLeather;
     public static int anvilID;
-    public static int repairStoneLevel, repairIronLevel, repairGoldLevel, repairdiamondlevel;
+    public static int repairStoneLevel, repairIronLevel, repairGoldLevel, repairdiamondlevel, repairBowLevel;
 
     /* Taming */
     public static int mtameWolf, mtameOcelot;
@@ -378,6 +378,7 @@ public class LoadProperties extends ConfigLoader{
         repairIronLevel = config.getInt("Skills.Repair.Iron.Level_Required", 0);
         repairGoldLevel = config.getInt("Skills.Repair.Gold.Level_Required", 0);
         repairStoneLevel = config.getInt("Skills.Repair.Stone.Level_Required", 0);
+        repairBowLevel = config.getInt("Skills.Repair.String.Level_Required", 0);
 
         tamingxpmodifier = config.getDouble("Experience.Formula.Multiplier.Taming", 1.0);
         miningxpmodifier = config.getDouble("Experience.Formula.Multiplier.Mining", 1.0);
