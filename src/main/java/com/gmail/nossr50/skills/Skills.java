@@ -234,12 +234,6 @@ public class Skills {
             }
         }
 
-        /* DEBUG */
-        if (player == null) {
-            System.out.println("Why am I null?");
-            return;
-        }
-
         /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
         if (skillups == 0 && LoadProperties.spoutEnabled && player instanceof SpoutPlayer) {
             SpoutPlayer sPlayer = (SpoutPlayer) player;
