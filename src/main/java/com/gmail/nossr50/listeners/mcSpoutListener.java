@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
@@ -28,15 +29,18 @@ public class mcSpoutListener implements Listener {
     @EventHandler
     public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
         SpoutPlayer sPlayer = event.getPlayer();
-
+        PlayerProfile PPs = Users.getProfile(sPlayer);
+        
+        //TODO: Add custom titles based on skills
+        if (LoadProperties.showPowerLevel) {
+            sPlayer.setTitle(sPlayer.getTitle() + "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" 
+        + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(PPs.getPowerLevel()));
+        }
+        
         if (sPlayer.isSpoutCraftEnabled()) {
             SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer)); //Setup Party HUD stuff
-            PlayerProfile PPs = Users.getProfile(sPlayer);
+            
             PPs.toggleSpoutEnabled();
-
-            if (LoadProperties.showPowerLevel) {
-                sPlayer.setTitle(sPlayer.getName() + "- Power: " + String.valueOf(PPs.getPowerLevel()));
-            }
         }
     }
 }
