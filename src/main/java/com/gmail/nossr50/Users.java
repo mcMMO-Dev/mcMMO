@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
@@ -93,13 +94,7 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfile(Player player) {
-        if(players.get(player.getName().toLowerCase()) != null) {
-            return players.get(player.getName().toLowerCase());
-        }
-        else {
-            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName()));
-            return players.get(player.getName().toLowerCase());
-        }
+        return getProfile(player.getName());
     }
     
     /**
@@ -109,13 +104,23 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfile(String playerName) {
-        if(players.get(playerName.toLowerCase()) != null) {
+        if (players.get(playerName.toLowerCase()) != null) {
             return players.get(playerName.toLowerCase());
         }
         else {
             players.put(playerName.toLowerCase(), new PlayerProfile(playerName));
             return players.get(playerName.toLowerCase());
         }
+    }
+
+    /**
+     * Get the profile of an offline player.
+     *
+     * @param player The player whose profile to retrieve
+     * @return the player's profile
+     */
+    public static PlayerProfile getOfflineProfile(OfflinePlayer player) {
+        return getOfflineProfile(player.getName());
     }
 
     /**

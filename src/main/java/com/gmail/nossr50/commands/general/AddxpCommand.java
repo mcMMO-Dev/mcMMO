@@ -9,9 +9,8 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
 public class AddxpCommand implements CommandExecutor {
@@ -23,19 +22,14 @@ public class AddxpCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player sendingPlayer;
         Player modifiedPlayer;
         int xp;
         SkillType skill;
         String skillName;
+        String usage = ChatColor.RED + "Proper usage is /addxp <playername> <skillname> <xp>"; //TODO: Needs more locale.
 
-        if (sender instanceof Player) {
-            sendingPlayer = (Player) sender;
-
-            if (sendingPlayer != null && !mcPermissions.getInstance().mmoedit(sendingPlayer)) {
-                sendingPlayer.sendMessage(mcLocale.getString("mcPlayerListener.NoPermission"));
-                return true;
-            }
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
+            return true;
         }
 
         switch (args.length) {
@@ -66,7 +60,7 @@ public class AddxpCommand implements CommandExecutor {
                 }
             }
             else {
-                System.out.println("Usage is /addxp playername skillname xp"); //TODO: Needs more locale.
+                sender.sendMessage(usage);
             }
 
             return true;
@@ -78,23 +72,20 @@ public class AddxpCommand implements CommandExecutor {
             if (modifiedPlayer != null && m.isInt(args[2]) && Skills.isSkill(args[1])) {
                 xp = Integer.valueOf(args[2]);
                 skill = Skills.getSkillType(args[1]);
+                String message;
 
                 Users.getProfile(modifiedPlayer).addXPOverride(skill, xp);
 
                 if (skill.equals(SkillType.ALL)) {
                     skillName = "all skills";
+                    message = ChatColor.RED + "All skills have been modified for " + playerName + "."; //TODO: Use locale
                 }
                 else {
                     skillName = m.getCapitalized(skill.toString());
+                    message = ChatColor.RED + skillName + " has been modified for " + playerName + "."; //TODO: Use locale
                 }
 
-                if (sender instanceof Player) {
-                    sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + playerName + "."); //TODO: Use locale
-                }
-                else {
-                    System.out.println(skillName + " has been modified for " + playerName + "."); //TODO: Use locale
-                }
-
+                sender.sendMessage(message);
                 modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + xp + " experience in " + skillName + "!"); //TODO: Needs more locale.
 
                 if (skill.equals(SkillType.ALL)) {
@@ -108,13 +99,7 @@ public class AddxpCommand implements CommandExecutor {
             return true;
 
         default:
-            if (sender instanceof Player) {
-                sender.sendMessage(ChatColor.RED + "Usage is /addxp playername skillname xp"); //TODO: Needs more locale.
-            }
-            else {
-                System.out.println("Usage is /addxp playername skillname xp"); //TODO: Needs more locale.
-            }
-
+            sender.sendMessage(usage);
             return true;
         }
     }

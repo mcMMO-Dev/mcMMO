@@ -30,7 +30,7 @@ public class mcPermissions {
     }
 
     public boolean arcaneBypass(Player player) {
-        return player.hasPermission(("mcmmo.repair.arcanebypass"));
+        return player.hasPermission(("mcmmo.bypass.arcanebypass"));
     }
 
     /*

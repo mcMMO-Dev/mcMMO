@@ -9,9 +9,8 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
 public class AddlevelsCommand implements CommandExecutor{
@@ -23,19 +22,14 @@ public class AddlevelsCommand implements CommandExecutor{
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player sendingPlayer;
         Player modifiedPlayer;
         int levels;
         SkillType skill;
         String skillName;
+        String usage = ChatColor.RED + "Proper usage is /addlevels <playername> <skillname> <levels>"; //TODO: Needs more locale.
 
-        if (sender instanceof Player) {
-            sendingPlayer = (Player) sender;
-
-            if (sendingPlayer != null && !mcPermissions.getInstance().mmoedit(sendingPlayer)) {
-                sendingPlayer.sendMessage(mcLocale.getString("mcPlayerListener.NoPermission"));
-                return true;
-            }
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
+            return true;
         }
 
         switch (args.length) {
@@ -58,7 +52,7 @@ public class AddlevelsCommand implements CommandExecutor{
                 }
             }
             else {
-                System.out.println("Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
+                sender.sendMessage(usage);
             }
 
             return true;
@@ -70,36 +64,27 @@ public class AddlevelsCommand implements CommandExecutor{
             if (modifiedPlayer != null && m.isInt(args[2]) && Skills.isSkill(args[1])) {
                 levels = Integer.valueOf(args[2]);
                 skill = Skills.getSkillType(args[1]);
-
-                if (skill.equals(SkillType.ALL)) {
-                    skillName = "all skills";
-                }
-                else {
-                    skillName = m.getCapitalized(skill.toString());
-                }
+                String message;
 
                 Users.getProfile(modifiedPlayer).addLevels(skill, levels);
 
-                if (sender instanceof Player) {
-                    sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + playerName + "."); //TODO: Use locale
+                if (skill.equals(SkillType.ALL)) {
+                    skillName = "all skills";
+                    message = ChatColor.RED + "All skills have been modified for " + playerName + "."; //TODO: Use locale
                 }
                 else {
-                    System.out.println(skillName + " has been modified for " + playerName + "."); //TODO: Use locale
+                    skillName = m.getCapitalized(skill.toString());
+                    message = ChatColor.RED + skillName + " has been modified for " + playerName + "."; //TODO: Use locale
                 }
 
+                sender.sendMessage(message);
                 modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
             }
 
             return true;
 
         default:
-            if (sender instanceof Player) {
-                sender.sendMessage(ChatColor.RED + "Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
-            }
-            else {
-                System.out.println("Usage is /addlevels playername skillname levels"); //TODO: Needs more locale.
-            }
-
+            sender.sendMessage(usage);
             return true;
         }
     }
