@@ -175,7 +175,7 @@ public class mcEntityListener implements Listener {
      *
      * @param event The event to monitor
      */
-    @EventHandler (priority = EventPriority.LOW)
+    @EventHandler (priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         Entity entity = event.getEntity();
 
@@ -197,7 +197,7 @@ public class mcEntityListener implements Listener {
      *
      * @param event The event to monitor
      */
-    @EventHandler (priority = EventPriority.LOW)
+    @EventHandler (priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEnitityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
