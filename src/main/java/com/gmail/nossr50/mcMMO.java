@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -168,6 +169,30 @@ public class mcMMO extends JavaPlugin {
     }
 
     /**
+     * Get profile of the player by name.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player Name of player whose profile to get
+     * @return the PlayerProfile object
+     */
+    public PlayerProfile getPlayerProfileByName(String playerName) {
+        return Users.getProfileByName(playerName);
+    }
+
+    /**
+     * Get profile of the offline player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player Offline player whose profile to get
+     * @return the PlayerProfile object
+     */
+    public PlayerProfile getOfflinePlayerProfile(OfflinePlayer player) {
+        return Users.getProfile(player);
+    }
+
+    /**
      * Things to be run when the plugin is disabled.
      */
     public void onDisable() {
@@ -284,7 +309,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (LoadProperties.mmoeditEnable) {
-            getCommand("mmoedit").setExecutor(new MmoeditCommand());
+            getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
         }
 
         if (LoadProperties.inspectEnable) {

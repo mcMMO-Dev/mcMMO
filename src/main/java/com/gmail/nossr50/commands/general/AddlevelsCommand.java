@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.general;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,7 +11,9 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
 public class AddlevelsCommand implements CommandExecutor{
@@ -22,7 +25,8 @@ public class AddlevelsCommand implements CommandExecutor{
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player modifiedPlayer;
+        OfflinePlayer modifiedPlayer;
+        PlayerProfile PP;
         int levels;
         SkillType skill;
         String skillName;
@@ -39,6 +43,7 @@ public class AddlevelsCommand implements CommandExecutor{
                     modifiedPlayer = (Player) sender;
                     levels = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
+                    PP = Users.getProfile(modifiedPlayer);
 
                     if (skill.equals(SkillType.ALL)) {
                         skillName = "all skills";
@@ -47,21 +52,24 @@ public class AddlevelsCommand implements CommandExecutor{
                         skillName = m.getCapitalized(skill.toString());
                     }
 
-                    Users.getProfile(modifiedPlayer).addLevels(skill, levels);
+                    PP.addLevels(skill, levels);
                     sender.sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
+
+                    return true;
                 }
             }
-            else {
-                sender.sendMessage(usage);
-            }
-
-            return true;
 
         case 3:
-            modifiedPlayer = plugin.getServer().getPlayer(args[0]);
+            modifiedPlayer = plugin.getServer().getOfflinePlayer(args[0]);
             String playerName = modifiedPlayer.getName();
+            PP = Users.getProfile(modifiedPlayer);
 
-            if (modifiedPlayer != null && m.isInt(args[2]) && Skills.isSkill(args[1])) {
+            if (!PP.isLoaded()) {
+                sender.sendMessage(mcLocale.getString("Commands.DoesNotExist"));
+                return true;
+            }
+
+            if (m.isInt(args[2]) && Skills.isSkill(args[1])) {
                 levels = Integer.valueOf(args[2]);
                 skill = Skills.getSkillType(args[1]);
                 String message;
@@ -78,10 +86,13 @@ public class AddlevelsCommand implements CommandExecutor{
                 }
 
                 sender.sendMessage(message);
-                modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
-            }
 
-            return true;
+                if (modifiedPlayer.isOnline()) {
+                    ((Player) modifiedPlayer).sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
+                }
+
+                return true;
+            }
 
         default:
             sender.sendMessage(usage);

@@ -57,13 +57,10 @@ public class AddxpCommand implements CommandExecutor {
                     else {
                         Skills.XpCheckSkill(skill, modifiedPlayer);
                     }
+
+                    return true;
                 }
             }
-            else {
-                sender.sendMessage(usage);
-            }
-
-            return true;
 
         case 3:
             modifiedPlayer = plugin.getServer().getPlayer(args[0]);
@@ -94,9 +91,9 @@ public class AddxpCommand implements CommandExecutor {
                 else {
                     Skills.XpCheckSkill(skill, modifiedPlayer);
                 }
-            }
 
-            return true;
+                return true;
+            }
 
         default:
             sender.sendMessage(usage);

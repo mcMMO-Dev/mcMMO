@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -44,7 +45,7 @@ public class Users {
      */
     public static void addUser(Player player) {
         if (!players.containsKey(player.getName().toLowerCase())) {
-            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName()));
+            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName(), true));
         }
     }
 
@@ -88,49 +89,34 @@ public class Users {
     }
 
     /**
-     * Get the profile of an online player.
+     * Get the profile of a player.
      *
      * @param player The player whose profile to retrieve
      * @return the player's profile
      */
-    public static PlayerProfile getProfile(Player player) {
-        return getProfile(player.getName());
+    public static PlayerProfile getProfile(OfflinePlayer player) {
+        return getProfileByName(player.getName());
     }
-    
+
     /**
-     * Get the profile of an online player.
+     * Get the profile of a player by name.
      *
-     * @param player The player whose profile to retrieve
+     * @param player The name of the player whose profile to retrieve
      * @return the player's profile
      */
-    public static PlayerProfile getProfile(String playerName) {
-        if (players.get(playerName.toLowerCase()) != null) {
-            return players.get(playerName.toLowerCase());
+    public static PlayerProfile getProfileByName(String playerName) {
+        if (Bukkit.getServer().getOfflinePlayer(playerName).isOnline()) {
+            if (players.get(playerName.toLowerCase()) != null) {
+                return players.get(playerName.toLowerCase());
+            }
+            else {
+                players.put(playerName.toLowerCase(), new PlayerProfile(playerName, true));
+                return players.get(playerName.toLowerCase());
+            }
         }
         else {
-            players.put(playerName.toLowerCase(), new PlayerProfile(playerName));
-            return players.get(playerName.toLowerCase());
+            return new PlayerProfile(playerName, false);
         }
-    }
-
-    /**
-     * Get the profile of an offline player.
-     *
-     * @param player The player whose profile to retrieve
-     * @return the player's profile
-     */
-    public static PlayerProfile getOfflineProfile(OfflinePlayer player) {
-        return getOfflineProfile(player.getName());
-    }
-
-    /**
-     * Get the profile of an offline player.
-     *
-     * @param playerName Name of the player whose profile to retrieve
-     * @return the player's profile
-     */
-    public static PlayerProfile getOfflineProfile(String playerName) {
-        return new PlayerProfile(playerName, false);
     }
 
     /**

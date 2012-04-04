@@ -63,38 +63,6 @@ public class PlayerProfile {
     private String playerName;
     private String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
 
-    public PlayerProfile(String name) {
-        hud = LoadProperties.defaulthud;
-        playerName = name;
-
-        for (AbilityType abilityType : AbilityType.values()) {
-            skillsDATS.put(abilityType, 0);
-        }
-
-        for (SkillType skillType : SkillType.values()) {
-            if (skillType != SkillType.ALL) {
-                skills.put(skillType, 0);
-                skillsXp.put(skillType, 0);
-            }
-        }
-
-        if (LoadProperties.useMySQL) {
-            if (!loadMySQL()) {
-                addMySQLPlayer();
-                loadMySQL(); //This is probably not needed anymore, could just delete. // So can we remove this whole function, or just this line?
-            }
-        }
-        else if (!load()) {
-            addPlayer();
-        }
-
-        lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
-    }
-
-    /*
-     * Why do we even have this? The only time it's called, it's false.
-     * Why not combine the two?
-     */
     public PlayerProfile(String name, boolean addNew) {
         hud = LoadProperties.defaulthud;
         playerName = name;
@@ -113,7 +81,6 @@ public class PlayerProfile {
         if (LoadProperties.useMySQL) {
             if (!loadMySQL() && addNew) {
                 addMySQLPlayer();
-                loadMySQL(); //This is probably not needed anymore, could just delete. // So can we remove this whole function, or just this line?
             }
         }
         else if (!load() && addNew) {
@@ -151,7 +118,7 @@ public class PlayerProfile {
             }
             HashMap<Integer, ArrayList<String>> users = mcMMO.database.read("SELECT lastlogin, party FROM "+LoadProperties.MySQLtablePrefix+"users WHERE id = " + id);
                 //lastlogin = Integer.parseInt(users.get(1).get(0));
-                party = users.get(1).get(1);                
+                party = users.get(1).get(1);
             HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM "+LoadProperties.MySQLtablePrefix+"cooldowns WHERE user_id = " + id);
             /*
              * I'm still learning MySQL, this is a fix for adding a new table
@@ -1077,7 +1044,7 @@ public class PlayerProfile {
      * @param skillType Type of skill to modify
      * @param newValue New level value for the skill
      */
-    public void modifyskill(SkillType skillType, int newValue) {
+    public void modifySkill(SkillType skillType, int newValue) {
         if (skillType.equals(SkillType.ALL)) {
             for (SkillType skill : SkillType.values()) {
                 if (skill.equals(SkillType.ALL)) {

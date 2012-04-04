@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.general;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +23,7 @@ public class InspectCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player target;
+        OfflinePlayer target;
         PlayerProfile PP;
         String usage = "Proper usage is /inspect <playername>"; //TODO: Needs more locale.
 
@@ -32,24 +33,26 @@ public class InspectCommand implements CommandExecutor {
 
         switch (args.length) {
         case 1:
-            target = plugin.getServer().getPlayer(args[0]);
+            target = plugin.getServer().getOfflinePlayer(args[0]);
+            PP = Users.getProfile(target);
 
-            if (target != null) {
-                PP = Users.getProfile(target);
+            if (target.isOnline()) {
+                Player player = (Player) target;
 
-                if (sender instanceof Player && !sender.isOp() && !m.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0)) {
+                if (sender instanceof Player && !sender.isOp() && !m.isNear(((Player) sender).getLocation(), player.getLocation(), 5.0)) {
                     sender.sendMessage(mcLocale.getString("Inspect.TooFar"));
                     return true;
                 }
 
                 sender.sendMessage(mcLocale.getString("Inspect.Stats", new Object[] { target.getName() }));
-                CommandHelper.printGatheringSkills(target, sender);
-                CommandHelper.printCombatSkills(target, sender);
-                CommandHelper.printMiscSkills(target, sender);
+                CommandHelper.printGatheringSkills(player, sender);
+                CommandHelper.printCombatSkills(player, sender);
+                CommandHelper.printMiscSkills(player, sender);
                 sender.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel", new Object[] { PP.getPowerLevel() }));
+
+                return true;
             }
             else {
-                PP = Users.getOfflineProfile(args[0]);
 
                 if (sender instanceof Player && !sender.isOp()) {
                     sender.sendMessage(mcLocale.getString("Inspect.Offline"));
@@ -57,7 +60,7 @@ public class InspectCommand implements CommandExecutor {
                 }
 
                 if (!PP.isLoaded()) {
-                    sender.sendMessage(mcLocale.getString("Inspect.DoesNotExist"));
+                    sender.sendMessage(mcLocale.getString("Commands.DoesNotExist"));
                     return true;
                 }
 
@@ -80,9 +83,9 @@ public class InspectCommand implements CommandExecutor {
                 sender.sendMessage(mcLocale.getString("Stats.MiscHeader"));
                 sender.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS) }));
                 sender.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.RepairSkill"), PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR) }));
-            }
 
-            return true;
+                return true;
+            }
 
         default:
             sender.sendMessage(usage);

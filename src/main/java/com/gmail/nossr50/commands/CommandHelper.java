@@ -32,6 +32,15 @@ public class CommandHelper {
         return false;
     }
 
+    public static boolean noConsoleUsage(CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(mcLocale.getString("Commands.NoConsole"));
+            return true;
+        }
+
+        return false;
+    }
+    
     /**
      * Print out details on Gathering skills. Only for online players.
      *

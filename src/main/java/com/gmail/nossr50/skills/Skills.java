@@ -295,25 +295,6 @@ public class Skills {
             return false;
         }
     }
-    
-    /**
-     * Get the format string for 
-     * @param skillname
-     * @param level
-     * @param XP
-     * @param XPToLevel
-     * @return
-     */
-    public static String getSkillStats(String skillname, Integer level, Integer XP, Integer XPToLevel) {
-        //TODO: Ditch this function in favor of better locale setup.
-
-        ChatColor parColor = ChatColor.DARK_AQUA;
-        ChatColor xpColor = ChatColor.GRAY;
-        ChatColor LvlColor = ChatColor.GREEN;
-        ChatColor skillColor = ChatColor.YELLOW;
-
-        return skillColor + skillname + LvlColor + level + parColor +" XP" + "(" + xpColor + XP + parColor + "/" + xpColor + XPToLevel + parColor + ")";
-    }
 
     /**
      * Check if the player has any combat skill permissions.
