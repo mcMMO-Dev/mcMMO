@@ -103,7 +103,8 @@ public class Skills {
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
         if (skill == SkillType.WOODCUTTING || skill == SkillType.AXES) {
-            if (tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
+            if ((mcPermissions.getInstance().treeFeller(player) || mcPermissions.getInstance().skullSplitter(player)) && 
+                    tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
                 if (LoadProperties.enableAbilityMessages) {
                     player.sendMessage(tool.getRaiseTool());
                 }
