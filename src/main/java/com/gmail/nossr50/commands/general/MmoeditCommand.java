@@ -30,7 +30,7 @@ public class MmoeditCommand implements CommandExecutor {
         int newValue;
         SkillType skill;
         String skillName;
-        String usage = ChatColor.RED + "Proper usage is /mmoedit <playername> <skillname> <newvalue>"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /mmoedit [player] <skill> <newvalue>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
             return true;
@@ -54,10 +54,13 @@ public class MmoeditCommand implements CommandExecutor {
 
                     PP.modifySkill(skill, newValue);
                     sender.sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
-
-                    return true;
                 }
             }
+            else {
+                sender.sendMessage(usage);
+            }
+
+            return true;
 
         case 3:
             modifiedPlayer = plugin.getServer().getOfflinePlayer(args[0]);
@@ -90,9 +93,12 @@ public class MmoeditCommand implements CommandExecutor {
                 if (modifiedPlayer.isOnline()) {
                     ((Player) modifiedPlayer).sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
                 }
-
-                return true;
             }
+            else {
+                sender.sendMessage(usage);
+            }
+
+            return true;
 
         default:
             sender.sendMessage(usage);

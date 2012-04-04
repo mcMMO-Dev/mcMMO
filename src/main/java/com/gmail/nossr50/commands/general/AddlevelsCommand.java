@@ -30,7 +30,7 @@ public class AddlevelsCommand implements CommandExecutor{
         int levels;
         SkillType skill;
         String skillName;
-        String usage = ChatColor.RED + "Proper usage is /addlevels <playername> <skillname> <levels>"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /addlevels [playername] <skill> <level>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
             return true;
@@ -54,10 +54,13 @@ public class AddlevelsCommand implements CommandExecutor{
 
                     PP.addLevels(skill, levels);
                     sender.sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
-
-                    return true;
                 }
             }
+            else {
+                sender.sendMessage(usage);
+            }
+
+            return true;
 
         case 3:
             modifiedPlayer = plugin.getServer().getOfflinePlayer(args[0]);
@@ -90,9 +93,12 @@ public class AddlevelsCommand implements CommandExecutor{
                 if (modifiedPlayer.isOnline()) {
                     ((Player) modifiedPlayer).sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
                 }
-
-                return true;
             }
+            else {
+                sender.sendMessage(usage);
+            }
+
+            return true;
 
         default:
             sender.sendMessage(usage);

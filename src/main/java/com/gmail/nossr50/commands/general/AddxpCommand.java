@@ -13,6 +13,7 @@ import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.skills.Skills;
 
+//TODO: Any way we can make this work for offline use?
 public class AddxpCommand implements CommandExecutor {
     private final mcMMO plugin;
 
@@ -26,7 +27,7 @@ public class AddxpCommand implements CommandExecutor {
         int xp;
         SkillType skill;
         String skillName;
-        String usage = ChatColor.RED + "Proper usage is /addxp <playername> <skillname> <xp>"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /addxp [player] <skill> <xp>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
             return true;
@@ -57,10 +58,13 @@ public class AddxpCommand implements CommandExecutor {
                     else {
                         Skills.XpCheckSkill(skill, modifiedPlayer);
                     }
-
-                    return true;
                 }
             }
+            else {
+                sender.sendMessage(usage);
+            }
+
+            return true;
 
         case 3:
             modifiedPlayer = plugin.getServer().getPlayer(args[0]);
@@ -91,9 +95,12 @@ public class AddxpCommand implements CommandExecutor {
                 else {
                     Skills.XpCheckSkill(skill, modifiedPlayer);
                 }
-
-                return true;
             }
+            else {
+                sender.sendMessage(usage);
+            }
+
+            return true;
 
         default:
             sender.sendMessage(usage);
