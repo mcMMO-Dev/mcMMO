@@ -20,6 +20,7 @@ Version 1.3.05
  = Fixed bug where Skull Splitter & Serrated Strikes could be used without permissions.
  = Fixed bug where API functions were set to static
  = Fixed bug where mmoedit threw errors when modifying an offline user
+ = Fixed dupe exploit with Blast Mining
  ! Changed Tree Feller to account for ability durability loss but not leaves.
  ! Changed bypass node for Arcane Forging to not default to true for OPs
  - Removed Ignition from Archery
