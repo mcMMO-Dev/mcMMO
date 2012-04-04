@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.3.06-dev
+
 Version 1.3.05
  + Added Skill Shot to Archery which increases damage dealt by 10% every 50 skill levels (caps at 200%)
  + Added ExperienceAPI and PartyAPI classes for developer use
