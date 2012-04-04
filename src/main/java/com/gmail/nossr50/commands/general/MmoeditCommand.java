@@ -40,10 +40,8 @@ public class MmoeditCommand implements CommandExecutor {
 			    
 			    if(Users.players.containsKey(args[0].toLowerCase())) {
 			        PPt = Users.players.get(args[0].toLowerCase());
-			    }
-			    
-			    if(PPt == null)
-			        Users.getOfflineProfile(args[0]); //Only grab offline profile if the above failed
+			    } else
+			        PPt = Users.getOfflineProfile(args[0]); //Only grab offline profile if the above failed
 			        
 			    if(!PPt.isLoaded())
 		        {
