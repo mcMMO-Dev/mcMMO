@@ -8,12 +8,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.LoadProperties;
-import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.runnables.SQLConversionTask;
 
 public class MmoupdateCommand implements CommandExecutor {
+<<<<<<< HEAD
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	    Player player = null;
@@ -39,6 +39,33 @@ public class MmoupdateCommand implements CommandExecutor {
 	}
 	
 	/**
+=======
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (CommandHelper.noConsoleUsage(sender)) {
+            return true;
+        }
+
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.admin")) {
+            return true;
+        }
+
+        sender.sendMessage(ChatColor.GRAY + "Starting conversion..."); //TODO: Needs more locale.
+        Users.clearUsers();
+        convertToMySQL();
+
+        for (Player x : Bukkit.getServer().getOnlinePlayers()) {
+            Users.addUser(x);
+        }
+
+        sender.sendMessage(ChatColor.GREEN + "Conversion finished!"); //TODO: Needs more locale.
+
+        return true;
+    }
+
+    /**
+>>>>>>> d9b4647cf5b277ae33d20e4e78ca67e1712f1ec7
      * Convert FlatFile data to MySQL data.
      */
     private void convertToMySQL() {
