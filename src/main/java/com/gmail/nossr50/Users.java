@@ -105,7 +105,7 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfileByName(String playerName) {
-        if (Bukkit.getServer().getOfflinePlayer(playerName).isOnline()) {
+        if (Bukkit.getServer().getOfflinePlayer(playerName).isOnline() || players.containsKey(playerName.toLowerCase())) {
             if (players.get(playerName.toLowerCase()) != null) {
                 return players.get(playerName.toLowerCase());
             }
