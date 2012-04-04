@@ -204,10 +204,8 @@ public class Combat {
                 
                 /* Every 100 skill levels Archery gains 20% damage bonus, set that here */
                 //TODO: Work in progress for balancing out Archery, will work on it more later...
-                //System.out.println("DEBUG 0: "+event.getDamage());
                 int archeryBonus = (int)(event.getDamage() * dmgBonusPercent);
                 event.setDamage(event.getDamage() + archeryBonus);
-                //System.out.println("DEBUG 1: "+event.getDamage());
                 
                 if (mcPermissions.getInstance().trackArrows(attacker)) {
                     Archery.trackArrows(pluginx, target, PPa);

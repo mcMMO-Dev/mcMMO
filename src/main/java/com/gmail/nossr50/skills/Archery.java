@@ -8,6 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
@@ -62,6 +63,7 @@ public class Archery {
 
         if (random.nextInt(2000) <= skillCheck && mcPermissions.getInstance().daze(attacker)) {
             defender.teleport(loc);
+            Combat.dealDamage(defender, 4);
             defender.sendMessage(mcLocale.getString("Combat.TouchedFuzzy"));
             attacker.sendMessage(mcLocale.getString("Combat.TargetDazed"));
         }
