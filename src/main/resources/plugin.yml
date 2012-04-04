@@ -3,7 +3,6 @@ main: com.gmail.nossr50.mcMMO
 version: ${project.version}-b${BUILD_NUMBER}
 softdepend: [Spout]
 authors:
-  - TheYeti
   - nossr50
   - NuclearW
   - gmcferrin
