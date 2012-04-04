@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -20,6 +21,10 @@ public class UnarmedCommand implements CommandExecutor {
 			return true;
 		}
 
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.unarmed")) {
+            return true;
+        }
+        
 		Player player = (Player) sender;
 		PlayerProfile PP = Users.getProfile(player);
 

@@ -14,7 +14,6 @@ public class McstatsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (CommandHelper.noConsoleUsage(sender)) {
             return true;
         }

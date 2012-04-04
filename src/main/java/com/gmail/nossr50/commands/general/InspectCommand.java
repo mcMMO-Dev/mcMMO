@@ -53,7 +53,6 @@ public class InspectCommand implements CommandExecutor {
                 return true;
             }
             else {
-
                 if (sender instanceof Player && !sender.isOp()) {
                     sender.sendMessage(mcLocale.getString("Inspect.Offline"));
                     return true;
