@@ -16,11 +16,11 @@ import com.gmail.nossr50.spout.SpoutStuff;
 public class mcSpoutListener implements Listener {
     //Why do we have this here? We never use it...
     mcMMO plugin = null;
-    
+
     public mcSpoutListener(mcMMO pluginx) {
         plugin = pluginx;
     }
-    
+
     /**
      * Monitor SpoutCraftEnable events.
      *
@@ -30,13 +30,13 @@ public class mcSpoutListener implements Listener {
     public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
         SpoutPlayer sPlayer = event.getPlayer();
         PlayerProfile PPs = Users.getProfile(sPlayer);
-        
+
         //TODO: Add custom titles based on skills
         if (LoadProperties.showPowerLevel) {
-            sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" 
+            sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl"
         + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(PPs.getPowerLevel()));
         }
-        
+
         if (sPlayer.isSpoutCraftEnabled()) {
             SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer)); //Setup Party HUD stuff
             
