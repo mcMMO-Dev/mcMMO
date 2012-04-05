@@ -102,21 +102,12 @@ public class Skills {
         /* Woodcutting & Axes need to be treated differently.
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
-        if (skill == SkillType.WOODCUTTING || skill == SkillType.AXES) {
-            if ((mcPermissions.getInstance().treeFeller(player) || mcPermissions.getInstance().skullSplitter(player)) && 
-                    tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
-                if (LoadProperties.enableAbilityMessages) {
-                    player.sendMessage(tool.getRaiseTool());
+        if (ability.getPermissions(player) && tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
+            if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
+                if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
+                    player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+                    return;
                 }
-
-                PP.setToolPreparationATS(tool, System.currentTimeMillis());
-                PP.setToolPreparationMode(tool, true);
-            }
-        }
-        else if (ability.getPermissions(player) && tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
-            if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
-                player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
-                return;
             }
 
             if (LoadProperties.enableAbilityMessages) {
