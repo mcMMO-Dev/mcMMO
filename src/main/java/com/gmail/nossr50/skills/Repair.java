@@ -484,5 +484,6 @@ public class Repair {
         int slot = inventory.first(Material.WOOD);
         ItemStack item = inventory.getItem(slot);
         item.setAmount(item.getAmount() - 1);
+        inventory.setItem(slot, item);
     }
 }
