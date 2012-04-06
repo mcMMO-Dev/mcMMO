@@ -1,5 +1,9 @@
 package com.gmail.nossr50.commands.mc;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -14,6 +18,8 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class McremoveCommand implements CommandExecutor {
+    String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+    
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = null;
@@ -68,42 +74,52 @@ public class McremoveCommand implements CommandExecutor {
 
             sender.sendMessage("User "+playerName+" removed from MySQL DB!"); //TODO: Needs more locale.
         } else {
-            //FlatFile removal
-            //TODO: Properly remove users from FlatFile, it's going to be a huge bitch with how our FlatFile system works. Let's adopt SQLite support.
-            if(Bukkit.getServer().getPlayer(playerName) != null)
-            {
-                Player targetPlayer = Bukkit.getServer().getPlayer(playerName);
-                if(targetPlayer.isOnline()) 
-                {
-                    Users.getProfile(targetPlayer).resetAllData();
-                    sender.sendMessage("User "+playerName+" removed from FlatFile DB!"); //TODO: Needs more locale.
-                } else {
-                    sender.sendMessage("[mcMMO] This command is not fully functional for FlatFile yet, the player needs to be online."); //TODO: Needs more locale.
-                    return true;
-                }
+            if(removeFlatFileUser(playerName)) {
+                sender.sendMessage(ChatColor.GREEN+"[mcMMO] It worked! User was removed.");
             } else {
-                sender.sendMessage("[mcMMO] This command is not fully functional for FlatFile yet, the player needs to be online."); //TODO: Needs more locale.
-                return true;
+                sender.sendMessage(ChatColor.RED+"[mcMMO] Couldn't find the user, remember its case sensitive!");
             }
         }
         
         //Force PlayerProfile stuff to update
-        if(Bukkit.getServer().getPlayer(playerName) != null)
+        if(Bukkit.getServer().getPlayer(playerName) != null && Users.players.containsKey(playerName.toLowerCase()))
         {
-            Player targetPlayer = Bukkit.getServer().getPlayer(playerName);
-            if(targetPlayer.isOnline())
-            {
-                targetPlayer.kickPlayer("[mcMMO] Stats have been reset! Rejoin!"); //TODO: Needs more locale.
-                Users.removeUserByName(playerName);
-            } else {
-                Users.removeUser(targetPlayer);
-            }
-        } else {
-            Users.removeUserByName(playerName);
+            Users.players.remove(playerName.toLowerCase());
+            Users.addUser(Bukkit.getServer().getPlayer(playerName));
         }
         
         sender.sendMessage("[mcMMO] mcremove operation completed."); //TODO: Needs more locale.
         
         return true;
+    }
+    
+    private boolean removeFlatFileUser(String playerName) {
+        boolean worked = false;
+        try {
+            FileReader file = new FileReader(location);
+            BufferedReader in = new BufferedReader(file);
+            StringBuilder writer = new StringBuilder();
+            String line = "";
+            while ((line = in.readLine()) != null) {
+                /* Write out the same file but when we get to the player we want to remove we skip his line */
+                if(!line.split(":")[0].equalsIgnoreCase(playerName))
+                {
+                    writer.append(line).append("\r\n");
+                } else {
+                    System.out.println("User found, removing...");
+                    worked = true;
+                    continue; //Skip the player
+                }
+            }
+            
+            in.close();
+            FileWriter out = new FileWriter(location); //Write out the new file
+            out.write(writer.toString());
+            out.close();
+            return worked;
+        } catch (Exception e) {
+            Bukkit.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            return worked;
+        }
     }
 }
