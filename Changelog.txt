@@ -10,6 +10,7 @@ Key:
 Version 1.3.06-dev
  + Added permissions check to skill functions
  + Added API functions for obtaining offline profiles & profiles via player names
+ = Fixed bug where {0} would be displayed in front of your power level in mcstats
  = Fixed mmoupdate not being useable from console
  = Fixed bug with repairing wooden tools
  ! Changed mcremove to no longer kick players when they are removed from database

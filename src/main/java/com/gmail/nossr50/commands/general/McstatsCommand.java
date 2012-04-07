@@ -28,7 +28,7 @@ public class McstatsCommand implements CommandExecutor {
         CommandHelper.printCombatSkills(player);
         CommandHelper.printMiscSkills(player);
 
-        player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel", new Object[] { PP.getPowerLevel() }));
+        player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel", new Object[] { String.valueOf(PP.getPowerLevel()) }));
 
         return true;
     }
