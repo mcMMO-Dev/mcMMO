@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 
@@ -56,7 +55,7 @@ public class ACommand implements CommandExecutor {
 				aMessage = aMessage + " " + args[i];
 			}
 
-			String name = (LoadProperties.aDisplayNames) ? player.getDisplayName() : player.getName();
+			String name = player.getName();
 			String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + name + ChatColor.AQUA + "} ";
 			Bukkit.getLogger().info("[A]<" + name + "> " + aMessage);
 			for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
