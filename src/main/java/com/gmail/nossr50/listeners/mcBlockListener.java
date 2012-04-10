@@ -155,7 +155,7 @@ public class mcBlockListener implements Listener {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 
-        if (mcPermissions.getInstance().herbalismDoubleDrops(player) && Herbalism.canBeGreenTerra(mat)) {
+        if (mcPermissions.getInstance().herbalism(player) && Herbalism.canBeGreenTerra(mat)) {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 

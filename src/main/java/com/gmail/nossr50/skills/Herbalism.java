@@ -227,8 +227,7 @@ public class Herbalism {
 
         if (mat == null) {
             return;
-        }
-        else {
+        } else if (mcPermissions.getInstance().herbalismDoubleDrops(player)) {
             ItemStack is = new ItemStack(mat);
 
             if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
@@ -250,10 +249,10 @@ public class Herbalism {
                     m.mcDropItem(loc, is);
                 }
             }
-
-            PP.addXP(SkillType.HERBALISM, xp);
-            Skills.XpCheckSkill(SkillType.HERBALISM, player);
         }
+        
+        PP.addXP(SkillType.HERBALISM, xp);
+        Skills.XpCheckSkill(SkillType.HERBALISM, player);
     }
 
     /**
