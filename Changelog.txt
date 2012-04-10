@@ -19,6 +19,7 @@ Version 1.3.06-dev
  ! Changed getPlayerProfile function to work for online & offline users
  ! Changed Archery's Daze to deal 4 DMG on proc (2 Hearts)
  ! Changed /addlevel command to work for offline users
+ ! Changed party & admin chat handling to be nicer to developers
 
 Version 1.3.05
  + Added Skill Shot to Archery which increases damage dealt by 10% every 50 skill levels (caps at 200%)

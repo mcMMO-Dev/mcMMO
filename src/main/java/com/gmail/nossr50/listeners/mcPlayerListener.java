@@ -1,5 +1,8 @@
 package com.gmail.nossr50.listeners;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -291,51 +294,42 @@ public class mcPlayerListener implements Listener {
         PlayerProfile PP = Users.getProfile(player);
         boolean partyChat = PP.getPartyChatMode();
         boolean adminChat = PP.getAdminChatMode();
+        Set<Player> recipients = event.getRecipients();
+
+        Set<Player> intendedRecipients = new HashSet<Player>();
+        String header = "";
 
         if (partyChat || adminChat) {
-            event.setCancelled(true);
 
-            String name = "";
-            boolean displayNames = false;
-            ChatColor color = ChatColor.WHITE;
-            String logHeader = "";
-
-            /* Set the pChat & aChat specific stuff */
             if (partyChat) {
+
                 if (!PP.inParty()) {
                     player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
                     return;
                 }
 
-                displayNames = LoadProperties.pDisplayNames;
-                color = ChatColor.GREEN;
-                logHeader = "[P](" + PP.getParty() + ")<";
-            }
-            else if (adminChat) {
-                displayNames = LoadProperties.aDisplayNames;
-                color = ChatColor.AQUA;
-                logHeader = "[A]<";
+                header = ChatColor.GREEN + "[P] (" + PP.getParty() + ") ";
+
+                for (Player x : plugin.getServer().getOnlinePlayers()) {
+                    if (Party.getInstance().inSameParty(player, x)) {
+                        intendedRecipients.add(x);
+                    }
+                }
+
             }
 
-            /* Format & display */
-            if (displayNames) {
-                name = player.getDisplayName();
-            }
-            else {
-                name = player.getName();
-            }
+            if (adminChat) {
+                header = ChatColor.AQUA + "[A] ";
 
-            String format = color + "(" + ChatColor.WHITE + name + color + ") " + event.getMessage();
-
-            for (Player x : plugin.getServer().getOnlinePlayers()) {
-                if (partyChat && Party.getInstance().inSameParty(player, x))
-                    x.sendMessage(format);
-                else if (adminChat && (x.isOp() || mcPermissions.getInstance().adminChat(x))) {
-                    x.sendMessage(format);
+                for (Player x : plugin.getServer().getOnlinePlayers()) {
+                    if (x.isOp() || mcPermissions.getInstance().adminChat(x)) {
+                        intendedRecipients.add(x);
+                    }
                 }
             }
 
-            Bukkit.getLogger().info(logHeader + name + ">" + event.getMessage());
+            recipients.retainAll(intendedRecipients);
+            event.setFormat(header + "<%1$s> " + ChatColor.WHITE + "%2$s");
         }
     }
 

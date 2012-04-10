@@ -25,7 +25,6 @@ public class LoadProperties extends ConfigLoader{
                           mcstatsEnable, addxpEnable, ptpEnable, mmoeditEnable,
                           mcremoveEnable, mcgodEnable, mcabilityEnable, mctopEnable,
                           addlevelsEnable, mcrefreshEnable, aEnable, pEnable;
-    public static Boolean aDisplayNames, pDisplayNames;
     public static int ptpCommandCooldown;
     public static Boolean donateMessage;
 
@@ -459,9 +458,6 @@ public class LoadProperties extends ConfigLoader{
         acceptEnable = config.getBoolean("Commands.accept.Enabled", true);
         aEnable = config.getBoolean("Commands.a.Enabled", true);
         pEnable = config.getBoolean("Commands.p.Enabled", true);
-
-        aDisplayNames = config.getBoolean("Commands.a.Display_Names", true);
-        pDisplayNames = config.getBoolean("Commands.p.Display_Names", true);
 
         ptpCommandCooldown = config.getInt("Commands.ptp.Cooldown", 30);
 

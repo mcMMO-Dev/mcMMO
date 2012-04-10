@@ -315,10 +315,8 @@ Commands:
         Cooldown: 30
     p:
         Enabled: true
-        Display_Names: true
     a:
         Enabled: true
-        Display_Names: true
 
 #
 #  Settings for Spout features
