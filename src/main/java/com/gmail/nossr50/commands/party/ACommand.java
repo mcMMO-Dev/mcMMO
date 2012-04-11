@@ -55,6 +55,11 @@ public class ACommand implements CommandExecutor {
 				aMessage = aMessage + " " + args[i];
 			}
 
+			
+            Users.getProfile(player).toggleAdminChat();
+            player.chat(aMessage);
+            Users.getProfile(player).toggleAdminChat();
+
 			String name = player.getName();
 			String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + name + ChatColor.AQUA + "} ";
 			Bukkit.getLogger().info("[A]<" + name + "> " + aMessage);

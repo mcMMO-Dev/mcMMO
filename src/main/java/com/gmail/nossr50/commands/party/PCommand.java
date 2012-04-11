@@ -11,7 +11,6 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.party.Party;
 
 public class PCommand implements CommandExecutor {
 	public PCommand() {}
@@ -62,17 +61,10 @@ public class PCommand implements CommandExecutor {
 			for (int i = 1; i <= args.length - 1; i++) {
 				pMessage = pMessage + " " + args[i];
 			}
-
-			String name = player.getName();
-			String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + name + ChatColor.GREEN + ") ";
-			Bukkit.getLogger().info("[P](" + PP.getParty() + ")<" + name + "> " + pMessage);
-
-			for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
-				if (Users.getProfile(herp).inParty()) {
-					if (Party.getInstance().inSameParty(herp, player))
-						herp.sendMessage(pPrefix + pMessage);
-				}
-			}
+			
+			PP.togglePartyChat();
+			player.chat(pMessage);
+			PP.togglePartyChat();
 
 			return true;
 		}
