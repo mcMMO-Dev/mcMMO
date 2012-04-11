@@ -21,14 +21,14 @@ public class McstatsCommand implements CommandExecutor {
         Player player = (Player) sender;
         PlayerProfile PP = Users.getProfile(player);
 
-        player.sendMessage(mcLocale.getString("mcPlayerListener.YourStats"));
-        player.sendMessage(mcLocale.getString("mcPlayerListener.NoSkillNote"));
+        player.sendMessage(mcLocale.getString("Stats.Own.Stats"));
+        player.sendMessage(mcLocale.getString("mcMMO.NoSkillNote"));
 
         CommandHelper.printGatheringSkills(player);
         CommandHelper.printCombatSkills(player);
         CommandHelper.printMiscSkills(player);
 
-        player.sendMessage(mcLocale.getString("mcPlayerListener.PowerLevel", new Object[] { String.valueOf(PP.getPowerLevel()) }));
+        player.sendMessage(mcLocale.getString("Commands.PowerLevel", new Object[] { String.valueOf(PP.getPowerLevel()) }));
 
         return true;
     }
