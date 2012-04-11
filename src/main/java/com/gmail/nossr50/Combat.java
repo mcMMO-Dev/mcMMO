@@ -351,10 +351,10 @@ public class Combat {
                         String message = "";
 
                         if (type.equals(SkillType.AXES)) {
-                            message = mcLocale.getString("Axes.HitByCleave");
+                            message = mcLocale.getString("Axes.Combat.Cleave.Struck");
                         }
                         else if (type.equals(SkillType.SWORDS)) {
-                            message = mcLocale.getString("Swords.HitBySerratedStrikes");
+                            message = mcLocale.getString("Swords.Combat.SS.Struck");
                         }
 
                         dealDamage(defender, damageAmount, attacker);

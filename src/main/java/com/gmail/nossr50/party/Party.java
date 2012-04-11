@@ -239,10 +239,10 @@ public class Party {
         informPartyMembers(player);
 
         if (!invite) {
-            player.sendMessage(mcLocale.getString("mcPlayerListener.JoinedParty", new Object[]{ newParty }));
+            player.sendMessage(mcLocale.getString("Commands.Party.Join", new Object[]{ newParty }));
         }
         else {
-            player.sendMessage(mcLocale.getString("mcPlayerListener.InviteAccepted", new Object[]{ PP.getParty() }));
+            player.sendMessage(mcLocale.getString("Commands.Invite.Accepted", new Object[]{ PP.getParty() }));
         }
     }
 

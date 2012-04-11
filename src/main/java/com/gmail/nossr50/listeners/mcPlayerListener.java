@@ -68,7 +68,7 @@ public class mcPlayerListener implements Listener {
         if (PP.getGodMode()) {
             if (!mcPermissions.getInstance().mcgod(player)) {
                 PP.toggleGodMode();
-                player.sendMessage(mcLocale.getString("GodMode.Forbidden"));
+                player.sendMessage(mcLocale.getString("Commands.GodMode.Forbidden"));
             }
         }
 
@@ -167,8 +167,8 @@ public class mcPlayerListener implements Listener {
         Player player = event.getPlayer();
 
         if (mcPermissions.getInstance().motd(player) && LoadProperties.enableMotd) {
-            player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), "mcmmo"}));
-            player.sendMessage(mcLocale.getString("mcPlayerListener.WIKI"));
+            player.sendMessage(mcLocale.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion(), "mcmmo"}));
+            player.sendMessage(mcLocale.getString("mcMMO.Wiki"));
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY

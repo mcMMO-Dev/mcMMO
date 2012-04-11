@@ -213,18 +213,18 @@ public class mcMMO extends JavaPlugin {
 
         //Register aliases with the aliasmap (used in the playercommandpreprocessevent to ugly alias them to actual commands)
         //Skills commands
-        aliasMap.put(mcLocale.getString("m.SkillAcrobatics").toLowerCase(), "acrobatics");
-        aliasMap.put(mcLocale.getString("m.SkillArchery").toLowerCase(), "archery");
-        aliasMap.put(mcLocale.getString("m.SkillAxes").toLowerCase(), "axes");
-        aliasMap.put(mcLocale.getString("m.SkillExcavation").toLowerCase(), "excavation");
-        aliasMap.put(mcLocale.getString("m.SkillFishing").toLowerCase(), "fishing");
-        aliasMap.put(mcLocale.getString("m.SkillHerbalism").toLowerCase(), "herbalism");
-        aliasMap.put(mcLocale.getString("m.SkillMining").toLowerCase(), "mining");
-        aliasMap.put(mcLocale.getString("m.SkillRepair").toLowerCase(), "repair");
-        aliasMap.put(mcLocale.getString("m.SkillSwords").toLowerCase(), "swords");
-        aliasMap.put(mcLocale.getString("m.SkillTaming").toLowerCase(), "taming");
-        aliasMap.put(mcLocale.getString("m.SkillUnarmed").toLowerCase(), "unarmed");
-        aliasMap.put(mcLocale.getString("m.SkillWoodCutting").toLowerCase(), "woodcutting");
+        aliasMap.put(mcLocale.getString("Acrobatics.SkillName").toLowerCase(), "acrobatics");
+        aliasMap.put(mcLocale.getString("Archery.SkillName").toLowerCase(), "archery");
+        aliasMap.put(mcLocale.getString("Axes.SkillName").toLowerCase(), "axes");
+        aliasMap.put(mcLocale.getString("Excavation.SkillName").toLowerCase(), "excavation");
+        aliasMap.put(mcLocale.getString("Fishing.SkillName").toLowerCase(), "fishing");
+        aliasMap.put(mcLocale.getString("Herbalism.SkillName").toLowerCase(), "herbalism");
+        aliasMap.put(mcLocale.getString("Mining.SkillName").toLowerCase(), "mining");
+        aliasMap.put(mcLocale.getString("Repair.SkillName").toLowerCase(), "repair");
+        aliasMap.put(mcLocale.getString("Swords.SkillName").toLowerCase(), "swords");
+        aliasMap.put(mcLocale.getString("Taming.SkillName").toLowerCase(), "taming");
+        aliasMap.put(mcLocale.getString("Unarmed.SkillName").toLowerCase(), "unarmed");
+        aliasMap.put(mcLocale.getString("WoodCutting.SkillName").toLowerCase(), "woodcutting");
 
         //Register commands
         //Skills commands
