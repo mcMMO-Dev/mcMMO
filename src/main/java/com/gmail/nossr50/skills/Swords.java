@@ -73,7 +73,7 @@ public class Swords {
             else {
                 mcBleedTimer.add(entity);
             }
-            attacker.sendMessage(mcLocale.getString("Swords.Combat.Bleeding"));
+            attacker.sendMessage(mcLocale.getString("Swords.EnemyBleeding"));
         }
     }
 
@@ -104,10 +104,10 @@ public class Swords {
 
                 if (random.nextInt(2000) <= skillCheck) {
                     Combat.dealDamage((LivingEntity) attacker, event.getDamage() / COUNTER_ATTACK_MODIFIER);
-                    defender.sendMessage(mcLocale.getString("Swords.Combat.Countered"));
+                    defender.sendMessage(mcLocale.getString("Swords.CounterAttacked"));
 
                     if (attacker instanceof Player) {
-                        ((Player) attacker).sendMessage(mcLocale.getString("Swords.Combat.Counter.Hit"));
+                        ((Player) attacker).sendMessage(mcLocale.getString("Swords.HitByCounterAttack"));
                     }
                 }
             }

@@ -7,12 +7,12 @@ import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.locale.mcLocale;
 
 public enum ToolType {
-    AXE(mcLocale.getString("Axes.Ability.Lower"), mcLocale.getString("Axes.Ability.Ready")),
-    FISTS(mcLocale.getString("Unarmed.Ability.Lower"), mcLocale.getString("Unarmed.Ability.Ready")),
-    HOE(mcLocale.getString("Herbalism.Ability.Lower"), mcLocale.getString("Herbalism.Ability.Ready")),
-    PICKAXE(mcLocale.getString("Mining.Ability.Lower"), mcLocale.getString("Mining.Ability.Ready")),
-    SHOVEL(mcLocale.getString("Excavation.Ability.Lower"), mcLocale.getString("Excavation.Ability.Ready")),
-    SWORD(mcLocale.getString("Swords.Ability.Lower"), mcLocale.getString("Swords.Ability.Ready"));
+    AXE(mcLocale.getString("Skills.LowerAxe"), mcLocale.getString("Skills.ReadyAxe")),
+    FISTS(mcLocale.getString("Skills.LowerFists"), mcLocale.getString("Skills.ReadyFists")),
+    HOE(mcLocale.getString("Skills.LowerHoe"), mcLocale.getString("Skills.ReadyHoe")),
+    PICKAXE(mcLocale.getString("Skills.LowerPickAxe"), mcLocale.getString("Skills.ReadyPickAxe")),
+    SHOVEL(mcLocale.getString("Skills.LowerShovel"), mcLocale.getString("Skills.ReadyShovel")),
+    SWORD(mcLocale.getString("Skills.LowerSword"), mcLocale.getString("Skills.ReadySword"));
 
     private String lowerTool;
     private String raiseTool;

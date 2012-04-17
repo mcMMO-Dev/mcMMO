@@ -102,7 +102,7 @@ public class Repair {
             }
         }
         else {
-            player.sendMessage(mcLocale.getString("Repair.Skills.FullDurability"));
+            player.sendMessage(mcLocale.getString("Skills.FullDurability"));
         }
     }
 
@@ -189,7 +189,7 @@ public class Repair {
             for (Enchantment x : enchants.keySet()) {
                 is.removeEnchantment(x);
             }
-            player.sendMessage(mcLocale.getString("Repair.Arcane.Lost"));
+            player.sendMessage(mcLocale.getString("Repair.LostEnchants"));
             return;
         }
 
@@ -216,13 +216,13 @@ public class Repair {
         Map<Enchantment, Integer> newEnchants = is.getEnchantments();
 
         if (newEnchants.isEmpty()) {
-            player.sendMessage(mcLocale.getString("Repair.Arcane.Fail"));
+            player.sendMessage(mcLocale.getString("Repair.ArcaneFailed"));
         }
         else if (downgraded || newEnchants.size() < enchants.size()) {
-            player.sendMessage(mcLocale.getString("Repair.Arcane.Downgrade"));
+            player.sendMessage(mcLocale.getString("Repair.Downgraded"));
         }
         else {
-            player.sendMessage(mcLocale.getString("Repair.Arcane.Perfect"));
+            player.sendMessage(mcLocale.getString("Repair.ArcanePerfect"));
         }
     }
 
@@ -349,12 +349,12 @@ public class Repair {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
         if (is.getAmount() != 1) {
-            player.sendMessage(mcLocale.getString("Repair.Skills.StackedItems"));
+            player.sendMessage(mcLocale.getString("Skills.StackedItems"));
         }
         else {
             if (ItemChecks.isDiamondTool(is) || ItemChecks.isDiamondArmor(is)) {
                 if (skillLevel < LoadProperties.repairdiamondlevel) {
-                    player.sendMessage(mcLocale.getString("Repair.Skills.AdeptDiamond"));
+                    player.sendMessage(mcLocale.getString("Skills.AdeptDiamond"));
                 }
                 else {
                     player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.BLUE + m.prettyItemString(LoadProperties.rDiamond));
@@ -362,7 +362,7 @@ public class Repair {
             }
             else if (ItemChecks.isIronTool(is) || ItemChecks.isIronArmor(is)) {
                 if (skillLevel < LoadProperties.repairIronLevel) {
-                    player.sendMessage(mcLocale.getString("Repair.Skills.AdeptIron"));
+                    player.sendMessage(mcLocale.getString("Skills.AdeptIron"));
                 }
                 else {
                     player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(LoadProperties.rIron));
@@ -370,7 +370,7 @@ public class Repair {
             }
             else if (ItemChecks.isGoldTool(is) || ItemChecks.isGoldArmor(is)) {
                 if (skillLevel < LoadProperties.repairGoldLevel) {
-                    player.sendMessage(mcLocale.getString("Repair.Skills.AdeptGold"));
+                    player.sendMessage(mcLocale.getString("Skills.AdeptGold"));
                 }
                 else {
                     player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GOLD + m.prettyItemString(LoadProperties.rGold));
@@ -378,7 +378,7 @@ public class Repair {
             }
             else if (ItemChecks.isStoneTool(is)) {
                 if (skillLevel < LoadProperties.repairStoneLevel) {
-                    player.sendMessage(mcLocale.getString("Repair.Skills.AdeptStone"));
+                    player.sendMessage(mcLocale.getString("Skills.AdeptStone"));
                 }
                 else {
                     player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GRAY + m.prettyItemString(LoadProperties.rStone));
@@ -408,7 +408,7 @@ public class Repair {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
         if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && mcPermissions.getInstance().repairBonus(player)) {
-            player.sendMessage(mcLocale.getString("Repair.Skills.FeltEasy"));
+            player.sendMessage(mcLocale.getString("Skills.FeltEasy"));
             return true;
         }
 
@@ -467,7 +467,7 @@ public class Repair {
                 }
             }
             else {
-                player.sendMessage(mcLocale.getString("Repair.Listener.Anvil"));
+                player.sendMessage(mcLocale.getString("mcBlockListener.PlacedAnvil"));
             }
 
             PP.togglePlacedAnvil();

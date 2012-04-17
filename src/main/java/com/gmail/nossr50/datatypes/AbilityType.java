@@ -11,77 +11,15 @@ import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Mining;
 
 public enum AbilityType {
-    BERSERK(
-            LoadProperties.berserkCooldown,
-            "Unarmed.Skills.Berserk.On",
-            "Unarmed.Skills.Berserk.Off",
-            "Unarmed.Skills.Berserk.Other.On",
-            "Unarmed.Skills.Berserk.Refresh",
-            "Unarmed.Skills.Berserk.Other.Off"),
-
-    SUPER_BREAKER(
-            LoadProperties.superBreakerCooldown,
-            "Mining.Skills.SuperBreaker.On",
-            "Mining.Skills.SuperBreaker.Off",
-            "Mining.Skills.SuperBreaker.Other.On",
-            "Mining.Skills.SuperBreaker.Refresh",
-            "Mining.Skills.SuperBreaker.Other.Off"),
-
-    GIGA_DRILL_BREAKER(
-            LoadProperties.gigaDrillBreakerCooldown,
-            "Excavation.Skills.GigaDrillBreaker.On",
-            "Excavation.Skills.GigaDrillBreaker.Off",
-            "Excavation.Skills.GigaDrillBreaker.Other.On",
-            "Excavation.Skills.GigaDrillBreaker.Refresh",
-            "Excavation.Skills.GigaDrillBreaker.Other.Off"),
-
-    GREEN_TERRA(
-            LoadProperties.greenTerraCooldown,
-            "Herbalism.Skills.GTe.On",
-            "Herbalism.Skills.GTe.Off",
-            "Herbalism.Skills.GTe.Other.On",
-            "Herbalism.Skills.GTe.Refresh",
-            "Herbalism.Skills.GTe.Other.Off"),
-
-    SKULL_SPLIITER(
-            LoadProperties.skullSplitterCooldown,
-            "Axes.Skills.SS.On",
-            "Axes.Skills.SS.Off",
-            "Axes.Skills.SS.Other.On",
-            "Axes.Skills.SS.Refresh",
-            "Axes.Skills.SS.Other.Off"),
-
-    TREE_FELLER(
-            LoadProperties.treeFellerCooldown,
-            "Woodcutting.Skills.TreeFeller.On",
-            "Woodcutting.Skills.TreeFeller.Off",
-            "Woodcutting.Skills.TreeFeller.Other.On",
-            "Woodcutting.Skills.TreeFeller.Refresh",
-            "Woodcutting.Skills.TreeFeller.Other.Off"),
-
-    SERRATED_STRIKES(
-            LoadProperties.serratedStrikeCooldown,
-            "Swords.Skills.SS.On",
-            "Swords.Skills.SS.Off",
-            "Swords.Skills.SS.Other.On",
-            "Swords.Skills.SS.Refresh",
-            "Swords.Skills.SS.Other.Off"),
-
-    BLAST_MINING(
-            LoadProperties.blastMiningCooldown,
-            null,
-            null,
-            "Mining.Blast.Other.On",
-            "Mining.Blast.Refresh",
-            null),
-
-    LEAF_BLOWER(
-            0,
-            null,
-            null,
-            null,
-            null,
-            null);
+    BERSERK(LoadProperties.berserkCooldown, mcLocale.getString("Skills.BerserkOn"), mcLocale.getString("Skills.BerserkOff"), "Skills.BerserkPlayer", mcLocale.getString("Skills.YourBerserk"), "Skills.BerserkPlayerOff"),
+    SUPER_BREAKER(LoadProperties.superBreakerCooldown, mcLocale.getString("Skills.SuperBreakerOn"), mcLocale.getString("Skills.SuperBreakerOff"), "Skills.SuperBreakerPlayer", mcLocale.getString("Skills.YourSuperBreaker"), "Skills.SuperBreakerPlayerOff"),
+    GIGA_DRILL_BREAKER(LoadProperties.gigaDrillBreakerCooldown, mcLocale.getString("Skills.GigaDrillBreakerOn"), mcLocale.getString("Skills.GigaDrillBreakerOff"), "Skills.GigaDrillBreakerPlayer", mcLocale.getString("Skills.YourGigaDrillBreaker"), "Skills.GigaDrillBreakerPlayerOff"),
+    GREEN_TERRA(LoadProperties.greenTerraCooldown, mcLocale.getString("Skills.GreenTerraOn"), mcLocale.getString("Skills.GreenTerraOff"), "Skills.GreenTerraPlayer", mcLocale.getString("Skills.YourGreenTerra"), mcLocale.getString("Skills.GreenTerraPlayerOff")),
+    SKULL_SPLIITER(LoadProperties.skullSplitterCooldown, mcLocale.getString("Skills.SkullSplitterOn"), mcLocale.getString("Skills.SkullSplitterOff"), "Skills.SkullSplitterPlayer", mcLocale.getString("Skills.YourSkullSplitter"), "Skills.SkullSplitterPlayerOff"),
+    TREE_FELLER(LoadProperties.treeFellerCooldown, mcLocale.getString("Skills.TreeFellerOn"), mcLocale.getString("Skills.TreeFellerOff"), "Skills.TreeFellerPlayer", mcLocale.getString("Skills.YourTreeFeller"), "Skills.TreeFellerPlayerOff"),
+    SERRATED_STRIKES(LoadProperties.skullSplitterCooldown, mcLocale.getString("Skills.SerratedStrikesOn"), mcLocale.getString("Skills.SerratedStrikesOff"), "Skills.SerratedStrikesPlayer", mcLocale.getString("Skills.YourSerratedStrikes"), "Skills.SerratedStrikesPlayerOff"),
+    BLAST_MINING(LoadProperties.blastMiningCooldown, null, null, "Skills.BlastMiningPlayer", mcLocale.getString("Skills.YourBlastMining"), null),
+    LEAF_BLOWER(0, null, null, null, null, null);
 
     private int cooldown;
     private String abilityOn;
@@ -104,11 +42,11 @@ public enum AbilityType {
     }
 
     public String getAbilityOn() {
-        return mcLocale.getString(this.abilityOn);
+        return this.abilityOn;
     }
 
     public String getAbilityOff() {
-        return mcLocale.getString(this.abilityOff);
+        return this.abilityOff;
     }
 
     public String getAbilityPlayer(Player player) {
@@ -120,7 +58,7 @@ public enum AbilityType {
     }
 
     public String getAbilityRefresh() {
-        return mcLocale.getString(this.abilityRefresh);
+        return this.abilityRefresh;
     }
 
     /**

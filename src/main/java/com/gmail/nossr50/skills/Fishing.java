@@ -97,7 +97,7 @@ public class Fishing {
             break;
         }
 
-        if (LoadProperties.fishingDrops && rewards.size() > 0) {
+        if (LoadProperties.fishingDrops) {
             FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
             if (random.nextDouble() * 100 <= treasure.getDropChance()) {

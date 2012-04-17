@@ -224,11 +224,11 @@ public class Skills {
                     }
                 }
                 else {
-                    player.sendMessage(mcLocale.getString(capitalized + "Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+                    player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
                 }
             }
             else {
-                player.sendMessage(mcLocale.getString(capitalized + "Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+                player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
             }
         }
 

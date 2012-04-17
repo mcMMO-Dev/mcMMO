@@ -273,7 +273,7 @@ public class BlastMining {
                 }
             }
 
-            player.sendMessage(mcLocale.getString("Mining.Blast.Boom"));
+            player.sendMessage(mcLocale.getString("BlastMining.Boom"));
 
             /* Create the TNT entity */
             TNTPrimed tnt = player.getWorld().spawn(block.getLocation(), TNTPrimed.class);

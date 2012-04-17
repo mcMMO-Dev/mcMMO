@@ -68,10 +68,10 @@ public class Acrobatics {
                 }
 
                 if (gracefulRoll) {
-                    player.sendMessage(mcLocale.getString("Acrobatics.Ability.Proc"));
+                    player.sendMessage(mcLocale.getString("Acrobatics.GracefulRoll"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Acrobatics.Roll.Text"));
+                    player.sendMessage(mcLocale.getString("Acrobatics.Roll"));
                 }
             }
         }
@@ -108,7 +108,7 @@ public class Acrobatics {
             int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
             if (random.nextInt(4000) <= skillCheck && mcPermissions.getInstance().dodge(defender)) {
-                defender.sendMessage(mcLocale.getString("Acrobatics.Combat.Proc"));
+                defender.sendMessage(mcLocale.getString("Acrobatics.Dodge"));
 
                 if (System.currentTimeMillis() >= (5000 + PPd.getRespawnATS()) && defender.getHealth() >= 1) {
                     PPd.addXP(SkillType.ACROBATICS, damage * DODGE_MODIFIER);
