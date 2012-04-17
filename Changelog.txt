@@ -16,6 +16,7 @@ Version 1.3.06-dev
  = Fixed bug with repairing wooden tools
  = Fixed bug with Nether Wart not awarding XP
  = Fixed bug with fishing treasures when treasures list is empty
+ = Fixed bug with only getting one level when there was enough XP for multiple levels.
  ! Changed mcremove to no longer kick players when they are removed from database
  ! Changed mcremove to work on offline users for FlatFile
  ! Changed PlayerProfile constructor to always take a boolean
@@ -23,6 +24,7 @@ Version 1.3.06-dev
  ! Changed Archery's Daze to deal 4 DMG on proc (2 Hearts)
  ! Changed /addlevel command to work for offline users
  ! Changed party & admin chat handling to be nicer to developers
+ ! Changed UpdateXPBar function to hopefully avoid errors
 
 Version 1.3.05
  + Added Skill Shot to Archery which increases damage dealt by 10% every 50 skill levels (caps at 200%)

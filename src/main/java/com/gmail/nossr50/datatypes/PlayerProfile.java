@@ -964,6 +964,10 @@ public class PlayerProfile {
         return skillsXp.get(skillType);
     }
 
+    public void skillUp(SkillType skillType, int newValue) {
+        skills.put(skillType, skills.get(skillType) + newValue);
+    }
+
     /**
      * Adds XP to the player, doesn't calculate for XP Rate
      *
@@ -1036,6 +1040,27 @@ public class PlayerProfile {
         Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
         skillsXp.put(skillType, skillsXp.get(skillType) + xp);
         lastgained = skillType;
+    }
+
+    /**
+     * Remove XP from a skill.
+     *
+     * @param skillType Type of skill to modify
+     * @param xp Amount of xp to remove
+     */
+    public void removeXP(SkillType skillType, int xp) {
+        if (skillType.equals(SkillType.ALL)) {
+            for (SkillType skill : SkillType.values()) {
+                if (skill.equals(SkillType.ALL)) {
+                    continue;
+                }
+
+                skillsXp.put(skill, skillsXp.get(skill) - xp);
+            }
+        }
+        else {
+            skillsXp.put(skillType, skillsXp.get(skillType) - xp);
+        }
     }
 
     /**
