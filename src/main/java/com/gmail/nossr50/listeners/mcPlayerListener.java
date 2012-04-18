@@ -297,7 +297,6 @@ public class mcPlayerListener implements Listener {
         Set<Player> recipients = event.getRecipients();
 
         Set<Player> intendedRecipients = new HashSet<Player>();
-        String header = "";
         ChatColor color = null;
 
         if (partyChat || adminChat) {
@@ -310,7 +309,6 @@ public class mcPlayerListener implements Listener {
                 }
 
                 color = ChatColor.GREEN;
-                header = color + "[P] (" + PP.getParty() + ") ";
 
                 for (Player x : plugin.getServer().getOnlinePlayers()) {
                     if (Party.getInstance().inSameParty(player, x)) {
@@ -318,21 +316,21 @@ public class mcPlayerListener implements Listener {
                     }
                 }
 
+                event.setFormat(color + "(" + ChatColor.WHITE + "%1$s" + color + ") %2$s");
             }
 
             if (adminChat) {
                 color = ChatColor.AQUA;
-                header = color + "[A] ";
-
                 for (Player x : plugin.getServer().getOnlinePlayers()) {
                     if (x.isOp() || mcPermissions.getInstance().adminChat(x)) {
                         intendedRecipients.add(x);
                     }
                 }
+
+                event.setFormat(color + "{" + ChatColor.WHITE + "%1$s" + color + "} %2$s");
             }
 
             recipients.retainAll(intendedRecipients);
-            event.setFormat(header + "<" + ChatColor.WHITE + "%1$s" + color + "> %2$s");
         }
     }
 
