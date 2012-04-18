@@ -54,19 +54,11 @@ public class ACommand implements CommandExecutor {
 			for (int i = 1; i <= args.length - 1; i++) {
 				aMessage = aMessage + " " + args[i];
 			}
-
 			
             Users.getProfile(player).toggleAdminChat();
             player.chat(aMessage);
             Users.getProfile(player).toggleAdminChat();
 
-			String name = player.getName();
-			String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + name + ChatColor.AQUA + "} ";
-			Bukkit.getLogger().info("[A]<" + name + "> " + aMessage);
-			for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
-				if (mcPermissions.getInstance().adminChat(herp) || herp.isOp())
-					herp.sendMessage(aPrefix + aMessage);
-			}
 			return true;
 		}
 
