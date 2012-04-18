@@ -53,7 +53,7 @@ public class WoodCutting {
      * @param PP The PlayerProfile of the player
      */
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP) {
-        if (toBeFelled.size() > LoadProperties.treeFellerThreshold) {
+        if (toBeFelled.size() >= LoadProperties.treeFellerThreshold) {
             player.sendMessage(mcLocale.getString("Skills.Woodcutting.TreeFellerThreshold"));
             return;
         }
@@ -186,6 +186,10 @@ public class WoodCutting {
      */
     private static void processTreeFelling(Block currentBlock, ArrayList<Block> toBeFelled) {
         Material type = currentBlock.getType();
+        
+        if(toBeFelled.size() >= LoadProperties.treeFellerThreshold) {
+            return;
+        }
 
         if (type.equals(Material.LOG) || type.equals(Material.LEAVES)) {
             toBeFelled.add(currentBlock);
