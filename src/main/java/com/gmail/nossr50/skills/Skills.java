@@ -188,14 +188,16 @@ public class Skills {
 
             while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
                 if ((skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) && (m.getPowerLevelCap() >= PP.getPowerLevel() + 1)) {
+                    PP.removeXP(skillType, PP.getXpToLevel(skillType));
                     skillups++;
                     PP.skillUp(skillType, 1);
 
                     McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
                     Bukkit.getPluginManager().callEvent(eventToFire);
                 }
-
-                PP.removeXP(skillType, PP.getXpToLevel(skillType));
+                else {
+                    PP.addLevels(skillType, 0);
+                }
             }
 
             if (!LoadProperties.useMySQL) {
