@@ -39,6 +39,8 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
+import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.BlastMining;
@@ -300,15 +302,20 @@ public class mcPlayerListener implements Listener {
         ChatColor color = null;
 
         if (partyChat || adminChat) {
-
             if (partyChat) {
-
                 if (!PP.inParty()) {
                     player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
                     return;
                 }
 
                 color = ChatColor.GREEN;
+
+                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), PP.getParty(), event.getMessage());
+                plugin.getServer().getPluginManager().callEvent(chatEvent);
+
+                if(chatEvent.isCancelled()) return;
+
+                event.setMessage(chatEvent.getMessage());
 
                 for (Player x : plugin.getServer().getOnlinePlayers()) {
                     if (Party.getInstance().inSameParty(player, x)) {
@@ -321,6 +328,14 @@ public class mcPlayerListener implements Listener {
 
             if (adminChat) {
                 color = ChatColor.AQUA;
+
+                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), event.getMessage());
+                plugin.getServer().getPluginManager().callEvent(chatEvent);
+
+                if(chatEvent.isCancelled()) return;
+
+                event.setMessage(chatEvent.getMessage());
+
                 for (Player x : plugin.getServer().getOnlinePlayers()) {
                     if (x.isOp() || mcPermissions.getInstance().adminChat(x)) {
                         intendedRecipients.add(x);

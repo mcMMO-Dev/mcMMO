@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class ACommand implements CommandExecutor {
@@ -25,6 +26,13 @@ public class ACommand implements CommandExecutor {
 			for (int i = 1; i <= args.length - 1; i++) {
 				aMessage = aMessage + " " + args[i];
 			}
+
+			McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent("Console", aMessage);
+			Bukkit.getPluginManager().callEvent(chatEvent);
+
+			if(chatEvent.isCancelled()) return true;
+
+			aMessage = chatEvent.getMessage();
 
 			String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + "*Console*" + ChatColor.AQUA + "} ";
 
