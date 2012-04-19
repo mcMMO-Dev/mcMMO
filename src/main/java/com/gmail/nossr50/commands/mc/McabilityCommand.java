@@ -25,10 +25,10 @@ public class McabilityCommand implements CommandExecutor {
         PlayerProfile PP = Users.getProfile((Player) sender);
 
         if (PP.getAbilityUse()) {
-            sender.sendMessage(mcLocale.getString("mcPlayerListener.AbilitiesOff"));
+            sender.sendMessage(mcLocale.getString("Commands.Ability.Off"));
         }
         else {
-            sender.sendMessage(mcLocale.getString("mcPlayerListener.AbilitiesOn"));
+            sender.sendMessage(mcLocale.getString("Commands.Ability.On"));
         }
 
         PP.toggleAbilityUse();

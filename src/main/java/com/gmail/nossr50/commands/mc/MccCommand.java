@@ -10,7 +10,7 @@ import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.locale.mcLocale;
 
-//TODO: Rework this whole thing. It's ugly.
+//TODO: Rework this whole thing. It's ugly. Also is missing all the admin & spout commands.
 public class MccCommand implements CommandExecutor {
 
     @Override
@@ -24,48 +24,48 @@ public class MccCommand implements CommandExecutor {
         player.sendMessage(ChatColor.RED + "---[]" + ChatColor.YELLOW + "mcMMO Commands" + ChatColor.RED + "[]---"); //TODO: Needs more locale.
 
         if (mcPermissions.getInstance().party(player)) {
-            player.sendMessage(mcLocale.getString("m.mccPartyCommands"));
-            player.sendMessage("/party " + mcLocale.getString("m.mccParty"));
-            player.sendMessage("/party q " + mcLocale.getString("m.mccPartyQ"));
+            player.sendMessage(mcLocale.getString("Commands.Party.Commands"));
+            player.sendMessage("/party " + mcLocale.getString("Commands.Party"));
+            player.sendMessage("/party q " + mcLocale.getString("Commands.Party.Quit"));
 
             if (mcPermissions.getInstance().partyChat(player)) {
-                player.sendMessage("/p " + mcLocale.getString("m.mccPartyToggle"));
+                player.sendMessage("/p " + mcLocale.getString("Commands.Party.Toggle"));
             }
 
-            player.sendMessage("/invite " + mcLocale.getString("m.mccPartyInvite"));
-            player.sendMessage("/invite " + mcLocale.getString("m.mccPartyAccept"));
+            player.sendMessage("/invite " + mcLocale.getString("Commands.Party.Invite"));
+            player.sendMessage("/invite " + mcLocale.getString("Commands.Party.Accept"));
 
             if (mcPermissions.getInstance().partyTeleport(player)) {
-                player.sendMessage("/ptp " + mcLocale.getString("m.mccPartyTeleport"));
+                player.sendMessage("/ptp " + mcLocale.getString("Commands.Party.Teleport"));
             }
         }
 
-        player.sendMessage(mcLocale.getString("m.mccOtherCommands"));
-        player.sendMessage("/mcstats " + ChatColor.RED + mcLocale.getString("m.mccStats"));
-        player.sendMessage("/mctop <skillname> <page> " + ChatColor.RED + mcLocale.getString("m.mccLeaderboards"));
+        player.sendMessage(mcLocale.getString("Commands.Other"));
+        player.sendMessage("/mcstats " + mcLocale.getString("Commands.Stats"));
+        player.sendMessage("/mctop " + mcLocale.getString("m.mccLeaderboards"));
 
         if (mcPermissions.getInstance().mcAbility(player)) {
-            player.sendMessage("/mcability " + ChatColor.RED + mcLocale.getString("m.mccToggleAbility"));
+            player.sendMessage("/mcability " + mcLocale.getString("Commands.ToggleAbility"));
         }
 
         if (mcPermissions.getInstance().adminChat(player)) {
-            player.sendMessage("/a " + ChatColor.RED + mcLocale.getString("m.mccAdminToggle"));
+            player.sendMessage("/a " + mcLocale.getString("Commands.AdminToggle"));
         }
 
         if (mcPermissions.getInstance().inspect(player)) {
-            player.sendMessage("/inspect " + mcLocale.getString("m.mccInspect"));
+            player.sendMessage("/inspect " + mcLocale.getString("Commands.Inspect"));
         }
 
         if (mcPermissions.getInstance().mmoedit(player)) {
-            player.sendMessage("/mmoedit " + mcLocale.getString("m.mccMmoedit"));
+            player.sendMessage("/mmoedit " + mcLocale.getString("Commands.mmoedit"));
         }
 
         if (mcPermissions.getInstance().mcgod(player)) {
-            player.sendMessage("/mcgod " + ChatColor.RED + mcLocale.getString("m.mccMcGod"));
+            player.sendMessage("/mcgod " + mcLocale.getString("Commands.mcgod"));
         }
 
-        player.sendMessage(mcLocale.getString("m.mccSkillInfo"));
-        player.sendMessage("/mcmmo " + mcLocale.getString("m.mccModDescription"));
+        player.sendMessage(mcLocale.getString("Commands.SkillInfo"));
+        player.sendMessage("/mcmmo " + mcLocale.getString("Commands.ModDescription"));
 
         return true;
     }

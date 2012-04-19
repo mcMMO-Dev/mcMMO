@@ -14,7 +14,7 @@ public class McmmoCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String description = mcLocale.getString("mcMMO.Description", new Object[] { "mcc" });
+        String description = mcLocale.getString("mcMMO.Description");
         String[] mcSplit = description.split(",");
 
         for (String x : mcSplit) {

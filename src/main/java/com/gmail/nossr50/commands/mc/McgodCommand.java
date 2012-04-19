@@ -25,10 +25,10 @@ public class McgodCommand implements CommandExecutor {
         PlayerProfile PP = Users.getProfile((Player) sender);
 
         if (PP.getGodMode()) {
-            sender.sendMessage(mcLocale.getString("mcPlayerListener.GodModeDisabled"));
+            sender.sendMessage(mcLocale.getString("Commands.GodMode.Disabled"));
         }
         else {
-            sender.sendMessage(mcLocale.getString("mcPlayerListener.GodModeEnabled"));
+            sender.sendMessage(mcLocale.getString("Commands.GodMode.Enabled"));
         }
 
         PP.toggleGodMode();
