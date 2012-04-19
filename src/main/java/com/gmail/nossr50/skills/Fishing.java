@@ -97,12 +97,14 @@ public class Fishing {
             break;
         }
 
-        if (LoadProperties.fishingDrops && rewards.size() > 0) {
-            FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
+        if (LoadProperties.fishingDrops) {
+            if (rewards.size() > 0) {
+                FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
-            if (random.nextDouble() * 100 <= treasure.getDropChance()) {
-                Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp());
-                theCatch.setItemStack(treasure.getDrop());
+                if (random.nextDouble() * 100 <= treasure.getDropChance()) {
+                    Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp());
+                    theCatch.setItemStack(treasure.getDrop());
+                }
             }
         }
         else {
@@ -115,7 +117,6 @@ public class Fishing {
             theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); //Change durability to random value
         }
 
-        m.mcDropItem(player.getLocation(), new ItemStack(Material.RAW_FISH)); //Always drop a fish
         PP.addXP(SkillType.FISHING, LoadProperties.mfishing);
         Skills.XpCheckSkill(SkillType.FISHING, player);
     }

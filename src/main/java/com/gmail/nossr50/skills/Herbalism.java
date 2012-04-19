@@ -90,6 +90,7 @@ public class Herbalism {
         case CROPS:
         case JACK_O_LANTERN:
         case MELON_BLOCK:
+        case NETHER_WARTS:
         case PUMPKIN:
         case RED_MUSHROOM:
         case RED_ROSE:

@@ -54,7 +54,7 @@ public class mcBleedTimer implements Runnable {
                 PP.decreaseBleedTicks();
 
                 if (PP.getBleedTicks() == 0) {
-                    player.sendMessage(mcLocale.getString("Swords.Combat.Bleeding.Stopped"));
+                    player.sendMessage(mcLocale.getString("Swords.StoppedBleeding"));
                 }
             }
         }

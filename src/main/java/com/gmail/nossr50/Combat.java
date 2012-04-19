@@ -100,7 +100,7 @@ public class Combat {
                 }
 
                 if (targetType.equals(EntityType.PLAYER) && mcPermissions.getInstance().disarm(attacker)) {
-                    Unarmed.disarmProcCheck(PPa, (Player) target);
+                    Unarmed.disarmProcCheck(attacker, (Player) target);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.UNARMED, plugin);
@@ -351,10 +351,10 @@ public class Combat {
                         String message = "";
 
                         if (type.equals(SkillType.AXES)) {
-                            message = mcLocale.getString("Axes.Combat.Cleave.Struck");
+                            message = mcLocale.getString("Axes.HitByCleave");
                         }
                         else if (type.equals(SkillType.SWORDS)) {
-                            message = mcLocale.getString("Swords.Combat.SS.Struck");
+                            message = mcLocale.getString("Swords.HitBySerratedStrikes");
                         }
 
                         dealDamage(defender, damageAmount, attacker);

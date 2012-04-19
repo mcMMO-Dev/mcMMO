@@ -188,8 +188,9 @@ public class Skills {
 
             while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
                 if ((skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) && (m.getPowerLevelCap() >= PP.getPowerLevel() + 1)) {
+                    PP.removeXP(skillType, PP.getXpToLevel(skillType));
                     skillups++;
-                    PP.addLevels(skillType, 1);
+                    PP.skillUp(skillType, 1);
 
                     McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
                     Bukkit.getPluginManager().callEvent(eventToFire);
@@ -212,23 +213,22 @@ public class Skills {
 
                 if (sPlayer.isSpoutCraftEnabled()) {
                     if (LoadProperties.xpbar) {
-                        SpoutStuff.updateXpBar(sPlayer);
+                        SpoutStuff.updateXpBar(player);
                     }
 
                     SpoutStuff.levelUpNotification(skillType, sPlayer);
-                    
+
                     /* Update custom titles */
                     if(LoadProperties.showPowerLevel) {
-                        sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" 
-                                + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(PP.getPowerLevel()));
+                        sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(PP.getPowerLevel()));
                     }
                 }
                 else {
-                    player.sendMessage(mcLocale.getString(capitalized + "Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+                    player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
                 }
             }
             else {
-                player.sendMessage(mcLocale.getString(capitalized + "Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+                player.sendMessage(mcLocale.getString("Skills."+capitalized+"Up", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
             }
         }
 
@@ -237,7 +237,7 @@ public class Skills {
             SpoutPlayer sPlayer = (SpoutPlayer) player;
             if (sPlayer.isSpoutCraftEnabled()) {
                 if (LoadProperties.xpbar) {
-                    SpoutStuff.updateXpBar(sPlayer);
+                    SpoutStuff.updateXpBar(player);
                 }
             }
         }

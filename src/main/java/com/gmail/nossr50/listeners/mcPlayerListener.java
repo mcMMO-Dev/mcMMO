@@ -39,6 +39,8 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
+import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.BlastMining;
@@ -68,7 +70,7 @@ public class mcPlayerListener implements Listener {
         if (PP.getGodMode()) {
             if (!mcPermissions.getInstance().mcgod(player)) {
                 PP.toggleGodMode();
-                player.sendMessage(mcLocale.getString("Commands.GodMode.Forbidden"));
+                player.sendMessage(mcLocale.getString("GodMode.Forbidden"));
             }
         }
 
@@ -167,8 +169,8 @@ public class mcPlayerListener implements Listener {
         Player player = event.getPlayer();
 
         if (mcPermissions.getInstance().motd(player) && LoadProperties.enableMotd) {
-            player.sendMessage(mcLocale.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion(), "mcmmo"}));
-            player.sendMessage(mcLocale.getString("mcMMO.Wiki"));
+            player.sendMessage(mcLocale.getString("mcPlayerListener.MOTD", new Object[] {plugin.getDescription().getVersion(), "mcmmo"}));
+            player.sendMessage(mcLocale.getString("mcPlayerListener.WIKI"));
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
@@ -297,20 +299,23 @@ public class mcPlayerListener implements Listener {
         Set<Player> recipients = event.getRecipients();
 
         Set<Player> intendedRecipients = new HashSet<Player>();
-        String header = "";
         ChatColor color = null;
 
         if (partyChat || adminChat) {
-
             if (partyChat) {
-
                 if (!PP.inParty()) {
                     player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
                     return;
                 }
 
                 color = ChatColor.GREEN;
-                header = color + "[P] (" + PP.getParty() + ") ";
+
+                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), PP.getParty(), event.getMessage());
+                plugin.getServer().getPluginManager().callEvent(chatEvent);
+
+                if(chatEvent.isCancelled()) return;
+
+                event.setMessage(chatEvent.getMessage());
 
                 for (Player x : plugin.getServer().getOnlinePlayers()) {
                     if (Party.getInstance().inSameParty(player, x)) {
@@ -318,21 +323,29 @@ public class mcPlayerListener implements Listener {
                     }
                 }
 
+                event.setFormat(color + "(" + ChatColor.WHITE + "%1$s" + color + ") %2$s");
             }
 
             if (adminChat) {
                 color = ChatColor.AQUA;
-                header = color + "[A] ";
+
+                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), event.getMessage());
+                plugin.getServer().getPluginManager().callEvent(chatEvent);
+
+                if(chatEvent.isCancelled()) return;
+
+                event.setMessage(chatEvent.getMessage());
 
                 for (Player x : plugin.getServer().getOnlinePlayers()) {
                     if (x.isOp() || mcPermissions.getInstance().adminChat(x)) {
                         intendedRecipients.add(x);
                     }
                 }
+
+                event.setFormat(color + "{" + ChatColor.WHITE + "%1$s" + color + "} %2$s");
             }
 
             recipients.retainAll(intendedRecipients);
-            event.setFormat(header + "<" + ChatColor.WHITE + "%1$s" + color + "> %2$s");
         }
     }
 

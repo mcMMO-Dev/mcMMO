@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills;
 
 import java.util.Random;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -43,16 +44,17 @@ public class Unarmed {
      * @param PPa Profile of the attacking player
      * @param defender The defending player
      */
-    public static void disarmProcCheck(PlayerProfile PPa, Player defender) {
+    public static void disarmProcCheck(Player attacker, Player defender) {
         final int MAX_BONUS_LEVEL = 1000;
 
+        PlayerProfile PPa = Users.getProfile(attacker);
         int skillLevel = PPa.getSkillLevel(SkillType.UNARMED);
         int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         ItemStack inHand = defender.getItemInHand();
 
         if (!inHand.getType().equals(Material.AIR)) {
-            if (random.nextInt(3000) <= skillCheck) {
+            if (random.nextInt(3000) <= skillCheck && ironGrip(defender, attacker)) {
                 defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
 
                 m.mcDropItem(defender.getLocation(), inHand);
@@ -76,6 +78,23 @@ public class Unarmed {
         if (random.nextInt(2000) <= skillCheck && mcPermissions.getInstance().deflect(defender)) {
             event.setCancelled(true);
             defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect"));
+        }
+    }
+
+    public static boolean ironGrip(Player defender, Player attacker) {
+        final int MAX_BONUS_LEVEL = 1000;
+
+        PlayerProfile PPd = Users.getProfile(defender);
+        int skillLevel = PPd.getSkillLevel(SkillType.UNARMED);
+        int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+
+        if (random.nextInt(1000) <= skillCheck) {
+            defender.sendMessage(ChatColor.GREEN + "Your iron grip kept you from being disarmed!"); //TODO: Use locale
+            attacker.sendMessage(ChatColor.RED + "Your opponent has an iron grip!"); //TODO: Use locale
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }
