@@ -10,6 +10,8 @@ Key:
 Version 1.3.06-dev
  + Added permissions check to skill functions
  + Added API functions for obtaining offline profiles & profiles via player names
+ + Added API functions for admin & party chat
+ + Added Iron Grip skill to Unarmed which gives players an chance to keep from being disarmed.
  = Fixed bug where Herbalism required double drops permission to give XP
  = Fixed bug where {0} would be displayed in front of your power level in mcstats
  = Fixed mmoupdate not being useable from console

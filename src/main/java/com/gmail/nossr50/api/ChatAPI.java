@@ -23,7 +23,9 @@ public class ChatAPI {
         McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(sender, party, message);
         Bukkit.getPluginManager().callEvent(chatEvent);
 
-        if(chatEvent.isCancelled()) return;
+        if (chatEvent.isCancelled()) {
+            return;
+        }
 
         String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + chatEvent.getSender() + ChatColor.GREEN + ") ";
 
@@ -50,7 +52,9 @@ public class ChatAPI {
         McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(sender, message);
         Bukkit.getPluginManager().callEvent(chatEvent);
 
-        if(chatEvent.isCancelled()) return;
+        if (chatEvent.isCancelled()) {
+            return;
+        }
 
         String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + chatEvent.getSender() + ChatColor.AQUA + "} ";
 
