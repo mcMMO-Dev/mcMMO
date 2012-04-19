@@ -88,7 +88,7 @@ public class Unarmed {
         int skillLevel = PPd.getSkillLevel(SkillType.UNARMED);
         int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        if (random.nextInt(3000) <= skillCheck) {
+        if (random.nextInt(1000) <= skillCheck) {
             defender.sendMessage(ChatColor.GREEN + "Your iron grip kept you from being disarmed!"); //TODO: Use locale
             attacker.sendMessage(ChatColor.RED + "Your opponent has an iron grip!"); //TODO: Use locale
             return true;
