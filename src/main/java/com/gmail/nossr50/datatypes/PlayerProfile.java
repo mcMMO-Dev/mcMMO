@@ -649,6 +649,15 @@ public class PlayerProfile {
      */
 
     /**
+     * Reset the prep modes of all tools.
+     */
+    public void resetToolPrepMode() {
+        for (ToolType tool : ToolType.values()) {
+            setToolPreparationMode(tool, false);
+        }
+    }
+
+    /**
      * Get the current prep mode of a tool.
      *
      * @param tool Tool to get the mode for
@@ -740,6 +749,15 @@ public class PlayerProfile {
     /*
      * Abilities
      */
+
+    /**
+     * Reset the prep modes of all tools.
+     */
+    public void resetAbilityMode() {
+        for (AbilityType ability : AbilityType.values()) {
+            setAbilityMode(ability, false);
+        }
+    }
 
     /**
      * Get the mode of an ability.
