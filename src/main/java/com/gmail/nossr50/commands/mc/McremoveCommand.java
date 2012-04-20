@@ -76,7 +76,7 @@ public class McremoveCommand implements CommandExecutor {
 
             sender.sendMessage("User "+playerName+" removed from MySQL DB!"); //TODO: Needs more locale.
             } else {
-                sender.sendMessage("Unabled to find player named "+playerName+" in the database!");
+                sender.sendMessage("Unable to find player named "+playerName+" in the database!");
             }
         } else {
             if(removeFlatFileUser(playerName)) {
