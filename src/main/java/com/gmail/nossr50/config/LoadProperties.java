@@ -120,7 +120,7 @@ public class LoadProperties extends ConfigLoader{
     public static double pvpxprewardmodifier;
     public static double animalXP, creeperXP, skeletonXP, spiderXP, ghastXP, slimeXP,
                          zombieXP, pigzombieXP, endermanXP, cavespiderXP, silverfishXP,
-                         blazeXP, magmacubeXP, enderdragonXP;
+                         blazeXP, magmacubeXP, enderdragonXP, irongolemXP;
 
     /* XP Formula Multiplier */
     public static double tamingxpmodifier, miningxpmodifier, repairxpmodifier, woodcuttingxpmodifier,
@@ -475,6 +475,7 @@ public class LoadProperties extends ConfigLoader{
         blazeXP = config.getDouble("Experience.Combat.Multiplier.Blaze", 3.0);
         magmacubeXP = config.getDouble("Experience.Combat.Multiplier.Magma_Cube", 2.0);
         enderdragonXP = config.getDouble("Experience.Combat.Multiplier.Ender_Dragon", 8.0);
+        irongolemXP = config.getDouble("Experience.Combat.Multiplier.Iron_Golem", 2.0);
 
         detonatorID = config.getInt("Skills.Mining.Detonator_ID", 259);
     }
