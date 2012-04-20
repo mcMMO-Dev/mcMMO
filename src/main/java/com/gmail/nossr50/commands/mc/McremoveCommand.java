@@ -44,8 +44,10 @@ public class McremoveCommand implements CommandExecutor {
         //If the server is using MySQL
         if(LoadProperties.useMySQL)
         {
-            int userId = mcMMO.database.getInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
+            int userId = 0;
+            userId = mcMMO.database.getInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
             
+            if(userId > 0) {
             //Remove user from tables
             mcMMO.database.write("DELETE FROM "
                     +LoadProperties.MySQLdbName+"."
@@ -73,6 +75,9 @@ public class McremoveCommand implements CommandExecutor {
             +LoadProperties.MySQLtablePrefix+"experience.user_id="+userId);
 
             sender.sendMessage("User "+playerName+" removed from MySQL DB!"); //TODO: Needs more locale.
+            } else {
+                sender.sendMessage("Unabled to find player named "+playerName+" in the database!");
+            }
         } else {
             if(removeFlatFileUser(playerName)) {
                 sender.sendMessage(ChatColor.GREEN+"[mcMMO] It worked! User was removed.");
