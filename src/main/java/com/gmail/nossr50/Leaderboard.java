@@ -214,7 +214,16 @@ public class Leaderboard {
         try {
             FileReader file = new FileReader(theLocation);
             BufferedReader in = new BufferedReader(file);
-            int destination = (pagenumber - 1) * 10; //How many lines to skip through
+            int destination;
+
+          //How many lines to skip through
+            if (pagenumber == 1) {
+                destination = 0;
+            }
+            else {
+                destination = (pagenumber * 10) - 9;
+            }
+
             int x = 0; //how many lines we've gone through
             int y = 0; //going through the lines
             String line = "";
