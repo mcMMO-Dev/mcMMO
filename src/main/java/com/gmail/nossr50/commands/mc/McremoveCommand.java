@@ -13,117 +13,123 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class McremoveCommand implements CommandExecutor {
-    String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
-    
+    private final String LOCATION = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player = null;
-        
-        if (sender instanceof Player) {
-            player = (Player) sender;
+        String playerName;
+        String usage = ChatColor.RED + "Correct usage is /mcremove <playername>"; //TODO: Needs more locale.
+        String success;
+
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcremove")) {
+            return true;
         }
 
-        if (player != null && !mcPermissions.getInstance().mcremove(player)) {
-            player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
+        switch (args.length) {
+        case 1:
+            playerName = args[0];
+            success = ChatColor.GREEN + playerName + "was successfully removed from the database!"; //TODO: Locale
+            break;
+
+        default:
+            sender.sendMessage(usage);
             return true;
         }
-        
-        if(args.length == 0)
-        {
-            sender.sendMessage("Correct usage is /mcremove [Player Name]"); //TODO: Needs more locale.
-            return true;
-        }
-        
-        String playerName = args[0]; //Player that we are going to remove
-        
-        //If the server is using MySQL
-        if(LoadProperties.useMySQL)
-        {
+
+        /* MySQL */
+        if (LoadProperties.useMySQL) {
             int userId = 0;
-            userId = mcMMO.database.getInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
-            
-            if(userId > 0) {
-            //Remove user from tables
-            mcMMO.database.write("DELETE FROM "
-                    +LoadProperties.MySQLdbName+"."
-                    +LoadProperties.MySQLtablePrefix+"users WHERE "
-                    +LoadProperties.MySQLtablePrefix+"users.id="+userId);
-            
-            mcMMO.database.write("DELETE FROM "
-                    +LoadProperties.MySQLdbName+"."
-                    +LoadProperties.MySQLtablePrefix+"cooldowns WHERE "
-                    +LoadProperties.MySQLtablePrefix+"cooldowns.user_id="+userId);
-            
-            mcMMO.database.write("DELETE FROM "
-                    +LoadProperties.MySQLdbName+"."
-                    +LoadProperties.MySQLtablePrefix+"huds WHERE "
-                    +LoadProperties.MySQLtablePrefix+"huds.user_id="+userId);
-            
-            mcMMO.database.write("DELETE FROM "
-                    +LoadProperties.MySQLdbName+"."
-                    +LoadProperties.MySQLtablePrefix+"skills WHERE "
-                    +LoadProperties.MySQLtablePrefix+"skills.user_id="+userId);
-            
-            mcMMO.database.write("DELETE FROM "
-            +LoadProperties.MySQLdbName+"."
-            +LoadProperties.MySQLtablePrefix+"experience WHERE "
-            +LoadProperties.MySQLtablePrefix+"experience.user_id="+userId);
+            userId = mcMMO.database.getInt("SELECT id FROM " + LoadProperties.MySQLtablePrefix + "users WHERE user = '" + playerName + "'");
 
-            sender.sendMessage("User "+playerName+" removed from MySQL DB!"); //TODO: Needs more locale.
-            } else {
-                sender.sendMessage("Unable to find player named "+playerName+" in the database!");
+            if (userId > 0) {
+                mcMMO.database.write("DELETE FROM "
+                        + LoadProperties.MySQLdbName + "."
+                        + LoadProperties.MySQLtablePrefix + "users WHERE "
+                        + LoadProperties.MySQLtablePrefix + "users.id=" + userId);
+
+                mcMMO.database.write("DELETE FROM "
+                        + LoadProperties.MySQLdbName + "."
+                        + LoadProperties.MySQLtablePrefix + "cooldowns WHERE "
+                        + LoadProperties.MySQLtablePrefix + "cooldowns.user_id=" + userId);
+
+                mcMMO.database.write("DELETE FROM "
+                        + LoadProperties.MySQLdbName + "."
+                        + LoadProperties.MySQLtablePrefix + "huds WHERE "
+                        + LoadProperties.MySQLtablePrefix + "huds.user_id=" + userId);
+
+                mcMMO.database.write("DELETE FROM "
+                        + LoadProperties.MySQLdbName + "."
+                        + LoadProperties.MySQLtablePrefix + "skills WHERE "
+                        + LoadProperties.MySQLtablePrefix + "skills.user_id=" + userId);
+
+                mcMMO.database.write("DELETE FROM "
+                        + LoadProperties.MySQLdbName + "."
+                        + LoadProperties.MySQLtablePrefix + "experience WHERE "
+                        + LoadProperties.MySQLtablePrefix + "experience.user_id=" + userId);
+
+                sender.sendMessage(success);
+
             }
-        } else {
-            if(removeFlatFileUser(playerName)) {
-                sender.sendMessage(ChatColor.GREEN+"[mcMMO] It worked! User was removed.");
-            } else {
-                sender.sendMessage(ChatColor.RED+"[mcMMO] Couldn't find the user, remember its case sensitive!");
+            else {
+                sender.sendMessage(mcLocale.getString("Commands.DoesNotExist"));
             }
         }
-        
+        else {
+            if (removeFlatFileUser(playerName)) {
+                sender.sendMessage(success);
+            }
+            else {
+                sender.sendMessage(mcLocale.getString("Commands.DoesNotExist"));
+            }
+        }
+
         //Force PlayerProfile stuff to update
-        if(Bukkit.getServer().getPlayer(playerName) != null && Users.players.containsKey(playerName.toLowerCase()))
-        {
-            Users.players.remove(playerName.toLowerCase());
-            Users.addUser(Bukkit.getServer().getPlayer(playerName));
+        Player player = Bukkit.getServer().getPlayer(playerName);
+
+        if (player != null && Users.players.containsKey(playerName.toLowerCase())) {
+            Users.removeUser(player);
+            Users.addUser(player);
         }
-        
-        sender.sendMessage("[mcMMO] mcremove operation completed."); //TODO: Needs more locale.
-        
+
         return true;
     }
-    
+
     private boolean removeFlatFileUser(String playerName) {
         boolean worked = false;
+
         try {
-            FileReader file = new FileReader(location);
+            FileReader file = new FileReader(LOCATION);
             BufferedReader in = new BufferedReader(file);
             StringBuilder writer = new StringBuilder();
             String line = "";
+
             while ((line = in.readLine()) != null) {
-                /* Write out the same file but when we get to the player we want to remove we skip his line */
-                if(!line.split(":")[0].equalsIgnoreCase(playerName))
-                {
+
+                /* Write out the same file but when we get to the player we want to remove, we skip his line. */
+                if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
                     writer.append(line).append("\r\n");
-                } else {
+                }
+                else {
                     System.out.println("User found, removing...");
                     worked = true;
                     continue; //Skip the player
                 }
             }
-            
+
             in.close();
-            FileWriter out = new FileWriter(location); //Write out the new file
+            FileWriter out = new FileWriter(LOCATION); //Write out the new file
             out.write(writer.toString());
             out.close();
+
             return worked;
-        } catch (Exception e) {
-            Bukkit.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+        }
+        catch (Exception e) {
+            Bukkit.getLogger().severe("Exception while reading " + LOCATION + " (Are you sure you formatted it correctly?)" + e.toString());
             return worked;
         }
     }
