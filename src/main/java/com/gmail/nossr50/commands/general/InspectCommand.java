@@ -17,8 +17,8 @@ import com.gmail.nossr50.locale.mcLocale;
 public class InspectCommand implements CommandExecutor {
     private final mcMMO plugin;
 
-    public InspectCommand(mcMMO instance) {
-        this.plugin = instance;
+    public InspectCommand (mcMMO plugin) {
+        this.plugin = plugin;
     }
 
     @Override

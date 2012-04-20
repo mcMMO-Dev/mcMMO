@@ -19,8 +19,8 @@ import com.gmail.nossr50.skills.Skills;
 public class MmoeditCommand implements CommandExecutor {
     private final mcMMO plugin;
 
-    public MmoeditCommand(mcMMO instance) {
-        this.plugin = instance;
+    public MmoeditCommand (mcMMO plugin) {
+        this.plugin = plugin;
     }
 
     @Override

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -278,7 +277,7 @@ public class LoadTreasures extends ConfigLoader{
         }
         else {
             for (String issue : issues) {
-                Bukkit.getLogger().warning(issue);
+                plugin.getLogger().warning(issue);
             }
             return false;
         }

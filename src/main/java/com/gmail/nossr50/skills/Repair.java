@@ -18,6 +18,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutSounds;
@@ -143,7 +144,7 @@ public class Repair {
 
         //CLANG CLANG
         if (LoadProperties.spoutEnabled) {
-            SpoutSounds.playRepairNoise(player);
+            SpoutSounds.playRepairNoise(player, mcMMO.p);
         }
     }
 

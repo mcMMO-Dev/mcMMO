@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,6 +18,11 @@ import com.gmail.nossr50.locale.mcLocale;
 
 public class McremoveCommand implements CommandExecutor {
     private final String LOCATION = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+    private final mcMMO plugin;
+
+    public McremoveCommand (mcMMO plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -89,7 +93,7 @@ public class McremoveCommand implements CommandExecutor {
         }
 
         //Force PlayerProfile stuff to update
-        Player player = Bukkit.getServer().getPlayer(playerName);
+        Player player = plugin.getServer().getPlayer(playerName);
 
         if (player != null && Users.players.containsKey(playerName.toLowerCase())) {
             Users.removeUser(player);
@@ -129,7 +133,7 @@ public class McremoveCommand implements CommandExecutor {
             return worked;
         }
         catch (Exception e) {
-            Bukkit.getLogger().severe("Exception while reading " + LOCATION + " (Are you sure you formatted it correctly?)" + e.toString());
+            plugin.getLogger().severe("Exception while reading " + LOCATION + " (Are you sure you formatted it correctly?)" + e.toString());
             return worked;
         }
     }

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.general;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,11 +7,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.runnables.SQLConversionTask;
 
 public class MmoupdateCommand implements CommandExecutor {
+    private final mcMMO plugin;
+
+    public MmoupdateCommand (mcMMO plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -24,7 +29,7 @@ public class MmoupdateCommand implements CommandExecutor {
         Users.clearUsers();
         convertToMySQL();
 
-        for (Player x : Bukkit.getServer().getOnlinePlayers()) {
+        for (Player x : plugin.getServer().getOnlinePlayers()) {
             Users.addUser(x);
         }
 
@@ -41,6 +46,6 @@ public class MmoupdateCommand implements CommandExecutor {
             return;
         }
 
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(Bukkit.getPluginManager().getPlugin("mcMMO"), new SQLConversionTask(), 1);
+        plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new SQLConversionTask(plugin), 1);
     }
 }

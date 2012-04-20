@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables;
 
-import org.bukkit.Bukkit;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.FileManager;
 
@@ -11,13 +10,13 @@ import com.gmail.nossr50.spout.SpoutStuff;
 public class SpoutStart implements Runnable{
     private final mcMMO plugin;
 
-    public SpoutStart(mcMMO m) {
-        this.plugin = m;
+    public SpoutStart(final mcMMO plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void run() {
-        if (Bukkit.getPluginManager().getPlugin("Spout") != null) {
+        if (plugin.getServer().getPluginManager().getPlugin("Spout") != null) {
             LoadProperties.spoutEnabled = true;
         }
         else {

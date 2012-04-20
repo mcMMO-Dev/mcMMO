@@ -1,6 +1,5 @@
 package com.gmail.nossr50.spout;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -8,6 +7,8 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
 import org.getspout.spoutapi.sound.SoundManager;
+
+import com.gmail.nossr50.mcMMO;
 
 public class SpoutSounds {
 
@@ -30,12 +31,12 @@ public class SpoutSounds {
      *
      * @param player The player who repaired an item
      */
-    public static void playRepairNoise(Player player) {
+    public static void playRepairNoise(Player player, mcMMO plugin) {
         SoundManager SM = SpoutManager.getSoundManager();
         SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
         //If this is pulling from online, why have it in the jar?
-        SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "repair.wav", false);
+        SM.playCustomSoundEffect(plugin, sPlayer, "repair.wav", false);
     }
 
     /**
@@ -43,11 +44,11 @@ public class SpoutSounds {
      *
      * @param player The player who leveled up
      */
-    protected static void playLevelUpNoise(Player player) {
+    protected static void playLevelUpNoise(Player player, mcMMO plugin) {
         SoundManager SM = SpoutManager.getSoundManager();
         SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
         //If this is pulling from online, why have it in the jar?
-        SM.playCustomSoundEffect(Bukkit.getServer().getPluginManager().getPlugin("mcMMO"), sPlayer, "level.wav", false);
+        SM.playCustomSoundEffect(plugin, sPlayer, "level.wav", false);
     }
 }

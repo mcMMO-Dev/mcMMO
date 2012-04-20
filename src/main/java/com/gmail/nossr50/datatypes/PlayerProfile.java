@@ -1001,12 +1001,12 @@ public class PlayerProfile {
                     continue;
                 }
 
-                Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, x, newValue));
+                mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, x, newValue));
                 skillsXp.put(x, skillsXp.get(x) + newValue);
             }
         }
         else {
-            Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, newValue));
+            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, newValue));
             skillsXp.put(skillType, skillsXp.get(skillType) + newValue);
             lastgained = skillType;
         }
@@ -1031,7 +1031,7 @@ public class PlayerProfile {
      * @param player The player to add XP to
      */
     public void addXP(SkillType skillType, int newValue) {
-        Player player = Bukkit.getPlayer(playerName);
+        Player player = mcMMO.p.getServer().getPlayer(playerName);
 
         if (System.currentTimeMillis() < ((xpGainATS * 1000) + 250) || player.getGameMode().equals(GameMode.CREATIVE)) {
             return;
@@ -1055,7 +1055,7 @@ public class PlayerProfile {
             xp += trueBonus;
         }
 
-        Bukkit.getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
+        mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
         skillsXp.put(skillType, skillsXp.get(skillType) + xp);
         lastgained = skillType;
     }

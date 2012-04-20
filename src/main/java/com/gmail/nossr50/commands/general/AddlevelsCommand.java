@@ -19,8 +19,8 @@ import com.gmail.nossr50.skills.Skills;
 public class AddlevelsCommand implements CommandExecutor{
     private final mcMMO plugin;
 
-    public AddlevelsCommand(mcMMO instance) {
-        this.plugin = instance;
+    public AddlevelsCommand (mcMMO plugin) {
+        this.plugin = plugin;
     }
 
     @Override

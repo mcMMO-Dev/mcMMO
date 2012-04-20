@@ -201,7 +201,7 @@ public class Metrics {
                 + encodeDataPair("authors", authors)
                 + encodeDataPair("version", description.getVersion())
                 + encodeDataPair("server", Bukkit.getVersion())
-                + encodeDataPair("players", Integer.toString(Bukkit.getServer().getOnlinePlayers().length))
+                + encodeDataPair("players", Integer.toString(plugin.getServer().getOnlinePlayers().length))
                 + encodeDataPair("revision", String.valueOf(REVISION));
 
         // If we're pinging, append it

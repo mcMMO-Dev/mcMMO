@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,13 +7,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class PCommand implements CommandExecutor {
-	public PCommand() {}
+    private final mcMMO plugin;
+
+    public PCommand (mcMMO plugin) {
+        this.plugin = plugin;
+    }
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,7 +33,7 @@ public class PCommand implements CommandExecutor {
 			}
 
 			McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent("Console", args[0], pMessage);
-			Bukkit.getPluginManager().callEvent(chatEvent);
+			plugin.getServer().getPluginManager().callEvent(chatEvent);
 
 			if(chatEvent.isCancelled()) return true;
 
@@ -37,9 +41,9 @@ public class PCommand implements CommandExecutor {
 
 			String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + "*Console*" + ChatColor.GREEN + ") ";
 
-			Bukkit.getLogger().info("[P](" + args[0] + ")" + "<*Console*> " + pMessage);
+			plugin.getLogger().info("[P](" + args[0] + ")" + "<*Console*> " + pMessage);
 
-			for (Player herp : Bukkit.getServer().getOnlinePlayers()) {
+			for (Player herp : plugin.getServer().getOnlinePlayers()) {
 				if (Users.getProfile(herp).inParty()) {
 					if (Users.getProfile(herp).getParty().equalsIgnoreCase(args[0])) {
 						herp.sendMessage(pPrefix + pMessage);

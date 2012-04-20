@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.CoalType;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,6 +13,7 @@ import org.bukkit.enchantments.Enchantment;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutSounds;
@@ -254,7 +254,7 @@ public class Mining {
                 return;
             }
 
-            Bukkit.getPluginManager().callEvent(armswing);
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
             Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
 
             miningBlockCheck(player, block);

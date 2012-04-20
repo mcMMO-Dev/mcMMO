@@ -17,8 +17,8 @@ import com.gmail.nossr50.skills.Skills;
 public class AddxpCommand implements CommandExecutor {
     private final mcMMO plugin;
 
-    public AddxpCommand(mcMMO instance) {
-        this.plugin = instance;
+    public AddxpCommand (mcMMO plugin) {
+        this.plugin = plugin;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -71,7 +70,7 @@ public class PtpCommand implements CommandExecutor {
 			    
 			if (PP.getParty().equals(PPt.getParty())) {
 			    McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, PP.getParty());
-			    Bukkit.getPluginManager().callEvent(event);
+			    plugin.getServer().getPluginManager().callEvent(event);
 
 			    if (!event.isCancelled()) {
     				player.teleport(target);

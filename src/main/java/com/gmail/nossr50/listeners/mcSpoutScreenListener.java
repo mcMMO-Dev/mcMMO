@@ -61,7 +61,7 @@ public class mcSpoutScreenListener implements Listener {
                     break;
                 }
 
-                SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer));
+                SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer, plugin));
                 SpoutStuff.playerScreens.get(sPlayer).updateButtons(PP);
             }
         }

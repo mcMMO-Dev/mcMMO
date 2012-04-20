@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
@@ -16,6 +16,12 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class PartyCommand implements CommandExecutor {
+    private final mcMMO plugin;
+
+    public PartyCommand (mcMMO plugin) {
+        this.plugin = plugin;
+    }
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -46,7 +52,7 @@ public class PartyCommand implements CommandExecutor {
 		} else if (args.length == 0 && PP.inParty()) {
 			String tempList = "";
 			int x = 0;
-			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			for (Player p : plugin.getServer().getOnlinePlayers()) {
 				if (PP.getParty().equals(Users.getProfile(p).getParty())) {
 					if (p != null && x + 1 >= Pinstance.partyCount(player)) {
 						if (Pinstance.isPartyLeader(p.getName(), PP.getParty())) {
@@ -113,7 +119,7 @@ public class PartyCommand implements CommandExecutor {
 			if (args[0].equals("q") && PP.inParty()) {
 
                 McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, PP.getParty(), null, EventReason.LEFT_PARTY);
-                Bukkit.getPluginManager().callEvent(event);
+                plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {
                     return true;
@@ -159,7 +165,7 @@ public class PartyCommand implements CommandExecutor {
 			} else {
 				if (PP.inParty()) {
 				    McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, PP.getParty(), args[0], EventReason.CHANGED_PARTIES);
-				    Bukkit.getPluginManager().callEvent(event);
+				    plugin.getServer().getPluginManager().callEvent(event);
 
 				    if (event.isCancelled()) {
 				        return true;
@@ -169,7 +175,7 @@ public class PartyCommand implements CommandExecutor {
 				}
 				else {
                     McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, args[0], EventReason.JOINED_PARTY);
-                    Bukkit.getPluginManager().callEvent(event);
+                    plugin.getServer().getPluginManager().callEvent(event);
 
                     if (event.isCancelled()) {
                         return true;
@@ -194,8 +200,8 @@ public class PartyCommand implements CommandExecutor {
 				if (Pinstance.isPartyLeader(player.getName(), PP.getParty())) {
 					if (Pinstance.isPartyLocked(PP.getParty())) {
 						Player tPlayer = null;
-						if (Bukkit.getServer().getPlayer(args[1]) != null)
-							tPlayer = Bukkit.getServer().getPlayer(args[1]);
+						if (plugin.getServer().getPlayer(args[1]) != null)
+							tPlayer = plugin.getServer().getPlayer(args[1]);
 						if (tPlayer == null) {
 							player.sendMessage(mcLocale.getString("Party.CouldNotKick", new Object[] { args[1] }));
 						}
@@ -212,7 +218,7 @@ public class PartyCommand implements CommandExecutor {
 							PlayerProfile tPP = Users.getProfile(tPlayer);
 
 			                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, tPP.getParty(), null, EventReason.KICKED_FROM_PARTY);
-			                Bukkit.getPluginManager().callEvent(event);
+			                plugin.getServer().getPluginManager().callEvent(event);
 
 			                if (event.isCancelled()) {
 			                    return true;
@@ -231,8 +237,8 @@ public class PartyCommand implements CommandExecutor {
 			} else if (args[0].equalsIgnoreCase("owner")) {
 				if (Pinstance.isPartyLeader(player.getName(), PP.getParty())) {
 					Player tPlayer = null;
-					if (Bukkit.getServer().getPlayer(args[1]) != null)
-						tPlayer = Bukkit.getServer().getPlayer(args[1]);
+					if (plugin.getServer().getPlayer(args[1]) != null)
+						tPlayer = plugin.getServer().getPlayer(args[1]);
 					if (tPlayer == null) {
 						player.sendMessage(mcLocale.getString("Party.CouldNotSetOwner", new Object[] { args[1] }));
 					}
@@ -246,7 +252,7 @@ public class PartyCommand implements CommandExecutor {
 				}
 			} else {
                 McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, PP.getParty(), args[0], EventReason.CHANGED_PARTIES);
-                Bukkit.getPluginManager().callEvent(event);
+                plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {
                     return true;
@@ -256,7 +262,7 @@ public class PartyCommand implements CommandExecutor {
 			}
 		} else if (args.length == 2 && !PP.inParty()) {
             McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, args[0], EventReason.JOINED_PARTY);
-            Bukkit.getPluginManager().callEvent(event);
+            plugin.getServer().getPluginManager().callEvent(event);
 
             if (event.isCancelled()) {
                 return true;

@@ -33,7 +33,7 @@ public class MccCommand implements CommandExecutor {
             }
 
             player.sendMessage("/invite " + mcLocale.getString("Commands.Party.Invite"));
-            player.sendMessage("/invite " + mcLocale.getString("Commands.Party.Accept"));
+            player.sendMessage("/accept " + mcLocale.getString("Commands.Party.Accept"));
 
             if (mcPermissions.getInstance().partyTeleport(player)) {
                 player.sendMessage("/ptp " + mcLocale.getString("Commands.Party.Teleport"));

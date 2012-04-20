@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.Color;
@@ -19,7 +18,8 @@ import com.gmail.nossr50.spout.SpoutStuff;
 public class HUDmmo {
     private int center_x = 427 / 2;
 
-    private String playerName = null;
+    private String playerName;
+    private final mcMMO plugin;
 
     private Widget xpbar = null;
     private GenericGradient xpfill = null;
@@ -28,10 +28,9 @@ public class HUDmmo {
     private GenericGradient xpicon_border = null;
     private GenericTexture xpicon = null;
 
-    private mcMMO plugin = (mcMMO) Bukkit.getServer().getPluginManager().getPlugin("mcMMO");
-
-    public HUDmmo(Player player) {
-        playerName = player.getName();
+    public HUDmmo(Player player, mcMMO plugin) {
+        this.playerName = player.getName();
+        this.plugin = plugin;
         initializeHUD(player);
     }
 

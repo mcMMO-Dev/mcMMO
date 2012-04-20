@@ -38,7 +38,7 @@ public class mcSpoutListener implements Listener {
         }
 
         if (sPlayer.isSpoutCraftEnabled()) {
-            SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer)); //Setup Party HUD stuff
+            SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer, plugin)); //Setup Party HUD stuff
             
             PPs.toggleSpoutEnabled();
         }

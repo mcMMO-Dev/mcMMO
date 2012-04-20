@@ -1,19 +1,24 @@
 package com.gmail.nossr50.commands.general;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class XprateCommand implements CommandExecutor {
+    private final mcMMO plugin;
     private static int oldrate = LoadProperties.xpGainMultiplier;
     public static boolean xpevent = false;
+
+    public XprateCommand (mcMMO plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,7 +34,7 @@ public class XprateCommand implements CommandExecutor {
         case 1:
             if (args[0].equalsIgnoreCase("reset")) {
                 if (xpevent) {
-                    for (Player x : Bukkit.getServer().getOnlinePlayers()) {
+                    for (Player x : plugin.getServer().getOnlinePlayers()) {
                         x.sendMessage(mcLocale.getString("Commands.xprate.over"));
                     }
 
@@ -63,7 +68,7 @@ public class XprateCommand implements CommandExecutor {
                 LoadProperties.xpGainMultiplier = m.getInt(args[0]);
 
                 if (xpevent) {
-                    for (Player x : Bukkit.getServer().getOnlinePlayers()) {
+                    for (Player x : plugin.getServer().getOnlinePlayers()) {
                         x.sendMessage(mcLocale.getString("Commands.xprate.started"));
                         x.sendMessage(mcLocale.getString("Commands.xprate.started2", new Object[] {LoadProperties.xpGainMultiplier}));
                     }

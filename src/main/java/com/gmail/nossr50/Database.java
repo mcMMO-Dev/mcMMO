@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.LoadProperties;
@@ -33,10 +32,10 @@ public class Database {
             DriverManager.getConnection(connectionString);
         }
         catch (ClassNotFoundException e) {
-            Bukkit.getLogger().warning(e.getLocalizedMessage());
+            plugin.getLogger().warning(e.getLocalizedMessage());
         }
         catch (SQLException ex) {
-            Bukkit.getLogger().warning(ex.getLocalizedMessage());
+            plugin.getLogger().warning(ex.getLocalizedMessage());
             printErrors(ex);
         }
     }
@@ -250,7 +249,7 @@ public class Database {
         {
             System.out.println("[mcMMO] Connection to MySQL was lost! Attempting to reconnect in 60 seconds...");
             reconnectTimestamp = System.currentTimeMillis();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,     
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,     
             new Runnable() {
                 public void run() {
                     if (!isConnected()) {
@@ -260,7 +259,7 @@ public class Database {
                                 x.save(); //Save all profiles
                             }
                             Users.players.clear(); //Clear the profiles
-                            for(Player x : Bukkit.getOnlinePlayers()) {
+                            for(Player x : plugin.getServer().getOnlinePlayers()) {
                                 Users.addUser(x); //Add in new profiles, forcing them to 'load' again from MySQL
                             }
                         }

@@ -3,7 +3,6 @@ package com.gmail.nossr50.listeners;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -51,10 +50,10 @@ import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
 
 public class mcPlayerListener implements Listener {
-    private mcMMO plugin;
+    private final mcMMO plugin;
 
-    public mcPlayerListener(mcMMO instance) {
-        plugin = instance;
+    public mcPlayerListener(final mcMMO plugin) {
+        this.plugin = plugin;
     }
 
     /**
@@ -152,11 +151,11 @@ public class mcPlayerListener implements Listener {
 
         //Bleed it out
         if(PP.getBleedTicks() > 0) {
-            Combat.dealDamage(player, PP.getBleedTicks()*2);
+            Combat.dealDamage(player, PP.getBleedTicks() * 2);
         }
 
         //Schedule PlayerProfile removal 2 minutes after quitting
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player), 2400);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player), 2400);
     }
 
     /**

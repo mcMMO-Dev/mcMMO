@@ -32,8 +32,7 @@ import com.gmail.nossr50.listeners.mcSpoutListener;
 import com.gmail.nossr50.listeners.mcSpoutScreenListener;
 
 public class SpoutStuff {
-
-    static mcMMO plugin = (mcMMO) Bukkit.getServer().getPluginManager().getPlugin("mcMMO");
+    static mcMMO plugin = mcMMO.p;
 
     private final static mcSpoutListener spoutListener = new mcSpoutListener(plugin);
     private final static mcSpoutInputListener spoutInputListener = new mcSpoutInputListener(plugin);
@@ -548,7 +547,7 @@ public class SpoutStuff {
 
         //TODO: Use Locale
         sPlayer.sendNotification(ChatColor.GREEN + "Level Up!", ChatColor.YELLOW + m.getCapitalized(skillType.toString()) + ChatColor.DARK_AQUA + " (" + ChatColor.GREEN + PP.getSkillLevel(skillType) + ChatColor.DARK_AQUA + ")", mat);
-        SpoutSounds.playLevelUpNoise(sPlayer);
+        SpoutSounds.playLevelUpNoise(sPlayer, plugin);
     }
 
     /**

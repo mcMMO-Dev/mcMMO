@@ -10,7 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
@@ -72,7 +71,7 @@ public class Party {
         PlayerProfile PP = Users.getProfile(player);
         int partyMembers = 0;
 
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
             if (player != null && p != null) { //Is this even possible?
                 if (PP.getParty().equals(Users.getProfile(p).getParty())) {
                     partyMembers++;
@@ -86,7 +85,7 @@ public class Party {
     private void informPartyMembers(Player player) {
         String playerName = player.getName();
 
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
             if (player != null && p != null) {
                 if (inSameParty(player, p) && !p.getName().equals(playerName)) {
                     p.sendMessage(mcLocale.getString("Party.InformedOnJoin", new Object[] {playerName}));
@@ -104,7 +103,7 @@ public class Party {
     public ArrayList<Player> getPartyMembers(Player player) {
         ArrayList<Player> players = new ArrayList<Player>();
 
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
             if (p.isOnline() && player != null && p != null) {
                 if (inSameParty(player, p) && !p.getName().equals(player.getName())) {
                     players.add(p);
@@ -122,7 +121,7 @@ public class Party {
     private void informPartyMembersOwnerChange(String newOwnerName) {
         Player newOwner = plugin.getServer().getPlayer(newOwnerName);
 
-        for (Player p : Bukkit.getServer().getOnlinePlayers()){
+        for (Player p : plugin.getServer().getOnlinePlayers()){
             if (newOwner != null && p != null) {
                 if (inSameParty(newOwner, p)) {
                     p.sendMessage(newOwnerName + " is the new party owner."); //TODO: Needs more locale
@@ -139,7 +138,7 @@ public class Party {
     private void informPartyMembersQuit(Player player) {
         String playerName = player.getName();
 
-        for (Player p : Bukkit.getServer().getOnlinePlayers()){
+        for (Player p : plugin.getServer().getOnlinePlayers()){
             if (player != null && p != null){
                 if (inSameParty(player, p) && !p.getName().equals(playerName)) {
                     p.sendMessage(mcLocale.getString("Party.InformedOnQuit", new Object[] {playerName}));
@@ -458,7 +457,7 @@ public class Party {
                 e.printStackTrace();
             }
             catch (EOFException e) {
-                Bukkit.getLogger().info("partyPlayersFile empty.");
+                plugin.getLogger().info("partyPlayersFile empty.");
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -477,7 +476,7 @@ public class Party {
                 e.printStackTrace();
             }
             catch (EOFException e) {
-                Bukkit.getLogger().info("partyLocksFile empty.");
+                plugin.getLogger().info("partyLocksFile empty.");
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -496,7 +495,7 @@ public class Party {
                 e.printStackTrace();
             }
             catch (EOFException e) {
-                Bukkit.getLogger().info("partyPasswordsFile empty.");
+                plugin.getLogger().info("partyPasswordsFile empty.");
             }
             catch (IOException e) {
                 e.printStackTrace();

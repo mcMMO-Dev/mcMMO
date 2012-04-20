@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.HUDType;
 import com.gmail.nossr50.datatypes.HUDmmo;
@@ -13,6 +14,12 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class MchudCommand implements CommandExecutor {
+    private final mcMMO plugin;
+
+    public MchudCommand (mcMMO plugin) {
+        this.plugin = plugin;
+    }
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!LoadProperties.spoutEnabled) {
@@ -39,7 +46,7 @@ public class MchudCommand implements CommandExecutor {
 						SpoutStuff.playerHUDs.get(player).resetHUD();
 						SpoutStuff.playerHUDs.remove(player);
 						PP.setHUDType(x);
-						SpoutStuff.playerHUDs.put(player, new HUDmmo(player));
+						SpoutStuff.playerHUDs.put(player, new HUDmmo(player, plugin));
 					}
 				}
 			}

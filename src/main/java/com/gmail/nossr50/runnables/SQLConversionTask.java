@@ -3,13 +3,16 @@ package com.gmail.nossr50.runnables;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import org.bukkit.Bukkit;
-
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 
 public class SQLConversionTask implements Runnable {
+    private final mcMMO plugin;
+
+    public SQLConversionTask(mcMMO plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void run() {
@@ -273,7 +276,7 @@ public class SQLConversionTask implements Runnable {
             in.close();
         }
         catch (Exception e) {
-            Bukkit.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            plugin.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
     }
 }

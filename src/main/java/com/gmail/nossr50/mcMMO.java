@@ -26,7 +26,6 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
@@ -52,6 +51,7 @@ public class mcMMO extends JavaPlugin {
     public HashMap<Integer, Player> tntTracker = new HashMap<Integer, Player>();
 
     public static Database database = null;
+    public static mcMMO p;
 
     //Config file stuff
     LoadProperties config;
@@ -64,7 +64,7 @@ public class mcMMO extends JavaPlugin {
      * Things to be run when the plugin is enabled.
      */
     public void onEnable() {
-        final Plugin thisPlugin = this;
+        p = this;
         mcmmo = this.getFile();
         new File(maindirectory).mkdir();
 
@@ -146,7 +146,7 @@ public class mcMMO extends JavaPlugin {
                         Metrics metrics = new Metrics();
 
                         // 'this' in this context is the Plugin object
-                        metrics.beginMeasuringPlugin(thisPlugin);
+                        metrics.beginMeasuringPlugin(p);
                     }
                     catch (IOException e) {
                         System.out.println("Failed to submit stats.");
@@ -243,7 +243,7 @@ public class mcMMO extends JavaPlugin {
 
         //mc* commands
         if (LoadProperties.mcremoveEnable) {
-            getCommand("mcremove").setExecutor(new McremoveCommand());
+            getCommand("mcremove").setExecutor(new McremoveCommand(this));
         }
 
         if (LoadProperties.mcabilityEnable) {
@@ -276,11 +276,11 @@ public class mcMMO extends JavaPlugin {
 
         //Party commands
         if (LoadProperties.acceptEnable) {
-            getCommand("accept").setExecutor(new AcceptCommand());
+            getCommand("accept").setExecutor(new AcceptCommand(this));
         }
 
         if (LoadProperties.aEnable) {
-            getCommand("a").setExecutor(new ACommand());
+            getCommand("a").setExecutor(new ACommand(this));
         }
 
         if (LoadProperties.inviteEnable) {
@@ -288,11 +288,11 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (LoadProperties.partyEnable) {
-            getCommand("party").setExecutor(new PartyCommand());
+            getCommand("party").setExecutor(new PartyCommand(this));
         }
 
         if (LoadProperties.pEnable) {
-            getCommand("p").setExecutor(new PCommand());
+            getCommand("p").setExecutor(new PCommand(this));
         }
 
         if (LoadProperties.ptpEnable) {
@@ -317,17 +317,17 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (LoadProperties.xprateEnable) {
-            getCommand("xprate").setExecutor(new XprateCommand());
+            getCommand("xprate").setExecutor(new XprateCommand(this));
         }
 
-        getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
+        getCommand("mmoupdate").setExecutor(new MmoupdateCommand(this));
 
         //Spout commands
         if (LoadProperties.xplockEnable) {
             getCommand("xplock").setExecutor(new XplockCommand());
         }
 
-        getCommand("mchud").setExecutor(new MchudCommand());
+        getCommand("mchud").setExecutor(new MchudCommand(this));
     }
 
     /**

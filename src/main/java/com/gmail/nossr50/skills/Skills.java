@@ -1,17 +1,18 @@
 package com.gmail.nossr50.skills;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.Leaderboard;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -193,7 +194,7 @@ public class Skills {
                     PP.skillUp(skillType, 1);
 
                     McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
-                    Bukkit.getPluginManager().callEvent(eventToFire);
+                    mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
                 }
                 else {
                     PP.addLevels(skillType, 0);
