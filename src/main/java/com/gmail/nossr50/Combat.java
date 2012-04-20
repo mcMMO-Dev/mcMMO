@@ -7,6 +7,7 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
@@ -439,6 +440,11 @@ public class Combat {
 
                 case MAGMA_CUBE:
                     baseXP = LoadProperties.magmacubeXP;
+                    break;
+
+                case IRON_GOLEM:
+                    if (!((IronGolem) target).isPlayerCreated())
+                        baseXP = LoadProperties.irongolemXP;
                     break;
 
                 case PIG_ZOMBIE:
