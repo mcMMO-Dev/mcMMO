@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -430,7 +429,7 @@ public class Repair {
         PlayerInventory inventory = player.getInventory();
 
         McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, (short) (initialDurability - newDurability), repairMaterial, item);
-        Bukkit.getPluginManager().callEvent(event);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return;

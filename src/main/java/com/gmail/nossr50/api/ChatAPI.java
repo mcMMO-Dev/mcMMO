@@ -1,10 +1,10 @@
 package com.gmail.nossr50.api;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
@@ -21,7 +21,7 @@ public class ChatAPI {
      */
     public void sendPartyChat(String sender, String party, String message) {
         McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(sender, party, message);
-        Bukkit.getPluginManager().callEvent(chatEvent);
+        mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
             return;
@@ -29,9 +29,9 @@ public class ChatAPI {
 
         String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + chatEvent.getSender() + ChatColor.GREEN + ") ";
 
-        Bukkit.getLogger().info("[P](" + chatEvent.getParty() + ")" + "<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
+        mcMMO.p.getLogger().info("[P](" + chatEvent.getParty() + ")" + "<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
 
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             if (Users.getProfile(player).inParty()) {
                 if (Users.getProfile(player).getParty().equalsIgnoreCase(chatEvent.getParty())) {
                     player.sendMessage(pPrefix + chatEvent.getMessage());
@@ -50,7 +50,7 @@ public class ChatAPI {
      */
     public void sendAdminChat(String sender, String message) {
         McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(sender, message);
-        Bukkit.getPluginManager().callEvent(chatEvent);
+        mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
             return;
@@ -58,9 +58,9 @@ public class ChatAPI {
 
         String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + chatEvent.getSender() + ChatColor.AQUA + "} ";
 
-        Bukkit.getLogger().info("[A]<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
+        mcMMO.p.getLogger().info("[A]<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
 
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             if (mcPermissions.getInstance().adminChat(player) || player.isOp())
                 player.sendMessage(aPrefix + chatEvent.getMessage());
         }

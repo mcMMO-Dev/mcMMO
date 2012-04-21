@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.Party;
 
 public class PartyAPI {
@@ -57,7 +57,7 @@ public class PartyAPI {
      * @return the list of parties.
      */
     public ArrayList<String> getParties() {
-        String location = "plugins/mcMMO/mcmmo.users";
+        String location = mcMMO.usersFile;
         ArrayList<String> parties = new ArrayList<String>();
 
         try {
@@ -83,7 +83,7 @@ public class PartyAPI {
             in.close();
         }
         catch (Exception e) {
-            Bukkit.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            mcMMO.p.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
         return parties;
     }

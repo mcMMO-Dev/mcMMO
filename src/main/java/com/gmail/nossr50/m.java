@@ -2,7 +2,6 @@ package com.gmail.nossr50;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -108,11 +107,11 @@ public class m {
         //Support for NoCheat
         if (shouldArmSwing) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-            Bukkit.getPluginManager().callEvent(armswing);
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
         }
 
         FakeBlockBreakEvent event = new FakeBlockBreakEvent(block, player);
-        Bukkit.getPluginManager().callEvent(event);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (!event.isCancelled()) {
             return true;
@@ -236,7 +235,7 @@ public class m {
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
-        Bukkit.getPluginManager().callEvent(event);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return;

@@ -18,9 +18,10 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class Party {
-    public static String partyPlayersFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyPlayers";
-    public static String partyLocksFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyLocks";
-    public static String partyPasswordsFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyPasswords";
+    public static String pluginPath;
+    public static String partyPlayersFile;
+    public static String partyLocksFile;
+    public static String partyPasswordsFile;
 
     HashMap<String, HashMap<String, Boolean>> partyPlayers = new HashMap<String, HashMap<String, Boolean>>();
     HashMap<String, Boolean> partyLocks = new HashMap<String, Boolean>();
@@ -30,8 +31,12 @@ public class Party {
     private static volatile Party instance;
 
     public Party(mcMMO instance) {
-        new File(mcMMO.maindirectory + File.separator + "FlatFileStuff").mkdir();
         plugin = instance;
+        pluginPath = plugin.getDataFolder().getPath();
+        partyPlayersFile = pluginPath + File.separator + "FlatFileStuff" + File.separator + "partyPlayers";
+        partyLocksFile = pluginPath + File.separator + "FlatFileStuff" + File.separator + "partyLocks";
+        partyPasswordsFile = pluginPath + File.separator + "FlatFileStuff" + File.separator + "partyPasswords";
+        new File(pluginPath + File.separator + "FlatFileStuff").mkdir();
     }
 
     public static Party getInstance() {

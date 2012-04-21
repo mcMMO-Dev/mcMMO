@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.Bukkit;
 
 import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -313,7 +313,7 @@ public class WoodCutting {
      */
     public static void leafBlower(Player player, Block block) {
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-        Bukkit.getPluginManager().callEvent(armswing);
+        mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
         if (LoadProperties.woodcuttingrequiresaxe) {
             Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);

@@ -17,7 +17,7 @@ import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class McremoveCommand implements CommandExecutor {
-    private final String LOCATION = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+    private final String location = mcMMO.usersFile;
     private final mcMMO plugin;
 
     public McremoveCommand (mcMMO plugin) {
@@ -107,7 +107,7 @@ public class McremoveCommand implements CommandExecutor {
         boolean worked = false;
 
         try {
-            FileReader file = new FileReader(LOCATION);
+            FileReader file = new FileReader(location);
             BufferedReader in = new BufferedReader(file);
             StringBuilder writer = new StringBuilder();
             String line = "";
@@ -126,14 +126,14 @@ public class McremoveCommand implements CommandExecutor {
             }
 
             in.close();
-            FileWriter out = new FileWriter(LOCATION); //Write out the new file
+            FileWriter out = new FileWriter(location); //Write out the new file
             out.write(writer.toString());
             out.close();
 
             return worked;
         }
         catch (Exception e) {
-            plugin.getLogger().severe("Exception while reading " + LOCATION + " (Are you sure you formatted it correctly?)" + e.toString());
+            plugin.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
             return worked;
         }
     }

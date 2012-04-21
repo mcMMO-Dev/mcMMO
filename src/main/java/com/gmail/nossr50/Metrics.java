@@ -1,6 +1,5 @@
 package com.gmail.nossr50;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -44,7 +43,7 @@ public class Metrics {
     /**
      * The file where guid and opt out is stored in
      */
-    private static final String CONFIG_FILE = "plugins/PluginMetrics/config.yml";
+    private static final String CONFIG_FILE = "plugins" + File.separator + "PluginMetrics" + File.separator + "config.yml";
 
     /**
      * The separator to use for custom data. This MUST NOT change unless you are hosting your own
@@ -200,7 +199,7 @@ public class Metrics {
         String data = encode("guid") + '=' + encode(guid)
                 + encodeDataPair("authors", authors)
                 + encodeDataPair("version", description.getVersion())
-                + encodeDataPair("server", Bukkit.getVersion())
+                + encodeDataPair("server", plugin.getServer().getVersion())
                 + encodeDataPair("players", Integer.toString(plugin.getServer().getOnlinePlayers().length))
                 + encodeDataPair("revision", String.valueOf(REVISION));
 

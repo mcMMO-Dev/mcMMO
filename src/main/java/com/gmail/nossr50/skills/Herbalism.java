@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -279,7 +278,7 @@ public class Herbalism {
             m.mcDropItem(loc, new ItemStack(Material.WHEAT));
             m.mcRandomDropItems(loc, new ItemStack(Material.SEEDS), 50, 3);
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, PP), 1);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, PP), 1);
 
             inventory.removeItem(new ItemStack(Material.SEEDS));
             player.updateInventory();

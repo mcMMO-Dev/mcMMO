@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.config.LoadTreasures;
@@ -135,7 +135,7 @@ public class Excavation {
 
         if (!block.hasMetadata("mcmmoPlacedBlock")) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-            Bukkit.getPluginManager().callEvent(armswing);
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
             Excavation.excavationProcCheck(block, player);
             Excavation.excavationProcCheck(block, player);

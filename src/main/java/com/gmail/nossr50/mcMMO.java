@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,20 +36,16 @@ import org.bukkit.entity.Player;
 
 public class mcMMO extends JavaPlugin {
 
-    public static String maindirectory = "plugins" + File.separator + "mcMMO";
-    public static File file = new File(maindirectory + File.separator + "config.yml");
-    public static File versionFile = new File(maindirectory + File.separator + "VERSION");
-
     private final mcPlayerListener playerListener = new mcPlayerListener(this);
     private final mcBlockListener blockListener = new mcBlockListener(this);
     private final mcEntityListener entityListener = new mcEntityListener(this);
 
-    //Alias - Command
-    public HashMap<String, String> aliasMap = new HashMap<String, String>();
+    public HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
     public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     public HashMap<Integer, Player> tntTracker = new HashMap<Integer, Player>();
 
-    public static Database database = null;
+    public static File versionFile;
+    public static Database database;
     public static mcMMO p;
 
     //Config file stuff
@@ -60,13 +55,24 @@ public class mcMMO extends JavaPlugin {
     //Jar stuff
     public static File mcmmo;
 
+    //File Paths
+    public static String mainDirectory;
+    public static String flatFileDirectory;
+    public static String usersFile;
+    public static String leaderboardDirectory;
+
     /**
      * Things to be run when the plugin is enabled.
      */
     public void onEnable() {
         p = this;
-        mcmmo = this.getFile();
-        new File(maindirectory).mkdir();
+        mcmmo = getFile();
+        versionFile = new File(getDataFolder(), "VERSION");
+
+        mainDirectory = getDataFolder().getPath() + File.separator;
+        flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
+        leaderboardDirectory = flatFileDirectory + "Leaderboards" + File.separator;
+        usersFile = flatFileDirectory + "mcmmo.users";
 
         if (!versionFile.exists()) {
             updateVersion();
@@ -97,12 +103,10 @@ public class mcMMO extends JavaPlugin {
         new Party(this);
 
         if (!LoadProperties.useMySQL) {
-            Users.getInstance().loadUsers();
+            Users.loadUsers();
         }
 
         PluginManager pm = getServer().getPluginManager();
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this, new SpoutStart(this), 20); //Schedule Spout Activation 1 second after start-up
 
         //Register events
         pm.registerEvents(playerListener, this);
@@ -128,6 +132,8 @@ public class mcMMO extends JavaPlugin {
 
         BukkitScheduler scheduler = getServer().getScheduler();
 
+        //Schedule Spout Activation 1 second after start-up
+        scheduler.scheduleSyncDelayedTask(this, new SpoutStart(this), 20);
         //Periodic save timer (Saves every 10 minutes)
         scheduler.scheduleSyncRepeatingTask(this, new mcSaveTimer(this), 0, LoadProperties.saveInterval * 1200);
         //Regen & Cooldown timer (Runs every second)
@@ -202,7 +208,7 @@ public class mcMMO extends JavaPlugin {
             x.save();
         }
 
-        Bukkit.getServer().getScheduler().cancelTasks(this); //This removes our tasks
+        this.getServer().getScheduler().cancelTasks(this); //This removes our tasks
         System.out.println("mcMMO was disabled."); //How informative!
     }
 
@@ -457,7 +463,7 @@ public class mcMMO extends JavaPlugin {
             treasuresConfig.save(treasuresConfigFile);
         }
         catch (IOException ex) {
-            Bukkit.getLogger().severe("Could not save config to " + treasuresConfigFile + ex.toString());
+            this.getLogger().severe("Could not save config to " + treasuresConfigFile + ex.toString());
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.gmail.nossr50;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
@@ -248,7 +247,7 @@ public class Combat {
     private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
         if (LoadProperties.eventCallback) {
             EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
-            Bukkit.getPluginManager().callEvent(ede);
+            mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {
                 return;
@@ -271,7 +270,7 @@ public class Combat {
     private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
         if (LoadProperties.eventCallback) {
             EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
-            Bukkit.getPluginManager().callEvent(ede);
+            mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {
                 return;
@@ -474,7 +473,7 @@ public class Combat {
         }
 
         if (baseXP != 0) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(pluginx, new GainXp(attacker, PP, skillType, baseXP, target), 0);
+            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(pluginx, new GainXp(attacker, PP, skillType, baseXP, target), 0);
         }
     }
 }

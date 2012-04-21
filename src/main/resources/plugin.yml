@@ -1,4 +1,5 @@
 name: mcMMO
+website: mcmmo.org
 main: com.gmail.nossr50.mcMMO
 version: ${project.version}-b${BUILD_NUMBER}
 softdepend: [Spout]

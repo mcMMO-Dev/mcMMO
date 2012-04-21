@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -32,7 +32,13 @@ import com.gmail.nossr50.listeners.mcSpoutListener;
 import com.gmail.nossr50.listeners.mcSpoutScreenListener;
 
 public class SpoutStuff {
-    static mcMMO plugin = mcMMO.p;
+    private static mcMMO plugin = mcMMO.p;
+
+    public final static String spoutDirectory = mcMMO.mainDirectory + "Resources" + File.separator;
+    public final static String hudDirectory = spoutDirectory + "HUD" + File.separator;
+    public final static String hudStandardDirectory = hudDirectory + "Standard" + File.separator;
+    public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
+    public final static String soundDirectory = spoutDirectory + "Sound" + File.separator;
 
     private final static mcSpoutListener spoutListener = new mcSpoutListener(plugin);
     private final static mcSpoutInputListener spoutInputListener = new mcSpoutInputListener(plugin);
@@ -49,12 +55,11 @@ public class SpoutStuff {
      * @param theFileName The name of the file
      * @param theFilePath The name of the file path
      */
-    public static void writeFile(String theFileName, String theFilePath) {
+    private static void writeFile(String theFileName, String theFilePath) {
         try {
-            File currentFile = new File("plugins/mcMMO/Resources/" + theFilePath + theFileName);
+            File currentFile = new File(theFilePath + theFileName);
 
-            @SuppressWarnings("static-access")
-            JarFile jar = new JarFile(plugin.mcmmo);
+            JarFile jar = new JarFile(mcMMO.mcmmo);
             JarEntry entry = jar.getJarEntry("resources/" + theFileName);
             InputStream is = jar.getInputStream(entry);
 
@@ -84,15 +89,14 @@ public class SpoutStuff {
     public static void extractFiles() {
 
         //Setup directories
-        new File("plugins/mcMMO/Resources/").mkdir();
-        new File("plugins/mcMMO/Resources/HUD/").mkdir();
-        new File("plugins/mcMMO/Resources/HUD/Standard/").mkdir();
-        new File("plugins/mcMMO/Resources/HUD/Retro/").mkdir();
-        new File("plugins/mcMMO/Resources/Sound/").mkdir();
+        new File(spoutDirectory).mkdir();
+        new File(hudDirectory).mkdir();
+        new File(hudStandardDirectory).mkdir();
+        new File(hudRetroDirectory).mkdir();
+        new File(soundDirectory).mkdir();
 
         //XP Bar images
         for (int x = 0; x < 255; x++) {
-            String theFilePath = "HUD/Standard/";
             String theFileName;
 
             if (x < 10) {
@@ -105,13 +109,10 @@ public class SpoutStuff {
                 theFileName = "xpbar_inc" + x + ".png";
             }
 
-            writeFile(theFileName, theFilePath);
+            writeFile(theFileName, hudStandardDirectory);
         }
 
         //Standard XP Icons
-        String standardFilePath = "HUD/Standard/";
-        String retroFilePath = "HUD/Retro/";
-
         for (SkillType y : SkillType.values()) {
             if (y.equals(SkillType.ALL)) {
                 continue;
@@ -120,19 +121,17 @@ public class SpoutStuff {
             String standardFileName = m.getCapitalized(y.toString())+".png";
             String retroFileName = m.getCapitalized(y.toString())+"_r.png";
 
-            writeFile(standardFileName, standardFilePath);
-            writeFile(retroFileName, retroFilePath);
+            writeFile(standardFileName, hudStandardDirectory);
+            writeFile(retroFileName, hudRetroDirectory);
         }
 
         //Blank icons
-        writeFile("Icon.png", standardFilePath);
-        writeFile("Icon_r.png", retroFilePath);
+        writeFile("Icon.png", hudStandardDirectory);
+        writeFile("Icon_r.png", hudRetroDirectory);
 
         //Sound FX
-        String theSoundFilePath = "Sound/";
-
-        writeFile("repair.wav", theSoundFilePath);
-        writeFile("level.wav", theSoundFilePath);
+        writeFile("repair.wav", soundDirectory);
+        writeFile("level.wav", soundDirectory);
     }
 
     /**
@@ -160,18 +159,17 @@ public class SpoutStuff {
      */
     public static ArrayList<File> getFiles() {
         ArrayList<File> files = new ArrayList<File>();
-        String dir = "plugins/mcMMO/Resources/";
 
         /* XP BAR */
         for (int x = 0; x < 255; x++) {
             if (x < 10) {
-                files.add(new File(dir + "HUD/Standard/xpbar_inc00" + x + ".png"));
+                files.add(new File(hudStandardDirectory + "xpbar_inc00" + x + ".png"));
             }
             else if (x < 100) {
-                files.add(new File(dir + "HUD/Standard/xpbar_inc0" + x + ".png"));
+                files.add(new File(hudStandardDirectory  + "xpbar_inc0" + x + ".png"));
             }
             else {
-                files.add(new File(dir + "HUD/Standard/xpbar_inc" + x + ".png"));
+                files.add(new File(hudStandardDirectory  + "xpbar_inc" + x + ".png"));
             }
         }
 
@@ -181,19 +179,19 @@ public class SpoutStuff {
                 continue;
             }
 
-            files.add(new File(dir + "HUD/Standard/" + m.getCapitalized(y.toString()) + ".png"));
-            files.add(new File(dir + "HUD/Retro/" + m.getCapitalized(y.toString()) + "_r.png"));
+            files.add(new File(hudStandardDirectory + m.getCapitalized(y.toString()) + ".png"));
+            files.add(new File(hudRetroDirectory + m.getCapitalized(y.toString()) + "_r.png"));
         }
         
         /* Blank icons */
-        files.add(new File(dir + "HUD/Standard/Icon.png"));
-        files.add(new File(dir + "HUD/Retro/Icon_r.png"));
+        files.add(new File(hudStandardDirectory + "Icon.png"));
+        files.add(new File(hudRetroDirectory + "Icon_r.png"));
 
         //Repair SFX
-        files.add(new File(dir + "Sound/repair.wav"));
+        files.add(new File(soundDirectory + "repair.wav"));
 
         //Level SFX
-        files.add(new File(dir + "Sound/level.wav"));
+        files.add(new File(soundDirectory + "level.wav"));
 
         return files;
     }
@@ -202,9 +200,9 @@ public class SpoutStuff {
      * Register custom Spout events.
      */
     public static void registerCustomEvent() {
-        Bukkit.getServer().getPluginManager().registerEvents(spoutListener, plugin);
-        Bukkit.getServer().getPluginManager().registerEvents(spoutInputListener, plugin);
-        Bukkit.getServer().getPluginManager().registerEvents(spoutScreenListener, plugin);
+        plugin.getServer().getPluginManager().registerEvents(spoutListener, plugin);
+        plugin.getServer().getPluginManager().registerEvents(spoutInputListener, plugin);
+        plugin.getServer().getPluginManager().registerEvents(spoutScreenListener, plugin);
     }
 
     /**
@@ -214,7 +212,7 @@ public class SpoutStuff {
      * @return the SpoutPlayer related to this player name, null if there's no player online with that name.
      */
     public static SpoutPlayer getSpoutPlayer(String playerName) {
-        for (Player x : Bukkit.getServer().getOnlinePlayers()) {
+        for (Player x : plugin.getServer().getOnlinePlayers()) {
             if (x.getName().equalsIgnoreCase(playerName)) {
                 return SpoutManager.getPlayer(x);
             }

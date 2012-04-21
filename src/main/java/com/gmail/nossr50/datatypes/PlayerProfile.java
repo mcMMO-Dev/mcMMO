@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -61,7 +60,7 @@ public class PlayerProfile {
     HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
 
     private String playerName;
-    private String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+    private String location = mcMMO.usersFile;
 
     public PlayerProfile(String name, boolean addNew) {
         hud = LoadProperties.defaulthud;
@@ -282,7 +281,7 @@ public class PlayerProfile {
             }
             in.close();
         } catch (Exception e) {
-            Bukkit.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            mcMMO.p.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
         return false;
     }
@@ -404,7 +403,7 @@ public class PlayerProfile {
                 out.write(writer.toString());
                 out.close();
             } catch (Exception e) {
-                Bukkit.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+                mcMMO.p.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
             }
         }
     }
@@ -479,7 +478,7 @@ public class PlayerProfile {
             out.newLine();
             out.close();
         } catch (Exception e) {
-            Bukkit.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            mcMMO.p.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
     }
 
@@ -993,7 +992,7 @@ public class PlayerProfile {
      * @param newValue The amount of XP to add
      */
     public void addXPOverride(SkillType skillType, int newValue) {
-        Player player = Bukkit.getPlayer(playerName);
+        Player player = mcMMO.p.getServer().getPlayer(playerName);
 
         if (skillType.equals(SkillType.ALL)) {
             for (SkillType x : SkillType.values()) {
@@ -1147,7 +1146,7 @@ public class PlayerProfile {
      * @return the power level of the player
      */
     public int getPowerLevel() {
-        Player player = Bukkit.getPlayer(playerName);
+        Player player = mcMMO.p.getServer().getPlayer(playerName);
         int powerLevel = 0;
 
         for (SkillType type : SkillType.values()) {
@@ -1166,7 +1165,7 @@ public class PlayerProfile {
      * @return the party bonus multiplier
      */
     private double partyModifier(SkillType skillType) {
-        Player player = Bukkit.getPlayer(playerName);
+        Player player = mcMMO.p.getServer().getPlayer(playerName);
         double bonusModifier = 0.0;
 
         for (Player x : Party.getInstance().getPartyMembers(player)) {

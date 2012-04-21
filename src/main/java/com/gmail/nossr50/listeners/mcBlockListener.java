@@ -22,7 +22,6 @@ import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 
-import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -268,7 +267,7 @@ public class mcBlockListener implements Listener {
         else if (PP.getAbilityMode(AbilityType.BERSERK) && Skills.triggerCheck(player, block, AbilityType.BERSERK)) {
             if (inhand.getType().equals(Material.AIR)) {
                 FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-                Bukkit.getPluginManager().callEvent(armswing);
+                plugin.getServer().getPluginManager().callEvent(armswing);
 
                 event.setInstaBreak(true);
             }

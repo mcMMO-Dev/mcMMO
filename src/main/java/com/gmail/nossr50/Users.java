@@ -5,24 +5,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Users {
-    private static volatile Users instance;
 
-    String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
-    String directory = "plugins/mcMMO/FlatFileStuff/";
-    String directoryb = "plugins/mcMMO/FlatFileStuff/Leaderboards/";
+    public static String location = mcMMO.usersFile;
+    public static String directory = mcMMO.flatFileDirectory;
+    public static String directoryb = mcMMO.leaderboardDirectory;
 
     public static HashMap<String, PlayerProfile> players = new HashMap<String, PlayerProfile>();
 
     /**
      * Load users.
      */
-    public void loadUsers() {
+    public static void loadUsers() {
         new File(directory).mkdir();
         new File(directoryb).mkdir();
         File theDir = new File(location);
@@ -105,7 +103,7 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfileByName(String playerName) {
-        if (Bukkit.getServer().getOfflinePlayer(playerName).isOnline() || players.containsKey(playerName.toLowerCase())) {
+        if (mcMMO.p.getServer().getOfflinePlayer(playerName).isOnline() || players.containsKey(playerName.toLowerCase())) {
             if (players.get(playerName.toLowerCase()) != null) {
                 return players.get(playerName.toLowerCase());
             }
@@ -117,17 +115,5 @@ public class Users {
         else {
             return new PlayerProfile(playerName, false);
         }
-    }
-
-    /**
-     * Get an instance of this class.
-     *
-     * @return an instance of this class
-     */
-    public static Users getInstance() {
-        if (instance == null) {
-            instance = new Users();
-        }
-        return instance;
     }
 }

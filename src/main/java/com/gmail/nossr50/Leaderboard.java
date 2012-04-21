@@ -7,15 +7,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.Tree;
 
 public class Leaderboard {
-    static String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";
+    private static String leaderboardsDirectory = mcMMO.leaderboardDirectory;
+    private static String location = mcMMO.usersFile;
+    private static mcMMO plugin = mcMMO.p;
 
     /**
      * Create the leaderboards.
@@ -121,7 +121,7 @@ public class Leaderboard {
             in.close();
         }
         catch (Exception e) {
-            Bukkit.getLogger().severe(("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString()));
+            plugin.getLogger().severe(("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString()));
         }
 
         //Write the leader board files
@@ -147,8 +147,8 @@ public class Leaderboard {
      * @param skillType Skill type to write the leaderboard of
      */
     private static void leaderWrite(PlayerStat[] ps, SkillType skillType) {
-        String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + skillType + ".mcmmo";
-        File theDir = new File(theLocation); 
+        String theLocation = leaderboardsDirectory + skillType.toString().toLowerCase() + ".mcmmo";
+        File theDir = new File(theLocation);
 
         //CHECK IF THE FILE EXISTS
         if (!theDir.exists()) {
@@ -158,7 +158,7 @@ public class Leaderboard {
                 writer = new FileWriter(theLocation);
             }
             catch (Exception e) {
-                Bukkit.getLogger().severe(("Exception while creating " + theLocation + e.toString()));
+                plugin.getLogger().severe(("Exception while creating " + theLocation + e.toString()));
             }
             finally {
                 try {
@@ -167,7 +167,7 @@ public class Leaderboard {
                     }
                 }
                 catch (IOException e) {
-                    Bukkit.getLogger().severe("Exception while closing writer for " + theLocation + e.toString());
+                    plugin.getLogger().severe("Exception while closing writer for " + theLocation + e.toString());
                 }
             }
         }
@@ -196,7 +196,7 @@ public class Leaderboard {
                 out.close();
             }
             catch (Exception e) {
-                Bukkit.getLogger().severe("Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)" + e.toString());
+                plugin.getLogger().severe("Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)" + e.toString());
             }
         }
     }
@@ -209,7 +209,7 @@ public class Leaderboard {
      * @return the requested leaderboard information
      */
     public static String[] retrieveInfo(String skillName, int pagenumber) {
-        String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + skillName + ".mcmmo"; //$NON-NLS-1$ //$NON-NLS-2$
+        String theLocation = leaderboardsDirectory + skillName + ".mcmmo";
 
         try {
             FileReader file = new FileReader(theLocation);
@@ -242,7 +242,7 @@ public class Leaderboard {
             return info;
         }
         catch (Exception e) {
-            Bukkit.getLogger().severe("Exception while reading " + theLocation + " (Are you sure you formatted it correctly?)" + e.toString());
+            plugin.getLogger().severe("Exception while reading " + theLocation + " (Are you sure you formatted it correctly?)" + e.toString());
         }
 
         return null; //Shouldn't get here
@@ -259,7 +259,7 @@ public class Leaderboard {
             return;
         }
 
-        String theLocation = "plugins/mcMMO/FlatFileStuff/Leaderboards/" + skillType + ".mcmmo";
+        String theLocation = leaderboardsDirectory + skillType.toString().toLowerCase() + ".mcmmo";
 
         try {
             FileReader file = new FileReader(theLocation);
@@ -294,7 +294,7 @@ public class Leaderboard {
             out.close();
         }
         catch (Exception e) {
-            Bukkit.getLogger().severe("Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)" + e.toString());
+            plugin.getLogger().severe("Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)" + e.toString());
         }
     }
 }
