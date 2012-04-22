@@ -93,7 +93,7 @@ public class Repair {
                     repairItem(player, is, new ItemStack(LoadProperties.rGold));
                     xpHandler(player, PP, is, durabilityBefore, 8, true);
                 }
-                else if (is.getType().equals(Material.BOW) && inventory.contains(LoadProperties.rString) && skillLevel >= LoadProperties.repairBowLevel && mcPermissions.getInstance().bowRepair(player)){
+                else if (ItemChecks.isStringTool(is) && inventory.contains(LoadProperties.rString) && skillLevel >= LoadProperties.repairStringLevel && mcPermissions.getInstance().stringRepair(player)){
                     repairItem(player, is, new ItemStack(LoadProperties.rString));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
@@ -141,7 +141,7 @@ public class Repair {
         PP.addXP(SkillType.REPAIR, dif * 10);
         Skills.XpCheckSkill(SkillType.REPAIR, player);
 
-        //CLANG CLANG
+        //CLANG CLANG (scary noise)
         if (LoadProperties.spoutEnabled) {
             SpoutSounds.playRepairNoise(player);
         }
@@ -321,7 +321,7 @@ public class Repair {
         else if (ItemChecks.isHoe(is) || ItemChecks.isSword(is) || is.getType().equals(Material.SHEARS)) {
             ramt = maxDurability / 2;
         }
-        else if (ItemChecks.isAxe(is) || ItemChecks.isMiningPick(is) || is.getType().equals(Material.BOW)) {
+        else if (ItemChecks.isAxe(is) || ItemChecks.isMiningPick(is) || ItemChecks.isStringTool(is)) {
             ramt = maxDurability / 3;
         }
         else if (ItemChecks.isBoots(is)) {
@@ -391,7 +391,7 @@ public class Repair {
             else if (ItemChecks.isLeatherArmor(is)) {
                 player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(LoadProperties.rLeather));
             }
-            else if (is.getType().equals(Material.BOW)) {
+            else if (ItemChecks.isStringTool(is)) {
                 player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(LoadProperties.rString));
             }
         }

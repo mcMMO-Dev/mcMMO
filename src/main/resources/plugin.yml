@@ -239,8 +239,8 @@ permissions:
         description: Allows ability to repair armor
     mcmmo.ability.repair.toolrepair:
         description: Allows ability to repair tools
-    mcmmo.ability.repair.bowrepair:
-        description: Allows ability to repair bows
+    mcmmo.ability.repair.stringrepair:
+        description: Allows ability to repair bows and fishing rods
     mcmmo.ability.unarmed.*:
         description: Allows access to all Unarmed abilities
         children:

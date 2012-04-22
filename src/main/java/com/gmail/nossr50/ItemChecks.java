@@ -13,15 +13,15 @@ public class ItemChecks {
      */
     public static boolean isSword(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_SWORD:
-        case GOLD_SWORD:
-        case IRON_SWORD:
-        case STONE_SWORD:
-        case WOOD_SWORD:
-            return true;
+            case DIAMOND_SWORD:
+            case GOLD_SWORD:
+            case IRON_SWORD:
+            case STONE_SWORD:
+            case WOOD_SWORD:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -33,15 +33,15 @@ public class ItemChecks {
      */
     public static boolean isHoe(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_HOE:
-        case GOLD_HOE:
-        case IRON_HOE:
-        case STONE_HOE:
-        case WOOD_HOE:
-            return true;
+            case DIAMOND_HOE:
+            case GOLD_HOE:
+            case IRON_HOE:
+            case STONE_HOE:
+            case WOOD_HOE:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -53,15 +53,15 @@ public class ItemChecks {
      */
     public static boolean isShovel(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_SPADE:
-        case GOLD_SPADE:
-        case IRON_SPADE:
-        case STONE_SPADE:
-        case WOOD_SPADE:
-            return true;
+            case DIAMOND_SPADE:
+            case GOLD_SPADE:
+            case IRON_SPADE:
+            case STONE_SPADE:
+            case WOOD_SPADE:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -73,15 +73,15 @@ public class ItemChecks {
      */
     public static boolean isAxe(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_AXE:
-        case GOLD_AXE:
-        case IRON_AXE:
-        case STONE_AXE:
-        case WOOD_AXE:
-            return true;
+            case DIAMOND_AXE:
+            case GOLD_AXE:
+            case IRON_AXE:
+            case STONE_AXE:
+            case WOOD_AXE:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -93,15 +93,15 @@ public class ItemChecks {
      */
     public static boolean isMiningPick(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_PICKAXE:
-        case GOLD_PICKAXE:
-        case IRON_PICKAXE:
-        case STONE_PICKAXE:
-        case WOOD_PICKAXE:
-            return true;
+            case DIAMOND_PICKAXE:
+            case GOLD_PICKAXE:
+            case IRON_PICKAXE:
+            case STONE_PICKAXE:
+            case WOOD_PICKAXE:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -113,14 +113,14 @@ public class ItemChecks {
      */
     public static boolean isHelmet(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_HELMET:
-        case GOLD_HELMET:
-        case IRON_HELMET:
-        case LEATHER_HELMET:
-            return true;
+            case DIAMOND_HELMET:
+            case GOLD_HELMET:
+            case IRON_HELMET:
+            case LEATHER_HELMET:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -132,14 +132,14 @@ public class ItemChecks {
      */
     public static boolean isChestplate(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_CHESTPLATE:
-        case GOLD_CHESTPLATE:
-        case IRON_CHESTPLATE:
-        case LEATHER_CHESTPLATE:
-            return true;
+            case DIAMOND_CHESTPLATE:
+            case GOLD_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case LEATHER_CHESTPLATE:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -151,14 +151,14 @@ public class ItemChecks {
      */
     public static boolean isPants(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_LEGGINGS:
-        case GOLD_LEGGINGS:
-        case IRON_LEGGINGS:
-        case LEATHER_LEGGINGS:
-            return true;
+            case DIAMOND_LEGGINGS:
+            case GOLD_LEGGINGS:
+            case IRON_LEGGINGS:
+            case LEATHER_LEGGINGS:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -170,14 +170,14 @@ public class ItemChecks {
      */
     public static boolean isBoots(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_BOOTS:
-        case GOLD_BOOTS:
-        case IRON_BOOTS:
-        case LEATHER_BOOTS:
-            return true;
+            case DIAMOND_BOOTS:
+            case GOLD_BOOTS:
+            case IRON_BOOTS:
+            case LEATHER_BOOTS:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -199,14 +199,14 @@ public class ItemChecks {
      */
     public static boolean isLeatherArmor(ItemStack is) {
         switch (is.getType()) {
-        case LEATHER_BOOTS:
-        case LEATHER_CHESTPLATE:
-        case LEATHER_HELMET:
-        case LEATHER_LEGGINGS:
-            return true;
+            case LEATHER_BOOTS:
+            case LEATHER_CHESTPLATE:
+            case LEATHER_HELMET:
+            case LEATHER_LEGGINGS:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -218,14 +218,14 @@ public class ItemChecks {
      */
     public static boolean isGoldArmor(ItemStack is) {
         switch (is.getType()) {
-        case GOLD_BOOTS:
-        case GOLD_CHESTPLATE:
-        case GOLD_HELMET:
-        case GOLD_LEGGINGS:
-            return true;
+            case GOLD_BOOTS:
+            case GOLD_CHESTPLATE:
+            case GOLD_HELMET:
+            case GOLD_LEGGINGS:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -237,14 +237,14 @@ public class ItemChecks {
      */
     public static boolean isIronArmor(ItemStack is) {
         switch (is.getType()) {
-        case IRON_BOOTS:
-        case IRON_CHESTPLATE:
-        case IRON_HELMET:
-        case IRON_LEGGINGS:
-            return true;
+            case IRON_BOOTS:
+            case IRON_CHESTPLATE:
+            case IRON_HELMET:
+            case IRON_LEGGINGS:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -256,14 +256,14 @@ public class ItemChecks {
      */
     public static boolean isDiamondArmor(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_BOOTS:
-        case DIAMOND_CHESTPLATE:
-        case DIAMOND_HELMET:
-        case DIAMOND_LEGGINGS:
-            return true;
+            case DIAMOND_BOOTS:
+            case DIAMOND_CHESTPLATE:
+            case DIAMOND_HELMET:
+            case DIAMOND_LEGGINGS:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -274,7 +274,7 @@ public class ItemChecks {
      * @return true if the item is a tool, false otherwise
      */
     public static boolean isTool(ItemStack is) {
-        return isStoneTool(is) || isWoodTool(is) || isGoldTool(is) || isIronTool(is) || isDiamondTool(is) || is.getType().equals(Material.BOW);
+        return isStoneTool(is) || isWoodTool(is) || isGoldTool(is) || isIronTool(is) || isDiamondTool(is) || isStringTool(is);
     }
 
     /**
@@ -285,15 +285,15 @@ public class ItemChecks {
      */
     public static boolean isStoneTool(ItemStack is) {
         switch (is.getType()) {
-        case STONE_AXE:
-        case STONE_HOE:
-        case STONE_PICKAXE:
-        case STONE_SPADE:
-        case STONE_SWORD:
-            return true;
+            case STONE_AXE:
+            case STONE_HOE:
+            case STONE_PICKAXE:
+            case STONE_SPADE:
+            case STONE_SWORD:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -305,15 +305,15 @@ public class ItemChecks {
      */
     public static boolean isWoodTool(ItemStack is) {
         switch (is.getType()) {
-        case WOOD_AXE:
-        case WOOD_HOE:
-        case WOOD_PICKAXE:
-        case WOOD_SPADE:
-        case WOOD_SWORD:
-            return true;
+            case WOOD_AXE:
+            case WOOD_HOE:
+            case WOOD_PICKAXE:
+            case WOOD_SPADE:
+            case WOOD_SWORD:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -325,17 +325,36 @@ public class ItemChecks {
      */
     public static boolean isGoldTool(ItemStack is) {
         switch (is.getType()) {
-        case GOLD_AXE:
-        case GOLD_HOE:
-        case GOLD_PICKAXE:
-        case GOLD_SPADE:
-        case GOLD_SWORD:
-            return true;
+            case GOLD_AXE:
+            case GOLD_HOE:
+            case GOLD_PICKAXE:
+            case GOLD_SPADE:
+            case GOLD_SWORD:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
+
+
+    /**
+     * Checks to see if an item is a string tool.
+     *
+     * @param is Item to check
+     * @return true if the item is a string tool, false otherwise
+     */
+    public static boolean isStringTool(ItemStack is) {
+        switch (is.getType()) {
+            case BOW:
+            case FISHING_ROD:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
 
     /**
      * Checks to see if an item is an iron tool.
@@ -345,16 +364,16 @@ public class ItemChecks {
      */
     public static boolean isIronTool(ItemStack is) {
         switch (is.getType()) {
-        case IRON_AXE:
-        case IRON_HOE:
-        case IRON_PICKAXE:
-        case IRON_SPADE:
-        case IRON_SWORD:
-        case SHEARS:
-            return true;
+            case IRON_AXE:
+            case IRON_HOE:
+            case IRON_PICKAXE:
+            case IRON_SPADE:
+            case IRON_SWORD:
+            case SHEARS:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
@@ -366,15 +385,15 @@ public class ItemChecks {
      */
     public static boolean isDiamondTool(ItemStack is) {
         switch (is.getType()) {
-        case DIAMOND_AXE:
-        case DIAMOND_HOE:
-        case DIAMOND_PICKAXE:
-        case DIAMOND_SPADE:
-        case DIAMOND_SWORD:
-            return true;
+            case DIAMOND_AXE:
+            case DIAMOND_HOE:
+            case DIAMOND_PICKAXE:
+            case DIAMOND_SPADE:
+            case DIAMOND_SWORD:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 }

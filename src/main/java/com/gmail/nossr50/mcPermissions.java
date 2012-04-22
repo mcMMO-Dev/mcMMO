@@ -169,8 +169,8 @@ public class mcPermissions {
         return player.hasPermission("mcmmo.ability.repair.toolrepair");
     }
 
-    public boolean bowRepair(Player player) {
-        return player.hasPermission("mcmmo.ability.repair.bowrepair");
+    public boolean stringRepair(Player player) {
+        return player.hasPermission("mcmmo.ability.repair.stringrepair");
     }
 
     /*
