@@ -50,6 +50,7 @@ public class mcLocale {
             return output;
         }
         catch (MissingResourceException e) {
+            e.printStackTrace();
             return '!' + key + '!';
         }
     }
