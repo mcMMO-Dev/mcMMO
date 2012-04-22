@@ -87,7 +87,7 @@ public class LoadProperties extends ConfigLoader{
     public static Boolean anvilmessages;
     public static int rWood, rStone, rIron, rGold, rDiamond, rString, rLeather;
     public static int anvilID;
-    public static int repairStoneLevel, repairIronLevel, repairGoldLevel, repairdiamondlevel, repairBowLevel;
+    public static int repairStoneLevel, repairIronLevel, repairGoldLevel, repairDiamondLevel, repairStringLevel;
 
     /* Taming */
     public static int mtameWolf, mtameOcelot;
@@ -373,11 +373,11 @@ public class LoadProperties extends ConfigLoader{
         woodcuttingrequiresaxe = config.getBoolean("Skills.Woodcutting.Requires_Axe", true);
         repairArmor = config.getBoolean("Skills.Repair.Can_Repair_Armor", true);
         repairTools = config.getBoolean("Skills.Repair.Can_Repair_Tools", true);
-        repairdiamondlevel = config.getInt("Skills.Repair.Diamond.Level_Required", 50);
+        repairDiamondLevel = config.getInt("Skills.Repair.Diamond.Level_Required", 50);
         repairIronLevel = config.getInt("Skills.Repair.Iron.Level_Required", 0);
         repairGoldLevel = config.getInt("Skills.Repair.Gold.Level_Required", 0);
         repairStoneLevel = config.getInt("Skills.Repair.Stone.Level_Required", 0);
-        repairBowLevel = config.getInt("Skills.Repair.String.Level_Required", 0);
+        repairStringLevel = config.getInt("Skills.Repair.String.Level_Required", 0);
 
         tamingxpmodifier = config.getDouble("Experience.Formula.Multiplier.Taming", 1.0);
         miningxpmodifier = config.getDouble("Experience.Formula.Multiplier.Mining", 1.0);

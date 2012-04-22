@@ -274,7 +274,7 @@ public class ItemChecks {
      * @return true if the item is a tool, false otherwise
      */
     public static boolean isTool(ItemStack is) {
-        return isStoneTool(is) || isWoodTool(is) || isGoldTool(is) || isIronTool(is) || isDiamondTool(is) || is.getType().equals(Material.BOW);
+        return isStoneTool(is) || isWoodTool(is) || isGoldTool(is) || isIronTool(is) || isDiamondTool(is) || isStringTool(is);
     }
 
     /**
@@ -316,6 +316,24 @@ public class ItemChecks {
             return false;
         }
     }
+
+    /**
+     * Checks to see if an item is a string tool.
+     *
+     * @param is Item to check
+     * @return true if the item is a string tool, false otherwise
+     */
+    public static boolean isStringTool(ItemStack is) {
+        switch (is.getType()) {
+            case BOW:
+            case FISHING_ROD:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
 
     /**
      * Checks to see if an item is a gold tool.
