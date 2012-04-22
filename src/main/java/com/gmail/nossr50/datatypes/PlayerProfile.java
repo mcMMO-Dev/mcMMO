@@ -555,6 +555,10 @@ public class PlayerProfile {
         save();
     }
 
+    public void setXpBarLocked(boolean locked) {
+        xpbarlocked = locked;
+    }
+
     public boolean getXpBarLocked() {
         return xpbarlocked;
     }

@@ -11,6 +11,7 @@ import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
 //TODO: Any way we can make this work for offline use?
@@ -36,7 +37,12 @@ public class AddxpCommand implements CommandExecutor {
         switch (args.length) {
         case 2:
             if (sender instanceof Player) {
-                if (m.isInt(args[1]) && Skills.isSkill(args[0])) {
+                if (!Skills.isSkill(args[1])) {
+                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                    return true;
+                }
+
+                if (m.isInt(args[1])) {
                     modifiedPlayer = (Player) sender;
                     xp = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
@@ -59,6 +65,9 @@ public class AddxpCommand implements CommandExecutor {
                         Skills.XpCheckSkill(skill, modifiedPlayer);
                     }
                 }
+                else {
+                    sender.sendMessage(usage);
+                }
             }
             else {
                 sender.sendMessage(usage);
@@ -70,7 +79,17 @@ public class AddxpCommand implements CommandExecutor {
             modifiedPlayer = plugin.getServer().getPlayer(args[0]);
             String playerName = modifiedPlayer.getName();
 
-            if (modifiedPlayer != null && m.isInt(args[2]) && Skills.isSkill(args[1])) {
+            if (!Users.getProfile(modifiedPlayer).isLoaded()) {
+                sender.sendMessage(mcLocale.getString("Commands.DoesNotExist"));
+                return true;
+            }
+
+            if (!Skills.isSkill(args[1])) {
+                sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                return true;
+            }
+
+            if (m.isInt(args[2])) {
                 xp = Integer.valueOf(args[2]);
                 skill = Skills.getSkillType(args[1]);
                 String message;

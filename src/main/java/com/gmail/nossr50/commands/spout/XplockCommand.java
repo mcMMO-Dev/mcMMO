@@ -9,54 +9,71 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class XplockCommand implements CommandExecutor {
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!LoadProperties.spoutEnabled || !LoadProperties.xpbar || !LoadProperties.xplockEnable) {
-			sender.sendMessage("This command is not enabled."); //TODO: Needs more locale.
-			return true;
-		}
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        String usage = ChatColor.RED + "Proper usage is /xplock [skill]";
 
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
-			return true;
-		}
+        if (CommandHelper.noConsoleUsage(sender)) {
+            return true;
+        }
 
-		Player player = (Player) sender;
-		PlayerProfile PP = Users.getProfile(player);
+        if (!LoadProperties.spoutEnabled || !LoadProperties.xpbar || !LoadProperties.xplockEnable) {
+            sender.sendMessage(mcLocale.getString("Commands.Disabled"));
+            return true;
+        }
 
-		if (args.length >= 1 && Skills.isSkill(args[0]) && mcPermissions.getInstance().permission(player, "mcmmo.skills." + Skills.getSkillType(args[0]).toString().toLowerCase())) {
-			if (PP.getXpBarLocked()) {
-				PP.setSkillLock(Skills.getSkillType(args[0]));
-				player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] { m.getCapitalized(PP.getSkillLock().toString()) }));
-			} else {
-				PP.setSkillLock(Skills.getSkillType(args[0]));
-				PP.toggleXpBarLocked();
-				player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] { m.getCapitalized(PP.getSkillLock().toString()) }));
-			}
-			SpoutStuff.updateXpBar(player);
-		} else if (args.length < 1) {
-			if (PP.getXpBarLocked()) {
-				PP.toggleXpBarLocked();
-				player.sendMessage(mcLocale.getString("Commands.xplock.unlocked"));
-			} else if (PP.getLastGained() != null) {
-				PP.toggleXpBarLocked();
-				PP.setSkillLock(PP.getLastGained());
-				player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] { m.getCapitalized(PP.getSkillLock().toString()) }));
-			}
-		} else if (args.length >= 1 && !Skills.isSkill(args[0])) {
-			player.sendMessage("Commands.xplock.invalid");
-		} else if (args.length >= 2 && Skills.isSkill(args[0]) && !mcPermissions.getInstance().permission(player, "mcmmo.skills." + Skills.getSkillType(args[0]).toString().toLowerCase())) {
-			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
-			return true;
-		}
+        Player player = (Player) sender;
+        PlayerProfile PP = Users.getProfile(player);
 
-		return true;
-	}
+        switch (args.length) {
+        case 0:
+            if (PP.getXpBarLocked()) {
+                PP.toggleXpBarLocked();
+                player.sendMessage(mcLocale.getString("Commands.xplock.unlocked"));
+                return true;
+            }
+
+            SkillType lastGained = PP.getLastGained();
+
+            if (lastGained != null) {
+                PP.toggleXpBarLocked();
+                PP.setSkillLock(lastGained);
+                player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] { m.getCapitalized(lastGained.toString()) }));
+                return true;
+            }
+
+        case 1:
+            if (Skills.isSkill(args[0])) {
+                if (mcPermissions.getInstance().permission(player, "mcmmo.skills." + args[0].toLowerCase())) {
+                    PP.setXpBarLocked(true);
+                    PP.setSkillLock(Skills.getSkillType(args[0]));
+                    SpoutStuff.updateXpBar(player);
+
+                    player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] { m.getCapitalized(args[0]) }));
+                    return true;
+                }
+                else {
+                    player.sendMessage(mcLocale.getString("mcMMO.NoPermission"));
+                    return true;
+                }
+            }
+            else {
+                player.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                return true;
+            }
+
+        default:
+            player.sendMessage(usage);
+            return true;
+        }
+    }
 }

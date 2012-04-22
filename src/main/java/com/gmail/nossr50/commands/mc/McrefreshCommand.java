@@ -24,7 +24,7 @@ public class McrefreshCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer player;
         PlayerProfile PP;
-        String usage = ChatColor.RED + "Proper usage is /mcrefresh [playername]"; //TODO: Needs more locale
+        String usage = ChatColor.RED + "Proper usage is /mcrefresh [player]"; //TODO: Needs more locale
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcrefresh")) {
             return true;

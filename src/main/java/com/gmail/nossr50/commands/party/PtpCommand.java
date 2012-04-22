@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
@@ -16,72 +16,73 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class PtpCommand implements CommandExecutor {
-	private final mcMMO plugin;
+    private final mcMMO plugin;
 
-	public PtpCommand(mcMMO instance) {
-		this.plugin = instance;
-	}
+    public PtpCommand(mcMMO instance) {
+        this.plugin = instance;
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        String usage = ChatColor.RED + "Proper usage is /ptp <player>"; //TODO: Needs more locale.
 
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
-			return true;
-		}
+        if (CommandHelper.noConsoleUsage(sender)) {
+            return true;
+        }
 
-		Player player = (Player) sender;
-		PlayerProfile PP = Users.getProfile(player);
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.ptp")) {
+            return true;
+        }
 
-		if (!mcPermissions.getInstance().partyTeleport(player)) {
-			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
-			return true;
-		}
-		
-		if(!Party.getInstance().isParty(PP.getParty()))
-		{
-		    player.sendMessage(ChatColor.RED+"You are not in a party!"); //TODO: Needs more locale.
-		    return true;
-		}
-		
-		if(PP.getRecentlyHurt()+(LoadProperties.ptpCommandCooldown*1000) > System.currentTimeMillis())
-		{
-		    player.sendMessage(ChatColor.RED+"You've been hurt in the last " + LoadProperties.ptpCommandCooldown + " seconds and cannnot teleport."); //TODO: Needs more locale.
-		    return true;
-		}
-		
-		if (args.length < 1) {
-			player.sendMessage(ChatColor.RED + "Usage is /ptp <playername>"); //TODO: Needs more locale.
-			return true;
-		}
-		
-		if (plugin.getServer().getPlayer(args[0]) == null) {
-			player.sendMessage("That is not a valid player"); //TODO: Needs more locale.
-		}
+        switch (args.length) {
+        case 1:
+            Player player = (Player) sender;
+            PlayerProfile PP = Users.getProfile(player);
 
-		if (plugin.getServer().getPlayer(args[0]) != null) {
-			Player target = plugin.getServer().getPlayer(args[0]);
-			PlayerProfile PPt = Users.getProfile(target);
-			
-			if (target.isDead()) {
-			    player.sendMessage(ChatColor.RED + "You can't teleport to dead players."); //TODO: Needs more locale.
-			    return true;
-			}
-			    
-			if (PP.getParty().equals(PPt.getParty())) {
-			    McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, PP.getParty());
-			    plugin.getServer().getPluginManager().callEvent(event);
+            if (!Party.getInstance().isInParty(player, PP)) {
+                player.sendMessage(mcLocale.getString("Commands.Party.None"));
+                return true;
+            }
 
-			    if (!event.isCancelled()) {
-    				player.teleport(target);
-    				player.sendMessage(ChatColor.GREEN + "You have teleported to " + target.getName()); //TODO: Needs more locale.
-    				target.sendMessage(ChatColor.GREEN + player.getName() + " has teleported to you."); //TODO: Needs more locale.
-			    }
-			} else {
-			    player.sendMessage(ChatColor.RED + "That player is in a different party than you."); //TODO: Needs more locale.
-			}
-		}
+            if (PP.getRecentlyHurt() + (LoadProperties.ptpCommandCooldown * 1000) > System.currentTimeMillis()) {
+                player.sendMessage(mcLocale.getString("Party.Teleport.Hurt", new Object[] { LoadProperties.ptpCommandCooldown }));
+                return true;
+            }
 
-		return true;
-	}
+            Player target = plugin.getServer().getPlayer(args[0]);
+
+            if (target == null) {
+                player.sendMessage(mcLocale.getString("Party.Teleport.Invalid"));
+                return true;
+            }
+
+            if (target.isDead()) {
+                player.sendMessage(mcLocale.getString("Party.Teleport.Dead"));
+                return true;
+            }
+
+            if (Party.getInstance().inSameParty(player, target)) {
+                McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, PP.getParty());
+                plugin.getServer().getPluginManager().callEvent(event);
+
+                if (event.isCancelled()) {
+                    return true;
+                }
+
+                player.teleport(target);
+                player.sendMessage(mcLocale.getString("Party.Teleport.Player", new Object[] { target.getName() }));
+                target.sendMessage(mcLocale.getString("Party.Teleport.Target", new Object[] { player.getName() }));
+            }
+            else {
+                player.sendMessage(mcLocale.getString("Party.NotInYourParty", new Object[] { target.getName() }));
+                return true;
+            }
+
+            return true;
+
+        default:
+            sender.sendMessage(usage);
+            return true;
+        }
+   }
 }

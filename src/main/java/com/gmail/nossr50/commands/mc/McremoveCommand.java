@@ -27,7 +27,7 @@ public class McremoveCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String playerName;
-        String usage = ChatColor.RED + "Proper usage is /mcremove <playername>"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /mcremove <player>"; //TODO: Needs more locale.
         String success;
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcremove")) {

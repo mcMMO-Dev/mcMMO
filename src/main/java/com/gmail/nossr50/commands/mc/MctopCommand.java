@@ -18,7 +18,7 @@ public class MctopCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = ChatColor.RED + "Proper usage is /mctop [skillname] [page]"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /mctop [skill] [page]"; //TODO: Needs more locale.
         if (!LoadProperties.useMySQL) {
 
             switch (args.length) {
@@ -34,13 +34,18 @@ public class MctopCommand implements CommandExecutor {
                     flatfileDisplay(1, args[0].toUpperCase(), sender);
                 }
                 else {
-                    sender.sendMessage(usage);
+                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
                 }
 
                 return true;
 
             case 2:
-                if (Skills.isSkill(args[0]) && m.isInt(args[1])) {
+                if (!Skills.isSkill(args[0])) {
+                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                    return true;
+                }
+
+                if (m.isInt(args[1])) {
                     flatfileDisplay(Integer.valueOf(args[1]), args[0].toUpperCase(), sender);
                 }
                 else {
@@ -70,18 +75,25 @@ public class MctopCommand implements CommandExecutor {
                     sqlDisplay(1, args[0].toLowerCase(), sender);
                 }
                 else {
-                    sender.sendMessage(usage);
+                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
                 }
 
                 return true;
 
             case 2:
-                if (Skills.isSkill(args[0]) && m.isInt(args[1])) {
+                if (!Skills.isSkill(args[0])) {
+                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                    return true;
+                }
+
+                if (m.isInt(args[1])) {
                     sqlDisplay(Integer.valueOf(args[1]), args[0].toLowerCase(), sender);
                 }
                 else {
                     sender.sendMessage(usage);
                 }
+
+                return true;
 
             default:
                 sender.sendMessage(usage);

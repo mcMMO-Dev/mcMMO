@@ -78,6 +78,11 @@ public class PartyCommand implements CommandExecutor {
             return true;
 
         case 1:
+            if (!partyInstance.isParty(args[0])) {
+                sender.sendMessage(mcLocale.getString("Party.InvalidName"));
+                return true;
+            }
+
             if (args[0].equalsIgnoreCase("q")) {
                 if (inParty) {
                     McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, partyName, null, EventReason.LEFT_PARTY);
@@ -166,6 +171,11 @@ public class PartyCommand implements CommandExecutor {
             return true;
 
         case 2:
+            if (!partyInstance.isParty(args[0])) {
+                sender.sendMessage(mcLocale.getString("Party.InvalidName"));
+                return true;
+            }
+
             if (PP.inParty()) {
                 if (args[0].equalsIgnoreCase("password")) {
                     if (isLeader) {
@@ -185,7 +195,7 @@ public class PartyCommand implements CommandExecutor {
                         Player target = plugin.getServer().getPlayer(args[1]);
 
                         if (target == null) {
-                            player.sendMessage(mcLocale.getString("Party.CouldNotKick", new Object[] { args[1] }));
+                            player.sendMessage(mcLocale.getString("Party.Player.Invalid"));
                             return true;
                         }
 
@@ -218,7 +228,7 @@ public class PartyCommand implements CommandExecutor {
                         Player target = plugin.getServer().getPlayer(args[1]);
 
                         if (target == null) {
-                            player.sendMessage(mcLocale.getString("Party.CouldNotSetOwner"));
+                            player.sendMessage(mcLocale.getString("Party.Player.Invalid"));
                             return true;
                         }
 

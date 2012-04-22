@@ -30,7 +30,7 @@ public class AddlevelsCommand implements CommandExecutor{
         int levels;
         SkillType skill;
         String skillName;
-        String usage = ChatColor.RED + "Proper usage is /addlevels [playername] <skill> <level>"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /addlevels [player] <skill> <level>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
             return true;
@@ -39,7 +39,12 @@ public class AddlevelsCommand implements CommandExecutor{
         switch (args.length) {
         case 2:
             if (sender instanceof Player) {
-                if (m.isInt(args[1]) && Skills.isSkill(args[0])) {
+                if (!Skills.isSkill(args[0])) {
+                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                    return true;
+                }
+
+                if (m.isInt(args[1])) {
                     modifiedPlayer = (Player) sender;
                     levels = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
@@ -72,7 +77,12 @@ public class AddlevelsCommand implements CommandExecutor{
                 return true;
             }
 
-            if (m.isInt(args[2]) && Skills.isSkill(args[1])) {
+            if (!Skills.isSkill(args[1])) {
+                sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                return true;
+            }
+
+            if (m.isInt(args[2])) {
                 levels = Integer.valueOf(args[2]);
                 skill = Skills.getSkillType(args[1]);
                 String message;

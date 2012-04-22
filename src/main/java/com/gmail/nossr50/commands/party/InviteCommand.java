@@ -13,6 +13,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
+//TODO: Make this work from console.
 public class InviteCommand implements CommandExecutor {
     private final mcMMO plugin;
 
@@ -22,7 +23,7 @@ public class InviteCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = ChatColor.RED + "Proper usage is /invite <playername>"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /invite <player>"; //TODO: Needs more locale.
 
         if (CommandHelper.noConsoleUsage(sender)) {
             return true;
@@ -52,13 +53,19 @@ public class InviteCommand implements CommandExecutor {
                     PPt.modifyInvite(PP.getParty());
 
                     player.sendMessage(mcLocale.getString("Commands.Invite.Success"));
+
                     target.sendMessage(mcLocale.getString("Commands.Party.Invite.0", new Object[] { PPt.getInvite(), player.getName() }));
                     target.sendMessage(mcLocale.getString("Commands.Party.Invite.1"));
+                    return true;
                 }
                 else {
                     player.sendMessage(mcLocale.getString("Party.Locked"));
                     return true;
                 }
+            }
+            else {
+                player.sendMessage(mcLocale.getString("Party.Player.Invalid"));
+                return true;
             }
 
         default:
