@@ -8,59 +8,62 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
+import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
 public class InviteCommand implements CommandExecutor {
-	private final mcMMO plugin;
+    private final mcMMO plugin;
 
-	public InviteCommand(mcMMO instance) {
-		this.plugin = instance;
-	}
+    public InviteCommand(mcMMO instance) {
+        this.plugin = instance;
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        String usage = ChatColor.RED + "Proper usage is /invite <playername>"; //TODO: Needs more locale.
 
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
-			return true;
-		}
+        if (CommandHelper.noConsoleUsage(sender)) {
+            return true;
+        }
 
-		Player player = (Player) sender;
-		PlayerProfile PP = Users.getProfile(player);
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party")) {
+            return true;
+        }
 
-		if (!mcPermissions.getInstance().party(player)) {
-			player.sendMessage(ChatColor.YELLOW + "[mcMMO] " + ChatColor.DARK_RED + mcLocale.getString("mcPlayerListener.NoPermission"));
-			return true;
-		}
+        switch (args.length) {
+        case 1:
+            Player player = (Player) sender;
+            PlayerProfile PP = Users.getProfile(player);
 
-		Party Pinstance = Party.getInstance();
+            Party partyInstance = Party.getInstance();
 
-		if (!PP.inParty()) {
-			player.sendMessage(mcLocale.getString("mcPlayerListener.NotInParty"));
-			return true;
-		}
-		if (args.length < 1) {
-			player.sendMessage(ChatColor.RED + "Usage is /invite <playername>"); //TODO: Needs more locale.
-			return true;
-		}
-		if (PP.inParty() && args.length >= 1 && (plugin.getServer().getPlayer(args[0]) != null)) {
-			if (Pinstance.canInvite(player, PP)) {
-				Player target = plugin.getServer().getPlayer(args[0]);
-				PlayerProfile PPt = Users.getProfile(target);
-				PPt.modifyInvite(PP.getParty());
+            if (!PP.inParty()) {
+                player.sendMessage(mcLocale.getString("Commands.Party.None"));
+                return true;
+            }
 
-				player.sendMessage(mcLocale.getString("mcPlayerListener.InviteSuccess"));
-				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite1", new Object[] { PPt.getInvite(), player.getName() }));
-				target.sendMessage(mcLocale.getString("mcPlayerListener.ReceivedInvite2", new Object[] { "accept" }));
-			} else {
-				player.sendMessage(mcLocale.getString("Party.Locked"));
-				return true;
-			}
-		}
+            Player target = plugin.getServer().getPlayer(args[0]);
 
-		return true;
-	}
+            if (target != null) {
+                if (partyInstance.canInvite(player, PP)) {
+                    PlayerProfile PPt = Users.getProfile(target);
+                    PPt.modifyInvite(PP.getParty());
+
+                    player.sendMessage(mcLocale.getString("Commands.Invite.Success"));
+                    target.sendMessage(mcLocale.getString("Commands.Party.Invite.0", new Object[] { PPt.getInvite(), player.getName() }));
+                    target.sendMessage(mcLocale.getString("Commands.Party.Invite.1"));
+                }
+                else {
+                    player.sendMessage(mcLocale.getString("Party.Locked"));
+                    return true;
+                }
+            }
+
+        default:
+            sender.sendMessage(usage);
+            return true;
+        }
+    }
 }

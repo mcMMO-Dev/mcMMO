@@ -90,6 +90,14 @@ public class PlayerProfile {
         lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
     }
 
+    public String getPlayerName() {
+        return this.playerName;
+    }
+
+    public Player getPlayer() {
+        return mcMMO.p.getServer().getPlayer(playerName);
+    }
+
     public boolean loadMySQL() {
         int id = 0;
         id = mcMMO.database.getInt("SELECT id FROM "+LoadProperties.MySQLtablePrefix+"users WHERE user = '" + playerName + "'");
@@ -1168,7 +1176,7 @@ public class PlayerProfile {
         Player player = mcMMO.p.getServer().getPlayer(playerName);
         double bonusModifier = 0.0;
 
-        for (Player x : Party.getInstance().getPartyMembers(player)) {
+        for (Player x : Party.getInstance().getOnlineMembers(player)) {
             if (x.isOnline() && !x.getName().equals(player.getName()) && Party.getInstance().isPartyLeader(x.getName(), this.getParty())) {
                 if (m.isNear(player.getLocation(), x.getLocation(), 25.0)) {
                     PlayerProfile PartyLeader = Users.getProfile(x);

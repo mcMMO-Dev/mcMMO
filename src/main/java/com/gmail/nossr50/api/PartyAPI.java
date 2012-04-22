@@ -89,15 +89,15 @@ public class PartyAPI {
     }
 
     /**
-     * Get a list of all players in this player's party.
+     * Get a list of all online players in this player's party.
      * </br>
      * This function is designed for API usage.
      *
      * @param player The player to check
-     * @return all the players in the player's party
+     * @return all online players in the player's party
      */
-    public ArrayList<Player> getPartyMembers(Player player) {
-        return Party.getInstance().getPartyMembers(player);
+    public ArrayList<Player> getOnlineMembers(Player player) {
+        return Party.getInstance().getOnlineMembers(player);
     }
 
     /**
@@ -121,5 +121,41 @@ public class PartyAPI {
      */
     public void removeFromParty(Player player) {
         Party.getInstance().removeFromParty(player, Users.getProfile(player));
+    }
+
+    /**
+     * Get the leader of a party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param partyName The party name
+     * @return the leader of the party
+     */
+    public Player getPartyLeader(String partyName) {
+        return Party.getInstance().getPartyLeader(partyName);
+    }
+
+    /**
+     * Set the leader of a party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param partyName The name of the party to set the leader of
+     * @param player The player to set as leader
+     */
+    public void setPartyLeader(String partyName, String player) {
+        Party.getInstance().setPartyLeader(partyName, player);
+    }
+
+    /**
+     * Get a list of all players in this player's party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to check
+     * @return all the players in the player's party
+     */
+    public ArrayList<Player> getAllMembers(Player player) {
+        return Party.getInstance().getAllMembers(player);
     }
 }

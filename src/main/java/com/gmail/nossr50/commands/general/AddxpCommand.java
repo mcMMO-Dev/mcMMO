@@ -27,7 +27,7 @@ public class AddxpCommand implements CommandExecutor {
         int xp;
         SkillType skill;
         String skillName;
-        String usage = ChatColor.RED + "Proper usage is /addxp [player] <skill> <xp>"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /addxp [playername] <skill> <xp>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
             return true;

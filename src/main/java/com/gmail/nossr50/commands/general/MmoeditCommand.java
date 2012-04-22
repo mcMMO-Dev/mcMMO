@@ -30,7 +30,7 @@ public class MmoeditCommand implements CommandExecutor {
         int newValue;
         SkillType skill;
         String skillName;
-        String usage = ChatColor.RED + "Proper usage is /mmoedit [player] <skill> <level>"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /mmoedit [playername] <skill> <level>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
             return true;

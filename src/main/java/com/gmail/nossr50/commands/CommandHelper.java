@@ -24,7 +24,7 @@ public class CommandHelper {
             Player player = (Player) sender;
 
             if (player != null && !mcPermissions.getInstance().permission(player, permission)) {
-                player.sendMessage(mcLocale.getString("mcPlayerListener.NoPermission"));
+                player.sendMessage(mcLocale.getString("mcMMO.NoPermission"));
                 return true;
             }
         }
@@ -40,7 +40,7 @@ public class CommandHelper {
 
         return false;
     }
-    
+
     /**
      * Print out details on Gathering skills. Only for online players.
      *
@@ -52,26 +52,26 @@ public class CommandHelper {
         if (Skills.hasGatheringSkills(inspect)) {
             PlayerProfile PP = Users.getProfile(inspect);
 
-            display.sendMessage(mcLocale.getString("Stats.GatheringHeader"));
+            display.sendMessage(mcLocale.getString("Stats.Header.Gathering"));
 
             if (mcPermissions.getInstance().excavation(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.ExcavationSkill"), PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Excavation.Listener"), PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION) }));
             }
 
             if (mcPermissions.getInstance().fishing(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.FishingSkill"), PP.getSkillLevel(SkillType.FISHING), PP.getSkillXpLevel(SkillType.FISHING), PP.getXpToLevel(SkillType.FISHING) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Fishing.Listener"), PP.getSkillLevel(SkillType.FISHING), PP.getSkillXpLevel(SkillType.FISHING), PP.getXpToLevel(SkillType.FISHING) }));
             }
 
             if (mcPermissions.getInstance().herbalism(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.HerbalismSkill"), PP.getSkillLevel(SkillType.HERBALISM), PP.getSkillXpLevel(SkillType.HERBALISM), PP.getXpToLevel(SkillType.HERBALISM) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Herbalism.Listener"), PP.getSkillLevel(SkillType.HERBALISM), PP.getSkillXpLevel(SkillType.HERBALISM), PP.getXpToLevel(SkillType.HERBALISM) }));
             }
 
             if (mcPermissions.getInstance().mining(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.MiningSkill"), PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Mining.Listener"), PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
             }
 
             if (mcPermissions.getInstance().woodcutting(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.WoodcuttingSkill"), PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Woodcutting.Listener"), PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING) }));
             }
         }
     }
@@ -91,26 +91,26 @@ public class CommandHelper {
         if (Skills.hasCombatSkills(inspect)) {
             PlayerProfile PP = Users.getProfile(inspect);
 
-            display.sendMessage(mcLocale.getString("Stats.CombatHeader"));
+            display.sendMessage(mcLocale.getString("Stats.Header.Combat"));
 
             if (mcPermissions.getInstance().axes(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.AxesSkill"), PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Axes.Listener"), PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES) }));
             }
 
             if (mcPermissions.getInstance().archery(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.ArcherySkill"), PP.getSkillLevel(SkillType.ARCHERY), PP.getSkillXpLevel(SkillType.ARCHERY), PP.getXpToLevel(SkillType.ARCHERY) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Archery.Listener"), PP.getSkillLevel(SkillType.ARCHERY), PP.getSkillXpLevel(SkillType.ARCHERY), PP.getXpToLevel(SkillType.ARCHERY) }));
             }
 
             if (mcPermissions.getInstance().swords(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.SwordsSkill"), PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Swords.Listener"), PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS) }));
             }
 
             if (mcPermissions.getInstance().taming(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.TamingSkill"), PP.getSkillLevel(SkillType.TAMING), PP.getSkillXpLevel(SkillType.TAMING), PP.getXpToLevel(SkillType.TAMING) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Taming.Listener"), PP.getSkillLevel(SkillType.TAMING), PP.getSkillXpLevel(SkillType.TAMING), PP.getXpToLevel(SkillType.TAMING) }));
             }
 
             if (mcPermissions.getInstance().unarmed(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.UnarmedSkill"), PP.getSkillLevel(SkillType.UNARMED), PP.getSkillXpLevel(SkillType.UNARMED), PP.getXpToLevel(SkillType.UNARMED) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Unarmed.Listener"), PP.getSkillLevel(SkillType.UNARMED), PP.getSkillXpLevel(SkillType.UNARMED), PP.getXpToLevel(SkillType.UNARMED) }));
             }
         }
     }
@@ -129,14 +129,14 @@ public class CommandHelper {
     public static void printMiscSkills(Player inspect, CommandSender display) {
         if (Skills.hasMiscSkills(inspect)) {
             PlayerProfile PP = Users.getProfile(inspect);
-            display.sendMessage(mcLocale.getString("Stats.MiscHeader"));
+            display.sendMessage(mcLocale.getString("Stats.Header.Misc"));
 
             if (mcPermissions.getInstance().acrobatics(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.AcrobaticsSkill"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Acrobatics.Listener"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS) }));
             }
 
             if (mcPermissions.getInstance().repair(inspect)) {
-                display.sendMessage(mcLocale.getString("m.SkillStats", new Object[] { mcLocale.getString("mcPlayerListener.RepairSkill"), PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR) }));
+                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Repair.Listener"), PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR) }));
             }
         }
     }

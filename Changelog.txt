@@ -33,6 +33,7 @@ Version 1.3.06-dev
  ! Changed /mcrefresh to work from console
  ! Changed /mcrefresh to work for offline players
  ! Changed UpdateXPBar function to hopefully avoid errors
+ ! Changed /party to show offline party members
 
 Version 1.3.05
  + Added Skill Shot to Archery which increases damage dealt by 10% every 50 skill levels (caps at 200%)

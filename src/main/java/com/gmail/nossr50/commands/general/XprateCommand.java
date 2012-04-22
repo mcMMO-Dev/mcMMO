@@ -22,9 +22,9 @@ public class XprateCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage1 = mcLocale.getString("Commands.xprate.proper");
-        String usage2 = mcLocale.getString("Commands.xprate.proper2");
-        String usage3 = mcLocale.getString("Commands.xprate.proper3");
+        String usage1 = mcLocale.getString("Commands.xprate.proper.0");
+        String usage2 = mcLocale.getString("Commands.xprate.proper.1");
+        String usage3 = mcLocale.getString("Commands.xprate.proper.2");
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.admin")) {
             return true;
@@ -69,8 +69,8 @@ public class XprateCommand implements CommandExecutor {
 
                 if (xpevent) {
                     for (Player x : plugin.getServer().getOnlinePlayers()) {
-                        x.sendMessage(mcLocale.getString("Commands.xprate.started"));
-                        x.sendMessage(mcLocale.getString("Commands.xprate.started2", new Object[] {LoadProperties.xpGainMultiplier}));
+                        x.sendMessage(mcLocale.getString("Commands.xprate.started.0"));
+                        x.sendMessage(mcLocale.getString("Commands.xprate.started.1", new Object[] {LoadProperties.xpGainMultiplier}));
                     }
                 }
                 else {

@@ -16,10 +16,7 @@ public class McmmoCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String description = mcLocale.getString("mcMMO.Description");
         String[] mcSplit = description.split(",");
-
-        for (String x : mcSplit) {
-            sender.sendMessage(x);
-        }
+        sender.sendMessage(mcSplit);
 
         if (LoadProperties.donateMessage) {
             if (LoadProperties.spoutEnabled && sender instanceof SpoutPlayer) {

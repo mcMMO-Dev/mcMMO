@@ -25,7 +25,7 @@ public class InspectCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer target;
         PlayerProfile PP;
-        String usage = "Proper usage is /inspect <player>"; //TODO: Needs more locale.
+        String usage = "Proper usage is /inspect <playername>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.inspect")) {
             return true;

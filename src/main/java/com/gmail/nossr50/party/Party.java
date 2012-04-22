@@ -90,13 +90,31 @@ public class Party {
     private void informPartyMembers(Player player) {
         String playerName = player.getName();
 
+        if (player != null) {
+            for (Player p : getOnlineMembers(player)) {
+                p.sendMessage(mcLocale.getString("Party.InformedOnJoin", new Object[] {playerName}));
+            }
+        }
+    }
+
+    /**
+     * Get a list of all online players in this player's party.
+     *
+     * @param player The player to check
+     * @return all online players in the player's party
+     */
+    public ArrayList<Player> getOnlineMembers(Player player) {
+        ArrayList<Player> players = new ArrayList<Player>();
+
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             if (player != null && p != null) {
-                if (inSameParty(player, p) && !p.getName().equals(playerName)) {
-                    p.sendMessage(mcLocale.getString("Party.InformedOnJoin", new Object[] {playerName}));
+                if (inSameParty(player, p) && !p.getName().equals(player.getName())) {
+                    players.add(p);
                 }
             }
         }
+
+        return players;
     }
 
     /**
@@ -105,16 +123,19 @@ public class Party {
      * @param player The player to check
      * @return all the players in the player's party
      */
-    public ArrayList<Player> getPartyMembers(Player player) {
+    public ArrayList<Player> getAllMembers(Player player) {
         ArrayList<Player> players = new ArrayList<Player>();
+        HashMap<String, PlayerProfile> profiles = Users.getProfiles();
 
-        for (Player p : plugin.getServer().getOnlinePlayers()) {
-            if (p.isOnline() && player != null && p != null) {
-                if (inSameParty(player, p) && !p.getName().equals(player.getName())) {
+        if (player != null) {
+            for (String name : profiles.keySet()) {
+                Player p = profiles.get(name).getPlayer();
+                if (inSameParty(p, player)) {
                     players.add(p);
                 }
             }
         }
+
         return players;
     }
 
@@ -126,11 +147,9 @@ public class Party {
     private void informPartyMembersOwnerChange(String newOwnerName) {
         Player newOwner = plugin.getServer().getPlayer(newOwnerName);
 
-        for (Player p : plugin.getServer().getOnlinePlayers()){
-            if (newOwner != null && p != null) {
-                if (inSameParty(newOwner, p)) {
-                    p.sendMessage(newOwnerName + " is the new party owner."); //TODO: Needs more locale
-                }
+        if (newOwner != null) {
+            for (Player p : getOnlineMembers(newOwner)) {
+                p.sendMessage(newOwnerName + " is the new party owner."); //TODO: Needs more locale
             }
         }
     }
@@ -143,11 +162,9 @@ public class Party {
     private void informPartyMembersQuit(Player player) {
         String playerName = player.getName();
 
-        for (Player p : plugin.getServer().getOnlinePlayers()){
-            if (player != null && p != null){
-                if (inSameParty(player, p) && !p.getName().equals(playerName)) {
-                    p.sendMessage(mcLocale.getString("Party.InformedOnQuit", new Object[] {playerName}));
-                }
+        if (player != null) {
+            for (Player p : getOnlineMembers(player)) {
+                p.sendMessage(mcLocale.getString("Party.InformedOnQuit", new Object[] {playerName}));
             }
         }
     }
@@ -243,10 +260,10 @@ public class Party {
         informPartyMembers(player);
 
         if (!invite) {
-            player.sendMessage(mcLocale.getString("mcPlayerListener.JoinedParty", new Object[]{ newParty }));
+            player.sendMessage(mcLocale.getString("Commands.Party.Join", new Object[]{ newParty }));
         }
         else {
-            player.sendMessage(mcLocale.getString("mcPlayerListener.InviteAccepted", new Object[]{ PP.getParty() }));
+            player.sendMessage(mcLocale.getString("Commands.Invite.Accepted", new Object[]{ PP.getParty() }));
         }
     }
 
@@ -306,6 +323,25 @@ public class Party {
 
         partyPasswords.put(partyName, password);
         savePartyFile(partyPasswordsFile, partyPasswords);
+    }
+
+    /**
+     * Get the leader of a party.
+     *
+     * @param partyName The party name
+     * @return the leader of the party
+     */
+    public Player getPartyLeader(String partyName) {
+        Player leader = null;
+
+        for (String name : partyPlayers.get(partyName).keySet()) {
+            if (partyPlayers.get(partyName).get(name)) {
+                leader = plugin.getServer().getPlayer(name);
+                break;
+            }
+        }
+
+        return leader;
     }
 
     /**
