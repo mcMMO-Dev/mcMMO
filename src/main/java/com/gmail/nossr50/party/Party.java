@@ -1,10 +1,12 @@
 package com.gmail.nossr50.party;
 
+import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -73,18 +75,12 @@ public class Party {
      * @return the number of players in this player's party
      */
     public int partyCount(Player player) {
-        PlayerProfile PP = Users.getProfile(player);
-        int partyMembers = 0;
-
-        for (Player p : plugin.getServer().getOnlinePlayers()) {
-            if (player != null && p != null) { //Is this even possible?
-                if (PP.getParty().equals(Users.getProfile(p).getParty())) {
-                    partyMembers++;
-                }
-            }
+        if (player != null) {
+            return getAllMembers(player).size();
         }
-
-        return partyMembers;
+        else {
+            return 0;
+        }
     }
 
     private void informPartyMembers(Player player) {
@@ -92,7 +88,9 @@ public class Party {
 
         if (player != null) {
             for (Player p : getOnlineMembers(player)) {
-                p.sendMessage(mcLocale.getString("Party.InformedOnJoin", new Object[] {playerName}));
+                if (p.getName() != playerName) {
+                    p.sendMessage(mcLocale.getString("Party.InformedOnJoin", new Object[] {playerName}));
+                }
             }
         }
     }
@@ -106,9 +104,31 @@ public class Party {
     public ArrayList<Player> getOnlineMembers(Player player) {
         ArrayList<Player> players = new ArrayList<Player>();
 
+        if (player != null) {
+            for (Player p : plugin.getServer().getOnlinePlayers()) {
+                if (inSameParty(player, p)) {
+                    players.add(p);
+                }
+            }
+        }
+
+        return players;
+    }
+
+    /**
+     * Get a list of all online players in this party.
+     *
+     * @param partyName The party to check
+     * @return all online players in this party
+     */
+    public ArrayList<Player> getOnlineMembers(String partyName) {
+        ArrayList<Player> players = new ArrayList<Player>();
+
         for (Player p : plugin.getServer().getOnlinePlayers()) {
-            if (player != null && p != null) {
-                if (inSameParty(player, p) && !p.getName().equals(player.getName())) {
+            PlayerProfile PP = Users.getProfile(p);
+
+            if (PP.inParty()) {
+                if (PP.getParty().equalsIgnoreCase(partyName)) {
                     players.add(p);
                 }
             }
@@ -139,6 +159,42 @@ public class Party {
         return players;
     }
 
+
+    /**
+     * Get a list of all current party names.
+     *
+     * @return the list of parties.
+     */
+    public ArrayList<String> getParties() {
+        String location = mcMMO.usersFile;
+        ArrayList<String> parties = new ArrayList<String>();
+
+        try {
+            FileReader file = new FileReader(location);
+            BufferedReader in = new BufferedReader(file);
+            String line = "";
+
+            while ((line = in.readLine()) != null) {
+                String[] character = line.split(":");
+                String theparty = null;
+
+                //Party
+                if (character.length > 3) {
+                    theparty = character[3];
+                }
+
+                if (!parties.contains(theparty)) {
+                    parties.add(theparty);
+                }
+            }
+            in.close();
+        }
+        catch (Exception e) {
+            mcMMO.p.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+        }
+        return parties;
+    }
+
     /**
      * Notify party members when the party owner changes.
      *
@@ -149,7 +205,9 @@ public class Party {
 
         if (newOwner != null) {
             for (Player p : getOnlineMembers(newOwner)) {
-                p.sendMessage(newOwnerName + " is the new party owner."); //TODO: Needs more locale
+                if (p.getName() != newOwnerName) {
+                    p.sendMessage(newOwnerName + " is the new party owner."); //TODO: Needs more locale
+                }
             }
         }
     }
@@ -164,7 +222,9 @@ public class Party {
 
         if (player != null) {
             for (Player p : getOnlineMembers(player)) {
-                p.sendMessage(mcLocale.getString("Party.InformedOnQuit", new Object[] {playerName}));
+                if (p.getName() != playerName) {
+                    p.sendMessage(mcLocale.getString("Party.InformedOnQuit", new Object[] {playerName}));
+                }
             }
         }
     }

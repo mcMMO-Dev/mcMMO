@@ -316,10 +316,8 @@ public class mcPlayerListener implements Listener {
 
                 event.setMessage(chatEvent.getMessage());
 
-                for (Player x : plugin.getServer().getOnlinePlayers()) {
-                    if (Party.getInstance().inSameParty(player, x)) {
-                        intendedRecipients.add(x);
-                    }
+                for (Player x : Party.getInstance().getOnlineMembers(player)) {
+                    intendedRecipients.add(x);
                 }
 
                 event.setFormat(color + "(" + ChatColor.WHITE + "%1$s" + color + ") %2$s");

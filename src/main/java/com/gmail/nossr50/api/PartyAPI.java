@@ -1,13 +1,10 @@
 package com.gmail.nossr50.api;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.Party;
 
 public class PartyAPI {
@@ -57,47 +54,7 @@ public class PartyAPI {
      * @return the list of parties.
      */
     public ArrayList<String> getParties() {
-        String location = mcMMO.usersFile;
-        ArrayList<String> parties = new ArrayList<String>();
-
-        try {
-
-            //Open the users file
-            FileReader file = new FileReader(location);
-            BufferedReader in = new BufferedReader(file);
-            String line = "";
-
-            while((line = in.readLine()) != null) {
-                String[] character = line.split(":");
-                String theparty = null;
-
-                //Party
-                if (character.length > 3) {
-                    theparty = character[3];
-                }
-
-                if (!parties.contains(theparty)) {
-                    parties.add(theparty);
-                }
-            }
-            in.close();
-        }
-        catch (Exception e) {
-            mcMMO.p.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
-        }
-        return parties;
-    }
-
-    /**
-     * Get a list of all online players in this player's party.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player The player to check
-     * @return all online players in the player's party
-     */
-    public ArrayList<Player> getOnlineMembers(Player player) {
-        return Party.getInstance().getOnlineMembers(player);
+        return Party.getInstance().getParties();
     }
 
     /**
@@ -157,5 +114,29 @@ public class PartyAPI {
      */
     public ArrayList<Player> getAllMembers(Player player) {
         return Party.getInstance().getAllMembers(player);
+    }
+
+    /**
+     * Get a list of all online players in this party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param partyName The party to check
+     * @return all online players in this party
+     */
+    public ArrayList<Player> getOnlineMembers(String partyName) {
+        return Party.getInstance().getOnlineMembers(partyName);
+    }
+
+    /**
+     * Get a list of all online players in this player's party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to check
+     * @return all online players in the player's party
+     */
+    public ArrayList<Player> getOnlineMembers(Player player) {
+        return Party.getInstance().getOnlineMembers(player);
     }
 }

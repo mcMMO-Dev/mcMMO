@@ -1173,18 +1173,20 @@ public class PlayerProfile {
      * @return the party bonus multiplier
      */
     private double partyModifier(SkillType skillType) {
-        Player player = mcMMO.p.getServer().getPlayer(playerName);
+        Player player = getPlayer();
         double bonusModifier = 0.0;
 
         for (Player x : Party.getInstance().getOnlineMembers(player)) {
-            if (x.isOnline() && !x.getName().equals(player.getName()) && Party.getInstance().isPartyLeader(x.getName(), this.getParty())) {
+            String memberName = x.getName();
+
+            if (!memberName.equals(playerName) && Party.getInstance().isPartyLeader(memberName, getParty())) {
                 if (m.isNear(player.getLocation(), x.getLocation(), 25.0)) {
                     PlayerProfile PartyLeader = Users.getProfile(x);
+                    int leaderSkill = PartyLeader.getSkillLevel(skillType);
+                    int playerSkill = getSkillLevel(skillType);
 
-                    if (PartyLeader.getSkillLevel(skillType) >= this.getSkillLevel(skillType)) {
-
-                        int leaderLevel = PartyLeader.getSkillLevel(skillType);
-                        int difference = leaderLevel - this.getSkillLevel(skillType);
+                    if (leaderSkill >= playerSkill) {
+                        int difference = leaderSkill - playerSkill;
                         bonusModifier = (difference * 0.75) / 100.0;
                     }
                 }

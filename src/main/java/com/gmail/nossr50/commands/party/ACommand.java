@@ -24,7 +24,7 @@ public class ACommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PlayerProfile PP;
-        String usage = ChatColor.RED + "Proper usage is /a [message]"; //TODO: Needs more locale.
+        String usage = ChatColor.RED + "Proper usage is /a <message>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.chat.adminchat")) {
             return true;
@@ -78,7 +78,6 @@ public class ACommand implements CommandExecutor {
                 }
 
                 message = chatEvent.getMessage();
-
                 String prefix = ChatColor.AQUA + "{" + ChatColor.WHITE + "*Console*" + ChatColor.AQUA + "} ";
 
                 plugin.getLogger().info("[A]<*Console*> " + message);
