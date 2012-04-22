@@ -48,7 +48,7 @@ public class Repair {
              * REPAIR ARMOR
              */
             if (ItemChecks.isArmor(is) && LoadProperties.repairArmor && mcPermissions.getInstance().armorRepair(player)) {
-                if (ItemChecks.isDiamondArmor(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairdiamondlevel && mcPermissions.getInstance().diamondRepair(player)) {
+                if (ItemChecks.isDiamondArmor(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairDiamondLevel && mcPermissions.getInstance().diamondRepair(player)) {
                     repairItem(player, is, new ItemStack(LoadProperties.rDiamond));
                     xpHandler(player, PP, is, durabilityBefore, 6, true);
                 }
@@ -85,7 +85,7 @@ public class Repair {
                     repairItem(player, is, new ItemStack(LoadProperties.rIron));
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
-                else if (ItemChecks.isDiamondTool(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairdiamondlevel && mcPermissions.getInstance().diamondRepair(player)) {
+                else if (ItemChecks.isDiamondTool(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairDiamondLevel && mcPermissions.getInstance().diamondRepair(player)) {
                     repairItem(player, is, new ItemStack(LoadProperties.rDiamond));
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
@@ -93,7 +93,7 @@ public class Repair {
                     repairItem(player, is, new ItemStack(LoadProperties.rGold));
                     xpHandler(player, PP, is, durabilityBefore, 8, true);
                 }
-                else if (is.getType().equals(Material.BOW) && inventory.contains(LoadProperties.rString) && skillLevel >= LoadProperties.repairBowLevel && mcPermissions.getInstance().bowRepair(player)){
+                else if (ItemChecks.isStringTool(is) && inventory.contains(LoadProperties.rString) && skillLevel >= LoadProperties.repairStringLevel && mcPermissions.getInstance().stringRepair(player)){
                     repairItem(player, is, new ItemStack(LoadProperties.rString));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
@@ -321,7 +321,7 @@ public class Repair {
         else if (ItemChecks.isHoe(is) || ItemChecks.isSword(is) || is.getType().equals(Material.SHEARS)) {
             ramt = maxDurability / 2;
         }
-        else if (ItemChecks.isAxe(is) || ItemChecks.isMiningPick(is) || is.getType().equals(Material.BOW)) {
+        else if (ItemChecks.isAxe(is) || ItemChecks.isMiningPick(is) || ItemChecks.isStringTool(is)) {
             ramt = maxDurability / 3;
         }
         else if (ItemChecks.isBoots(is)) {
@@ -354,7 +354,7 @@ public class Repair {
         }
         else {
             if (ItemChecks.isDiamondTool(is) || ItemChecks.isDiamondArmor(is)) {
-                if (skillLevel < LoadProperties.repairdiamondlevel) {
+                if (skillLevel < LoadProperties.repairDiamondLevel) {
                     player.sendMessage(mcLocale.getString("Skills.AdeptDiamond"));
                 }
                 else {
@@ -391,7 +391,7 @@ public class Repair {
             else if (ItemChecks.isLeatherArmor(is)) {
                 player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(LoadProperties.rLeather));
             }
-            else if (is.getType().equals(Material.BOW)) {
+            else if (ItemChecks.isStringTool(is)) {
                 player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(LoadProperties.rString));
             }
         }
