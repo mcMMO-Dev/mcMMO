@@ -35,7 +35,7 @@ public class PlayerProfile {
     private boolean loaded = false;
     private boolean partyhud = true, spoutcraft = false, xpbarlocked = false;
     private boolean placedAnvil = false;
-    private boolean partyChatMode = false, partyChatOnly = false, adminChatMode = false;
+    private boolean partyChatMode = false, adminChatMode = false;
     private boolean godMode = false;
     private boolean greenTerraMode, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, skullSplitterMode, berserkMode;
     private boolean greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true,
@@ -609,14 +609,6 @@ public class PlayerProfile {
 
     public void togglePartyChat() {
         partyChatMode = !partyChatMode;
-    }
-
-    public boolean getPartyChatOnlyToggle() {
-        return partyChatOnly;
-    }
-
-    public void togglePartyChatOnly() {
-        partyChatOnly = !partyChatOnly;
     }
 
     /*

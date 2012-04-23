@@ -65,9 +65,14 @@ public class ACommand implements CommandExecutor {
                 Player player = (Player) sender;
                 PP = Users.getProfile(player);
 
-                PP.toggleAdminChat();
-                player.chat(message);
-                PP.toggleAdminChat();
+                if (PP.getAdminChatMode()) {
+                    player.chat(message);
+                }
+                else {
+                    PP.toggleAdminChat();
+                    player.chat(message);
+                    PP.toggleAdminChat();
+                }
             }
             else {
                 McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent("Console", message);

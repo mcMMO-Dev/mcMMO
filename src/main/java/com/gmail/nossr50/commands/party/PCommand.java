@@ -71,9 +71,14 @@ public class PCommand implements CommandExecutor {
                     message = message + " " + args [i];
                 }
 
-                PP.togglePartyChat();
-                player.chat(message);
-                PP.togglePartyChat();
+                if (PP.getPartyChatMode()) {
+                    player.chat(message);
+                }
+                else {
+                    PP.togglePartyChat();
+                    player.chat(message);
+                    PP.togglePartyChat();
+                }
             }
             else {
                 if (args.length < 2) {
