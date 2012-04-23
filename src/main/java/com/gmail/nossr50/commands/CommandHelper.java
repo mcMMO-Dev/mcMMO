@@ -10,6 +10,8 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
+import java.util.logging.Logger;
+
 public class CommandHelper {
 
     /**
@@ -46,7 +48,6 @@ public class CommandHelper {
      *
      * @param inspect The player to retrieve stats for
      * @param display The sender to display stats to
-     * @param online true if the player to retrieve stats for is online, false otherwise
      */
     public static void printGatheringSkills(Player inspect, CommandSender display) {
         if (Skills.hasGatheringSkills(inspect)) {
@@ -85,7 +86,6 @@ public class CommandHelper {
      *
      * @param inspect The player to retrieve stats for
      * @param display The sender to display stats to
-     * @param online true if the player to retrieve stats for is online, false otherwise
      */
     public static void printCombatSkills(Player inspect, CommandSender display) {
         if (Skills.hasCombatSkills(inspect)) {
@@ -124,7 +124,6 @@ public class CommandHelper {
      *
      * @param inspect The player to retrieve stats for
      * @param display The sender to display stats to
-     * @param online true if the player to retrieve stats for is online, false otherwise
      */
     public static void printMiscSkills(Player inspect, CommandSender display) {
         if (Skills.hasMiscSkills(inspect)) {
