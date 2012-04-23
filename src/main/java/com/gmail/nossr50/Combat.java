@@ -192,7 +192,7 @@ public class Combat {
             int damage = event.getDamage();
 
             if (mcPermissions.getInstance().archery(attacker) && damage > 0) {
-                
+
                 /*Archery needs a damage bonus to be viable in PVP*/
                 int skillLvl = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
                 double dmgBonusPercent = ((skillLvl / 50) * 0.1D);
@@ -200,9 +200,10 @@ public class Combat {
                 /* Cap maximum bonus at 200% */
                 if(dmgBonusPercent > 2)
                     dmgBonusPercent = 2;
-                
+
                 /* Every 100 skill levels Archery gains 20% damage bonus, set that here */
                 //TODO: Work in progress for balancing out Archery, will work on it more later...
+                //TODO: Right now this is calculating a 10% bonus every 50 levels, not 20% every 100. Is this intended?
                 int archeryBonus = (int)(event.getDamage() * dmgBonusPercent);
                 event.setDamage(event.getDamage() + archeryBonus);
                 

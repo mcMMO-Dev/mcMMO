@@ -29,17 +29,17 @@ public class FishingCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		PlayerProfile PP = Users.getProfile(player);
 
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.SkillFishing") }));
-		player.sendMessage(mcLocale.getString("m.XPGain", new Object[] { mcLocale.getString("m.XPGainFishing") }));
+		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Fishing.SkillName") }));
+		player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Fishing") }));
 
 		if (mcPermissions.getInstance().fishing(player))
-			player.sendMessage(mcLocale.getString("m.LVL", new Object[] { PP.getSkillLevel(SkillType.FISHING), PP.getSkillXpLevel(SkillType.FISHING), PP.getXpToLevel(SkillType.FISHING) }));
+			player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.FISHING), PP.getSkillXpLevel(SkillType.FISHING), PP.getXpToLevel(SkillType.FISHING) }));
 
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.Effects") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsFishing1_0"), mcLocale.getString("m.EffectsFishing1_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsFishing2_0"), mcLocale.getString("m.EffectsFishing2_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsFishing3_0"), mcLocale.getString("m.EffectsFishing3_1") }));
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.YourStats") }));
+		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsFishing1_0"), mcLocale.getString("m.EffectsFishing1_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsFishing2_0"), mcLocale.getString("m.EffectsFishing2_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsFishing3_0"), mcLocale.getString("m.EffectsFishing3_1") }));
+		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
 		player.sendMessage(mcLocale.getString("m.FishingRank", new Object[] { Fishing.getFishingLootTier(PP) }));
 		player.sendMessage(mcLocale.getString("m.FishingMagicInfo"));
 

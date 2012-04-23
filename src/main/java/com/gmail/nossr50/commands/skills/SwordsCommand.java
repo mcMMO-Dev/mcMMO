@@ -51,18 +51,18 @@ public class SwordsCommand implements CommandExecutor {
 			ticks++;
 		}
 
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.SkillSwords") }));
-		player.sendMessage(mcLocale.getString("m.XPGain", new Object[] { mcLocale.getString("m.XPGainSwords") }));
+		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Swords.SkillName") }));
+		player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Swords") }));
 		
 		if (mcPermissions.getInstance().swords(player))
-			player.sendMessage(mcLocale.getString("m.LVL", new Object[] { PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS) }));
+			player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS) }));
 		
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.Effects") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsSwords1_0"), mcLocale.getString("m.EffectsSwords1_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsSwords2_0"), mcLocale.getString("m.EffectsSwords2_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsSwords3_0"), mcLocale.getString("m.EffectsSwords3_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsSwords5_0"), mcLocale.getString("m.EffectsSwords5_1") }));
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.YourStats") }));
+		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsSwords1_0"), mcLocale.getString("m.EffectsSwords1_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsSwords2_0"), mcLocale.getString("m.EffectsSwords2_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsSwords3_0"), mcLocale.getString("m.EffectsSwords3_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsSwords5_0"), mcLocale.getString("m.EffectsSwords5_1") }));
+		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
 		player.sendMessage(mcLocale.getString("m.SwordsCounterAttChance", new Object[] { counterattackpercentage }));
 		player.sendMessage(mcLocale.getString("m.SwordsBleedLength", new Object[] { bleedrank }));
 		player.sendMessage(mcLocale.getString("m.SwordsTickNote"));

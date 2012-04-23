@@ -76,19 +76,19 @@ public class MiningCommand implements CommandExecutor {
 			radius = 4;
 		}
 		
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.SkillMining") }));
-		player.sendMessage(mcLocale.getString("m.XPGain", new Object[] { mcLocale.getString("m.XPGainMining") }));
+		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Mining.SkillName") }));
+		player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Mining") }));
 
 		if (mcPermissions.getInstance().mining(player))
-			player.sendMessage(mcLocale.getString("m.LVL", new Object[] { PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
+			player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
 
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.Effects") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsMining1_0"), mcLocale.getString("m.EffectsMining1_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsMining2_0"), mcLocale.getString("m.EffectsMining2_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsMining3_0"), mcLocale.getString("m.EffectsMining3_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsMining4_0"), mcLocale.getString("m.EffectsMining4_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsMining5_0"), mcLocale.getString("m.EffectsMining5_1") }));
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.YourStats") }));
+		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining1_0"), mcLocale.getString("m.EffectsMining1_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining2_0"), mcLocale.getString("m.EffectsMining2_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining3_0"), mcLocale.getString("m.EffectsMining3_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining4_0"), mcLocale.getString("m.EffectsMining4_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining5_0"), mcLocale.getString("m.EffectsMining5_1") }));
+		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
 		player.sendMessage(mcLocale.getString("m.MiningDoubleDropChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.MiningSuperBreakerLength", new Object[] { ticks }));
 		if (PP.getSkillLevel(SkillType.MINING) < 125)

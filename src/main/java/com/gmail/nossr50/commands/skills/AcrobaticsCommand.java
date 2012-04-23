@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -14,6 +13,11 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.util.Page;
 
 public class AcrobaticsCommand implements CommandExecutor {
+    private float skillValue;
+    private String dodgeChance;
+    private String rollChance;
+    private String gracefulRollChance;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandHelper.noConsoleUsage(sender)) {
@@ -27,35 +31,48 @@ public class AcrobaticsCommand implements CommandExecutor {
         Player player = (Player) sender;
         PlayerProfile PP = Users.getProfile(player);
 
-        String dodgepercentage;
-        float skillvalue = (float) PP.getSkillLevel(SkillType.ACROBATICS);
-        String percentage = String.valueOf((skillvalue / 1000) * 100);
-        String gracepercentage = String.valueOf(((skillvalue / 1000) * 100) * 2);
+        skillValue = (float) PP.getSkillLevel(SkillType.ACROBATICS);
+        dataCalculations(skillValue);
 
-        if (PP.getSkillLevel(SkillType.ACROBATICS) <= 800) {
-            dodgepercentage = String.valueOf((skillvalue / 4000 * 100));
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Acrobatics.SkillName") }));
+        player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Acrobatics") }));
+        player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS) }));
+
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Acrobatics.Effect.0"), mcLocale.getString("Acrobatics.Effect.1") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Acrobatics.Effect.2"), mcLocale.getString("Acrobatics.Effect.3") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Acrobatics.Effect.4"), mcLocale.getString("Acrobatics.Effect.5") }));
+
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
+        player.sendMessage(mcLocale.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }));
+        player.sendMessage(mcLocale.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }));
+        player.sendMessage(mcLocale.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }));
+
+        Page.grabGuidePageForSkill(SkillType.ACROBATICS, player, args);
+
+        return true;
+    }
+
+    private void dataCalculations(float skillValue) {
+        if (skillValue >= 1000) {
+            dodgeChance = "20";
+            rollChance = "100";
+            gracefulRollChance = "100";
+        }
+        else if (skillValue >= 800) {
+            dodgeChance = "20";
+            rollChance = String.valueOf(skillValue / 10);
+            gracefulRollChance = "100";
+        }
+        else if (skillValue >= 500) {
+            dodgeChance = String.valueOf(skillValue / 40);
+            rollChance = String.valueOf(skillValue / 10);
+            gracefulRollChance = "100";
         }
         else {
-            dodgepercentage = "20";
+            dodgeChance = String.valueOf(skillValue / 40);
+            rollChance = String.valueOf(skillValue / 10);
+            gracefulRollChance = String.valueOf(skillValue / 5);
         }
-
-        player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.SkillAcrobatics") }));
-        player.sendMessage(mcLocale.getString("m.XPGain", new Object[] { mcLocale.getString("m.XPGainAcrobatics") }));
-
-        if (mcPermissions.getInstance().acrobatics(player))
-            player.sendMessage(mcLocale.getString("m.LVL", new Object[] { PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS) }));
-
-        player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.Effects") }));
-        player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsAcrobatics1_0"), mcLocale.getString("m.EffectsAcrobatics1_1") }));
-        player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsAcrobatics2_0"), mcLocale.getString("m.EffectsAcrobatics2_1") }));
-        player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsAcrobatics3_0"), mcLocale.getString("m.EffectsAcrobatics3_1") }));
-        player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.YourStats") }));
-        player.sendMessage(mcLocale.getString("m.AcrobaticsRollChance", new Object[] { percentage }));
-        player.sendMessage(mcLocale.getString("m.AcrobaticsGracefulRollChance", new Object[] { gracepercentage }));
-        player.sendMessage(mcLocale.getString("m.AcrobaticsDodgeChance", new Object[] { dodgepercentage }));
-        
-        Page.grabGuidePageForSkill(SkillType.ACROBATICS, player, args);
-        
-        return true;
     }
 }

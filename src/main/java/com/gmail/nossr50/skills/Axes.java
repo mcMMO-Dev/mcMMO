@@ -31,10 +31,8 @@ public class Axes {
     public static void axesBonus(Player attacker, EntityDamageByEntityEvent event) {
         final int MAX_BONUS = 4;
 
-        int bonus = 0;
-
         /* Add 1 DMG for every 50 skill levels */
-        bonus += Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / 50;
+        int bonus = Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / 50;
 
         if (bonus > MAX_BONUS) {
             bonus = MAX_BONUS;

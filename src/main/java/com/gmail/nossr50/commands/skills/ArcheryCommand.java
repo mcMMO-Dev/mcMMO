@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -14,53 +13,56 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.util.Page;
 
 public class ArcheryCommand implements CommandExecutor {
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
-			return true;
-		}
+    private float skillValue;
+    private String skillShotBonus;
+    private String dazeChance;
+    private String retrieveChance;
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (CommandHelper.noConsoleUsage(sender)) {
+            return true;
+        }
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.archery")) {
             return true;
         }
-		Player player = (Player) sender;
-		PlayerProfile PP = Users.getProfile(player);
 
-		float skillvalue = (float) PP.getSkillLevel(SkillType.ARCHERY);
-		String percentage = String.valueOf((skillvalue / 1000) * 100);
-		
-		double dmgBonusPercent = ((PP.getSkillLevel(SkillType.ARCHERY) / 50) * 0.1D);
-        
-        /* Cap maximum bonus at 200% */
-        if(dmgBonusPercent > 2)
-            dmgBonusPercent = 2;
-        
-        dmgBonusPercent = dmgBonusPercent * 100; //Convert to percentage
+        Player player = (Player) sender;
+        PlayerProfile PP = Users.getProfile(player);
 
-		String percentagedaze;
-		if (PP.getSkillLevel(SkillType.ARCHERY) < 1000)
-			percentagedaze = String.valueOf((skillvalue / 2000) * 100);
-		else
-			percentagedaze = "50";
+        skillValue = (float) PP.getSkillLevel(SkillType.ARCHERY);
+        dataCalculations(skillValue);
 
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.SkillArchery") }));
-		player.sendMessage(mcLocale.getString("m.XPGain", new Object[] { mcLocale.getString("m.XPGainArchery") }));
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Archery.SkillName") }));
+        player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Archery") }));
+        player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.ARCHERY), PP.getSkillXpLevel(SkillType.ARCHERY), PP.getXpToLevel(SkillType.ARCHERY) }));
 
-		if (mcPermissions.getInstance().archery(player))
-			player.sendMessage(mcLocale.getString("m.LVL", new Object[] { PP.getSkillLevel(SkillType.ARCHERY), PP.getSkillXpLevel(SkillType.ARCHERY), PP.getXpToLevel(SkillType.ARCHERY) }));
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Archery.Effect.0"), mcLocale.getString("Archery.Effect.1") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Archery.Effect.2"), mcLocale.getString("Archery.Effect.3") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Archery.Effect.4"), mcLocale.getString("Archery.Effect.5") }));
 
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.Effects") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsArchery1_0"), mcLocale.getString("m.EffectsArchery1_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsArchery2_0"), mcLocale.getString("m.EffectsArchery2_1") }));
-		player.sendMessage(mcLocale.getString("m.EffectsTemplate", new Object[] { mcLocale.getString("m.EffectsArchery4_0"), mcLocale.getString("m.EffectsArchery4_1") }));
-		player.sendMessage(mcLocale.getString("m.SkillHeader", new Object[] { mcLocale.getString("m.YourStats") }));
-		player.sendMessage(mcLocale.getString("m.ArcherySkillShot", new Object[] { dmgBonusPercent }));
-		player.sendMessage(mcLocale.getString("m.ArcheryDazeChance", new Object[] { percentagedaze }));
-		player.sendMessage(mcLocale.getString("m.ArcheryRetrieveChance", new Object[] { percentage }));
-		
-		Page.grabGuidePageForSkill(SkillType.ARCHERY, player, args);
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
+        player.sendMessage(mcLocale.getString("Archery.Combat.SkillshotBonus", new Object[] { skillShotBonus }));
+        player.sendMessage(mcLocale.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }));
+        player.sendMessage(mcLocale.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }));
 
-		return true;
-	}
+        Page.grabGuidePageForSkill(SkillType.ARCHERY, player, args);
+
+        return true;
+    }
+
+    private void dataCalculations(float skillValue) {
+        if (skillValue >= 1000) {
+            skillShotBonus = "200";
+            dazeChance = "50";
+            retrieveChance = "100";
+        }
+        else {
+            skillShotBonus = String.valueOf((int) skillValue / 5);
+            dazeChance = String.valueOf(skillValue / 20);
+            retrieveChance = String.valueOf(skillValue / 10);
+        }
+    }
 }
