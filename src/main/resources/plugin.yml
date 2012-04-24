@@ -36,7 +36,7 @@ commands:
         description: Make yourself invulnerable
         permission: mcmmo.tools.mcgod        
     mcstats:
-        description: Shows your mcMMO stats and xp
+        description: Shows player mcMMO stats and xp
     mcremove:
         description: Remove a user from the database
         permission: mcmmo.tools.mcremove
@@ -90,6 +90,7 @@ commands:
     a:
         description: Toggle Admin chat or send admin chat messages
         permission: mcmmo.chat.adminchat
+
 permissions:
     mcmmo.*:
         description: Implies all mcmmo permissions.
@@ -120,6 +121,7 @@ permissions:
         description: Allows access to mmoupdate and other sensitive commands        
     mcmmo.bypass.arcanebypass:
         description: Allows user to bypass Arcane Repair so he will never lose enchantments
+
     mcmmo.tools.*:
         description: Implies all mcmmo.tools permissions.
         children:
@@ -135,6 +137,7 @@ permissions:
         description: Allows access to mcgod command
     mcmmo.tools.mcremove:
         decription: Allows access to mcremove command
+
     mcmmo.ability.*:
         description: Implies all mcmmo.ability permissions.
         children:
@@ -347,14 +350,18 @@ permissions:
     mcmmo.item.chimaerawing:
         description: Allows use of Chimaera Wing item
     mcmmo.motd:
-        description: Allows access to the motd        
+        description: Allows access to the motd
+
     mcmmo.commands.*:
         description: Implies all mcmmo.commands permissions.
         children:
             mcmmo.commands.ability: true  
             mcmmo.commands.ptp: true 
             mcmmo.commands.inspect: true 
-            mcmmo.commands.party: true 
+            mcmmo.commands.party: true
+            mcmmo.commands.inspect: true
+            mcmmo.commands.inspect.offline: true
+            mcmmo.commands.inspect.all: true
     mcmmo.commands.ability:
         description: Allows access to the mcability command
     mcmmo.commands.ptp:
@@ -362,7 +369,14 @@ permissions:
     mcmmo.commands.inspect:
         description: Allows access to the inspect command
     mcmmo.commands.party:
-        description: Allows acces to the party command        
+        description: Allows acces to the party command
+    mcmmo.commands.inspect:
+        description: Allows players to view other player's stats
+    mcmmo.commands.inspect.offline:
+        description: Allows players to view offline player's stats
+    mcmmo.commands.inspect.all:
+        description: Bypasses distance restriction
+
     mcmmo.chat.*:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
@@ -372,6 +386,7 @@ permissions:
         description: Allows participation in admin chat
     mcmmo.chat.partychat:
         description: Allows participation in party chat
+
     mcmmo.skills.*:
         description: Implies all mcmmo.skills permissions.
         children:
