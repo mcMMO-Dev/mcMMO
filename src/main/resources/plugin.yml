@@ -266,7 +266,7 @@ permissions:
             mcmmo.ability.repair.diamondrepair: true
             mcmmo.ability.repair.armorrepair: true
             mcmmo.ability.repair.toolrepair: true
-            mcmmo.ability.repair.bowrepair: true
+            mcmmo.ability.repair.stringrepair: true
     mcmmo.ability.repair.repairbonus:
         description: Allows access to Super Repair bonus
     mcmmo.ability.repair.arcaneforging:
@@ -287,8 +287,8 @@ permissions:
         description: Allows ability to repair armor
     mcmmo.ability.repair.toolrepair:
         description: Allows ability to repair tools
-    mcmmo.ability.repair.bowrepair:
-        description: Allows ability to repair bows
+    mcmmo.ability.repair.stringrepair:
+        description: Allows ability to repair Bow and Fishing rod
     mcmmo.ability.unarmed.*:
         description: Allows access to all Unarmed abilities
         children:

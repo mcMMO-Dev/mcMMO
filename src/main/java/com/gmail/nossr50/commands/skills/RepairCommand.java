@@ -42,9 +42,10 @@ public class RepairCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair1_0"), mcLocale.getString("m.EffectsRepair1_1") }));
 		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair2_0"), mcLocale.getString("m.EffectsRepair2_1") }));
 		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair3_0"), mcLocale.getString("m.EffectsRepair3_1") }));
-		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair4_0", new Object[] { LoadProperties.repairdiamondlevel }), mcLocale.getString("m.EffectsRepair4_1") }));
+		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair4_0", new Object[] { LoadProperties.repairDiamondLevel }), mcLocale.getString("m.EffectsRepair4_1") }));
 		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair5_0"), mcLocale.getString("m.EffectsRepair5_1") }));
 		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
+
 		player.sendMessage(mcLocale.getString("m.RepairRepairMastery", new Object[] { repairmastery }));
 		player.sendMessage(mcLocale.getString("m.RepairSuperRepairChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.ArcaneForgingRank", new Object[] { Repair.getArcaneForgingRank(PP.getSkillLevel(SkillType.REPAIR)) }));
