@@ -34,25 +34,20 @@ public class mcTimer implements Runnable {
             /*
              * MONITOR SKILLS
              */
-            Skills.monitorSkill(player, PP, curTime, SkillType.AXES);
-            Skills.monitorSkill(player, PP, curTime, SkillType.EXCAVATION);
-            Skills.monitorSkill(player, PP, curTime, SkillType.HERBALISM);
-            Skills.monitorSkill(player, PP, curTime, SkillType.MINING);
-            Skills.monitorSkill(player, PP, curTime, SkillType.SWORDS);
-            Skills.monitorSkill(player, PP, curTime, SkillType.UNARMED);
-            Skills.monitorSkill(player, PP, curTime, SkillType.WOODCUTTING);
+            for (SkillType skill : SkillType.values()) {
+                if (skill.getTool() != null && skill.getAbility() != null) {
+                    Skills.monitorSkill(player, PP, curTime, skill);
+                }
+            }
 
             /*
              * COOLDOWN MONITORING
              */
-            Skills.watchCooldown(player, PP, curTime, AbilityType.SKULL_SPLIITER);
-            Skills.watchCooldown(player, PP, curTime, AbilityType.GIGA_DRILL_BREAKER);
-            Skills.watchCooldown(player, PP, curTime, AbilityType.GREEN_TERRA);
-            Skills.watchCooldown(player, PP, curTime, AbilityType.SUPER_BREAKER);
-            Skills.watchCooldown(player, PP, curTime, AbilityType.SERRATED_STRIKES);
-            Skills.watchCooldown(player, PP, curTime, AbilityType.BERSERK);
-            Skills.watchCooldown(player, PP, curTime, AbilityType.TREE_FELLER);
-            Skills.watchCooldown(player, PP, curTime, AbilityType.BLAST_MINING);
+            for (AbilityType ability : AbilityType.values()) {
+                if (ability.getCooldown() > 0 ) {
+                    Skills.watchCooldown(player, PP, curTime, ability);
+                }
+            }
         }
     }
 }

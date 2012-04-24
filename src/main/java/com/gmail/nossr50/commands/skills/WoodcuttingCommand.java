@@ -49,7 +49,7 @@ public class WoodcuttingCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
 		
 		if (PP.getSkillLevel(SkillType.WOODCUTTING) < 100)
-			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockWoodCutting1") }));
+			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockWoodCutting1") }));
 		else
 			player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("m.AbilBonusWoodCutting1_0"), mcLocale.getString("m.AbilBonusWoodCutting1_1") }));
 		

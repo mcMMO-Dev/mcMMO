@@ -31,113 +31,86 @@ commands:
     addxp:
         aliases: []
         description: Add XP to a user
-        permission: mcmmo.tools.mmoedit
     addlevels:
         aliases: []
         description: Add levels to a user
-        permission: mcmmo.tools.mmoedit
     mcability:
         aliases: []
         description: Toggle whether or not abilities get readied on right click
-        permission: mcmmo.commands.ability
     mcrefresh:
         aliases: []
         description: Refresh all cooldowns for mcMMO
-        permission: mcmmo.tools.mcrefresh
     mcgod:
         aliases: []
         description: Make yourself invulnerable
-        permission: mcmmo.tools.mcgod        
     mcstats:
         aliases: []
         description: Shows your mcMMO stats and xp
     mcremove:
         aliases: []
         description: Remove a user from the database
-        permission: mcmmo.tools.mcremove
     mmoedit:
         aliases: []
         description: Edit the skill values for a user
-        permission: mcmmo.tools.mmoedit
     ptp:
         aliases: []
         description: Teleport to a party member
-        permission: mcmmo.commands.ptp
     party:
         aliases: []
         description: Create/join a party
-        permission: mcmmo.commands.party
     inspect:
         aliases: []
-        description: View mcMMO stats of another player
     invite:
         aliases: []
         description: Invite a player into your party
-        permission: mcmmo.chat.partychat
     accept:
         aliases: []
         description: Accept a party invite
-        permission: mcmmo.chat.partychat
     mmoupdate:
         aliases: []
         description: Convert from Flat File to MySQL
-        permission: mcmmo.admin
     p:
         aliases: [pc]
         description: Toggle Party chat or send party chat messages
-        permission: mcmmo.chat.partychat
     excavation:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.excavation
     herbalism:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.herbalism
     mining:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.mining
     woodcutting:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.woodcutting
     axes:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.axes
     archery:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.archery
     swords:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.swords
     taming:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.taming
     unarmed:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.unarmed
     acrobatics:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.acrobatics
     repair:
-        aliases: []
+        aliases: [mcrepair]
         description: Detailed skill info
-        permission: mcmmo.skills.repair
     fishing:
         aliases: []
         description: Detailed skill info
-        permission: mcmmo.skills.fishing
     a:
         aliases: [ac]
         description: Toggle Admin chat or send admin chat messages
-        permission: mcmmo.chat.adminchat
 permissions:
     mcmmo.*:
         description: Implies all mcmmo permissions.
@@ -165,7 +138,7 @@ permissions:
             mcmmo.admin: true
             mcmmo.tools.*: true
     mcmmo.admin:
-        description: All    ows access to mmoupdate and other sensitive commands        
+        description: Allows access to mmoupdate and other sensitive commands        
     mcmmo.bypass.arcanebypass:
         description: Allows user to bypass Arcane Repair so he will never lose enchantments
     mcmmo.tools.*:

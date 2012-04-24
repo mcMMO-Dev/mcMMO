@@ -57,33 +57,28 @@ public class AxesCommand implements CommandExecutor {
     }
 
     private void dataCalculations(float skillValue) {
+        impactDamage = String.valueOf(5 + ((int) skillValue / 30));
+        skullSplitterLength = String.valueOf(2 + ((int) skillValue / 50));
+
         if (skillValue >= 1000) {
             critChance = "37.5";
             bonusDamage = "4";
-            impactDamage = String.valueOf(5 + ((int) skillValue / 30));
             greaterImpactDamage = "2";
-            skullSplitterLength = String.valueOf(2 + ((int) skillValue / 50));
         }
         else if (skillValue >= 750) {
             critChance = "37.5";
             bonusDamage = "4";
-            impactDamage = String.valueOf(5 + ((int) skillValue / 30));
             greaterImpactDamage = "2";
-            skullSplitterLength = String.valueOf(2 + ((int) skillValue / 50));
         }
         else if (skillValue >= 200) {
             critChance = String.valueOf(skillValue / 20);
             bonusDamage = "4";
-            impactDamage = String.valueOf(5 + ((int) skillValue / 30));
             greaterImpactDamage = "2";
-            skullSplitterLength = String.valueOf(2 + ((int) skillValue / 50));
         }
         else {
             critChance = String.valueOf(skillValue / 20);
             bonusDamage = String.valueOf((int) skillValue / 50);
-            impactDamage = String.valueOf(5 + ((int) skillValue / 30));
             greaterImpactDamage = "2";
-            skullSplitterLength = String.valueOf(2 + ((int) skillValue / 50));
         }
     }
 }

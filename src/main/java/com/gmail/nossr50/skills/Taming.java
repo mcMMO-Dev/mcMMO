@@ -154,7 +154,7 @@ public class Taming {
                     }
 
                     wolf.teleport(master.getLocation());
-                    master.sendMessage(mcLocale.getString("mcEntityListener.WolfComesBack"));
+                    master.sendMessage(mcLocale.getString("Taming.Listener.Wolf"));
                 }
             }
             break;
@@ -232,11 +232,11 @@ public class Taming {
                     if (x.getType().equals(type)) {
                         switch (type) {
                         case WOLF:
-                            player.sendMessage(mcLocale.getString("m.TamingSummonWolfFailed"));
+                            player.sendMessage(mcLocale.getString("Taming.Summon.Fail.Wolf"));
                             return;
 
                         case OCELOT:
-                            player.sendMessage(mcLocale.getString("m.TamingSummonOcelotFailed"));
+                            player.sendMessage(mcLocale.getString("Taming.Summon.Fail.Ocelot"));
                             return;
 
                         default:
@@ -258,7 +258,7 @@ public class Taming {
                 }
 
                 player.setItemInHand(new ItemStack(summonItem, item.getAmount() - summonAmount));
-                player.sendMessage(mcLocale.getString("m.TamingSummon"));
+                player.sendMessage(mcLocale.getString("Taming.Summon.Complete"));
             }
             else {
                 player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(summonItem.getId()));

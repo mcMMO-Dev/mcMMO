@@ -92,7 +92,7 @@ public class MiningCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("m.MiningDoubleDropChance", new Object[] { percentage }));
 		player.sendMessage(mcLocale.getString("m.MiningSuperBreakerLength", new Object[] { ticks }));
 		if (PP.getSkillLevel(SkillType.MINING) < 125)
-			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockMining1") }));
+			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockMining1") }));
 		else{
 			switch (rank){
 			case 1:
@@ -122,11 +122,11 @@ public class MiningCommand implements CommandExecutor {
 			}
 		}
 		if (PP.getSkillLevel(SkillType.MINING) < 250)
-			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockMining2") }));
+			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockMining2") }));
 		else
 			player.sendMessage(mcLocale.getString("m.MiningBiggerBombs", new Object[] { radius }));
 		if (PP.getSkillLevel(SkillType.MINING) < 500)
-			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockMining3") }));
+			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockMining3") }));
 		else
 			player.sendMessage(mcLocale.getString("m.MiningDemolitionsExpertDamageDecrease", new Object[] { damage }));
 		

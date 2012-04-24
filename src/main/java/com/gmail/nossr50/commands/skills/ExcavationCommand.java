@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -14,41 +13,42 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.util.Page;
 
 public class ExcavationCommand implements CommandExecutor {
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
-			return true;
-		}
+    private float skillValue;
+    private String gigaDrillBreakerLength;
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (CommandHelper.noConsoleUsage(sender)) {
+            return true;
+        }
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.excavation")) {
             return true;
         }
-		Player player = (Player) sender;
-		PlayerProfile PP = Users.getProfile(player);
 
-		int ticks = 2;
-		int x = PP.getSkillLevel(SkillType.EXCAVATION);
-		while (x >= 50) {
-			x -= 50;
-			ticks++;
-		}
+        Player player = (Player) sender;
+        PlayerProfile PP = Users.getProfile(player);
 
-		player.sendMessage("");
-		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Excavation.SkillName") }));
-		player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Excavation") }));
+        skillValue = (float) PP.getSkillLevel(SkillType.EXCAVATION);
+        dataCalculations(skillValue);
 
-		if (mcPermissions.getInstance().excavation(player))
-			player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION) }));
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Excavation.SkillName") }));
+        player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Excavation") }));
+        player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION) }));
 
-		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
-		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsExcavation1_0"), mcLocale.getString("m.EffectsExcavation1_1") }));
-		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsExcavation2_0"), mcLocale.getString("m.EffectsExcavation2_1") }));
-		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
-		player.sendMessage(mcLocale.getString("m.ExcavationGigaDrillBreakerLength", new Object[] { ticks }));
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Excavation.Effect.0"), mcLocale.getString("Excavation.Effect.1") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Excavation.Effect.2"), mcLocale.getString("Excavation.Effect.3") }));
 
-		Page.grabGuidePageForSkill(SkillType.EXCAVATION, player, args);
-		
-		return true;
-	}
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
+        player.sendMessage(mcLocale.getString("Excavation.Effect.Length", new Object[] { gigaDrillBreakerLength }));
+
+        Page.grabGuidePageForSkill(SkillType.EXCAVATION, player, args);
+
+        return true;
+    }
+
+    private void dataCalculations(float skillValue) {
+        gigaDrillBreakerLength = String.valueOf(2 + ((int) skillValue / 50));
+    }
 }

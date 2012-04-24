@@ -97,14 +97,12 @@ public class Fishing {
             break;
         }
 
-        if (LoadProperties.fishingDrops) {
-            if (rewards.size() > 0) {
-                FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
+        if (LoadProperties.fishingDrops && rewards.size() > 0) {
+            FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
-                if (random.nextDouble() * 100 <= treasure.getDropChance()) {
-                    Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp());
-                    theCatch.setItemStack(treasure.getDrop());
-                }
+            if (random.nextDouble() * 100 <= treasure.getDropChance()) {
+                Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp());
+                theCatch.setItemStack(treasure.getDrop());
             }
         }
         else {

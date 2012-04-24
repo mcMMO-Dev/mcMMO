@@ -50,26 +50,26 @@ public class TamingCommand implements CommandExecutor {
 		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
 
 		if (PP.getSkillLevel(SkillType.TAMING) < 100)
-			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockTaming1") }));
+			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockTaming1") }));
 		else
 			player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("m.AbilBonusTaming1_0"), mcLocale.getString("m.AbilBonusTaming1_1") }));
 
 		if (PP.getSkillLevel(SkillType.TAMING) < 250)
-			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockTaming2") }));
+			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockTaming2") }));
 		else
 			player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("m.AbilBonusTaming2_0"), mcLocale.getString("m.AbilBonusTaming2_1") }));
 
 		if (PP.getSkillLevel(SkillType.TAMING) < 500)
-			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockTaming3") }));
+			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockTaming3") }));
 		else
 			player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("m.AbilBonusTaming3_0"), mcLocale.getString("m.AbilBonusTaming3_1") }));
 
 		if (PP.getSkillLevel(SkillType.TAMING) < 750)
-			player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockTaming4") }));
+			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockTaming4") }));
 		else
 			player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("m.AbilBonusTaming4_0"), mcLocale.getString("m.AbilBonusTaming4_1") }));
 		if (PP.getSkillLevel(SkillType.TAMING) < 50)
-            player.sendMessage(mcLocale.getString("m.AbilityLockTemplate", new Object[] { mcLocale.getString("m.AbilLockTaming5") }));
+            player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockTaming5") }));
 		else
 	          player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("m.AbilBonusTaming5_0"), mcLocale.getString("m.AbilBonusTaming5_1") }));
 		

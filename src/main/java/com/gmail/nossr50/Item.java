@@ -38,7 +38,7 @@ public class Item {
 
                 for (int y = 0; block.getY() + y < player.getWorld().getMaxHeight(); y++) {
                     if (!block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
-                        player.sendMessage(mcLocale.getString("Item.ChimaeraWingFail"));
+                        player.sendMessage(mcLocale.getString("Item.ChimaeraWing.Fail"));
                         player.teleport(block.getRelative(0, y - 1, 0).getLocation());
                         return;
                     }
@@ -51,10 +51,10 @@ public class Item {
                     player.teleport(player.getWorld().getSpawnLocation());
                 }
 
-                player.sendMessage(mcLocale.getString("Item.ChimaeraWingPass"));
+                player.sendMessage(mcLocale.getString("Item.ChimaeraWing.Pass"));
             }
             else if (!Skills.cooldownOver(PP.getRecentlyHurt(), 60) && is.getAmount() >= LoadProperties.feathersConsumedByChimaeraWing) {
-                player.sendMessage(mcLocale.getString("Item.InjuredWait", new Object[] {Skills.calculateTimeLeft(PP.getRecentlyHurt(), 60)}));
+                player.sendMessage(mcLocale.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(PP.getRecentlyHurt(), 60)}));
             }
             else if (is.getAmount() <= LoadProperties.feathersConsumedByChimaeraWing) {
                 player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(LoadProperties.chimaeraId));

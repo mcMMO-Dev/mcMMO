@@ -169,7 +169,7 @@ public class mcPlayerListener implements Listener {
 
         if (mcPermissions.getInstance().motd(player) && LoadProperties.enableMotd) {
             player.sendMessage(mcLocale.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
-            player.sendMessage(mcLocale.getString("McMMO.Wiki"));
+            player.sendMessage(mcLocale.getString("mcMMO.Wiki"));
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY

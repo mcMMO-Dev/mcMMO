@@ -226,7 +226,8 @@ public class mcEntityListener implements Listener {
                 int currentFoodLevel = player.getFoodLevel();
                 int newFoodLevel = event.getFoodLevel();
 
-                /* Some foods have 3 ranks
+                /*
+                 * Some foods have 3 ranks
                  * Some foods have 5 ranks
                  * The number of ranks is based on how 'common' the item is
                  * We can adjust this quite easily if we find something is giving too much of a bonus

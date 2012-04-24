@@ -54,7 +54,7 @@ public class WoodCutting {
      */
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP) {
         if (toBeFelled.size() >= LoadProperties.treeFellerThreshold) {
-            player.sendMessage(mcLocale.getString("Skills.Woodcutting.TreeFellerThreshold"));
+            player.sendMessage(mcLocale.getString("Woodcutting.Skills.TreeFellerThreshold"));
             return;
         }
 
@@ -67,7 +67,7 @@ public class WoodCutting {
 
         /* This is to prevent using wood axes everytime you tree fell */
         if ((inHand.getDurability() + durabilityLoss >= inHand.getType().getMaxDurability()) || inHand.getType().equals(Material.AIR)) {
-            player.sendMessage(mcLocale.getString("TreeFeller.AxeSplinters"));
+            player.sendMessage(mcLocale.getString("Woodcutting.Skills.TreeFeller.Splinter"));
 
             int health = player.getHealth();
 

@@ -80,12 +80,12 @@ public class Axes {
             if (entity instanceof Player){
                 event.setDamage((int) (damage * PVP_MODIFIER));
                 Player player = (Player) entity;
-                player.sendMessage(mcLocale.getString("Axes.HitCritically"));
+                player.sendMessage(mcLocale.getString("Axes.Combat.CritStruck"));
             }
             else {
                 event.setDamage(damage * PVE_MODIFIER);
             }
-            attacker.sendMessage(mcLocale.getString("Axes.CriticalHit"));
+            attacker.sendMessage(mcLocale.getString("Axes.Combat.CriticalHit"));
         }
     }
 
@@ -138,7 +138,7 @@ public class Axes {
         if (random.nextInt(100) <= GREATER_IMPACT_CHANCE) {
             event.setDamage(event.getDamage() + 2);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(GREATER_IMPACT_MULTIPLIER));
-            attacker.sendMessage(mcLocale.getString("Axes.GreaterImpactOnEnemy"));
+            attacker.sendMessage(mcLocale.getString("Axes.Combat.GI.Proc"));
         }
     }
 
