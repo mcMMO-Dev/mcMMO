@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -14,124 +13,126 @@ import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.util.Page;
 
 public class MiningCommand implements CommandExecutor {
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("This command does not support console useage."); //TODO: Needs more locale.
-			return true;
-		}
+    private float skillValue;
+    private String doubleDropChance;
+    private String superBreakerLength;
+    private int blastMiningRank;
+    private int blastRadiusIncrease;
+    private int blastDamageDecrease;
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (CommandHelper.noConsoleUsage(sender)) {
+            return true;
+        }
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.mining")) {
             return true;
         }
-        
-		Player player = (Player) sender;
-		PlayerProfile PP = Users.getProfile(player);
 
-		float skillvalue = (float) PP.getSkillLevel(SkillType.MINING);
-		String percentage = String.valueOf((skillvalue / 1000) * 100);
-		int ticks = 2;
-		int x = PP.getSkillLevel(SkillType.MINING);
-		while (x >= 50) {
-			x -= 50;
-			ticks++;
-		}
-		
-		int rank = 0;
-		int damage = 0;
-		int radius = 0;
-		if(PP.getSkillLevel(SkillType.MINING) >= 125 && PP.getSkillLevel(SkillType.MINING) < 250)
-			rank = 1;
-		if(PP.getSkillLevel(SkillType.MINING) >= 250 && PP.getSkillLevel(SkillType.MINING) < 375){
-			rank = 2;
-			radius = 1;
-		}
-		if(PP.getSkillLevel(SkillType.MINING) >= 375 && PP.getSkillLevel(SkillType.MINING) < 500){
-			rank = 3;
-			radius = 1;
-		}
-		if(PP.getSkillLevel(SkillType.MINING) >= 500 && PP.getSkillLevel(SkillType.MINING) < 625){
-			rank = 4;
-			damage = 25;
-			radius = 2;
-		}
-		if(PP.getSkillLevel(SkillType.MINING) >= 625 && PP.getSkillLevel(SkillType.MINING) < 750){
-			rank = 5;
-			damage = 25;
-			radius = 2;
-		}
-		if(PP.getSkillLevel(SkillType.MINING) >= 750 && PP.getSkillLevel(SkillType.MINING) < 875){
-			rank = 6;
-			damage = 50;
-			radius = 3;
-		}
-		if(PP.getSkillLevel(SkillType.MINING) >= 875 && PP.getSkillLevel(SkillType.MINING) < 1000){
-			rank = 7;
-			damage = 50;
-			radius = 3;
-		}
-		if(PP.getSkillLevel(SkillType.MINING) >= 1000){
-			rank = 8;
-			damage = 100;
-			radius = 4;
-		}
-		
-		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Mining.SkillName") }));
-		player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Mining") }));
+        Player player = (Player) sender;
+        PlayerProfile PP = Users.getProfile(player);
 
-		if (mcPermissions.getInstance().mining(player))
-			player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
+        skillValue = (float) PP.getSkillLevel(SkillType.MINING);
+        dataCalculations(skillValue);
 
-		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
-		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining1_0"), mcLocale.getString("m.EffectsMining1_1") }));
-		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining2_0"), mcLocale.getString("m.EffectsMining2_1") }));
-		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining3_0"), mcLocale.getString("m.EffectsMining3_1") }));
-		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining4_0"), mcLocale.getString("m.EffectsMining4_1") }));
-		player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsMining5_0"), mcLocale.getString("m.EffectsMining5_1") }));
-		player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
-		player.sendMessage(mcLocale.getString("m.MiningDoubleDropChance", new Object[] { percentage }));
-		player.sendMessage(mcLocale.getString("m.MiningSuperBreakerLength", new Object[] { ticks }));
-		if (PP.getSkillLevel(SkillType.MINING) < 125)
-			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockMining1") }));
-		else{
-			switch (rank){
-			case 1:
-				player.sendMessage(mcLocale.getString("m.MiningBlastMining", new Object[] { rank, mcLocale.getString("m.BlastMining1") }));
-				break;
-			case 2:
-				player.sendMessage(mcLocale.getString("m.MiningBlastMining", new Object[] { rank, mcLocale.getString("m.BlastMining2") }));
-				break;
-			case 3:
-				player.sendMessage(mcLocale.getString("m.MiningBlastMining", new Object[] { rank, mcLocale.getString("m.BlastMining3") }));
-				break;
-			case 4:
-				player.sendMessage(mcLocale.getString("m.MiningBlastMining", new Object[] { rank, mcLocale.getString("m.BlastMining4") }));
-				break;
-			case 5:
-				player.sendMessage(mcLocale.getString("m.MiningBlastMining", new Object[] { rank, mcLocale.getString("m.BlastMining5") }));
-				break;
-			case 6:
-				player.sendMessage(mcLocale.getString("m.MiningBlastMining", new Object[] { rank, mcLocale.getString("m.BlastMining6") }));
-				break;
-			case 7:
-				player.sendMessage(mcLocale.getString("m.MiningBlastMining", new Object[] { rank, mcLocale.getString("m.BlastMining7") }));
-				break;
-			case 8:
-				player.sendMessage(mcLocale.getString("m.MiningBlastMining", new Object[] { rank, mcLocale.getString("m.BlastMining8") }));
-				break;
-			}
-		}
-		if (PP.getSkillLevel(SkillType.MINING) < 250)
-			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockMining2") }));
-		else
-			player.sendMessage(mcLocale.getString("m.MiningBiggerBombs", new Object[] { radius }));
-		if (PP.getSkillLevel(SkillType.MINING) < 500)
-			player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("m.AbilLockMining3") }));
-		else
-			player.sendMessage(mcLocale.getString("m.MiningDemolitionsExpertDamageDecrease", new Object[] { damage }));
-		
-		Page.grabGuidePageForSkill(SkillType.MINING, player, args);
-		
-		return true;
-	}
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Mining.SkillName") }));
+        player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Mining") }));
+        player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
+
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.0"), mcLocale.getString("Mining.Effect.1") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.2"), mcLocale.getString("Mining.Effect.3") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.4"), mcLocale.getString("Mining.Effect.5") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.6"), mcLocale.getString("Mining.Effect.7") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.8"), mcLocale.getString("Mining.Effect.9") }));
+
+        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
+        player.sendMessage(mcLocale.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }));
+        player.sendMessage(mcLocale.getString("Mining.Ability.Length", new Object[] { superBreakerLength }));
+
+        if (PP.getSkillLevel(SkillType.MINING) < 125) {
+            player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("Mining.Ability.Locked.0") }));
+        }
+        else {
+            player.sendMessage(mcLocale.getString("Mining.Blast.Rank", new Object[] { blastMiningRank, mcLocale.getString("Mining.Blast.Effect." + (blastMiningRank - 1)) }));
+        }
+
+        if (PP.getSkillLevel(SkillType.MINING) < 250) {
+            player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("Mining.Ability.Locked.1") }));
+        }
+        else {
+            player.sendMessage(mcLocale.getString("m.MiningBiggerBombs", new Object[] { blastRadiusIncrease }));
+        }
+
+        if (PP.getSkillLevel(SkillType.MINING) < 500) {
+            player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("Mining.Ability.Locked.2") }));
+        }
+        else {
+            player.sendMessage(mcLocale.getString("m.MiningDemolitionsExpertDamageDecrease", new Object[] { blastDamageDecrease }));
+        }
+
+        Page.grabGuidePageForSkill(SkillType.MINING, player, args);
+
+        return true;
+    }
+
+    private void dataCalculations(float skillValue) {
+        superBreakerLength = String.valueOf(2 + ((int) skillValue / 50));
+
+        if (skillValue >= 1000) {
+            blastMiningRank = 8;
+            blastDamageDecrease = 100;
+            blastRadiusIncrease = 4;
+            doubleDropChance = "100";
+        }
+        else if (skillValue >= 875) {
+            blastMiningRank = 7;
+            blastDamageDecrease = 50;
+            blastRadiusIncrease = 3;
+            doubleDropChance = String.valueOf(skillValue / 10);
+        }
+        else if (skillValue >= 750) {
+            blastMiningRank = 6;
+            blastDamageDecrease = 50;
+            blastRadiusIncrease = 3;
+            doubleDropChance = String.valueOf(skillValue / 10);
+        }
+        else if (skillValue >= 625) {
+            blastMiningRank = 5;
+            blastDamageDecrease = 25;
+            blastRadiusIncrease = 2;
+            doubleDropChance = String.valueOf(skillValue / 10);
+        }
+        else if (skillValue >= 500) {
+            blastMiningRank = 4;
+            blastDamageDecrease = 25;
+            blastRadiusIncrease = 2;
+            doubleDropChance = String.valueOf(skillValue / 10);
+        }
+        else if (skillValue >= 375) {
+            blastMiningRank = 3;
+            blastDamageDecrease = 0;
+            blastRadiusIncrease = 1;
+            doubleDropChance = String.valueOf(skillValue / 10);
+        }
+        else if (skillValue >= 250) {
+            blastMiningRank = 2;
+            blastDamageDecrease = 0;
+            blastRadiusIncrease = 1;
+            doubleDropChance = String.valueOf(skillValue / 10);
+        }
+        else if (skillValue >= 125) {
+            blastMiningRank = 1;
+            blastDamageDecrease = 0;
+            blastRadiusIncrease = 0;
+            doubleDropChance = String.valueOf(skillValue / 10);
+        }
+        else {
+            blastMiningRank = 0;
+            blastDamageDecrease = 0;
+            blastRadiusIncrease = 0;
+            doubleDropChance = String.valueOf(skillValue / 10);
+        }
+    }
 }

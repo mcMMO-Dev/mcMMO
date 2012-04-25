@@ -153,7 +153,9 @@ public class Repair {
      * @param skillLevel The skill level of the player whose rank is being checked
      * @return The player's current Arcane Forging rank
      */
-    public static int getArcaneForgingRank(int skillLevel) {
+    public static int getArcaneForgingRank(PlayerProfile PP) {
+        int skillLevel = PP.getSkillLevel(SkillType.REPAIR);
+
         if (skillLevel >= LoadProperties.arcaneRank4) {
             return 4;
         }
@@ -184,7 +186,7 @@ public class Repair {
             return;
         }
 
-        int rank = getArcaneForgingRank(Users.getProfile(player).getSkillLevel(SkillType.REPAIR));
+        int rank = getArcaneForgingRank(Users.getProfile(player));
 
         if (rank == 0 || !mcPermissions.getInstance().arcaneForging(player)) {
             for (Enchantment x : enchants.keySet()) {
