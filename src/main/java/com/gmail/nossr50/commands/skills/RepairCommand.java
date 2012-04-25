@@ -15,6 +15,10 @@ import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.util.Page;
 
 public class RepairCommand implements CommandExecutor {
+    private float skillValue;
+    private String repairMasteryBonus;
+    private String superRepairChance;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandHelper.noConsoleUsage(sender)) {
@@ -28,9 +32,8 @@ public class RepairCommand implements CommandExecutor {
         Player player = (Player) sender;
         PlayerProfile PP = Users.getProfile(player);
 
-        float skillvalue = (float) PP.getSkillLevel(SkillType.REPAIR);
-        String percentage = String.valueOf((skillvalue / 1000) * 100);
-        String repairmastery = String.valueOf((skillvalue / 500) * 100);
+        skillValue = (float) PP.getSkillLevel(SkillType.REPAIR);
+        dataCalculations(skillValue);
 
         int arcaneForgingRank = Repair.getArcaneForgingRank(PP);
 
@@ -39,26 +42,32 @@ public class RepairCommand implements CommandExecutor {
         player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR) }));
 
         player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair1_0"), mcLocale.getString("m.EffectsRepair1_1") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair2_0"), mcLocale.getString("m.EffectsRepair2_1") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair3_0"), mcLocale.getString("m.EffectsRepair3_1") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair4_0", new Object[] { LoadProperties.repairDiamondLevel }), mcLocale.getString("m.EffectsRepair4_1") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("m.EffectsRepair5_0"), mcLocale.getString("m.EffectsRepair5_1") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.0"), mcLocale.getString("Repair.Effect.1") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.2"), mcLocale.getString("Repair.Effect.3") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.4"), mcLocale.getString("Repair.Effect.5") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.6", new Object[] { LoadProperties.repairDiamondLevel }), mcLocale.getString("Repair.Effect.7") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.8"), mcLocale.getString("Repair.Effect.9") }));
 
         player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
-        player.sendMessage(mcLocale.getString("m.RepairRepairMastery", new Object[] { repairmastery }));
-        player.sendMessage(mcLocale.getString("m.RepairSuperRepairChance", new Object[] { percentage }));
-        player.sendMessage(mcLocale.getString("m.ArcaneForgingRank", new Object[] { arcaneForgingRank }));
-        player.sendMessage(mcLocale.getString("m.ArcaneEnchantKeepChance", new Object[] { Repair.getEnchantChance(arcaneForgingRank) }));
-        player.sendMessage(mcLocale.getString("m.ArcaneEnchantDowngradeChance", new Object[] { Repair.getDowngradeChance(arcaneForgingRank) }));
-        
+        player.sendMessage(mcLocale.getString("Repair.Skills.Mastery", new Object[] { repairMasteryBonus }));
+        player.sendMessage(mcLocale.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }));
+        player.sendMessage(mcLocale.getString("Repair.Arcane.Rank", new Object[] { arcaneForgingRank }));
+        player.sendMessage(mcLocale.getString("Repair.Arcane.Chance.Success", new Object[] { Repair.getEnchantChance(arcaneForgingRank) }));
+        player.sendMessage(mcLocale.getString("Repair.Arcane.Chance.Downgrade", new Object[] { Repair.getDowngradeChance(arcaneForgingRank) }));
+
         Page.grabGuidePageForSkill(SkillType.REPAIR, player, args);
-        
+
         return true;
     }
 
     private void dataCalculations(float skillValue) {
+        repairMasteryBonus = String.valueOf(skillValue / 5);
+
         if (skillValue >= 1000) {
+            superRepairChance = "100";
+        }
+        else {
+            superRepairChance = String.valueOf(skillValue / 10);
         }
     }
 }

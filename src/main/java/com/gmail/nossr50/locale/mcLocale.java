@@ -33,7 +33,7 @@ public class mcLocale {
                     RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(myLocale));
                 }
                 catch (MissingResourceException e) {
-                    RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, new Locale("en_us"));
+                    RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, new Locale("en-US"));
                 }
             }
 
