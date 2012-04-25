@@ -99,8 +99,7 @@ public class mcMMO extends JavaPlugin {
         this.config2 = new LoadTreasures(this);
         this.config2.load();
 
-        Party.getInstance().loadParties();
-        new Party(this);
+        new Party(this).loadParties();
 
         if (!LoadProperties.useMySQL) {
             Users.loadUsers();
