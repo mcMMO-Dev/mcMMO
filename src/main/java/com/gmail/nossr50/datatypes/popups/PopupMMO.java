@@ -39,14 +39,6 @@ public class PopupMMO extends GenericPopup {
         HUDButton.setY(center_y / 2);
         HUDButton.setDirty(true);
 
-        if (Config.partybar) {
-            PartyButton = new ButtonPartyToggle(PP);
-            PartyButton.setX(center_x - (PartyButton.getWidth() / 2));
-            PartyButton.setY((center_y / 2) + PartyButton.getHeight());
-            PartyButton.setDirty(true);
-            this.attachWidget(plugin, PartyButton);
-        }
-
         EscapeButton = new ButtonEscape();
         EscapeButton.setX(center_x - (EscapeButton.getWidth() / 2));
         EscapeButton.setY((center_y / 2) + (HUDButton.getHeight() * 2) + 5);

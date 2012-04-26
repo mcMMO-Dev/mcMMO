@@ -185,12 +185,12 @@ public class HUDmmo {
         xpbg.setPriority(RenderPriority.Low);
         xpbg.setDirty(true);
 
-        if (Config.xpbar) {
+        if (Config.getSpoutXPBarEnabled()) {
             sPlayer.getMainScreen().attachWidget(plugin, xpbar);
             sPlayer.getMainScreen().attachWidget(plugin, xpfill);
             sPlayer.getMainScreen().attachWidget(plugin, xpbg);
 
-            if (Config.xpicon) {
+            if (Config.getSpoutXPBarIconEnabled()) {
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon);
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon_bg);
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon_border);
@@ -206,26 +206,26 @@ public class HUDmmo {
      * @param sPlayer Player to initialize XP bar for
      */
     public void initializeXpBarDisplayStandard(SpoutPlayer sPlayer) {
-        if (Config.xpbar) {
+        if (Config.getSpoutXPBarEnabled()) {
             xpbar = new GenericTexture();
 
             ((GenericTexture) xpbar).setUrl("xpbar_inc000.png");
 
-            xpbar.setX(Config.xpbar_x);
-            xpbar.setY(Config.xpbar_y);
+            xpbar.setX(Config.getSpoutXPBarXPosition());
+            xpbar.setY(Config.getSpoutXPBarYPosition());
             xpbar.setHeight(8);
             xpbar.setWidth(256);
 
             sPlayer.getMainScreen().attachWidget(plugin, xpbar);
 
-            if (Config.xpicon) {
+            if (Config.getSpoutXPBarIconEnabled()) {
                 xpicon = new GenericTexture();
 
                 xpicon.setUrl("Icon.png");
                 xpicon.setHeight(16);
                 xpicon.setWidth(32);
-                xpicon.setX(Config.xpicon_x);
-                xpicon.setY(Config.xpicon_y);
+                xpicon.setX(Config.getSpoutXPIconXPosition());
+                xpicon.setY(Config.getSpoutXPIconYPosition());
                 xpicon.setDirty(true);
 
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon);
@@ -241,25 +241,25 @@ public class HUDmmo {
      * @param sPlayer Player to initialize XP bar for
      */
     private void initializeXpBarDisplaySmall(SpoutPlayer sPlayer) {
-        if (Config.xpbar) {
+        if (Config.getSpoutXPBarEnabled()) {
             xpbar = new GenericTexture();
 
             ((GenericTexture)xpbar).setUrl("xpbar_inc000.png");
             xpbar.setX(center_x - 64);
-            xpbar.setY(Config.xpbar_y);
+            xpbar.setY(Config.getSpoutXPBarYPosition());
             xpbar.setHeight(4);
             xpbar.setWidth(128);
 
             sPlayer.getMainScreen().attachWidget(plugin, xpbar);
 
-            if (Config.xpicon) {
+            if (Config.getSpoutXPBarIconEnabled()) {
                 xpicon = new GenericTexture();
 
                 xpicon.setUrl("Icon.png");
                 xpicon.setHeight(8);
                 xpicon.setWidth(16);
                 xpicon.setX(center_x - (8 + 64));
-                xpicon.setY(Config.xpicon_y + 2);
+                xpicon.setY(Config.getSpoutXPIconYPosition() + 2);
                 xpicon.setDirty(true);
 
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon);
@@ -276,7 +276,7 @@ public class HUDmmo {
      * @param PP Profile of the given player
      */
     private void updateXpBarStandard(Player player, PlayerProfile PP) {
-        if (!Config.xpbar) {
+        if (!Config.getSpoutXPBarEnabled()) {
             return;
         }
 
@@ -302,7 +302,7 @@ public class HUDmmo {
      * @param PP Profile of the given player
      */
     private void updateXpBarRetro(Player player, PlayerProfile PP) {
-        if (!Config.xpbar) {
+        if (!Config.getSpoutXPBarEnabled()) {
             return;
         }
 

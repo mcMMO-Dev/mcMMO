@@ -87,7 +87,7 @@ public class BlockChecks {
             break;
         }
 
-        if (Material.getMaterial(Config.anvilID).equals(material)) {
+        if (Material.getMaterial(Config.getRepairAnvilId()).equals(material)) {
             return false;
         }
         else {

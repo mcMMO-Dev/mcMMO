@@ -134,7 +134,7 @@ public class mcMMO extends JavaPlugin {
         //Schedule Spout Activation 1 second after start-up
         scheduler.scheduleSyncDelayedTask(this, new SpoutStart(this), 20);
         //Periodic save timer (Saves every 10 minutes)
-        scheduler.scheduleSyncRepeatingTask(this, new mcSaveTimer(this), 0, Config.saveInterval * 1200);
+        scheduler.scheduleSyncRepeatingTask(this, new mcSaveTimer(this), 0, Config.getSaveInterval() * 1200);
         //Regen & Cooldown timer (Runs every second)
         scheduler.scheduleSyncRepeatingTask(this, new mcTimer(this), 0, 20);
         //Bleed timer (Runs every two seconds)
@@ -142,7 +142,7 @@ public class mcMMO extends JavaPlugin {
 
         registerCommands();
 
-        if (Config.statsTracking) {
+        if (Config.getStatsTrackingEnabled()) {
             //Plugin Metrics running in a new thread
             new Thread(new Runnable() {
                 public void run() {

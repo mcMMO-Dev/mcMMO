@@ -247,7 +247,7 @@ public class Combat {
      * @param cause DamageCause to pass to damage event
      */
     private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
-        if (Config.eventCallback) {
+        if (Config.getEventCallbackEnabled()) {
             EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
@@ -270,7 +270,7 @@ public class Combat {
      * @param attacker Player to pass to event as damager
      */
     private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
-        if (Config.eventCallback) {
+        if (Config.getEventCallbackEnabled()) {
             EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
@@ -395,7 +395,7 @@ public class Combat {
         double baseXP = 0;
 
         if (target instanceof Player) {
-            if (!Config.pvpxp) {
+            if (!Config.getExperienceGainsPlayerVersusPlayerEnabled()) {
                 return;
             }
 

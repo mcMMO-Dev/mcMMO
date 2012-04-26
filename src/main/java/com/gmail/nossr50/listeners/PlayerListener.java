@@ -167,7 +167,7 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (mcPermissions.getInstance().motd(player) && Config.enableMotd) {
+        if (mcPermissions.getInstance().motd(player) && Config.getMOTDEnabled()) {
             player.sendMessage(mcLocale.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
             player.sendMessage(mcLocale.getString("mcMMO.Wiki"));
         }
@@ -204,7 +204,7 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_BLOCK:
 
             /* REPAIR CHECKS */
-            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == Config.anvilID && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
+            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == Config.getRepairAnvilId() && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
                 Repair.repairCheck(player, is);
                 event.setCancelled(true);
                 player.updateInventory();

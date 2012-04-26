@@ -118,7 +118,7 @@ public class BlockListener implements Listener {
             block.setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
         }
 
-        if (id == Config.anvilID && Config.anvilmessages) {
+        if (id == Config.getRepairAnvilId() && Config.getRepairAnvilMessagesEnabled()) {
             Repair.placedAnvilCheck(player, id);
         }
     }

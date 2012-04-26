@@ -26,7 +26,7 @@ public class XplockCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Config.spoutEnabled || !Config.xpbar || !Config.getCommandXPLockEnabled()) {
+        if (!Config.spoutEnabled || !Config.getSpoutXPBarEnabled() || !Config.getCommandXPLockEnabled()) {
             sender.sendMessage(mcLocale.getString("Commands.Disabled"));
             return true;
         }

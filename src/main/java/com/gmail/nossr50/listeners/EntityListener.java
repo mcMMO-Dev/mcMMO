@@ -165,7 +165,7 @@ public class EntityListener implements Listener {
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         SpawnReason reason = event.getSpawnReason();
 
-        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !Config.xpGainsMobSpawners) {
+        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !Config.getExperienceGainsMobspawnersEnabled()) {
             event.getEntity().setMetadata("mcmmoFromMobSpawner", new FixedMetadataValue(plugin, true));
         }
     }

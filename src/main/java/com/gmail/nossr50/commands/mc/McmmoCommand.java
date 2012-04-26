@@ -18,7 +18,7 @@ public class McmmoCommand implements CommandExecutor {
         String[] mcSplit = description.split(",");
         sender.sendMessage(mcSplit);
 
-        if (Config.donateMessage) {
+        if (Config.getDonateMessageEnabled()) {
             if (Config.spoutEnabled && sender instanceof SpoutPlayer) {
                 SpoutPlayer sPlayer = (SpoutPlayer) sender;
 

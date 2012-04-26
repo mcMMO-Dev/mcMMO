@@ -213,7 +213,7 @@ public class Skills {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
                 if (sPlayer.isSpoutCraftEnabled()) {
-                    if (Config.xpbar) {
+                    if (Config.getSpoutXPBarEnabled()) {
                         SpoutStuff.updateXpBar(player);
                     }
 
@@ -237,7 +237,7 @@ public class Skills {
         if (skillups == 0 && Config.spoutEnabled && player instanceof SpoutPlayer) {
             SpoutPlayer sPlayer = (SpoutPlayer) player;
             if (sPlayer.isSpoutCraftEnabled()) {
-                if (Config.xpbar) {
+                if (Config.getSpoutXPBarEnabled()) {
                     SpoutStuff.updateXpBar(player);
                 }
             }

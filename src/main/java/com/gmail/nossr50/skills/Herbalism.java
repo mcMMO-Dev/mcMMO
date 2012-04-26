@@ -45,13 +45,13 @@ public class Herbalism {
             player.updateInventory();
 
             if (m.blockBreakSimulate(block, player, false)) {
-                if (Config.enableSmoothToMossy && type.equals(Material.SMOOTH_BRICK)) {
+                if (Config.getHerbalismGreenThumbSmoothbrickToMossy() && type.equals(Material.SMOOTH_BRICK)) {
                     block.setData((byte) 0x1); //Set type of the brick to mossy
                 }
-                else if (Config.enableDirtToGrass && type.equals(Material.DIRT)) {
+                else if (Config.getHerbalismGreenThumbDirtToGrass() && type.equals(Material.DIRT)) {
                     block.setType(Material.GRASS);
                 }
-                else if (Config.enableCobbleToMossy && type.equals(Material.COBBLESTONE)) {
+                else if (Config.getHerbalismGreenThumbCobbleToMossy() && type.equals(Material.COBBLESTONE)) {
                     block.setType(Material.MOSSY_COBBLESTONE);
                 }
             }

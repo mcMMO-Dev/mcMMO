@@ -4,15 +4,19 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.HUDType;
 
 public class Config extends ConfigLoader{
+    
+    public static int xpGainMultiplier = getExperienceGainsGlobalMultiplier();
 
     /*
      * GENERAL SETTINGS
      */
 
     /* General Settings */
-    public static String locale;
-    public static Boolean enableMotd, statsTracking, eventCallback;
-    public static int saveInterval;
+    public static String getLocale() { return config.getString("General.Locale", "en_us"); }
+    public static boolean getMOTDEnabled() { return config.getBoolean("General.MOTD_Enabled", true); }
+    public static int getSaveInterval() { return config.getInt("General.Save_Interval", 10); }
+    public static boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking", true); }
+    public static boolean getEventCallbackEnabled() { return config.getBoolean("General.Event_Callback", true); }
 
     /* mySQL */
     public static boolean getUseMySQL() { return config.getBoolean("MySQL.Enabled", false); }
@@ -52,8 +56,8 @@ public class Config extends ConfigLoader{
     public static boolean getCommandAdminChatAEnabled() { return config.getBoolean("Commands.a.Enabled", true); }
     public static boolean getCommandPartyChatPEnabled() { return config.getBoolean("Commands.p.Enabled", true); }
 
-    public static int ptpCommandCooldown;
-    public static Boolean donateMessage;
+    public static int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 30); }
+    public static boolean getDonateMessageEnabled() { return config.getBoolean("Commands.mcmmo.Donate_Message", true); }
 
     /* Items */
     public static int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
@@ -120,8 +124,9 @@ public class Config extends ConfigLoader{
     public static int getHerbalismXPVines() { return config.getInt("Experience.Herbalism.Vines", 10); }
     public static boolean getHerbalismHungerBonusEnabled() { return config.getBoolean("Skills.Herbalism.Hunger_Bonus", true); }
     public static boolean getHerbalismWheatRegrowth() { return config.getBoolean("Skills.Herbalism.Instant_Wheat_Regrowth", true); }
-
-    public static Boolean enableCobbleToMossy, enableSmoothToMossy, enableDirtToGrass;
+    public static boolean getHerbalismGreenThumbCobbleToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true); }
+    public static boolean getHerbalismGreenThumbSmoothbrickToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true); }
+    public static boolean getHerbalismGreenThumbDirtToGrass() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Dirt_To_Grass", true); }
 
     /* Mining */
     public static int getMiningXPGoldOre() { return config.getInt("Experience.Mining.Gold", 250); } 
@@ -141,11 +146,24 @@ public class Config extends ConfigLoader{
     public static int getDetonatorItemID() { return config.getInt("Skills.Mining.Detonator_ID", 259); }
 
     /* Repair */
-    public static Boolean repairArmor, repairTools;
-    public static Boolean anvilmessages;
-    public static int rWood, rStone, rIron, rGold, rDiamond, rString, rLeather;
-    public static int anvilID;
-    public static int repairStoneLevel, repairIronLevel, repairGoldLevel, repairDiamondLevel, repairStringLevel;
+    public static boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
+    public static int getRepairAnvilId() { return config.getInt("Skills.Repair.Anvil_ID", 42); }
+
+    public static int getRepairGoldMaterial() { return config.getInt("Skills.Repair.Gold.ID", 266); }
+    public static int getRepairStoneMaterial() { return config.getInt("Skills.Repair.Stone.ID", 4); }
+    public static int getRepairWoodMaterial() { return config.getInt("Skills.Repair.Wood.ID", 5); }
+    public static int getRepairDiamondMaterial() { return config.getInt("Skills.Repair.Diamond.ID", 264); }
+    public static int getRepairIronMaterial() { return config.getInt("Skills.Repair.Iron.ID", 265); }
+    public static int getRepairStringMaterial() { return config.getInt("Skills.Repair.String.ID", 287); }
+    public static int getRepairLeatherMaterial() { return config.getInt("Skills.Repair.Leather.ID", 334); }
+    
+    public static boolean getRepairArmorAllowed() { return config.getBoolean("Skills.Repair.Can_Repair_Armor", true); }
+    public static boolean getRepairToolsAllowed() { return config.getBoolean("Skills.Repair.Can_Repair_Tools", true); }
+    public static int getRepairDiamondLevelRequirement() { return config.getInt("Skills.Repair.Diamond.Level_Required", 50); }
+    public static int getRepairIronLevelRequirement() { return config.getInt("Skills.Repair.Iron.Level_Required", 0); }
+    public static int getRepairGoldLevelRequirement() { return config.getInt("Skills.Repair.Gold.Level_Required", 0); }
+    public static int getRepairStoneLevelRequirement() { return config.getInt("Skills.Repair.Stone.Level_Required", 0); }
+    public static int getRepairStringLevelRequirement() { return config.getInt("Skills.Repair.String.Level_Required", 0); }
 
     /* Taming */
     public static int getTamingXPWolf() { return config.getInt("Experience.Taming.Animal_Taming.Wolf", 250); }
@@ -160,10 +178,20 @@ public class Config extends ConfigLoader{
     public static int getWoodcuttingXPJungle() { return config.getInt("Experience.Woodcutting.Jungle", 100); }
 
     /* Arcane Forging */
-    public static Boolean mayDowngradeEnchants, mayLoseEnchants;
-    public static int arcaneRank1, arcaneRank2, arcaneRank3, arcaneRank4;
-    public static int downgradeRank1, downgradeRank2, downgradeRank3, downgradeRank4;
-    public static int keepEnchantsRank1, keepEnchantsRank2, keepEnchantsRank3, keepEnchantsRank4;
+    public static boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Arcane_Forging.Downgrades.Enabled", true); }
+    public static int getArcaneForgingDowngradeChanceRank1() { return config.getInt("Arcane_Forging.Downgrades.Chance.Rank_1", 75); }
+    public static int getArcaneForgingDowngradeChanceRank2() { return config.getInt("Arcane_Forging.Downgrades.Chance.Rank_2", 50); }
+    public static int getArcaneForgingDowngradeChanceRank3() { return config.getInt("Arcane_Forging.Downgrades.Chance.Rank_3", 25); }
+    public static int getArcaneForgingDowngradeChanceRank4() { return config.getInt("Arcane_Forging.Downgrades.Chance.Rank_4", 15); }
+    public static boolean getArcaneForgingEnchantLossEnabled() { return config.getBoolean("Arcane_Forging.May_Lose_Enchants", true); }
+    public static int getArcaneForgingKeepEnchantsChanceRank1() { return config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10); }
+    public static int getArcaneForgingKeepEnchantsChanceRank2() { return config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20); }
+    public static int getArcaneForgingKeepEnchantsChanceRank3() { return config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30); }
+    public static int getArcaneForgingKeepEnchantsChanceRank4() { return config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40); }
+    public static int getArcaneForgingRankLevels1() { return config.getInt("Arcane_Forging.Rank_Levels.Rank_1", 100); }
+    public static int getArcaneForgingRankLevels2() { return config.getInt("Arcane_Forging.Rank_Levels.Rank_2", 250); }
+    public static int getArcaneForgingRankLevels3() { return config.getInt("Arcane_Forging.Rank_Levels.Rank_3", 500); }
+    public static int getArcaneForgingRankLevels4() { return config.getInt("Arcane_Forging.Rank_Levels.Rank_4", 750); }
 
     /* Level Caps */
     public static int getLevelCapAcrobatics() { return config.getInt("Skills.Acrobatics.Level_Cap", 0); }
@@ -185,8 +213,9 @@ public class Config extends ConfigLoader{
      */
 
     /* General Settings */
-    public static Boolean xpGainsMobSpawners, pvpxp;
-    public static int xpGainMultiplier;
+    public static boolean getExperienceGainsMobspawnersEnabled() { return config.getBoolean("Experience.Gains.Mobspawners.Enabled", false); }
+    public static boolean getExperienceGainsPlayerVersusPlayerEnabled() { return config.getBoolean("Experience.PVP.Rewards", true); }
+    public static int getExperienceGainsGlobalMultiplier() { return config.getInt("Experience.Gains.Multiplier.Global", 1); }
 
     /* Combat XP Multipliers */
     public static double getPlayerVersusPlayerXP() { return config.getDouble("Experience.Gains.Multiplier.PVP", 1.0); }
@@ -228,12 +257,13 @@ public class Config extends ConfigLoader{
     public static boolean spoutEnabled;
     public static boolean getShowPowerLevelForSpout() { return config.getBoolean("Spout.HUD.Show_Power_Level", true); }
 
-    /* Spout Party HUD */
-    public static Boolean showDisplayName, showFaces, partybar;
-
     /* Spout XP Bar */
-    public static Boolean xpbar, xpicon;
-    public static int xpbar_x, xpbar_y, xpicon_x, xpicon_y;
+    public static boolean getSpoutXPBarEnabled() { return config.getBoolean("Spout.XP.Bar.Enabled", true); }
+    public static boolean getSpoutXPBarIconEnabled() { return config.getBoolean("Spout.XP.Icon.Enabled", true); }
+    public static int getSpoutXPBarXPosition() { return config.getInt("Spout.XP.Bar.X_POS", 95); }
+    public static int getSpoutXPBarYPosition() { return config.getInt("Spout.XP.Bar.Y_POS", 6); }
+    public static int getSpoutXPIconXPosition() { return config.getInt("Spout.XP.Icon.X_POS", 78); }
+    public static int getSpoutXPIconYPosition() { return config.getInt("Spout.XP.Icon.Y_POS", 2); }
 
     /* Spout HUD Colors */
     public static double getSpoutRetroHUDXPBorderRed() { return config.getDouble("Spout.HUD.Retro.Colors.Border.RED", 0.0); }
@@ -316,71 +346,5 @@ public class Config extends ConfigLoader{
                 defaulthud = x;
             }
         }
-
-        donateMessage = config.getBoolean("Commands.mcmmo.Donate_Message", true);
-        xpGainsMobSpawners = config.getBoolean("Experience.Gains.Mobspawners.Enabled", false);
-        
-        xpbar = config.getBoolean("Spout.XP.Bar.Enabled", true);
-        xpicon = config.getBoolean("Spout.XP.Icon.Enabled", true);
-        xpbar_x = config.getInt("Spout.XP.Bar.X_POS", 95);
-        xpbar_y = config.getInt("Spout.XP.Bar.Y_POS", 6);
-        xpicon_x = config.getInt("Spout.XP.Icon.X_POS", 78);
-        xpicon_y = config.getInt("Spout.XP.Icon.Y_POS", 2);
-
-        showFaces = config.getBoolean("Spout.Party.HUD.Show_Faces", true);
-        showDisplayName = config.getBoolean("Spout.Party.HUD.Show_Display_Name", false);
-        partybar = config.getBoolean("Spout.Party.HUD.Enabled", true);
-
-        locale = config.getString("General.Locale", "en_us");
-        enableMotd = config.getBoolean("General.MOTD_Enabled", true);
-        saveInterval = config.getInt("General.Save_Interval", 10);
-        statsTracking = config.getBoolean("General.Stats_Tracking", true);
-        eventCallback = config.getBoolean("General.Event_Callback", true);
-
-        enableCobbleToMossy = config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
-        enableSmoothToMossy = config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true);
-        enableDirtToGrass = config.getBoolean("Skills.Herbalism.Green_Thumb.Dirt_To_Grass", true);
-
-        xpGainMultiplier = config.getInt("Experience.Gains.Multiplier.Global", 1);
-        
-        
-        pvpxp = config.getBoolean("Experience.PVP.Rewards", true);
-
-        
-        repairArmor = config.getBoolean("Skills.Repair.Can_Repair_Armor", true);
-        repairTools = config.getBoolean("Skills.Repair.Can_Repair_Tools", true);
-        repairDiamondLevel = config.getInt("Skills.Repair.Diamond.Level_Required", 50);
-        repairIronLevel = config.getInt("Skills.Repair.Iron.Level_Required", 0);
-        repairGoldLevel = config.getInt("Skills.Repair.Gold.Level_Required", 0);
-        repairStoneLevel = config.getInt("Skills.Repair.Stone.Level_Required", 0);
-        repairStringLevel = config.getInt("Skills.Repair.String.Level_Required", 0);
-
-        anvilmessages = config.getBoolean("Skills.Repair.Anvil_Messages", true);
-        anvilID = config.getInt("Skills.Repair.Anvil_ID", 42);
-
-        rGold = config.getInt("Skills.Repair.Gold.ID", 266);
-        rStone = config.getInt("Skills.Repair.Stone.ID", 4);
-        rWood = config.getInt("Skills.Repair.Wood.ID", 5);
-        rDiamond = config.getInt("Skills.Repair.Diamond.ID", 264);
-        rIron = config.getInt("Skills.Repair.Iron.ID", 265);
-        rString = config.getInt("Skills.Repair.String.ID", 287);
-        rLeather = config.getInt("Skills.Repair.Leather.ID", 334);
-
-        mayDowngradeEnchants = config.getBoolean("Arcane_Forging.Downgrades.Enabled", true);
-        downgradeRank1 = config.getInt("Arcane_Forging.Downgrades.Chance.Rank_1", 75);
-        downgradeRank2 = config.getInt("Arcane_Forging.Downgrades.Chance.Rank_2", 50);
-        downgradeRank3 = config.getInt("Arcane_Forging.Downgrades.Chance.Rank_3", 25);
-        downgradeRank4 = config.getInt("Arcane_Forging.Downgrades.Chance.Rank_4", 15);
-        mayLoseEnchants = config.getBoolean("Arcane_Forging.May_Lose_Enchants", true);
-        keepEnchantsRank1 = config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10);
-        keepEnchantsRank2 = config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20);
-        keepEnchantsRank3 = config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30);
-        keepEnchantsRank4 = config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40);
-        arcaneRank1 = config.getInt("Arcane_Forging.Rank_Levels.Rank_1", 100);
-        arcaneRank2 = config.getInt("Arcane_Forging.Rank_Levels.Rank_2", 250);
-        arcaneRank3 = config.getInt("Arcane_Forging.Rank_Levels.Rank_3", 500);
-        arcaneRank4 = config.getInt("Arcane_Forging.Rank_Levels.Rank_4", 750);
-        
-        ptpCommandCooldown = config.getInt("Commands.ptp.Cooldown", 30);
     }
 }
