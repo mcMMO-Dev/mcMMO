@@ -76,7 +76,7 @@ public class Config extends ConfigLoader{
                       serratedStrikeCooldown, skullSplitterCooldown;
 
     /* Thresholds */
-    public static int treeFellerThreshold;
+    public static int getTreeFellerThreshold() { return config.getInt("Abilities.Limits.Tree_Feller_Threshold", 500); }
 
     /*
      * SKILL SETTINGS
@@ -128,7 +128,7 @@ public class Config extends ConfigLoader{
     public static int getMiningXPEndStone() { return config.getInt("Experience.Mining.End_Stone", 150); }
     public static int getMiningXPMossyStone() { return config.getInt("Experience.Mining.Moss_Stone", 30); }
     
-    public static int detonatorID;
+    public static int getDetonatorItemID() { return config.getInt("Skills.Mining.Detonator_ID", 259); }
 
     /* Repair */
     public static Boolean repairArmor, repairTools;
@@ -138,11 +138,16 @@ public class Config extends ConfigLoader{
     public static int repairStoneLevel, repairIronLevel, repairGoldLevel, repairDiamondLevel, repairStringLevel;
 
     /* Taming */
-    public static int mtameWolf, mtameOcelot;
-    public static int bonesConsumedByCOTW, fishConsumedByCOTW;
+    public static int getTamingXPWolf() { return config.getInt("Experience.Taming.Animal_Taming.Wolf", 250); }
+    public static int getTamingXPOcelot() { return config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500); }
+    public static int getTamingCOTWWolfCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10); }
+    public static int getTamingCOTWOcelotCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10); }
 
     /* Woodcutting */
-    public static int moak, mbirch, mspruce, mjungle;
+    public static int getWoodcuttingXPOak() { return config.getInt("Experience.Woodcutting.Oak", 70); }
+    public static int getWoodcuttingXPBirch() { return config.getInt("Experience.Woodcutting.Birch", 90); }
+    public static int getWoodcuttingXPSpruce() { return config.getInt("Experience.Woodcutting.Spruce", 80); }
+    public static int getWoodcuttingXPJungle() { return config.getInt("Experience.Woodcutting.Jungle", 100); }
 
     /* Arcane Forging */
     public static Boolean mayDowngradeEnchants, mayLoseEnchants;
@@ -306,10 +311,7 @@ public class Config extends ConfigLoader{
 
         donateMessage = config.getBoolean("Commands.mcmmo.Donate_Message", true);
         xpGainsMobSpawners = config.getBoolean("Experience.Gains.Mobspawners.Enabled", false);
-
-        bonesConsumedByCOTW = config.getInt("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10);
-        fishConsumedByCOTW = config.getInt("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10);
-
+        
         xpbar = config.getBoolean("Spout.XP.Bar.Enabled", true);
         xpicon = config.getBoolean("Spout.XP.Icon.Enabled", true);
         xpbar_x = config.getInt("Spout.XP.Bar.X_POS", 95);
@@ -321,15 +323,9 @@ public class Config extends ConfigLoader{
         showDisplayName = config.getBoolean("Spout.Party.HUD.Show_Display_Name", false);
         partybar = config.getBoolean("Spout.Party.HUD.Enabled", true);
 
-        moak = config.getInt("Experience.Woodcutting.Oak", 70);
-        mbirch = config.getInt("Experience.Woodcutting.Birch", 90);
-        mspruce = config.getInt("Experience.Woodcutting.Spruce", 80);
-        mjungle = config.getInt("Experience.Woodcutting.Jungle", 100);
-
         
 
-        mtameWolf = config.getInt("Experience.Taming.Animal_Taming.Wolf", 250);
-        mtameOcelot = config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500);
+        
 
         
 
@@ -338,7 +334,6 @@ public class Config extends ConfigLoader{
         greenTerraCooldown = config.getInt("Abilities.Cooldowns.Green_Terra", 240);
         superBreakerCooldown = config.getInt("Abilities.Cooldowns.Super_Breaker", 240);
         gigaDrillBreakerCooldown = config.getInt("Abilities.Cooldowns.Giga_Drill_Breaker", 240);
-        treeFellerThreshold = config.getInt("Abilities.Limits.Tree_Feller_Threshold", 500);
         treeFellerCooldown = config.getInt("Abilities.Cooldowns.Tree_Feller", 240);
         berserkCooldown = config.getInt("Abilities.Cooldowns.Berserk", 240);
         serratedStrikeCooldown = config.getInt("Abilities.Cooldowns.Serrated_Strikes", 240);
@@ -403,7 +398,5 @@ public class Config extends ConfigLoader{
         arcaneRank4 = config.getInt("Arcane_Forging.Rank_Levels.Rank_4", 750);
         
         ptpCommandCooldown = config.getInt("Commands.ptp.Cooldown", 30);
-
-        detonatorID = config.getInt("Skills.Mining.Detonator_ID", 259);
     }
 }

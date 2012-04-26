@@ -235,7 +235,7 @@ public class mcPlayerListener implements Listener {
             }
 
             /* BLAST MINING CHECK */
-            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.detonatorID) {
+            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.getDetonatorItemID()) {
                 BlastMining.remoteDetonation(player, plugin);
             }
 
@@ -258,7 +258,7 @@ public class mcPlayerListener implements Listener {
             Item.itemchecks(player);
 
             /* BLAST MINING CHECK */
-            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.detonatorID) {
+            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.getDetonatorItemID()) {
                 BlastMining.remoteDetonation(player, plugin);
             }
 

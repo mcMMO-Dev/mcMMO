@@ -299,11 +299,11 @@ public class mcEntityListener implements Listener {
 
             switch (type) {
             case WOLF:
-                xp = Config.mtameWolf;
+                xp = Config.getTamingXPWolf();
                 break;
 
             case OCELOT:
-                xp = Config.mtameOcelot;
+                xp = Config.getTamingXPOcelot();
                 break;
 
             default:

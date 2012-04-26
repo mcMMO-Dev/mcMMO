@@ -53,7 +53,7 @@ public class WoodCutting {
      * @param PP The PlayerProfile of the player
      */
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP) {
-        if (toBeFelled.size() >= Config.treeFellerThreshold) {
+        if (toBeFelled.size() >= Config.getTreeFellerThreshold()) {
             player.sendMessage(mcLocale.getString("Woodcutting.Skills.TreeFellerThreshold"));
             return;
         }
@@ -116,19 +116,19 @@ public class WoodCutting {
 
                         switch (species) {
                             case GENERIC:
-                                xp += Config.moak;
+                                xp += Config.getWoodcuttingXPOak();
                                 break;
 
                             case REDWOOD:
-                                xp += Config.mspruce;
+                                xp += Config.getWoodcuttingXPSpruce();
                                 break;
 
                             case BIRCH:
-                                xp += Config.mbirch;
+                                xp += Config.getWoodcuttingXPBirch();
                                 break;
 
                             case JUNGLE:
-                                xp += Config.mjungle / 4; //Nerf XP from Jungle Trees when using Tree Feller
+                                xp += Config.getWoodcuttingXPJungle() / 4; //Nerf XP from Jungle Trees when using Tree Feller
                                 break;
 
                             default:
@@ -187,7 +187,7 @@ public class WoodCutting {
     private static void processTreeFelling(Block currentBlock, ArrayList<Block> toBeFelled) {
         Material type = currentBlock.getType();
         
-        if(toBeFelled.size() >= Config.treeFellerThreshold) {
+        if(toBeFelled.size() >= Config.getTreeFellerThreshold()) {
             return;
         }
 
@@ -281,19 +281,19 @@ public class WoodCutting {
 
         switch (species) {
         case GENERIC:
-            xp += Config.moak;
+            xp += Config.getWoodcuttingXPOak();
             break;
 
         case REDWOOD:
-            xp += Config.mspruce;
+            xp += Config.getWoodcuttingXPSpruce();
             break;
 
         case BIRCH:
-            xp += Config.mbirch;
+            xp += Config.getWoodcuttingXPBirch();
             break;
 
         case JUNGLE:
-            xp += Config.mjungle;
+            xp += Config.getWoodcuttingXPJungle();
             break;
 
         default:
