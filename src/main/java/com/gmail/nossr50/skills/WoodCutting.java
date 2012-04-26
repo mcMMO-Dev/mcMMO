@@ -315,8 +315,8 @@ public class WoodCutting {
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
         mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
-        if (Config.woodcuttingrequiresaxe) {
-            Skills.abilityDurabilityLoss(player.getItemInHand(), Config.abilityDurabilityLoss);
+        if (Config.getWoodcuttingRequiresTool()) {
+            Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getAbilityToolDamage());
         }
 
         if (Config.spoutEnabled) {
@@ -329,7 +329,7 @@ public class WoodCutting {
         for (Block x : toBeFelled) {
             if (x.getType().equals(Material.LOG)) {
                 durabilityLoss++;
-                durabilityLoss = durabilityLoss + Config.abilityDurabilityLoss;
+                durabilityLoss = durabilityLoss + Config.getAbilityToolDamage();
             }
         }
 

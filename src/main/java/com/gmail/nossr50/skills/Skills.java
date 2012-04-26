@@ -80,7 +80,7 @@ public class Skills {
      * @param skill The skill the ability is tied to
      */
     public static void activationCheck(Player player, SkillType skill) {
-        if (Config.enableOnlyActivateWhenSneaking && !player.isSneaking()) {
+        if (Config.getAbilitiesOnlyActivateWhenSneaking() && !player.isSneaking()) {
             return;
         }
 
@@ -111,7 +111,7 @@ public class Skills {
                 }
             }
 
-            if (Config.enableAbilityMessages) {
+            if (Config.getAbilityMessagesEnabled()) {
                 player.sendMessage(tool.getRaiseTool());
             }
 
@@ -349,7 +349,7 @@ public class Skills {
      * @param durabilityLoss The durability to remove from the item
      */
     public static void abilityDurabilityLoss(ItemStack inhand, int durabilityLoss) {
-        if (Config.toolsLoseDurabilityFromAbilities) {
+        if (Config.getAbilitiesDamageTools()) {
             if (!inhand.containsEnchantment(Enchantment.DURABILITY)) {
                 inhand.setDurability((short) (inhand.getDurability() + durabilityLoss));
             }

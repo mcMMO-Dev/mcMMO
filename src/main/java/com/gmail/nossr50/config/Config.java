@@ -56,24 +56,32 @@ public class Config extends ConfigLoader{
     public static Boolean donateMessage;
 
     /* Items */
-    public static Boolean chimaeraWingEnable;
-    public static int chimaeraId, feathersConsumedByChimaeraWing;
+    public static int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
+    public static int getChimaeraItemId() { return config.getInt("Items.Chimaera_Wing.Item_ID", 288); }
+    public static boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
 
     /*
      * ABILITY SETTINGS
      */
 
     /* General Settings */
-    public static Boolean enableOnlyActivateWhenSneaking, enableAbilityMessages, enableAbilities;
+    public static boolean getAbilityMessagesEnabled() { return config.getBoolean("Abilities.Messages", true); }
+    public static boolean getAbilitiesEnabled() { return config.getBoolean("Abilities.Enabled", true); }
+    public static boolean getAbilitiesOnlyActivateWhenSneaking() { return config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false); }
 
     /* Durability Settings */
-    public static Boolean toolsLoseDurabilityFromAbilities;
-    public static int abilityDurabilityLoss;
+    public static boolean getAbilitiesDamageTools() { return config.getBoolean("Abilities.Tools.Durability_Loss_Enabled", true); }
+    public static int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 2); }
 
     /* Cooldowns */
-    public static int superBreakerCooldown, blastMiningCooldown, greenTerraCooldown,
-                      gigaDrillBreakerCooldown, treeFellerCooldown, berserkCooldown,
-                      serratedStrikeCooldown, skullSplitterCooldown;
+    public static int getAbilityCooldownGreenTerra() { return config.getInt("Abilities.Cooldowns.Green_Terra", 240); }
+    public static int getAbilityCooldownSuperBreaker() { return config.getInt("Abilities.Cooldowns.Super_Breaker", 240); }
+    public static int getAbilityCooldownGigaDrillBreaker() { return config.getInt("Abilities.Cooldowns.Giga_Drill_Breaker", 240); }
+    public static int getAbilityCooldownTreeFeller() { return config.getInt("Abilities.Cooldowns.Tree_Feller", 240); }
+    public static int getAbilityCooldownBerserk() { return config.getInt("Abilities.Cooldowns.Berserk", 240); }
+    public static int getAbilityCooldownSerratedStrikes() { return config.getInt("Abilities.Cooldowns.Serrated_Strikes", 240); }
+    public static int getAbilityCooldownSkullSplitter() { return config.getInt("Abilities.Cooldowns.Skull_Splitter", 240); }
+    public static int getAbilityCooldownBlastMining() { return config.getInt("Abilities.Cooldowns.Blast_Mining", 60); }
 
     /* Thresholds */
     public static int getTreeFellerThreshold() { return config.getInt("Abilities.Limits.Tree_Feller_Threshold", 500); }
@@ -83,7 +91,9 @@ public class Config extends ConfigLoader{
      */
 
     /* Tool Requirements */
-    public static Boolean miningrequirespickaxe, excavationRequiresShovel, woodcuttingrequiresaxe;
+    public static boolean getMiningRequiresTool() { return config.getBoolean("Skills.Mining.Requires_Pickaxe", true); }
+    public static boolean getExcavationRequiresTool() { return config.getBoolean("Skills.Excavation.Requires_Shovel", true); }
+    public static boolean getWoodcuttingRequiresTool() { return config.getBoolean("Skills.Woodcutting.Requires_Axe", true); }
 
     /* Excavation */
     public static int getExcavationBaseXP() { return config.getInt("Experience.Excavation.Base", 40); }
@@ -307,9 +317,6 @@ public class Config extends ConfigLoader{
             }
         }
 
-        enableAbilityMessages = config.getBoolean("Abilities.Messages", true);
-        enableAbilities = config.getBoolean("Abilities.Enabled", true);
-
         donateMessage = config.getBoolean("Commands.mcmmo.Donate_Message", true);
         xpGainsMobSpawners = config.getBoolean("Experience.Gains.Mobspawners.Enabled", false);
         
@@ -324,17 +331,6 @@ public class Config extends ConfigLoader{
         showDisplayName = config.getBoolean("Spout.Party.HUD.Show_Display_Name", false);
         partybar = config.getBoolean("Spout.Party.HUD.Enabled", true);
 
-        enableOnlyActivateWhenSneaking = config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false);
-
-        greenTerraCooldown = config.getInt("Abilities.Cooldowns.Green_Terra", 240);
-        superBreakerCooldown = config.getInt("Abilities.Cooldowns.Super_Breaker", 240);
-        gigaDrillBreakerCooldown = config.getInt("Abilities.Cooldowns.Giga_Drill_Breaker", 240);
-        treeFellerCooldown = config.getInt("Abilities.Cooldowns.Tree_Feller", 240);
-        berserkCooldown = config.getInt("Abilities.Cooldowns.Berserk", 240);
-        serratedStrikeCooldown = config.getInt("Abilities.Cooldowns.Serrated_Strikes", 240);
-        skullSplitterCooldown = config.getInt("Abilities.Cooldowns.Skull_Splitter", 240);
-        blastMiningCooldown = config.getInt("Abilities.Cooldowns.Blast_Mining", 60);
-
         locale = config.getString("General.Locale", "en_us");
         enableMotd = config.getBoolean("General.MOTD_Enabled", true);
         saveInterval = config.getInt("General.Save_Interval", 10);
@@ -346,18 +342,11 @@ public class Config extends ConfigLoader{
         enableDirtToGrass = config.getBoolean("Skills.Herbalism.Green_Thumb.Dirt_To_Grass", true);
 
         xpGainMultiplier = config.getInt("Experience.Gains.Multiplier.Global", 1);
-        toolsLoseDurabilityFromAbilities = config.getBoolean("Abilities.Tools.Durability_Loss_Enabled", true);
-        abilityDurabilityLoss = config.getInt("Abilities.Tools.Durability_Loss", 2);
-
-        feathersConsumedByChimaeraWing = config.getInt("Items.Chimaera_Wing.Feather_Cost", 10);
-        chimaeraId = config.getInt("Items.Chimaera_Wing.Item_ID", 288);
-        chimaeraWingEnable = config.getBoolean("Items.Chimaera_Wing.Enabled", true);
-
+        
+        
         pvpxp = config.getBoolean("Experience.PVP.Rewards", true);
 
-        miningrequirespickaxe = config.getBoolean("Skills.Mining.Requires_Pickaxe", true);
-        excavationRequiresShovel = config.getBoolean("Skills.Excavation.Requires_Shovel", true);
-        woodcuttingrequiresaxe = config.getBoolean("Skills.Woodcutting.Requires_Axe", true);
+        
         repairArmor = config.getBoolean("Skills.Repair.Can_Repair_Armor", true);
         repairTools = config.getBoolean("Skills.Repair.Can_Repair_Tools", true);
         repairDiamondLevel = config.getInt("Skills.Repair.Diamond.Level_Required", 50);

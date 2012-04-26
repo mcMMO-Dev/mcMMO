@@ -211,7 +211,7 @@ public class PlayerListener implements Listener {
             }
 
             /* ACTIVATION CHECKS */
-            if (Config.enableAbilities && BlockChecks.abilityBlockCheck(mat)) {
+            if (Config.getAbilitiesEnabled() && BlockChecks.abilityBlockCheck(mat)) {
                 if (!mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL)) {
                     Skills.activationCheck(player, SkillType.HERBALISM);
                 }
@@ -244,7 +244,7 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_AIR:
 
             /* ACTIVATION CHECKS */
-            if (Config.enableAbilities) {
+            if (Config.getAbilitiesEnabled()) {
                 Skills.activationCheck(player, SkillType.AXES);
                 Skills.activationCheck(player, SkillType.EXCAVATION);
                 Skills.activationCheck(player, SkillType.HERBALISM);

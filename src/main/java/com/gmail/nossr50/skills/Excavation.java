@@ -131,7 +131,7 @@ public class Excavation {
      * @param block The block to check
      */
     public static void gigaDrillBreaker(Player player, Block block) {
-        Skills.abilityDurabilityLoss(player.getItemInHand(), Config.abilityDurabilityLoss);
+        Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getAbilityToolDamage());
 
         if (!block.hasMetadata("mcmmoPlacedBlock")) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);

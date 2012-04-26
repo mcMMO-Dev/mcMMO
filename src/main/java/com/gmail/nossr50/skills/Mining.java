@@ -216,7 +216,7 @@ public class Mining {
     public static void SuperBreakerBlockCheck(Player player, Block block) {
         Material type = block.getType();
         int tier = m.getTier(player.getItemInHand());
-        int durabilityLoss = Config.abilityDurabilityLoss;
+        int durabilityLoss = Config.getAbilityToolDamage();
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 
         switch (type) {
