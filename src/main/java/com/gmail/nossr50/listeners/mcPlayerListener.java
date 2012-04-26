@@ -32,7 +32,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.general.XprateCommand;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.AbilityType;
@@ -145,7 +145,7 @@ public class mcPlayerListener implements Listener {
         /* GARBAGE COLLECTION */
 
         //Remove Spout Stuff
-        if (LoadProperties.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
+        if (Config.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
             SpoutStuff.playerHUDs.remove(player);
         }
 
@@ -167,14 +167,14 @@ public class mcPlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (mcPermissions.getInstance().motd(player) && LoadProperties.enableMotd) {
+        if (mcPermissions.getInstance().motd(player) && Config.enableMotd) {
             player.sendMessage(mcLocale.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
             player.sendMessage(mcLocale.getString("mcMMO.Wiki"));
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
         if (XprateCommand.xpevent) {
-            player.sendMessage(mcLocale.getString("XPRate.Event", new Object[] {LoadProperties.xpGainMultiplier}));
+            player.sendMessage(mcLocale.getString("XPRate.Event", new Object[] {Config.xpGainMultiplier}));
         }
     }
 
@@ -204,14 +204,14 @@ public class mcPlayerListener implements Listener {
         case RIGHT_CLICK_BLOCK:
 
             /* REPAIR CHECKS */
-            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == LoadProperties.anvilID && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
+            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == Config.anvilID && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
                 Repair.repairCheck(player, is);
                 event.setCancelled(true);
                 player.updateInventory();
             }
 
             /* ACTIVATION CHECKS */
-            if (LoadProperties.enableAbilities && BlockChecks.abilityBlockCheck(mat)) {
+            if (Config.enableAbilities && BlockChecks.abilityBlockCheck(mat)) {
                 if (!mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL)) {
                     Skills.activationCheck(player, SkillType.HERBALISM);
                 }
@@ -235,7 +235,7 @@ public class mcPlayerListener implements Listener {
             }
 
             /* BLAST MINING CHECK */
-            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == LoadProperties.detonatorID) {
+            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.detonatorID) {
                 BlastMining.remoteDetonation(player, plugin);
             }
 
@@ -244,7 +244,7 @@ public class mcPlayerListener implements Listener {
         case RIGHT_CLICK_AIR:
 
             /* ACTIVATION CHECKS */
-            if (LoadProperties.enableAbilities) {
+            if (Config.enableAbilities) {
                 Skills.activationCheck(player, SkillType.AXES);
                 Skills.activationCheck(player, SkillType.EXCAVATION);
                 Skills.activationCheck(player, SkillType.HERBALISM);
@@ -258,7 +258,7 @@ public class mcPlayerListener implements Listener {
             Item.itemchecks(player);
 
             /* BLAST MINING CHECK */
-            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == LoadProperties.detonatorID) {
+            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.detonatorID) {
                 BlastMining.remoteDetonation(player, plugin);
             }
 

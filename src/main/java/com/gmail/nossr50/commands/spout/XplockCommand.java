@@ -10,7 +10,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -26,7 +26,7 @@ public class XplockCommand implements CommandExecutor {
             return true;
         }
 
-        if (!LoadProperties.spoutEnabled || !LoadProperties.xpbar || !LoadProperties.xplockEnable) {
+        if (!Config.spoutEnabled || !Config.xpbar || !Config.xplockEnable) {
             sender.sendMessage(mcLocale.getString("Commands.Disabled"));
             return true;
         }

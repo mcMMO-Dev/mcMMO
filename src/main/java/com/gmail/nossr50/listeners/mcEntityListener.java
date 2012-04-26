@@ -27,7 +27,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -165,7 +165,7 @@ public class mcEntityListener implements Listener {
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         SpawnReason reason = event.getSpawnReason();
 
-        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !LoadProperties.xpGainsMobSpawners) {
+        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !Config.xpGainsMobSpawners) {
             event.getEntity().setMetadata("mcmmoFromMobSpawner", new FixedMetadataValue(plugin, true));
         }
     }
@@ -219,7 +219,7 @@ public class mcEntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.LOW)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if (LoadProperties.herbalismHungerBonus) {
+        if (Config.herbalismHungerBonus) {
             if (event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
                 PlayerProfile PP = Users.getProfile(player);
@@ -299,11 +299,11 @@ public class mcEntityListener implements Listener {
 
             switch (type) {
             case WOLF:
-                xp = LoadProperties.mtameWolf;
+                xp = Config.mtameWolf;
                 break;
 
             case OCELOT:
-                xp = LoadProperties.mtameOcelot;
+                xp = Config.mtameOcelot;
                 break;
 
             default:

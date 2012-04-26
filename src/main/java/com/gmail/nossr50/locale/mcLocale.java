@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 
 import org.bukkit.ChatColor;
 
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 
 public class mcLocale {
     private static final String BUNDLE_NAME = "com.gmail.nossr50.locale.locale";
@@ -28,7 +28,7 @@ public class mcLocale {
         try {
             if (RESOURCE_BUNDLE == null) {
                 Locale.setDefault(new Locale("en", "US"));
-                String[] myLocale = LoadProperties.locale.split("[-_ ]");
+                String[] myLocale = Config.locale.split("[-_ ]");
 
                 Locale locale = null;
 

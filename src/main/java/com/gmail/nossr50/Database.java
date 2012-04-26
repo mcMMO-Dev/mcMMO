@@ -9,13 +9,14 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.DatabaseUpdate;
 import com.gmail.nossr50.runnables.SQLReconnect;
 
 public class Database {
 
-    private static String connectionString = "jdbc:mysql://" + LoadProperties.MySQLserverName + ":" + LoadProperties.MySQLport + "/" + LoadProperties.MySQLdbName + "?user=" + LoadProperties.MySQLuserName + "&password=" + LoadProperties.MySQLdbPass;
+    private static String connectionString = "jdbc:mysql://" + Config.getMySQLServerName() + ":" + Config.getMySQLServerPort() + "/" + Config.getMySQLDatabaseName() + "?user=" + Config.getMySQLUserName() + "&password=" + Config.getMySQLUserPassword();
+    private static String tablePrefix = Config.getMySQLTablePrefix();
     private static Connection conn = null;
     private static mcMMO plugin = null;
     private static long reconnectTimestamp = 0;
@@ -61,16 +62,16 @@ public class Database {
      * Attempt to create the database structure.
      */
     public void createStructure() {
-        write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "huds` (`user_id` int(10) unsigned NOT NULL,"
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` (`user_id` int(10) unsigned NOT NULL,"
                 + "`hudtype` varchar(50) NOT NULL DEFAULT '',"
                 + "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-        write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
                 + "`lastlogin` int(32) unsigned NOT NULL,"
                 + "`party` varchar(100) NOT NULL DEFAULT '',"
                 + "PRIMARY KEY (`id`),"
                 + "UNIQUE KEY `user` (`user`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
-        write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "cooldowns` (`user_id` int(10) unsigned NOT NULL,"
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` (`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`mining` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`woodcutting` int(32) unsigned NOT NULL DEFAULT '0',"
@@ -84,7 +85,7 @@ public class Database {
                 + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-        write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "skills` (`user_id` int(10) unsigned NOT NULL,"
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` (`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -97,7 +98,7 @@ public class Database {
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-        write("CREATE TABLE IF NOT EXISTS `" + LoadProperties.MySQLtablePrefix + "experience` (`user_id` int(10) unsigned NOT NULL,"
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` (`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -127,10 +128,10 @@ public class Database {
 
         switch (update) {
         case BLAST_MINING:
-            sql = "SELECT * FROM  `"+LoadProperties.MySQLtablePrefix+"cooldowns` ORDER BY  `"+LoadProperties.MySQLtablePrefix+"cooldowns`.`blast_mining` ASC LIMIT 0 , 30";
+            sql = "SELECT * FROM  `"+tablePrefix+"cooldowns` ORDER BY  `"+tablePrefix+"cooldowns`.`blast_mining` ASC LIMIT 0 , 30";
             break;
         case FISHING:
-            sql = "SELECT * FROM  `"+LoadProperties.MySQLtablePrefix+"experience` ORDER BY  `"+LoadProperties.MySQLtablePrefix+"experience`.`fishing` ASC LIMIT 0 , 30";
+            sql = "SELECT * FROM  `"+tablePrefix+"experience` ORDER BY  `"+tablePrefix+"experience`.`fishing` ASC LIMIT 0 , 30";
             break;
         default:
             break;
@@ -153,12 +154,12 @@ public class Database {
         catch (SQLException ex) {
             if (update.equals(DatabaseUpdate.BLAST_MINING)) {
                 System.out.println("Updating mcMMO MySQL tables for Blast Mining...");
-                write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0' ;");
+                write("ALTER TABLE `"+tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0' ;");
             }
             else if (update.equals(DatabaseUpdate.FISHING)) {
                 System.out.println("Updating mcMMO MySQL tables for Fishing...");
-                write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
-                write("ALTER TABLE `"+LoadProperties.MySQLtablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
+                write("ALTER TABLE `"+tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
+                write("ALTER TABLE `"+tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
             }
         }
     }

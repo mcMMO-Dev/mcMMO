@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.runnables.SQLConversionTask;
 
 public class MmoupdateCommand implements CommandExecutor {
@@ -42,7 +42,7 @@ public class MmoupdateCommand implements CommandExecutor {
      * Convert FlatFile data to MySQL data.
      */
     private void convertToMySQL() {
-        if (!LoadProperties.useMySQL) {
+        if (!Config.getUseMySQL()) {
             return;
         }
 

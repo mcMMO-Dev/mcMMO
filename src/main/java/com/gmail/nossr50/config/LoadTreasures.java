@@ -212,23 +212,23 @@ public class LoadTreasures extends ConfigLoader{
                 int dropLevel = fTreasure.getDropLevel();
                 int maxLevel = fTreasure.getMaxLevel();
 
-                if(dropLevel <= LoadProperties.fishingTier1 && maxLevel >= LoadProperties.fishingTier1) {
+                if(dropLevel <= Config.fishingTier1 && maxLevel >= Config.fishingTier1) {
                     fishingRewardsTier1.add(fTreasure);
                 }
 
-                if(dropLevel <= LoadProperties.fishingTier2 && maxLevel >= LoadProperties.fishingTier2) {
+                if(dropLevel <= Config.fishingTier2 && maxLevel >= Config.fishingTier2) {
                     fishingRewardsTier2.add(fTreasure);
                 }
 
-                if (dropLevel <= LoadProperties.fishingTier3 && maxLevel >= LoadProperties.fishingTier3) {
+                if (dropLevel <= Config.fishingTier3 && maxLevel >= Config.fishingTier3) {
                     fishingRewardsTier3.add(fTreasure);
                 }
 
-                if (dropLevel <= LoadProperties.fishingTier4 && maxLevel >= LoadProperties.fishingTier4) {
+                if (dropLevel <= Config.fishingTier4 && maxLevel >= Config.fishingTier4) {
                     fishingRewardsTier4.add(fTreasure);
                 }
 
-                if (dropLevel <= LoadProperties.fishingTier5 && maxLevel >= LoadProperties.fishingTier5) {
+                if (dropLevel <= Config.fishingTier5 && maxLevel >= Config.fishingTier5) {
                     fishingRewardsTier5.add(fTreasure);
                 }
 

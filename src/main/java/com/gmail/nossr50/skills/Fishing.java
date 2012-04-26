@@ -21,7 +21,7 @@ import com.gmail.nossr50.Combat;
 import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.LoadTreasures;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -42,16 +42,16 @@ public class Fishing {
         int level = PP.getSkillLevel(SkillType.FISHING);
         int fishingTier;
 
-        if (level >= LoadProperties.fishingTier5) {
+        if (level >= Config.fishingTier5) {
             fishingTier = 5;
         }
-        else if (level >= LoadProperties.fishingTier4) {
+        else if (level >= Config.fishingTier4) {
             fishingTier = 4;
         }
-        else if (level >= LoadProperties.fishingTier3) {
+        else if (level >= Config.fishingTier3) {
             fishingTier =  3;
         }
-        else if (level >= LoadProperties.fishingTier2) {
+        else if (level >= Config.fishingTier2) {
             fishingTier =  2;
         }
         else {
@@ -97,7 +97,7 @@ public class Fishing {
             break;
         }
 
-        if (LoadProperties.fishingDrops && rewards.size() > 0) {
+        if (Config.fishingDrops && rewards.size() > 0) {
             FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
             if (random.nextDouble() * 100 <= treasure.getDropChance()) {
@@ -115,7 +115,7 @@ public class Fishing {
             theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); //Change durability to random value
         }
 
-        PP.addXP(SkillType.FISHING, LoadProperties.mfishing);
+        PP.addXP(SkillType.FISHING, Config.mfishing);
         Skills.XpCheckSkill(SkillType.FISHING, player);
     }
 

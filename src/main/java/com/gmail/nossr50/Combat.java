@@ -15,7 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -247,7 +247,7 @@ public class Combat {
      * @param cause DamageCause to pass to damage event
      */
     private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
-        if (LoadProperties.eventCallback) {
+        if (Config.eventCallback) {
             EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
@@ -270,7 +270,7 @@ public class Combat {
      * @param attacker Player to pass to event as damager
      */
     private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
-        if (LoadProperties.eventCallback) {
+        if (Config.eventCallback) {
             EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
@@ -395,7 +395,7 @@ public class Combat {
         double baseXP = 0;
 
         if (target instanceof Player) {
-            if (!LoadProperties.pvpxp) {
+            if (!Config.pvpxp) {
                 return;
             }
 
@@ -403,72 +403,72 @@ public class Combat {
             PlayerProfile PPd = Users.getProfile(defender);
 
             if (System.currentTimeMillis() >= (PPd.getRespawnATS() * 1000) + 5000 && ((PPd.getLastLogin() + 5) * 1000) < System.currentTimeMillis() && defender.getHealth() >= 1) {
-                baseXP = 20 * LoadProperties.pvpxprewardmodifier;
+                baseXP = 20 * Config.getPlayerVersusPlayerXP();
             }
         }
         else if (!target.hasMetadata("mcmmoFromMobSpawner")) {
             if (target instanceof Animals && !target.hasMetadata("mcmmoSummoned")) {
-                baseXP = LoadProperties.animalXP;
+                baseXP = Config.getAnimalsXP();
             }
             else {
                 EntityType type = target.getType();
 
                 switch (type) {
                 case BLAZE:
-                    baseXP = LoadProperties.blazeXP;
+                    baseXP = Config.getBlazeXP();
                     break;
 
                 case CAVE_SPIDER:
-                    baseXP = LoadProperties.cavespiderXP;
+                    baseXP = Config.getCaveSpiderXP();
                     break;
 
                 case CREEPER:
-                    baseXP = LoadProperties.creeperXP;
+                    baseXP = Config.getCreeperXP();
                     break;
 
                 case ENDER_DRAGON:
-                    baseXP = LoadProperties.enderdragonXP;
+                    baseXP = Config.getEnderDragonXP();
                     break;
 
                 case ENDERMAN:
-                    baseXP = LoadProperties.endermanXP;
+                    baseXP = Config.getEndermanXP();
                     break;
 
                 case GHAST:
-                    baseXP = LoadProperties.ghastXP;
+                    baseXP = Config.getGhastXP();
                     break;
 
                 case MAGMA_CUBE:
-                    baseXP = LoadProperties.magmacubeXP;
+                    baseXP = Config.getMagmaCubeXP();
                     break;
 
                 case IRON_GOLEM:
                     if (!((IronGolem) target).isPlayerCreated())
-                        baseXP = LoadProperties.irongolemXP;
+                        baseXP = Config.getIronGolemXP();
                     break;
 
                 case PIG_ZOMBIE:
-                    baseXP = LoadProperties.pigzombieXP;
+                    baseXP = Config.getPigZombieXP();
                     break;
 
                 case SILVERFISH:
-                    baseXP = LoadProperties.silverfishXP;
+                    baseXP = Config.getSilverfishXP();
                     break;
 
                 case SKELETON:
-                    baseXP = LoadProperties.skeletonXP;
+                    baseXP = Config.getSkeletonXP();
                     break;
 
                 case SLIME:
-                    baseXP = LoadProperties.slimeXP;
+                    baseXP = Config.getSlimeXP();
                     break;
 
                 case SPIDER:
-                    baseXP = LoadProperties.spiderXP;
+                    baseXP = Config.getSpiderXP();
                     break;
 
                 case ZOMBIE:
-                    baseXP = LoadProperties.zombieXP;
+                    baseXP = Config.getZombieXP();
                     break;
 
                 default:

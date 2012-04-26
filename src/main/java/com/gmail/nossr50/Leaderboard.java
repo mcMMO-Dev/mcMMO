@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.Tree;
@@ -255,7 +255,7 @@ public class Leaderboard {
      * @param skillType Skill whose leaderboard is being updated.
      */
     public static void updateLeaderboard(PlayerStat ps, SkillType skillType) {
-        if (LoadProperties.useMySQL) {
+        if (Config.getUseMySQL()) {
             return;
         }
 

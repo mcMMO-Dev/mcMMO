@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
@@ -261,8 +261,8 @@ public class m {
     }
 
     public static int getPowerLevelCap() {
-        if (LoadProperties.powerLevelCap > 0) {
-            return LoadProperties.powerLevelCap;
+        if (Config.getPowerLevelCap() > 0) {
+            return Config.getPowerLevelCap();
         }
         else {
             return Integer.MAX_VALUE;

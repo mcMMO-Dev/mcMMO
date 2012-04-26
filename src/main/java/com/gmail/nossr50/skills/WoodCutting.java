@@ -16,7 +16,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
@@ -53,7 +53,7 @@ public class WoodCutting {
      * @param PP The PlayerProfile of the player
      */
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP) {
-        if (toBeFelled.size() >= LoadProperties.treeFellerThreshold) {
+        if (toBeFelled.size() >= Config.treeFellerThreshold) {
             player.sendMessage(mcLocale.getString("Woodcutting.Skills.TreeFellerThreshold"));
             return;
         }
@@ -116,19 +116,19 @@ public class WoodCutting {
 
                         switch (species) {
                             case GENERIC:
-                                xp += LoadProperties.moak;
+                                xp += Config.moak;
                                 break;
 
                             case REDWOOD:
-                                xp += LoadProperties.mspruce;
+                                xp += Config.mspruce;
                                 break;
 
                             case BIRCH:
-                                xp += LoadProperties.mbirch;
+                                xp += Config.mbirch;
                                 break;
 
                             case JUNGLE:
-                                xp += LoadProperties.mjungle / 4; //Nerf XP from Jungle Trees when using Tree Feller
+                                xp += Config.mjungle / 4; //Nerf XP from Jungle Trees when using Tree Feller
                                 break;
 
                             default:
@@ -187,7 +187,7 @@ public class WoodCutting {
     private static void processTreeFelling(Block currentBlock, ArrayList<Block> toBeFelled) {
         Material type = currentBlock.getType();
         
-        if(toBeFelled.size() >= LoadProperties.treeFellerThreshold) {
+        if(toBeFelled.size() >= Config.treeFellerThreshold) {
             return;
         }
 
@@ -281,19 +281,19 @@ public class WoodCutting {
 
         switch (species) {
         case GENERIC:
-            xp += LoadProperties.moak;
+            xp += Config.moak;
             break;
 
         case REDWOOD:
-            xp += LoadProperties.mspruce;
+            xp += Config.mspruce;
             break;
 
         case BIRCH:
-            xp += LoadProperties.mbirch;
+            xp += Config.mbirch;
             break;
 
         case JUNGLE:
-            xp += LoadProperties.mjungle;
+            xp += Config.mjungle;
             break;
 
         default:
@@ -315,11 +315,11 @@ public class WoodCutting {
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
         mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
-        if (LoadProperties.woodcuttingrequiresaxe) {
-            Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
+        if (Config.woodcuttingrequiresaxe) {
+            Skills.abilityDurabilityLoss(player.getItemInHand(), Config.abilityDurabilityLoss);
         }
 
-        if (LoadProperties.spoutEnabled) {
+        if (Config.spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }
@@ -329,7 +329,7 @@ public class WoodCutting {
         for (Block x : toBeFelled) {
             if (x.getType().equals(Material.LOG)) {
                 durabilityLoss++;
-                durabilityLoss = durabilityLoss + LoadProperties.abilityDurabilityLoss;
+                durabilityLoss = durabilityLoss + Config.abilityDurabilityLoss;
             }
         }
 

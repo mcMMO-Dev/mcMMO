@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Item {
@@ -21,7 +21,7 @@ public class Item {
     public static void itemchecks(Player player) {
         ItemStack inhand = player.getItemInHand();
 
-        if (LoadProperties.chimaeraWingEnable && inhand.getTypeId() == LoadProperties.chimaeraId) {
+        if (Config.chimaeraWingEnable && inhand.getTypeId() == Config.chimaeraId) {
             chimaerawing(player);
         }
     }
@@ -32,9 +32,9 @@ public class Item {
         Block block = player.getLocation().getBlock();
         int amount = is.getAmount();
 
-        if (mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == LoadProperties.chimaeraId) {
-            if (Skills.cooldownOver(PP.getRecentlyHurt(), 60) && amount >= LoadProperties.feathersConsumedByChimaeraWing) {
-                player.setItemInHand(new ItemStack(LoadProperties.chimaeraId, amount - LoadProperties.feathersConsumedByChimaeraWing));
+        if (mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == Config.chimaeraId) {
+            if (Skills.cooldownOver(PP.getRecentlyHurt(), 60) && amount >= Config.feathersConsumedByChimaeraWing) {
+                player.setItemInHand(new ItemStack(Config.chimaeraId, amount - Config.feathersConsumedByChimaeraWing));
 
                 for (int y = 0; block.getY() + y < player.getWorld().getMaxHeight(); y++) {
                     if (!block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
@@ -53,11 +53,11 @@ public class Item {
 
                 player.sendMessage(mcLocale.getString("Item.ChimaeraWing.Pass"));
             }
-            else if (!Skills.cooldownOver(PP.getRecentlyHurt(), 60) && is.getAmount() >= LoadProperties.feathersConsumedByChimaeraWing) {
+            else if (!Skills.cooldownOver(PP.getRecentlyHurt(), 60) && is.getAmount() >= Config.feathersConsumedByChimaeraWing) {
                 player.sendMessage(mcLocale.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(PP.getRecentlyHurt(), 60)}));
             }
-            else if (is.getAmount() <= LoadProperties.feathersConsumedByChimaeraWing) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(LoadProperties.chimaeraId));
+            else if (is.getAmount() <= Config.feathersConsumedByChimaeraWing) {
+                player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(Config.chimaeraId));
             }
         }
     }

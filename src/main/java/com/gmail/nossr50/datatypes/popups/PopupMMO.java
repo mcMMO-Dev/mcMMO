@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.buttons.ButtonEscape;
 import com.gmail.nossr50.datatypes.buttons.ButtonHUDStyle;
@@ -39,7 +39,7 @@ public class PopupMMO extends GenericPopup {
         HUDButton.setY(center_y / 2);
         HUDButton.setDirty(true);
 
-        if (LoadProperties.partybar) {
+        if (Config.partybar) {
             PartyButton = new ButtonPartyToggle(PP);
             PartyButton.setX(center_x - (PartyButton.getWidth() / 2));
             PartyButton.setY((center_y / 2) + PartyButton.getHeight());

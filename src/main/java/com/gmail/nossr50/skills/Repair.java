@@ -19,7 +19,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -47,21 +47,21 @@ public class Repair {
             /*
              * REPAIR ARMOR
              */
-            if (ItemChecks.isArmor(is) && LoadProperties.repairArmor && mcPermissions.getInstance().armorRepair(player)) {
-                if (ItemChecks.isDiamondArmor(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairDiamondLevel && mcPermissions.getInstance().diamondRepair(player)) {
-                    repairItem(player, is, new ItemStack(LoadProperties.rDiamond));
+            if (ItemChecks.isArmor(is) && Config.repairArmor && mcPermissions.getInstance().armorRepair(player)) {
+                if (ItemChecks.isDiamondArmor(is) && inventory.contains(Config.rDiamond) && skillLevel >= Config.repairDiamondLevel && mcPermissions.getInstance().diamondRepair(player)) {
+                    repairItem(player, is, new ItemStack(Config.rDiamond));
                     xpHandler(player, PP, is, durabilityBefore, 6, true);
                 }
-                else if (ItemChecks.isIronArmor(is) && inventory.contains(LoadProperties.rIron) && skillLevel >= LoadProperties.repairIronLevel && mcPermissions.getInstance().ironRepair(player)) {
-                    repairItem(player, is, new ItemStack(LoadProperties.rIron));
+                else if (ItemChecks.isIronArmor(is) && inventory.contains(Config.rIron) && skillLevel >= Config.repairIronLevel && mcPermissions.getInstance().ironRepair(player)) {
+                    repairItem(player, is, new ItemStack(Config.rIron));
                     xpHandler(player, PP, is, durabilityBefore, 2, true);
                 }
-                else if (ItemChecks.isGoldArmor(is) && inventory.contains(LoadProperties.rGold) && skillLevel >= LoadProperties.repairGoldLevel && mcPermissions.getInstance().goldRepair(player)) {
-                    repairItem(player, is, new ItemStack(LoadProperties.rGold));
+                else if (ItemChecks.isGoldArmor(is) && inventory.contains(Config.rGold) && skillLevel >= Config.repairGoldLevel && mcPermissions.getInstance().goldRepair(player)) {
+                    repairItem(player, is, new ItemStack(Config.rGold));
                     xpHandler(player, PP, is, durabilityBefore, 4, true);
                 }
-                else if (ItemChecks.isLeatherArmor(is) && inventory.contains(LoadProperties.rLeather) && mcPermissions.getInstance().leatherRepair(player)) {
-                    repairItem(player, is, new ItemStack(LoadProperties.rLeather));
+                else if (ItemChecks.isLeatherArmor(is) && inventory.contains(Config.rLeather) && mcPermissions.getInstance().leatherRepair(player)) {
+                    repairItem(player, is, new ItemStack(Config.rLeather));
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
                 else {
@@ -72,29 +72,29 @@ public class Repair {
             /*
              * REPAIR TOOLS
              */
-            else if (ItemChecks.isTool(is) && LoadProperties.repairTools && mcPermissions.getInstance().toolRepair(player)) {
-                if (ItemChecks.isStoneTool(is) && inventory.contains(LoadProperties.rStone) && skillLevel >= LoadProperties.repairStoneLevel && mcPermissions.getInstance().stoneRepair(player)) {
-                    repairItem(player, is, new ItemStack(LoadProperties.rStone));
+            else if (ItemChecks.isTool(is) && Config.repairTools && mcPermissions.getInstance().toolRepair(player)) {
+                if (ItemChecks.isStoneTool(is) && inventory.contains(Config.rStone) && skillLevel >= Config.repairStoneLevel && mcPermissions.getInstance().stoneRepair(player)) {
+                    repairItem(player, is, new ItemStack(Config.rStone));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
-                else if (ItemChecks.isWoodTool(is) && inventory.contains(LoadProperties.rWood) && mcPermissions.getInstance().woodRepair(player)) {
-                    repairItem(player, is, new ItemStack(LoadProperties.rWood));
+                else if (ItemChecks.isWoodTool(is) && inventory.contains(Config.rWood) && mcPermissions.getInstance().woodRepair(player)) {
+                    repairItem(player, is, new ItemStack(Config.rWood));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
-                else if (ItemChecks.isIronTool(is) && inventory.contains(LoadProperties.rIron) && skillLevel >= LoadProperties.repairIronLevel && mcPermissions.getInstance().ironRepair(player)) {
-                    repairItem(player, is, new ItemStack(LoadProperties.rIron));
+                else if (ItemChecks.isIronTool(is) && inventory.contains(Config.rIron) && skillLevel >= Config.repairIronLevel && mcPermissions.getInstance().ironRepair(player)) {
+                    repairItem(player, is, new ItemStack(Config.rIron));
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
-                else if (ItemChecks.isDiamondTool(is) && inventory.contains(LoadProperties.rDiamond) && skillLevel >= LoadProperties.repairDiamondLevel && mcPermissions.getInstance().diamondRepair(player)) {
-                    repairItem(player, is, new ItemStack(LoadProperties.rDiamond));
+                else if (ItemChecks.isDiamondTool(is) && inventory.contains(Config.rDiamond) && skillLevel >= Config.repairDiamondLevel && mcPermissions.getInstance().diamondRepair(player)) {
+                    repairItem(player, is, new ItemStack(Config.rDiamond));
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
-                else if (ItemChecks.isGoldTool(is) && inventory.contains(LoadProperties.rGold) && skillLevel >= LoadProperties.repairGoldLevel && mcPermissions.getInstance().goldRepair(player)) {
-                    repairItem(player, is, new ItemStack(LoadProperties.rGold));
+                else if (ItemChecks.isGoldTool(is) && inventory.contains(Config.rGold) && skillLevel >= Config.repairGoldLevel && mcPermissions.getInstance().goldRepair(player)) {
+                    repairItem(player, is, new ItemStack(Config.rGold));
                     xpHandler(player, PP, is, durabilityBefore, 8, true);
                 }
-                else if (ItemChecks.isStringTool(is) && inventory.contains(LoadProperties.rString) && skillLevel >= LoadProperties.repairStringLevel && mcPermissions.getInstance().stringRepair(player)){
-                    repairItem(player, is, new ItemStack(LoadProperties.rString));
+                else if (ItemChecks.isStringTool(is) && inventory.contains(Config.rString) && skillLevel >= Config.repairStringLevel && mcPermissions.getInstance().stringRepair(player)){
+                    repairItem(player, is, new ItemStack(Config.rString));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
                 else {
@@ -142,7 +142,7 @@ public class Repair {
         Skills.XpCheckSkill(SkillType.REPAIR, player);
 
         //CLANG CLANG
-        if (LoadProperties.spoutEnabled) {
+        if (Config.spoutEnabled) {
             SpoutSounds.playRepairNoise(player, mcMMO.p);
         }
     }
@@ -156,16 +156,16 @@ public class Repair {
     public static int getArcaneForgingRank(PlayerProfile PP) {
         int skillLevel = PP.getSkillLevel(SkillType.REPAIR);
 
-        if (skillLevel >= LoadProperties.arcaneRank4) {
+        if (skillLevel >= Config.arcaneRank4) {
             return 4;
         }
-        else if (skillLevel >= LoadProperties.arcaneRank3) {
+        else if (skillLevel >= Config.arcaneRank3) {
             return 3;
         }
-        else if (skillLevel >= LoadProperties.arcaneRank2) {
+        else if (skillLevel >= Config.arcaneRank2) {
             return 2;
         }
-        else if (skillLevel >= LoadProperties.arcaneRank1) {
+        else if (skillLevel >= Config.arcaneRank1) {
             return 1;
         }
         else {
@@ -204,7 +204,7 @@ public class Repair {
             if (random.nextInt(100) <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
 
-                if (LoadProperties.mayDowngradeEnchants && enchantLevel > 1) {
+                if (Config.mayDowngradeEnchants && enchantLevel > 1) {
                     if (random.nextInt(100) <= getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, enchantLevel--);
                         downgraded = true;
@@ -238,16 +238,16 @@ public class Repair {
     public static int getEnchantChance(int rank) {
         switch (rank) {
         case 4:
-            return LoadProperties.keepEnchantsRank4;
+            return Config.keepEnchantsRank4;
 
         case 3:
-            return LoadProperties.keepEnchantsRank3;
+            return Config.keepEnchantsRank3;
 
         case 2:
-            return LoadProperties.keepEnchantsRank2;
+            return Config.keepEnchantsRank2;
 
         case 1:
-            return LoadProperties.keepEnchantsRank1;
+            return Config.keepEnchantsRank1;
 
         default:
             return 0;
@@ -263,16 +263,16 @@ public class Repair {
     public static int getDowngradeChance(int rank) {
         switch (rank) {
         case 4:
-            return LoadProperties.downgradeRank4;
+            return Config.downgradeRank4;
 
         case 3:
-            return LoadProperties.downgradeRank3;
+            return Config.downgradeRank3;
 
         case 2:
-            return LoadProperties.downgradeRank2;
+            return Config.downgradeRank2;
 
         case 1:
-            return LoadProperties.downgradeRank1;
+            return Config.downgradeRank1;
 
         default:
             return 100;
@@ -356,45 +356,45 @@ public class Repair {
         }
         else {
             if (ItemChecks.isDiamondTool(is) || ItemChecks.isDiamondArmor(is)) {
-                if (skillLevel < LoadProperties.repairDiamondLevel) {
+                if (skillLevel < Config.repairDiamondLevel) {
                     player.sendMessage(mcLocale.getString("Repair.Skills.AdeptDiamond"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.BLUE + m.prettyItemString(LoadProperties.rDiamond));
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.BLUE + m.prettyItemString(Config.rDiamond));
                 }
             }
             else if (ItemChecks.isIronTool(is) || ItemChecks.isIronArmor(is)) {
-                if (skillLevel < LoadProperties.repairIronLevel) {
+                if (skillLevel < Config.repairIronLevel) {
                     player.sendMessage(mcLocale.getString("Repair.Skills.AdeptIron"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(LoadProperties.rIron));
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(Config.rIron));
                 }
             }
             else if (ItemChecks.isGoldTool(is) || ItemChecks.isGoldArmor(is)) {
-                if (skillLevel < LoadProperties.repairGoldLevel) {
+                if (skillLevel < Config.repairGoldLevel) {
                     player.sendMessage(mcLocale.getString("Repair.Skills.AdeptGold"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GOLD + m.prettyItemString(LoadProperties.rGold));
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GOLD + m.prettyItemString(Config.rGold));
                 }
             }
             else if (ItemChecks.isStoneTool(is)) {
-                if (skillLevel < LoadProperties.repairStoneLevel) {
+                if (skillLevel < Config.repairStoneLevel) {
                     player.sendMessage(mcLocale.getString("Repair.Skills.AdeptStone"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GRAY + m.prettyItemString(LoadProperties.rStone));
+                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GRAY + m.prettyItemString(Config.rStone));
                 }
             }
             else if (ItemChecks.isWoodTool(is)) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.DARK_GREEN + m.prettyItemString(LoadProperties.rWood));
+                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.DARK_GREEN + m.prettyItemString(Config.rWood));
             }
             else if (ItemChecks.isLeatherArmor(is)) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(LoadProperties.rLeather));
+                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(Config.rLeather));
             }
             else if (ItemChecks.isStringTool(is)) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(LoadProperties.rString));
+                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(Config.rString));
             }
         }
     }
@@ -445,7 +445,7 @@ public class Repair {
         }
 
         /* Handle the enchants */
-        if (LoadProperties.mayLoseEnchants && !mcPermissions.getInstance().arcaneBypass(player)) {
+        if (Config.mayLoseEnchants && !mcPermissions.getInstance().arcaneBypass(player)) {
             addEnchants(player, item);
         }
 
@@ -462,7 +462,7 @@ public class Repair {
         PlayerProfile PP = Users.getProfile(player);
 
         if (!PP.getPlacedAnvil()) {
-            if (LoadProperties.spoutEnabled) {
+            if (Config.spoutEnabled) {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
                 if (sPlayer.isSpoutCraftEnabled()) {

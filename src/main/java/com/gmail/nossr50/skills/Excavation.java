@@ -15,7 +15,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.LoadTreasures;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -66,7 +66,7 @@ public class Excavation {
 
         List<ExcavationTreasure> treasures = new ArrayList<ExcavationTreasure>();
 
-        int xp = LoadProperties.mbase;
+        int xp = Config.mbase;
 
         if (mcPermissions.getInstance().excavationTreasures(player)) {
             switch (type) {
@@ -131,7 +131,7 @@ public class Excavation {
      * @param block The block to check
      */
     public static void gigaDrillBreaker(Player player, Block block) {
-        Skills.abilityDurabilityLoss(player.getItemInHand(), LoadProperties.abilityDurabilityLoss);
+        Skills.abilityDurabilityLoss(player.getItemInHand(), Config.abilityDurabilityLoss);
 
         if (!block.hasMetadata("mcmmoPlacedBlock")) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
@@ -141,7 +141,7 @@ public class Excavation {
             Excavation.excavationProcCheck(block, player);
         }
 
-        if (LoadProperties.spoutEnabled) {
+        if (Config.spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }

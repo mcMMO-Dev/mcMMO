@@ -4,7 +4,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.FileManager;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class SpoutStart implements Runnable{
@@ -17,14 +17,14 @@ public class SpoutStart implements Runnable{
     @Override
     public void run() {
         if (plugin.getServer().getPluginManager().getPlugin("Spout") != null) {
-            LoadProperties.spoutEnabled = true;
+            Config.spoutEnabled = true;
         }
         else {
-            LoadProperties.spoutEnabled = false;
+            Config.spoutEnabled = false;
         }
 
         //Spout Stuff
-        if (LoadProperties.spoutEnabled) {
+        if (Config.spoutEnabled) {
             SpoutStuff.setupSpoutConfigs();
             SpoutStuff.registerCustomEvent();
             SpoutStuff.extractFiles(); //Extract source materials

@@ -2,7 +2,7 @@ package com.gmail.nossr50;
 
 import org.bukkit.Material;
 
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 
 public class BlockChecks {
 
@@ -87,7 +87,7 @@ public class BlockChecks {
             break;
         }
 
-        if (Material.getMaterial(LoadProperties.anvilID).equals(material)) {
+        if (Material.getMaterial(Config.anvilID).equals(material)) {
             return false;
         }
         else {

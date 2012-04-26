@@ -5,10 +5,11 @@ import java.io.FileReader;
 
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 
 public class SQLConversionTask implements Runnable {
     private final mcMMO plugin;
+    private String tablePrefix = Config.getMySQLTablePrefix();
 
     public SQLConversionTask(mcMMO plugin) {
         this.plugin = plugin;
@@ -164,7 +165,7 @@ public class SQLConversionTask implements Runnable {
 
                 //Check to see if the user is in the DB
                 id = mcMMO.database.getInt("SELECT id FROM "
-                        + LoadProperties.MySQLtablePrefix
+                        + tablePrefix
                         + "users WHERE user = '" + playerName + "'");
 
                 if (id > 0) {
@@ -172,11 +173,11 @@ public class SQLConversionTask implements Runnable {
 
                     //Update the skill values
                     mcMMO.database.write("UPDATE "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "users SET lastlogin = " + 0
                             + " WHERE id = " + id);
                     mcMMO.database.write("UPDATE "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "skills SET "
                             + "  taming = taming+" + m.getInt(taming)
                             + ", mining = mining+" + m.getInt(mining)
@@ -192,7 +193,7 @@ public class SQLConversionTask implements Runnable {
                             + ", fishing = fishing+" + m.getInt(fishing)
                             + " WHERE user_id = " + id);
                     mcMMO.database.write("UPDATE "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "experience SET "
                             + "  taming = " + m.getInt(tamingXP)
                             + ", mining = " + m.getInt(miningXP)
@@ -213,32 +214,32 @@ public class SQLConversionTask implements Runnable {
 
                     //Create the user in the DB
                     mcMMO.database.write("INSERT INTO "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "users (user, lastlogin) VALUES ('"
                             + playerName + "',"
                             + System.currentTimeMillis() / 1000 + ")");
                     id = mcMMO.database.getInt("SELECT id FROM "
-                                    + LoadProperties.MySQLtablePrefix
+                                    + tablePrefix
                                     + "users WHERE user = '"
                                     + playerName + "'");
                     mcMMO.database.write("INSERT INTO "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "skills (user_id) VALUES (" + id + ")");
                     mcMMO.database.write("INSERT INTO "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "experience (user_id) VALUES (" + id
                             + ")");
                     //Update the skill values
                     mcMMO.database.write("UPDATE "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "users SET lastlogin = " + 0
                             + " WHERE id = " + id);
                     mcMMO.database.write("UPDATE "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "users SET party = '" + party
                             + "' WHERE id = " + id);
                     mcMMO.database.write("UPDATE "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "skills SET "
                             + "  taming = taming+" + m.getInt(taming)
                             + ", mining = mining+" + m.getInt(mining)
@@ -254,7 +255,7 @@ public class SQLConversionTask implements Runnable {
                             + ", fishing = fishing+" + m.getInt(fishing)
                             + " WHERE user_id = " + id);
                     mcMMO.database.write("UPDATE "
-                            + LoadProperties.MySQLtablePrefix
+                            + tablePrefix
                             + "experience SET "
                             + "  taming = " + m.getInt(tamingXP)
                             + ", mining = " + m.getInt(miningXP)

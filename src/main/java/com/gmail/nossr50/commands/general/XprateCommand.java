@@ -8,12 +8,12 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class XprateCommand implements CommandExecutor {
     private final mcMMO plugin;
-    private static int oldrate = LoadProperties.xpGainMultiplier;
+    private static int oldrate = Config.xpGainMultiplier;
     public static boolean xpevent = false;
 
     public XprateCommand (mcMMO plugin) {
@@ -39,10 +39,10 @@ public class XprateCommand implements CommandExecutor {
                     }
 
                     xpevent = !xpevent;
-                    LoadProperties.xpGainMultiplier = oldrate;
+                    Config.xpGainMultiplier = oldrate;
                 }
                 else {
-                    LoadProperties.xpGainMultiplier = oldrate;
+                    Config.xpGainMultiplier = oldrate;
                 }
             }
             else if (m.isInt(args[0])) {
@@ -56,7 +56,7 @@ public class XprateCommand implements CommandExecutor {
 
         case 2:
             if (m.isInt(args[0])) {
-                oldrate = LoadProperties.xpGainMultiplier;
+                oldrate = Config.xpGainMultiplier;
 
                 if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {
                     xpevent = Boolean.valueOf(args[1]);
@@ -65,16 +65,16 @@ public class XprateCommand implements CommandExecutor {
                     sender.sendMessage(usage3);
                 }
 
-                LoadProperties.xpGainMultiplier = m.getInt(args[0]);
+                Config.xpGainMultiplier = m.getInt(args[0]);
 
                 if (xpevent) {
                     for (Player x : plugin.getServer().getOnlinePlayers()) {
                         x.sendMessage(mcLocale.getString("Commands.xprate.started.0"));
-                        x.sendMessage(mcLocale.getString("Commands.xprate.started.1", new Object[] {LoadProperties.xpGainMultiplier}));
+                        x.sendMessage(mcLocale.getString("Commands.xprate.started.1", new Object[] {Config.xpGainMultiplier}));
                     }
                 }
                 else {
-                    sender.sendMessage("The XP RATE was modified to " + LoadProperties.xpGainMultiplier); //TODO: Locale
+                    sender.sendMessage("The XP RATE was modified to " + Config.xpGainMultiplier); //TODO: Locale
                 }
             }
             else {

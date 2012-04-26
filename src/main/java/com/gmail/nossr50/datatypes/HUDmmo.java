@@ -12,7 +12,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class HUDmmo {
@@ -119,9 +119,9 @@ public class HUDmmo {
      * @param sPlayer Player to initialize XP bar for
      */
     private void initializeXpBarDisplayRetro(SpoutPlayer sPlayer) {
-        Color border = new Color((float) LoadProperties.xpborder_r, (float) LoadProperties.xpborder_g, (float) LoadProperties.xpborder_b, 1f);
+        Color border = new Color((float) Config.getSpoutRetroHUDXPBorderRed(), (float) Config.getSpoutRetroHUDXPBorderGreen(), (float) Config.getSpoutRetroHUDXPBorderBlue(), 1f);
         Color green = new Color(0f, 1f, 0f, 1f);
-        Color background = new Color((float) LoadProperties.xpbackground_r, (float) LoadProperties.xpbackground_g, (float) LoadProperties.xpbackground_b, 1f);
+        Color background = new Color((float) Config.getSpoutRetroHUDXPBackgroundRed(), (float) Config.getSpoutRetroHUDXPBackgroundGreen(), (float) Config.getSpoutRetroHUDXPBackgroundBlue(), 1f);
         Color darkbg = new Color(0.2f, 0.2f, 0.2f, 1f);
 
         xpicon = new GenericTexture();
@@ -185,12 +185,12 @@ public class HUDmmo {
         xpbg.setPriority(RenderPriority.Low);
         xpbg.setDirty(true);
 
-        if (LoadProperties.xpbar) {
+        if (Config.xpbar) {
             sPlayer.getMainScreen().attachWidget(plugin, xpbar);
             sPlayer.getMainScreen().attachWidget(plugin, xpfill);
             sPlayer.getMainScreen().attachWidget(plugin, xpbg);
 
-            if (LoadProperties.xpicon) {
+            if (Config.xpicon) {
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon);
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon_bg);
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon_border);
@@ -206,26 +206,26 @@ public class HUDmmo {
      * @param sPlayer Player to initialize XP bar for
      */
     public void initializeXpBarDisplayStandard(SpoutPlayer sPlayer) {
-        if (LoadProperties.xpbar) {
+        if (Config.xpbar) {
             xpbar = new GenericTexture();
 
             ((GenericTexture) xpbar).setUrl("xpbar_inc000.png");
 
-            xpbar.setX(LoadProperties.xpbar_x);
-            xpbar.setY(LoadProperties.xpbar_y);
+            xpbar.setX(Config.xpbar_x);
+            xpbar.setY(Config.xpbar_y);
             xpbar.setHeight(8);
             xpbar.setWidth(256);
 
             sPlayer.getMainScreen().attachWidget(plugin, xpbar);
 
-            if (LoadProperties.xpicon) {
+            if (Config.xpicon) {
                 xpicon = new GenericTexture();
 
                 xpicon.setUrl("Icon.png");
                 xpicon.setHeight(16);
                 xpicon.setWidth(32);
-                xpicon.setX(LoadProperties.xpicon_x);
-                xpicon.setY(LoadProperties.xpicon_y);
+                xpicon.setX(Config.xpicon_x);
+                xpicon.setY(Config.xpicon_y);
                 xpicon.setDirty(true);
 
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon);
@@ -241,25 +241,25 @@ public class HUDmmo {
      * @param sPlayer Player to initialize XP bar for
      */
     private void initializeXpBarDisplaySmall(SpoutPlayer sPlayer) {
-        if (LoadProperties.xpbar) {
+        if (Config.xpbar) {
             xpbar = new GenericTexture();
 
             ((GenericTexture)xpbar).setUrl("xpbar_inc000.png");
             xpbar.setX(center_x - 64);
-            xpbar.setY(LoadProperties.xpbar_y);
+            xpbar.setY(Config.xpbar_y);
             xpbar.setHeight(4);
             xpbar.setWidth(128);
 
             sPlayer.getMainScreen().attachWidget(plugin, xpbar);
 
-            if (LoadProperties.xpicon) {
+            if (Config.xpicon) {
                 xpicon = new GenericTexture();
 
                 xpicon.setUrl("Icon.png");
                 xpicon.setHeight(8);
                 xpicon.setWidth(16);
                 xpicon.setX(center_x - (8 + 64));
-                xpicon.setY(LoadProperties.xpicon_y + 2);
+                xpicon.setY(Config.xpicon_y + 2);
                 xpicon.setDirty(true);
 
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon);
@@ -276,7 +276,7 @@ public class HUDmmo {
      * @param PP Profile of the given player
      */
     private void updateXpBarStandard(Player player, PlayerProfile PP) {
-        if (!LoadProperties.xpbar) {
+        if (!Config.xpbar) {
             return;
         }
 
@@ -302,7 +302,7 @@ public class HUDmmo {
      * @param PP Profile of the given player
      */
     private void updateXpBarRetro(Player player, PlayerProfile PP) {
-        if (!LoadProperties.xpbar) {
+        if (!Config.xpbar) {
             return;
         }
 
@@ -327,40 +327,40 @@ public class HUDmmo {
     private static Color getRetroColor(SkillType type) {
         switch (type) {
             case ACROBATICS:
-                return new Color((float) LoadProperties.acrobatics_r, (float) LoadProperties.acrobatics_g, (float) LoadProperties.acrobatics_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDAcrobaticsRed(), (float) Config.getSpoutRetroHUDAcrobaticsGreen(), (float) Config.getSpoutRetroHUDAcrobaticsBlue(), 1f);
 
             case ARCHERY:
-                return new Color((float) LoadProperties.archery_r, (float) LoadProperties.archery_g, (float) LoadProperties.archery_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDArcheryRed(), (float) Config.getSpoutRetroHUDArcheryGreen(), (float) Config.getSpoutRetroHUDArcheryBlue(), 1f);
 
             case AXES:
-                return new Color((float) LoadProperties.axes_r, (float) LoadProperties.axes_g, (float) LoadProperties.axes_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDAxesRed(), (float) Config.getSpoutRetroHUDAxesGreen(), (float) Config.getSpoutRetroHUDAxesBlue(), 1f);
 
             case EXCAVATION:
-                return new Color((float) LoadProperties.excavation_r, (float) LoadProperties.excavation_g, (float) LoadProperties.excavation_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDExcavationRed(), (float) Config.getSpoutRetroHUDExcavationGreen(), (float) Config.getSpoutRetroHUDExcavationBlue(), 1f);
 
             case HERBALISM:
-                return new Color((float) LoadProperties.herbalism_r, (float) LoadProperties.herbalism_g, (float) LoadProperties.herbalism_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDHerbalismRed(), (float) Config.getSpoutRetroHUDHerbalismGreen(), (float) Config.getSpoutRetroHUDHerbalismBlue(), 1f);
 
             case MINING:
-                return new Color((float) LoadProperties.mining_r, (float) LoadProperties.mining_g, (float) LoadProperties.mining_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDMiningRed(), (float) Config.getSpoutRetroHUDMiningGreen(), (float) Config.getSpoutRetroHUDMiningBlue(), 1f);
 
             case REPAIR:
-                return new Color((float) LoadProperties.repair_r, (float) LoadProperties.repair_g, (float) LoadProperties.repair_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDRepairRed(), (float) Config.getSpoutRetroHUDRepairGreen(), (float) Config.getSpoutRetroHUDRepairBlue(), 1f);
 
             case SWORDS:
-                return new Color((float) LoadProperties.swords_r, (float) LoadProperties.swords_g, (float) LoadProperties.swords_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDSwordsRed(), (float) Config.getSpoutRetroHUDSwordsGreen(), (float) Config.getSpoutRetroHUDSwordsBlue(), 1f);
 
             case TAMING:
-                return new Color((float) LoadProperties.taming_r, (float) LoadProperties.taming_g, (float) LoadProperties.taming_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDTamingRed(), (float) Config.getSpoutRetroHUDTamingGreen(), (float) Config.getSpoutRetroHUDTamingBlue(), 1f);
 
             case UNARMED:
-                return new Color((float) LoadProperties.unarmed_r, (float) LoadProperties.unarmed_g, (float) LoadProperties.unarmed_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDUnarmedRed(), (float) Config.getSpoutRetroHUDUnarmedGreen(), (float) Config.getSpoutRetroHUDUnarmedBlue(), 1f);
 
             case WOODCUTTING:
-                return new Color((float) LoadProperties.woodcutting_r, (float) LoadProperties.woodcutting_g, (float) LoadProperties.woodcutting_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDWoodcuttingRed(), (float) Config.getSpoutRetroHUDWoodcuttingGreen(), (float) Config.getSpoutRetroHUDWoodcuttingBlue(), 1f);
 
             case FISHING:
-                return new Color((float) LoadProperties.fishing_r, (float) LoadProperties.fishing_g, (float) LoadProperties.fishing_b, 1f);
+                return new Color((float) Config.getSpoutRetroHUDFishingRed(), (float) Config.getSpoutRetroHUDFishingGreen(), (float) Config.getSpoutRetroHUDFishingBlue(), 1f);
 
             default:
                 return new Color(0.3f, 0.3f, 0.75f, 1f);

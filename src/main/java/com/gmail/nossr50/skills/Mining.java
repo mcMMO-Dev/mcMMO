@@ -15,7 +15,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -89,56 +89,56 @@ public class Mining {
         
         switch (type) {
         case COAL_ORE:
-            xp += LoadProperties.mcoal;
+            xp += Config.mcoal;
             break;
 
         case DIAMOND_ORE:
-            xp += LoadProperties.mdiamond;
+            xp += Config.mdiamond;
             break;
 
         case ENDER_STONE:
-            xp += LoadProperties.mendstone;
+            xp += Config.mendstone;
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
-            xp += LoadProperties.mredstone;
+            xp += Config.mredstone;
             break;
 
         case GLOWSTONE:
-            xp += LoadProperties.mglowstone;
+            xp += Config.mglowstone;
             break;
 
         case GOLD_ORE:
-            xp += LoadProperties.mgold;
+            xp += Config.mgold;
             break;
 
         case IRON_ORE:
-            xp += LoadProperties.miron;
+            xp += Config.miron;
             break;
 
         case LAPIS_ORE:
-            xp += LoadProperties.mlapis;
+            xp += Config.mlapis;
             break;
 
         case MOSSY_COBBLESTONE:
-            xp += LoadProperties.mmossstone;
+            xp += Config.mmossstone;
             break;
 
         case NETHERRACK:
-            xp += LoadProperties.mnetherrack;
+            xp += Config.mnetherrack;
             break;
 
         case OBSIDIAN:
-            xp += LoadProperties.mobsidian;
+            xp += Config.mobsidian;
             break;
 
         case SANDSTONE:
-            xp += LoadProperties.msandstone;
+            xp += Config.msandstone;
             break;
 
         case STONE:
-            xp += LoadProperties.mstone;
+            xp += Config.mstone;
             break;
 
         default:
@@ -216,7 +216,7 @@ public class Mining {
     public static void SuperBreakerBlockCheck(Player player, Block block) {
         Material type = block.getType();
         int tier = m.getTier(player.getItemInHand());
-        int durabilityLoss = LoadProperties.abilityDurabilityLoss;
+        int durabilityLoss = Config.abilityDurabilityLoss;
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 
         switch (type) {
@@ -259,7 +259,7 @@ public class Mining {
 
             miningBlockCheck(player, block);
 
-            if (LoadProperties.spoutEnabled) {
+            if (Config.spoutEnabled) {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }

@@ -49,7 +49,7 @@ public class mcMMO extends JavaPlugin {
     public static mcMMO p;
 
     //Config file stuff
-    LoadProperties config;
+    Config config;
     LoadTreasures config2;
 
     //Jar stuff
@@ -93,7 +93,7 @@ public class mcMMO extends JavaPlugin {
             }
         }
 
-        this.config = new LoadProperties(this);
+        this.config = new Config(this);
         this.config.load();
 
         this.config2 = new LoadTreasures(this);
@@ -101,7 +101,7 @@ public class mcMMO extends JavaPlugin {
 
         new Party(this).loadParties();
 
-        if (!LoadProperties.useMySQL) {
+        if (!Config.getUseMySQL()) {
             Users.loadUsers();
         }
 
@@ -115,7 +115,7 @@ public class mcMMO extends JavaPlugin {
         PluginDescriptionFile pdfFile = this.getDescription();
 
         //Setup the leaderboards
-        if (LoadProperties.useMySQL) {
+        if (Config.getUseMySQL()) {
             database = new Database(this);
             database.createStructure();
         }
@@ -134,7 +134,7 @@ public class mcMMO extends JavaPlugin {
         //Schedule Spout Activation 1 second after start-up
         scheduler.scheduleSyncDelayedTask(this, new SpoutStart(this), 20);
         //Periodic save timer (Saves every 10 minutes)
-        scheduler.scheduleSyncRepeatingTask(this, new mcSaveTimer(this), 0, LoadProperties.saveInterval * 1200);
+        scheduler.scheduleSyncRepeatingTask(this, new mcSaveTimer(this), 0, Config.saveInterval * 1200);
         //Regen & Cooldown timer (Runs every second)
         scheduler.scheduleSyncRepeatingTask(this, new mcTimer(this), 0, 20);
         //Bleed timer (Runs every two seconds)
@@ -142,7 +142,7 @@ public class mcMMO extends JavaPlugin {
 
         registerCommands();
 
-        if (LoadProperties.statsTracking) {
+        if (Config.statsTracking) {
             //Plugin Metrics running in a new thread
             new Thread(new Runnable() {
                 public void run() {
@@ -247,88 +247,88 @@ public class mcMMO extends JavaPlugin {
         getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
 
         //mc* commands
-        if (LoadProperties.mcremoveEnable) {
+        if (Config.mcremoveEnable) {
             getCommand("mcremove").setExecutor(new McremoveCommand(this));
         }
 
-        if (LoadProperties.mcabilityEnable) {
+        if (Config.mcabilityEnable) {
             getCommand("mcability").setExecutor(new McabilityCommand());
         }
 
-        if (LoadProperties.mccEnable) {
+        if (Config.mccEnable) {
             getCommand("mcc").setExecutor(new MccCommand());
         }
 
-        if (LoadProperties.mcgodEnable) {
+        if (Config.mcgodEnable) {
             getCommand("mcgod").setExecutor(new McgodCommand());
         }
 
-        if (LoadProperties.mcmmoEnable) {
+        if (Config.mcmmoEnable) {
             getCommand("mcmmo").setExecutor(new McmmoCommand());
         }
 
-        if (LoadProperties.mcrefreshEnable) {
+        if (Config.mcrefreshEnable) {
             getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
         }
 
-        if (LoadProperties.mctopEnable) {
+        if (Config.mctopEnable) {
             getCommand("mctop").setExecutor(new MctopCommand());
         }
 
-        if (LoadProperties.mcstatsEnable) {
+        if (Config.mcstatsEnable) {
             getCommand("mcstats").setExecutor(new McstatsCommand());
         }
 
         //Party commands
-        if (LoadProperties.acceptEnable) {
+        if (Config.acceptEnable) {
             getCommand("accept").setExecutor(new AcceptCommand(this));
         }
 
-        if (LoadProperties.aEnable) {
+        if (Config.aEnable) {
             getCommand("a").setExecutor(new ACommand(this));
         }
 
-        if (LoadProperties.inviteEnable) {
+        if (Config.inviteEnable) {
             getCommand("invite").setExecutor(new InviteCommand(this));
         }
 
-        if (LoadProperties.partyEnable) {
+        if (Config.partyEnable) {
             getCommand("party").setExecutor(new PartyCommand(this));
         }
 
-        if (LoadProperties.pEnable) {
+        if (Config.pEnable) {
             getCommand("p").setExecutor(new PCommand(this));
         }
 
-        if (LoadProperties.ptpEnable) {
+        if (Config.ptpEnable) {
             getCommand("ptp").setExecutor(new PtpCommand(this));
         }
 
         //Other commands
-        if (LoadProperties.addxpEnable) {
+        if (Config.addxpEnable) {
             getCommand("addxp").setExecutor(new AddxpCommand(this));
         }
 
-        if (LoadProperties.addlevelsEnable) {
+        if (Config.addlevelsEnable) {
             getCommand("addlevels").setExecutor(new AddlevelsCommand(this));
         }
 
-        if (LoadProperties.mmoeditEnable) {
+        if (Config.mmoeditEnable) {
             getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
         }
 
-        if (LoadProperties.inspectEnable) {
+        if (Config.inspectEnable) {
             getCommand("inspect").setExecutor(new InspectCommand(this));
         }
 
-        if (LoadProperties.xprateEnable) {
+        if (Config.xprateEnable) {
             getCommand("xprate").setExecutor(new XprateCommand(this));
         }
 
         getCommand("mmoupdate").setExecutor(new MmoupdateCommand(this));
 
         //Spout commands
-        if (LoadProperties.xplockEnable) {
+        if (Config.xplockEnable) {
             getCommand("xplock").setExecutor(new XplockCommand());
         }
 

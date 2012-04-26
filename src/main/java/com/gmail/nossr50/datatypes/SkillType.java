@@ -4,22 +4,22 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 
 public enum SkillType {
-    ACROBATICS(LoadProperties.levelCapAcrobatics, LoadProperties.acrobaticsxpmodifier),
+    ACROBATICS(Config.getLevelCapAcrobatics(), Config.getFormulaMultiplierAcrobatics()),
     ALL, //This one is just for convenience
-    ARCHERY(LoadProperties.levelCapArchery, LoadProperties.archeryxpmodifier),
-    AXES(AbilityType.SKULL_SPLIITER, LoadProperties.levelCapAxes, ToolType.AXE, LoadProperties.axesxpmodifier),
-    EXCAVATION(AbilityType.GIGA_DRILL_BREAKER, LoadProperties.levelCapExcavation, ToolType.SHOVEL, LoadProperties.excavationxpmodifier),
-    FISHING(LoadProperties.levelCapFishing, LoadProperties.fishingxpmodifier),
-    HERBALISM(AbilityType.GREEN_TERRA, LoadProperties.levelCapHerbalism, ToolType.HOE, LoadProperties.herbalismxpmodifier),
-    MINING(AbilityType.SUPER_BREAKER, LoadProperties.levelCapMining, ToolType.PICKAXE, LoadProperties.miningxpmodifier),
-    REPAIR(LoadProperties.levelCapRepair, LoadProperties.repairxpmodifier),
-    SWORDS(AbilityType.SERRATED_STRIKES, LoadProperties.levelCapSwords, ToolType.SWORD, LoadProperties.swordsxpmodifier),
-    TAMING(LoadProperties.levelCapTaming, LoadProperties.tamingxpmodifier),
-    UNARMED(AbilityType.BERSERK, LoadProperties.levelCapUnarmed, ToolType.FISTS, LoadProperties.unarmedxpmodifier),
-    WOODCUTTING(AbilityType.TREE_FELLER, LoadProperties.levelCapWoodcutting, ToolType.AXE, LoadProperties.woodcuttingxpmodifier);
+    ARCHERY(Config.getLevelCapArchery(), Config.getFormulaMultiplierArchery()),
+    AXES(AbilityType.SKULL_SPLIITER, Config.getLevelCapAxes(), ToolType.AXE, Config.getFormulaMultiplierAxes()),
+    EXCAVATION(AbilityType.GIGA_DRILL_BREAKER, Config.getLevelCapExcavation(), ToolType.SHOVEL, Config.getFormulaMultiplierExcavation()),
+    FISHING(Config.getLevelCapFishing(), Config.getFormulaMultiplierFishing()),
+    HERBALISM(AbilityType.GREEN_TERRA, Config.getLevelCapHerbalism(), ToolType.HOE, Config.getFormulaMultiplierHerbalism()),
+    MINING(AbilityType.SUPER_BREAKER, Config.getLevelCapMining(), ToolType.PICKAXE, Config.getFormulaMultiplierMining()),
+    REPAIR(Config.getLevelCapRepair(), Config.getFormulaMultiplierRepair()),
+    SWORDS(AbilityType.SERRATED_STRIKES, Config.getLevelCapSwords(), ToolType.SWORD, Config.getFormulaMultiplierSwords()),
+    TAMING(Config.getLevelCapTaming(), Config.getFormulaMultiplierTaming()),
+    UNARMED(AbilityType.BERSERK, Config.getLevelCapUnarmed(), ToolType.FISTS, Config.getFormulaMultiplierUnarmed()),
+    WOODCUTTING(AbilityType.TREE_FELLER, Config.getLevelCapWoodcutting(), ToolType.AXE, Config.getFormulaMultiplierWoodcutting());
 
     private AbilityType ability;
     private int maxLevel;

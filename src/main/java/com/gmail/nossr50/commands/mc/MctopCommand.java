@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.Leaderboard;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Skills;
 
@@ -19,7 +19,8 @@ public class MctopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String usage = ChatColor.RED + "Proper usage is /mctop [skill] [page]"; //TODO: Needs more locale.
-        if (!LoadProperties.useMySQL) {
+        
+        if (!Config.getUseMySQL()) {
 
             switch (args.length) {
             case 0:
@@ -131,7 +132,8 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
-        HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + query + ", user_id FROM " + LoadProperties.MySQLtablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
+        String tablePrefix = Config.getMySQLTablePrefix();
+        HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
 
         if (query == "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing") {
             sender.sendMessage(mcLocale.getString("Commands.PowerLevel.Leaderboard"));
@@ -141,11 +143,11 @@ public class MctopCommand implements CommandExecutor {
         }
 
         for (int i = (page * 10) - 9; i <= (page * 10); i++) {
-            if (i > userslist.size() || mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null) {
+            if (i > userslist.size() || mcMMO.database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null) {
                 break;
             }
 
-            HashMap<Integer, ArrayList<String>> username = mcMMO.database.read("SELECT user FROM " + LoadProperties.MySQLtablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+            HashMap<Integer, ArrayList<String>> username = mcMMO.database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
             sender.sendMessage(String.valueOf(i) + ". " + ChatColor.GREEN + userslist.get(i).get(0) + " - " + ChatColor.WHITE + username.get(1).get(0));
         }
     }

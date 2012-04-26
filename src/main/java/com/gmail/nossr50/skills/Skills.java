@@ -14,7 +14,7 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -80,7 +80,7 @@ public class Skills {
      * @param skill The skill the ability is tied to
      */
     public static void activationCheck(Player player, SkillType skill) {
-        if (LoadProperties.enableOnlyActivateWhenSneaking && !player.isSneaking()) {
+        if (Config.enableOnlyActivateWhenSneaking && !player.isSneaking()) {
             return;
         }
 
@@ -111,7 +111,7 @@ public class Skills {
                 }
             }
 
-            if (LoadProperties.enableAbilityMessages) {
+            if (Config.enableAbilityMessages) {
                 player.sendMessage(tool.getRaiseTool());
             }
 
@@ -201,7 +201,7 @@ public class Skills {
                 }
             }
 
-            if (!LoadProperties.useMySQL) {
+            if (!Config.getUseMySQL()) {
                 ProcessLeaderboardUpdate(skillType, player);
                 ProcessLeaderboardUpdate(SkillType.ALL, player);
             }
@@ -209,18 +209,18 @@ public class Skills {
             String capitalized = m.getCapitalized(skillType.toString());
 
             /* Spout Stuff */
-            if (LoadProperties.spoutEnabled && player instanceof SpoutPlayer) {
+            if (Config.spoutEnabled && player instanceof SpoutPlayer) {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
                 if (sPlayer.isSpoutCraftEnabled()) {
-                    if (LoadProperties.xpbar) {
+                    if (Config.xpbar) {
                         SpoutStuff.updateXpBar(player);
                     }
 
                     SpoutStuff.levelUpNotification(skillType, sPlayer);
 
                     /* Update custom titles */
-                    if (LoadProperties.showPowerLevel) {
+                    if (Config.getShowPowerLevelForSpout()) {
                         sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(PP.getPowerLevel()));
                     }
                 }
@@ -234,10 +234,10 @@ public class Skills {
         }
 
         /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
-        if (skillups == 0 && LoadProperties.spoutEnabled && player instanceof SpoutPlayer) {
+        if (skillups == 0 && Config.spoutEnabled && player instanceof SpoutPlayer) {
             SpoutPlayer sPlayer = (SpoutPlayer) player;
             if (sPlayer.isSpoutCraftEnabled()) {
-                if (LoadProperties.xpbar) {
+                if (Config.xpbar) {
                     SpoutStuff.updateXpBar(player);
                 }
             }
@@ -349,7 +349,7 @@ public class Skills {
      * @param durabilityLoss The durability to remove from the item
      */
     public static void abilityDurabilityLoss(ItemStack inhand, int durabilityLoss) {
-        if (LoadProperties.toolsLoseDurabilityFromAbilities) {
+        if (Config.toolsLoseDurabilityFromAbilities) {
             if (!inhand.containsEnchantment(Enchantment.DURABILITY)) {
                 inhand.setDurability((short) (inhand.getDurability() + durabilityLoss));
             }

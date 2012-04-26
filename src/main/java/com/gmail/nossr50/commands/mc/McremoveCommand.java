@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class McremoveCommand implements CommandExecutor {
@@ -27,6 +27,8 @@ public class McremoveCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String playerName;
+        String tablePrefix = Config.getMySQLTablePrefix();
+        String databaseName = Config.getMySQLDatabaseName();
         String usage = ChatColor.RED + "Proper usage is /mcremove <player>"; //TODO: Needs more locale.
         String success;
 
@@ -46,35 +48,35 @@ public class McremoveCommand implements CommandExecutor {
         }
 
         /* MySQL */
-        if (LoadProperties.useMySQL) {
+        if (Config.getUseMySQL()) {
             int userId = 0;
-            userId = mcMMO.database.getInt("SELECT id FROM " + LoadProperties.MySQLtablePrefix + "users WHERE user = '" + playerName + "'");
+            userId = mcMMO.database.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
 
             if (userId > 0) {
                 mcMMO.database.write("DELETE FROM "
-                        + LoadProperties.MySQLdbName + "."
-                        + LoadProperties.MySQLtablePrefix + "users WHERE "
-                        + LoadProperties.MySQLtablePrefix + "users.id=" + userId);
+                        + databaseName + "."
+                        + tablePrefix + "users WHERE "
+                        + tablePrefix + "users.id=" + userId);
 
                 mcMMO.database.write("DELETE FROM "
-                        + LoadProperties.MySQLdbName + "."
-                        + LoadProperties.MySQLtablePrefix + "cooldowns WHERE "
-                        + LoadProperties.MySQLtablePrefix + "cooldowns.user_id=" + userId);
+                        + databaseName + "."
+                        + tablePrefix + "cooldowns WHERE "
+                        + tablePrefix + "cooldowns.user_id=" + userId);
 
                 mcMMO.database.write("DELETE FROM "
-                        + LoadProperties.MySQLdbName + "."
-                        + LoadProperties.MySQLtablePrefix + "huds WHERE "
-                        + LoadProperties.MySQLtablePrefix + "huds.user_id=" + userId);
+                        + databaseName + "."
+                        + tablePrefix + "huds WHERE "
+                        + tablePrefix + "huds.user_id=" + userId);
 
                 mcMMO.database.write("DELETE FROM "
-                        + LoadProperties.MySQLdbName + "."
-                        + LoadProperties.MySQLtablePrefix + "skills WHERE "
-                        + LoadProperties.MySQLtablePrefix + "skills.user_id=" + userId);
+                        + databaseName + "."
+                        + tablePrefix + "skills WHERE "
+                        + tablePrefix + "skills.user_id=" + userId);
 
                 mcMMO.database.write("DELETE FROM "
-                        + LoadProperties.MySQLdbName + "."
-                        + LoadProperties.MySQLtablePrefix + "experience WHERE "
-                        + LoadProperties.MySQLtablePrefix + "experience.user_id=" + userId);
+                        + databaseName + "."
+                        + tablePrefix + "experience WHERE "
+                        + tablePrefix + "experience.user_id=" + userId);
 
                 sender.sendMessage(success);
 

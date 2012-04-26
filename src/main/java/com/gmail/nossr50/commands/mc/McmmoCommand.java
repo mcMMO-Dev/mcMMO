@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.mcLocale;
 
 public class McmmoCommand implements CommandExecutor {
@@ -18,8 +18,8 @@ public class McmmoCommand implements CommandExecutor {
         String[] mcSplit = description.split(",");
         sender.sendMessage(mcSplit);
 
-        if (LoadProperties.donateMessage) {
-            if (LoadProperties.spoutEnabled && sender instanceof SpoutPlayer) {
+        if (Config.donateMessage) {
+            if (Config.spoutEnabled && sender instanceof SpoutPlayer) {
                 SpoutPlayer sPlayer = (SpoutPlayer) sender;
 
                 sPlayer.sendNotification(ChatColor.YELLOW + "[mcMMO]" + ChatColor.GOLD + " Donate!", ChatColor.GREEN + "nossr50@gmail.com", Material.DIAMOND);

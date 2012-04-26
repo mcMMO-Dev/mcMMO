@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -45,7 +45,7 @@ public class RepairCommand implements CommandExecutor {
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.0"), mcLocale.getString("Repair.Effect.1") }));
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.2"), mcLocale.getString("Repair.Effect.3") }));
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.4"), mcLocale.getString("Repair.Effect.5") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.6", new Object[] { LoadProperties.repairDiamondLevel }), mcLocale.getString("Repair.Effect.7") }));
+        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.6", new Object[] { Config.repairDiamondLevel }), mcLocale.getString("Repair.Effect.7") }));
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Repair.Effect.8"), mcLocale.getString("Repair.Effect.9") }));
 
         player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));

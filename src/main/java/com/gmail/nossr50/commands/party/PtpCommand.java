@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.mcLocale;
@@ -44,8 +44,8 @@ public class PtpCommand implements CommandExecutor {
                 return true;
             }
 
-            if (PP.getRecentlyHurt() + (LoadProperties.ptpCommandCooldown * 1000) > System.currentTimeMillis()) {
-                player.sendMessage(mcLocale.getString("Party.Teleport.Hurt", new Object[] { LoadProperties.ptpCommandCooldown }));
+            if (PP.getRecentlyHurt() + (Config.ptpCommandCooldown * 1000) > System.currentTimeMillis()) {
+                player.sendMessage(mcLocale.getString("Party.Teleport.Hurt", new Object[] { Config.ptpCommandCooldown }));
                 return true;
             }
 

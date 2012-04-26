@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
@@ -46,8 +46,8 @@ public class TamingCommand implements CommandExecutor {
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Taming.Effect.10"), mcLocale.getString("Taming.Effect.11") }));
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Taming.Effect.12"), mcLocale.getString("Taming.Effect.13") }));
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Taming.Effect.16"), mcLocale.getString("Taming.Effect.17") }));
-        player.sendMessage(mcLocale.getString("Taming.Effect.14", new Object[] { LoadProperties.fishConsumedByCOTW }));
-        player.sendMessage(mcLocale.getString("Taming.Effect.15", new Object[] { LoadProperties.bonesConsumedByCOTW }));
+        player.sendMessage(mcLocale.getString("Taming.Effect.14", new Object[] { Config.fishConsumedByCOTW }));
+        player.sendMessage(mcLocale.getString("Taming.Effect.15", new Object[] { Config.bonesConsumedByCOTW }));
 
         player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
 

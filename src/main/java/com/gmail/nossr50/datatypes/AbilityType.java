@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.skills.Excavation;
 import com.gmail.nossr50.skills.Herbalism;
@@ -12,7 +12,7 @@ import com.gmail.nossr50.skills.Mining;
 
 public enum AbilityType {
     BERSERK(
-            LoadProperties.berserkCooldown,
+            Config.berserkCooldown,
             "Unarmed.Skills.Berserk.On",
             "Unarmed.Skills.Berserk.Off",
             "Unarmed.Skills.Berserk.Other.On",
@@ -20,7 +20,7 @@ public enum AbilityType {
             "Unarmed.Skills.Berserk.Other.Off"),
 
     SUPER_BREAKER(
-            LoadProperties.superBreakerCooldown,
+            Config.superBreakerCooldown,
             "Mining.Skills.SuperBreaker.On",
             "Mining.Skills.SuperBreaker.Off",
             "Mining.Skills.SuperBreaker.Other.On",
@@ -28,7 +28,7 @@ public enum AbilityType {
             "Mining.Skills.SuperBreaker.Other.Off"),
 
     GIGA_DRILL_BREAKER(
-            LoadProperties.gigaDrillBreakerCooldown,
+            Config.gigaDrillBreakerCooldown,
             "Excavation.Skills.GigaDrillBreaker.On",
             "Excavation.Skills.GigaDrillBreaker.Off",
             "Excavation.Skills.GigaDrillBreaker.Other.On",
@@ -36,7 +36,7 @@ public enum AbilityType {
             "Excavation.Skills.GigaDrillBreaker.Other.Off"),
 
     GREEN_TERRA(
-            LoadProperties.greenTerraCooldown,
+            Config.greenTerraCooldown,
             "Herbalism.Skills.GTe.On",
             "Herbalism.Skills.GTe.Off",
             "Herbalism.Skills.GTe.Other.On",
@@ -44,7 +44,7 @@ public enum AbilityType {
             "Herbalism.Skills.GTe.Other.Off"),
 
     SKULL_SPLIITER(
-            LoadProperties.skullSplitterCooldown,
+            Config.skullSplitterCooldown,
             "Axes.Skills.SS.On",
             "Axes.Skills.SS.Off",
             "Axes.Skills.SS.Other.On",
@@ -52,7 +52,7 @@ public enum AbilityType {
             "Axes.Skills.SS.Other.Off"),
 
     TREE_FELLER(
-            LoadProperties.treeFellerCooldown,
+            Config.treeFellerCooldown,
             "Woodcutting.Skills.TreeFeller.On",
             "Woodcutting.Skills.TreeFeller.Off",
             "Woodcutting.Skills.TreeFeller.Other.On",
@@ -60,7 +60,7 @@ public enum AbilityType {
             "Woodcutting.Skills.TreeFeller.Other.Off"),
 
     SERRATED_STRIKES(
-            LoadProperties.serratedStrikeCooldown,
+            Config.serratedStrikeCooldown,
             "Swords.Skills.SS.On",
             "Swords.Skills.SS.Off",
             "Swords.Skills.SS.Other.On",
@@ -68,7 +68,7 @@ public enum AbilityType {
             "Swords.Skills.SS.Other.Off"),
 
     BLAST_MINING(
-            LoadProperties.blastMiningCooldown,
+            Config.blastMiningCooldown,
             null,
             null,
             "Mining.Blast.Other.On",
