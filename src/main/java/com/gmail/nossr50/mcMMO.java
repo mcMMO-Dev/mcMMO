@@ -8,9 +8,9 @@ import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.runnables.*;
-import com.gmail.nossr50.listeners.mcBlockListener;
-import com.gmail.nossr50.listeners.mcEntityListener;
-import com.gmail.nossr50.listeners.mcPlayerListener;
+import com.gmail.nossr50.listeners.BlockListener;
+import com.gmail.nossr50.listeners.EntityListener;
+import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
@@ -36,9 +36,9 @@ import org.bukkit.entity.Player;
 
 public class mcMMO extends JavaPlugin {
 
-    private final mcPlayerListener playerListener = new mcPlayerListener(this);
-    private final mcBlockListener blockListener = new mcBlockListener(this);
-    private final mcEntityListener entityListener = new mcEntityListener(this);
+    private final PlayerListener playerListener = new PlayerListener(this);
+    private final BlockListener blockListener = new BlockListener(this);
+    private final EntityListener entityListener = new EntityListener(this);
 
     public HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
     public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();

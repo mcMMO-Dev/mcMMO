@@ -8,7 +8,7 @@ import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 /**
  * Listener for listening to our own events, only really useful for catching errors
  */
-public class mcSelfListener implements Listener {
+public class SelfListener implements Listener {
 
     /**
      * Monitor internal XP gain events.

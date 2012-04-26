@@ -27,9 +27,9 @@ import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.listeners.mcSpoutInputListener;
-import com.gmail.nossr50.listeners.mcSpoutListener;
-import com.gmail.nossr50.listeners.mcSpoutScreenListener;
+import com.gmail.nossr50.listeners.SpoutInputListener;
+import com.gmail.nossr50.listeners.SpoutListener;
+import com.gmail.nossr50.listeners.SpoutScreenListener;
 
 public class SpoutStuff {
     private static mcMMO plugin = mcMMO.p;
@@ -40,9 +40,9 @@ public class SpoutStuff {
     public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
     public final static String soundDirectory = spoutDirectory + "Sound" + File.separator;
 
-    private final static mcSpoutListener spoutListener = new mcSpoutListener(plugin);
-    private final static mcSpoutInputListener spoutInputListener = new mcSpoutInputListener(plugin);
-    private final static mcSpoutScreenListener spoutScreenListener = new mcSpoutScreenListener(plugin);
+    private final static SpoutListener spoutListener = new SpoutListener(plugin);
+    private final static SpoutInputListener spoutInputListener = new SpoutInputListener(plugin);
+    private final static SpoutScreenListener spoutScreenListener = new SpoutScreenListener(plugin);
 
     public static HashMap<Player, HUDmmo> playerHUDs = new HashMap<Player, HUDmmo>();
     public static HashMap<SpoutPlayer, PopupMMO> playerScreens = new HashMap<SpoutPlayer, PopupMMO>();

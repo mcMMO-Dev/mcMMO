@@ -300,6 +300,7 @@ public class Config extends ConfigLoader{
 
         // Setup default HUD
         String temp = config.getString("Spout.HUD.Default", "STANDARD");
+        
         for (HUDType x : HUDType.values()) {
             if (x.toString().equalsIgnoreCase(temp)) {
                 defaulthud = x;
@@ -322,12 +323,6 @@ public class Config extends ConfigLoader{
         showFaces = config.getBoolean("Spout.Party.HUD.Show_Faces", true);
         showDisplayName = config.getBoolean("Spout.Party.HUD.Show_Display_Name", false);
         partybar = config.getBoolean("Spout.Party.HUD.Enabled", true);
-
-        
-
-        
-
-        
 
         enableOnlyActivateWhenSneaking = config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false);
 
