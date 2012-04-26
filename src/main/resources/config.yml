@@ -259,11 +259,11 @@ Experience:
         Multiplier:
             Animals: 1.0
             Creeper: 4.0
-            Skeleton: 2.0
-            Spider: 3.0
+            Skeleton: 3.0
+            Spider: 2.0
             Zombie: 2.0
             Pig_Zombie: 3.0
-            Enderman: 2.0
+            Enderman: 4.0
             Cave_Spider: 3.0
             Silverfish: 3.0
             Blaze: 3.0

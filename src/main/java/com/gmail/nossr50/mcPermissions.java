@@ -29,8 +29,19 @@ public class mcPermissions {
         return player.hasPermission("mcmmo.admin");
     }
 
+    /*
+     * MCMMO.BYPASS.*
+     */
     public boolean arcaneBypass(Player player) {
         return player.hasPermission("mcmmo.bypass.arcanebypass");
+    }
+
+    public boolean inspectDistanceBypass(Player player) {
+        return player.hasPermission("mcmmo.bypass.inspect.distance");
+    }
+
+    public boolean inspectOfflineBypass(Player player) {
+        return player.hasPermission("mcmmo.bypass.inspect.offline");
     }
 
     /*

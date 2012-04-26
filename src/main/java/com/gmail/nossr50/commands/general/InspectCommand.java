@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -39,7 +40,7 @@ public class InspectCommand implements CommandExecutor {
             if (target.isOnline()) {
                 Player player = (Player) target;
 
-                if (sender instanceof Player && !sender.isOp() && !m.isNear(((Player) sender).getLocation(), player.getLocation(), 5.0)) {
+                if (sender instanceof Player && !sender.isOp() && !m.isNear(((Player) sender).getLocation(), player.getLocation(), 5.0) && !mcPermissions.getInstance().inspectDistanceBypass((Player) sender)) {
                     sender.sendMessage(mcLocale.getString("Inspect.TooFar"));
                     return true;
                 }
@@ -53,7 +54,7 @@ public class InspectCommand implements CommandExecutor {
                 return true;
             }
             else {
-                if (sender instanceof Player && !sender.isOp()) {
+                if (sender instanceof Player && !sender.isOp() && !mcPermissions.getInstance().inspectOfflineBypass((Player) sender)) {
                     sender.sendMessage(mcLocale.getString("Inspect.Offline"));
                     return true;
                 }

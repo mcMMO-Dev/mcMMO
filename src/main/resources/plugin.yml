@@ -139,8 +139,18 @@ permissions:
             mcmmo.tools.*: true
     mcmmo.admin:
         description: Allows access to mmoupdate and other sensitive commands        
+    mcmmo.bypass.*:
+        description: Implies all bypass permissions.
+        children:
+            mcmmo.bypass.arcanebypass: true
+            mcmmo.bypass.inspect.distance: true
+            mcmmo.bypass.inspect.offline: true
     mcmmo.bypass.arcanebypass:
         description: Allows user to bypass Arcane Repair so he will never lose enchantments
+    mcmmo.bypass.inspect.distance:
+        description: Allows user to bypass Inspect's distance requirements
+    mcmmo.bypass.inspect.offline:
+        description: Allows user to bypass Inspect's offline player requirements
     mcmmo.tools.*:
         description: Implies all mcmmo.tools permissions.
         children:

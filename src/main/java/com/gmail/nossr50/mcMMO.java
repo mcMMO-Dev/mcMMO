@@ -178,7 +178,7 @@ public class mcMMO extends JavaPlugin {
      * </br>
      * This function is designed for API usage.
      *
-     * @param player Name of player whose profile to get
+     * @param playerName Name of player whose profile to get
      * @return the PlayerProfile object
      */
     public PlayerProfile getPlayerProfileByName(String playerName) {
