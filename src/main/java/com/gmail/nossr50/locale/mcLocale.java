@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 
@@ -27,14 +28,16 @@ public class mcLocale {
     public static String getString(String key, Object[] messageArguments) {
         try {
             if (RESOURCE_BUNDLE == null) {
-                String myLocale = LoadProperties.locale.toLowerCase();
-                try {
-                    //attempt to get the locale denoted
-                    RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(myLocale));
-                }
-                catch (MissingResourceException e) {
-                    RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, new Locale("en-US"));
-                }
+                Locale.setDefault(new Locale("en", "US"));
+                String[] myLocale = LoadProperties.locale.split("[-_ ]");
+                
+                Locale locale = null;
+                if (myLocale.length == 1)
+                	locale = new Locale(myLocale[0]);
+                else if (myLocale.length >= 2)
+                	locale = new Locale(myLocale[0], myLocale[1]);
+                
+                RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, locale);
             }
 
             String output = RESOURCE_BUNDLE.getString(key);

@@ -8,7 +8,7 @@
 #  Settings for mcMMO in general
 ###
 General:
-    Locale: en-US
+    Locale: en_US
     MOTD_Enabled: true
     #Amount of time (in minutes) to wait between saves of player information
     Save_Interval: 10
