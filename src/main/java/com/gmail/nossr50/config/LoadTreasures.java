@@ -212,23 +212,23 @@ public class LoadTreasures extends ConfigLoader{
                 int dropLevel = fTreasure.getDropLevel();
                 int maxLevel = fTreasure.getMaxLevel();
 
-                if(dropLevel <= Config.fishingTier1 && maxLevel >= Config.fishingTier1) {
+                if(dropLevel <= Config.getFishingTierLevelsTier1() && maxLevel >= Config.getFishingTierLevelsTier1()) {
                     fishingRewardsTier1.add(fTreasure);
                 }
 
-                if(dropLevel <= Config.fishingTier2 && maxLevel >= Config.fishingTier2) {
+                if(dropLevel <= Config.getFishingTierLevelsTier2() && maxLevel >= Config.getFishingTierLevelsTier2()) {
                     fishingRewardsTier2.add(fTreasure);
                 }
 
-                if (dropLevel <= Config.fishingTier3 && maxLevel >= Config.fishingTier3) {
+                if (dropLevel <= Config.getFishingTierLevelsTier3() && maxLevel >= Config.getFishingTierLevelsTier3()) {
                     fishingRewardsTier3.add(fTreasure);
                 }
 
-                if (dropLevel <= Config.fishingTier4 && maxLevel >= Config.fishingTier4) {
+                if (dropLevel <= Config.getFishingTierLevelsTier4() && maxLevel >= Config.getFishingTierLevelsTier4()) {
                     fishingRewardsTier4.add(fTreasure);
                 }
 
-                if (dropLevel <= Config.fishingTier5 && maxLevel >= Config.fishingTier5) {
+                if (dropLevel <= Config.getFishingTierLevelsTier5() && maxLevel >= Config.getFishingTierLevelsTier5()) {
                     fishingRewardsTier5.add(fTreasure);
                 }
 

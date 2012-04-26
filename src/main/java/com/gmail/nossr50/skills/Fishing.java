@@ -42,16 +42,16 @@ public class Fishing {
         int level = PP.getSkillLevel(SkillType.FISHING);
         int fishingTier;
 
-        if (level >= Config.fishingTier5) {
+        if (level >= Config.getFishingTierLevelsTier5()) {
             fishingTier = 5;
         }
-        else if (level >= Config.fishingTier4) {
+        else if (level >= Config.getFishingTierLevelsTier4()) {
             fishingTier = 4;
         }
-        else if (level >= Config.fishingTier3) {
+        else if (level >= Config.getFishingTierLevelsTier3()) {
             fishingTier =  3;
         }
-        else if (level >= Config.fishingTier2) {
+        else if (level >= Config.getFishingTierLevelsTier2()) {
             fishingTier =  2;
         }
         else {
@@ -97,7 +97,7 @@ public class Fishing {
             break;
         }
 
-        if (Config.fishingDrops && rewards.size() > 0) {
+        if (Config.getFishingDropsEnabled() && rewards.size() > 0) {
             FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
             if (random.nextDouble() * 100 <= treasure.getDropChance()) {
@@ -115,7 +115,7 @@ public class Fishing {
             theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); //Change durability to random value
         }
 
-        PP.addXP(SkillType.FISHING, Config.mfishing);
+        PP.addXP(SkillType.FISHING, Config.getFishingBaseXP());
         Skills.XpCheckSkill(SkillType.FISHING, player);
     }
 

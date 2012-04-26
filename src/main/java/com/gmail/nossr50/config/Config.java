@@ -96,9 +96,13 @@ public class Config extends ConfigLoader{
     public static int mbase;
 
     /* Fishing */
-    public static Boolean fishingDrops;
-    public static int fishingTier1, fishingTier2, fishingTier3, fishingTier4, fishingTier5;
-    public static int mfishing;
+    public static int getFishingBaseXP() { return config.getInt("Experience.Fishing.Base", 800); }
+    public static boolean getFishingDropsEnabled() { return config.getBoolean("Fishing.Drops_Enabled", true); }
+    public static int getFishingTierLevelsTier1() { return config.getInt("Fishing.Tier_Levels.Tier1", 0); }
+    public static int getFishingTierLevelsTier2() { return config.getInt("Fishing.Tier_Levels.Tier2", 200); }
+    public static int getFishingTierLevelsTier3() { return config.getInt("Fishing.Tier_Levels.Tier3", 400); }
+    public static int getFishingTierLevelsTier4() { return config.getInt("Fishing.Tier_Levels.Tier4", 600); }
+    public static int getFishingTierLevelsTier5() { return config.getInt("Fishing.Tier_Levels.Tier5", 800); }
 
     /* Herbalism */
     public static Boolean herbalismHungerBonus, wheatRegrowth;
@@ -338,7 +342,7 @@ public class Config extends ConfigLoader{
         mtameWolf = config.getInt("Experience.Taming.Animal_Taming.Wolf", 250);
         mtameOcelot = config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500);
 
-        mfishing = config.getInt("Experience.Fishing.Base", 800);
+        
 
         enableOnlyActivateWhenSneaking = config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false);
 
@@ -429,14 +433,7 @@ public class Config extends ConfigLoader{
         arcaneRank2 = config.getInt("Arcane_Forging.Rank_Levels.Rank_2", 250);
         arcaneRank3 = config.getInt("Arcane_Forging.Rank_Levels.Rank_3", 500);
         arcaneRank4 = config.getInt("Arcane_Forging.Rank_Levels.Rank_4", 750);
-
-        fishingDrops = config.getBoolean("Fishing.Drops_Enabled", true);
-        fishingTier1 = config.getInt("Fishing.Tier_Levels.Tier1", 0);
-        fishingTier2 = config.getInt("Fishing.Tier_Levels.Tier2", 200);
-        fishingTier3 = config.getInt("Fishing.Tier_Levels.Tier3", 400);
-        fishingTier4 = config.getInt("Fishing.Tier_Levels.Tier4", 600);
-        fishingTier5 = config.getInt("Fishing.Tier_Levels.Tier5", 800);
-
+        
         ptpCommandCooldown = config.getInt("Commands.ptp.Cooldown", 30);
 
         detonatorID = config.getInt("Skills.Mining.Detonator_ID", 259);
