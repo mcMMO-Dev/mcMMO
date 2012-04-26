@@ -219,7 +219,7 @@ public class mcEntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.LOW)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if (Config.herbalismHungerBonus) {
+        if (Config.getHerbalismHungerBonusEnabled()) {
             if (event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
                 PlayerProfile PP = Users.getProfile(player);

@@ -93,7 +93,7 @@ public class Config extends ConfigLoader{
     public static Boolean miningrequirespickaxe, excavationRequiresShovel, woodcuttingrequiresaxe;
 
     /* Excavation */
-    public static int mbase;
+    public static int getExcavationBaseXP() { return config.getInt("Experience.Excavation.Base", 40); }
 
     /* Fishing */
     public static int getFishingBaseXP() { return config.getInt("Experience.Fishing.Base", 800); }
@@ -105,8 +105,19 @@ public class Config extends ConfigLoader{
     public static int getFishingTierLevelsTier5() { return config.getInt("Fishing.Tier_Levels.Tier5", 800); }
 
     /* Herbalism */
-    public static Boolean herbalismHungerBonus, wheatRegrowth;
-    public static int mmelon, mcactus, mmushroom, mflower, msugar, mpumpkin, mwheat, mvines, mlilypad, mnetherwart;
+    public static int getHerbalismXPSugarCane() { return config.getInt("Experience.Herbalism.Sugar_Cane", 30); }
+    public static int getHerbalismXPWheat() { return config.getInt("Experience.Herbalism.Wheat", 50); }
+    public static int getHerbalismXPCactus() { return config.getInt("Experience.Herbalism.Cactus", 30); }
+    public static int getHerbalismXPPumpkin() { return config.getInt("Experience.Herbalism.Pumpkin", 20); }
+    public static int getHerbalismXPFlowers() { return config.getInt("Experience.Herbalism.Flowers", 100); }
+    public static int getHerbalismXPMushrooms() { return config.getInt("Experience.Herbalism.Mushrooms", 150); }
+    public static int getHerbalismXPMelon() { return config.getInt("Experience.Herbalism.Melon", 20); }
+    public static int getHerbalismXPNetherWart() { return config.getInt("Experience.Herbalism.Nether_Wart", 50); }
+    public static int getHerbalismXPLilyPads() { return config.getInt("Experience.Herbalism.Lily_Pads", 100); }
+    public static int getHerbalismXPVines() { return config.getInt("Experience.Herbalism.Vines", 10); }
+    public static boolean getHerbalismHungerBonusEnabled() { return config.getBoolean("Skills.Herbalism.Hunger_Bonus", true); }
+    public static boolean getHerbalismWheatRegrowth() { return config.getBoolean("Skills.Herbalism.Instant_Wheat_Regrowth", true); }
+
     public static Boolean enableCobbleToMossy, enableSmoothToMossy, enableDirtToGrass;
 
     /* Mining */
@@ -316,21 +327,6 @@ public class Config extends ConfigLoader{
         showFaces = config.getBoolean("Spout.Party.HUD.Show_Faces", true);
         showDisplayName = config.getBoolean("Spout.Party.HUD.Show_Display_Name", false);
         partybar = config.getBoolean("Spout.Party.HUD.Enabled", true);
-        
-        mbase = config.getInt("Experience.Excavation.Base", 40);
-
-        msugar = config.getInt("Experience.Herbalism.Sugar_Cane", 30);
-        mwheat = config.getInt("Experience.Herbalism.Wheat", 50);
-        mcactus = config.getInt("Experience.Herbalism.Cactus", 30);
-        mpumpkin = config.getInt("Experience.Herbalism.Pumpkin", 20);
-        mflower = config.getInt("Experience.Herbalism.Flowers", 100);
-        mmushroom = config.getInt("Experience.Herbalism.Mushrooms", 150);
-        mmelon = config.getInt("Experience.Herbalism.Melon", 20);
-        mnetherwart = config.getInt("Experience.Herbalism.Nether_Wart", 50);
-        mlilypad = config.getInt("Experience.Herbalism.Lily_Pads", 100);
-        mvines = config.getInt("Experience.Herbalism.Vines", 10);
-        herbalismHungerBonus = config.getBoolean("Skills.Herbalism.Hunger_Bonus", true);
-        wheatRegrowth = config.getBoolean("Skills.Herbalism.Instant_Wheat_Regrowth", true);
 
         moak = config.getInt("Experience.Woodcutting.Oak", 70);
         mbirch = config.getInt("Experience.Woodcutting.Birch", 90);

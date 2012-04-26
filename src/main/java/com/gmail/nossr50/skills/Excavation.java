@@ -66,7 +66,7 @@ public class Excavation {
 
         List<ExcavationTreasure> treasures = new ArrayList<ExcavationTreasure>();
 
-        int xp = Config.mbase;
+        int xp = Config.getExcavationBaseXP();
 
         if (mcPermissions.getInstance().excavationTreasures(player)) {
             switch (type) {
