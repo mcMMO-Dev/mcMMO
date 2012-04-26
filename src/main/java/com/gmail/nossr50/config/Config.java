@@ -55,13 +55,6 @@ public class Config extends ConfigLoader{
     public static int ptpCommandCooldown;
     public static Boolean donateMessage;
 
-    /* Tool Level Requirements */
-    public static Boolean perLevelTools;
-    public static int sAxe, sHoe, sShovel, sSword, sPickaxe;
-    public static int iAxe, iHoe, iShovel, iSword, iPickaxe;
-    public static int gAxe, gHoe, gShovel, gSword, gPickaxe;
-    public static int dAxe, dHoe, dShovel, dSword, dPickaxe;
-
     /* Items */
     public static Boolean chimaeraWingEnable;
     public static int chimaeraId, feathersConsumedByChimaeraWing;
@@ -357,7 +350,6 @@ public class Config extends ConfigLoader{
         saveInterval = config.getInt("General.Save_Interval", 10);
         statsTracking = config.getBoolean("General.Stats_Tracking", true);
         eventCallback = config.getBoolean("General.Event_Callback", true);
-        perLevelTools = config.getBoolean("General.Per_Level_Tools", false);
 
         enableCobbleToMossy = config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true);
         enableSmoothToMossy = config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true);
@@ -370,26 +362,6 @@ public class Config extends ConfigLoader{
         feathersConsumedByChimaeraWing = config.getInt("Items.Chimaera_Wing.Feather_Cost", 10);
         chimaeraId = config.getInt("Items.Chimaera_Wing.Item_ID", 288);
         chimaeraWingEnable = config.getBoolean("Items.Chimaera_Wing.Enabled", true);
-        dAxe = config.getInt("Items.Diamond.Axe", 750);
-        dHoe = config.getInt("Items.Diamond.Hoe", 750);
-        dShovel = config.getInt("Items.Diamond.Shovel", 750);
-        dSword = config.getInt("Items.Diamond.Sword", 750);
-        dPickaxe = config.getInt("Items.Diamond.Pickaxe", 750);
-        gAxe = config.getInt("Items.Gold.Axe", 500);
-        gHoe = config.getInt("Items.Gold.Hoe", 500);
-        gShovel = config.getInt("Items.Gold.Shovel", 500);
-        gSword = config.getInt("Items.Gold.Sword", 500);
-        gPickaxe = config.getInt("Items.Gold.Pickaxe", 500);
-        iAxe = config.getInt("Items.Iron.Axe", 250);
-        iHoe = config.getInt("Items.Iron.Hoe", 250);
-        iShovel = config.getInt("Items.Iron.Shovel", 250);
-        iSword = config.getInt("Items.Iron.Sword", 250);
-        iPickaxe = config.getInt("Items.Iron.Pickaxe", 250);
-        sAxe = config.getInt("Items.Stone.Axe", 0);
-        sHoe = config.getInt("Items.Stone.Hoe", 0);
-        sShovel = config.getInt("Items.Stone.Shovel", 0);
-        sSword = config.getInt("Items.Stone.Sword", 0);
-        sPickaxe = config.getInt("Items.Stone.Pickaxe", 0);
 
         pvpxp = config.getBoolean("Experience.PVP.Rewards", true);
 
