@@ -89,56 +89,56 @@ public class Mining {
         
         switch (type) {
         case COAL_ORE:
-            xp += Config.mcoal;
+            xp += Config.getMiningXPCoalOre();
             break;
 
         case DIAMOND_ORE:
-            xp += Config.mdiamond;
+            xp += Config.getMiningXPDiamondOre();
             break;
 
         case ENDER_STONE:
-            xp += Config.mendstone;
+            xp += Config.getMiningXPEndStone();
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
-            xp += Config.mredstone;
+            xp += Config.getMiningXPRedstoneOre();
             break;
 
         case GLOWSTONE:
-            xp += Config.mglowstone;
+            xp += Config.getMiningXPGlowstone();
             break;
 
         case GOLD_ORE:
-            xp += Config.mgold;
+            xp += Config.getMiningXPGoldOre();
             break;
 
         case IRON_ORE:
-            xp += Config.miron;
+            xp += Config.getMiningXPIronOre();
             break;
 
         case LAPIS_ORE:
-            xp += Config.mlapis;
+            xp += Config.getMiningXPLapisOre();
             break;
 
         case MOSSY_COBBLESTONE:
-            xp += Config.mmossstone;
+            xp += Config.getMiningXPMossyStone();
             break;
 
         case NETHERRACK:
-            xp += Config.mnetherrack;
+            xp += Config.getMiningXPNetherrack();
             break;
 
         case OBSIDIAN:
-            xp += Config.mobsidian;
+            xp += Config.getMiningXPObsidian();
             break;
 
         case SANDSTONE:
-            xp += Config.msandstone;
+            xp += Config.getMiningXPSandstone();
             break;
 
         case STONE:
-            xp += Config.mstone;
+            xp += Config.getMiningXPStone();
             break;
 
         default:

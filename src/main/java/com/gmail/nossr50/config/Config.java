@@ -90,7 +90,20 @@ public class Config extends ConfigLoader{
     public static Boolean enableCobbleToMossy, enableSmoothToMossy, enableDirtToGrass;
 
     /* Mining */
-    public static int msandstone, mgold, mdiamond, miron, mredstone, mlapis, mobsidian, mnetherrack, mglowstone, mcoal, mstone, mendstone, mmossstone;
+    public static int getMiningXPGoldOre() { return config.getInt("Experience.Mining.Gold", 250); } 
+    public static int getMiningXPDiamondOre() { return config.getInt("Experience.Mining.Diamond", 750); }
+    public static int getMiningXPIronOre() { return config.getInt("Experience.Mining.Iron", 250); }
+    public static int getMiningXPRedstoneOre() { return config.getInt("Experience.Mining.Redstone", 150); }
+    public static int getMiningXPLapisOre() { return config.getInt("Experience.Mining.Lapis", 400); }
+    public static int getMiningXPObsidian() { return config.getInt("Experience.Mining.Obsidian", 150); }
+    public static int getMiningXPNetherrack() { return config.getInt("Experience.Mining.Netherrack", 30); }
+    public static int getMiningXPGlowstone() { return config.getInt("Experience.Mining.Glowstone", 30); }
+    public static int getMiningXPCoalOre() { return config.getInt("Experience.Mining.Coal", 100); }
+    public static int getMiningXPStone() { return config.getInt("Experience.Mining.Stone", 30); }
+    public static int getMiningXPSandstone() { return config.getInt("Experience.Mining.Sandstone", 30); }
+    public static int getMiningXPEndStone() { return config.getInt("Experience.Mining.End_Stone", 150); }
+    public static int getMiningXPMossyStone() { return config.getInt("Experience.Mining.Moss_Stone", 30); }
+    
     public static int detonatorID;
 
     /* Repair */
@@ -304,19 +317,7 @@ public class Config extends ConfigLoader{
         mspruce = config.getInt("Experience.Woodcutting.Spruce", 80);
         mjungle = config.getInt("Experience.Woodcutting.Jungle", 100);
 
-        mgold = config.getInt("Experience.Mining.Gold", 250);
-        mdiamond = config.getInt("Experience.Mining.Diamond", 750);
-        miron = config.getInt("Experience.Mining.Iron", 250);
-        mredstone = config.getInt("Experience.Mining.Redstone", 150);
-        mlapis = config.getInt("Experience.Mining.Lapis", 400);
-        mobsidian = config.getInt("Experience.Mining.Obsidian", 150);
-        mnetherrack = config.getInt("Experience.Mining.Netherrack", 30);
-        mglowstone = config.getInt("Experience.Mining.Glowstone", 30);
-        mcoal = config.getInt("Experience.Mining.Coal", 100);
-        mstone = config.getInt("Experience.Mining.Stone", 30);
-        msandstone = config.getInt("Experience.Mining.Sandstone", 30);
-        mendstone = config.getInt("Experience.Mining.End_Stone", 150);
-        mmossstone = config.getInt("Experience.Mining.Moss_Stone", 30);
+        
 
         mtameWolf = config.getInt("Experience.Taming.Animal_Taming.Wolf", 250);
         mtameOcelot = config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500);
@@ -386,8 +387,6 @@ public class Config extends ConfigLoader{
         repairGoldLevel = config.getInt("Skills.Repair.Gold.Level_Required", 0);
         repairStoneLevel = config.getInt("Skills.Repair.Stone.Level_Required", 0);
         repairStringLevel = config.getInt("Skills.Repair.String.Level_Required", 0);
-
-        
 
         anvilmessages = config.getBoolean("Skills.Repair.Anvil_Messages", true);
         anvilID = config.getInt("Skills.Repair.Anvil_ID", 42);
