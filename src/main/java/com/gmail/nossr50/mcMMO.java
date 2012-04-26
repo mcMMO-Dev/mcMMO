@@ -247,88 +247,88 @@ public class mcMMO extends JavaPlugin {
         getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
 
         //mc* commands
-        if (Config.mcremoveEnable) {
+        if (Config.getCommandMCRemoveEnabled()) {
             getCommand("mcremove").setExecutor(new McremoveCommand(this));
         }
 
-        if (Config.mcabilityEnable) {
+        if (Config.getCommandMCAbilityEnabled()) {
             getCommand("mcability").setExecutor(new McabilityCommand());
         }
 
-        if (Config.mccEnable) {
+        if (Config.getCommandMCCEnabled()) {
             getCommand("mcc").setExecutor(new MccCommand());
         }
 
-        if (Config.mcgodEnable) {
+        if (Config.getCommandMCGodEnabled()) {
             getCommand("mcgod").setExecutor(new McgodCommand());
         }
 
-        if (Config.mcmmoEnable) {
+        if (Config.getCommandmcMMOEnabled()) {
             getCommand("mcmmo").setExecutor(new McmmoCommand());
         }
 
-        if (Config.mcrefreshEnable) {
+        if (Config.getCommandMCRefreshEnabled()) {
             getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
         }
 
-        if (Config.mctopEnable) {
+        if (Config.getCommandMCTopEnabled()) {
             getCommand("mctop").setExecutor(new MctopCommand());
         }
 
-        if (Config.mcstatsEnable) {
+        if (Config.getCommandMCStatsEnabled()) {
             getCommand("mcstats").setExecutor(new McstatsCommand());
         }
 
         //Party commands
-        if (Config.acceptEnable) {
+        if (Config.getCommandAcceptEnabled()) {
             getCommand("accept").setExecutor(new AcceptCommand(this));
         }
 
-        if (Config.aEnable) {
+        if (Config.getCommandAdminChatAEnabled()) {
             getCommand("a").setExecutor(new ACommand(this));
         }
 
-        if (Config.inviteEnable) {
+        if (Config.getCommandInviteEnabled()) {
             getCommand("invite").setExecutor(new InviteCommand(this));
         }
 
-        if (Config.partyEnable) {
+        if (Config.getCommandPartyEnabled()) {
             getCommand("party").setExecutor(new PartyCommand(this));
         }
 
-        if (Config.pEnable) {
+        if (Config.getCommandPartyChatPEnabled()) {
             getCommand("p").setExecutor(new PCommand(this));
         }
 
-        if (Config.ptpEnable) {
+        if (Config.getCommandPTPEnabled()) {
             getCommand("ptp").setExecutor(new PtpCommand(this));
         }
 
         //Other commands
-        if (Config.addxpEnable) {
+        if (Config.getCommandAddXPEnabled()) {
             getCommand("addxp").setExecutor(new AddxpCommand(this));
         }
 
-        if (Config.addlevelsEnable) {
+        if (Config.getCommandAddLevelsEnabled()) {
             getCommand("addlevels").setExecutor(new AddlevelsCommand(this));
         }
 
-        if (Config.mmoeditEnable) {
+        if (Config.getCommandMmoeditEnabled()) {
             getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
         }
 
-        if (Config.inspectEnable) {
+        if (Config.getCommandInspectEnabled()) {
             getCommand("inspect").setExecutor(new InspectCommand(this));
         }
 
-        if (Config.xprateEnable) {
+        if (Config.getCommandXPRateEnabled()) {
             getCommand("xprate").setExecutor(new XprateCommand(this));
         }
 
         getCommand("mmoupdate").setExecutor(new MmoupdateCommand(this));
 
         //Spout commands
-        if (Config.xplockEnable) {
+        if (Config.getCommandXPLockEnabled()) {
             getCommand("xplock").setExecutor(new XplockCommand());
         }
 

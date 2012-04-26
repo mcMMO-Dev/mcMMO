@@ -31,11 +31,27 @@ public class Config extends ConfigLoader{
     }
 
     /* Commands */
-    public static Boolean xplockEnable, xprateEnable, mccEnable, mcmmoEnable,
-                          partyEnable, inviteEnable, acceptEnable, inspectEnable,
-                          mcstatsEnable, addxpEnable, ptpEnable, mmoeditEnable,
-                          mcremoveEnable, mcgodEnable, mcabilityEnable, mctopEnable,
-                          addlevelsEnable, mcrefreshEnable, aEnable, pEnable;
+    public static boolean getCommandXPLockEnabled() { return config.getBoolean("Commands.xplock.Enabled", true); }
+    public static boolean getCommandXPRateEnabled() { return config.getBoolean("Commands.xprate.Enabled", true); }
+    public static boolean getCommandMCTopEnabled() { return config.getBoolean("Commands.mctop.Enabled", true); }
+    public static boolean getCommandAddXPEnabled() { return config.getBoolean("Commands.addxp.Enabled", true); }
+    public static boolean getCommandAddLevelsEnabled() { return config.getBoolean("Commands.addlevels.Enabled", true); }
+    public static boolean getCommandMCAbilityEnabled() { return config.getBoolean("Commands.mcability.Enabled", true); }
+    public static boolean getCommandMCRefreshEnabled() { return config.getBoolean("Commands.mcrefresh.Enabled", true); }
+    public static boolean getCommandmcMMOEnabled() { return config.getBoolean("Commands.mcmmo.Enabled", true); }
+    public static boolean getCommandMCCEnabled() { return config.getBoolean("Commands.mcc.Enabled", true); }
+    public static boolean getCommandMCGodEnabled() { return config.getBoolean("Commands.mcgod.Enabled", true); }
+    public static boolean getCommandMCStatsEnabled() { return config.getBoolean("Commands.mcstats.Enabled", true); }
+    public static boolean getCommandMmoeditEnabled() { return config.getBoolean("Commands.mmoedit.Enabled", true); }
+    public static boolean getCommandMCRemoveEnabled() { return config.getBoolean("Commands.mcremove.Enable", true); }
+    public static boolean getCommandPTPEnabled() { return config.getBoolean("Commands.ptp.Enabled", true); }
+    public static boolean getCommandPartyEnabled() { return config.getBoolean("Commands.party.Enabled", true); }
+    public static boolean getCommandInspectEnabled() { return config.getBoolean("Commands.inspect.Enabled", true); }
+    public static boolean getCommandInviteEnabled() { return config.getBoolean("Commands.invite.Enabled", true); }
+    public static boolean getCommandAcceptEnabled() { return config.getBoolean("Commands.accept.Enabled", true); }
+    public static boolean getCommandAdminChatAEnabled() { return config.getBoolean("Commands.a.Enabled", true); }
+    public static boolean getCommandPartyChatPEnabled() { return config.getBoolean("Commands.p.Enabled", true); }
+
     public static int ptpCommandCooldown;
     public static Boolean donateMessage;
 
@@ -420,27 +436,6 @@ public class Config extends ConfigLoader{
         fishingTier3 = config.getInt("Fishing.Tier_Levels.Tier3", 400);
         fishingTier4 = config.getInt("Fishing.Tier_Levels.Tier4", 600);
         fishingTier5 = config.getInt("Fishing.Tier_Levels.Tier5", 800);
-
-        xplockEnable = config.getBoolean("Commands.xplock.Enabled", true);
-        xprateEnable = config.getBoolean("Commands.xprate.Enabled", true);
-        mctopEnable = config.getBoolean("Commands.mctop.Enabled", true);
-        addxpEnable = config.getBoolean("Commands.addxp.Enabled", true);
-        addlevelsEnable = config.getBoolean("Commands.addlevels.Enabled", true);
-        mcabilityEnable = config.getBoolean("Commands.mcability.Enabled", true);
-        mcrefreshEnable = config.getBoolean("Commands.mcrefresh.Enabled", true);
-        mcmmoEnable = config.getBoolean("Commands.mcmmo.Enabled", true);
-        mccEnable = config.getBoolean("Commands.mcc.Enabled", true);
-        mcgodEnable = config.getBoolean("Commands.mcgod.Enabled", true);
-        mcstatsEnable = config.getBoolean("Commands.mcstats.Enabled", true);
-        mmoeditEnable = config.getBoolean("Commands.mmoedit.Enabled", true);
-        mcremoveEnable = config.getBoolean("Commands.mcremove.Enable", true);
-        ptpEnable = config.getBoolean("Commands.ptp.Enabled", true);
-        partyEnable = config.getBoolean("Commands.party.Enabled", true);
-        inspectEnable = config.getBoolean("Commands.inspect.Enabled", true);
-        inviteEnable = config.getBoolean("Commands.invite.Enabled", true);
-        acceptEnable = config.getBoolean("Commands.accept.Enabled", true);
-        aEnable = config.getBoolean("Commands.a.Enabled", true);
-        pEnable = config.getBoolean("Commands.p.Enabled", true);
 
         ptpCommandCooldown = config.getInt("Commands.ptp.Cooldown", 30);
 
