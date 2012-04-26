@@ -5,7 +5,7 @@ import com.gmail.nossr50.datatypes.HUDType;
 
 public class Config extends ConfigLoader{
     
-    public static int xpGainMultiplier = getExperienceGainsGlobalMultiplier();
+    public static int xpGainMultiplier = 1;
 
     /*
      * GENERAL SETTINGS
@@ -319,6 +319,7 @@ public class Config extends ConfigLoader{
     public Config(mcMMO plugin) {
         super(plugin, "config.yml");
         config = plugin.getConfig();
+        xpGainMultiplier = getExperienceGainsGlobalMultiplier();
     }
 
     @Override
