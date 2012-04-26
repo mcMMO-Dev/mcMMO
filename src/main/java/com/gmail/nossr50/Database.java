@@ -9,18 +9,16 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.DatabaseUpdate;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.runnables.SQLReconnect;
 
 public class Database {
 
-    private String connectionString = "jdbc:mysql://" + LoadProperties.MySQLserverName + ":" + LoadProperties.MySQLport + "/" + LoadProperties.MySQLdbName + "?user=" + LoadProperties.MySQLuserName + "&password=" + LoadProperties.MySQLdbPass;
-    private Connection conn = null;
-    private mcMMO plugin = null;
-    private long reconnectTimestamp = 0;
+    private static String connectionString = "jdbc:mysql://" + LoadProperties.MySQLserverName + ":" + LoadProperties.MySQLport + "/" + LoadProperties.MySQLdbName + "?user=" + LoadProperties.MySQLuserName + "&password=" + LoadProperties.MySQLdbPass;
+    private static Connection conn = null;
+    private static mcMMO plugin = null;
+    private static long reconnectTimestamp = 0;
 
     public Database(mcMMO instance) {
         plugin = instance;
@@ -43,7 +41,7 @@ public class Database {
     /**
      * Attempt to connect to the mySQL database.
      */
-    public void connect() {
+    public static void connect() {
         try {
             System.out.println("[mcMMO] Attempting connection to MySQL...");
             Properties conProperties = new Properties();
@@ -229,7 +227,7 @@ public class Database {
      * 
      * @return the boolean value for whether or not we are connected
      */
-    public boolean isConnected() {
+    public static boolean isConnected() {
         if(conn == null)
             return false;
         
@@ -244,28 +242,11 @@ public class Database {
      * Schedules a Sync Delayed Task with the Bukkit Scheduler to attempt reconnection after a minute has elapsed
      * This will check for a connection being present or not to prevent unneeded reconnection attempts
      */
-    public void attemptReconnect() {
-        if(reconnectTimestamp+60000 < System.currentTimeMillis()) //Only reconnect if another attempt hasn't been made recently
-        {
-            System.out.println("[mcMMO] Connection to MySQL was lost! Attempting to reconnect in 60 seconds...");
+    public static void attemptReconnect() {
+        if(reconnectTimestamp + 60000 < System.currentTimeMillis()) {
+            System.out.println("[mcMMO] Connection to MySQL was lost! Attempting to reconnect in 60 seconds..."); //Only reconnect if another attempt hasn't been made recently
             reconnectTimestamp = System.currentTimeMillis();
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,     
-            new Runnable() {
-                public void run() {
-                    if (!isConnected()) {
-                        connect();
-                        if(isConnected()) {
-                            for(PlayerProfile x : Users.players.values()) {
-                                x.save(); //Save all profiles
-                            }
-                            Users.players.clear(); //Clear the profiles
-                            for(Player x : plugin.getServer().getOnlinePlayers()) {
-                                Users.addUser(x); //Add in new profiles, forcing them to 'load' again from MySQL
-                            }
-                        }
-                    }
-                }
-            }, 20*60);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(plugin), 1200);
         }
     }
 
