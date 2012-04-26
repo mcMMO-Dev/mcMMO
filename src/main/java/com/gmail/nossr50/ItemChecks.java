@@ -1,6 +1,5 @@
 package com.gmail.nossr50;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemChecks {
@@ -396,3 +395,4 @@ public class ItemChecks {
         }
     }
 }
+    

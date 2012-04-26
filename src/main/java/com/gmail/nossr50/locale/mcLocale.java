@@ -22,7 +22,7 @@ public class mcLocale {
      * Gets the appropriate string from the Locale files.
      *
      * @param key The key to look up the string with
-     * @param messageArguments Any arguements to be added to the string
+     * @param messageArguments Any arguments to be added to the string
      * @return The properly formatted locale string
      */
     public static String getString(String key, Object[] messageArguments) {
