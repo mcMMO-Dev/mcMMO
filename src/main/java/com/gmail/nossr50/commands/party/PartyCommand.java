@@ -78,11 +78,6 @@ public class PartyCommand implements CommandExecutor {
             return true;
 
         case 1:
-            if (!partyInstance.isParty(args[0])) {
-                sender.sendMessage(mcLocale.getString("Party.InvalidName"));
-                return true;
-            }
-
             if (args[0].equalsIgnoreCase("q")) {
                 if (inParty) {
                     McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, partyName, null, EventReason.LEFT_PARTY);
