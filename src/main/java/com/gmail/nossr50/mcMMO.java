@@ -14,12 +14,7 @@ import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.locale.mcLocale;
 import com.gmail.nossr50.party.Party;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -123,23 +118,16 @@ public class mcMMO extends JavaPlugin {
         registerCommands();
 
         if (Config.getStatsTrackingEnabled()) {
-            //Plugin Metrics running in a new thread
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        // create a new metrics object
-                        Metrics metrics = new Metrics();
-
-                        // 'this' in this context is the Plugin object
-                        metrics.beginMeasuringPlugin(p);
-                    }
-                    catch (IOException e) {
-                        System.out.println("Failed to submit stats.");
-                    }
+            try {
+                    Metrics metrics = new Metrics(this);
+                    metrics.start();
                 }
-            }).start();
+                catch (IOException e) {
+                System.out.println("Failed to submit stats.");
+            }
         }
     }
+
 
     /**
      * Get profile of the player.
