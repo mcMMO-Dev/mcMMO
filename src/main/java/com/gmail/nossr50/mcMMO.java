@@ -12,7 +12,6 @@ import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.party.Party;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,8 +72,6 @@ public class mcMMO extends JavaPlugin {
 
         this.config2 = new LoadTreasures(this);
         this.config2.load();
-
-        new Party(this).loadParties();
 
         if (!Config.getInstance().getUseMySQL()) {
             Users.loadUsers();

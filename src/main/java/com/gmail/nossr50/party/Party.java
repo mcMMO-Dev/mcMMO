@@ -32,18 +32,19 @@ public class Party {
     private static mcMMO plugin;
     private static volatile Party instance;
 
-    public Party(mcMMO instance) {
-        plugin = instance;
+    private Party() {
+        plugin = mcMMO.p;
         pluginPath = plugin.getDataFolder().getPath();
         partyPlayersFile = pluginPath + File.separator + "FlatFileStuff" + File.separator + "partyPlayers";
         partyLocksFile = pluginPath + File.separator + "FlatFileStuff" + File.separator + "partyLocks";
         partyPasswordsFile = pluginPath + File.separator + "FlatFileStuff" + File.separator + "partyPasswords";
         new File(pluginPath + File.separator + "FlatFileStuff").mkdir();
+        loadParties();
     }
 
     public static Party getInstance() {
         if (instance == null) {
-            instance = new Party(plugin);
+            instance = new Party();
         }
         return instance;
     }
