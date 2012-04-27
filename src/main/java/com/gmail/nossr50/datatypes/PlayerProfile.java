@@ -295,12 +295,10 @@ public class PlayerProfile {
         return false;
     }
 
-    public void save()
-    {
-        Long timestamp = System.currentTimeMillis()/1000; //Convert to seconds
+    public void save() {
+        Long timestamp = System.currentTimeMillis() / 1000; //Convert to seconds
         // if we are using mysql save to database
-        if (Config.getInstance().getUseMySQL()) 
-        {
+        if (Config.getInstance().getUseMySQL()) {
             mcMMO.database.write("UPDATE "+tablePrefix+"huds SET "
                     +" hudtype = '"+hud.toString()+"' WHERE user_id = "+this.userid);
             mcMMO.database.write("UPDATE "+tablePrefix+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
@@ -343,8 +341,8 @@ public class PlayerProfile {
                     +", acrobatics = "+skillsXp.get(SkillType.ACROBATICS)
                     +", fishing = "+skillsXp.get(SkillType.FISHING)
                     +" WHERE user_id = "+this.userid);
-        } else 
-        {
+        }
+        else {
             // otherwise save to flatfile
             try {
                 //Open the file
@@ -352,18 +350,16 @@ public class PlayerProfile {
                 BufferedReader in = new BufferedReader(file);
                 StringBuilder writer = new StringBuilder();
                 String line = "";
-                
+
                 //While not at the end of the file
-                while((line = in.readLine()) != null)
-                {
+                while ((line = in.readLine()) != null) {
                     //Read the line in and copy it to the output it's not the player
                     //we want to edit
-                    if(!line.split(":")[0].equalsIgnoreCase(playerName))
-                    {
+                    if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
                         writer.append(line).append("\r\n");
-                        
-                    //Otherwise write the new player information
-                    } else {
+                    }
+                    else {
+                      //Otherwise write the new player information
                         writer.append(playerName + ":");
                         writer.append(skills.get(SkillType.MINING) + ":");
                         writer.append("" + ":");
@@ -403,15 +399,17 @@ public class PlayerProfile {
                         writer.append(skills.get(SkillType.FISHING) + ":");
                         writer.append(skillsXp.get(SkillType.FISHING) + ":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.BLAST_MINING)) + ":");
-                        writer.append("\r\n");                               
+                        writer.append("\r\n");
                     }
                 }
+
                 in.close();
                 //Write the new file
                 FileWriter out = new FileWriter(location);
                 out.write(writer.toString());
                 out.close();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 mcMMO.p.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
             }
         }
