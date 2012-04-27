@@ -5,12 +5,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Page;
+import com.gmail.nossr50.util.Users;
 
 public class SwordsCommand implements CommandExecutor {
     private float skillValue;
@@ -35,22 +35,22 @@ public class SwordsCommand implements CommandExecutor {
         skillValue = (float) PP.getSkillLevel(SkillType.SWORDS);
         dataCalculations(skillValue);
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Swords.SkillName") }));
-        player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Swords") }));
-        player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS) }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Swords.SkillName") }));
+        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Swords") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS) }));
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Swords.Effect.0"), mcLocale.getString("Swords.Effect.1") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Swords.Effect.2"), mcLocale.getString("Swords.Effect.3") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Swords.Effect.4"), mcLocale.getString("Swords.Effect.5") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Swords.Effect.6"), mcLocale.getString("Swords.Effect.7") }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.0"), LocaleLoader.getString("Swords.Effect.1") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.2"), LocaleLoader.getString("Swords.Effect.3") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.4"), LocaleLoader.getString("Swords.Effect.5") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.6"), LocaleLoader.getString("Swords.Effect.7") }));
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
-        player.sendMessage(mcLocale.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }));
-        player.sendMessage(mcLocale.getString("Swords.Combat.Bleed.Length", new Object[] { bleedLength }));
-        player.sendMessage(mcLocale.getString("Swords.Combat.Bleed.Note"));
-        player.sendMessage(mcLocale.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }));
-        player.sendMessage(mcLocale.getString("Swords.SS.Length", new Object[] { serratedStrikesLength }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
+        player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }));
+        player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Length", new Object[] { bleedLength }));
+        player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Note"));
+        player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }));
+        player.sendMessage(LocaleLoader.getString("Swords.SS.Length", new Object[] { serratedStrikesLength }));
 
         Page.grabGuidePageForSkill(SkillType.SWORDS, player, args);
 

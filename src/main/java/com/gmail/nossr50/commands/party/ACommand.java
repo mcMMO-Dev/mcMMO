@@ -6,13 +6,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class ACommand implements CommandExecutor {
     private final mcMMO plugin;
@@ -42,10 +42,10 @@ public class ACommand implements CommandExecutor {
                 PP.toggleAdminChat();
 
                 if (PP.getAdminChatMode()) {
-                    sender.sendMessage(mcLocale.getString("Commands.AdminChat.On"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.On"));
                 }
                 else {
-                    sender.sendMessage(mcLocale.getString("Commands.AdminChat.Off"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.Off"));
                 }
             }
             else {
@@ -88,7 +88,7 @@ public class ACommand implements CommandExecutor {
                 plugin.getLogger().info("[A]<*Console*> " + message);
 
                 for (Player player : plugin.getServer().getOnlinePlayers()) {
-                    if (mcPermissions.getInstance().adminChat(player) || player.isOp()) {
+                    if (Permissions.getInstance().adminChat(player) || player.isOp()) {
                         player.sendMessage(prefix + message);
                     }
                 }

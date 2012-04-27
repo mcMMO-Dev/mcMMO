@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.Users;
 
 public class PartyAPI {
 

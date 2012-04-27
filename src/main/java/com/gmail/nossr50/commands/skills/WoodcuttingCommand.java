@@ -5,12 +5,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Page;
+import com.gmail.nossr50.util.Users;
 
 public class WoodcuttingCommand implements CommandExecutor {
     private float skillValue;
@@ -33,26 +33,26 @@ public class WoodcuttingCommand implements CommandExecutor {
         skillValue = (float) PP.getSkillLevel(SkillType.UNARMED);
         dataCalculations(skillValue);
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("WoodCutting.SkillName") }));
-        player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.WoodCutting") }));
-        player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING) }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("WoodCutting.SkillName") }));
+        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.WoodCutting") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING) }));
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Woodcutting.Effect.0"), mcLocale.getString("Woodcutting.Effect.1") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Woodcutting.Effect.2"), mcLocale.getString("Woodcutting.Effect.3") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Woodcutting.Effect.4"), mcLocale.getString("Woodcutting.Effect.5") }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.0"), LocaleLoader.getString("Woodcutting.Effect.1") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.2"), LocaleLoader.getString("Woodcutting.Effect.3") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5") }));
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
 
         if (PP.getSkillLevel(SkillType.WOODCUTTING) < 100) {
-            player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("Woodcutting.Ability.Locked.0") }));
+            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Woodcutting.Ability.Locked.0") }));
         }
         else {
-            player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("Woodcutting.Ability.0"), mcLocale.getString("Woodcutting.Ability.1") }));
+            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1") }));
         }
 
-        player.sendMessage(mcLocale.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }));
-        player.sendMessage(mcLocale.getString("Woodcutting.Ability.Length", new Object[] { treeFellerLength }));
+        player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }));
+        player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", new Object[] { treeFellerLength }));
         
         Page.grabGuidePageForSkill(SkillType.WOODCUTTING, player, args);
         

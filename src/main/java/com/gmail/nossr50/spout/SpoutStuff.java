@@ -20,8 +20,6 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -30,6 +28,8 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.listeners.SpoutInputListener;
 import com.gmail.nossr50.listeners.SpoutListener;
 import com.gmail.nossr50.listeners.SpoutScreenListener;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 public class SpoutStuff {
     private static mcMMO plugin = mcMMO.p;
@@ -118,8 +118,8 @@ public class SpoutStuff {
                 continue;
             }
 
-            String standardFileName = m.getCapitalized(y.toString())+".png";
-            String retroFileName = m.getCapitalized(y.toString())+"_r.png";
+            String standardFileName = Misc.getCapitalized(y.toString())+".png";
+            String retroFileName = Misc.getCapitalized(y.toString())+"_r.png";
 
             writeFile(standardFileName, hudStandardDirectory);
             writeFile(retroFileName, hudRetroDirectory);
@@ -179,8 +179,8 @@ public class SpoutStuff {
                 continue;
             }
 
-            files.add(new File(hudStandardDirectory + m.getCapitalized(y.toString()) + ".png"));
-            files.add(new File(hudRetroDirectory + m.getCapitalized(y.toString()) + "_r.png"));
+            files.add(new File(hudStandardDirectory + Misc.getCapitalized(y.toString()) + ".png"));
+            files.add(new File(hudRetroDirectory + Misc.getCapitalized(y.toString()) + "_r.png"));
         }
         
         /* Blank icons */
@@ -544,7 +544,7 @@ public class SpoutStuff {
         }
 
         //TODO: Use Locale
-        sPlayer.sendNotification(ChatColor.GREEN + "Level Up!", ChatColor.YELLOW + m.getCapitalized(skillType.toString()) + ChatColor.DARK_AQUA + " (" + ChatColor.GREEN + PP.getSkillLevel(skillType) + ChatColor.DARK_AQUA + ")", mat);
+        sPlayer.sendNotification(ChatColor.GREEN + "Level Up!", ChatColor.YELLOW + Misc.getCapitalized(skillType.toString()) + ChatColor.DARK_AQUA + " (" + ChatColor.GREEN + PP.getSkillLevel(skillType) + ChatColor.DARK_AQUA + ")", mat);
         SpoutSounds.playLevelUpNoise(sPlayer, plugin);
     }
 

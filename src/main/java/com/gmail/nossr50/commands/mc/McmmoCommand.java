@@ -8,13 +8,13 @@ import org.bukkit.command.CommandSender;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 
 public class McmmoCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String description = mcLocale.getString("mcMMO.Description");
+        String description = LocaleLoader.getString("mcMMO.Description");
         String[] mcSplit = description.split(",");
         sender.sendMessage(mcSplit);
 

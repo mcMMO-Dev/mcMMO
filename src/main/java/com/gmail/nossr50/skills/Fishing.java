@@ -17,16 +17,16 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
-import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.ItemChecks;
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.LoadTreasures;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 public class Fishing {
 
@@ -136,7 +136,7 @@ public class Fishing {
             boolean enchanted = false;
             ItemStack fishingResults = theCatch.getItemStack();
 
-            player.sendMessage(mcLocale.getString("Fishing.ItemFound"));
+            player.sendMessage(LocaleLoader.getString("Fishing.ItemFound"));
             if (ItemChecks.isArmor(fishingResults) || ItemChecks.isTool(fishingResults)) {
                 if (random.nextInt(100) <= ENCHANTMENT_CHANCE) {
                     for (Enchantment newEnchant : Enchantment.values()) {
@@ -166,7 +166,7 @@ public class Fishing {
             }
 
             if (enchanted) {
-                player.sendMessage(mcLocale.getString("Fishing.MagicFound"));
+                player.sendMessage(LocaleLoader.getString("Fishing.MagicFound"));
             }
         }
     }
@@ -185,91 +185,91 @@ public class Fishing {
 
         switch (type) {
         case BLAZE:
-            m.mcDropItem(loc, new ItemStack(Material.BLAZE_ROD));
+            Misc.mcDropItem(loc, new ItemStack(Material.BLAZE_ROD));
             break;
 
         case CAVE_SPIDER:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE));
+                Misc.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.STRING));
+                Misc.mcDropItem(loc, new ItemStack(Material.STRING));
             }
             break;
 
         case CHICKEN:
             if (DROP_NUMBER > 66) {
-                m.mcDropItem(loc, new ItemStack(Material.FEATHER));
+                Misc.mcDropItem(loc, new ItemStack(Material.FEATHER));
             }
             else if (DROP_NUMBER > 33) {
-                m.mcDropItem(loc, new ItemStack(Material.RAW_CHICKEN));
+                Misc.mcDropItem(loc, new ItemStack(Material.RAW_CHICKEN));
                 }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.EGG));
+                Misc.mcDropItem(loc, new ItemStack(Material.EGG));
             }
             break;
 
         case COW:
             if (DROP_NUMBER > 99) {
-                m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET));
+                Misc.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET));
             }
             else if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.LEATHER));
+                Misc.mcDropItem(loc, new ItemStack(Material.LEATHER));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF));
+                Misc.mcDropItem(loc, new ItemStack(Material.RAW_BEEF));
             }
             break;
 
         case CREEPER:
-            m.mcDropItem(loc, new ItemStack(Material.SULPHUR));
+            Misc.mcDropItem(loc, new ItemStack(Material.SULPHUR));
             break;
 
         case ENDERMAN:
-            m.mcDropItem(loc, new ItemStack(Material.ENDER_PEARL));
+            Misc.mcDropItem(loc, new ItemStack(Material.ENDER_PEARL));
             break;
 
         case GHAST:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.SULPHUR));
+                Misc.mcDropItem(loc, new ItemStack(Material.SULPHUR));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.GHAST_TEAR));
+                Misc.mcDropItem(loc, new ItemStack(Material.GHAST_TEAR));
             }
             break;
 
         case MAGMA_CUBE:
-            m.mcDropItem(loc, new ItemStack(Material.MAGMA_CREAM));
+            Misc.mcDropItem(loc, new ItemStack(Material.MAGMA_CREAM));
             break;
 
         case MUSHROOM_COW:
             if (DROP_NUMBER > 99) {
-                m.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET));
+                Misc.mcDropItem(loc, new ItemStack(Material.MILK_BUCKET));
             }
             else if (DROP_NUMBER > 98) {
-                m.mcDropItem(loc, new ItemStack(Material.MUSHROOM_SOUP));
+                Misc.mcDropItem(loc, new ItemStack(Material.MUSHROOM_SOUP));
             }
             else if (DROP_NUMBER > 66) {
-                m.mcDropItem(loc, new ItemStack(Material.LEATHER));
+                Misc.mcDropItem(loc, new ItemStack(Material.LEATHER));
             }
             else if (DROP_NUMBER > 33) {
-                m.mcDropItem(loc, new ItemStack(Material.RAW_BEEF));
+                Misc.mcDropItem(loc, new ItemStack(Material.RAW_BEEF));
             }
             else {
-                m.mcDropItems(loc, new ItemStack(Material.RED_MUSHROOM), 3);
+                Misc.mcDropItems(loc, new ItemStack(Material.RED_MUSHROOM), 3);
             }
             break;
 
         case PIG:
-            m.mcDropItem(loc, new ItemStack(Material.PORK));
+            Misc.mcDropItem(loc, new ItemStack(Material.PORK));
             break;
 
         case PIG_ZOMBIE:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH));
+                Misc.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.GOLD_NUGGET));
+                Misc.mcDropItem(loc, new ItemStack(Material.GOLD_NUGGET));
             }
             break;
 
@@ -283,48 +283,48 @@ public class Fishing {
                 ItemStack theWool = wool.toItemStack();
                 theWool.setAmount(1 + random.nextInt(6));
 
-                m.mcDropItem(loc, theWool);
+                Misc.mcDropItem(loc, theWool);
                 sheep.setSheared(true);
             }
             break;
 
         case SKELETON:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.BONE));
+                Misc.mcDropItem(loc, new ItemStack(Material.BONE));
             }
             else {
-                m.mcDropItems(loc, new ItemStack(Material.ARROW), 3);
+                Misc.mcDropItems(loc, new ItemStack(Material.ARROW), 3);
             }
             break;
 
         case SLIME:
-            m.mcDropItem(loc, new ItemStack(Material.SLIME_BALL));
+            Misc.mcDropItem(loc, new ItemStack(Material.SLIME_BALL));
             break;
 
         case SNOWMAN:
             if (DROP_NUMBER > 99) {
-                m.mcDropItem(loc, new ItemStack(Material.PUMPKIN));
+                Misc.mcDropItem(loc, new ItemStack(Material.PUMPKIN));
             }
             else {
-                m.mcDropItems(loc, new ItemStack(Material.SNOW_BALL), 5);
+                Misc.mcDropItems(loc, new ItemStack(Material.SNOW_BALL), 5);
             }
             break;
 
         case SPIDER:
             if (DROP_NUMBER > 50) {
-                m.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE));
+                Misc.mcDropItem(loc, new ItemStack(Material.SPIDER_EYE));
             }
             else {
-                m.mcDropItem(loc, new ItemStack(Material.STRING));
+                Misc.mcDropItem(loc, new ItemStack(Material.STRING));
             }
             break;
 
         case SQUID:
-            m.mcDropItem(loc, new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x0));
+            Misc.mcDropItem(loc, new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x0));
             break;
 
         case ZOMBIE:
-            m.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH));
+            Misc.mcDropItem(loc, new ItemStack(Material.ROTTEN_FLESH));
             break;
 
         default:

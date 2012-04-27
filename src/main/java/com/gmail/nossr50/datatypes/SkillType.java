@@ -2,9 +2,9 @@ package com.gmail.nossr50.datatypes;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public enum SkillType {
     ACROBATICS(Config.getInstance().getLevelCapAcrobatics(), Config.getInstance().getFormulaMultiplierAcrobatics()),
@@ -75,40 +75,40 @@ public enum SkillType {
     public boolean getPermissions(Player player) {
         switch (this) {
         case ACROBATICS:
-            return mcPermissions.getInstance().acrobatics(player);
+            return Permissions.getInstance().acrobatics(player);
 
         case ARCHERY:
-            return mcPermissions.getInstance().archery(player);
+            return Permissions.getInstance().archery(player);
 
         case AXES:
-            return mcPermissions.getInstance().axes(player);
+            return Permissions.getInstance().axes(player);
 
         case EXCAVATION:
-            return mcPermissions.getInstance().excavation(player);
+            return Permissions.getInstance().excavation(player);
 
         case FISHING:
-            return mcPermissions.getInstance().fishing(player);
+            return Permissions.getInstance().fishing(player);
 
         case HERBALISM:
-            return mcPermissions.getInstance().herbalism(player);
+            return Permissions.getInstance().herbalism(player);
 
         case MINING:
-            return mcPermissions.getInstance().mining(player);
+            return Permissions.getInstance().mining(player);
 
         case REPAIR:
-            return mcPermissions.getInstance().repair(player);
+            return Permissions.getInstance().repair(player);
 
         case SWORDS:
-            return mcPermissions.getInstance().swords(player);
+            return Permissions.getInstance().swords(player);
 
         case TAMING:
-            return mcPermissions.getInstance().taming(player);
+            return Permissions.getInstance().taming(player);
 
         case UNARMED:
-            return mcPermissions.getInstance().unarmed(player);
+            return Permissions.getInstance().unarmed(player);
 
         case WOODCUTTING:
-            return mcPermissions.getInstance().woodcutting(player);
+            return Permissions.getInstance().woodcutting(player);
 
         default:
             return false;

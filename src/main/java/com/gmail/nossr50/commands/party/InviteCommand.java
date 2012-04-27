@@ -6,12 +6,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.Users;
 
 //TODO: Make this work from console.
 public class InviteCommand implements CommandExecutor {
@@ -41,7 +41,7 @@ public class InviteCommand implements CommandExecutor {
             Party partyInstance = Party.getInstance();
 
             if (!PP.inParty()) {
-                player.sendMessage(mcLocale.getString("Commands.Party.None"));
+                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 return true;
             }
 
@@ -52,19 +52,19 @@ public class InviteCommand implements CommandExecutor {
                     PlayerProfile PPt = Users.getProfile(target);
                     PPt.modifyInvite(PP.getParty());
 
-                    player.sendMessage(mcLocale.getString("Commands.Invite.Success"));
+                    player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
 
-                    target.sendMessage(mcLocale.getString("Commands.Party.Invite.0", new Object[] { PPt.getInvite(), player.getName() }));
-                    target.sendMessage(mcLocale.getString("Commands.Party.Invite.1"));
+                    target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", new Object[] { PPt.getInvite(), player.getName() }));
+                    target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.1"));
                     return true;
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Party.Locked"));
+                    player.sendMessage(LocaleLoader.getString("Party.Locked"));
                     return true;
                 }
             }
             else {
-                player.sendMessage(mcLocale.getString("Party.Player.Invalid"));
+                player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
                 return true;
             }
 

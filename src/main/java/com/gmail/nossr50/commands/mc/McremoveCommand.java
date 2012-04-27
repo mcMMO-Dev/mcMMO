@@ -10,11 +10,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Users;
 
 public class McremoveCommand implements CommandExecutor {
     private final String location = mcMMO.usersFile;
@@ -82,7 +82,7 @@ public class McremoveCommand implements CommandExecutor {
 
             }
             else {
-                sender.sendMessage(mcLocale.getString("Commands.DoesNotExist"));
+                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
             }
         }
         else {
@@ -90,7 +90,7 @@ public class McremoveCommand implements CommandExecutor {
                 sender.sendMessage(success);
             }
             else {
-                sender.sendMessage(mcLocale.getString("Commands.DoesNotExist"));
+                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
             }
         }
 

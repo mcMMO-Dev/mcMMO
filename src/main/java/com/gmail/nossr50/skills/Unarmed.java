@@ -8,12 +8,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class Unarmed {
 
@@ -49,15 +49,15 @@ public class Unarmed {
 
         PlayerProfile PPa = Users.getProfile(attacker);
         int skillLevel = PPa.getSkillLevel(SkillType.UNARMED);
-        int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         ItemStack inHand = defender.getItemInHand();
 
         if (!inHand.getType().equals(Material.AIR)) {
             if (random.nextInt(3000) <= skillCheck && ironGrip(defender, attacker)) {
-                defender.sendMessage(mcLocale.getString("Skills.Disarmed"));
+                defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
 
-                m.mcDropItem(defender.getLocation(), inHand);
+                Misc.mcDropItem(defender.getLocation(), inHand);
                 defender.setItemInHand(new ItemStack(Material.AIR));
             }
         }
@@ -73,11 +73,11 @@ public class Unarmed {
         final int MAX_BONUS_LEVEL = 1000;
 
         int skillLevel = Users.getProfile(defender).getSkillLevel(SkillType.UNARMED);
-        int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        if (random.nextInt(2000) <= skillCheck && mcPermissions.getInstance().deflect(defender)) {
+        if (random.nextInt(2000) <= skillCheck && Permissions.getInstance().deflect(defender)) {
             event.setCancelled(true);
-            defender.sendMessage(mcLocale.getString("Combat.ArrowDeflect"));
+            defender.sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
         }
     }
 
@@ -86,7 +86,7 @@ public class Unarmed {
 
         PlayerProfile PPd = Users.getProfile(defender);
         int skillLevel = PPd.getSkillLevel(SkillType.UNARMED);
-        int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         if (random.nextInt(1000) <= skillCheck) {
             defender.sendMessage(ChatColor.GREEN + "Your iron grip kept you from being disarmed!"); //TODO: Use locale

@@ -7,11 +7,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Users;
 
 public class McrefreshCommand implements CommandExecutor {
     private final mcMMO plugin;
@@ -48,7 +48,7 @@ public class McrefreshCommand implements CommandExecutor {
             String playerName = player.getName();
 
             if (!PP.isLoaded()) {
-                sender.sendMessage(mcLocale.getString("Commands.DoesNotExist"));
+                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return true;
             }
 
@@ -67,7 +67,7 @@ public class McrefreshCommand implements CommandExecutor {
         PP.resetAbilityMode();
 
         if (player.isOnline()) {
-            ((Player) player).sendMessage(mcLocale.getString("Ability.Generic.Refresh"));
+            ((Player) player).sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
         }
 
         return true;

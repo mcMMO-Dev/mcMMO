@@ -5,11 +5,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Users;
 
 public class AxesCommand implements CommandExecutor {
     private float skillValue;
@@ -35,23 +35,23 @@ public class AxesCommand implements CommandExecutor {
         skillValue = (float) PP.getSkillLevel(SkillType.AXES);
         dataCalculations(skillValue);
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Axes.SkillName") }));
-        player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Axes") }));
-        player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES) }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Axes.SkillName") }));
+        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Axes") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES) }));
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Axes.Effect.0"), mcLocale.getString("Axes.Effect.1") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Axes.Effect.2"), mcLocale.getString("Axes.Effect.3") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Axes.Effect.4"), mcLocale.getString("Axes.Effect.5") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Axes.Effect.6"), mcLocale.getString("Axes.Effect.7") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Axes.Effect.8"), mcLocale.getString("Axes.Effect.9") }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Axes.Effect.0"), LocaleLoader.getString("Axes.Effect.1") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Axes.Effect.2"), LocaleLoader.getString("Axes.Effect.3") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Axes.Effect.4"), LocaleLoader.getString("Axes.Effect.5") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Axes.Effect.6"), LocaleLoader.getString("Axes.Effect.7") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Axes.Effect.8"), LocaleLoader.getString("Axes.Effect.9") }));
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
-        player.sendMessage(mcLocale.getString("Axes.Combat.CritChance", new Object[] { critChance }));
-        player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("Axes.Ability.Bonus.0"), mcLocale.getString("Axes.Ability.Bonus.1", new Object[] {bonusDamage}) }));
-        player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("Axes.Ability.Bonus.2"), mcLocale.getString("Axes.Ability.Bonus.3", new Object[] {impactDamage}) }));
-        player.sendMessage(mcLocale.getString("Ability.Generic.Template", new Object[] { mcLocale.getString("Axes.Ability.Bonus.4"), mcLocale.getString("Axes.Ability.Bonus.5", new Object[] {greaterImpactDamage}) }));
-        player.sendMessage(mcLocale.getString("Axes.Combat.SS.Length", new Object[] { skullSplitterLength }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
+        player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", new Object[] { critChance }));
+        player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Axes.Ability.Bonus.0"), LocaleLoader.getString("Axes.Ability.Bonus.1", new Object[] {bonusDamage}) }));
+        player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Axes.Ability.Bonus.2"), LocaleLoader.getString("Axes.Ability.Bonus.3", new Object[] {impactDamage}) }));
+        player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", new Object[] {greaterImpactDamage}) }));
+        player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", new Object[] { skullSplitterLength }));
 
         return true;
     }

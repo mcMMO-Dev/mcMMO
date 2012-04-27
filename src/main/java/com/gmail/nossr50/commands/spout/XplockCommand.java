@@ -6,16 +6,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class XplockCommand implements CommandExecutor {
     @Override
@@ -27,7 +27,7 @@ public class XplockCommand implements CommandExecutor {
         }
 
         if (!Config.getInstance().spoutEnabled || !Config.getInstance().getSpoutXPBarEnabled() || !Config.getInstance().getCommandXPLockEnabled()) {
-            sender.sendMessage(mcLocale.getString("Commands.Disabled"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
             return true;
         }
 
@@ -38,7 +38,7 @@ public class XplockCommand implements CommandExecutor {
         case 0:
             if (PP.getXpBarLocked()) {
                 PP.toggleXpBarLocked();
-                player.sendMessage(mcLocale.getString("Commands.xplock.unlocked"));
+                player.sendMessage(LocaleLoader.getString("Commands.xplock.unlocked"));
                 return true;
             }
 
@@ -47,27 +47,27 @@ public class XplockCommand implements CommandExecutor {
             if (lastGained != null) {
                 PP.toggleXpBarLocked();
                 PP.setSkillLock(lastGained);
-                player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] { m.getCapitalized(lastGained.toString()) }));
+                player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(lastGained.toString()) }));
                 return true;
             }
 
         case 1:
             if (Skills.isSkill(args[0])) {
-                if (mcPermissions.getInstance().permission(player, "mcmmo.skills." + args[0].toLowerCase())) {
+                if (Permissions.getInstance().permission(player, "mcmmo.skills." + args[0].toLowerCase())) {
                     PP.setXpBarLocked(true);
                     PP.setSkillLock(Skills.getSkillType(args[0]));
                     SpoutStuff.updateXpBar(player);
 
-                    player.sendMessage(mcLocale.getString("Commands.xplock.locked", new Object[] { m.getCapitalized(args[0]) }));
+                    player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(args[0]) }));
                     return true;
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("mcMMO.NoPermission"));
+                    player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
                     return true;
                 }
             }
             else {
-                player.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                player.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
 

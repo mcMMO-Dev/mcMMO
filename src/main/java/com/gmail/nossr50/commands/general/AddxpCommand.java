@@ -6,13 +6,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 //TODO: Any way we can make this work for offline use?
 public class AddxpCommand implements CommandExecutor {
@@ -38,11 +38,11 @@ public class AddxpCommand implements CommandExecutor {
         case 2:
             if (sender instanceof Player) {
                 if (!Skills.isSkill(args[1])) {
-                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                     return true;
                 }
 
-                if (m.isInt(args[1])) {
+                if (Misc.isInt(args[1])) {
                     modifiedPlayer = (Player) sender;
                     xp = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
@@ -53,7 +53,7 @@ public class AddxpCommand implements CommandExecutor {
                         skillName = "all skills";
                     }
                     else {
-                        skillName = m.getCapitalized(skill.toString());
+                        skillName = Misc.getCapitalized(skill.toString());
                     }
 
                     modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + xp + " experience in " + skillName + "!"); //TODO: Needs more locale.
@@ -80,16 +80,16 @@ public class AddxpCommand implements CommandExecutor {
             String playerName = modifiedPlayer.getName();
 
             if (!Users.getProfile(modifiedPlayer).isLoaded()) {
-                sender.sendMessage(mcLocale.getString("Commands.DoesNotExist"));
+                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return true;
             }
 
             if (!Skills.isSkill(args[1])) {
-                sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
 
-            if (m.isInt(args[2])) {
+            if (Misc.isInt(args[2])) {
                 xp = Integer.valueOf(args[2]);
                 skill = Skills.getSkillType(args[1]);
                 String message;
@@ -101,7 +101,7 @@ public class AddxpCommand implements CommandExecutor {
                     message = ChatColor.RED + "All skills have been modified for " + playerName + "."; //TODO: Use locale
                 }
                 else {
-                    skillName = m.getCapitalized(skill.toString());
+                    skillName = Misc.getCapitalized(skill.toString());
                     message = ChatColor.RED + skillName + " has been modified for " + playerName + "."; //TODO: Use locale
                 }
 

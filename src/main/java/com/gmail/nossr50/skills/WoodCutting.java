@@ -11,17 +11,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 import org.getspout.spoutapi.sound.SoundEffect;
 
@@ -54,7 +54,7 @@ public class WoodCutting {
      */
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP) {
         if (toBeFelled.size() >= Config.getInstance().getTreeFellerThreshold()) {
-            player.sendMessage(mcLocale.getString("Woodcutting.Skills.TreeFellerThreshold"));
+            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFellerThreshold"));
             return;
         }
 
@@ -67,7 +67,7 @@ public class WoodCutting {
 
         /* This is to prevent using wood axes everytime you tree fell */
         if ((inHand.getDurability() + durabilityLoss >= inHand.getType().getMaxDurability()) || inHand.getType().equals(Material.AIR)) {
-            player.sendMessage(mcLocale.getString("Woodcutting.Skills.TreeFeller.Splinter"));
+            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Splinter"));
 
             int health = player.getHealth();
 
@@ -85,7 +85,7 @@ public class WoodCutting {
         ItemStack jungle = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.JUNGLE.getData());
         
         for (Block x : toBeFelled) {
-            if (m.blockBreakSimulate(x, player, true)) {
+            if (Misc.blockBreakSimulate(x, player, true)) {
                 if (x.getType() == Material.LOG) {
                     Tree tree = (Tree) x.getState().getData();
                     TreeSpecies species = tree.getSpecies();
@@ -141,13 +141,13 @@ public class WoodCutting {
                     x.setType(Material.AIR);
 
                     /* Drop the block */
-                    m.mcDropItem(x.getLocation(), item);
+                    Misc.mcDropItem(x.getLocation(), item);
                 }
                 else if (x.getType() == Material.LEAVES) {
                     final int SAPLING_DROP_CHANCE = 10;
 
                     item = new ItemStack(Material.SAPLING, 1, (short) 0, (byte) (x.getData() & 3)); //Drop the right type of sapling
-                    m.mcRandomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
+                    Misc.mcRandomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
 
                     //Remove the block
                     x.setData((byte) 0);
@@ -258,9 +258,9 @@ public class WoodCutting {
         byte type = block.getData();
         Material mat = Material.getMaterial(block.getTypeId());
 
-        if ((skillLevel > MAX_SKILL_LEVEL || random.nextInt(1000) <= skillLevel) && mcPermissions.getInstance().woodcuttingDoubleDrops(player)) {
+        if ((skillLevel > MAX_SKILL_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().woodcuttingDoubleDrops(player)) {
             ItemStack item = new ItemStack(mat, 1, (short) 0, type);
-            m.mcDropItem(block.getLocation(), item);
+            Misc.mcDropItem(block.getLocation(), item);
         }
     }
 

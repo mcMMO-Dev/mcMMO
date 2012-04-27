@@ -6,13 +6,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class Acrobatics {
 
@@ -35,7 +35,7 @@ public class Acrobatics {
         int damage = event.getDamage();
         int health = player.getHealth();
 
-        if (!mcPermissions.getInstance().gracefulRoll(player)) {
+        if (!Permissions.getInstance().gracefulRoll(player)) {
             gracefulRoll = false;
         }
 
@@ -43,7 +43,7 @@ public class Acrobatics {
             acrovar = acrovar * 2;
         }
 
-        if ((acrovar > MAX_BONUS_LEVEL || random.nextInt(1000) <= acrovar) && mcPermissions.getInstance().roll(player)) {
+        if ((acrovar > MAX_BONUS_LEVEL || random.nextInt(1000) <= acrovar) && Permissions.getInstance().roll(player)) {
             int threshold = 7;
 
             if (gracefulRoll) {
@@ -68,10 +68,10 @@ public class Acrobatics {
                 }
 
                 if (gracefulRoll) {
-                    player.sendMessage(mcLocale.getString("Acrobatics.Ability.Proc"));
+                    player.sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Acrobatics.Roll.Text"));
+                    player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
                 }
             }
         }
@@ -103,12 +103,12 @@ public class Acrobatics {
             }
         }
 
-        if (mcPermissions.getInstance().acrobatics(defender)) {
+        if (Permissions.getInstance().acrobatics(defender)) {
             int skillLevel = PPd.getSkillLevel(SkillType.ACROBATICS);
-            int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+            int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-            if (random.nextInt(4000) <= skillCheck && mcPermissions.getInstance().dodge(defender)) {
-                defender.sendMessage(mcLocale.getString("Acrobatics.Combat.Proc"));
+            if (random.nextInt(4000) <= skillCheck && Permissions.getInstance().dodge(defender)) {
+                defender.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
 
                 if (System.currentTimeMillis() >= (5000 + PPd.getRespawnATS()) && defender.getHealth() >= 1) {
                     PPd.addXP(SkillType.ACROBATICS, damage * DODGE_MODIFIER);

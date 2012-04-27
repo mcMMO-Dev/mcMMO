@@ -24,13 +24,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.BlockChecks;
-import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.Item;
-import com.gmail.nossr50.ItemChecks;
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
@@ -40,7 +34,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.skills.BlastMining;
 import com.gmail.nossr50.skills.Fishing;
@@ -48,6 +42,12 @@ import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
+import com.gmail.nossr50.util.BlockChecks;
+import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.Item;
+import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class PlayerListener implements Listener {
     private final mcMMO plugin;
@@ -67,16 +67,16 @@ public class PlayerListener implements Listener {
         PlayerProfile PP = Users.getProfile(player);
 
         if (PP.getGodMode()) {
-            if (!mcPermissions.getInstance().mcgod(player)) {
+            if (!Permissions.getInstance().mcgod(player)) {
                 PP.toggleGodMode();
-                player.sendMessage(mcLocale.getString("Commands.GodMode.Forbidden"));
+                player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
             }
         }
 
         if (PP.inParty()) {
-            if (!mcPermissions.getInstance().party(player)) {
+            if (!Permissions.getInstance().party(player)) {
                 PP.removeParty();
-                player.sendMessage(mcLocale.getString("Party.Forbidden"));
+                player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
             }
         }
     }
@@ -90,7 +90,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (mcPermissions.getInstance().fishing(player)) {
+        if (Permissions.getInstance().fishing(player)) {
             State state = event.getState();
 
             switch (state) {
@@ -99,7 +99,7 @@ public class PlayerListener implements Listener {
                 break;
 
             case CAUGHT_ENTITY:
-                if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) >= 150 && mcPermissions.getInstance().shakeMob(player)) {
+                if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) >= 150 && Permissions.getInstance().shakeMob(player)) {
                     Fishing.shakeMob(event);
                 }
                 break;
@@ -167,14 +167,14 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (mcPermissions.getInstance().motd(player) && Config.getInstance().getMOTDEnabled()) {
-            player.sendMessage(mcLocale.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
-            player.sendMessage(mcLocale.getString("mcMMO.Wiki"));
+        if (Permissions.getInstance().motd(player) && Config.getInstance().getMOTDEnabled()) {
+            player.sendMessage(LocaleLoader.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
+            player.sendMessage(LocaleLoader.getString("mcMMO.Wiki"));
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
         if (XprateCommand.xpevent) {
-            player.sendMessage(mcLocale.getString("XPRate.Event", new Object[] {Config.getInstance().xpGainMultiplier}));
+            player.sendMessage(LocaleLoader.getString("XPRate.Event", new Object[] {Config.getInstance().xpGainMultiplier}));
         }
     }
 
@@ -204,7 +204,7 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_BLOCK:
 
             /* REPAIR CHECKS */
-            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId() && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
+            if (Permissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId() && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
                 Repair.repairCheck(player, is);
                 event.setCancelled(true);
                 player.updateInventory();
@@ -225,7 +225,7 @@ public class PlayerListener implements Listener {
             }
 
             /* GREEN THUMB CHECK */
-            if (mcPermissions.getInstance().greenThumbBlocks(player) && Herbalism.makeMossy(mat) && is.getType().equals(Material.SEEDS)) {
+            if (Permissions.getInstance().greenThumbBlocks(player) && Herbalism.makeMossy(mat) && is.getType().equals(Material.SEEDS)) {
                 Herbalism.greenThumbBlocks(is, player, block);
             }
 
@@ -235,7 +235,7 @@ public class PlayerListener implements Listener {
             }
 
             /* BLAST MINING CHECK */
-            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
+            if (Permissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
                 BlastMining.remoteDetonation(player, plugin);
             }
 
@@ -258,7 +258,7 @@ public class PlayerListener implements Listener {
             Item.itemchecks(player);
 
             /* BLAST MINING CHECK */
-            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
+            if (Permissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
                 BlastMining.remoteDetonation(player, plugin);
             }
 
@@ -268,7 +268,7 @@ public class PlayerListener implements Listener {
         case LEFT_CLICK_BLOCK:
 
             /* CALL OF THE WILD CHECKS */
-            if (player.isSneaking() && mcPermissions.getInstance().taming(player)) {
+            if (player.isSneaking() && Permissions.getInstance().taming(player)) {
                 if (is.getType().equals(Material.RAW_FISH)) {
                     Taming.animalSummon(EntityType.OCELOT, player, plugin);
                 }
@@ -334,7 +334,7 @@ public class PlayerListener implements Listener {
                 event.setMessage(chatEvent.getMessage());
 
                 for (Player x : plugin.getServer().getOnlinePlayers()) {
-                    if (x.isOp() || mcPermissions.getInstance().adminChat(x)) {
+                    if (x.isOp() || Permissions.getInstance().adminChat(x)) {
                         intendedRecipients.add(x);
                     }
                 }

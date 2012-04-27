@@ -3,11 +3,11 @@ package com.gmail.nossr50.api;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class ChatAPI {
     /**
@@ -61,7 +61,7 @@ public class ChatAPI {
         mcMMO.p.getLogger().info("[A]<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-            if (mcPermissions.getInstance().adminChat(player) || player.isOp())
+            if (Permissions.getInstance().adminChat(player) || player.isOp())
                 player.sendMessage(aPrefix + chatEvent.getMessage());
         }
     }
