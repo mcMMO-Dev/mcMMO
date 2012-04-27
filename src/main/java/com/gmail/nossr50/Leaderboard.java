@@ -255,7 +255,7 @@ public class Leaderboard {
      * @param skillType Skill whose leaderboard is being updated.
      */
     public static void updateLeaderboard(PlayerStat ps, SkillType skillType) {
-        if (Config.getUseMySQL()) {
+        if (Config.getInstance().getUseMySQL()) {
             return;
         }
 

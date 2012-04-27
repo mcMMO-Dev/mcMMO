@@ -66,7 +66,7 @@ public class Excavation {
 
         List<ExcavationTreasure> treasures = new ArrayList<ExcavationTreasure>();
 
-        int xp = Config.getExcavationBaseXP();
+        int xp = Config.getInstance().getExcavationBaseXP();
 
         if (mcPermissions.getInstance().excavationTreasures(player)) {
             switch (type) {
@@ -131,7 +131,7 @@ public class Excavation {
      * @param block The block to check
      */
     public static void gigaDrillBreaker(Player player, Block block) {
-        Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getAbilityToolDamage());
+        Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());
 
         if (!block.hasMetadata("mcmmoPlacedBlock")) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
@@ -141,7 +141,7 @@ public class Excavation {
             Excavation.excavationProcCheck(block, player);
         }
 
-        if (Config.spoutEnabled) {
+        if (Config.getInstance().spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }

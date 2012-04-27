@@ -42,7 +42,7 @@ public class MmoupdateCommand implements CommandExecutor {
      * Convert FlatFile data to MySQL data.
      */
     private void convertToMySQL() {
-        if (!Config.getUseMySQL()) {
+        if (!Config.getInstance().getUseMySQL()) {
             return;
         }
 

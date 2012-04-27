@@ -165,7 +165,7 @@ public class EntityListener implements Listener {
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         SpawnReason reason = event.getSpawnReason();
 
-        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !Config.getExperienceGainsMobspawnersEnabled()) {
+        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !Config.getInstance().getExperienceGainsMobspawnersEnabled()) {
             event.getEntity().setMetadata("mcmmoFromMobSpawner", new FixedMetadataValue(plugin, true));
         }
     }
@@ -219,7 +219,7 @@ public class EntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.LOW)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if (Config.getHerbalismHungerBonusEnabled()) {
+        if (Config.getInstance().getHerbalismHungerBonusEnabled()) {
             if (event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
                 PlayerProfile PP = Users.getProfile(player);
@@ -299,11 +299,11 @@ public class EntityListener implements Listener {
 
             switch (type) {
             case WOLF:
-                xp = Config.getTamingXPWolf();
+                xp = Config.getInstance().getTamingXPWolf();
                 break;
 
             case OCELOT:
-                xp = Config.getTamingXPOcelot();
+                xp = Config.getInstance().getTamingXPOcelot();
                 break;
 
             default:

@@ -214,12 +214,12 @@ public class Taming {
         switch (type) {
         case WOLF:
             summonItem = Material.BONE;
-            summonAmount = Config.getTamingCOTWWolfCost();
+            summonAmount = Config.getInstance().getTamingCOTWWolfCost();
             break;
 
         case OCELOT:
             summonItem = Material.RAW_FISH;
-            summonAmount = Config.getTamingCOTWOcelotCost();
+            summonAmount = Config.getInstance().getTamingCOTWOcelotCost();
             break;
 
         default:

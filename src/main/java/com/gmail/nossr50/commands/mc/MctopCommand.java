@@ -20,7 +20,7 @@ public class MctopCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String usage = ChatColor.RED + "Proper usage is /mctop [skill] [page]"; //TODO: Needs more locale.
         
-        if (!Config.getUseMySQL()) {
+        if (!Config.getInstance().getUseMySQL()) {
 
             switch (args.length) {
             case 0:
@@ -132,7 +132,7 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
-        String tablePrefix = Config.getMySQLTablePrefix();
+        String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
 
         if (query == "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing") {

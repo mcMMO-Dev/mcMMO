@@ -29,7 +29,7 @@ public class mcLocale {
             if (RESOURCE_BUNDLE == null) {
                 Locale.setDefault(new Locale("en", "US"));
                 Locale locale = null;
-                String[] myLocale = Config.getLocale().split("[-_ ]");
+                String[] myLocale = Config.getInstance().getLocale().split("[-_ ]");
 
                 if (myLocale.length == 1) {
                     locale = new Locale(myLocale[0]);

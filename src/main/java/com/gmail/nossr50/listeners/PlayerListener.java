@@ -145,7 +145,7 @@ public class PlayerListener implements Listener {
         /* GARBAGE COLLECTION */
 
         //Remove Spout Stuff
-        if (Config.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
+        if (Config.getInstance().spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
             SpoutStuff.playerHUDs.remove(player);
         }
 
@@ -167,14 +167,14 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (mcPermissions.getInstance().motd(player) && Config.getMOTDEnabled()) {
+        if (mcPermissions.getInstance().motd(player) && Config.getInstance().getMOTDEnabled()) {
             player.sendMessage(mcLocale.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
             player.sendMessage(mcLocale.getString("mcMMO.Wiki"));
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
         if (XprateCommand.xpevent) {
-            player.sendMessage(mcLocale.getString("XPRate.Event", new Object[] {Config.xpGainMultiplier}));
+            player.sendMessage(mcLocale.getString("XPRate.Event", new Object[] {Config.getInstance().xpGainMultiplier}));
         }
     }
 
@@ -204,14 +204,14 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_BLOCK:
 
             /* REPAIR CHECKS */
-            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == Config.getRepairAnvilId() && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
+            if (mcPermissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId() && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
                 Repair.repairCheck(player, is);
                 event.setCancelled(true);
                 player.updateInventory();
             }
 
             /* ACTIVATION CHECKS */
-            if (Config.getAbilitiesEnabled() && BlockChecks.abilityBlockCheck(mat)) {
+            if (Config.getInstance().getAbilitiesEnabled() && BlockChecks.abilityBlockCheck(mat)) {
                 if (!mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL)) {
                     Skills.activationCheck(player, SkillType.HERBALISM);
                 }
@@ -235,7 +235,7 @@ public class PlayerListener implements Listener {
             }
 
             /* BLAST MINING CHECK */
-            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.getDetonatorItemID()) {
+            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
                 BlastMining.remoteDetonation(player, plugin);
             }
 
@@ -244,7 +244,7 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_AIR:
 
             /* ACTIVATION CHECKS */
-            if (Config.getAbilitiesEnabled()) {
+            if (Config.getInstance().getAbilitiesEnabled()) {
                 Skills.activationCheck(player, SkillType.AXES);
                 Skills.activationCheck(player, SkillType.EXCAVATION);
                 Skills.activationCheck(player, SkillType.HERBALISM);
@@ -258,7 +258,7 @@ public class PlayerListener implements Listener {
             Item.itemchecks(player);
 
             /* BLAST MINING CHECK */
-            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.getDetonatorItemID()) {
+            if (mcPermissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
                 BlastMining.remoteDetonation(player, plugin);
             }
 

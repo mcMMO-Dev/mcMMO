@@ -27,8 +27,8 @@ public class McremoveCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String playerName;
-        String tablePrefix = Config.getMySQLTablePrefix();
-        String databaseName = Config.getMySQLDatabaseName();
+        String tablePrefix = Config.getInstance().getMySQLTablePrefix();
+        String databaseName = Config.getInstance().getMySQLDatabaseName();
         String usage = ChatColor.RED + "Proper usage is /mcremove <player>"; //TODO: Needs more locale.
         String success;
 
@@ -48,7 +48,7 @@ public class McremoveCommand implements CommandExecutor {
         }
 
         /* MySQL */
-        if (Config.getUseMySQL()) {
+        if (Config.getInstance().getUseMySQL()) {
             int userId = 0;
             userId = mcMMO.database.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
 

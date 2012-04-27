@@ -13,7 +13,7 @@ import com.gmail.nossr50.locale.mcLocale;
 
 public class XprateCommand implements CommandExecutor {
     private final mcMMO plugin;
-    private static int oldrate = Config.xpGainMultiplier;
+    private static int oldrate = Config.getInstance().xpGainMultiplier;
     public static boolean xpevent = false;
 
     public XprateCommand (mcMMO plugin) {
@@ -39,10 +39,10 @@ public class XprateCommand implements CommandExecutor {
                     }
 
                     xpevent = !xpevent;
-                    Config.xpGainMultiplier = oldrate;
+                    Config.getInstance().xpGainMultiplier = oldrate;
                 }
                 else {
-                    Config.xpGainMultiplier = oldrate;
+                    Config.getInstance().xpGainMultiplier = oldrate;
                 }
             }
             else if (m.isInt(args[0])) {
@@ -56,7 +56,7 @@ public class XprateCommand implements CommandExecutor {
 
         case 2:
             if (m.isInt(args[0])) {
-                oldrate = Config.xpGainMultiplier;
+                oldrate = Config.getInstance().xpGainMultiplier;
 
                 if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {
                     xpevent = Boolean.valueOf(args[1]);
@@ -65,16 +65,16 @@ public class XprateCommand implements CommandExecutor {
                     sender.sendMessage(usage3);
                 }
 
-                Config.xpGainMultiplier = m.getInt(args[0]);
+                Config.getInstance().xpGainMultiplier = m.getInt(args[0]);
 
                 if (xpevent) {
                     for (Player x : plugin.getServer().getOnlinePlayers()) {
                         x.sendMessage(mcLocale.getString("Commands.xprate.started.0"));
-                        x.sendMessage(mcLocale.getString("Commands.xprate.started.1", new Object[] {Config.xpGainMultiplier}));
+                        x.sendMessage(mcLocale.getString("Commands.xprate.started.1", new Object[] {Config.getInstance().xpGainMultiplier}));
                     }
                 }
                 else {
-                    sender.sendMessage("The XP RATE was modified to " + Config.xpGainMultiplier); //TODO: Locale
+                    sender.sendMessage("The XP RATE was modified to " + Config.getInstance().xpGainMultiplier); //TODO: Locale
                 }
             }
             else {

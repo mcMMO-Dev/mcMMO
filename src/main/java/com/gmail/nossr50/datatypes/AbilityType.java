@@ -12,7 +12,7 @@ import com.gmail.nossr50.skills.Mining;
 
 public enum AbilityType {
     BERSERK(
-            Config.getAbilityCooldownBerserk(),
+            Config.getInstance().getAbilityCooldownBerserk(),
             "Unarmed.Skills.Berserk.On",
             "Unarmed.Skills.Berserk.Off",
             "Unarmed.Skills.Berserk.Other.On",
@@ -20,7 +20,7 @@ public enum AbilityType {
             "Unarmed.Skills.Berserk.Other.Off"),
 
     SUPER_BREAKER(
-            Config.getAbilityCooldownSuperBreaker(),
+            Config.getInstance().getAbilityCooldownSuperBreaker(),
             "Mining.Skills.SuperBreaker.On",
             "Mining.Skills.SuperBreaker.Off",
             "Mining.Skills.SuperBreaker.Other.On",
@@ -28,7 +28,7 @@ public enum AbilityType {
             "Mining.Skills.SuperBreaker.Other.Off"),
 
     GIGA_DRILL_BREAKER(
-            Config.getAbilityCooldownGigaDrillBreaker(),
+            Config.getInstance().getAbilityCooldownGigaDrillBreaker(),
             "Excavation.Skills.GigaDrillBreaker.On",
             "Excavation.Skills.GigaDrillBreaker.Off",
             "Excavation.Skills.GigaDrillBreaker.Other.On",
@@ -36,7 +36,7 @@ public enum AbilityType {
             "Excavation.Skills.GigaDrillBreaker.Other.Off"),
 
     GREEN_TERRA(
-            Config.getAbilityCooldownGreenTerra(),
+            Config.getInstance().getAbilityCooldownGreenTerra(),
             "Herbalism.Skills.GTe.On",
             "Herbalism.Skills.GTe.Off",
             "Herbalism.Skills.GTe.Other.On",
@@ -44,7 +44,7 @@ public enum AbilityType {
             "Herbalism.Skills.GTe.Other.Off"),
 
     SKULL_SPLIITER(
-            Config.getAbilityCooldownSkullSplitter(),
+            Config.getInstance().getAbilityCooldownSkullSplitter(),
             "Axes.Skills.SS.On",
             "Axes.Skills.SS.Off",
             "Axes.Skills.SS.Other.On",
@@ -52,7 +52,7 @@ public enum AbilityType {
             "Axes.Skills.SS.Other.Off"),
 
     TREE_FELLER(
-            Config.getAbilityCooldownTreeFeller(),
+            Config.getInstance().getAbilityCooldownTreeFeller(),
             "Woodcutting.Skills.TreeFeller.On",
             "Woodcutting.Skills.TreeFeller.Off",
             "Woodcutting.Skills.TreeFeller.Other.On",
@@ -60,7 +60,7 @@ public enum AbilityType {
             "Woodcutting.Skills.TreeFeller.Other.Off"),
 
     SERRATED_STRIKES(
-            Config.getAbilityCooldownSerratedStrikes(),
+            Config.getInstance().getAbilityCooldownSerratedStrikes(),
             "Swords.Skills.SS.On",
             "Swords.Skills.SS.Off",
             "Swords.Skills.SS.Other.On",
@@ -68,7 +68,7 @@ public enum AbilityType {
             "Swords.Skills.SS.Other.Off"),
 
     BLAST_MINING(
-            Config.getAbilityCooldownBlastMining(),
+            Config.getInstance().getAbilityCooldownBlastMining(),
             null,
             null,
             "Mining.Blast.Other.On",

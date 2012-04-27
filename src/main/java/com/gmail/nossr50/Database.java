@@ -15,8 +15,8 @@ import com.gmail.nossr50.runnables.SQLReconnect;
 
 public class Database {
 
-    private static String connectionString = "jdbc:mysql://" + Config.getMySQLServerName() + ":" + Config.getMySQLServerPort() + "/" + Config.getMySQLDatabaseName() + "?user=" + Config.getMySQLUserName() + "&password=" + Config.getMySQLUserPassword();
-    private static String tablePrefix = Config.getMySQLTablePrefix();
+    private static String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName() + "?user=" + Config.getInstance().getMySQLUserName() + "&password=" + Config.getInstance().getMySQLUserPassword();
+    private static String tablePrefix = Config.getInstance().getMySQLTablePrefix();
     private static Connection conn = null;
     private static mcMMO plugin = null;
     private static long reconnectTimestamp = 0;

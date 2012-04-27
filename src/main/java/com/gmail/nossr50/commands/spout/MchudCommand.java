@@ -32,7 +32,7 @@ public class MchudCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Config.spoutEnabled || !Config.getSpoutXPBarEnabled()) {
+        if (!Config.getInstance().spoutEnabled || !Config.getInstance().getSpoutXPBarEnabled()) {
             sender.sendMessage(mcLocale.getString("Commands.Disabled"));
             return true;
         }

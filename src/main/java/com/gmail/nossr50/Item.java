@@ -21,7 +21,7 @@ public class Item {
     public static void itemchecks(Player player) {
         ItemStack inhand = player.getItemInHand();
 
-        if (Config.getChimaeraEnabled() && inhand.getTypeId() == Config.getChimaeraItemId()) {
+        if (Config.getInstance().getChimaeraEnabled() && inhand.getTypeId() == Config.getInstance().getChimaeraItemId()) {
             chimaerawing(player);
         }
     }
@@ -32,9 +32,9 @@ public class Item {
         Block block = player.getLocation().getBlock();
         int amount = is.getAmount();
 
-        if (mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == Config.getChimaeraItemId()) {
-            if (Skills.cooldownOver(PP.getRecentlyHurt(), 60) && amount >= Config.getChimaeraCost()) {
-                player.setItemInHand(new ItemStack(Config.getChimaeraItemId(), amount - Config.getChimaeraCost()));
+        if (mcPermissions.getInstance().chimaeraWing(player) && is.getTypeId() == Config.getInstance().getChimaeraItemId()) {
+            if (Skills.cooldownOver(PP.getRecentlyHurt(), 60) && amount >= Config.getInstance().getChimaeraCost()) {
+                player.setItemInHand(new ItemStack(Config.getInstance().getChimaeraItemId(), amount - Config.getInstance().getChimaeraCost()));
 
                 for (int y = 0; block.getY() + y < player.getWorld().getMaxHeight(); y++) {
                     if (!block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
@@ -53,11 +53,11 @@ public class Item {
 
                 player.sendMessage(mcLocale.getString("Item.ChimaeraWing.Pass"));
             }
-            else if (!Skills.cooldownOver(PP.getRecentlyHurt(), 60) && is.getAmount() >= Config.getChimaeraCost()) {
+            else if (!Skills.cooldownOver(PP.getRecentlyHurt(), 60) && is.getAmount() >= Config.getInstance().getChimaeraCost()) {
                 player.sendMessage(mcLocale.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(PP.getRecentlyHurt(), 60)}));
             }
-            else if (is.getAmount() <= Config.getChimaeraCost()) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(Config.getChimaeraItemId()));
+            else if (is.getAmount() <= Config.getInstance().getChimaeraCost()) {
+                player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(Config.getInstance().getChimaeraItemId()));
             }
         }
     }

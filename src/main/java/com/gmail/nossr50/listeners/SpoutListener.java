@@ -32,7 +32,7 @@ public class SpoutListener implements Listener {
         PlayerProfile PPs = Users.getProfile(sPlayer);
 
         //TODO: Add custom titles based on skills
-        if (Config.getShowPowerLevelForSpout()) {
+        if (Config.getInstance().getShowPowerLevelForSpout()) {
             sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl"
         + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(PPs.getPowerLevel()));
         }

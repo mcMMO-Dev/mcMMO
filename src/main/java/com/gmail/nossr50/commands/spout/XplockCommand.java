@@ -26,7 +26,7 @@ public class XplockCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Config.spoutEnabled || !Config.getSpoutXPBarEnabled() || !Config.getCommandXPLockEnabled()) {
+        if (!Config.getInstance().spoutEnabled || !Config.getInstance().getSpoutXPBarEnabled() || !Config.getInstance().getCommandXPLockEnabled()) {
             sender.sendMessage(mcLocale.getString("Commands.Disabled"));
             return true;
         }

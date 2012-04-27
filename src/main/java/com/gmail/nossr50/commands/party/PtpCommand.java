@@ -44,8 +44,8 @@ public class PtpCommand implements CommandExecutor {
                 return true;
             }
 
-            if (PP.getRecentlyHurt() + (Config.getPTPCommandCooldown() * 1000) > System.currentTimeMillis()) {
-                player.sendMessage(mcLocale.getString("Party.Teleport.Hurt", new Object[] { Config.getPTPCommandCooldown() }));
+            if (PP.getRecentlyHurt() + (Config.getInstance().getPTPCommandCooldown() * 1000) > System.currentTimeMillis()) {
+                player.sendMessage(mcLocale.getString("Party.Teleport.Hurt", new Object[] { Config.getInstance().getPTPCommandCooldown() }));
                 return true;
             }
 

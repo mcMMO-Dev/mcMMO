@@ -18,8 +18,8 @@ public class McmmoCommand implements CommandExecutor {
         String[] mcSplit = description.split(",");
         sender.sendMessage(mcSplit);
 
-        if (Config.getDonateMessageEnabled()) {
-            if (Config.spoutEnabled && sender instanceof SpoutPlayer) {
+        if (Config.getInstance().getDonateMessageEnabled()) {
+            if (Config.getInstance().spoutEnabled && sender instanceof SpoutPlayer) {
                 SpoutPlayer sPlayer = (SpoutPlayer) sender;
 
                 sPlayer.sendNotification(ChatColor.YELLOW + "[mcMMO]" + ChatColor.GOLD + " Donate!", ChatColor.GREEN + "nossr50@gmail.com", Material.DIAMOND);

@@ -30,7 +30,7 @@ public class PlayerProfile {
     /* Party Stuff */
     private String party;
     private String invite;
-    private String tablePrefix = Config.getMySQLTablePrefix();
+    private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     /* Toggles */
     private boolean loaded = false;
@@ -64,7 +64,7 @@ public class PlayerProfile {
     private String location = mcMMO.usersFile;
 
     public PlayerProfile(String name, boolean addNew) {
-        hud = Config.defaulthud;
+        hud = Config.getInstance().defaulthud;
         playerName = name;
 
         for (AbilityType abilityType : AbilityType.values()) {
@@ -78,7 +78,7 @@ public class PlayerProfile {
             }
         }
 
-        if (Config.getUseMySQL()) {
+        if (Config.getInstance().getUseMySQL()) {
             if (!loadMySQL() && addNew) {
                 addMySQLPlayer();
             }
@@ -121,7 +121,7 @@ public class PlayerProfile {
                     }
                 }
                 } else {
-                    hud = Config.defaulthud;
+                    hud = Config.getInstance().defaulthud;
                 }
             }
             HashMap<Integer, ArrayList<String>> users = mcMMO.database.read("SELECT lastlogin, party FROM "+tablePrefix+"users WHERE id = " + id);
@@ -299,7 +299,7 @@ public class PlayerProfile {
     {
         Long timestamp = System.currentTimeMillis()/1000; //Convert to seconds
         // if we are using mysql save to database
-        if (Config.getUseMySQL()) 
+        if (Config.getInstance().getUseMySQL()) 
         {
             mcMMO.database.write("UPDATE "+tablePrefix+"huds SET "
                     +" hudtype = '"+hud.toString()+"' WHERE user_id = "+this.userid);
@@ -477,7 +477,7 @@ public class PlayerProfile {
             out.append(0+":"); //DATS
             out.append(0+":"); //DATS
             out.append(0+":"); //DATS
-            out.append(Config.defaulthud.toString()+":");//HUD
+            out.append(Config.getInstance().defaulthud.toString()+":");//HUD
             out.append(0+":"); //Fishing
             out.append(0+":"); //FishingXP
             out.append(0+":"); //Blast Mining
@@ -1023,7 +1023,7 @@ public class PlayerProfile {
      * @param newValue The amount of XP to add
      */
     public void addXPOverrideBonus(SkillType skillType, int newValue) {
-        int xp = newValue * Config.xpGainMultiplier;
+        int xp = newValue * Config.getInstance().xpGainMultiplier;
         addXPOverride(skillType, xp);
     }
 
@@ -1048,7 +1048,7 @@ public class PlayerProfile {
             bonusModifier = partyModifier(skillType);
         }
 
-        int xp = (int) (newValue / skillType.getXpModifier()) * Config.xpGainMultiplier;
+        int xp = (int) (newValue / skillType.getXpModifier()) * Config.getInstance().xpGainMultiplier;
 
         if (bonusModifier > 0) {
             if (bonusModifier >= 2) {

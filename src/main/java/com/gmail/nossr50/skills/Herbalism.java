@@ -45,13 +45,13 @@ public class Herbalism {
             player.updateInventory();
 
             if (m.blockBreakSimulate(block, player, false)) {
-                if (Config.getHerbalismGreenThumbSmoothbrickToMossy() && type.equals(Material.SMOOTH_BRICK)) {
+                if (Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy() && type.equals(Material.SMOOTH_BRICK)) {
                     block.setData((byte) 0x1); //Set type of the brick to mossy
                 }
-                else if (Config.getHerbalismGreenThumbDirtToGrass() && type.equals(Material.DIRT)) {
+                else if (Config.getInstance().getHerbalismGreenThumbDirtToGrass() && type.equals(Material.DIRT)) {
                     block.setType(Material.GRASS);
                 }
-                else if (Config.getHerbalismGreenThumbCobbleToMossy() && type.equals(Material.COBBLESTONE)) {
+                else if (Config.getInstance().getHerbalismGreenThumbCobbleToMossy() && type.equals(Material.COBBLESTONE)) {
                     block.setType(Material.MOSSY_COBBLESTONE);
                 }
             }
@@ -132,7 +132,7 @@ public class Herbalism {
         case RED_MUSHROOM:
             if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = Material.getMaterial(id);
-                xp = Config.getHerbalismXPMushrooms();
+                xp = Config.getInstance().getHerbalismXPMushrooms();
             }
             break;
 
@@ -145,7 +145,7 @@ public class Herbalism {
                         if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
                             catciDrops++;
                         }
-                        xp += Config.getHerbalismXPCactus();
+                        xp += Config.getInstance().getHerbalismXPCactus();
                     }
                 }
             }
@@ -154,9 +154,9 @@ public class Herbalism {
         case CROPS:
             if (data == CropState.RIPE.getData()) {
                 mat = Material.WHEAT;
-                xp = Config.getHerbalismXPWheat();
+                xp = Config.getInstance().getHerbalismXPWheat();
 
-                if (Config.getHerbalismWheatRegrowth() && mcPermissions.getInstance().greenThumbWheat(player)) {
+                if (Config.getInstance().getHerbalismWheatRegrowth() && mcPermissions.getInstance().greenThumbWheat(player)) {
                     greenThumbWheat(block, player, event, plugin);
                 }
             }
@@ -165,14 +165,14 @@ public class Herbalism {
         case MELON_BLOCK:
             if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = Material.MELON;
-                xp = Config.getHerbalismXPMelon();
+                xp = Config.getInstance().getHerbalismXPMelon();
             }
             break;
 
         case NETHER_WARTS:
             if (data == (byte) 0x3) {
                 mat = Material.NETHER_STALK;
-                xp = Config.getHerbalismXPNetherWart();
+                xp = Config.getInstance().getHerbalismXPNetherWart();
             }
             break;
 
@@ -180,7 +180,7 @@ public class Herbalism {
         case JACK_O_LANTERN:
             if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = Material.getMaterial(id);
-                xp = Config.getHerbalismXPPumpkin();
+                xp = Config.getInstance().getHerbalismXPPumpkin();
             }
             break;
 
@@ -188,7 +188,7 @@ public class Herbalism {
         case YELLOW_FLOWER:
             if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = Material.getMaterial(id);
-                xp = Config.getHerbalismXPFlowers();
+                xp = Config.getInstance().getHerbalismXPFlowers();
             }
             break;
 
@@ -201,7 +201,7 @@ public class Herbalism {
                         if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
                             caneDrops++;
                         }
-                        xp += Config.getHerbalismXPSugarCane();
+                        xp += Config.getInstance().getHerbalismXPSugarCane();
                     }
                 }
             }
@@ -210,14 +210,14 @@ public class Herbalism {
         case VINE:
             if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = type;
-                xp = Config.getHerbalismXPVines();
+                xp = Config.getInstance().getHerbalismXPVines();
             }
             break;
 
         case WATER_LILY:
             if (!block.hasMetadata("mcmmoPlacedBlock")) {
                 mat = type;
-                xp = Config.getHerbalismXPLilyPads();
+                xp = Config.getInstance().getHerbalismXPLilyPads();
             }
             break;
 

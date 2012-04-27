@@ -15,8 +15,8 @@ import com.gmail.nossr50.Users;
 import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcPermissions;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
@@ -89,56 +89,56 @@ public class Mining {
         
         switch (type) {
         case COAL_ORE:
-            xp += Config.getMiningXPCoalOre();
+            xp += Config.getInstance().getMiningXPCoalOre();
             break;
 
         case DIAMOND_ORE:
-            xp += Config.getMiningXPDiamondOre();
+            xp += Config.getInstance().getMiningXPDiamondOre();
             break;
 
         case ENDER_STONE:
-            xp += Config.getMiningXPEndStone();
+            xp += Config.getInstance().getMiningXPEndStone();
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
-            xp += Config.getMiningXPRedstoneOre();
+            xp += Config.getInstance().getMiningXPRedstoneOre();
             break;
 
         case GLOWSTONE:
-            xp += Config.getMiningXPGlowstone();
+            xp += Config.getInstance().getMiningXPGlowstone();
             break;
 
         case GOLD_ORE:
-            xp += Config.getMiningXPGoldOre();
+            xp += Config.getInstance().getMiningXPGoldOre();
             break;
 
         case IRON_ORE:
-            xp += Config.getMiningXPIronOre();
+            xp += Config.getInstance().getMiningXPIronOre();
             break;
 
         case LAPIS_ORE:
-            xp += Config.getMiningXPLapisOre();
+            xp += Config.getInstance().getMiningXPLapisOre();
             break;
 
         case MOSSY_COBBLESTONE:
-            xp += Config.getMiningXPMossyStone();
+            xp += Config.getInstance().getMiningXPMossyStone();
             break;
 
         case NETHERRACK:
-            xp += Config.getMiningXPNetherrack();
+            xp += Config.getInstance().getMiningXPNetherrack();
             break;
 
         case OBSIDIAN:
-            xp += Config.getMiningXPObsidian();
+            xp += Config.getInstance().getMiningXPObsidian();
             break;
 
         case SANDSTONE:
-            xp += Config.getMiningXPSandstone();
+            xp += Config.getInstance().getMiningXPSandstone();
             break;
 
         case STONE:
-            xp += Config.getMiningXPStone();
+            xp += Config.getInstance().getMiningXPStone();
             break;
 
         default:
@@ -216,7 +216,7 @@ public class Mining {
     public static void SuperBreakerBlockCheck(Player player, Block block) {
         Material type = block.getType();
         int tier = m.getTier(player.getItemInHand());
-        int durabilityLoss = Config.getAbilityToolDamage();
+        int durabilityLoss = Config.getInstance().getAbilityToolDamage();
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 
         switch (type) {
@@ -259,7 +259,7 @@ public class Mining {
 
             miningBlockCheck(player, block);
 
-            if (Config.spoutEnabled) {
+            if (Config.getInstance().spoutEnabled) {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }

@@ -9,7 +9,7 @@ import com.gmail.nossr50.config.Config;
 
 public class SQLConversionTask implements Runnable {
     private final mcMMO plugin;
-    private String tablePrefix = Config.getMySQLTablePrefix();
+    private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     public SQLConversionTask(mcMMO plugin) {
         this.plugin = plugin;

@@ -261,8 +261,8 @@ public class m {
     }
 
     public static int getPowerLevelCap() {
-        if (Config.getPowerLevelCap() > 0) {
-            return Config.getPowerLevelCap();
+        if (Config.getInstance().getPowerLevelCap() > 0) {
+            return Config.getInstance().getPowerLevelCap();
         }
         else {
             return Integer.MAX_VALUE;

@@ -46,8 +46,8 @@ public class TamingCommand implements CommandExecutor {
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Taming.Effect.10"), mcLocale.getString("Taming.Effect.11") }));
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Taming.Effect.12"), mcLocale.getString("Taming.Effect.13") }));
         player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Taming.Effect.16"), mcLocale.getString("Taming.Effect.17") }));
-        player.sendMessage(mcLocale.getString("Taming.Effect.14", new Object[] { Config.getTamingCOTWOcelotCost() }));
-        player.sendMessage(mcLocale.getString("Taming.Effect.15", new Object[] { Config.getTamingCOTWWolfCost() }));
+        player.sendMessage(mcLocale.getString("Taming.Effect.14", new Object[] { Config.getInstance().getTamingCOTWOcelotCost() }));
+        player.sendMessage(mcLocale.getString("Taming.Effect.15", new Object[] { Config.getInstance().getTamingCOTWWolfCost() }));
 
         player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
 

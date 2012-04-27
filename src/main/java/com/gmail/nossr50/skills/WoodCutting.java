@@ -53,7 +53,7 @@ public class WoodCutting {
      * @param PP The PlayerProfile of the player
      */
     private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP) {
-        if (toBeFelled.size() >= Config.getTreeFellerThreshold()) {
+        if (toBeFelled.size() >= Config.getInstance().getTreeFellerThreshold()) {
             player.sendMessage(mcLocale.getString("Woodcutting.Skills.TreeFellerThreshold"));
             return;
         }
@@ -116,19 +116,19 @@ public class WoodCutting {
 
                         switch (species) {
                             case GENERIC:
-                                xp += Config.getWoodcuttingXPOak();
+                                xp += Config.getInstance().getWoodcuttingXPOak();
                                 break;
 
                             case REDWOOD:
-                                xp += Config.getWoodcuttingXPSpruce();
+                                xp += Config.getInstance().getWoodcuttingXPSpruce();
                                 break;
 
                             case BIRCH:
-                                xp += Config.getWoodcuttingXPBirch();
+                                xp += Config.getInstance().getWoodcuttingXPBirch();
                                 break;
 
                             case JUNGLE:
-                                xp += Config.getWoodcuttingXPJungle() / 4; //Nerf XP from Jungle Trees when using Tree Feller
+                                xp += Config.getInstance().getWoodcuttingXPJungle() / 4; //Nerf XP from Jungle Trees when using Tree Feller
                                 break;
 
                             default:
@@ -187,7 +187,7 @@ public class WoodCutting {
     private static void processTreeFelling(Block currentBlock, ArrayList<Block> toBeFelled) {
         Material type = currentBlock.getType();
         
-        if(toBeFelled.size() >= Config.getTreeFellerThreshold()) {
+        if(toBeFelled.size() >= Config.getInstance().getTreeFellerThreshold()) {
             return;
         }
 
@@ -281,19 +281,19 @@ public class WoodCutting {
 
         switch (species) {
         case GENERIC:
-            xp += Config.getWoodcuttingXPOak();
+            xp += Config.getInstance().getWoodcuttingXPOak();
             break;
 
         case REDWOOD:
-            xp += Config.getWoodcuttingXPSpruce();
+            xp += Config.getInstance().getWoodcuttingXPSpruce();
             break;
 
         case BIRCH:
-            xp += Config.getWoodcuttingXPBirch();
+            xp += Config.getInstance().getWoodcuttingXPBirch();
             break;
 
         case JUNGLE:
-            xp += Config.getWoodcuttingXPJungle();
+            xp += Config.getInstance().getWoodcuttingXPJungle();
             break;
 
         default:
@@ -315,11 +315,11 @@ public class WoodCutting {
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
         mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
-        if (Config.getWoodcuttingRequiresTool()) {
-            Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getAbilityToolDamage());
+        if (Config.getInstance().getWoodcuttingRequiresTool()) {
+            Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());
         }
 
-        if (Config.spoutEnabled) {
+        if (Config.getInstance().spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }
@@ -329,7 +329,7 @@ public class WoodCutting {
         for (Block x : toBeFelled) {
             if (x.getType().equals(Material.LOG)) {
                 durabilityLoss++;
-                durabilityLoss = durabilityLoss + Config.getAbilityToolDamage();
+                durabilityLoss = durabilityLoss + Config.getInstance().getAbilityToolDamage();
             }
         }
 

@@ -247,7 +247,7 @@ public class Combat {
      * @param cause DamageCause to pass to damage event
      */
     private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
-        if (Config.getEventCallbackEnabled()) {
+        if (Config.getInstance().getEventCallbackEnabled()) {
             EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
@@ -270,7 +270,7 @@ public class Combat {
      * @param attacker Player to pass to event as damager
      */
     private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
-        if (Config.getEventCallbackEnabled()) {
+        if (Config.getInstance().getEventCallbackEnabled()) {
             EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
@@ -395,7 +395,7 @@ public class Combat {
         double baseXP = 0;
 
         if (target instanceof Player) {
-            if (!Config.getExperienceGainsPlayerVersusPlayerEnabled()) {
+            if (!Config.getInstance().getExperienceGainsPlayerVersusPlayerEnabled()) {
                 return;
             }
 
@@ -403,72 +403,72 @@ public class Combat {
             PlayerProfile PPd = Users.getProfile(defender);
 
             if (System.currentTimeMillis() >= (PPd.getRespawnATS() * 1000) + 5000 && ((PPd.getLastLogin() + 5) * 1000) < System.currentTimeMillis() && defender.getHealth() >= 1) {
-                baseXP = 20 * Config.getPlayerVersusPlayerXP();
+                baseXP = 20 * Config.getInstance().getPlayerVersusPlayerXP();
             }
         }
         else if (!target.hasMetadata("mcmmoFromMobSpawner")) {
             if (target instanceof Animals && !target.hasMetadata("mcmmoSummoned")) {
-                baseXP = Config.getAnimalsXP();
+                baseXP = Config.getInstance().getAnimalsXP();
             }
             else {
                 EntityType type = target.getType();
 
                 switch (type) {
                 case BLAZE:
-                    baseXP = Config.getBlazeXP();
+                    baseXP = Config.getInstance().getBlazeXP();
                     break;
 
                 case CAVE_SPIDER:
-                    baseXP = Config.getCaveSpiderXP();
+                    baseXP = Config.getInstance().getCaveSpiderXP();
                     break;
 
                 case CREEPER:
-                    baseXP = Config.getCreeperXP();
+                    baseXP = Config.getInstance().getCreeperXP();
                     break;
 
                 case ENDER_DRAGON:
-                    baseXP = Config.getEnderDragonXP();
+                    baseXP = Config.getInstance().getEnderDragonXP();
                     break;
 
                 case ENDERMAN:
-                    baseXP = Config.getEndermanXP();
+                    baseXP = Config.getInstance().getEndermanXP();
                     break;
 
                 case GHAST:
-                    baseXP = Config.getGhastXP();
+                    baseXP = Config.getInstance().getGhastXP();
                     break;
 
                 case MAGMA_CUBE:
-                    baseXP = Config.getMagmaCubeXP();
+                    baseXP = Config.getInstance().getMagmaCubeXP();
                     break;
 
                 case IRON_GOLEM:
                     if (!((IronGolem) target).isPlayerCreated())
-                        baseXP = Config.getIronGolemXP();
+                        baseXP = Config.getInstance().getIronGolemXP();
                     break;
 
                 case PIG_ZOMBIE:
-                    baseXP = Config.getPigZombieXP();
+                    baseXP = Config.getInstance().getPigZombieXP();
                     break;
 
                 case SILVERFISH:
-                    baseXP = Config.getSilverfishXP();
+                    baseXP = Config.getInstance().getSilverfishXP();
                     break;
 
                 case SKELETON:
-                    baseXP = Config.getSkeletonXP();
+                    baseXP = Config.getInstance().getSkeletonXP();
                     break;
 
                 case SLIME:
-                    baseXP = Config.getSlimeXP();
+                    baseXP = Config.getInstance().getSlimeXP();
                     break;
 
                 case SPIDER:
-                    baseXP = Config.getSpiderXP();
+                    baseXP = Config.getInstance().getSpiderXP();
                     break;
 
                 case ZOMBIE:
-                    baseXP = Config.getZombieXP();
+                    baseXP = Config.getInstance().getZombieXP();
                     break;
 
                 default:
