@@ -155,7 +155,7 @@ public class PlayerListener implements Listener {
         }
 
         //Schedule PlayerProfile removal 2 minutes after quitting
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player), 2400);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player.getName()), 2400);
     }
 
     /**
