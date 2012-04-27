@@ -53,6 +53,7 @@ public class PtpCommand implements CommandExecutor {
 
             if (player.equals(target)) {
                 player.sendMessage("You can't teleport to yourself!"); //TODO: Use locale
+                return true;
             }
 
             if (target == null) {
