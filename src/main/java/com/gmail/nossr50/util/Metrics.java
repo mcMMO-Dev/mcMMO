@@ -1,4 +1,4 @@
-package com.gmail.nossr50;
+package com.gmail.nossr50.util;
 /*
  * Copyright 2011 Tyler Blair. All rights reserved.
  *

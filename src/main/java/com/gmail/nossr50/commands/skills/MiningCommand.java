@@ -5,12 +5,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Page;
+import com.gmail.nossr50.util.Users;
 
 public class MiningCommand implements CommandExecutor {
     private float skillValue;
@@ -36,40 +36,40 @@ public class MiningCommand implements CommandExecutor {
         skillValue = (float) PP.getSkillLevel(SkillType.MINING);
         dataCalculations(skillValue);
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Mining.SkillName") }));
-        player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Mining") }));
-        player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Mining.SkillName") }));
+        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Mining") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.0"), mcLocale.getString("Mining.Effect.1") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.2"), mcLocale.getString("Mining.Effect.3") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.4"), mcLocale.getString("Mining.Effect.5") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.6"), mcLocale.getString("Mining.Effect.7") }));
-        player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Mining.Effect.8"), mcLocale.getString("Mining.Effect.9") }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.0"), LocaleLoader.getString("Mining.Effect.1") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.2"), LocaleLoader.getString("Mining.Effect.3") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.4"), LocaleLoader.getString("Mining.Effect.5") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.6"), LocaleLoader.getString("Mining.Effect.7") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.8"), LocaleLoader.getString("Mining.Effect.9") }));
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
-        player.sendMessage(mcLocale.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }));
-        player.sendMessage(mcLocale.getString("Mining.Ability.Length", new Object[] { superBreakerLength }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
+        player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }));
+        player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", new Object[] { superBreakerLength }));
 
         if (PP.getSkillLevel(SkillType.MINING) < 125) {
-            player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("Mining.Ability.Locked.0") }));
+            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.0") }));
         }
         else {
-            player.sendMessage(mcLocale.getString("Mining.Blast.Rank", new Object[] { blastMiningRank, mcLocale.getString("Mining.Blast.Effect." + (blastMiningRank - 1)) }));
+            player.sendMessage(LocaleLoader.getString("Mining.Blast.Rank", new Object[] { blastMiningRank, LocaleLoader.getString("Mining.Blast.Effect." + (blastMiningRank - 1)) }));
         }
 
         if (PP.getSkillLevel(SkillType.MINING) < 250) {
-            player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("Mining.Ability.Locked.1") }));
+            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.1") }));
         }
         else {
-            player.sendMessage(mcLocale.getString("m.MiningBiggerBombs", new Object[] { blastRadiusIncrease }));
+            player.sendMessage(LocaleLoader.getString("m.MiningBiggerBombs", new Object[] { blastRadiusIncrease }));
         }
 
         if (PP.getSkillLevel(SkillType.MINING) < 500) {
-            player.sendMessage(mcLocale.getString("Ability.Generic.Template.Lock", new Object[] { mcLocale.getString("Mining.Ability.Locked.2") }));
+            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.2") }));
         }
         else {
-            player.sendMessage(mcLocale.getString("m.MiningDemolitionsExpertDamageDecrease", new Object[] { blastDamageDecrease }));
+            player.sendMessage(LocaleLoader.getString("m.MiningDemolitionsExpertDamageDecrease", new Object[] { blastDamageDecrease }));
         }
 
         Page.grabGuidePageForSkill(SkillType.MINING, player, args);

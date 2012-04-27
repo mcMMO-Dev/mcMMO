@@ -18,15 +18,15 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.runnables.mcBleedTimer;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.BleedTimer;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class Taming {
 
@@ -94,14 +94,14 @@ public class Taming {
             if (entity instanceof Player) {
                 Player target = (Player) entity;
 
-                target.sendMessage(mcLocale.getString("Combat.StruckByGore"));
+                target.sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
                 Users.getProfile(target).addBleedTicks(2);
             }
             else {
-                mcBleedTimer.add((LivingEntity) entity);
+                BleedTimer.add((LivingEntity) entity);
             }
 
-            master.sendMessage(mcLocale.getString("Combat.Gore"));
+            master.sendMessage(LocaleLoader.getString("Combat.Gore"));
         }
     }
 
@@ -147,20 +147,20 @@ public class Taming {
         case CONTACT:
         case LAVA:
         case FIRE:
-            if (mcPermissions.getInstance().environmentallyAware(master)) {
+            if (Permissions.getInstance().environmentallyAware(master)) {
                 if (skillLevel >= ENVIRONMENTALLY_AWARE_LEVEL) {
                     if (event.getDamage() >= wolf.getHealth()) {
                         return;
                     }
 
                     wolf.teleport(master.getLocation());
-                    master.sendMessage(mcLocale.getString("Taming.Listener.Wolf"));
+                    master.sendMessage(LocaleLoader.getString("Taming.Listener.Wolf"));
                 }
             }
             break;
 
         case FALL:
-            if (mcPermissions.getInstance().environmentallyAware(master)) {
+            if (Permissions.getInstance().environmentallyAware(master)) {
                 if (skillLevel >= ENVIRONMENTALLY_AWARE_LEVEL) {
                     event.setCancelled(true);
                 }
@@ -169,7 +169,7 @@ public class Taming {
 
         /* Thick Fur */
         case FIRE_TICK:
-            if (mcPermissions.getInstance().thickFur(master)) {
+            if (Permissions.getInstance().thickFur(master)) {
                 if(skillLevel >= THICK_FUR_LEVEL) {
                     wolf.setFireTicks(0);
                 }
@@ -178,7 +178,7 @@ public class Taming {
 
         case ENTITY_ATTACK:
         case PROJECTILE:
-            if (mcPermissions.getInstance().thickFur(master)) {
+            if (Permissions.getInstance().thickFur(master)) {
                 if (skillLevel >= THICK_FUR_LEVEL) {
                     event.setDamage(event.getDamage() / THICK_FUR_MODIFIER);
                 }
@@ -188,7 +188,7 @@ public class Taming {
         /* Shock Proof */
         case ENTITY_EXPLOSION:
         case BLOCK_EXPLOSION:
-            if (mcPermissions.getInstance().shockProof(master)) {
+            if (Permissions.getInstance().shockProof(master)) {
                 if (skillLevel >= SHOCK_PROOF_LEVEL) {
                     event.setDamage(event.getDamage() / SHOCK_PROOF_MODIFIER);
                 }
@@ -232,11 +232,11 @@ public class Taming {
                     if (x.getType().equals(type)) {
                         switch (type) {
                         case WOLF:
-                            player.sendMessage(mcLocale.getString("Taming.Summon.Fail.Wolf"));
+                            player.sendMessage(LocaleLoader.getString("Taming.Summon.Fail.Wolf"));
                             return;
 
                         case OCELOT:
-                            player.sendMessage(mcLocale.getString("Taming.Summon.Fail.Ocelot"));
+                            player.sendMessage(LocaleLoader.getString("Taming.Summon.Fail.Ocelot"));
                             return;
 
                         default:
@@ -258,10 +258,10 @@ public class Taming {
                 }
 
                 player.setItemInHand(new ItemStack(summonItem, item.getAmount() - summonAmount));
-                player.sendMessage(mcLocale.getString("Taming.Summon.Complete"));
+                player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete"));
             }
             else {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(summonItem.getId()));
+                player.sendMessage(LocaleLoader.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + Misc.prettyItemString(summonItem.getId()));
             }
         }
     }
@@ -276,15 +276,15 @@ public class Taming {
     public static void beastLore(EntityDamageByEntityEvent event, LivingEntity target, Player inspector) {
         if (target instanceof Tameable) {
             Tameable beast = (Tameable) target;
-            String message = mcLocale.getString("Combat.BeastLore") + " ";
+            String message = LocaleLoader.getString("Combat.BeastLore") + " ";
             int health = target.getHealth();
             event.setCancelled(true);
 
             if (beast.isTamed()) {
-                message = message.concat(mcLocale.getString("Combat.BeastLoreOwner", new Object[] {getOwnerName(beast)}) + " ");
+                message = message.concat(LocaleLoader.getString("Combat.BeastLoreOwner", new Object[] {getOwnerName(beast)}) + " ");
             }
 
-            message = message.concat(mcLocale.getString("Combat.BeastLoreHealth", new Object[] {health, target.getMaxHealth()}));
+            message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", new Object[] {health, target.getMaxHealth()}));
             inspector.sendMessage(message);
         }
     }

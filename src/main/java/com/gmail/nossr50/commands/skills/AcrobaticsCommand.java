@@ -5,13 +5,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Page;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class AcrobaticsCommand implements CommandExecutor {
     private float skillValue;
@@ -40,40 +40,40 @@ public class AcrobaticsCommand implements CommandExecutor {
         dataCalculations(skillValue);
         permissionsCheck(player);
 
-        player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Acrobatics.SkillName") }));
-        player.sendMessage(mcLocale.getString("Commands.XPGain", new Object[] { mcLocale.getString("Commands.XPGain.Acrobatics") }));
-        player.sendMessage(mcLocale.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS) }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Acrobatics.SkillName") }));
+        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Acrobatics") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS) }));
 
         if (canDodge || canGracefulRoll || canRoll) {
-            player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Effects.Effects") }));
+            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
         }
 
         if (canRoll) {
-            player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Acrobatics.Effect.0"), mcLocale.getString("Acrobatics.Effect.1") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Acrobatics.Effect.0"), LocaleLoader.getString("Acrobatics.Effect.1") }));
         }
 
         if (canGracefulRoll) {
-            player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Acrobatics.Effect.2"), mcLocale.getString("Acrobatics.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Acrobatics.Effect.2"), LocaleLoader.getString("Acrobatics.Effect.3") }));
         }
 
         if (canDodge) {
-            player.sendMessage(mcLocale.getString("Effects.Template", new Object[] { mcLocale.getString("Acrobatics.Effect.4"), mcLocale.getString("Acrobatics.Effect.5") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Acrobatics.Effect.4"), LocaleLoader.getString("Acrobatics.Effect.5") }));
         }
 
         if (canDodge || canGracefulRoll || canRoll) {
-            player.sendMessage(mcLocale.getString("Skills.Header", new Object[] { mcLocale.getString("Commands.Stats.Self") }));
+            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
         }
 
         if (canRoll) {
-            player.sendMessage(mcLocale.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }));
+            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }));
         }
 
         if (canGracefulRoll) {
-            player.sendMessage(mcLocale.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }));
+            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }));
         }
 
         if (canDodge) {
-            player.sendMessage(mcLocale.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }));
+            player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }));
         }
 
         Page.grabGuidePageForSkill(SkillType.ACROBATICS, player, args);
@@ -105,7 +105,7 @@ public class AcrobaticsCommand implements CommandExecutor {
     }
 
     private void permissionsCheck(Player player) {
-        mcPermissions permInstance = mcPermissions.getInstance();
+        Permissions permInstance = Permissions.getInstance();
         canDodge = permInstance.dodge(player);
         canRoll = permInstance.roll(player);
         canGracefulRoll = permInstance.gracefulRoll(player);

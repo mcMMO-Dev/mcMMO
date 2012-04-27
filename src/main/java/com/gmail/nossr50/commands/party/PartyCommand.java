@@ -6,14 +6,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.Users;
 
 public class PartyCommand implements CommandExecutor {
     private final mcMMO plugin;
@@ -48,9 +48,9 @@ public class PartyCommand implements CommandExecutor {
         switch (args.length) {
         case 0:
             if (!inParty) {
-                player.sendMessage(mcLocale.getString("Party.Help.0"));
-                player.sendMessage(mcLocale.getString("Party.Help.1"));
-                player.sendMessage(mcLocale.getString("Party.Help.2"));
+                player.sendMessage(LocaleLoader.getString("Party.Help.0"));
+                player.sendMessage(LocaleLoader.getString("Party.Help.1"));
+                player.sendMessage(LocaleLoader.getString("Party.Help.2"));
             }
             else {
                 String tempList = "";
@@ -71,8 +71,8 @@ public class PartyCommand implements CommandExecutor {
                     tempList += ChatColor.WHITE + playerName;
                 }
 
-                player.sendMessage(mcLocale.getString("Commands.Party.InParty", new Object[] { partyName }));
-                player.sendMessage(mcLocale.getString("Commands.Party.Members", new Object[] { tempList }));
+                player.sendMessage(LocaleLoader.getString("Commands.Party.InParty", new Object[] { partyName }));
+                player.sendMessage(LocaleLoader.getString("Commands.Party.Members", new Object[] { tempList }));
             }
 
             return true;
@@ -88,33 +88,33 @@ public class PartyCommand implements CommandExecutor {
                     }
 
                     partyInstance.removeFromParty(player, PP);
-                    player.sendMessage(mcLocale.getString("Commands.Party.Leave"));
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.Leave"));
                 }
                 else {
                     player.sendMessage("Commands.Party.None");
                 }
             }
             else if (args[0].equals("?")) {
-                player.sendMessage(mcLocale.getString("Party.Help.3"));
-                player.sendMessage(mcLocale.getString("Party.Help.1"));
-                player.sendMessage(mcLocale.getString("Party.Help.4"));
-                player.sendMessage(mcLocale.getString("Party.Help.5"));
-                player.sendMessage(mcLocale.getString("Party.Help.6"));
-                player.sendMessage(mcLocale.getString("Party.Help.7"));
+                player.sendMessage(LocaleLoader.getString("Party.Help.3"));
+                player.sendMessage(LocaleLoader.getString("Party.Help.1"));
+                player.sendMessage(LocaleLoader.getString("Party.Help.4"));
+                player.sendMessage(LocaleLoader.getString("Party.Help.5"));
+                player.sendMessage(LocaleLoader.getString("Party.Help.6"));
+                player.sendMessage(LocaleLoader.getString("Party.Help.7"));
             }
             else if (args[0].equalsIgnoreCase("lock")) {
                 if (inParty) {
                     if (isLeader) {
                         if (partyInstance.isPartyLocked(partyName)) {
-                            player.sendMessage(mcLocale.getString("Party.IsLocked"));
+                            player.sendMessage(LocaleLoader.getString("Party.IsLocked"));
                         }
                         else {
                             partyInstance.lockParty(partyName);
-                            player.sendMessage(mcLocale.getString("Party.Locked"));
+                            player.sendMessage(LocaleLoader.getString("Party.Locked"));
                         }
                     }
                     else {
-                        player.sendMessage(mcLocale.getString("Party.NotOwner"));
+                        player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
                     }
                 }
                 else {
@@ -125,15 +125,15 @@ public class PartyCommand implements CommandExecutor {
                 if (inParty) {
                     if (isLeader) {
                         if (!partyInstance.isPartyLocked(partyName)) {
-                            player.sendMessage(mcLocale.getString("Party.IsntLocked"));
+                            player.sendMessage(LocaleLoader.getString("Party.IsntLocked"));
                         }
                         else {
                             partyInstance.unlockParty(partyName);
-                            player.sendMessage(mcLocale.getString("Party.Unlocked"));
+                            player.sendMessage(LocaleLoader.getString("Party.Unlocked"));
                         }
                     }
                     else {
-                        player.sendMessage(mcLocale.getString("Party.NotOwner"));
+                        player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
                     }
                 }
                 else {
@@ -167,7 +167,7 @@ public class PartyCommand implements CommandExecutor {
 
         case 2:
             if (!partyInstance.isParty(args[0])) {
-                sender.sendMessage(mcLocale.getString("Party.InvalidName"));
+                sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));
                 return true;
             }
 
@@ -179,10 +179,10 @@ public class PartyCommand implements CommandExecutor {
                         }
 
                         partyInstance.setPartyPassword(partyName, args[1]);
-                        player.sendMessage(mcLocale.getString("Party.PasswordSet", new Object[] { args[1] }));
+                        player.sendMessage(LocaleLoader.getString("Party.PasswordSet", new Object[] { args[1] }));
                     }
                     else {
-                        player.sendMessage(mcLocale.getString("Party.NotOwner"));
+                        player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
                     }
                 }
                 else if (args[0].equalsIgnoreCase("kick")) {
@@ -190,7 +190,7 @@ public class PartyCommand implements CommandExecutor {
                         Player target = plugin.getServer().getPlayer(args[1]);
 
                         if (target == null) {
-                            player.sendMessage(mcLocale.getString("Party.Player.Invalid"));
+                            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
                             return true;
                         }
 
@@ -198,7 +198,7 @@ public class PartyCommand implements CommandExecutor {
                         String targetName = target.getName();
 
                         if (!partyInstance.inSameParty(player, (Player) target)) {
-                            player.sendMessage(mcLocale.getString("Party.NotInYourParty", new Object[] { targetName }));
+                            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] { targetName }));
                             return true;
                         }
 
@@ -211,11 +211,11 @@ public class PartyCommand implements CommandExecutor {
                             }
 
                             partyInstance.removeFromParty(target, PPt);
-                            target.sendMessage(mcLocale.getString("Commands.Party.Kick", new Object[] { partyName }));
+                            target.sendMessage(LocaleLoader.getString("Commands.Party.Kick", new Object[] { partyName }));
                         }
                     }
                     else {
-                        player.sendMessage(mcLocale.getString("Party.NotOwner"));
+                        player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
                     }
                 }
                 else if (args[0].equalsIgnoreCase("owner")) {
@@ -223,14 +223,14 @@ public class PartyCommand implements CommandExecutor {
                         Player target = plugin.getServer().getPlayer(args[1]);
 
                         if (target == null) {
-                            player.sendMessage(mcLocale.getString("Party.Player.Invalid"));
+                            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
                             return true;
                         }
 
                         String targetName = target.getName();
 
                         if (!partyInstance.inSameParty(player, (Player) target)) {
-                            player.sendMessage(mcLocale.getString("Party.NotInYourParty", new Object[] { targetName }));
+                            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] { targetName }));
                             return true;
                         }
 
@@ -239,7 +239,7 @@ public class PartyCommand implements CommandExecutor {
                         }
                     }
                     else {
-                        player.sendMessage(mcLocale.getString("Party.NotOwner"));
+                        player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
                     }
                 }
                 else {
@@ -268,9 +268,9 @@ public class PartyCommand implements CommandExecutor {
             return true;
 
         default:
-            player.sendMessage(mcLocale.getString("Party.Help.0"));
-            player.sendMessage(mcLocale.getString("Party.Help.1"));
-            player.sendMessage(mcLocale.getString("Party.Help.2"));
+            player.sendMessage(LocaleLoader.getString("Party.Help.0"));
+            player.sendMessage(LocaleLoader.getString("Party.Help.1"));
+            player.sendMessage(LocaleLoader.getString("Party.Help.2"));
             return true;
         }
     }

@@ -11,10 +11,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.spout.SpoutSounds;
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.LoadTreasures;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -68,7 +68,7 @@ public class Excavation {
 
         int xp = Config.getInstance().getExcavationBaseXP();
 
-        if (mcPermissions.getInstance().excavationTreasures(player)) {
+        if (Permissions.getInstance().excavationTreasures(player)) {
             switch (type) {
             case DIRT:
                 treasures = LoadTreasures.excavationFromDirt;
@@ -114,7 +114,7 @@ public class Excavation {
             //Drop items
             for (ItemStack x : is) {
                 if (x != null) {
-                    m.mcDropItem(loc, x);
+                    Misc.mcDropItem(loc, x);
                 }
             }
         }

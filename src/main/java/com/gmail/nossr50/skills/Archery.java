@@ -8,14 +8,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class Archery {
 
@@ -52,7 +52,7 @@ public class Archery {
 
         int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
         Location loc = defender.getLocation();
-        int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         if (random.nextInt(10) > 5) {
             loc.setPitch(90);
@@ -61,11 +61,11 @@ public class Archery {
             loc.setPitch(-90);
         }
 
-        if (random.nextInt(2000) <= skillCheck && mcPermissions.getInstance().daze(attacker)) {
+        if (random.nextInt(2000) <= skillCheck && Permissions.getInstance().daze(attacker)) {
             defender.teleport(loc);
             Combat.dealDamage(defender, 4);
-            defender.sendMessage(mcLocale.getString("Combat.TouchedFuzzy"));
-            attacker.sendMessage(mcLocale.getString("Combat.TargetDazed"));
+            defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
+            attacker.sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
         }
     }
 
@@ -77,7 +77,7 @@ public class Archery {
      */
     public static void arrowRetrievalCheck(Entity entity, mcMMO plugin) {
         if (plugin.arrowTracker.containsKey(entity)) {
-            m.mcDropItems(entity.getLocation(), new ItemStack(Material.ARROW), plugin.arrowTracker.get(entity));
+            Misc.mcDropItems(entity.getLocation(), new ItemStack(Material.ARROW), plugin.arrowTracker.get(entity));
         }
 
         plugin.arrowTracker.remove(entity);

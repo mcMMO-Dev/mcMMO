@@ -3,12 +3,12 @@ package com.gmail.nossr50.commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class CommandHelper {
 
@@ -23,8 +23,8 @@ public class CommandHelper {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (player != null && !mcPermissions.getInstance().permission(player, permission)) {
-                player.sendMessage(mcLocale.getString("mcMMO.NoPermission"));
+            if (player != null && !Permissions.getInstance().permission(player, permission)) {
+                player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
                 return true;
             }
         }
@@ -34,7 +34,7 @@ public class CommandHelper {
 
     public static boolean noConsoleUsage(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(mcLocale.getString("Commands.NoConsole"));
+            sender.sendMessage(LocaleLoader.getString("Commands.NoConsole"));
             return true;
         }
 
@@ -51,26 +51,26 @@ public class CommandHelper {
         if (Skills.hasGatheringSkills(inspect)) {
             PlayerProfile PP = Users.getProfile(inspect);
 
-            display.sendMessage(mcLocale.getString("Stats.Header.Gathering"));
+            display.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
 
-            if (mcPermissions.getInstance().excavation(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Excavation.Listener"), PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION) }));
+            if (Permissions.getInstance().excavation(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Excavation.Listener"), PP.getSkillLevel(SkillType.EXCAVATION), PP.getSkillXpLevel(SkillType.EXCAVATION), PP.getXpToLevel(SkillType.EXCAVATION) }));
             }
 
-            if (mcPermissions.getInstance().fishing(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Fishing.Listener"), PP.getSkillLevel(SkillType.FISHING), PP.getSkillXpLevel(SkillType.FISHING), PP.getXpToLevel(SkillType.FISHING) }));
+            if (Permissions.getInstance().fishing(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Fishing.Listener"), PP.getSkillLevel(SkillType.FISHING), PP.getSkillXpLevel(SkillType.FISHING), PP.getXpToLevel(SkillType.FISHING) }));
             }
 
-            if (mcPermissions.getInstance().herbalism(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Herbalism.Listener"), PP.getSkillLevel(SkillType.HERBALISM), PP.getSkillXpLevel(SkillType.HERBALISM), PP.getXpToLevel(SkillType.HERBALISM) }));
+            if (Permissions.getInstance().herbalism(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Herbalism.Listener"), PP.getSkillLevel(SkillType.HERBALISM), PP.getSkillXpLevel(SkillType.HERBALISM), PP.getXpToLevel(SkillType.HERBALISM) }));
             }
 
-            if (mcPermissions.getInstance().mining(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Mining.Listener"), PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
+            if (Permissions.getInstance().mining(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Mining.Listener"), PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
             }
 
-            if (mcPermissions.getInstance().woodcutting(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Woodcutting.Listener"), PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING) }));
+            if (Permissions.getInstance().woodcutting(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Woodcutting.Listener"), PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING) }));
             }
         }
     }
@@ -89,26 +89,26 @@ public class CommandHelper {
         if (Skills.hasCombatSkills(inspect)) {
             PlayerProfile PP = Users.getProfile(inspect);
 
-            display.sendMessage(mcLocale.getString("Stats.Header.Combat"));
+            display.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
 
-            if (mcPermissions.getInstance().axes(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Axes.Listener"), PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES) }));
+            if (Permissions.getInstance().axes(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Axes.Listener"), PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES) }));
             }
 
-            if (mcPermissions.getInstance().archery(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Archery.Listener"), PP.getSkillLevel(SkillType.ARCHERY), PP.getSkillXpLevel(SkillType.ARCHERY), PP.getXpToLevel(SkillType.ARCHERY) }));
+            if (Permissions.getInstance().archery(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Archery.Listener"), PP.getSkillLevel(SkillType.ARCHERY), PP.getSkillXpLevel(SkillType.ARCHERY), PP.getXpToLevel(SkillType.ARCHERY) }));
             }
 
-            if (mcPermissions.getInstance().swords(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Swords.Listener"), PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS) }));
+            if (Permissions.getInstance().swords(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Swords.Listener"), PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS) }));
             }
 
-            if (mcPermissions.getInstance().taming(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Taming.Listener"), PP.getSkillLevel(SkillType.TAMING), PP.getSkillXpLevel(SkillType.TAMING), PP.getXpToLevel(SkillType.TAMING) }));
+            if (Permissions.getInstance().taming(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Taming.Listener"), PP.getSkillLevel(SkillType.TAMING), PP.getSkillXpLevel(SkillType.TAMING), PP.getXpToLevel(SkillType.TAMING) }));
             }
 
-            if (mcPermissions.getInstance().unarmed(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Unarmed.Listener"), PP.getSkillLevel(SkillType.UNARMED), PP.getSkillXpLevel(SkillType.UNARMED), PP.getXpToLevel(SkillType.UNARMED) }));
+            if (Permissions.getInstance().unarmed(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Unarmed.Listener"), PP.getSkillLevel(SkillType.UNARMED), PP.getSkillXpLevel(SkillType.UNARMED), PP.getXpToLevel(SkillType.UNARMED) }));
             }
         }
     }
@@ -126,14 +126,14 @@ public class CommandHelper {
     public static void printMiscSkills(Player inspect, CommandSender display) {
         if (Skills.hasMiscSkills(inspect)) {
             PlayerProfile PP = Users.getProfile(inspect);
-            display.sendMessage(mcLocale.getString("Stats.Header.Misc"));
+            display.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
 
-            if (mcPermissions.getInstance().acrobatics(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Acrobatics.Listener"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS) }));
+            if (Permissions.getInstance().acrobatics(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Acrobatics.Listener"), PP.getSkillLevel(SkillType.ACROBATICS), PP.getSkillXpLevel(SkillType.ACROBATICS), PP.getXpToLevel(SkillType.ACROBATICS) }));
             }
 
-            if (mcPermissions.getInstance().repair(inspect)) {
-                display.sendMessage(mcLocale.getString("Skills.Stats", new Object[] { mcLocale.getString("Repair.Listener"), PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR) }));
+            if (Permissions.getInstance().repair(inspect)) {
+                display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Repair.Listener"), PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR) }));
             }
         }
     }

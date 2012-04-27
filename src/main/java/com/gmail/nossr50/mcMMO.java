@@ -8,10 +8,14 @@ import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.runnables.*;
+import com.gmail.nossr50.util.Database;
+import com.gmail.nossr50.util.Leaderboard;
+import com.gmail.nossr50.util.Metrics;
+import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.PlayerListener;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -106,11 +110,11 @@ public class mcMMO extends JavaPlugin {
         //Schedule Spout Activation 1 second after start-up
         scheduler.scheduleSyncDelayedTask(this, new SpoutStart(this), 20);
         //Periodic save timer (Saves every 10 minutes)
-        scheduler.scheduleSyncRepeatingTask(this, new mcSaveTimer(this), 0, Config.getInstance().getSaveInterval() * 1200);
+        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(this), 0, Config.getInstance().getSaveInterval() * 1200);
         //Regen & Cooldown timer (Runs every second)
-        scheduler.scheduleSyncRepeatingTask(this, new mcTimer(this), 0, 20);
+        scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(this), 0, 20);
         //Bleed timer (Runs every two seconds)
-        scheduler.scheduleSyncRepeatingTask(this, new mcBleedTimer(this), 0, 40);
+        scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(this), 0, 40);
 
         registerCommands();
 
@@ -183,18 +187,18 @@ public class mcMMO extends JavaPlugin {
 
         //Register aliases with the aliasmap (used in the playercommandpreprocessevent to ugly alias them to actual commands)
         //Skills commands
-        aliasMap.put(mcLocale.getString("Acrobatics.SkillName").toLowerCase(), "acrobatics");
-        aliasMap.put(mcLocale.getString("Archery.SkillName").toLowerCase(), "archery");
-        aliasMap.put(mcLocale.getString("Axes.SkillName").toLowerCase(), "axes");
-        aliasMap.put(mcLocale.getString("Excavation.SkillName").toLowerCase(), "excavation");
-        aliasMap.put(mcLocale.getString("Fishing.SkillName").toLowerCase(), "fishing");
-        aliasMap.put(mcLocale.getString("Herbalism.SkillName").toLowerCase(), "herbalism");
-        aliasMap.put(mcLocale.getString("Mining.SkillName").toLowerCase(), "mining");
-        aliasMap.put(mcLocale.getString("Repair.SkillName").toLowerCase(), "repair");
-        aliasMap.put(mcLocale.getString("Swords.SkillName").toLowerCase(), "swords");
-        aliasMap.put(mcLocale.getString("Taming.SkillName").toLowerCase(), "taming");
-        aliasMap.put(mcLocale.getString("Unarmed.SkillName").toLowerCase(), "unarmed");
-        aliasMap.put(mcLocale.getString("WoodCutting.SkillName").toLowerCase(), "woodcutting");
+        aliasMap.put(LocaleLoader.getString("Acrobatics.SkillName").toLowerCase(), "acrobatics");
+        aliasMap.put(LocaleLoader.getString("Archery.SkillName").toLowerCase(), "archery");
+        aliasMap.put(LocaleLoader.getString("Axes.SkillName").toLowerCase(), "axes");
+        aliasMap.put(LocaleLoader.getString("Excavation.SkillName").toLowerCase(), "excavation");
+        aliasMap.put(LocaleLoader.getString("Fishing.SkillName").toLowerCase(), "fishing");
+        aliasMap.put(LocaleLoader.getString("Herbalism.SkillName").toLowerCase(), "herbalism");
+        aliasMap.put(LocaleLoader.getString("Mining.SkillName").toLowerCase(), "mining");
+        aliasMap.put(LocaleLoader.getString("Repair.SkillName").toLowerCase(), "repair");
+        aliasMap.put(LocaleLoader.getString("Swords.SkillName").toLowerCase(), "swords");
+        aliasMap.put(LocaleLoader.getString("Taming.SkillName").toLowerCase(), "taming");
+        aliasMap.put(LocaleLoader.getString("Unarmed.SkillName").toLowerCase(), "unarmed");
+        aliasMap.put(LocaleLoader.getString("WoodCutting.SkillName").toLowerCase(), "woodcutting");
 
         //Register commands
         //Skills commands

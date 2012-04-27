@@ -6,15 +6,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.HUDType;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.util.Users;
 
 public class MchudCommand implements CommandExecutor {
     private final mcMMO plugin;
@@ -33,7 +33,7 @@ public class MchudCommand implements CommandExecutor {
         }
 
         if (!Config.getInstance().spoutEnabled || !Config.getInstance().getSpoutXPBarEnabled()) {
-            sender.sendMessage(mcLocale.getString("Commands.Disabled"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
             return true;
         }
 

@@ -14,17 +14,17 @@ import org.bukkit.inventory.PlayerInventory;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.ItemChecks;
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 
 public class Repair {
 
@@ -47,20 +47,20 @@ public class Repair {
             /*
              * REPAIR ARMOR
              */
-            if (ItemChecks.isArmor(is) && Config.getInstance().getRepairArmorAllowed() && mcPermissions.getInstance().armorRepair(player)) {
-                if (ItemChecks.isDiamondArmor(is) && inventory.contains(Config.getInstance().getRepairDiamondMaterial()) && skillLevel >= Config.getInstance().getRepairDiamondLevelRequirement() && mcPermissions.getInstance().diamondRepair(player)) {
+            if (ItemChecks.isArmor(is) && Config.getInstance().getRepairArmorAllowed() && Permissions.getInstance().armorRepair(player)) {
+                if (ItemChecks.isDiamondArmor(is) && inventory.contains(Config.getInstance().getRepairDiamondMaterial()) && skillLevel >= Config.getInstance().getRepairDiamondLevelRequirement() && Permissions.getInstance().diamondRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairDiamondMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 6, true);
                 }
-                else if (ItemChecks.isIronArmor(is) && inventory.contains(Config.getInstance().getRepairIronMaterial()) && skillLevel >= Config.getInstance().getRepairIronLevelRequirement() && mcPermissions.getInstance().ironRepair(player)) {
+                else if (ItemChecks.isIronArmor(is) && inventory.contains(Config.getInstance().getRepairIronMaterial()) && skillLevel >= Config.getInstance().getRepairIronLevelRequirement() && Permissions.getInstance().ironRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairIronMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 2, true);
                 }
-                else if (ItemChecks.isGoldArmor(is) && inventory.contains(Config.getInstance().getRepairGoldMaterial()) && skillLevel >= Config.getInstance().getRepairGoldLevelRequirement() && mcPermissions.getInstance().goldRepair(player)) {
+                else if (ItemChecks.isGoldArmor(is) && inventory.contains(Config.getInstance().getRepairGoldMaterial()) && skillLevel >= Config.getInstance().getRepairGoldLevelRequirement() && Permissions.getInstance().goldRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairGoldMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 4, true);
                 }
-                else if (ItemChecks.isLeatherArmor(is) && inventory.contains(Config.getInstance().getRepairLeatherMaterial()) && mcPermissions.getInstance().leatherRepair(player)) {
+                else if (ItemChecks.isLeatherArmor(is) && inventory.contains(Config.getInstance().getRepairLeatherMaterial()) && Permissions.getInstance().leatherRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairLeatherMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
@@ -72,28 +72,28 @@ public class Repair {
             /*
              * REPAIR TOOLS
              */
-            else if (ItemChecks.isTool(is) && Config.getInstance().getRepairToolsAllowed() && mcPermissions.getInstance().toolRepair(player)) {
-                if (ItemChecks.isStoneTool(is) && inventory.contains(Config.getInstance().getRepairStoneMaterial()) && skillLevel >= Config.getInstance().getRepairStoneLevelRequirement() && mcPermissions.getInstance().stoneRepair(player)) {
+            else if (ItemChecks.isTool(is) && Config.getInstance().getRepairToolsAllowed() && Permissions.getInstance().toolRepair(player)) {
+                if (ItemChecks.isStoneTool(is) && inventory.contains(Config.getInstance().getRepairStoneMaterial()) && skillLevel >= Config.getInstance().getRepairStoneLevelRequirement() && Permissions.getInstance().stoneRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairStoneMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
-                else if (ItemChecks.isWoodTool(is) && inventory.contains(Config.getInstance().getRepairWoodMaterial()) && mcPermissions.getInstance().woodRepair(player)) {
+                else if (ItemChecks.isWoodTool(is) && inventory.contains(Config.getInstance().getRepairWoodMaterial()) && Permissions.getInstance().woodRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairWoodMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
-                else if (ItemChecks.isIronTool(is) && inventory.contains(Config.getInstance().getRepairIronMaterial()) && skillLevel >= Config.getInstance().getRepairIronLevelRequirement() && mcPermissions.getInstance().ironRepair(player)) {
+                else if (ItemChecks.isIronTool(is) && inventory.contains(Config.getInstance().getRepairIronMaterial()) && skillLevel >= Config.getInstance().getRepairIronLevelRequirement() && Permissions.getInstance().ironRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairIronMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
-                else if (ItemChecks.isDiamondTool(is) && inventory.contains(Config.getInstance().getRepairDiamondMaterial()) && skillLevel >= Config.getInstance().getRepairDiamondLevelRequirement() && mcPermissions.getInstance().diamondRepair(player)) {
+                else if (ItemChecks.isDiamondTool(is) && inventory.contains(Config.getInstance().getRepairDiamondMaterial()) && skillLevel >= Config.getInstance().getRepairDiamondLevelRequirement() && Permissions.getInstance().diamondRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairDiamondMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 1, true);
                 }
-                else if (ItemChecks.isGoldTool(is) && inventory.contains(Config.getInstance().getRepairGoldMaterial()) && skillLevel >= Config.getInstance().getRepairGoldLevelRequirement() && mcPermissions.getInstance().goldRepair(player)) {
+                else if (ItemChecks.isGoldTool(is) && inventory.contains(Config.getInstance().getRepairGoldMaterial()) && skillLevel >= Config.getInstance().getRepairGoldLevelRequirement() && Permissions.getInstance().goldRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairGoldMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 8, true);
                 }
-                else if (ItemChecks.isStringTool(is) && inventory.contains(Config.getInstance().getRepairStringMaterial()) && skillLevel >= Config.getInstance().getRepairStringLevelRequirement() && mcPermissions.getInstance().stringRepair(player)){
+                else if (ItemChecks.isStringTool(is) && inventory.contains(Config.getInstance().getRepairStringMaterial()) && skillLevel >= Config.getInstance().getRepairStringLevelRequirement() && Permissions.getInstance().stringRepair(player)){
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairStringMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
@@ -103,7 +103,7 @@ public class Repair {
             }
         }
         else {
-            player.sendMessage(mcLocale.getString("Repair.Skills.FullDurability"));
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.FullDurability"));
         }
     }
 
@@ -188,11 +188,11 @@ public class Repair {
 
         int rank = getArcaneForgingRank(Users.getProfile(player));
 
-        if (rank == 0 || !mcPermissions.getInstance().arcaneForging(player)) {
+        if (rank == 0 || !Permissions.getInstance().arcaneForging(player)) {
             for (Enchantment x : enchants.keySet()) {
                 is.removeEnchantment(x);
             }
-            player.sendMessage(mcLocale.getString("Repair.Arcane.Lost"));
+            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Lost"));
             return;
         }
 
@@ -219,13 +219,13 @@ public class Repair {
         Map<Enchantment, Integer> newEnchants = is.getEnchantments();
 
         if (newEnchants.isEmpty()) {
-            player.sendMessage(mcLocale.getString("Repair.Arcane.Fail"));
+            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Fail"));
         }
         else if (downgraded || newEnchants.size() < enchants.size()) {
-            player.sendMessage(mcLocale.getString("Repair.Arcane.Downgrade"));
+            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Downgrade"));
         }
         else {
-            player.sendMessage(mcLocale.getString("Repair.Arcane.Perfect"));
+            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Perfect"));
         }
     }
 
@@ -352,49 +352,49 @@ public class Repair {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
         if (is.getAmount() != 1) {
-            player.sendMessage(mcLocale.getString("Repair.Skills.StackedItems"));
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.StackedItems"));
         }
         else {
             if (ItemChecks.isDiamondTool(is) || ItemChecks.isDiamondArmor(is)) {
                 if (skillLevel < Config.getInstance().getRepairDiamondLevelRequirement()) {
-                    player.sendMessage(mcLocale.getString("Repair.Skills.AdeptDiamond"));
+                    player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptDiamond"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.BLUE + m.prettyItemString(Config.getInstance().getRepairDiamondMaterial()));
+                    player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.BLUE + Misc.prettyItemString(Config.getInstance().getRepairDiamondMaterial()));
                 }
             }
             else if (ItemChecks.isIronTool(is) || ItemChecks.isIronArmor(is)) {
                 if (skillLevel < Config.getInstance().getRepairIronLevelRequirement()) {
-                    player.sendMessage(mcLocale.getString("Repair.Skills.AdeptIron"));
+                    player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptIron"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + m.prettyItemString(Config.getInstance().getRepairIronMaterial()));
+                    player.sendMessage(LocaleLoader.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + Misc.prettyItemString(Config.getInstance().getRepairIronMaterial()));
                 }
             }
             else if (ItemChecks.isGoldTool(is) || ItemChecks.isGoldArmor(is)) {
                 if (skillLevel < Config.getInstance().getRepairGoldLevelRequirement()) {
-                    player.sendMessage(mcLocale.getString("Repair.Skills.AdeptGold"));
+                    player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptGold"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GOLD + m.prettyItemString(Config.getInstance().getRepairGoldMaterial()));
+                    player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.GOLD + Misc.prettyItemString(Config.getInstance().getRepairGoldMaterial()));
                 }
             }
             else if (ItemChecks.isStoneTool(is)) {
                 if (skillLevel < Config.getInstance().getRepairStoneLevelRequirement()) {
-                    player.sendMessage(mcLocale.getString("Repair.Skills.AdeptStone"));
+                    player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptStone"));
                 }
                 else {
-                    player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.GRAY + m.prettyItemString(Config.getInstance().getRepairStoneMaterial()));
+                    player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.GRAY + Misc.prettyItemString(Config.getInstance().getRepairStoneMaterial()));
                 }
             }
             else if (ItemChecks.isWoodTool(is)) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.DARK_GREEN + m.prettyItemString(Config.getInstance().getRepairWoodMaterial()));
+                player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.DARK_GREEN + Misc.prettyItemString(Config.getInstance().getRepairWoodMaterial()));
             }
             else if (ItemChecks.isLeatherArmor(is)) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(Config.getInstance().getRepairLeatherMaterial()));
+                player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + Misc.prettyItemString(Config.getInstance().getRepairLeatherMaterial()));
             }
             else if (ItemChecks.isStringTool(is)) {
-                player.sendMessage(mcLocale.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + m.prettyItemString(Config.getInstance().getRepairStringMaterial()));
+                player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + Misc.prettyItemString(Config.getInstance().getRepairStringMaterial()));
             }
         }
     }
@@ -410,8 +410,8 @@ public class Repair {
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
-        if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && mcPermissions.getInstance().repairBonus(player)) {
-            player.sendMessage(mcLocale.getString("Repair.Skills.FeltEasy"));
+        if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().repairBonus(player)) {
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }
 
@@ -445,7 +445,7 @@ public class Repair {
         }
 
         /* Handle the enchants */
-        if (Config.getInstance().getArcaneForgingEnchantLossEnabled() && !mcPermissions.getInstance().arcaneBypass(player)) {
+        if (Config.getInstance().getArcaneForgingEnchantLossEnabled() && !Permissions.getInstance().arcaneBypass(player)) {
             addEnchants(player, item);
         }
 
@@ -470,7 +470,7 @@ public class Repair {
                 }
             }
             else {
-                player.sendMessage(mcLocale.getString("Repair.Listener.Anvil"));
+                player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil"));
             }
 
             PP.togglePlacedAnvil();

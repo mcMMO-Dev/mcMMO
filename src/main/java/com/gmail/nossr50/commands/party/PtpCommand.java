@@ -6,14 +6,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.Users;
 
 public class PtpCommand implements CommandExecutor {
     private final mcMMO plugin;
@@ -40,12 +40,12 @@ public class PtpCommand implements CommandExecutor {
             PlayerProfile PP = Users.getProfile(player);
 
             if (!Party.getInstance().isInParty(player, PP)) {
-                player.sendMessage(mcLocale.getString("Commands.Party.None"));
+                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 return true;
             }
 
             if (PP.getRecentlyHurt() + (Config.getInstance().getPTPCommandCooldown() * 1000) > System.currentTimeMillis()) {
-                player.sendMessage(mcLocale.getString("Party.Teleport.Hurt", new Object[] { Config.getInstance().getPTPCommandCooldown() }));
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Hurt", new Object[] { Config.getInstance().getPTPCommandCooldown() }));
                 return true;
             }
 
@@ -53,15 +53,16 @@ public class PtpCommand implements CommandExecutor {
 
             if (player.equals(target)) {
                 player.sendMessage("You can't teleport to yourself!"); //TODO: Use locale
+                return true;
             }
 
             if (target == null) {
-                player.sendMessage(mcLocale.getString("Party.Teleport.Invalid"));
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Invalid"));
                 return true;
             }
 
             if (target.isDead()) {
-                player.sendMessage(mcLocale.getString("Party.Teleport.Dead"));
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Dead"));
                 return true;
             }
 
@@ -74,11 +75,11 @@ public class PtpCommand implements CommandExecutor {
                 }
 
                 player.teleport(target);
-                player.sendMessage(mcLocale.getString("Party.Teleport.Player", new Object[] { target.getName() }));
-                target.sendMessage(mcLocale.getString("Party.Teleport.Target", new Object[] { player.getName() }));
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", new Object[] { target.getName() }));
+                target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", new Object[] { player.getName() }));
             }
             else {
-                player.sendMessage(mcLocale.getString("Party.NotInYourParty", new Object[] { target.getName() }));
+                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] { target.getName() }));
                 return true;
             }
 

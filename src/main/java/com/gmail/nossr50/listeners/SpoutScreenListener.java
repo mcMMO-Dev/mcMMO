@@ -6,7 +6,6 @@ import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.event.screen.ScreenCloseEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.HUDType;
 import com.gmail.nossr50.datatypes.HUDmmo;
@@ -16,6 +15,7 @@ import com.gmail.nossr50.datatypes.buttons.ButtonHUDStyle;
 import com.gmail.nossr50.datatypes.buttons.ButtonPartyToggle;
 import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.util.Users;
 
 public class SpoutScreenListener implements Listener {
     //Why do we have this here? We never use it...

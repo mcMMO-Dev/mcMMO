@@ -9,20 +9,20 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.Leaderboard;
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.util.Leaderboard;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 
 public class Skills {
 
@@ -106,7 +106,7 @@ public class Skills {
         if (ability.getPermissions(player) && tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
                 if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
-                    player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                     return;
                 }
             }
@@ -146,7 +146,7 @@ public class Skills {
                 player.sendMessage(ability.getAbilityOff());
 
                 for (Player y : player.getWorld().getPlayers()) {
-                    if (y != player && m.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
+                    if (y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
                         y.sendMessage(ability.getAbilityPlayerOff(player));
                     }
                 }
@@ -188,7 +188,7 @@ public class Skills {
         if (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
 
             while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
-                if ((skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) && (m.getPowerLevelCap() >= PP.getPowerLevel() + 1)) {
+                if ((skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) && (Misc.getPowerLevelCap() >= PP.getPowerLevel() + 1)) {
                     PP.removeXP(skillType, PP.getXpToLevel(skillType));
                     skillups++;
                     PP.skillUp(skillType, 1);
@@ -206,7 +206,7 @@ public class Skills {
                 ProcessLeaderboardUpdate(SkillType.ALL, player);
             }
 
-            String capitalized = m.getCapitalized(skillType.toString());
+            String capitalized = Misc.getCapitalized(skillType.toString());
 
             /* Spout Stuff */
             if (Config.getInstance().spoutEnabled && player instanceof SpoutPlayer) {
@@ -225,11 +225,11 @@ public class Skills {
                     }
                 }
                 else {
-                    player.sendMessage(mcLocale.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+                    player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
                 }
             }
             else {
-                player.sendMessage(mcLocale.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
             }
         }
 
@@ -296,11 +296,11 @@ public class Skills {
      * @return true if the player has combat skills, false otherwise
      */
     public static boolean hasCombatSkills(Player player) {
-        if (mcPermissions.getInstance().axes(player)
-                || mcPermissions.getInstance().archery(player)
-                || mcPermissions.getInstance().swords(player)
-                || mcPermissions.getInstance().taming(player)
-                || mcPermissions.getInstance().unarmed(player)) {
+        if (Permissions.getInstance().axes(player)
+                || Permissions.getInstance().archery(player)
+                || Permissions.getInstance().swords(player)
+                || Permissions.getInstance().taming(player)
+                || Permissions.getInstance().unarmed(player)) {
             return true;
         }
         else {
@@ -315,11 +315,11 @@ public class Skills {
      * @return true if the player has gathering skills, false otherwise
      */
     public static boolean hasGatheringSkills(Player player) {
-        if (mcPermissions.getInstance().excavation(player)
-                || mcPermissions.getInstance().fishing(player)
-                || mcPermissions.getInstance().herbalism(player)
-                || mcPermissions.getInstance().mining(player)
-                || mcPermissions.getInstance().woodcutting(player)) {
+        if (Permissions.getInstance().excavation(player)
+                || Permissions.getInstance().fishing(player)
+                || Permissions.getInstance().herbalism(player)
+                || Permissions.getInstance().mining(player)
+                || Permissions.getInstance().woodcutting(player)) {
             return true;
         }
         else {
@@ -334,7 +334,7 @@ public class Skills {
      * @return true if the player has misc skills, false otherwise
      */
     public static boolean hasMiscSkills(Player player) {
-        if (mcPermissions.getInstance().acrobatics(player) || mcPermissions.getInstance().repair(player)) {
+        if (Permissions.getInstance().acrobatics(player) || Permissions.getInstance().repair(player)) {
             return true;
         }
         else {
@@ -377,7 +377,7 @@ public class Skills {
              */
             if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
                 if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
-                    player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                     return;
                 }
             }
@@ -388,7 +388,7 @@ public class Skills {
                 player.sendMessage(ability.getAbilityOn());
 
                 for (Player y : player.getWorld().getPlayers()) {
-                    if (y != player && m.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
+                    if (y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
                         y.sendMessage(ability.getAbilityPlayer(player));
                     }
                 }
@@ -420,7 +420,7 @@ public class Skills {
         case GIGA_DRILL_BREAKER:
         case SUPER_BREAKER:
         case LEAF_BLOWER:
-            if (!m.blockBreakSimulate(block, player, true)) {
+            if (!Misc.blockBreakSimulate(block, player, true)) {
                 activate = false;
                 break;
             }

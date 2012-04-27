@@ -3,12 +3,12 @@ package com.gmail.nossr50.datatypes;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Excavation;
 import com.gmail.nossr50.skills.Herbalism;
 import com.gmail.nossr50.skills.Mining;
+import com.gmail.nossr50.util.Permissions;
 
 public enum AbilityType {
     BERSERK(
@@ -104,23 +104,23 @@ public enum AbilityType {
     }
 
     public String getAbilityOn() {
-        return mcLocale.getString(this.abilityOn);
+        return LocaleLoader.getString(this.abilityOn);
     }
 
     public String getAbilityOff() {
-        return mcLocale.getString(this.abilityOff);
+        return LocaleLoader.getString(this.abilityOff);
     }
 
     public String getAbilityPlayer(Player player) {
-        return mcLocale.getString(this.abilityPlayer, new Object[] {player.getName()});
+        return LocaleLoader.getString(this.abilityPlayer, new Object[] {player.getName()});
     }
 
     public String getAbilityPlayerOff(Player player) {
-        return mcLocale.getString(this.abilityPlayerOff, new Object[] {player.getName()});
+        return LocaleLoader.getString(this.abilityPlayerOff, new Object[] {player.getName()});
     }
 
     public String getAbilityRefresh() {
-        return mcLocale.getString(this.abilityRefresh);
+        return LocaleLoader.getString(this.abilityRefresh);
     }
 
     /**
@@ -132,31 +132,31 @@ public enum AbilityType {
     public boolean getPermissions(Player player) {
         switch (this) {
         case BERSERK:
-            return mcPermissions.getInstance().berserk(player);
+            return Permissions.getInstance().berserk(player);
 
         case BLAST_MINING:
-            return mcPermissions.getInstance().blastMining(player);
+            return Permissions.getInstance().blastMining(player);
 
         case GIGA_DRILL_BREAKER:
-            return mcPermissions.getInstance().gigaDrillBreaker(player);
+            return Permissions.getInstance().gigaDrillBreaker(player);
 
         case GREEN_TERRA:
-            return mcPermissions.getInstance().greenTerra(player);
+            return Permissions.getInstance().greenTerra(player);
 
         case LEAF_BLOWER:
-            return mcPermissions.getInstance().leafBlower(player);
+            return Permissions.getInstance().leafBlower(player);
 
         case SERRATED_STRIKES:
-            return mcPermissions.getInstance().serratedStrikes(player);
+            return Permissions.getInstance().serratedStrikes(player);
 
         case SKULL_SPLIITER:
-            return mcPermissions.getInstance().skullSplitter(player);
+            return Permissions.getInstance().skullSplitter(player);
 
         case SUPER_BREAKER:
-            return mcPermissions.getInstance().superBreaker(player);
+            return Permissions.getInstance().superBreaker(player);
 
         case TREE_FELLER:
-            return mcPermissions.getInstance().treeFeller(player);
+            return Permissions.getInstance().treeFeller(player);
 
         default:
             return false;

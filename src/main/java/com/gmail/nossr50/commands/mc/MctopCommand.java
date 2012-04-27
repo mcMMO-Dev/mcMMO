@@ -7,12 +7,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import com.gmail.nossr50.Leaderboard;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.util.Leaderboard;
+import com.gmail.nossr50.util.Misc;
 
 public class MctopCommand implements CommandExecutor {
 
@@ -28,25 +28,25 @@ public class MctopCommand implements CommandExecutor {
                 return true;
 
             case 1:
-                if (m.isInt(args[0])) {
+                if (Misc.isInt(args[0])) {
                     flatfileDisplay(Integer.valueOf(args[0]), "ALL", sender);
                 }
                 else if (Skills.isSkill(args[0])) {
                     flatfileDisplay(1, args[0].toUpperCase(), sender);
                 }
                 else {
-                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 }
 
                 return true;
 
             case 2:
                 if (!Skills.isSkill(args[0])) {
-                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                     return true;
                 }
 
-                if (m.isInt(args[1])) {
+                if (Misc.isInt(args[1])) {
                     flatfileDisplay(Integer.valueOf(args[1]), args[0].toUpperCase(), sender);
                 }
                 else {
@@ -69,25 +69,25 @@ public class MctopCommand implements CommandExecutor {
                 return true;
 
             case 1:
-                if (m.isInt(args[0])) {
+                if (Misc.isInt(args[0])) {
                     sqlDisplay(Integer.valueOf(args[0]), powerlevel, sender);
                 }
                 else if (Skills.isSkill(args[0])) {
                     sqlDisplay(1, args[0].toLowerCase(), sender);
                 }
                 else {
-                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 }
 
                 return true;
 
             case 2:
                 if (!Skills.isSkill(args[0])) {
-                    sender.sendMessage(mcLocale.getString("Commands.Skill.Invalid"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                     return true;
                 }
 
-                if (m.isInt(args[1])) {
+                if (Misc.isInt(args[1])) {
                     sqlDisplay(Integer.valueOf(args[1]), args[0].toLowerCase(), sender);
                 }
                 else {
@@ -107,10 +107,10 @@ public class MctopCommand implements CommandExecutor {
         String[] info = Leaderboard.retrieveInfo(skill, page);
 
         if (skill == "ALL") {
-            sender.sendMessage(mcLocale.getString("Commands.PowerLevel.Leaderboard"));
+            sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
-            sender.sendMessage(mcLocale.getString("Commands.Skill.Leaderboard", new Object[] { m.getCapitalized(skill) }));
+            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", new Object[] { Misc.getCapitalized(skill) }));
         }
 
         int n = (page * 10) - 9; // Position
@@ -136,10 +136,10 @@ public class MctopCommand implements CommandExecutor {
         HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
 
         if (query == "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing") {
-            sender.sendMessage(mcLocale.getString("Commands.PowerLevel.Leaderboard"));
+            sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
-            sender.sendMessage(mcLocale.getString("Commands.Skill.Leaderboard", new Object[] { m.getCapitalized(query) }));
+            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", new Object[] { Misc.getCapitalized(query) }));
         }
 
         for (int i = (page * 10) - 9; i <= (page * 10); i++) {

@@ -6,10 +6,10 @@ import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.util.Users;
 
 public class SpoutInputListener implements Listener {
     private mcMMO plugin;

@@ -11,16 +11,16 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.GreenThumbTimer;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class Herbalism {
 
@@ -44,7 +44,7 @@ public class Herbalism {
             inventory.removeItem(new ItemStack(Material.SEEDS));
             player.updateInventory();
 
-            if (m.blockBreakSimulate(block, player, false)) {
+            if (Misc.blockBreakSimulate(block, player, false)) {
                 if (Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy() && type.equals(Material.SMOOTH_BRICK)) {
                     block.setData((byte) 0x1); //Set type of the brick to mossy
                 }
@@ -156,7 +156,7 @@ public class Herbalism {
                 mat = Material.WHEAT;
                 xp = Config.getInstance().getHerbalismXPWheat();
 
-                if (Config.getInstance().getHerbalismWheatRegrowth() && mcPermissions.getInstance().greenThumbWheat(player)) {
+                if (Config.getInstance().getHerbalismWheatRegrowth() && Permissions.getInstance().greenThumbWheat(player)) {
                     greenThumbWheat(block, player, event, plugin);
                 }
             }
@@ -227,26 +227,26 @@ public class Herbalism {
 
         if (mat == null) {
             return;
-        } else if (mcPermissions.getInstance().herbalismDoubleDrops(player)) {
+        } else if (Permissions.getInstance().herbalismDoubleDrops(player)) {
             ItemStack is = new ItemStack(mat);
 
             if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
                 if (type.equals(Material.CACTUS)) {
-                    m.mcDropItems(loc, is, catciDrops);
+                    Misc.mcDropItems(loc, is, catciDrops);
                 }
                 else if (type.equals(Material.MELON_BLOCK)) {
-                    m.mcDropItems(loc, is, 3);
-                    m.mcRandomDropItems(loc, is, 50, 4);
+                    Misc.mcDropItems(loc, is, 3);
+                    Misc.mcRandomDropItems(loc, is, 50, 4);
                 }
                 else if (type.equals(Material.NETHER_WARTS)) {
-                    m.mcDropItems(loc, is, 2);
-                    m.mcRandomDropItems(loc, is, 50, 3);
+                    Misc.mcDropItems(loc, is, 2);
+                    Misc.mcRandomDropItems(loc, is, 50, 3);
                 }
                 else if (type.equals(Material.SUGAR_CANE_BLOCK)) {
-                    m.mcDropItems(loc, is, caneDrops);
+                    Misc.mcDropItems(loc, is, caneDrops);
                 }
                 else {
-                    m.mcDropItem(loc, is);
+                    Misc.mcDropItem(loc, is);
                 }
             }
         }
@@ -275,8 +275,8 @@ public class Herbalism {
         if (hasSeeds && PP.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1500) <= herbLevel)) {
             event.setCancelled(true);
 
-            m.mcDropItem(loc, new ItemStack(Material.WHEAT));
-            m.mcRandomDropItems(loc, new ItemStack(Material.SEEDS), 50, 3);
+            Misc.mcDropItem(loc, new ItemStack(Material.WHEAT));
+            Misc.mcRandomDropItems(loc, new ItemStack(Material.SEEDS), 50, 3);
 
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, PP), 1);
 
@@ -305,7 +305,7 @@ public class Herbalism {
             greenTerra(player, block);
         }
         else {
-            player.sendMessage(mcLocale.getString("mcPlayerListener.GreenThumbFail"));
+            player.sendMessage(LocaleLoader.getString("mcPlayerListener.GreenThumbFail"));
         }
     }
 }

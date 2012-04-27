@@ -15,14 +15,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 
-import com.gmail.nossr50.BlockChecks;
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.BlockChecks;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 public class BlastMining {
 
@@ -256,24 +256,24 @@ public class BlastMining {
 
         Block block = player.getTargetBlock(transparent, BLOCKS_AWAY);
 
-        if (block.getType().equals(Material.TNT) && m.blockBreakSimulate(block, player, true) && PP.getSkillLevel(SkillType.MINING) >= 125) {
+        if (block.getType().equals(Material.TNT) && Misc.blockBreakSimulate(block, player, true) && PP.getSkillLevel(SkillType.MINING) >= 125) {
             final double MAX_DISTANCE_AWAY = 10.0;
             AbilityType ability = AbilityType.BLAST_MINING;
 
             /* Check Cooldown */
             if(!Skills.cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
-                player.sendMessage(mcLocale.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                 return;
             }
 
             /* Send message to nearby players */
             for(Player y : player.getWorld().getPlayers()) {
-                if(y != player && m.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
+                if(y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
                     y.sendMessage(ability.getAbilityPlayer(player));
                 }
             }
 
-            player.sendMessage(mcLocale.getString("Mining.Blast.Boom"));
+            player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
             /* Create the TNT entity */
             TNTPrimed tnt = player.getWorld().spawn(block.getLocation(), TNTPrimed.class);

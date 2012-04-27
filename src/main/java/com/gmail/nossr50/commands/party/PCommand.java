@@ -6,13 +6,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.Users;
 
 public class PCommand implements CommandExecutor {
     private final mcMMO plugin;
@@ -43,10 +43,10 @@ public class PCommand implements CommandExecutor {
                 PP.togglePartyChat();
 
                 if (PP.getPartyChatMode()) {
-                    sender.sendMessage(mcLocale.getString("Commands.Party.Chat.On"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.On"));
                 }
                 else {
-                    sender.sendMessage(mcLocale.getString("Commands.Party.Chat.Off"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Off"));
                 }
             }
             else {
@@ -61,7 +61,7 @@ public class PCommand implements CommandExecutor {
                 PP = Users.getProfile(player);
 
                 if (!PP.inParty()) {
-                    player.sendMessage(mcLocale.getString("Commands.Party.None"));
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                     return true;
                 }
 
@@ -87,7 +87,7 @@ public class PCommand implements CommandExecutor {
                 }
 
                 if (!Party.getInstance().isParty(args[0])) {
-                    sender.sendMessage(mcLocale.getString("Party.InvalidName"));
+                    sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));
                     return true;
                 }
 

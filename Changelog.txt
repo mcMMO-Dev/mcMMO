@@ -13,6 +13,7 @@ Version 1.3.06-dev
  + Added API functions for admin & party chat
  + Added Iron Grip skill to Unarmed which gives players an chance to keep from being disarmed.
  + Added some new languages to the locale files.
+ = Fixed exploit where you could teleport to yourself with PTP to prevent things like fall damage
  = Fixed NPE error with Metrics on startup
  = Fixed bug where Herbalism required double drops permission to give XP
  = Fixed bug where {0} would be displayed in front of your power level in mcstats

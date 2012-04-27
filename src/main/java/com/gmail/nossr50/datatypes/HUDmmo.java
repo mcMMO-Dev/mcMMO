@@ -9,11 +9,11 @@ import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 public class HUDmmo {
     private int center_x = 427 / 2;
@@ -286,7 +286,7 @@ public class HUDmmo {
             return;
         }
 
-        ((GenericTexture) xpicon).setUrl(m.getCapitalized(theType.toString()) + ".png");
+        ((GenericTexture) xpicon).setUrl(Misc.getCapitalized(theType.toString()) + ".png");
         xpicon.setDirty(true);
 
         ((GenericTexture) xpbar).setUrl(getUrlBar(getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.STANDARD)));
@@ -314,7 +314,7 @@ public class HUDmmo {
 
         Color color = getRetroColor(theType);
 
-        xpicon.setUrl(m.getCapitalized(theType.toString()) + "_r.png");
+        xpicon.setUrl(Misc.getCapitalized(theType.toString()) + "_r.png");
 
         xpfill.setBottomColor(color);
         xpfill.setTopColor(color);

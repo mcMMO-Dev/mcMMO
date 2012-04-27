@@ -9,17 +9,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.ItemChecks;
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.runnables.mcBleedTimer;
+import com.gmail.nossr50.runnables.BleedTimer;
+import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class Swords {
 
@@ -54,7 +54,7 @@ public class Swords {
 
         PlayerProfile PPa = Users.getProfile(attacker);
         int skillLevel = PPa.getSkillLevel(SkillType.SWORDS);
-        int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         if (random.nextInt(1000) <= skillCheck && !entity.isDead()) {
             if (entity instanceof Player) {
@@ -71,9 +71,9 @@ public class Swords {
                 Users.getProfile(target).addBleedTicks(bleedTicks);
             }
             else {
-                mcBleedTimer.add(entity);
+                BleedTimer.add(entity);
             }
-            attacker.sendMessage(mcLocale.getString("Swords.Combat.Bleeding"));
+            attacker.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
         }
     }
 
@@ -95,19 +95,19 @@ public class Swords {
             Player defender = (Player) target;
             PlayerProfile PPd = Users.getProfile(defender);
 
-            if (ItemChecks.isSword(defender.getItemInHand()) && mcPermissions.getInstance().counterAttack(defender)) {
+            if (ItemChecks.isSword(defender.getItemInHand()) && Permissions.getInstance().counterAttack(defender)) {
                 final int MAX_BONUS_LEVEL = 600;
                 final int COUNTER_ATTACK_MODIFIER = 2;
 
                 int skillLevel = PPd.getSkillLevel(SkillType.SWORDS);
-                int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+                int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
                 if (random.nextInt(2000) <= skillCheck) {
                     Combat.dealDamage((LivingEntity) attacker, event.getDamage() / COUNTER_ATTACK_MODIFIER);
-                    defender.sendMessage(mcLocale.getString("Swords.Combat.Countered"));
+                    defender.sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
 
                     if (attacker instanceof Player) {
-                        ((Player) attacker).sendMessage(mcLocale.getString("Swords.Combat.Counter.Hit"));
+                        ((Player) attacker).sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Hit"));
                     }
                 }
             }

@@ -5,13 +5,13 @@ import java.util.HashSet;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.Users;
 
-public class mcBleedTimer implements Runnable {
+public class BleedTimer implements Runnable {
     private final mcMMO plugin;
 
     private static HashSet<LivingEntity> bleedList = new HashSet<LivingEntity>();
@@ -20,7 +20,7 @@ public class mcBleedTimer implements Runnable {
 
     private static boolean lock = false;
 
-    public mcBleedTimer(final mcMMO plugin) {
+    public BleedTimer(final mcMMO plugin) {
         this.plugin = plugin;
     }
 
@@ -54,7 +54,7 @@ public class mcBleedTimer implements Runnable {
                 PP.decreaseBleedTicks();
 
                 if (PP.getBleedTicks() == 0) {
-                    player.sendMessage(mcLocale.getString("Swords.Combat.Bleeding.Stopped"));
+                    player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Stopped"));
                 }
             }
         }

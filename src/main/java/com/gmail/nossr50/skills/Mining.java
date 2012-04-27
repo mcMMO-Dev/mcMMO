@@ -11,11 +11,11 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
 import org.bukkit.enchantments.Enchantment;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -38,40 +38,40 @@ public class Mining {
         switch (type) {
         case COAL_ORE:
             item = new ItemStack(Material.COAL, 1, (short) 0, CoalType.COAL.getData());
-            m.mcDropItem(loc, item);
+            Misc.mcDropItem(loc, item);
             break;
 
         case DIAMOND_ORE:
             item = new ItemStack(Material.DIAMOND);
-            m.mcDropItem(loc, item);
+            Misc.mcDropItem(loc, item);
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
             item = new ItemStack(Material.REDSTONE);
-            m.mcDropItems(loc, item, 4);
-            m.mcRandomDropItem(loc, item, 50);
+            Misc.mcDropItems(loc, item, 4);
+            Misc.mcRandomDropItem(loc, item, 50);
             break;
 
         case GLOWSTONE:
             item = new ItemStack(Material.GLOWSTONE_DUST);
-            m.mcDropItems(loc, item, 2);
-            m.mcRandomDropItems(loc, item, 50, 2);
+            Misc.mcDropItems(loc, item, 2);
+            Misc.mcRandomDropItems(loc, item, 50, 2);
             break;
 
         case LAPIS_ORE:
             item = new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x4);
-            m.mcDropItems(loc, item, 4);
-            m.mcRandomDropItems(loc, item, 50, 4);
+            Misc.mcDropItems(loc, item, 4);
+            Misc.mcRandomDropItems(loc, item, 50, 4);
             break;
 
         case STONE:
             item = new ItemStack(Material.COBBLESTONE);
-            m.mcDropItem(loc, item);
+            Misc.mcDropItem(loc, item);
             break;
 
         default:
-            m.mcDropItem(loc, item);
+            Misc.mcDropItem(loc, item);
             break;
         }
     }
@@ -167,9 +167,9 @@ public class Mining {
 
             int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 
-            if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && mcPermissions.getInstance().miningDoubleDrops(player)) {
+            if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().miningDoubleDrops(player)) {
                 if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
-                    m.mcDropItem(block.getLocation(), new ItemStack(block.getType()));
+                    Misc.mcDropItem(block.getLocation(), new ItemStack(block.getType()));
                 }
                 else {
                     miningDrops(block);
@@ -215,7 +215,7 @@ public class Mining {
      */
     public static void SuperBreakerBlockCheck(Player player, Block block) {
         Material type = block.getType();
-        int tier = m.getTier(player.getItemInHand());
+        int tier = Misc.getTier(player.getItemInHand());
         int durabilityLoss = Config.getInstance().getAbilityToolDamage();
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 

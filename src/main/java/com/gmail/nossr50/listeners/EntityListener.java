@@ -22,23 +22,23 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.runnables.mcBleedTimer;
+import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.Acrobatics;
 import com.gmail.nossr50.skills.Archery;
 import com.gmail.nossr50.skills.BlastMining;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
+import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class EntityListener implements Listener {
     private final mcMMO plugin;
@@ -76,7 +76,7 @@ public class EntityListener implements Listener {
         if (defender instanceof LivingEntity) {
             LivingEntity livingDefender = (LivingEntity)defender;
 
-            if (!m.isInvincible(livingDefender, event)) {
+            if (!Misc.isInvincible(livingDefender, event)) {
                 Combat.combatChecks(event, plugin);
             }
         }
@@ -109,11 +109,11 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            if (!m.isInvincible(player, event)) {
-                if (cause == DamageCause.FALL && mcPermissions.getInstance().acrobatics(player)) {
+            if (!Misc.isInvincible(player, event)) {
+                if (cause == DamageCause.FALL && Permissions.getInstance().acrobatics(player)) {
                     Acrobatics.acrobaticsCheck(player, event);
                 }
-                else if (cause == DamageCause.BLOCK_EXPLOSION && mcPermissions.getInstance().demolitionsExpertise(player)) {
+                else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.getInstance().demolitionsExpertise(player)) {
                     BlastMining.demolitionsExpertise(player, event);
                 }
 
@@ -126,7 +126,7 @@ public class EntityListener implements Listener {
         case WOLF:
             Wolf wolf = (Wolf) entity;
 
-            if ((!m.isInvincible(wolf, event)) && wolf.isTamed() && (wolf.getOwner() instanceof Player)) {
+            if ((!Misc.isInvincible(wolf, event)) && wolf.isTamed() && (wolf.getOwner() instanceof Player)) {
                 Taming.preventDamage(event);
             }
             break;
@@ -147,7 +147,7 @@ public class EntityListener implements Listener {
         x.setFireTicks(0);
 
         /* Remove bleed track */
-        mcBleedTimer.remove(x);
+        BleedTimer.remove(x);
 
         Archery.arrowRetrievalCheck(x, plugin);
 
@@ -185,7 +185,7 @@ public class EntityListener implements Listener {
             if (plugin.tntTracker.containsKey(id)) {
                 Player player = plugin.tntTracker.get(id);
 
-                if (mcPermissions.getInstance().biggerBombs(player)) {
+                if (Permissions.getInstance().biggerBombs(player)) {
                     BlastMining.biggerBombs(player, event);
                 }
             }
@@ -292,7 +292,7 @@ public class EntityListener implements Listener {
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
 
-        if (mcPermissions.getInstance().taming(player) && !event.getEntity().hasMetadata("mcmmoSummoned")) {
+        if (Permissions.getInstance().taming(player) && !event.getEntity().hasMetadata("mcmmoSummoned")) {
             PlayerProfile PP = Users.getProfile(player);
             EntityType type = event.getEntityType();
             int xp = 0;

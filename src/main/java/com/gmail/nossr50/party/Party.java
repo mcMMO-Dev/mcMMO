@@ -16,10 +16,10 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Users;
 
 public class Party {
     public static String pluginPath;
@@ -92,7 +92,7 @@ public class Party {
         if (player != null) {
             for (Player p : getOnlineMembers(player)) {
                 if (p.getName() != playerName) {
-                    p.sendMessage(mcLocale.getString("Party.InformedOnJoin", new Object[] {playerName}));
+                    p.sendMessage(LocaleLoader.getString("Party.InformedOnJoin", new Object[] {playerName}));
                 }
             }
         }
@@ -226,7 +226,7 @@ public class Party {
         if (player != null) {
             for (Player p : getOnlineMembers(player)) {
                 if (p.getName() != playerName) {
-                    p.sendMessage(mcLocale.getString("Party.InformedOnQuit", new Object[] {playerName}));
+                    p.sendMessage(LocaleLoader.getString("Party.InformedOnQuit", new Object[] {playerName}));
                 }
             }
         }
@@ -323,10 +323,10 @@ public class Party {
         informPartyMembers(player);
 
         if (!invite) {
-            player.sendMessage(mcLocale.getString("Commands.Party.Join", new Object[]{ newParty }));
+            player.sendMessage(LocaleLoader.getString("Commands.Party.Join", new Object[]{ newParty }));
         }
         else {
-            player.sendMessage(mcLocale.getString("Commands.Invite.Accepted", new Object[]{ PP.getParty() }));
+            player.sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", new Object[]{ PP.getParty() }));
         }
     }
 

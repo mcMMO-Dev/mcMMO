@@ -5,11 +5,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 
 public class XprateCommand implements CommandExecutor {
     private final mcMMO plugin;
@@ -22,9 +22,9 @@ public class XprateCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage1 = mcLocale.getString("Commands.xprate.proper.0");
-        String usage2 = mcLocale.getString("Commands.xprate.proper.1");
-        String usage3 = mcLocale.getString("Commands.xprate.proper.2");
+        String usage1 = LocaleLoader.getString("Commands.xprate.proper.0");
+        String usage2 = LocaleLoader.getString("Commands.xprate.proper.1");
+        String usage3 = LocaleLoader.getString("Commands.xprate.proper.2");
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.admin")) {
             return true;
@@ -35,7 +35,7 @@ public class XprateCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("reset")) {
                 if (xpevent) {
                     for (Player x : plugin.getServer().getOnlinePlayers()) {
-                        x.sendMessage(mcLocale.getString("Commands.xprate.over"));
+                        x.sendMessage(LocaleLoader.getString("Commands.xprate.over"));
                     }
 
                     xpevent = !xpevent;
@@ -45,7 +45,7 @@ public class XprateCommand implements CommandExecutor {
                     Config.getInstance().xpGainMultiplier = oldrate;
                 }
             }
-            else if (m.isInt(args[0])) {
+            else if (Misc.isInt(args[0])) {
                 sender.sendMessage(usage3);
             }
             else {
@@ -55,7 +55,7 @@ public class XprateCommand implements CommandExecutor {
             return true;
 
         case 2:
-            if (m.isInt(args[0])) {
+            if (Misc.isInt(args[0])) {
                 oldrate = Config.getInstance().xpGainMultiplier;
 
                 if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {
@@ -65,12 +65,12 @@ public class XprateCommand implements CommandExecutor {
                     sender.sendMessage(usage3);
                 }
 
-                Config.getInstance().xpGainMultiplier = m.getInt(args[0]);
+                Config.getInstance().xpGainMultiplier = Misc.getInt(args[0]);
 
                 if (xpevent) {
                     for (Player x : plugin.getServer().getOnlinePlayers()) {
-                        x.sendMessage(mcLocale.getString("Commands.xprate.started.0"));
-                        x.sendMessage(mcLocale.getString("Commands.xprate.started.1", new Object[] {Config.getInstance().xpGainMultiplier}));
+                        x.sendMessage(LocaleLoader.getString("Commands.xprate.started.0"));
+                        x.sendMessage(LocaleLoader.getString("Commands.xprate.started.1", new Object[] {Config.getInstance().xpGainMultiplier}));
                     }
                 }
                 else {

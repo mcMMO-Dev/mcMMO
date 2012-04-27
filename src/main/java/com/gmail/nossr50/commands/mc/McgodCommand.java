@@ -5,10 +5,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Users;
 
 public class McgodCommand implements CommandExecutor {
 
@@ -25,10 +25,10 @@ public class McgodCommand implements CommandExecutor {
         PlayerProfile PP = Users.getProfile((Player) sender);
 
         if (PP.getGodMode()) {
-            sender.sendMessage(mcLocale.getString("Commands.GodMode.Disabled"));
+            sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
         }
         else {
-            sender.sendMessage(mcLocale.getString("Commands.GodMode.Enabled"));
+            sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Enabled"));
         }
 
         PP.toggleGodMode();

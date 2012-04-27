@@ -11,12 +11,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 public class Axes {
 
@@ -72,7 +72,7 @@ public class Axes {
 
         PlayerProfile PPa = Users.getProfile(attacker);
         int skillLevel = PPa.getSkillLevel(SkillType.AXES);
-        int skillCheck = m.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         if (random.nextInt(2000) <= skillCheck && !entity.isDead()){
             int damage = event.getDamage();
@@ -80,12 +80,12 @@ public class Axes {
             if (entity instanceof Player){
                 event.setDamage((int) (damage * PVP_MODIFIER));
                 Player player = (Player) entity;
-                player.sendMessage(mcLocale.getString("Axes.Combat.CritStruck"));
+                player.sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
             }
             else {
                 event.setDamage(damage * PVE_MODIFIER);
             }
-            attacker.sendMessage(mcLocale.getString("Axes.Combat.CriticalHit"));
+            attacker.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
         }
     }
 
@@ -138,7 +138,7 @@ public class Axes {
         if (random.nextInt(100) <= GREATER_IMPACT_CHANCE) {
             event.setDamage(event.getDamage() + 2);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(GREATER_IMPACT_MULTIPLIER));
-            attacker.sendMessage(mcLocale.getString("Axes.Combat.GI.Proc"));
+            attacker.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
         }
     }
 
