@@ -5,11 +5,13 @@ import com.gmail.nossr50.datatypes.HUDType;
 
 public class Config extends ConfigLoader {
     public int xpGainMultiplier = 1;
-    public static Config instance = null;
+    private static volatile Config instance;
 
     public static Config getInstance() {
-        if(instance == null)
+        if (instance == null) {
             instance = new Config(mcMMO.p);
+        }
+
         return instance;
     }
 
