@@ -12,6 +12,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.Users;
@@ -542,7 +544,14 @@ public class Party {
      * @return true if this player is in the right party, false otherwise
      */
     public boolean isInParty(Player player, PlayerProfile PP) {
-        return partyPlayers.get(PP.getParty()).containsKey(player.getName());
+        Map<String, Boolean> party = partyPlayers.get(PP.getParty());
+
+        if (party != null && party.containsKey(player.getName())) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
