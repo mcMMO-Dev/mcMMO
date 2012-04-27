@@ -3,11 +3,10 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.HUDType;
 
-public class Config extends ConfigLoader{
-    
+public class Config extends ConfigLoader {
     public int xpGainMultiplier = 1;
     public static Config instance = null;
-    
+
     public static Config getInstance() {
         if(instance == null)
             instance = new Config(mcMMO.p);

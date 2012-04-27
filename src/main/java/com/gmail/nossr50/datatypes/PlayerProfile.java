@@ -298,8 +298,7 @@ public class PlayerProfile {
         Long timestamp = System.currentTimeMillis() / 1000; //Convert to seconds
         // if we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
-            mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"huds SET "
-                    +" hudtype = '"+hud.toString()+"' WHERE user_id = "+this.userid);
+            mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"huds SET hudtype = '"+hud.toString()+"' WHERE user_id = "+this.userid);
             mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
             mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
             mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"cooldowns SET "
