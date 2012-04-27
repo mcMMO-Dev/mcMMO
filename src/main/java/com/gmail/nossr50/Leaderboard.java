@@ -209,7 +209,7 @@ public class Leaderboard {
      * @return the requested leaderboard information
      */
     public static String[] retrieveInfo(String skillName, int pagenumber) {
-        String theLocation = leaderboardsDirectory + skillName + ".mcmmo";
+        String theLocation = leaderboardsDirectory + skillName.toLowerCase() + ".mcmmo";
 
         try {
             FileReader file = new FileReader(theLocation);
