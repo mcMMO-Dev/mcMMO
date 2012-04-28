@@ -355,5 +355,8 @@ public class Config extends ConfigLoader {
                 defaulthud = x;
             }
         }
+        
+        if(defaulthud == null)
+            defaulthud = HUDType.STANDARD;
     }
 }
