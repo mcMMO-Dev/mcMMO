@@ -9,10 +9,10 @@ import com.gmail.nossr50.mcMMO;
 
 public abstract class ConfigLoader {
 
-    protected static File configFile;
-    protected static File dataFolder;
+    protected File configFile;
+    protected File dataFolder;
     protected final mcMMO plugin;
-    protected static FileConfiguration config;
+    protected FileConfiguration config;
 
     public ConfigLoader(mcMMO plugin, String fileName){
         this.plugin = plugin;
@@ -28,7 +28,7 @@ public abstract class ConfigLoader {
     /**
      * Save this config file.
      */
-    private static void saveConfig() {
+    private void saveConfig() {
         try {
             config.save(configFile);
         }
