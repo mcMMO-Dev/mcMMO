@@ -232,8 +232,8 @@ public class PlayerListener implements Listener {
             }
 
             /* BLAST MINING CHECK */
-            if (Permissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
-                BlastMining.remoteDetonation(player, plugin);
+            if (player.isSneaking() && Permissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
+                BlastMining.detonate(event, player, plugin);
             }
 
             break;
@@ -255,8 +255,8 @@ public class PlayerListener implements Listener {
             Item.itemchecks(player);
 
             /* BLAST MINING CHECK */
-            if (Permissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
-                BlastMining.remoteDetonation(player, plugin);
+            if (player.isSneaking() && Permissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
+                BlastMining.detonate(event, player, plugin);
             }
 
             break;
