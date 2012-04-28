@@ -71,31 +71,31 @@ public class Excavation {
         if (Permissions.getInstance().excavationTreasures(player)) {
             switch (type) {
             case DIRT:
-                treasures = LoadTreasures.excavationFromDirt;
+                treasures = LoadTreasures.getInstance().excavationFromDirt;
                 break;
 
             case GRASS:
-                treasures = LoadTreasures.excavationFromGrass;
+                treasures = LoadTreasures.getInstance().excavationFromGrass;
                 break;
 
             case SAND:
-                treasures = LoadTreasures.excavationFromSand;
+                treasures = LoadTreasures.getInstance().excavationFromSand;
                 break;
 
             case GRAVEL:
-                treasures = LoadTreasures.excavationFromGravel;
+                treasures = LoadTreasures.getInstance().excavationFromGravel;
                 break;
 
             case CLAY:
-                treasures = LoadTreasures.excavationFromClay;
+                treasures = LoadTreasures.getInstance().excavationFromClay;
                 break;
 
             case MYCEL:
-                treasures = LoadTreasures.excavationFromMycel;
+                treasures = LoadTreasures.getInstance().excavationFromMycel;
                 break;
 
             case SOUL_SAND:
-                treasures = LoadTreasures.excavationFromSoulSand;
+                treasures = LoadTreasures.getInstance().excavationFromSoulSand;
                 break;
 
             default:

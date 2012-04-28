@@ -46,10 +46,6 @@ public class mcMMO extends JavaPlugin {
     public static Database database;
     public static mcMMO p;
 
-    //Config file stuff
-    Config config;
-    LoadTreasures config2;
-
     //Jar stuff
     public static File mcmmo;
 
@@ -70,12 +66,6 @@ public class mcMMO extends JavaPlugin {
         flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
         leaderboardDirectory = flatFileDirectory + "Leaderboards" + File.separator;
         usersFile = flatFileDirectory + "mcmmo.users";
-
-        this.config = new Config(this);
-        this.config.load();
-
-        this.config2 = new LoadTreasures(this);
-        this.config2.load();
 
         if (!Config.getInstance().getUseMySQL()) {
             Users.loadUsers();

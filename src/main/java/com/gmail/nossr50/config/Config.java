@@ -324,15 +324,15 @@ public class Config extends ConfigLoader {
 
     public HUDType defaulthud;
 
-    public Config(mcMMO plugin) {
+    private Config(mcMMO plugin) {
         super(plugin, "config.yml");
         config = plugin.getConfig();
         xpGainMultiplier = getExperienceGainsGlobalMultiplier();
+        load();
     }
 
     @Override
-    public void load() {
-
+    protected void load() {
         // If it doesn't exist, copy it from the .jar
         if (!configFile.exists()) {
             dataFolder.mkdir();
@@ -355,7 +355,7 @@ public class Config extends ConfigLoader {
                 defaulthud = x;
             }
         }
-        
+
         if(defaulthud == null)
             defaulthud = HUDType.STANDARD;
     }

@@ -17,27 +17,37 @@ import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.Treasure;
 
 public class LoadTreasures extends ConfigLoader{
+    private static LoadTreasures instance;
 
-    public static List<ExcavationTreasure> excavationFromDirt = new ArrayList<ExcavationTreasure>();
-    public static List<ExcavationTreasure> excavationFromGrass = new ArrayList<ExcavationTreasure>();
-    public static List<ExcavationTreasure> excavationFromSand = new ArrayList<ExcavationTreasure>();
-    public static List<ExcavationTreasure> excavationFromGravel = new ArrayList<ExcavationTreasure>();
-    public static List<ExcavationTreasure> excavationFromClay = new ArrayList<ExcavationTreasure>();
-    public static List<ExcavationTreasure> excavationFromMycel = new ArrayList<ExcavationTreasure>();
-    public static List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
-    public static List<FishingTreasure> fishingRewardsTier1 = new ArrayList<FishingTreasure>();
-    public static List<FishingTreasure> fishingRewardsTier2 = new ArrayList<FishingTreasure>();
-    public static List<FishingTreasure> fishingRewardsTier3 = new ArrayList<FishingTreasure>();
-    public static List<FishingTreasure> fishingRewardsTier4 = new ArrayList<FishingTreasure>();
-    public static List<FishingTreasure> fishingRewardsTier5 = new ArrayList<FishingTreasure>();
+    public static LoadTreasures getInstance() {
+        if (instance == null) {
+            instance = new LoadTreasures(mcMMO.p);
+        }
 
-    public LoadTreasures(mcMMO plugin) {
+        return instance;
+    }
+
+    public List<ExcavationTreasure> excavationFromDirt = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromGrass = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromSand = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromGravel = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromClay = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromMycel = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
+    public List<FishingTreasure> fishingRewardsTier1 = new ArrayList<FishingTreasure>();
+    public List<FishingTreasure> fishingRewardsTier2 = new ArrayList<FishingTreasure>();
+    public List<FishingTreasure> fishingRewardsTier3 = new ArrayList<FishingTreasure>();
+    public List<FishingTreasure> fishingRewardsTier4 = new ArrayList<FishingTreasure>();
+    public List<FishingTreasure> fishingRewardsTier5 = new ArrayList<FishingTreasure>();
+
+    private LoadTreasures(mcMMO plugin) {
         super(plugin, "treasures.yml");
         config = plugin.getTreasuresConfig();
+        load();
     }
 
     @Override
-    public void load() {
+    protected void load() {
 
         // If it doesn't exist, copy it from the .jar
         if (!configFile.exists()) {

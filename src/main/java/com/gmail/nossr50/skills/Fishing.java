@@ -74,23 +74,23 @@ public class Fishing {
 
         switch (getFishingLootTier(PP)) {
         case 1:
-            rewards = LoadTreasures.fishingRewardsTier1;
+            rewards = LoadTreasures.getInstance().fishingRewardsTier1;
             break;
 
         case 2:
-            rewards = LoadTreasures.fishingRewardsTier2;
+            rewards = LoadTreasures.getInstance().fishingRewardsTier2;
             break;
 
         case 3:
-            rewards = LoadTreasures.fishingRewardsTier3;
+            rewards = LoadTreasures.getInstance().fishingRewardsTier3;
             break;
 
         case 4:
-            rewards = LoadTreasures.fishingRewardsTier4;
+            rewards = LoadTreasures.getInstance().fishingRewardsTier4;
             break;
 
         case 5:
-            rewards = LoadTreasures.fishingRewardsTier5;
+            rewards = LoadTreasures.getInstance().fishingRewardsTier5;
             break;
 
         default:
