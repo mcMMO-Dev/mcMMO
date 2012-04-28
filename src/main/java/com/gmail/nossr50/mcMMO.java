@@ -114,7 +114,7 @@ public class mcMMO extends JavaPlugin {
         //Regen & Cooldown timer (Runs every second)
         scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(this), 0, 20);
         //Bleed timer (Runs every two seconds)
-        scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(this), 0, 40);
+        scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 0, 40);
 
         registerCommands();
 

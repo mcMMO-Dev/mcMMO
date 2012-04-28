@@ -57,22 +57,16 @@ public class Swords {
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         if (random.nextInt(1000) <= skillCheck && !entity.isDead()) {
-            if (entity instanceof Player) {
-                Player target = (Player) entity;
-                int bleedTicks;
+            int bleedTicks = 0;
 
-                if (skillLevel >= 750) {
-                    bleedTicks = 3;
-                }
-                else {
-                    bleedTicks = 2;
-                }
-
-                Users.getProfile(target).addBleedTicks(bleedTicks);
+            if (skillLevel >= 750) {
+                bleedTicks = 3;
             }
             else {
-                BleedTimer.add(entity);
+                bleedTicks = 2;
             }
+            
+            BleedTimer.add(entity, bleedTicks);
             attacker.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
         }
     }

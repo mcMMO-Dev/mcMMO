@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.AbilityType;
@@ -43,7 +44,6 @@ import com.gmail.nossr50.skills.Repair;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.Taming;
 import com.gmail.nossr50.util.BlockChecks;
-import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Item;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Permissions;
@@ -140,7 +140,6 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile PP = Users.getProfile(player);
 
         /* GARBAGE COLLECTION */
 
@@ -150,9 +149,7 @@ public class PlayerListener implements Listener {
         }
 
         //Bleed it out
-        if(PP.getBleedTicks() > 0) {
-            Combat.dealDamage(player, PP.getBleedTicks() * 2);
-        }
+        BleedTimer.bleedOut(player);
 
         //Schedule PlayerProfile removal 2 minutes after quitting
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player.getName()), 2400);

@@ -62,12 +62,13 @@ public class Combat {
             combatAbilityChecks(attacker);
 
             if (ItemChecks.isSword(itemInHand) && Permissions.getInstance().swords(attacker)) {
-                if (!BleedTimer.contains(target) && Permissions.getInstance().swordsBleed(attacker)) {
+                if (Permissions.getInstance().swordsBleed(attacker)) {
                     Swords.bleedCheck(attacker, target, plugin);
                 }
 
                 if (PPa.getAbilityMode(AbilityType.SERRATED_STRIKES) && Permissions.getInstance().serratedStrikes(attacker)) {
-                    applyAbilityAoE(attacker, target, event.getDamage(), plugin, SkillType.SWORDS);
+                    applyAbilityAoE(attacker, target, event.getDamage() / 4, plugin, SkillType.SWORDS);
+                    BleedTimer.add(target, 5);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.SWORDS, plugin);
@@ -86,7 +87,7 @@ public class Combat {
                 }
  
                 if (PPa.getAbilityMode(AbilityType.SKULL_SPLIITER) && Permissions.getInstance().skullSplitter(attacker)) {
-                    applyAbilityAoE(attacker, target, event.getDamage(), plugin, SkillType.AXES);
+                    applyAbilityAoE(attacker, target, event.getDamage() / 2, plugin, SkillType.AXES);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.AXES, plugin);
@@ -138,9 +139,6 @@ public class Combat {
 
         case ARROW:
             archeryCheck((EntityDamageByEntityEvent) event, plugin);
-            break;
-
-        default:
             break;
         }
 
@@ -297,89 +295,76 @@ public class Combat {
      */
     private static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, mcMMO plugin, SkillType type) {
         int numberOfTargets = Misc.getTier(attacker.getItemInHand()); //The higher the weapon tier, the more targets you hit
-        int damageAmount = 0;
-
-        if (type.equals(SkillType.AXES)) {
-            damageAmount = damage / 2;
-        }
-        else if (type.equals(SkillType.SWORDS)) {
-            damageAmount = damage / 4;
-        }
+        int damageAmount = damage;
 
         if (damageAmount < 1) {
             damageAmount = 1;
         }
 
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
-            EntityType entityType = entity.getType();
-
-            if (entityType.equals(EntityType.WOLF)) {
-                Wolf wolf = (Wolf) entity;
-                AnimalTamer tamer = wolf.getOwner();
+            if (!(entity instanceof LivingEntity)) {
+                continue;
+            }
+            
+            if (numberOfTargets <= 0) {
+                break;
+            }
+            
+            switch (entity.getType()) {
+            case WOLF:
+                AnimalTamer tamer = ((Wolf) entity).getOwner();
 
                 if (tamer instanceof Player) {
-                    Player owner = (Player) tamer;
-
-                    if (owner.equals(attacker) || Party.getInstance().inSameParty(attacker, owner)) {
+                    if (tamer.equals(attacker) || Party.getInstance().inSameParty(attacker, (Player) tamer)) {
                         continue;
                     }
                 }
+                
+                break;
+            case PLAYER:
+                Player defender = (Player) entity;
+                
+                if (!target.getWorld().getPVP()) {
+                    continue;
+                }
+                
+                if (defender.getName().equals(attacker.getName())) {
+                    continue;
+                }
+                
+                if (Party.getInstance().inSameParty(attacker, defender)) {
+                    continue;
+                }
+                
+                PlayerProfile playerProfile = Users.getProfile((Player) entity);
+                
+                if (playerProfile.getGodMode()) {
+                    continue;
+                }
+                
+                break;
             }
-
-            if (entity instanceof LivingEntity && numberOfTargets >= 1) {
-                if (entityType.equals(EntityType.PLAYER)) {
-                    Player defender = (Player) entity;
-                    PlayerProfile PP = Users.getProfile(defender);
-
-                    //Reasons why the target shouldn't be hit
-                    if (PP.getGodMode()) {
-                        continue;
-                    }
-
-                    if (defender.getName().equals(attacker.getName())) { //Is this even possible?
-                        continue;
-                    }
-
-                    if (Party.getInstance().inSameParty(attacker, defender)) {
-                        continue;
-                    }
-
-                    if (defender.isDead()) {
-                        continue;
-                    }
-
-                    //Apply effect to players only if PVP is enabled
-                    if (target.getWorld().getPVP()) {
-                        String message = "";
-
-                        if (type.equals(SkillType.AXES)) {
-                            message = LocaleLoader.getString("Axes.Combat.Cleave.Struck");
-                        }
-                        else if (type.equals(SkillType.SWORDS)) {
-                            message = LocaleLoader.getString("Swords.Combat.SS.Struck");
-                        }
-
-                        dealDamage(defender, damageAmount, attacker);
-                        defender.sendMessage(message);
-
-                        if (type.equals(SkillType.SWORDS)) {
-                            PP.addBleedTicks(5);
-                        }
-
-                        numberOfTargets--;
-                    }
+            
+            
+            switch (type) {
+            case SWORDS:
+                if (entity instanceof Player) {
+                    ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
                 }
-                else {
-                    LivingEntity livingEntity = (LivingEntity) entity;
-
-                    if (type.equals(SkillType.SWORDS)) {
-                        BleedTimer.add(livingEntity);
-                    }
-
-                    dealDamage(livingEntity, damageAmount, attacker);
-                    numberOfTargets--;
+                
+                BleedTimer.add((LivingEntity) entity, 5);
+                
+                break;
+            case AXES:
+                if (entity instanceof Player) {
+                    ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.Cleave.Struck"));
                 }
+                
+                break;
             }
+            
+            dealDamage((LivingEntity) entity, damageAmount, attacker);
+            numberOfTargets--;
         }
     }
 

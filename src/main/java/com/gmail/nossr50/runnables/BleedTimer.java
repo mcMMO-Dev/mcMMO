@@ -1,45 +1,51 @@
 package com.gmail.nossr50.runnables;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Combat;
-import com.gmail.nossr50.util.Users;
 
 public class BleedTimer implements Runnable {
-    private final mcMMO plugin;
-
-    private static HashSet<LivingEntity> bleedList = new HashSet<LivingEntity>();
-    private static HashSet<LivingEntity> bleedAddList = new HashSet<LivingEntity>();
-    private static HashSet<LivingEntity> bleedRemoveList = new HashSet<LivingEntity>();
+    private final static int MAX_BLEED_TICKS = 10;
+    
+    private static Map<LivingEntity, Integer> bleedList = new HashMap<LivingEntity, Integer>();
+    private static Map<LivingEntity, Integer> bleedAddList = new HashMap<LivingEntity, Integer>();
+    private static List<LivingEntity> bleedRemoveList = new ArrayList<LivingEntity>();
 
     private static boolean lock = false;
-
-    public BleedTimer(final mcMMO plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public void run() {
         updateBleedList();
+        bleedSimulate();
+    }
 
-        // Player bleed simulation
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
-            if (player == null) {
-                continue;
+    private void bleedSimulate() {
+        lock = true;
+
+        for (Entry<LivingEntity, Integer> entry : bleedList.entrySet()) {
+            LivingEntity entity = entry.getKey();
+
+            if (entry.getValue() <= 0 || entity.isDead() || entity == null) {
+                remove(entity);
+                break;
             }
 
-            PlayerProfile PP = Users.getProfile(player);
-            if (PP == null) {
-                continue;
-            }
+            // Player bleed simulation
+            if (entity instanceof Player) {
+                Player player = (Player) entity;
 
-            if (PP.getBleedTicks() >= 1) {
+                if (!player.isOnline()) {
+                    continue;
+                }
 
                 //Never kill with Bleeding
                 if (player.getHealth() - 2 < 0) {
@@ -51,29 +57,16 @@ public class BleedTimer implements Runnable {
                     Combat.dealDamage(player, 2);
                 }
 
-                PP.decreaseBleedTicks();
+                entry.setValue(entry.getValue() - 1);
 
-                if (PP.getBleedTicks() == 0) {
+                if (entry.getValue() <= 0) {
                     player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Stopped"));
                 }
             }
-        }
-
-        // Non-player bleed simulation
-        bleedSimulate();
-    }
-
-    private void bleedSimulate() {
-        lock = true;
-
-        // Bleed monsters/animals
-        for (LivingEntity entity : bleedList) {
-            if ((entity == null || entity.isDead())) {
-                remove(entity);
-                continue;
-            }
+            // Bleed monsters/animals
             else {
                 Combat.dealDamage(entity, 2);
+                entry.setValue(entry.getValue() - 1);
             }
         }
 
@@ -83,15 +76,27 @@ public class BleedTimer implements Runnable {
 
     private void updateBleedList() {
         if (lock) {
-            plugin.getLogger().warning("mcBleedTimer attempted to update the bleedList but the list was locked!");
+            mcMMO.p.getLogger().warning("mcBleedTimer attempted to update the bleedList but the list was locked!");
         }
         else {
-            bleedList.removeAll(bleedRemoveList);
+            bleedList.keySet().removeAll(bleedRemoveList);
             bleedRemoveList.clear();
 
-            bleedList.addAll(bleedAddList);
+            bleedList.putAll(bleedAddList);
             bleedAddList.clear();
         }
+    }
+
+    /**
+     * Instantly Bleed out a LivingEntity
+     * 
+     * @param entity LivingEntity to bleed out
+     */
+    public static void bleedOut(LivingEntity entity) {
+        if (bleedList.containsKey(entity)) {
+            Combat.dealDamage(entity, bleedList.get(entity) * 2);
+            bleedList.remove(entity);
+       }
     }
 
     /**
@@ -106,7 +111,7 @@ public class BleedTimer implements Runnable {
             }
         }
         else {
-            if (bleedList.contains(entity)) {
+            if (bleedList.containsKey(entity)) {
                 bleedList.remove(entity);
             }
         }
@@ -117,15 +122,50 @@ public class BleedTimer implements Runnable {
      *
      * @param entity LivingEntity to add
      */
-    public static void add(LivingEntity entity) {
+    public static void add(LivingEntity entity, int ticks) {
+        int newTicks = ticks;
+
         if (lock) {
-            if (!bleedAddList.contains(entity)) {
-                bleedAddList.add(entity);
+            if (bleedAddList.containsKey(entity)) {
+                newTicks += bleedAddList.get(entity);
+                
+                if (newTicks > MAX_BLEED_TICKS) {
+                    newTicks = MAX_BLEED_TICKS;
+                }
+
+                bleedAddList.put(entity, newTicks);
+            }
+            else {
+                if (newTicks > MAX_BLEED_TICKS) {
+                    newTicks = MAX_BLEED_TICKS;
+                }
+
+                bleedAddList.put(entity, newTicks);
             }
         }
         else {
-            if (!bleedList.contains(entity)){
-                bleedList.add(entity);
+            if (bleedList.containsKey(entity)) {
+                newTicks += bleedList.get(entity);
+                
+                if (newTicks > MAX_BLEED_TICKS) {
+                    newTicks = MAX_BLEED_TICKS;
+                }
+
+                bleedList.put(entity, newTicks);
+
+                // Need to find a better way to ensure that the entity stays in bleedList
+                // when some ticks are added but already marked for removal.
+                // Suggestion: Why not use Iterator.remove() and drop the lock boolean?
+                if (bleedRemoveList.contains(entity)) {
+                    bleedRemoveList.remove(entity);
+                }
+            }
+            else {
+                if (newTicks > MAX_BLEED_TICKS) {
+                    newTicks = MAX_BLEED_TICKS;
+                }
+
+                bleedList.put(entity, newTicks);
             }
         }
     }
@@ -137,6 +177,6 @@ public class BleedTimer implements Runnable {
      * @return true if in the list, false if not
      */
     public static boolean contains(LivingEntity entity) {
-        return (bleedList.contains(entity) || bleedAddList.contains(entity));
+        return (bleedList.containsKey(entity) || bleedAddList.containsKey(entity));
     }
 }
