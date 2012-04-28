@@ -5,7 +5,7 @@ import com.gmail.nossr50.datatypes.HUDType;
 
 public class Config extends ConfigLoader {
     public int xpGainMultiplier = 1;
-    private static volatile Config instance;
+    private static Config instance;
 
     public static Config getInstance() {
         if (instance == null) {
@@ -351,7 +351,7 @@ public class Config extends ConfigLoader {
         String temp = config.getString("Spout.HUD.Default", "STANDARD");
         
         for (HUDType x : HUDType.values()) {
-            if (x.toString().equalsIgnoreCase(temp)) {
+            if (x.toString().toLowerCase().equalsIgnoreCase(temp.toString().toLowerCase())) {
                 defaulthud = x;
             }
         }

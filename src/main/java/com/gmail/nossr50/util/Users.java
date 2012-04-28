@@ -106,7 +106,7 @@ public class Users {
      */
     public static PlayerProfile getProfileByName(String playerName) {
         if (mcMMO.p.getServer().getOfflinePlayer(playerName).isOnline() || players.containsKey(playerName.toLowerCase())) {
-            if (players.get(playerName.toLowerCase()) != null) {
+            if (players.containsKey(playerName.toLowerCase())) {
                 return players.get(playerName.toLowerCase());
             }
             else {
