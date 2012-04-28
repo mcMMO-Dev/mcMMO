@@ -19,8 +19,6 @@ import com.gmail.nossr50.mcMMO;
 
 public class PlayerProfile {
 
-    final static int MAX_BLEED_TICKS = 10;
-
     /* HUD */
     private HUDType hud;
     private int xpbarinc = 0;
@@ -52,7 +50,6 @@ public class PlayerProfile {
     /* mySQL STUFF */
     private int lastlogin = 0;
     private int userid = 0;
-    private int bleedticks = 0;
 
     HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and Levels
     HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and XP
@@ -607,30 +604,6 @@ public class PlayerProfile {
 
     public void togglePartyChat() {
         partyChatMode = !partyChatMode;
-    }
-
-    /*
-     * Bleed Stuff
-     */
-
-    public void decreaseBleedTicks() {
-        bleedticks--;
-    }
-
-    public int getBleedTicks() {
-        return bleedticks;
-    }
-
-    public void resetBleedTicks() {
-        bleedticks = 0;
-    }
-
-    public void addBleedTicks(int newvalue){
-        bleedticks += newvalue;
-
-        if (bleedticks > MAX_BLEED_TICKS) {
-            bleedticks = MAX_BLEED_TICKS;
-        }
     }
 
     /*

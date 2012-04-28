@@ -92,14 +92,10 @@ public class Taming {
             event.setDamage(event.getDamage() * GORE_MULTIPLIER);
 
             if (entity instanceof Player) {
-                Player target = (Player) entity;
+                ((Player) entity).sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
+            }
 
-                target.sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
-                Users.getProfile(target).addBleedTicks(2);
-            }
-            else {
-                BleedTimer.add((LivingEntity) entity);
-            }
+            BleedTimer.add((LivingEntity) entity, 2);
 
             master.sendMessage(LocaleLoader.getString("Combat.Gore"));
         }
