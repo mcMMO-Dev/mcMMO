@@ -41,22 +41,18 @@ public class BlastMining {
      * @return A list of blocks dropped from the explosion
      */
     private static List<Block> explosionYields(List<Block> ores, List<Block> debris, float yield, float oreBonus, float debrisReduction, int extraDrops) {
-        Iterator<Block> iterator2 = ores.iterator();
+        Iterator<Block> oresIterator = ores.iterator();
         List<Block> blocksDropped = new ArrayList<Block>();
 
-        while (iterator2.hasNext()) {
-            Block temp = iterator2.next();
+        while (oresIterator.hasNext()) {
+            Block temp = oresIterator.next();
 
             if (random.nextFloat() < (yield + oreBonus)) {
                 blocksDropped.add(temp);
                 Mining.miningDrops(temp);
 
                 if (!temp.hasMetadata("mcmmoPlacedBlock")) {
-                    if (extraDrops == 2) {
-                        blocksDropped.add(temp);
-                        Mining.miningDrops(temp);
-                    }
-                    if (extraDrops == 3) {
+                    for (int i = 1 ; i < extraDrops ; i++) {
                         blocksDropped.add(temp);
                         Mining.miningDrops(temp);
                     }
@@ -64,11 +60,11 @@ public class BlastMining {
             }
         }
 
-        if (yield - debrisReduction != 0) {
-            Iterator<Block> iterator3 = debris.iterator();
+        if (yield - debrisReduction > 0) {
+            Iterator<Block> debrisIterator = debris.iterator();
 
-            while (iterator3.hasNext()) {
-                Block temp = iterator3.next();
+            while (debrisIterator.hasNext()) {
+                Block temp = debrisIterator.next();
 
                 if (random.nextFloat() < (yield - debrisReduction))
                     Mining.miningDrops(temp);
