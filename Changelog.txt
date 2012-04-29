@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.3.06-dev
+ + Added Iron Golem XP for aggressive golems
  + Added permissions check to skill functions
  + Added API functions for obtaining offline profiles & profiles via player names
  + Added API functions for admin & party chat
@@ -26,6 +27,7 @@ Version 1.3.06-dev
  = Fixed issues with custom characters & locale files.
  = Fixed double explosion for Blast Mining
  = Fixed Blast Mining not giving triple drops when it should
+ ! Changed Bleeding to now stack to a finite number on Monsters and will wear off eventually
  ! Changed how we handled the config file to prevent any bugs when returning values
  ! Changed locale files to use a new naming scheme. This breaks ALL old locale files. If you want to assist with re-translating anything, go to getlocalization.com/mcMMO
  ! Changed mcremove to check for users in the MySQL DB before sending queries to remove them
