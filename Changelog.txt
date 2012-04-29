@@ -7,7 +7,7 @@ Key:
   ! Change
   - Removal
 
-Version 1.3.06-dev
+Version 1.3.06
  + Added Iron Golem XP for aggressive golems
  + Added permissions check to skill functions
  + Added API functions for obtaining offline profiles & profiles via player names
