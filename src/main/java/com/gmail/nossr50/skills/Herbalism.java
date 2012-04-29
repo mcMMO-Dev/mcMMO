@@ -43,7 +43,6 @@ public class Herbalism {
             inventory.removeItem(new ItemStack(Material.SEEDS));
             player.updateInventory();
             greenTerraConvert(player, block);
-            
         }
     }
     

@@ -112,9 +112,8 @@ public class mcMMO extends JavaPlugin {
             try {
                     Metrics metrics = new Metrics(this);
                     metrics.start();
-                }
-                catch (IOException e) {
-                System.out.println("Failed to submit stats.");
+                } catch (IOException e) {
+                    System.out.println("Failed to submit stats.");
             }
         }
     }
