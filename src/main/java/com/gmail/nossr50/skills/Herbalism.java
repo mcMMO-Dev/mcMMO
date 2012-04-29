@@ -35,7 +35,6 @@ public class Herbalism {
     public static void greenTerra(Player player, Block block) {
         PlayerInventory inventory = player.getInventory();
         boolean hasSeeds = inventory.contains(Material.SEEDS);
-        Material type = block.getType();
 
         if (!hasSeeds) {
             player.sendMessage("You need more seeds to spread Green Terra");  //TODO: Needs more locale.
@@ -43,17 +42,23 @@ public class Herbalism {
         else if (hasSeeds && !block.getType().equals(Material.WHEAT)) {
             inventory.removeItem(new ItemStack(Material.SEEDS));
             player.updateInventory();
-
-            if (Misc.blockBreakSimulate(block, player, false)) {
-                if (Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy() && type.equals(Material.SMOOTH_BRICK)) {
-                    block.setData((byte) 0x1); //Set type of the brick to mossy
-                }
-                else if (Config.getInstance().getHerbalismGreenThumbDirtToGrass() && type.equals(Material.DIRT)) {
-                    block.setType(Material.GRASS);
-                }
-                else if (Config.getInstance().getHerbalismGreenThumbCobbleToMossy() && type.equals(Material.COBBLESTONE)) {
-                    block.setType(Material.MOSSY_COBBLESTONE);
-                }
+            greenTerraConvert(player, block);
+            
+        }
+    }
+    
+    public static void greenTerraConvert(Player player, Block block) {
+        Material type = block.getType();
+        
+        if (Misc.blockBreakSimulate(block, player, false)) {
+            if (Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy() && type.equals(Material.SMOOTH_BRICK)) {
+                block.setData((byte) 0x1); //Set type of the brick to mossy
+            }
+            else if (Config.getInstance().getHerbalismGreenThumbDirtToGrass() && type.equals(Material.DIRT)) {
+                block.setType(Material.GRASS);
+            }
+            else if (Config.getInstance().getHerbalismGreenThumbCobbleToMossy() && type.equals(Material.COBBLESTONE)) {
+                block.setType(Material.MOSSY_COBBLESTONE);
             }
         }
     }
@@ -302,7 +307,7 @@ public class Herbalism {
         player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
 
         if (skillLevel > MAX_BONUS_LEVEL || random.nextInt(1500) <= skillLevel) {
-            greenTerra(player, block);
+            greenTerraConvert(player, block);
         }
         else {
             player.sendMessage(LocaleLoader.getString("mcPlayerListener.GreenThumbFail"));
