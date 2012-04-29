@@ -184,7 +184,7 @@ public class BlockListener implements Listener {
             }
         }
 
-        if (PP.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.getInstance().treeFeller(player)) {
+        if (PP.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.getInstance().treeFeller(player) && ItemChecks.isAxe(inhand)) {
             WoodCutting.treeFeller(event);
         }
 
