@@ -62,14 +62,14 @@ public class MiningCommand implements CommandExecutor {
             player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.1") }));
         }
         else {
-            player.sendMessage(LocaleLoader.getString("m.MiningBiggerBombs", new Object[] { blastRadiusIncrease }));
+            player.sendMessage(LocaleLoader.getString("Mining.Blast.Radius.Increase", new Object[] { blastRadiusIncrease }));
         }
 
         if (PP.getSkillLevel(SkillType.MINING) < 500) {
             player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.2") }));
         }
         else {
-            player.sendMessage(LocaleLoader.getString("m.MiningDemolitionsExpertDamageDecrease", new Object[] { blastDamageDecrease }));
+            player.sendMessage(LocaleLoader.getString("Mining.Effect.Decrease", new Object[] { blastDamageDecrease }));
         }
 
         Page.grabGuidePageForSkill(SkillType.MINING, player, args);
