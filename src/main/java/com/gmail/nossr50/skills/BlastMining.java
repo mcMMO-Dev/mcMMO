@@ -236,6 +236,7 @@ public class BlastMining {
     /**
      * Detonate TNT for Blast Mining
      *
+     * @param event The PlayerInteractEvent
      * @param player Player detonating the TNT
      * @param plugin mcMMO plugin instance
      */

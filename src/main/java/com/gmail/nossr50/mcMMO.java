@@ -115,14 +115,13 @@ public class mcMMO extends JavaPlugin {
 
         if (Config.getInstance().getStatsTrackingEnabled()) {
             try {
-                    Metrics metrics = new Metrics(this);
-                    metrics.start();
-                } catch (IOException e) {
-                    System.out.println("Failed to submit stats.");
+                Metrics metrics = new Metrics(this);
+                metrics.start();
+            } catch (IOException e) {
+                System.out.println("Failed to submit stats.");
             }
         }
     }
-
 
     /**
      * Get profile of the player.
@@ -164,23 +163,20 @@ public class mcMMO extends JavaPlugin {
      * Things to be run when the plugin is disabled.
      */
     public void onDisable() {
-
         //Make sure to save player information if the server shuts down
         for (PlayerProfile x : Users.getProfiles().values()) {
             x.save();
         }
-        
 
         this.getServer().getScheduler().cancelTasks(this); //This removes our tasks
-        
+
         //Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
-        
-        try {  //Try the backup
-			ZipLibrary.mcMMObackup();
-		} catch (IOException e)  {
-			p.getLogger().severe(e.toString());
-		}
-        
+        try {
+            ZipLibrary.mcMMObackup();
+        } catch (IOException e) {
+            p.getLogger().severe(e.toString());
+        }
+
         System.out.println("mcMMO was disabled."); //How informative!
     }
 
@@ -188,7 +184,6 @@ public class mcMMO extends JavaPlugin {
      * Register the commands.
      */
     private void registerCommands() {
-
         //Register aliases with the aliasmap (used in the playercommandpreprocessevent to ugly alias them to actual commands)
         //Skills commands
         aliasMap.put(LocaleLoader.getString("Acrobatics.SkillName").toLowerCase(), "acrobatics");

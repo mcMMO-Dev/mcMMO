@@ -310,11 +310,11 @@ public class Combat {
             if (!(entity instanceof LivingEntity)) {
                 continue;
             }
-            
+
             if (numberOfTargets <= 0) {
                 break;
             }
-            
+
             switch (entity.getType()) {
             case WOLF:
                 AnimalTamer tamer = ((Wolf) entity).getOwner();
@@ -324,50 +324,49 @@ public class Combat {
                         continue;
                     }
                 }
-                
+
                 break;
             case PLAYER:
                 Player defender = (Player) entity;
-                
+
                 if (!target.getWorld().getPVP()) {
                     continue;
                 }
-                
+
                 if (defender.getName().equals(attacker.getName())) {
                     continue;
                 }
-                
+
                 if (Party.getInstance().inSameParty(attacker, defender)) {
                     continue;
                 }
-                
+
                 PlayerProfile playerProfile = Users.getProfile((Player) entity);
-                
+
                 if (playerProfile.getGodMode()) {
                     continue;
                 }
-                
+
                 break;
             }
-            
-            
+
             switch (type) {
             case SWORDS:
                 if (entity instanceof Player) {
                     ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
                 }
-                
+
                 BleedTimer.add((LivingEntity) entity, 5);
-                
+
                 break;
             case AXES:
                 if (entity instanceof Player) {
                     ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.Cleave.Struck"));
                 }
-                
+
                 break;
             }
-            
+
             dealDamage((LivingEntity) entity, damageAmount, attacker);
             numberOfTargets--;
         }

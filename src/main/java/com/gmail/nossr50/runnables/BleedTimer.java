@@ -15,7 +15,7 @@ import com.gmail.nossr50.util.Combat;
 
 public class BleedTimer implements Runnable {
     private final static int MAX_BLEED_TICKS = 10;
-    
+
     private static Map<LivingEntity, Integer> bleedList = new HashMap<LivingEntity, Integer>();
     private static Map<LivingEntity, Integer> bleedAddList = new HashMap<LivingEntity, Integer>();
     private static List<LivingEntity> bleedRemoveList = new ArrayList<LivingEntity>();
@@ -121,6 +121,7 @@ public class BleedTimer implements Runnable {
      * Add a LivingEntity to the bleedList if it is not in it.
      *
      * @param entity LivingEntity to add
+     * @param ticks Number of bleeding ticks
      */
     public static void add(LivingEntity entity, int ticks) {
         int newTicks = ticks;
@@ -128,7 +129,7 @@ public class BleedTimer implements Runnable {
         if (lock) {
             if (bleedAddList.containsKey(entity)) {
                 newTicks += bleedAddList.get(entity);
-                
+
                 if (newTicks > MAX_BLEED_TICKS) {
                     newTicks = MAX_BLEED_TICKS;
                 }
@@ -146,7 +147,7 @@ public class BleedTimer implements Runnable {
         else {
             if (bleedList.containsKey(entity)) {
                 newTicks += bleedList.get(entity);
-                
+
                 if (newTicks > MAX_BLEED_TICKS) {
                     newTicks = MAX_BLEED_TICKS;
                 }
