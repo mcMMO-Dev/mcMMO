@@ -145,6 +145,9 @@ permissions:
             mcmmo.bypass.arcanebypass: true
             mcmmo.bypass.inspect.distance: true
             mcmmo.bypass.inspect.offline: true
+            mcmmo.bypass.hardcoremode: true
+    mcmmo.bypass.hardcoremode:
+        description: Allows user to bypass negative penalties of Hardcore mode
     mcmmo.bypass.arcanebypass:
         description: Allows user to bypass Arcane Repair so he will never lose enchantments
     mcmmo.bypass.inspect.distance:
