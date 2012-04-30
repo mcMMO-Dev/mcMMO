@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.Metrics;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
+import com.gmail.nossr50.listeners.HardcoreListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 
@@ -37,6 +38,7 @@ public class mcMMO extends JavaPlugin {
     private final PlayerListener playerListener = new PlayerListener(this);
     private final BlockListener blockListener = new BlockListener(this);
     private final EntityListener entityListener = new EntityListener(this);
+    private final HardcoreListener hardcoreListener = new HardcoreListener();
 
     public HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
     public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
@@ -77,6 +79,7 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvents(playerListener, this);
         pm.registerEvents(blockListener, this);
         pm.registerEvents(entityListener, this);
+        pm.registerEvents(hardcoreListener, this);
 
         PluginDescriptionFile pdfFile = this.getDescription();
 
