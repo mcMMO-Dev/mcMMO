@@ -22,6 +22,6 @@ public class Hardcore {
             PP.modifySkill(st, newValue);
         }
         
-        player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_RED+"You've suffered a penalty to your knowledge from death.");
+        player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_RED+"You've suffered a penalty to skills from death.");
     }
 }
