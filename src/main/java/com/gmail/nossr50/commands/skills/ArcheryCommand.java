@@ -100,6 +100,7 @@ public class ArcheryCommand implements CommandExecutor {
 
     private void permissionsCheck(Player player) {
         Permissions permInstance = Permissions.getInstance();
+
         canSkillShot = permInstance.archeryBonus(player);
         canDaze = permInstance.daze(player);
         canRetrieve = permInstance.trackArrows(player);

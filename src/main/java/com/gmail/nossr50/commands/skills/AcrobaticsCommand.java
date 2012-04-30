@@ -110,6 +110,7 @@ public class AcrobaticsCommand implements CommandExecutor {
 
     private void permissionsCheck(Player player) {
         Permissions permInstance = Permissions.getInstance();
+
         canDodge = permInstance.dodge(player);
         canRoll = permInstance.roll(player);
         canGracefulRoll = permInstance.gracefulRoll(player);

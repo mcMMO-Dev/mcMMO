@@ -123,6 +123,7 @@ public class AxesCommand implements CommandExecutor {
 
     private void permissionsCheck(Player player) {
         Permissions permInstance = Permissions.getInstance();
+
         canSkullSplitter = permInstance.skullSplitter(player);
         canCritical = permInstance.criticalHit(player);
         canBonusDamage = permInstance.axeBonus(player);
