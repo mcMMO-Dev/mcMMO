@@ -19,6 +19,7 @@ public class Config extends ConfigLoader {
      * GENERAL SETTINGS
      */
 
+
     /* General Settings */
     public String getLocale() { return config.getString("General.Locale", "en_us"); }
     public boolean getMOTDEnabled() { return config.getBoolean("General.MOTD_Enabled", true); }
@@ -33,7 +34,8 @@ public class Config extends ConfigLoader {
     public String getMySQLUserName() { return config.getString("MySQL.Database.User_Name", "UserName"); } //Really should be labeled under MySQL.User_Name instead...
     public int getMySQLServerPort() { return config.getInt("MySQL.Server.Port", 3306); }
     public String getMySQLServerName() { return config.getString("MySQL.Server.Address", "localhost"); }
-    public String getMySQLUserPassword() { 
+
+    public String getMySQLUserPassword() {
         if (config.getString("MySQL.Database.User_Password", null) != null) {
             return config.getString("MySQL.Database.User_Password", null);
         }

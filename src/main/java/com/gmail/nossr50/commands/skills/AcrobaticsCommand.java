@@ -1,5 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.text.DecimalFormat;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -82,25 +84,27 @@ public class AcrobaticsCommand implements CommandExecutor {
     }
 
     private void dataCalculations(float skillValue) {
+        DecimalFormat percent = new DecimalFormat("##0.00%");
+
         if (skillValue >= 1000) {
-            dodgeChance = "20";
-            rollChance = "100";
-            gracefulRollChance = "100";
+            dodgeChance = "20.00%";
+            rollChance = "100.00%";
+            gracefulRollChance = "100.00%";
         }
         else if (skillValue >= 800) {
-            dodgeChance = "20";
-            rollChance = String.valueOf(skillValue / 10);
-            gracefulRollChance = "100";
+            dodgeChance = "20.00%";
+            rollChance = percent.format(skillValue / 1000);
+            gracefulRollChance = "100.00%";
         }
         else if (skillValue >= 500) {
-            dodgeChance = String.valueOf(skillValue / 40);
-            rollChance = String.valueOf(skillValue / 10);
-            gracefulRollChance = "100";
+            dodgeChance = percent.format(skillValue / 4000);
+            rollChance = percent.format(skillValue / 1000);
+            gracefulRollChance = "100.00%";
         }
         else {
-            dodgeChance = String.valueOf(skillValue / 40);
-            rollChance = String.valueOf(skillValue / 10);
-            gracefulRollChance = String.valueOf(skillValue / 5);
+            dodgeChance = percent.format(skillValue / 4000);
+            rollChance = percent.format(skillValue / 1000);
+            gracefulRollChance = percent.format(skillValue / 500);
         }
     }
 

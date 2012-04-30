@@ -212,12 +212,12 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.archery.trackarrows");
     }
 
-    public boolean ignition(Player player) {
-        return player.hasPermission("mcmmo.ability.archery.ignition");
-    }
-
     public boolean daze(Player player) {
         return player.hasPermission("mcmmo.ability.archery.daze");
+    }
+
+    public boolean archeryBonus(Player player) {
+        return player.hasPermission("mcmmo.ability.archery.bonusdamage");
     }
 
     /*

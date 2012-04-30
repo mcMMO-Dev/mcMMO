@@ -291,14 +291,14 @@ permissions:
         description: Allows access to all Archery abilities
         children:
             mcmmo.ability.archery.trackarrows: true
-            mcmmo.ability.archery.ignition: true
             mcmmo.ability.archery.daze: true
+            mcmmo.ability.archery.bonusdamage : true
     mcmmo.ability.archery.trackarrows:
         description: Allows tracking & retrieval of arrows
-    mcmmo.ability.archery.ignition:
-        description: Allows access to the Ignition ability
     mcmmo.ability.archery.daze:
         description: Allows access to the Daze ability
+    mcmmo.ability.archery.bonusdamage:
+        description: Allows bonus damage from Archery
     mcmmo.ability.herbalism.*:
         description: Allows access to all Herbalism abilities
         children:

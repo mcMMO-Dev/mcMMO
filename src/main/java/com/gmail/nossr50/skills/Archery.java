@@ -14,7 +14,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Archery {
@@ -61,7 +60,7 @@ public class Archery {
             loc.setPitch(-90);
         }
 
-        if (random.nextInt(2000) <= skillCheck && Permissions.getInstance().daze(attacker)) {
+        if (random.nextInt(2000) <= skillCheck) {
             defender.teleport(loc);
             Combat.dealDamage(defender, 4);
             defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
