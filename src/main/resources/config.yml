@@ -31,6 +31,13 @@ MySQL:
     Server:
         Port: 3306
         Address: localhost
+#
+#  Settings for Hardcore mode
+###
+Hardcore:
+    Enabled: false
+    Death_Stat_Loss_Penalty_Percentage: 75
+    Vampirism: false
 
 #
 #  Settings for mcMMO items
