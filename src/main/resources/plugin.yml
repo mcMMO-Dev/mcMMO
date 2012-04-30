@@ -116,8 +116,6 @@ permissions:
         description: Implies all mcmmo permissions.
         children:
             mcmmo.defaults: true
-            #Instead of containing mcmmo.defaultsop on its own, it should specify each of mcmmo.defaultsop
-            mcmmo.admin: true
             mcmmo.tools.*: true
             mcmmo.chat.adminchat: true
     mcmmo.defaults:
@@ -140,6 +138,7 @@ permissions:
     mcmmo.admin:
         description: Allows access to mmoupdate and other sensitive commands        
     mcmmo.bypass.*:
+        default: false
         description: Implies all bypass permissions.
         children:
             mcmmo.bypass.arcanebypass: true
@@ -147,12 +146,16 @@ permissions:
             mcmmo.bypass.inspect.offline: true
             mcmmo.bypass.hardcoremode: true
     mcmmo.bypass.hardcoremode:
+        default: false
         description: Allows user to bypass negative penalties of Hardcore mode
     mcmmo.bypass.arcanebypass:
+        default: false
         description: Allows user to bypass Arcane Repair so he will never lose enchantments
     mcmmo.bypass.inspect.distance:
+        default: op
         description: Allows user to bypass Inspect's distance requirements
     mcmmo.bypass.inspect.offline:
+        default: op
         description: Allows user to bypass Inspect's offline player requirements
     mcmmo.tools.*:
         description: Implies all mcmmo.tools permissions.

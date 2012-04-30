@@ -14,6 +14,7 @@ Version 1.3.07
  + Added a permission node for Greater Impact ability
  + Added permission nodes for Treasure & Magic Hunter for Fishing
  = Fixed bug where the permission node for Impact didn't work
+ = Fixed some bypass nodes defaulting true for Ops
  ! Changed MySQL to save player information 50ms apart from each other to reduce the load on the MySQL server
  - Removed some unused permission nodes
 
