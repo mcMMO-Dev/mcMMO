@@ -26,6 +26,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Fishing {
@@ -97,7 +98,7 @@ public class Fishing {
             break;
         }
 
-        if (Config.getInstance().getFishingDropsEnabled() && rewards.size() > 0) {
+        if (Config.getInstance().getFishingDropsEnabled() && rewards.size() > 0 && Permissions.getInstance().fishingTreasures(player)) {
             FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
             if (random.nextDouble() * 100 <= treasure.getDropChance()) {
@@ -129,7 +130,7 @@ public class Fishing {
         PlayerProfile PP = Users.getProfile(player);
 
         getFishingResults(player, event);
-        Item theCatch = (Item)event.getCaught();
+        Item theCatch = (Item) event.getCaught();
 
         if (theCatch.getItemStack().getType() != Material.RAW_FISH) {
             final int ENCHANTMENT_CHANCE = 10;
@@ -138,7 +139,7 @@ public class Fishing {
 
             player.sendMessage(LocaleLoader.getString("Fishing.ItemFound"));
             if (ItemChecks.isArmor(fishingResults) || ItemChecks.isTool(fishingResults)) {
-                if (random.nextInt(100) <= ENCHANTMENT_CHANCE) {
+                if (random.nextInt(100) <= ENCHANTMENT_CHANCE && Permissions.getInstance().fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
                             Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();

@@ -108,6 +108,14 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.fishing.shakemob");
     }
 
+    public boolean fishingTreasures(Player player) {
+        return player.hasPermission("mcmmo.ability.fishing.treasures");
+    }
+
+    public boolean fishingMagic(Player player) {
+        return player.hasPermission("mcmmo.ability.fishing.magic");
+    }
+
     /*
      * MCMMO.ABILITY.MINING.*
      */

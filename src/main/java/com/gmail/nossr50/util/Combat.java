@@ -204,9 +204,8 @@ public class Combat {
                         dmgBonusPercent = 2;
                     }
 
-                    /* Every 100 skill levels Archery gains 20% damage bonus, set that here */
+                    /* Every 50 skill levels Archery gains 10% damage bonus, set that here */
                     //TODO: Work in progress for balancing out Archery, will work on it more later...
-                    //TODO: Right now this is calculating a 10% bonus every 50 levels, not 20% every 100. Is this intended?
                     int archeryBonus = (int)(event.getDamage() * dmgBonusPercent);
                     event.setDamage(event.getDamage() + archeryBonus);
                 }

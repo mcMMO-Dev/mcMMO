@@ -213,8 +213,14 @@ permissions:
         description: Allows access to all Fishing abilities
         children:
             mcmmo.ability.fishing.shakemob: true
+            mcmmo.ability.fishing.treasures: true
+            mcmmo.ability.fishing.magic: true
     mcmmo.ability.fishing.shakemob:
         description: Allows access to the Shake Mob ability
+    mcmmo.ability.fishing.treasures:
+        description: Allows treasure drops from Fishing
+    mcmmo.ability.fishing.magic:
+        description: Allows enchanted drops from Fishing
     mcmmo.ability.mining.*:
         description: Allows access to all Mining abilities
         children:
