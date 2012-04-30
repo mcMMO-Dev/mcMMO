@@ -14,7 +14,7 @@ public class Hardcore {
         for(SkillType st : SkillType.values()) {
             if(st.equals(SkillType.ALL))
                 continue;
-            int newValue = (int) (PP.getSkillLevel(st) / Config.getInstance().getHardcoreDeathStatPenaltyPercentage());
+            int newValue = (int) (PP.getSkillLevel(st) - (PP.getSkillLevel(st) / (Config.getInstance().getHardcoreDeathStatPenaltyPercentage() * 0.01D)));
             
             if(newValue < 0)
                 newValue = 0;
