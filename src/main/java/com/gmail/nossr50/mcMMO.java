@@ -18,6 +18,8 @@ import com.gmail.nossr50.listeners.HardcoreListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 
+import net.shatteredlands.shatt.backup.ZipLibrary;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -167,8 +169,18 @@ public class mcMMO extends JavaPlugin {
         for (PlayerProfile x : Users.getProfiles().values()) {
             x.save();
         }
+        
 
         this.getServer().getScheduler().cancelTasks(this); //This removes our tasks
+        
+        //Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
+        
+        try {  //Try the backup
+			ZipLibrary.mcMMObackup();
+		} catch (IOException e)  {
+			p.getLogger().severe(e.toString());
+		}
+        
         System.out.println("mcMMO was disabled."); //How informative!
     }
 
