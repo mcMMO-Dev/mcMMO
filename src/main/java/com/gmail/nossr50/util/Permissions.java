@@ -288,6 +288,10 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.axes.impact");
     }
 
+    public boolean greaterImpact(Player player) {
+        return player.hasPermission("mcmmo.ability.axes.greaterimpact");
+    }
+
     /*
      * MCMMO.ABILITY.ACROBATICS.*
      */

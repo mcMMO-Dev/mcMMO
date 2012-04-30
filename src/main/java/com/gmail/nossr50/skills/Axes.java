@@ -16,6 +16,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Axes {
@@ -110,7 +111,7 @@ public class Axes {
             durabilityDamage += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/30;
 
             if (!hasArmor(targetPlayer)) {
-                applyImpact(attacker, target, event);
+                applyGreaterImpact(attacker, target, event);
             }
             else {
                 for (ItemStack armor : targetPlayer.getInventory().getArmorContents()) {
@@ -120,20 +121,24 @@ public class Axes {
             }
         }
         else {
-            applyImpact(attacker, target, event); //Since mobs are technically unarmored, this will always trigger
+            applyGreaterImpact(attacker, target, event); //Since mobs are technically unarmored, this will always trigger
         }
     }
 
     /**
-     * Apply impact ability.
+     * Apply Greater Impact ability.
      *
      * @param attacker The attacking player
      * @param target The defending entity
      * @param event The event to modify
      */
-    private static void applyImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
+    private static void applyGreaterImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
         final int GREATER_IMPACT_CHANCE = 25;
         final double GREATER_IMPACT_MULTIPLIER = 1.5;
+
+        if (!Permissions.getInstance().greaterImpact(attacker)) {
+            return;
+        }
 
         if (random.nextInt(100) <= GREATER_IMPACT_CHANCE) {
             event.setDamage(event.getDamage() + 2);

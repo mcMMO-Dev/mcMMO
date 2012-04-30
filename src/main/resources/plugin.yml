@@ -342,14 +342,17 @@ permissions:
             mcmmo.ability.axes.bonusdamage: true
             mcmmo.ability.axes.criticalhit: true
             mcmmo.ability.axes.impact: true
+            mcmmo.ability.axes.greaterimpact: true
     mcmmo.ability.axes.skullsplitter:
         description: Allows access to the Skull Splitter ability
     mcmmo.ability.axes.bonusdamage:
         description: Allows bonus damage from Axes
     mcmmo.ability.axes.criticalhit:
         description: Allows access to the Critical Hit ability
-    mcmmo.ability.axes.skullsplitter:
+    mcmmo.ability.axes.impact:
         description: Allows access to the Impact ability
+    mcmmo.ability.axes.greaterimpact:
+        description: Allows access to the Greater Impact ability
     mcmmo.ability.acrobatics.*:
         description: Allows access to all Acrobatics abilities
         children:

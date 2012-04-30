@@ -9,6 +9,8 @@ Key:
 
 Version 1.3.07
  + Added a permission node for Archery bonus damage
+ + Added a permission node for Greater Impact ability
+ = Fixed bug where the permission node for Impact didn't work
  ! Changed MySQL to save player information 50ms apart from each other to reduce the load on the MySQL server
  - Removed some unused permission nodes
 
@@ -36,7 +38,7 @@ Version 1.3.06
  ! Changed Bleeding to now stack to a finite number on Monsters and will wear off eventually
  ! Changed how we handled the config file to prevent any bugs when returning values
  ! Changed locale files to use a new naming scheme. This breaks ALL old locale files. If you want to assist with re-translating anything, go to getlocalization.com/mcMMO
- ! Changed mcremove to check for users in the MySQL DB before sending queries to remove them
+ ! Changed /mcremove to check for users in the MySQL DB before sending queries to remove them
  ! Changed how the tree feller threshold worked for the better
  ! Changed /mcremove to no longer kick players when they are removed from database
  ! Changed /mcremove to work on offline users for FlatFile
