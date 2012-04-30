@@ -142,12 +142,9 @@ permissions:
     mcmmo.bypass.*:
         description: Implies all bypass permissions.
         children:
-            mcmmo.bypass.hardcoremode: true
             mcmmo.bypass.arcanebypass: true
             mcmmo.bypass.inspect.distance: true
             mcmmo.bypass.inspect.offline: true
-    mcmmo.bypass.hardcoremode:
-        description: Allows user to bypass the negative effects of death from Hardcore mode
     mcmmo.bypass.arcanebypass:
         description: Allows user to bypass Arcane Repair so he will never lose enchantments
     mcmmo.bypass.inspect.distance:

@@ -32,9 +32,6 @@ public class Permissions {
     /*
      * MCMMO.BYPASS.*
      */
-    public boolean hardcoremodeBypass(Player player) {
-        return player.hasPermission("mcmmo.bypass.hardcoremode");
-    }
     public boolean arcaneBypass(Player player) {
         return player.hasPermission("mcmmo.bypass.arcanebypass");
     }
