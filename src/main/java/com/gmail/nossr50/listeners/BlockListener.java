@@ -26,6 +26,7 @@ import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -61,7 +62,7 @@ public class BlockListener implements Listener {
             if (b.hasMetadata("mcmmoPlacedBlock")) {
                 b.getRelative(direction).setMetadata("mcmmoNeedsTracking", new FixedMetadataValue(plugin, true));
                 b.removeMetadata("mcmmoPlacedBlock", plugin);
-                }
+            }
         }
 
         for (Block b : blocks) {
@@ -277,13 +278,15 @@ public class BlockListener implements Listener {
             }
         }
         else if (PP.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
-            if (Config.getInstance().getMiningRequiresTool() && ItemChecks.isMiningPick(inhand)) {
-                event.setInstaBreak(true);
-                Mining.SuperBreakerBlockCheck(player, block);
-            }
-            else if (!Config.getInstance().getMiningRequiresTool()) {
-                event.setInstaBreak(true);
-                Mining.SuperBreakerBlockCheck(player, block);
+            if(!player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {  
+                if (Config.getInstance().getMiningRequiresTool() && ItemChecks.isMiningPick(inhand)) {
+                    event.setInstaBreak(true);
+                    Mining.SuperBreakerBlockCheck(player, block);
+                }
+                else if (!Config.getInstance().getMiningRequiresTool()) {
+                    event.setInstaBreak(true);
+                    Mining.SuperBreakerBlockCheck(player, block);
+                }
             }
         }
         else if (PP.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && mat.equals(Material.LEAVES)) {

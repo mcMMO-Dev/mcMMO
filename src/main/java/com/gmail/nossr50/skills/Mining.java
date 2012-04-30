@@ -156,7 +156,7 @@ public class Mining {
      * @param block The block being broken
      */
     public static void miningBlockCheck(Player player, Block block) {
-        if (block.hasMetadata("mcmmoPlacedBlock")) {
+        if (block.hasMetadata("mcmmoPlacedBlock") || player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
             return;
         }
 
@@ -168,12 +168,7 @@ public class Mining {
             int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 
             if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().miningDoubleDrops(player)) {
-                if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
-                    Misc.mcDropItem(block.getLocation(), new ItemStack(block.getType()));
-                }
-                else {
-                    miningDrops(block);
-                }
+                miningDrops(block);
             }
         }
     }
