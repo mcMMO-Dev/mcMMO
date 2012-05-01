@@ -143,37 +143,8 @@ public class WoodCutting {
                     x.setData((byte) 0x0);
                     x.setType(Material.AIR);
 
-                    Config configInstance = Config.getInstance();
-
                     /* Drop the block */
-                    switch (species) {
-                    case GENERIC:
-                        if (configInstance.getOakDoubleDropsEnabled()) {
-                            Misc.mcDropItem(x.getLocation(), item);
-                        }
-                        break;
-
-                    case REDWOOD:
-                        if (configInstance.getSpruceDoubleDropsEnabled()) {
-                            Misc.mcDropItem(x.getLocation(), item);
-                        }
-                        break;
-
-                    case BIRCH:
-                        if (configInstance.getBirchDoubleDropsEnabled()) {
-                            Misc.mcDropItem(x.getLocation(), item);
-                        }
-                        break;
-
-                    case JUNGLE:
-                        if (configInstance.getJungleDoubleDropsEnabled()) {
-                            Misc.mcDropItem(x.getLocation(), item);
-                        }
-                        break;
-
-                    default:
-                        break;
-                    }
+                    Misc.mcDropItem(x.getLocation(), item);
                 }
                 else if (x.getType() == Material.LEAVES) {
                     final int SAPLING_DROP_CHANCE = 10;
