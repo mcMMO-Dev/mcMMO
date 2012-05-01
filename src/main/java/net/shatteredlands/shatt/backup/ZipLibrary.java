@@ -25,19 +25,18 @@ public class ZipLibrary {
     private static File Leaderboards = new File(mcMMO.leaderboardDirectory);
 
     public static void mcMMObackup() throws IOException {
-    	
-    	if (Config.getInstance().getUseMySQL()) {
-    		System.out.println("No Backup performed, in SQL Mode.");
-    		return;
-    	}
-    	
-    	try {
-    	if (BackupDir.mkdir()) {
+        if (Config.getInstance().getUseMySQL()) {
+            System.out.println("No Backup performed, in SQL Mode.");
+            return;
+        }
+
+        try {
+            if (BackupDir.mkdir()) {
                 mcMMO.p.getLogger().info("Created Backup Directory.");
-    	}
-            } catch (Exception e) {
-                mcMMO.p.getLogger().severe(e.toString());
             }
+        } catch (Exception e) {
+            mcMMO.p.getLogger().severe(e.toString());
+        }
  
 
         //Generate the proper date for the backup filename
@@ -58,8 +57,7 @@ public class ZipLibrary {
         packZip(fileZip, sources);
     }
 
-    private static void packZip(File output, List<File> sources) throws IOException
-    {
+    private static void packZip(File output, List<File> sources) throws IOException {
         ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(output));
         zipOut.setLevel(Deflater.DEFAULT_COMPRESSION);
 
@@ -88,7 +86,7 @@ public class ZipLibrary {
 
     private static void zipDir(ZipOutputStream zos, String path, File dir) throws IOException {
         if (!dir.canRead()) {
-            System.out.println("Cannot read " + dir.getCanonicalPath() + " (maybe because of permissions)");
+            System.out.println("Cannot read " + dir.getCanonicalPath() + " (Maybe because of permissions?)");
             return;
         }
 
