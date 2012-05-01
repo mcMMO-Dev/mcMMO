@@ -285,8 +285,8 @@ public class BlastMining {
         }
 
         /* Send message to nearby players */
-        for(Player y : player.getWorld().getPlayers()) {
-            if(y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
+        for (Player y : player.getWorld().getPlayers()) {
+            if (y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
                 y.sendMessage(ability.getAbilityPlayer(player));
             }
         }

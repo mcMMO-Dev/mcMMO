@@ -318,7 +318,7 @@ permissions:
             mcmmo.ability.herbalism.greenterra: true
             mcmmo.ability.herbalism.greenthumbblocks: true
             mcmmo.ability.herbalism.greenthumbwheat: true
-            mcmmo.ability.herbalism.foodbonus: true
+            mcmmo.ability.herbalism.farmersdiet: true
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
     mcmmo.ability.herbalism.greenterra:
@@ -385,12 +385,15 @@ permissions:
         children:
             mcmmo.ability.blastmining.biggerbombs: true
             mcmmo.ability.blastmining.demolitionsexpertise: true
+            mcmmo.ability.blastmining.detonate: true
     mcmmo.ability.blastmining.biggerbombs:
         description: Allows access to the Bigger Bombs ability
     mcmmo.ability.blastmining.demolitionsexpertise:
         description: Allows access to the Demolitions Expertise ability
+    mcmmo.ability.blastmining.detonate:
+        description: Allows for remote TNT detonation
     mcmmo.item.*:
-        description: Implies all mcmmo.item permissions.
+        description: Implies all mcmmo.item permissions
         children:
             mcmmo.item.chimaerawing: true 
     mcmmo.item.chimaerawing:
@@ -461,5 +464,3 @@ permissions:
         description: Allows access to the Axes skill
     mcmmo.skills.acrobatics:
         description: Allows access to the Acrobatics skill
-    mcmmo.skills.blastmining:
-        description: Allows access to the Blast Mining subskill for Mining
