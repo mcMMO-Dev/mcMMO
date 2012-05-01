@@ -222,6 +222,10 @@ public class EntityListener implements Listener {
                 int currentFoodLevel = player.getFoodLevel();
                 int newFoodLevel = event.getFoodLevel();
 
+                if (!Permissions.getInstance().farmersDiet(player)) {
+                    return;
+                }
+
                 /*
                  * Some foods have 3 ranks
                  * Some foods have 5 ranks

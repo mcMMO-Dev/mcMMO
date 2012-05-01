@@ -318,6 +318,7 @@ permissions:
             mcmmo.ability.herbalism.greenterra: true
             mcmmo.ability.herbalism.greenthumbblocks: true
             mcmmo.ability.herbalism.greenthumbwheat: true
+            mcmmo.ability.herbalism.foodbonus: true
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
     mcmmo.ability.herbalism.greenterra:
@@ -326,6 +327,8 @@ permissions:
         description: Allows access to the Green Thumb ability for blocks
     mcmmo.ability.herbalism.greenthumbwheat:
         description: Allows access to the Green Thumb ability for wheat
+    mcmmo.ability.herbalism.farmersdiet:
+        description: Allows access to the Farmer's Diet ability
     mcmmo.ability.excavation.*:
         description: Allows access to all Excavation abilities
         children:

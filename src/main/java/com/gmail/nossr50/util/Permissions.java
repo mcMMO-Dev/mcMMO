@@ -35,6 +35,7 @@ public class Permissions {
     public boolean hardcoremodeBypass(Player player) {
         return player.hasPermission("mcmmo.bypass.hardcoremode");
     }
+
     public boolean arcaneBypass(Player player) {
         return player.hasPermission("mcmmo.bypass.arcanebypass");
     }
@@ -249,6 +250,10 @@ public class Permissions {
 
     public boolean greenThumbWheat(Player player) {
         return player.hasPermission("mcmmo.ability.herbalism.greenthumbwheat");
+    }
+
+    public boolean farmersDiet(Player player) {
+        return player.hasPermission("mcmmo.ability.herbalism.farmersdiet");
     }
 
     /*
