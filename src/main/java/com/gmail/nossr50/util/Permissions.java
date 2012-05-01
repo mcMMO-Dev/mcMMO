@@ -336,6 +336,10 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.blastmining.demolitionsexpertise");
     }
 
+    public boolean blastMining(Player player) {
+        return player.hasPermission("mcmmo.ability.blastmining.detonate");
+    }
+
     /*
      * MCMMO.ITEM.*
      */
@@ -390,10 +394,6 @@ public class Permissions {
 
     public boolean mining(Player player) {
         return player.hasPermission("mcmmo.skills.mining");
-    }
-
-    public boolean blastMining(Player player) {
-        return player.hasPermission("mcmmo.skills.blastmining");
     }
 
     public boolean fishing(Player player) {
