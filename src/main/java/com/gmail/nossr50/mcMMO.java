@@ -81,7 +81,9 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvents(playerListener, this);
         pm.registerEvents(blockListener, this);
         pm.registerEvents(entityListener, this);
-        pm.registerEvents(hardcoreListener, this);
+        if (Config.getInstance().getHardcoreEnabled()) {
+            pm.registerEvents(hardcoreListener, this);
+        }
 
         PluginDescriptionFile pdfFile = this.getDescription();
 
