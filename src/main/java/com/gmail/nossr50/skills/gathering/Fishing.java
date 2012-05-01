@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills;
+package com.gmail.nossr50.skills.gathering;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Fishing {

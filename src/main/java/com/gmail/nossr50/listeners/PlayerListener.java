@@ -37,16 +37,16 @@ import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.skills.BlastMining;
-import com.gmail.nossr50.skills.Fishing;
-import com.gmail.nossr50.skills.Herbalism;
-import com.gmail.nossr50.skills.Repair;
-import com.gmail.nossr50.skills.Skills;
-import com.gmail.nossr50.skills.Taming;
+import com.gmail.nossr50.skills.combat.Taming;
+import com.gmail.nossr50.skills.gathering.BlastMining;
+import com.gmail.nossr50.skills.gathering.Fishing;
+import com.gmail.nossr50.skills.gathering.Herbalism;
+import com.gmail.nossr50.skills.misc.Repair;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Item;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class PlayerListener implements Listener {

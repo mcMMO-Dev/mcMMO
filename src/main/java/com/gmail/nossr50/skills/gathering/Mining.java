@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills;
+package com.gmail.nossr50.skills.gathering;
 
 import java.util.Random;
 
@@ -16,6 +16,7 @@ import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;

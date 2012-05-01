@@ -6,7 +6,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class SkillMonitor implements Runnable {

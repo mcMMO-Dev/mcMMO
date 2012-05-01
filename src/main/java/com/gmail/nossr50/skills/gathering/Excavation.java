@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills;
+package com.gmail.nossr50.skills.gathering;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;

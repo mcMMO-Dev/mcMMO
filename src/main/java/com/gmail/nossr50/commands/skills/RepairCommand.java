@@ -12,7 +12,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.Repair;
+import com.gmail.nossr50.skills.misc.Repair;
 import com.gmail.nossr50.util.Page;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;

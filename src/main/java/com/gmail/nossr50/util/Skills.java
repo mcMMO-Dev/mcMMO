@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills;
+package com.gmail.nossr50.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -12,10 +12,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutStuff;
-import com.gmail.nossr50.util.Leaderboard;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.PlayerStat;

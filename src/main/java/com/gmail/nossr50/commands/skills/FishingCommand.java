@@ -11,7 +11,7 @@ import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.Fishing;
+import com.gmail.nossr50.skills.gathering.Fishing;
 import com.gmail.nossr50.util.Page;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;

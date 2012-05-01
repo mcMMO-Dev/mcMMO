@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills;
+package com.gmail.nossr50.skills.gathering;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,6 +23,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class BlastMining {

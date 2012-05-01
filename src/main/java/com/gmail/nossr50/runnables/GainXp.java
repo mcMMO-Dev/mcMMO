@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.util.Skills;
 
 public class GainXp implements Runnable {
     private Player player = null;

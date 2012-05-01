@@ -30,14 +30,14 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.BleedTimer;
-import com.gmail.nossr50.skills.Acrobatics;
-import com.gmail.nossr50.skills.Archery;
-import com.gmail.nossr50.skills.BlastMining;
-import com.gmail.nossr50.skills.Skills;
-import com.gmail.nossr50.skills.Taming;
+import com.gmail.nossr50.skills.combat.Archery;
+import com.gmail.nossr50.skills.combat.Taming;
+import com.gmail.nossr50.skills.gathering.BlastMining;
+import com.gmail.nossr50.skills.misc.Acrobatics;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class EntityListener implements Listener {

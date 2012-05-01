@@ -27,13 +27,12 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.GainXp;
 import com.gmail.nossr50.runnables.BleedTimer;
-import com.gmail.nossr50.skills.Acrobatics;
-import com.gmail.nossr50.skills.Archery;
-import com.gmail.nossr50.skills.Axes;
-import com.gmail.nossr50.skills.Skills;
-import com.gmail.nossr50.skills.Swords;
-import com.gmail.nossr50.skills.Taming;
-import com.gmail.nossr50.skills.Unarmed;
+import com.gmail.nossr50.skills.combat.Archery;
+import com.gmail.nossr50.skills.combat.Axes;
+import com.gmail.nossr50.skills.combat.Swords;
+import com.gmail.nossr50.skills.combat.Taming;
+import com.gmail.nossr50.skills.combat.Unarmed;
+import com.gmail.nossr50.skills.misc.Acrobatics;
 
 public class Combat {
 
