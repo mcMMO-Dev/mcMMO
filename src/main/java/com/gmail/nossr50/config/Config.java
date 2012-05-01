@@ -46,7 +46,9 @@ public class Config extends ConfigLoader {
     /* Hardcore Mode */
     public boolean getHardcoreEnabled() { return config.getBoolean("Hardcore.Enabled", false); }
     public double getHardcoreDeathStatPenaltyPercentage() { return config.getDouble("Hardcore.Death_Stat_Loss_Penalty_Percentage", 75); }
+    public double getHardcoreVampirismStatLeechPercentage() { return config.getDouble("Hardcore.Vampirism_Stat_Leech_Percentage", 5); }
     public boolean getHardcoreVampirismEnabled() { return config.getBoolean("Hardcore.Vampirism", false); }
+    
 
     /* Commands */
     public boolean getCommandXPLockEnabled() { return config.getBoolean("Commands.xplock.Enabled", true); }
