@@ -8,12 +8,10 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.buttons.ButtonEscape;
 import com.gmail.nossr50.datatypes.buttons.ButtonHUDStyle;
-import com.gmail.nossr50.datatypes.buttons.ButtonPartyToggle;
 
 public class PopupMMO extends GenericPopup {
 
     private ButtonHUDStyle HUDButton = null;
-    private ButtonPartyToggle PartyButton = null;
     private ButtonEscape EscapeButton = null;
     private GenericLabel mcMMO_label = new GenericLabel();
     private GenericLabel tip_escape = new GenericLabel();
@@ -53,7 +51,7 @@ public class PopupMMO extends GenericPopup {
 
     public void updateButtons(PlayerProfile PP) {
         HUDButton.updateText(PP);
-        PartyButton.updateText(PP);
+        //PartyButton.updateText(PP);
         this.setDirty(true);
     }
 }
