@@ -32,7 +32,7 @@ public class Hardcore {
         for(SkillType st : SkillType.values()) {
             if(st.equals(SkillType.ALL))
                 continue;
-            int newValue = (int) (PPd.getSkillLevel(st) - (PPd.getSkillLevel(st) * (Config.getInstance().getHardcoreVampirismStatLeechPercentage() * 0.01D)));
+            int newValue = (int) (PPd.getSkillLevel(st) * (Config.getInstance().getHardcoreVampirismStatLeechPercentage() * 0.01D));
             PPk.modifySkill(st, newValue+PPk.getSkillLevel(st));
         }
         

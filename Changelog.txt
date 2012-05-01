@@ -9,6 +9,7 @@ Key:
 
 Version 1.3.07
  + Added new configurable Hardcore mode functionality to mcMMO
+ + Added new configurable Vampirism PVP stat leech for Hardcore mode
  + Added new bypass permission node for the negative penalties of Hardcore mode 'mcmmo.bypass.hardcoremode'
  + Added a permission node for Archery bonus damage
  + Added a permission node for Greater Impact ability
