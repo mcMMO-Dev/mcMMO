@@ -25,6 +25,7 @@ Version 1.3.07
  ! Changed Super Breaker to be non-functional when used with a Silk Touch enchanted pick
  ! Changed MySQL to save player information 50ms apart from each other to reduce the load on the MySQL server
  ! Changed the permission node for Blast Mining detonation to mcmmo.ability.blastmining.detonate (was mcmmo.skills.blastmining) for the sake of consistency
+ ! Changed skill commands to only display what you have permissions for
  - Removed some unused permission nodes
  - Removed a few config options in favor of permissions nodes (Hunger Bonus, Armor/Tool Repair, Instant Wheat Regrowth)
  - Removed level requirement for repairing string tools from the config file

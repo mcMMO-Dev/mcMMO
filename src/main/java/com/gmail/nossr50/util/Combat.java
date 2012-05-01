@@ -123,7 +123,7 @@ public class Combat {
                         Taming.fastFoodService(PPo, wolf, event);
                     }
 
-                    if (Permissions.getInstance().sharpenedclaws(master)) {
+                    if (Permissions.getInstance().sharpenedClaws(master)) {
                         Taming.sharpenedClaws(PPo, event);
                     }
 

@@ -76,7 +76,7 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.taming.fastfoodservice");
     }
 
-    public boolean sharpenedclaws(Player player) {
+    public boolean sharpenedClaws(Player player) {
         return player.hasPermission("mcmmo.ability.taming.sharpenedclaws");
     }
 
