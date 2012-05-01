@@ -286,60 +286,59 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
         PlayerProfile PP = Users.getProfile(player);
-        boolean partyChat = PP.getPartyChatMode();
-        boolean adminChat = PP.getAdminChatMode();
-        Set<Player> recipients = event.getRecipients();
 
-        Set<Player> intendedRecipients = new HashSet<Player>();
-        ChatColor color = null;
+        if (PP.getPartyChatMode()) {
+            if (!PP.inParty()) {
+                player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
+                return;
+            }
 
-        if (partyChat || adminChat) {
-            if (partyChat) {
-                if (!PP.inParty()) {
-                    player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
-                    return;
-                }
+            McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), PP.getParty(), event.getMessage());
+            plugin.getServer().getPluginManager().callEvent(chatEvent);
 
-                color = ChatColor.GREEN;
+            if(chatEvent.isCancelled()) {
+                return;
+            }
 
-                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), PP.getParty(), event.getMessage());
-                plugin.getServer().getPluginManager().callEvent(chatEvent);
+            event.setMessage(chatEvent.getMessage());
 
-                if(chatEvent.isCancelled()) return;
+            Set<Player> intendedRecipients = new HashSet<Player>();
 
-                event.setMessage(chatEvent.getMessage());
+            for (Player x : Party.getInstance().getOnlineMembers(player)) {
+                intendedRecipients.add(x);
+            }
 
-                for (Player x : Party.getInstance().getOnlineMembers(player)) {
+            ChatColor bracketColor = ChatColor.GREEN;
+
+            event.setFormat(bracketColor + "(" + ChatColor.WHITE + "%1$s" + bracketColor + ") %2$s");
+            event.getRecipients().retainAll(intendedRecipients);
+        }
+        else if (PP.getAdminChatMode()) {
+            McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), event.getMessage());
+            plugin.getServer().getPluginManager().callEvent(chatEvent);
+
+            if(chatEvent.isCancelled()) {
+                return;
+            }
+
+            event.setMessage(chatEvent.getMessage());
+
+            Set<Player> intendedRecipients = new HashSet<Player>();
+
+            for (Player x : plugin.getServer().getOnlinePlayers()) {
+                if (x.isOp() || Permissions.getInstance().adminChat(x)) {
                     intendedRecipients.add(x);
                 }
-
-                event.setFormat(color + "(" + ChatColor.WHITE + "%1$s" + color + ") %2$s");
             }
 
-            if (adminChat) {
-                color = ChatColor.AQUA;
+            ChatColor bracketColor = ChatColor.AQUA;
 
-                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), event.getMessage());
-                plugin.getServer().getPluginManager().callEvent(chatEvent);
-
-                if(chatEvent.isCancelled()) return;
-
-                event.setMessage(chatEvent.getMessage());
-
-                for (Player x : plugin.getServer().getOnlinePlayers()) {
-                    if (x.isOp() || Permissions.getInstance().adminChat(x)) {
-                        intendedRecipients.add(x);
-                    }
-                }
-
-                event.setFormat(color + "{" + ChatColor.WHITE + "%1$s" + color + "} %2$s");
-            }
-
-            recipients.retainAll(intendedRecipients);
+            event.setFormat(bracketColor + "{" + ChatColor.WHITE + "%1$s" + bracketColor + "} %2$s");
+            event.getRecipients().retainAll(intendedRecipients);
         }
     }
 
