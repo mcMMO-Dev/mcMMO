@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
@@ -18,6 +19,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -140,8 +142,37 @@ public class WoodCutting {
                     x.setData((byte) 0x0);
                     x.setType(Material.AIR);
 
+                    Config configInstance = Config.getInstance();
+
                     /* Drop the block */
-                    Misc.mcDropItem(x.getLocation(), item);
+                    switch (species) {
+                    case GENERIC:
+                        if (configInstance.getOakDoubleDropsEnabled()) {
+                            Misc.mcDropItem(x.getLocation(), item);
+                        }
+                        break;
+
+                    case REDWOOD:
+                        if (configInstance.getSpruceDoubleDropsEnabled()) {
+                            Misc.mcDropItem(x.getLocation(), item);
+                        }
+                        break;
+
+                    case BIRCH:
+                        if (configInstance.getBirchDoubleDropsEnabled()) {
+                            Misc.mcDropItem(x.getLocation(), item);
+                        }
+                        break;
+
+                    case JUNGLE:
+                        if (configInstance.getJungleDoubleDropsEnabled()) {
+                            Misc.mcDropItem(x.getLocation(), item);
+                        }
+                        break;
+
+                    default:
+                        break;
+                    }
                 }
                 else if (x.getType() == Material.LEAVES) {
                     final int SAPLING_DROP_CHANCE = 10;
@@ -156,25 +187,9 @@ public class WoodCutting {
             }
         }
 
-        PP.addXP(SkillType.WOODCUTTING, xp); //Tree Feller gives nerf'd XP
-        Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
-    }
-
-    /**
-     * Checks if the block is affected by Tree Feller.
-     *
-     * @param block Block to check
-     * @return true if the block is affected by Tree Feller, false otherwise
-     */
-    private static boolean treeFellerCompatible(Block block) {
-        switch (block.getType()) {
-        case LOG:
-        case LEAVES:
-        case AIR:
-            return true;
-
-        default:
-            return false;
+        if (Permissions.getInstance().woodcutting(player)) {
+            PP.addXP(SkillType.WOODCUTTING, xp); //Tree Feller gives nerf'd XP
+            Skills.XpCheckSkill(SkillType.WOODCUTTING, player);
         }
     }
 
@@ -202,24 +217,24 @@ public class WoodCutting {
         Block yPositive = currentBlock.getRelative(0, 1, 0);
 
         if (!currentBlock.hasMetadata("mcmmoPlacedBlock")) {
-            if (!isTooAggressive(currentBlock, xPositive) && treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive)) {
+            if (!isTooAggressive(currentBlock, xPositive) && BlockChecks.treeFellerCompatible(xPositive.getType()) && !toBeFelled.contains(xPositive)) {
                 processTreeFelling(xPositive, toBeFelled);
             }
 
-            if (!isTooAggressive(currentBlock, xNegative) && treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative)) {
+            if (!isTooAggressive(currentBlock, xNegative) && BlockChecks.treeFellerCompatible(xNegative.getType()) && !toBeFelled.contains(xNegative)) {
                 processTreeFelling(xNegative, toBeFelled);
             }
 
-            if (!isTooAggressive(currentBlock, zPositive) && treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive)) {
+            if (!isTooAggressive(currentBlock, zPositive) && BlockChecks.treeFellerCompatible(zPositive.getType()) && !toBeFelled.contains(zPositive)) {
                 processTreeFelling(zPositive, toBeFelled);
             }
 
-            if (!isTooAggressive(currentBlock, zNegative) && treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative)) {
+            if (!isTooAggressive(currentBlock, zNegative) && BlockChecks.treeFellerCompatible(zNegative.getType()) && !toBeFelled.contains(zNegative)) {
                 processTreeFelling(zNegative, toBeFelled);
             }
         }
 
-        if (treeFellerCompatible(yPositive)) {
+        if (BlockChecks.treeFellerCompatible(yPositive.getType())) {
             if(!currentBlock.hasMetadata("mcmmoPlacedBlock") && !toBeFelled.contains(yPositive)) {
                 processTreeFelling(yPositive, toBeFelled);
             }
@@ -258,9 +273,43 @@ public class WoodCutting {
         byte type = block.getData();
         Material mat = Material.getMaterial(block.getTypeId());
 
+        Tree tree = (Tree) block.getState().getData();
+        TreeSpecies species = tree.getSpecies();
+
         if ((skillLevel > MAX_SKILL_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().woodcuttingDoubleDrops(player)) {
+            Config configInstance = Config.getInstance();
             ItemStack item = new ItemStack(mat, 1, (short) 0, type);
-            Misc.mcDropItem(block.getLocation(), item);
+            Location location = block.getLocation();
+
+            /* Drop the block */
+            switch (species) {
+            case GENERIC:
+                if (configInstance.getOakDoubleDropsEnabled()) {
+                    Misc.mcDropItem(location, item);
+                }
+                break;
+
+            case REDWOOD:
+                if (configInstance.getSpruceDoubleDropsEnabled()) {
+                    Misc.mcDropItem(location, item);
+                }
+                break;
+
+            case BIRCH:
+                if (configInstance.getBirchDoubleDropsEnabled()) {
+                    Misc.mcDropItem(location, item);
+                }
+                break;
+
+            case JUNGLE:
+                if (configInstance.getJungleDoubleDropsEnabled()) {
+                    Misc.mcDropItem(location, item);
+                }
+                break;
+
+            default:
+                break;
+            }
         }
     }
 

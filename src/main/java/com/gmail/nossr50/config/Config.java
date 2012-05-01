@@ -19,7 +19,6 @@ public class Config extends ConfigLoader {
      * GENERAL SETTINGS
      */
 
-
     /* General Settings */
     public String getLocale() { return config.getString("General.Locale", "en_us"); }
     public boolean getMOTDEnabled() { return config.getBoolean("General.MOTD_Enabled", true); }
@@ -43,7 +42,7 @@ public class Config extends ConfigLoader {
             return "";
         }
     }
-    
+
     /* Hardcore Mode */
     public boolean getHardcoreEnabled() { return config.getBoolean("Hardcore.Enabled", false); }
     public double getHardcoreDeathStatPenaltyPercentage() { return config.getDouble("Hardcore.Death_Stat_Loss_Penalty_Percentage", 75); }
@@ -137,11 +136,25 @@ public class Config extends ConfigLoader {
     public int getHerbalismXPNetherWart() { return config.getInt("Experience.Herbalism.Nether_Wart", 50); }
     public int getHerbalismXPLilyPads() { return config.getInt("Experience.Herbalism.Lily_Pads", 100); }
     public int getHerbalismXPVines() { return config.getInt("Experience.Herbalism.Vines", 10); }
+
     public boolean getHerbalismHungerBonusEnabled() { return config.getBoolean("Skills.Herbalism.Hunger_Bonus", true); }
     public boolean getHerbalismWheatRegrowth() { return config.getBoolean("Skills.Herbalism.Instant_Wheat_Regrowth", true); }
     public boolean getHerbalismGreenThumbCobbleToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true); }
     public boolean getHerbalismGreenThumbSmoothbrickToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true); }
     public boolean getHerbalismGreenThumbDirtToGrass() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Dirt_To_Grass", true); }
+
+    public boolean getBrownMushroomsDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Brown_Mushrooms", true); }
+    public boolean getCactiDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Cacti", true); }
+    public boolean getWheatDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Wheat", true); }
+    public boolean getMelonsDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Melons", true); }
+    public boolean getNetherWartsDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Nether_Warts", true); }
+    public boolean getPumpkinsDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Pumpkins", true); }
+    public boolean getRedMushroomsDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Red_Mushrooms", true); }
+    public boolean getRedRosesDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Red_Roses", true); }
+    public boolean getSugarCaneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Sugar_Cane", true); }
+    public boolean getVinesDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Vines", true); }
+    public boolean getWaterLiliesDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Water_Lilies", true); }
+    public boolean getYellowFlowersDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Yellow_Flowers", true); }
 
     /* Mining */
     public int getMiningXPGoldOre() { return config.getInt("Experience.Mining.Gold", 250); } 
@@ -157,7 +170,21 @@ public class Config extends ConfigLoader {
     public int getMiningXPSandstone() { return config.getInt("Experience.Mining.Sandstone", 30); }
     public int getMiningXPEndStone() { return config.getInt("Experience.Mining.End_Stone", 150); }
     public int getMiningXPMossyStone() { return config.getInt("Experience.Mining.Moss_Stone", 30); }
-    
+
+    public boolean getCoalDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Coal", true); }
+    public boolean getDiamondDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Diamond", true); }
+    public boolean getEndStoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.End_Stone", true); }
+    public boolean getGlowstoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Glowstone", true); }
+    public boolean getGoldDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Gold", true); }
+    public boolean getIronDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Iron", true); }
+    public boolean getLapisDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Lapis", true); }
+    public boolean getMossyCobblestoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Moss_Stone", true); }
+    public boolean getNetherrackDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Netherrack", true); }
+    public boolean getObsidianDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Obsidian", true); }
+    public boolean getRedstoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Redstone", true); }
+    public boolean getSandstoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Sandstone", true); }
+    public boolean getStoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Stone", true); }
+
     public int getDetonatorItemID() { return config.getInt("Skills.Mining.Detonator_ID", 259); }
 
     /* Repair */
@@ -171,7 +198,7 @@ public class Config extends ConfigLoader {
     public int getRepairIronMaterial() { return config.getInt("Skills.Repair.Iron.ID", 265); }
     public int getRepairStringMaterial() { return config.getInt("Skills.Repair.String.ID", 287); }
     public int getRepairLeatherMaterial() { return config.getInt("Skills.Repair.Leather.ID", 334); }
-    
+
     public boolean getRepairArmorAllowed() { return config.getBoolean("Skills.Repair.Can_Repair_Armor", true); }
     public boolean getRepairToolsAllowed() { return config.getBoolean("Skills.Repair.Can_Repair_Tools", true); }
     public int getRepairDiamondLevelRequirement() { return config.getInt("Skills.Repair.Diamond.Level_Required", 50); }
@@ -191,6 +218,11 @@ public class Config extends ConfigLoader {
     public int getWoodcuttingXPBirch() { return config.getInt("Experience.Woodcutting.Birch", 90); }
     public int getWoodcuttingXPSpruce() { return config.getInt("Experience.Woodcutting.Spruce", 80); }
     public int getWoodcuttingXPJungle() { return config.getInt("Experience.Woodcutting.Jungle", 100); }
+
+    public boolean getOakDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Oak", true); }
+    public boolean getBirchDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Birch", true); }
+    public boolean getSpruceDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Spruce", true); }
+    public boolean getJungleDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Jungle", true); }
 
     /* Arcane Forging */
     public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Arcane_Forging.Downgrades.Enabled", true); }

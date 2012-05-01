@@ -63,52 +63,6 @@ public class Herbalism {
     }
 
     /**
-     * Check if a block can be made mossy.
-     *
-     * @param material The type of Block to check
-     * @return true if the block can be made mossy, false otherwise
-     */
-    public static Boolean makeMossy(Material type) {
-        switch (type) {
-        case COBBLESTONE:
-        case DIRT:
-        case SMOOTH_BRICK:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
-     * Check if a block is affected by Herbalism abilities.
-     *
-     * @param type The type of Block to check
-     * @return true if the block is affected, false otherwise
-     */
-    public static Boolean canBeGreenTerra(Material type){
-        switch (type) {
-        case BROWN_MUSHROOM:
-        case CACTUS:
-        case CROPS:
-        case JACK_O_LANTERN:
-        case MELON_BLOCK:
-        case NETHER_WARTS:
-        case PUMPKIN:
-        case RED_MUSHROOM:
-        case RED_ROSE:
-        case SUGAR_CANE_BLOCK:
-        case VINE:
-        case WATER_LILY:
-        case YELLOW_FLOWER:
-            return true;
-
-        default:
-            return false;
-        }
-    }
-
-    /**
      * Check for extra Herbalism drops.
      *
      * @param block The block to check for extra drops
@@ -231,30 +185,89 @@ public class Herbalism {
 
         if (mat == null) {
             return;
-        } else if (Permissions.getInstance().herbalismDoubleDrops(player)) {
+        }
+
+        if (Permissions.getInstance().herbalismDoubleDrops(player)) {
             ItemStack is = new ItemStack(mat);
 
             if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
-                if (type.equals(Material.CACTUS)) {
-                    Misc.mcDropItems(loc, is, catciDrops);
-                }
-                else if (type.equals(Material.MELON_BLOCK)) {
-                    Misc.mcDropItems(loc, is, 3);
-                    Misc.mcRandomDropItems(loc, is, 50, 4);
-                }
-                else if (type.equals(Material.NETHER_WARTS)) {
-                    Misc.mcDropItems(loc, is, 2);
-                    Misc.mcRandomDropItems(loc, is, 50, 3);
-                }
-                else if (type.equals(Material.SUGAR_CANE_BLOCK)) {
-                    Misc.mcDropItems(loc, is, caneDrops);
-                }
-                else {
-                    Misc.mcDropItem(loc, is);
+                Config configInstance = Config.getInstance();
+
+                switch (type) {
+                case BROWN_MUSHROOM:
+                    if (configInstance.getBrownMushroomsDoubleDropsEnabled()) {
+                        Misc.mcDropItem(loc, is);
+                    }
+                    break;
+
+                case CACTUS:
+                    if (configInstance.getCactiDoubleDropsEnabled()) {
+                        Misc.mcDropItems(loc, is, catciDrops);
+                    }
+                    break;
+
+                case CROPS:
+                    if (configInstance.getWheatDoubleDropsEnabled()) {
+                        Misc.mcDropItem(loc, is);
+                    }
+                    break;
+
+                case MELON_BLOCK:
+                    if (configInstance.getMelonsDoubleDropsEnabled()) {
+                        Misc.mcDropItems(loc, is, 3);
+                        Misc.mcRandomDropItems(loc, is, 50, 4);
+                    }
+                    break;
+
+                case NETHER_WARTS:
+                    if (configInstance.getNetherWartsDoubleDropsEnabled()) {
+                        Misc.mcDropItems(loc, is, 2);
+                        Misc.mcRandomDropItems(loc, is, 50, 3);
+                    }
+                    break;
+
+                case PUMPKIN:
+                    if (configInstance.getPumpkinsDoubleDropsEnabled()) {
+                        Misc.mcDropItem(loc, is);
+                    }
+                    break;
+
+                case RED_MUSHROOM:
+                    if (configInstance.getRedMushroomsDoubleDropsEnabled()) {
+                        Misc.mcDropItem(loc, is);
+                    }
+                    break;
+
+                case SUGAR_CANE_BLOCK:
+                    if (configInstance.getSugarCaneDoubleDropsEnabled()) {
+                        Misc.mcDropItems(loc, is, caneDrops);
+                    }
+                    break;
+
+                case VINE:
+                    if (configInstance.getVinesDoubleDropsEnabled()) {
+                        Misc.mcDropItem(loc, is);
+                    }
+                    break;
+
+                case WATER_LILY:
+                    if (configInstance.getWaterLiliesDoubleDropsEnabled()) {
+                        Misc.mcDropItem(loc, is);
+                    }
+                    break;
+
+                case YELLOW_FLOWER:
+                    if (configInstance.getYellowFlowersDoubleDropsEnabled()) {
+                        Misc.mcDropItem(loc, is);
+                    }
+                    break;
+
+                default:
+                    break;
                 }
             }
         }
-        
+
         PP.addXP(SkillType.HERBALISM, xp);
         Skills.XpCheckSkill(SkillType.HERBALISM, player);
     }

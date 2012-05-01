@@ -222,7 +222,7 @@ public class PlayerListener implements Listener {
             }
 
             /* GREEN THUMB CHECK */
-            if (Permissions.getInstance().greenThumbBlocks(player) && Herbalism.makeMossy(mat) && is.getType().equals(Material.SEEDS)) {
+            if (Permissions.getInstance().greenThumbBlocks(player) && BlockChecks.makeMossy(mat) && is.getType().equals(Material.SEEDS)) {
                 Herbalism.greenThumbBlocks(is, player, block);
             }
 

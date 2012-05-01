@@ -1,6 +1,6 @@
 #
 #  mcMMO configuration
-#    First generated on ${project.version}-b${BUILD_NUMBER}
+#  First generated on ${project.version}-b${BUILD_NUMBER}
 #
 #####
 
@@ -172,6 +172,43 @@ Skills:
     Woodcutting:
         Level_Cap: 0
         Requires_Axe: true
+
+#
+#  Settings for Double Drops  
+###
+Double_Drops:
+    Herbalism:
+        Brown_Mushrooms: true
+        Cacti: true
+        Melons: true
+        Nether_Warts: true
+        Pumpkins: true
+        Red_Mushrooms: true
+        Red_Roses: true
+        Sugar_Cane: true
+        Vines: true
+        Water_Lilies: true
+        Wheat: true
+        Yellow_Flowers: true
+    Mining:
+        Coal: true
+        Diamond: true
+        End_Stone: true
+        Glowstone: true
+        Gold: true
+        Iron: true
+        Lapis: true
+        Moss_Stone: true
+        Netherrack: true
+        Obsidian: true
+        Redstone: true
+        Sandstone: true
+        Stone: true
+    Woodcutting:
+        Oak: true
+        Birch: true
+        Spruce: true
+        Jungle: true
 
 #
 #  Settings for XP distribution

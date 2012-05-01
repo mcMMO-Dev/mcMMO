@@ -27,7 +27,6 @@ public class BlockChecks {
         case GRASS:
         case GRAVEL:
         case IRON_ORE:
-        case JACK_O_LANTERN:
         case LAPIS_ORE:
         case LOG:
         case MELON_BLOCK:
@@ -110,6 +109,120 @@ public class BlockChecks {
         case IRON_ORE:
         case LAPIS_ORE:
         case REDSTONE_ORE:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * Check if a block can be made mossy.
+     *
+     * @param material The type of Block to check
+     * @return true if the block can be made mossy, false otherwise
+     */
+    public static boolean makeMossy(Material type) {
+        switch (type) {
+        case COBBLESTONE:
+        case DIRT:
+        case SMOOTH_BRICK:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * Check if a block is affected by Herbalism abilities.
+     *
+     * @param type The type of Block to check
+     * @return true if the block is affected, false otherwise
+     */
+    public static boolean canBeGreenTerra(Material type){
+        switch (type) {
+        case BROWN_MUSHROOM:
+        case CACTUS:
+        case CROPS:
+        case MELON_BLOCK:
+        case NETHER_WARTS:
+        case PUMPKIN:
+        case RED_MUSHROOM:
+        case RED_ROSE:
+        case SUGAR_CANE_BLOCK:
+        case VINE:
+        case WATER_LILY:
+        case YELLOW_FLOWER:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * Check to see if a block is broken by Super Breaker.
+     *
+     * @param type The type of Block to check
+     * @return true if the block would be broken by Super Breaker, false otherwise
+     */
+    public static Boolean canBeSuperBroken(Material type) {
+        switch (type) {
+        case COAL_ORE:
+        case DIAMOND_ORE:
+        case ENDER_STONE:
+        case GLOWING_REDSTONE_ORE:
+        case GLOWSTONE:
+        case GOLD_ORE:
+        case IRON_ORE:
+        case LAPIS_ORE:
+        case MOSSY_COBBLESTONE:
+        case NETHERRACK:
+        case OBSIDIAN:
+        case REDSTONE_ORE:
+        case SANDSTONE:
+        case STONE:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * Check to see if a block can be broken by Giga Drill Breaker.
+     *
+     * @param material The type of block to check
+     * @return
+     */
+    public static boolean canBeGigaDrillBroken(Material type) {
+        switch (type) {
+        case CLAY:
+        case DIRT:
+        case GRASS:
+        case GRAVEL:
+        case MYCEL:
+        case SAND:
+        case SOUL_SAND:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * Checks if the block is affected by Tree Feller.
+     *
+     * @param block Block to check
+     * @return true if the block is affected by Tree Feller, false otherwise
+     */
+    public static boolean treeFellerCompatible(Material type) {
+        switch (type) {
+        case LOG:
+        case LEAVES:
+        case AIR:
             return true;
 
         default:

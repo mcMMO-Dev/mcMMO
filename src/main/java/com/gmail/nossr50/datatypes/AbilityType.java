@@ -5,9 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.Excavation;
-import com.gmail.nossr50.skills.Herbalism;
-import com.gmail.nossr50.skills.Mining;
+import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Permissions;
 
 public enum AbilityType {
@@ -130,33 +128,35 @@ public enum AbilityType {
      * @return true if the player has permissions, false otherwise
      */
     public boolean getPermissions(Player player) {
+        Permissions permInstance = Permissions.getInstance();
+
         switch (this) {
         case BERSERK:
-            return Permissions.getInstance().berserk(player);
+            return permInstance.berserk(player);
 
         case BLAST_MINING:
-            return Permissions.getInstance().blastMining(player);
+            return permInstance.blastMining(player);
 
         case GIGA_DRILL_BREAKER:
-            return Permissions.getInstance().gigaDrillBreaker(player);
+            return permInstance.gigaDrillBreaker(player);
 
         case GREEN_TERRA:
-            return Permissions.getInstance().greenTerra(player);
+            return permInstance.greenTerra(player);
 
         case LEAF_BLOWER:
-            return Permissions.getInstance().leafBlower(player);
+            return permInstance.leafBlower(player);
 
         case SERRATED_STRIKES:
-            return Permissions.getInstance().serratedStrikes(player);
+            return permInstance.serratedStrikes(player);
 
         case SKULL_SPLIITER:
-            return Permissions.getInstance().skullSplitter(player);
+            return permInstance.skullSplitter(player);
 
         case SUPER_BREAKER:
-            return Permissions.getInstance().superBreaker(player);
+            return permInstance.superBreaker(player);
 
         case TREE_FELLER:
-            return Permissions.getInstance().treeFeller(player);
+            return permInstance.treeFeller(player);
 
         default:
             return false;
@@ -172,19 +172,19 @@ public enum AbilityType {
     public boolean blockCheck(Material material) {
         switch (this) {
         case BERSERK:
-            return (Excavation.canBeGigaDrillBroken(material) || material.equals(Material.SNOW));
+            return (BlockChecks.canBeGigaDrillBroken(material) || material.equals(Material.SNOW));
 
         case GIGA_DRILL_BREAKER:
-            return Excavation.canBeGigaDrillBroken(material);
+            return BlockChecks.canBeGigaDrillBroken(material);
 
         case GREEN_TERRA:
-            return Herbalism.makeMossy(material);
+            return BlockChecks.makeMossy(material);
 
         case LEAF_BLOWER:
             return material.equals(Material.LEAVES);
 
         case SUPER_BREAKER:
-            return Mining.canBeSuperBroken(material);
+            return BlockChecks.canBeSuperBroken(material);
 
         case TREE_FELLER:
             return material.equals(Material.LOG);

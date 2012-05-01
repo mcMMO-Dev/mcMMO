@@ -13,6 +13,7 @@ import org.bukkit.enchantments.Enchantment;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -34,44 +35,98 @@ public class Mining {
         Location loc = block.getLocation();
         Material type = block.getType();
         ItemStack item = new ItemStack(type);
+        Config configInstance = Config.getInstance();
 
         switch (type) {
         case COAL_ORE:
-            item = new ItemStack(Material.COAL, 1, (short) 0, CoalType.COAL.getData());
-            Misc.mcDropItem(loc, item);
+            if (configInstance.getCoalDoubleDropsEnabled()) {
+                item = new ItemStack(Material.COAL, 1, (short) 0, CoalType.COAL.getData());
+                Misc.mcDropItem(loc, item);
+            }
             break;
 
         case DIAMOND_ORE:
-            item = new ItemStack(Material.DIAMOND);
-            Misc.mcDropItem(loc, item);
+            if (configInstance.getDiamondDoubleDropsEnabled()) {
+                item = new ItemStack(Material.DIAMOND);
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case ENDER_STONE:
+            if (configInstance.getEndStoneDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
-            item = new ItemStack(Material.REDSTONE);
-            Misc.mcDropItems(loc, item, 4);
-            Misc.mcRandomDropItem(loc, item, 50);
+            if (configInstance.getRedstoneDoubleDropsEnabled()) {
+                item = new ItemStack(Material.REDSTONE);
+                Misc.mcDropItems(loc, item, 4);
+                Misc.mcRandomDropItem(loc, item, 50);
+            }
             break;
 
         case GLOWSTONE:
-            item = new ItemStack(Material.GLOWSTONE_DUST);
-            Misc.mcDropItems(loc, item, 2);
-            Misc.mcRandomDropItems(loc, item, 50, 2);
+            if (configInstance.getGlowstoneDoubleDropsEnabled()) {
+                item = new ItemStack(Material.GLOWSTONE_DUST);
+                Misc.mcDropItems(loc, item, 2);
+                Misc.mcRandomDropItems(loc, item, 50, 2);
+            }
+            break;
+
+        case GOLD_ORE:
+            if (configInstance.getGoldDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case IRON_ORE:
+            if (configInstance.getIronDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
             break;
 
         case LAPIS_ORE:
-            item = new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x4);
-            Misc.mcDropItems(loc, item, 4);
-            Misc.mcRandomDropItems(loc, item, 50, 4);
+            if (configInstance.getLapisDoubleDropsEnabled()) {
+                item = new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x4);
+                Misc.mcDropItems(loc, item, 4);
+                Misc.mcRandomDropItems(loc, item, 50, 4);
+            }
+            break;
+
+        case MOSSY_COBBLESTONE:
+            if (configInstance.getMossyCobblestoneDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case NETHERRACK:
+            if (configInstance.getNetherrackDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case OBSIDIAN:
+            if (configInstance.getObsidianDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case SANDSTONE:
+            if (configInstance.getSandstoneDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
             break;
 
         case STONE:
-            item = new ItemStack(Material.COBBLESTONE);
-            Misc.mcDropItem(loc, item);
+            if (configInstance.getStoneDoubleDropsEnabled()) {
+                item = new ItemStack(Material.COBBLESTONE);
+                Misc.mcDropItem(loc, item);
+            }
             break;
 
         default:
-            Misc.mcDropItem(loc, item);
             break;
         }
     }
@@ -162,7 +217,7 @@ public class Mining {
 
         miningXP(player, block);
 
-        if (canBeSuperBroken(block.getType())) {
+        if (BlockChecks.canBeSuperBroken(block.getType())) {
             final int MAX_BONUS_LEVEL = 1000;
 
             int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
@@ -170,35 +225,6 @@ public class Mining {
             if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().miningDoubleDrops(player)) {
                 miningDrops(block);
             }
-        }
-    }
-
-    /**
-     * Check to see if a block is broken by Super Breaker.
-     *
-     * @param type The type of Block to check
-     * @return true if the block would be broken by Super Breaker, false otherwise
-     */
-    public static Boolean canBeSuperBroken(Material type) {
-        switch (type) {
-        case COAL_ORE:
-        case DIAMOND_ORE:
-        case ENDER_STONE:
-        case GLOWING_REDSTONE_ORE:
-        case GLOWSTONE:
-        case GOLD_ORE:
-        case IRON_ORE:
-        case LAPIS_ORE:
-        case MOSSY_COBBLESTONE:
-        case NETHERRACK:
-        case OBSIDIAN:
-        case REDSTONE_ORE:
-        case SANDSTONE:
-        case STONE:
-            return true;
-
-        default:
-            return false;
         }
     }
 
