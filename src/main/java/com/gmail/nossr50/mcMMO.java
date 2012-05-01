@@ -174,7 +174,7 @@ public class mcMMO extends JavaPlugin {
         try {
             ZipLibrary.mcMMObackup();
         } catch (IOException e) {
-            p.getLogger().severe(e.toString());
+            getLogger().severe(e.toString());
         }
 
         System.out.println("mcMMO was disabled."); //How informative!
