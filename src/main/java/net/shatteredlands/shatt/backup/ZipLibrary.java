@@ -1,7 +1,5 @@
 package net.shatteredlands.shatt.backup;
 
-import com.gmail.nossr50.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,6 +11,8 @@ import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import com.gmail.nossr50.mcMMO;
 
 public class ZipLibrary {
     
