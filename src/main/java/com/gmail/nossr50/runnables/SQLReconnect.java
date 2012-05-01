@@ -16,7 +16,7 @@ public class SQLReconnect implements Runnable {
 
     @Override
     public void run() {
-        if (Database.isConnected()) {
+        if (!Database.isConnected()) {
             Database.connect();
             if (Database.isConnected()) {
                 for (PlayerProfile x : Users.players.values()) {
