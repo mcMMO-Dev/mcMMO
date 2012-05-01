@@ -13,6 +13,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 
 public class ZipLibrary {
 
@@ -24,13 +25,20 @@ public class ZipLibrary {
     private static File Leaderboards = new File(mcMMO.leaderboardDirectory);
 
     public static void mcMMObackup() throws IOException {
-        if (BackupDir.mkdir()) {
-            try {
+    	
+    	if (Config.getInstance().getUseMySQL()) {
+    		System.out.println("No Backup performed, in SQL Mode.");
+    		return;
+    	}
+    	
+    	try {
+    	if (BackupDir.mkdir()) {
                 mcMMO.p.getLogger().info("Created Backup Directory.");
+    	}
             } catch (Exception e) {
                 mcMMO.p.getLogger().severe(e.toString());
             }
-        }
+ 
 
         //Generate the proper date for the backup filename
         Date date = new Date();
