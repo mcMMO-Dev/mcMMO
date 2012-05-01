@@ -21,6 +21,7 @@ Version 1.3.07
  = Fixed bug where the permission node for Impact didn't work
  = Fixed some bypass nodes defaulting true for Ops
  = Fixed bug with trying to use Chimera Wing while standing on a half-block
+ ! Changed bleeding ticks damage to 1 from 2
  ! Changed Mining to ignore blocks when the pick is enchanted with Silk Touch
  ! Changed Super Breaker to be non-functional when used with a Silk Touch enchanted pick
  ! Changed MySQL to save player information 50ms apart from each other to reduce the load on the MySQL server

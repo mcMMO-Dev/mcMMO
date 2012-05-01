@@ -48,13 +48,8 @@ public class BleedTimer implements Runnable {
                 }
 
                 //Never kill with Bleeding
-                if (player.getHealth() - 2 < 0) {
-                    if (player.getHealth() - 1 > 0) {
-                        Combat.dealDamage(player, 1);
-                    }
-                }
-                else {
-                    Combat.dealDamage(player, 2);
+                if (player.getHealth() - 1 > 0) {
+                    Combat.dealDamage(player, 1);
                 }
 
                 entry.setValue(entry.getValue() - 1);
