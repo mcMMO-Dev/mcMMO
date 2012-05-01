@@ -15,14 +15,14 @@ import java.util.zip.ZipOutputStream;
 import com.gmail.nossr50.mcMMO;
 
 public class ZipLibrary {
-    
+
     private static String BackupDirectory = mcMMO.mainDirectory + "backup";
     private static File BackupDir = new File(BackupDirectory);
     private static File FlatFileDirectory = new File(mcMMO.flatFileDirectory);
     private static File UsersFile = new File(mcMMO.usersFile);
     private static File ConfigFile = new File(mcMMO.mainDirectory + "config.yml");
     private static File Leaderboards = new File(mcMMO.leaderboardDirectory);
-    
+
     public static void mcMMObackup() throws IOException {
         if (BackupDir.mkdir()) {
             try {
@@ -74,7 +74,7 @@ public class ZipLibrary {
             return file;
         }
         else {
-            return path + "/" + file;
+            return path + File.separator + file;
         }
     }
 
