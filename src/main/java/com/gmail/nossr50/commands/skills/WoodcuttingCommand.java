@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -23,6 +24,7 @@ public class WoodcuttingCommand implements CommandExecutor {
     private boolean canTreeFell;
     private boolean canLeafBlow;
     private boolean canDoubleDrop;
+    private boolean doubleDropsDisabled;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -45,7 +47,7 @@ public class WoodcuttingCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.WoodCutting") }));
         player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING) }));
 
-        if (canDoubleDrop || canLeafBlow || canTreeFell) {
+        if ((canDoubleDrop && !doubleDropsDisabled ) || canLeafBlow || canTreeFell) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
         }
 
@@ -57,11 +59,11 @@ public class WoodcuttingCommand implements CommandExecutor {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.2"), LocaleLoader.getString("Woodcutting.Effect.3") }));
         }
 
-        if (canDoubleDrop) {
+        if (canDoubleDrop && !doubleDropsDisabled) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5") }));
         }
 
-        if (canDoubleDrop || canLeafBlow || canTreeFell) {
+        if ((canDoubleDrop && !doubleDropsDisabled ) || canLeafBlow || canTreeFell) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
         }
 
@@ -75,7 +77,7 @@ public class WoodcuttingCommand implements CommandExecutor {
             }
         }
 
-        if (canDoubleDrop) {
+        if (canDoubleDrop && !doubleDropsDisabled) {
             player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }));
         }
 
@@ -103,9 +105,11 @@ public class WoodcuttingCommand implements CommandExecutor {
 
     private void permissionsCheck(Player player) {
         Permissions permInstance = Permissions.getInstance();
+        Config configInstance = Config.getInstance();
 
         canTreeFell = permInstance.treeFeller(player);
         canDoubleDrop = permInstance.woodcuttingDoubleDrops(player);
         canLeafBlow = permInstance.leafBlower(player);
+        doubleDropsDisabled = configInstance.woodcuttingDoubleDropsDisabled();
     }
 }

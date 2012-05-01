@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -29,6 +30,7 @@ public class MiningCommand implements CommandExecutor {
     private boolean canBlast;
     private boolean canBiggerBombs;
     private boolean canDemoExpert;
+    private boolean doubleDropsDisabled;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -51,7 +53,7 @@ public class MiningCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Mining") }));
         player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.MINING), PP.getSkillXpLevel(SkillType.MINING), PP.getXpToLevel(SkillType.MINING) }));
 
-        if (canBiggerBombs || canBlast || canDemoExpert || canDoubleDrop || canSuperBreaker) {
+        if (canBiggerBombs || canBlast || canDemoExpert || (canDoubleDrop && !doubleDropsDisabled ) || canSuperBreaker) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
         }
 
@@ -59,7 +61,7 @@ public class MiningCommand implements CommandExecutor {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.0"), LocaleLoader.getString("Mining.Effect.1") }));
         }
 
-        if (canDoubleDrop) {
+        if (canDoubleDrop && !doubleDropsDisabled) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.2"), LocaleLoader.getString("Mining.Effect.3") }));
         }
 
@@ -75,11 +77,11 @@ public class MiningCommand implements CommandExecutor {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.8"), LocaleLoader.getString("Mining.Effect.9") }));
         }
 
-        if (canBiggerBombs || canBlast || canDemoExpert || canDoubleDrop || canSuperBreaker) {
+        if (canBiggerBombs || canBlast || canDemoExpert || (canDoubleDrop && !doubleDropsDisabled ) || canSuperBreaker) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
         }
 
-        if (canDoubleDrop) {
+        if (canDoubleDrop && !doubleDropsDisabled) {
             player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }));
         }
 
@@ -182,11 +184,13 @@ public class MiningCommand implements CommandExecutor {
 
     private void permissionsCheck(Player player) {
         Permissions permInstance = Permissions.getInstance();
+        Config configInstance = Config.getInstance();
 
         canBiggerBombs = permInstance.biggerBombs(player);
         canBlast = permInstance.blastMining(player);
         canDemoExpert = permInstance.demolitionsExpertise(player);
         canDoubleDrop = permInstance.miningDoubleDrops(player);
         canSuperBreaker = permInstance.superBreaker(player);
+        doubleDropsDisabled = configInstance.miningDoubleDropsDisabled();
     }
 }

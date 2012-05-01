@@ -1,5 +1,10 @@
 package com.gmail.nossr50.config;
 
+import java.util.Iterator;
+import java.util.Set;
+
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.HUDType;
 
@@ -156,6 +161,25 @@ public class Config extends ConfigLoader {
     public boolean getWaterLiliesDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Water_Lilies", true); }
     public boolean getYellowFlowersDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Yellow_Flowers", true); }
 
+    public boolean herbalismDoubleDropsDisabled() {
+        ConfigurationSection section = config.getConfigurationSection("Double_Drops.Herbalism");
+        Set<String> keys = section.getKeys(false);
+        Iterator<String> iterator = keys.iterator();
+
+        boolean disabled = true;
+
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+
+            if (config.getBoolean("Double_Drops.Herbalism." + key)) {
+                disabled = false;
+                break;
+            }
+        }
+
+        return disabled;
+    }
+
     /* Mining */
     public int getMiningXPGoldOre() { return config.getInt("Experience.Mining.Gold", 250); } 
     public int getMiningXPDiamondOre() { return config.getInt("Experience.Mining.Diamond", 750); }
@@ -184,6 +208,25 @@ public class Config extends ConfigLoader {
     public boolean getRedstoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Redstone", true); }
     public boolean getSandstoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Sandstone", true); }
     public boolean getStoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Stone", true); }
+
+    public boolean miningDoubleDropsDisabled() {
+        ConfigurationSection section = config.getConfigurationSection("Double_Drops.Mining");
+        Set<String> keys = section.getKeys(false);
+        Iterator<String> iterator = keys.iterator();
+
+        boolean disabled = true;
+
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+
+            if (config.getBoolean("Double_Drops.Mining." + key)) {
+                disabled = false;
+                break;
+            }
+        }
+
+        return disabled;
+    }
 
     public int getDetonatorItemID() { return config.getInt("Skills.Mining.Detonator_ID", 259); }
 
@@ -220,6 +263,25 @@ public class Config extends ConfigLoader {
     public boolean getBirchDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Birch", true); }
     public boolean getSpruceDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Spruce", true); }
     public boolean getJungleDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Jungle", true); }
+
+    public boolean woodcuttingDoubleDropsDisabled() {
+        ConfigurationSection section = config.getConfigurationSection("Double_Drops.Woodcutting");
+        Set<String> keys = section.getKeys(false);
+        Iterator<String> iterator = keys.iterator();
+
+        boolean disabled = true;
+
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+
+            if (config.getBoolean("Double_Drops.Woodcutting." + key)) {
+                disabled = false;
+                break;
+            }
+        }
+
+        return disabled;
+    }
 
     /* Arcane Forging */
     public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Arcane_Forging.Downgrades.Enabled", true); }
