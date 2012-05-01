@@ -114,7 +114,7 @@ public class Herbalism {
                 mat = Material.WHEAT;
                 xp = Config.getInstance().getHerbalismXPWheat();
 
-                if (Config.getInstance().getHerbalismWheatRegrowth() && Permissions.getInstance().greenThumbWheat(player)) {
+                if (Permissions.getInstance().greenThumbWheat(player)) {
                     greenThumbWheat(block, player, event, plugin);
                 }
             }

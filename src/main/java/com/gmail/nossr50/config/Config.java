@@ -139,8 +139,6 @@ public class Config extends ConfigLoader {
     public int getHerbalismXPLilyPads() { return config.getInt("Experience.Herbalism.Lily_Pads", 100); }
     public int getHerbalismXPVines() { return config.getInt("Experience.Herbalism.Vines", 10); }
 
-    public boolean getHerbalismHungerBonusEnabled() { return config.getBoolean("Skills.Herbalism.Hunger_Bonus", true); }
-    public boolean getHerbalismWheatRegrowth() { return config.getBoolean("Skills.Herbalism.Instant_Wheat_Regrowth", true); }
     public boolean getHerbalismGreenThumbCobbleToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true); }
     public boolean getHerbalismGreenThumbSmoothbrickToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true); }
     public boolean getHerbalismGreenThumbDirtToGrass() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Dirt_To_Grass", true); }
@@ -201,13 +199,10 @@ public class Config extends ConfigLoader {
     public int getRepairStringMaterial() { return config.getInt("Skills.Repair.String.ID", 287); }
     public int getRepairLeatherMaterial() { return config.getInt("Skills.Repair.Leather.ID", 334); }
 
-    public boolean getRepairArmorAllowed() { return config.getBoolean("Skills.Repair.Can_Repair_Armor", true); }
-    public boolean getRepairToolsAllowed() { return config.getBoolean("Skills.Repair.Can_Repair_Tools", true); }
     public int getRepairDiamondLevelRequirement() { return config.getInt("Skills.Repair.Diamond.Level_Required", 50); }
     public int getRepairIronLevelRequirement() { return config.getInt("Skills.Repair.Iron.Level_Required", 0); }
     public int getRepairGoldLevelRequirement() { return config.getInt("Skills.Repair.Gold.Level_Required", 0); }
     public int getRepairStoneLevelRequirement() { return config.getInt("Skills.Repair.Stone.Level_Required", 0); }
-    public int getRepairStringLevelRequirement() { return config.getInt("Skills.Repair.String.Level_Required", 0); }
 
     /* Taming */
     public int getTamingXPWolf() { return config.getInt("Experience.Taming.Animal_Taming.Wolf", 250); }

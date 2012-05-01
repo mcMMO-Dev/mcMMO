@@ -215,69 +215,67 @@ public class EntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.LOW)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if (Config.getInstance().getHerbalismHungerBonusEnabled()) {
-            if (event.getEntity() instanceof Player) {
-                Player player = (Player) event.getEntity();
-                PlayerProfile PP = Users.getProfile(player);
-                int currentFoodLevel = player.getFoodLevel();
-                int newFoodLevel = event.getFoodLevel();
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            PlayerProfile PP = Users.getProfile(player);
+            int currentFoodLevel = player.getFoodLevel();
+            int newFoodLevel = event.getFoodLevel();
 
-                if (!Permissions.getInstance().farmersDiet(player)) {
+            if (!Permissions.getInstance().farmersDiet(player)) {
+                return;
+            }
+
+            /*
+             * Some foods have 3 ranks
+             * Some foods have 5 ranks
+             * The number of ranks is based on how 'common' the item is
+             * We can adjust this quite easily if we find something is giving too much of a bonus
+             */
+
+            if (newFoodLevel > currentFoodLevel) {
+                Material food = player.getItemInHand().getType();
+                int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
+                int foodChange = newFoodLevel - currentFoodLevel;
+                int rankChange = 0;
+
+                switch (food) {
+                case BREAD:
+                    /* BREAD RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+                    rankChange = 200;
+                    break;
+
+                case COOKIE:
+                    /* COOKIE RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                    rankChange = 400;
+                    break;
+
+                case MELON:
+                    /* MELON RESTORES  1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                    rankChange = 400;
+                    break;
+
+                case MUSHROOM_SOUP:
+                    /* MUSHROOM SOUP RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+                    rankChange = 200;
+                    break;
+
+                default:
                     return;
                 }
 
-                /*
-                 * Some foods have 3 ranks
-                 * Some foods have 5 ranks
-                 * The number of ranks is based on how 'common' the item is
-                 * We can adjust this quite easily if we find something is giving too much of a bonus
-                 */
-
-                if (newFoodLevel > currentFoodLevel) {
-                    Material food = player.getItemInHand().getType();
-                    int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
-                    int foodChange = newFoodLevel - currentFoodLevel;
-                    int rankChange = 0;
-
-                    switch (food) {
-                    case BREAD:
-                        /* BREAD RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                        rankChange = 200;
-                        break;
-
-                    case COOKIE:
-                        /* COOKIE RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                        rankChange = 400;
-                        break;
-
-                    case MELON:
-                        /* MELON RESTORES  1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                        rankChange = 400;
-                        break;
-
-                    case MUSHROOM_SOUP:
-                        /* MUSHROOM SOUP RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                        rankChange = 200;
-                        break;
-
-                    default:
-                        return;
+                for (int i = 200; i <= 1000; i += rankChange) {
+                    if (herbLevel >= i) {
+                        foodChange++;
                     }
+                }
 
-                    for (int i = 200; i <= 1000; i += rankChange) {
-                        if (herbLevel >= i) {
-                            foodChange++;
-                        }
-                    }
-
-                    /* Make sure we don't go over the max value */
-                    newFoodLevel = currentFoodLevel + foodChange;
-                    if (newFoodLevel > 20) {
-                        event.setFoodLevel(20);
-                    }
-                    else {
-                        event.setFoodLevel(newFoodLevel);
-                    }
+                /* Make sure we don't go over the max value */
+                newFoodLevel = currentFoodLevel + foodChange;
+                if (newFoodLevel > 20) {
+                    event.setFoodLevel(20);
+                }
+                else {
+                    event.setFoodLevel(newFoodLevel);
                 }
             }
         }

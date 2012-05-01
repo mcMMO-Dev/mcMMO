@@ -252,6 +252,7 @@ permissions:
         description: Allows access to all Repair abilities
         children:
             mcmmo.ability.repair.repairbonus: true
+            mcmmo.ability.repair.repairmastery: true
             mcmmo.ability.repair.arcaneforging: true
             mcmmo.ability.repair.woodrepair: true
             mcmmo.ability.repair.stonerepair: true
@@ -264,6 +265,8 @@ permissions:
             mcmmo.ability.repair.stringrepair: true
     mcmmo.ability.repair.repairbonus:
         description: Allows access to Super Repair bonus
+    mcmmo.ability.repair.repairmastry:
+        description: Allows access to Repair Mastery
     mcmmo.ability.repair.arcaneforging:
         description: Allows access to the Arcane Forging ability
     mcmmo.ability.repair.woodrepair:

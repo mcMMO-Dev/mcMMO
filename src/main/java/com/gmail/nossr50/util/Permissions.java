@@ -156,6 +156,10 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.repair.repairbonus");
     }
 
+    public boolean repairMastery(Player player) {
+        return player.hasPermission("mcmmo.ability.repair.repairmastery");
+    }
+
     public boolean arcaneForging(Player player) {
         return player.hasPermission("mcmmo.ability.repair.arcaneforging");
     }

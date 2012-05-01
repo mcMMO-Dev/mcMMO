@@ -47,7 +47,7 @@ public class Repair {
             /*
              * REPAIR ARMOR
              */
-            if (ItemChecks.isArmor(is) && Config.getInstance().getRepairArmorAllowed() && Permissions.getInstance().armorRepair(player)) {
+            if (ItemChecks.isArmor(is) && Permissions.getInstance().armorRepair(player)) {
                 if (ItemChecks.isDiamondArmor(is) && inventory.contains(Config.getInstance().getRepairDiamondMaterial()) && skillLevel >= Config.getInstance().getRepairDiamondLevelRequirement() && Permissions.getInstance().diamondRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairDiamondMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 6, true);
@@ -72,7 +72,7 @@ public class Repair {
             /*
              * REPAIR TOOLS
              */
-            else if (ItemChecks.isTool(is) && Config.getInstance().getRepairToolsAllowed() && Permissions.getInstance().toolRepair(player)) {
+            else if (ItemChecks.isTool(is) && Permissions.getInstance().toolRepair(player)) {
                 if (ItemChecks.isStoneTool(is) && inventory.contains(Config.getInstance().getRepairStoneMaterial()) && skillLevel >= Config.getInstance().getRepairStoneLevelRequirement() && Permissions.getInstance().stoneRepair(player)) {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairStoneMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
@@ -93,7 +93,7 @@ public class Repair {
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairGoldMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 8, true);
                 }
-                else if (ItemChecks.isStringTool(is) && inventory.contains(Config.getInstance().getRepairStringMaterial()) && skillLevel >= Config.getInstance().getRepairStringLevelRequirement() && Permissions.getInstance().stringRepair(player)){
+                else if (ItemChecks.isStringTool(is) && inventory.contains(Config.getInstance().getRepairStringMaterial()) && Permissions.getInstance().stringRepair(player)){
                     repairItem(player, is, new ItemStack(Config.getInstance().getRepairStringMaterial()));
                     xpHandler(player, PP, is, durabilityBefore, 2, false);
                 }
@@ -291,8 +291,10 @@ public class Repair {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
         float bonus = (float) skillLevel / 500;
 
-        bonus = (ramt * bonus);
-        ramt += bonus;
+        if (Permissions.getInstance().repairMastery(player)) {
+            bonus = (ramt * bonus);
+            ramt += bonus;
+        }
 
         if (checkPlayerProcRepair(player)) {
             ramt = (short) (ramt * 2);
@@ -303,6 +305,7 @@ public class Repair {
         if (durability < 0) {
             durability = 0;
         }
+
         return durability;
     }
 
