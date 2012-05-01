@@ -228,7 +228,7 @@ public class PlayerListener implements Listener {
 
             /* ITEM CHECKS */
             if (BlockChecks.abilityBlockCheck(mat)) {
-                Item.itemchecks(player);
+                Item.itemChecks(player);
             }
 
             /* BLAST MINING CHECK */
@@ -252,7 +252,7 @@ public class PlayerListener implements Listener {
             }
 
             /* ITEM CHECKS */
-            Item.itemchecks(player);
+            Item.itemChecks(player);
 
             /* BLAST MINING CHECK */
             if (player.isSneaking() && Permissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {

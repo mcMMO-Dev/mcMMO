@@ -22,6 +22,7 @@ public class ZipLibrary {
     private static File FlatFileDirectory = new File(mcMMO.flatFileDirectory);
     private static File UsersFile = new File(mcMMO.usersFile);
     private static File ConfigFile = new File(mcMMO.mainDirectory + "config.yml");
+    private static File TreasuresFile = new File(mcMMO.mainDirectory + "treasures.yml");
     private static File Leaderboards = new File(mcMMO.leaderboardDirectory);
 
     public static void mcMMObackup() throws IOException {
@@ -37,7 +38,6 @@ public class ZipLibrary {
         } catch (Exception e) {
             mcMMO.p.getLogger().severe(e.toString());
         }
- 
 
         //Generate the proper date for the backup filename
         Date date = new Date();
@@ -49,6 +49,7 @@ public class ZipLibrary {
         sources.add(FlatFileDirectory);
         sources.add(UsersFile);
         sources.add(ConfigFile);
+        sources.add(TreasuresFile);
         sources.add(Leaderboards);
 
         //Actually do something
