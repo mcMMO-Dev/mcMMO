@@ -300,7 +300,7 @@ public class PlayerListener implements Listener {
             McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), PP.getParty(), event.getMessage());
             plugin.getServer().getPluginManager().callEvent(chatEvent);
 
-            if(chatEvent.isCancelled()) {
+            if (chatEvent.isCancelled()) {
                 return;
             }
 
@@ -321,7 +321,7 @@ public class PlayerListener implements Listener {
             McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), event.getMessage());
             plugin.getServer().getPluginManager().callEvent(chatEvent);
 
-            if(chatEvent.isCancelled()) {
+            if (chatEvent.isCancelled()) {
                 return;
             }
 

@@ -116,8 +116,12 @@ Skills:
     Acrobatics:
         Level_Cap: 0 
     Archery:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
         Level_Cap: 0
     Axes:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
         Level_Cap: 0
     Excavation:
         Level_Cap: 0
@@ -157,13 +161,19 @@ Skills:
             Level_Required: 50
             ID: 264
     Swords:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
         Level_Cap: 0
     Taming:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
         Level_Cap: 0
         Call_Of_The_Wild:
             Bones_Required: 10
             Fish_Required: 10
     Unarmed:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
         Level_Cap: 0
     Woodcutting:
         Level_Cap: 0

@@ -314,6 +314,18 @@ public class Config extends ConfigLoader {
     public int getLevelCapWoodcutting() { return config.getInt("Skills.Woodcutting.Level_Cap", 0); }
     public int getPowerLevelCap() { return config.getInt("General.Power_Level_Cap", 0); }
 
+    /* PVP & PVE Settings */
+    public boolean getArcheryPVP() { return config.getBoolean("Skills.Archery.Enabled_For_PVP", true); }
+    public boolean getArcheryPVE() { return config.getBoolean("Skills.Archery.Enabled_For_PVE", true); }
+    public boolean getAxesPVP() { return config.getBoolean("Skills.Axes.Enabled_For_PVP", true); }
+    public boolean getAxesPVE() { return config.getBoolean("Skills.Axes.Enabled_For_PVE", true); }
+    public boolean getSwordsPVP() { return config.getBoolean("Skills.Swords.Enabled_For_PVP", true); }
+    public boolean getSwordsPVE() { return config.getBoolean("Skills.Swords.Enabled_For_PVE", true); }
+    public boolean getTamingPVP() { return config.getBoolean("Skills.Taming.Enabled_For_PVP", true); }
+    public boolean getTamingPVE() { return config.getBoolean("Skills.Taming.Enabled_For_PVE", true); }
+    public boolean getUnarmedPVP() { return config.getBoolean("Skills.Unarmed.Enabled_For_PVP", true); }
+    public boolean getUnarmedPVE() { return config.getBoolean("Skills.Unarmed.Enabled_For_PVE", true); }
+
     /*
      * XP SETTINGS
      */
