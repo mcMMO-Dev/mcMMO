@@ -1112,7 +1112,7 @@ public class PlayerProfile {
      * @return the XP remaining until next level
      */
     public int getXpToLevel(SkillType skillType) {
-        return (int) (1020 + (skills.get(skillType) *  20)); //Do we REALLY need to cast to int here?
+        return 1020 + (skills.get(skillType) *  Config.getInstance().getFormulaMultiplierCurve()); //Do we REALLY need to cast to int here?
     }
 
     /**

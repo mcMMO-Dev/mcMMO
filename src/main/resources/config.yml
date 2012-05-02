@@ -229,6 +229,7 @@ Experience:
     PVP:
         Rewards: true
     Formula:
+        Curve_Modifier: 20
         Multiplier:
             Swords: 1.0
             Taming: 1.0
