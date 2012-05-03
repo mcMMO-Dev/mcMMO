@@ -1,5 +1,9 @@
 package com.gmail.nossr50.skills.combat;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -18,6 +22,7 @@ import com.gmail.nossr50.util.Users;
 
 public class Archery {
 
+    public static Map<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     private static Random random = new Random();
 
     /**
@@ -31,12 +36,15 @@ public class Archery {
         final int MAX_BONUS_LEVEL = 1000;
         int skillLevel = PPa.getSkillLevel(SkillType.ARCHERY);
 
-        if (!plugin.arrowTracker.containsKey(entity)) {
-            plugin.arrowTracker.put(entity, 0);
-        }
-
         if (skillLevel > MAX_BONUS_LEVEL || (random.nextInt(1000) <= skillLevel)) {
-            plugin.arrowTracker.put(entity, 1);
+            for (Entry<Entity, Integer> entry : arrowTracker.entrySet()) {
+                if (entry.getKey() == entity) {
+                    entry.setValue(entry.getValue() + 1);
+                    return;
+                }
+            }
+
+            arrowTracker.put(entity, 1);
         }
     }
 
@@ -72,13 +80,16 @@ public class Archery {
      * Check for arrow retrieval.
      *
      * @param entity The entity hit by the arrows
-     * @param plugin mcMMO plugin instance
      */
-    public static void arrowRetrievalCheck(Entity entity, mcMMO plugin) {
-        if (plugin.arrowTracker.containsKey(entity)) {
-            Misc.mcDropItems(entity.getLocation(), new ItemStack(Material.ARROW), plugin.arrowTracker.get(entity));
-        }
+    public static void arrowRetrievalCheck(Entity entity) {
+        for (Iterator<Map.Entry<Entity, Integer>> it = arrowTracker.entrySet().iterator() ; it.hasNext() ; ) {
+            Entry<Entity, Integer> entry = it.next();
 
-        plugin.arrowTracker.remove(entity);
+            if (entry.getKey() == entity) {
+                Misc.mcDropItem(entity.getLocation(), new ItemStack(Material.ARROW, entry.getValue()));
+                it.remove();
+                return;
+            }
+        }
     }
 }

@@ -32,7 +32,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class mcMMO extends JavaPlugin {
@@ -43,7 +42,6 @@ public class mcMMO extends JavaPlugin {
     private final HardcoreListener hardcoreListener = new HardcoreListener();
 
     public HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
-    public HashMap<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     public HashMap<Integer, Player> tntTracker = new HashMap<Integer, Player>();
 
     public static File versionFile;

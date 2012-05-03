@@ -144,12 +144,10 @@ public class EntityListener implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
+
         entity.setFireTicks(0);
-
-        /* Remove bleed track */
         BleedTimer.remove(entity);
-
-        Archery.arrowRetrievalCheck(entity, plugin);
+        Archery.arrowRetrievalCheck(entity);
     }
 
     /**
