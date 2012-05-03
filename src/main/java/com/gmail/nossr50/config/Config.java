@@ -315,6 +315,8 @@ public class Config extends ConfigLoader {
     public int getPowerLevelCap() { return config.getInt("General.Power_Level_Cap", 0); }
 
     /* PVP & PVE Settings */
+    public boolean getAcrobaticsPVP() { return config.getBoolean("Skills.Acrobatics.Enabled_For_PVP", true); }
+    public boolean getAcrobaticsPVE() { return config.getBoolean("Skills.Acrobatics.Enabled_For_PVE", true); }
     public boolean getArcheryPVP() { return config.getBoolean("Skills.Archery.Enabled_For_PVP", true); }
     public boolean getArcheryPVE() { return config.getBoolean("Skills.Archery.Enabled_For_PVE", true); }
     public boolean getAxesPVP() { return config.getBoolean("Skills.Axes.Enabled_For_PVP", true); }

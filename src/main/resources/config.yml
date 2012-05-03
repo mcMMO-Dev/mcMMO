@@ -114,6 +114,8 @@ Abilities:
 ###
 Skills:
     Acrobatics:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
         Level_Cap: 0 
     Archery:
         Enabled_For_PVP: true
