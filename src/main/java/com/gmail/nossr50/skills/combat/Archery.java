@@ -86,7 +86,7 @@ public class Archery {
             Entry<Entity, Integer> entry = it.next();
 
             if (entry.getKey() == entity) {
-                Misc.mcDropItem(entity.getLocation(), new ItemStack(Material.ARROW, entry.getValue()));
+                Misc.mcDropItems(entity.getLocation(), new ItemStack(Material.ARROW), entry.getValue());
                 it.remove();
                 return;
             }
