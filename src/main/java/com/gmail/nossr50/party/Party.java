@@ -152,9 +152,10 @@ public class Party {
 
         if (player != null) {
             for (String name : profiles.keySet()) {
-                Player p = profiles.get(name).getPlayer();
-                if (inSameParty(p, player)) {
-                    players.add(p);
+                Player otherPlayer = profiles.get(name).getPlayer();
+
+                if (otherPlayer != null && inSameParty(otherPlayer, player)) {
+                    players.add(otherPlayer);
                 }
             }
         }
