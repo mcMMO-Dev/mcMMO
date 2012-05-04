@@ -327,7 +327,7 @@ public class Repair {
         else if (ItemChecks.isHoe(is) || ItemChecks.isSword(is) || is.getType().equals(Material.SHEARS)) {
             ramt = maxDurability / 2;
         }
-        else if (ItemChecks.isAxe(is) || ItemChecks.isMiningPick(is) || ItemChecks.isStringTool(is)) {
+        else if (ItemChecks.isAxe(is) || ItemChecks.isPickaxe(is) || ItemChecks.isStringTool(is)) {
             ramt = maxDurability / 3;
         }
         else if (ItemChecks.isBoots(is)) {

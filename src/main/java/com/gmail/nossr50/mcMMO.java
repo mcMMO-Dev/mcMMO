@@ -56,6 +56,7 @@ public class mcMMO extends JavaPlugin {
     public static String flatFileDirectory;
     public static String usersFile;
     public static String leaderboardDirectory;
+    public static String modDirectory;
 
     /**
      * Things to be run when the plugin is enabled.
@@ -67,6 +68,7 @@ public class mcMMO extends JavaPlugin {
         mainDirectory = getDataFolder().getPath() + File.separator;
         flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
         leaderboardDirectory = flatFileDirectory + "Leaderboards" + File.separator;
+        modDirectory = mainDirectory + "ModConfigs" + File.separator;
         usersFile = flatFileDirectory + "mcmmo.users";
 
         if (!Config.getInstance().getUseMySQL()) {
@@ -79,11 +81,12 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvents(playerListener, this);
         pm.registerEvents(blockListener, this);
         pm.registerEvents(entityListener, this);
+
         if (Config.getInstance().getHardcoreEnabled()) {
             pm.registerEvents(hardcoreListener, this);
         }
 
-        PluginDescriptionFile pdfFile = this.getDescription();
+        PluginDescriptionFile pdfFile = getDescription();
 
         //Setup the leaderboards
         if (Config.getInstance().getUseMySQL()) {
@@ -117,7 +120,8 @@ public class mcMMO extends JavaPlugin {
             try {
                 Metrics metrics = new Metrics(this);
                 metrics.start();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 System.out.println("Failed to submit stats.");
             }
         }
@@ -168,12 +172,13 @@ public class mcMMO extends JavaPlugin {
             x.save();
         }
 
-        this.getServer().getScheduler().cancelTasks(this); //This removes our tasks
+        getServer().getScheduler().cancelTasks(this); //This removes our tasks
 
         //Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
         try {
             ZipLibrary.mcMMObackup();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             getLogger().severe(e.toString());
         }
 
@@ -304,7 +309,7 @@ public class mcMMO extends JavaPlugin {
     }
 
     /*
-     * Boilerplate Custom Config Stuff
+     * Boilerplate Custom Config Stuff (Treasures)
      */
 
     private FileConfiguration treasuresConfig = null;
@@ -352,7 +357,60 @@ public class mcMMO extends JavaPlugin {
             treasuresConfig.save(treasuresConfigFile);
         }
         catch (IOException ex) {
-            this.getLogger().severe("Could not save config to " + treasuresConfigFile + ex.toString());
+            getLogger().severe("Could not save config to " + treasuresConfigFile + ex.toString());
+        }
+    }
+
+    /*
+     * Boilerplate Custom Config Stuff (Tools)
+     */
+
+    private FileConfiguration toolsConfig = null;
+    private File toolsConfigFile = null;
+
+    /**
+     * Reload the Tools.yml file.
+     */
+    public void reloadToolsConfig() {
+        if (toolsConfigFile == null) {
+            toolsConfigFile = new File(modDirectory, "tools.yml");
+        }
+
+        toolsConfig = YamlConfiguration.loadConfiguration(toolsConfigFile);
+        InputStream defConfigStream = getResource("tools.yml"); // Look for defaults in the jar
+
+        if (defConfigStream != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            toolsConfig.setDefaults(defConfig);
+        }
+    }
+
+    /**
+     * Get the Tools config information.
+     *
+     * @return the configuration object for tools.yml
+     */
+    public FileConfiguration getToolsConfig() {
+        if (toolsConfig == null) {
+            reloadToolsConfig();
+        }
+
+        return toolsConfig;
+    }
+
+    /**
+     * Save the Tools config informtion.
+     */
+    public void saveToolsConfig() {
+        if (toolsConfig == null || toolsConfigFile == null) {
+            return;
+        }
+
+        try {
+            toolsConfig.save(toolsConfigFile);
+        }
+        catch (IOException ex) {
+            getLogger().severe("Could not save config to " + toolsConfigFile + ex.toString());
         }
     }
 }

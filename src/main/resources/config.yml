@@ -41,6 +41,13 @@ Hardcore:
     Vampirism_Stat_Leech_Percentage: 5
 
 #
+#  Settings for SMP Mods
+###
+Mods:
+    Tool_Mods_Enabled: false
+    Block_Mods_Enabled: false
+
+#
 #  Settings for mcMMO items
 ###
 Items:

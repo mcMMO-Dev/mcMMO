@@ -53,7 +53,10 @@ public class Config extends ConfigLoader {
     public double getHardcoreDeathStatPenaltyPercentage() { return config.getDouble("Hardcore.Death_Stat_Loss_Penalty_Percentage", 75); }
     public double getHardcoreVampirismStatLeechPercentage() { return config.getDouble("Hardcore.Vampirism_Stat_Leech_Percentage", 5); }
     public boolean getHardcoreVampirismEnabled() { return config.getBoolean("Hardcore.Vampirism", false); }
-    
+
+    /* SMP Mods */
+    public boolean getToolModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }
+    public boolean getBlockModsEnabled() { return config.getBoolean("Mods.Block_Mods_Enabled", false); }
 
     /* Commands */
     public boolean getCommandXPLockEnabled() { return config.getBoolean("Commands.xplock.Enabled", true); }
@@ -446,7 +449,6 @@ public class Config extends ConfigLoader {
 
     @Override
     protected void load() {
-        // If it doesn't exist, copy it from the .jar
         if (!configFile.exists()) {
             dataFolder.mkdir();
             plugin.saveDefaultConfig();

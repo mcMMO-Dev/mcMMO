@@ -48,7 +48,7 @@ public enum ToolType {
             return ItemChecks.isHoe(is);
 
         case PICKAXE:
-            return ItemChecks.isMiningPick(is);
+            return ItemChecks.isPickaxe(is);
 
         case SHOVEL:
             return ItemChecks.isShovel(is);

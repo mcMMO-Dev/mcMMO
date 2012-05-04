@@ -48,8 +48,6 @@ public class LoadTreasures extends ConfigLoader{
 
     @Override
     protected void load() {
-
-        // If it doesn't exist, copy it from the .jar
         if (!configFile.exists()) {
             dataFolder.mkdir();
             plugin.saveTreasuresConfig();
@@ -95,7 +93,7 @@ public class LoadTreasures extends ConfigLoader{
             int data = config.getInt("Treasures." + treasureName + ".Data");
 
             if (Material.getMaterial(id) == null) {
-                reason.add("Invlid id: " + id);
+                reason.add("Invalid id: " + id);
             }
 
             if (amount < 1) {

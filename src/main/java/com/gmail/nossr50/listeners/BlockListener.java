@@ -164,7 +164,7 @@ public class BlockListener implements Listener {
          */
 
         if (Permissions.getInstance().mining(player) && BlockChecks.canBeSuperBroken(mat)) {
-            if (Config.getInstance().getMiningRequiresTool() && ItemChecks.isMiningPick(inhand)) {
+            if (Config.getInstance().getMiningRequiresTool() && ItemChecks.isPickaxe(inhand)) {
                 Mining.miningBlockCheck(player, block);
             }
             else if (!Config.getInstance().getMiningRequiresTool()) {
@@ -279,7 +279,7 @@ public class BlockListener implements Listener {
         }
         else if (PP.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
             if(!player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {  
-                if (Config.getInstance().getMiningRequiresTool() && ItemChecks.isMiningPick(inhand)) {
+                if (Config.getInstance().getMiningRequiresTool() && ItemChecks.isPickaxe(inhand)) {
                     event.setInstaBreak(true);
                     Mining.SuperBreakerBlockCheck(player, block);
                 }

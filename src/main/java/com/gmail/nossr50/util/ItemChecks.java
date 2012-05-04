@@ -2,7 +2,11 @@ package com.gmail.nossr50.util;
 
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.mods.LoadCustomTools;
+
 public class ItemChecks {
+    private static Config configInstance = Config.getInstance();
 
     /**
      * Checks if the item is a sword.
@@ -20,7 +24,12 @@ public class ItemChecks {
             return true;
 
         default:
-            return false;
+            if (configInstance.getToolModsEnabled() && LoadCustomTools.getInstance().customSwordIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -40,7 +49,12 @@ public class ItemChecks {
             return true;
 
         default:
-            return false;
+            if (configInstance.getToolModsEnabled() && LoadCustomTools.getInstance().customHoeIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -49,7 +63,7 @@ public class ItemChecks {
      *
      * @param is Item to check
      * @return true if the item is a shovel, false otherwise
-     */
+     */ 
     public static boolean isShovel(ItemStack is) {
         switch (is.getType()) {
         case DIAMOND_SPADE:
@@ -60,7 +74,12 @@ public class ItemChecks {
             return true;
 
         default:
-            return false;
+            if (configInstance.getToolModsEnabled() && LoadCustomTools.getInstance().customShovelIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -80,7 +99,12 @@ public class ItemChecks {
             return true;
 
         default:
-            return false;
+            if (configInstance.getToolModsEnabled() && LoadCustomTools.getInstance().customAxeIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -90,7 +114,7 @@ public class ItemChecks {
      * @param is Item to check
      * @return true if the item is a pickaxe, false otherwise
      */
-    public static boolean isMiningPick(ItemStack is) {
+    public static boolean isPickaxe(ItemStack is) {
         switch (is.getType()) {
         case DIAMOND_PICKAXE:
         case GOLD_PICKAXE:
@@ -100,7 +124,12 @@ public class ItemChecks {
             return true;
 
         default:
-            return false;
+            if (configInstance.getToolModsEnabled() && LoadCustomTools.getInstance().customPickaxeIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -395,4 +424,3 @@ public class ItemChecks {
         }
     }
 }
-    
