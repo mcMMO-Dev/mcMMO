@@ -18,7 +18,7 @@ public class McabilityCommand implements CommandExecutor {
             return true;
         }
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.admin")) {
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.ability")) {
             return true;
         }
 
