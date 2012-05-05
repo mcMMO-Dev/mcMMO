@@ -43,11 +43,10 @@ public class LoadTreasures extends ConfigLoader{
     private LoadTreasures(mcMMO plugin) {
         super(plugin, "treasures.yml");
         config = plugin.getTreasuresConfig();
-        load();
     }
 
     @Override
-    protected void load() {
+    public void load() {
         if (!configFile.exists()) {
             dataFolder.mkdir();
             plugin.saveTreasuresConfig();
