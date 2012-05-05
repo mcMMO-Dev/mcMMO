@@ -7,6 +7,7 @@ import com.gmail.nossr50.commands.mc.*;
 import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.*;
+import com.gmail.nossr50.config.mods.LoadCustomTools;
 import com.gmail.nossr50.runnables.*;
 import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Leaderboard;
@@ -48,7 +49,7 @@ public class mcMMO extends JavaPlugin {
     public static Database database;
     public static mcMMO p;
 
-    //Jar stuff
+    /* Jar Stuff */
     public static File mcmmo;
 
     //File Paths
@@ -58,14 +59,24 @@ public class mcMMO extends JavaPlugin {
     public final String leaderboardDirectory = flatFileDirectory + "Leaderboards" + File.separator;
     public final String modDirectory = mainDirectory + "ModConfigs" + File.separator;
 
+    private static Config configInstance = Config.getInstance();
+
     /**
      * Things to be run when the plugin is enabled.
      */
     public void onEnable() {
         p = this;
         mcmmo = getFile();
+        
+        if (!configInstance.getUseMySQL()) {
 
-        if (!Config.getInstance().getUseMySQL()) {
+        configInstance.load();
+        LoadTreasures.getInstance().load();
+
+        if (configInstance.getToolModsEnabled()) {
+            LoadCustomTools.getInstance().load();
+        }
+        
             Users.loadUsers();
         }
 
@@ -76,14 +87,14 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvents(blockListener, this);
         pm.registerEvents(entityListener, this);
 
-        if (Config.getInstance().getHardcoreEnabled()) {
+        if (configInstance.getHardcoreEnabled()) {
             pm.registerEvents(hardcoreListener, this);
         }
 
         PluginDescriptionFile pdfFile = getDescription();
 
         //Setup the leaderboards
-        if (Config.getInstance().getUseMySQL()) {
+        if (configInstance.getUseMySQL()) {
             database = new Database(this);
             database.createStructure();
         }
@@ -102,7 +113,7 @@ public class mcMMO extends JavaPlugin {
         //Schedule Spout Activation 1 second after start-up
         scheduler.scheduleSyncDelayedTask(this, new SpoutStart(this), 20);
         //Periodic save timer (Saves every 10 minutes)
-        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(this), 0, Config.getInstance().getSaveInterval() * 1200);
+        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(this), 0, configInstance.getSaveInterval() * 1200);
         //Regen & Cooldown timer (Runs every second)
         scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(this), 0, 20);
         //Bleed timer (Runs every two seconds)
@@ -110,7 +121,7 @@ public class mcMMO extends JavaPlugin {
 
         registerCommands();
 
-        if (Config.getInstance().getStatsTrackingEnabled()) {
+        if (configInstance.getStatsTrackingEnabled()) {
             try {
                 Metrics metrics = new Metrics(this);
                 metrics.start();
@@ -214,88 +225,88 @@ public class mcMMO extends JavaPlugin {
         getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
 
         //mc* commands
-        if (Config.getInstance().getCommandMCRemoveEnabled()) {
+        if (configInstance.getCommandMCRemoveEnabled()) {
             getCommand("mcremove").setExecutor(new McremoveCommand(this));
         }
 
-        if (Config.getInstance().getCommandMCAbilityEnabled()) {
+        if (configInstance.getCommandMCAbilityEnabled()) {
             getCommand("mcability").setExecutor(new McabilityCommand());
         }
 
-        if (Config.getInstance().getCommandMCCEnabled()) {
+        if (configInstance.getCommandMCCEnabled()) {
             getCommand("mcc").setExecutor(new MccCommand());
         }
 
-        if (Config.getInstance().getCommandMCGodEnabled()) {
+        if (configInstance.getCommandMCGodEnabled()) {
             getCommand("mcgod").setExecutor(new McgodCommand());
         }
 
-        if (Config.getInstance().getCommandmcMMOEnabled()) {
+        if (configInstance.getCommandmcMMOEnabled()) {
             getCommand("mcmmo").setExecutor(new McmmoCommand());
         }
 
-        if (Config.getInstance().getCommandMCRefreshEnabled()) {
+        if (configInstance.getCommandMCRefreshEnabled()) {
             getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
         }
 
-        if (Config.getInstance().getCommandMCTopEnabled()) {
+        if (configInstance.getCommandMCTopEnabled()) {
             getCommand("mctop").setExecutor(new MctopCommand());
         }
 
-        if (Config.getInstance().getCommandMCStatsEnabled()) {
+        if (configInstance.getCommandMCStatsEnabled()) {
             getCommand("mcstats").setExecutor(new McstatsCommand());
         }
 
         //Party commands
-        if (Config.getInstance().getCommandAcceptEnabled()) {
+        if (configInstance.getCommandAcceptEnabled()) {
             getCommand("accept").setExecutor(new AcceptCommand(this));
         }
 
-        if (Config.getInstance().getCommandAdminChatAEnabled()) {
+        if (configInstance.getCommandAdminChatAEnabled()) {
             getCommand("a").setExecutor(new ACommand(this));
         }
 
-        if (Config.getInstance().getCommandInviteEnabled()) {
+        if (configInstance.getCommandInviteEnabled()) {
             getCommand("invite").setExecutor(new InviteCommand(this));
         }
 
-        if (Config.getInstance().getCommandPartyEnabled()) {
+        if (configInstance.getCommandPartyEnabled()) {
             getCommand("party").setExecutor(new PartyCommand(this));
         }
 
-        if (Config.getInstance().getCommandPartyChatPEnabled()) {
+        if (configInstance.getCommandPartyChatPEnabled()) {
             getCommand("p").setExecutor(new PCommand(this));
         }
 
-        if (Config.getInstance().getCommandPTPEnabled()) {
+        if (configInstance.getCommandPTPEnabled()) {
             getCommand("ptp").setExecutor(new PtpCommand(this));
         }
 
         //Other commands
-        if (Config.getInstance().getCommandAddXPEnabled()) {
+        if (configInstance.getCommandAddXPEnabled()) {
             getCommand("addxp").setExecutor(new AddxpCommand(this));
         }
 
-        if (Config.getInstance().getCommandAddLevelsEnabled()) {
+        if (configInstance.getCommandAddLevelsEnabled()) {
             getCommand("addlevels").setExecutor(new AddlevelsCommand(this));
         }
 
-        if (Config.getInstance().getCommandMmoeditEnabled()) {
+        if (configInstance.getCommandMmoeditEnabled()) {
             getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
         }
 
-        if (Config.getInstance().getCommandInspectEnabled()) {
+        if (configInstance.getCommandInspectEnabled()) {
             getCommand("inspect").setExecutor(new InspectCommand(this));
         }
 
-        if (Config.getInstance().getCommandXPRateEnabled()) {
+        if (configInstance.getCommandXPRateEnabled()) {
             getCommand("xprate").setExecutor(new XprateCommand(this));
         }
 
         getCommand("mmoupdate").setExecutor(new MmoupdateCommand(this));
 
         //Spout commands
-        if (Config.getInstance().getCommandXPLockEnabled()) {
+        if (configInstance.getCommandXPLockEnabled()) {
             getCommand("xplock").setExecutor(new XplockCommand());
         }
 

@@ -444,11 +444,10 @@ public class Config extends ConfigLoader {
         super(plugin, "config.yml");
         config = plugin.getConfig();
         xpGainMultiplier = getExperienceGainsGlobalMultiplier();
-        load();
     }
 
     @Override
-    protected void load() {
+    public void load() {
         if (!configFile.exists()) {
             dataFolder.mkdir();
             plugin.saveDefaultConfig();
