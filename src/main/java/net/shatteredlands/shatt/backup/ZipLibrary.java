@@ -17,13 +17,13 @@ import com.gmail.nossr50.config.Config;
 
 public class ZipLibrary {
 
-    private static String BackupDirectory = mcMMO.mainDirectory + "backup";
+    private static String BackupDirectory = mcMMO.p.mainDirectory + "backup";
     private static File BackupDir = new File(BackupDirectory);
-    private static File FlatFileDirectory = new File(mcMMO.flatFileDirectory);
-    private static File UsersFile = new File(mcMMO.usersFile);
-    private static File ConfigFile = new File(mcMMO.mainDirectory + "config.yml");
-    private static File TreasuresFile = new File(mcMMO.mainDirectory + "treasures.yml");
-    private static File Leaderboards = new File(mcMMO.leaderboardDirectory);
+    private static File FlatFileDirectory = new File(mcMMO.p.flatFileDirectory);
+    private static File UsersFile = new File(mcMMO.p.usersFile);
+    private static File ConfigFile = new File(mcMMO.p.mainDirectory + "config.yml");
+    private static File TreasuresFile = new File(mcMMO.p.mainDirectory + "treasures.yml");
+    private static File Leaderboards = new File(mcMMO.p.leaderboardDirectory);
 
     public static void mcMMObackup() throws IOException {
         if (Config.getInstance().getUseMySQL()) {

@@ -52,11 +52,11 @@ public class mcMMO extends JavaPlugin {
     public static File mcmmo;
 
     //File Paths
-    public static String mainDirectory;
-    public static String flatFileDirectory;
-    public static String usersFile;
-    public static String leaderboardDirectory;
-    public static String modDirectory;
+    public final String mainDirectory = getDataFolder().getPath() + File.separator;
+    public final String flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
+    public final String usersFile = flatFileDirectory + "mcmmo.users";
+    public final String leaderboardDirectory = flatFileDirectory + "Leaderboards" + File.separator;
+    public final String modDirectory = mainDirectory + "ModConfigs" + File.separator;
 
     /**
      * Things to be run when the plugin is enabled.
@@ -64,12 +64,6 @@ public class mcMMO extends JavaPlugin {
     public void onEnable() {
         p = this;
         mcmmo = getFile();
-
-        mainDirectory = getDataFolder().getPath() + File.separator;
-        flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
-        leaderboardDirectory = flatFileDirectory + "Leaderboards" + File.separator;
-        modDirectory = mainDirectory + "ModConfigs" + File.separator;
-        usersFile = flatFileDirectory + "mcmmo.users";
 
         if (!Config.getInstance().getUseMySQL()) {
             Users.loadUsers();

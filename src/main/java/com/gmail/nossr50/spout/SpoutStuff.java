@@ -34,7 +34,7 @@ import com.gmail.nossr50.util.Users;
 public class SpoutStuff {
     private static mcMMO plugin = mcMMO.p;
 
-    public final static String spoutDirectory = mcMMO.mainDirectory + "Resources" + File.separator;
+    public final static String spoutDirectory = mcMMO.p.mainDirectory + "Resources" + File.separator;
     public final static String hudDirectory = spoutDirectory + "HUD" + File.separator;
     public final static String hudStandardDirectory = hudDirectory + "Standard" + File.separator;
     public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;

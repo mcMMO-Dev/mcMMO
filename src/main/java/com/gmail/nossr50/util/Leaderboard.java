@@ -14,8 +14,8 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.Tree;
 
 public class Leaderboard {
-    private static String leaderboardsDirectory = mcMMO.leaderboardDirectory;
-    private static String location = mcMMO.usersFile;
+    private static String leaderboardsDirectory = mcMMO.p.leaderboardDirectory;
+    private static String location = mcMMO.p.usersFile;
     private static mcMMO plugin = mcMMO.p;
 
     /**

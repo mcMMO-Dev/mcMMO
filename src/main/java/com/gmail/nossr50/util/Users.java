@@ -13,19 +13,15 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Users {
 
-    public static String location = mcMMO.usersFile;
-    public static String directory = mcMMO.flatFileDirectory;
-    public static String directoryb = mcMMO.leaderboardDirectory;
-
     public static HashMap<String, PlayerProfile> players = new HashMap<String, PlayerProfile>();
 
     /**
      * Load users.
      */
     public static void loadUsers() {
-        new File(directory).mkdir();
-        new File(directoryb).mkdir();
-        File theDir = new File(location);
+        new File(mcMMO.p.flatFileDirectory).mkdir();
+        new File(mcMMO.p.leaderboardDirectory).mkdir();
+        File theDir = new File(mcMMO.p.usersFile);
 
         if (!theDir.exists()) {
             try {

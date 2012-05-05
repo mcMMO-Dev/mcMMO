@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Properties;
-
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.DatabaseUpdate;
