@@ -6,7 +6,8 @@ import com.gmail.nossr50.commands.spout.*;
 import com.gmail.nossr50.commands.mc.*;
 import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
-import com.gmail.nossr50.config.*;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.LoadTreasures;
 import com.gmail.nossr50.config.mods.LoadCustomTools;
 import com.gmail.nossr50.runnables.*;
 import com.gmail.nossr50.util.Database;
@@ -50,7 +51,7 @@ public class mcMMO extends JavaPlugin {
     public static mcMMO p;
 
     /* Jar Stuff */
-    public static File mcmmo;
+    public final File mcmmo = getFile();
 
     //File Paths
     public final String mainDirectory = getDataFolder().getPath() + File.separator;
@@ -66,9 +67,6 @@ public class mcMMO extends JavaPlugin {
      */
     public void onEnable() {
         p = this;
-        mcmmo = getFile();
-        
-        if (!configInstance.getUseMySQL()) {
 
         configInstance.load();
         LoadTreasures.getInstance().load();
@@ -76,7 +74,8 @@ public class mcMMO extends JavaPlugin {
         if (configInstance.getToolModsEnabled()) {
             LoadCustomTools.getInstance().load();
         }
-        
+
+        if (!configInstance.getUseMySQL()) {
             Users.loadUsers();
         }
 

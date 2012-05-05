@@ -170,7 +170,7 @@ public class Party {
      * @return the list of parties.
      */
     public ArrayList<String> getParties() {
-        String location = mcMMO.p.usersFile;
+        String location = plugin.usersFile;
         ArrayList<String> parties = new ArrayList<String>();
 
         try {
@@ -194,7 +194,7 @@ public class Party {
             in.close();
         }
         catch (Exception e) {
-            mcMMO.p.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            plugin.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
         return parties;
     }

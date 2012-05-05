@@ -57,7 +57,7 @@ public class PlayerProfile {
     HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
 
     private String playerName;
-    private String location = mcMMO.p.usersFile;
+    private final String location = mcMMO.p.usersFile;
 
     public PlayerProfile(String name, boolean addNew) {
         hud = Config.getInstance().defaulthud;

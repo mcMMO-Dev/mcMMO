@@ -17,11 +17,12 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
 
 public class McremoveCommand implements CommandExecutor {
-    private final String location = mcMMO.p.usersFile;
+    private final String location;
     private final mcMMO plugin;
 
     public McremoveCommand (mcMMO plugin) {
         this.plugin = plugin;
+        this.location = plugin.usersFile;
     }
 
     @Override

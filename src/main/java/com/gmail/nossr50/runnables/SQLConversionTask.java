@@ -17,7 +17,7 @@ public class SQLConversionTask implements Runnable {
 
     @Override
     public void run() {
-        String location = mcMMO.p.usersFile;
+        String location = plugin.usersFile;
 
         try {
             FileReader file = new FileReader(location);

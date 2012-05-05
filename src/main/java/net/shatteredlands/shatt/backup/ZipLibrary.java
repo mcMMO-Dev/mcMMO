@@ -16,14 +16,15 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 
 public class ZipLibrary {
-
-    private static String BackupDirectory = mcMMO.p.mainDirectory + "backup";
+    private final static mcMMO plugin = mcMMO.p;
+    private static String BackupDirectory = plugin.mainDirectory + "backup" + File.separator;
     private static File BackupDir = new File(BackupDirectory);
-    private static File FlatFileDirectory = new File(mcMMO.p.flatFileDirectory);
-    private static File UsersFile = new File(mcMMO.p.usersFile);
-    private static File ConfigFile = new File(mcMMO.p.mainDirectory + "config.yml");
-    private static File TreasuresFile = new File(mcMMO.p.mainDirectory + "treasures.yml");
-    private static File Leaderboards = new File(mcMMO.p.leaderboardDirectory);
+    private static File FlatFileDirectory = new File(plugin.flatFileDirectory);
+    private static File ModFileDirectory = new File(plugin.modDirectory);
+    private static File UsersFile = new File(plugin.usersFile);
+    private static File ConfigFile = new File(plugin.mainDirectory + "config.yml");
+    private static File TreasuresFile = new File(plugin.mainDirectory + "treasures.yml");
+    private static File Leaderboards = new File(plugin.leaderboardDirectory);
 
     public static void mcMMObackup() throws IOException {
         if (Config.getInstance().getUseMySQL()) {
@@ -47,6 +48,7 @@ public class ZipLibrary {
         //Create the Source List, and add directories/etc to the file.
         List<File> sources = new ArrayList<File>();
         sources.add(FlatFileDirectory);
+        sources.add(ModFileDirectory);
         sources.add(UsersFile);
         sources.add(ConfigFile);
         sources.add(TreasuresFile);

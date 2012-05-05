@@ -12,16 +12,19 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Users {
-
+    private final static mcMMO plugin = mcMMO.p;
     public static HashMap<String, PlayerProfile> players = new HashMap<String, PlayerProfile>();
+
 
     /**
      * Load users.
      */
     public static void loadUsers() {
-        new File(mcMMO.p.flatFileDirectory).mkdir();
-        new File(mcMMO.p.leaderboardDirectory).mkdir();
-        File theDir = new File(mcMMO.p.usersFile);
+        
+
+        new File(plugin.flatFileDirectory).mkdir();
+        new File(plugin.leaderboardDirectory).mkdir();
+        File theDir = new File(plugin.usersFile);
 
         if (!theDir.exists()) {
             try {
@@ -101,7 +104,7 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfileByName(String playerName) {
-        if (mcMMO.p.getServer().getOfflinePlayer(playerName).isOnline() || players.containsKey(playerName.toLowerCase())) {
+        if (plugin.getServer().getOfflinePlayer(playerName).isOnline() || players.containsKey(playerName.toLowerCase())) {
             if (players.containsKey(playerName.toLowerCase())) {
                 return players.get(playerName.toLowerCase());
             }
