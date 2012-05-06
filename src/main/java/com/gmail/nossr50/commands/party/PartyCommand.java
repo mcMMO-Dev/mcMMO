@@ -159,7 +159,7 @@ public class PartyCommand implements CommandExecutor {
             return true;
 
         case 2:
-            if (!partyInstance.isParty(args[0])) {
+            if (!partyInstance.isParty(args[1])) {
                 sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));
                 return true;
             }
