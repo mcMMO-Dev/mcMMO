@@ -1000,13 +1000,11 @@ public class PlayerProfile {
     /**
      * Adds XP to the player, this is affected by skill modifiers and XP Rate
      *
+     * @param player The player to add XP to
      * @param skillType The skill to add XP to
      * @param newvalue The amount of XP to add
-     * @param player The player to add XP to
      */
-    public void addXP(SkillType skillType, int newValue) {
-        Player player = mcMMO.p.getServer().getPlayer(playerName);
-
+    public void addXP(Player player, SkillType skillType, int newValue) {
         if (System.currentTimeMillis() < ((xpGainATS * 1000) + 250) || player.getGameMode().equals(GameMode.CREATIVE)) {
             return;
         }

@@ -103,7 +103,7 @@ public class Fishing {
             FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
             if (random.nextDouble() * 100 <= treasure.getDropChance()) {
-                Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp());
+                Users.getProfile(player).addXP(player, SkillType.FISHING, treasure.getXp());
                 theCatch.setItemStack(treasure.getDrop());
             }
         }
@@ -117,7 +117,7 @@ public class Fishing {
             theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); //Change durability to random value
         }
 
-        PP.addXP(SkillType.FISHING, Config.getInstance().getFishingBaseXP());
+        PP.addXP(player, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
         Skills.XpCheckSkill(SkillType.FISHING, player);
     }
 

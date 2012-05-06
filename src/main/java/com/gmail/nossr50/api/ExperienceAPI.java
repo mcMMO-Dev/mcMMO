@@ -61,7 +61,7 @@ public class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public void addXP(Player player, SkillType skillType, int XP) {
-        Users.getProfile(player).addXP(skillType, XP);
+        Users.getProfile(player).addXP(player, skillType, XP);
         checkXP(player, skillType);
     }
 

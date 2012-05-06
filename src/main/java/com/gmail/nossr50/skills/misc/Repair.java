@@ -139,7 +139,7 @@ public class Repair {
             dif = (short) (dif / 2);
         }
 
-        PP.addXP(SkillType.REPAIR, dif * 10);
+        PP.addXP(player, SkillType.REPAIR, dif * 10);
         Skills.XpCheckSkill(SkillType.REPAIR, player);
 
         //CLANG CLANG

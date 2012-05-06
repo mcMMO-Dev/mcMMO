@@ -269,7 +269,7 @@ public class Herbalism {
             }
         }
 
-        PP.addXP(SkillType.HERBALISM, xp);
+        PP.addXP(player, SkillType.HERBALISM, xp);
         Skills.XpCheckSkill(SkillType.HERBALISM, player);
     }
 
