@@ -440,7 +440,7 @@ public class Config extends ConfigLoader {
 
     public HUDType defaulthud;
 
-    private Config(mcMMO plugin) {
+    public Config(mcMMO plugin) {
         super(plugin, "config.yml");
         config = plugin.getConfig();
         xpGainMultiplier = getExperienceGainsGlobalMultiplier();

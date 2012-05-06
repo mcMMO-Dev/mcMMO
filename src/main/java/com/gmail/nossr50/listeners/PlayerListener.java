@@ -316,8 +316,7 @@ public class PlayerListener implements Listener {
 
             event.setFormat(bracketColor + "(" + ChatColor.WHITE + "%1$s" + bracketColor + ") %2$s");
             event.getRecipients().retainAll(intendedRecipients);
-        }
-        else if (PP.getAdminChatMode()) {
+        } else if (PP.getAdminChatMode()) {
             McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), event.getMessage());
             plugin.getServer().getPluginManager().callEvent(chatEvent);
 

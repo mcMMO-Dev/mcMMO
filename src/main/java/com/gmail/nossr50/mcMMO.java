@@ -51,24 +51,23 @@ public class mcMMO extends JavaPlugin {
     public static mcMMO p;
 
     /* Jar Stuff */
-    public final File mcmmo = getFile();
+    public File mcmmo;
 
     //File Paths
-    public final String mainDirectory = getDataFolder().getPath() + File.separator;
-    public final String flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
-    public final String usersFile = flatFileDirectory + "mcmmo.users";
-    public final String leaderboardDirectory = flatFileDirectory + "Leaderboards" + File.separator;
-    public final String modDirectory = mainDirectory + "ModConfigs" + File.separator;
+    public String mainDirectory, flatFileDirectory, usersFile, leaderboardDirectory, modDirectory;
 
-    private static Config configInstance = Config.getInstance();
+    private static Config configInstance = null;
 
     /**
      * Things to be run when the plugin is enabled.
      */
     public void onEnable() {
         p = this;
-
+        setupFilePaths();
+        
+        configInstance = new Config(this);
         configInstance.load();
+        
         LoadTreasures.getInstance().load();
 
         if (configInstance.getToolModsEnabled()) {
@@ -129,6 +128,15 @@ public class mcMMO extends JavaPlugin {
                 System.out.println("Failed to submit stats.");
             }
         }
+    }
+    
+    public void setupFilePaths() {
+        mcmmo = getFile();
+        mainDirectory = getDataFolder().getPath() + File.separator;
+        flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
+        usersFile = flatFileDirectory + "mcmmo.users";
+        leaderboardDirectory = flatFileDirectory + "Leaderboards" + File.separator;
+        modDirectory = mainDirectory + "ModConfigs" + File.separator;
     }
 
     /**
