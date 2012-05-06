@@ -323,7 +323,7 @@ public class Herbalism {
             greenTerraConvert(player, block);
         }
         else {
-            player.sendMessage(LocaleLoader.getString("mcPlayerListener.GreenThumbFail"));
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Fail"));
         }
     }
 }
