@@ -8,6 +8,7 @@ website: http://forums.bukkit.org/threads/rpg-mech-mcmmo-v1-3-05-rpg-addiction-r
 
 main: com.gmail.nossr50.mcMMO
 softdepend: [Spout]
+load: STARTUP
 
 commands:
     mchud:

@@ -59,16 +59,16 @@ public class BlockListener implements Listener {
         BlockFace direction = event.getDirection();
 
         for (Block b : blocks) {
-            if (b.hasMetadata("mcmmoPlacedBlock")) {
-                b.getRelative(direction).setMetadata("mcmmoNeedsTracking", new FixedMetadataValue(plugin, true));
-                b.removeMetadata("mcmmoPlacedBlock", plugin);
+            if (mcMMO.placeStore.isTrue(b)) {
+                mcMMO.placeStore.setTrue(b.getRelative(direction));
+                mcMMO.placeStore.setFalse(b);
             }
         }
 
         for (Block b : blocks) {
-            if (b.getRelative(direction).hasMetadata("mcmmoNeedsTracking")) {
-                b.getRelative(direction).setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
-                b.getRelative(direction).removeMetadata("mcmmoNeedsTracking", plugin);
+            if (mcMMO.placeStore.isTrue(b.getRelative(direction))) {
+                mcMMO.placeStore.setTrue(b.getRelative(direction));
+                mcMMO.placeStore.setFalse(b);
             }
         }
     }
@@ -82,9 +82,9 @@ public class BlockListener implements Listener {
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         Block block = event.getRetractLocation().getBlock();
 
-        if (block.hasMetadata("mcmmoPlacedBlock")) {
-            block.removeMetadata("mcmmoPlacedBlock", plugin);
-            event.getBlock().getRelative(event.getDirection()).setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
+        if (mcMMO.placeStore.isTrue(block)) {
+            mcMMO.placeStore.setFalse(block);
+            mcMMO.placeStore.setTrue(event.getBlock().getRelative(event.getDirection()));
         }
     }
 
@@ -108,7 +108,7 @@ public class BlockListener implements Listener {
                 }
                 else {
                     Block newLocation = block.getRelative(0, y + 1, 0);
-                    newLocation.setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
+                    mcMMO.placeStore.setTrue(newLocation);
                     break;
                 }
             }
@@ -116,7 +116,7 @@ public class BlockListener implements Listener {
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(mat)) {
-            block.setMetadata("mcmmoPlacedBlock", new FixedMetadataValue(plugin, true));
+            mcMMO.placeStore.setTrue(block);
         }
 
         if (id == Config.getInstance().getRepairAnvilId() && Config.getInstance().getRepairAnvilMessagesEnabled()) {
@@ -193,7 +193,7 @@ public class BlockListener implements Listener {
          * EXCAVATION
          */
 
-        if (BlockChecks.canBeGigaDrillBroken(mat) && Permissions.getInstance().excavation(player) && !block.hasMetadata("mcmmoPlacedBlock")) {
+        if (BlockChecks.canBeGigaDrillBroken(mat) && Permissions.getInstance().excavation(player) && !mcMMO.placeStore.isTrue(block)) {
             if (Config.getInstance().getExcavationRequiresTool() && ItemChecks.isShovel(inhand)) {
                 Excavation.excavationProcCheck(block, player);
             }
@@ -203,8 +203,8 @@ public class BlockListener implements Listener {
         }
 
         //Remove metadata when broken
-        if (block.hasMetadata("mcmmoPlacedBlock") && BlockChecks.shouldBeWatched(mat)) {
-            block.removeMetadata("mcmmoPlacedBlock", plugin);
+        if (mcMMO.placeStore.isTrue(block) && BlockChecks.shouldBeWatched(mat)) {
+            mcMMO.placeStore.setFalse(block);
         }
     }
 

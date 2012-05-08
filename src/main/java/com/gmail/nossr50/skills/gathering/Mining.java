@@ -212,7 +212,7 @@ public class Mining {
      * @param block The block being broken
      */
     public static void miningBlockCheck(Player player, Block block) {
-        if (block.hasMetadata("mcmmoPlacedBlock") || player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+        if (mcMMO.placeStore.isTrue(block) || player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
             return;
         }
 
@@ -272,7 +272,7 @@ public class Mining {
         case NETHERRACK:
         case SANDSTONE:
         case STONE:
-            if (block.hasMetadata("mcmmoPlacedBlock")) {
+            if (mcMMO.placeStore.isTrue(block)) {
                 return;
             }
 

@@ -112,7 +112,7 @@ public class Excavation {
     public static void gigaDrillBreaker(Player player, Block block) {
         Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());
 
-        if (!block.hasMetadata("mcmmoPlacedBlock")) {
+        if (!mcMMO.placeStore.isTrue(block)) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
             mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 

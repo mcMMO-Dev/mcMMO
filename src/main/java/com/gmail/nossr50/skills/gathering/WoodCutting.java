@@ -114,7 +114,7 @@ public class WoodCutting {
                         break;
                     }
 
-                    if (!x.hasMetadata("mcmmoPlacedBlock")) {
+                    if (!mcMMO.placeStore.isTrue(x)) {
                         WoodCutting.woodCuttingProcCheck(player, x);
 
                         switch (species) {
@@ -188,7 +188,7 @@ public class WoodCutting {
         Block zNegative = currentBlock.getRelative(0, 0, -1);
         Block yPositive = currentBlock.getRelative(0, 1, 0);
 
-        if (!currentBlock.hasMetadata("mcmmoPlacedBlock")) {
+        if (!mcMMO.placeStore.isTrue(currentBlock)) {
             if (!isTooAggressive(currentBlock, xPositive) && BlockChecks.treeFellerCompatible(xPositive.getType()) && !toBeFelled.contains(xPositive)) {
                 processTreeFelling(xPositive, toBeFelled);
             }
@@ -207,7 +207,7 @@ public class WoodCutting {
         }
 
         if (BlockChecks.treeFellerCompatible(yPositive.getType())) {
-            if(!currentBlock.hasMetadata("mcmmoPlacedBlock") && !toBeFelled.contains(yPositive)) {
+            if(!mcMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
                 processTreeFelling(yPositive, toBeFelled);
             }
         }
@@ -296,7 +296,7 @@ public class WoodCutting {
         int xp = 0;
         TreeSpecies species = TreeSpecies.getByData(block.getData());
 
-        if (block.hasMetadata("mcmmoPlacedBlock")) {
+        if (mcMMO.placeStore.isTrue(block)) {
             return;
         }
 

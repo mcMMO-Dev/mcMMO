@@ -14,10 +14,13 @@ import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Metrics;
 import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.blockmeta.ChunkletManager;
+import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.HardcoreListener;
 import com.gmail.nossr50.listeners.PlayerListener;
+import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
@@ -41,6 +44,7 @@ public class mcMMO extends JavaPlugin {
     private final PlayerListener playerListener = new PlayerListener(this);
     private final BlockListener blockListener = new BlockListener(this);
     private final EntityListener entityListener = new EntityListener(this);
+    private final WorldListener worldListener = new WorldListener();
     private final HardcoreListener hardcoreListener = new HardcoreListener();
 
     public HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
@@ -49,6 +53,8 @@ public class mcMMO extends JavaPlugin {
     public static File versionFile;
     public static Database database;
     public static mcMMO p;
+
+    public static ChunkletManager placeStore = new HashChunkletManager();
 
     /* Jar Stuff */
     public File mcmmo;
@@ -84,6 +90,7 @@ public class mcMMO extends JavaPlugin {
         pm.registerEvents(playerListener, this);
         pm.registerEvents(blockListener, this);
         pm.registerEvents(entityListener, this);
+        pm.registerEvents(worldListener, this);
 
         if (configInstance.getHardcoreEnabled()) {
             pm.registerEvents(hardcoreListener, this);
@@ -185,6 +192,12 @@ public class mcMMO extends JavaPlugin {
         }
 
         getServer().getScheduler().cancelTasks(this); //This removes our tasks
+
+        //Save our metadata
+        placeStore.saveAll();
+
+        //Cleanup empty metadata stores
+        placeStore.cleanUp();
 
         //Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
         try {

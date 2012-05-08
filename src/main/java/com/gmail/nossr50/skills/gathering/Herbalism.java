@@ -89,7 +89,7 @@ public class Herbalism {
         switch (type) {
         case BROWN_MUSHROOM:
         case RED_MUSHROOM:
-            if (!block.hasMetadata("mcmmoPlacedBlock")) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPMushrooms();
             }
@@ -100,7 +100,7 @@ public class Herbalism {
                 Block b = block.getRelative(0, y, 0);
                 if (b.getType().equals(Material.CACTUS)) {
                     mat = Material.CACTUS;
-                    if (!b.hasMetadata("mcmmoPlacedBlock")) {
+                    if (!mcMMO.placeStore.isTrue(b)) {
                         if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
                             catciDrops++;
                         }
@@ -122,7 +122,7 @@ public class Herbalism {
             break;
 
         case MELON_BLOCK:
-            if (!block.hasMetadata("mcmmoPlacedBlock")) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = Material.MELON;
                 xp = Config.getInstance().getHerbalismXPMelon();
             }
@@ -137,7 +137,7 @@ public class Herbalism {
 
         case PUMPKIN:
         case JACK_O_LANTERN:
-            if (!block.hasMetadata("mcmmoPlacedBlock")) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPPumpkin();
             }
@@ -145,7 +145,7 @@ public class Herbalism {
 
         case RED_ROSE:
         case YELLOW_FLOWER:
-            if (!block.hasMetadata("mcmmoPlacedBlock")) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPFlowers();
             }
@@ -156,7 +156,7 @@ public class Herbalism {
                 Block b = block.getRelative(0, y, 0);
                 if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
                     mat = Material.SUGAR_CANE;
-                    if (!b.hasMetadata("mcmmoPlacedBlock")) {
+                    if (!mcMMO.placeStore.isTrue(b)) {
                         if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
                             caneDrops++;
                         }
@@ -167,14 +167,14 @@ public class Herbalism {
             break;
 
         case VINE:
-            if (!block.hasMetadata("mcmmoPlacedBlock")) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = type;
                 xp = Config.getInstance().getHerbalismXPVines();
             }
             break;
 
         case WATER_LILY:
-            if (!block.hasMetadata("mcmmoPlacedBlock")) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = type;
                 xp = Config.getInstance().getHerbalismXPLilyPads();
             }
