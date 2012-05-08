@@ -268,9 +268,7 @@ public class Combat {
             int damage = event.getDamage();
 
             if (permInstance.archery(attacker) && damage > 0) {
-
                 if (permInstance.archeryBonus(attacker)) {
-
                     /*Archery needs a damage bonus to be viable in PVP*/
                     int skillLvl = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
                     double dmgBonusPercent = ((skillLvl / 50) * 0.1D);
@@ -293,16 +291,8 @@ public class Combat {
                 startGainXp(attacker, PPa, target, SkillType.ARCHERY, pluginx);
 
                 if (target instanceof Player) {
-                    Player defender = (Player) target;
-                    PlayerProfile PPd = Users.getProfile(defender);
-
-                    if (PPa.inParty() && PPd.inParty() && Party.getInstance().inSameParty(defender, attacker)) {
-                        event.setCancelled(true);
-                        return;
-                    }
-
                     if (permInstance.daze(attacker)) {
-                        Archery.dazeCheck(defender, attacker);
+                        Archery.dazeCheck((Player) target, attacker);
                     }
                 }
             }

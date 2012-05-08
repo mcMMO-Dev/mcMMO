@@ -1,11 +1,14 @@
 package com.gmail.nossr50.listeners;
 
 import org.bukkit.Material;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -58,14 +61,22 @@ public class EntityListener implements Listener {
             return;
         }
 
-        Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
 
-        if (attacker instanceof Player && defender instanceof Player) {
-            if (!defender.getWorld().getPVP()) {
-                return;
-            }
+        if (attacker instanceof Projectile) {
+            attacker = ((Projectile) attacker).getShooter();
+        }
+        else if (attacker instanceof Tameable) {
+            AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
 
+            if (animalTamer instanceof Player) {
+                attacker = (Player) animalTamer;
+            }
+        }
+
+        Entity defender = event.getEntity();
+
+        if (attacker instanceof Player && defender instanceof Player) {
             if (Party.getInstance().inSameParty((Player)defender, (Player)attacker)) {
                 event.setCancelled(true);
                 return;
