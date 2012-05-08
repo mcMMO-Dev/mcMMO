@@ -288,7 +288,9 @@ public class Combat {
                     Archery.trackArrows(pluginx, target, PPa);
                 }
 
-                startGainXp(attacker, PPa, target, SkillType.ARCHERY, pluginx);
+                if (target != attacker) {
+                    startGainXp(attacker, PPa, target, SkillType.ARCHERY, pluginx);
+                }
 
                 if (target instanceof Player) {
                     if (permInstance.daze(attacker)) {
