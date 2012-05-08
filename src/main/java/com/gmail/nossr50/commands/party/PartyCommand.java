@@ -161,11 +161,6 @@ public class PartyCommand implements CommandExecutor {
         case 2:
             if (PP.inParty()) {
                 if (args[0].equalsIgnoreCase("password")) {
-                    if (!partyInstance.isParty(args[1])) {
-                        sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));
-                        return true;
-                    }
-
                     if (isLeader) {
                         if (!partyInstance.isPartyLocked(partyName)) {
                             partyInstance.lockParty(partyName);
