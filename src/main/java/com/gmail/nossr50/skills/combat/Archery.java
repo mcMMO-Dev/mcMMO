@@ -10,13 +10,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
@@ -53,8 +53,9 @@ public class Archery {
      *
      * @param defender Defending player
      * @param attacker Attacking player
+     * @param event The event to modify
      */
-    public static void dazeCheck(Player defender, Player attacker) {
+    public static void dazeCheck(Player defender, Player attacker, EntityDamageByEntityEvent event) {
         final int MAX_BONUS_LEVEL = 1000;
 
         int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
@@ -70,7 +71,7 @@ public class Archery {
 
         if (random.nextInt(2000) <= skillCheck) {
             defender.teleport(loc);
-            Combat.dealDamage(defender, 4);
+            event.setDamage(event.getDamage() + 4);
             defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
             attacker.sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
         }

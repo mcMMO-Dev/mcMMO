@@ -265,9 +265,8 @@ public class Combat {
         if (shooter instanceof Player) {
             Player attacker = (Player) shooter;
             PlayerProfile PPa = Users.getProfile(attacker);
-            int damage = event.getDamage();
 
-            if (permInstance.archery(attacker) && damage > 0) {
+            if (permInstance.archery(attacker)) {
                 if (permInstance.archeryBonus(attacker)) {
                     /*Archery needs a damage bonus to be viable in PVP*/
                     int skillLvl = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
@@ -280,8 +279,14 @@ public class Combat {
 
                     /* Every 50 skill levels Archery gains 10% damage bonus, set that here */
                     //TODO: Work in progress for balancing out Archery, will work on it more later...
-                    int archeryBonus = (int)(event.getDamage() * dmgBonusPercent);
-                    event.setDamage(event.getDamage() + archeryBonus);
+                    int damage = event.getDamage();
+                    int archeryBonus = (int) (damage * dmgBonusPercent);
+
+                    event.setDamage(damage + archeryBonus);
+                }
+
+                if (target instanceof Player && permInstance.daze(attacker)) {
+                    Archery.dazeCheck((Player) target, attacker, event);
                 }
 
                 if (permInstance.trackArrows(attacker)) {
@@ -290,12 +295,6 @@ public class Combat {
 
                 if (target != attacker) {
                     startGainXp(attacker, PPa, target, SkillType.ARCHERY, pluginx);
-                }
-
-                if (target instanceof Player) {
-                    if (permInstance.daze(attacker)) {
-                        Archery.dazeCheck((Player) target, attacker);
-                    }
                 }
             }
         }
