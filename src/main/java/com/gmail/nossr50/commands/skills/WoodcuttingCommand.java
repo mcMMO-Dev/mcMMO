@@ -43,7 +43,7 @@ public class WoodcuttingCommand implements CommandExecutor {
         dataCalculations(skillValue);
         permissionsCheck(player);
 
-        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("WoodCutting.SkillName") }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Woodcutting.SkillName") }));
         player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.WoodCutting") }));
         player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING) }));
 
