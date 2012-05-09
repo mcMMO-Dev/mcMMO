@@ -62,19 +62,16 @@ public class mcMMO extends JavaPlugin {
     //File Paths
     public String mainDirectory, flatFileDirectory, usersFile, leaderboardDirectory, modDirectory;
 
-    private static Config configInstance = null;
-
     /**
      * Things to be run when the plugin is enabled.
      */
     public void onEnable() {
         p = this;
         setupFilePaths();
-        
-        configInstance = new Config(this);
-        configInstance.load();
-        
-        LoadTreasures.getInstance().load();
+
+        //Force the loading of config files
+        Config configInstance = Config.getInstance();
+        LoadTreasures.getInstance();
 
         if (configInstance.getToolModsEnabled()) {
             LoadCustomTools.getInstance().load();
@@ -243,6 +240,8 @@ public class mcMMO extends JavaPlugin {
         getCommand("taming").setExecutor(new TamingCommand());
         getCommand("unarmed").setExecutor(new UnarmedCommand());
         getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
+
+        Config configInstance = Config.getInstance();
 
         //mc* commands
         if (configInstance.getCommandMCRemoveEnabled()) {

@@ -22,6 +22,7 @@ public class LoadTreasures extends ConfigLoader{
     public static LoadTreasures getInstance() {
         if (instance == null) {
             instance = new LoadTreasures(mcMMO.p);
+            instance.load();
         }
 
         return instance;
@@ -46,7 +47,7 @@ public class LoadTreasures extends ConfigLoader{
     }
 
     @Override
-    public void load() {
+    protected void load() {
         if (!configFile.exists()) {
             dataFolder.mkdir();
             plugin.saveTreasuresConfig();

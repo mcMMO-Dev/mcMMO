@@ -15,6 +15,7 @@ public class Config extends ConfigLoader {
     public static Config getInstance() {
         if (instance == null) {
             instance = new Config(mcMMO.p);
+            instance.load();
         }
 
         return instance;
@@ -440,14 +441,14 @@ public class Config extends ConfigLoader {
 
     public HUDType defaulthud;
 
-    public Config(mcMMO plugin) {
+    private Config(mcMMO plugin) {
         super(plugin, "config.yml");
         config = plugin.getConfig();
         xpGainMultiplier = getExperienceGainsGlobalMultiplier();
     }
 
     @Override
-    public void load() {
+    protected void load() {
         if (!configFile.exists()) {
             dataFolder.mkdir();
             plugin.saveDefaultConfig();
