@@ -57,11 +57,13 @@ public class PartyCommand implements CommandExecutor {
 
                 for (Player p : partyInstance.getAllMembers(player)) {
                     if (p.equals(partyInstance.getPartyLeader(partyName))) {
-                        tempList = ChatColor.GOLD + p.getName();
+                        tempList += ChatColor.GOLD;
                     }
                     else {
-                        tempList = ChatColor.WHITE + p.getName();
+                        tempList += ChatColor.WHITE;
                     }
+
+                    tempList += p.getName() + " ";
                 }
 
                 player.sendMessage(LocaleLoader.getString("Commands.Party.InParty", new Object[] { partyName }));

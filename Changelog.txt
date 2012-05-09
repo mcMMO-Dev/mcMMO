@@ -23,6 +23,7 @@ Version 1.3.07
  = Fixed bug where an arrow could bounce off entities on daze proc
  = Fixed bug where a player could gain Acrobatics experience while riding a cart
  = Fixed /party not working properly with 2 arguments
+ = Fixed /party not showing properly the member list
  = Fixed /ability not checking the right permission
  = Fixed rare NPE on /party command
  = Fixed Arrow Retrieval dropping only one arrow
