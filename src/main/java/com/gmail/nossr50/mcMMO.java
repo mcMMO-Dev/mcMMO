@@ -227,7 +227,7 @@ public class mcMMO extends JavaPlugin {
         aliasMap.put(LocaleLoader.getString("Swords.SkillName").toLowerCase(), "swords");
         aliasMap.put(LocaleLoader.getString("Taming.SkillName").toLowerCase(), "taming");
         aliasMap.put(LocaleLoader.getString("Unarmed.SkillName").toLowerCase(), "unarmed");
-        aliasMap.put(LocaleLoader.getString("WoodCutting.SkillName").toLowerCase(), "woodcutting");
+        aliasMap.put(LocaleLoader.getString("Woodcutting.SkillName").toLowerCase(), "woodcutting");
 
         //Register commands
         //Skills commands

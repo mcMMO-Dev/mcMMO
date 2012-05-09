@@ -341,9 +341,6 @@ public class PlayerListener implements Listener {
         }
     }
 
-    // Dynamically aliasing commands need to be re-done.
-    // For now, using a command with an alias will send both the original command, and the mcMMO command
-
     /**
      * Monitor PlayerCommandPreprocess events.
      *
@@ -352,18 +349,15 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         String message = event.getMessage();
-        
-        if (!message.startsWith("/")) {
-            return;
-        }
-
         String command = message.substring(1).split(" ")[0];
 
-        if (plugin.aliasMap.containsKey(command)) {
-            if (command.equalsIgnoreCase(plugin.aliasMap.get(command))) {
+        if (plugin.aliasMap.containsKey(command.toLowerCase())) {
+            //We should find a better way to avoid string replacement where the alias is equals to the command
+            if (command.equals(plugin.aliasMap.get(command.toLowerCase()))) {
                 return;
             }
-            event.getPlayer().chat(message.replaceFirst(command, plugin.aliasMap.get(command)));
+
+            event.setMessage(message.replace(command, plugin.aliasMap.get(command.toLowerCase())));
         }
     }
 }
