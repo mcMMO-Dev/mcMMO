@@ -208,7 +208,7 @@ public class PlayerListener implements Listener {
             }
 
             /* ACTIVATION CHECKS */
-            if (Config.getInstance().getAbilitiesEnabled() && BlockChecks.abilityBlockCheck(mat)) {
+            if (Config.getInstance().getAbilitiesEnabled() && BlockChecks.abilityBlockCheck(block)) {
                 if (!mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL)) {
                     Skills.activationCheck(player, SkillType.HERBALISM);
                 }
@@ -222,12 +222,12 @@ public class PlayerListener implements Listener {
             }
 
             /* GREEN THUMB CHECK */
-            if (Permissions.getInstance().greenThumbBlocks(player) && BlockChecks.makeMossy(mat) && is.getType().equals(Material.SEEDS)) {
+            if (Permissions.getInstance().greenThumbBlocks(player) && BlockChecks.makeMossy(block) && is.getType().equals(Material.SEEDS)) {
                 Herbalism.greenThumbBlocks(is, player, block);
             }
 
             /* ITEM CHECKS */
-            if (BlockChecks.abilityBlockCheck(mat)) {
+            if (BlockChecks.abilityBlockCheck(block)) {
                 Item.itemChecks(player);
             }
 

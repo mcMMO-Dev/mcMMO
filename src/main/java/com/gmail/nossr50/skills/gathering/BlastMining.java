@@ -103,7 +103,7 @@ public class BlastMining {
         while (iterator.hasNext()) {
             Block temp = iterator.next();
 
-            if (BlockChecks.isOre(temp.getType())) {
+            if (BlockChecks.isOre(temp)) {
                 ores.add(temp);
             }
             else {

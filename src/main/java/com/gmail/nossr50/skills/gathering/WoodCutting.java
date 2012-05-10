@@ -189,24 +189,24 @@ public class WoodCutting {
         Block yPositive = currentBlock.getRelative(0, 1, 0);
 
         if (!mcMMO.placeStore.isTrue(currentBlock)) {
-            if (!isTooAggressive(currentBlock, xPositive) && BlockChecks.treeFellerCompatible(xPositive.getType()) && !toBeFelled.contains(xPositive)) {
+            if (!isTooAggressive(currentBlock, xPositive) && BlockChecks.treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive)) {
                 processTreeFelling(xPositive, toBeFelled);
             }
 
-            if (!isTooAggressive(currentBlock, xNegative) && BlockChecks.treeFellerCompatible(xNegative.getType()) && !toBeFelled.contains(xNegative)) {
+            if (!isTooAggressive(currentBlock, xNegative) && BlockChecks.treeFellerCompatible(xNegative) && !toBeFelled.contains(xNegative)) {
                 processTreeFelling(xNegative, toBeFelled);
             }
 
-            if (!isTooAggressive(currentBlock, zPositive) && BlockChecks.treeFellerCompatible(zPositive.getType()) && !toBeFelled.contains(zPositive)) {
+            if (!isTooAggressive(currentBlock, zPositive) && BlockChecks.treeFellerCompatible(zPositive) && !toBeFelled.contains(zPositive)) {
                 processTreeFelling(zPositive, toBeFelled);
             }
 
-            if (!isTooAggressive(currentBlock, zNegative) && BlockChecks.treeFellerCompatible(zNegative.getType()) && !toBeFelled.contains(zNegative)) {
+            if (!isTooAggressive(currentBlock, zNegative) && BlockChecks.treeFellerCompatible(zNegative) && !toBeFelled.contains(zNegative)) {
                 processTreeFelling(zNegative, toBeFelled);
             }
         }
 
-        if (BlockChecks.treeFellerCompatible(yPositive.getType())) {
+        if (BlockChecks.treeFellerCompatible(yPositive)) {
             if(!mcMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
                 processTreeFelling(yPositive, toBeFelled);
             }

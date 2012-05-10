@@ -146,16 +146,16 @@ public class BlockListener implements Listener {
          */
 
         /* Green Terra */
-        if (PP.getToolPreparationMode(ToolType.HOE) && Permissions.getInstance().greenTerra(player) && ((mat.equals(Material.CROPS) && block.getData() == CropState.RIPE.getData()) || BlockChecks.canBeGreenTerra(mat))) {
+        if (PP.getToolPreparationMode(ToolType.HOE) && Permissions.getInstance().greenTerra(player) && ((mat.equals(Material.CROPS) && block.getData() == CropState.RIPE.getData()) || BlockChecks.canBeGreenTerra(block))) {
             Skills.abilityCheck(player, SkillType.HERBALISM);
         }
 
         /* Triple drops */
-        if (PP.getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canBeGreenTerra(mat)) {
+        if (PP.getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canBeGreenTerra(block)) {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 
-        if (Permissions.getInstance().herbalism(player) && BlockChecks.canBeGreenTerra(mat)) {
+        if (Permissions.getInstance().herbalism(player) && BlockChecks.canBeGreenTerra(block)) {
             Herbalism.herbalismProcCheck(block, player, event, plugin);
         }
 
@@ -163,7 +163,7 @@ public class BlockListener implements Listener {
          * MINING
          */
 
-        if (Permissions.getInstance().mining(player) && BlockChecks.canBeSuperBroken(mat)) {
+        if (Permissions.getInstance().mining(player) && BlockChecks.canBeSuperBroken(block)) {
             if (Config.getInstance().getMiningRequiresTool() && ItemChecks.isPickaxe(inhand)) {
                 Mining.miningBlockCheck(player, block);
             }
@@ -193,7 +193,7 @@ public class BlockListener implements Listener {
          * EXCAVATION
          */
 
-        if (BlockChecks.canBeGigaDrillBroken(mat) && Permissions.getInstance().excavation(player) && !mcMMO.placeStore.isTrue(block)) {
+        if (BlockChecks.canBeGigaDrillBroken(block) && Permissions.getInstance().excavation(player) && !mcMMO.placeStore.isTrue(block)) {
             if (Config.getInstance().getExcavationRequiresTool() && ItemChecks.isShovel(inhand)) {
                 Excavation.excavationProcCheck(block, player);
             }
@@ -226,20 +226,20 @@ public class BlockListener implements Listener {
         /*
          * ABILITY PREPARATION CHECKS
          */
-        if (BlockChecks.abilityBlockCheck(mat)) {
-            if (PP.getToolPreparationMode(ToolType.HOE) && (BlockChecks.canBeGreenTerra(mat) || BlockChecks.makeMossy(mat))) {
+        if (BlockChecks.abilityBlockCheck(block)) {
+            if (PP.getToolPreparationMode(ToolType.HOE) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.makeMossy(block))) {
                 Skills.abilityCheck(player, SkillType.HERBALISM);
             }
             else if (PP.getToolPreparationMode(ToolType.AXE) && mat.equals(Material.LOG) && Permissions.getInstance().treeFeller(player)) {  //TODO: Why are we checking the permissions here?
                 Skills.abilityCheck(player, SkillType.WOODCUTTING);
             }
-            else if (PP.getToolPreparationMode(ToolType.PICKAXE) && BlockChecks.canBeSuperBroken(mat)) {
+            else if (PP.getToolPreparationMode(ToolType.PICKAXE) && BlockChecks.canBeSuperBroken(block)) {
                 Skills.abilityCheck(player, SkillType.MINING);
             }
-            else if (PP.getToolPreparationMode(ToolType.SHOVEL) && BlockChecks.canBeGigaDrillBroken(mat)) {
+            else if (PP.getToolPreparationMode(ToolType.SHOVEL) && BlockChecks.canBeGigaDrillBroken(block)) {
                 Skills.abilityCheck(player, SkillType.EXCAVATION);
             }
-            else if (PP.getToolPreparationMode(ToolType.FISTS) && (BlockChecks.canBeGigaDrillBroken(mat) || mat.equals(Material.SNOW))) {
+            else if (PP.getToolPreparationMode(ToolType.FISTS) && (BlockChecks.canBeGigaDrillBroken(block) || mat.equals(Material.SNOW))) {
                 Skills.abilityCheck(player, SkillType.UNARMED);
             }
         }
@@ -252,7 +252,7 @@ public class BlockListener implements Listener {
         /*
          * ABILITY TRIGGER CHECKS
          */
-        if (PP.getAbilityMode(AbilityType.GREEN_TERRA) && Permissions.getInstance().greenTerra(player) && BlockChecks.makeMossy(mat)) {
+        if (PP.getAbilityMode(AbilityType.GREEN_TERRA) && Permissions.getInstance().greenTerra(player) && BlockChecks.makeMossy(block)) {
             Herbalism.greenTerra(player, block);
         }
         else if (PP.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {

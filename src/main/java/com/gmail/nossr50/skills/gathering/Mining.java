@@ -218,7 +218,7 @@ public class Mining {
 
         miningXP(player, block);
 
-        if (BlockChecks.canBeSuperBroken(block.getType())) {
+        if (BlockChecks.canBeSuperBroken(block)) {
             final int MAX_BONUS_LEVEL = 1000;
 
             int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 import com.gmail.nossr50.config.Config;
 
@@ -9,7 +10,7 @@ public class BlockChecks {
     /**
      * Checks to see if a block type awards XP.
      *
-     * @param material The type of Block to check
+     * @param block Block to check
      * @return true if the block type awards XP, false otherwise
      */
     public static boolean shouldBeWatched(Material material) {
@@ -56,11 +57,11 @@ public class BlockChecks {
     /**
      * Check if a block should allow for the activation of abilities.
      *
-     * @param material The type of Block to check
+     * @param block Block to check
      * @return true if the block should allow ability activation, false otherwise
      */
-    public static boolean abilityBlockCheck(Material material) {
-        switch (material) {
+    public static boolean abilityBlockCheck(Block block) {
+        switch (block.getType()) {
         case BED_BLOCK:
         case BREWING_STAND:
         case BOOKSHELF:
@@ -81,12 +82,9 @@ public class BlockChecks {
         case WOODEN_DOOR:
         case WORKBENCH:
             return false;
-
-        default:
-            break;
         }
 
-        if (Material.getMaterial(Config.getInstance().getRepairAnvilId()).equals(material)) {
+        if (block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
             return false;
         }
         else {
@@ -97,11 +95,11 @@ public class BlockChecks {
     /**
      * Check if a block type is an ore.
      *
-     * @param material The type of Block to check
+     * @param block Block to check
      * @return true if the Block is an ore, false otherwise
      */
-    public static boolean isOre(Material material) {
-        switch (material) {
+    public static boolean isOre(Block block) {
+        switch (block.getType()) {
         case COAL_ORE:
         case DIAMOND_ORE:
         case GLOWING_REDSTONE_ORE:
@@ -119,15 +117,18 @@ public class BlockChecks {
     /**
      * Check if a block can be made mossy.
      *
-     * @param material The type of Block to check
+     * @param block The block to check
      * @return true if the block can be made mossy, false otherwise
      */
-    public static boolean makeMossy(Material type) {
-        switch (type) {
+    public static boolean makeMossy(Block block) {
+        switch (block.getType()) {
         case COBBLESTONE:
         case DIRT:
-        case SMOOTH_BRICK:
             return true;
+        case SMOOTH_BRICK:
+            if (block.getData() == 0) {
+                return true;
+            }
 
         default:
             return false;
@@ -137,11 +138,11 @@ public class BlockChecks {
     /**
      * Check if a block is affected by Herbalism abilities.
      *
-     * @param type The type of Block to check
+     * @param block Block to check
      * @return true if the block is affected, false otherwise
      */
-    public static boolean canBeGreenTerra(Material type){
-        switch (type) {
+    public static boolean canBeGreenTerra(Block block){
+        switch (block.getType()) {
         case BROWN_MUSHROOM:
         case CACTUS:
         case CROPS:
@@ -164,11 +165,11 @@ public class BlockChecks {
     /**
      * Check to see if a block is broken by Super Breaker.
      *
-     * @param type The type of Block to check
+     * @param block Block to check
      * @return true if the block would be broken by Super Breaker, false otherwise
      */
-    public static Boolean canBeSuperBroken(Material type) {
-        switch (type) {
+    public static Boolean canBeSuperBroken(Block block) {
+        switch (block.getType()) {
         case COAL_ORE:
         case DIAMOND_ORE:
         case ENDER_STONE:
@@ -193,11 +194,11 @@ public class BlockChecks {
     /**
      * Check to see if a block can be broken by Giga Drill Breaker.
      *
-     * @param material The type of block to check
-     * @return
+     * @param block Block to check
+     * @return true if the block can be broken by Giga Drill Breaker, false otherwise
      */
-    public static boolean canBeGigaDrillBroken(Material type) {
-        switch (type) {
+    public static boolean canBeGigaDrillBroken(Block block) {
+        switch (block.getType()) {
         case CLAY:
         case DIRT:
         case GRASS:
@@ -218,8 +219,8 @@ public class BlockChecks {
      * @param block Block to check
      * @return true if the block is affected by Tree Feller, false otherwise
      */
-    public static boolean treeFellerCompatible(Material type) {
-        switch (type) {
+    public static boolean treeFellerCompatible(Block block) {
+        switch (block.getType()) {
         case LOG:
         case LEAVES:
         case AIR:

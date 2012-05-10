@@ -42,7 +42,6 @@ public class Herbalism {
         }
         else if (hasSeeds && !block.getType().equals(Material.WHEAT)) {
             inventory.removeItem(new ItemStack(Material.SEEDS));
-            player.updateInventory();
             greenTerraConvert(player, block);
         }
     }
@@ -51,13 +50,13 @@ public class Herbalism {
         Material type = block.getType();
         
         if (Misc.blockBreakSimulate(block, player, false)) {
-            if (Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy() && type.equals(Material.SMOOTH_BRICK)) {
-                block.setData((byte) 0x1); //Set type of the brick to mossy
+            if (Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy() && type == Material.SMOOTH_BRICK && block.getData() == 0) {
+                block.setTypeIdAndData(block.getTypeId(), (byte) 1, false); //Set type of the brick to mossy, force the client update
             }
-            else if (Config.getInstance().getHerbalismGreenThumbDirtToGrass() && type.equals(Material.DIRT)) {
+            else if (Config.getInstance().getHerbalismGreenThumbDirtToGrass() && type == Material.DIRT) {
                 block.setType(Material.GRASS);
             }
-            else if (Config.getInstance().getHerbalismGreenThumbCobbleToMossy() && type.equals(Material.COBBLESTONE)) {
+            else if (Config.getInstance().getHerbalismGreenThumbCobbleToMossy() && type == Material.COBBLESTONE) {
                 block.setType(Material.MOSSY_COBBLESTONE);
             }
         }
@@ -299,7 +298,6 @@ public class Herbalism {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, PP), 1);
 
             inventory.removeItem(new ItemStack(Material.SEEDS));
-            player.updateInventory();
         }
     }
 
