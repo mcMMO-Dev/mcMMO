@@ -1,6 +1,9 @@
 == mcMMO
 **The RPG lovers mod**
 
+=== Forums
+http://forums.mcmmo.info Talk with developers and the community about mcMMO here
+
 === Brief Description
 mcMMO takes core Minecraft game mechanics and expands them to add an extensive RPG experience, the goal of the project has always been a quality RPG experience. Everything in mcMMO is carefully thought out and is constantly improving. mcMMO adds eleven skills to train in and level in, while also offering a high level of customization for server admins. There are countless features, including custom sounds, graphical elements, and more added when running mcMMO in conjunction with Spout. I carefully read feedback and evaluate the mechanics of mcMMO in every update to provide an ever-evolving experience.
 
