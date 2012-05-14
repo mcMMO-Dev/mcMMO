@@ -63,7 +63,7 @@ public class Database {
      */
     public void createStructure() {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` (`user_id` int(10) unsigned NOT NULL,"
-                + "`hudtype` varchar(50) NOT NULL DEFAULT '',"
+                + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
                 + "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
