@@ -166,7 +166,7 @@ public class PlayerListener implements Listener {
 
         if (Permissions.getInstance().motd(player) && Config.getInstance().getMOTDEnabled()) {
             player.sendMessage(LocaleLoader.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
-            player.sendMessage(LocaleLoader.getString("mcMMO.Wiki"));
+            player.sendMessage(LocaleLoader.getString("mcMMO.Website"));
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY

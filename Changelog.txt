@@ -36,6 +36,7 @@ Version 1.3.07
  = Fixed some bypass nodes defaulting true for Ops
  = Fixed bug with trying to use Chimera Wing while standing on a half-block
  = Fixed duplication bug when a placed block was mined after a server restart
+ ! Changed the mcMMO motd to link to the new website rather than the wiki
  ! Changed bleeding ticks damage to 1 from 2
  ! Changed Mining to ignore blocks when the pick is enchanted with Silk Touch
  ! Changed Super Breaker to be non-functional when used with a Silk Touch enchanted pick
