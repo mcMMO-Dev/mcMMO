@@ -5,18 +5,22 @@ Axes:
     Axe_1:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
     Axe_2:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
-        
+
 #
 #  Settings for Bows
 ###
@@ -24,16 +28,20 @@ Bows:
     Bow_1:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
     Bow_2:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
 
 #
@@ -43,16 +51,20 @@ Hoes:
     Hoe_1:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
     Hoe_2:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
 
 #
@@ -62,16 +74,20 @@ Pickaxes:
     Pickaxe_1:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
     Pickaxe_2:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
 
 #
@@ -81,16 +97,20 @@ Shovels:
     Shovel_1:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
     Shovel_2:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
 
 #
@@ -100,14 +120,18 @@ Swords:
     Sword_1:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999
     Sword_2:
         ID: 999
         XP_Modifer: 1.0
+        Ability_Enabled: true
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
         Durability: 9999

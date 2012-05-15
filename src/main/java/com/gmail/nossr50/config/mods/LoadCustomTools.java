@@ -30,6 +30,7 @@ public class LoadCustomTools extends ConfigLoader {
     public List<CustomTool> customPickaxes = new ArrayList<CustomTool>();
     public List<CustomTool> customShovels = new ArrayList<CustomTool>();
     public List<CustomTool> customSwords = new ArrayList<CustomTool>();
+    public List<CustomTool> customTools = new ArrayList<CustomTool>();
 
     public List<Integer> customAxeIDs = new ArrayList<Integer>();
     public List<Integer> customBowIDs = new ArrayList<Integer>();
@@ -37,6 +38,7 @@ public class LoadCustomTools extends ConfigLoader {
     public List<Integer> customPickaxeIDs = new ArrayList<Integer>();
     public List<Integer> customShovelIDs = new ArrayList<Integer>();
     public List<Integer> customSwordIDs = new ArrayList<Integer>();
+    public List<Integer> customIDs = new ArrayList<Integer>();
 
     private LoadCustomTools(mcMMO plugin) {
         super(plugin, "ModConfigs" + File.separator + "tools.yml");
@@ -76,17 +78,19 @@ public class LoadCustomTools extends ConfigLoader {
 
             int id = config.getInt(toolType + "." + toolName + ".ID");
             double multiplier = config.getDouble(toolType + "." + toolName + ".XP_Modifier", 1.0);
+            boolean abilityEnabled = config.getBoolean(toolType + "." + toolName + ".Ability_Enabled", true);
             boolean repairable = config.getBoolean(toolType + "." + toolName + ".Repairable");
-            int repairID = config.getInt(toolType + "." + toolName + ".Repair_Material_ID");
-            byte repairData = (byte) config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Value");
-            short durability = (short) config.getInt(toolType + "." + toolName + ".Durability");
+            int repairID = config.getInt(toolType + "." + toolName + ".Repair_Material_ID", 0);
+            byte repairData = (byte) config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Value", 0);
+            int repairQuantity = config.getInt(toolType + "." + toolName + ".Repair_Material_Quantity", 0);
+            short durability = (short) config.getInt(toolType + "." + toolName + ".Durability", 0);
 
             if (id == 0) {
                 plugin.getLogger().warning("Missing ID. This item will be skipped.");
                 continue;
             }
 
-            if (repairable && (repairID == 0 || durability == 0)) {
+            if (repairable && (repairID == 0 || repairQuantity == 0 || durability == 0 )) {
                 plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable.");
                 repairable = false;
             }
@@ -95,14 +99,16 @@ public class LoadCustomTools extends ConfigLoader {
 
             if (repairable) {
                 ItemStack repairMaterial = new ItemStack(repairID, 1, (short) 0, repairData);
-                tool = new CustomTool(durability, repairMaterial, repairable, multiplier, id);
+                tool = new CustomTool(durability, repairMaterial, repairQuantity, repairable, abilityEnabled, multiplier, id);
             }
             else {
-                tool = new CustomTool(durability, null, repairable, multiplier, id);
+                tool = new CustomTool(durability, null, 0, repairable, abilityEnabled, multiplier, id);
             }
 
             toolList.add(tool);
             idList.add(id);
+            customIDs.add(id);
+            customTools.add(tool);
         }
     }
 }
