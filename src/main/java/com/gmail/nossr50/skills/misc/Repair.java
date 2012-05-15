@@ -530,6 +530,11 @@ public class Repair {
         }
 
         inventory.removeItem(repairMaterial);
+
+        if (configInstance.getArcaneForgingEnchantLossEnabled() && !permInstance.arcaneBypass(player)) {
+            addEnchants(player, item);
+        }
+
         item.setDurability(newDurability);
     }
 
