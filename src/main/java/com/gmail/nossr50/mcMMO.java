@@ -15,7 +15,7 @@ import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Metrics;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.util.blockmeta.ChunkletManager;
-import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
+import com.gmail.nossr50.util.blockmeta.ChunkletManagerFactory;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.HardcoreListener;
@@ -54,7 +54,7 @@ public class mcMMO extends JavaPlugin {
     public static Database database;
     public static mcMMO p;
 
-    public static ChunkletManager placeStore = new HashChunkletManager();
+    public static ChunkletManager placeStore;
 
     /* Jar Stuff */
     public File mcmmo;
@@ -132,6 +132,9 @@ public class mcMMO extends JavaPlugin {
                 System.out.println("Failed to submit stats.");
             }
         }
+
+        // Get our ChunkletManager
+        placeStore = ChunkletManagerFactory.getChunkletManager();
     }
     
     public void setupFilePaths() {

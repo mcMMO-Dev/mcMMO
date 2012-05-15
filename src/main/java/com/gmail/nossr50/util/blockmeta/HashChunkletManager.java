@@ -132,7 +132,7 @@ public class HashChunkletManager implements ChunkletManager {
 
         ChunkletStore cStore;
         if(!store.containsKey(world.getName() + "," + cx + "," + cz + "," + cy)) {
-            cStore = new PrimitiveChunkletStore();
+            cStore = ChunkletStoreFactory.getChunkletStore();
             store.put(world.getName() + "," + cx + "," + cz + "," + cy, cStore);
         }
 
