@@ -42,6 +42,7 @@ public class Herbalism {
         }
         else if (hasSeeds && !block.getType().equals(Material.WHEAT)) {
             inventory.removeItem(new ItemStack(Material.SEEDS));
+            player.updateInventory();   // Needed until replacement available
             greenTerraConvert(player, block);
         }
     }
@@ -298,6 +299,7 @@ public class Herbalism {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, PP), 1);
 
             inventory.removeItem(new ItemStack(Material.SEEDS));
+            player.updateInventory();   // Needed until replacement available
         }
     }
 
