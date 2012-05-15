@@ -16,6 +16,7 @@ import com.gmail.nossr50.skills.misc.Repair;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
@@ -185,7 +186,14 @@ public class BlockListener implements Listener {
         }
 
         if (PP.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.getInstance().treeFeller(player) && ItemChecks.isAxe(inhand)) {
-            WoodCutting.treeFeller(event);
+            if (Config.getInstance().getToolModsEnabled()) {
+                if ((ItemChecks.isCustomTool(inhand) && ModChecks.toolAbilityEnabled(inhand)) || !ItemChecks.isCustomTool(inhand)) {
+                    WoodCutting.treeFeller(event);
+                }
+            }
+            else {
+                WoodCutting.treeFeller(event);
+            }
         }
 
         /*
@@ -252,12 +260,27 @@ public class BlockListener implements Listener {
          * ABILITY TRIGGER CHECKS
          */
         if (PP.getAbilityMode(AbilityType.GREEN_TERRA) && Permissions.getInstance().greenTerra(player) && BlockChecks.makeMossy(block)) {
-            Herbalism.greenTerra(player, block);
+            if (Config.getInstance().getToolModsEnabled()) {
+                if ((ItemChecks.isCustomTool(inhand) && ModChecks.toolAbilityEnabled(inhand)) || !ItemChecks.isCustomTool(inhand)) {
+                    Herbalism.greenTerra(player, block);
+                }
+            }
+            else {
+                Herbalism.greenTerra(player, block);
+            }
         }
         else if (PP.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
             if (Config.getInstance().getExcavationRequiresTool() && ItemChecks.isShovel(inhand)) {
-                event.setInstaBreak(true);
-                Excavation.gigaDrillBreaker(player, block);
+                if (Config.getInstance().getToolModsEnabled()) {
+                    if ((ItemChecks.isCustomTool(inhand) && ModChecks.toolAbilityEnabled(inhand)) || !ItemChecks.isCustomTool(inhand)) {
+                        event.setInstaBreak(true);
+                        Excavation.gigaDrillBreaker(player, block);
+                    }
+                }
+                else {
+                    event.setInstaBreak(true);
+                    Excavation.gigaDrillBreaker(player, block);
+                }
             }
             else if (!Config.getInstance().getExcavationRequiresTool()) {
                 event.setInstaBreak(true);
@@ -277,10 +300,18 @@ public class BlockListener implements Listener {
             }
         }
         else if (PP.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
-            if(!player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {  
+            if (!player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) { //TODO: Why are we checking this?
                 if (Config.getInstance().getMiningRequiresTool() && ItemChecks.isPickaxe(inhand)) {
-                    event.setInstaBreak(true);
-                    Mining.SuperBreakerBlockCheck(player, block);
+                    if (Config.getInstance().getToolModsEnabled()) {
+                        if ((ItemChecks.isCustomTool(inhand) && ModChecks.toolAbilityEnabled(inhand)) || !ItemChecks.isCustomTool(inhand)) {
+                            event.setInstaBreak(true);
+                            Mining.SuperBreakerBlockCheck(player, block);
+                        }
+                    }
+                    else {
+                        event.setInstaBreak(true);
+                        Mining.SuperBreakerBlockCheck(player, block);
+                    }
                 }
                 else if (!Config.getInstance().getMiningRequiresTool()) {
                     event.setInstaBreak(true);

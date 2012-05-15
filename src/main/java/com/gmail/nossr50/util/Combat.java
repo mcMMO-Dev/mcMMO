@@ -366,6 +366,14 @@ public class Combat {
      * @param type The type of skill being used
      */
     private static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, mcMMO plugin, SkillType type) {
+        ItemStack inHand = attacker.getItemInHand();
+
+        if (Config.getInstance().getToolModsEnabled()) {
+            if (ItemChecks.isCustomTool(inHand) && !ModChecks.toolAbilityEnabled(inHand)) {
+                return;
+            }
+        }
+
         int numberOfTargets = Misc.getTier(attacker.getItemInHand()); //The higher the weapon tier, the more targets you hit
         int damageAmount = damage;
 
@@ -373,6 +381,7 @@ public class Combat {
             damageAmount = 1;
         }
 
+        //TODO: Looking at this, I think it's busted. Need to test to confirm.
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
             if (!(entity instanceof LivingEntity)) {
                 continue;
