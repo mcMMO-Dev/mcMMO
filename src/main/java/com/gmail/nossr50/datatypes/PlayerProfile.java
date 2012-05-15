@@ -9,11 +9,14 @@ import java.util.ArrayList;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.mcMMO;
 
@@ -1025,6 +1028,14 @@ public class PlayerProfile {
 
             double trueBonus = bonusModifier * xp;
             xp += trueBonus;
+        }
+
+        if (Config.getInstance().getToolModsEnabled()) {
+            ItemStack item = player.getItemInHand();
+
+            if (ItemChecks.isCustomTool(item)) {
+                xp = (int) (xp * ModChecks.getToolFromItemStack(item).getXpMultiplier());
+            }
         }
 
         mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));

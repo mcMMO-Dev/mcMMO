@@ -22,4 +22,20 @@ public class ModChecks {
 
         return false;
     }
+
+    /**
+     * Get the custom tool associated with an item.
+     *
+     * @param item The item to check
+     * @return the tool if it exists, null otherwise
+     */
+    public static CustomTool getToolFromItemStack(ItemStack item) {
+        for (CustomTool tool : LoadCustomTools.getInstance().customTools) {
+            if (tool.getItemID() == item.getTypeId()) {
+                return tool;
+            }
+        }
+
+        return null;
+    }
 }

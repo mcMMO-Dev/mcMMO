@@ -45,7 +45,7 @@ commands:
         aliases: []
         description: Make yourself invulnerable
     mcstats:
-        aliases: []
+        aliases: [/stats]
         description: Shows your mcMMO stats and xp
     mcremove:
         aliases: []

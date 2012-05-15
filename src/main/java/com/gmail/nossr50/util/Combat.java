@@ -381,7 +381,6 @@ public class Combat {
             damageAmount = 1;
         }
 
-        //TODO: Looking at this, I think it's busted. Need to test to confirm.
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
             if (!(entity instanceof LivingEntity)) {
                 continue;
