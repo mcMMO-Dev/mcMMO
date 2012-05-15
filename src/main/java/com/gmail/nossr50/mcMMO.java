@@ -8,6 +8,7 @@ import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.LoadTreasures;
+import com.gmail.nossr50.config.mods.LoadCustomArmor;
 import com.gmail.nossr50.config.mods.LoadCustomTools;
 import com.gmail.nossr50.runnables.*;
 import com.gmail.nossr50.util.Database;
@@ -75,6 +76,10 @@ public class mcMMO extends JavaPlugin {
 
         if (configInstance.getToolModsEnabled()) {
             LoadCustomTools.getInstance().load();
+        }
+
+        if (configInstance.getArmorModsEnabled()) {
+            LoadCustomArmor.getInstance().load();
         }
 
         if (!configInstance.getUseMySQL()) {
@@ -438,6 +443,59 @@ public class mcMMO extends JavaPlugin {
         }
         catch (IOException ex) {
             getLogger().severe("Could not save config to " + toolsConfigFile + ex.toString());
+        }
+    }
+
+    /*
+     * Boilerplate Custom Config Stuff (Armor)
+     */
+
+    private FileConfiguration armorConfig = null;
+    private File armorConfigFile = null;
+
+    /**
+     * Reload the Armor.yml file.
+     */
+    public void reloadArmorConfig() {
+        if (armorConfigFile == null) {
+            armorConfigFile = new File(modDirectory, "armor.yml");
+        }
+
+        armorConfig = YamlConfiguration.loadConfiguration(armorConfigFile);
+        InputStream defConfigStream = getResource("armor.yml"); // Look for defaults in the jar
+
+        if (defConfigStream != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            armorConfig.setDefaults(defConfig);
+        }
+    }
+
+    /**
+     * Get the Armor config information.
+     *
+     * @return the configuration object for armor.yml
+     */
+    public FileConfiguration getArmorConfig() {
+        if (armorConfig == null) {
+            reloadArmorConfig();
+        }
+
+        return armorConfig;
+    }
+
+    /**
+     * Save the Armor config informtion.
+     */
+    public void saveArmorConfig() {
+        if (armorConfig == null || armorConfigFile == null) {
+            return;
+        }
+
+        try {
+            armorConfig.save(armorConfigFile);
+        }
+        catch (IOException ex) {
+            getLogger().severe("Could not save config to " + armorConfigFile + ex.toString());
         }
     }
 }

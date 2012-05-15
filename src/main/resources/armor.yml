@@ -1,0 +1,75 @@
+#
+#  Settings for Boots
+###
+Boots:
+    Boot_1:
+        ID: 999
+        Repairable: true
+        Repair_Material_ID: 99
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Durability: 9999
+    Boot_2:
+        ID: 999
+        Repairable: true
+        Repair_Material_ID: 99
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Durability: 9999
+
+#
+#  Settings for Chestplates
+###
+Chestplates:
+    Chestplate_1:
+        ID: 999
+        Repairable: true
+        Repair_Material_ID: 99
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Durability: 9999
+    Chestplate_2:
+        ID: 999
+        Repairable: true
+        Repair_Material_ID: 99
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Durability: 9999
+
+#
+#  Settings for Helmets
+###
+Helmets:
+    Helmet_1:
+        ID: 999
+        Repairable: true
+        Repair_Material_ID: 99
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Durability: 9999
+    Helmet_2:
+        ID: 999
+        Repairable: true
+        Repair_Material_ID: 99
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Durability: 9999
+
+#
+#  Settings for Leggings
+###
+Leggings:
+    Legging_1:
+        ID: 999
+        Repairable: true
+        Repair_Material_ID: 99
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Durability: 9999
+    Legging_2:
+        ID: 999
+        Repairable: true
+        Repair_Material_ID: 99
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Durability: 9999

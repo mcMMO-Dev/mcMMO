@@ -16,16 +16,18 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.mods.LoadCustomArmor;
 import com.gmail.nossr50.config.mods.LoadCustomTools;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.datatypes.mods.CustomTool;
+import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 
@@ -113,10 +115,35 @@ public class Repair {
             else if (ItemChecks.isCustomTool(is) && permInstance.toolRepair(player)) {
                 LoadCustomTools toolsInstance = LoadCustomTools.getInstance();
 
-                for (CustomTool tool : toolsInstance.customTools) {
+                for (CustomItem tool : toolsInstance.customItems) {
                     if (tool.getItemID() == is.getTypeId()) {
-                        if (inventory.contains(tool.getRepairMaterial())) {
-                            repairCustomItem(player, is, tool.getRepairMaterial());
+                        ItemStack repairMaterial = tool.getRepairMaterial();
+
+                        if (inventory.contains(repairMaterial)) {
+                            repairCustomItem(player, is, repairMaterial);
+                            xpHandler(player, PP, is, durabilityBefore, 1, true);
+                        }
+                        else {
+                            needMoreVespeneGas(is, player);
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            /*
+             * REPAIR CUSTOM ARMOR
+             */
+            else if (ItemChecks.isCustomArmor(is) && permInstance.armorRepair(player)) {
+                LoadCustomArmor armorInstance = LoadCustomArmor.getInstance();
+
+                for (CustomItem armor : armorInstance.customItems) {
+                    if (armor.getItemID() == is.getTypeId()) {
+                        ItemStack repairMaterial = armor.getRepairMaterial();
+
+                        if (inventory.contains(repairMaterial)) {
+                            repairCustomItem(player, is, repairMaterial);
                             xpHandler(player, PP, is, durabilityBefore, 1, true);
                         }
                         else {
@@ -384,11 +411,25 @@ public class Repair {
         int materialsRequired = 0;
         int repairAmount = 0;
 
-        for (CustomTool tool : LoadCustomTools.getInstance().customTools) {
-            if (tool.getItemID() == is.getTypeId()) {
-                maxDurability = tool.getDurability();
-                materialsRequired = tool.getRepairQuantity();
-                break;
+        LoadCustomTools toolInstance = LoadCustomTools.getInstance();
+        LoadCustomArmor armorInstance = LoadCustomArmor.getInstance();
+
+        if (ModChecks.getToolFromItemStack(is) != null) {
+            for (CustomItem tool : toolInstance.customItems) {
+                if (tool.getItemID() == is.getTypeId()) {
+                    maxDurability = tool.getDurability();
+                    materialsRequired = tool.getRepairQuantity();
+                    break;
+                }
+            }
+        }
+        else if (ModChecks.getArmorFromItemStack(is) != null) {
+            for (CustomItem armor : armorInstance.customItems) {
+                if (armor.getItemID() == is.getTypeId()) {
+                    maxDurability = armor.getDurability();
+                    materialsRequired = armor.getRepairQuantity();
+                    break;
+                }
             }
         }
 

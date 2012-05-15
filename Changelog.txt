@@ -10,6 +10,7 @@ Key:
 Version 1.3.07
  + Added ability to gain XP with custom tools. Enable custom tools in the config file, then enter the data in the tools.yml file.
  + Added ability to repair custom tools. Enable custom tools in the config file, then enter the data in the tools.yml file.
+ + Added ability to repair custom armor. Enable custom armor in the config file, then enter the data in the armor.yml file.
  + Added functionality which makes a new folder in all world files "mcmmo_data" to store player placed block information in
  + Added new configurable Hardcore mode functionality to mcMMO
  + Added new configurable Vampirism PVP stat leech for Hardcore mode

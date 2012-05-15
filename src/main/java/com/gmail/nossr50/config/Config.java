@@ -57,6 +57,7 @@ public class Config extends ConfigLoader {
 
     /* SMP Mods */
     public boolean getToolModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }
+    public boolean getArmorModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }
     public boolean getBlockModsEnabled() { return config.getBoolean("Mods.Block_Mods_Enabled", false); }
 
     /* Commands */

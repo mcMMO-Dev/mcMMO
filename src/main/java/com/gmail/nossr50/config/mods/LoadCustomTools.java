@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.mods;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,10 +9,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 
-public class LoadCustomTools extends ConfigLoader {
+public class LoadCustomTools extends ModConfigLoader {
     private static LoadCustomTools instance;
 
     public static LoadCustomTools getInstance() {
@@ -24,24 +22,15 @@ public class LoadCustomTools extends ConfigLoader {
         return instance;
     }
 
-    public List<CustomTool> customAxes = new ArrayList<CustomTool>();
-    public List<CustomTool> customBows = new ArrayList<CustomTool>();
-    public List<CustomTool> customHoes = new ArrayList<CustomTool>();
-    public List<CustomTool> customPickaxes = new ArrayList<CustomTool>();
-    public List<CustomTool> customShovels = new ArrayList<CustomTool>();
-    public List<CustomTool> customSwords = new ArrayList<CustomTool>();
-    public List<CustomTool> customTools = new ArrayList<CustomTool>();
-
     public List<Integer> customAxeIDs = new ArrayList<Integer>();
     public List<Integer> customBowIDs = new ArrayList<Integer>();
     public List<Integer> customHoeIDs = new ArrayList<Integer>();
     public List<Integer> customPickaxeIDs = new ArrayList<Integer>();
     public List<Integer> customShovelIDs = new ArrayList<Integer>();
     public List<Integer> customSwordIDs = new ArrayList<Integer>();
-    public List<Integer> customIDs = new ArrayList<Integer>();
 
     private LoadCustomTools(mcMMO plugin) {
-        super(plugin, "ModConfigs" + File.separator + "tools.yml");
+        super(plugin, "tools.yml");
         config = plugin.getToolsConfig();
     }
 
@@ -60,15 +49,15 @@ public class LoadCustomTools extends ConfigLoader {
     protected void loadKeys() {
         plugin.getLogger().info("Loading mcMMO tools.yml File...");
 
-        loadTool("Axes", customAxes, customAxeIDs);
-        loadTool("Bows", customBows, customBowIDs);
-        loadTool("Hoes", customHoes, customHoeIDs);
-        loadTool("Pickaxes", customPickaxes, customPickaxeIDs);
-        loadTool("Shovels", customShovels, customShovelIDs);
-        loadTool("Swords", customSwords, customSwordIDs);
+        loadTool("Axes", customAxeIDs);
+        loadTool("Bows", customBowIDs);
+        loadTool("Hoes", customHoeIDs);
+        loadTool("Pickaxes", customPickaxeIDs);
+        loadTool("Shovels", customShovelIDs);
+        loadTool("Swords", customSwordIDs);
     }
 
-    private void loadTool(String toolType, List<CustomTool> toolList, List<Integer> idList) {
+    private void loadTool(String toolType, List<Integer> idList) {
         ConfigurationSection toolSection = config.getConfigurationSection(toolType);
         Set<String> toolConfigSet = toolSection.getKeys(false);
         Iterator<String> iterator = toolConfigSet.iterator();
@@ -76,7 +65,7 @@ public class LoadCustomTools extends ConfigLoader {
         while (iterator.hasNext()) {
             String toolName = iterator.next();
 
-            int id = config.getInt(toolType + "." + toolName + ".ID");
+            int id = config.getInt(toolType + "." + toolName + ".ID", 0);
             double multiplier = config.getDouble(toolType + "." + toolName + ".XP_Modifier", 1.0);
             boolean abilityEnabled = config.getBoolean(toolType + "." + toolName + ".Ability_Enabled", true);
             boolean repairable = config.getBoolean(toolType + "." + toolName + ".Repairable");
@@ -90,7 +79,7 @@ public class LoadCustomTools extends ConfigLoader {
                 continue;
             }
 
-            if (repairable && (repairID == 0 || repairQuantity == 0 || durability == 0 )) {
+            if (repairable && (repairID == 0 || repairQuantity == 0 || durability == 0)) {
                 plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable.");
                 repairable = false;
             }
@@ -105,10 +94,9 @@ public class LoadCustomTools extends ConfigLoader {
                 tool = new CustomTool(durability, null, 0, repairable, abilityEnabled, multiplier, id);
             }
 
-            toolList.add(tool);
             idList.add(id);
             customIDs.add(id);
-            customTools.add(tool);
+            customItems.add(tool);
         }
     }
 }

@@ -3,11 +3,13 @@ package com.gmail.nossr50.util;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.mods.LoadCustomArmor;
 import com.gmail.nossr50.config.mods.LoadCustomTools;
 
 public class ItemChecks {
     private static Config configInstance = Config.getInstance();
     private static boolean customToolsEnabled = configInstance.getToolModsEnabled();
+    private static boolean customArmorEnabled = configInstance.getArmorModsEnabled();
 
     /**
      * Checks if the item is a sword.
@@ -149,7 +151,12 @@ public class ItemChecks {
             return true;
 
         default:
-            return false;
+            if (customArmorEnabled && LoadCustomArmor.getInstance().customHelmetIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -168,7 +175,12 @@ public class ItemChecks {
             return true;
 
         default:
-            return false;
+            if (customArmorEnabled && LoadCustomArmor.getInstance().customChestplateIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -187,7 +199,12 @@ public class ItemChecks {
             return true;
 
         default:
-            return false;
+            if (customArmorEnabled && LoadCustomArmor.getInstance().customLeggingIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -206,7 +223,12 @@ public class ItemChecks {
             return true;
 
         default:
-            return false;
+            if (customArmorEnabled && LoadCustomArmor.getInstance().customBootIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -218,6 +240,21 @@ public class ItemChecks {
      */
     public static boolean isArmor(ItemStack is) {
         return isLeatherArmor(is) || isGoldArmor(is) || isIronArmor(is) || isDiamondArmor(is);
+    }
+
+    /**
+     * Checks to see if an item is a custom tool.
+     *
+     * @param is Item to check
+     * @return true if the item is a custom tool, false otherwise
+     */
+    public static boolean isCustomArmor(ItemStack is) {
+        if (customArmorEnabled && LoadCustomArmor.getInstance().customIDs.contains(is.getTypeId())) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
