@@ -45,6 +45,7 @@ import com.gmail.nossr50.skills.misc.Repair;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Item;
 import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
@@ -201,10 +202,22 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_BLOCK:
 
             /* REPAIR CHECKS */
-            if (Permissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId() && (ItemChecks.isTool(is) || ItemChecks.isArmor(is))) {
-                Repair.repairCheck(player, is);
-                event.setCancelled(true);
-                player.updateInventory();
+            if (Permissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
+                if (ItemChecks.isTool(is) || ItemChecks.isArmor(is)) {
+                    Repair.repairCheck(player, is);
+                    event.setCancelled(true);
+                    player.updateInventory();
+                }
+                else if (Config.getInstance().getToolModsEnabled() && ItemChecks.isCustomTool(is) && ModChecks.getToolFromItemStack(is).isRepairable()) {
+                    Repair.repairCheck(player, is);
+                    event.setCancelled(true);
+                    player.updateInventory();
+                }
+                else if (Config.getInstance().getArmorModsEnabled() && ItemChecks.isCustomArmor(is) && ModChecks.getArmorFromItemStack(is).isRepairable()) {
+                    Repair.repairCheck(player, is);
+                    event.setCancelled(true);
+                    player.updateInventory();
+                }
             }
 
             /* ACTIVATION CHECKS */
