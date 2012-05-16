@@ -11,11 +11,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.mcPermissions;
 
 public class McremoveCommand implements CommandExecutor {
     String location = "plugins/mcMMO/FlatFileStuff/mcmmo.users";

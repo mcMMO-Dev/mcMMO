@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
 

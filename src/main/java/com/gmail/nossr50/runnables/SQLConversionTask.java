@@ -5,9 +5,9 @@ import java.io.FileReader;
 
 import org.bukkit.Bukkit;
 
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
+import com.gmail.nossr50.util.m;
 
 public class SQLConversionTask implements Runnable {
 

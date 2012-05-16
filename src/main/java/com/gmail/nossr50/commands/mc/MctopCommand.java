@@ -7,13 +7,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import com.gmail.nossr50.Leaderboard;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.util.Leaderboard;
+import com.gmail.nossr50.util.Skills;
+import com.gmail.nossr50.util.m;
 
 public class MctopCommand implements CommandExecutor {
 	@Override

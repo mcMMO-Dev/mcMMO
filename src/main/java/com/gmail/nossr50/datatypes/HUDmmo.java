@@ -10,11 +10,11 @@ import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.m;
 
 public class HUDmmo {
     private int center_x = 427 / 2;

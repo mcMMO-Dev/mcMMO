@@ -6,12 +6,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.util.Skills;
+import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.m;
 
 //TODO: Any way we can make this work for offline use?
 public class AddxpCommand implements CommandExecutor {

@@ -3,8 +3,8 @@ package com.gmail.nossr50.datatypes;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.ItemChecks;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.ItemChecks;
 
 public enum ToolType {
     AXE(mcLocale.getString("Skills.LowerAxe"), mcLocale.getString("Skills.ReadyAxe")),

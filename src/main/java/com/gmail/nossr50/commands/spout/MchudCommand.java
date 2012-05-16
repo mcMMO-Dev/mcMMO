@@ -5,12 +5,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.HUDType;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.util.Users;
 
 public class MchudCommand implements CommandExecutor {
 	@Override

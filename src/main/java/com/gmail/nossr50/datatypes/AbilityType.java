@@ -3,12 +3,12 @@ package com.gmail.nossr50.datatypes;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.skills.Excavation;
-import com.gmail.nossr50.skills.Herbalism;
-import com.gmail.nossr50.skills.Mining;
+import com.gmail.nossr50.skills.gathering.Excavation;
+import com.gmail.nossr50.skills.gathering.Herbalism;
+import com.gmail.nossr50.skills.gathering.Mining;
+import com.gmail.nossr50.util.mcPermissions;
 
 public enum AbilityType {
     BERSERK(LoadProperties.berserkCooldown, mcLocale.getString("Skills.BerserkOn"), mcLocale.getString("Skills.BerserkOff"), "Skills.BerserkPlayer", mcLocale.getString("Skills.YourBerserk"), "Skills.BerserkPlayerOff"),

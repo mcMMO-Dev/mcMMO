@@ -6,9 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.mcPermissions;
 
 //TODO: Rework this whole thing. It's ugly.
 public class MccCommand implements CommandExecutor {

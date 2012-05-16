@@ -5,11 +5,11 @@ import java.util.HashSet;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Combat;
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.Users;
 
 public class mcBleedTimer implements Runnable {
     private final mcMMO plugin;

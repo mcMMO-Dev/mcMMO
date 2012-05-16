@@ -5,15 +5,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.skills.Repair;
+import com.gmail.nossr50.skills.misc.Repair;
 import com.gmail.nossr50.util.Page;
+import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.mcPermissions;
 
 public class RepairCommand implements CommandExecutor {
 	@Override

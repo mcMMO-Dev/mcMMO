@@ -2,8 +2,8 @@ package com.gmail.nossr50.runnables;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Users;
 
 public class mcSaveTimer implements Runnable {
     private final mcMMO plugin;

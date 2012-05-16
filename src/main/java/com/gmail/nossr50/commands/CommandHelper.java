@@ -3,12 +3,12 @@ package com.gmail.nossr50.commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.mcLocale;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.util.Skills;
+import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.mcPermissions;
 
 public class CommandHelper {
 

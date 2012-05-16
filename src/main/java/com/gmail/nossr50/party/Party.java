@@ -13,10 +13,10 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Users;
 
 public class Party {
     public static String partyPlayersFile = mcMMO.maindirectory + File.separator + "FlatFileStuff" + File.separator + "partyPlayers";

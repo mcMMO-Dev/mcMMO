@@ -6,10 +6,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.m;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.LoadProperties;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.m;
 
 public class XprateCommand implements CommandExecutor {
     private static int oldrate = LoadProperties.xpGainMultiplier;

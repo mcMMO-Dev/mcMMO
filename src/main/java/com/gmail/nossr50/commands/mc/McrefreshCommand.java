@@ -6,13 +6,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.Users;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcPermissions;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.locale.mcLocale;
+import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.mcPermissions;
 
 public class McrefreshCommand implements CommandExecutor {
 	private final mcMMO plugin;
