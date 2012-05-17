@@ -23,6 +23,20 @@ public interface Repairable {
     public byte getRepairMaterialMetadata();
 
     /**
+     * Gets the RepairItemType value for this repairable item
+     *
+     * @return the RepairItemType for this repairable
+     */
+    public RepairItemType getRepairItemType();
+
+    /**
+     * Gets the RepairMaterialType value for this repairable item
+     *
+     * @return the RepairMaterialType for this repairable
+     */
+    public RepairMaterialType getRepairMaterialType();
+
+    /**
      * Gets the minimum quantity of repair materials ignoring all other repair bonuses
      *
      * This is typically set to the number of items needed to create that item, for example 5 for helmets or 2 for swords
