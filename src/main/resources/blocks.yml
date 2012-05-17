@@ -9,6 +9,7 @@ Excavation:
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
+        Drop_Item_Amount: 1
     Block_2:
         ID: 999
         Data_Value: 0
@@ -16,6 +17,7 @@ Excavation:
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
+        Drop_Item_Amount: 1
 
 #
 #  Settings for Custom Herbalism Blocks
@@ -28,6 +30,7 @@ Herbalism:
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
+        Drop_Item_Amount: 1
     Block_2:
         ID: 999
         Data_Value: 0
@@ -35,6 +38,7 @@ Herbalism:
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
+        Drop_Item_Amount: 1
 
 #
 #  Settings for Custom Mining Blocks
@@ -48,6 +52,7 @@ Mining:
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
+        Drop_Item_Amount: 1
     Block_2:
         ID: 999
         Data_Value: 0
@@ -56,6 +61,7 @@ Mining:
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
+        Drop_Item_Amount: 1
 
 #
 #  Settings for Custom Woodcutting Blocks
@@ -69,6 +75,7 @@ Woodcutting:
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
+        Drop_Item_Amount: 1
     Block_2:
         ID: 999
         Data_Value: 0
@@ -77,3 +84,4 @@ Woodcutting:
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
+        Drop_Item_Amount: 1

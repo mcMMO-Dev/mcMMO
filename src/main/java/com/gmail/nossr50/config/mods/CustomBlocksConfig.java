@@ -74,6 +74,7 @@ public class CustomBlocksConfig extends ModConfigLoader{
             boolean dropItem = config.getBoolean(skillType + "." + blockName + ".Drop_Item", false);
             int dropID = config.getInt(skillType + "." + blockName + ".Drop_Item_ID", 0);
             byte dropData = (byte) config.getInt(skillType + "." + blockName + ".Drop_Item_Data_Value", 0);
+            int dropAmount = config.getInt(skillType + "." + blockName + ".Drop_Item_Amount", 1);
 
             if (id == 0) {
                 plugin.getLogger().warning("Missing ID. This block will be skipped.");
@@ -90,10 +91,10 @@ public class CustomBlocksConfig extends ModConfigLoader{
             ItemStack blockItem;
 
             if (dropItem) {
-                itemDrop = new ItemStack(dropID, 1, (short) 0, dropData);
+                itemDrop = new ItemStack(dropID, dropAmount, (short) 0, dropData);
             }
             else {
-                itemDrop = new ItemStack(id, 1, (short) 0, data);
+                itemDrop = new ItemStack(id, dropAmount, (short) 0, data);
             }
 
             block = new CustomBlock(itemDrop, xp, data, id);
