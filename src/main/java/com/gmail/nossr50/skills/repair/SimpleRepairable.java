@@ -3,10 +3,12 @@ package com.gmail.nossr50.skills.repair;
 public class SimpleRepairable implements Repairable {
     private final int itemId, repairMaterialId, minimumQuantity, minimumLevel;
     private final short maximumDurability, baseRepairDurability;
+    private final byte repairMetadata;
 
-    protected SimpleRepairable(int itemId, int repairMaterialId, int minimumLevel, int minimumQuantity, short maximumDurability) {
+    protected SimpleRepairable(int itemId, int repairMaterialId, byte repairMetadata, int minimumLevel, int minimumQuantity, short maximumDurability) {
         this.itemId = itemId;
         this.repairMaterialId = repairMaterialId;
+        this.repairMetadata = repairMetadata;
         this.minimumLevel = minimumLevel;
         this.minimumQuantity = minimumQuantity;
         this.maximumDurability = maximumDurability;
@@ -21,6 +23,11 @@ public class SimpleRepairable implements Repairable {
     @Override
     public int getRepairMaterialId() {
         return repairMaterialId;
+    }
+
+    @Override
+    public byte getRepairMaterialMetadata() {
+        return repairMetadata;
     }
 
     @Override

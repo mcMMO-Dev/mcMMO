@@ -16,6 +16,13 @@ public interface Repairable {
     public int getRepairMaterialId();
 
     /**
+     * Gets the metadata byte value of the material used to repair this item
+     *
+     * @return the byte metadata of the repair material
+     */
+    public byte getRepairMaterialMetadata();
+
+    /**
      * Gets the minimum quantity of repair materials ignoring all other repair bonuses
      *
      * This is typically set to the number of items needed to create that item, for example 5 for helmets or 2 for swords
