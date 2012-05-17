@@ -16,12 +16,12 @@ import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.Treasure;
 
-public class LoadTreasures extends ConfigLoader{
-    private static LoadTreasures instance;
+public class TreasuresConfig extends ConfigLoader{
+    private static TreasuresConfig instance;
 
-    public static LoadTreasures getInstance() {
+    public static TreasuresConfig getInstance() {
         if (instance == null) {
-            instance = new LoadTreasures(mcMMO.p);
+            instance = new TreasuresConfig(mcMMO.p);
             instance.load();
         }
 
@@ -41,7 +41,7 @@ public class LoadTreasures extends ConfigLoader{
     public List<FishingTreasure> fishingRewardsTier4 = new ArrayList<FishingTreasure>();
     public List<FishingTreasure> fishingRewardsTier5 = new ArrayList<FishingTreasure>();
 
-    private LoadTreasures(mcMMO plugin) {
+    private TreasuresConfig(mcMMO plugin) {
         super(plugin, "treasures.yml");
         config = plugin.getTreasuresConfig();
     }

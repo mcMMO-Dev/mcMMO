@@ -3,8 +3,8 @@ package com.gmail.nossr50.util;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.mods.LoadCustomArmor;
-import com.gmail.nossr50.config.mods.LoadCustomTools;
+import com.gmail.nossr50.config.mods.CustomArmorConfig;
+import com.gmail.nossr50.config.mods.CustomToolsConfig;
 
 public class ItemChecks {
     private static Config configInstance = Config.getInstance();
@@ -27,7 +27,7 @@ public class ItemChecks {
             return true;
 
         default:
-            if (customToolsEnabled && LoadCustomTools.getInstance().customSwordIDs.contains(is.getTypeId())) {
+            if (customToolsEnabled && CustomToolsConfig.getInstance().customSwordIDs.contains(is.getTypeId())) {
                 return true;
             }
             else {
@@ -52,7 +52,7 @@ public class ItemChecks {
             return true;
 
         default:
-            if (customToolsEnabled && LoadCustomTools.getInstance().customHoeIDs.contains(is.getTypeId())) {
+            if (customToolsEnabled && CustomToolsConfig.getInstance().customHoeIDs.contains(is.getTypeId())) {
                 return true;
             }
             else {
@@ -77,7 +77,7 @@ public class ItemChecks {
             return true;
 
         default:
-            if (customToolsEnabled && LoadCustomTools.getInstance().customShovelIDs.contains(is.getTypeId())) {
+            if (customToolsEnabled && CustomToolsConfig.getInstance().customShovelIDs.contains(is.getTypeId())) {
                 return true;
             }
             else {
@@ -102,7 +102,7 @@ public class ItemChecks {
             return true;
 
         default:
-            if (customToolsEnabled && LoadCustomTools.getInstance().customAxeIDs.contains(is.getTypeId())) {
+            if (customToolsEnabled && CustomToolsConfig.getInstance().customAxeIDs.contains(is.getTypeId())) {
                 return true;
             }
             else {
@@ -127,7 +127,7 @@ public class ItemChecks {
             return true;
 
         default:
-            if (customToolsEnabled && LoadCustomTools.getInstance().customPickaxeIDs.contains(is.getTypeId())) {
+            if (customToolsEnabled && CustomToolsConfig.getInstance().customPickaxeIDs.contains(is.getTypeId())) {
                 return true;
             }
             else {
@@ -151,7 +151,7 @@ public class ItemChecks {
             return true;
 
         default:
-            if (customArmorEnabled && LoadCustomArmor.getInstance().customHelmetIDs.contains(is.getTypeId())) {
+            if (customArmorEnabled && CustomArmorConfig.getInstance().customHelmetIDs.contains(is.getTypeId())) {
                 return true;
             }
             else {
@@ -175,7 +175,7 @@ public class ItemChecks {
             return true;
 
         default:
-            if (customArmorEnabled && LoadCustomArmor.getInstance().customChestplateIDs.contains(is.getTypeId())) {
+            if (customArmorEnabled && CustomArmorConfig.getInstance().customChestplateIDs.contains(is.getTypeId())) {
                 return true;
             }
             else {
@@ -199,7 +199,7 @@ public class ItemChecks {
             return true;
 
         default:
-            if (customArmorEnabled && LoadCustomArmor.getInstance().customLeggingIDs.contains(is.getTypeId())) {
+            if (customArmorEnabled && CustomArmorConfig.getInstance().customLeggingIDs.contains(is.getTypeId())) {
                 return true;
             }
             else {
@@ -223,7 +223,7 @@ public class ItemChecks {
             return true;
 
         default:
-            if (customArmorEnabled && LoadCustomArmor.getInstance().customBootIDs.contains(is.getTypeId())) {
+            if (customArmorEnabled && CustomArmorConfig.getInstance().customBootIDs.contains(is.getTypeId())) {
                 return true;
             }
             else {
@@ -249,7 +249,7 @@ public class ItemChecks {
      * @return true if the item is a custom tool, false otherwise
      */
     public static boolean isCustomArmor(ItemStack is) {
-        if (customArmorEnabled && LoadCustomArmor.getInstance().customIDs.contains(is.getTypeId())) {
+        if (customArmorEnabled && CustomArmorConfig.getInstance().customIDs.contains(is.getTypeId())) {
             return true;
         }
         else {
@@ -350,7 +350,7 @@ public class ItemChecks {
      * @return true if the item is a custom tool, false otherwise
      */
     public static boolean isCustomTool(ItemStack is) {
-        if (customToolsEnabled && LoadCustomTools.getInstance().customIDs.contains(is.getTypeId())) {
+        if (customToolsEnabled && CustomToolsConfig.getInstance().customIDs.contains(is.getTypeId())) {
             return true;
         }
         else {

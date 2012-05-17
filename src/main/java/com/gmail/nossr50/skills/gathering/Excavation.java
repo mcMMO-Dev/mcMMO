@@ -18,7 +18,7 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.LoadTreasures;
+import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -59,31 +59,31 @@ public class Excavation {
         if (Permissions.getInstance().excavationTreasures(player)) {
             switch (type) {
             case DIRT:
-                treasures = LoadTreasures.getInstance().excavationFromDirt;
+                treasures = TreasuresConfig.getInstance().excavationFromDirt;
                 break;
 
             case GRASS:
-                treasures = LoadTreasures.getInstance().excavationFromGrass;
+                treasures = TreasuresConfig.getInstance().excavationFromGrass;
                 break;
 
             case SAND:
-                treasures = LoadTreasures.getInstance().excavationFromSand;
+                treasures = TreasuresConfig.getInstance().excavationFromSand;
                 break;
 
             case GRAVEL:
-                treasures = LoadTreasures.getInstance().excavationFromGravel;
+                treasures = TreasuresConfig.getInstance().excavationFromGravel;
                 break;
 
             case CLAY:
-                treasures = LoadTreasures.getInstance().excavationFromClay;
+                treasures = TreasuresConfig.getInstance().excavationFromClay;
                 break;
 
             case MYCEL:
-                treasures = LoadTreasures.getInstance().excavationFromMycel;
+                treasures = TreasuresConfig.getInstance().excavationFromMycel;
                 break;
 
             case SOUL_SAND:
-                treasures = LoadTreasures.getInstance().excavationFromSoulSand;
+                treasures = TreasuresConfig.getInstance().excavationFromSoulSand;
                 break;
 
             default:

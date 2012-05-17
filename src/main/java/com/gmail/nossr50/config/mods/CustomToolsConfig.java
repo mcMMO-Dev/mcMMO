@@ -12,12 +12,12 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 
-public class LoadCustomTools extends ModConfigLoader {
-    private static LoadCustomTools instance;
+public class CustomToolsConfig extends ModConfigLoader {
+    private static CustomToolsConfig instance;
 
-    public static LoadCustomTools getInstance() {
+    public static CustomToolsConfig getInstance() {
         if (instance == null) {
-            instance = new LoadCustomTools(mcMMO.p);
+            instance = new CustomToolsConfig(mcMMO.p);
         }
 
         return instance;
@@ -33,7 +33,7 @@ public class LoadCustomTools extends ModConfigLoader {
     public List<Integer> customIDs = new ArrayList<Integer>();
     public List<CustomItem> customItems = new ArrayList<CustomItem>();
 
-    private LoadCustomTools(mcMMO plugin) {
+    private CustomToolsConfig(mcMMO plugin) {
         super(plugin, "tools.yml");
         config = plugin.getToolsConfig();
     }

@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.LoadTreasures;
+import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
@@ -76,23 +76,23 @@ public class Fishing {
 
         switch (getFishingLootTier(PP)) {
         case 1:
-            rewards = LoadTreasures.getInstance().fishingRewardsTier1;
+            rewards = TreasuresConfig.getInstance().fishingRewardsTier1;
             break;
 
         case 2:
-            rewards = LoadTreasures.getInstance().fishingRewardsTier2;
+            rewards = TreasuresConfig.getInstance().fishingRewardsTier2;
             break;
 
         case 3:
-            rewards = LoadTreasures.getInstance().fishingRewardsTier3;
+            rewards = TreasuresConfig.getInstance().fishingRewardsTier3;
             break;
 
         case 4:
-            rewards = LoadTreasures.getInstance().fishingRewardsTier4;
+            rewards = TreasuresConfig.getInstance().fishingRewardsTier4;
             break;
 
         case 5:
-            rewards = LoadTreasures.getInstance().fishingRewardsTier5;
+            rewards = TreasuresConfig.getInstance().fishingRewardsTier5;
             break;
 
         default:

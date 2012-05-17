@@ -16,8 +16,8 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.mods.LoadCustomArmor;
-import com.gmail.nossr50.config.mods.LoadCustomTools;
+import com.gmail.nossr50.config.mods.CustomArmorConfig;
+import com.gmail.nossr50.config.mods.CustomToolsConfig;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
@@ -113,7 +113,7 @@ public class Repair {
              * REPAIR CUSTOM TOOLS
              */
             else if (ItemChecks.isCustomTool(is) && permInstance.toolRepair(player)) {
-                LoadCustomTools toolsInstance = LoadCustomTools.getInstance();
+                CustomToolsConfig toolsInstance = CustomToolsConfig.getInstance();
 
                 for (CustomItem tool : toolsInstance.customItems) {
                     if (tool.getItemID() == is.getTypeId()) {
@@ -136,7 +136,7 @@ public class Repair {
              * REPAIR CUSTOM ARMOR
              */
             else if (ItemChecks.isCustomArmor(is) && permInstance.armorRepair(player)) {
-                LoadCustomArmor armorInstance = LoadCustomArmor.getInstance();
+                CustomArmorConfig armorInstance = CustomArmorConfig.getInstance();
 
                 for (CustomItem armor : armorInstance.customItems) {
                     if (armor.getItemID() == is.getTypeId()) {
@@ -406,8 +406,8 @@ public class Repair {
         int materialsRequired = 0;
         int repairAmount = 0;
 
-        LoadCustomTools toolInstance = LoadCustomTools.getInstance();
-        LoadCustomArmor armorInstance = LoadCustomArmor.getInstance();
+        CustomToolsConfig toolInstance = CustomToolsConfig.getInstance();
+        CustomArmorConfig armorInstance = CustomArmorConfig.getInstance();
 
         if (ModChecks.getToolFromItemStack(is) != null) {
             for (CustomItem tool : toolInstance.customItems) {

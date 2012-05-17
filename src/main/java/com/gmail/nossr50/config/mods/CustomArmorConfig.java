@@ -11,12 +11,12 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomItem;
 
-public class LoadCustomArmor extends ModConfigLoader{
-    private static LoadCustomArmor instance;
+public class CustomArmorConfig extends ModConfigLoader{
+    private static CustomArmorConfig instance;
 
-    public static LoadCustomArmor getInstance() {
+    public static CustomArmorConfig getInstance() {
         if (instance == null) {
-            instance = new LoadCustomArmor(mcMMO.p);
+            instance = new CustomArmorConfig(mcMMO.p);
         }
 
         return instance;
@@ -30,7 +30,7 @@ public class LoadCustomArmor extends ModConfigLoader{
     public List<Integer> customIDs = new ArrayList<Integer>();
     public List<CustomItem> customItems = new ArrayList<CustomItem>();
 
-    public LoadCustomArmor(mcMMO plugin) {
+    public CustomArmorConfig(mcMMO plugin) {
         super(plugin, "armor.yml");
         config = plugin.getArmorConfig();
     }

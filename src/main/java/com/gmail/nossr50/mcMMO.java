@@ -7,10 +7,10 @@ import com.gmail.nossr50.commands.mc.*;
 import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.LoadTreasures;
+import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
-import com.gmail.nossr50.config.mods.LoadCustomArmor;
-import com.gmail.nossr50.config.mods.LoadCustomTools;
+import com.gmail.nossr50.config.mods.CustomArmorConfig;
+import com.gmail.nossr50.config.mods.CustomToolsConfig;
 import com.gmail.nossr50.runnables.*;
 import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Leaderboard;
@@ -73,14 +73,14 @@ public class mcMMO extends JavaPlugin {
 
         //Force the loading of config files
         Config configInstance = Config.getInstance();
-        LoadTreasures.getInstance();
+        TreasuresConfig.getInstance();
 
         if (configInstance.getToolModsEnabled()) {
-            LoadCustomTools.getInstance().load();
+            CustomToolsConfig.getInstance().load();
         }
 
         if (configInstance.getArmorModsEnabled()) {
-            LoadCustomArmor.getInstance().load();
+            CustomArmorConfig.getInstance().load();
         }
 
         if (configInstance.getBlockModsEnabled()) {

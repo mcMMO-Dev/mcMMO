@@ -4,15 +4,15 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
-import com.gmail.nossr50.config.mods.LoadCustomArmor;
-import com.gmail.nossr50.config.mods.LoadCustomTools;
+import com.gmail.nossr50.config.mods.CustomArmorConfig;
+import com.gmail.nossr50.config.mods.CustomToolsConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 
 public class ModChecks {
-    private static LoadCustomTools toolInstance = LoadCustomTools.getInstance();
-    private static LoadCustomArmor armorInstance = LoadCustomArmor.getInstance();
+    private static CustomToolsConfig toolInstance = CustomToolsConfig.getInstance();
+    private static CustomArmorConfig armorInstance = CustomArmorConfig.getInstance();
     private static CustomBlocksConfig blocksInstance = CustomBlocksConfig.getInstance();
 
     /**
