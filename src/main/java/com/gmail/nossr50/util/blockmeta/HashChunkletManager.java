@@ -29,7 +29,7 @@ public class HashChunkletManager implements ChunkletManager {
             } else {
                 ChunkletStore in = deserializeChunkletStore(yFile);
                 if(in != null) {
-                	store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
+                    store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
                 }
             }
         }
@@ -78,29 +78,29 @@ public class HashChunkletManager implements ChunkletManager {
     }
 
     public void unloadWorld(World world) {
-    	saveWorld(world);
+        saveWorld(world);
 
         String worldName = world.getName();
 
         for(String key : store.keySet()) {
-        	String tempWorldName = key.split(",")[0];
-        	if(tempWorldName.equals(worldName)) {
-        	    store.remove(key);
-        	}
+            String tempWorldName = key.split(",")[0];
+            if(tempWorldName.equals(worldName)) {
+                store.remove(key);
+            }
         }
     }
 
     public void saveAll() {
-    	for(World world : Bukkit.getWorlds()) {
-    		saveWorld(world);
-    	}
+        for(World world : Bukkit.getWorlds()) {
+            saveWorld(world);
+        }
     }
 
     public void unloadAll() {
-    	saveAll();
-    	for(World world : Bukkit.getWorlds()) {
-    		unloadWorld(world);
-    	}
+        saveAll();
+        for(World world : Bukkit.getWorlds()) {
+            unloadWorld(world);
+        }
     }
 
     public boolean isTrue(int x, int y, int z, World world) {
@@ -155,7 +155,7 @@ public class HashChunkletManager implements ChunkletManager {
 
         ChunkletStore cStore;
         if(!store.containsKey(world.getName() + "," + cx + "," + cz + "," + cy)) {
-            return;	// No need to make a store for something we will be setting to false
+            return;    // No need to make a store for something we will be setting to false
         }
 
         cStore = store.get(world.getName() + "," + cx + "," + cz + "," + cy);
@@ -192,7 +192,7 @@ public class HashChunkletManager implements ChunkletManager {
      * @param location Where on the disk to put it
      */
     private void serializeChunkletStore(ChunkletStore cStore, File location) {
-    	try {
+        try {
             FileOutputStream fileOut = new FileOutputStream(location);
             ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
             objOut.writeObject(cStore);
@@ -219,8 +219,8 @@ public class HashChunkletManager implements ChunkletManager {
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
-		}
+            ex.printStackTrace();
+        }
 
         return storeIn;
     }

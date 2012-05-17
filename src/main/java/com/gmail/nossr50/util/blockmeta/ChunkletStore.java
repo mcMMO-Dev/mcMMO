@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public interface ChunkletStore extends Serializable {
     /**
+     * Checks the value at the given coordinates
+     *
      * @param x x coordinate in current chunklet
      * @param y y coordinate in current chunklet
      * @param z z coordinate in current chunklet
@@ -13,7 +15,7 @@ public interface ChunkletStore extends Serializable {
 
     /**
      * Set the value to true at the given coordinates
-     * 
+     *
      * @param x x coordinate in current chunklet
      * @param y y coordinate in current chunklet
      * @param z z coordinate in current chunklet
@@ -22,7 +24,7 @@ public interface ChunkletStore extends Serializable {
 
     /**
      * Set the value to false at the given coordinates
-     * 
+     *
      * @param x x coordinate in current chunklet
      * @param y y coordinate in current chunklet
      * @param z z coordinate in current chunklet

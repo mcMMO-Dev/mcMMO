@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 public interface ChunkletManager {
     /**
      * Informs the ChunkletManager a chunk is loaded, it should load appropriate data
-     * 
+     *
      * @param cx Chunk X coordiate that is loaded
      * @param cz Chunk Z coordiate that is loaded
      * @param world World that the chunk was loaded in
@@ -15,7 +15,7 @@ public interface ChunkletManager {
 
     /**
      * Informs the ChunkletManager a chunk is unloaded, it should unload and save appropriate data
-     * 
+     *
      * @param cx Chunk X coordiate that is unloaded
      * @param cz Chunk Z coordiate that is unloaded
      * @param world World that the chunk was unloaded in
@@ -24,14 +24,14 @@ public interface ChunkletManager {
 
     /**
      * Save all ChunkletStores related to the given world
-     * 
+     *
      * @param world World to save
      */
     public void saveWorld(World world);
 
     /**
      * Unload all ChunkletStores from memory related to the given world after saving them
-     * 
+     *
      * @param world World to unload
      */
     public void unloadWorld(World world);
@@ -48,7 +48,7 @@ public interface ChunkletManager {
 
     /**
      * Check to see if a given location is set to true
-     * 
+     *
      * @param x X coordinate to check
      * @param y Y coordinate to check
      * @param z Z coordinate to check
@@ -59,7 +59,7 @@ public interface ChunkletManager {
 
     /**
      * Check to see if a given block location is set to true
-     * 
+     *
      * @param block Block location to check
      * @return true if the given block location is set to true, false if otherwise
      */
@@ -67,7 +67,7 @@ public interface ChunkletManager {
 
     /**
      * Set a given location to true, should create stores as necessary if the location does not exist
-     * 
+     *
      * @param x X coordinate to set
      * @param y Y coordinate to set
      * @param z Z coordinate to set
@@ -77,14 +77,14 @@ public interface ChunkletManager {
 
     /**
      * Set a given block location to true, should create stores as necessary if the location does not exist
-     * 
+     *
      * @param block Block location to set
      */
     public void setTrue(Block block);
 
     /**
      * Set a given location to false, should not create stores if one does not exist for the given location
-     * 
+     *
      * @param x X coordinate to set
      * @param y Y coordinate to set
      * @param z Z coordinate to set
@@ -94,7 +94,7 @@ public interface ChunkletManager {
 
     /**
      * Set a given block location to false, should not create stores if one does not exist for the given location
-     * 
+     *
      * @param block Block location to set
      */
     public void setFalse(Block block);
