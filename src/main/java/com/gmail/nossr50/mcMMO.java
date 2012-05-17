@@ -8,6 +8,7 @@ import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.LoadTreasures;
+import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.config.mods.LoadCustomArmor;
 import com.gmail.nossr50.config.mods.LoadCustomTools;
 import com.gmail.nossr50.runnables.*;
@@ -80,6 +81,10 @@ public class mcMMO extends JavaPlugin {
 
         if (configInstance.getArmorModsEnabled()) {
             LoadCustomArmor.getInstance().load();
+        }
+
+        if (configInstance.getBlockModsEnabled()) {
+            CustomBlocksConfig.getInstance().load();
         }
 
         if (!configInstance.getUseMySQL()) {
