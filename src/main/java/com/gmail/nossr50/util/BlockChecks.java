@@ -118,7 +118,12 @@ public class BlockChecks {
             return true;
 
         default:
-            return false;
+            if (customBlocksEnabled && ModChecks.isCustomOreBlock(block)) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 

@@ -27,6 +27,10 @@ public class CustomBlocksConfig extends ModConfigLoader{
     public List<ItemStack> customMiningBlocks = new ArrayList<ItemStack>();
     public List<ItemStack> customWoodcuttingBlocks = new ArrayList<ItemStack>();
 
+    public List<ItemStack> customOres = new ArrayList<ItemStack>();
+    public List<ItemStack> customLogs = new ArrayList<ItemStack>();
+    public List<ItemStack> customLeaves = new ArrayList<ItemStack>();
+
     public List<ItemStack> customItems = new ArrayList<ItemStack>();
     public List<CustomBlock> customBlocks = new ArrayList<CustomBlock>();
 
@@ -94,6 +98,19 @@ public class CustomBlocksConfig extends ModConfigLoader{
 
             block = new CustomBlock(itemDrop, xp, data, id);
             blockItem = new ItemStack(id, 1, (short) 0, data);
+
+            if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
+                customOres.add(blockItem);
+            }
+            else if (skillType.equals("Woodcutting")) {
+                if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
+                    customLogs.add(blockItem);
+                }
+                else {
+                    customLeaves.add(blockItem);
+                    block.setXpGain(0); //Leaves don't grant XP
+                }
+            }
 
             blockList.add(blockItem);
             customItems.add(blockItem);

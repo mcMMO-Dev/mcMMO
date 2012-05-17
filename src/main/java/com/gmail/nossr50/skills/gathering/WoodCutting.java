@@ -16,12 +16,14 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
@@ -89,7 +91,33 @@ public class WoodCutting {
         
         for (Block x : toBeFelled) {
             if (Misc.blockBreakSimulate(x, player, true)) {
-                if (x.getType() == Material.LOG) {
+                if (Config.getInstance().getBlockModsEnabled()) {
+                    CustomBlock block = ModChecks.getCustomBlock(x);
+                    item = block.getItemDrop();
+
+                    if (ModChecks.isCustomLogBlock(x)) {
+                        if (!mcMMO.placeStore.isTrue(x)) {
+                            WoodCutting.woodCuttingProcCheck(player, x);
+                            xp = block.getXpGain();
+                        }
+
+                        /* Remove the block */
+                        x.setData((byte) 0x0);
+                        x.setType(Material.AIR);
+
+                        Misc.mcDropItem(x.getLocation(), item);
+                    }
+                    else if (ModChecks.isCustomLeafBlock(x)) {
+                        final int SAPLING_DROP_CHANCE = 10;
+
+                        /* Remove the block */
+                        x.setData((byte) 0x0);
+                        x.setType(Material.AIR);
+
+                        Misc.mcRandomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
+                    }
+                }
+                else if (x.getType() == Material.LOG) {
                     Tree tree = (Tree) x.getState().getData();
                     TreeSpecies species = tree.getSpecies();
 
@@ -174,11 +202,14 @@ public class WoodCutting {
     private static void processTreeFelling(Block currentBlock, ArrayList<Block> toBeFelled) {
         Material type = currentBlock.getType();
         
-        if(toBeFelled.size() >= Config.getInstance().getTreeFellerThreshold()) {
+        if (toBeFelled.size() >= Config.getInstance().getTreeFellerThreshold()) {
             return;
         }
 
         if (type.equals(Material.LOG) || type.equals(Material.LEAVES)) {
+            toBeFelled.add(currentBlock);
+        }
+        else if (Config.getInstance().getBlockModsEnabled() && (ModChecks.isCustomLogBlock(currentBlock) || ModChecks.isCustomLeafBlock(currentBlock))) {
             toBeFelled.add(currentBlock);
         }
 
@@ -222,9 +253,9 @@ public class WoodCutting {
      */
     private static boolean isTooAggressive(Block currentBlock, Block newBlock) {
         Material currentType = currentBlock.getType();
-        Material newType = currentBlock.getType();
+        Material newType = newBlock.getType();
 
-        if ((currentType.equals(Material.LEAVES) || currentType.equals(Material.AIR)) && (newType.equals(Material.LEAVES) || newType.equals(Material.AIR))) {
+        if ((currentType.equals(Material.LEAVES) || currentType.equals(Material.AIR) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLeafBlock(currentBlock))) && (newType.equals(Material.LEAVES) || newType.equals(Material.AIR) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLeafBlock(currentBlock)))) {
             return true;
         }
         else {
@@ -250,8 +281,19 @@ public class WoodCutting {
 
         if ((skillLevel > MAX_SKILL_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().woodcuttingDoubleDrops(player)) {
             Config configInstance = Config.getInstance();
-            ItemStack item = new ItemStack(mat, 1, (short) 0, type);
-            Location location = block.getLocation();
+            ItemStack item;
+            Location location;
+
+            if (configInstance.getBlockModsEnabled() && ModChecks.isCustomLogBlock(block)) {
+                item = ModChecks.getCustomBlock(block).getItemDrop();
+                location = block.getLocation();
+                Misc.mcDropItem(location, item);
+                return;
+            }
+            else {
+                item = new ItemStack(mat, 1, (short) 0, type);
+                location = block.getLocation();
+            }
 
             /* Drop the block */
             switch (species) {
@@ -300,25 +342,30 @@ public class WoodCutting {
             return;
         }
 
-        switch (species) {
-        case GENERIC:
-            xp += Config.getInstance().getWoodcuttingXPOak();
-            break;
+        if (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(block)) {
+            xp = ModChecks.getCustomBlock(block).getXpGain();
+        }
+        else {
+            switch (species) {
+            case GENERIC:
+                xp += Config.getInstance().getWoodcuttingXPOak();
+                break;
 
-        case REDWOOD:
-            xp += Config.getInstance().getWoodcuttingXPSpruce();
-            break;
+            case REDWOOD:
+                xp += Config.getInstance().getWoodcuttingXPSpruce();
+                break;
 
-        case BIRCH:
-            xp += Config.getInstance().getWoodcuttingXPBirch();
-            break;
+            case BIRCH:
+                xp += Config.getInstance().getWoodcuttingXPBirch();
+                break;
 
-        case JUNGLE:
-            xp += Config.getInstance().getWoodcuttingXPJungle();
-            break;
+            case JUNGLE:
+                xp += Config.getInstance().getWoodcuttingXPJungle();
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
         }
 
         WoodCutting.woodCuttingProcCheck(player, block);
@@ -348,7 +395,7 @@ public class WoodCutting {
     private static int durabilityLossCalulate(ArrayList<Block> toBeFelled) {
         int durabilityLoss = 0;
         for (Block x : toBeFelled) {
-            if (x.getType().equals(Material.LOG)) {
+            if (x.getType().equals(Material.LOG) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(x))) {
                 durabilityLoss++;
                 durabilityLoss = durabilityLoss + Config.getInstance().getAbilityToolDamage();
             }

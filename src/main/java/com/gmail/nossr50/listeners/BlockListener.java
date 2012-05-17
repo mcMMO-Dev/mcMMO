@@ -319,7 +319,7 @@ public class BlockListener implements Listener {
                 }
             }
         }
-        else if (PP.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && mat.equals(Material.LEAVES)) {
+        else if (PP.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && (mat.equals(Material.LEAVES) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block)))) {
             if (Config.getInstance().getWoodcuttingRequiresTool() && ItemChecks.isAxe(inhand)) {
                 if (Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
                     event.setInstaBreak(true);

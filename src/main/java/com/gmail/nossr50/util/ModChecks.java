@@ -78,4 +78,49 @@ public class ModChecks {
 
         return null;
     }
+
+    /**
+     * Check if a custom block is a leaf block.
+     *
+     * @param block The block to check
+     * @return true if the block represents leaves, false otherwise
+     */
+    public static boolean isCustomLeafBlock(Block block) {
+        if (blocksInstance.customLeaves.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Check if a custom block is a log block.
+     *
+     * @param block The block to check
+     * @return true if the block represents a log, false otherwise
+     */
+    public static boolean isCustomLogBlock(Block block) {
+        if (blocksInstance.customLogs.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Check if a custom block is an ore block.
+     *
+     * @param block The block to check
+     * @return true if the block represents an ore, false otherwise
+     */
+    public static boolean isCustomOreBlock(Block block) {
+        if (blocksInstance.customOres.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
