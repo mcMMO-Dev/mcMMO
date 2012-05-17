@@ -196,6 +196,14 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.repair.toolrepair");
     }
 
+    public boolean otherMaterialRepair(Player player) {
+        return player.hasPermission("mcmmo.ability.repair.othermaterialrepair");
+    }
+
+    public boolean otherRepair(Player player) {
+        return player.hasPermission("mcmmo.ability.repair.otherrepair");
+    }
+
     public boolean stringRepair(Player player) {
         return player.hasPermission("mcmmo.ability.repair.stringrepair");
     }
