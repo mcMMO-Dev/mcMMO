@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 
 public class LoadCustomTools extends ModConfigLoader {
@@ -28,6 +29,9 @@ public class LoadCustomTools extends ModConfigLoader {
     public List<Integer> customPickaxeIDs = new ArrayList<Integer>();
     public List<Integer> customShovelIDs = new ArrayList<Integer>();
     public List<Integer> customSwordIDs = new ArrayList<Integer>();
+
+    public List<Integer> customIDs = new ArrayList<Integer>();
+    public List<CustomItem> customItems = new ArrayList<CustomItem>();
 
     private LoadCustomTools(mcMMO plugin) {
         super(plugin, "tools.yml");

@@ -12,12 +12,14 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.LoadTreasures;
+import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
@@ -45,7 +47,14 @@ public class Excavation {
 
         List<ExcavationTreasure> treasures = new ArrayList<ExcavationTreasure>();
 
-        int xp = Config.getInstance().getExcavationBaseXP();
+        int xp;
+
+        if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            xp = ModChecks.getCustomBlock(block).getXpGain();
+        }
+        else {
+            xp = Config.getInstance().getExcavationBaseXP();
+        }
 
         if (Permissions.getInstance().excavationTreasures(player)) {
             switch (type) {

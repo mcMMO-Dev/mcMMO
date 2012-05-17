@@ -1,0 +1,75 @@
+#
+#  Settings for Custom Excavation Blocks
+###
+Excavation:
+    Block_1:
+        ID: 999
+        Data_Value: 0
+        XP_Gain: 99
+        Drop_Item: false
+        Drop_Item_ID: 999
+        Drop_Item_Data_Value: 0
+    Block_2:
+        ID: 999
+        Data_Value: 0
+        XP_Gain: 99
+        Drop_Item: false
+        Drop_Item_ID: 999
+        Drop_Item_Data_Value: 0
+
+#
+#  Settings for Custom Herbalism Blocks
+###
+Herbalism:
+    Block_1:
+        ID: 999
+        Data_Value: 0
+        XP_Gain: 99
+        Drop_Item: false
+        Drop_Item_ID: 999
+        Drop_Item_Data_Value: 0
+    Block_2:
+        ID: 999
+        Data_Value: 0
+        XP_Gain: 99
+        Drop_Item: false
+        Drop_Item_ID: 999
+        Drop_Item_Data_Value: 0
+
+#
+#  Settings for Custom Mining Blocks
+###
+Mining:
+    Block_1:
+        ID: 999
+        Data_Value: 0
+        XP_Gain: 99
+        Drop_Item: false
+        Drop_Item_ID: 999
+        Drop_Item_Data_Value: 0
+    Block_2:
+        ID: 999
+        Data_Value: 0
+        XP_Gain: 99
+        Drop_Item: false
+        Drop_Item_ID: 999
+        Drop_Item_Data_Value: 0
+
+#
+#  Settings for Custom Woodcutting Blocks
+###
+Woodcutting:
+    Block_1:
+        ID: 999
+        Data_Value: 0
+        XP_Gain: 99
+        Drop_Item: false
+        Drop_Item_ID: 999
+        Drop_Item_Data_Value: 0
+    Block_2:
+        ID: 999
+        Data_Value: 0
+        XP_Gain: 99
+        Drop_Item: false
+        Drop_Item_ID: 999
+        Drop_Item_Data_Value: 0

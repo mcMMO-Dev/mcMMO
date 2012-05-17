@@ -1,11 +1,14 @@
 package com.gmail.nossr50.util;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 
 public class BlockChecks {
+    private static Config configInstance = Config.getInstance();
+    private static boolean customBlocksEnabled = configInstance.getBlockModsEnabled();
 
     /**
      * Checks to see if a block type awards XP.
@@ -13,8 +16,8 @@ public class BlockChecks {
      * @param block Block to check
      * @return true if the block type awards XP, false otherwise
      */
-    public static boolean shouldBeWatched(Material material) {
-        switch (material) {
+    public static boolean shouldBeWatched(Block block) {
+        switch (block.getType()) {
         case BROWN_MUSHROOM:
         case CACTUS:
         case CLAY:
@@ -50,7 +53,12 @@ public class BlockChecks {
             return true;
 
         default:
-            return false;
+            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customItems.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -158,7 +166,12 @@ public class BlockChecks {
             return true;
 
         default:
-            return false;
+            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -187,7 +200,12 @@ public class BlockChecks {
             return true;
 
         default:
-            return false;
+            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customMiningBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -209,7 +227,12 @@ public class BlockChecks {
             return true;
 
         default:
-            return false;
+            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -227,7 +250,12 @@ public class BlockChecks {
             return true;
 
         default:
-            return false;
+            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customWoodcuttingBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 }

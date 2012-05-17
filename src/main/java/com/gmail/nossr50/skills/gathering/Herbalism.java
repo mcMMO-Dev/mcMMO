@@ -13,12 +13,14 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.GreenThumbTimer;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
@@ -82,9 +84,12 @@ public class Herbalism {
         Byte data = block.getData();
         Location loc = block.getLocation();
         Material mat = null;
+
         int xp = 0;
         int catciDrops = 0;
         int caneDrops = 0;
+
+        boolean customPlant = false;
 
         switch (type) {
         case BROWN_MUSHROOM:
@@ -181,15 +186,26 @@ public class Herbalism {
             break;
 
         default:
+            if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+                customPlant = true;
+                xp = ModChecks.getCustomBlock(block).getXpGain();
+            }
             break;
         }
 
-        if (mat == null) {
+        if (mat == null && !customPlant) {
             return;
         }
 
         if (Permissions.getInstance().herbalismDoubleDrops(player)) {
-            ItemStack is = new ItemStack(mat);
+            ItemStack is = null;
+
+            if (customPlant) {
+                is = new ItemStack(ModChecks.getCustomBlock(block).getItemDrop());
+            }
+            else {
+                is = new ItemStack(mat);
+            }
 
             if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
                 Config configInstance = Config.getInstance();
@@ -264,6 +280,9 @@ public class Herbalism {
                     break;
 
                 default:
+                    if (customPlant) {
+                        Misc.mcDropItem(loc, is);
+                    }
                     break;
                 }
             }

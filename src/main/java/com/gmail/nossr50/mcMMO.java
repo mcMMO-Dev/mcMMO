@@ -498,4 +498,57 @@ public class mcMMO extends JavaPlugin {
             getLogger().severe("Could not save config to " + armorConfigFile + ex.toString());
         }
     }
+
+    /*
+     * Boilerplate Custom Config Stuff (Blocks)
+     */
+
+    private FileConfiguration blocksConfig = null;
+    private File blocksConfigFile = null;
+
+    /**
+     * Reload the Blocks.yml file.
+     */
+    public void reloadBlocksConfig() {
+        if (blocksConfigFile == null) {
+            blocksConfigFile = new File(modDirectory, "blocks.yml");
+        }
+
+        blocksConfig = YamlConfiguration.loadConfiguration(blocksConfigFile);
+        InputStream defConfigStream = getResource("blocks.yml"); // Look for defaults in the jar
+
+        if (defConfigStream != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            blocksConfig.setDefaults(defConfig);
+        }
+    }
+
+    /**
+     * Get the Blocks config information.
+     *
+     * @return the configuration object for blocks.yml
+     */
+    public FileConfiguration getBlocksConfig() {
+        if (blocksConfig == null) {
+            reloadBlocksConfig();
+        }
+
+        return blocksConfig;
+    }
+
+    /**
+     * Save the Blocks config informtion.
+     */
+    public void saveBlocksConfig() {
+        if (blocksConfig == null || blocksConfigFile == null) {
+            return;
+        }
+
+        try {
+            blocksConfig.save(blocksConfigFile);
+        }
+        catch (IOException ex) {
+            getLogger().severe("Could not save config to " + blocksConfigFile + ex.toString());
+        }
+    }
 }

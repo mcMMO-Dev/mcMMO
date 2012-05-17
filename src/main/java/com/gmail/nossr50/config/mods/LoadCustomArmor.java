@@ -27,6 +27,9 @@ public class LoadCustomArmor extends ModConfigLoader{
     public List<Integer> customHelmetIDs = new ArrayList<Integer>();
     public List<Integer> customLeggingIDs = new ArrayList<Integer>();
 
+    public List<Integer> customIDs = new ArrayList<Integer>();
+    public List<CustomItem> customItems = new ArrayList<CustomItem>();
+
     public LoadCustomArmor(mcMMO plugin) {
         super(plugin, "armor.yml");
         config = plugin.getArmorConfig();

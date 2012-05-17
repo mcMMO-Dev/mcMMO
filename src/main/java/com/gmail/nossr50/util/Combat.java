@@ -369,7 +369,7 @@ public class Combat {
         ItemStack inHand = attacker.getItemInHand();
 
         if (Config.getInstance().getToolModsEnabled()) {
-            if (ItemChecks.isCustomTool(inHand) && !ModChecks.toolAbilityEnabled(inHand)) {
+            if (ItemChecks.isCustomTool(inHand) && !ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
                 return;
             }
         }
