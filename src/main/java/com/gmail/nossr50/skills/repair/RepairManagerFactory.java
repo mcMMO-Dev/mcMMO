@@ -6,7 +6,6 @@ public class RepairManagerFactory {
         return new SimpleRepairManager();
     }
 
-
     public static RepairManager getRepairManager(int repairablesSize) {
         // TODO: Add in loading from config what type of manager we want.
         return new SimpleRepairManager(repairablesSize);
