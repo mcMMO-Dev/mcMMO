@@ -57,19 +57,19 @@ public class Repair {
             if (ItemChecks.isArmor(is) && permInstance.armorRepair(player)) {
                 if (ItemChecks.isDiamondArmor(is) && inventory.contains(configInstance.getRepairDiamondMaterial()) && skillLevel >= configInstance.getRepairDiamondLevelRequirement() && permInstance.diamondRepair(player)) {
                     repairItem(player, is, new ItemStack(configInstance.getRepairDiamondMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 6, true);
+                    xpHandler(player, PP, is, durabilityBefore, 6);
                 }
                 else if (ItemChecks.isIronArmor(is) && inventory.contains(configInstance.getRepairIronMaterial()) && skillLevel >= configInstance.getRepairIronLevelRequirement() && permInstance.ironRepair(player)) {
                     repairItem(player, is, new ItemStack(configInstance.getRepairIronMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 2, true);
+                    xpHandler(player, PP, is, durabilityBefore, 2);
                 }
                 else if (ItemChecks.isGoldArmor(is) && inventory.contains(configInstance.getRepairGoldMaterial()) && skillLevel >= configInstance.getRepairGoldLevelRequirement() && permInstance.goldRepair(player)) {
                     repairItem(player, is, new ItemStack(configInstance.getRepairGoldMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 4, true);
+                    xpHandler(player, PP, is, durabilityBefore, 4);
                 }
                 else if (ItemChecks.isLeatherArmor(is) && inventory.contains(configInstance.getRepairLeatherMaterial()) && permInstance.leatherRepair(player)) {
                     repairItem(player, is, new ItemStack(configInstance.getRepairLeatherMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 1, true);
+                    xpHandler(player, PP, is, durabilityBefore, 1);
                 }
                 else {
                     needMoreVespeneGas(is, player); //UNABLE TO REPAIR
@@ -82,27 +82,27 @@ public class Repair {
             else if (ItemChecks.isTool(is) && permInstance.toolRepair(player)) {
                 if (ItemChecks.isStoneTool(is) && inventory.contains(configInstance.getRepairStoneMaterial()) && skillLevel >= configInstance.getRepairStoneLevelRequirement() && permInstance.stoneRepair(player)) {
                     repairItem(player, is, new ItemStack(configInstance.getRepairStoneMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 2, false);
+                    xpHandler(player, PP, is, durabilityBefore, .5);
                 }
                 else if (ItemChecks.isWoodTool(is) && inventory.contains(configInstance.getRepairWoodMaterial()) && permInstance.woodRepair(player)) {
                     repairItem(player, is, new ItemStack(configInstance.getRepairWoodMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 2, false);
+                    xpHandler(player, PP, is, durabilityBefore, .5);
                 }
                 else if (ItemChecks.isIronTool(is) && inventory.contains(configInstance.getRepairIronMaterial()) && skillLevel >= configInstance.getRepairIronLevelRequirement() && permInstance.ironRepair(player)) {
                     repairItem(player, is, new ItemStack(configInstance.getRepairIronMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 1, true);
+                    xpHandler(player, PP, is, durabilityBefore, 1);
                 }
                 else if (ItemChecks.isDiamondTool(is) && inventory.contains(configInstance.getRepairDiamondMaterial()) && skillLevel >= configInstance.getRepairDiamondLevelRequirement() && permInstance.diamondRepair(player)) {
                     repairItem(player, is, new ItemStack(configInstance.getRepairDiamondMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 1, true);
+                    xpHandler(player, PP, is, durabilityBefore, 1);
                 }
                 else if (ItemChecks.isGoldTool(is) && inventory.contains(configInstance.getRepairGoldMaterial()) && skillLevel >= configInstance.getRepairGoldLevelRequirement() && permInstance.goldRepair(player)) {
                     repairItem(player, is, new ItemStack(configInstance.getRepairGoldMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 8, true);
+                    xpHandler(player, PP, is, durabilityBefore, 8);
                 }
                 else if (ItemChecks.isStringTool(is) && inventory.contains(configInstance.getRepairStringMaterial()) && permInstance.stringRepair(player)){
                     repairItem(player, is, new ItemStack(configInstance.getRepairStringMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 2, false);
+                    xpHandler(player, PP, is, durabilityBefore, .5);
                 }
                 else {
                     needMoreVespeneGas(is, player); //UNABLE TO REPAIR
@@ -121,7 +121,7 @@ public class Repair {
 
                         if (inventory.contains(repairMaterial)) {
                             repairCustomItem(player, is, repairMaterial);
-                            xpHandler(player, PP, is, durabilityBefore, 1, true);
+                            xpHandler(player, PP, is, durabilityBefore, 1);
                         }
                         else {
                             needMoreVespeneGas(is, player);
@@ -144,7 +144,7 @@ public class Repair {
 
                         if (inventory.contains(repairMaterial)) {
                             repairCustomItem(player, is, repairMaterial);
-                            xpHandler(player, PP, is, durabilityBefore, 1, true);
+                            xpHandler(player, PP, is, durabilityBefore, 1);
                         }
                         else {
                             needMoreVespeneGas(is, player);
@@ -170,16 +170,11 @@ public class Repair {
      * @param modify Amount to modify the durability by
      * @param boost True if the modifier is a boost, false if the modifier is a reduction
      */
-    private static void xpHandler(Player player, PlayerProfile PP, ItemStack is, short durabilityBefore, int modify, boolean boost) {
+    private static void xpHandler(Player player, PlayerProfile PP, ItemStack is, short durabilityBefore, double modify) {
         short durabilityAfter = is.getDurability();
         short dif = (short) (durabilityBefore - durabilityAfter);
 
-        if (boost) {
-            dif = (short) (dif * modify);
-        }
-        else {
-            dif = (short) (dif / modify);
-        }
+        dif = (short) (dif * modify);
 
         //TODO: What exactly is this for, and should we have it for armor as well?
         if (ItemChecks.isShovel(is)) {
