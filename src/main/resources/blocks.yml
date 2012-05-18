@@ -49,6 +49,7 @@ Mining:
         Data_Value: 0
         XP_Gain: 99
         Is_Ore: true
+        Tier: 1
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
@@ -58,6 +59,7 @@ Mining:
         Data_Value: 0
         XP_Gain: 99
         Is_Ore: true
+        Tier: 1
         Drop_Item: false
         Drop_Item_ID: 999
         Drop_Item_Data_Value: 0
