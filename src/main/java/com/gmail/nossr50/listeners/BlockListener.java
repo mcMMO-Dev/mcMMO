@@ -41,8 +41,6 @@ import org.getspout.spoutapi.sound.SoundEffect;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;
-    private static Config configInstance = Config.getInstance();
-    private static Permissions permInstance = Permissions.getInstance();
 
     public BlockListener(final mcMMO plugin) {
         this.plugin = plugin;
@@ -95,6 +93,8 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
+        Config configInstance = Config.getInstance();
+
         Block block = event.getBlock();
         Player player = event.getPlayer();
         int id = block.getTypeId();
@@ -135,6 +135,9 @@ public class BlockListener implements Listener {
         PlayerProfile PP = Users.getProfile(player);
         Block block = event.getBlock();
         ItemStack inHand = player.getItemInHand();
+
+        Config configInstance = Config.getInstance();
+        Permissions permInstance = Permissions.getInstance();
 
         if (event instanceof FakeBlockBreakEvent) {
             return;
@@ -224,6 +227,9 @@ public class BlockListener implements Listener {
         ItemStack inHand = player.getItemInHand();
         Block block = event.getBlock();
         Material material = block.getType();
+
+        Config configInstance = Config.getInstance();
+        Permissions permInstance = Permissions.getInstance();
 
         /*
          * ABILITY PREPARATION CHECKS
