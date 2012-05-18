@@ -110,3 +110,57 @@ Repairables:
         MinimumLevel: 0
         MinimumQuantity: 2
         XpMultiplier: .25
+    #
+    # Iron repairables
+    ###
+    # Tools
+    IronSword:
+        ItemId: 267
+        ItemType: TOOL
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 250
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: .5
+    IronShovel:
+        ItemId: 256
+        ItemType: TOOL
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 250
+        MinimumLevel: 0
+        MinimumQuantity: 1
+        XpMultiplier: .3
+    IronPickaxe:
+        ItemId: 257
+        ItemType: TOOL
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 250
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: 1
+    IronAxe:
+        ItemId: 258
+        ItemType: TOOL
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 250
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: 1
+    IronHoe:
+        ItemId: 292
+        ItemType: TOOL
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 250
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: .5
