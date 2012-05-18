@@ -181,7 +181,7 @@ public class BlockListener implements Listener {
             }
 
             if (PP.getAbilityMode(AbilityType.TREE_FELLER) && permInstance.treeFeller(player) && ItemChecks.isAxe(inHand)) {
-                if (ItemChecks.isCustomTool(inHand)) {
+                if (ModChecks.isCustomTool(inHand)) {
                     if (ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
                         WoodCutting.treeFeller(event);
                     }
@@ -255,7 +255,7 @@ public class BlockListener implements Listener {
          * ABILITY TRIGGER CHECKS
          */
         if (PP.getAbilityMode(AbilityType.GREEN_TERRA) && permInstance.greenTerra(player) && BlockChecks.makeMossy(block)) {
-            if (ItemChecks.isCustomTool(inHand)) {
+            if (ModChecks.isCustomTool(inHand)) {
                 if (ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
                     Herbalism.greenTerra(player, block);
                 }
@@ -267,7 +267,7 @@ public class BlockListener implements Listener {
         else if (PP.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
             if (configInstance.getExcavationRequiresTool()) {
                 if (ItemChecks.isShovel(inHand)) {
-                    if (ItemChecks.isCustomTool(inHand)) {
+                    if (ModChecks.isCustomTool(inHand)) {
                         if (ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
                             event.setInstaBreak(true);
                             Excavation.gigaDrillBreaker(player, block);
@@ -299,7 +299,7 @@ public class BlockListener implements Listener {
         else if (PP.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
-                    if (ItemChecks.isCustomTool(inHand)) {
+                    if (ModChecks.isCustomTool(inHand)) {
                         if (ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
                             event.setInstaBreak(true);
                             Mining.superBreakerBlockCheck(player, block);

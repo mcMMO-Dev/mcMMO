@@ -146,7 +146,7 @@ public class Misc {
         else if (ItemChecks.isDiamondTool(inHand)) {
             tier = 4;
         }
-        else if (ItemChecks.isCustomTool(inHand)) {
+        else if (ModChecks.isCustomTool(inHand)) {
             tier = ModChecks.getToolFromItemStack(inHand).getTier();
         }
 

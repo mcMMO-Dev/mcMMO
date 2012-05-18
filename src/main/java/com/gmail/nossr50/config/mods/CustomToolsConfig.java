@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.mods;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -9,7 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 
 public class CustomToolsConfig extends ModConfigLoader {
@@ -31,7 +31,8 @@ public class CustomToolsConfig extends ModConfigLoader {
     public List<Integer> customSwordIDs = new ArrayList<Integer>();
 
     public List<Integer> customIDs = new ArrayList<Integer>();
-    public List<CustomItem> customItems = new ArrayList<CustomItem>();
+    public List<CustomTool> customToolList = new ArrayList<CustomTool>();
+    public HashMap<Integer, CustomTool> customTools = new HashMap<Integer, CustomTool>();
 
     private CustomToolsConfig(mcMMO plugin) {
         super(plugin, "tools.yml");
@@ -101,7 +102,8 @@ public class CustomToolsConfig extends ModConfigLoader {
 
             idList.add(id);
             customIDs.add(id);
-            customItems.add(tool);
+            customToolList.add(tool);
+            customTools.put(id, tool);
         }
     }
 }

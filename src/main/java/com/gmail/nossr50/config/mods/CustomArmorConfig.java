@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.mods;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +29,8 @@ public class CustomArmorConfig extends ModConfigLoader{
     public List<Integer> customLeggingIDs = new ArrayList<Integer>();
 
     public List<Integer> customIDs = new ArrayList<Integer>();
-    public List<CustomItem> customItems = new ArrayList<CustomItem>();
+    public List<CustomItem> customArmorList = new ArrayList<CustomItem>();
+    public HashMap<Integer, CustomItem> customArmor = new HashMap<Integer, CustomItem>();
 
     public CustomArmorConfig(mcMMO plugin) {
         super(plugin, "armor.yml");
@@ -93,7 +95,8 @@ public class CustomArmorConfig extends ModConfigLoader{
 
             idList.add(id);
             customIDs.add(id);
-            customItems.add(armor);
+            customArmorList.add(armor);
+            customArmor.put(id, armor);
         }
     }
 }

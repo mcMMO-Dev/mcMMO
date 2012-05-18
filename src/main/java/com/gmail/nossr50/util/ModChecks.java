@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomToolsConfig;
@@ -11,6 +12,10 @@ import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 
 public class ModChecks {
+    private static Config configInstance = Config.getInstance();
+    private static boolean customToolsEnabled = configInstance.getToolModsEnabled();
+    private static boolean customArmorEnabled = configInstance.getArmorModsEnabled();
+
     private static CustomToolsConfig toolInstance = CustomToolsConfig.getInstance();
     private static CustomArmorConfig armorInstance = CustomArmorConfig.getInstance();
     private static CustomBlocksConfig blocksInstance = CustomBlocksConfig.getInstance();
@@ -19,44 +24,20 @@ public class ModChecks {
      * Get the custom armor associated with an item.
      *
      * @param item The item to check
-     * @return the ay if it exists, null otherwise
+     * @return the armor if it exists, null otherwise
      */
     public static CustomItem getArmorFromItemStack(ItemStack item) {
-        int id = item.getTypeId();
-
-        if (!armorInstance.customIDs.contains(id)) {
-            return null;
-        }
-
-        for (CustomItem armor : armorInstance.customItems) {
-            if (armor.getItemID() == id) {
-                return armor;
-            }
-        }
-
-        return null;
+        return armorInstance.customArmor.get(item.getTypeId());
     }
 
     /**
      * Get the custom tool associated with an item.
      *
      * @param item The item to check
-     * @return the armor if it exists, null otherwise
+     * @return the tool if it exists, null otherwise
      */
     public static CustomTool getToolFromItemStack(ItemStack item) {
-        int id = item.getTypeId();
-
-        if (!toolInstance.customIDs.contains(id)) {
-            return null;
-        }
-
-        for (CustomItem tool : toolInstance.customItems) {
-            if (tool.getItemID() == id) {
-                return (CustomTool) tool;
-            }
-        }
-
-        return null;
+        return toolInstance.customTools.get(item.getTypeId());
     }
 
     /**
@@ -117,6 +98,36 @@ public class ModChecks {
      */
     public static boolean isCustomOreBlock(Block block) {
         if (blocksInstance.customOres.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks to see if an item is a custom tool.
+     *
+     * @param is Item to check
+     * @return true if the item is a custom tool, false otherwise
+     */
+    public static boolean isCustomTool(ItemStack item) {
+        if (customToolsEnabled && toolInstance.customTools.containsKey(item.getTypeId())) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks to see if an item is custom armor.
+     *
+     * @param is Item to check
+     * @return true if the item is custom armor, false otherwise
+     */
+    public static boolean isCustomArmor(ItemStack item) {
+        if (customArmorEnabled && armorInstance.customArmor.containsKey(item.getTypeId())) {
             return true;
         }
         else {

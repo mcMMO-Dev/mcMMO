@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Users;
@@ -1032,9 +1032,10 @@ public class PlayerProfile {
 
         if (Config.getInstance().getToolModsEnabled()) {
             ItemStack item = player.getItemInHand();
+            CustomTool tool = ModChecks.getToolFromItemStack(item);
 
-            if (ItemChecks.isCustomTool(item)) {
-                xp = (int) (xp * ModChecks.getToolFromItemStack(item).getXpMultiplier());
+            if (tool != null) {
+                xp = (int) (xp * tool.getXpMultiplier());
             }
         }
 

@@ -209,12 +209,12 @@ public class PlayerListener implements Listener {
                     event.setCancelled(true);
                     player.updateInventory();
                 }
-                else if (ItemChecks.isCustomTool(is) && ModChecks.getToolFromItemStack(is).isRepairable()) {
+                else if (ModChecks.isCustomTool(is) && ModChecks.getToolFromItemStack(is).isRepairable()) {
                     Repair.repairCheck(player, is);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
-                else if (ItemChecks.isCustomArmor(is) && ModChecks.getArmorFromItemStack(is).isRepairable()) {
+                else if (ModChecks.isCustomArmor(is) && ModChecks.getArmorFromItemStack(is).isRepairable()) {
                     Repair.repairCheck(player, is);
                     event.setCancelled(true);
                     player.updateInventory();

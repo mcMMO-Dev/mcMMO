@@ -243,21 +243,6 @@ public class ItemChecks {
     }
 
     /**
-     * Checks to see if an item is custom armor.
-     *
-     * @param is Item to check
-     * @return true if the item is custom armor, false otherwise
-     */
-    public static boolean isCustomArmor(ItemStack is) {
-        if (customArmorEnabled && CustomArmorConfig.getInstance().customIDs.contains(is.getTypeId())) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    /**
      * Checks to see if an item is a leather armor piece.
      *
      * @param is Item to check
@@ -341,21 +326,6 @@ public class ItemChecks {
      */
     public static boolean isTool(ItemStack is) {
         return isStoneTool(is) || isWoodTool(is) || isGoldTool(is) || isIronTool(is) || isDiamondTool(is) || isStringTool(is);
-    }
-
-    /**
-     * Checks to see if an item is a custom tool.
-     *
-     * @param is Item to check
-     * @return true if the item is a custom tool, false otherwise
-     */
-    public static boolean isCustomTool(ItemStack is) {
-        if (customToolsEnabled && CustomToolsConfig.getInstance().customIDs.contains(is.getTypeId())) {
-            return true;
-        }
-        else {
-            return false;
-        }
     }
 
     /**

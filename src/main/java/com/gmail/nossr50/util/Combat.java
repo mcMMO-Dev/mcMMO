@@ -368,10 +368,8 @@ public class Combat {
     private static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, mcMMO plugin, SkillType type) {
         ItemStack inHand = attacker.getItemInHand();
 
-        if (Config.getInstance().getToolModsEnabled()) {
-            if (ItemChecks.isCustomTool(inHand) && !ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
-                return;
-            }
+        if (ModChecks.isCustomTool(inHand) && !ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
+            return;
         }
 
         int numberOfTargets = Misc.getTier(attacker.getItemInHand()); //The higher the weapon tier, the more targets you hit
