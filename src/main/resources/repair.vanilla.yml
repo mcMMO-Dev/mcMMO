@@ -1,0 +1,112 @@
+#
+# Repairables
+###
+Repairables:
+    #
+    # Wooden repairables
+    ###
+    # Tools
+    WoodSword:
+        ItemId: 268
+        ItemType: TOOL
+        MaterialType: WOOD
+        RepairMaterialId: 5
+        RepairMaterialMetadata: -1
+        MaximumDurability: 59
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: .25
+    WoodShovel:
+        ItemId: 260
+        ItemType: TOOL
+        MaterialType: WOOD
+        RepairMaterialId: 5
+        RepairMaterialMetadata: -1
+        MaximumDurability: 59
+        MinimumLevel: 0
+        MinimumQuantity: 1
+        XpMultiplier: .16
+    WoodPickaxe:
+        ItemId: 270
+        ItemType: TOOL
+        MaterialType: WOOD
+        RepairMaterialId: 5
+        RepairMaterialMetadata: -1
+        MaximumDurability: 59
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: .5
+    WoodAxe:
+        ItemId: 271
+        ItemType: TOOL
+        MaterialType: WOOD
+        RepairMaterialId: 5
+        RepairMaterialMetadata: -1
+        MaximumDurability: 59
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: .5
+    WoodHoe:
+        ItemId: 290
+        ItemType: TOOL
+        MaterialType: WOOD
+        RepairMaterialId: 5
+        RepairMaterialMetadata: -1
+        MaximumDurability: 59
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: .25
+    #
+    # Stone repairables
+    ###
+    # Tools
+    StoneSword:
+        ItemId: 272
+        ItemType: TOOL
+        MaterialType: STONE
+        RepairMaterialId: 4
+        RepairMaterialMetadata: -1
+        MaximumDurability: 131
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: .25
+    StoneShovel:
+        ItemId: 273
+        ItemType: TOOL
+        MaterialType: STONE
+        RepairMaterialId: 4
+        RepairMaterialMetadata: -1
+        MaximumDurability: 131
+        MinimumLevel: 0
+        MinimumQuantity: 1
+        XpMultiplier: .16
+    StonePickaxe:
+        ItemId: 274
+        ItemType: TOOL
+        MaterialType: STONE
+        RepairMaterialId: 4
+        RepairMaterialMetadata: -1
+        MaximumDurability: 131
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: .5
+    StoneAxe:
+        ItemId: 275
+        ItemType: TOOL
+        MaterialType: STONE
+        RepairMaterialId: 4
+        RepairMaterialMetadata: -1
+        MaximumDurability: 131
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: .5
+    StoneHoe:
+        ItemId: 291
+        ItemType: TOOL
+        MaterialType: STONE
+        RepairMaterialId: 4
+        RepairMaterialMetadata: -1
+        MaximumDurability: 131
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: .25
