@@ -41,7 +41,6 @@ public abstract class ConfigLoader {
      * Add the defaults to this config file.
      */
     protected void addDefaults() {
-
         // Load from included config.yml
         config.options().copyDefaults(true);
         saveConfig();
