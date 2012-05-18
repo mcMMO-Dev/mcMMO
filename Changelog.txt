@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 1.3.08
+ ! Changed Mining to allow Silk Touch to work again since the dupe exploit has been fixed.
+
 Version 1.3.07
  + Added ability to gain XP from custom blocks. Enable custom blocks in the config file, then enter the data in the blocks.yml file.
  + Added ability to gain XP with custom tools. Enable custom tools in the config file, then enter the data in the tools.yml file.

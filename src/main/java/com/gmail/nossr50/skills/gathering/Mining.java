@@ -6,14 +6,13 @@ import org.bukkit.CoalType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
-import org.bukkit.enchantments.Enchantment;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.spout.SpoutSounds;
-import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
@@ -28,6 +27,74 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 public class Mining {
 
     private static Random random = new Random();
+
+    /**
+     * Handle double drops when using Silk Touch.
+     *
+     * @param block The block to process drops for
+     */
+    private static void silkTouchDrops(Block block) {
+        Location loc = block.getLocation();
+        Material type = block.getType();
+        ItemStack item = new ItemStack(type);
+        Config configInstance = Config.getInstance();
+
+        switch (type) {
+        case ENDER_STONE:
+        case GOLD_ORE:
+        case IRON_ORE:
+        case MOSSY_COBBLESTONE:
+        case NETHERRACK:
+        case OBSIDIAN:
+        case SANDSTONE:
+            miningDrops(block);
+            break;
+
+        case COAL_ORE:
+            if (configInstance.getCoalDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case DIAMOND_ORE:
+            if (configInstance.getDiamondDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case GLOWING_REDSTONE_ORE:
+        case REDSTONE_ORE:
+            if (configInstance.getRedstoneDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case GLOWSTONE:
+            if (configInstance.getGlowstoneDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case LAPIS_ORE:
+            if (configInstance.getLapisDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        case STONE:
+            if (configInstance.getStoneDoubleDropsEnabled()) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+
+        default:
+            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customMiningBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+                Misc.mcDropItem(loc, item);
+            }
+            break;
+        }
+
+    }
 
     /**
      * Drop items from Mining & Blast Mining skills.
@@ -130,7 +197,7 @@ public class Mining {
             break;
 
         default:
-            if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customMiningBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customMiningBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
                 item = ModChecks.getCustomBlock(block).getItemDrop();
                 Misc.mcDropItem(loc, item);
             }
@@ -221,18 +288,21 @@ public class Mining {
      * @param block The block being broken
      */
     public static void miningBlockCheck(Player player, Block block) {
-        if (mcMMO.placeStore.isTrue(block) || player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+        if (mcMMO.placeStore.isTrue(block)) {
             return;
         }
 
         miningXP(player, block);
 
-        if (BlockChecks.canBeSuperBroken(block)) {
-            final int MAX_BONUS_LEVEL = 1000;
+        final int MAX_BONUS_LEVEL = 1000;
 
-            int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
+        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
 
-            if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().miningDoubleDrops(player)) {
+        if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().miningDoubleDrops(player)) {
+            if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+                silkTouchDrops(block);
+            }
+            else {
                 miningDrops(block);
             }
         }
@@ -244,7 +314,7 @@ public class Mining {
      * @param player The player using the ability
      * @param block The block being affected
      */
-    public static void SuperBreakerBlockCheck(Player player, Block block) {
+    public static void superBreakerBlockCheck(Player player, Block block) {
         Material type = block.getType();
         int tier = Misc.getTier(player.getItemInHand());
         int durabilityLoss = Config.getInstance().getAbilityToolDamage();

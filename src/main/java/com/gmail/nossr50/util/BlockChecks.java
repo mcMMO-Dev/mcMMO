@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util;
 
+import org.bukkit.CropState;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
@@ -158,7 +160,6 @@ public class BlockChecks {
         switch (block.getType()) {
         case BROWN_MUSHROOM:
         case CACTUS:
-        case CROPS:
         case MELON_BLOCK:
         case NETHER_WARTS:
         case PUMPKIN:
@@ -169,6 +170,14 @@ public class BlockChecks {
         case WATER_LILY:
         case YELLOW_FLOWER:
             return true;
+
+        case CROPS:
+            if (block.getData() == CropState.RIPE.getData()) {
+                return true;
+            }
+            else {
+                return false;
+            }
 
         default:
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
@@ -261,6 +270,15 @@ public class BlockChecks {
             else {
                 return false;
             }
+        }
+    }
+
+    public static boolean isLog (Block block){
+        if (block.getType().equals(Material.LOG) || (customBlocksEnabled && ModChecks.isCustomLogBlock(block))) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }
