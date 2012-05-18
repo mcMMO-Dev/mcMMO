@@ -36,14 +36,6 @@ public class HashChunkletManager implements ChunkletManager {
     }
 
     public void chunkUnloaded(int cx, int cz, World world) {
-        boolean found = false;
-
-        for(String key : store.keySet()) {
-            if(key.startsWith(world.getName() + "," + cx + "," + cz)) found = true;
-        }
-
-        if(!found) return;
-
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
         File cxDir = new File(dataDir, "" + cx);
         if(!cxDir.exists()) cxDir.mkdir();
