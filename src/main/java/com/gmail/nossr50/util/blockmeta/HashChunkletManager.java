@@ -55,6 +55,7 @@ public class HashChunkletManager implements ChunkletManager {
             if(store.containsKey(world.getName() + "," + cx + "," + cz + "," + y)) {
                 ChunkletStore out = store.get(world.getName() + "," + cx + "," + cz + "," + y);
                 serializeChunkletStore(out, yFile);
+                store.remove(world.getName() + "," + cx + "," + cz + "," + y);
             }
         }
     }
