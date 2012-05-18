@@ -105,7 +105,7 @@ public class WoodCutting {
                         x.setData((byte) 0x0);
                         x.setType(Material.AIR);
 
-                        Misc.mcDropItem(x.getLocation(), item);
+                        Misc.dropItem(x.getLocation(), item);
                     }
                     else if (ModChecks.isCustomLeafBlock(x)) {
                         final int SAPLING_DROP_CHANCE = 10;
@@ -114,7 +114,7 @@ public class WoodCutting {
                         x.setData((byte) 0x0);
                         x.setType(Material.AIR);
 
-                        Misc.mcRandomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
+                        Misc.randomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
                     }
                 }
                 else if (x.getType() == Material.LOG) {
@@ -172,13 +172,13 @@ public class WoodCutting {
                     x.setType(Material.AIR);
 
                     /* Drop the block */
-                    Misc.mcDropItem(x.getLocation(), item);
+                    Misc.dropItem(x.getLocation(), item);
                 }
                 else if (x.getType() == Material.LEAVES) {
                     final int SAPLING_DROP_CHANCE = 10;
 
                     item = new ItemStack(Material.SAPLING, 1, (short) 0, (byte) (x.getData() & 3)); //Drop the right type of sapling
-                    Misc.mcRandomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
+                    Misc.randomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
 
                     //Remove the block
                     x.setData((byte) 0);
@@ -287,7 +287,7 @@ public class WoodCutting {
             if (configInstance.getBlockModsEnabled() && ModChecks.isCustomLogBlock(block)) {
                 item = ModChecks.getCustomBlock(block).getItemDrop();
                 location = block.getLocation();
-                Misc.mcDropItem(location, item);
+                Misc.dropItem(location, item);
                 return;
             }
             else {
@@ -299,25 +299,25 @@ public class WoodCutting {
             switch (species) {
             case GENERIC:
                 if (configInstance.getOakDoubleDropsEnabled()) {
-                    Misc.mcDropItem(location, item);
+                    Misc.dropItem(location, item);
                 }
                 break;
 
             case REDWOOD:
                 if (configInstance.getSpruceDoubleDropsEnabled()) {
-                    Misc.mcDropItem(location, item);
+                    Misc.dropItem(location, item);
                 }
                 break;
 
             case BIRCH:
                 if (configInstance.getBirchDoubleDropsEnabled()) {
-                    Misc.mcDropItem(location, item);
+                    Misc.dropItem(location, item);
                 }
                 break;
 
             case JUNGLE:
                 if (configInstance.getJungleDoubleDropsEnabled()) {
-                    Misc.mcDropItem(location, item);
+                    Misc.dropItem(location, item);
                 }
                 break;
 

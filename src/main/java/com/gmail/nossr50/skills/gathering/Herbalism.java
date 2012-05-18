@@ -213,75 +213,75 @@ public class Herbalism {
                 switch (type) {
                 case BROWN_MUSHROOM:
                     if (configInstance.getBrownMushroomsDoubleDropsEnabled()) {
-                        Misc.mcDropItem(loc, is);
+                        Misc.dropItem(loc, is);
                     }
                     break;
 
                 case CACTUS:
                     if (configInstance.getCactiDoubleDropsEnabled()) {
-                        Misc.mcDropItems(loc, is, catciDrops);
+                        Misc.dropItems(loc, is, catciDrops);
                     }
                     break;
 
                 case CROPS:
                     if (configInstance.getWheatDoubleDropsEnabled()) {
-                        Misc.mcDropItem(loc, is);
+                        Misc.dropItem(loc, is);
                     }
                     break;
 
                 case MELON_BLOCK:
                     if (configInstance.getMelonsDoubleDropsEnabled()) {
-                        Misc.mcDropItems(loc, is, 3);
-                        Misc.mcRandomDropItems(loc, is, 50, 4);
+                        Misc.dropItems(loc, is, 3);
+                        Misc.randomDropItems(loc, is, 50, 4);
                     }
                     break;
 
                 case NETHER_WARTS:
                     if (configInstance.getNetherWartsDoubleDropsEnabled()) {
-                        Misc.mcDropItems(loc, is, 2);
-                        Misc.mcRandomDropItems(loc, is, 50, 3);
+                        Misc.dropItems(loc, is, 2);
+                        Misc.randomDropItems(loc, is, 50, 3);
                     }
                     break;
 
                 case PUMPKIN:
                     if (configInstance.getPumpkinsDoubleDropsEnabled()) {
-                        Misc.mcDropItem(loc, is);
+                        Misc.dropItem(loc, is);
                     }
                     break;
 
                 case RED_MUSHROOM:
                     if (configInstance.getRedMushroomsDoubleDropsEnabled()) {
-                        Misc.mcDropItem(loc, is);
+                        Misc.dropItem(loc, is);
                     }
                     break;
 
                 case SUGAR_CANE_BLOCK:
                     if (configInstance.getSugarCaneDoubleDropsEnabled()) {
-                        Misc.mcDropItems(loc, is, caneDrops);
+                        Misc.dropItems(loc, is, caneDrops);
                     }
                     break;
 
                 case VINE:
                     if (configInstance.getVinesDoubleDropsEnabled()) {
-                        Misc.mcDropItem(loc, is);
+                        Misc.dropItem(loc, is);
                     }
                     break;
 
                 case WATER_LILY:
                     if (configInstance.getWaterLiliesDoubleDropsEnabled()) {
-                        Misc.mcDropItem(loc, is);
+                        Misc.dropItem(loc, is);
                     }
                     break;
 
                 case YELLOW_FLOWER:
                     if (configInstance.getYellowFlowersDoubleDropsEnabled()) {
-                        Misc.mcDropItem(loc, is);
+                        Misc.dropItem(loc, is);
                     }
                     break;
 
                 default:
                     if (customPlant) {
-                        Misc.mcDropItem(loc, is);
+                        Misc.dropItem(loc, is);
                     }
                     break;
                 }
@@ -312,8 +312,8 @@ public class Herbalism {
         if (hasSeeds && PP.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1500) <= herbLevel)) {
             event.setCancelled(true);
 
-            Misc.mcDropItem(loc, new ItemStack(Material.WHEAT));
-            Misc.mcRandomDropItems(loc, new ItemStack(Material.SEEDS), 50, 3);
+            Misc.dropItem(loc, new ItemStack(Material.WHEAT));
+            Misc.randomDropItems(loc, new ItemStack(Material.SEEDS), 50, 3);
 
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, PP), 1);
 

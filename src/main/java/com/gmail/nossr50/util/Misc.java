@@ -197,9 +197,9 @@ public class Misc {
      * @param is The items to drop
      * @param quantity The amount of items to drop
      */
-    public static void mcDropItems(Location location, ItemStack is, int quantity) {
+    public static void dropItems(Location location, ItemStack is, int quantity) {
         for (int i = 0; i < quantity; i++) {
-            mcDropItem(location, is);
+            dropItem(location, is);
         }
     }
 
@@ -210,9 +210,9 @@ public class Misc {
      * @param is The item to drop
      * @param chance The percentage chance for the item to drop
      */
-    public static void mcRandomDropItem(Location location, ItemStack is, double chance) {
+    public static void randomDropItem(Location location, ItemStack is, double chance) {
         if (random.nextInt(100) < chance) {
-            mcDropItem(location, is);
+            dropItem(location, is);
         }
     }
 
@@ -224,9 +224,9 @@ public class Misc {
      * @param chance The percentage chance for the item to drop
      * @param quantity The amount of items to drop
      */
-    public static void mcRandomDropItems(Location location, ItemStack is, int chance, int quantity) {
+    public static void randomDropItems(Location location, ItemStack is, int chance, int quantity) {
         for(int i = 0; i < quantity; i++) {
-            mcRandomDropItem(location, is, chance);
+            randomDropItem(location, is, chance);
         }
     }
 
@@ -236,7 +236,7 @@ public class Misc {
      * @param location The location to drop the item at
      * @param itemStack The item to drop
      */
-    public static void mcDropItem(Location location, ItemStack itemStack) {
+    public static void dropItem(Location location, ItemStack itemStack) {
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);

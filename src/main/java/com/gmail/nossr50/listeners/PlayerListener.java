@@ -165,9 +165,9 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (Permissions.getInstance().motd(player) && Config.getInstance().getMOTDEnabled()) {
-            player.sendMessage(ChatColor.GOLD+"Server is running "+ChatColor.GREEN+plugin.getName()+" "+plugin.getDescription().getVersion());
-            player.sendMessage(ChatColor.GOLD+"http://www.mcmmo.info"+ChatColor.DARK_AQUA+" - mcMMO Website");
+        if (Config.getInstance().getMOTDEnabled() && Permissions.getInstance().motd(player)) {
+            player.sendMessage(ChatColor.GOLD + "Server is running " + ChatColor.GREEN + plugin.getName() + " " + plugin.getDescription().getVersion()); //TODO: Locale
+            player.sendMessage(ChatColor.GOLD + "http://www.mcmmo.info" + ChatColor.DARK_AQUA + " - mcMMO Website"); //TODO: Locale
             //player.sendMessage(LocaleLoader.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
             //player.sendMessage(LocaleLoader.getString("mcMMO.Website"));
         }
@@ -186,7 +186,6 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-
         Action action = event.getAction();
         Block block = event.getClickedBlock();
         ItemStack is = player.getItemInHand();
@@ -210,12 +209,12 @@ public class PlayerListener implements Listener {
                     event.setCancelled(true);
                     player.updateInventory();
                 }
-                else if (Config.getInstance().getToolModsEnabled() && ItemChecks.isCustomTool(is) && ModChecks.getToolFromItemStack(is).isRepairable()) {
+                else if (ItemChecks.isCustomTool(is) && ModChecks.getToolFromItemStack(is).isRepairable()) {
                     Repair.repairCheck(player, is);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
-                else if (Config.getInstance().getArmorModsEnabled() && ItemChecks.isCustomArmor(is) && ModChecks.getArmorFromItemStack(is).isRepairable()) {
+                else if (ItemChecks.isCustomArmor(is) && ModChecks.getArmorFromItemStack(is).isRepairable()) {
                     Repair.repairCheck(player, is);
                     event.setCancelled(true);
                     player.updateInventory();
@@ -331,7 +330,8 @@ public class PlayerListener implements Listener {
 
             event.setFormat(bracketColor + "(" + ChatColor.WHITE + "%1$s" + bracketColor + ") %2$s");
             event.getRecipients().retainAll(intendedRecipients);
-        } else if (PP.getAdminChatMode()) {
+        }
+        else if (PP.getAdminChatMode()) {
             McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), event.getMessage());
             plugin.getServer().getPluginManager().callEvent(chatEvent);
 

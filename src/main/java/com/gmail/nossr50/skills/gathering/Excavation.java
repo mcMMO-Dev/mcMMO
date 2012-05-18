@@ -102,7 +102,7 @@ public class Excavation {
             //Drop items
             for (ItemStack x : is) {
                 if (x != null) {
-                    Misc.mcDropItem(loc, x);
+                    Misc.dropItem(loc, x);
                 }
             }
         }

@@ -57,7 +57,7 @@ public class Unarmed {
             if (random.nextInt(3000) <= skillCheck && !ironGrip(defender, attacker)) {
                 defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
 
-                Misc.mcDropItem(defender.getLocation(), inHand);
+                Misc.dropItem(defender.getLocation(), inHand);
                 defender.setItemInHand(new ItemStack(Material.AIR));
             }
         }
