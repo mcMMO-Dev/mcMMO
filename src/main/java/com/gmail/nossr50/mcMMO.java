@@ -361,9 +361,9 @@ public class mcMMO extends JavaPlugin {
         }
 
         treasuresConfig = YamlConfiguration.loadConfiguration(treasuresConfigFile);
-        InputStream defConfigStream = getResource("treasures.yml"); // Look for defaults in the jar
 
-        if (defConfigStream != null) {
+        if (isInJar("treasures.yml")) {
+            InputStream defConfigStream = getResource("treasures.yml");
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
             treasuresConfig.setDefaults(defConfig);
         }
@@ -414,9 +414,9 @@ public class mcMMO extends JavaPlugin {
         }
 
         toolsConfig = YamlConfiguration.loadConfiguration(toolsConfigFile);
-        InputStream defConfigStream = getResource("tools.yml"); // Look for defaults in the jar
 
-        if (defConfigStream != null) {
+        if (isInJar("tools.yml")) {
+            InputStream defConfigStream = getResource("tools.yml");
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
             toolsConfig.setDefaults(defConfig);
         }
@@ -467,9 +467,9 @@ public class mcMMO extends JavaPlugin {
         }
 
         armorConfig = YamlConfiguration.loadConfiguration(armorConfigFile);
-        InputStream defConfigStream = getResource("armor.yml"); // Look for defaults in the jar
 
-        if (defConfigStream != null) {
+        if (isInJar("armor.yml")) {
+            InputStream defConfigStream = getResource("armor.yml");
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
             armorConfig.setDefaults(defConfig);
         }
@@ -520,9 +520,9 @@ public class mcMMO extends JavaPlugin {
         }
 
         blocksConfig = YamlConfiguration.loadConfiguration(blocksConfigFile);
-        InputStream defConfigStream = getResource("blocks.yml"); // Look for defaults in the jar
 
-        if (defConfigStream != null) {
+        if (isInJar("blocks.yml")) {
+            InputStream defConfigStream = getResource("blocks.yml");
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
             blocksConfig.setDefaults(defConfig);
         }
@@ -555,5 +555,10 @@ public class mcMMO extends JavaPlugin {
         catch (IOException ex) {
             getLogger().severe("Could not save config to " + blocksConfigFile + ex.toString());
         }
+    }
+
+    public boolean isInJar(String resource) {
+        InputStream iStream = getResource(resource);
+        return iStream != null;
     }
 }
