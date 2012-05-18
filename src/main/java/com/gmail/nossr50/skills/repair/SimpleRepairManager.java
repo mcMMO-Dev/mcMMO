@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.repair;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,13 +19,20 @@ public class SimpleRepairManager implements RepairManager {
 
     @Override
     public void registerRepairable(Repairable repairable) {
-        // TODO Auto-generated method stub
+        Integer itemId = repairable.getItemId();
+        repairables.put(itemId, repairable);
+    }
+
+    @Override
+    public void registerRepairables(List<Repairable> repairables) {
+        for(Repairable repairable : repairables) {
+            registerRepairable(repairable);
+        }
     }
 
     @Override
     public boolean isRepairable(int itemId) {
-        // TODO Auto-generated method stub
-        return false;
+        return repairables.containsKey(itemId);
     }
 
     @Override
