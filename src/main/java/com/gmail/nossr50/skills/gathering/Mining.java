@@ -251,6 +251,10 @@ public class Mining {
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 
         if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customItems.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            if (ModChecks.getCustomBlock(block).getTier() < tier) {
+                return;
+            }
+
             if (mcMMO.placeStore.isTrue(block)) {
                 return;
             }

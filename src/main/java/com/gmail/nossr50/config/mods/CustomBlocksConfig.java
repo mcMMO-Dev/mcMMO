@@ -71,6 +71,7 @@ public class CustomBlocksConfig extends ModConfigLoader{
             int id = config.getInt(skillType + "." + blockName + ".ID", 0);
             byte data = (byte) config.getInt(skillType + "." + blockName + ".Data_Value", 0);
             int xp = config.getInt(skillType + "." + blockName + ".XP_Gain", 0);
+            int tier = config.getInt(skillType + "." + blockName + ".Tier", 1);
             boolean dropItem = config.getBoolean(skillType + "." + blockName + ".Drop_Item", false);
             int dropID = config.getInt(skillType + "." + blockName + ".Drop_Item_ID", 0);
             byte dropData = (byte) config.getInt(skillType + "." + blockName + ".Drop_Item_Data_Value", 0);
@@ -97,7 +98,7 @@ public class CustomBlocksConfig extends ModConfigLoader{
                 itemDrop = new ItemStack(id, dropAmount, (short) 0, data);
             }
 
-            block = new CustomBlock(itemDrop, xp, data, id);
+            block = new CustomBlock(itemDrop, tier, xp, data, id);
             blockItem = new ItemStack(id, 1, (short) 0, data);
 
             if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
