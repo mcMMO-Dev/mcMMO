@@ -37,14 +37,15 @@ public class HashChunkletManager implements ChunkletManager {
 
     public void chunkUnloaded(int cx, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
-        File cxDir = new File(dataDir, "" + cx);
-        if(!cxDir.exists()) cxDir.mkdir();
-        File czDir = new File(cxDir, "" + cz);
-        if(!czDir.exists()) czDir.mkdir();
 
         for(int y = 1; y <= 4; y++) {
-            File yFile = new File(czDir, "" + y);
             if(store.containsKey(world.getName() + "," + cx + "," + cz + "," + y)) {
+                File cxDir = new File(dataDir, "" + cx);
+                if(!cxDir.exists()) cxDir.mkdir();
+                File czDir = new File(cxDir, "" + cz);
+                if(!czDir.exists()) czDir.mkdir();
+                File yFile = new File(czDir, "" + y);
+
                 ChunkletStore out = store.get(world.getName() + "," + cx + "," + cz + "," + y);
                 serializeChunkletStore(out, yFile);
                 store.remove(world.getName() + "," + cx + "," + cz + "," + y);
