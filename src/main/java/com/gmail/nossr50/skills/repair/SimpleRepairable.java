@@ -6,8 +6,9 @@ public class SimpleRepairable implements Repairable {
     private final byte repairMetadata;
     private final RepairItemType repairItemType;
     private final RepairMaterialType repairMaterialType;
+    private final double xpMultiplier;
 
-    protected SimpleRepairable(int itemId, int repairMaterialId, byte repairMetadata, int minimumLevel, int minimumQuantity, short maximumDurability, RepairItemType repairItemType, RepairMaterialType repairMaterialType) {
+    protected SimpleRepairable(int itemId, int repairMaterialId, byte repairMetadata, int minimumLevel, int minimumQuantity, short maximumDurability, RepairItemType repairItemType, RepairMaterialType repairMaterialType, double xpMultiplier) {
         this.itemId = itemId;
         this.repairMaterialId = repairMaterialId;
         this.repairMetadata = repairMetadata;
@@ -17,6 +18,7 @@ public class SimpleRepairable implements Repairable {
         this.minimumQuantity = minimumQuantity;
         this.maximumDurability = maximumDurability;
         this.baseRepairDurability = (short) (maximumDurability / minimumQuantity);
+        this.xpMultiplier = xpMultiplier;
     }
 
     @Override
@@ -62,5 +64,10 @@ public class SimpleRepairable implements Repairable {
     @Override
     public int getMinimumLevel() {
         return minimumLevel;
+    }
+
+    @Override
+    public double getXpMultiplier() {
+        return xpMultiplier;
     }
 }

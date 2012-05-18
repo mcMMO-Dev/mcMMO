@@ -67,4 +67,11 @@ public interface Repairable {
      * @return the minimum level to repair this item, or 0 for no minimum
      */
     public int getMinimumLevel();
+
+    /**
+     * Gets the xpMultiplier for this repairable
+     *
+     * @return the xpMultiplier of this repairable
+     */
+    public double getXpMultiplier();
 }
