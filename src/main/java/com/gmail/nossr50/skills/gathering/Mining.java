@@ -250,37 +250,7 @@ public class Mining {
         int durabilityLoss = Config.getInstance().getAbilityToolDamage();
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 
-        switch (type) {
-        case OBSIDIAN:
-            if (tier < 4) {
-                return;
-            }
-            durabilityLoss = durabilityLoss * 5; //Obsidian needs to do more damage than normal
-            /* FALL THROUGH */
-
-        case DIAMOND_ORE:
-        case GLOWING_REDSTONE_ORE:
-        case GOLD_ORE:
-        case LAPIS_ORE:
-        case REDSTONE_ORE:
-            if (tier < 3) {
-                return;
-            }
-            /* FALL THROUGH */
-
-        case IRON_ORE:
-            if (tier < 2) {
-                return;
-            }
-            /* FALL THROUGH */
-
-        case COAL_ORE:
-        case ENDER_STONE:
-        case GLOWSTONE:
-        case MOSSY_COBBLESTONE:
-        case NETHERRACK:
-        case SANDSTONE:
-        case STONE:
+        if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customItems.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
             if (mcMMO.placeStore.isTrue(block)) {
                 return;
             }
@@ -292,6 +262,52 @@ public class Mining {
 
             if (Config.getInstance().spoutEnabled) {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+            }
+        }
+        else {
+            switch (type) {
+            case OBSIDIAN:
+                if (tier < 4) {
+                    return;
+                }
+                durabilityLoss = durabilityLoss * 5; //Obsidian needs to do more damage than normal
+                /* FALL THROUGH */
+
+            case DIAMOND_ORE:
+            case GLOWING_REDSTONE_ORE:
+            case GOLD_ORE:
+            case LAPIS_ORE:
+            case REDSTONE_ORE:
+                if (tier < 3) {
+                    return;
+                }
+                /* FALL THROUGH */
+
+            case IRON_ORE:
+                if (tier < 2) {
+                    return;
+                }
+                /* FALL THROUGH */
+
+            case COAL_ORE:
+            case ENDER_STONE:
+            case GLOWSTONE:
+            case MOSSY_COBBLESTONE:
+            case NETHERRACK:
+            case SANDSTONE:
+            case STONE:
+                if (mcMMO.placeStore.isTrue(block)) {
+                    return;
+                }
+
+                mcMMO.p.getServer().getPluginManager().callEvent(armswing);
+                Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
+
+                miningBlockCheck(player, block);
+
+                if (Config.getInstance().spoutEnabled) {
+                    SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+                }
             }
         }
     }
