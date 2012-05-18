@@ -164,3 +164,44 @@ Repairables:
         MinimumLevel: 0
         MinimumQuantity: 2
         XpMultiplier: .5
+    # Armor
+    IronHelmet:
+        ItemId: 306
+        ItemType: ARMOR
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 165
+        MinimumLevel: 0
+        MinimumQuantity: 1
+        XpMultiplier: 2
+    IronChest:
+        ItemId: 307
+        ItemType: ARMOR
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 240
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: 2
+    IronLegs:
+        ItemId: 308
+        ItemType: ARMOR
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 225
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: 2
+    IronBoots:
+        ItemId: 309
+        ItemType: ARMOR
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 195
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: 2
