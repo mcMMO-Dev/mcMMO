@@ -166,8 +166,10 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         if (Permissions.getInstance().motd(player) && Config.getInstance().getMOTDEnabled()) {
-            player.sendMessage(LocaleLoader.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
-            player.sendMessage(LocaleLoader.getString("mcMMO.Website"));
+            player.sendMessage(ChatColor.GOLD+"Server is running "+ChatColor.GREEN+plugin.getName()+" "+plugin.getDescription().getVersion());
+            player.sendMessage(ChatColor.GOLD+"http://www.mcmmo.info"+ChatColor.DARK_AQUA+" - mcMMO Website");
+            //player.sendMessage(LocaleLoader.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
+            //player.sendMessage(LocaleLoader.getString("mcMMO.Website"));
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
