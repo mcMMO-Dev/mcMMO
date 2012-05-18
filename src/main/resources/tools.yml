@@ -6,6 +6,7 @@ Axes:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -15,6 +16,7 @@ Axes:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -29,6 +31,7 @@ Bows:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -38,6 +41,7 @@ Bows:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -52,6 +56,7 @@ Hoes:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -61,6 +66,7 @@ Hoes:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -75,6 +81,7 @@ Pickaxes:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -84,6 +91,7 @@ Pickaxes:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -98,6 +106,7 @@ Shovels:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -107,6 +116,7 @@ Shovels:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -121,6 +131,7 @@ Swords:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0
@@ -130,6 +141,7 @@ Swords:
         ID: 999
         XP_Modifer: 1.0
         Ability_Enabled: true
+        Tier: 1
         Repairable: true
         Repair_Material_ID: 99
         Repair_Material_Data_Value: 0

@@ -72,6 +72,7 @@ public class CustomToolsConfig extends ModConfigLoader {
             int id = config.getInt(toolType + "." + toolName + ".ID", 0);
             double multiplier = config.getDouble(toolType + "." + toolName + ".XP_Modifier", 1.0);
             boolean abilityEnabled = config.getBoolean(toolType + "." + toolName + ".Ability_Enabled", true);
+            int tier = config.getInt(toolType + "." + toolName + ".Tier", 1);
             boolean repairable = config.getBoolean(toolType + "." + toolName + ".Repairable");
             int repairID = config.getInt(toolType + "." + toolName + ".Repair_Material_ID", 0);
             byte repairData = (byte) config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Value", 0);
@@ -92,10 +93,10 @@ public class CustomToolsConfig extends ModConfigLoader {
 
             if (repairable) {
                 ItemStack repairMaterial = new ItemStack(repairID, 1, (short) 0, repairData);
-                tool = new CustomTool(durability, repairMaterial, repairQuantity, repairable, abilityEnabled, multiplier, id);
+                tool = new CustomTool(durability, repairMaterial, repairQuantity, repairable, tier, abilityEnabled, multiplier, id);
             }
             else {
-                tool = new CustomTool(durability, null, 0, repairable, abilityEnabled, multiplier, id);
+                tool = new CustomTool(durability, null, 0, repairable, tier, abilityEnabled, multiplier, id);
             }
 
             idList.add(id);

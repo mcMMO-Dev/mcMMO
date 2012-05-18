@@ -140,11 +140,15 @@ public class Misc {
         else if (ItemChecks.isIronTool(inHand)) {
             tier = 3;
         }
-        else if(ItemChecks.isGoldTool(inHand)) {
+        else if (ItemChecks.isGoldTool(inHand)) {
             tier = 1;
         }
-        else if(ItemChecks.isDiamondTool(inHand))
+        else if (ItemChecks.isDiamondTool(inHand)) {
             tier = 4;
+        }
+        else if (ItemChecks.isCustomTool(inHand)) {
+            tier = ModChecks.getToolFromItemStack(inHand).getTier();
+        }
 
         return tier;
     }

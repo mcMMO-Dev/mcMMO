@@ -243,10 +243,10 @@ public class ItemChecks {
     }
 
     /**
-     * Checks to see if an item is a custom tool.
+     * Checks to see if an item is custom armor.
      *
      * @param is Item to check
-     * @return true if the item is a custom tool, false otherwise
+     * @return true if the item is custom armor, false otherwise
      */
     public static boolean isCustomArmor(ItemStack is) {
         if (customArmorEnabled && CustomArmorConfig.getInstance().customIDs.contains(is.getTypeId())) {

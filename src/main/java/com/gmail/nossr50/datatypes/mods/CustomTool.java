@@ -5,11 +5,13 @@ import org.bukkit.inventory.ItemStack;
 public class CustomTool extends CustomItem {
     private double xpMultiplier;
     private boolean abilityEnabled;
+    private int tier;
 
-    public CustomTool(short durability, ItemStack repairMaterial, int repairQuantity, boolean repairable, boolean abilityEnabled, double xpMultiplier, int itemID) {
+    public CustomTool(short durability, ItemStack repairMaterial, int repairQuantity, boolean repairable, int tier, boolean abilityEnabled, double xpMultiplier, int itemID) {
         super(durability, repairMaterial, repairQuantity, repairable, itemID);
         this.xpMultiplier = xpMultiplier;
         this.abilityEnabled = abilityEnabled;
+        this.tier = tier;
     }
 
     public double getXpMultiplier() {
@@ -26,5 +28,13 @@ public class CustomTool extends CustomItem {
 
     public void setAbilityEnabled(boolean abilityEnabled) {
         this.abilityEnabled = abilityEnabled;
+    }
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
     }
 }
