@@ -16,6 +16,7 @@ import com.gmail.nossr50.runnables.*;
 import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Metrics;
+import com.gmail.nossr50.util.Metrics.Graph;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.util.blockmeta.ChunkletManager;
 import com.gmail.nossr50.util.blockmeta.ChunkletManagerFactory;
@@ -138,6 +139,25 @@ public class mcMMO extends JavaPlugin {
         if (configInstance.getStatsTrackingEnabled()) {
             try {
                 Metrics metrics = new Metrics(this);
+
+                Graph graph = metrics.createGraph("Percentage of servers using timings");
+
+                if(pm.useTimings()) {
+                    graph.addPlotter(new Metrics.Plotter("Enabled") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                } else {
+                    graph.addPlotter(new Metrics.Plotter("Disabled") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+
                 metrics.start();
             }
             catch (IOException e) {
