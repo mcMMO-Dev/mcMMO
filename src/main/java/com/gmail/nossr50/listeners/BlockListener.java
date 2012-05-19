@@ -80,7 +80,7 @@ public class BlockListener implements Listener {
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         Block block = event.getRetractLocation().getBlock();
 
-        if (mcMMO.placeStore.isTrue(block)) {
+        if (mcMMO.placeStore.isTrue(block) && event.isSticky()) {
             mcMMO.placeStore.setFalse(block);
             mcMMO.placeStore.setTrue(event.getBlock().getRelative(event.getDirection()));
         }
