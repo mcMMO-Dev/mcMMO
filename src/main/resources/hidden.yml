@@ -1,0 +1,7 @@
+#
+# WARNING: THIS CONFIG IS FOR ADVANCED USERS ONLY.
+# You will need to reset any values in this config every time you update mcMMO
+###
+Options:
+    # true to use Chunklets metadata store system, false to disable
+    Chunklets: true

@@ -1,8 +1,15 @@
 package com.gmail.nossr50.util.blockmeta;
 
+import com.gmail.nossr50.config.HiddenConfig;
+
 public class ChunkletManagerFactory {
     public static ChunkletManager getChunkletManager() {
-        // TODO: Add in loading from config what type of manager we want.
-        return new HashChunkletManager();
+        HiddenConfig hConfig = HiddenConfig.getInstance();
+
+        if(hConfig.getChunkletsEnabled()) {
+            return new HashChunkletManager();
+        } else {
+            return new NullChunkletManager();
+        }
     }
 }

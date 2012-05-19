@@ -7,6 +7,7 @@ import com.gmail.nossr50.commands.mc.*;
 import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
@@ -74,6 +75,7 @@ public class mcMMO extends JavaPlugin {
         //Force the loading of config files
         Config configInstance = Config.getInstance();
         TreasuresConfig.getInstance();
+        HiddenConfig.getInstance();
 
         if (configInstance.getToolModsEnabled()) {
             CustomToolsConfig.getInstance().load();
