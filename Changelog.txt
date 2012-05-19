@@ -8,6 +8,8 @@ Key:
   - Removal
 
 Version 1.3.08
+ + Added new hidden.yml inside the jar for very sensitive config options for advanced users
+ + Added option to disable Chunklets for servers which do not have doubledrops and do not care about xp farming
  ! Changed Mining to allow Silk Touch to work again since the dupe exploit has been fixed.
 
 Version 1.3.07
