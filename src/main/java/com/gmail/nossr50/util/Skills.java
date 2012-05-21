@@ -341,13 +341,13 @@ public class Skills {
     /**
      * Handle tool durability loss from abilities.
      *
-     * @param inhand The item to damage
+     * @param inHand The item to damage
      * @param durabilityLoss The durability to remove from the item
      */
-    public static void abilityDurabilityLoss(ItemStack inhand, int durabilityLoss) {
+    public static void abilityDurabilityLoss(ItemStack inHand, int durabilityLoss) {
         if (Config.getInstance().getAbilitiesDamageTools()) {
-            if (!inhand.containsEnchantment(Enchantment.DURABILITY)) {
-                inhand.setDurability((short) (inhand.getDurability() + durabilityLoss));
+            if (!inHand.containsEnchantment(Enchantment.DURABILITY)) {
+                inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
             }
         }
     }
