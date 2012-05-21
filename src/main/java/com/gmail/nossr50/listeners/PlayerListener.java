@@ -188,15 +188,15 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         Action action = event.getAction();
         Block block = event.getClickedBlock();
-        ItemStack is = player.getItemInHand();
-        Material mat;
+        ItemStack inHand = player.getItemInHand();
+        Material material;
 
         /* Fix for NPE on interacting with air */
         if (block == null) {
-            mat = Material.AIR;
+            material = Material.AIR;
         }
         else {
-            mat = block.getType();
+            material = block.getType();
         }
 
         switch (action) {
@@ -204,18 +204,18 @@ public class PlayerListener implements Listener {
 
             /* REPAIR CHECKS */
             if (Permissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
-                if (ItemChecks.isTool(is) || ItemChecks.isArmor(is)) {
-                    Repair.repairCheck(player, is);
+                if (ItemChecks.isTool(inHand) || ItemChecks.isArmor(inHand)) {
+                    Repair.repairCheck(player, inHand);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
-                else if (ModChecks.isCustomTool(is) && ModChecks.getToolFromItemStack(is).isRepairable()) {
-                    Repair.repairCheck(player, is);
+                else if (ModChecks.isCustomTool(inHand) && ModChecks.getToolFromItemStack(inHand).isRepairable()) {
+                    Repair.repairCheck(player, inHand);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
-                else if (ModChecks.isCustomArmor(is) && ModChecks.getArmorFromItemStack(is).isRepairable()) {
-                    Repair.repairCheck(player, is);
+                else if (ModChecks.isCustomArmor(inHand) && ModChecks.getArmorFromItemStack(inHand).isRepairable()) {
+                    Repair.repairCheck(player, inHand);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
@@ -223,7 +223,7 @@ public class PlayerListener implements Listener {
 
             /* ACTIVATION CHECKS */
             if (Config.getInstance().getAbilitiesEnabled() && BlockChecks.abilityBlockCheck(block)) {
-                if (!mat.equals(Material.DIRT) && !mat.equals(Material.GRASS) && !mat.equals(Material.SOIL)) {
+                if (!material.equals(Material.DIRT) && !material.equals(Material.GRASS) && !material.equals(Material.SOIL)) {
                     Skills.activationCheck(player, SkillType.HERBALISM);
                 }
 
@@ -236,8 +236,8 @@ public class PlayerListener implements Listener {
             }
 
             /* GREEN THUMB CHECK */
-            if (Permissions.getInstance().greenThumbBlocks(player) && BlockChecks.makeMossy(block) && is.getType().equals(Material.SEEDS)) {
-                Herbalism.greenThumbBlocks(is, player, block);
+            if (inHand.getType().equals(Material.SEEDS) && BlockChecks.makeMossy(block) && Permissions.getInstance().greenThumbBlocks(player)) {
+                Herbalism.greenThumbBlocks(inHand, player, block);
             }
 
             /* ITEM CHECKS */
@@ -246,7 +246,7 @@ public class PlayerListener implements Listener {
             }
 
             /* BLAST MINING CHECK */
-            if (player.isSneaking() && Permissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
+            if (player.isSneaking() && inHand.getTypeId() == Config.getInstance().getDetonatorItemID() && Permissions.getInstance().blastMining(player)) {
                 BlastMining.detonate(event, player, plugin);
             }
 
@@ -269,7 +269,7 @@ public class PlayerListener implements Listener {
             Item.itemChecks(player);
 
             /* BLAST MINING CHECK */
-            if (player.isSneaking() && Permissions.getInstance().blastMining(player) && is.getTypeId() == Config.getInstance().getDetonatorItemID()) {
+            if (player.isSneaking() && inHand.getTypeId() == Config.getInstance().getDetonatorItemID() && Permissions.getInstance().blastMining(player)) {
                 BlastMining.detonate(event, player, plugin);
             }
 
@@ -280,10 +280,10 @@ public class PlayerListener implements Listener {
 
             /* CALL OF THE WILD CHECKS */
             if (player.isSneaking() && Permissions.getInstance().taming(player)) {
-                if (is.getType().equals(Material.RAW_FISH)) {
+                if (inHand.getType().equals(Material.RAW_FISH)) {
                     Taming.animalSummon(EntityType.OCELOT, player, plugin);
                 }
-                else if (is.getType().equals(Material.BONE)) {
+                else if (inHand.getType().equals(Material.BONE)) {
                     Taming.animalSummon(EntityType.WOLF, player, plugin);
                 }
             }
@@ -365,14 +365,15 @@ public class PlayerListener implements Listener {
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         String message = event.getMessage();
         String command = message.substring(1).split(" ")[0];
+        String lowerCaseCommand = command.toLowerCase();
 
-        if (plugin.aliasMap.containsKey(command.toLowerCase())) {
+        if (plugin.aliasMap.containsKey(lowerCaseCommand)) {
             //We should find a better way to avoid string replacement where the alias is equals to the command
-            if (command.equals(plugin.aliasMap.get(command.toLowerCase()))) {
+            if (command.equals(plugin.aliasMap.get(lowerCaseCommand))) {
                 return;
             }
 
-            event.setMessage(message.replace(command, plugin.aliasMap.get(command.toLowerCase())));
+            event.setMessage(message.replace(command, plugin.aliasMap.get(lowerCaseCommand)));
         }
     }
 }
