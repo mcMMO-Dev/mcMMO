@@ -77,7 +77,7 @@ public class Combat {
                 }
 
                 if (permInstance.swordsBleed(attacker)) {
-                    Swords.bleedCheck(attacker, target, plugin);
+                    Swords.bleedCheck(attacker, target);
                 }
 
                 if (PPa.getAbilityMode(AbilityType.SERRATED_STRIKES) && permInstance.serratedStrikes(attacker)) {
@@ -183,7 +183,8 @@ public class Combat {
                     startGainXp(master, PPo, target, SkillType.TAMING, plugin);
                 }
             }
-        } else if (damager instanceof Projectile) {
+        }
+        else if (damager instanceof Projectile) {
             if (!configInstance.getArcheryPVP() && ((Projectile) damager).getShooter().getType().equals(EntityType.PLAYER)) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     return;
@@ -201,11 +202,11 @@ public class Combat {
 
         if (target instanceof Player) {
             if (configInstance.getSwordsPVP() && damager instanceof Player) {
-                Swords.counterAttackChecks(event);
+                Swords.counterAttackChecks(damager, (Player) target, event.getDamage());
             }
 
             if (configInstance.getSwordsPVE() && !(damager instanceof Player)) {
-                Swords.counterAttackChecks(event);
+                Swords.counterAttackChecks(damager, (Player) target, event.getDamage());
             }
 
             if (configInstance.getAcrobaticsPVP() && damager instanceof Player) {

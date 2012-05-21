@@ -7,9 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -30,9 +28,8 @@ public class Swords {
      *
      * @param attacker The attacking player
      * @param entity The defending entity
-     * @param plugin mcMMO plugin instance
      */
-    public static void bleedCheck(Player attacker, LivingEntity entity, mcMMO plugin) {
+    public static void bleedCheck(Player attacker, LivingEntity entity) {
 
         if (entity instanceof Tameable) {
             Tameable pet = (Tameable) entity;
@@ -76,33 +73,26 @@ public class Swords {
      *
      * @param event The event to modify
      */
-    public static void counterAttackChecks(EntityDamageByEntityEvent event) {
-        Entity attacker = event.getDamager();
-
+    public static void counterAttackChecks(Entity attacker, Player defender, int damage) {
         if (!(attacker instanceof LivingEntity)) {
             return;
         }
 
-        Entity target = event.getEntity();
+        PlayerProfile PPd = Users.getProfile(defender);
 
-        if (target instanceof Player) {
-            Player defender = (Player) target;
-            PlayerProfile PPd = Users.getProfile(defender);
+        if (ItemChecks.isSword(defender.getItemInHand()) && Permissions.getInstance().counterAttack(defender)) {
+            final int MAX_BONUS_LEVEL = 600;
+            final int COUNTER_ATTACK_MODIFIER = 2;
 
-            if (ItemChecks.isSword(defender.getItemInHand()) && Permissions.getInstance().counterAttack(defender)) {
-                final int MAX_BONUS_LEVEL = 600;
-                final int COUNTER_ATTACK_MODIFIER = 2;
+            int skillLevel = PPd.getSkillLevel(SkillType.SWORDS);
+            int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-                int skillLevel = PPd.getSkillLevel(SkillType.SWORDS);
-                int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+            if (random.nextInt(2000) <= skillCheck) {
+                Combat.dealDamage((LivingEntity) attacker, damage / COUNTER_ATTACK_MODIFIER);
+                defender.sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
 
-                if (random.nextInt(2000) <= skillCheck) {
-                    Combat.dealDamage((LivingEntity) attacker, event.getDamage() / COUNTER_ATTACK_MODIFIER);
-                    defender.sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
-
-                    if (attacker instanceof Player) {
-                        ((Player) attacker).sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Hit"));
-                    }
+                if (attacker instanceof Player) {
+                    ((Player) attacker).sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Hit"));
                 }
             }
         }
