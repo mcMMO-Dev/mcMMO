@@ -110,7 +110,7 @@ Abilities:
         Serrated_Strikes: 240
         Tree_Feller: 240
         Super_Breaker: 240
-    Max_Ticks:
+    Max_Seconds:
         Blast_Mining: 0
         Giga_Drill_Breaker: 0
         Berserk: 0
