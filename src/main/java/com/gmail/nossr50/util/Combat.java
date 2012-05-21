@@ -148,7 +148,7 @@ public class Combat {
             else if (itemInHand.getType().equals(Material.BONE) && permInstance.beastLore(attacker)) {
                 Taming.beastLore(event, target, attacker);
             }
-        } else if (damager instanceof Tameable) {
+        } else if (damager instanceof Wolf) {
             Wolf wolf = (Wolf) damager;
 
             if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
