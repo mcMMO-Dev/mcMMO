@@ -113,6 +113,16 @@ public class Config extends ConfigLoader {
     public int getAbilityCooldownSkullSplitter() { return config.getInt("Abilities.Cooldowns.Skull_Splitter", 240); }
     public int getAbilityCooldownBlastMining() { return config.getInt("Abilities.Cooldowns.Blast_Mining", 60); }
 
+    /* Max ticks */
+    public int getAbilityMaxTicksGreenTerra() { return config.getInt("Abilities.Max_Ticks.Green_Terra", 0); }
+    public int getAbilityMaxTicksSuperBreaker() { return config.getInt("Abilities.Max_Ticks.Super_Breaker", 0); }
+    public int getAbilityMaxTicksGigaDrillBreaker() { return config.getInt("Abilities.Max_Ticks.Giga_Drill_Breaker", 0); }
+    public int getAbilityMaxTicksTreeFeller() { return config.getInt("Abilities.Max_Ticks.Tree_Feller", 0); }
+    public int getAbilityMaxTicksBerserk() { return config.getInt("Abilities.Max_Ticks.Berserk", 0); }
+    public int getAbilityMaxTicksSerratedStrikes() { return config.getInt("Abilities.Max_Ticks.Serrated_Strikes", 0); }
+    public int getAbilityMaxTicksSkullSplitter() { return config.getInt("Abilities.Max_Ticks.Skull_Splitter", 0); }
+    public int getAbilityMaxTicksBlastMining() { return config.getInt("Abilities.Max_Ticks.Blast_Mining", 0); }
+
     /* Thresholds */
     public int getTreeFellerThreshold() { return config.getInt("Abilities.Limits.Tree_Feller_Threshold", 500); }
 

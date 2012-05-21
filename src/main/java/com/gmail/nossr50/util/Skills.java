@@ -389,6 +389,9 @@ public class Skills {
             }
 
             int ticks = 2 + (PP.getSkillLevel(type) / 50);
+            if (ability.getMaxTicks() != 0 && ticks > ability.getMaxTicks()) {
+                ticks = ability.getMaxTicks();
+            }
 
             if (!PP.getAbilityMode(ability) && cooldownOver(PP.getSkillDATS(ability), ability.getCooldown())) {
                 player.sendMessage(ability.getAbilityOn());

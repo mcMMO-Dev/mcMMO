@@ -12,6 +12,7 @@ import com.gmail.nossr50.util.Permissions;
 public enum AbilityType {
     BERSERK(
             Config.getInstance().getAbilityCooldownBerserk(),
+            Config.getInstance().getAbilityMaxTicksBerserk(),
             "Unarmed.Skills.Berserk.On",
             "Unarmed.Skills.Berserk.Off",
             "Unarmed.Skills.Berserk.Other.On",
@@ -20,6 +21,7 @@ public enum AbilityType {
 
     SUPER_BREAKER(
             Config.getInstance().getAbilityCooldownSuperBreaker(),
+            Config.getInstance().getAbilityMaxTicksSuperBreaker(),
             "Mining.Skills.SuperBreaker.On",
             "Mining.Skills.SuperBreaker.Off",
             "Mining.Skills.SuperBreaker.Other.On",
@@ -28,6 +30,7 @@ public enum AbilityType {
 
     GIGA_DRILL_BREAKER(
             Config.getInstance().getAbilityCooldownGigaDrillBreaker(),
+            Config.getInstance().getAbilityMaxTicksGigaDrillBreaker(),
             "Excavation.Skills.GigaDrillBreaker.On",
             "Excavation.Skills.GigaDrillBreaker.Off",
             "Excavation.Skills.GigaDrillBreaker.Other.On",
@@ -36,6 +39,7 @@ public enum AbilityType {
 
     GREEN_TERRA(
             Config.getInstance().getAbilityCooldownGreenTerra(),
+            Config.getInstance().getAbilityMaxTicksGreenTerra(),
             "Herbalism.Skills.GTe.On",
             "Herbalism.Skills.GTe.Off",
             "Herbalism.Skills.GTe.Other.On",
@@ -44,6 +48,7 @@ public enum AbilityType {
 
     SKULL_SPLIITER(
             Config.getInstance().getAbilityCooldownSkullSplitter(),
+            Config.getInstance().getAbilityMaxTicksSkullSplitter(),
             "Axes.Skills.SS.On",
             "Axes.Skills.SS.Off",
             "Axes.Skills.SS.Other.On",
@@ -52,6 +57,7 @@ public enum AbilityType {
 
     TREE_FELLER(
             Config.getInstance().getAbilityCooldownTreeFeller(),
+            Config.getInstance().getAbilityMaxTicksTreeFeller(),
             "Woodcutting.Skills.TreeFeller.On",
             "Woodcutting.Skills.TreeFeller.Off",
             "Woodcutting.Skills.TreeFeller.Other.On",
@@ -60,6 +66,7 @@ public enum AbilityType {
 
     SERRATED_STRIKES(
             Config.getInstance().getAbilityCooldownSerratedStrikes(),
+            Config.getInstance().getAbilityMaxTicksSerratedStrikes(),
             "Swords.Skills.SS.On",
             "Swords.Skills.SS.Off",
             "Swords.Skills.SS.Other.On",
@@ -68,6 +75,7 @@ public enum AbilityType {
 
     BLAST_MINING(
             Config.getInstance().getAbilityCooldownBlastMining(),
+            Config.getInstance().getAbilityMaxTicksBlastMining(),
             null,
             null,
             "Mining.Blast.Other.On",
@@ -76,6 +84,7 @@ public enum AbilityType {
 
     LEAF_BLOWER(
             0,
+            0,
             null,
             null,
             null,
@@ -83,14 +92,16 @@ public enum AbilityType {
             null);
 
     private int cooldown;
+    private int maxTicks;
     private String abilityOn;
     private String abilityOff;
     private String abilityPlayer;
     private String abilityRefresh;
     private String abilityPlayerOff;
 
-    private AbilityType(int cooldown, String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
+    private AbilityType(int cooldown, int maxTicks, String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
         this.cooldown = cooldown;
+        this.maxTicks = maxTicks;
         this.abilityOn = abilityOn;
         this.abilityOff = abilityOff;
         this.abilityPlayer = abilityPlayer;
@@ -120,6 +131,10 @@ public enum AbilityType {
 
     public String getAbilityRefresh() {
         return LocaleLoader.getString(this.abilityRefresh);
+    }
+
+    public int getMaxTicks() {
+        return this.maxTicks;
     }
 
     /**
