@@ -268,9 +268,11 @@ public class Skills {
      */
     public static SkillType getSkillType(String skillName) {
         for (SkillType x : SkillType.values()) {
-            if (x.toString().equals(skillName.toUpperCase()))
+            if (x.toString().equals(skillName.toUpperCase())) {
                 return x;
+            }
         }
+
         return null;
     }
 
