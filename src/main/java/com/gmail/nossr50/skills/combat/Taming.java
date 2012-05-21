@@ -29,7 +29,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Taming {
-
     private static Random random = new Random();
 
     /**
@@ -37,15 +36,14 @@ public class Taming {
      *
      * @param PPo The PlayerProfile of the wolf's owner
      * @param theWolf The wolf using the ability
-     * @param event The event to modify
+     * @param damage The damage being absorbed by the wolf  
      */
-    public static void fastFoodService (PlayerProfile PPo, Wolf theWolf, EntityDamageEvent event) {
+    public static void fastFoodService (PlayerProfile PPo, Wolf theWolf, int damage) {
         final int SKILL_ACTIVATION_LEVEL = 50;
         final int ACTIVATION_CHANCE = 50;
 
         int health = theWolf.getHealth();
         int maxHealth = theWolf.getMaxHealth();
-        int damage = event.getDamage();
 
         if (PPo.getSkillLevel(SkillType.TAMING) >= SKILL_ACTIVATION_LEVEL) {
             if (health < maxHealth) {
@@ -82,9 +80,8 @@ public class Taming {
      * @param PPo The PlayerProfile of the wolf's owner
      * @param event The event to modify
      * @param master The wolf's master
-     * @param plugin mcMMO plugin instance
      */
-    public static void gore(PlayerProfile PPo, EntityDamageEvent event, Player master, mcMMO plugin) {
+    public static void gore(PlayerProfile PPo, EntityDamageEvent event, Player master) {
         final int GORE_MULTIPLIER = 2;
 
         if (random.nextInt(1000) <= PPo.getSkillLevel(SkillType.TAMING)) {
@@ -111,8 +108,7 @@ public class Taming {
         AnimalTamer tamer = beast.getOwner();
 
         if (tamer instanceof Player) {
-            Player owner = (Player) tamer;
-            return owner.getName();
+            return ((Player) tamer).getName();
         }
         else {
             return "Offline Master";
@@ -261,7 +257,7 @@ public class Taming {
                 player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete"));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + Misc.prettyItemString(summonItem.getId()));
+                player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.GRAY + Misc.prettyItemString(summonItem.getId()));
             }
         }
     }

@@ -20,19 +20,18 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Swords {
-
     private static Random random = new Random();
 
     /**
      * Check for Bleed effect.
      *
      * @param attacker The attacking player
-     * @param entity The defending entity
+     * @param defender The defending entity
      */
-    public static void bleedCheck(Player attacker, LivingEntity entity) {
+    public static void bleedCheck(Player attacker, LivingEntity defender) {
 
-        if (entity instanceof Tameable) {
-            Tameable pet = (Tameable) entity;
+        if (defender instanceof Tameable) {
+            Tameable pet = (Tameable) defender;
 
             if (pet.isTamed()) {
                 AnimalTamer tamer = pet.getOwner();
@@ -53,7 +52,7 @@ public class Swords {
         int skillLevel = PPa.getSkillLevel(SkillType.SWORDS);
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        if (random.nextInt(1000) <= skillCheck && !entity.isDead()) {
+        if (random.nextInt(1000) <= skillCheck && !defender.isDead()) {
             int bleedTicks = 0;
 
             if (skillLevel >= 750) {
@@ -63,7 +62,7 @@ public class Swords {
                 bleedTicks = 2;
             }
             
-            BleedTimer.add(entity, bleedTicks);
+            BleedTimer.add(defender, bleedTicks);
             attacker.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
         }
     }
@@ -71,7 +70,9 @@ public class Swords {
     /**
      * Counter-attack entities.
      *
-     * @param event The event to modify
+     * @param attacker The attacking entity
+     * @param defender The defending player
+     * @param damage The amount of damage being countered
      */
     public static void counterAttackChecks(Entity attacker, Player defender, int damage) {
         if (!(attacker instanceof LivingEntity)) {

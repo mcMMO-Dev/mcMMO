@@ -148,7 +148,8 @@ public class Combat {
             else if (itemInHand.getType().equals(Material.BONE) && permInstance.beastLore(attacker)) {
                 Taming.beastLore(event, target, attacker);
             }
-        } else if (damager instanceof Wolf) {
+        }
+        else if (damager instanceof Wolf) {
             Wolf wolf = (Wolf) damager;
 
             if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
@@ -167,19 +168,19 @@ public class Combat {
                     }
                 }
 
+                if (permInstance.fastFoodService(master)) {
+                    Taming.fastFoodService(PPo, wolf, event.getDamage());
+                }
+
+                if (permInstance.sharpenedClaws(master)) {
+                    Taming.sharpenedClaws(PPo, event);
+                }
+
+                if (permInstance.gore(master)) {
+                    Taming.gore(PPo, event, master);
+                }
+
                 if (permInstance.taming(master)) {
-                    if (permInstance.fastFoodService(master)) {
-                        Taming.fastFoodService(PPo, wolf, event);
-                    }
-
-                    if (permInstance.sharpenedClaws(master)) {
-                        Taming.sharpenedClaws(PPo, event);
-                    }
-
-                    if (permInstance.gore(master)) {
-                        Taming.gore(PPo, event, master, plugin);
-                    }
-
                     startGainXp(master, PPo, target, SkillType.TAMING, plugin);
                 }
             }

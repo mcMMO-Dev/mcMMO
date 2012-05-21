@@ -16,7 +16,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Unarmed {
-
     private static Random random = new Random();
 
     /**
@@ -81,7 +80,14 @@ public class Unarmed {
         }
     }
 
-    public static boolean ironGrip(Player defender, Player attacker) {
+    /**
+     * Check Iron Grip ability success
+     *
+     * @param defender The defending player
+     * @param attacker The attacking player
+     * @return true if the defender was not disarmed, false otherwise
+     */
+    private static boolean ironGrip(Player defender, Player attacker) {
         final int MAX_BONUS_LEVEL = 1000;
 
         PlayerProfile PPd = Users.getProfile(defender);
