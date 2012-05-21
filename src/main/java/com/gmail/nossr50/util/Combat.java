@@ -286,7 +286,7 @@ public class Combat {
                 }
 
                 if (permInstance.trackArrows(attacker)) {
-                    Archery.trackArrows(pluginx, target, PPa);
+                    Archery.trackArrows(target, PPa);
                 }
 
                 if (target != attacker) {

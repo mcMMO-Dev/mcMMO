@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -21,24 +20,24 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
 public class Archery {
-
-    public static Map<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
     private static Random random = new Random();
+    public static Map<Entity, Integer> arrowTracker = new HashMap<Entity, Integer>();
 
     /**
      * Track arrows fired for later retrieval.
      *
-     * @param plugin mcMMO plugin instance
      * @param entity Entity damaged by the arrow
      * @param PPa PlayerProfile of the player firing the arrow
      */
-    public static void trackArrows(mcMMO plugin, Entity entity, PlayerProfile PPa) {
+    public static void trackArrows(Entity entity, PlayerProfile PPa) {
         final int MAX_BONUS_LEVEL = 1000;
-        int skillLevel = PPa.getSkillLevel(SkillType.ARCHERY);
 
-        if (skillLevel > MAX_BONUS_LEVEL || (random.nextInt(1000) <= skillLevel)) {
+        int skillLevel = PPa.getSkillLevel(SkillType.ARCHERY);
+        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
+
+        if (random.nextInt(1000) <= skillCheck) {
             for (Entry<Entity, Integer> entry : arrowTracker.entrySet()) {
-                if (entry.getKey() == entity) {
+                if (entry.getKey() == entity) { //Shouldn't we be using .equals() here?
                     entry.setValue(entry.getValue() + 1);
                     return;
                 }
@@ -59,18 +58,18 @@ public class Archery {
         final int MAX_BONUS_LEVEL = 1000;
 
         int skillLevel = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
-        Location loc = defender.getLocation();
+        Location location = defender.getLocation();
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         if (random.nextInt(10) > 5) {
-            loc.setPitch(90);
+            location.setPitch(90);
         }
         else {
-            loc.setPitch(-90);
+            location.setPitch(-90);
         }
 
         if (random.nextInt(2000) <= skillCheck) {
-            defender.teleport(loc);
+            defender.teleport(location);
             event.setDamage(event.getDamage() + 4);
             defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
             attacker.sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
@@ -83,10 +82,10 @@ public class Archery {
      * @param entity The entity hit by the arrows
      */
     public static void arrowRetrievalCheck(Entity entity) {
-        for (Iterator<Map.Entry<Entity, Integer>> it = arrowTracker.entrySet().iterator() ; it.hasNext() ; ) {
+        for (Iterator<Map.Entry<Entity, Integer>> it = arrowTracker.entrySet().iterator() ; it.hasNext() ; ) { //This is a wee bit confusing...
             Entry<Entity, Integer> entry = it.next();
 
-            if (entry.getKey() == entity) {
+            if (entry.getKey() == entity) { //Shouldn't we be using .equals() here?
                 Misc.dropItems(entity.getLocation(), new ItemStack(Material.ARROW), entry.getValue());
                 it.remove();
                 return;

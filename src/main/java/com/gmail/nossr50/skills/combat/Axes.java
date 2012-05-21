@@ -80,8 +80,7 @@ public class Axes {
 
             if (entity instanceof Player){
                 event.setDamage((int) (damage * PVP_MODIFIER));
-                Player player = (Player) entity;
-                player.sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
+                ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
             }
             else {
                 event.setDamage(damage * PVE_MODIFIER);
