@@ -168,7 +168,10 @@ public class mcMMO extends JavaPlugin {
         // Get our ChunkletManager
         placeStore = ChunkletManagerFactory.getChunkletManager();
     }
-    
+
+    /**
+     * Setup the various storage file paths
+     */
     public void setupFilePaths() {
         mcmmo = getFile();
         mainDirectory = getDataFolder().getPath() + File.separator;
