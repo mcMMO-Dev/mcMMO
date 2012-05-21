@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -105,12 +104,15 @@ public class EntityListener implements Listener {
         }
 
         Entity entity = event.getEntity();
-        EntityType type = entity.getType();
         DamageCause cause = event.getCause();
-        
-        switch(type) {
-        case PLAYER:
 
+        if (!(entity instanceof LivingEntity)) {
+            return;
+        }
+
+        LivingEntity lEntity = (LivingEntity) entity;
+
+        if (lEntity instanceof Player) {
             /* Check for invincibility */
             Player player = (Player) entity;
             PlayerProfile PP = Users.getProfile(player);
@@ -132,18 +134,12 @@ public class EntityListener implements Listener {
                     PP.setRecentlyHurt(System.currentTimeMillis());
                 }
             }
-            break;
+        } else if (lEntity instanceof Tameable) {
+            Tameable pet = (Tameable) lEntity;
 
-        case WOLF:
-            Wolf wolf = (Wolf) entity;
-
-            if ((!Misc.isInvincible(wolf, event)) && wolf.isTamed() && (wolf.getOwner() instanceof Player)) {
+            if ((!Misc.isInvincible(lEntity, event)) && pet.isTamed() && (pet.getOwner() instanceof Player)) {
                 Taming.preventDamage(event);
             }
-            break;
-
-        default:
-            break;
         }
     }
 

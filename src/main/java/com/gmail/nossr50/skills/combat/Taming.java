@@ -132,6 +132,10 @@ public class Taming {
         final int THICK_FUR_MODIFIER = 2;
         final int SHOCK_PROOF_MODIFIER = 6;
 
+        if (!(event.getEntity() instanceof Wolf)) {
+            return;
+        }
+
         DamageCause cause = event.getCause();
         Wolf wolf = (Wolf) event.getEntity();
         Player master = (Player) wolf.getOwner();

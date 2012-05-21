@@ -6,7 +6,7 @@ import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -51,11 +51,11 @@ public class Axes {
     public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
 
-        if (entity instanceof Wolf) {
-            Wolf wolf = (Wolf) entity;
+        if (entity instanceof Tameable) {
+            Tameable pet = (Tameable) entity;
 
-            if (wolf.isTamed()) {
-                AnimalTamer tamer = wolf.getOwner();
+            if (pet.isTamed()) {
+                AnimalTamer tamer = pet.getOwner();
 
                 if (tamer instanceof Player) {
                     Player owner = (Player) tamer;

@@ -6,6 +6,7 @@ import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
@@ -34,11 +35,11 @@ public class Swords {
      */
     public static void bleedCheck(Player attacker, LivingEntity entity, mcMMO plugin) {
 
-        if (entity instanceof Wolf) {
-            Wolf wolf = (Wolf) entity;
+        if (entity instanceof Tameable) {
+            Tameable pet = (Tameable) entity;
 
-            if (wolf.isTamed()) {
-                AnimalTamer tamer = wolf.getOwner();
+            if (pet.isTamed()) {
+                AnimalTamer tamer = pet.getOwner();
 
                 if (tamer instanceof Player) {
                     Player owner = (Player) tamer;

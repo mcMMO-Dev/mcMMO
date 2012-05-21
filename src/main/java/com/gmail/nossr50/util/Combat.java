@@ -3,12 +3,13 @@ package com.gmail.nossr50.util;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -51,11 +52,11 @@ public class Combat {
 
         Entity damager = event.getDamager();
         LivingEntity target = (LivingEntity) event.getEntity();
-        EntityType damagerType = damager.getType();
-        EntityType targetType = target.getType();
 
-        switch (damagerType) {
-        case PLAYER:
+        boolean targetIsPlayer = target instanceof Player;
+        boolean targetIsTamedPet = (target instanceof Tameable) ? ((Tameable) target).isTamed() : false;
+
+        if (damager instanceof Player) {
             Player attacker = (Player) event.getDamager();
             ItemStack itemInHand = attacker.getItemInHand();
             PlayerProfile PPa = Users.getProfile(attacker);
@@ -64,13 +65,13 @@ public class Combat {
 
             if (ItemChecks.isSword(itemInHand) && permInstance.swords(attacker)) {
                 if (!configInstance.getSwordsPVP()) {
-                    if (targetType.equals(EntityType.PLAYER) || (targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+                    if (targetIsPlayer || targetIsTamedPet) {
                         return;
                     }
                 }
 
                 if (!configInstance.getSwordsPVE()) {
-                    if (!targetType.equals(EntityType.PLAYER) || !(targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+                    if (!targetIsPlayer || !targetIsTamedPet) {
                         return;
                     }
                 }
@@ -88,13 +89,13 @@ public class Combat {
             }
             else if (ItemChecks.isAxe(itemInHand) && permInstance.axes(attacker)) {
                 if (!configInstance.getAxesPVP()) {
-                    if (targetType.equals(EntityType.PLAYER) || (targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+                    if (targetIsPlayer || targetIsTamedPet) {
                         return;
                     }
                 }
 
                 if (!configInstance.getAxesPVE()) {
-                    if (!targetType.equals(EntityType.PLAYER) || !(targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+                    if (!targetIsPlayer || !targetIsTamedPet) {
                         return;
                     }
                 }
@@ -119,13 +120,13 @@ public class Combat {
             }
             else if (itemInHand.getType().equals(Material.AIR) && permInstance.unarmed(attacker)) {
                 if (!configInstance.getUnarmedPVP()) {
-                    if (targetType.equals(EntityType.PLAYER) || (targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+                    if (targetIsPlayer || targetIsTamedPet) {
                         return;
                     }
                 }
 
                 if (!configInstance.getUnarmedPVE()) {
-                    if (!targetType.equals(EntityType.PLAYER) || !(targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+                    if (!targetIsPlayer || !targetIsTamedPet) {
                         return;
                     }
                 }
@@ -138,7 +139,7 @@ public class Combat {
                     event.setDamage((int) (event.getDamage() * 1.5));
                 }
 
-                if (targetType.equals(EntityType.PLAYER) && permInstance.disarm(attacker)) {
+                if (targetIsPlayer && permInstance.disarm(attacker)) {
                     Unarmed.disarmProcCheck(attacker, (Player) target);
                 }
 
@@ -147,9 +148,7 @@ public class Combat {
             else if (itemInHand.getType().equals(Material.BONE) && permInstance.beastLore(attacker)) {
                 Taming.beastLore(event, target, attacker);
             }
-            break;
-
-        case WOLF:
+        } else if (damager instanceof Tameable) {
             Wolf wolf = (Wolf) damager;
 
             if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
@@ -157,13 +156,13 @@ public class Combat {
                 PlayerProfile PPo = Users.getProfile(master);
 
                 if (!configInstance.getTamingPVP()) {
-                    if (targetType.equals(EntityType.PLAYER) || (targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+                    if (targetIsPlayer || targetIsTamedPet) {
                         return;
                     }
                 }
 
                 if (!configInstance.getTamingPVE()) {
-                    if (!targetType.equals(EntityType.PLAYER) || !(targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+                    if (!targetIsPlayer || !targetIsTamedPet) {
                         return;
                     }
                 }
@@ -184,39 +183,36 @@ public class Combat {
                     startGainXp(master, PPo, target, SkillType.TAMING, plugin);
                 }
             }
-            break;
-
-        case ARROW:
-            if (!configInstance.getArcheryPVP() && ((Arrow) damager).getShooter().getType().equals(EntityType.PLAYER)) {
-                if (targetType.equals(EntityType.PLAYER) || (targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+        } else if (damager instanceof Projectile) {
+            if (!configInstance.getArcheryPVP() && ((Projectile) damager).getShooter().getType().equals(EntityType.PLAYER)) {
+                if (targetIsPlayer || targetIsTamedPet) {
                     return;
                 }
             }
 
-            if (!configInstance.getArcheryPVE() && !((Arrow) damager).getShooter().getType().equals(EntityType.PLAYER)) {
-                if (!targetType.equals(EntityType.PLAYER) || !(targetType.equals(EntityType.WOLF) && ((Wolf) target).isTamed())) {
+            if (!configInstance.getArcheryPVE() && !((Projectile) damager).getShooter().getType().equals(EntityType.PLAYER)) {
+                if (!targetIsPlayer || !targetIsTamedPet) {
                     return;
                 }
             }
 
             archeryCheck(event, plugin);
-            break;
         }
 
-        if (targetType.equals(EntityType.PLAYER)) {
-            if (configInstance.getSwordsPVP() && damagerType.equals(EntityType.PLAYER)) {
+        if (target instanceof Player) {
+            if (configInstance.getSwordsPVP() && damager instanceof Player) {
                 Swords.counterAttackChecks(event);
             }
 
-            if (configInstance.getSwordsPVE() && !damagerType.equals(EntityType.PLAYER)) {
+            if (configInstance.getSwordsPVE() && !(damager instanceof Player)) {
                 Swords.counterAttackChecks(event);
             }
 
-            if (configInstance.getAcrobaticsPVP() && damagerType.equals(EntityType.PLAYER)) {
+            if (configInstance.getAcrobaticsPVP() && damager instanceof Player) {
                 Acrobatics.dodgeChecks(event);
             }
 
-            if (configInstance.getAcrobaticsPVE() && !damagerType.equals(EntityType.PLAYER)) {
+            if (configInstance.getAcrobaticsPVE() && !(damager instanceof Player)) {
                 Acrobatics.dodgeChecks(event);
             }
         }
@@ -248,7 +244,7 @@ public class Combat {
      * @param pluginx mcMMO plugin instance
      */
     public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx) {
-        Arrow arrow = (Arrow) event.getDamager();
+        Projectile arrow = (Projectile) event.getDamager();
         LivingEntity shooter = arrow.getShooter();
         LivingEntity target = (LivingEntity) event.getEntity();
 
@@ -388,19 +384,7 @@ public class Combat {
                 break;
             }
 
-            switch (entity.getType()) {
-            case WOLF:
-                AnimalTamer tamer = ((Wolf) entity).getOwner();
-
-                if (tamer instanceof Player) {
-                    if (tamer.equals(attacker) || Party.getInstance().inSameParty(attacker, (Player) tamer)) {
-                        continue;
-                    }
-                }
-
-                break;
-
-            case PLAYER:
+            if (entity instanceof Player) {
                 Player defender = (Player) entity;
 
                 if (!target.getWorld().getPVP()) {
@@ -420,11 +404,14 @@ public class Combat {
                 if (playerProfile.getGodMode()) {
                     continue;
                 }
+            } else if (entity instanceof Tameable) {
+                AnimalTamer tamer = ((Tameable) entity).getOwner();
 
-                break;
-
-            default:
-                break;
+                if (tamer instanceof Player) {
+                    if (tamer.equals(attacker) || Party.getInstance().inSameParty(attacker, (Player) tamer)) {
+                        continue;
+                    }
+                }
             }
 
             switch (type) {
