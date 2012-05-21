@@ -94,7 +94,7 @@ public class Misc {
             return false;
         }
     }
-
+    
     /**
      * Simulate a block break event.
      *
@@ -266,8 +266,10 @@ public class Misc {
     }
 
     public static int getPowerLevelCap() {
-        if (Config.getInstance().getPowerLevelCap() > 0) {
-            return Config.getInstance().getPowerLevelCap();
+        int levelCap = Config.getInstance().getPowerLevelCap();
+
+        if (levelCap > 0) {
+            return levelCap;
         }
         else {
             return Integer.MAX_VALUE;
