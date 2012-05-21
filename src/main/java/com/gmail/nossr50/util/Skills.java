@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util;
 
+import java.util.Random;
+
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -24,6 +26,8 @@ public class Skills {
 
     private final static int TIME_CONVERSION_FACTOR = 1000;
     private final static double MAX_DISTANCE_AWAY = 10.0;
+
+    private final static Random random = new Random();
 
     /**
      * Checks to see if the cooldown for an item or ability is expired.
@@ -346,9 +350,13 @@ public class Skills {
      */
     public static void abilityDurabilityLoss(ItemStack inHand, int durabilityLoss) {
         if (Config.getInstance().getAbilitiesDamageTools()) {
-            if (!inHand.containsEnchantment(Enchantment.DURABILITY)) {
-                inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
+            if (inHand.containsEnchantment(Enchantment.DURABILITY)) {
+                int level = inHand.getEnchantmentLevel(Enchantment.DURABILITY);
+                if (random.nextInt(level + 1) > 0) {
+                    return;
+                }
             }
+            inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
         }
     }
 
