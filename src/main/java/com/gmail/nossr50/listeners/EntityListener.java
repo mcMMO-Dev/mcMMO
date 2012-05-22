@@ -123,7 +123,7 @@ public class EntityListener implements Listener {
             }
 
             if (!Misc.isInvincible(player, event)) {
-                if (cause == DamageCause.FALL && Permissions.getInstance().acrobatics(player) && !player.isInsideVehicle()) {
+                if (cause == DamageCause.FALL && Permissions.getInstance().acrobatics(player) && !player.isInsideVehicle() && !player.getItemInHand().getType().equals(Material.ENDER_PEARL)) {
                     Acrobatics.acrobaticsCheck(player, event);
                 }
                 else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.getInstance().demolitionsExpertise(player)) {

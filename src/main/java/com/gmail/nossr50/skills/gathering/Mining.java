@@ -19,13 +19,11 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 
 public class Mining {
-
     private static Random random = new Random();
 
     /**
@@ -88,7 +86,7 @@ public class Mining {
             break;
 
         default:
-            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customMiningBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            if (ModChecks.isCustomMiningBlock(block)) {
                 Misc.dropItem(loc, item);
             }
             break;
@@ -197,7 +195,7 @@ public class Mining {
             break;
 
         default:
-            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customMiningBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            if (ModChecks.isCustomMiningBlock(block)) {
                 item = ModChecks.getCustomBlock(block).getItemDrop();
                 Misc.dropItem(loc, item);
             }
@@ -271,7 +269,7 @@ public class Mining {
             break;
 
         default:
-            if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customMiningBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            if (ModChecks.isCustomMiningBlock(block)) {
                 xp += ModChecks.getCustomBlock(block).getXpGain();
             }
             break;
@@ -295,10 +293,10 @@ public class Mining {
         miningXP(player, block);
 
         final int MAX_BONUS_LEVEL = 1000;
-
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
+        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().miningDoubleDrops(player)) {
+        if (random.nextInt(1000) <= skillCheck && Permissions.getInstance().miningDoubleDrops(player)) {
             if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
                 silkTouchDrops(block);
             }
@@ -320,7 +318,7 @@ public class Mining {
         int durabilityLoss = Config.getInstance().getAbilityToolDamage();
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 
-        if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customItems.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+        if (ModChecks.isCustomMiningBlock(block)) {
             if (ModChecks.getCustomBlock(block).getTier() < tier) {
                 return;
             }

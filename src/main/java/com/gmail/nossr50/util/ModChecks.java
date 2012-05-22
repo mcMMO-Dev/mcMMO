@@ -15,6 +15,7 @@ public class ModChecks {
     private static Config configInstance = Config.getInstance();
     private static boolean customToolsEnabled = configInstance.getToolModsEnabled();
     private static boolean customArmorEnabled = configInstance.getArmorModsEnabled();
+    private static boolean customBlocksEnabled = configInstance.getBlockModsEnabled();
 
     private static CustomToolsConfig toolInstance = CustomToolsConfig.getInstance();
     private static CustomArmorConfig armorInstance = CustomArmorConfig.getInstance();
@@ -58,6 +59,21 @@ public class ModChecks {
         }
 
         return null;
+    }
+
+    /**
+     * Check if a custom block is a custom block.
+     *
+     * @param block The block to check
+     * @return true if the block is custom, false otherwise
+     */
+    public static boolean isCustomMiningBlock(Block block) {
+        if (customBlocksEnabled && blocksInstance.customMiningBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**

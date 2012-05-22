@@ -16,7 +16,6 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Acrobatics {
-
     private static Random random = new Random();
 
     /**
