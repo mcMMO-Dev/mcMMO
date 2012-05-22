@@ -21,7 +21,6 @@ public class HardcoreListener implements Listener {
                     Hardcore.invokeVampirism(((Player)player.getKiller()), player);
                 }
             }
-            
             Hardcore.invokeStatPenalty(player);
         }
     }
