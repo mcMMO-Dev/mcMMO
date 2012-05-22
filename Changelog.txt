@@ -8,6 +8,8 @@ Key:
   - Removal
 
 Version 1.3.08
+ + Added more notifications about Vampirism and Hardcore mode on player death
+ + Added informative information about Hardcore mode when joining a server running Hardcore mode
  + Added new hidden.yml inside the jar for very sensitive config options for advanced users
  + Added option to disable Chunklets for servers which do not have doubledrops and do not care about xp farming
  + Added new "Max_Seconds" setting in config.yml to limit the max time of abilities
@@ -21,7 +23,6 @@ Version 1.3.08
  ! Changed Hardcore & Vampirism to not be executed if percentages were set to zero or below
  ! Changed Vampirism to actually remove stats from the victim
  ! Changed Vampirism to inform the victim of their stat loss
- ! Added more notifications about Vampirism and Hardcore mode
  ! Changed Mining to allow Silk Touch to work again since the dupe exploit has been fixed.
  ! Changed Metrics to also report if the server uses plugin profiling
  - Removed level and item settings from Repair skill in config.yml
