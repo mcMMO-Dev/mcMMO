@@ -439,3 +439,27 @@ Repairables:
         MinimumLevel: 0
         MinimumQuantity: 4
         XpMultiplier: 1
+    #
+    # String repairables
+    ###
+    # Tools
+    FishingRod:
+        ItemId: 346
+        ItemType: TOOL
+        MaterialType: STRING
+        RepairMaterialId: 287
+        RepairMaterialMetadata: -1
+        MaximumDurability: 64
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: .5
+    Bow:
+        ItemId: 261
+        ItemType: TOOL
+        MaterialType: STRING
+        RepairMaterialId: 287
+        RepairMaterialMetadata: -1
+        MaximumDurability: 384
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: .5
