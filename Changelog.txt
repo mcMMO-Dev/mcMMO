@@ -18,6 +18,7 @@ Version 1.3.08
  = Fixed exploit where you could gain tons of Acrobatics XP from spamming Ender Pearls
  = Fixed normal pistons marking a block as user-placed on retract if it wasn't a sticky piston (thanks turt2live!)
  = Fixed handling of the Unbreaking enchantment so that tools are actually damaged as they should now
+ = Fixed hurting pet cats with serrated strikes
  ! Changed Hardcore Vampirism to require the victim to have at least half the skill level of the killer in order for vampirism to proc (this is to avoid exploitation)
  ! Changed Hardcore Vampirism to steal a minimum of 1 skill level from a player no matter the percentage
  ! Changed Hardcore & Vampirism to not be executed if percentages were set to zero or below
