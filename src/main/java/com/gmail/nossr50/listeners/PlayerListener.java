@@ -214,18 +214,8 @@ public class PlayerListener implements Listener {
 
             /* REPAIR CHECKS */
             if (Permissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
-                if (ItemChecks.isTool(inHand) || ItemChecks.isArmor(inHand)) {
-                    Repair.repairCheck(player, inHand);
-                    event.setCancelled(true);
-                    player.updateInventory();
-                }
-                else if (ModChecks.isCustomTool(inHand) && ModChecks.getToolFromItemStack(inHand).isRepairable()) {
-                    Repair.repairCheck(player, inHand);
-                    event.setCancelled(true);
-                    player.updateInventory();
-                }
-                else if (ModChecks.isCustomArmor(inHand) && ModChecks.getArmorFromItemStack(inHand).isRepairable()) {
-                    Repair.repairCheck(player, inHand);
+                if (mcMMO.repairManager.isRepairable(inHand)) {
+                    mcMMO.repairManager.handleRepair(player, inHand);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
