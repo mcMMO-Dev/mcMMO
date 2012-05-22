@@ -153,22 +153,10 @@ public class Repair {
      * @param modify Amount to modify the durability by
      * @param boost True if the modifier is a boost, false if the modifier is a reduction
      */
-    private static void xpHandler(Player player, PlayerProfile PP, ItemStack is, short durabilityBefore, double modify) {
-        short durabilityAfter = is.getDurability();
+    protected static void xpHandler(Player player, PlayerProfile PP, short durabilityBefore, short durabilityAfter, double modify) {
         short dif = (short) (durabilityBefore - durabilityAfter);
 
         dif = (short) (dif * modify);
-
-        //TODO: What exactly is this for, and should we have it for armor as well?
-        if (ItemChecks.isShovel(is)) {
-            dif = (short) (dif / 3);
-        }
-        else if(ItemChecks.isSword(is)) {
-            dif = (short) (dif / 2);
-        }
-        else if(ItemChecks.isHoe(is)) {
-            dif = (short) (dif / 2);
-        }
 
         PP.addXP(player, SkillType.REPAIR, dif * 10);
         Skills.XpCheckSkill(SkillType.REPAIR, player);
