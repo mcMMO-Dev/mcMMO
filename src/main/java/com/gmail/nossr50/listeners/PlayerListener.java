@@ -166,8 +166,19 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.getInstance().motd(player)) {
-            player.sendMessage(ChatColor.GOLD + "Server is running " + ChatColor.GREEN + plugin.getName() + " " + plugin.getDescription().getVersion()); //TODO: Locale
-            player.sendMessage(ChatColor.GOLD + "http://www.mcmmo.info" + ChatColor.DARK_AQUA + " - mcMMO Website & Forums"); //TODO: Locale
+            player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.YELLOW+"Running version " + ChatColor.DARK_AQUA + plugin.getDescription().getVersion()); //TODO: Locale
+            
+            if(Config.getInstance().getHardcoreEnabled()) {
+                if(Config.getInstance().getHardcoreVampirismEnabled()) {
+                    player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_RED+"Hardcore & Vampirism enabled.");
+                    player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_AQUA+"Skill Death Penalty: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreDeathStatPenaltyPercentage()+"% "+ChatColor.DARK_AQUA+"Vampirism Stat Leech: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreVampirismStatLeechPercentage()+"%");
+                } else {
+                    player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_RED+"Hardcore enabled.");
+                    player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_AQUA+"Skill Death Penalty: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreDeathStatPenaltyPercentage()+"%");
+                }
+            }
+            
+            player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.GREEN+ "http://www.mcmmo.info" + ChatColor.YELLOW + " - mcMMO Website & Forums"); //TODO: Locale
             //player.sendMessage(LocaleLoader.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
             //player.sendMessage(LocaleLoader.getString("mcMMO.Website"));
         }
@@ -177,15 +188,7 @@ public class PlayerListener implements Listener {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", new Object[] {Config.getInstance().xpGainMultiplier}));
         }
         
-        if(Config.getInstance().getHardcoreEnabled()) {
-            if(Config.getInstance().getHardcoreVampirismEnabled()) {
-                player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_RED+"Hardcore & Vampirism enabled.");
-                player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_AQUA+"Skill Death Penalty: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreDeathStatPenaltyPercentage()+"% "+ChatColor.DARK_AQUA+"Vampirism Stat Leech: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreVampirismStatLeechPercentage()+"%");
-            } else {
-                player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_RED+"Hardcore enabled.");
-                player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_AQUA+"Skill Death Penalty: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreDeathStatPenaltyPercentage()+"%");
-            }
-        }
+        
     }
 
     /**
