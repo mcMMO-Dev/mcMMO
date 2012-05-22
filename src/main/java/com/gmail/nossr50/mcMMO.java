@@ -8,11 +8,15 @@ import com.gmail.nossr50.commands.party.*;
 import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.RepairConfigManager;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomToolsConfig;
 import com.gmail.nossr50.runnables.*;
+import com.gmail.nossr50.skills.repair.RepairManager;
+import com.gmail.nossr50.skills.repair.RepairManagerFactory;
+import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Metrics;
@@ -33,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -59,6 +64,7 @@ public class mcMMO extends JavaPlugin {
     public static mcMMO p;
 
     public static ChunkletManager placeStore;
+    public static RepairManager repairManager;
 
     /* Jar Stuff */
     public File mcmmo;
@@ -77,6 +83,12 @@ public class mcMMO extends JavaPlugin {
         Config configInstance = Config.getInstance();
         TreasuresConfig.getInstance();
         HiddenConfig.getInstance();
+
+        //Load repair configs and register them
+        RepairConfigManager rManager = new RepairConfigManager(this);
+        List<Repairable> repairables = rManager.getLoadedRepairables();
+        repairManager = RepairManagerFactory.getRepairManager(repairables.size());
+        repairManager.registerRepairables(repairables);
 
         if (configInstance.getToolModsEnabled()) {
             CustomToolsConfig.getInstance().load();
