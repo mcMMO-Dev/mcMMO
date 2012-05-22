@@ -249,19 +249,6 @@ public class Config extends ConfigLoader {
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
     public int getRepairAnvilId() { return config.getInt("Skills.Repair.Anvil_ID", 42); }
 
-    public int getRepairGoldMaterial() { return config.getInt("Skills.Repair.Gold.ID", 266); }
-    public int getRepairStoneMaterial() { return config.getInt("Skills.Repair.Stone.ID", 4); }
-    public int getRepairWoodMaterial() { return config.getInt("Skills.Repair.Wood.ID", 5); }
-    public int getRepairDiamondMaterial() { return config.getInt("Skills.Repair.Diamond.ID", 264); }
-    public int getRepairIronMaterial() { return config.getInt("Skills.Repair.Iron.ID", 265); }
-    public int getRepairStringMaterial() { return config.getInt("Skills.Repair.String.ID", 287); }
-    public int getRepairLeatherMaterial() { return config.getInt("Skills.Repair.Leather.ID", 334); }
-
-    public int getRepairDiamondLevelRequirement() { return config.getInt("Skills.Repair.Diamond.Level_Required", 50); }
-    public int getRepairIronLevelRequirement() { return config.getInt("Skills.Repair.Iron.Level_Required", 0); }
-    public int getRepairGoldLevelRequirement() { return config.getInt("Skills.Repair.Gold.Level_Required", 0); }
-    public int getRepairStoneLevelRequirement() { return config.getInt("Skills.Repair.Stone.Level_Required", 0); }
-
     /* Taming */
     public int getTamingXPWolf() { return config.getInt("Experience.Taming.Animal_Taming.Wolf", 250); }
     public int getTamingXPOcelot() { return config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500); }
