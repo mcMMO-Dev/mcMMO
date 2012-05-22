@@ -164,17 +164,19 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-
+        
         if (Config.getInstance().getMOTDEnabled() && Permissions.getInstance().motd(player)) {
-            player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.YELLOW+"Running version " + ChatColor.DARK_AQUA + plugin.getDescription().getVersion()); //TODO: Locale
+            String prefix = ChatColor.GOLD+"[mcMMO] ";
+            
+            player.sendMessage(prefix+ChatColor.YELLOW+"Running version " + ChatColor.DARK_AQUA + plugin.getDescription().getVersion()); //TODO: Locale
             
             if(Config.getInstance().getHardcoreEnabled()) {
                 if(Config.getInstance().getHardcoreVampirismEnabled()) {
-                    player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_RED+"Hardcore & Vampirism enabled.");
-                    player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_AQUA+"Skill Death Penalty: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreDeathStatPenaltyPercentage()+"% "+ChatColor.DARK_AQUA+"Vampirism Stat Leech: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreVampirismStatLeechPercentage()+"%");
+                    player.sendMessage(prefix+ChatColor.DARK_RED+"Hardcore & Vampirism enabled.");
+                    player.sendMessage(prefix+ChatColor.DARK_AQUA+"Skill Death Penalty: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreDeathStatPenaltyPercentage()+"% "+ChatColor.DARK_AQUA+"Vampirism Stat Leech: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreVampirismStatLeechPercentage()+"%");
                 } else {
-                    player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_RED+"Hardcore enabled.");
-                    player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.DARK_AQUA+"Skill Death Penalty: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreDeathStatPenaltyPercentage()+"%");
+                    player.sendMessage(prefix+ChatColor.DARK_RED+"Hardcore enabled.");
+                    player.sendMessage(prefix+ChatColor.DARK_AQUA+"Skill Death Penalty: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreDeathStatPenaltyPercentage()+"%");
                 }
             }
             
