@@ -29,6 +29,14 @@ public interface RepairManager {
     public boolean isRepairable(int itemId);
 
     /**
+     * Checks if an item is repairable
+     *
+     * @param itemStack Item to check if repairable
+     * @return true if repairable, false if not
+     */
+    public boolean isRepairable(ItemStack itemStack);
+
+    /**
      * Handle the repairing of this object
      *
      * @param player Player that is repairing an item

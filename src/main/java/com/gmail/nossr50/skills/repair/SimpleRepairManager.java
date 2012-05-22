@@ -36,6 +36,11 @@ public class SimpleRepairManager implements RepairManager {
     }
 
     @Override
+    public boolean isRepairable(ItemStack itemStack) {
+        return isRepairable(itemStack.getTypeId());
+    }
+
+    @Override
     public void handleRepair(Player player, ItemStack item) {
         // TODO Auto-generated method stub
     }
