@@ -57,7 +57,7 @@ Repairables:
         MinimumQuantity: 2
         XpMultiplier: .25
     WoodShovel:
-        ItemId: 260
+        ItemId: 269
         ItemType: TOOL
         MaterialType: WOOD
         RepairMaterialId: 5
