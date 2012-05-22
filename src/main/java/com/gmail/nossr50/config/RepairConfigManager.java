@@ -12,6 +12,8 @@ public class RepairConfigManager {
     private List<Repairable> repairables;
 
     public RepairConfigManager(mcMMO plugin) {
+        repairables = new ArrayList<Repairable>();
+
         Pattern pattern = Pattern.compile("repair\\.(?:.+)\\.yml");
         File dataFolder = plugin.getDataFolder();
 
