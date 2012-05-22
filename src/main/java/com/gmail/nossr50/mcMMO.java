@@ -36,6 +36,7 @@ import net.shatteredlands.shatt.backup.ZipLibrary;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,23 +85,27 @@ public class mcMMO extends JavaPlugin {
         TreasuresConfig.getInstance();
         HiddenConfig.getInstance();
 
-        //Load repair configs and register them
-        RepairConfigManager rManager = new RepairConfigManager(this);
-        List<Repairable> repairables = rManager.getLoadedRepairables();
-        repairManager = RepairManagerFactory.getRepairManager(repairables.size());
-        repairManager.registerRepairables(repairables);
+        List<Repairable> repairables = new ArrayList<Repairable>();
 
         if (configInstance.getToolModsEnabled()) {
             CustomToolsConfig.getInstance().load();
+            repairables.addAll(CustomToolsConfig.getInstance().getLoadedRepairables());
         }
 
         if (configInstance.getArmorModsEnabled()) {
             CustomArmorConfig.getInstance().load();
+            repairables.addAll(CustomArmorConfig.getInstance().getLoadedRepairables());
         }
 
         if (configInstance.getBlockModsEnabled()) {
             CustomBlocksConfig.getInstance().load();
         }
+
+        //Load repair configs, make manager, and register them at this time
+        RepairConfigManager rManager = new RepairConfigManager(this);
+        repairables.addAll(rManager.getLoadedRepairables());
+        repairManager = RepairManagerFactory.getRepairManager(repairables.size());
+        repairManager.registerRepairables(repairables);
 
         if (!configInstance.getUseMySQL()) {
             Users.loadUsers();

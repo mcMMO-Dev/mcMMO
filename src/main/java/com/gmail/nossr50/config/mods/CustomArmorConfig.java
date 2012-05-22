@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomItem;
+import com.gmail.nossr50.skills.repair.Repairable;
 
 public class CustomArmorConfig extends ModConfigLoader{
     private static CustomArmorConfig instance;
@@ -22,6 +23,8 @@ public class CustomArmorConfig extends ModConfigLoader{
 
         return instance;
     }
+
+    private List<Repairable> repairables;
 
     public List<Integer> customBootIDs = new ArrayList<Integer>();
     public List<Integer> customChestplateIDs = new ArrayList<Integer>();
@@ -51,6 +54,7 @@ public class CustomArmorConfig extends ModConfigLoader{
     @Override
     protected void loadKeys() {
         plugin.getLogger().info("Loading mcMMO armor.yml File...");
+        repairables = new ArrayList<Repairable>();
 
         loadArmor("Boots", customBootIDs);
         loadArmor("Chestplates", customChestplateIDs);
@@ -98,5 +102,10 @@ public class CustomArmorConfig extends ModConfigLoader{
             customArmorList.add(armor);
             customArmor.put(id, armor);
         }
+    }
+
+    public List<Repairable> getLoadedRepairables() {
+        if(repairables == null) return new ArrayList<Repairable>();
+        return repairables;
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
+import com.gmail.nossr50.skills.repair.Repairable;
 
 public class CustomToolsConfig extends ModConfigLoader {
     private static CustomToolsConfig instance;
@@ -22,6 +23,8 @@ public class CustomToolsConfig extends ModConfigLoader {
 
         return instance;
     }
+
+    private List<Repairable> repairables;
 
     public List<Integer> customAxeIDs = new ArrayList<Integer>();
     public List<Integer> customBowIDs = new ArrayList<Integer>();
@@ -53,6 +56,7 @@ public class CustomToolsConfig extends ModConfigLoader {
     @Override
     protected void loadKeys() {
         plugin.getLogger().info("Loading mcMMO tools.yml File...");
+        repairables = new ArrayList<Repairable>();
 
         loadTool("Axes", customAxeIDs);
         loadTool("Bows", customBowIDs);
@@ -105,5 +109,10 @@ public class CustomToolsConfig extends ModConfigLoader {
             customToolList.add(tool);
             customTools.put(id, tool);
         }
+    }
+
+    public List<Repairable> getLoadedRepairables() {
+        if(repairables == null) return new ArrayList<Repairable>();
+        return repairables;
     }
 }
