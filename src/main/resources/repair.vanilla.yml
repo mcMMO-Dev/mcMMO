@@ -395,3 +395,47 @@ Repairables:
         MinimumLevel: 50
         MinimumQuantity: 4
         XpMultiplier: 6
+    #
+    # Leather repairables
+    ###
+    # Armor
+    LeatherHelmet:
+        ItemId: 298
+        ItemType: ARMOR
+        MaterialType: LEATHER
+        RepairMaterialId: 334
+        RepairMaterialMetadata: -1
+        MaximumDurability: 55
+        MinimumLevel: 0
+        MinimumQuantity: 5
+        XpMultiplier: 1
+    LeatherChest:
+        ItemId: 299
+        ItemType: ARMOR
+        MaterialType: LEATHER
+        RepairMaterialId: 334
+        RepairMaterialMetadata: -1
+        MaximumDurability: 80
+        MinimumLevel: 0
+        MinimumQuantity: 8
+        XpMultiplier: 1
+    LeatherLegs:
+        ItemId: 300
+        ItemType: ARMOR
+        MaterialType: LEATHER
+        RepairMaterialId: 334
+        RepairMaterialMetadata: -1
+        MaximumDurability: 75
+        MinimumLevel: 0
+        MinimumQuantity: 7
+        XpMultiplier: 1
+    LeatherBoots:
+        ItemId: 301
+        ItemType: ARMOR
+        MaterialType: LEATHER
+        RepairMaterialId: 334
+        RepairMaterialMetadata: -1
+        MaximumDurability: 65
+        MinimumLevel: 0
+        MinimumQuantity: 4
+        XpMultiplier: 1
