@@ -25,6 +25,8 @@ public class RepairConfigManager {
         for(String location : dataFolder.list()) {
             if(!pattern.matcher(location).matches()) continue;
 
+            plugin.getLogger().info("Loading " + location + " repair config file...");
+
             File file = new File(dataFolder, location);
             if(file.isDirectory()) continue;
 
