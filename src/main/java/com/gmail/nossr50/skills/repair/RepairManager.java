@@ -37,6 +37,14 @@ public interface RepairManager {
     public boolean isRepairable(ItemStack itemStack);
 
     /**
+     * Gets the repairable with this id
+     *
+     * @param id Id of the repairable to look for
+     * @return the repairable, can be null
+     */
+    public Repairable getRepairable(int id);
+
+    /**
      * Handle the repairing of this object
      *
      * @param player Player that is repairing an item

@@ -53,6 +53,11 @@ public class SimpleRepairManager implements RepairManager {
     }
 
     @Override
+    public Repairable getRepairable(int id) {
+        return repairables.get(id);
+    }
+
+    @Override
     public void handleRepair(Player player, ItemStack item) {
         // Load some variables for use
         PlayerProfile PP = Users.getProfile(player);
