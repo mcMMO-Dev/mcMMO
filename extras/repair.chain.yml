@@ -1,0 +1,73 @@
+#
+# Any file named repair.*.yml in the mcmmmo folder will be loaded as a repair config
+# All repair configs have a main section titled "Repairables"
+# Afterwards, all sub-items are considered a Repairable to be loaded
+# The bare minimum of a Repairable is that it have an ItemId, a RepairMaterialId, and a MaximumDurability
+#
+# ItemId: This is the id of the item to be repairable.
+## This is required to be set.
+#
+# ItemType: This is the type of item to be repaired, this is only important to permissions.
+## Valid values are ARMOR, TOOL, and OTHER.
+## This defaults to OTHER.
+#
+# MaterialType: This is the type of the material of the item to be repaired, this is only important for permissions.
+## Valid values are STRING, LEATHER, WOOD, STONE, IRON, GOLD, DIAMOND, and OTHER
+## This defaults to OTHER.
+#
+# RepairMaterialId: This is the id of the item used to repair this repairable.
+## This is required to be set.
+#
+# RepairMaterialMetadata: This is the metadata of the item used to repair this repairable.
+## A value of -1 means to ignore all metadata when repairing.
+## This defaults to -1
+#
+# MaximumDurability: This is the maximum durability of the item.
+## This is required to be set.
+#
+# MinimumLevel: This is the minimum repair level needed to repair this item.
+## Valid values are > 0
+## This defaults to 0
+#
+# MinimumQuantity: This is the minimum number of items needed to repair this item ignoring all other repair bonuses.
+## This is typically the number of the repair material needed to create a new item, for example for a sword it is 2, for an axe it is 3
+## This defaults to 2
+#
+# XpMultiplier: This is the amount to multiply the xp bonus by.
+## This defaults to 1
+#
+#
+# The following is an example of a repair.*.yml config which adds the ability to repair Chainmail armor using fire.
+#
+#
+###
+Repairables:
+    ChainHelmet:
+        ItemId: 302
+        ItemType: ARMOR
+        RepairMaterialId: 51
+        MaximumDurability: 165
+        MinimumQuantity: 5
+        XpMultiplier: 2
+    ChainChest:
+        ItemId: 303
+        ItemType: ARMOR
+        RepairMaterialId: 51
+        MaximumDurability: 240
+        MinimumQuantity: 8
+        XpMultiplier: 2
+    ChainLegs:
+        ItemId: 304
+        ItemType: ARMOR
+        RepairMaterialId: 51
+        MaximumDurability: 225
+        MinimumQuantity: 7
+        XpMultiplier: 2
+    ChainBoots:
+        ItemId: 305
+        ItemType: ARMOR
+        RepairMaterialId: 51
+        RepairMaterialMetadata: -1
+        MaximumDurability: 195
+        MinimumQuantity: 4
+        XpMultiplier: 2
