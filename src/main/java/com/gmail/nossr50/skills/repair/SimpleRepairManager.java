@@ -140,6 +140,9 @@ public class SimpleRepairManager implements RepairManager {
         // Remove the item
         removeOneFrom(inventory, repairItemLocation);
 
+        // Give out XP like candy
+        Repair.xpHandler(player, PP, startDurability, newDurability, repairable.getXpMultiplier());
+
         // Repair the item!
         item.setDurability(newDurability);
     }
