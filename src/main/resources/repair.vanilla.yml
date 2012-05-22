@@ -300,3 +300,98 @@ Repairables:
         MinimumLevel: 0
         MinimumQuantity: 4
         XpMultiplier: 4
+    #
+    # Diamond repairables
+    ###
+    # Tools
+    DiamondSword:
+        ItemId: 276
+        ItemType: TOOL
+        MaterialType: DIAMOND
+        RepairMaterialId: 264
+        RepairMaterialMetadata: -1
+        MaximumDurability: 1561
+        MinimumLevel: 50
+        MinimumQuantity: 2
+        XpMultiplier: .5
+    DiamondShovel:
+        ItemId: 277
+        ItemType: TOOL
+        MaterialType: DIAMOND
+        RepairMaterialId: 264
+        RepairMaterialMetadata: -1
+        MaximumDurability: 1561
+        MinimumLevel: 50
+        MinimumQuantity: 1
+        XpMultiplier: .3
+    DiamondPickaxe:
+        ItemId: 278
+        ItemType: TOOL
+        MaterialType: DIAMOND
+        RepairMaterialId: 264
+        RepairMaterialMetadata: -1
+        MaximumDurability: 1561
+        MinimumLevel: 50
+        MinimumQuantity: 3
+        XpMultiplier: 1
+    DiamondAxe:
+        ItemId: 279
+        ItemType: TOOL
+        MaterialType: DIAMOND
+        RepairMaterialId: 264
+        RepairMaterialMetadata: -1
+        MaximumDurability: 1561
+        MinimumLevel: 50
+        MinimumQuantity: 3
+        XpMultiplier: 1
+    DiamondHoe:
+        ItemId: 293
+        ItemType: TOOL
+        MaterialType: DIAMOND
+        RepairMaterialId: 264
+        RepairMaterialMetadata: -1
+        MaximumDurability: 1561
+        MinimumLevel: 50
+        MinimumQuantity: 2
+        XpMultiplier: .5
+    # Armor
+    DiamondHelmet:
+        ItemId: 310
+        ItemType: ARMOR
+        MaterialType: DIAMOND
+        RepairMaterialId: 264
+        RepairMaterialMetadata: -1
+        MaximumDurability: 363
+        MinimumLevel: 50
+        MinimumQuantity: 5
+        XpMultiplier: 6
+    DiamondChest:
+        ItemId: 311
+        ItemType: ARMOR
+        MaterialType: DIAMOND
+        RepairMaterialId: 264
+        RepairMaterialMetadata: -1
+        MaximumDurability: 528
+        MinimumLevel: 50
+        MinimumQuantity: 8
+        XpMultiplier: 6
+    DiamondLegs:
+        ItemId: 312
+        ItemType: ARMOR
+        MaterialType: DIAMOND
+        RepairMaterialId: 264
+        RepairMaterialMetadata: -1
+        MaximumDurability: 495
+        MinimumLevel: 50
+        MinimumQuantity: 7
+        XpMultiplier: 6
+    DiamondBoots:
+        ItemId: 313
+        ItemType: ARMOR
+        MaterialType: DIAMOND
+        RepairMaterialId: 264
+        RepairMaterialMetadata: -1
+        MaximumDurability: 429
+        MinimumLevel: 50
+        MinimumQuantity: 4
+        XpMultiplier: 6
