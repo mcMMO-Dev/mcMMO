@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
@@ -98,13 +97,10 @@ public class CustomToolsConfig extends ModConfigLoader {
             CustomTool tool;
 
             if (repairable) {
-                ItemStack repairMaterial = new ItemStack(repairID, 1, (short) 0, repairData);
                 repairables.add(RepairableFactory.getRepairable(id, repairID, repairData, repairQuantity, durability));
-                tool = new CustomTool(durability, repairMaterial, repairQuantity, repairable, tier, abilityEnabled, multiplier, id);
             }
-            else {
-                tool = new CustomTool(durability, null, 0, repairable, tier, abilityEnabled, multiplier, id);
-            }
+
+            tool = new CustomTool(tier, abilityEnabled, multiplier, id);
 
             idList.add(id);
             customIDs.add(id);

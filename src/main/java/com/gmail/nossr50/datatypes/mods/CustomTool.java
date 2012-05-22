@@ -1,14 +1,12 @@
 package com.gmail.nossr50.datatypes.mods;
 
-import org.bukkit.inventory.ItemStack;
-
 public class CustomTool extends CustomItem {
     private double xpMultiplier;
     private boolean abilityEnabled;
     private int tier;
 
-    public CustomTool(short durability, ItemStack repairMaterial, int repairQuantity, boolean repairable, int tier, boolean abilityEnabled, double xpMultiplier, int itemID) {
-        super(durability, repairMaterial, repairQuantity, repairable, itemID);
+    public CustomTool(int tier, boolean abilityEnabled, double xpMultiplier, int itemID) {
+        super(itemID);
         this.xpMultiplier = xpMultiplier;
         this.abilityEnabled = abilityEnabled;
         this.tier = tier;

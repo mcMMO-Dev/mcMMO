@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomItem;
@@ -91,13 +90,10 @@ public class CustomArmorConfig extends ModConfigLoader{
             CustomItem armor;
 
             if (repairable) {
-                ItemStack repairMaterial = new ItemStack(repairID, 1, (short) 0, repairData);
                 repairables.add(RepairableFactory.getRepairable(id, repairID, repairData, repairQuantity, durability));
-                armor = new CustomItem(durability, repairMaterial, repairQuantity, repairable, id);
             }
-            else {
-                armor = new CustomItem(durability, null, 0, repairable, id);
-            }
+
+            armor = new CustomItem(id);
 
             idList.add(id);
             customIDs.add(id);
