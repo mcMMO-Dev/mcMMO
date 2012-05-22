@@ -7,12 +7,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.util.Page;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -128,12 +130,17 @@ public class RepairCommand implements CommandExecutor {
 
     private void dataCalculations(float skillValue) {
         DecimalFormat percent = new DecimalFormat("##0.00%");
-        Config configInstance = Config.getInstance();
 
-        diamondLevel = configInstance.getRepairDiamondLevelRequirement();
-        goldLevel = configInstance.getRepairGoldLevelRequirement();
-        ironLevel = configInstance.getRepairIronLevelRequirement();
-        stoneLevel = configInstance.getRepairStoneLevelRequirement();
+        // We're using pickaxes here, not the best but works
+        Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
+        Repairable goldRepairable = mcMMO.repairManager.getRepairable(285);
+        Repairable ironRepairable = mcMMO.repairManager.getRepairable(257);
+        Repairable stoneRepairable = mcMMO.repairManager.getRepairable(274);
+
+        diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
+        goldLevel = (goldRepairable == null) ? 0 : goldRepairable.getMinimumLevel();
+        ironLevel = (ironRepairable == null) ? 0 : ironRepairable.getMinimumLevel();
+        stoneLevel = (stoneRepairable == null) ? 0 : stoneRepairable.getMinimumLevel();
 
         repairMasteryBonus = percent.format(skillValue / 500);
 
