@@ -12,7 +12,7 @@ import com.gmail.nossr50.skills.gathering.Excavation;
 import com.gmail.nossr50.skills.gathering.Herbalism;
 import com.gmail.nossr50.skills.gathering.Mining;
 import com.gmail.nossr50.skills.gathering.WoodCutting;
-import com.gmail.nossr50.skills.misc.Repair;
+import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ItemChecks;

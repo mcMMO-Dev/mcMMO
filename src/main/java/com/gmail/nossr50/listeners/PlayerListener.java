@@ -41,7 +41,7 @@ import com.gmail.nossr50.skills.combat.Taming;
 import com.gmail.nossr50.skills.gathering.BlastMining;
 import com.gmail.nossr50.skills.gathering.Fishing;
 import com.gmail.nossr50.skills.gathering.Herbalism;
-import com.gmail.nossr50.skills.misc.Repair;
+import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Item;
 import com.gmail.nossr50.util.ItemChecks;
