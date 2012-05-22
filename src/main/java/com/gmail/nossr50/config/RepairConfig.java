@@ -56,7 +56,7 @@ public class RepairConfig extends ConfigLoader {
 
             int repairMetadata = config.getInt("Repairables." + key + ".RepairMaterialMetadata", -1);
             int minimumLevel = config.getInt("Repairables." + key + ".MinimumLevel", 0);
-            int minimumQuantity = config.getInt("Repairables." + key + ".MinimumQuantity", 0);
+            int minimumQuantity = config.getInt("Repairables." + key + ".MinimumQuantity", 2);
             double xpMultiplier = config.getDouble("Repairables." + key + ".XpMultiplier", 1);
 
             RepairItemType repairItemType = RepairItemType.OTHER;
