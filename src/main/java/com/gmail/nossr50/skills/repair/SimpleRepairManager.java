@@ -117,6 +117,7 @@ public class SimpleRepairManager implements RepairManager {
         // This should never happen, but if it does we need to complain loudly about it.
         if(repairItemLocation == -1) {
             player.sendMessage("mcMMO encountered an error attempting to repair this item!");  // TODO: Locale ?
+            return;
         }
 
         // Call event
