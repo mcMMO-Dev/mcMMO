@@ -164,6 +164,16 @@ Repairables:
         MinimumLevel: 0
         MinimumQuantity: 2
         XpMultiplier: .5
+    Shears:
+        ItemId: 359
+        ItemType: TOOL
+        MaterialType: IRON
+        RepairMaterialId: 265
+        RepairMaterialMetadata: -1
+        MaximumDurability: 238
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: 1
     # Armor
     IronHelmet:
         ItemId: 306
