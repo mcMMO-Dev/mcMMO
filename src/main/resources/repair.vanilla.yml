@@ -173,7 +173,7 @@ Repairables:
         RepairMaterialMetadata: -1
         MaximumDurability: 165
         MinimumLevel: 0
-        MinimumQuantity: 1
+        MinimumQuantity: 5
         XpMultiplier: 2
     IronChest:
         ItemId: 307
@@ -183,7 +183,7 @@ Repairables:
         RepairMaterialMetadata: -1
         MaximumDurability: 240
         MinimumLevel: 0
-        MinimumQuantity: 3
+        MinimumQuantity: 8
         XpMultiplier: 2
     IronLegs:
         ItemId: 308
@@ -193,7 +193,7 @@ Repairables:
         RepairMaterialMetadata: -1
         MaximumDurability: 225
         MinimumLevel: 0
-        MinimumQuantity: 3
+        MinimumQuantity: 7
         XpMultiplier: 2
     IronBoots:
         ItemId: 309
@@ -203,5 +203,100 @@ Repairables:
         RepairMaterialMetadata: -1
         MaximumDurability: 195
         MinimumLevel: 0
-        MinimumQuantity: 2
+        MinimumQuantity: 4
         XpMultiplier: 2
+    #
+    # Gold repairables
+    ###
+    # Tools
+    GoldSword:
+        ItemId: 283
+        ItemType: TOOL
+        MaterialType: GOLD
+        RepairMaterialId: 266
+        RepairMaterialMetadata: -1
+        MaximumDurability: 32
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: 4
+    GoldShovel:
+        ItemId: 284
+        ItemType: TOOL
+        MaterialType: GOLD
+        RepairMaterialId: 266
+        RepairMaterialMetadata: -1
+        MaximumDurability: 32
+        MinimumLevel: 0
+        MinimumQuantity: 1
+        XpMultiplier: 2.6
+    GoldPickaxe:
+        ItemId: 285
+        ItemType: TOOL
+        MaterialType: GOLD
+        RepairMaterialId: 266
+        RepairMaterialMetadata: -1
+        MaximumDurability: 32
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: 8
+    GoldAxe:
+        ItemId: 286
+        ItemType: TOOL
+        MaterialType: GOLD
+        RepairMaterialId: 266
+        RepairMaterialMetadata: -1
+        MaximumDurability: 32
+        MinimumLevel: 0
+        MinimumQuantity: 3
+        XpMultiplier: 8
+    GoldHoe:
+        ItemId: 294
+        ItemType: TOOL
+        MaterialType: GOLD
+        RepairMaterialId: 266
+        RepairMaterialMetadata: -1
+        MaximumDurability: 32
+        MinimumLevel: 0
+        MinimumQuantity: 2
+        XpMultiplier: 4
+    # Armor
+    GoldHelmet:
+        ItemId: 314
+        ItemType: ARMOR
+        MaterialType: GOLD
+        RepairMaterialId: 266
+        RepairMaterialMetadata: -1
+        MaximumDurability: 77
+        MinimumLevel: 0
+        MinimumQuantity: 5
+        XpMultiplier: 4
+    GoldChest:
+        ItemId: 315
+        ItemType: ARMOR
+        MaterialType: GOLD
+        RepairMaterialId: 266
+        RepairMaterialMetadata: -1
+        MaximumDurability: 112
+        MinimumLevel: 0
+        MinimumQuantity: 8
+        XpMultiplier: 4
+    GoldLegs:
+        ItemId: 316
+        ItemType: ARMOR
+        MaterialType: GOLD
+        RepairMaterialId: 266
+        RepairMaterialMetadata: -1
+        MaximumDurability: 105
+        MinimumLevel: 0
+        MinimumQuantity: 7
+        XpMultiplier: 4
+    GoldBoots:
+        ItemId: 317
+        ItemType: ARMOR
+        MaterialType: GOLD
+        RepairMaterialId: 266
+        RepairMaterialMetadata: -1
+        MaximumDurability: 91
+        MinimumLevel: 0
+        MinimumQuantity: 4
+        XpMultiplier: 4
