@@ -4,30 +4,21 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.spout.SpoutSounds;
-import com.gmail.nossr50.util.ItemChecks;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.datatypes.mods.CustomItem;
-import com.gmail.nossr50.datatypes.mods.CustomTool;
-import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class Repair {
@@ -35,113 +26,6 @@ public class Repair {
     private static Random random = new Random();
     private static Config configInstance = Config.getInstance();
     private static Permissions permInstance = Permissions.getInstance();
-
-    /**
-     * Handle all the item repair checks.
-     *
-     * @param player Player repairing the item
-     * @param is The item being repaired
-     */
-    public static void repairCheck(Player player, ItemStack is) {
-        PlayerProfile PP = Users.getProfile(player);
-        short durabilityBefore = is.getDurability();
-        PlayerInventory inventory = player.getInventory();
-        int skillLevel = PP.getSkillLevel(SkillType.REPAIR);
-
-        if (durabilityBefore > 0 && is.getAmount() == 1) {
-
-            /*
-             * REPAIR ARMOR
-             */
-            if (ItemChecks.isArmor(is) && permInstance.armorRepair(player)) {
-                if (ItemChecks.isDiamondArmor(is) && inventory.contains(configInstance.getRepairDiamondMaterial()) && skillLevel >= configInstance.getRepairDiamondLevelRequirement() && permInstance.diamondRepair(player)) {
-                    repairItem(player, is, new ItemStack(configInstance.getRepairDiamondMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 6);
-                }
-                else if (ItemChecks.isIronArmor(is) && inventory.contains(configInstance.getRepairIronMaterial()) && skillLevel >= configInstance.getRepairIronLevelRequirement() && permInstance.ironRepair(player)) {
-                    repairItem(player, is, new ItemStack(configInstance.getRepairIronMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 2);
-                }
-                else if (ItemChecks.isGoldArmor(is) && inventory.contains(configInstance.getRepairGoldMaterial()) && skillLevel >= configInstance.getRepairGoldLevelRequirement() && permInstance.goldRepair(player)) {
-                    repairItem(player, is, new ItemStack(configInstance.getRepairGoldMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 4);
-                }
-                else if (ItemChecks.isLeatherArmor(is) && inventory.contains(configInstance.getRepairLeatherMaterial()) && permInstance.leatherRepair(player)) {
-                    repairItem(player, is, new ItemStack(configInstance.getRepairLeatherMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 1);
-                }
-                else {
-                    needMoreVespeneGas(is, player); //UNABLE TO REPAIR
-                }
-            }
-
-            /*
-             * REPAIR TOOLS
-             */
-            else if (ItemChecks.isTool(is) && permInstance.toolRepair(player)) {
-                if (ItemChecks.isStoneTool(is) && inventory.contains(configInstance.getRepairStoneMaterial()) && skillLevel >= configInstance.getRepairStoneLevelRequirement() && permInstance.stoneRepair(player)) {
-                    repairItem(player, is, new ItemStack(configInstance.getRepairStoneMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, .5);
-                }
-                else if (ItemChecks.isWoodTool(is) && inventory.contains(configInstance.getRepairWoodMaterial()) && permInstance.woodRepair(player)) {
-                    repairItem(player, is, new ItemStack(configInstance.getRepairWoodMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, .5);
-                }
-                else if (ItemChecks.isIronTool(is) && inventory.contains(configInstance.getRepairIronMaterial()) && skillLevel >= configInstance.getRepairIronLevelRequirement() && permInstance.ironRepair(player)) {
-                    repairItem(player, is, new ItemStack(configInstance.getRepairIronMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 1);
-                }
-                else if (ItemChecks.isDiamondTool(is) && inventory.contains(configInstance.getRepairDiamondMaterial()) && skillLevel >= configInstance.getRepairDiamondLevelRequirement() && permInstance.diamondRepair(player)) {
-                    repairItem(player, is, new ItemStack(configInstance.getRepairDiamondMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 1);
-                }
-                else if (ItemChecks.isGoldTool(is) && inventory.contains(configInstance.getRepairGoldMaterial()) && skillLevel >= configInstance.getRepairGoldLevelRequirement() && permInstance.goldRepair(player)) {
-                    repairItem(player, is, new ItemStack(configInstance.getRepairGoldMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, 8);
-                }
-                else if (ItemChecks.isStringTool(is) && inventory.contains(configInstance.getRepairStringMaterial()) && permInstance.stringRepair(player)){
-                    repairItem(player, is, new ItemStack(configInstance.getRepairStringMaterial()));
-                    xpHandler(player, PP, is, durabilityBefore, .5);
-                }
-                else {
-                    needMoreVespeneGas(is, player); //UNABLE TO REPAIR
-                }
-            }
-
-            /*
-             * REPAIR CUSTOM TOOLS
-             */
-            else if (ModChecks.isCustomTool(is) && permInstance.toolRepair(player)) {
-                ItemStack repairMaterial = ModChecks.getToolFromItemStack(is).getRepairMaterial();
-
-                if (inventory.contains(repairMaterial)) {
-                    repairCustomItem(player, is, repairMaterial);
-                    xpHandler(player, PP, is, durabilityBefore, 1);
-                }
-                else {
-                    needMoreVespeneGas(is, player);
-                }
-            }
-
-            /*
-             * REPAIR CUSTOM ARMOR
-             */
-            else if (ModChecks.isCustomArmor(is) && permInstance.armorRepair(player)) {
-                ItemStack repairMaterial = ModChecks.getArmorFromItemStack(is).getRepairMaterial();
-
-                if (inventory.contains(repairMaterial)) {
-                    repairCustomItem(player, is, repairMaterial);
-                    xpHandler(player, PP, is, durabilityBefore, 1);
-                }
-                else {
-                    needMoreVespeneGas(is, player);
-                }
-            }
-        }
-        else {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.FullDurability"));
-        }
-    }
 
     /**
      * Handle the XP gain for repair events.
@@ -303,19 +187,6 @@ public class Repair {
      * Computes repair bonuses.
      *
      * @param player The player repairing an item
-     * @param durability The durability of the item being repaired
-     * @param repairAmount The base amount of durability repaired to the item
-     * @return The final amount of durability repaired to the item
-     */
-    private static short repairCalculate(Player player, short durability, int repairAmount) {
-        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
-        return repairCalculate(player, skillLevel, durability, repairAmount);
-    }
-
-    /**
-     * Computes repair bonuses.
-     *
-     * @param player The player repairing an item
      * @param skillLevel the skillLevel of the player in Repair
      * @param durability The durability of the item being repaired
      * @param repairAmount The base amount of durability repaired to the item
@@ -343,131 +214,6 @@ public class Repair {
     }
 
     /**
-     * Gets the base durability amount to repair an item.
-     *
-     * @param is The item being repaired
-     * @param player The player repairing the item
-     * @return The final amount of durability repaired to the item
-     */
-    private static short getRepairAmount(ItemStack is, Player player){
-        short maxDurability = is.getType().getMaxDurability();
-        int repairAmount = 0;
-
-        if (ItemChecks.isShovel(is)) {
-            repairAmount = maxDurability;
-        }
-        else if (ItemChecks.isHoe(is) || ItemChecks.isSword(is) || is.getType().equals(Material.SHEARS) || is.getType().equals(Material.FISHING_ROD)) {
-            repairAmount = maxDurability / 2;
-        }
-        else if (ItemChecks.isAxe(is) || ItemChecks.isPickaxe(is) || is.getType().equals(Material.BOW)) {
-            repairAmount = maxDurability / 3;
-        }
-        else if (ItemChecks.isBoots(is)) {
-            repairAmount = maxDurability / 4;
-        }
-        else if (ItemChecks.isHelmet(is)) {
-            repairAmount = maxDurability / 5;
-        }
-        else if (ItemChecks.isPants(is)) {
-            repairAmount = maxDurability / 7;
-        }
-        else if (ItemChecks.isChestplate(is)) {
-            repairAmount = maxDurability / 8;
-        }
-
-        return repairCalculate(player, is.getDurability(), repairAmount);
-    }
-
-    /**
-     * Gets the base durability amount to repair a custom item.
-     *
-     * @param is The custom item being repaired
-     * @param player The player repairing the custom item
-     * @return The final amount of durability repaired to the custom item
-     */
-    private static short getCustomRepairAmount(ItemStack is, Player player) {
-        short maxDurability = 0;
-        int materialsRequired = 0;
-        int repairAmount = 0;
-
-        CustomTool tool = ModChecks.getToolFromItemStack(is);
-        CustomItem armor = ModChecks.getArmorFromItemStack(is);
-
-        if (tool != null) {
-            maxDurability = tool.getDurability();
-            materialsRequired = tool.getRepairQuantity();
-        }
-        else if (armor != null) {
-            maxDurability = armor.getDurability();
-            materialsRequired = armor.getRepairQuantity();
-        }
-
-        repairAmount = maxDurability / materialsRequired;
-
-        return repairCalculate(player, is.getDurability(), repairAmount);
-    }
-
-    /**
-     * Informs a player that the repair has failed.
-     *
-     * @param is The item being repaired
-     * @param player The player repairing the item
-     */
-    private static void needMoreVespeneGas(ItemStack is, Player player) {
-        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
-
-        if (is.getAmount() != 1) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.StackedItems"));
-        }
-        else {
-            if (ItemChecks.isDiamondTool(is) || ItemChecks.isDiamondArmor(is)) {
-                if (skillLevel < configInstance.getRepairDiamondLevelRequirement()) {
-                    player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptDiamond"));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.BLUE + Misc.prettyItemString(configInstance.getRepairDiamondMaterial()));
-                }
-            }
-            else if (ItemChecks.isIronTool(is) || ItemChecks.isIronArmor(is)) {
-                if (skillLevel < configInstance.getRepairIronLevelRequirement()) {
-                    player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptIron"));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + Misc.prettyItemString(configInstance.getRepairIronMaterial()));
-                }
-            }
-            else if (ItemChecks.isGoldTool(is) || ItemChecks.isGoldArmor(is)) {
-                if (skillLevel < configInstance.getRepairGoldLevelRequirement()) {
-                    player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptGold"));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.GOLD + Misc.prettyItemString(configInstance.getRepairGoldMaterial()));
-                }
-            }
-            else if (ItemChecks.isStoneTool(is)) {
-                if (skillLevel < configInstance.getRepairStoneLevelRequirement()) {
-                    player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptStone"));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.GRAY + Misc.prettyItemString(configInstance.getRepairStoneMaterial()));
-                }
-            }
-            else if (ItemChecks.isWoodTool(is)) {
-                player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.DARK_GREEN + Misc.prettyItemString(configInstance.getRepairWoodMaterial()));
-            }
-            else if (ItemChecks.isLeatherArmor(is)) {
-                player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + Misc.prettyItemString(configInstance.getRepairLeatherMaterial()));
-            }
-            else if (ItemChecks.isStringTool(is)) {
-                player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + Misc.prettyItemString(configInstance.getRepairStringMaterial()));
-            }
-            else {
-                player.sendMessage("You do not have the material needed to repair this item!"); //TODO: Use locale
-            }
-        }
-    }
-
-    /**
      * Checks for Super Repair bonus.
      *
      * @param player The player repairing an item
@@ -484,68 +230,6 @@ public class Repair {
         }
 
         return false;
-    }
-
-    /**
-     * Repairs an item.
-     *
-     * @param player The player repairing an item
-     * @param item The item being repaired
-     * @param repairMaterial The repair reagent
-     */
-    private static void repairItem(Player player, ItemStack item, ItemStack repairMaterial) {
-        short initialDurability = item.getDurability();
-        short newDurability = getRepairAmount(item, player);
-        PlayerInventory inventory = player.getInventory();
-
-        McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, (short) (initialDurability - newDurability), repairMaterial, item);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return;
-        }
-
-        if (repairMaterial.getType().equals(Material.WOOD)) {
-            removeWood(inventory);
-        }
-        else {
-            inventory.removeItem(repairMaterial);
-        }
-
-        /* Handle the enchants */
-        if (configInstance.getArcaneForgingEnchantLossEnabled() && !permInstance.arcaneBypass(player)) {
-            addEnchants(player, item);
-        }
-
-        item.setDurability(newDurability);
-    }
-
-    /**
-     * Repairs a custom item.
-     *
-     * @param player The player repairing an item
-     * @param item The custom item being repaired
-     * @param repairMaterial The repair reagent
-     */
-    private static void repairCustomItem(Player player, ItemStack item, ItemStack repairMaterial) {
-        short initialDurability = item.getDurability();
-        short newDurability = getCustomRepairAmount(item, player);
-        PlayerInventory inventory = player.getInventory();
-
-        McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, (short) (initialDurability - newDurability), repairMaterial, item);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return;
-        }
-
-        inventory.removeItem(repairMaterial);
-
-        if (configInstance.getArcaneForgingEnchantLossEnabled() && !permInstance.arcaneBypass(player)) {
-            addEnchants(player, item);
-        }
-
-        item.setDurability(newDurability);
     }
 
     /**
@@ -571,18 +255,5 @@ public class Repair {
 
             PP.togglePlacedAnvil();
         }
-    }
-
-    /**
-     * Removes wood from a player's inventory on repair. Needed due to wood having multiple possible data values.
-     *
-     * @param inventory The inventory to remove wood from
-     */
-    private static void removeWood(PlayerInventory inventory) {
-        //TODO: Make this less hackish once there's a better way to do it...
-        int slot = inventory.first(Material.WOOD);
-        ItemStack item = inventory.getItem(slot);
-        item.setAmount(item.getAmount() - 1);
-        inventory.setItem(slot, item);
     }
 }
