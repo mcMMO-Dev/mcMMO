@@ -106,7 +106,7 @@ public class SimpleRepairManager implements RepairManager {
 
         // We're going to hold onto our repair item location
         int repairItemLocation;
-        if(repairable.getRepairMaterialMetadata() != (byte) -1) {
+        if(repairable.getRepairMaterialMetadata() == (byte) -1) {
             repairItemLocation = findInInventory(inventory, repairable.getRepairMaterialId());
         } else {
             // Special case for when the repairable has metadata that must be addressed
