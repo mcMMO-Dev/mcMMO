@@ -16,8 +16,8 @@ public class RepairConfigManager {
 
         Pattern pattern = Pattern.compile("repair\\.(?:.+)\\.yml");
         File dataFolder = plugin.getDataFolder();
-
         File vanilla = new File(dataFolder, "repair.vanilla.yml");
+
         if (!vanilla.exists()) {
             plugin.saveResource("repair.vanilla.yml", false);
         }

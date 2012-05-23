@@ -18,11 +18,11 @@ public class SpoutConfig extends ConfigLoader {
 
     public SpoutConfig(mcMMO plugin) {
         super(plugin, "spout.yml");
-        config = plugin.getSpoutConfig();
     }
 
     public boolean spoutEnabled;
     public boolean getShowPowerLevel() { return config.getBoolean("HUD.Show_Power_Level", true); }
+    public String getMenuKey() { return config.getString("Menu.Key", "KEY_M"); }
 
     /* XP Bar */
     public boolean getXPBarEnabled() { return config.getBoolean("XP.Bar.Enabled", true); }
@@ -76,17 +76,6 @@ public class SpoutConfig extends ConfigLoader {
     public double getRetroHUDFishingRed() { return config.getDouble("HUD.Retro.Colors.Fishing.RED", 0.3); }
     public double getRetroHUDFishingGreen() { return config.getDouble("HUD.Retro.Colors.Fishing.GREEN", 0.3); }
     public double getRetroHUDFishingBlue() { return config.getDouble("HUD.Retro.Colors.Fishing.BLUE", 0.75); }
-
-    @Override
-    public void load() {
-        if (!configFile.exists()) {
-            dataFolder.mkdir();
-            plugin.saveSpoutConfig();
-        }
-
-        addDefaults();
-        loadKeys();
-    }
 
     @Override
     protected void loadKeys() {

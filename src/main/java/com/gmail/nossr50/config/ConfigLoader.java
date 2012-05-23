@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.mcMMO;
 
@@ -18,12 +19,21 @@ public abstract class ConfigLoader {
         this.plugin = plugin;
         dataFolder = plugin.getDataFolder();
         configFile = new File(dataFolder, File.separator + fileName);
+        config = YamlConfiguration.loadConfiguration(this.configFile);
     }
 
     /**
      * Load this config file.
      */
-    protected abstract void load();
+    public void load() {
+        if (!configFile.exists()) {
+            dataFolder.mkdir();
+            saveConfig();
+        }
+
+        addDefaults();
+        loadKeys();
+    }
 
     /**
      * Save this config file.
@@ -32,8 +42,8 @@ public abstract class ConfigLoader {
         try {
             config.save(configFile);
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (IOException ex) {
+            plugin.getLogger().severe("Could not save config to " + configFile + ex);
         }
     }
 
@@ -41,7 +51,6 @@ public abstract class ConfigLoader {
      * Add the defaults to this config file.
      */
     protected void addDefaults() {
-        // Load from included config.yml
         config.options().copyDefaults(true);
         saveConfig();
     }

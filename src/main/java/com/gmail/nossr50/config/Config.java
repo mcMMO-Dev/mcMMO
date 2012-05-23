@@ -385,7 +385,7 @@ public class Config extends ConfigLoader {
     }
 
     @Override
-    protected void load() {
+    public void load() {
         if (!configFile.exists()) {
             dataFolder.mkdir();
             plugin.saveDefaultConfig();

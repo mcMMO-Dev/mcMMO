@@ -27,8 +27,10 @@ public class HiddenConfig extends ConfigLoader {
     }
 
     @Override
-    protected void load() {
-        if(plugin.isInJar(fileName)) loadKeys();
+    public void load() {
+        if (plugin.getResource(fileName) != null) {
+            loadKeys();
+        }
     }
 
     @Override

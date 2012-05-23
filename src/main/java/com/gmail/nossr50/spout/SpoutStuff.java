@@ -21,6 +21,7 @@ import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.popups.PopupMMO;
@@ -134,7 +135,7 @@ public class SpoutStuff {
      * Setup Spout config options
      */
     public static void setupSpoutConfigs() {
-        String temp = plugin.getSpoutConfig().getString("Menu.Key", "KEY_M");
+        String temp = SpoutConfig.getInstance().getMenuKey();
 
         for (Keyboard x : Keyboard.values()) {
             if (x.toString().equalsIgnoreCase(temp)) {

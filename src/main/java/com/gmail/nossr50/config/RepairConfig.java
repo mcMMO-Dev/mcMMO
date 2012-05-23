@@ -22,7 +22,7 @@ public class RepairConfig extends ConfigLoader {
     }
 
     @Override
-    protected void load() {
+    public void load() {
         loadKeys();
     }
 
@@ -32,6 +32,7 @@ public class RepairConfig extends ConfigLoader {
 
         ConfigurationSection section = config.getConfigurationSection("Repairables");
         Set<String> keys = section.getKeys(false);
+
         for (String key : keys) {
             // Validate all the things!
             List<String> reason = new ArrayList<String>();

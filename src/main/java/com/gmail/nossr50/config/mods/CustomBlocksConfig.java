@@ -36,18 +36,6 @@ public class CustomBlocksConfig extends ModConfigLoader{
 
     public CustomBlocksConfig(mcMMO plugin) {
         super(plugin, "blocks.yml");
-        config = plugin.getBlocksConfig();
-    }
-
-    @Override
-    public void load() {
-        if (!configFile.exists()) {
-            dataFolder.mkdir();
-            plugin.saveBlocksConfig();
-        }
-
-        addDefaults();
-        loadKeys();
     }
 
     @Override

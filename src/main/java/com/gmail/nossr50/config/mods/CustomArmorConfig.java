@@ -37,18 +37,6 @@ public class CustomArmorConfig extends ModConfigLoader{
 
     public CustomArmorConfig(mcMMO plugin) {
         super(plugin, "armor.yml");
-        config = plugin.getArmorConfig();
-    }
-
-    @Override
-    public void load() {
-        if (!configFile.exists()) {
-            dataFolder.mkdir();
-            plugin.saveArmorConfig();
-        }
-
-        addDefaults();
-        loadKeys();
     }
 
     @Override

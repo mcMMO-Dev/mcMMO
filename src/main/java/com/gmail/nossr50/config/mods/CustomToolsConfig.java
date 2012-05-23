@@ -39,18 +39,6 @@ public class CustomToolsConfig extends ModConfigLoader {
 
     private CustomToolsConfig(mcMMO plugin) {
         super(plugin, "tools.yml");
-        config = plugin.getToolsConfig();
-    }
-
-    @Override
-    public void load() {
-        if (!configFile.exists()) {
-            dataFolder.mkdir();
-            plugin.saveToolsConfig();
-        }
-
-        addDefaults();
-        loadKeys();
     }
 
     @Override
