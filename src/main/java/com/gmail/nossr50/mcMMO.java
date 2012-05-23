@@ -9,7 +9,6 @@ import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.RepairConfigManager;
-import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
@@ -36,7 +35,6 @@ import net.shatteredlands.shatt.backup.ZipLibrary;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,8 +44,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class mcMMO extends JavaPlugin {
@@ -74,6 +70,9 @@ public class mcMMO extends JavaPlugin {
     //File Paths
     public String mainDirectory, flatFileDirectory, usersFile, leaderboardDirectory, modDirectory;
 
+    //Spout Check
+    public boolean spoutEnabled;
+
     /**
      * Things to be run when the plugin is enabled.
      */
@@ -85,7 +84,6 @@ public class mcMMO extends JavaPlugin {
         Config configInstance = Config.getInstance();
         TreasuresConfig.getInstance();
         HiddenConfig.getInstance();
-        SpoutConfig.getInstance().load();
 
         List<Repairable> repairables = new ArrayList<Repairable>();
 

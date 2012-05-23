@@ -17,14 +17,15 @@ public class SpoutStart implements Runnable{
     @Override
     public void run() {
         if (plugin.getServer().getPluginManager().getPlugin("Spout") != null) {
-            SpoutConfig.getInstance().spoutEnabled = true;
+            plugin.spoutEnabled = true;
         }
         else {
-            SpoutConfig.getInstance().spoutEnabled = false;
+            plugin.spoutEnabled = false;
         }
 
         //Spout Stuff
-        if (SpoutConfig.getInstance().spoutEnabled) {
+        if (plugin.spoutEnabled) {
+            SpoutConfig.getInstance().load();
             SpoutStuff.setupSpoutConfigs();
             SpoutStuff.registerCustomEvent();
             SpoutStuff.extractFiles(); //Extract source materials

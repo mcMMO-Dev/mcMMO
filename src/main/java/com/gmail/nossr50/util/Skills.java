@@ -210,7 +210,7 @@ public class Skills {
             String capitalized = Misc.getCapitalized(skillType.toString());
 
             /* Spout Stuff */
-            if (SpoutConfig.getInstance().spoutEnabled && player instanceof SpoutPlayer) {
+            if (mcMMO.p.spoutEnabled && player instanceof SpoutPlayer) {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
                 if (sPlayer.isSpoutCraftEnabled()) {
@@ -235,7 +235,7 @@ public class Skills {
         }
 
         /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
-        if (skillups == 0 && SpoutConfig.getInstance().spoutEnabled && player instanceof SpoutPlayer) {
+        if (skillups == 0 && mcMMO.p.spoutEnabled && player instanceof SpoutPlayer) {
             SpoutPlayer sPlayer = (SpoutPlayer) player;
             if (sPlayer.isSpoutCraftEnabled()) {
                 if (SpoutConfig.getInstance().getXPBarEnabled()) {

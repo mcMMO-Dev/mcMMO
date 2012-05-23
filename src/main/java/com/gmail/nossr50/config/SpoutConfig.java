@@ -20,7 +20,6 @@ public class SpoutConfig extends ConfigLoader {
         super(plugin, "spout.yml");
     }
 
-    public boolean spoutEnabled;
     public boolean getShowPowerLevel() { return config.getBoolean("HUD.Show_Power_Level", true); }
     public String getMenuKey() { return config.getString("Menu.Key", "KEY_M"); }
 

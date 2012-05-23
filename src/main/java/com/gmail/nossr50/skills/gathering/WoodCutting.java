@@ -14,7 +14,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
@@ -388,7 +387,7 @@ public class WoodCutting {
             Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());
         }
 
-        if (SpoutConfig.getInstance().spoutEnabled) {
+        if (mcMMO.p.spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }
