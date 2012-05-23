@@ -18,30 +18,39 @@ public class RepairConfigManager {
         File dataFolder = plugin.getDataFolder();
 
         File vanilla = new File(dataFolder, "repair.vanilla.yml");
-        if(!vanilla.exists()) {
+        if (!vanilla.exists()) {
             plugin.saveResource("repair.vanilla.yml", false);
         }
 
-        for(String location : dataFolder.list()) {
-            if(!pattern.matcher(location).matches()) continue;
+        for (String location : dataFolder.list()) {
+            if (!pattern.matcher(location).matches()) {
+                continue;
+            }
 
             plugin.getLogger().info("Loading " + location + " repair config file...");
 
             File file = new File(dataFolder, location);
-            if(file.isDirectory()) continue;
+
+            if (file.isDirectory()) {
+                continue;
+            }
 
             RepairConfig rConfig = new RepairConfig(plugin, location);
             rConfig.load();
 
             List<Repairable> rConfigRepairables = rConfig.getLoadedRepairables();
-            if(rConfigRepairables != null) {
+
+            if (rConfigRepairables != null) {
                 repairables.addAll(rConfigRepairables);
             }
         }
     }
 
     public List<Repairable> getLoadedRepairables() {
-        if(repairables == null) return new ArrayList<Repairable>();
+        if (repairables == null) {
+            return new ArrayList<Repairable>();
+        }
+
         return repairables;
     }
 }

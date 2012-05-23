@@ -161,14 +161,15 @@ public class mcMMO extends JavaPlugin {
 
                 Graph graph = metrics.createGraph("Percentage of servers using timings");
 
-                if(pm.useTimings()) {
+                if (pm.useTimings()) {
                     graph.addPlotter(new Metrics.Plotter("Enabled") {
                         @Override
                         public int getValue() {
                             return 1;
                         }
                     });
-                } else {
+                }
+                else {
                     graph.addPlotter(new Metrics.Plotter("Disabled") {
                         @Override
                         public int getValue() {
