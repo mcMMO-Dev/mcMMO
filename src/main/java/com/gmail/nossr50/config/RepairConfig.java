@@ -14,12 +14,10 @@ import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableFactory;
 
 public class RepairConfig extends ConfigLoader {
-    private final String fileName;
     private List<Repairable> repairables;
 
     public RepairConfig(mcMMO plugin, String fileName) {
         super(plugin, fileName);
-        this.fileName = fileName;
         this.config = YamlConfiguration.loadConfiguration(this.configFile);
     }
 
@@ -34,19 +32,19 @@ public class RepairConfig extends ConfigLoader {
 
         ConfigurationSection section = config.getConfigurationSection("Repairables");
         Set<String> keys = section.getKeys(false);
-        for(String key : keys) {
+        for (String key : keys) {
             // Validate all the things!
             List<String> reason = new ArrayList<String>();
 
-            if(!config.contains("Repairables." + key + ".ItemId")) {
+            if (!config.contains("Repairables." + key + ".ItemId")) {
                 reason.add(key + " is missing ItemId");
             }
 
-            if(!config.contains("Repairables." + key + ".RepairMaterialId")) {
+            if (!config.contains("Repairables." + key + ".RepairMaterialId")) {
                 reason.add(key + " is missing RepairMaterialId");
             }
 
-            if(!config.contains("Repairables." + key + ".MaximumDurability")) {
+            if (!config.contains("Repairables." + key + ".MaximumDurability")) {
                 reason.add(key + " is missing MaximumDurability");
             }
 
@@ -65,27 +63,29 @@ public class RepairConfig extends ConfigLoader {
             String repairItemTypeString = config.getString("Repairables." + key + ".ItemType", "OTHER");
             String repairMaterialTypeString = config.getString("Repairables." + key + ".MaterialType", "OTHER");
 
-            if(minimumLevel < 0) {
+            if (minimumLevel < 0) {
                 reason.add(key + " has an invalid MinimumLevel of " + minimumLevel);
             }
 
-            if(minimumQuantity < 0) {
+            if (minimumQuantity < 0) {
                 reason.add(key + " has an invalid MinimumQuantity of " + minimumQuantity);
             }
 
             try {
                 repairItemType = RepairItemType.valueOf(repairItemTypeString);
-            } catch (IllegalArgumentException ex) {
+            }
+            catch (IllegalArgumentException ex) {
                 reason.add(key + " has an invalid ItemType of " + repairItemTypeString);
             }
 
             try {
                 repairMaterialType = RepairMaterialType.valueOf(repairMaterialTypeString);
-            } catch (IllegalArgumentException ex) {
+            }
+            catch (IllegalArgumentException ex) {
                 reason.add(key + " has an invalid MaterialType of " + repairMaterialTypeString);
             }
 
-            if(noErrorsInRepairable(reason)) {
+            if (noErrorsInRepairable(reason)) {
                 Repairable repairable = RepairableFactory.getRepairable(itemId, repairMaterialId, (byte) repairMetadata, minimumLevel, minimumQuantity, (short) maximumDurability, repairItemType, repairMaterialType, xpMultiplier);
                 repairables.add(repairable);
             }
@@ -93,7 +93,10 @@ public class RepairConfig extends ConfigLoader {
     }
 
     protected List<Repairable> getLoadedRepairables() {
-        if(repairables == null) return new ArrayList<Repairable>();
+        if (repairables == null) {
+            return new ArrayList<Repairable>();
+        }
+
         return repairables;
     }
 

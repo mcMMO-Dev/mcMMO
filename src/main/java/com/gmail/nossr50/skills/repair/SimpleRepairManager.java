@@ -37,7 +37,7 @@ public class SimpleRepairManager implements RepairManager {
 
     @Override
     public void registerRepairables(List<Repairable> repairables) {
-        for(Repairable repairable : repairables) {
+        for (Repairable repairable : repairables) {
             registerRepairable(repairable);
         }
     }
@@ -67,28 +67,28 @@ public class SimpleRepairManager implements RepairManager {
         Repairable repairable = repairables.get(item.getTypeId());
 
         // Permissions checks on material and item types
-        if(!repairable.getRepairItemType().getPermissions(player)) {
+        if (!repairable.getRepairItemType().getPermissions(player)) {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
             return;
         }
 
-        if(!repairable.getRepairMaterialType().getPermissions(player)) {
+        if (!repairable.getRepairMaterialType().getPermissions(player)) {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
             return;
         }
 
         // Level check
-        if(skillLevel < repairable.getMinimumLevel()) {
+        if (skillLevel < repairable.getMinimumLevel()) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.Adept", new Object[] { String.valueOf(repairable.getMinimumLevel()), Misc.prettyItemString(item.getTypeId()) } ));
             return;
         }
 
         // Check if they have the proper material to repair with
-        if(!inventory.contains(repairable.getRepairMaterialId())) {
+        if (!inventory.contains(repairable.getRepairMaterialId())) {
             String message = LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + Misc.prettyItemString(repairable.getRepairMaterialId());
-            if(repairable.getRepairMaterialMetadata() != (byte) -1) {
+            if (repairable.getRepairMaterialMetadata() != (byte) -1) {
                 // TODO: Do something nicer than append the metadata as a :# ?
-                if(findInInventory(inventory, repairable.getRepairMaterialId(), repairable.getRepairMaterialMetadata()) == -1) {
+                if (findInInventory(inventory, repairable.getRepairMaterialId(), repairable.getRepairMaterialMetadata()) == -1) {
                     message += ":" + repairable.getRepairMaterialMetadata();
                 }
             }
@@ -97,33 +97,34 @@ public class SimpleRepairManager implements RepairManager {
         }
 
         // Do not repair if at full durability
-        if(startDurability <= 0) {
+        if (startDurability <= 0) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FullDurability"));
             return;
         }
 
         // Do not repair stacked items
-        if(item.getAmount() != 1) {
+        if (item.getAmount() != 1) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.StackedItems"));
             return;
         }
 
         // Lets get down to business,
         // To defeat, the huns.
-        int baseRepairAmount = repairable.getBaseRepairDurability();
-        short newDurability = Repair.repairCalculate(player, skillLevel, startDurability, baseRepairAmount);
+        int baseRepairAmount = repairable.getBaseRepairDurability(); // Did they send me daughters?
+        short newDurability = Repair.repairCalculate(player, skillLevel, startDurability, baseRepairAmount); // When I asked for sons?
 
         // We're going to hold onto our repair item location
         int repairItemLocation;
-        if(repairable.getRepairMaterialMetadata() == (byte) -1) {
+        if (repairable.getRepairMaterialMetadata() == (byte) -1) {
             repairItemLocation = findInInventory(inventory, repairable.getRepairMaterialId());
-        } else {
+        }
+        else {
             // Special case for when the repairable has metadata that must be addressed
             repairItemLocation = findInInventory(inventory, repairable.getRepairMaterialId(), repairable.getRepairMaterialMetadata());
         }
 
         // This should never happen, but if it does we need to complain loudly about it.
-        if(repairItemLocation == -1) {
+        if (repairItemLocation == -1) {
             player.sendMessage("mcMMO encountered an error attempting to repair this item!");  // TODO: Locale ?
             return;
         }
@@ -160,9 +161,10 @@ public class SimpleRepairManager implements RepairManager {
      */
     private void removeOneFrom(PlayerInventory inventory, int index) {
         ItemStack item = inventory.getItem(index);
-        if(item.getAmount() > 1) {
+        if (item.getAmount() > 1) {
             item.setAmount(item.getAmount() - 1);
-        } else {
+        }
+        else {
             item = new ItemStack(0);
         }
 
@@ -179,10 +181,12 @@ public class SimpleRepairManager implements RepairManager {
      */
     private int findInInventory(PlayerInventory inventory, int itemId) {
         int location = inventory.first(itemId);
+
         // VALIDATE
-        if(inventory.getItem(location).getTypeId() == itemId) {
+        if (inventory.getItem(location).getTypeId() == itemId) {
             return location;
-        } else {
+        }
+        else {
             return -1;
         }
     }
@@ -199,14 +203,16 @@ public class SimpleRepairManager implements RepairManager {
         int location = -1;
 
         ItemStack[] contents = inventory.getContents();
-        for(int i = 0; i < contents.length; i++) {
+        for (int i = 0; i < contents.length; i++) {
             ItemStack item = contents[i];
-            if(item.getTypeId() == itemId) {
-                if(item.getData().getData() == metadata) {
+            if (item.getTypeId() == itemId) {
+                if (item.getData().getData() == metadata) {
                     location = i;
                 }
             }
-            if(location != -1) break;
+            if (location != -1) {
+                break;
+            }
         }
 
         return location;
