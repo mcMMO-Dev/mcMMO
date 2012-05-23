@@ -138,7 +138,7 @@ public class SpoutStuff {
      * Setup Spout config options
      */
     public static void setupSpoutConfigs() {
-        String temp = plugin.getConfig().getString("Spout.Menu.Key", "KEY_M");
+        String temp = plugin.getSpoutConfig().getString("Menu.Key", "KEY_M");
 
         for (Keyboard x : Keyboard.values()) {
             if (x.toString().equalsIgnoreCase(temp)) {
@@ -147,7 +147,7 @@ public class SpoutStuff {
         }
 
         if (keypress == null) {
-            System.out.println("Invalid KEY for Spout.Menu.Key, using KEY_M");
+            System.out.println("Invalid KEY for Menu.Key, using KEY_M");
             keypress = Keyboard.KEY_M;
         }
     }

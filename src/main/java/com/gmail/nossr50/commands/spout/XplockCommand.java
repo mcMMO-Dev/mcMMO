@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -26,7 +27,7 @@ public class XplockCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Config.getInstance().spoutEnabled || !Config.getInstance().getSpoutXPBarEnabled() || !Config.getInstance().getCommandXPLockEnabled()) {
+        if (!SpoutConfig.getInstance().spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled() || !Config.getInstance().getCommandXPLockEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
             return true;
         }

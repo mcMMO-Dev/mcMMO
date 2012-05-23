@@ -13,6 +13,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -209,18 +210,18 @@ public class Skills {
             String capitalized = Misc.getCapitalized(skillType.toString());
 
             /* Spout Stuff */
-            if (Config.getInstance().spoutEnabled && player instanceof SpoutPlayer) {
+            if (SpoutConfig.getInstance().spoutEnabled && player instanceof SpoutPlayer) {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
                 if (sPlayer.isSpoutCraftEnabled()) {
-                    if (Config.getInstance().getSpoutXPBarEnabled()) {
+                    if (SpoutConfig.getInstance().getXPBarEnabled()) {
                         SpoutStuff.updateXpBar(player);
                     }
 
                     SpoutStuff.levelUpNotification(skillType, sPlayer);
 
                     /* Update custom titles */
-                    if (Config.getInstance().getShowPowerLevelForSpout()) {
+                    if (SpoutConfig.getInstance().getShowPowerLevel()) {
                         sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(PP.getPowerLevel()));
                     }
                 }
@@ -234,10 +235,10 @@ public class Skills {
         }
 
         /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
-        if (skillups == 0 && Config.getInstance().spoutEnabled && player instanceof SpoutPlayer) {
+        if (skillups == 0 && SpoutConfig.getInstance().spoutEnabled && player instanceof SpoutPlayer) {
             SpoutPlayer sPlayer = (SpoutPlayer) player;
             if (sPlayer.isSpoutCraftEnabled()) {
-                if (Config.getInstance().getSpoutXPBarEnabled()) {
+                if (SpoutConfig.getInstance().getXPBarEnabled()) {
                     SpoutStuff.updateXpBar(player);
                 }
             }

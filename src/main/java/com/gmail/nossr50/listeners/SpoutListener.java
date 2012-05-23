@@ -7,7 +7,7 @@ import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -32,9 +32,8 @@ public class SpoutListener implements Listener {
         PlayerProfile PPs = Users.getProfile(sPlayer);
 
         //TODO: Add custom titles based on skills
-        if (Config.getInstance().getShowPowerLevelForSpout()) {
-            sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl"
-        + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(PPs.getPowerLevel()));
+        if (SpoutConfig.getInstance().getShowPowerLevel()) {
+            sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(PPs.getPowerLevel()));
         }
 
         if (sPlayer.isSpoutCraftEnabled()) {

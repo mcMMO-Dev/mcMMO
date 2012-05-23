@@ -13,6 +13,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
@@ -46,7 +47,7 @@ public class Repair {
         Skills.XpCheckSkill(SkillType.REPAIR, player);
 
         //CLANG CLANG
-        if (configInstance.spoutEnabled) {
+        if (SpoutConfig.getInstance().spoutEnabled) {
             SpoutSounds.playRepairNoise(player, mcMMO.p);
         }
     }
@@ -242,7 +243,7 @@ public class Repair {
         PlayerProfile PP = Users.getProfile(player);
 
         if (!PP.getPlacedAnvil()) {
-            if (configInstance.spoutEnabled) {
+            if (SpoutConfig.getInstance().spoutEnabled) {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
                 if (sPlayer.isSpoutCraftEnabled()) {

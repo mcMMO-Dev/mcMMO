@@ -19,6 +19,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
@@ -332,7 +333,7 @@ public class Mining {
 
             miningBlockCheck(player, block);
 
-            if (Config.getInstance().spoutEnabled) {
+            if (SpoutConfig.getInstance().spoutEnabled) {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }
@@ -377,7 +378,7 @@ public class Mining {
 
                 miningBlockCheck(player, block);
 
-                if (Config.getInstance().spoutEnabled) {
+                if (SpoutConfig.getInstance().spoutEnabled) {
                     SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
                 }
             }

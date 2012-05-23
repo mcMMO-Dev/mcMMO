@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -253,7 +254,7 @@ public class BlockListener implements Listener {
         }
 
         /* TREE FELLER SOUNDS */
-        if (configInstance.spoutEnabled && BlockChecks.isLog(block) && PP.getAbilityMode(AbilityType.TREE_FELLER)) {
+        if (SpoutConfig.getInstance().spoutEnabled && BlockChecks.isLog(block) && PP.getAbilityMode(AbilityType.TREE_FELLER)) {
             SpoutSounds.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
         }
 
@@ -298,7 +299,7 @@ public class BlockListener implements Listener {
                 event.setInstaBreak(true);
             }
 
-            if (configInstance.spoutEnabled) {
+            if (SpoutConfig.getInstance().spoutEnabled) {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }

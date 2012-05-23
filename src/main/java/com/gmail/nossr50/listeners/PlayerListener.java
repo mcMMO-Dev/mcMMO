@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -142,7 +143,7 @@ public class PlayerListener implements Listener {
         /* GARBAGE COLLECTION */
 
         //Remove Spout Stuff
-        if (Config.getInstance().spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
+        if (SpoutConfig.getInstance().spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
             SpoutStuff.playerHUDs.remove(player);
         }
 

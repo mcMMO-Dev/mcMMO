@@ -9,6 +9,7 @@ import com.gmail.nossr50.commands.general.*;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.RepairConfigManager;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
@@ -84,6 +85,7 @@ public class mcMMO extends JavaPlugin {
         Config configInstance = Config.getInstance();
         TreasuresConfig.getInstance();
         HiddenConfig.getInstance();
+        SpoutConfig.getInstance().load();
 
         List<Repairable> repairables = new ArrayList<Repairable>();
 
@@ -596,6 +598,59 @@ public class mcMMO extends JavaPlugin {
         }
         catch (IOException ex) {
             getLogger().severe("Could not save config to " + blocksConfigFile + ex.toString());
+        }
+    }
+
+    /*
+     * Boilerplate Custom Config Stuff (Spout)
+     */
+
+    private FileConfiguration spoutConfig = null;
+    private File spoutConfigFile = null;
+
+    /**
+     * Reload the Spout.yml file.
+     */
+    public void reloadSpoutConfig() {
+        if (spoutConfigFile == null) {
+            spoutConfigFile = new File(modDirectory, "spout.yml");
+        }
+
+        spoutConfig = YamlConfiguration.loadConfiguration(spoutConfigFile);
+
+        if (isInJar("spout.yml")) {
+            InputStream defConfigStream = getResource("spout.yml");
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            spoutConfig.setDefaults(defConfig);
+        }
+    }
+
+    /**
+     * Get the Spout config information.
+     *
+     * @return the configuration object for spout.yml
+     */
+    public FileConfiguration getSpoutConfig() {
+        if (spoutConfig == null) {
+            reloadSpoutConfig();
+        }
+
+        return spoutConfig;
+    }
+
+    /**
+     * Save the Spout config informtion.
+     */
+    public void saveSpoutConfig() {
+        if (spoutConfig == null || spoutConfigFile == null) {
+            return;
+        }
+
+        try {
+            spoutConfig.save(spoutConfigFile);
+        }
+        catch (IOException ex) {
+            getLogger().severe("Could not save config to " + spoutConfigFile + ex.toString());
         }
     }
 

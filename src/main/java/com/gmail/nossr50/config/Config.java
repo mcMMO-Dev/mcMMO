@@ -373,66 +373,6 @@ public class Config extends ConfigLoader {
     public double getFormulaMultiplierFishing() { return config.getDouble("Experience.Formula.Multiplier.Fishing", 1.0); }
 
     /*
-     * SPOUT SETTINGS
-     */
-
-    public boolean spoutEnabled;
-    public boolean getShowPowerLevelForSpout() { return config.getBoolean("Spout.HUD.Show_Power_Level", true); }
-
-    /* Spout XP Bar */
-    public boolean getSpoutXPBarEnabled() { return config.getBoolean("Spout.XP.Bar.Enabled", true); }
-    public boolean getSpoutXPBarIconEnabled() { return config.getBoolean("Spout.XP.Icon.Enabled", true); }
-    public int getSpoutXPBarXPosition() { return config.getInt("Spout.XP.Bar.X_POS", 95); }
-    public int getSpoutXPBarYPosition() { return config.getInt("Spout.XP.Bar.Y_POS", 6); }
-    public int getSpoutXPIconXPosition() { return config.getInt("Spout.XP.Icon.X_POS", 78); }
-    public int getSpoutXPIconYPosition() { return config.getInt("Spout.XP.Icon.Y_POS", 2); }
-
-    /* Spout HUD Colors */
-    public double getSpoutRetroHUDXPBorderRed() { return config.getDouble("Spout.HUD.Retro.Colors.Border.RED", 0.0); }
-    public double getSpoutRetroHUDXPBorderGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Border.GREEN", 0.0); }
-    public double getSpoutRetroHUDXPBorderBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Border.BLUE", 0.0); }
-    public double getSpoutRetroHUDXPBackgroundRed() { return config.getDouble("Spout.HUD.Retro.Colors.Background.RED", 0.75); }
-    public double getSpoutRetroHUDXPBackgroundGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Background.GREEN", 0.75); }
-    public double getSpoutRetroHUDXPBackgroundBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Background.BLUE", 0.75); }
-
-    public double getSpoutRetroHUDAcrobaticsRed() { return config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3); }
-    public double getSpoutRetroHUDAcrobaticsGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3); }
-    public double getSpoutRetroHUDAcrobaticsBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.BLUE", 0.75); }
-    public double getSpoutRetroHUDArcheryRed() { return config.getDouble("Spout.HUD.Retro.Colors.Archery.RED", 0.3); }
-    public double getSpoutRetroHUDArcheryGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Archery.GREEN", 0.3); }
-    public double getSpoutRetroHUDArcheryBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Archery.BLUE", 0.75); }
-    public double getSpoutRetroHUDAxesRed() { return config.getDouble("Spout.HUD.Retro.Colors.Axes.RED", 0.3); }
-    public double getSpoutRetroHUDAxesGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Axes.GREEN", 0.3); }
-    public double getSpoutRetroHUDAxesBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Axes.BLUE", 0.75); }
-    public double getSpoutRetroHUDExcavationRed() { return config.getDouble("Spout.HUD.Retro.Colors.Excavation.RED", 0.3); }
-    public double getSpoutRetroHUDExcavationGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Excavation.GREEN", 0.3); }
-    public double getSpoutRetroHUDExcavationBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Excavation.BLUE", 0.75); }
-    public double getSpoutRetroHUDHerbalismRed() { return config.getDouble("Spout.HUD.Retro.Colors.Herbalism.RED", 0.3); }
-    public double getSpoutRetroHUDHerbalismGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Herbalism.GREEN", 0.3); }
-    public double getSpoutRetroHUDHerbalismBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Herbalism.BLUE", 0.75); }
-    public double getSpoutRetroHUDMiningRed() { return config.getDouble("Spout.HUD.Retro.Colors.Mining.RED", 0.3); }
-    public double getSpoutRetroHUDMiningGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Mining.GREEN", 0.3); }
-    public double getSpoutRetroHUDMiningBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Mining.BLUE", 0.75); }
-    public double getSpoutRetroHUDRepairRed() { return config.getDouble("Spout.HUD.Retro.Colors.Repair.RED", 0.3); }
-    public double getSpoutRetroHUDRepairGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Repair.GREEN", 0.3); }
-    public double getSpoutRetroHUDRepairBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Repair.BLUE", 0.75); }
-    public double getSpoutRetroHUDSwordsRed() { return config.getDouble("Spout.HUD.Retro.Colors.Swords.RED", 0.3); }
-    public double getSpoutRetroHUDSwordsGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Swords.GREEN", 0.3); }
-    public double getSpoutRetroHUDSwordsBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Swords.BLUE", 0.75); }
-    public double getSpoutRetroHUDTamingRed() { return config.getDouble("Spout.HUD.Retro.Colors.Taming.RED", 0.3); }
-    public double getSpoutRetroHUDTamingGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Taming.GREEN", 0.3); }
-    public double getSpoutRetroHUDTamingBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Taming.BLUE", 0.75); }
-    public double getSpoutRetroHUDUnarmedRed() { return config.getDouble("Spout.HUD.Retro.Colors.Unarmed.RED", 0.3); }
-    public double getSpoutRetroHUDUnarmedGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Unarmed.GREEN", 0.3); }
-    public double getSpoutRetroHUDUnarmedBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Unarmed.BLUE", 0.75); }
-    public double getSpoutRetroHUDWoodcuttingRed() { return config.getDouble("Spout.HUD.Retro.Colors.Woodcutting.RED", 0.3); }
-    public double getSpoutRetroHUDWoodcuttingGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Woodcutting.GREEN", 0.3); }
-    public double getSpoutRetroHUDWoodcuttingBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Woodcutting.BLUE", 0.75); }
-    public double getSpoutRetroHUDFishingRed() { return config.getDouble("Spout.HUD.Retro.Colors.Fishing.RED", 0.3); }
-    public double getSpoutRetroHUDFishingGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Fishing.GREEN", 0.3); }
-    public double getSpoutRetroHUDFishingBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Fishing.BLUE", 0.75); }
-
-    /*
      * CONFIG LOADING
      */
 
@@ -458,18 +398,5 @@ public class Config extends ConfigLoader {
     @Override
     protected void loadKeys() {
         plugin.getLogger().info("Loading mcMMO config.yml File...");
-
-        // Setup default HUD
-        String temp = config.getString("Spout.HUD.Default", "STANDARD");
-
-        for (HUDType x : HUDType.values()) {
-            if (x.toString().toLowerCase().equalsIgnoreCase(temp.toString().toLowerCase())) {
-                defaulthud = x;
-            }
-        }
-
-        if (defaulthud == null) {
-            defaulthud = HUDType.STANDARD;
-        }
     }
 }

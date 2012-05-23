@@ -18,6 +18,7 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -129,7 +130,7 @@ public class Excavation {
             Excavation.excavationProcCheck(block, player);
         }
 
-        if (Config.getInstance().spoutEnabled) {
+        if (SpoutConfig.getInstance().spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }

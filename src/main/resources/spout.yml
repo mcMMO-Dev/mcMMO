@@ -1,0 +1,77 @@
+Menu:
+    Key: KEY_M
+XP:
+    Bar:
+        Enabled: true
+        X_POS: 95
+        Y_POS: 6
+    Icon:
+        Enabled: true
+        X_POS: 78
+        Y_POS: 2
+Party:
+    HUD:
+        Show_Faces: true
+        Enabled: true
+        Show_Display_Name: false
+HUD:
+    Show_Power_Level: true
+    Default: STANDARD
+    Retro:
+        Colors:
+            Swords:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Taming:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Acrobatics:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Border:
+                BLUE: 0.0
+                GREEN: 0.0
+                RED: 0.0
+            Background:
+                BLUE: 0.75
+                GREEN: 0.75
+                RED: 0.75
+            Woodcutting:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Archery:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Axes:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Repair:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Fishing:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Excavation:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Herbalism:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Unarmed:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
+            Mining:
+                BLUE: 0.75
+                GREEN: 0.3
+                RED: 0.3
