@@ -461,14 +461,15 @@ public class Config extends ConfigLoader {
 
         // Setup default HUD
         String temp = config.getString("Spout.HUD.Default", "STANDARD");
-        
+
         for (HUDType x : HUDType.values()) {
             if (x.toString().toLowerCase().equalsIgnoreCase(temp.toString().toLowerCase())) {
                 defaulthud = x;
             }
         }
 
-        if(defaulthud == null)
+        if (defaulthud == null) {
             defaulthud = HUDType.STANDARD;
+        }
     }
 }
