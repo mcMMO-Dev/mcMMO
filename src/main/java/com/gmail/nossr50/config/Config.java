@@ -341,7 +341,6 @@ public class Config extends ConfigLoader {
 
     /* Combat XP Multipliers */
     public double getPlayerVersusPlayerXP() { return config.getDouble("Experience.Gains.Multiplier.PVP", 1.0); }
-    
     public double getAnimalsXP() { return config.getDouble("Experience.Combat.Multiplier.Animals", 1.0); }
     public double getCreeperXP() { return config.getDouble("Experience.Combat.Multiplier.Creeper", 4.0); }
     public double getSkeletonXP() { return config.getDouble("Experience.Combat.Multiplier.Skeleton", 2.0); }
@@ -395,7 +394,7 @@ public class Config extends ConfigLoader {
     public double getSpoutRetroHUDXPBackgroundRed() { return config.getDouble("Spout.HUD.Retro.Colors.Background.RED", 0.75); }
     public double getSpoutRetroHUDXPBackgroundGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Background.GREEN", 0.75); }
     public double getSpoutRetroHUDXPBackgroundBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Background.BLUE", 0.75); }
-    
+
     public double getSpoutRetroHUDAcrobaticsRed() { return config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.RED", 0.3); }
     public double getSpoutRetroHUDAcrobaticsGreen() { return config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.GREEN", 0.3); }
     public double getSpoutRetroHUDAcrobaticsBlue() { return config.getDouble("Spout.HUD.Retro.Colors.Acrobatics.BLUE", 0.75); }
