@@ -21,14 +21,10 @@ public class SpoutConfig extends ConfigLoader {
         config = plugin.getSpoutConfig();
     }
 
-    /*
-     * SPOUT SETTINGS
-     */
-
     public boolean spoutEnabled;
     public boolean getShowPowerLevel() { return config.getBoolean("HUD.Show_Power_Level", true); }
 
-    /* Spout XP Bar */
+    /* XP Bar */
     public boolean getXPBarEnabled() { return config.getBoolean("XP.Bar.Enabled", true); }
     public boolean getXPBarIconEnabled() { return config.getBoolean("XP.Icon.Enabled", true); }
     public int getXPBarXPosition() { return config.getInt("XP.Bar.X_POS", 95); }
@@ -36,7 +32,7 @@ public class SpoutConfig extends ConfigLoader {
     public int getXPIconXPosition() { return config.getInt("XP.Icon.X_POS", 78); }
     public int getXPIconYPosition() { return config.getInt("XP.Icon.Y_POS", 2); }
 
-    /* Spout HUD Colors */
+    /* HUD Colors */
     public double getRetroHUDXPBorderRed() { return config.getDouble("HUD.Retro.Colors.Border.RED", 0.0); }
     public double getRetroHUDXPBorderGreen() { return config.getDouble("HUD.Retro.Colors.Border.GREEN", 0.0); }
     public double getRetroHUDXPBorderBlue() { return config.getDouble("HUD.Retro.Colors.Border.BLUE", 0.0); }
@@ -109,5 +105,4 @@ public class SpoutConfig extends ConfigLoader {
             defaulthud = HUDType.STANDARD;
         }
     }
-
 }
