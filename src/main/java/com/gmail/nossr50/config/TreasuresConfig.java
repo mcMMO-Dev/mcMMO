@@ -43,6 +43,7 @@ public class TreasuresConfig extends ConfigLoader{
 
     private TreasuresConfig(mcMMO plugin) {
         super(plugin, "treasures.yml");
+        saveIfNotExist();
     }
 
     @Override

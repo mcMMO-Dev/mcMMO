@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.gmail.nossr50.mcMMO;
 
 public abstract class ConfigLoader {
-
+    protected String fileName;
     protected File configFile;
     protected File dataFolder;
     protected final mcMMO plugin;
@@ -17,9 +17,10 @@ public abstract class ConfigLoader {
 
     public ConfigLoader(mcMMO plugin, String fileName){
         this.plugin = plugin;
+        this.fileName = fileName;
         dataFolder = plugin.getDataFolder();
         configFile = new File(dataFolder, File.separator + fileName);
-        config = YamlConfiguration.loadConfiguration(this.configFile);
+        config = YamlConfiguration.loadConfiguration(configFile);
     }
 
     /**
@@ -45,6 +46,19 @@ public abstract class ConfigLoader {
         catch (IOException ex) {
             plugin.getLogger().severe("Could not save config to " + configFile + ex);
         }
+    }
+
+    protected void saveIfNotExist() {
+        if (!configFile.exists()) {
+            if (plugin.getResource(fileName) != null) {
+                plugin.saveResource(fileName, false);
+            }
+        }
+        rereadFromDisk();
+    }
+
+    protected void rereadFromDisk() {
+        config = YamlConfiguration.loadConfiguration(configFile);
     }
 
     /**

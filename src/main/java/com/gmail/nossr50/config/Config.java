@@ -380,7 +380,7 @@ public class Config extends ConfigLoader {
 
     private Config(mcMMO plugin) {
         super(plugin, "config.yml");
-        config = plugin.getConfig();
+        saveIfNotExist();
         xpGainMultiplier = getExperienceGainsGlobalMultiplier();
     }
 

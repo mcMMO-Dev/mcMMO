@@ -18,6 +18,7 @@ public class SpoutConfig extends ConfigLoader {
 
     public SpoutConfig(mcMMO plugin) {
         super(plugin, "spout.yml");
+        saveIfNotExist();
     }
 
     public boolean getShowPowerLevel() { return config.getBoolean("HUD.Show_Power_Level", true); }
