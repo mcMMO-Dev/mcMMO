@@ -385,17 +385,6 @@ public class Config extends ConfigLoader {
     }
 
     @Override
-    public void load() {
-        if (!configFile.exists()) {
-            dataFolder.mkdir();
-            plugin.saveDefaultConfig();
-        }
-
-        addDefaults();
-        loadKeys();
-    }
-
-    @Override
     protected void loadKeys() {
         plugin.getLogger().info("Loading mcMMO config.yml File...");
     }
