@@ -6,7 +6,6 @@ import java.util.Set;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.HUDType;
 
 public class Config extends ConfigLoader {
     public int xpGainMultiplier = 1;
@@ -375,8 +374,6 @@ public class Config extends ConfigLoader {
     /*
      * CONFIG LOADING
      */
-
-    public HUDType defaulthud;
 
     private Config(mcMMO plugin) {
         super(plugin, "config.yml");

@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.Party;
@@ -63,7 +64,7 @@ public class PlayerProfile {
     private final String location = mcMMO.p.usersFile;
 
     public PlayerProfile(String name, boolean addNew) {
-        hud = Config.getInstance().defaulthud;
+        hud = SpoutConfig.getInstance().defaulthud;
         playerName = name;
 
         for (AbilityType abilityType : AbilityType.values()) {
@@ -120,7 +121,7 @@ public class PlayerProfile {
                     }
                 }
                 } else {
-                    hud = Config.getInstance().defaulthud;
+                    hud = SpoutConfig.getInstance().defaulthud;
                 }
             }
             HashMap<Integer, ArrayList<String>> users = mcMMO.database.read("SELECT lastlogin, party FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE id = " + id);
@@ -474,7 +475,7 @@ public class PlayerProfile {
             out.append(0+":"); //DATS
             out.append(0+":"); //DATS
             out.append(0+":"); //DATS
-            out.append(Config.getInstance().defaulthud.toString()+":");//HUD
+            out.append(SpoutConfig.getInstance().defaulthud.toString()+":");//HUD
             out.append(0+":"); //Fishing
             out.append(0+":"); //FishingXP
             out.append(0+":"); //Blast Mining
