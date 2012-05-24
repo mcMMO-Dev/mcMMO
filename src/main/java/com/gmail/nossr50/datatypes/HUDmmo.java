@@ -154,7 +154,7 @@ public class HUDmmo {
         xpicon.setHeight(6);
         xpicon.setX(141);
         xpicon.setY(9);
-        xpicon.setPriority(RenderPriority.High);
+        xpicon.setPriority(RenderPriority.Normal);
         xpicon.setDirty(true);
         xpicon.setUrl("Icon_r.png");
 
@@ -164,7 +164,7 @@ public class HUDmmo {
         xpbar.setY(10);
         ((GenericGradient) xpbar).setBottomColor(border);
         ((GenericGradient) xpbar).setTopColor(border);
-        xpbar.setPriority(RenderPriority.Lowest);
+        xpbar.setPriority(RenderPriority.Highest);
         xpbar.setDirty(true);
 
         xpfill.setWidth(0);
@@ -215,6 +215,7 @@ public class HUDmmo {
             xpbar.setY(SpoutConfig.getInstance().getXPBarYPosition());
             xpbar.setHeight(8);
             xpbar.setWidth(256);
+            xpbar.setPriority(RenderPriority.Lowest);
 
             sPlayer.getMainScreen().attachWidget(plugin, xpbar);
 
@@ -226,6 +227,7 @@ public class HUDmmo {
                 xpicon.setWidth(32);
                 xpicon.setX(SpoutConfig.getInstance().getXPIconXPosition());
                 xpicon.setY(SpoutConfig.getInstance().getXPIconYPosition());
+                xpicon.setPriority(RenderPriority.High);
                 xpicon.setDirty(true);
 
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon);
@@ -249,6 +251,7 @@ public class HUDmmo {
             xpbar.setY(SpoutConfig.getInstance().getXPBarYPosition());
             xpbar.setHeight(4);
             xpbar.setWidth(128);
+            xpbar.setPriority(RenderPriority.Lowest);
 
             sPlayer.getMainScreen().attachWidget(plugin, xpbar);
 
@@ -260,6 +263,7 @@ public class HUDmmo {
                 xpicon.setWidth(16);
                 xpicon.setX(center_x - (8 + 64));
                 xpicon.setY(SpoutConfig.getInstance().getXPIconYPosition() + 2);
+                xpicon.setPriority(RenderPriority.High);
                 xpicon.setDirty(true);
 
                 sPlayer.getMainScreen().attachWidget(plugin, xpicon);
