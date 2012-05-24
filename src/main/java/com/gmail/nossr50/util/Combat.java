@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -186,14 +187,14 @@ public class Combat {
                 }
             }
         }
-        else if (damager instanceof Projectile) {
-            if (!configInstance.getArcheryPVP() && ((Projectile) damager).getShooter().getType().equals(EntityType.PLAYER)) {
+        else if (damager instanceof Arrow) {
+            if (!configInstance.getArcheryPVP() && ((Arrow) damager).getShooter().getType().equals(EntityType.PLAYER)) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     return;
                 }
             }
 
-            if (!configInstance.getArcheryPVE() && !((Projectile) damager).getShooter().getType().equals(EntityType.PLAYER)) {
+            if (!configInstance.getArcheryPVE() && !((Arrow) damager).getShooter().getType().equals(EntityType.PLAYER)) {
                 if (!targetIsPlayer || !targetIsTamedPet) {
                     return;
                 }
