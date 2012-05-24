@@ -154,7 +154,7 @@ public class HUDmmo {
         xpicon.setHeight(6);
         xpicon.setX(141);
         xpicon.setY(9);
-        xpicon.setPriority(RenderPriority.Normal);
+        xpicon.setPriority(RenderPriority.High);
         xpicon.setDirty(true);
         xpicon.setUrl("Icon_r.png");
 
@@ -164,7 +164,7 @@ public class HUDmmo {
         xpbar.setY(10);
         ((GenericGradient) xpbar).setBottomColor(border);
         ((GenericGradient) xpbar).setTopColor(border);
-        xpbar.setPriority(RenderPriority.Highest);
+        xpbar.setPriority(RenderPriority.Lowest);
         xpbar.setDirty(true);
 
         xpfill.setWidth(0);
