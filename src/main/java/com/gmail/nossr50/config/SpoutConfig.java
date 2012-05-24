@@ -9,6 +9,7 @@ public class SpoutConfig extends ConfigLoader {
     public static SpoutConfig getInstance() {
         if (instance == null) {
             instance = new SpoutConfig(mcMMO.p);
+            instance.load();
         }
 
         return instance;

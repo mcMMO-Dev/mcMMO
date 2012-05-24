@@ -25,7 +25,7 @@ public class SpoutStart implements Runnable{
 
         //Spout Stuff
         if (plugin.spoutEnabled) {
-            SpoutConfig.getInstance().load();
+            SpoutConfig.getInstance();
             SpoutStuff.setupSpoutConfigs();
             SpoutStuff.registerCustomEvent();
             SpoutStuff.extractFiles(); //Extract source materials
