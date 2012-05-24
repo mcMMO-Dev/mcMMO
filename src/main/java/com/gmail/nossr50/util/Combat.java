@@ -14,6 +14,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
@@ -386,6 +387,9 @@ public class Combat {
                 break;
             }
 
+            PlayerAnimationEvent armswing = new PlayerAnimationEvent(attacker);
+            plugin.getServer().getPluginManager().callEvent(armswing);
+
             if (entity instanceof Player) {
                 Player defender = (Player) entity;
 
@@ -406,7 +410,8 @@ public class Combat {
                 if (playerProfile.getGodMode()) {
                     continue;
                 }
-            } else if (entity instanceof Tameable) {
+            }
+            else if (entity instanceof Tameable) {
                 AnimalTamer tamer = ((Tameable) entity).getOwner();
 
                 if (tamer instanceof Player) {

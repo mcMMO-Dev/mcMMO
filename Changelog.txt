@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 1.3.09
+ = Fixed issue with NoCheatPlus and Serrated Strikes / Skull Splitter (fight.noswing)
+
 Version 1.3.08
  + Added more notifications about Vampirism and Hardcore mode on player death
  + Added information about Hardcore mode when joining a server running Hardcore mode
