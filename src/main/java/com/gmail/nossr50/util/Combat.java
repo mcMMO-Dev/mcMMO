@@ -508,8 +508,10 @@ public class Combat {
                     break;
 
                 case IRON_GOLEM:
-                    if (!((IronGolem) target).isPlayerCreated())
+                    if (!((IronGolem) target).isPlayerCreated()) {
                         baseXP = configInstance.getIronGolemXP();
+                    }
+
                     break;
 
                 case PIG_ZOMBIE:
