@@ -22,6 +22,7 @@ public class TreasuresConfig extends ConfigLoader{
     public static TreasuresConfig getInstance() {
         if (instance == null) {
             instance = new TreasuresConfig(mcMMO.p);
+            instance.load();
         }
 
         return instance;
