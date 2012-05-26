@@ -32,6 +32,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -73,6 +74,25 @@ public class BlockListener implements Listener {
     }
 
     /**
+     * Monitor BlockPhysics events.
+     *
+     * @param event The event to monitor
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockPhysics(BlockPhysicsEvent event) {
+        //TODO: Figure out how to REMOVE metadata from the location the sand fell from.
+        Material type = event.getChangedType();
+
+        if (type == Material.GRAVEL || type == Material.SAND) {
+            Block fallenBlock = event.getBlock().getRelative(BlockFace.UP);
+
+            if (fallenBlock.getType() == type) {
+                mcMMO.placeStore.setTrue(fallenBlock);
+            }
+        }
+    }
+
+    /**
      * Monitor BlockPistonRetract events.
      *
      * @param event The event to monitor
@@ -99,21 +119,6 @@ public class BlockListener implements Listener {
         Block block = event.getBlock();
         Player player = event.getPlayer();
         int id = block.getTypeId();
-        Material mat = block.getType();
-
-        /* Code to prevent issues with placed falling Sand/Gravel not being tracked */
-        if (mat.equals(Material.SAND) || mat.equals(Material.GRAVEL)) {
-            for (int y = -1;  y + block.getY() >= 0; y--) {
-                if (block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
-                    continue;
-                }
-                else {
-                    Block newLocation = block.getRelative(0, y + 1, 0);
-                    mcMMO.placeStore.setTrue(newLocation);
-                    break;
-                }
-            }
-        }
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(block)) {
@@ -142,6 +147,11 @@ public class BlockListener implements Listener {
 
         if (event instanceof FakeBlockBreakEvent) {
             return;
+        }
+
+        //DEBUG MESSAGES
+        if (!mcMMO.placeStore.isTrue(block) && BlockChecks.shouldBeWatched(block)) {
+            player.sendMessage("Why aren't you watching me?");
         }
 
         /* HERBALISM */
