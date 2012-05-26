@@ -36,6 +36,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import org.getspout.spoutapi.sound.SoundEffect;
 
@@ -58,15 +59,15 @@ public class BlockListener implements Listener {
 
         for (Block b : blocks) {
             if (mcMMO.placeStore.isTrue(b)) {
-                mcMMO.placeStore.setTrue(b.getRelative(direction));
+                b.getRelative(direction).setMetadata("pistonTrack", new FixedMetadataValue(plugin, true));
                 mcMMO.placeStore.setFalse(b);
             }
         }
 
         for (Block b : blocks) {
-            if (mcMMO.placeStore.isTrue(b.getRelative(direction))) {
+            if (b.getRelative(direction).hasMetadata("pistonTrack")) {
                 mcMMO.placeStore.setTrue(b.getRelative(direction));
-                mcMMO.placeStore.setFalse(b);
+                b.getRelative(direction).removeMetadata("pistonTrack", plugin);
             }
         }
     }

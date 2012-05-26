@@ -10,6 +10,7 @@ Key:
 Version 1.3.09
  = Fixed issue with NoCheatPlus and Serrated Strikes / Skull Splitter (fight.noswing)
  = Fixed bug where you could receive Archery XP from Potions
+ = Fixed bug with duping blocks via piston pushing
  ! Changed Spout settings to be in their own config file (spout.yml)
 
 Version 1.3.08
