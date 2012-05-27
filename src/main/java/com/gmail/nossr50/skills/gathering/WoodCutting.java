@@ -104,10 +104,10 @@ public class WoodCutting {
         for (Block x : toBeFelled) {
             if (Misc.blockBreakSimulate(x, player, true)) {
                 if (Config.getInstance().getBlockModsEnabled()) {
-                    CustomBlock block = ModChecks.getCustomBlock(x);
-                    item = block.getItemDrop();
-
                     if (ModChecks.isCustomLogBlock(x)) {
+                        CustomBlock block = ModChecks.getCustomBlock(x);
+                        item = block.getItemDrop();
+
                         if (!mcMMO.placeStore.isTrue(x)) {
                             WoodCutting.woodCuttingProcCheck(player, x);
                             xp = block.getXpGain();
@@ -120,6 +120,9 @@ public class WoodCutting {
                         Misc.dropItem(x.getLocation(), item);
                     }
                     else if (ModChecks.isCustomLeafBlock(x)) {
+                        CustomBlock block = ModChecks.getCustomBlock(x);
+                        item = block.getItemDrop();
+
                         final int SAPLING_DROP_CHANCE = 10;
 
                         /* Remove the block */
