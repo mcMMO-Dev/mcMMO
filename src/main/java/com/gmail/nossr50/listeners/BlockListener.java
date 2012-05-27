@@ -149,11 +149,6 @@ public class BlockListener implements Listener {
             return;
         }
 
-        //DEBUG MESSAGES
-        if (!mcMMO.placeStore.isTrue(block) && BlockChecks.shouldBeWatched(block)) {
-            player.sendMessage("Why aren't you watching me?");
-        }
-
         /* HERBALISM */
         if (BlockChecks.canBeGreenTerra(block)) {
             /* Green Terra */
