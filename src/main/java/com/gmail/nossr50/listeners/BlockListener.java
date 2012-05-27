@@ -73,7 +73,7 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPhysics(BlockPhysicsEvent event) {
-        //TODO: Figure out how to REMOVE metadata from the location the sand fell from.
+        //TODO: Figure out how to REMOVE metadata from the location the sand/gravel fell from.
         Material type = event.getChangedType();
 
         if (type == Material.GRAVEL || type == Material.SAND) {
@@ -112,10 +112,13 @@ public class BlockListener implements Listener {
         Block block = event.getBlock();
         Player player = event.getPlayer();
         int id = block.getTypeId();
+        Material type = block.getType();
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(block)) {
-            mcMMO.placeStore.setTrue(block);
+            if (!((type == Material.SAND || type == Material.GRAVEL) && block.getRelative(BlockFace.DOWN).getType() == Material.AIR)) { //Don't wanna track sand that's gonna fall.
+                mcMMO.placeStore.setTrue(block);
+            }
         }
 
         if (id == configInstance.getRepairAnvilId() && configInstance.getRepairAnvilMessagesEnabled()) {
@@ -209,6 +212,23 @@ public class BlockListener implements Listener {
         //Remove metadata when broken
         if (mcMMO.placeStore.isTrue(block) && BlockChecks.shouldBeWatched(block)) {
             mcMMO.placeStore.setFalse(block);
+        }
+
+        //Remove metadata from fallen sand/gravel
+        Material aboveType = block.getRelative(BlockFace.UP).getType();
+
+        if (aboveType == Material.SAND || aboveType == Material.GRAVEL) {
+            for (int y = 1; block.getY() + y <= block.getWorld().getHighestBlockYAt(block.getX(), block.getZ()); y++) {
+                Block relative = block.getRelative(0, y, 0);
+                Material relativeType = relative.getType();
+
+                if ((relativeType == Material.SAND || relativeType == Material.GRAVEL) && mcMMO.placeStore.isTrue(relative)) {
+                    mcMMO.placeStore.setFalse(relative);
+                }
+                else {
+                    break;
+                }
+            }
         }
     }
 
