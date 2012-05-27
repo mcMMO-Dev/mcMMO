@@ -48,11 +48,14 @@ public class ZipLibrary {
         //Create the Source List, and add directories/etc to the file.
         List<File> sources = new ArrayList<File>();
         sources.add(FlatFileDirectory);
-        sources.add(ModFileDirectory);
         sources.add(UsersFile);
         sources.add(ConfigFile);
         sources.add(TreasuresFile);
         sources.add(Leaderboards);
+
+        if (ModFileDirectory.exists()) {
+            sources.add(ModFileDirectory);
+        }
 
         //Actually do something
         System.out.println("Backing up your mcMMO Configuration... ");
