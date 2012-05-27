@@ -37,6 +37,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import org.getspout.spoutapi.sound.SoundEffect;
 
@@ -58,11 +59,17 @@ public class BlockListener implements Listener {
         BlockFace direction = event.getDirection();
 
         for (Block b : blocks) {
-            mcMMO.placeStore.setFalse(b);
+            if (mcMMO.placeStore.isTrue(b)) {
+                b.getRelative(direction).setMetadata("pistonTrack", new FixedMetadataValue(plugin, true));
+                mcMMO.placeStore.setFalse(b);
+            }
         }
 
         for (Block b : blocks) {
-            mcMMO.placeStore.setTrue(b.getRelative(direction));
+            if (b.getRelative(direction).hasMetadata("pistonTrack")) {
+                mcMMO.placeStore.setTrue(b.getRelative(direction));
+                b.getRelative(direction).removeMetadata("pistonTrack", plugin);
+            }
         }
     }
 
@@ -113,6 +120,20 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
         int id = block.getTypeId();
         Material type = block.getType();
+
+        /* Code to prevent issues with placed falling Sand/Gravel not being tracked */
+        if (type.equals(Material.SAND) || type.equals(Material.GRAVEL)) {
+            for (int y = -1;  y + block.getY() >= 0; y--) {
+                if (block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
+                    continue;
+                }
+                else {
+                    Block newLocation = block.getRelative(0, y + 1, 0);
+                    mcMMO.placeStore.setTrue(newLocation);
+                    break;
+                }
+            }
+        }
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(block)) {
@@ -218,11 +239,14 @@ public class BlockListener implements Listener {
         Material aboveType = block.getRelative(BlockFace.UP).getType();
 
         if (aboveType == Material.SAND || aboveType == Material.GRAVEL) {
-            for (int y = 1; block.getY() + y <= block.getWorld().getHighestBlockYAt(block.getX(), block.getZ()); y++) {
+            for (int y = 1; block.getY() + y <= block.getWorld().getMaxHeight(); y++) {
                 Block relative = block.getRelative(0, y, 0);
                 Material relativeType = relative.getType();
 
                 if ((relativeType == Material.SAND || relativeType == Material.GRAVEL) && mcMMO.placeStore.isTrue(relative)) {
+                    mcMMO.placeStore.setFalse(relative);
+                }
+                else if (!BlockChecks.shouldBeWatched(relative) && mcMMO.placeStore.isTrue(relative)){
                     mcMMO.placeStore.setFalse(relative);
                 }
                 else {
