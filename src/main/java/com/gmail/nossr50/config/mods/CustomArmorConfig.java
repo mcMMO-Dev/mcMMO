@@ -81,7 +81,7 @@ public class CustomArmorConfig extends ModConfigLoader{
                 repairables.add(RepairableFactory.getRepairable(id, repairID, repairData, repairQuantity, durability));
             }
 
-            armor = new CustomItem(id);
+            armor = new CustomItem(id, durability);
 
             idList.add(id);
             customIDs.add(id);

@@ -12,6 +12,7 @@ Version 1.3.09
  = Fixed bug where you could receive Archery XP from Potions
  = Fixed bug with duping blocks via piston pushing
  = Fixed bug with falling sand/gravel not being tracked
+ = Fixed bug with Tree Feller not working with custom axes
  ! Changed Spout settings to be in their own config file (spout.yml)
 
 Version 1.3.08

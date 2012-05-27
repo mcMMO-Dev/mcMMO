@@ -5,8 +5,8 @@ public class CustomTool extends CustomItem {
     private boolean abilityEnabled;
     private int tier;
 
-    public CustomTool(int tier, boolean abilityEnabled, double xpMultiplier, int itemID) {
-        super(itemID);
+    public CustomTool(int tier, boolean abilityEnabled, double xpMultiplier, short durability, int itemID) {
+        super(itemID, durability);
         this.xpMultiplier = xpMultiplier;
         this.abilityEnabled = abilityEnabled;
         this.tier = tier;

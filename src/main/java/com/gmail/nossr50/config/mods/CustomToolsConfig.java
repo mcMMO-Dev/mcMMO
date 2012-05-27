@@ -88,7 +88,7 @@ public class CustomToolsConfig extends ModConfigLoader {
                 repairables.add(RepairableFactory.getRepairable(id, repairID, repairData, repairQuantity, durability));
             }
 
-            tool = new CustomTool(tier, abilityEnabled, multiplier, id);
+            tool = new CustomTool(tier, abilityEnabled, multiplier, durability, id);
 
             idList.add(id);
             customIDs.add(id);

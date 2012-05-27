@@ -71,7 +71,19 @@ public class WoodCutting {
         inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
 
         /* This is to prevent using wood axes everytime you tree fell */
-        if ((inHand.getDurability() + durabilityLoss >= inHand.getType().getMaxDurability()) || inHand.getType().equals(Material.AIR)) {
+        if (ModChecks.isCustomTool(inHand)) {
+            if (inHand.getDurability() + durabilityLoss >= ModChecks.getToolFromItemStack(inHand).getDurability()) {
+                player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Splinter"));
+
+                int health = player.getHealth();
+
+                if (health >= 2) {
+                    Combat.dealDamage(player, random.nextInt(health - 1));
+                }
+                return;
+            }
+        }
+        else if ((inHand.getDurability() + durabilityLoss >= inHand.getType().getMaxDurability()) || inHand.getType().equals(Material.AIR)) {
             player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Splinter"));
 
             int health = player.getHealth();
