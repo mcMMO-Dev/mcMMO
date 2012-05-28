@@ -177,6 +177,14 @@ public class PlayerListener implements Listener {
                 }
             }
             
+            if(player.hasPermission("mcmmo.perks.xp.quadruple")) {
+                player.sendMessage(prefix+ChatColor.GREEN+"You have the Quadruple XP Perk and will receive 4x XP.");
+            } else if (player.hasPermission("mcmmo.perks.xp.triple")) {
+                player.sendMessage(prefix+ChatColor.GREEN+"You have the Triple XP Perk and will receive 3x XP.");
+            } else if (player.hasPermission("mcmmo.perks.xp.double")) {
+                player.sendMessage(prefix+ChatColor.GREEN+"You have the Double XP Perk and will receive 2x XP.");
+            }
+            
             player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.GREEN+ "http://www.mcmmo.info" + ChatColor.YELLOW + " - mcMMO Website & Forums"); //TODO: Locale
             //player.sendMessage(LocaleLoader.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
             //player.sendMessage(LocaleLoader.getString("mcMMO.Website"));
