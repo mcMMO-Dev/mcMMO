@@ -164,6 +164,7 @@ public class PlayerListener implements Listener {
         
         if (Config.getInstance().getMOTDEnabled() && Permissions.getInstance().motd(player)) {
             String prefix = ChatColor.GOLD+"[mcMMO] ";
+            String perkPrefix = ChatColor.RED+"[mcMMO Perks] ";
             
             player.sendMessage(prefix+ChatColor.YELLOW+"Running version " + ChatColor.DARK_AQUA + plugin.getDescription().getVersion()); //TODO: Locale
             
@@ -178,11 +179,11 @@ public class PlayerListener implements Listener {
             }
             
             if(player.hasPermission("mcmmo.perks.xp.quadruple")) {
-                player.sendMessage(prefix+ChatColor.GREEN+"You have the Quadruple XP Perk and will receive 4x XP.");
+                player.sendMessage(perkPrefix+ChatColor.DARK_AQUA+"Quadruple XP - Receive 4x XP.");
             } else if (player.hasPermission("mcmmo.perks.xp.triple")) {
-                player.sendMessage(prefix+ChatColor.GREEN+"You have the Triple XP Perk and will receive 3x XP.");
+                player.sendMessage(perkPrefix+ChatColor.DARK_AQUA+"Triple XP - Receive 3x XP.");
             } else if (player.hasPermission("mcmmo.perks.xp.double")) {
-                player.sendMessage(prefix+ChatColor.GREEN+"You have the Double XP Perk and will receive 2x XP.");
+                player.sendMessage(perkPrefix+ChatColor.DARK_AQUA+"Double XP - Receive 2x XP.");
             }
             
             player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.GREEN+ "http://www.mcmmo.info" + ChatColor.YELLOW + " - mcMMO Website & Forums"); //TODO: Locale
