@@ -137,7 +137,23 @@ permissions:
             mcmmo.admin: true
             mcmmo.tools.*: true
     mcmmo.admin:
-        description: Allows access to mmoupdate and other sensitive commands        
+        description: Allows access to mmoupdate and other sensitive commands
+    mcmmo.perks.xp:
+        default: false
+        description: XP Perks typically given to donors or VIPs
+        children:
+            mcmmo.perks.xp.quadruple;
+            mcmmo.perks.xp.triple;
+            mcmmo.perks.xp.double;
+    mcmmo.perks.xp.quadruple:
+        default: false
+        description: Quadruples incoming XP
+    mcmmo.perks.xp.triple:
+        default: false
+        description: Triples incoming XP
+    mcmmo.perks.xp.double
+        default: false
+        description: Doubles incoming XP
     mcmmo.bypass.*:
         default: false
         description: Implies all bypass permissions.

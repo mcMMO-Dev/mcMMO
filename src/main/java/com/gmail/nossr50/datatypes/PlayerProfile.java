@@ -1002,7 +1002,7 @@ public class PlayerProfile {
     }
 
     /**
-     * Adds XP to the player, this is affected by skill modifiers and XP Rate
+     * Adds XP to the player, this is affected by skill modifiers and XP Rate and Permissions
      *
      * @param player The player to add XP to
      * @param skillType The skill to add XP to
@@ -1038,6 +1038,14 @@ public class PlayerProfile {
             if (tool != null) {
                 xp = (int) (xp * tool.getXpMultiplier());
             }
+        }
+        
+        if(player.hasPermission("mcmmo.perks.xp.quadruple")) {
+            xp = xp * 4;
+        } else if (player.hasPermission("mcmmo.perks.xp.triple")) {
+            xp = xp * 3;
+        } else if (player.hasPermission("mcmmo.perks.xp.double")) {
+            xp = xp * 2;
         }
 
         mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
