@@ -142,16 +142,16 @@ permissions:
         default: false
         description: XP Perks typically given to donors or VIPs
         children:
-            mcmmo.perks.xp.quadruple;
-            mcmmo.perks.xp.triple;
-            mcmmo.perks.xp.double;
+            mcmmo.perks.xp.quadruple: true
+            mcmmo.perks.xp.triple: true
+            mcmmo.perks.xp.double: true
     mcmmo.perks.xp.quadruple:
         default: false
         description: Quadruples incoming XP
     mcmmo.perks.xp.triple:
         default: false
         description: Triples incoming XP
-    mcmmo.perks.xp.double
+    mcmmo.perks.xp.double:
         default: false
         description: Doubles incoming XP
     mcmmo.bypass.*:
