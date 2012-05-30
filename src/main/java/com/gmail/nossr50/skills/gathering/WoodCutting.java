@@ -67,9 +67,6 @@ public class WoodCutting {
         int xp = 0;
         ItemStack inHand = player.getItemInHand();
 
-        /* Damage the tool */
-        inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
-
         /* This is to prevent using wood axes everytime you tree fell */
         if (ModChecks.isCustomTool(inHand)) {
             if (inHand.getDurability() + durabilityLoss >= ModChecks.getToolFromItemStack(inHand).getDurability()) {
@@ -93,6 +90,9 @@ public class WoodCutting {
             }
             return;
         }
+
+        /* Damage the tool */
+        inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
 
         //Prepare ItemStacks
         ItemStack item = null;
