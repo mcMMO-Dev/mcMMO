@@ -30,7 +30,6 @@ public class PCommand implements CommandExecutor {
             return true;
         }
 
-
         switch (args.length) {
         case 0:
             if (sender instanceof Player) {
@@ -71,13 +70,20 @@ public class PCommand implements CommandExecutor {
                     message = message + " " + args [i];
                 }
 
-                if (PP.getPartyChatMode()) {
-                    player.chat(message);
+                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), PP.getParty(), message);
+                plugin.getServer().getPluginManager().callEvent(chatEvent);
+
+                if (chatEvent.isCancelled()) {
+                    return true;
                 }
-                else {
-                    PP.togglePartyChat();
-                    player.chat(message);
-                    PP.togglePartyChat();
+
+                message = chatEvent.getMessage();
+                String prefix = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getName() + ChatColor.GREEN + ") ";
+
+                plugin.getLogger().info("[P](" + PP.getParty() + ")" + "<" + player.getName() + "> " + message);
+
+                for (Player p : Party.getInstance().getOnlineMembers(PP.getParty())) {
+                    p.sendMessage(prefix + message);
                 }
             }
             else {

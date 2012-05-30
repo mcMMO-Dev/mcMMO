@@ -329,18 +329,15 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            event.setMessage(chatEvent.getMessage());
+            String prefix = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getName() + ChatColor.GREEN + ") ";
 
-            Set<Player> intendedRecipients = new HashSet<Player>();
+            plugin.getLogger().info("[P](" + PP.getParty() + ")" + "<" + player.getName() + "> " + chatEvent.getMessage());
 
-            for (Player x : Party.getInstance().getOnlineMembers(player)) {
-                intendedRecipients.add(x);
+            for (Player p : Party.getInstance().getOnlineMembers(PP.getParty())) {
+                p.sendMessage(prefix + chatEvent.getMessage());
             }
 
-            ChatColor bracketColor = ChatColor.GREEN;
-
-            event.setFormat(bracketColor + "(" + ChatColor.WHITE + "%1$s" + bracketColor + ") %2$s");
-            event.getRecipients().retainAll(intendedRecipients);
+            event.setCancelled(true);
         }
         else if (PP.getAdminChatMode()) {
             McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), event.getMessage());
