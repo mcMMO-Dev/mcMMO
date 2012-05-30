@@ -63,15 +63,23 @@ public class ACommand implements CommandExecutor {
 
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                PP = Users.getProfile(player);
 
-                if (PP.getAdminChatMode()) {
-                    player.chat(message);
+                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), message);
+                plugin.getServer().getPluginManager().callEvent(chatEvent);
+
+                if (chatEvent.isCancelled()) {
+                    return true;
                 }
-                else {
-                    PP.toggleAdminChat();
-                    player.chat(message);
-                    PP.toggleAdminChat();
+
+                message = chatEvent.getMessage();
+                String prefix = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getName() + ChatColor.AQUA + "} ";
+
+                plugin.getLogger().info("[A]<" + player.getName() + "> " + message);
+
+                for (Player p : plugin.getServer().getOnlinePlayers()) {
+                    if (Permissions.getInstance().adminChat(player) || player.isOp()) {
+                        p.sendMessage(prefix + message);
+                    }
                 }
             }
             else {

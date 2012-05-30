@@ -347,20 +347,15 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            event.setMessage(chatEvent.getMessage());
+            String prefix = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getName() + ChatColor.AQUA + "} ";
 
-            Set<Player> intendedRecipients = new HashSet<Player>();
+            plugin.getLogger().info("[A]<" + player.getName() + "> " + chatEvent.getMessage());
 
-            for (Player x : plugin.getServer().getOnlinePlayers()) {
-                if (x.isOp() || Permissions.getInstance().adminChat(x)) {
-                    intendedRecipients.add(x);
+            for (Player p : plugin.getServer().getOnlinePlayers()) {
+                if (Permissions.getInstance().adminChat(player) || player.isOp()) {
+                    p.sendMessage(prefix + chatEvent.getMessage());
                 }
             }
-
-            ChatColor bracketColor = ChatColor.AQUA;
-
-            event.setFormat(bracketColor + "{" + ChatColor.WHITE + "%1$s" + bracketColor + "} %2$s");
-            event.getRecipients().retainAll(intendedRecipients);
         }
     }
 
