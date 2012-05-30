@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.blockmeta;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+
+import com.gmail.nossr50.mcMMO;
 
 public class HashChunkletManager implements ChunkletManager {
     private HashMap<String, ChunkletStore> store = new HashMap<String, ChunkletStore>();
@@ -211,6 +214,11 @@ public class HashChunkletManager implements ChunkletManager {
             objIn.close();
             fileIn.close();
         } catch (IOException ex) {
+            if (ex instanceof EOFException) {
+                // EOF should only happen on Chunklets that somehow have been corrupted.
+                mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read, data in this are will be lost.");
+                return ChunkletStoreFactory.getChunkletStore();
+            }
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
