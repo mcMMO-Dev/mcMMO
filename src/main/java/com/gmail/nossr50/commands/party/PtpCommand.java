@@ -57,7 +57,7 @@ public class PtpCommand implements CommandExecutor {
             }
 
             if (target == null) {
-                player.sendMessage(LocaleLoader.getString("Party.Teleport.Invalid"));
+                player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
                 return true;
             }
 
