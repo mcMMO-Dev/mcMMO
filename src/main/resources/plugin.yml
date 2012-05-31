@@ -284,7 +284,7 @@ permissions:
             mcmmo.ability.repair.otherrepair: true
     mcmmo.ability.repair.repairbonus:
         description: Allows access to Super Repair bonus
-    mcmmo.ability.repair.repairmastry:
+    mcmmo.ability.repair.repairmastery:
         description: Allows access to Repair Mastery
     mcmmo.ability.repair.arcaneforging:
         description: Allows access to the Arcane Forging ability
@@ -465,7 +465,6 @@ permissions:
             mcmmo.skills.swords: true 
             mcmmo.skills.axes: true 
             mcmmo.skills.acrobatics: true
-            mcmmo.skills.blastmining: true
     mcmmo.skills.fishing:
         description: Allows access to the Fishing skill
     mcmmo.skills.taming:
