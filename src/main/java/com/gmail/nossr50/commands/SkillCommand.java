@@ -15,7 +15,7 @@ import com.gmail.nossr50.util.Page;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-public abstract class SkillCommand implements CommandExecutor{
+public abstract class SkillCommand implements CommandExecutor {
     private SkillType skill;
     private String skillString;
     private String permission;
