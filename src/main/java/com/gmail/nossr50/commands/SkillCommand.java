@@ -20,17 +20,17 @@ public abstract class SkillCommand implements CommandExecutor{
     private String skillString;
     private String permission;
 
-    private Player player;
+    protected Player player;
     private PlayerProfile profile;
-    private float skillValue;
+    protected float skillValue;
 
-    private DecimalFormat percent = new DecimalFormat("##0.00%");
-    private Permissions permInstance = Permissions.getInstance();
+    protected DecimalFormat percent = new DecimalFormat("##0.00%");
+    protected Permissions permInstance = Permissions.getInstance();
 
-    public SkillCommand(SkillType skill, String permission) {
+    public SkillCommand(SkillType skill) {
         this.skill = skill;
         this.skillString = Misc.getCapitalized(skill.toString());
-        this.permission = permission;
+        this.permission = "mcmmo.skills." + skillString.toLowerCase();
     }
 
     @Override
@@ -81,5 +81,5 @@ public abstract class SkillCommand implements CommandExecutor{
 
     protected abstract boolean statsHeaderPermissions();
 
-    protected abstract boolean statsDisplay();
+    protected abstract void statsDisplay();
 }
