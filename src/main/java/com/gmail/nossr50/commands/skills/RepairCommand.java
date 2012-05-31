@@ -1,26 +1,15 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Repairable;
-import com.gmail.nossr50.util.Page;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class RepairCommand implements CommandExecutor {
-    private float skillValue;
+public class RepairCommand extends SkillCommand {
+    private int arcaneForgingRank;
     private String repairMasteryBonus;
     private String superRepairChance;
 
@@ -40,33 +29,56 @@ public class RepairCommand implements CommandExecutor {
     private int ironLevel;
     private int stoneLevel;
 
+    public RepairCommand() {
+        super(SkillType.REPAIR);
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
+    protected void dataCalculations() {
+        // We're using pickaxes here, not the best but it works
+        Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
+        Repairable goldRepairable = mcMMO.repairManager.getRepairable(285);
+        Repairable ironRepairable = mcMMO.repairManager.getRepairable(257);
+        Repairable stoneRepairable = mcMMO.repairManager.getRepairable(274);
+
+        diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
+        goldLevel = (goldRepairable == null) ? 0 : goldRepairable.getMinimumLevel();
+        ironLevel = (ironRepairable == null) ? 0 : ironRepairable.getMinimumLevel();
+        stoneLevel = (stoneRepairable == null) ? 0 : stoneRepairable.getMinimumLevel();
+
+        repairMasteryBonus = percent.format(skillValue / 500);
+
+        if (skillValue >= 1000) {
+            superRepairChance = "100.00%";
+        }
+        else {
+            superRepairChance = percent.format(skillValue / 1000);
         }
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.repair")) {
-            return true;
-        }
+        arcaneForgingRank = Repair.getArcaneForgingRank(profile);
+    }
 
-        Player player = (Player) sender;
-        PlayerProfile PP = Users.getProfile(player);
+    @Override
+    protected void permissionsCheck() {
+        canSuperRepair = permInstance.repairBonus(player);
+        canMasterRepair = permInstance.repairMastery(player);
+        canArcaneForge = permInstance.arcaneForging(player);
+        canRepairDiamond = permInstance.diamondRepair(player);
+        canRepairGold = permInstance.goldRepair(player);
+        canRepairIron = permInstance.ironRepair(player);
+        canRepairStone = permInstance.stoneRepair(player);
+        canRepairString = permInstance.stringRepair(player);
+        canRepairLeather = permInstance.leatherRepair(player);
+        canRepairWood = permInstance.woodRepair(player);
+    }
 
-        skillValue = (float) PP.getSkillLevel(SkillType.REPAIR);
-        dataCalculations(skillValue);
-        permissionsCheck(player);
+    @Override
+    protected boolean effectsHeaderPermissions() {
+        return canArcaneForge || canRepairDiamond || canRepairGold || canRepairIron || canMasterRepair || canRepairStone || canSuperRepair || canRepairString || canRepairWood || canRepairLeather;
+    }
 
-        int arcaneForgingRank = Repair.getArcaneForgingRank(PP);
-
-        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Repair.SkillName") }));
-        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Repair") }));
-        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.REPAIR), PP.getSkillXpLevel(SkillType.REPAIR), PP.getXpToLevel(SkillType.REPAIR) }));
-
-        if (canArcaneForge || canRepairDiamond || canRepairGold || canRepairIron || canMasterRepair || canRepairStone || canSuperRepair || canRepairString || canRepairWood || canRepairLeather) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
-        }
-
+    @Override
+    protected void effectsDisplay() {
         player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.0"), LocaleLoader.getString("Repair.Effect.1") }));
 
         if (canMasterRepair) {
@@ -98,11 +110,15 @@ public class RepairCommand implements CommandExecutor {
         if (canArcaneForge) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.8"), LocaleLoader.getString("Repair.Effect.9") }));
         }
+    }
 
-        if (canArcaneForge || canMasterRepair || canSuperRepair) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
-        }
+    @Override
+    protected boolean statsHeaderPermissions() {
+        return canArcaneForge || canMasterRepair || canSuperRepair;
+    }
 
+    @Override
+    protected void statsDisplay() {
         if (canMasterRepair) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.Mastery", new Object[] { repairMasteryBonus }));
         }
@@ -122,48 +138,5 @@ public class RepairCommand implements CommandExecutor {
                 player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", new Object[] { Repair.getDowngradeChance(arcaneForgingRank) }));
             }
         }
-
-        Page.grabGuidePageForSkill(SkillType.REPAIR, player, args);
-
-        return true;
-    }
-
-    private void dataCalculations(float skillValue) {
-        DecimalFormat percent = new DecimalFormat("##0.00%");
-
-        // We're using pickaxes here, not the best but works
-        Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
-        Repairable goldRepairable = mcMMO.repairManager.getRepairable(285);
-        Repairable ironRepairable = mcMMO.repairManager.getRepairable(257);
-        Repairable stoneRepairable = mcMMO.repairManager.getRepairable(274);
-
-        diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
-        goldLevel = (goldRepairable == null) ? 0 : goldRepairable.getMinimumLevel();
-        ironLevel = (ironRepairable == null) ? 0 : ironRepairable.getMinimumLevel();
-        stoneLevel = (stoneRepairable == null) ? 0 : stoneRepairable.getMinimumLevel();
-
-        repairMasteryBonus = percent.format(skillValue / 500);
-
-        if (skillValue >= 1000) {
-            superRepairChance = "100.00%";
-        }
-        else {
-            superRepairChance = percent.format(skillValue / 1000);
-        }
-    }
-
-    private void permissionsCheck(Player player) {
-        Permissions permInstance = Permissions.getInstance();
-
-        canSuperRepair = permInstance.repairBonus(player);
-        canMasterRepair = permInstance.repairMastery(player);
-        canArcaneForge = permInstance.arcaneForging(player);
-        canRepairDiamond = permInstance.diamondRepair(player);
-        canRepairGold = permInstance.goldRepair(player);
-        canRepairIron = permInstance.ironRepair(player);
-        canRepairStone = permInstance.stoneRepair(player);
-        canRepairString = permInstance.stringRepair(player);
-        canRepairLeather = permInstance.leatherRepair(player);
-        canRepairWood = permInstance.woodRepair(player);
     }
 }
