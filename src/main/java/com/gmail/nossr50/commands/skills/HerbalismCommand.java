@@ -1,23 +1,11 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Page;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class HerbalismCommand implements CommandExecutor {
-    private float skillValue;
+public class HerbalismCommand extends SkillCommand {
     private String greenTerraLength;
     private String greenThumbChance;
     private String greenThumbStage;
@@ -31,83 +19,12 @@ public class HerbalismCommand implements CommandExecutor {
     private boolean canDoubleDrop;
     private boolean doubleDropsDisabled;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
-        }
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.herbalism")) {
-            return true;
-        }
-
-        Player player = (Player) sender;
-        PlayerProfile PP = Users.getProfile(player);
-
-        skillValue = (float) PP.getSkillLevel(SkillType.HERBALISM);
-        dataCalculations(skillValue);
-        permissionsCheck(player);
-
-        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Herbalism.SkillName") }));
-        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Herbalism") }));
-        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.HERBALISM), PP.getSkillXpLevel(SkillType.HERBALISM), PP.getXpToLevel(SkillType.HERBALISM) }));
-
-        if (canGreenTerra || (canDoubleDrop && !doubleDropsDisabled )|| canFarmersDiet || canGreenThumbBlocks || canGreenThumbWheat) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
-        }
-
-        if (canGreenTerra) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.0"), LocaleLoader.getString("Herbalism.Effect.1") }));
-        }
-
-        if (canGreenThumbWheat) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.2"), LocaleLoader.getString("Herbalism.Effect.3") }));
-        }
-
-        if (canGreenThumbBlocks) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.4"), LocaleLoader.getString("Herbalism.Effect.5") }));
-        }
-
-        if (canFarmersDiet) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.6"), LocaleLoader.getString("Herbalism.Effect.7") }));
-        }
-
-        if (canDoubleDrop && !doubleDropsDisabled) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.8"), LocaleLoader.getString("Herbalism.Effect.9") }));
-        }
-
-        if (canGreenTerra || (canDoubleDrop && !doubleDropsDisabled ) || canFarmersDiet || canGreenThumbBlocks || canGreenThumbWheat) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
-        }
-
-        if (canGreenTerra) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", new Object[] { greenTerraLength }));
-        }
-
-        if (canGreenThumbBlocks || canGreenThumbWheat) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }));
-        }
-
-        if (canGreenThumbWheat) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Stage", new Object[] { greenThumbStage }));
-        }
-
-        if (canFarmersDiet) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.FD", new Object[] { farmersDietRank } ));
-        }
-
-        if (canDoubleDrop && !doubleDropsDisabled) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }));
-        }
-
-        Page.grabGuidePageForSkill(SkillType.HERBALISM, player, args);
-
-        return true;
+    public HerbalismCommand() {
+        super(SkillType.HERBALISM);
     }
 
-    private void dataCalculations(float skillValue) {
-        DecimalFormat percent = new DecimalFormat("##0.00%");
-
+    @Override
+    protected void dataCalculations() {
         greenTerraLength = String.valueOf(2 + ((int) skillValue / 50));
 
         if (skillValue >= 1500) {
@@ -154,8 +71,8 @@ public class HerbalismCommand implements CommandExecutor {
         }
     }
 
-    private void permissionsCheck(Player player) {
-        Permissions permInstance = Permissions.getInstance();
+    @Override
+    protected void permissionsCheck() {
         Config configInstance = Config.getInstance();
 
         canGreenTerra = permInstance.greenTerra(player);
@@ -164,5 +81,61 @@ public class HerbalismCommand implements CommandExecutor {
         canFarmersDiet = permInstance.farmersDiet(player);
         canDoubleDrop = permInstance.herbalismDoubleDrops(player);
         doubleDropsDisabled = configInstance.herbalismDoubleDropsDisabled();
+    }
+
+    @Override
+    protected boolean effectsHeaderPermissions() {
+        return canGreenTerra || (canDoubleDrop && !doubleDropsDisabled) || canFarmersDiet || canGreenThumbBlocks || canGreenThumbWheat;
+    }
+
+    @Override
+    protected void effectsDisplay() {
+        if (canGreenTerra) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.0"), LocaleLoader.getString("Herbalism.Effect.1") }));
+        }
+
+        if (canGreenThumbWheat) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.2"), LocaleLoader.getString("Herbalism.Effect.3") }));
+        }
+
+        if (canGreenThumbBlocks) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.4"), LocaleLoader.getString("Herbalism.Effect.5") }));
+        }
+
+        if (canFarmersDiet) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.6"), LocaleLoader.getString("Herbalism.Effect.7") }));
+        }
+
+        if (canDoubleDrop && !doubleDropsDisabled) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.8"), LocaleLoader.getString("Herbalism.Effect.9") }));
+        }
+    }
+
+    @Override
+    protected boolean statsHeaderPermissions() {
+        return canGreenTerra || (canDoubleDrop && !doubleDropsDisabled) || canFarmersDiet || canGreenThumbBlocks || canGreenThumbWheat;
+    }
+
+    @Override
+    protected void statsDisplay() {
+        if (canGreenTerra) {
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", new Object[] { greenTerraLength }));
+        }
+
+        if (canGreenThumbBlocks || canGreenThumbWheat) {
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }));
+        }
+
+        if (canGreenThumbWheat) {
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Stage", new Object[] { greenThumbStage }));
+        }
+
+        if (canFarmersDiet) {
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.FD", new Object[] { farmersDietRank } ));
+        }
+
+        if (canDoubleDrop && !doubleDropsDisabled) {
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }));
+        }
     }
 }
