@@ -16,6 +16,7 @@ Version 1.3.09
  = Fixed bug with Tree Feller not working with custom axes
  = Fixed bug with locale strings when trying to teleport to a non-existent player
  = Fixed bug with Tree Feller changing durability before checking for axe splintering
+ = Fixed bug with Repair Mastery permission due to typo
  ! Changed Spout settings to be in their own config file (spout.yml)
 
 Version 1.3.08
