@@ -1,23 +1,11 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Page;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class TamingCommand implements CommandExecutor {
-    private float skillValue;
+public class TamingCommand extends SkillCommand {
     private String goreChance;
 
     private boolean canBeastLore;
@@ -29,30 +17,39 @@ public class TamingCommand implements CommandExecutor {
     private boolean canCallWild;
     private boolean canFastFood;
 
+    public TamingCommand() {
+        super(SkillType.TAMING);
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
+    protected void dataCalculations() {
+        if (skillValue >= 1000) {
+            goreChance = "100.00%";
         }
+        else {
+            goreChance = percent.format(skillValue / 1000);
+        }    }
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.taming")) {
-            return true;
-        }
+    @Override
+    protected void permissionsCheck() {
+        canBeastLore = permInstance.beastLore(player);
+        canCallWild = permInstance.callOfTheWild(player);
+        canEnvironmentallyAware = permInstance.environmentallyAware(player);
+        canFastFood = permInstance.fastFoodService(player);
+        canGore = permInstance.gore(player);
+        canSharpenedClaws = permInstance.sharpenedClaws(player);
+        canShockProof = permInstance.shockProof(player);
+        canThickFur = permInstance.thickFur(player);
+    }
 
-        Player player = (Player) sender;
-        PlayerProfile PP = Users.getProfile(player);
+    @Override
+    protected boolean effectsHeaderPermissions() {
+        return canBeastLore || canCallWild || canEnvironmentallyAware || canFastFood || canGore || canSharpenedClaws || canShockProof || canThickFur;
+    }
 
-        skillValue = (float) PP.getSkillLevel(SkillType.TAMING);
-        dataCalculations(skillValue);
-        permissionsCheck(player);
-
-        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Taming.SkillName") }));
-        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Taming") }));
-        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.TAMING), PP.getSkillXpLevel(SkillType.TAMING), PP.getXpToLevel(SkillType.TAMING) }));
-
-        if (canBeastLore || canCallWild || canEnvironmentallyAware || canFastFood || canGore || canSharpenedClaws || canShockProof || canThickFur) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
-        }
+    @Override
+    protected void effectsDisplay() {
+        Config configInstance = Config.getInstance();
 
         if (canBeastLore) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.0"), LocaleLoader.getString("Taming.Effect.1") }));
@@ -84,16 +81,20 @@ public class TamingCommand implements CommandExecutor {
 
         if (canCallWild) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.12"), LocaleLoader.getString("Taming.Effect.13") }));
-            player.sendMessage(LocaleLoader.getString("Taming.Effect.14", new Object[] { Config.getInstance().getTamingCOTWOcelotCost() }));
-            player.sendMessage(LocaleLoader.getString("Taming.Effect.15", new Object[] { Config.getInstance().getTamingCOTWWolfCost() }));
+            player.sendMessage(LocaleLoader.getString("Taming.Effect.14", new Object[] { configInstance.getTamingCOTWOcelotCost() }));
+            player.sendMessage(LocaleLoader.getString("Taming.Effect.15", new Object[] { configInstance.getTamingCOTWWolfCost() }));
         }
+    }
 
-        if (canEnvironmentallyAware || canFastFood || canGore || canSharpenedClaws || canShockProof || canThickFur) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
-        }
+    @Override
+    protected boolean statsHeaderPermissions() {
+        return canEnvironmentallyAware || canFastFood || canGore || canSharpenedClaws || canShockProof || canThickFur;
+    }
 
+    @Override
+    protected void statsDisplay() {
         if (canFastFood) {
-            if (PP.getSkillLevel(SkillType.TAMING) < 50) {
+            if (skillValue < 50) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.4") }));
             }
             else {
@@ -102,7 +103,7 @@ public class TamingCommand implements CommandExecutor {
         }
 
         if (canEnvironmentallyAware) {
-            if (PP.getSkillLevel(SkillType.TAMING) < 100) {
+            if (skillValue < 100) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.0") }));
             }
             else {
@@ -111,7 +112,7 @@ public class TamingCommand implements CommandExecutor {
         }
 
         if (canThickFur) {
-            if (PP.getSkillLevel(SkillType.TAMING) < 250) {
+            if (skillValue < 250) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.1") }));
             }
             else {
@@ -120,7 +121,7 @@ public class TamingCommand implements CommandExecutor {
         }
 
         if (canShockProof) {
-            if (PP.getSkillLevel(SkillType.TAMING) < 500) {
+            if (skillValue < 500) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.2") }));
             }
             else {
@@ -129,7 +130,7 @@ public class TamingCommand implements CommandExecutor {
         }
 
         if (canSharpenedClaws) {
-            if (PP.getSkillLevel(SkillType.TAMING) < 750) {
+            if (skillValue < 750) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.3") }));
             }
             else {
@@ -140,33 +141,5 @@ public class TamingCommand implements CommandExecutor {
         if (canGore) {
             player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", new Object[] { goreChance }));
         }
-
-        Page.grabGuidePageForSkill(SkillType.TAMING, player, args);
-
-        return true;
-    }
-
-    private void dataCalculations(float skillValue) {
-        DecimalFormat percent = new DecimalFormat("##0.00%");
-
-        if (skillValue >= 1000) {
-            goreChance = "100.00%";
-        }
-        else {
-            goreChance = percent.format(skillValue / 1000);
-        }
-    }
-
-    private void permissionsCheck(Player player) {
-        Permissions permInstance = Permissions.getInstance();
-
-        canBeastLore = permInstance.beastLore(player);
-        canCallWild = permInstance.callOfTheWild(player);
-        canEnvironmentallyAware = permInstance.environmentallyAware(player);
-        canFastFood = permInstance.fastFoodService(player);
-        canGore = permInstance.gore(player);
-        canSharpenedClaws = permInstance.sharpenedClaws(player);
-        canShockProof = permInstance.shockProof(player);
-        canThickFur = permInstance.thickFur(player);
     }
 }
