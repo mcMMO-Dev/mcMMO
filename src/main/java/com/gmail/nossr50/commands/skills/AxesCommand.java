@@ -1,21 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class AxesCommand implements CommandExecutor {
-    private float skillValue;
+public class AxesCommand extends SkillCommand {
     private String critChance;
     private String bonusDamage;
     private String impactDamage;
@@ -28,31 +17,46 @@ public class AxesCommand implements CommandExecutor {
     private boolean canImpact;
     private boolean canGreaterImpact;
 
+    public AxesCommand() {
+        super(SkillType.AXES);
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
+    protected void dataCalculations() {
+        impactDamage = String.valueOf(5 + ((int) skillValue / 30));
+        skullSplitterLength = String.valueOf(2 + ((int) skillValue / 50));
+        greaterImpactDamage = "2";
+
+        if (skillValue >= 750) {
+            critChance = "37.50";
+            bonusDamage = "4";
         }
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.axes")) {
-            return true;
+        else if (skillValue >= 200) {
+            critChance = percent.format(skillValue / 2000);
+            bonusDamage = "4";
         }
-
-        Player player = (Player) sender;
-        PlayerProfile PP = Users.getProfile(player);
-
-        skillValue = (float) PP.getSkillLevel(SkillType.AXES);
-        dataCalculations(skillValue);
-        permissionsCheck(player);
-
-        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Axes.SkillName") }));
-        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Axes") }));
-        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.AXES), PP.getSkillXpLevel(SkillType.AXES), PP.getXpToLevel(SkillType.AXES) }));
-
-        if (canSkullSplitter || canCritical || canBonusDamage || canImpact || canGreaterImpact) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
+        else {
+            critChance = percent.format(skillValue / 2000);
+            bonusDamage = String.valueOf((int) skillValue / 50);
         }
+    }
 
+    @Override
+    protected void permissionsCheck() {
+        canSkullSplitter = permInstance.skullSplitter(player);
+        canCritical = permInstance.criticalHit(player);
+        canBonusDamage = permInstance.axeBonus(player);
+        canImpact = permInstance.impact(player);
+        canGreaterImpact = permInstance.greaterImpact(player);
+    }
+
+    @Override
+    protected boolean effectsHeaderPermissions() {
+        return canSkullSplitter || canCritical || canBonusDamage || canImpact || canGreaterImpact;
+    }
+
+    @Override
+    protected void effectsDisplay() {
         if (canSkullSplitter) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Axes.Effect.0"), LocaleLoader.getString("Axes.Effect.1") }));
         }
@@ -72,11 +76,15 @@ public class AxesCommand implements CommandExecutor {
         if (canGreaterImpact) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Axes.Effect.8"), LocaleLoader.getString("Axes.Effect.9") }));
         }
+    }
 
-        if (canSkullSplitter || canCritical || canBonusDamage || canImpact || canGreaterImpact) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
-        }
+    @Override
+    protected boolean statsHeaderPermissions() {
+        return canSkullSplitter || canCritical || canBonusDamage || canImpact || canGreaterImpact;
+    }
 
+    @Override
+    protected void statsDisplay() {
         if (canBonusDamage) {
             player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Axes.Ability.Bonus.0"), LocaleLoader.getString("Axes.Ability.Bonus.1", new Object[] {bonusDamage}) }));
         }
@@ -96,38 +104,5 @@ public class AxesCommand implements CommandExecutor {
         if (canSkullSplitter) {
             player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", new Object[] { skullSplitterLength }));
         }
-
-        return true;
-    }
-
-    private void dataCalculations(float skillValue) {
-        DecimalFormat percent = new DecimalFormat("##0.00%");
-
-        impactDamage = String.valueOf(5 + ((int) skillValue / 30));
-        skullSplitterLength = String.valueOf(2 + ((int) skillValue / 50));
-        greaterImpactDamage = "2";
-
-        if (skillValue >= 750) {
-            critChance = "37.50";
-            bonusDamage = "4";
-        }
-        else if (skillValue >= 200) {
-            critChance = percent.format(skillValue / 2000);
-            bonusDamage = "4";
-        }
-        else {
-            critChance = percent.format(skillValue / 2000);
-            bonusDamage = String.valueOf((int) skillValue / 50);
-        }
-    }
-
-    private void permissionsCheck(Player player) {
-        Permissions permInstance = Permissions.getInstance();
-
-        canSkullSplitter = permInstance.skullSplitter(player);
-        canCritical = permInstance.criticalHit(player);
-        canBonusDamage = permInstance.axeBonus(player);
-        canImpact = permInstance.impact(player);
-        canGreaterImpact = permInstance.greaterImpact(player);
     }
 }
