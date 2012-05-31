@@ -13,8 +13,8 @@ public class AcrobaticsCommand extends SkillCommand {
     private boolean canRoll;
     private boolean canGracefulRoll;
 
-    public AcrobaticsCommand(SkillType skill) {
-        super(skill);
+    public AcrobaticsCommand() {
+        super(SkillType.ACROBATICS);
     }
 
     @Override

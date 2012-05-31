@@ -1,7 +1,6 @@
 package com.gmail.nossr50;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.commands.skills.*;
 import com.gmail.nossr50.commands.spout.*;
 import com.gmail.nossr50.commands.mc.*;
@@ -285,7 +284,7 @@ public class mcMMO extends JavaPlugin {
 
         //Register commands
         //Skills commands
-        getCommand("acrobatics").setExecutor(new AcrobaticsCommand(SkillType.ACROBATICS));
+        getCommand("acrobatics").setExecutor(new AcrobaticsCommand());
         getCommand("archery").setExecutor(new ArcheryCommand());
         getCommand("axes").setExecutor(new AxesCommand());
         getCommand("excavation").setExecutor(new ExcavationCommand());
