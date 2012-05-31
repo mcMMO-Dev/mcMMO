@@ -1,22 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Page;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class SwordsCommand implements CommandExecutor {
-    private float skillValue;
+public class SwordsCommand extends SkillCommand {
     private String counterAttackChance;
     private String bleedLength;
     private String bleedChance;
@@ -26,70 +14,12 @@ public class SwordsCommand implements CommandExecutor {
     private boolean canSerratedStrike;
     private boolean canBleed;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
-        }
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.swords")) {
-            return true;
-        }
-
-        Player player = (Player) sender;
-        PlayerProfile PP = Users.getProfile(player);
-
-        skillValue = (float) PP.getSkillLevel(SkillType.SWORDS);
-        dataCalculations(skillValue);
-        permissionsCheck(player);
-
-        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Swords.SkillName") }));
-        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.Swords") }));
-        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.SWORDS), PP.getSkillXpLevel(SkillType.SWORDS), PP.getXpToLevel(SkillType.SWORDS) }));
-
-        if (canBleed || canCounter || canSerratedStrike) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
-        }
-
-        if (canCounter) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.0"), LocaleLoader.getString("Swords.Effect.1") }));
-        }
-
-        if (canSerratedStrike) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.2"), LocaleLoader.getString("Swords.Effect.3") }));
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.4"), LocaleLoader.getString("Swords.Effect.5") }));
-        }
-
-        if (canBleed) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.6"), LocaleLoader.getString("Swords.Effect.7") }));
-        }
-
-        if (canBleed || canCounter || canSerratedStrike) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
-        }
-
-        if (canCounter) {
-            player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }));
-        }
-
-        if (canBleed) {
-            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Length", new Object[] { bleedLength }));
-            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Note"));
-            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }));
-        }
-
-        if (canSerratedStrike) {
-            player.sendMessage(LocaleLoader.getString("Swords.SS.Length", new Object[] { serratedStrikesLength }));
-        }
-
-        Page.grabGuidePageForSkill(SkillType.SWORDS, player, args);
-
-        return true;
+    public SwordsCommand() {
+        super(SkillType.SWORDS);
     }
 
-    private void dataCalculations(float skillValue) {
-        DecimalFormat percent = new DecimalFormat("##0.00%");
-
+    @Override
+    protected void dataCalculations() {
         serratedStrikesLength = String.valueOf(2 + ((int) skillValue / 50));
 
         if (skillValue >= 750) {
@@ -109,11 +39,53 @@ public class SwordsCommand implements CommandExecutor {
         }
     }
 
-    private void permissionsCheck(Player player) {
-        Permissions permInstance = Permissions.getInstance();
-
+    @Override
+    protected void permissionsCheck() {
         canBleed = permInstance.swordsBleed(player);
         canCounter = permInstance.counterAttack(player);
         canSerratedStrike = permInstance.serratedStrikes(player);
+    }
+
+    @Override
+    protected boolean effectsHeaderPermissions() {
+        return canBleed || canCounter || canSerratedStrike;
+    }
+
+    @Override
+    protected void effectsDisplay() {
+        if (canCounter) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.0"), LocaleLoader.getString("Swords.Effect.1") }));
+        }
+
+        if (canSerratedStrike) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.2"), LocaleLoader.getString("Swords.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.4"), LocaleLoader.getString("Swords.Effect.5") }));
+        }
+
+        if (canBleed) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.6"), LocaleLoader.getString("Swords.Effect.7") }));
+        }
+    }
+
+    @Override
+    protected boolean statsHeaderPermissions() {
+        return canBleed || canCounter || canSerratedStrike;
+    }
+
+    @Override
+    protected void statsDisplay() {
+        if (canCounter) {
+            player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }));
+        }
+
+        if (canBleed) {
+            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Length", new Object[] { bleedLength }));
+            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Note"));
+            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }));
+        }
+
+        if (canSerratedStrike) {
+            player.sendMessage(LocaleLoader.getString("Swords.SS.Length", new Object[] { serratedStrikesLength }));
+        }
     }
 }
