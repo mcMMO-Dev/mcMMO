@@ -21,7 +21,7 @@ public abstract class SkillCommand implements CommandExecutor{
     private String permission;
 
     protected Player player;
-    private PlayerProfile profile;
+    protected PlayerProfile profile;
     protected float skillValue;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
