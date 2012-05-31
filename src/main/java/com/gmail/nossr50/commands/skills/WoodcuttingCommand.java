@@ -1,23 +1,11 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Page;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class WoodcuttingCommand implements CommandExecutor {
-    private float skillValue;
+public class WoodcuttingCommand extends SkillCommand {
     private String treeFellerLength;
     private String doubleDropChance;
 
@@ -26,31 +14,39 @@ public class WoodcuttingCommand implements CommandExecutor {
     private boolean canDoubleDrop;
     private boolean doubleDropsDisabled;
 
+    public WoodcuttingCommand() {
+        super(SkillType.WOODCUTTING);
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
+    protected void dataCalculations() {
+        treeFellerLength = String.valueOf(2 + ((int) skillValue / 50));
+
+        if (skillValue >= 1000) {
+            doubleDropChance = "100.00%";
         }
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.skills.woodcutting")) {
-            return true;
+        else {
+            doubleDropChance = percent.format(skillValue / 1000);
         }
+    }
 
-        Player player = (Player) sender;
-        PlayerProfile PP = Users.getProfile(player);
+    @Override
+    protected void permissionsCheck() {
+        Config configInstance = Config.getInstance();
 
-        skillValue = (float) PP.getSkillLevel(SkillType.UNARMED);
-        dataCalculations(skillValue);
-        permissionsCheck(player);
+        canTreeFell = permInstance.treeFeller(player);
+        canDoubleDrop = permInstance.woodcuttingDoubleDrops(player);
+        canLeafBlow = permInstance.leafBlower(player);
+        doubleDropsDisabled = configInstance.woodcuttingDoubleDropsDisabled();
+    }
 
-        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Woodcutting.SkillName") }));
-        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain.WoodCutting") }));
-        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { PP.getSkillLevel(SkillType.WOODCUTTING), PP.getSkillXpLevel(SkillType.WOODCUTTING), PP.getXpToLevel(SkillType.WOODCUTTING) }));
+    @Override
+    protected boolean effectsHeaderPermissions() {
+        return (canDoubleDrop && !doubleDropsDisabled) || canLeafBlow || canTreeFell;
+    }
 
-        if ((canDoubleDrop && !doubleDropsDisabled ) || canLeafBlow || canTreeFell) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
-        }
-
+    @Override
+    protected void effectsDisplay() {
         if (canTreeFell) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.0"), LocaleLoader.getString("Woodcutting.Effect.1") }));
         }
@@ -62,14 +58,18 @@ public class WoodcuttingCommand implements CommandExecutor {
         if (canDoubleDrop && !doubleDropsDisabled) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5") }));
         }
+    }
 
-        if ((canDoubleDrop && !doubleDropsDisabled ) || canLeafBlow || canTreeFell) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
-        }
+    @Override
+    protected boolean statsHeaderPermissions() {
+        return (canDoubleDrop && !doubleDropsDisabled) || canLeafBlow || canTreeFell;
+    }
 
+    @Override
+    protected void statsDisplay() {
         //TODO: Remove? Basically duplicates the above.
         if (canLeafBlow) {
-            if (PP.getSkillLevel(SkillType.WOODCUTTING) < 100) {
+            if (skillValue < 100) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Woodcutting.Ability.Locked.0") }));
             }
             else {
@@ -84,32 +84,5 @@ public class WoodcuttingCommand implements CommandExecutor {
         if (canTreeFell) {
             player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", new Object[] { treeFellerLength }));
         }
-
-        Page.grabGuidePageForSkill(SkillType.WOODCUTTING, player, args);
-
-        return true;
-    }
-
-    private void dataCalculations(float skillValue) {
-        DecimalFormat percent = new DecimalFormat("##0.00%");
-
-        treeFellerLength = String.valueOf(2 + ((int) skillValue / 50));
-
-        if (skillValue >= 1000) {
-            doubleDropChance = "100.00%";
-        }
-        else {
-            doubleDropChance = percent.format(skillValue / 1000);
-        }
-    }
-
-    private void permissionsCheck(Player player) {
-        Permissions permInstance = Permissions.getInstance();
-        Config configInstance = Config.getInstance();
-
-        canTreeFell = permInstance.treeFeller(player);
-        canDoubleDrop = permInstance.woodcuttingDoubleDrops(player);
-        canLeafBlow = permInstance.leafBlower(player);
-        doubleDropsDisabled = configInstance.woodcuttingDoubleDropsDisabled();
     }
 }
