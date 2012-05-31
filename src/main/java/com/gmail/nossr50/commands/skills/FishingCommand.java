@@ -67,7 +67,7 @@ public class FishingCommand extends SkillCommand {
 
         if (canShake) {
             //TODO: Do we really need to display this twice? Not like there are any associated stats.
-            if (profile.getSkillLevel(SkillType.FISHING) < 150) {
+            if (skillValue < 150) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0") }));
             }
             else {
