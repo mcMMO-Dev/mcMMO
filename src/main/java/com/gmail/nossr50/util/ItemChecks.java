@@ -1,7 +1,10 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.api.SpoutToolsAPI;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomToolsConfig;
@@ -28,6 +31,9 @@ public class ItemChecks {
 
         default:
             if (customToolsEnabled && CustomToolsConfig.getInstance().customSwordIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else if (mcMMO.p.spoutEnabled && is instanceof SpoutItemStack && SpoutToolsAPI.spoutSwords.contains((SpoutItemStack) is)) {
                 return true;
             }
             else {

@@ -9,6 +9,7 @@ Key:
 
 Version 1.3.09
  + Added several permission nodes to give individual users special perks (Double/Triple/Quadruple XP)
+ + Added API for plugins to add custom tools directly via Spout
  = Fixed issue with NoCheatPlus and Serrated Strikes / Skull Splitter (fight.noswing)
  = Fixed bug where you could receive Archery XP from Potions
  = Fixed bug with duping blocks via piston pushing
