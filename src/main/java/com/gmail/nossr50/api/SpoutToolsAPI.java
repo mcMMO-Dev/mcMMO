@@ -3,10 +3,10 @@ package com.gmail.nossr50.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.bukkit.inventory.ItemStack;
 
 public class SpoutToolsAPI {
-    public static List<SpoutItemStack> spoutSwords = new ArrayList<SpoutItemStack>();
+    public static List<ItemStack> spoutSwords = new ArrayList<ItemStack>();
 
     /**
      * Add a custom Spout sword to mcMMO for XP gain & ability use.
@@ -15,7 +15,7 @@ public class SpoutToolsAPI {
      *
      * @param spoutSword The sword to add
      */
-    public void addCustomSword(SpoutItemStack spoutSword) {
+    public void addCustomSword(ItemStack spoutSword) {
         spoutSwords.add(spoutSword);
     }
 }

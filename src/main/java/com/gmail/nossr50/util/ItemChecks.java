@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.inventory.SpoutItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.api.SpoutToolsAPI;
@@ -33,7 +32,7 @@ public class ItemChecks {
             if (customToolsEnabled && CustomToolsConfig.getInstance().customSwordIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else if (mcMMO.p.spoutEnabled && is instanceof SpoutItemStack && SpoutToolsAPI.spoutSwords.contains((SpoutItemStack) is)) {
+            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutSwords.contains(is)) {
                 return true;
             }
             else {
