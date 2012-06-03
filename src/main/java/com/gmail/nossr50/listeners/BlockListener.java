@@ -21,6 +21,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 
 import org.bukkit.Material;
@@ -263,6 +264,11 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
+        
+        if (event instanceof FakeBlockDamageEvent) {
+            return;
+        }
+        
         final int LEAF_BLOWER_LEVEL = 100;
 
         Player player = event.getPlayer();
