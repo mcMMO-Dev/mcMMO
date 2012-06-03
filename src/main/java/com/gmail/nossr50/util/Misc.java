@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 
@@ -110,14 +111,15 @@ public class Misc {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
             mcMMO.p.getServer().getPluginManager().callEvent(armswing);
         }
+        
+        FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getItemInHand(), true);
+        mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
+        FakeBlockBreakEvent breakEvent = new FakeBlockBreakEvent(block, player);
+        mcMMO.p.getServer().getPluginManager().callEvent(breakEvent);
 
-        FakeBlockBreakEvent event = new FakeBlockBreakEvent(block, player);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        if (!event.isCancelled()) {
+        if (!damageEvent.isCancelled() || !breakEvent.isCancelled()) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
