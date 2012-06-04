@@ -1,8 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
