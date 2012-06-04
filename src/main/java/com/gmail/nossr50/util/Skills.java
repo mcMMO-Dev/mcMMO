@@ -181,24 +181,24 @@ public class Skills {
      *
      * @param skillType The skill to check
      * @param player The player whose skill to check
+     * @param profile The profile of the player whose skill to check
      */
-    public static void xpCheckSkill(SkillType skillType, Player player) {
-        PlayerProfile PP = Users.getProfile(player);
+    public static void xpCheckSkill(SkillType skillType, Player player, PlayerProfile profile) {
         int skillups = 0;
 
-        if (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
+        if (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
 
-            while (PP.getSkillXpLevel(skillType) >= PP.getXpToLevel(skillType)) {
-                if ((skillType.getMaxLevel() >= PP.getSkillLevel(skillType) + 1) && (Misc.getPowerLevelCap() >= PP.getPowerLevel() + 1)) {
-                    PP.removeXP(skillType, PP.getXpToLevel(skillType));
+            while (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
+                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Misc.getPowerLevelCap() >= profile.getPowerLevel() + 1)) {
+                    profile.removeXP(skillType, profile.getXpToLevel(skillType));
                     skillups++;
-                    PP.skillUp(skillType, 1);
+                    profile.skillUp(skillType, 1);
 
                     McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
                     mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
                 }
                 else {
-                    PP.addLevels(skillType, 0);
+                    profile.addLevels(skillType, 0);
                 }
             }
 
@@ -222,15 +222,15 @@ public class Skills {
 
                     /* Update custom titles */
                     if (SpoutConfig.getInstance().getShowPowerLevel()) {
-                        sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(PP.getPowerLevel()));
+                        sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(profile.getPowerLevel()));
                     }
                 }
                 else {
-                    player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+                    player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), profile.getSkillLevel(skillType)}));
                 }
             }
             else {
-                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), PP.getSkillLevel(skillType)}));
+                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), profile.getSkillLevel(skillType)}));
             }
         }
 
@@ -257,7 +257,7 @@ public class Skills {
                 continue;
             }
 
-            xpCheckSkill(x, player);
+            xpCheckSkill(x, player, Users.getProfile(player));
         }
     }
 
@@ -449,5 +449,18 @@ public class Skills {
         }
 
         return activate;
+    }
+
+    /**
+     * Handle the processing of XP gain from individual skills.
+     *
+     * @param player The player that gained XP
+     * @param profile The profile of the player gaining XP
+     * @param type The type of skill to gain XP from
+     * @param xp the amount of XP to gain
+     */
+    public static void xpProcessing(Player player, PlayerProfile profile, SkillType type, int xp) {
+        profile.addXP(player, type, xp);
+        xpCheckSkill(type, player, profile);
     }
 }

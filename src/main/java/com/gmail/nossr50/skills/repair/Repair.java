@@ -42,8 +42,7 @@ public class Repair {
 
         dif = (short) (dif * modify);
 
-        PP.addXP(player, SkillType.REPAIR, dif * 10);
-        Skills.xpCheckSkill(SkillType.REPAIR, player);
+        Skills.xpProcessing(player, PP, SkillType.REPAIR, dif * 10);
 
         //CLANG CLANG
         if (mcMMO.p.spoutEnabled) {

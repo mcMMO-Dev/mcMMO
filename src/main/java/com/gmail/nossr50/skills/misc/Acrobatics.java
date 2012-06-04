@@ -58,8 +58,7 @@ public class Acrobatics {
 
             /* Check for death */
             if (health - damage >= 1) {
-                PP.addXP(player, SkillType.ACROBATICS, damage * ROLL_XP_MODIFIER);
-                Skills.xpCheckSkill(SkillType.ACROBATICS, player);
+                Skills.xpProcessing(player, PP, SkillType.ACROBATICS, damage * ROLL_XP_MODIFIER);
 
                 event.setDamage(newDamage);
 
@@ -76,8 +75,7 @@ public class Acrobatics {
             }
         }
         else if (health - damage >= 1) {
-            PP.addXP(player, SkillType.ACROBATICS, event.getDamage() * FALL_XP_MODIFIER);
-            Skills.xpCheckSkill(SkillType.ACROBATICS, player);
+            Skills.xpProcessing(player, PP, SkillType.ACROBATICS, event.getDamage() * FALL_XP_MODIFIER);
         }
     }
 
@@ -111,8 +109,7 @@ public class Acrobatics {
                 defender.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
 
                 if (System.currentTimeMillis() >= (5000 + PPd.getRespawnATS()) && defender.getHealth() >= 1) {
-                    PPd.addXP(defender, SkillType.ACROBATICS, damage * DODGE_MODIFIER);
-                    Skills.xpCheckSkill(SkillType.ACROBATICS, defender);
+                    Skills.xpProcessing(defender, PPd, SkillType.ACROBATICS, damage * DODGE_MODIFIER);
                 }
 
                 int newDamage = damage / 2;

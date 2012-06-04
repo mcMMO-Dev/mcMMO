@@ -19,7 +19,7 @@ public class ExperienceAPI {
             Skills.xpCheckAll(player);
         }
         else {
-            Skills.xpCheckSkill(skillType, player);
+            Skills.xpCheckSkill(skillType, player, Users.getProfile(player));
         }
     }
 

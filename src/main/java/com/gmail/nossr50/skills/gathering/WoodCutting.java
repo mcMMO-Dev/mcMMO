@@ -203,8 +203,7 @@ public class WoodCutting {
         }
 
         if (Permissions.getInstance().woodcutting(player)) {
-            PP.addXP(player, SkillType.WOODCUTTING, xp); //Tree Feller gives nerf'd XP
-            Skills.xpCheckSkill(SkillType.WOODCUTTING, player);
+            Skills.xpProcessing(player, PP, SkillType.WOODCUTTING, xp);
         }
     }
 
@@ -384,8 +383,7 @@ public class WoodCutting {
         }
 
         WoodCutting.woodCuttingProcCheck(player, block);
-        PP.addXP(player, SkillType.WOODCUTTING, xp);
-        Skills.xpCheckSkill(SkillType.WOODCUTTING, player);
+        Skills.xpProcessing(player, PP, SkillType.WOODCUTTING, xp);
     }
 
     /**

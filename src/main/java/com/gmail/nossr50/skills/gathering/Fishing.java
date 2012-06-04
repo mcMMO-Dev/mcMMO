@@ -117,8 +117,7 @@ public class Fishing {
             theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); //Change durability to random value
         }
 
-        PP.addXP(player, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
-        Skills.xpCheckSkill(SkillType.FISHING, player);
+        Skills.xpProcessing(player, PP, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
     }
 
     /**

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
@@ -47,7 +48,8 @@ public class AddxpCommand implements CommandExecutor {
                     xp = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
 
-                    Users.getProfile(modifiedPlayer).addXPOverride(skill, xp);
+                    PlayerProfile profile = Users.getProfile(modifiedPlayer);
+                    profile.addXPOverride(skill, xp);
 
                     if (skill.equals(SkillType.ALL)) {
                         skillName = "all skills";
@@ -62,7 +64,7 @@ public class AddxpCommand implements CommandExecutor {
                         Skills.xpCheckAll(modifiedPlayer);
                     }
                     else {
-                        Skills.xpCheckSkill(skill, modifiedPlayer);
+                        Skills.xpCheckSkill(skill, modifiedPlayer, profile);
                     }
                 }
                 else {
@@ -78,8 +80,9 @@ public class AddxpCommand implements CommandExecutor {
         case 3:
             modifiedPlayer = plugin.getServer().getPlayer(args[0]);
             String playerName = modifiedPlayer.getName();
+            PlayerProfile profile = Users.getProfile(modifiedPlayer);
 
-            if (!Users.getProfile(modifiedPlayer).isLoaded()) {
+            if (!profile.isLoaded()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return true;
             }
@@ -94,7 +97,7 @@ public class AddxpCommand implements CommandExecutor {
                 skill = Skills.getSkillType(args[1]);
                 String message;
 
-                Users.getProfile(modifiedPlayer).addXPOverride(skill, xp);
+                profile.addXPOverride(skill, xp);
 
                 if (skill.equals(SkillType.ALL)) {
                     skillName = "all skills";
@@ -112,7 +115,7 @@ public class AddxpCommand implements CommandExecutor {
                     Skills.xpCheckAll(modifiedPlayer);
                 }
                 else {
-                    Skills.xpCheckSkill(skill, modifiedPlayer);
+                    Skills.xpCheckSkill(skill, modifiedPlayer, profile);
                 }
             }
             else {
