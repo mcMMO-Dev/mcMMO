@@ -59,10 +59,10 @@ public class AddxpCommand implements CommandExecutor {
                     modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + xp + " experience in " + skillName + "!"); //TODO: Needs more locale.
 
                     if (skill.equals(SkillType.ALL)) {
-                        Skills.XpCheckAll(modifiedPlayer);
+                        Skills.xpCheckAll(modifiedPlayer);
                     }
                     else {
-                        Skills.XpCheckSkill(skill, modifiedPlayer);
+                        Skills.xpCheckSkill(skill, modifiedPlayer);
                     }
                 }
                 else {
@@ -109,10 +109,10 @@ public class AddxpCommand implements CommandExecutor {
                 modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + xp + " experience in " + skillName + "!"); //TODO: Needs more locale.
 
                 if (skill.equals(SkillType.ALL)) {
-                    Skills.XpCheckAll(modifiedPlayer);
+                    Skills.xpCheckAll(modifiedPlayer);
                 }
                 else {
-                    Skills.XpCheckSkill(skill, modifiedPlayer);
+                    Skills.xpCheckSkill(skill, modifiedPlayer);
                 }
             }
             else {

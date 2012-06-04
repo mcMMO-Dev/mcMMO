@@ -118,7 +118,7 @@ public class Fishing {
         }
 
         PP.addXP(player, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
-        Skills.XpCheckSkill(SkillType.FISHING, player);
+        Skills.xpCheckSkill(SkillType.FISHING, player);
     }
 
     /**

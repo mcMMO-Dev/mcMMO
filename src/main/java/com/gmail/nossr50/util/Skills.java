@@ -161,7 +161,7 @@ public class Skills {
      * @param skillType The skill to update the leaderboards for
      * @param player The player whose skill to update
      */
-    public static void ProcessLeaderboardUpdate(SkillType skillType, Player player) {
+    public static void processLeaderboardUpdate(SkillType skillType, Player player) {
         PlayerProfile PP = Users.getProfile(player);
         PlayerStat ps = new PlayerStat();
 
@@ -182,7 +182,7 @@ public class Skills {
      * @param skillType The skill to check
      * @param player The player whose skill to check
      */
-    public static void XpCheckSkill(SkillType skillType, Player player) {
+    public static void xpCheckSkill(SkillType skillType, Player player) {
         PlayerProfile PP = Users.getProfile(player);
         int skillups = 0;
 
@@ -203,8 +203,8 @@ public class Skills {
             }
 
             if (!Config.getInstance().getUseMySQL()) {
-                ProcessLeaderboardUpdate(skillType, player);
-                ProcessLeaderboardUpdate(SkillType.ALL, player);
+                processLeaderboardUpdate(skillType, player);
+                processLeaderboardUpdate(SkillType.ALL, player);
             }
 
             String capitalized = Misc.getCapitalized(skillType.toString());
@@ -250,14 +250,14 @@ public class Skills {
      *
      * @param player The player to check XP for.
      */
-    public static void XpCheckAll(Player player) {
+    public static void xpCheckAll(Player player) {
         for (SkillType x : SkillType.values()) {
             //Don't want to do anything with this one
             if (x == SkillType.ALL) {
                 continue;
             }
 
-            XpCheckSkill(x, player);
+            xpCheckSkill(x, player);
         }
     }
 

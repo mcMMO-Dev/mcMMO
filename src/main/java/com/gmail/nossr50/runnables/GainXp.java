@@ -40,6 +40,6 @@ public class GainXp implements Runnable {
         }
 
         PP.addXP(player, skillType, (int) (damage * baseXp));
-        Skills.XpCheckSkill(skillType, player);
+        Skills.xpCheckSkill(skillType, player);
     }
 }

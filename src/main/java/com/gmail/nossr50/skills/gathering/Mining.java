@@ -276,7 +276,7 @@ public class Mining {
         }
 
         PP.addXP(player, SkillType.MINING, xp);
-        Skills.XpCheckSkill(SkillType.MINING, player);
+        Skills.xpCheckSkill(SkillType.MINING, player);
     }
 
     /**

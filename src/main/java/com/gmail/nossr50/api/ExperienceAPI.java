@@ -16,10 +16,10 @@ public class ExperienceAPI {
      */
     private void checkXP(Player player, SkillType skillType) {
         if (skillType.equals(SkillType.ALL)) {
-            Skills.XpCheckAll(player);
+            Skills.xpCheckAll(player);
         }
         else {
-            Skills.XpCheckSkill(skillType, player);
+            Skills.xpCheckSkill(skillType, player);
         }
     }
 

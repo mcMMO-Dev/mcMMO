@@ -314,7 +314,7 @@ public class EntityListener implements Listener {
             }
 
             PP.addXP(player, SkillType.TAMING, xp);
-            Skills.XpCheckSkill(SkillType.TAMING, player);
+            Skills.xpCheckSkill(SkillType.TAMING, player);
         }
     }
 }
