@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -111,15 +112,19 @@ public class Misc {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
             mcMMO.p.getServer().getPluginManager().callEvent(armswing);
         }
-        
+
+        PluginManager pluginManger = mcMMO.p.getServer().getPluginManager();
+
         FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getItemInHand(), true);
-        mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
+        pluginManger.callEvent(damageEvent);
+
         FakeBlockBreakEvent breakEvent = new FakeBlockBreakEvent(block, player);
-        mcMMO.p.getServer().getPluginManager().callEvent(breakEvent);
+        pluginManger.callEvent(breakEvent);
 
         if (!damageEvent.isCancelled() || !breakEvent.isCancelled()) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
