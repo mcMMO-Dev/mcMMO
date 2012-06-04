@@ -60,6 +60,9 @@ public class ItemChecks {
             if (customToolsEnabled && CustomToolsConfig.getInstance().customHoeIDs.contains(is.getTypeId())) {
                 return true;
             }
+            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutHoes.contains(is)) {
+                return true;
+            }
             else {
                 return false;
             }
@@ -83,6 +86,9 @@ public class ItemChecks {
 
         default:
             if (customToolsEnabled && CustomToolsConfig.getInstance().customShovelIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutShovels.contains(is)) {
                 return true;
             }
             else {
@@ -110,6 +116,9 @@ public class ItemChecks {
             if (customToolsEnabled && CustomToolsConfig.getInstance().customAxeIDs.contains(is.getTypeId())) {
                 return true;
             }
+            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutAxes.contains(is)) {
+                return true;
+            }
             else {
                 return false;
             }
@@ -133,6 +142,9 @@ public class ItemChecks {
 
         default:
             if (customToolsEnabled && CustomToolsConfig.getInstance().customPickaxeIDs.contains(is.getTypeId())) {
+                return true;
+            }
+            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutPickaxes.contains(is)) {
                 return true;
             }
             else {
