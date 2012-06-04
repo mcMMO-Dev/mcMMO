@@ -272,6 +272,11 @@ public class Misc {
         }
     }
 
+    /**
+     * Get the max power level for a player.
+     *
+     * @return the maximum power level for a player
+     */
     public static int getPowerLevelCap() {
         int levelCap = Config.getInstance().getPowerLevelCap();
 
