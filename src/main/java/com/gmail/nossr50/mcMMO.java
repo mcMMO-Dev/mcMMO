@@ -97,7 +97,7 @@ public class mcMMO extends JavaPlugin {
     public static RepairManager repairManager;
 
     /* Jar Stuff */
-    public File mcmmo;
+    public static File mcmmo;
 
     //File Paths
     public static String mainDirectory;
