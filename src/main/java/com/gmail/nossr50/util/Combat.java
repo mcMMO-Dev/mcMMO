@@ -113,7 +113,7 @@ public class Combat {
                 if (permInstance.impact(attacker)) {
                     Axes.impact(attacker, target, event);
                 }
- 
+
                 if (PPa.getAbilityMode(AbilityType.SKULL_SPLIITER) && permInstance.skullSplitter(attacker)) {
                     applyAbilityAoE(attacker, target, event.getDamage() / 2, plugin, SkillType.AXES);
                 }
@@ -319,7 +319,7 @@ public class Combat {
      */
     private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
         if (configInstance.getEventCallbackEnabled()) {
-            EntityDamageEvent ede = (EntityDamageEvent) new FakeEntityDamageEvent(target, cause, dmg);
+            EntityDamageEvent ede = new FakeEntityDamageEvent(target, cause, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {
@@ -342,7 +342,7 @@ public class Combat {
      */
     private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
         if (configInstance.getEventCallbackEnabled()) {
-            EntityDamageEvent ede = (EntityDamageByEntityEvent) new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
+            EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {

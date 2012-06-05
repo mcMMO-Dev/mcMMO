@@ -213,7 +213,7 @@ public class Mining {
         PlayerProfile PP = Users.getProfile(player);
         Material type = block.getType();
         int xp = 0;
-        
+
         switch (type) {
         case COAL_ORE:
             xp += Config.getInstance().getMiningXPCoalOre();

@@ -61,7 +61,7 @@ public class McrefreshCommand implements CommandExecutor {
             return true;
         }
 
-        PP.setRecentlyHurt((long) 0);
+        PP.setRecentlyHurt(0);
         PP.resetCooldowns();
         PP.resetToolPrepMode();
         PP.resetAbilityMode();

@@ -20,7 +20,7 @@ public class Users {
      * Load users.
      */
     public static void loadUsers() {
-        
+
 
         new File(plugin.flatFileDirectory).mkdir();
         new File(plugin.leaderboardDirectory).mkdir();

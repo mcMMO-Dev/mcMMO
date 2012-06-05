@@ -74,7 +74,7 @@ public class ItemChecks {
      *
      * @param is Item to check
      * @return true if the item is a shovel, false otherwise
-     */ 
+     */
     public static boolean isShovel(ItemStack is) {
         switch (is.getType()) {
         case DIAMOND_SPADE:

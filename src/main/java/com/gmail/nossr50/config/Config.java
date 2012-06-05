@@ -195,7 +195,7 @@ public class Config extends ConfigLoader {
     }
 
     /* Mining */
-    public int getMiningXPGoldOre() { return config.getInt("Experience.Mining.Gold", 250); } 
+    public int getMiningXPGoldOre() { return config.getInt("Experience.Mining.Gold", 250); }
     public int getMiningXPDiamondOre() { return config.getInt("Experience.Mining.Diamond", 750); }
     public int getMiningXPIronOre() { return config.getInt("Experience.Mining.Iron", 250); }
     public int getMiningXPRedstoneOre() { return config.getInt("Experience.Mining.Redstone", 150); }

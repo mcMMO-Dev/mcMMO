@@ -61,7 +61,7 @@ public class Swords {
             else {
                 bleedTicks = 2;
             }
-            
+
             BleedTimer.add(defender, bleedTicks);
             attacker.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
         }

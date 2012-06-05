@@ -19,7 +19,7 @@ public class MctopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String usage = ChatColor.RED + "Proper usage is /mctop [skill] [page]"; //TODO: Needs more locale.
-        
+
         if (!Config.getInstance().getUseMySQL()) {
 
             switch (args.length) {

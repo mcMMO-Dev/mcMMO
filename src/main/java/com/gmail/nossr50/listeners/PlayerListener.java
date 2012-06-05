@@ -158,13 +158,14 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        
+
+        //TODO: Locale ALL the things.
         if (Config.getInstance().getMOTDEnabled() && Permissions.getInstance().motd(player)) {
             String prefix = ChatColor.GOLD+"[mcMMO] ";
             String perkPrefix = ChatColor.RED+"[mcMMO Perks] ";
-            
+
             player.sendMessage(prefix+ChatColor.YELLOW+"Running version " + ChatColor.DARK_AQUA + plugin.getDescription().getVersion()); //TODO: Locale
-            
+
             if(Config.getInstance().getHardcoreEnabled()) {
                 if(Config.getInstance().getHardcoreVampirismEnabled()) {
                     player.sendMessage(prefix+ChatColor.DARK_RED+"Hardcore & Vampirism enabled.");
@@ -174,7 +175,7 @@ public class PlayerListener implements Listener {
                     player.sendMessage(prefix+ChatColor.DARK_AQUA+"Skill Death Penalty: "+ChatColor.DARK_RED+Config.getInstance().getHardcoreDeathStatPenaltyPercentage()+"%");
                 }
             }
-            
+
             if(player.hasPermission("mcmmo.perks.xp.quadruple")) {
                 player.sendMessage(perkPrefix+ChatColor.DARK_AQUA+"Quadruple XP - Receive 4x XP.");
             } else if (player.hasPermission("mcmmo.perks.xp.triple")) {
@@ -182,7 +183,7 @@ public class PlayerListener implements Listener {
             } else if (player.hasPermission("mcmmo.perks.xp.double")) {
                 player.sendMessage(perkPrefix+ChatColor.DARK_AQUA+"Double XP - Receive 2x XP.");
             }
-            
+
             player.sendMessage(ChatColor.GOLD+"[mcMMO] "+ChatColor.GREEN+ "http://www.mcmmo.info" + ChatColor.YELLOW + " - mcMMO Website & Forums"); //TODO: Locale
             //player.sendMessage(LocaleLoader.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
             //player.sendMessage(LocaleLoader.getString("mcMMO.Website"));
@@ -192,8 +193,8 @@ public class PlayerListener implements Listener {
         if (XprateCommand.xpevent) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", new Object[] {Config.getInstance().xpGainMultiplier}));
         }
-        
-        
+
+
     }
 
     /**

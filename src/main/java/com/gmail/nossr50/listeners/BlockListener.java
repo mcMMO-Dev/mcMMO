@@ -264,11 +264,11 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
-        
+
         if (event instanceof FakeBlockDamageEvent) {
             return;
         }
-        
+
         final int LEAF_BLOWER_LEVEL = 100;
 
         Player player = event.getPlayer();

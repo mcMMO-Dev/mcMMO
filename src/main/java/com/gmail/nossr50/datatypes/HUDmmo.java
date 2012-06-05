@@ -290,7 +290,7 @@ public class HUDmmo {
             return;
         }
 
-        ((GenericTexture) xpicon).setUrl(Misc.getCapitalized(theType.toString()) + ".png");
+        xpicon.setUrl(Misc.getCapitalized(theType.toString()) + ".png");
         xpicon.setDirty(true);
 
         ((GenericTexture) xpbar).setUrl(getUrlBar(getXpInc(PP.getSkillXpLevel(theType), PP.getXpToLevel(theType), HUDType.STANDARD)));

@@ -24,7 +24,7 @@ public class HardcoreListener implements Listener {
         if (!Permissions.getInstance().hardcoremodeBypass(player)) {
             if (player.getKiller() instanceof Player) {
                 if (Config.getInstance().getHardcoreVampirismEnabled()) {
-                    Hardcore.invokeVampirism(((Player)player.getKiller()), player);
+                    Hardcore.invokeVampirism(player.getKiller(), player);
                 }
             }
 

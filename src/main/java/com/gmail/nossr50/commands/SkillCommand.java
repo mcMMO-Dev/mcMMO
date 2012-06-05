@@ -46,7 +46,7 @@ public abstract class SkillCommand implements CommandExecutor {
         player = (Player) sender;
         profile = Users.getProfile(player);
 
-        skillValue = (float) profile.getSkillLevel(skill);
+        skillValue = profile.getSkillLevel(skill);
         dataCalculations();
         permissionsCheck();
 

@@ -46,7 +46,7 @@ public class SpoutListener implements Listener {
 
         if (sPlayer.isSpoutCraftEnabled()) {
             SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer, plugin)); //Setup Party HUD stuff
-            
+
             PPs.toggleSpoutEnabled();
         }
     }
@@ -60,12 +60,12 @@ public class SpoutListener implements Listener {
     public void onButtonClick(ButtonClickEvent event) {
         SpoutPlayer sPlayer = event.getPlayer();
         PlayerProfile PP = Users.getProfile(sPlayer);
-        
+
         if (event.getButton() instanceof ButtonHUDStyle) {
             if (SpoutStuff.playerHUDs.containsKey(sPlayer)) {
                 SpoutStuff.playerHUDs.get(sPlayer).resetHUD();
                 SpoutStuff.playerHUDs.remove(sPlayer);
-                
+
                 switch (PP.getHUDType()) {
                 case RETRO:
                     PP.setHUDType(HUDType.STANDARD);

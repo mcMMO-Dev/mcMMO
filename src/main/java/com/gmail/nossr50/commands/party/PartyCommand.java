@@ -187,7 +187,7 @@ public class PartyCommand implements CommandExecutor {
                         PlayerProfile PPt = Users.getProfile(target);
                         String targetName = target.getName();
 
-                        if (!partyInstance.inSameParty(player, (Player) target)) {
+                        if (!partyInstance.inSameParty(player, target)) {
                             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] { targetName }));
                             return true;
                         }
@@ -219,7 +219,7 @@ public class PartyCommand implements CommandExecutor {
 
                         String targetName = target.getName();
 
-                        if (!partyInstance.inSameParty(player, (Player) target)) {
+                        if (!partyInstance.inSameParty(player, target)) {
                             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] { targetName }));
                             return true;
                         }

@@ -76,6 +76,7 @@ public class mcMMO extends JavaPlugin {
     /**
      * Things to be run when the plugin is enabled.
      */
+    @Override
     public void onEnable() {
         p = this;
         setupFilePaths();
@@ -238,6 +239,7 @@ public class mcMMO extends JavaPlugin {
     /**
      * Things to be run when the plugin is disabled.
      */
+    @Override
     public void onDisable() {
         //Make sure to save player information if the server shuts down
         for (PlayerProfile x : Users.getProfiles().values()) {

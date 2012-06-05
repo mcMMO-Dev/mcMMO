@@ -84,7 +84,7 @@ public class BleedTimer implements Runnable {
 
     /**
      * Instantly Bleed out a LivingEntity
-     * 
+     *
      * @param entity LivingEntity to bleed out
      */
     public static void bleedOut(LivingEntity entity) {
@@ -96,7 +96,7 @@ public class BleedTimer implements Runnable {
 
     /**
      * Remove a LivingEntity from the bleedList if it is in it
-     * 
+     *
      * @param entity LivingEntity to remove
      */
     public static void remove(LivingEntity entity) {
@@ -168,7 +168,7 @@ public class BleedTimer implements Runnable {
 
     /**
      * Check to see if a LivingEntity is in the bleedList
-     * 
+     *
      * @param entity LivingEntity to check if in the bleedList
      * @return true if in the list, false if not
      */

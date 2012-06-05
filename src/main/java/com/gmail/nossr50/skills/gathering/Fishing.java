@@ -276,7 +276,7 @@ public class Fishing {
 
         case SHEEP:
             Sheep sheep = (Sheep) le;
-            
+
             if (!sheep.isSheared()) {
                 Wool wool = new Wool();
                 wool.setColor(sheep.getColor());

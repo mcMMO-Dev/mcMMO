@@ -74,7 +74,7 @@ public class Party {
      * Get the number of players in this player's party.
      *
      * @param player The player to check
-     * @param players A list of players to 
+     * @param players A list of players to
      * @return the number of players in this player's party
      */
     public int partyCount(Player player) {

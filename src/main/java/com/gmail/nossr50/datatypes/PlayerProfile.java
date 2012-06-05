@@ -102,9 +102,9 @@ public class PlayerProfile {
     public boolean loadMySQL() {
         int id = 0;
         id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + playerName + "'");
-        
+
         this.userid = id;
-        
+
         if (id > 0) {
             HashMap<Integer, ArrayList<String>> huds = mcMMO.database.read("SELECT hudtype FROM "+Config.getInstance().getMySQLTablePrefix()+"huds WHERE user_id = " + id);
             if(huds.get(1) == null)
@@ -204,7 +204,7 @@ public class PlayerProfile {
                 String[] character = line.split(":");
 
                 if(!character[0].equals(playerName)){continue;}
-                
+
                 //Get Mining
                 if(character.length > 1 && Misc.isInt(character[1]))
                     skills.put(SkillType.MINING, Integer.valueOf(character[1]));
@@ -299,7 +299,7 @@ public class PlayerProfile {
         Long timestamp = System.currentTimeMillis() / 1000; //Convert to seconds
         // if we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
-            
+
             mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"huds SET hudtype = '"+hud.toString()+"' WHERE user_id = "+this.userid);
             mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
             mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
@@ -440,7 +440,7 @@ public class PlayerProfile {
             //Open the file to write the player
             FileWriter file = new FileWriter(location, true);
             BufferedWriter out = new BufferedWriter(file);
-            
+
             //Add the player to the end
             out.append(playerName + ":");
             out.append(0 + ":"); //mining
@@ -481,7 +481,7 @@ public class PlayerProfile {
             out.append(0+":"); //Blast Mining
 
             //Add more in the same format as the line above
-            
+
             out.newLine();
             out.close();
         } catch (Exception e) {
@@ -1039,7 +1039,7 @@ public class PlayerProfile {
                 xp = (int) (xp * tool.getXpMultiplier());
             }
         }
-        
+
         if(player.hasPermission("mcmmo.perks.xp.quadruple")) {
             xp = xp * 4;
         } else if (player.hasPermission("mcmmo.perks.xp.triple")) {

@@ -179,7 +179,7 @@ public class SpoutStuff {
             files.add(new File(hudStandardDirectory + Misc.getCapitalized(y.toString()) + ".png"));
             files.add(new File(hudRetroDirectory + Misc.getCapitalized(y.toString()) + "_r.png"));
         }
-        
+
         /* Blank icons */
         files.add(new File(hudStandardDirectory + "Icon.png"));
         files.add(new File(hudRetroDirectory + "Icon_r.png"));

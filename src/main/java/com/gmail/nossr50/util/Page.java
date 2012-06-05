@@ -9,7 +9,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class Page {
-    
+
     public static int getTotalPageNumber(String address)
     {
         String[] addressSplit = LocaleLoader.getString(address).split("\n");
@@ -18,24 +18,24 @@ public class Page {
         else
             return (addressSplit.length/8)+1;
     }
-    
+
     public static ArrayList<String> grabPageContents(String header, String address, int pagenum)
     {
         int pageIndexStart = 0;
-        
+
         //Determine what string to start at
         if(pagenum > 1)
         {
             pageIndexStart = 8*(pagenum-1);
         }
-        
+
         ArrayList<String> allStrings = new ArrayList<String>();
         String split[] = LocaleLoader.getString(address).split("\n");
-        
+
         allStrings.add(ChatColor.GOLD+"-="+ChatColor.GREEN+header+ChatColor.GOLD+"=-"); //So stylish
-        
+
         //Add targeted strings
-        
+
         while(allStrings.size() < 9)
         {
             if(pageIndexStart+allStrings.size() > split.length)
@@ -43,11 +43,11 @@ public class Page {
             else
                 allStrings.add(split[pageIndexStart+allStrings.size()-1]);
         }
-        
+
         allStrings.add("Page "+pagenum+" of "+getTotalPageNumber(address));
         return allStrings;
     }
-    
+
     public static void clearChat(Player player)
     {
         for(int x = 0; x < 20; x++)
@@ -55,7 +55,7 @@ public class Page {
             player.sendMessage("");
         }
     }
-    
+
     public static void grabGuidePageForSkill(SkillType skilltype, Player player, String[] args)
     {
         String capitalized = Misc.getCapitalized(skilltype.toString());
@@ -64,9 +64,9 @@ public class Page {
         {
             if(args[0].equals("?"))
             {
-                
+
                 String address = "Guides."+capitalized;
-                
+
                 if(args.length > 1 && Misc.isInt(args[1]) && Misc.getInt(args[1]) <= Page.getTotalPageNumber(address))
                 {
                     Page.clearChat(player);
@@ -82,7 +82,7 @@ public class Page {
                         player.sendMessage(target);
                     }
                 }
-                else if(args.length > 1 && Misc.getInt(args[1]) > Page.getTotalPageNumber(address)) 
+                else if(args.length > 1 && Misc.getInt(args[1]) > Page.getTotalPageNumber(address))
                 {
                     player.sendMessage("That page doesn't exist, there are only "+Page.getTotalPageNumber(address)+" total pages"); //TODO: Needs more locale.
                 }

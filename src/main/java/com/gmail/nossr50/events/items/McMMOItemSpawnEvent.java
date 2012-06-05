@@ -58,10 +58,11 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
-    
+
     /** Rest of file is required boilerplate for custom events **/
     private static final HandlerList handlers = new HandlerList();
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

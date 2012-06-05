@@ -36,7 +36,7 @@ public class Taming {
      *
      * @param PPo The PlayerProfile of the wolf's owner
      * @param theWolf The wolf using the ability
-     * @param damage The damage being absorbed by the wolf  
+     * @param damage The damage being absorbed by the wolf
      */
     public static void fastFoodService (PlayerProfile PPo, Wolf theWolf, int damage) {
         final int SKILL_ACTIVATION_LEVEL = 50;

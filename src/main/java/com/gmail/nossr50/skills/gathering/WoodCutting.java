@@ -100,7 +100,7 @@ public class WoodCutting {
         ItemStack spruce = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.REDWOOD.getData());
         ItemStack birch = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.BIRCH.getData());
         ItemStack jungle = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.JUNGLE.getData());
-        
+
         for (Block x : toBeFelled) {
             if (Misc.blockBreakSimulate(x, player, true)) {
                 if (Config.getInstance().getBlockModsEnabled()) {
@@ -215,7 +215,7 @@ public class WoodCutting {
      */
     private static void processTreeFelling(Block currentBlock, ArrayList<Block> toBeFelled) {
         Material type = currentBlock.getType();
-        
+
         if (toBeFelled.size() >= Config.getInstance().getTreeFellerThreshold()) {
             return;
         }

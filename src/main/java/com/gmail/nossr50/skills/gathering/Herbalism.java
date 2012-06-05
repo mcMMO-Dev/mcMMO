@@ -48,10 +48,10 @@ public class Herbalism {
             greenTerraConvert(player, block);
         }
     }
-    
+
     public static void greenTerraConvert(Player player, Block block) {
         Material type = block.getType();
-        
+
         if (Misc.blockBreakSimulate(block, player, false)) {
             if (Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy() && type == Material.SMOOTH_BRICK && block.getData() == 0) {
                 block.setTypeIdAndData(block.getTypeId(), (byte) 1, false); //Set type of the brick to mossy, force the client update

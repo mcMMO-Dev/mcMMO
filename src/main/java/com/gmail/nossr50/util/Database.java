@@ -222,23 +222,23 @@ public class Database {
         }
         return result;
     }
-    
+
     /**
      * Get connection status
-     * 
+     *
      * @return the boolean value for whether or not we are connected
      */
     public static boolean isConnected() {
         if(conn == null)
             return false;
-        
+
         try {
             return conn.isValid(3);
         } catch (SQLException e) {
             return false;
         }
     }
-    
+
     /**
      * Schedules a Sync Delayed Task with the Bukkit Scheduler to attempt reconnection after a minute has elapsed
      * This will check for a connection being present or not to prevent unneeded reconnection attempts

@@ -18,6 +18,7 @@ import com.gmail.nossr50.mcMMO;
 public class HashChunkletManager implements ChunkletManager {
     private HashMap<String, ChunkletStore> store = new HashMap<String, ChunkletStore>();
 
+    @Override
     public void chunkLoaded(int cx, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
         File cxDir = new File(dataDir, "" + cx);
@@ -38,6 +39,7 @@ public class HashChunkletManager implements ChunkletManager {
         }
     }
 
+    @Override
     public void chunkUnloaded(int cx, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
 
@@ -56,6 +58,7 @@ public class HashChunkletManager implements ChunkletManager {
         }
     }
 
+    @Override
     public void saveWorld(World world) {
         String worldName = world.getName();
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
@@ -74,6 +77,7 @@ public class HashChunkletManager implements ChunkletManager {
         }
     }
 
+    @Override
     public void unloadWorld(World world) {
         saveWorld(world);
 
@@ -87,12 +91,14 @@ public class HashChunkletManager implements ChunkletManager {
         }
     }
 
+    @Override
     public void saveAll() {
         for(World world : Bukkit.getWorlds()) {
             saveWorld(world);
         }
     }
 
+    @Override
     public void unloadAll() {
         saveAll();
         for(World world : Bukkit.getWorlds()) {
@@ -100,6 +106,7 @@ public class HashChunkletManager implements ChunkletManager {
         }
     }
 
+    @Override
     public boolean isTrue(int x, int y, int z, World world) {
         int cx = x / 16;
         int cz = z / 16;
@@ -114,10 +121,12 @@ public class HashChunkletManager implements ChunkletManager {
         return check.isTrue(ix, iy, iz);
     }
 
+    @Override
     public boolean isTrue(Block block) {
         return isTrue(block.getX(), block.getY(), block.getZ(), block.getWorld());
     }
 
+    @Override
     public void setTrue(int x, int y, int z, World world) {
         int cx = x / 16;
         int cz = z / 16;
@@ -137,10 +146,12 @@ public class HashChunkletManager implements ChunkletManager {
         cStore.setTrue(ix, iy, iz);
     }
 
+    @Override
     public void setTrue(Block block) {
         setTrue(block.getX(), block.getY(), block.getZ(), block.getWorld());
     }
 
+    @Override
     public void setFalse(int x, int y, int z, World world) {
         int cx = x / 16;
         int cz = z / 16;
@@ -159,10 +170,12 @@ public class HashChunkletManager implements ChunkletManager {
         cStore.setFalse(ix, iy, iz);
     }
 
+    @Override
     public void setFalse(Block block) {
         setFalse(block.getX(), block.getY(), block.getZ(), block.getWorld());
     }
 
+    @Override
     public void cleanUp() {
         for(String key : store.keySet()) {
             if(store.get(key).isEmpty()) {
