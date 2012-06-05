@@ -12,6 +12,11 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class McmmoCommand implements CommandExecutor {
+    private final mcMMO plugin;
+
+    public McmmoCommand (mcMMO plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -20,7 +25,7 @@ public class McmmoCommand implements CommandExecutor {
         sender.sendMessage(mcSplit);
 
         if (Config.getInstance().getDonateMessageEnabled()) {
-            if (mcMMO.p.spoutEnabled && sender instanceof SpoutPlayer) {
+            if (plugin.spoutEnabled && sender instanceof SpoutPlayer) {
                 SpoutPlayer sPlayer = (SpoutPlayer) sender;
 
                 sPlayer.sendNotification(ChatColor.YELLOW + "[mcMMO]" + ChatColor.GOLD + " Donate!", ChatColor.GREEN + "mcmmodev@gmail.com", Material.DIAMOND);

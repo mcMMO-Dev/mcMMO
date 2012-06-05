@@ -351,7 +351,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (configInstance.getCommandmcMMOEnabled()) {
-            getCommand("mcmmo").setExecutor(new McmmoCommand());
+            getCommand("mcmmo").setExecutor(new McmmoCommand(this));
         }
 
         if (configInstance.getCommandMCRefreshEnabled()) {
@@ -416,7 +416,7 @@ public class mcMMO extends JavaPlugin {
 
         //Spout commands
         if (configInstance.getCommandXPLockEnabled()) {
-            getCommand("xplock").setExecutor(new XplockCommand());
+            getCommand("xplock").setExecutor(new XplockCommand(this));
         }
 
         getCommand("mchud").setExecutor(new MchudCommand(this));

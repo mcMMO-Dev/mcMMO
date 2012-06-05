@@ -20,6 +20,12 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class XplockCommand implements CommandExecutor {
+    private final mcMMO plugin;
+
+    public XplockCommand (mcMMO plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String usage = ChatColor.RED + "Proper usage is /xplock [skill]";
@@ -28,7 +34,7 @@ public class XplockCommand implements CommandExecutor {
             return true;
         }
 
-        if (!mcMMO.p.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled() || !Config.getInstance().getCommandXPLockEnabled()) {
+        if (!plugin.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled() || !Config.getInstance().getCommandXPLockEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
             return true;
         }
