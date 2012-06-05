@@ -64,6 +64,11 @@ public class EntityListener implements Listener {
 
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
+
+            //There is no shooter when a projectile is thrown by a dispenser
+            if (attacker == null) {
+                return;
+            }
         }
         else if (attacker instanceof Tameable) {
             AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
