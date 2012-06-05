@@ -44,7 +44,6 @@ public class Combat {
      * Apply combat modifiers and process and XP gain.
      *
      * @param event The event to run the combat checks on.
-     * @param plugin mcMMO plugin instance
      */
     public static void combatChecks(EntityDamageByEntityEvent event) {
         if (event.getDamage() == 0 || event.getEntity().isDead()) {
@@ -450,7 +449,6 @@ public class Combat {
      * @param PP The player's PlayerProfile
      * @param target The defending entity
      * @param skillType The skill being used
-     * @param plugin mcMMO plugin instance
      */
     public static void startGainXp(Player attacker, PlayerProfile PP, LivingEntity target, SkillType skillType) {
         double baseXP = 0;
