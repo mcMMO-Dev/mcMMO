@@ -6,9 +6,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.locale.LocaleLoader;
 
 public class Item {
 

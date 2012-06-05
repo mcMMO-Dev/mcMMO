@@ -4,8 +4,8 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
+import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.config.mods.CustomToolsConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.mods.CustomItem;

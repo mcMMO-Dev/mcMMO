@@ -9,13 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.sound.SoundEffect;
 
-import com.gmail.nossr50.spout.SpoutSounds;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModChecks;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Skills;
-import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.TreasuresConfig;
@@ -24,8 +19,12 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
-
-import org.getspout.spoutapi.sound.SoundEffect;
+import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ModChecks;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Skills;
+import com.gmail.nossr50.util.Users;
 
 public class Excavation {
 

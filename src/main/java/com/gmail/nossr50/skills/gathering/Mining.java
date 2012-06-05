@@ -12,16 +12,16 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 
 public class Mining {
     private static Random random = new Random();

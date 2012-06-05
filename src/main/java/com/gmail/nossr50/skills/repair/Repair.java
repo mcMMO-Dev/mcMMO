@@ -1,8 +1,8 @@
 package com.gmail.nossr50.skills.repair;
 
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -13,13 +13,13 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
-import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 
 public class Repair {
 

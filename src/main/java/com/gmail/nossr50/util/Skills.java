@@ -7,14 +7,12 @@ import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.SpoutConfig;
-import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.PlayerStat;
@@ -22,6 +20,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.spout.SpoutStuff;
 
 public class Skills {
 

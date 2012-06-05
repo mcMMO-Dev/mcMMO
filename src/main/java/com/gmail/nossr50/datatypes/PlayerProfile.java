@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
@@ -19,7 +20,6 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Users;
-import com.gmail.nossr50.mcMMO;
 
 public class PlayerProfile {
 

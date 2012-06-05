@@ -2,8 +2,6 @@ package com.gmail.nossr50.datatypes;
 
 import java.util.ArrayList;
 
-import com.gmail.nossr50.datatypes.PlayerStat;
-
 public class TreeNode {
     TreeNode left = null;
     TreeNode right = null;

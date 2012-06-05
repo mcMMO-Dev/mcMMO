@@ -2,7 +2,6 @@ package com.gmail.nossr50.spout;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;

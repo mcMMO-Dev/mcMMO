@@ -2,28 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import java.util.List;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.AbilityType;
-import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.datatypes.ToolType;
-import com.gmail.nossr50.skills.gathering.Excavation;
-import com.gmail.nossr50.skills.gathering.Herbalism;
-import com.gmail.nossr50.skills.gathering.Mining;
-import com.gmail.nossr50.skills.gathering.WoodCutting;
-import com.gmail.nossr50.skills.repair.Repair;
-import com.gmail.nossr50.spout.SpoutSounds;
-import com.gmail.nossr50.util.BlockChecks;
-import com.gmail.nossr50.util.ItemChecks;
-import com.gmail.nossr50.util.ModChecks;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Skills;
-import com.gmail.nossr50.util.Users;
-import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
-import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
-import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -39,8 +17,29 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-
 import org.getspout.spoutapi.sound.SoundEffect;
+
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.AbilityType;
+import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.ToolType;
+import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.skills.gathering.Excavation;
+import com.gmail.nossr50.skills.gathering.Herbalism;
+import com.gmail.nossr50.skills.gathering.Mining;
+import com.gmail.nossr50.skills.gathering.WoodCutting;
+import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.util.BlockChecks;
+import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.ModChecks;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Skills;
+import com.gmail.nossr50.util.Users;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;

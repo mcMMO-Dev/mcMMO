@@ -15,7 +15,6 @@ import java.util.jar.JarFile;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -24,8 +23,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.listeners.SpoutListener;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
