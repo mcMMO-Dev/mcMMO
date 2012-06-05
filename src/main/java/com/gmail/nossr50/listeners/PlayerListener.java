@@ -161,8 +161,8 @@ public class PlayerListener implements Listener {
 
         //TODO: Locale ALL the things.
         if (Config.getInstance().getMOTDEnabled() && Permissions.getInstance().motd(player)) {
-            String prefix = ChatColor.GOLD+"[mcMMO] ";
-            String perkPrefix = ChatColor.RED+"[mcMMO Perks] ";
+            String prefix = ChatColor.GOLD + "[mcMMO] ";
+            String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
 
             player.sendMessage(prefix + ChatColor.YELLOW + "Running version " + ChatColor.DARK_AQUA + plugin.getDescription().getVersion()); //TODO: Locale
 
