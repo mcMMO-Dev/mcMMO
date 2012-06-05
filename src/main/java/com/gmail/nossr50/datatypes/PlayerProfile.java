@@ -1040,11 +1040,13 @@ public class PlayerProfile {
             }
         }
 
-        if(player.hasPermission("mcmmo.perks.xp.quadruple")) {
+        if (player.hasPermission("mcmmo.perks.xp.quadruple")) {
             xp = xp * 4;
-        } else if (player.hasPermission("mcmmo.perks.xp.triple")) {
+        }
+        else if (player.hasPermission("mcmmo.perks.xp.triple")) {
             xp = xp * 3;
-        } else if (player.hasPermission("mcmmo.perks.xp.double")) {
+        }
+        else if (player.hasPermission("mcmmo.perks.xp.double")) {
             xp = xp * 2;
         }
 
