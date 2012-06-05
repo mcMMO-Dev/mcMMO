@@ -188,16 +188,17 @@ public class Combat {
             }
         }
         else if (damager instanceof Arrow) {
-            if (!configInstance.getArcheryPVP() && ((Arrow) damager).getShooter().getType().equals(EntityType.PLAYER)) {
-                if (targetIsPlayer || targetIsTamedPet) {
+            if (((Arrow) damager).getShooter().getType() != EntityType.PLAYER) {
+                return;
+            }
+
+            if (targetIsPlayer || targetIsTamedPet) {
+                if (!configInstance.getArcheryPVP()) {
                     return;
                 }
             }
-
-            if (!configInstance.getArcheryPVE() && !((Arrow) damager).getShooter().getType().equals(EntityType.PLAYER)) {
-                if (!targetIsPlayer || !targetIsTamedPet) {
-                    return;
-                }
+            else if (!configInstance.getArcheryPVE()) {
+                return;
             }
 
             archeryCheck(event, plugin);
