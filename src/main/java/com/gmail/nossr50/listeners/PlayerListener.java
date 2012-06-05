@@ -357,6 +357,8 @@ public class PlayerListener implements Listener {
                     p.sendMessage(prefix + chatEvent.getMessage());
                 }
             }
+
+            event.setCancelled(true);
         }
     }
 
