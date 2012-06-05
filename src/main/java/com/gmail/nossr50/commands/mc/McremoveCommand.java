@@ -98,7 +98,7 @@ public class McremoveCommand implements CommandExecutor {
         //Force PlayerProfile stuff to update
         Player player = plugin.getServer().getPlayer(playerName);
 
-        if (player != null && Users.players.containsKey(playerName.toLowerCase())) {
+        if (player != null && Users.getProfiles().containsKey(player)) {
             Users.removeUser(player);
             Users.addUser(player);
         }

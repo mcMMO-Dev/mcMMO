@@ -27,7 +27,7 @@ public class GainXp implements Runnable {
     @Override
     public void run() {
         int health = target.getHealth();
-        int damage =  baseHealth - health;
+        int damage = baseHealth - health;
 
         //May avoid negative xp, we don't know what other plugins do with the entity health
         if (damage <= 0) {

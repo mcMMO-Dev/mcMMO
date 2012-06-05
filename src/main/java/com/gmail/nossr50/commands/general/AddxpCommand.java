@@ -61,7 +61,7 @@ public class AddxpCommand implements CommandExecutor {
                     modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + xp + " experience in " + skillName + "!"); //TODO: Needs more locale.
 
                     if (skill.equals(SkillType.ALL)) {
-                        Skills.xpCheckAll(modifiedPlayer);
+                        Skills.xpCheckAll(modifiedPlayer, profile);
                     }
                     else {
                         Skills.xpCheckSkill(skill, modifiedPlayer, profile);
@@ -112,7 +112,7 @@ public class AddxpCommand implements CommandExecutor {
                 modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + xp + " experience in " + skillName + "!"); //TODO: Needs more locale.
 
                 if (skill.equals(SkillType.ALL)) {
-                    Skills.xpCheckAll(modifiedPlayer);
+                    Skills.xpCheckAll(modifiedPlayer, profile);
                 }
                 else {
                     Skills.xpCheckSkill(skill, modifiedPlayer, profile);

@@ -60,12 +60,12 @@ public class PlayerProfile {
     HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>();
     HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
 
-    private String playerName;
+    private Player player;
     private final static String location = mcMMO.usersFile;
 
-    public PlayerProfile(String name, boolean addNew) {
+    public PlayerProfile(Player player, boolean addNew) {
         hud = SpoutConfig.getInstance().defaulthud;
-        playerName = name;
+        this.player = player;
 
         for (AbilityType abilityType : AbilityType.values()) {
             skillsDATS.put(abilityType, 0);
@@ -91,17 +91,14 @@ public class PlayerProfile {
         lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
     }
 
-    public String getPlayerName() {
-        return this.playerName;
-    }
-
+    //This method is actually never used
     public Player getPlayer() {
-        return mcMMO.p.getServer().getPlayer(playerName);
+        return player;
     }
 
     public boolean loadMySQL() {
         int id = 0;
-        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + playerName + "'");
+        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + player.getName() + "'");
 
         this.userid = id;
 
@@ -183,8 +180,8 @@ public class PlayerProfile {
 
     public void addMySQLPlayer() {
         int id = 0;
-        mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
-        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + playerName + "'");
+        mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"users (user, lastlogin) VALUES ('" + player.getName() + "'," + System.currentTimeMillis() / 1000 +")");
+        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + player.getName() + "'");
         mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"cooldowns (user_id) VALUES ("+id+")");
         mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"skills (user_id) VALUES ("+id+")");
         mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"experience (user_id) VALUES ("+id+")");
@@ -203,7 +200,7 @@ public class PlayerProfile {
                 //Find if the line contains the player we want.
                 String[] character = line.split(":");
 
-                if(!character[0].equals(playerName)){continue;}
+                if(!character[0].equals(player.getName())){continue;}
 
                 //Get Mining
                 if(character.length > 1 && Misc.isInt(character[1]))
@@ -355,12 +352,12 @@ public class PlayerProfile {
                 while ((line = in.readLine()) != null) {
                     //Read the line in and copy it to the output it's not the player
                     //we want to edit
-                    if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
+                    if (!line.split(":")[0].equalsIgnoreCase(player.getName())) {
                         writer.append(line).append("\r\n");
                     }
                     else {
                       //Otherwise write the new player information
-                        writer.append(playerName + ":");
+                        writer.append(player.getName() + ":");
                         writer.append(skills.get(SkillType.MINING) + ":");
                         writer.append("" + ":");
                         writer.append(party+":");
@@ -442,7 +439,7 @@ public class PlayerProfile {
             BufferedWriter out = new BufferedWriter(file);
 
             //Add the player to the end
-            out.append(playerName + ":");
+            out.append(player.getName() + ":");
             out.append(0 + ":"); //mining
             out.append(""+":");
             out.append(party+":");
@@ -971,8 +968,6 @@ public class PlayerProfile {
      * @param newValue The amount of XP to add
      */
     public void addXPOverride(SkillType skillType, int newValue) {
-        Player player = mcMMO.p.getServer().getPlayer(playerName);
-
         if (skillType.equals(SkillType.ALL)) {
             for (SkillType x : SkillType.values()) {
                 if (x.equals(SkillType.ALL)) {
@@ -1004,11 +999,10 @@ public class PlayerProfile {
     /**
      * Adds XP to the player, this is affected by skill modifiers and XP Rate and Permissions
      *
-     * @param player The player to add XP to
      * @param skillType The skill to add XP to
      * @param newvalue The amount of XP to add
      */
-    public void addXP(Player player, SkillType skillType, int newValue) {
+    public void addXP(SkillType skillType, int newValue) {
         if (System.currentTimeMillis() < ((xpGainATS * 1000) + 250) || player.getGameMode().equals(GameMode.CREATIVE)) {
             return;
         }
@@ -1142,7 +1136,6 @@ public class PlayerProfile {
      * @return the power level of the player
      */
     public int getPowerLevel() {
-        Player player = mcMMO.p.getServer().getPlayer(playerName);
         int powerLevel = 0;
 
         for (SkillType type : SkillType.values()) {
@@ -1161,15 +1154,12 @@ public class PlayerProfile {
      * @return the party bonus multiplier
      */
     private double partyModifier(SkillType skillType) {
-        Player player = getPlayer();
         double bonusModifier = 0.0;
 
-        for (Player x : Party.getInstance().getOnlineMembers(player)) {
-            String memberName = x.getName();
-
-            if (!memberName.equals(playerName) && Party.getInstance().isPartyLeader(memberName, getParty())) {
-                if (Misc.isNear(player.getLocation(), x.getLocation(), 25.0)) {
-                    PlayerProfile PartyLeader = Users.getProfile(x);
+        for (Player member : Party.getInstance().getOnlineMembers(player)) {
+            if (!member.equals(player) && Party.getInstance().isPartyLeader(member.getName(), getParty())) {
+                if (Misc.isNear(player.getLocation(), member.getLocation(), 25.0)) {
+                    PlayerProfile PartyLeader = Users.getProfile(member);
                     int leaderSkill = PartyLeader.getSkillLevel(skillType);
                     int playerSkill = getSkillLevel(skillType);
 

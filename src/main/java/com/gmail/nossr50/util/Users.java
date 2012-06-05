@@ -12,18 +12,15 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Users {
-    private final static mcMMO plugin = mcMMO.p;
-    public static HashMap<String, PlayerProfile> players = new HashMap<String, PlayerProfile>();
-
+    private static HashMap<Player, PlayerProfile> players = new HashMap<Player, PlayerProfile>();
 
     /**
      * Load users.
      */
     public static void loadUsers() {
-
-
         new File(mcMMO.flatFileDirectory).mkdir();
         new File(mcMMO.leaderboardDirectory).mkdir();
+
         File theDir = new File(mcMMO.usersFile);
 
         if (!theDir.exists()) {
@@ -43,8 +40,8 @@ public class Users {
      * @param player The player to create a user record for
      */
     public static void addUser(Player player) {
-        if (!players.containsKey(player.getName().toLowerCase())) {
-            players.put(player.getName().toLowerCase(), new PlayerProfile(player.getName(), true));
+        if (!players.containsKey(player)) {
+            players.put(player, new PlayerProfile(player, true));
         }
     }
 
@@ -60,7 +57,7 @@ public class Users {
      *
      * @return a HashMap containing the PlayerProfile of everyone in the database
      */
-    public static HashMap<String, PlayerProfile> getProfiles() {
+    public static HashMap<Player, PlayerProfile> getProfiles() {
         return players;
     }
 
@@ -70,11 +67,10 @@ public class Users {
      * @param player The player to remove
      */
     public static void removeUser(Player player) {
-
         //Only remove PlayerProfile if user is offline and we have it in memory
-        if (!player.isOnline() && players.containsKey(player.getName().toLowerCase())) {
-            players.get(player.getName().toLowerCase()).save();
-            players.remove(player.getName().toLowerCase());
+        if (!player.isOnline() && players.containsKey(player)) {
+            players.get(player).save();
+            players.remove(player);
         }
     }
 
@@ -84,7 +80,7 @@ public class Users {
      * @param playerName The name of the player to remove
      */
     public static void removeUserByName(String playerName) {
-        players.remove(playerName.toLowerCase());
+        players.remove(mcMMO.p.getServer().getOfflinePlayer(playerName));
     }
 
     /**
@@ -94,7 +90,7 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfile(OfflinePlayer player) {
-        return getProfileByName(player.getName());
+        return players.get(player);
     }
 
     /**
@@ -104,17 +100,28 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfileByName(String playerName) {
-        if (plugin.getServer().getOfflinePlayer(playerName).isOnline() || players.containsKey(playerName.toLowerCase())) {
-            if (players.containsKey(playerName.toLowerCase())) {
-                return players.get(playerName.toLowerCase());
+        Player player = mcMMO.p.getServer().getPlayer(playerName);
+        PlayerProfile profile = players.get(player);
+
+        if (profile == null) {
+            if (player != null) {
+                PlayerProfile newProfile = new PlayerProfile(player, true);
+
+                players.put(player, newProfile);
+                return newProfile;
             }
             else {
-                players.put(playerName.toLowerCase(), new PlayerProfile(playerName, true));
-                return players.get(playerName.toLowerCase());
+                mcMMO.p.getLogger().severe("getProfileByName(" + playerName + ") just returned null :(");
+
+                for (StackTraceElement ste : new Throwable().getStackTrace()) {
+                    System.out.println(ste);
+                }
+
+                return null;
             }
         }
         else {
-            return new PlayerProfile(playerName, false);
+            return profile;
         }
     }
 }

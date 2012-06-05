@@ -248,15 +248,16 @@ public class Skills {
      * Check XP of all skills.
      *
      * @param player The player to check XP for.
+     * @param profile The profile of the player whose skill to check
      */
-    public static void xpCheckAll(Player player) {
-        for (SkillType x : SkillType.values()) {
+    public static void xpCheckAll(Player player, PlayerProfile profile) {
+        for (SkillType skillType : SkillType.values()) {
             //Don't want to do anything with this one
-            if (x == SkillType.ALL) {
+            if (skillType == SkillType.ALL) {
                 continue;
             }
 
-            xpCheckSkill(x, player, Users.getProfile(player));
+            xpCheckSkill(skillType, player, profile);
         }
     }
 
@@ -459,7 +460,7 @@ public class Skills {
      * @param xp the amount of XP to gain
      */
     public static void xpProcessing(Player player, PlayerProfile profile, SkillType type, int xp) {
-        profile.addXP(player, type, xp);
+        profile.addXP(type, xp);
         xpCheckSkill(type, player, profile);
     }
 }

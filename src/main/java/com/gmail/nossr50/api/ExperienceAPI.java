@@ -16,7 +16,7 @@ public class ExperienceAPI {
      */
     private void checkXP(Player player, SkillType skillType) {
         if (skillType.equals(SkillType.ALL)) {
-            Skills.xpCheckAll(player);
+            Skills.xpCheckAll(player, Users.getProfile(player));
         }
         else {
             Skills.xpCheckSkill(skillType, player, Users.getProfile(player));
@@ -61,7 +61,7 @@ public class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public void addXP(Player player, SkillType skillType, int XP) {
-        Users.getProfile(player).addXP(player, skillType, XP);
+        Users.getProfile(player).addXP(skillType, XP);
         checkXP(player, skillType);
     }
 
