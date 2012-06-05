@@ -17,7 +17,7 @@ public class SpoutConfig extends ConfigLoader {
 
     public HUDType defaulthud;
 
-    public SpoutConfig(mcMMO plugin) {
+    private SpoutConfig(mcMMO plugin) {
         super(plugin, "spout.yml");
         saveIfNotExist();
     }
