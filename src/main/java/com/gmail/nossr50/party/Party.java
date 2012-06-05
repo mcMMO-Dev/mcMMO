@@ -170,7 +170,7 @@ public class Party {
      * @return the list of parties.
      */
     public ArrayList<String> getParties() {
-        String location = plugin.usersFile;
+        String location = mcMMO.usersFile;
         ArrayList<String> parties = new ArrayList<String>();
 
         try {

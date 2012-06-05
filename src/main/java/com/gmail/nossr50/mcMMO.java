@@ -100,10 +100,14 @@ public class mcMMO extends JavaPlugin {
     public File mcmmo;
 
     //File Paths
-    public String mainDirectory, flatFileDirectory, usersFile, leaderboardDirectory, modDirectory;
+    public static String mainDirectory;
+    public static String flatFileDirectory;
+    public static String usersFile;
+    public static String leaderboardDirectory;
+    public static String modDirectory;
 
     //Spout Check
-    public boolean spoutEnabled;
+    public static boolean spoutEnabled;
 
     /**
      * Things to be run when the plugin is enabled.
@@ -351,7 +355,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (configInstance.getCommandmcMMOEnabled()) {
-            getCommand("mcmmo").setExecutor(new McmmoCommand(this));
+            getCommand("mcmmo").setExecutor(new McmmoCommand());
         }
 
         if (configInstance.getCommandMCRefreshEnabled()) {
@@ -416,7 +420,7 @@ public class mcMMO extends JavaPlugin {
 
         //Spout commands
         if (configInstance.getCommandXPLockEnabled()) {
-            getCommand("xplock").setExecutor(new XplockCommand(this));
+            getCommand("xplock").setExecutor(new XplockCommand());
         }
 
         getCommand("mchud").setExecutor(new MchudCommand(this));

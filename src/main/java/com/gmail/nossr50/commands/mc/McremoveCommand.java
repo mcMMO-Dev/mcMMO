@@ -22,7 +22,7 @@ public class McremoveCommand implements CommandExecutor {
 
     public McremoveCommand (mcMMO plugin) {
         this.plugin = plugin;
-        this.location = plugin.usersFile;
+        this.location = mcMMO.usersFile;
     }
 
     @Override

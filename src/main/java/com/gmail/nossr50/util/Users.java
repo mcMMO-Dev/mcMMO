@@ -22,9 +22,9 @@ public class Users {
     public static void loadUsers() {
 
 
-        new File(plugin.flatFileDirectory).mkdir();
-        new File(plugin.leaderboardDirectory).mkdir();
-        File theDir = new File(plugin.usersFile);
+        new File(mcMMO.flatFileDirectory).mkdir();
+        new File(mcMMO.leaderboardDirectory).mkdir();
+        File theDir = new File(mcMMO.usersFile);
 
         if (!theDir.exists()) {
             try {

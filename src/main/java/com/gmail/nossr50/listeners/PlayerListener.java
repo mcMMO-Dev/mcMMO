@@ -139,7 +139,7 @@ public class PlayerListener implements Listener {
         /* GARBAGE COLLECTION */
 
         //Remove Spout Stuff
-        if (plugin.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
+        if (mcMMO.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
             SpoutStuff.playerHUDs.remove(player);
         }
 

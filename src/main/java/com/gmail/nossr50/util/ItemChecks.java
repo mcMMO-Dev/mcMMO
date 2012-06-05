@@ -32,7 +32,7 @@ public class ItemChecks {
             if (customToolsEnabled && CustomToolsConfig.getInstance().customSwordIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutSwords.contains(is)) {
+            else if (mcMMO.spoutEnabled && SpoutToolsAPI.spoutSwords.contains(is)) {
                 return true;
             }
             else {
@@ -60,7 +60,7 @@ public class ItemChecks {
             if (customToolsEnabled && CustomToolsConfig.getInstance().customHoeIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutHoes.contains(is)) {
+            else if (mcMMO.spoutEnabled && SpoutToolsAPI.spoutHoes.contains(is)) {
                 return true;
             }
             else {
@@ -88,7 +88,7 @@ public class ItemChecks {
             if (customToolsEnabled && CustomToolsConfig.getInstance().customShovelIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutShovels.contains(is)) {
+            else if (mcMMO.spoutEnabled && SpoutToolsAPI.spoutShovels.contains(is)) {
                 return true;
             }
             else {
@@ -116,7 +116,7 @@ public class ItemChecks {
             if (customToolsEnabled && CustomToolsConfig.getInstance().customAxeIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutAxes.contains(is)) {
+            else if (mcMMO.spoutEnabled && SpoutToolsAPI.spoutAxes.contains(is)) {
                 return true;
             }
             else {
@@ -144,7 +144,7 @@ public class ItemChecks {
             if (customToolsEnabled && CustomToolsConfig.getInstance().customPickaxeIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else if (mcMMO.p.spoutEnabled && SpoutToolsAPI.spoutPickaxes.contains(is)) {
+            else if (mcMMO.spoutEnabled && SpoutToolsAPI.spoutPickaxes.contains(is)) {
                 return true;
             }
             else {

@@ -45,7 +45,7 @@ public class Repair {
         Skills.xpProcessing(player, PP, SkillType.REPAIR, dif * 10);
 
         //CLANG CLANG
-        if (mcMMO.p.spoutEnabled) {
+        if (mcMMO.spoutEnabled) {
             SpoutSounds.playRepairNoise(player, mcMMO.p);
         }
     }
@@ -241,7 +241,7 @@ public class Repair {
         PlayerProfile PP = Users.getProfile(player);
 
         if (!PP.getPlacedAnvil()) {
-            if (mcMMO.p.spoutEnabled) {
+            if (mcMMO.spoutEnabled) {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
                 if (sPlayer.isSpoutCraftEnabled()) {

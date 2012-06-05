@@ -61,7 +61,7 @@ public class PlayerProfile {
     HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
 
     private String playerName;
-    private final String location = mcMMO.p.usersFile;
+    private final static String location = mcMMO.usersFile;
 
     public PlayerProfile(String name, boolean addNew) {
         hud = SpoutConfig.getInstance().defaulthud;

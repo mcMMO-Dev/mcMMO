@@ -17,14 +17,14 @@ public class SpoutStart implements Runnable{
     @Override
     public void run() {
         if (plugin.getServer().getPluginManager().getPlugin("Spout") != null) {
-            plugin.spoutEnabled = true;
+            mcMMO.spoutEnabled = true;
         }
         else {
-            plugin.spoutEnabled = false;
+            mcMMO.spoutEnabled = false;
         }
 
         //Spout Stuff
-        if (plugin.spoutEnabled) {
+        if (mcMMO.spoutEnabled) {
             SpoutConfig.getInstance();
             SpoutStuff.setupSpoutConfigs();
             SpoutStuff.registerCustomEvent();

@@ -331,7 +331,7 @@ public class Mining {
 
             miningBlockCheck(player, block);
 
-            if (mcMMO.p.spoutEnabled) {
+            if (mcMMO.spoutEnabled) {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }
@@ -376,7 +376,7 @@ public class Mining {
 
                 miningBlockCheck(player, block);
 
-                if (mcMMO.p.spoutEnabled) {
+                if (mcMMO.spoutEnabled) {
                     SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
                 }
             }

@@ -399,7 +399,7 @@ public class WoodCutting {
             Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());
         }
 
-        if (mcMMO.p.spoutEnabled) {
+        if (mcMMO.spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }

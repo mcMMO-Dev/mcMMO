@@ -32,7 +32,7 @@ public class MchudCommand implements CommandExecutor {
             return true;
         }
 
-        if (!plugin.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled()) {
+        if (!mcMMO.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
             return true;
         }

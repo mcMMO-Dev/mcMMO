@@ -301,7 +301,7 @@ public class BlockListener implements Listener {
         }
 
         /* TREE FELLER SOUNDS */
-        if (plugin.spoutEnabled && BlockChecks.isLog(block) && PP.getAbilityMode(AbilityType.TREE_FELLER)) {
+        if (mcMMO.spoutEnabled && BlockChecks.isLog(block) && PP.getAbilityMode(AbilityType.TREE_FELLER)) {
             SpoutSounds.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
         }
 
@@ -346,7 +346,7 @@ public class BlockListener implements Listener {
                 event.setInstaBreak(true);
             }
 
-            if (plugin.spoutEnabled) {
+            if (mcMMO.spoutEnabled) {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }
