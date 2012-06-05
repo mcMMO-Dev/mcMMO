@@ -9,7 +9,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -47,7 +46,7 @@ public class Combat {
      * @param event The event to run the combat checks on.
      * @param plugin mcMMO plugin instance
      */
-    public static void combatChecks(EntityDamageByEntityEvent event, mcMMO plugin) {
+    public static void combatChecks(EntityDamageByEntityEvent event) {
         if (event.getDamage() == 0 || event.getEntity().isDead()) {
             return;
         }
@@ -83,11 +82,11 @@ public class Combat {
                 }
 
                 if (PPa.getAbilityMode(AbilityType.SERRATED_STRIKES) && permInstance.serratedStrikes(attacker)) {
-                    applyAbilityAoE(attacker, target, event.getDamage() / 4, plugin, SkillType.SWORDS);
+                    applyAbilityAoE(attacker, target, event.getDamage() / 4, SkillType.SWORDS);
                     BleedTimer.add(target, 5);
                 }
 
-                startGainXp(attacker, PPa, target, SkillType.SWORDS, plugin);
+                startGainXp(attacker, PPa, target, SkillType.SWORDS);
             }
             else if (ItemChecks.isAxe(itemInHand) && permInstance.axes(attacker)) {
                 if (!configInstance.getAxesPVP()) {
@@ -115,10 +114,10 @@ public class Combat {
                 }
 
                 if (PPa.getAbilityMode(AbilityType.SKULL_SPLIITER) && permInstance.skullSplitter(attacker)) {
-                    applyAbilityAoE(attacker, target, event.getDamage() / 2, plugin, SkillType.AXES);
+                    applyAbilityAoE(attacker, target, event.getDamage() / 2, SkillType.AXES);
                 }
 
-                startGainXp(attacker, PPa, target, SkillType.AXES, plugin);
+                startGainXp(attacker, PPa, target, SkillType.AXES);
             }
             else if (itemInHand.getType().equals(Material.AIR) && permInstance.unarmed(attacker)) {
                 if (!configInstance.getUnarmedPVP()) {
@@ -145,7 +144,7 @@ public class Combat {
                     Unarmed.disarmProcCheck(attacker, (Player) target);
                 }
 
-                startGainXp(attacker, PPa, target, SkillType.UNARMED, plugin);
+                startGainXp(attacker, PPa, target, SkillType.UNARMED);
             }
             else if (itemInHand.getType().equals(Material.BONE) && permInstance.beastLore(attacker)) {
                 Taming.beastLore(event, target, attacker);
@@ -183,12 +182,14 @@ public class Combat {
                 }
 
                 if (permInstance.taming(master)) {
-                    startGainXp(master, PPo, target, SkillType.TAMING, plugin);
+                    startGainXp(master, PPo, target, SkillType.TAMING);
                 }
             }
         }
         else if (damager instanceof Arrow) {
-            if (((Arrow) damager).getShooter().getType() != EntityType.PLAYER) {
+            LivingEntity shooter = ((Arrow) damager).getShooter();
+
+            if (shooter.getType() != EntityType.PLAYER) {
                 return;
             }
 
@@ -201,7 +202,7 @@ public class Combat {
                 return;
             }
 
-            archeryCheck(event, plugin);
+            archeryCheck((Player) shooter, target, event);
         }
 
         if (target instanceof Player) {
@@ -245,14 +246,11 @@ public class Combat {
     /**
      * Process archery abilities.
      *
+     * @param shooter The player shooting
+     * @param target The defending entity
      * @param event The event to run the archery checks on.
-     * @param pluginx mcMMO plugin instance
      */
-    public static void archeryCheck(EntityDamageByEntityEvent event, mcMMO pluginx) {
-        Projectile arrow = (Projectile) event.getDamager();
-        LivingEntity shooter = arrow.getShooter();
-        LivingEntity target = (LivingEntity) event.getEntity();
-
+    public static void archeryCheck(Player shooter, LivingEntity target, EntityDamageByEntityEvent event) {
         if (target instanceof Player) {
             Player defender = (Player) target;
 
@@ -263,40 +261,37 @@ public class Combat {
             }
         }
 
-        if (shooter instanceof Player) {
-            Player attacker = (Player) shooter;
-            PlayerProfile PPa = Users.getProfile(attacker);
+        if (permInstance.archery(shooter)) {
+            if (permInstance.archeryBonus(shooter)) {
+                /*Archery needs a damage bonus to be viable in PVP*/
+                int skillLvl = Users.getProfile(shooter).getSkillLevel(SkillType.ARCHERY);
+                double dmgBonusPercent = ((skillLvl / 50) * 0.1D);
 
-            if (permInstance.archery(attacker)) {
-                if (permInstance.archeryBonus(attacker)) {
-                    /*Archery needs a damage bonus to be viable in PVP*/
-                    int skillLvl = Users.getProfile(attacker).getSkillLevel(SkillType.ARCHERY);
-                    double dmgBonusPercent = ((skillLvl / 50) * 0.1D);
-
-                    /* Cap maximum bonus at 200% */
-                    if (dmgBonusPercent > 2) {
-                        dmgBonusPercent = 2;
-                    }
-
-                    /* Every 50 skill levels Archery gains 10% damage bonus, set that here */
-                    //TODO: Work in progress for balancing out Archery, will work on it more later...
-                    int damage = event.getDamage();
-                    int archeryBonus = (int) (damage * dmgBonusPercent);
-
-                    event.setDamage(damage + archeryBonus);
+                /* Cap maximum bonus at 200% */
+                if (dmgBonusPercent > 2) {
+                    dmgBonusPercent = 2;
                 }
 
-                if (target instanceof Player && permInstance.daze(attacker)) {
-                    Archery.dazeCheck((Player) target, attacker, event);
-                }
+                /* Every 50 skill levels Archery gains 10% damage bonus, set that here */
+                //TODO: Work in progress for balancing out Archery, will work on it more later...
+                int damage = event.getDamage();
+                int archeryBonus = (int) (damage * dmgBonusPercent);
 
-                if (permInstance.trackArrows(attacker)) {
-                    Archery.trackArrows(target, PPa);
-                }
+                event.setDamage(damage + archeryBonus);
+            }
 
-                if (target != attacker) {
-                    startGainXp(attacker, PPa, target, SkillType.ARCHERY, pluginx);
-                }
+            if (target instanceof Player && permInstance.daze(shooter)) {
+                Archery.dazeCheck((Player) target, shooter, event);
+            }
+
+            PlayerProfile PP = Users.getProfile(shooter);
+
+            if (permInstance.trackArrows(shooter)) {
+                Archery.trackArrows(target, PP);
+            }
+
+            if (target != shooter) {
+                startGainXp(shooter, PP, target, SkillType.ARCHERY);
             }
         }
     }
@@ -363,10 +358,9 @@ public class Combat {
      * @param attacker The attacking player
      * @param target The defending entity
      * @param damage The initial damage amount
-     * @param plugin mcMMO plugin instance
      * @param type The type of skill being used
      */
-    private static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, mcMMO plugin, SkillType type) {
+    private static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, SkillType type) {
         ItemStack inHand = attacker.getItemInHand();
 
         if (ModChecks.isCustomTool(inHand) && !ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
@@ -390,7 +384,7 @@ public class Combat {
             }
 
             PlayerAnimationEvent armswing = new PlayerAnimationEvent(attacker);
-            plugin.getServer().getPluginManager().callEvent(armswing);
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
             if (entity instanceof Player) {
                 Player defender = (Player) entity;
@@ -458,7 +452,7 @@ public class Combat {
      * @param skillType The skill being used
      * @param plugin mcMMO plugin instance
      */
-    public static void startGainXp(Player attacker, PlayerProfile PP, LivingEntity target, SkillType skillType, mcMMO pluginx) {
+    public static void startGainXp(Player attacker, PlayerProfile PP, LivingEntity target, SkillType skillType) {
         double baseXP = 0;
 
         if (target instanceof Player) {
@@ -549,7 +543,7 @@ public class Combat {
         }
 
         if (baseXP != 0) {
-            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(pluginx, new GainXp(attacker, PP, skillType, baseXP, target), 0);
+            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GainXp(attacker, PP, skillType, baseXP, target), 0);
         }
     }
 }

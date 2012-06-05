@@ -92,7 +92,7 @@ public class EntityListener implements Listener {
             LivingEntity livingDefender = (LivingEntity)defender;
 
             if (!Misc.isInvincible(livingDefender, event)) {
-                Combat.combatChecks(event, plugin);
+                Combat.combatChecks(event);
             }
         }
     }
