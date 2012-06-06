@@ -61,11 +61,13 @@ public class PlayerProfile {
     HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
 
     private Player player;
+    private String playerName;
     private final static String location = mcMMO.usersFile;
 
     public PlayerProfile(Player player, boolean addNew) {
         hud = SpoutConfig.getInstance().defaulthud;
         this.player = player;
+        this.playerName = player.getName();
 
         for (AbilityType abilityType : AbilityType.values()) {
             skillsDATS.put(abilityType, 0);
@@ -98,7 +100,7 @@ public class PlayerProfile {
 
     public boolean loadMySQL() {
         int id = 0;
-        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + player.getName() + "'");
+        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + playerName + "'");
 
         this.userid = id;
 
@@ -180,8 +182,8 @@ public class PlayerProfile {
 
     public void addMySQLPlayer() {
         int id = 0;
-        mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"users (user, lastlogin) VALUES ('" + player.getName() + "'," + System.currentTimeMillis() / 1000 +")");
-        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + player.getName() + "'");
+        mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
+        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + playerName + "'");
         mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"cooldowns (user_id) VALUES ("+id+")");
         mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"skills (user_id) VALUES ("+id+")");
         mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"experience (user_id) VALUES ("+id+")");
@@ -200,7 +202,7 @@ public class PlayerProfile {
                 //Find if the line contains the player we want.
                 String[] character = line.split(":");
 
-                if(!character[0].equals(player.getName())){continue;}
+                if(!character[0].equals(playerName)){continue;}
 
                 //Get Mining
                 if(character.length > 1 && Misc.isInt(character[1]))
@@ -352,12 +354,12 @@ public class PlayerProfile {
                 while ((line = in.readLine()) != null) {
                     //Read the line in and copy it to the output it's not the player
                     //we want to edit
-                    if (!line.split(":")[0].equalsIgnoreCase(player.getName())) {
+                    if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
                         writer.append(line).append("\r\n");
                     }
                     else {
                       //Otherwise write the new player information
-                        writer.append(player.getName() + ":");
+                        writer.append(playerName + ":");
                         writer.append(skills.get(SkillType.MINING) + ":");
                         writer.append("" + ":");
                         writer.append(party+":");
@@ -439,7 +441,7 @@ public class PlayerProfile {
             BufferedWriter out = new BufferedWriter(file);
 
             //Add the player to the end
-            out.append(player.getName() + ":");
+            out.append(playerName + ":");
             out.append(0 + ":"); //mining
             out.append(""+":");
             out.append(party+":");
