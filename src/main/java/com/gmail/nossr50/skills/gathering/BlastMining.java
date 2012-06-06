@@ -296,7 +296,7 @@ public class BlastMining {
 
         /* Create the TNT entity */
         TNTPrimed tnt = player.getWorld().spawn(block.getLocation(), TNTPrimed.class);
-        plugin.tntTracker.put(tnt.getEntityId(), player);
+        plugin.addToTNTTracker(tnt.getEntityId(), player.getName());
         tnt.setFuseTicks(0);
 
         /* Disable the original one */

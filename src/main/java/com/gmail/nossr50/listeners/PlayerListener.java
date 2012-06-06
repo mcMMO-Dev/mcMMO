@@ -373,13 +373,13 @@ public class PlayerListener implements Listener {
         String command = message.substring(1).split(" ")[0];
         String lowerCaseCommand = command.toLowerCase();
 
-        if (plugin.aliasMap.containsKey(lowerCaseCommand)) {
+        if (plugin.commandIsAliased(lowerCaseCommand)) {
             //We should find a better way to avoid string replacement where the alias is equals to the command
-            if (command.equals(plugin.aliasMap.get(lowerCaseCommand))) {
+            if (command.equals(plugin.getCommandAlias(lowerCaseCommand))) {
                 return;
             }
 
-            event.setMessage(message.replace(command, plugin.aliasMap.get(lowerCaseCommand)));
+            event.setMessage(message.replace(command, plugin.getCommandAlias(lowerCaseCommand)));
         }
     }
 }

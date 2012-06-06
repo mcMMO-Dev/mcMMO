@@ -86,8 +86,8 @@ public class McMMO extends JavaPlugin {
     private final WorldListener worldListener = new WorldListener();
     private final HardcoreListener hardcoreListener = new HardcoreListener();
 
-    public HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
-    public HashMap<Integer, Player> tntTracker = new HashMap<Integer, Player>();
+    private HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
+    private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
 
     public static File versionFile;
     public static Database database;
@@ -424,5 +424,64 @@ public class McMMO extends JavaPlugin {
         }
 
         getCommand("mchud").setExecutor(new MchudCommand(this));
+    }
+
+    /**
+     * Checks to see if the alias map contains the given key.
+     *
+     * @param command The command to check
+     * @return true if the command is in the map, false otherwise
+     */
+    public boolean commandIsAliased(String command) {
+        return aliasMap.containsKey(command);
+    }
+
+    /**
+     * Get the alias of a given command.
+     *
+     * @param command The command to retrieve the alias of
+     * @return the alias of the command
+     */
+    public String getCommandAlias(String command) {
+        return aliasMap.get(command);
+    }
+
+    /**
+     * Add a set of values to the TNT tracker.
+     *
+     * @param tntID The EntityID of the TNT
+     * @param playerName The name of the detonating player
+     */
+    public void addToTNTTracker(int tntID, String playerName) {
+        tntTracker.put(tntID, playerName);
+    }
+
+    /**
+     * Check to see if a given TNT Entity is tracked.
+     *
+     * @param tntID The EntityID of the TNT
+     * @return true if the TNT is being tracked, false otherwise
+     */
+    public boolean tntIsTracked(int tntID) {
+        return tntTracker.containsKey(tntID);
+    }
+
+    /**
+     * Get the player who detonated the TNT.
+     *
+     * @param tntID The EntityID of the TNT
+     * @return the Player who detonated it
+     */
+    public Player getTNTPlayer(int tntID) {
+        return getServer().getPlayer(tntTracker.get(tntID));
+    }
+
+    /**
+     * Remove TNT from the tracker after it explodes.
+     *
+     * @param tntID The EntityID of the TNT
+     */
+    public void removeFromTNTTracker(int tntID) {
+        tntTracker.remove(tntID);
     }
 }

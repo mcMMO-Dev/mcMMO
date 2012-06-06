@@ -188,8 +188,8 @@ public class EntityListener implements Listener {
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
 
-            if (plugin.tntTracker.containsKey(id)) {
-                Player player = plugin.tntTracker.get(id);
+            if (plugin.tntIsTracked(id)) {
+                Player player = plugin.getTNTPlayer(id);
 
                 if (Permissions.getInstance().biggerBombs(player)) {
                     BlastMining.biggerBombs(player, event);
@@ -210,10 +210,10 @@ public class EntityListener implements Listener {
         if (event.getEntity() instanceof TNTPrimed) {
             int id = entity.getEntityId();
 
-            if (plugin.tntTracker.containsKey(id)) {
-                Player player = plugin.tntTracker.get(id);
+            if (plugin.tntIsTracked(id)) {
+                Player player = plugin.getTNTPlayer(id);
                 BlastMining.dropProcessing(player, event);
-                plugin.tntTracker.remove(id);
+                plugin.removeFromTNTTracker(id);
             }
         }
     }
