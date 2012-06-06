@@ -69,7 +69,6 @@ public class Users {
     public static void removeUser(Player player) {
         //Only remove PlayerProfile if user is offline and we have it in memory
         if (!player.isOnline() && players.containsKey(player)) {
-            players.get(player).save();
             players.remove(player);
         }
     }
