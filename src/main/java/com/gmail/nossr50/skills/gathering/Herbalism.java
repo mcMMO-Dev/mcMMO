@@ -11,7 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
@@ -73,7 +73,7 @@ public class Herbalism {
      * @param event The event to use for Green Thumb
      * @param plugin mcMMO plugin instance
      */
-    public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, McMMO plugin) {
+    public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
         final PlayerProfile PP = Users.getProfile(player);
         final int MAX_BONUS_LEVEL = 1000;
 
@@ -94,7 +94,7 @@ public class Herbalism {
         switch (type) {
         case BROWN_MUSHROOM:
         case RED_MUSHROOM:
-            if (!McMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPMushrooms();
             }
@@ -105,7 +105,7 @@ public class Herbalism {
                 Block b = block.getRelative(0, y, 0);
                 if (b.getType().equals(Material.CACTUS)) {
                     mat = Material.CACTUS;
-                    if (!McMMO.placeStore.isTrue(b)) {
+                    if (!mcMMO.placeStore.isTrue(b)) {
                         if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
                             catciDrops++;
                         }
@@ -127,7 +127,7 @@ public class Herbalism {
             break;
 
         case MELON_BLOCK:
-            if (!McMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = Material.MELON;
                 xp = Config.getInstance().getHerbalismXPMelon();
             }
@@ -142,7 +142,7 @@ public class Herbalism {
 
         case PUMPKIN:
         case JACK_O_LANTERN:
-            if (!McMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPPumpkin();
             }
@@ -150,7 +150,7 @@ public class Herbalism {
 
         case RED_ROSE:
         case YELLOW_FLOWER:
-            if (!McMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPFlowers();
             }
@@ -161,7 +161,7 @@ public class Herbalism {
                 Block b = block.getRelative(0, y, 0);
                 if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
                     mat = Material.SUGAR_CANE;
-                    if (!McMMO.placeStore.isTrue(b)) {
+                    if (!mcMMO.placeStore.isTrue(b)) {
                         if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
                             caneDrops++;
                         }
@@ -172,14 +172,14 @@ public class Herbalism {
             break;
 
         case VINE:
-            if (!McMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = type;
                 xp = Config.getInstance().getHerbalismXPVines();
             }
             break;
 
         case WATER_LILY:
-            if (!McMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 mat = type;
                 xp = Config.getInstance().getHerbalismXPLilyPads();
             }
@@ -299,7 +299,7 @@ public class Herbalism {
      * @param event The event triggering the ability
      * @param plugin mcMMO plugin instance
      */
-    private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, McMMO plugin) {
+    private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
         final int MAX_BONUS_LEVEL = 1500;
 
         PlayerProfile PP = Users.getProfile(player);

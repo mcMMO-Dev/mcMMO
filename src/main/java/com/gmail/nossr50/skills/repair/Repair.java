@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -45,8 +45,8 @@ public class Repair {
         Skills.xpProcessing(player, PP, SkillType.REPAIR, dif * 10);
 
         //CLANG CLANG
-        if (McMMO.spoutEnabled) {
-            SpoutSounds.playRepairNoise(player, McMMO.p);
+        if (mcMMO.spoutEnabled) {
+            SpoutSounds.playRepairNoise(player, mcMMO.p);
         }
     }
 
@@ -241,7 +241,7 @@ public class Repair {
         PlayerProfile PP = Users.getProfile(player);
 
         if (!PP.getPlacedAnvil()) {
-            if (McMMO.spoutEnabled) {
+            if (mcMMO.spoutEnabled) {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
                 if (sPlayer.isSpoutCraftEnabled()) {

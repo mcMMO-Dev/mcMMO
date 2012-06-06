@@ -10,7 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -18,11 +18,11 @@ import com.gmail.nossr50.util.Users;
 
 public class McremoveCommand implements CommandExecutor {
     private final String location;
-    private final McMMO plugin;
+    private final mcMMO plugin;
 
-    public McremoveCommand (McMMO plugin) {
+    public McremoveCommand (mcMMO plugin) {
         this.plugin = plugin;
-        this.location = McMMO.usersFile;
+        this.location = mcMMO.usersFile;
     }
 
     @Override
@@ -51,30 +51,30 @@ public class McremoveCommand implements CommandExecutor {
         /* MySQL */
         if (Config.getInstance().getUseMySQL()) {
             int userId = 0;
-            userId = McMMO.database.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
+            userId = mcMMO.database.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
 
             if (userId > 0) {
-                McMMO.database.write("DELETE FROM "
+                mcMMO.database.write("DELETE FROM "
                         + databaseName + "."
                         + tablePrefix + "users WHERE "
                         + tablePrefix + "users.id=" + userId);
 
-                McMMO.database.write("DELETE FROM "
+                mcMMO.database.write("DELETE FROM "
                         + databaseName + "."
                         + tablePrefix + "cooldowns WHERE "
                         + tablePrefix + "cooldowns.user_id=" + userId);
 
-                McMMO.database.write("DELETE FROM "
+                mcMMO.database.write("DELETE FROM "
                         + databaseName + "."
                         + tablePrefix + "huds WHERE "
                         + tablePrefix + "huds.user_id=" + userId);
 
-                McMMO.database.write("DELETE FROM "
+                mcMMO.database.write("DELETE FROM "
                         + databaseName + "."
                         + tablePrefix + "skills WHERE "
                         + tablePrefix + "skills.user_id=" + userId);
 
-                McMMO.database.write("DELETE FROM "
+                mcMMO.database.write("DELETE FROM "
                         + databaseName + "."
                         + tablePrefix + "experience WHERE "
                         + tablePrefix + "experience.user_id=" + userId);

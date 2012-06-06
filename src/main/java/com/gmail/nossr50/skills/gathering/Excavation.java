@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
@@ -118,15 +118,15 @@ public class Excavation {
     public static void gigaDrillBreaker(Player player, Block block) {
         Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());
 
-        if (!McMMO.placeStore.isTrue(block)) {
+        if (!mcMMO.placeStore.isTrue(block)) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-            McMMO.p.getServer().getPluginManager().callEvent(armswing);
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
             Excavation.excavationProcCheck(block, player);
             Excavation.excavationProcCheck(block, player);
         }
 
-        if (McMMO.spoutEnabled) {
+        if (mcMMO.spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }

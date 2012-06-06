@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
@@ -16,9 +16,9 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.util.Users;
 
 public class PartyCommand implements CommandExecutor {
-    private final McMMO plugin;
+    private final mcMMO plugin;
 
-    public PartyCommand (McMMO plugin) {
+    public PartyCommand (mcMMO plugin) {
         this.plugin = plugin;
     }
 

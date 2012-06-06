@@ -19,7 +19,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -30,9 +30,9 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
 public class SpoutStuff {
-    private static McMMO plugin = McMMO.p;
+    private static mcMMO plugin = mcMMO.p;
 
-    public final static String spoutDirectory = McMMO.mainDirectory + "Resources" + File.separator;
+    public final static String spoutDirectory = mcMMO.mainDirectory + "Resources" + File.separator;
     public final static String hudDirectory = spoutDirectory + "HUD" + File.separator;
     public final static String hudStandardDirectory = hudDirectory + "Standard" + File.separator;
     public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
@@ -55,7 +55,7 @@ public class SpoutStuff {
         try {
             File currentFile = new File(theFilePath + theFileName);
             
-            JarFile jar = new JarFile(McMMO.mcmmo);
+            JarFile jar = new JarFile(mcMMO.mcmmo);
             JarEntry entry = jar.getJarEntry("resources/" + theFileName);
             InputStream is = jar.getInputStream(entry);
 

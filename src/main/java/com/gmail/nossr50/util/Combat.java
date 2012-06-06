@@ -17,7 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -315,7 +315,7 @@ public class Combat {
     private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
         if (configInstance.getEventCallbackEnabled()) {
             EntityDamageEvent ede = new FakeEntityDamageEvent(target, cause, dmg);
-            McMMO.p.getServer().getPluginManager().callEvent(ede);
+            mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {
                 return;
@@ -338,7 +338,7 @@ public class Combat {
     private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
         if (configInstance.getEventCallbackEnabled()) {
             EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
-            McMMO.p.getServer().getPluginManager().callEvent(ede);
+            mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {
                 return;
@@ -383,7 +383,7 @@ public class Combat {
             }
 
             PlayerAnimationEvent armswing = new PlayerAnimationEvent(attacker);
-            McMMO.p.getServer().getPluginManager().callEvent(armswing);
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
             if (entity instanceof Player) {
                 Player defender = (Player) entity;
@@ -541,7 +541,7 @@ public class Combat {
         }
 
         if (baseXP != 0) {
-            McMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(McMMO.p, new GainXp(attacker, PP, skillType, baseXP, target), 0);
+            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GainXp(attacker, PP, skillType, baseXP, target), 0);
         }
     }
 }

@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
@@ -15,9 +15,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class ACommand implements CommandExecutor {
-    private final McMMO plugin;
+    private final mcMMO plugin;
 
-    public ACommand (McMMO plugin) {
+    public ACommand (mcMMO plugin) {
         this.plugin = plugin;
     }
 

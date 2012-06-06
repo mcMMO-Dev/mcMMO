@@ -18,7 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -202,7 +202,7 @@ public class Taming {
      * @param type Type of animal to summon
      * @param player Player summoning the animal
      */
-    public static void animalSummon(EntityType type, Player player, McMMO plugin) {
+    public static void animalSummon(EntityType type, Player player, mcMMO plugin) {
         ItemStack item = player.getItemInHand();
         Material summonItem = null;
         int summonAmount = 0;

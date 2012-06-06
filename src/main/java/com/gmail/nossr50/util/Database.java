@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.DatabaseUpdate;
 import com.gmail.nossr50.runnables.SQLReconnect;
@@ -19,10 +19,10 @@ public class Database {
     private static String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName() + "?user=" + Config.getInstance().getMySQLUserName() + "&password=" + Config.getInstance().getMySQLUserPassword();
     private static String tablePrefix = Config.getInstance().getMySQLTablePrefix();
     private static Connection conn = null;
-    private static McMMO plugin = null;
+    private static mcMMO plugin = null;
     private static long reconnectTimestamp = 0;
 
-    public Database(McMMO instance) {
+    public Database(mcMMO instance) {
         plugin = instance;
         connect(); //Connect to MySQL
 

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 
 public class Config extends ConfigLoader {
     public int xpGainMultiplier = 1;
@@ -13,7 +13,7 @@ public class Config extends ConfigLoader {
 
     public static Config getInstance() {
         if (instance == null) {
-            instance = new Config(McMMO.p);
+            instance = new Config(mcMMO.p);
             instance.load();
         }
 
@@ -375,7 +375,7 @@ public class Config extends ConfigLoader {
      * CONFIG LOADING
      */
 
-    private Config(McMMO plugin) {
+    private Config(mcMMO plugin) {
         super(plugin, "config.yml");
         saveIfNotExist();
         xpGainMultiplier = getExperienceGainsGlobalMultiplier();

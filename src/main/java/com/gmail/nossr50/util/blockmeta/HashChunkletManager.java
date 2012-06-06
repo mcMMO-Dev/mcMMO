@@ -13,7 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 
 public class HashChunkletManager implements ChunkletManager {
     private HashMap<String, ChunkletStore> store = new HashMap<String, ChunkletStore>();
@@ -229,7 +229,7 @@ public class HashChunkletManager implements ChunkletManager {
         } catch (IOException ex) {
             if (ex instanceof EOFException) {
                 // EOF should only happen on Chunklets that somehow have been corrupted.
-                McMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read, data in this are will be lost.");
+                mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read, data in this are will be lost.");
                 return ChunkletStoreFactory.getChunkletStore();
             }
             ex.printStackTrace();

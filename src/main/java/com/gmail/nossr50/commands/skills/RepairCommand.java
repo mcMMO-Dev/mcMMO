@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -36,10 +36,10 @@ public class RepairCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // We're using pickaxes here, not the best but it works
-        Repairable diamondRepairable = McMMO.repairManager.getRepairable(278);
-        Repairable goldRepairable = McMMO.repairManager.getRepairable(285);
-        Repairable ironRepairable = McMMO.repairManager.getRepairable(257);
-        Repairable stoneRepairable = McMMO.repairManager.getRepairable(274);
+        Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
+        Repairable goldRepairable = mcMMO.repairManager.getRepairable(285);
+        Repairable ironRepairable = mcMMO.repairManager.getRepairable(257);
+        Repairable stoneRepairable = mcMMO.repairManager.getRepairable(274);
 
         diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
         goldLevel = (goldRepairable == null) ? 0 : goldRepairable.getMinimumLevel();

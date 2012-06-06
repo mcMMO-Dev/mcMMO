@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.HUDType;
 
 public class SpoutConfig extends ConfigLoader {
@@ -8,7 +8,7 @@ public class SpoutConfig extends ConfigLoader {
 
     public static SpoutConfig getInstance() {
         if (instance == null) {
-            instance = new SpoutConfig(McMMO.p);
+            instance = new SpoutConfig(mcMMO.p);
             instance.load();
         }
 
@@ -17,7 +17,7 @@ public class SpoutConfig extends ConfigLoader {
 
     public HUDType defaulthud;
 
-    private SpoutConfig(McMMO plugin) {
+    private SpoutConfig(mcMMO plugin) {
         super(plugin, "spout.yml");
         saveIfNotExist();
     }

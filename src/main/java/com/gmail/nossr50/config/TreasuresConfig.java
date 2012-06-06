@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.Treasure;
@@ -21,7 +21,7 @@ public class TreasuresConfig extends ConfigLoader{
 
     public static TreasuresConfig getInstance() {
         if (instance == null) {
-            instance = new TreasuresConfig(McMMO.p);
+            instance = new TreasuresConfig(mcMMO.p);
             instance.load();
         }
 
@@ -41,7 +41,7 @@ public class TreasuresConfig extends ConfigLoader{
     public List<FishingTreasure> fishingRewardsTier4 = new ArrayList<FishingTreasure>();
     public List<FishingTreasure> fishingRewardsTier5 = new ArrayList<FishingTreasure>();
 
-    private TreasuresConfig(McMMO plugin) {
+    private TreasuresConfig(mcMMO plugin) {
         super(plugin, "treasures.yml");
         saveIfNotExist();
     }

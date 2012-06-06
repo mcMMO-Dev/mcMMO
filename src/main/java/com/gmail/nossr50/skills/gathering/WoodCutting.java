@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
 import org.getspout.spoutapi.sound.SoundEffect;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -107,7 +107,7 @@ public class WoodCutting {
                         CustomBlock block = ModChecks.getCustomBlock(x);
                         item = block.getItemDrop();
 
-                        if (!McMMO.placeStore.isTrue(x)) {
+                        if (!mcMMO.placeStore.isTrue(x)) {
                             WoodCutting.woodCuttingProcCheck(player, x);
                             xp = block.getXpGain();
                         }
@@ -156,7 +156,7 @@ public class WoodCutting {
                         break;
                     }
 
-                    if (!McMMO.placeStore.isTrue(x)) {
+                    if (!mcMMO.placeStore.isTrue(x)) {
                         WoodCutting.woodCuttingProcCheck(player, x);
 
                         switch (species) {
@@ -232,7 +232,7 @@ public class WoodCutting {
         Block zNegative = currentBlock.getRelative(0, 0, -1);
         Block yPositive = currentBlock.getRelative(0, 1, 0);
 
-        if (!McMMO.placeStore.isTrue(currentBlock)) {
+        if (!mcMMO.placeStore.isTrue(currentBlock)) {
             if (!isTooAggressive(currentBlock, xPositive) && BlockChecks.treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive)) {
                 processTreeFelling(xPositive, toBeFelled);
             }
@@ -251,7 +251,7 @@ public class WoodCutting {
         }
 
         if (BlockChecks.treeFellerCompatible(yPositive)) {
-            if(!McMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
+            if(!mcMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
                 processTreeFelling(yPositive, toBeFelled);
             }
         }
@@ -351,7 +351,7 @@ public class WoodCutting {
         int xp = 0;
         TreeSpecies species = TreeSpecies.getByData(block.getData());
 
-        if (McMMO.placeStore.isTrue(block)) {
+        if (mcMMO.placeStore.isTrue(block)) {
             return;
         }
 
@@ -393,13 +393,13 @@ public class WoodCutting {
      */
     public static void leafBlower(Player player, Block block) {
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-        McMMO.p.getServer().getPluginManager().callEvent(armswing);
+        mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
         if (Config.getInstance().getWoodcuttingRequiresTool()) {
             Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());
         }
 
-        if (McMMO.spoutEnabled) {
+        if (mcMMO.spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
     }

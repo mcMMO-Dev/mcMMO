@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.buttons.ButtonEscape;
 import com.gmail.nossr50.datatypes.buttons.ButtonHUDStyle;
@@ -19,7 +19,7 @@ public class PopupMMO extends GenericPopup {
     private int center_x = 427 / 2;
     private int center_y = 240 / 2;
 
-    public PopupMMO(Player player, PlayerProfile PP, McMMO plugin) {
+    public PopupMMO(Player player, PlayerProfile PP, mcMMO plugin) {
 
         //240, 427 are the bottom right
         mcMMO_label.setText(ChatColor.GOLD + "~mcMMO Menu~"); //TODO: Needs more locale

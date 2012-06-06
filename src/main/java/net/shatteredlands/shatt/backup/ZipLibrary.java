@@ -12,18 +12,18 @@ import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 
 public class ZipLibrary {
-    private static String BackupDirectory = McMMO.mainDirectory + "backup" + File.separator;
+    private static String BackupDirectory = mcMMO.mainDirectory + "backup" + File.separator;
     private static File BackupDir = new File(BackupDirectory);
-    private static File FlatFileDirectory = new File(McMMO.flatFileDirectory);
-    private static File ModFileDirectory = new File(McMMO.modDirectory);
-    private static File UsersFile = new File(McMMO.usersFile);
-    private static File ConfigFile = new File(McMMO.mainDirectory + "config.yml");
-    private static File TreasuresFile = new File(McMMO.mainDirectory + "treasures.yml");
-    private static File Leaderboards = new File(McMMO.leaderboardDirectory);
+    private static File FlatFileDirectory = new File(mcMMO.flatFileDirectory);
+    private static File ModFileDirectory = new File(mcMMO.modDirectory);
+    private static File UsersFile = new File(mcMMO.usersFile);
+    private static File ConfigFile = new File(mcMMO.mainDirectory + "config.yml");
+    private static File TreasuresFile = new File(mcMMO.mainDirectory + "treasures.yml");
+    private static File Leaderboards = new File(mcMMO.leaderboardDirectory);
 
     public static void mcMMObackup() throws IOException {
         if (Config.getInstance().getUseMySQL()) {
@@ -33,10 +33,10 @@ public class ZipLibrary {
 
         try {
             if (BackupDir.mkdir()) {
-                McMMO.p.getLogger().info("Created Backup Directory.");
+                mcMMO.p.getLogger().info("Created Backup Directory.");
             }
         } catch (Exception e) {
-            McMMO.p.getLogger().severe(e.toString());
+            mcMMO.p.getLogger().severe(e.toString());
         }
 
         //Generate the proper date for the backup filename

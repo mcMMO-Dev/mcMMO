@@ -7,16 +7,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.Tree;
 
 public class Leaderboard {
-    private static McMMO plugin = McMMO.p;
-    private static String leaderboardsDirectory = McMMO.leaderboardDirectory;
-    private final static String location = McMMO.usersFile;
+    private static mcMMO plugin = mcMMO.p;
+    private static String leaderboardsDirectory = mcMMO.leaderboardDirectory;
+    private final static String location = mcMMO.usersFile;
 
     /**
      * Create the leaderboards.

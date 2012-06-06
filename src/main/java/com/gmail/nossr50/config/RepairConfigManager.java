@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repairable;
 
 public class RepairConfigManager {
     private List<Repairable> repairables;
 
-    public RepairConfigManager(McMMO plugin) {
+    public RepairConfigManager(mcMMO plugin) {
         repairables = new ArrayList<Repairable>();
 
         Pattern pattern = Pattern.compile("repair\\.(?:.+)\\.yml");

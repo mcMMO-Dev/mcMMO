@@ -10,7 +10,7 @@ import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.HUDType;
 import com.gmail.nossr50.datatypes.HUDmmo;
@@ -23,9 +23,9 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Users;
 
 public class SpoutListener implements Listener {
-    private final McMMO plugin;
+    private final mcMMO plugin;
 
-    public SpoutListener(McMMO plugin) {
+    public SpoutListener(mcMMO plugin) {
         this.plugin = plugin;
     }
 

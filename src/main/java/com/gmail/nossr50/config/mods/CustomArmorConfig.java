@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableFactory;
@@ -18,7 +18,7 @@ public class CustomArmorConfig extends ModConfigLoader{
 
     public static CustomArmorConfig getInstance() {
         if (instance == null) {
-            instance = new CustomArmorConfig(McMMO.p);
+            instance = new CustomArmorConfig(mcMMO.p);
         }
 
         return instance;
@@ -35,7 +35,7 @@ public class CustomArmorConfig extends ModConfigLoader{
     public List<CustomItem> customArmorList = new ArrayList<CustomItem>();
     public HashMap<Integer, CustomItem> customArmor = new HashMap<Integer, CustomItem>();
 
-    public CustomArmorConfig(McMMO plugin) {
+    public CustomArmorConfig(mcMMO plugin) {
         super(plugin, "armor.yml");
     }
 

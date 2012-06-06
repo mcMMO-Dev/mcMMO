@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -17,9 +17,9 @@ import com.gmail.nossr50.util.Users;
 
 //TODO: Any way we can make this work for offline use?
 public class AddxpCommand implements CommandExecutor {
-    private final McMMO plugin;
+    private final mcMMO plugin;
 
-    public AddxpCommand (McMMO plugin) {
+    public AddxpCommand (mcMMO plugin) {
         this.plugin = plugin;
     }
 

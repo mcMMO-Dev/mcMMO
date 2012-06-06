@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
@@ -110,10 +110,10 @@ public class Misc {
         //Support for NoCheat
         if (shouldArmSwing) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-            McMMO.p.getServer().getPluginManager().callEvent(armswing);
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
         }
 
-        PluginManager pluginManger = McMMO.p.getServer().getPluginManager();
+        PluginManager pluginManger = mcMMO.p.getServer().getPluginManager();
 
         FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getItemInHand(), true);
         pluginManger.callEvent(damageEvent);
@@ -247,7 +247,7 @@ public class Misc {
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
-        McMMO.p.getServer().getPluginManager().callEvent(event);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return;

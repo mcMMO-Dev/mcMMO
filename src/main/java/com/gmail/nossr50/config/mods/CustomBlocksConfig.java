@@ -8,7 +8,7 @@ import java.util.Set;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 
 public class CustomBlocksConfig extends ModConfigLoader{
@@ -16,7 +16,7 @@ public class CustomBlocksConfig extends ModConfigLoader{
 
     public static CustomBlocksConfig getInstance() {
         if (instance == null) {
-            instance = new CustomBlocksConfig(McMMO.p);
+            instance = new CustomBlocksConfig(mcMMO.p);
         }
 
         return instance;
@@ -34,7 +34,7 @@ public class CustomBlocksConfig extends ModConfigLoader{
     public List<ItemStack> customItems = new ArrayList<ItemStack>();
     public List<CustomBlock> customBlocks = new ArrayList<CustomBlock>();
 
-    public CustomBlocksConfig(McMMO plugin) {
+    public CustomBlocksConfig(mcMMO plugin) {
         super(plugin, "blocks.yml");
     }
 

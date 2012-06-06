@@ -3,7 +3,7 @@ package com.gmail.nossr50.api;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.util.Permissions;
@@ -24,7 +24,7 @@ public final class ChatAPI {
      */
     public static void sendPartyChat(String sender, String party, String message) {
         McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(sender, party, message);
-        McMMO.p.getServer().getPluginManager().callEvent(chatEvent);
+        mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
             return;
@@ -32,9 +32,9 @@ public final class ChatAPI {
 
         String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + chatEvent.getSender() + ChatColor.GREEN + ") ";
 
-        McMMO.p.getLogger().info("[P](" + chatEvent.getParty() + ")" + "<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
+        mcMMO.p.getLogger().info("[P](" + chatEvent.getParty() + ")" + "<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
 
-        for (Player player : McMMO.p.getServer().getOnlinePlayers()) {
+        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             if (Users.getProfile(player).inParty()) {
                 if (Users.getProfile(player).getParty().equalsIgnoreCase(chatEvent.getParty())) {
                     player.sendMessage(pPrefix + chatEvent.getMessage());
@@ -53,7 +53,7 @@ public final class ChatAPI {
      */
     public static void sendAdminChat(String sender, String message) {
         McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(sender, message);
-        McMMO.p.getServer().getPluginManager().callEvent(chatEvent);
+        mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
             return;
@@ -61,9 +61,9 @@ public final class ChatAPI {
 
         String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + chatEvent.getSender() + ChatColor.AQUA + "} ";
 
-        McMMO.p.getLogger().info("[A]<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
+        mcMMO.p.getLogger().info("[A]<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
 
-        for (Player player : McMMO.p.getServer().getOnlinePlayers()) {
+        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             if (Permissions.getInstance().adminChat(player) || player.isOp())
                 player.sendMessage(aPrefix + chatEvent.getMessage());
         }

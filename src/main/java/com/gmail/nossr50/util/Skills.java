@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.McMMO;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
@@ -194,7 +194,7 @@ public class Skills {
                     profile.skillUp(skillType, 1);
 
                     McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
-                    McMMO.p.getServer().getPluginManager().callEvent(eventToFire);
+                    mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
                 }
                 else {
                     profile.addLevels(skillType, 0);
@@ -209,7 +209,7 @@ public class Skills {
             String capitalized = Misc.getCapitalized(skillType.toString());
 
             /* Spout Stuff */
-            if (McMMO.spoutEnabled && player instanceof SpoutPlayer) {
+            if (mcMMO.spoutEnabled && player instanceof SpoutPlayer) {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
                 if (sPlayer.isSpoutCraftEnabled()) {
@@ -234,7 +234,7 @@ public class Skills {
         }
 
         /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
-        if (skillups == 0 && McMMO.spoutEnabled && player instanceof SpoutPlayer) {
+        if (skillups == 0 && mcMMO.spoutEnabled && player instanceof SpoutPlayer) {
             SpoutPlayer sPlayer = (SpoutPlayer) player;
             if (sPlayer.isSpoutCraftEnabled()) {
                 if (SpoutConfig.getInstance().getXPBarEnabled()) {
