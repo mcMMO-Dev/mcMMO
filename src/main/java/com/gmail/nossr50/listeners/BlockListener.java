@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.getspout.spoutapi.sound.SoundEffect;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -42,9 +42,9 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class BlockListener implements Listener {
-    private final mcMMO plugin;
+    private final McMMO plugin;
 
-    public BlockListener(final mcMMO plugin) {
+    public BlockListener(final McMMO plugin) {
         this.plugin = plugin;
     }
 
@@ -59,15 +59,15 @@ public class BlockListener implements Listener {
         BlockFace direction = event.getDirection();
 
         for (Block b : blocks) {
-            if (mcMMO.placeStore.isTrue(b)) {
+            if (McMMO.placeStore.isTrue(b)) {
                 b.getRelative(direction).setMetadata("pistonTrack", new FixedMetadataValue(plugin, true));
-                mcMMO.placeStore.setFalse(b);
+                McMMO.placeStore.setFalse(b);
             }
         }
 
         for (Block b : blocks) {
             if (b.getRelative(direction).hasMetadata("pistonTrack")) {
-                mcMMO.placeStore.setTrue(b.getRelative(direction));
+                McMMO.placeStore.setTrue(b.getRelative(direction));
                 b.getRelative(direction).removeMetadata("pistonTrack", plugin);
             }
         }
@@ -87,7 +87,7 @@ public class BlockListener implements Listener {
             Block fallenBlock = event.getBlock().getRelative(BlockFace.UP);
 
             if (fallenBlock.getType() == type) {
-                mcMMO.placeStore.setTrue(fallenBlock);
+                McMMO.placeStore.setTrue(fallenBlock);
             }
         }
     }
@@ -101,9 +101,9 @@ public class BlockListener implements Listener {
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         Block block = event.getRetractLocation().getBlock();
 
-        if (event.isSticky() && mcMMO.placeStore.isTrue(block)) {
-            mcMMO.placeStore.setFalse(block);
-            mcMMO.placeStore.setTrue(event.getBlock().getRelative(event.getDirection()));
+        if (event.isSticky() && McMMO.placeStore.isTrue(block)) {
+            McMMO.placeStore.setFalse(block);
+            McMMO.placeStore.setTrue(event.getBlock().getRelative(event.getDirection()));
         }
     }
 
@@ -129,7 +129,7 @@ public class BlockListener implements Listener {
                 }
                 else {
                     Block newLocation = block.getRelative(0, y + 1, 0);
-                    mcMMO.placeStore.setTrue(newLocation);
+                    McMMO.placeStore.setTrue(newLocation);
                     break;
                 }
             }
@@ -138,7 +138,7 @@ public class BlockListener implements Listener {
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(block)) {
             if (!((type == Material.SAND || type == Material.GRAVEL) && block.getRelative(BlockFace.DOWN).getType() == Material.AIR)) { //Don't wanna track sand that's gonna fall.
-                mcMMO.placeStore.setTrue(block);
+                McMMO.placeStore.setTrue(block);
             }
         }
 
@@ -219,7 +219,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockChecks.canBeGigaDrillBroken(block) && permInstance.excavation(player) && !mcMMO.placeStore.isTrue(block)) {
+        else if (BlockChecks.canBeGigaDrillBroken(block) && permInstance.excavation(player) && !McMMO.placeStore.isTrue(block)) {
             if (configInstance.getExcavationRequiresTool()) {
                 if (ItemChecks.isShovel(inHand)) {
                     Excavation.excavationProcCheck(block, player);
@@ -231,8 +231,8 @@ public class BlockListener implements Listener {
         }
 
         //Remove metadata when broken
-        if (mcMMO.placeStore.isTrue(block) && BlockChecks.shouldBeWatched(block)) {
-            mcMMO.placeStore.setFalse(block);
+        if (McMMO.placeStore.isTrue(block) && BlockChecks.shouldBeWatched(block)) {
+            McMMO.placeStore.setFalse(block);
         }
 
         //Remove metadata from fallen sand/gravel
@@ -243,11 +243,11 @@ public class BlockListener implements Listener {
                 Block relative = block.getRelative(0, y, 0);
                 Material relativeType = relative.getType();
 
-                if ((relativeType == Material.SAND || relativeType == Material.GRAVEL) && mcMMO.placeStore.isTrue(relative)) {
-                    mcMMO.placeStore.setFalse(relative);
+                if ((relativeType == Material.SAND || relativeType == Material.GRAVEL) && McMMO.placeStore.isTrue(relative)) {
+                    McMMO.placeStore.setFalse(relative);
                 }
-                else if (!BlockChecks.shouldBeWatched(relative) && mcMMO.placeStore.isTrue(relative)){
-                    mcMMO.placeStore.setFalse(relative);
+                else if (!BlockChecks.shouldBeWatched(relative) && McMMO.placeStore.isTrue(relative)){
+                    McMMO.placeStore.setFalse(relative);
                 }
                 else {
                     break;
@@ -301,7 +301,7 @@ public class BlockListener implements Listener {
         }
 
         /* TREE FELLER SOUNDS */
-        if (mcMMO.spoutEnabled && BlockChecks.isLog(block) && PP.getAbilityMode(AbilityType.TREE_FELLER)) {
+        if (McMMO.spoutEnabled && BlockChecks.isLog(block) && PP.getAbilityMode(AbilityType.TREE_FELLER)) {
             SpoutSounds.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
         }
 
@@ -346,7 +346,7 @@ public class BlockListener implements Listener {
                 event.setInstaBreak(true);
             }
 
-            if (mcMMO.spoutEnabled) {
+            if (McMMO.spoutEnabled) {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }

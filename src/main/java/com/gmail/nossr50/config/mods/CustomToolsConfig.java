@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableFactory;
@@ -18,7 +18,7 @@ public class CustomToolsConfig extends ModConfigLoader {
 
     public static CustomToolsConfig getInstance() {
         if (instance == null) {
-            instance = new CustomToolsConfig(mcMMO.p);
+            instance = new CustomToolsConfig(McMMO.p);
         }
 
         return instance;
@@ -37,7 +37,7 @@ public class CustomToolsConfig extends ModConfigLoader {
     public List<CustomTool> customToolList = new ArrayList<CustomTool>();
     public HashMap<Integer, CustomTool> customTools = new HashMap<Integer, CustomTool>();
 
-    private CustomToolsConfig(mcMMO plugin) {
+    private CustomToolsConfig(McMMO plugin) {
         super(plugin, "tools.yml");
     }
 

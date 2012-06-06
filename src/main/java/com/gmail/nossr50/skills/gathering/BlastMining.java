@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -52,7 +52,7 @@ public class BlastMining {
                 blocksDropped.add(temp);
                 Mining.miningDrops(temp);
 
-                if (!mcMMO.placeStore.isTrue(temp)) {
+                if (!McMMO.placeStore.isTrue(temp)) {
                     for (int i = 1 ; i < extraDrops ; i++) {
                         blocksDropped.add(temp);
                         Mining.miningDrops(temp);
@@ -159,7 +159,7 @@ public class BlastMining {
         }
 
         for (Block block : xp) {
-            if (!mcMMO.placeStore.isTrue(block)) {
+            if (!McMMO.placeStore.isTrue(block)) {
                 Mining.miningXP(player, block);
             }
         }
@@ -241,7 +241,7 @@ public class BlastMining {
      * @param player Player detonating the TNT
      * @param plugin mcMMO plugin instance
      */
-    public static void detonate(PlayerInteractEvent event, Player player, mcMMO plugin) {
+    public static void detonate(PlayerInteractEvent event, Player player, McMMO plugin) {
         PlayerProfile PP = Users.getProfile(player);
 
         if (PP.getSkillLevel(SkillType.MINING) < 125)

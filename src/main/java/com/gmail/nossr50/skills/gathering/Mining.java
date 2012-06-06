@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -285,7 +285,7 @@ public class Mining {
      * @param block The block being broken
      */
     public static void miningBlockCheck(Player player, Block block) {
-        if (mcMMO.placeStore.isTrue(block)) {
+        if (McMMO.placeStore.isTrue(block)) {
             return;
         }
 
@@ -322,16 +322,16 @@ public class Mining {
                 return;
             }
 
-            if (mcMMO.placeStore.isTrue(block)) {
+            if (McMMO.placeStore.isTrue(block)) {
                 return;
             }
 
-            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
+            McMMO.p.getServer().getPluginManager().callEvent(armswing);
             Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
 
             miningBlockCheck(player, block);
 
-            if (mcMMO.spoutEnabled) {
+            if (McMMO.spoutEnabled) {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }
@@ -367,16 +367,16 @@ public class Mining {
             case NETHERRACK:
             case SANDSTONE:
             case STONE:
-                if (mcMMO.placeStore.isTrue(block)) {
+                if (McMMO.placeStore.isTrue(block)) {
                     return;
                 }
 
-                mcMMO.p.getServer().getPluginManager().callEvent(armswing);
+                McMMO.p.getServer().getPluginManager().callEvent(armswing);
                 Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
 
                 miningBlockCheck(player, block);
 
-                if (mcMMO.spoutEnabled) {
+                if (McMMO.spoutEnabled) {
                     SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
                 }
             }

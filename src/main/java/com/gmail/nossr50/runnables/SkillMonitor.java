@@ -2,7 +2,7 @@ package com.gmail.nossr50.runnables;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -10,9 +10,9 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class SkillMonitor implements Runnable {
-    private final mcMMO plugin;
+    private final McMMO plugin;
 
-    public SkillMonitor(final mcMMO plugin) {
+    public SkillMonitor(final McMMO plugin) {
         this.plugin = plugin;
     }
 

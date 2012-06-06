@@ -78,7 +78,7 @@ import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.util.blockmeta.ChunkletManager;
 import com.gmail.nossr50.util.blockmeta.ChunkletManagerFactory;
 
-public class mcMMO extends JavaPlugin {
+public class McMMO extends JavaPlugin {
 
     private final PlayerListener playerListener = new PlayerListener(this);
     private final BlockListener blockListener = new BlockListener(this);
@@ -91,7 +91,7 @@ public class mcMMO extends JavaPlugin {
 
     public static File versionFile;
     public static Database database;
-    public static mcMMO p;
+    public static McMMO p;
 
     public static ChunkletManager placeStore;
     public static RepairManager repairManager;

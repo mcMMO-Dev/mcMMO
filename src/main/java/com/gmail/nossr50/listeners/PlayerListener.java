@@ -21,7 +21,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.AbilityType;
@@ -45,9 +45,9 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class PlayerListener implements Listener {
-    private final mcMMO plugin;
+    private final McMMO plugin;
 
-    public PlayerListener(final mcMMO plugin) {
+    public PlayerListener(final McMMO plugin) {
         this.plugin = plugin;
     }
 
@@ -139,7 +139,7 @@ public class PlayerListener implements Listener {
         /* GARBAGE COLLECTION */
 
         //Remove Spout Stuff
-        if (mcMMO.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
+        if (McMMO.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
             SpoutStuff.playerHUDs.remove(player);
         }
 
@@ -226,8 +226,8 @@ public class PlayerListener implements Listener {
 
             /* REPAIR CHECKS */
             if (Permissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
-                if (mcMMO.repairManager.isRepairable(inHand)) {
-                    mcMMO.repairManager.handleRepair(player, inHand);
+                if (McMMO.repairManager.isRepairable(inHand)) {
+                    McMMO.repairManager.handleRepair(player, inHand);
                     event.setCancelled(true);
                     player.updateInventory();
                 }

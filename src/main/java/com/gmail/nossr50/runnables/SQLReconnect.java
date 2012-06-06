@@ -2,15 +2,15 @@ package com.gmail.nossr50.runnables;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Users;
 
 public class SQLReconnect implements Runnable {
-    private final mcMMO plugin;
+    private final McMMO plugin;
 
-    public SQLReconnect(mcMMO plugin) {
+    public SQLReconnect(McMMO plugin) {
         this.plugin = plugin;
     }
 

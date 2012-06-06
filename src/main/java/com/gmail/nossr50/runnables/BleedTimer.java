@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Combat;
 
@@ -71,7 +71,7 @@ public class BleedTimer implements Runnable {
 
     private void updateBleedList() {
         if (lock) {
-            mcMMO.p.getLogger().warning("mcBleedTimer attempted to update the bleedList but the list was locked!");
+            McMMO.p.getLogger().warning("mcBleedTimer attempted to update the bleedList but the list was locked!");
         }
         else {
             bleedList.keySet().removeAll(bleedRemoveList);

@@ -6,16 +6,16 @@ import java.io.IOException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 
 public abstract class ConfigLoader {
     protected String fileName;
     protected File configFile;
     protected File dataFolder;
-    protected final mcMMO plugin;
+    protected final McMMO plugin;
     protected FileConfiguration config;
 
-    public ConfigLoader(mcMMO plugin, String fileName){
+    public ConfigLoader(McMMO plugin, String fileName){
         this.plugin = plugin;
         this.fileName = fileName;
         dataFolder = plugin.getDataFolder();

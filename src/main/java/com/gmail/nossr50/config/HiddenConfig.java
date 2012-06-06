@@ -2,7 +2,7 @@ package com.gmail.nossr50.config;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 
 public class HiddenConfig extends ConfigLoader {
     private static String fileName;
@@ -11,7 +11,7 @@ public class HiddenConfig extends ConfigLoader {
 
     private static boolean chunkletsEnabled;
 
-    public HiddenConfig(mcMMO plugin, String fileName) {
+    public HiddenConfig(McMMO plugin, String fileName) {
         super(plugin, fileName);
         HiddenConfig.fileName = fileName;
     }
@@ -19,7 +19,7 @@ public class HiddenConfig extends ConfigLoader {
 
     public static HiddenConfig getInstance() {
         if (instance == null) {
-            instance = new HiddenConfig(mcMMO.p, "hidden.yml");
+            instance = new HiddenConfig(McMMO.p, "hidden.yml");
             instance.load();
         }
 

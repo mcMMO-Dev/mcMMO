@@ -16,7 +16,7 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
@@ -31,11 +31,11 @@ public class Party {
     HashMap<String, Boolean> partyLocks = new HashMap<String, Boolean>();
     HashMap<String, String> partyPasswords = new HashMap<String, String>();
 
-    private static mcMMO plugin;
+    private static McMMO plugin;
     private static volatile Party instance;
 
     private Party() {
-        plugin = mcMMO.p;
+        plugin = McMMO.p;
         pluginPath = plugin.getDataFolder().getPath();
         partyPlayersFile = pluginPath + File.separator + "FlatFileStuff" + File.separator + "partyPlayers";
         partyLocksFile = pluginPath + File.separator + "FlatFileStuff" + File.separator + "partyLocks";
@@ -168,7 +168,7 @@ public class Party {
      * @return the list of parties.
      */
     public ArrayList<String> getParties() {
-        String location = mcMMO.usersFile;
+        String location = McMMO.usersFile;
         ArrayList<String> parties = new ArrayList<String>();
 
         try {

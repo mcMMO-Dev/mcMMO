@@ -10,7 +10,7 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 
 public class WorldListener implements Listener {
     @EventHandler
@@ -23,21 +23,21 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onWorldUnload(WorldUnloadEvent event) {
-        mcMMO.placeStore.unloadWorld(event.getWorld());
+        McMMO.placeStore.unloadWorld(event.getWorld());
     }
 
     @EventHandler
     public void onWorldSave(WorldSaveEvent event) {
-        mcMMO.placeStore.saveWorld(event.getWorld());
+        McMMO.placeStore.saveWorld(event.getWorld());
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        mcMMO.placeStore.chunkLoaded(event.getChunk().getX(), event.getChunk().getZ(), event.getChunk().getWorld());
+        McMMO.placeStore.chunkLoaded(event.getChunk().getX(), event.getChunk().getZ(), event.getChunk().getWorld());
     }
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
-        mcMMO.placeStore.chunkUnloaded(event.getChunk().getX(), event.getChunk().getZ(), event.getChunk().getWorld());
+        McMMO.placeStore.chunkUnloaded(event.getChunk().getX(), event.getChunk().getZ(), event.getChunk().getWorld());
     }
 }

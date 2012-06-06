@@ -9,7 +9,7 @@ import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Misc;
@@ -19,7 +19,7 @@ public class HUDmmo {
     private int center_x = 427 / 2;
 
     private String playerName;
-    private final mcMMO plugin;
+    private final McMMO plugin;
 
     private Widget xpbar = null;
     private GenericGradient xpfill = null;
@@ -28,7 +28,7 @@ public class HUDmmo {
     private GenericGradient xpicon_border = null;
     private GenericTexture xpicon = null;
 
-    public HUDmmo(Player player, mcMMO plugin) {
+    public HUDmmo(Player player, McMMO plugin) {
         this.playerName = player.getName();
         this.plugin = plugin;
         initializeHUD(player);

@@ -3,28 +3,28 @@ package com.gmail.nossr50.runnables;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.FileManager;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class SpoutStart implements Runnable{
-    private final mcMMO plugin;
+    private final McMMO plugin;
 
-    public SpoutStart(final mcMMO plugin) {
+    public SpoutStart(final McMMO plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void run() {
         if (plugin.getServer().getPluginManager().getPlugin("Spout") != null) {
-            mcMMO.spoutEnabled = true;
+            McMMO.spoutEnabled = true;
         }
         else {
-            mcMMO.spoutEnabled = false;
+            McMMO.spoutEnabled = false;
         }
 
         //Spout Stuff
-        if (mcMMO.spoutEnabled) {
+        if (McMMO.spoutEnabled) {
             SpoutConfig.getInstance();
             SpoutStuff.setupSpoutConfigs();
             SpoutStuff.registerCustomEvent();

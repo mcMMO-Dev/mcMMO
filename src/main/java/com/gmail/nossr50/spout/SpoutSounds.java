@@ -7,7 +7,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundEffect;
 import org.getspout.spoutapi.sound.SoundManager;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 
 public class SpoutSounds {
 
@@ -30,7 +30,7 @@ public class SpoutSounds {
      *
      * @param player The player who repaired an item
      */
-    public static void playRepairNoise(Player player, mcMMO plugin) {
+    public static void playRepairNoise(Player player, McMMO plugin) {
         SoundManager SM = SpoutManager.getSoundManager();
         SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
@@ -43,7 +43,7 @@ public class SpoutSounds {
      *
      * @param player The player who leveled up
      */
-    protected static void playLevelUpNoise(Player player, mcMMO plugin) {
+    protected static void playLevelUpNoise(Player player, McMMO plugin) {
         SoundManager SM = SpoutManager.getSoundManager();
         SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 

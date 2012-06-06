@@ -8,7 +8,7 @@ import java.util.HashMap;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Users {
@@ -18,10 +18,10 @@ public class Users {
      * Load users.
      */
     public static void loadUsers() {
-        new File(mcMMO.flatFileDirectory).mkdir();
-        new File(mcMMO.leaderboardDirectory).mkdir();
+        new File(McMMO.flatFileDirectory).mkdir();
+        new File(McMMO.leaderboardDirectory).mkdir();
 
-        File theDir = new File(mcMMO.usersFile);
+        File theDir = new File(McMMO.usersFile);
 
         if (!theDir.exists()) {
             try {
@@ -79,7 +79,7 @@ public class Users {
      * @param playerName The name of the player to remove
      */
     public static void removeUserByName(String playerName) {
-        players.remove(mcMMO.p.getServer().getOfflinePlayer(playerName));
+        players.remove(McMMO.p.getServer().getOfflinePlayer(playerName));
     }
 
     /**
@@ -99,7 +99,7 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfileByName(String playerName) {
-        Player player = mcMMO.p.getServer().getPlayer(playerName);
+        Player player = McMMO.p.getServer().getPlayer(playerName);
         PlayerProfile profile = players.get(player);
 
         if (profile == null) {
@@ -110,7 +110,7 @@ public class Users {
                 return newProfile;
             }
             else {
-                mcMMO.p.getLogger().severe("getProfileByName(" + playerName + ") just returned null :(");
+                McMMO.p.getLogger().severe("getProfileByName(" + playerName + ") just returned null :(");
 
                 for (StackTraceElement ste : new Throwable().getStackTrace()) {
                     System.out.println(ste);

@@ -24,7 +24,7 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -43,9 +43,9 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class EntityListener implements Listener {
-    private final mcMMO plugin;
+    private final McMMO plugin;
 
-    public EntityListener(final mcMMO plugin) {
+    public EntityListener(final McMMO plugin) {
         this.plugin = plugin;
     }
 

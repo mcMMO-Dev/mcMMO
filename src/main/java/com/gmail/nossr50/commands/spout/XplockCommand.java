@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.SpoutConfig;
@@ -28,7 +28,7 @@ public class XplockCommand implements CommandExecutor {
             return true;
         }
 
-        if (!mcMMO.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled() || !Config.getInstance().getCommandXPLockEnabled()) {
+        if (!McMMO.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled() || !Config.getInstance().getCommandXPLockEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
             return true;
         }

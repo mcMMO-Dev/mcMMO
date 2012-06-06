@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.McMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Leaderboard;
@@ -134,7 +134,7 @@ public class MctopCommand implements CommandExecutor {
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-        HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
+        HashMap<Integer, ArrayList<String>> userslist = McMMO.database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
 
         if (query == "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing") {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
@@ -144,11 +144,11 @@ public class MctopCommand implements CommandExecutor {
         }
 
         for (int i = (page * 10) - 9; i <= (page * 10); i++) {
-            if (i > userslist.size() || mcMMO.database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null) {
+            if (i > userslist.size() || McMMO.database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null) {
                 break;
             }
 
-            HashMap<Integer, ArrayList<String>> username = mcMMO.database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+            HashMap<Integer, ArrayList<String>> username = McMMO.database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
             sender.sendMessage(String.valueOf(i) + ". " + ChatColor.GREEN + userslist.get(i).get(0) + " - " + ChatColor.WHITE + username.get(1).get(0));
         }
     }
