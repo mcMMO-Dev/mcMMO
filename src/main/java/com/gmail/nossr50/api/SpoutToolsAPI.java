@@ -22,7 +22,7 @@ public class SpoutToolsAPI {
      * @param spoutTool The tool to add
      * @param type The type of tool to add
      */
-    public void addCustomTool(ItemStack spoutTool, ToolType type) {
+    public static void addCustomTool(ItemStack spoutTool, ToolType type) {
         switch (type) {
         case AXE:
             spoutAxes.add(spoutTool);
