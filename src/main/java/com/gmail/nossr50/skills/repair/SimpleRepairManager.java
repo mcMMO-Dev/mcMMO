@@ -205,17 +205,9 @@ public class SimpleRepairManager implements RepairManager {
         ItemStack[] contents = inventory.getContents();
         for (int i = 0; i < contents.length; i++) {
             ItemStack item = contents[i];
-            
-            //DEBUG TIME!
+
             if (item == null) {
-                System.out.println("The item is null.");
-                System.out.println("Content length: " + contents.length);
-                System.out.println("Current contents: " + i);
-            }
-            else {
-                System.out.println("The item is: " + item.toString());
-                System.out.println("Content length: " + contents.length);
-                System.out.println("Current contents: " + i);
+                continue;
             }
 
             if (item.getTypeId() == itemId) {
@@ -223,6 +215,7 @@ public class SimpleRepairManager implements RepairManager {
                     location = i;
                 }
             }
+
             if (location != -1) {
                 break;
             }
