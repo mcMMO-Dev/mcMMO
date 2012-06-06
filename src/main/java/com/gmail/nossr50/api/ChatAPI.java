@@ -9,7 +9,10 @@ import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-public class ChatAPI {
+public final class ChatAPI {
+
+    private ChatAPI() {}
+
     /**
      * Send a message to all members of a party
      * </br>
@@ -19,7 +22,7 @@ public class ChatAPI {
      * @param party The name of the party to send to
      * @param message The message to send
      */
-    public void sendPartyChat(String sender, String party, String message) {
+    public static void sendPartyChat(String sender, String party, String message) {
         McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(sender, party, message);
         McMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
@@ -48,7 +51,7 @@ public class ChatAPI {
      * @param sender The name of the sender to display in the chat
      * @param message The message to send
      */
-    public void sendAdminChat(String sender, String message) {
+    public static void sendAdminChat(String sender, String message) {
         McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(sender, message);
         McMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 

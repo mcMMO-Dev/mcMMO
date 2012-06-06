@@ -7,7 +7,10 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.datatypes.ToolType;
 
-public class SpoutToolsAPI {
+public final class SpoutToolsAPI {
+
+    private SpoutToolsAPI() {}
+
     public static List<ItemStack> spoutSwords = new ArrayList<ItemStack>();
     public static List<ItemStack> spoutAxes = new ArrayList<ItemStack>();
     public static List<ItemStack> spoutPickaxes = new ArrayList<ItemStack>();
@@ -22,7 +25,7 @@ public class SpoutToolsAPI {
      * @param spoutTool The tool to add
      * @param type The type of tool to add
      */
-    public void addCustomTool(ItemStack spoutTool, ToolType type) {
+    public static void addCustomTool(ItemStack spoutTool, ToolType type) {
         switch (type) {
         case AXE:
             spoutAxes.add(spoutTool);
