@@ -12,7 +12,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
 public class PtpCommand implements CommandExecutor {
@@ -39,11 +39,6 @@ public class PtpCommand implements CommandExecutor {
             Player player = (Player) sender;
             PlayerProfile PP = Users.getProfile(player);
 
-            if (!Party.getInstance().isInParty(player, PP)) {
-                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return true;
-            }
-
             if (PP.getRecentlyHurt() + (Config.getInstance().getPTPCommandCooldown() * 1000) > System.currentTimeMillis()) {
                 player.sendMessage(LocaleLoader.getString("Party.Teleport.Hurt", new Object[] { Config.getInstance().getPTPCommandCooldown() }));
                 return true;
@@ -66,8 +61,8 @@ public class PtpCommand implements CommandExecutor {
                 return true;
             }
 
-            if (Party.getInstance().inSameParty(player, target)) {
-                McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, PP.getParty());
+            if (PartyManager.getInstance().inSameParty(player, target)) {
+                McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, PP.getParty().getName());
                 plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {

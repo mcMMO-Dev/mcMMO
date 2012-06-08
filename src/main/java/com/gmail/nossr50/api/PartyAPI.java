@@ -1,10 +1,10 @@
 package com.gmail.nossr50.api;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
 public final class PartyAPI {
@@ -20,7 +20,7 @@ public final class PartyAPI {
      * @return the name of the player's party
      */
     public static String getPartyName(Player player) {
-        return Users.getProfile(player).getParty();
+        return Users.getProfile(player).getParty().getName();
     }
 
     /**
@@ -45,7 +45,7 @@ public final class PartyAPI {
      * @return true if the two players are in the same party, false otherwise
      */
     public static boolean inSameParty(Player playera, Player playerb) {
-        return Party.getInstance().inSameParty(playera, playerb);
+        return PartyManager.getInstance().inSameParty(playera, playerb);
     }
 
     /**
@@ -55,8 +55,8 @@ public final class PartyAPI {
      *
      * @return the list of parties.
      */
-    public static ArrayList<String> getParties() {
-        return Party.getInstance().getParties();
+    public static List<String> getParties() {
+        return PartyManager.getInstance().getParties();
     }
 
     /**
@@ -68,7 +68,7 @@ public final class PartyAPI {
      * @param partyName The party to add the player to
      */
     public static void addToParty(Player player, String partyName) {
-        Party.getInstance().addToParty(player, Users.getProfile(player), partyName, false, null);
+        PartyManager.getInstance().addToParty(player, Users.getProfile(player), partyName, null);
     }
 
     /**
@@ -79,7 +79,7 @@ public final class PartyAPI {
      * @param player The player to remove
      */
     public static void removeFromParty(Player player) {
-        Party.getInstance().removeFromParty(player, Users.getProfile(player));
+        PartyManager.getInstance().removeFromParty(player, Users.getProfile(player));
     }
 
     /**
@@ -90,8 +90,8 @@ public final class PartyAPI {
      * @param partyName The party name
      * @return the leader of the party
      */
-    public static Player getPartyLeader(String partyName) {
-        return Party.getInstance().getPartyLeader(partyName);
+    public static String getPartyLeader(String partyName) {
+        return PartyManager.getInstance().getPartyLeader(partyName);
     }
 
     /**
@@ -103,7 +103,7 @@ public final class PartyAPI {
      * @param player The player to set as leader
      */
     public static void setPartyLeader(String partyName, String player) {
-        Party.getInstance().setPartyLeader(partyName, player);
+        PartyManager.getInstance().setPartyLeader(partyName, player);
     }
 
     /**
@@ -114,8 +114,8 @@ public final class PartyAPI {
      * @param player The player to check
      * @return all the players in the player's party
      */
-    public static ArrayList<Player> getAllMembers(Player player) {
-        return Party.getInstance().getAllMembers(player);
+    public static List<String> getAllMembers(Player player) {
+        return PartyManager.getInstance().getAllMembers(player);
     }
 
     /**
@@ -126,8 +126,8 @@ public final class PartyAPI {
      * @param partyName The party to check
      * @return all online players in this party
      */
-    public static ArrayList<Player> getOnlineMembers(String partyName) {
-        return Party.getInstance().getOnlineMembers(partyName);
+    public static List<Player> getOnlineMembers(String partyName) {
+        return PartyManager.getInstance().getOnlineMembers(partyName);
     }
 
     /**
@@ -138,7 +138,7 @@ public final class PartyAPI {
      * @param player The player to check
      * @return all online players in the player's party
      */
-    public static ArrayList<Player> getOnlineMembers(Player player) {
-        return Party.getInstance().getOnlineMembers(player);
+    public static List<Player> getOnlineMembers(Player player) {
+        return PartyManager.getInstance().getOnlineMembers(player);
     }
 }

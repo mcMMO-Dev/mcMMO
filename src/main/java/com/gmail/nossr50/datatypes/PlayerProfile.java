@@ -17,6 +17,7 @@ import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Users;
@@ -30,8 +31,8 @@ public class PlayerProfile {
     private SkillType skillLock;
 
     /* Party Stuff */
-    private String party;
-    private String invite;
+    private Party party;
+    private Party invite;
 
     /* Toggles */
     private boolean loaded = false;
@@ -109,7 +110,7 @@ public class PlayerProfile {
         int id = 0;
         id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + playerName + "'");
 
-        this.userid = id;
+        userid = id;
 
         if (id > 0) {
             HashMap<Integer, ArrayList<String>> huds = mcMMO.database.read("SELECT hudtype FROM "+Config.getInstance().getMySQLTablePrefix()+"huds WHERE user_id = " + id);
@@ -131,8 +132,8 @@ public class PlayerProfile {
                 }
             }
             HashMap<Integer, ArrayList<String>> users = mcMMO.database.read("SELECT lastlogin, party FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE id = " + id);
-                //lastlogin = Integer.parseInt(users.get(1).get(0));
-                party = users.get(1).get(1);
+            //lastlogin = Integer.parseInt(users.get(1).get(0));
+            party = PartyManager.getInstance().getParty(users.get(1).get(1));
             HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM "+Config.getInstance().getMySQLTablePrefix()+"cooldowns WHERE user_id = " + id);
             /*
              * I'm still learning MySQL, this is a fix for adding a new table
@@ -216,7 +217,7 @@ public class PlayerProfile {
                     skills.put(SkillType.MINING, Integer.valueOf(character[1]));
                 //Party
                 if(character.length > 3)
-                    party = character[3];
+                    party = PartyManager.getInstance().getParty(character[3]);
                 //Mining XP
                 if(character.length > 4 && Misc.isInt(character[4]))
                     skillsXp.put(SkillType.MINING, Integer.valueOf(character[4]));
@@ -306,47 +307,54 @@ public class PlayerProfile {
         // if we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
 
-            mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"huds SET hudtype = '"+hud.toString()+"' WHERE user_id = "+this.userid);
-            mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + this.userid);
-            mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"users SET party = '"+this.party+"' WHERE id = " +this.userid);
-            mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"cooldowns SET "
-                    +" mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
-                    +", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
-                    +", unarmed = " + skillsDATS.get(AbilityType.BERSERK)
-                    +", herbalism = " + skillsDATS.get(AbilityType.GREEN_TERRA)
-                    +", excavation = " + skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER)
-                    +", swords = " + skillsDATS.get(AbilityType.SERRATED_STRIKES)
-                    +", axes = " + skillsDATS.get(AbilityType.SKULL_SPLIITER)
-                    +", blast_mining = " + skillsDATS.get(AbilityType.BLAST_MINING)
-                    +" WHERE user_id = "+this.userid);
-            mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"skills SET "
-                    +"  taming = "+skills.get(SkillType.TAMING)
-                    +", mining = "+skills.get(SkillType.MINING)
-                    +", repair = "+skills.get(SkillType.REPAIR)
-                    +", woodcutting = "+skills.get(SkillType.WOODCUTTING)
-                    +", unarmed = "+skills.get(SkillType.UNARMED)
-                    +", herbalism = "+skills.get(SkillType.HERBALISM)
-                    +", excavation = "+skills.get(SkillType.EXCAVATION)
-                    +", archery = " +skills.get(SkillType.ARCHERY)
-                    +", swords = " +skills.get(SkillType.SWORDS)
-                    +", axes = "+skills.get(SkillType.AXES)
-                    +", acrobatics = "+skills.get(SkillType.ACROBATICS)
-                    +", fishing = "+skills.get(SkillType.FISHING)
-                    +" WHERE user_id = "+this.userid);
-            mcMMO.database.write("UPDATE "+Config.getInstance().getMySQLTablePrefix()+"experience SET "
-                    +"  taming = "+skillsXp.get(SkillType.TAMING)
-                    +", mining = "+skillsXp.get(SkillType.MINING)
-                    +", repair = "+skillsXp.get(SkillType.REPAIR)
-                    +", woodcutting = "+skillsXp.get(SkillType.WOODCUTTING)
-                    +", unarmed = "+skillsXp.get(SkillType.UNARMED)
-                    +", herbalism = "+skillsXp.get(SkillType.HERBALISM)
-                    +", excavation = "+skillsXp.get(SkillType.EXCAVATION)
-                    +", archery = " +skillsXp.get(SkillType.ARCHERY)
-                    +", swords = " +skillsXp.get(SkillType.SWORDS)
-                    +", axes = "+skillsXp.get(SkillType.AXES)
-                    +", acrobatics = "+skillsXp.get(SkillType.ACROBATICS)
-                    +", fishing = "+skillsXp.get(SkillType.FISHING)
-                    +" WHERE user_id = "+this.userid);
+            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "huds SET hudtype = '" + hud.toString() + "' WHERE user_id = " + userid);
+            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + userid);
+
+            String partyName = "";
+
+            if (party != null) {
+                partyName = party.getName();
+            }
+
+            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "users SET party = '" + partyName + "' WHERE id = " + userid);
+            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "cooldowns SET "
+                    + " mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
+                    + ", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
+                    + ", unarmed = " + skillsDATS.get(AbilityType.BERSERK)
+                    + ", herbalism = " + skillsDATS.get(AbilityType.GREEN_TERRA)
+                    + ", excavation = " + skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER)
+                    + ", swords = " + skillsDATS.get(AbilityType.SERRATED_STRIKES)
+                    + ", axes = " + skillsDATS.get(AbilityType.SKULL_SPLIITER)
+                    + ", blast_mining = " + skillsDATS.get(AbilityType.BLAST_MINING)
+                    + " WHERE user_id = " + userid);
+            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "skills SET "
+                    + " taming = " + skills.get(SkillType.TAMING)
+                    + ", mining = " + skills.get(SkillType.MINING)
+                    + ", repair = " + skills.get(SkillType.REPAIR)
+                    + ", woodcutting = " + skills.get(SkillType.WOODCUTTING)
+                    + ", unarmed = " + skills.get(SkillType.UNARMED)
+                    + ", herbalism = " + skills.get(SkillType.HERBALISM)
+                    + ", excavation = " + skills.get(SkillType.EXCAVATION)
+                    + ", archery = " + skills.get(SkillType.ARCHERY)
+                    + ", swords = " + skills.get(SkillType.SWORDS)
+                    + ", axes = " + skills.get(SkillType.AXES)
+                    + ", acrobatics = " + skills.get(SkillType.ACROBATICS)
+                    + ", fishing = " + skills.get(SkillType.FISHING)
+                    + " WHERE user_id = " + userid);
+            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "experience SET "
+                    + "  taming = " + skillsXp.get(SkillType.TAMING)
+                    + ", mining = " + skillsXp.get(SkillType.MINING)
+                    + ", repair = " + skillsXp.get(SkillType.REPAIR)
+                    + ", woodcutting = " + skillsXp.get(SkillType.WOODCUTTING)
+                    + ", unarmed = " + skillsXp.get(SkillType.UNARMED)
+                    + ", herbalism = " + skillsXp.get(SkillType.HERBALISM)
+                    + ", excavation = " + skillsXp.get(SkillType.EXCAVATION)
+                    + ", archery = " + skillsXp.get(SkillType.ARCHERY)
+                    + ", swords = " + skillsXp.get(SkillType.SWORDS)
+                    + ", axes = " + skillsXp.get(SkillType.AXES)
+                    + ", acrobatics = " + skillsXp.get(SkillType.ACROBATICS)
+                    + ", fishing = " + skillsXp.get(SkillType.FISHING)
+                    + " WHERE user_id = " + userid);
         }
         else {
             // otherwise save to flatfile
@@ -369,7 +377,14 @@ public class PlayerProfile {
                         writer.append(playerName + ":");
                         writer.append(skills.get(SkillType.MINING) + ":");
                         writer.append("" + ":");
-                        writer.append(party+":");
+
+                        String partyName = "";
+
+                        if (party != null) {
+                            partyName = party.getName();
+                        }
+
+                        writer.append(partyName + ":");
                         writer.append(skillsXp.get(SkillType.MINING) + ":");
                         writer.append(skills.get(SkillType.WOODCUTTING) + ":");
                         writer.append(skillsXp.get(SkillType.WOODCUTTING) + ":");
@@ -389,19 +404,19 @@ public class PlayerProfile {
                         writer.append(skillsXp.get(SkillType.SWORDS) + ":");
                         writer.append(skillsXp.get(SkillType.AXES) + ":");
                         writer.append(skillsXp.get(SkillType.ACROBATICS) + ":");
-                        writer.append(""+":");
+                        writer.append("" + ":");
                         writer.append(skills.get(SkillType.TAMING) + ":");
                         writer.append(skillsXp.get(SkillType.TAMING) + ":");
                         //Need to store the DATS of abilities nao
                         //Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.BERSERK))+":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER))+":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.TREE_FELLER))+":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GREEN_TERRA))+":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SERRATED_STRIKES))+":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SKULL_SPLIITER))+":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SUPER_BREAKER))+":");
-                        writer.append(hud.toString()+":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.BERSERK)) + ":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER)) + ":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.TREE_FELLER)) + ":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GREEN_TERRA)) + ":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SERRATED_STRIKES)) + ":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SKULL_SPLIITER)) + ":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SUPER_BREAKER)) + ":");
+                        writer.append(hud.toString() + ":");
                         writer.append(skills.get(SkillType.FISHING) + ":");
                         writer.append(skillsXp.get(SkillType.FISHING) + ":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.BLAST_MINING)) + ":");
@@ -435,7 +450,7 @@ public class PlayerProfile {
         }
 
         //Misc stuff
-        party = "";
+        party = null;
 
         save();
     }
@@ -450,41 +465,48 @@ public class PlayerProfile {
             //Add the player to the end
             out.append(playerName + ":");
             out.append(0 + ":"); //mining
-            out.append(""+":");
-            out.append(party+":");
-            out.append(0+":"); //XP
-            out.append(0+":"); //woodcutting
-            out.append(0+":"); //woodCuttingXP
-            out.append(0+":"); //repair
-            out.append(0+":"); //unarmed
-            out.append(0+":"); //herbalism
-            out.append(0+":"); //excavation
-            out.append(0+":"); //archery
-            out.append(0+":"); //swords
-            out.append(0+":"); //axes
-            out.append(0+":"); //acrobatics
-            out.append(0+":"); //repairXP
-            out.append(0+":"); //unarmedXP
-            out.append(0+":"); //herbalismXP
-            out.append(0+":"); //excavationXP
-            out.append(0+":"); //archeryXP
-            out.append(0+":"); //swordsXP
-            out.append(0+":"); //axesXP
-            out.append(0+":"); //acrobaticsXP
-            out.append(""+":");
-            out.append(0+":"); //taming
-            out.append(0+":"); //tamingXP
-            out.append(0+":"); //DATS
-            out.append(0+":"); //DATS
-            out.append(0+":"); //DATS
-            out.append(0+":"); //DATS
-            out.append(0+":"); //DATS
-            out.append(0+":"); //DATS
-            out.append(0+":"); //DATS
-            out.append(SpoutConfig.getInstance().defaulthud.toString()+":");//HUD
-            out.append(0+":"); //Fishing
-            out.append(0+":"); //FishingXP
-            out.append(0+":"); //Blast Mining
+            out.append("" + ":");
+
+            String partyName = "";
+
+            if (party != null) {
+                partyName = party.getName();
+            }
+
+            out.append(partyName + ":");
+            out.append(0 + ":"); //XP
+            out.append(0 + ":"); //woodcutting
+            out.append(0 + ":"); //woodCuttingXP
+            out.append(0 + ":"); //repair
+            out.append(0 + ":"); //unarmed
+            out.append(0 + ":"); //herbalism
+            out.append(0 + ":"); //excavation
+            out.append(0 + ":"); //archery
+            out.append(0 + ":"); //swords
+            out.append(0 + ":"); //axes
+            out.append(0 + ":"); //acrobatics
+            out.append(0 + ":"); //repairXP
+            out.append(0 + ":"); //unarmedXP
+            out.append(0 + ":"); //herbalismXP
+            out.append(0 + ":"); //excavationXP
+            out.append(0 + ":"); //archeryXP
+            out.append(0 + ":"); //swordsXP
+            out.append(0 + ":"); //axesXP
+            out.append(0 + ":"); //acrobaticsXP
+            out.append("" + ":");
+            out.append(0 + ":"); //taming
+            out.append(0 + ":"); //tamingXP
+            out.append(0 + ":"); //DATS
+            out.append(0 + ":"); //DATS
+            out.append(0 + ":"); //DATS
+            out.append(0 + ":"); //DATS
+            out.append(0 + ":"); //DATS
+            out.append(0 + ":"); //DATS
+            out.append(0 + ":"); //DATS
+            out.append(SpoutConfig.getInstance().defaulthud.toString() + ":");//HUD
+            out.append(0 + ":"); //Fishing
+            out.append(0 +":"); //FishingXP
+            out.append(0 + ":"); //Blast Mining
 
             //Add more in the same format as the line above
 
@@ -1165,8 +1187,8 @@ public class PlayerProfile {
     private double partyModifier(SkillType skillType) {
         double bonusModifier = 0.0;
 
-        for (Player member : Party.getInstance().getOnlineMembers(player)) {
-            if (!member.equals(player) && Party.getInstance().isPartyLeader(member.getName(), getParty())) {
+        for (Player member : party.getOnlineMembers()) {
+            if (party.getLeader().equals(member.getName())) {
                 if (Misc.isNear(player.getLocation(), member.getLocation(), 25.0)) {
                     PlayerProfile PartyLeader = Users.getProfile(member);
                     int leaderSkill = PartyLeader.getSkillLevel(skillType);
@@ -1187,21 +1209,16 @@ public class PlayerProfile {
      * Party Stuff
      */
 
-    public void acceptInvite() {
-        party = invite;
-        invite = "";
+    public void setInvite(Party invite) {
+        this.invite = invite;
     }
 
-    public void modifyInvite(String invitename) {
-        invite = invitename;
-    }
-
-    public String getInvite() {
+    public Party getInvite() {
         return invite;
     }
 
     public boolean hasPartyInvite() {
-        if (invite != null && !invite.equals("") && !invite.equals("null")) {
+        if (invite != null) {
             return true;
         }
         else {
@@ -1209,24 +1226,28 @@ public class PlayerProfile {
         }
     }
 
-    public void setParty(String newParty) {
-        party = newParty;
+    public void setParty(Party party) {
+        this.party = party;
     }
 
-    public String getParty() {
+    public Party getParty() {
         return party;
+    }
+
+    public boolean inParty() {
+        if (party != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void removeParty() {
         party = null;
     }
 
-    public boolean inParty() {
-        if (party != null && !party.equals("") && !party.equals("null")) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    public void removeInvite() {
+        invite = null;
     }
 }

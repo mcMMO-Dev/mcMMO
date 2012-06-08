@@ -30,7 +30,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
-import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.combat.Archery;
 import com.gmail.nossr50.skills.combat.Taming;
@@ -81,7 +81,7 @@ public class EntityListener implements Listener {
         Entity defender = event.getEntity();
 
         if (attacker instanceof Player && defender instanceof Player) {
-            if (Party.getInstance().inSameParty((Player)defender, (Player)attacker)) {
+            if (PartyManager.getInstance().inSameParty((Player) defender, (Player) attacker)) {
                 event.setCancelled(true);
                 return;
             }
@@ -89,7 +89,7 @@ public class EntityListener implements Listener {
 
         /* Check for invincibility */
         if (defender instanceof LivingEntity) {
-            LivingEntity livingDefender = (LivingEntity)defender;
+            LivingEntity livingDefender = (LivingEntity) defender;
 
             if (!Misc.isInvincible(livingDefender, event)) {
                 Combat.combatChecks(event);

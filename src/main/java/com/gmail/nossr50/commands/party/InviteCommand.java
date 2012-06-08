@@ -11,6 +11,7 @@ import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
 //TODO: Make this work from console.
@@ -36,11 +37,9 @@ public class InviteCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             Player player = (Player) sender;
-            PlayerProfile PP = Users.getProfile(player);
+            PlayerProfile playerProfile = Users.getProfile(player);
 
-            Party partyInstance = Party.getInstance();
-
-            if (!PP.inParty()) {
+            if (!playerProfile.inParty()) {
                 player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 return true;
             }
@@ -48,13 +47,12 @@ public class InviteCommand implements CommandExecutor {
             Player target = plugin.getServer().getPlayer(args[0]);
 
             if (target != null) {
-                if (partyInstance.canInvite(player, PP)) {
-                    PlayerProfile PPt = Users.getProfile(target);
-                    PPt.modifyInvite(PP.getParty());
-
+                if (PartyManager.getInstance().canInvite(player, playerProfile)) {
+                    Party party = playerProfile.getParty();
+                    
+                    Users.getProfile(target).setInvite(party);
                     player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
-
-                    target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", new Object[] { PPt.getInvite(), player.getName() }));
+                    target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", new Object[] {party.getName(), player.getName()}));
                     target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.1"));
                     return true;
                 }

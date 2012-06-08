@@ -26,7 +26,7 @@ import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.GainXp;
 import com.gmail.nossr50.skills.combat.Archery;
@@ -396,7 +396,7 @@ public class Combat {
                     continue;
                 }
 
-                if (Party.getInstance().inSameParty(attacker, defender)) {
+                if (PartyManager.getInstance().inSameParty(attacker, defender)) {
                     continue;
                 }
 
@@ -410,7 +410,7 @@ public class Combat {
                 AnimalTamer tamer = ((Tameable) entity).getOwner();
 
                 if (tamer instanceof Player) {
-                    if (tamer.equals(attacker) || Party.getInstance().inSameParty(attacker, (Player) tamer)) {
+                    if (tamer.equals(attacker) || PartyManager.getInstance().inSameParty(attacker, (Player) tamer)) {
                         continue;
                     }
                 }

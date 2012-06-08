@@ -63,6 +63,7 @@ import com.gmail.nossr50.listeners.HardcoreListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.SaveTimer;
 import com.gmail.nossr50.runnables.SkillMonitor;
@@ -269,6 +270,8 @@ public class mcMMO extends JavaPlugin {
         for (PlayerProfile playerProfile : Users.getProfiles()) {
             playerProfile.save();
         }
+
+        PartyManager.getInstance().saveParties();
 
         getServer().getScheduler().cancelTasks(this); //This removes our tasks
 

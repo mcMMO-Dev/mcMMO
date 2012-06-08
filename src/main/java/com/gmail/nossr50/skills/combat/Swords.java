@@ -11,7 +11,7 @@ import org.bukkit.entity.Tameable;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.ItemChecks;
@@ -39,7 +39,7 @@ public class Swords {
                 if (tamer instanceof Player) {
                     Player owner = (Player) tamer;
 
-                    if (owner == attacker || Party.getInstance().inSameParty(attacker, owner)) {
+                    if (owner == attacker || PartyManager.getInstance().inSameParty(attacker, owner)) {
                         return;
                     }
                 }

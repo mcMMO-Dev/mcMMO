@@ -12,6 +12,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
 public class PCommand implements CommandExecutor {
@@ -57,9 +58,9 @@ public class PCommand implements CommandExecutor {
         default:
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                PP = Users.getProfile(player);
+                Party party = Users.getProfile(player).getParty();
 
-                if (!PP.inParty()) {
+                if (party == null) {
                     player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                     return true;
                 }
@@ -70,7 +71,7 @@ public class PCommand implements CommandExecutor {
                     message = message + " " + args [i];
                 }
 
-                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), PP.getParty(), message);
+                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), party.getName(), message);
                 plugin.getServer().getPluginManager().callEvent(chatEvent);
 
                 if (chatEvent.isCancelled()) {
@@ -80,10 +81,10 @@ public class PCommand implements CommandExecutor {
                 message = chatEvent.getMessage();
                 String prefix = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getName() + ChatColor.GREEN + ") ";
 
-                plugin.getLogger().info("[P](" + PP.getParty() + ")" + "<" + player.getName() + "> " + message);
+                plugin.getLogger().info("[P](" + party.getName() + ")" + "<" + player.getName() + "> " + message);
 
-                for (Player p : Party.getInstance().getOnlineMembers(PP.getParty())) {
-                    p.sendMessage(prefix + message);
+                for (Player member : party.getOnlineMembers()) {
+                    member.sendMessage(prefix + message);
                 }
             }
             else {
@@ -92,7 +93,7 @@ public class PCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (!Party.getInstance().isParty(args[0])) {
+                if (!PartyManager.getInstance().isParty(args[0])) {
                     sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));
                     return true;
                 }
@@ -115,8 +116,8 @@ public class PCommand implements CommandExecutor {
 
                 plugin.getLogger().info("[P](" + args[0] + ")" + "<*Console*> " + message);
 
-                for (Player player : Party.getInstance().getOnlineMembers(args[0])) {
-                    player.sendMessage(prefix + message);
+                for (Player member : PartyManager.getInstance().getOnlineMembers(args[0])) {
+                    member.sendMessage(prefix + message);
                 }
             }
 

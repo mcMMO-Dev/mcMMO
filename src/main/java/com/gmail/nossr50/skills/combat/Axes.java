@@ -14,7 +14,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -60,7 +60,7 @@ public class Axes {
                 if (tamer instanceof Player) {
                     Player owner = (Player) tamer;
 
-                    if (owner == attacker || Party.getInstance().inSameParty(attacker, owner)) {
+                    if (owner == attacker || PartyManager.getInstance().inSameParty(attacker, owner)) {
                         return;
                     }
                 }

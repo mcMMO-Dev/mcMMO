@@ -36,7 +36,7 @@ public final class ChatAPI {
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             if (Users.getProfile(player).inParty()) {
-                if (Users.getProfile(player).getParty().equalsIgnoreCase(chatEvent.getParty())) {
+                if (Users.getProfile(player).getParty().getName().equalsIgnoreCase(chatEvent.getParty())) {
                     player.sendMessage(pPrefix + chatEvent.getMessage());
                 }
             }

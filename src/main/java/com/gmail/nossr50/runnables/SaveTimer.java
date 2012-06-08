@@ -3,6 +3,7 @@ package com.gmail.nossr50.runnables;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
 
 public class SaveTimer implements Runnable {
     private final mcMMO plugin;
@@ -20,5 +21,7 @@ public class SaveTimer implements Runnable {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new ProfileSaveTask(player), count);
             count++;
         }
+
+        PartyManager.getInstance().saveParties();
     }
 }

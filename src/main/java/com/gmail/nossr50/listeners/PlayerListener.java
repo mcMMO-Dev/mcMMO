@@ -318,39 +318,44 @@ public class PlayerListener implements Listener {
         PlayerProfile PP = Users.getProfile(player);
 
         if (PP.getPartyChatMode()) {
-            if (!PP.inParty()) {
+            Party party = PP.getParty();
+
+            if (party == null) {
                 player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
                 return;
             }
 
-            McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), PP.getParty(), event.getMessage());
+            String partyName = party.getName();
+            String playerName = player.getName();
+            McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(playerName, partyName, event.getMessage());
             plugin.getServer().getPluginManager().callEvent(chatEvent);
 
             if (chatEvent.isCancelled()) {
                 return;
             }
 
-            String prefix = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getName() + ChatColor.GREEN + ") ";
+            String prefix = ChatColor.GREEN + "(" + ChatColor.WHITE + playerName + ChatColor.GREEN + ") ";
 
-            plugin.getLogger().info("[P](" + PP.getParty() + ")" + "<" + player.getName() + "> " + chatEvent.getMessage());
+            plugin.getLogger().info("[P](" + partyName + ")" + "<" + playerName + "> " + chatEvent.getMessage());
 
-            for (Player p : Party.getInstance().getOnlineMembers(PP.getParty())) {
-                p.sendMessage(prefix + chatEvent.getMessage());
+            for (Player member : party.getOnlineMembers()) {
+                member.sendMessage(prefix + chatEvent.getMessage());
             }
 
             event.setCancelled(true);
         }
         else if (PP.getAdminChatMode()) {
-            McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), event.getMessage());
+            String playerName = player.getName();
+            McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(playerName, event.getMessage());
             plugin.getServer().getPluginManager().callEvent(chatEvent);
 
             if (chatEvent.isCancelled()) {
                 return;
             }
 
-            String prefix = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getName() + ChatColor.AQUA + "} ";
+            String prefix = ChatColor.AQUA + "{" + ChatColor.WHITE + playerName + ChatColor.AQUA + "} ";
 
-            plugin.getLogger().info("[A]<" + player.getName() + "> " + chatEvent.getMessage());
+            plugin.getLogger().info("[A]<" + playerName + "> " + chatEvent.getMessage());
 
             for (Player p : plugin.getServer().getOnlinePlayers()) {
                 if (Permissions.getInstance().adminChat(player) || player.isOp()) {

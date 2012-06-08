@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
@@ -96,7 +96,7 @@ public class Acrobatics {
         if (event.getDamager() instanceof Player) {
             Player attacker = (Player) event.getDamager();
 
-            if (Party.getInstance().inSameParty(defender, attacker)) {
+            if (PartyManager.getInstance().inSameParty(defender, attacker)) {
                 return;
             }
         }
