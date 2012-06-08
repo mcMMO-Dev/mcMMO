@@ -42,7 +42,7 @@ public class McremoveCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             playerName = args[0];
-            success = ChatColor.GREEN + playerName + "was successfully removed from the database!"; //TODO: Locale
+            success = ChatColor.GREEN + playerName + " was successfully removed from the database!"; //TODO: Locale
             break;
 
         default:
