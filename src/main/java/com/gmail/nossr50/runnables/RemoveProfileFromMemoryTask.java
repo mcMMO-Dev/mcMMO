@@ -2,6 +2,7 @@ package com.gmail.nossr50.runnables;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.util.Users;
 
 public class RemoveProfileFromMemoryTask implements Runnable {
@@ -13,10 +14,15 @@ public class RemoveProfileFromMemoryTask implements Runnable {
 
     @Override
     public void run() {
+        PlayerProfile playerProfile = Users.getProfile(player);
+
         //Check if the profile still exists (stuff like MySQL reconnection removes profiles)
-        if (Users.getProfiles().containsKey(player)) {
-            Users.getProfile(player).save(); //We save here so players don't quit/reconnect to cause lag
-            Users.removeUser(player);
+        if (playerProfile != null) {
+            playerProfile.save(); //We save here so players don't quit/reconnect to cause lag
+
+            if (!player.isOnline()) {
+                Users.removeUser(playerProfile);
+            }
         }
     }
 }

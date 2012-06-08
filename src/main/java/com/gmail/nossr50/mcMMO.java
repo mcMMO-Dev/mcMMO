@@ -237,18 +237,6 @@ public class mcMMO extends JavaPlugin {
     }
 
     /**
-     * Get profile of the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player Player whose profile to get
-     * @return the PlayerProfile object
-     */
-    public PlayerProfile getPlayerProfile(Player player) {
-        return Users.getProfile(player);
-    }
-
-    /**
      * Get profile of the player by name.
      * </br>
      * This function is designed for API usage.
@@ -256,19 +244,19 @@ public class mcMMO extends JavaPlugin {
      * @param playerName Name of player whose profile to get
      * @return the PlayerProfile object
      */
-    public PlayerProfile getPlayerProfileByName(String playerName) {
-        return Users.getProfileByName(playerName);
+    public PlayerProfile getPlayerProfile(String playerName) {
+        return Users.getProfile(playerName);
     }
 
     /**
-     * Get profile of the offline player.
+     * Get profile of the player.
      * </br>
      * This function is designed for API usage.
      *
-     * @param player Offline player whose profile to get
+     * @param player player whose profile to get
      * @return the PlayerProfile object
      */
-    public PlayerProfile getOfflinePlayerProfile(OfflinePlayer player) {
+    public PlayerProfile getPlayerProfile(OfflinePlayer player) {
         return Users.getProfile(player);
     }
 
@@ -278,8 +266,8 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         //Make sure to save player information if the server shuts down
-        for (PlayerProfile x : Users.getProfiles().values()) {
-            x.save();
+        for (PlayerProfile playerProfile : Users.getProfiles()) {
+            playerProfile.save();
         }
 
         getServer().getScheduler().cancelTasks(this); //This removes our tasks

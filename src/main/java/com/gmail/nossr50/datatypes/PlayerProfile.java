@@ -93,9 +93,16 @@ public class PlayerProfile {
         lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
     }
 
-    //This method is actually never used
     public Player getPlayer() {
         return player;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public boolean loadMySQL() {

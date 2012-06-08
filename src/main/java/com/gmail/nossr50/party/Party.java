@@ -148,10 +148,11 @@ public class Party {
      */
     public ArrayList<Player> getAllMembers(Player player) {
         ArrayList<Player> players = new ArrayList<Player>();
-        HashMap<Player, PlayerProfile> profiles = Users.getProfiles();
 
         if (player != null) {
-            for (Player otherPlayer : profiles.keySet()) {
+            for (PlayerProfile playerProfile : Users.getProfiles()) {
+                Player otherPlayer = playerProfile.getPlayer();
+
                 if (otherPlayer != null && inSameParty(otherPlayer, player)) {
                     players.add(otherPlayer);
                 }
