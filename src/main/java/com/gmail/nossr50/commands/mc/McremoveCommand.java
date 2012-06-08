@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
 
@@ -96,12 +98,15 @@ public class McremoveCommand implements CommandExecutor {
         }
 
         //Force PlayerProfile stuff to update
-        Player player = plugin.getServer().getPlayer(playerName);
+        OfflinePlayer player = plugin.getServer().getOfflinePlayer(playerName);
+        PlayerProfile playerProfile = Users.getProfile(player);
 
-        //TODO fix this
-        if (player != null /*&& Users.getProfiles().containsKey(player)*/) { 
-            Users.removeUser(player);
-            Users.addUser(player);
+        if (playerProfile != null) {
+            Users.removeUser(playerProfile);
+
+            if (player.isOnline()) {
+                Users.addUser((Player) player);
+            }
         }
 
         return true;
