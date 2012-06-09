@@ -256,8 +256,7 @@ public class PartyManager {
      * @param password the password for this party, null if there was no password
      */
     public void addToParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
-        //Fix for FFS
-        partyName = partyName.replace(":", ".");
+        partyName = partyName.replace(".", "");
         Party party = getParty(partyName);
         String playerName = player.getName();
 
@@ -266,7 +265,7 @@ public class PartyManager {
 
             party.setName(partyName);
             party.setLeader(playerName);
-            
+
             if (password != null) {
                 party.setPassword(password);
                 party.setLocked(true);
