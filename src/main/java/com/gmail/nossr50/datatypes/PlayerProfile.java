@@ -70,6 +70,8 @@ public class PlayerProfile {
         this.player = player;
         this.playerName = player.getName();
 
+        party = PartyManager.getInstance().getPlayerParty(playerName);
+
         for (AbilityType abilityType : AbilityType.values()) {
             skillsDATS.put(abilityType, 0);
         }
@@ -132,15 +134,12 @@ public class PlayerProfile {
                 }
             }
 
-            HashMap<Integer, ArrayList<String>> users = mcMMO.database.read("SELECT lastlogin, party FROM " + Config.getInstance().getMySQLTablePrefix() + "users WHERE id = " + userid);
-            //lastlogin = Integer.parseInt(users.get(1).get(0));
-            party = PartyManager.getInstance().getParty(users.get(1).get(1));
-            HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + Config.getInstance().getMySQLTablePrefix() + "cooldowns WHERE user_id = " + userid);
-
             /*
              * I'm still learning MySQL, this is a fix for adding a new table
              * its not pretty but it works
              */
+            HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + Config.getInstance().getMySQLTablePrefix() + "cooldowns WHERE user_id = " + userid);
+
             if(cooldowns.get(1) == null) {
                 mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "cooldowns (user_id) VALUES (" + userid + ")");
             }
@@ -209,13 +208,8 @@ public class PlayerProfile {
                     continue;
                 }
 
-                //Get Mining
                 if (character.length > 1 && Misc.isInt(character[1]))
                     skills.put(SkillType.MINING, Integer.valueOf(character[1]));
-                //Party
-                if (character.length > 3)
-                    party = PartyManager.getInstance().getParty(character[3]);
-                //Mining XP
                 if (character.length > 4 && Misc.isInt(character[4]))
                     skillsXp.put(SkillType.MINING, Integer.valueOf(character[4]));
                 if (character.length > 5 && Misc.isInt(character[5]))
@@ -306,14 +300,6 @@ public class PlayerProfile {
 
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "huds SET hudtype = '" + hud.toString() + "' WHERE user_id = " + userid);
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + userid);
-
-            String partyName = "";
-
-            if (party != null) {
-                partyName = party.getName();
-            }
-
-            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "users SET party = '" + partyName + "' WHERE id = " + userid);
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "cooldowns SET "
                     + " mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
                     + ", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
@@ -374,14 +360,7 @@ public class PlayerProfile {
                         writer.append(playerName + ":");
                         writer.append(skills.get(SkillType.MINING) + ":");
                         writer.append("" + ":");
-
-                        String partyName = "";
-
-                        if (party != null) {
-                            partyName = party.getName();
-                        }
-
-                        writer.append(partyName + ":");
+                        writer.append("" + ":");
                         writer.append(skillsXp.get(SkillType.MINING) + ":");
                         writer.append(skills.get(SkillType.WOODCUTTING) + ":");
                         writer.append(skillsXp.get(SkillType.WOODCUTTING) + ":");
@@ -443,14 +422,7 @@ public class PlayerProfile {
             out.append(playerName + ":");
             out.append(0 + ":"); //mining
             out.append("" + ":");
-
-            String partyName = "";
-
-            if (party != null) {
-                partyName = party.getName();
-            }
-
-            out.append(partyName + ":");
+            out.append("" + ":");
             out.append(0 + ":"); //XP
             out.append(0 + ":"); //woodcutting
             out.append(0 + ":"); //woodCuttingXP

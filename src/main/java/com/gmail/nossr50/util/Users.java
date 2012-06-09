@@ -90,7 +90,7 @@ public class Users {
      */
     public static void removeUser(String playerName) {
         for (Iterator<PlayerProfile> it = profiles.iterator() ; it.hasNext() ; ) {
-            if (it.next().getPlayer().getName().equals(playerName)) {
+            if (it.next().getPlayerName().equals(playerName)) {
                 it.remove();
                 return;
             }

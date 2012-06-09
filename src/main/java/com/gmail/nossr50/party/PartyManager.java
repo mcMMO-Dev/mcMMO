@@ -167,6 +167,22 @@ public class PartyManager {
     }
 
     /**
+     * Retrieve a party by a member name
+     * 
+     * @param playerName The member name
+     * @return the existing party, null otherwise
+     */
+    public Party getPlayerParty(String playerName) {
+        for (Party party : parties) {
+            if (party.getMembers().contains(playerName)) {
+                return party;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Get a list of all current party names.
      *
      * @return the list of parties.

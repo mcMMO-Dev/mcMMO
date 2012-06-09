@@ -69,7 +69,6 @@ public class Database {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
                 + "`lastlogin` int(32) unsigned NOT NULL,"
-                + "`party` varchar(100) NOT NULL DEFAULT '',"
                 + "PRIMARY KEY (`id`),"
                 + "UNIQUE KEY `user` (`user`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` (`user_id` int(10) unsigned NOT NULL,"
