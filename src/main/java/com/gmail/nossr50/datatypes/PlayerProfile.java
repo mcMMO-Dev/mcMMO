@@ -97,7 +97,7 @@ public class PlayerProfile {
         lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
     }
 
-    public Player getlayer() {
+    public Player getPlayer() {
         return player;
     }
 
@@ -107,6 +107,7 @@ public class PlayerProfile {
 
     public void setPlayer(Player player) {
         this.player = player;
+        this.playerName = player.getName();
     }
 
     public boolean loadMySQL() {

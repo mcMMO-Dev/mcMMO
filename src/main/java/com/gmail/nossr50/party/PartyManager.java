@@ -401,7 +401,7 @@ public class PartyManager {
     }
 
     /**
-     * Load all party related files.
+     * Load party file.
      */
     private void loadParties() {
         File file = new File(partiesFilePath);
@@ -432,9 +432,7 @@ public class PartyManager {
     }
 
     /**
-     * Save all party-related files.
-     * 
-     * @throws Exception 
+     * Save party file.
      */
     public void saveParties() {
         File file = new File(partiesFilePath);
