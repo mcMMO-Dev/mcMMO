@@ -84,6 +84,7 @@ public class PlayerProfile {
         if (Config.getInstance().getUseMySQL()) {
             if (!loadMySQL() && addNew) {
                 addMySQLPlayer();
+                loaded = true;
             }
         }
         else if (!load() && addNew) {
@@ -94,7 +95,7 @@ public class PlayerProfile {
         lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
     }
 
-    public Player getPlayer() {
+    public Player getlayer() {
         return player;
     }
 
@@ -107,44 +108,43 @@ public class PlayerProfile {
     }
 
     public boolean loadMySQL() {
-        int id = 0;
-        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + playerName + "'");
+        userid = mcMMO.database.getInt("SELECT id FROM " + Config.getInstance().getMySQLTablePrefix() + "users WHERE user = '" + playerName + "'");
 
-        userid = id;
+        if (userid <= 0) {
+            return false;
+        }
+        else {
+            HashMap<Integer, ArrayList<String>> huds = mcMMO.database.read("SELECT hudtype FROM " + Config.getInstance().getMySQLTablePrefix() + "huds WHERE user_id = " + userid);
 
-        if (id > 0) {
-            HashMap<Integer, ArrayList<String>> huds = mcMMO.database.read("SELECT hudtype FROM "+Config.getInstance().getMySQLTablePrefix()+"huds WHERE user_id = " + id);
-            if(huds.get(1) == null)
-            {
-                mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"huds (user_id) VALUES ("+id+")");
-            } else {
-                if(huds.get(1).get(0) != null)
-                {
-                for(HUDType x : HUDType.values())
-                {
-                    if(x.toString().equals(huds.get(1).get(0)))
-                    {
-                        hud = x;
+            if (huds.get(1) == null) {
+                mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "huds (user_id) VALUES (" + userid + ")");
+            }
+            else {
+                if (huds.get(1).get(0) != null) {
+                    for (HUDType x : HUDType.values()) {
+                        if (x.toString().equals(huds.get(1).get(0))) {
+                            hud = x;
+                        }
                     }
                 }
-                } else {
+                else {
                     hud = SpoutConfig.getInstance().defaulthud;
                 }
             }
-            HashMap<Integer, ArrayList<String>> users = mcMMO.database.read("SELECT lastlogin, party FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE id = " + id);
+
+            HashMap<Integer, ArrayList<String>> users = mcMMO.database.read("SELECT lastlogin, party FROM " + Config.getInstance().getMySQLTablePrefix() + "users WHERE id = " + userid);
             //lastlogin = Integer.parseInt(users.get(1).get(0));
             party = PartyManager.getInstance().getParty(users.get(1).get(1));
-            HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM "+Config.getInstance().getMySQLTablePrefix()+"cooldowns WHERE user_id = " + id);
+            HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + Config.getInstance().getMySQLTablePrefix() + "cooldowns WHERE user_id = " + userid);
+
             /*
              * I'm still learning MySQL, this is a fix for adding a new table
              * its not pretty but it works
              */
-            if(cooldowns.get(1) == null)
-            {
-                mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"cooldowns (user_id) VALUES ("+id+")");
+            if(cooldowns.get(1) == null) {
+                mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "cooldowns (user_id) VALUES (" + userid + ")");
             }
-            else
-            {
+            else {
                 skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(cooldowns.get(1).get(0)));
                 skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(cooldowns.get(1).get(1)));
                 skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(cooldowns.get(1).get(2)));
@@ -154,7 +154,8 @@ public class PlayerProfile {
                 skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(cooldowns.get(1).get(6)));
                 skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(cooldowns.get(1).get(7)));
             }
-            HashMap<Integer, ArrayList<String>> stats = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+Config.getInstance().getMySQLTablePrefix()+"skills WHERE user_id = " + id);
+
+            HashMap<Integer, ArrayList<String>> stats = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+Config.getInstance().getMySQLTablePrefix()+"skills WHERE user_id = " + userid);
                 skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
                 skills.put(SkillType.MINING, Integer.valueOf(stats.get(1).get(1)));
                 skills.put(SkillType.REPAIR, Integer.valueOf(stats.get(1).get(2)));
@@ -167,7 +168,7 @@ public class PlayerProfile {
                 skills.put(SkillType.AXES, Integer.valueOf(stats.get(1).get(9)));
                 skills.put(SkillType.ACROBATICS, Integer.valueOf(stats.get(1).get(10)));
                 skills.put(SkillType.FISHING, Integer.valueOf(stats.get(1).get(11)));
-            HashMap<Integer, ArrayList<String>> experience = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+Config.getInstance().getMySQLTablePrefix()+"experience WHERE user_id = " + id);
+            HashMap<Integer, ArrayList<String>> experience = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+Config.getInstance().getMySQLTablePrefix()+"experience WHERE user_id = " + userid);
                 skillsXp.put(SkillType.TAMING, Integer.valueOf(experience.get(1).get(0)));
                 skillsXp.put(SkillType.MINING, Integer.valueOf(experience.get(1).get(1)));
                 skillsXp.put(SkillType.REPAIR, Integer.valueOf(experience.get(1).get(2)));
@@ -183,118 +184,114 @@ public class PlayerProfile {
             loaded = true;
             return true;
         }
-        else {
-            return false;
-        }
     }
 
     public void addMySQLPlayer() {
-        int id = 0;
-        mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 +")");
-        id = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix()+"users WHERE user = '" + playerName + "'");
-        mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"cooldowns (user_id) VALUES ("+id+")");
-        mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"skills (user_id) VALUES ("+id+")");
-        mcMMO.database.write("INSERT INTO "+Config.getInstance().getMySQLTablePrefix()+"experience (user_id) VALUES ("+id+")");
-        this.userid = id;
+        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 + ")");
+        userid = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix() + "users WHERE user = '" + playerName + "'");
+        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "cooldowns (user_id) VALUES (" + userid + ")");
+        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "skills (user_id) VALUES (" + userid + ")");
+        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "experience (user_id) VALUES (" + userid + ")");
     }
 
-    public boolean load()
-    {
+    public boolean load() {
         try {
             //Open the user file
             FileReader file = new FileReader(location);
             BufferedReader in = new BufferedReader(file);
             String line = "";
-            while((line = in.readLine()) != null)
-            {
+
+            while ((line = in.readLine()) != null) {
                 //Find if the line contains the player we want.
                 String[] character = line.split(":");
 
-                if(!character[0].equals(playerName)){continue;}
+                if (!character[0].equals(playerName)) {
+                    continue;
+                }
 
                 //Get Mining
-                if(character.length > 1 && Misc.isInt(character[1]))
+                if (character.length > 1 && Misc.isInt(character[1]))
                     skills.put(SkillType.MINING, Integer.valueOf(character[1]));
                 //Party
-                if(character.length > 3)
+                if (character.length > 3)
                     party = PartyManager.getInstance().getParty(character[3]);
                 //Mining XP
-                if(character.length > 4 && Misc.isInt(character[4]))
+                if (character.length > 4 && Misc.isInt(character[4]))
                     skillsXp.put(SkillType.MINING, Integer.valueOf(character[4]));
-                if(character.length > 5 && Misc.isInt(character[5]))
+                if (character.length > 5 && Misc.isInt(character[5]))
                     skills.put(SkillType.WOODCUTTING, Integer.valueOf(character[5]));
-                if(character.length > 6 && Misc.isInt(character[6]))
+                if (character.length > 6 && Misc.isInt(character[6]))
                     skillsXp.put(SkillType.WOODCUTTING, Integer.valueOf(character[6]));
-                if(character.length > 7 && Misc.isInt(character[7]))
+                if (character.length > 7 && Misc.isInt(character[7]))
                     skills.put(SkillType.REPAIR, Integer.valueOf(character[7]));
-                if(character.length > 8 && Misc.isInt(character[8]))
+                if (character.length > 8 && Misc.isInt(character[8]))
                     skills.put(SkillType.UNARMED,  Integer.valueOf(character[8]));
-                if(character.length > 9 && Misc.isInt(character[9]))
+                if (character.length > 9 && Misc.isInt(character[9]))
                     skills.put(SkillType.HERBALISM, Integer.valueOf(character[9]));
-                if(character.length > 10 && Misc.isInt(character[10]))
+                if (character.length > 10 && Misc.isInt(character[10]))
                     skills.put(SkillType.EXCAVATION, Integer.valueOf(character[10]));
-                if(character.length > 11 && Misc.isInt(character[11]))
+                if (character.length > 11 && Misc.isInt(character[11]))
                     skills.put(SkillType.ARCHERY, Integer.valueOf(character[11]));
-                if(character.length > 12 && Misc.isInt(character[12]))
+                if (character.length > 12 && Misc.isInt(character[12]))
                     skills.put(SkillType.SWORDS, Integer.valueOf(character[12]));
-                if(character.length > 13 && Misc.isInt(character[13]))
+                if (character.length > 13 && Misc.isInt(character[13]))
                     skills.put(SkillType.AXES, Integer.valueOf(character[13]));
-                if(character.length > 14 && Misc.isInt(character[14]))
+                if (character.length > 14 && Misc.isInt(character[14]))
                     skills.put(SkillType.ACROBATICS, Integer.valueOf(character[14]));
-                if(character.length > 15 && Misc.isInt(character[15]))
+                if (character.length > 15 && Misc.isInt(character[15]))
                     skillsXp.put(SkillType.REPAIR, Integer.valueOf(character[15]));
-                if(character.length > 16 && Misc.isInt(character[16]))
+                if (character.length > 16 && Misc.isInt(character[16]))
                     skillsXp.put(SkillType.UNARMED, Integer.valueOf(character[16]));
-                if(character.length > 17 && Misc.isInt(character[17]))
+                if (character.length > 17 && Misc.isInt(character[17]))
                     skillsXp.put(SkillType.HERBALISM, Integer.valueOf(character[17]));
-                if(character.length > 18 && Misc.isInt(character[18]))
+                if (character.length > 18 && Misc.isInt(character[18]))
                     skillsXp.put(SkillType.EXCAVATION, Integer.valueOf(character[18]));
-                if(character.length > 19 && Misc.isInt(character[19]))
+                if (character.length > 19 && Misc.isInt(character[19]))
                     skillsXp.put(SkillType.ARCHERY, Integer.valueOf(character[19]));
-                if(character.length > 20 && Misc.isInt(character[20]))
+                if (character.length > 20 && Misc.isInt(character[20]))
                     skillsXp.put(SkillType.SWORDS, Integer.valueOf(character[20]));
-                if(character.length > 21 && Misc.isInt(character[21]))
+                if (character.length > 21 && Misc.isInt(character[21]))
                     skillsXp.put(SkillType.AXES, Integer.valueOf(character[21]));
-                if(character.length > 22 && Misc.isInt(character[22]))
+                if (character.length > 22 && Misc.isInt(character[22]))
                     skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(character[22]));
-                if(character.length > 24 && Misc.isInt(character[24]))
+                if (character.length > 24 && Misc.isInt(character[24]))
                     skills.put(SkillType.TAMING, Integer.valueOf(character[24]));
-                if(character.length > 25 && Misc.isInt(character[25]))
+                if (character.length > 25 && Misc.isInt(character[25]))
                     skillsXp.put(SkillType.TAMING, Integer.valueOf(character[25]));
-                if(character.length > 26)
+                if (character.length > 26)
                     skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(character[26]));
-                if(character.length > 27)
+                if (character.length > 27)
                     skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[27]));
-                if(character.length > 28)
+                if (character.length > 28)
                     skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(character[28]));
-                if(character.length > 29)
+                if (character.length > 29)
                     skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(character[29]));
-                if(character.length > 30)
+                if (character.length > 30)
                     skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(character[30]));
-                if(character.length > 31)
+                if (character.length > 31)
                     skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(character[31]));
-                if(character.length > 32)
+                if (character.length > 32)
                     skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[32]));
-                if(character.length > 33)
-                {
-                    for(HUDType x : HUDType.values())
-                    {
-                        if(x.toString().equalsIgnoreCase(character[33]))
-                        {
+                if (character.length > 33) {
+                    for (HUDType x : HUDType.values()) {
+                        if (x.toString().equalsIgnoreCase(character[33])) {
                             hud = x;
                         }
                     }
                 }
-                if(character.length > 34)
+                if (character.length > 34)
                     skills.put(SkillType.FISHING, Integer.valueOf(character[34]));
-                if(character.length > 35)
+                if (character.length > 35)
                     skillsXp.put(SkillType.FISHING, Integer.valueOf(character[35]));
-                if(character.length > 36)
+                if (character.length > 36)
                     skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[36]));
-                in.close();
+ 
                 loaded = true;
+
+                in.close();
                 return true;
             }
+
             in.close();
         } catch (Exception e) {
             mcMMO.p.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
@@ -436,27 +433,7 @@ public class PlayerProfile {
         }
     }
 
-    public void resetAllData() {
-        //This will reset everything to default values and then save the information to FlatFile/MySQL
-        for (SkillType skillType : SkillType.values()) {
-            if (skillType != SkillType.ALL) {
-                skills.put(skillType, 0);
-                skillsXp.put(skillType, 0);
-            }
-        }
-
-        for (AbilityType abilityType : AbilityType.values()) {
-            skillsDATS.put(abilityType, 0);
-        }
-
-        //Misc stuff
-        party = null;
-
-        save();
-    }
-
-    public void addPlayer()
-    {
+    public void addPlayer() {
         try {
             //Open the file to write the player
             FileWriter file = new FileWriter(location, true);
