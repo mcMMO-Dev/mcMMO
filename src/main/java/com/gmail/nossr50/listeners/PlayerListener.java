@@ -32,7 +32,6 @@ import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.BleedTimer;
-import com.gmail.nossr50.runnables.RemoveProfileFromMemoryTask;
 import com.gmail.nossr50.skills.combat.Taming;
 import com.gmail.nossr50.skills.gathering.BlastMining;
 import com.gmail.nossr50.skills.gathering.Fishing;
@@ -145,9 +144,6 @@ public class PlayerListener implements Listener {
 
         //Bleed it out
         BleedTimer.bleedOut(player);
-
-        //Schedule PlayerProfile removal 2 minutes after quitting
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new RemoveProfileFromMemoryTask(player), 2400);
     }
 
     /**
