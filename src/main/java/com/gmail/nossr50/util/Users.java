@@ -98,15 +98,6 @@ public class Users {
     }
 
     /**
-     * Remove a user from the DB by its profile.
-     * 
-     * @param playerProfile the profile of the player to remove
-     */
-    public static void removeUser(PlayerProfile playerProfile) {
-        profiles.remove(playerProfile);
-    }
-
-    /**
      * Get the profile of a player.
      *
      * @param player The player whose profile to retrieve

@@ -102,7 +102,7 @@ public class McremoveCommand implements CommandExecutor {
         PlayerProfile playerProfile = Users.getProfile(player);
 
         if (playerProfile != null) {
-            Users.removeUser(playerProfile);
+            Users.getProfiles().remove(playerProfile);
 
             if (player.isOnline()) {
                 Users.addUser((Player) player);
