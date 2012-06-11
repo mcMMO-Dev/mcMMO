@@ -1,8 +1,6 @@
 package com.gmail.nossr50.party;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,38 +154,11 @@ public class PartyManager {
     }
 
     /**
-     * Get a list of all current party names.
+     * Get a list of all current parties.
      *
      * @return the list of parties.
      */
-    public List<String> getParties() {
-        String location = mcMMO.usersFile;
-        ArrayList<String> parties = new ArrayList<String>();
-
-        try {
-            FileReader file = new FileReader(location);
-            BufferedReader in = new BufferedReader(file);
-            String line = "";
-
-            while ((line = in.readLine()) != null) {
-                String[] character = line.split(":");
-                String theparty = null;
-
-                //Party
-                if (character.length > 3) {
-                    theparty = character[3];
-                }
-
-                if (!parties.contains(theparty)) {
-                    parties.add(theparty);
-                }
-            }
-            in.close();
-        }
-        catch (Exception e) {
-            plugin.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
-        }
-
+    public List<Party> getParties() {
         return parties;
     }
 

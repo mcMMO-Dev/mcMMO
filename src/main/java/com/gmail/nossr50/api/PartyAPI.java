@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
@@ -49,13 +50,13 @@ public final class PartyAPI {
     }
 
     /**
-     * Get a list of all current party names.
+     * Get a list of all current parties.
      * </br>
      * This function is designed for API usage.
      *
      * @return the list of parties.
      */
-    public static List<String> getParties() {
+    public static List<Party> getParties() {
         return PartyManager.getInstance().getParties();
     }
 
