@@ -32,10 +32,10 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
+import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.combat.Archery;
 import com.gmail.nossr50.skills.combat.Taming;
 import com.gmail.nossr50.skills.gathering.BlastMining;
-import com.gmail.nossr50.skills.misc.Acrobatics;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -128,8 +128,9 @@ public class EntityListener implements Listener {
             }
 
             if (!Misc.isInvincible(player, event)) {
-                if (cause == DamageCause.FALL && Permissions.getInstance().acrobatics(player) && !player.isInsideVehicle() && !player.getItemInHand().getType().equals(Material.ENDER_PEARL)) {
-                    Acrobatics.acrobaticsCheck(player, event);
+                if (cause == DamageCause.FALL && !player.isInsideVehicle() && !player.getItemInHand().getType().equals(Material.ENDER_PEARL)) {
+                    AcrobaticsManager acroManager = new AcrobaticsManager(player);
+                    acroManager.rollCheck(event);
                 }
                 else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.getInstance().demolitionsExpertise(player)) {
                     BlastMining.demolitionsExpertise(player, event);

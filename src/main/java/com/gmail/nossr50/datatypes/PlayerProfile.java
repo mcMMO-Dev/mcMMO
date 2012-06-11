@@ -50,7 +50,6 @@ public class PlayerProfile {
     /* Timestamps */
     private int xpGainATS = 0;
     private int recentlyHurt = 0;
-    private int respawnATS;
 
     /* mySQL STUFF */
     private int lastlogin = 0;
@@ -586,18 +585,6 @@ public class PlayerProfile {
 
     public void togglePartyChat() {
         partyChatMode = !partyChatMode;
-    }
-
-    /*
-     * Exploit Prevention
-     */
-
-    public long getRespawnATS() {
-        return respawnATS;
-    }
-
-    public void setRespawnATS(long newvalue) {
-        respawnATS = (int) (newvalue / 1000);
     }
 
     /*

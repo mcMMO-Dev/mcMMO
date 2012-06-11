@@ -29,12 +29,12 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.GainXp;
+import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.combat.Archery;
 import com.gmail.nossr50.skills.combat.Axes;
 import com.gmail.nossr50.skills.combat.Swords;
 import com.gmail.nossr50.skills.combat.Taming;
 import com.gmail.nossr50.skills.combat.Unarmed;
-import com.gmail.nossr50.skills.misc.Acrobatics;
 
 public class Combat {
     private static Config configInstance = Config.getInstance();
@@ -205,6 +205,8 @@ public class Combat {
         }
 
         if (target instanceof Player) {
+            AcrobaticsManager acroManager = new AcrobaticsManager((Player) target);
+
             if (configInstance.getSwordsPVP() && damager instanceof Player) {
                 Swords.counterAttackChecks(damager, (Player) target, event.getDamage());
             }
@@ -214,11 +216,11 @@ public class Combat {
             }
 
             if (configInstance.getAcrobaticsPVP() && damager instanceof Player) {
-                Acrobatics.dodgeChecks(event);
+                acroManager.dodgeCheck(event);
             }
 
             if (configInstance.getAcrobaticsPVE() && !(damager instanceof Player)) {
-                Acrobatics.dodgeChecks(event);
+                acroManager.dodgeCheck(event);
             }
         }
     }
@@ -459,9 +461,8 @@ public class Combat {
             }
 
             Player defender = (Player) target;
-            PlayerProfile PPd = Users.getProfile(defender);
 
-            if (System.currentTimeMillis() >= (PPd.getRespawnATS() * 1000) + 5000 && ((PPd.getLastLogin() + 5) * 1000) < System.currentTimeMillis() && defender.getHealth() >= 1) {
+            if (defender.getHealth() >= 1) {
                 baseXP = 20 * configInstance.getPlayerVersusPlayerXP();
             }
         }
