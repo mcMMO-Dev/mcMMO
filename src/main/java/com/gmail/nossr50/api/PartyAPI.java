@@ -68,7 +68,7 @@ public final class PartyAPI {
      * @param partyName The party to add the player to
      */
     public static void addToParty(Player player, String partyName) {
-        PartyManager.getInstance().addToParty(player, Users.getProfile(player), partyName, null);
+        PartyManager.getInstance().addToParty(player.getName(), Users.getProfile(player), PartyManager.getInstance().getParty(partyName)); //TODO this will throw a NPE if the party doesn't exist
     }
 
     /**
@@ -79,7 +79,7 @@ public final class PartyAPI {
      * @param player The player to remove
      */
     public static void removeFromParty(Player player) {
-        PartyManager.getInstance().removeFromParty(player, Users.getProfile(player));
+        PartyManager.getInstance().removeFromParty(player.getName(), Users.getProfile(player).getParty());
     }
 
     /**
@@ -103,7 +103,7 @@ public final class PartyAPI {
      * @param player The player to set as leader
      */
     public static void setPartyLeader(String partyName, String player) {
-        PartyManager.getInstance().setPartyLeader(partyName, player);
+        PartyManager.getInstance().setPartyLeader(player, PartyManager.getInstance().getParty(partyName));
     }
 
     /**

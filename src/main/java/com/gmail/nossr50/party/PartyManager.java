@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -56,40 +54,15 @@ public class PartyManager {
     }
 
     /**
-     * Check if two players are in the same party.
-     *
-     * @param firstPlayer The first player
-     * @param secondPlayer The second player
-     * @return true if they are in the same party, false otherwise
-     */
-    public boolean inSameParty(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer) {
-        PlayerProfile firstProfile = Users.getProfile(firstPlayer);
-        PlayerProfile secondProfile = Users.getProfile(secondPlayer);
-
-        if (firstProfile == null || secondProfile == null) {
-            return false;
-        }
-
-        Party firstParty = firstProfile.getParty();
-        Party secondParty = secondProfile.getParty();
-
-        if (firstParty == null || secondParty == null || firstParty != secondParty) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Notify party members when a player joins
      * 
-     * @param player The player that joins
+     * @param playerName The name of the player that joins
      * @param party The concerned party
      */
-    private void informPartyMembersJoin(Player player, Party party) {
+    private void informPartyMembersJoin(String playerName, Party party) {
         for (Player member : party.getOnlineMembers()) {
-            if (member != player) {
-                member.sendMessage(LocaleLoader.getString("Party.InformedOnJoin", new Object[] {player.getName()}));
+            if (member.getName().equals(playerName)) {
+                member.sendMessage(LocaleLoader.getString("Party.InformedOnJoin", new Object[] {playerName}));
             }
         }
     }
@@ -97,13 +70,13 @@ public class PartyManager {
     /**
      * Notify party members when a party member quits.
      *
-     * @param player The player that quits
+     * @param playerName The name of the player that quits
      * @param party The concerned party
      */
-    private void informPartyMembersQuit(Player player, Party party) {
+    private void informPartyMembersQuit(String playerName, Party party) {
         for (Player member : party.getOnlineMembers()) {
-            if (member != player) {
-                member.sendMessage(LocaleLoader.getString("Party.InformedOnQuit", new Object[] {player.getName()}));
+            if (member.getName().equals(playerName)) {
+                member.sendMessage(LocaleLoader.getString("Party.InformedOnQuit", new Object[] {playerName}));
             }
         }
     }
@@ -118,7 +91,7 @@ public class PartyManager {
         Party party = Users.getProfile(player).getParty();
 
         if (party == null) {
-            return Collections.emptyList();
+            return null;
         }
 
         return party.getMembers();
@@ -221,30 +194,30 @@ public class PartyManager {
     /**
      * Remove a player from a party.
      *
-     * @param player The player to remove
-     * @param playerProfile The profile of the player to remove
+     * @param playerName The name of the player to remove
+     * @param party The party
      */
-    public void removeFromParty(Player player, PlayerProfile playerProfile) {
-        String playerName = player.getName();
-        Party party = playerProfile.getParty();
+    public void removeFromParty(String playerName, Party party) {
         List<String> members = party.getMembers();
 
-        if (members.contains(playerName)) {
-            members.remove(playerName);
+        members.remove(playerName);
 
-            if (members.isEmpty()) {
-                parties.remove(party);
+        if (members.isEmpty()) {
+            parties.remove(party);
+        }
+        else {
+            if (party.getLeader().equals(playerName)) {
+                party.setLocked(false);
             }
-            else {
-                if (party.getLeader().equals(playerName) && party.isLocked()) {
-                    party.setLocked(false);
-                }
 
-                informPartyMembersQuit(player, party);
-            }
+            informPartyMembersQuit(playerName, party);
         }
 
-        playerProfile.removeParty();
+        PlayerProfile playerProfile = Users.getProfile(playerName);
+
+        if (playerProfile != null) {
+            playerProfile.removeParty();
+        }
     }
 
     /**
@@ -255,7 +228,7 @@ public class PartyManager {
      * @param partyName The party to add the player to
      * @param password the password for this party, null if there was no password
      */
-    public void addToParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
+    public void joinParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
         partyName = partyName.replace(".", "");
         Party party = getParty(partyName);
         String playerName = player.getName();
@@ -273,32 +246,45 @@ public class PartyManager {
 
             parties.add(party);
         }
-        else {
-            //Don't care about passwords if it isn't locked
-            if (party.isLocked()) {
-                String partyPassword = party.getPassword();
+        else if (!checkJoinability(player, playerProfile, party, password)) {
+            return;
+        }
 
-                if (partyPassword != null) {
-                    if (password == null) {
-                        player.sendMessage("This party requires a password. Use /party <party> <password> to join it."); //TODO: Needs more locale.
-                        return;
-                    }
-                    else if (!password.equalsIgnoreCase(partyPassword)) {
-                        player.sendMessage("Party password incorrect."); //TODO: Needs more locale.
-                        return;
-                    }
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Join", new Object[]{party.getName()}));
+        addToParty(player.getName(), playerProfile, party);
+    }
+
+    /**
+     * Check if a player can join a party
+     *
+     * @param player The player trying to join a party
+     * @param playerProfile The profile of the player
+     * @param party The party
+     * @param password The password provided by the player
+     * @return true if the player can join the party
+     */
+    private boolean checkJoinability(Player player, PlayerProfile playerProfile, Party party, String password) {
+        //Don't care about passwords if it isn't locked
+        if (party.isLocked()) {
+            String partyPassword = party.getPassword();
+
+            if (partyPassword != null) {
+                if (password == null) {
+                    player.sendMessage("This party requires a password. Use /party <party> <password> to join it."); //TODO: Needs more locale.
+                    return false;
                 }
-                else {
-                    player.sendMessage("Party is locked."); //TODO: Needs more locale.
-                    return;
+                else if (!password.equals(partyPassword)) {
+                    player.sendMessage("Party password incorrect."); //TODO: Needs more locale.
+                    return false;
                 }
+            }
+            else {
+                player.sendMessage("Party is locked."); //TODO: Needs more locale.
+                return false;
             }
         }
 
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Join", new Object[]{partyName}));
-        informPartyMembersJoin(player, party);
-        playerProfile.setParty(party);
-        party.getMembers().add(player.getName());
+        return true;
     }
 
     /**
@@ -306,18 +292,30 @@ public class PartyManager {
      * 
      * @param player The player to add to the party
      * @param playerProfile The profile of the player
-     * @param party The party
      */
-    public void addToInvitedParty(Player player, PlayerProfile playerProfile, Party party) {
-        if (!parties.contains(party)) {
-            parties.add(party);
+    public void joinInvitedParty(Player player, PlayerProfile playerProfile) {
+        Party invite = playerProfile.getInvite();
+
+        if (!parties.contains(invite)) {
+            parties.add(invite);
         }
 
-        player.sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", new Object[]{party.getName()}));
-        informPartyMembersJoin(player, party);
+        player.sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", new Object[]{invite.getName()}));
         playerProfile.removeInvite();
+        addToParty(player.getName(), playerProfile, invite);
+    }
+
+    /**
+     * Add a player to a party
+     * 
+     * @param playerName The name of the player to add to a party
+     * @param playerProfile The profile of the player
+     * @param party The party
+     */
+    public void addToParty(String playerName, PlayerProfile playerProfile, Party party) {
+        informPartyMembersJoin(playerName, party);
         playerProfile.setParty(party);
-        party.getMembers().add(player.getName());
+        party.getMembers().add(playerName);
     }
 
     /**
@@ -339,16 +337,10 @@ public class PartyManager {
     /**
      * Set the leader of a party.
      *
-     * @param partyName The party name
      * @param playerName The name of the player to set as leader
+     * @param party The party
      */
-    public void setPartyLeader(String partyName, String playerName) {
-        Party party = getParty(partyName);
-
-        if (party == null) {
-            return;
-        }
-
+    public void setPartyLeader(String playerName, Party party) {
         String leaderName = party.getLeader();
 
         for (Player member : party.getOnlineMembers()) {
@@ -371,7 +363,7 @@ public class PartyManager {
      *
      * @param player The player to check
      * @param playerProfile The profile of the given player
-     * @return true if the player can invite, false otherwise
+     * @return true if the player can invite
      */
     public boolean canInvite(Player player, PlayerProfile playerProfile) {
         Party party = playerProfile.getParty();

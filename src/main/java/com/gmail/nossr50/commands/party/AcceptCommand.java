@@ -11,6 +11,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
@@ -32,23 +33,25 @@ public class AcceptCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile playerProfile = Users.getProfile(player);
 
-        if (PP.hasPartyInvite()) {
+        if (playerProfile.hasPartyInvite()) {
             PartyManager partyManagerInstance = PartyManager.getInstance();
 
-            if (PP.inParty()) {
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, PP.getParty().getName(), PP.getInvite().getName(), EventReason.CHANGED_PARTIES);
+            if (playerProfile.inParty()) {
+                Party party = playerProfile.getParty();
+                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), playerProfile.getInvite().getName(), EventReason.CHANGED_PARTIES);
+
                 plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {
                     return true;
                 }
 
-                partyManagerInstance.removeFromParty(player, PP);
+                partyManagerInstance.removeFromParty(player.getName(), party);
             }
             else {
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, PP.getInvite().getName(), EventReason.JOINED_PARTY);
+                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, playerProfile.getInvite().getName(), EventReason.JOINED_PARTY);
                 plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {
@@ -56,7 +59,7 @@ public class AcceptCommand implements CommandExecutor {
                 }
             }
 
-            partyManagerInstance.addToInvitedParty(player, PP, PP.getInvite());
+            partyManagerInstance.joinInvitedParty(player, playerProfile);
         }
         else {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoInvites"));

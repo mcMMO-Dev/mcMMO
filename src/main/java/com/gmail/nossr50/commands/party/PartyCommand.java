@@ -1,7 +1,9 @@
 package com.gmail.nossr50.commands.party;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,15 +51,22 @@ public class PartyCommand implements CommandExecutor {
                 player.sendMessage(LocaleLoader.getString("Party.Help.2"));
             }
             else {
-                String tempList = ChatColor.GOLD + party.getLeader() + " ";
+                Server server = plugin.getServer();
+                String leader = party.getLeader();
+                StringBuffer tempList = new StringBuffer();
 
                 for (String otherPlayerName : party.getMembers()) {
-                    if (plugin.getServer().getPlayer(otherPlayerName) == null) {
-                        tempList += ChatColor.GRAY + otherPlayerName + " ";
+                    if (leader.equals(otherPlayerName)) {
+                        tempList.append(ChatColor.GOLD);
                     }
-                    else if (!party.getLeader().equals(otherPlayerName)){
-                        tempList += ChatColor.WHITE + otherPlayerName + " ";
+                    else if (server.getPlayer(otherPlayerName) != null) {
+                        tempList.append(ChatColor.WHITE);
                     }
+                    else {
+                        tempList.append(ChatColor.GRAY);
+                    }
+
+                    tempList.append(otherPlayerName + " ");
                 }
 
                 player.sendMessage(LocaleLoader.getString("Commands.Party.InParty", new Object[] {party.getName()}));
@@ -76,7 +85,7 @@ public class PartyCommand implements CommandExecutor {
                         return true;
                     }
 
-                    partyManagerInstance.removeFromParty(player, playerProfile);
+                    partyManagerInstance.removeFromParty(playerName, party);
                     player.sendMessage(LocaleLoader.getString("Commands.Party.Leave"));
                 }
                 else {
@@ -138,7 +147,7 @@ public class PartyCommand implements CommandExecutor {
                         return true;
                     }
 
-                    partyManagerInstance.removeFromParty(player, playerProfile);
+                    partyManagerInstance.removeFromParty(playerName, party);
                 }
                 else {
                     McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, args[0], EventReason.JOINED_PARTY);
@@ -149,7 +158,7 @@ public class PartyCommand implements CommandExecutor {
                     }
                 }
 
-                partyManagerInstance.addToParty(player, playerProfile, args[0], null);
+                partyManagerInstance.joinParty(player, playerProfile, args[0], null);
             }
 
             return true;
@@ -168,33 +177,23 @@ public class PartyCommand implements CommandExecutor {
                 }
                 else if (args[0].equalsIgnoreCase("kick")) {
                     if (party.getLeader().equals(playerName)) {
-                        //TODO allow to kick offline players
-                        Player target = plugin.getServer().getPlayer(args[1]);
+                        List<String> members = party.getMembers();
 
-                        if (target == null) {
-                            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
+                        if (!members.contains(args[1])) {
+                            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
                             return true;
                         }
-
-                        PlayerProfile otherPlayerProfile = Users.getProfile(target);
-                        String targetName = target.getName();
-
-                        if (!partyManagerInstance.inSameParty(player, target)) {
-                            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {targetName}));
-                            return true;
-                        }
-
                         else {
                             String partyName = party.getName();
                             McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, partyName, null, EventReason.KICKED_FROM_PARTY);
+
                             plugin.getServer().getPluginManager().callEvent(event);
 
                             if (event.isCancelled()) {
                                 return true;
                             }
 
-                            partyManagerInstance.removeFromParty(target, otherPlayerProfile);
-                            target.sendMessage(LocaleLoader.getString("Commands.Party.Kick", new Object[] {partyName}));
+                            partyManagerInstance.removeFromParty(args[1], party);
                         }
                     }
                     else {
@@ -203,27 +202,15 @@ public class PartyCommand implements CommandExecutor {
                 }
                 else if (args[0].equalsIgnoreCase("owner")) {
                     if (party.getLeader().equals(playerName)) {
-                        //TODO allow to set the ownership to offline players
-                        OfflinePlayer target = plugin.getServer().getOfflinePlayer(args[1]);
+                        List<String> members = party.getMembers();
 
-                        if (target == null) {
-                            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
+                        if (!members.contains(args[1])) {
+                            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
                             return true;
                         }
-
-                        String targetName = target.getName();
-
-                        if (!partyManagerInstance.inSameParty(player, target)) {
-                            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {targetName}));
-                            return true;
-                        }
-
                         else {
-                            partyManagerInstance.setPartyLeader(party.getName(), targetName);
+                            partyManagerInstance.setPartyLeader(args[1], party);
                         }
-                    }
-                    else {
-                        player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
                     }
                 }
                 else {
@@ -234,8 +221,8 @@ public class PartyCommand implements CommandExecutor {
                         return true;
                     }
 
-                    partyManagerInstance.removeFromParty(player, playerProfile);
-                    partyManagerInstance.addToParty(player, playerProfile, args[0], args[1]);
+                    partyManagerInstance.removeFromParty(playerName, party);
+                    partyManagerInstance.joinParty(player, playerProfile, args[0], args[1]);
                 }
             }
             else {
@@ -246,7 +233,7 @@ public class PartyCommand implements CommandExecutor {
                     return true;
                 }
 
-                partyManagerInstance.addToParty(player, playerProfile, args[0], args[1]);
+                partyManagerInstance.joinParty(player, playerProfile, args[0], args[1]);
             }
 
             return true;
