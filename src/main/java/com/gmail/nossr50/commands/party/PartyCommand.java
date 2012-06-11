@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -177,9 +175,7 @@ public class PartyCommand implements CommandExecutor {
                 }
                 else if (args[0].equalsIgnoreCase("kick")) {
                     if (party.getLeader().equals(playerName)) {
-                        List<String> members = party.getMembers();
-
-                        if (!members.contains(args[1])) {
+                        if (!party.getMembers().contains(args[1])) {
                             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
                             return true;
                         }
@@ -202,9 +198,7 @@ public class PartyCommand implements CommandExecutor {
                 }
                 else if (args[0].equalsIgnoreCase("owner")) {
                     if (party.getLeader().equals(playerName)) {
-                        List<String> members = party.getMembers();
-
-                        if (!members.contains(args[1])) {
+                        if (!party.getMembers().contains(args[1])) {
                             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
                             return true;
                         }
