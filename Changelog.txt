@@ -19,6 +19,7 @@ Version 1.3.09
  = Fixed possible NPE when a projectile is shot by a dispenser or doesn't have any shooter
  = Fixed issue with NoCheatPlus and Serrated Strikes / Skull Splitter (fight.noswing)
  = Fixed bug where you could receive Archery XP from Potions
+ = Fixed bug where Chunklets for the < 64 y coordinates would not be properly loaded
  = Fixed bug with duping blocks via piston pushing
  = Fixed bug with falling sand/gravel not being tracked
  = Fixed bug with Tree Feller not working with custom axes
@@ -29,6 +30,7 @@ Version 1.3.09
  ! API methods can now only be used in a static way
  ! Changed Spout settings to be in their own config file (spout.yml)
  ! Changed file format for parties (parties.yml), previous files are no longer used
+ ! Changed mcMMO to inform on corrupt Chunklets and make new ones
 
 Version 1.3.08
  + Added more notifications about Vampirism and Hardcore mode on player death
