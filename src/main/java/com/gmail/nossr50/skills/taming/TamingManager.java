@@ -1,9 +1,13 @@
 package com.gmail.nossr50.skills.taming;
 
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageEvent;
-
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Permissions;
@@ -14,12 +18,14 @@ public class TamingManager {
     private PlayerProfile profile;
     private int skillLevel;
     private Permissions permissionsInstance;
+    private Config configInstance;
 
     public TamingManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
         this.skillLevel = profile.getSkillLevel(SkillType.TAMING);
-        this.permissionsInstance = Permissions.getInstance();
+        this.permissionsInstance =  Permissions.getInstance();
+        this.configInstance = Config.getInstance();
     }
 
     /**
@@ -75,6 +81,138 @@ public class TamingManager {
             eventHandler.modifyEventDamage();
             eventHandler.applyBleed();
             eventHandler.sendAbilityMessage();
+        }
+    }
+
+    /**
+     * Prevent damage to wolves based on various skills.
+     *
+     * @param event The event to modify
+     */
+    public void preventDamage(EntityDamageEvent event) {
+        DamageCause cause = event.getCause();
+
+        switch (cause) {
+        case CONTACT:
+        case LAVA:
+        case FIRE:
+        case FALL:
+            environmentallyAware(event, cause);
+            break;
+
+        case FIRE_TICK:
+        case ENTITY_ATTACK:
+        case PROJECTILE:
+            thickFur(event, cause);
+            break;
+
+        case ENTITY_EXPLOSION:
+        case BLOCK_EXPLOSION:
+            shockProof(event);
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    /**
+     * Summon an ocelot to your side.
+     */
+    public void summonOcelot() {
+        callOfTheWild(EntityType.OCELOT, configInstance.getTamingCOTWOcelotCost());
+    }
+
+    /**
+     * Summon a wolf to your side.
+     */
+    public void summonWolf() {
+        callOfTheWild(EntityType.WOLF, configInstance.getTamingCOTWWolfCost());
+    }
+
+    public void beastLore(LivingEntity livingEntity) {
+        if (!permissionsInstance.beastLore(player)) {
+            return;
+        }
+
+        BeastLoreEventHandler eventHandler = new BeastLoreEventHandler(player, livingEntity);
+
+        eventHandler.sendInspectMessage();
+    }
+
+    private void callOfTheWild(EntityType type, int summonAmount) {
+        if (!permissionsInstance.callOfTheWild(player)) {
+            return;
+        }
+
+        CallOfTheWildEventHandler eventHandler = new CallOfTheWildEventHandler(player, type, summonAmount);
+
+        ItemStack inHand = eventHandler.inHand;
+        int inHandAmount = inHand.getAmount();
+
+        if (inHandAmount < summonAmount) {
+            eventHandler.sendInsufficientAmountMessage();
+            return;
+        }
+        else {
+            if (eventHandler.nearbyEntityExists()) {
+                eventHandler.sendFailureMessage();
+            }
+            else {
+                eventHandler.spawnCreature();
+                eventHandler.processResourceCost();
+                eventHandler.sendSuccessMessage();
+            }
+        }
+    }
+
+    private void environmentallyAware(EntityDamageEvent event, DamageCause cause) {
+        if (!permissionsInstance.environmentallyAware(player)) {
+            return;
+        }
+
+        if (skillLevel >= Taming.ENVIRONMENTALLY_AWARE_ACTIVATION_LEVEL) {
+            EnvironmentallyAwareEventHandler eventHandler = new EnvironmentallyAwareEventHandler(this, event);
+
+            switch (cause) {
+            case CONTACT:
+            case FIRE:
+            case LAVA:
+                eventHandler.teleportWolf();
+                eventHandler.sendAbilityMessage();
+                break;
+
+            case FALL:
+                eventHandler.cancelEvent();
+                break;
+
+            default:
+                break;
+            }
+        }
+    }
+
+    private void thickFur(EntityDamageEvent event, DamageCause cause) {
+        if (!permissionsInstance.thickFur(player)) {
+            return;
+        }
+
+        if (skillLevel >= Taming.THICK_FUR_ACTIVATION_LEVEL) {
+           ThickFurEventHandler eventHandler = new ThickFurEventHandler(event, cause);
+
+           eventHandler.modifyEventDamage();
+        }
+    }
+
+    private void shockProof(EntityDamageEvent event) {
+        if (!permissionsInstance.shockProof(player)) {
+            return;
+        }
+
+        if (skillLevel >= Taming.SHOCK_PROOF_ACTIVATION_LEVEL) {
+            ShockProofEventHandler eventHandler = new ShockProofEventHandler(event);
+
+            eventHandler.modifyEventDamage();
         }
     }
 

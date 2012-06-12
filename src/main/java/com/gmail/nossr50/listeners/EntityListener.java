@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Tameable;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -35,7 +36,7 @@ import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.combat.Archery;
 import com.gmail.nossr50.skills.gathering.BlastMining;
-import com.gmail.nossr50.skills.taming.Taming;
+import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -142,9 +143,11 @@ public class EntityListener implements Listener {
             }
         } else if (lEntity instanceof Tameable) {
             Tameable pet = (Tameable) lEntity;
+            AnimalTamer owner = pet.getOwner();
 
-            if ((!Misc.isInvincible(lEntity, event)) && pet.isTamed() && (pet.getOwner() instanceof Player)) {
-                Taming.preventDamage(event);
+            if ((!Misc.isInvincible(lEntity, event)) && pet.isTamed() && (owner instanceof Player) && pet instanceof Wolf) {
+                TamingManager tamingManager = new TamingManager((Player) owner);
+                tamingManager.preventDamage(event);
             }
         }
     }

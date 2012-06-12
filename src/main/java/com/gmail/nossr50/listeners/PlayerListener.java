@@ -3,7 +3,6 @@ package com.gmail.nossr50.listeners;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,7 +35,7 @@ import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.gathering.BlastMining;
 import com.gmail.nossr50.skills.gathering.Fishing;
 import com.gmail.nossr50.skills.gathering.Herbalism;
-import com.gmail.nossr50.skills.taming.Taming;
+import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Item;
@@ -291,12 +290,16 @@ public class PlayerListener implements Listener {
         case LEFT_CLICK_BLOCK:
 
             /* CALL OF THE WILD CHECKS */
-            if (player.isSneaking() && Permissions.getInstance().taming(player)) {
-                if (inHand.getType().equals(Material.RAW_FISH)) {
-                    Taming.animalSummon(EntityType.OCELOT, player, plugin);
+            if (player.isSneaking()) {
+                Material type = inHand.getType();
+
+                if (type == Material.RAW_FISH) {
+                    TamingManager tamingManager = new TamingManager(player);
+                    tamingManager.summonOcelot();
                 }
-                else if (inHand.getType().equals(Material.BONE)) {
-                    Taming.animalSummon(EntityType.WOLF, player, plugin);
+                else if (type == Material.BONE) {
+                    TamingManager tamingManager = new TamingManager(player);
+                    tamingManager.summonWolf();
                 }
             }
 

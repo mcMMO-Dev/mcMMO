@@ -34,7 +34,6 @@ import com.gmail.nossr50.skills.combat.Archery;
 import com.gmail.nossr50.skills.combat.Axes;
 import com.gmail.nossr50.skills.combat.Swords;
 import com.gmail.nossr50.skills.combat.Unarmed;
-import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 
 public class Combat {
@@ -146,8 +145,10 @@ public class Combat {
 
                 startGainXp(attacker, PPa, target, SkillType.UNARMED);
             }
-            else if (itemInHand.getType().equals(Material.BONE) && permInstance.beastLore(attacker)) {
-                Taming.beastLore(event, target, attacker);
+            else if (itemInHand.getType() == Material.BONE && target instanceof Tameable) {
+                TamingManager tamingManager = new TamingManager(attacker);
+                tamingManager.beastLore(target);
+                event.setCancelled(true);
             }
         }
         else if (damager instanceof Wolf) {
