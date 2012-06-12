@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.acrobatics;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -48,7 +47,7 @@ public class AcrobaticsManager {
      *
      * @param event The event to check
      */
-    public void dodgeCheck(EntityDamageByEntityEvent event) {
+    public void dodgeCheck(EntityDamageEvent event) {
         if (!permHandler.canDodge()) {
             return;
         }
