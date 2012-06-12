@@ -53,7 +53,6 @@ public class PlayerProfile {
     private int respawnATS;
 
     /* mySQL STUFF */
-    private int lastlogin;
     private int userid;
 
     HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and Levels
@@ -69,7 +68,6 @@ public class PlayerProfile {
         hud = SpoutConfig.getInstance().defaulthud;
         this.player = player;
         this.playerName = player.getName();
-        lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
 
         party = PartyManager.getInstance().getPlayerParty(playerName);
 
@@ -294,10 +292,10 @@ public class PlayerProfile {
     }
 
     public void save() {
-        Long timestamp = System.currentTimeMillis() / 1000; //Convert to seconds
+        Long timestamp = System.currentTimeMillis() / 1000;
+
         // if we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
-
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "huds SET hudtype = '" + hud.toString() + "' WHERE user_id = " + userid);
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + userid);
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "cooldowns SET "
@@ -469,10 +467,6 @@ public class PlayerProfile {
     /*
      * mySQL Stuff
      */
-
-    public int getLastLogin() {
-        return lastlogin;
-    }
 
     public int getMySQLuserId() {
         return userid;
