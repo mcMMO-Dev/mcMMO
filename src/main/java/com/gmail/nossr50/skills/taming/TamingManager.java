@@ -100,14 +100,15 @@ public class TamingManager {
             environmentallyAware(event, cause);
             break;
 
-        case FIRE_TICK:
         case ENTITY_ATTACK:
+        case FIRE_TICK:
         case PROJECTILE:
             thickFur(event, cause);
             break;
 
-        case ENTITY_EXPLOSION:
         case BLOCK_EXPLOSION:
+        case ENTITY_EXPLOSION:
+        case LIGHTNING:
             shockProof(event);
             break;
 
@@ -130,6 +131,11 @@ public class TamingManager {
         callOfTheWild(EntityType.WOLF, configInstance.getTamingCOTWWolfCost());
     }
 
+    /**
+     * Handle the Beast Lore ability.
+     *
+     * @param livingEntity The entity to examine
+     */
     public void beastLore(LivingEntity livingEntity) {
         if (!permissionsInstance.beastLore(player)) {
             return;
@@ -140,6 +146,12 @@ public class TamingManager {
         eventHandler.sendInspectMessage();
     }
 
+    /**
+     * Handle the Call of the Wild ability.
+     *
+     * @param type The type of entity to summon.
+     * @param summonAmount The amount of material needed to summon the entity
+     */
     private void callOfTheWild(EntityType type, int summonAmount) {
         if (!permissionsInstance.callOfTheWild(player)) {
             return;
@@ -166,6 +178,12 @@ public class TamingManager {
         }
     }
 
+    /**
+     * Handle the Environmentally Aware ability.
+     *
+     * @param event The event to modify
+     * @param cause The damage cause of the event
+     */
     private void environmentallyAware(EntityDamageEvent event, DamageCause cause) {
         if (!permissionsInstance.environmentallyAware(player)) {
             return;
@@ -192,6 +210,12 @@ public class TamingManager {
         }
     }
 
+    /**
+     * Handle the Thick Fur ability.
+     *
+     * @param event The event to modify
+     * @param cause The damage cause of the event
+     */
     private void thickFur(EntityDamageEvent event, DamageCause cause) {
         if (!permissionsInstance.thickFur(player)) {
             return;
@@ -204,6 +228,11 @@ public class TamingManager {
         }
     }
 
+    /**
+     * Handle the Shock Proof ability.
+     *
+     * @param event The event to modify
+     */
     private void shockProof(EntityDamageEvent event) {
         if (!permissionsInstance.shockProof(player)) {
             return;
