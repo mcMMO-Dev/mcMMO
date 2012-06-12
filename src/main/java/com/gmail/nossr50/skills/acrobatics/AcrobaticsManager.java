@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import java.util.Random;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -11,8 +9,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Users;
 
 public class AcrobaticsManager {
-    private Random random = new Random();
-
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
@@ -37,13 +33,13 @@ public class AcrobaticsManager {
 
         RollEventHandler eventHandler = new RollEventHandler(this, event);
 
-        if (random.nextInt(1000) <= eventHandler.getSkillModifier() && !eventHandler.isFatal(eventHandler.getModifiedDamage())) {
+        if (Acrobatics.getRandom().nextInt(1000) <= eventHandler.skillModifier && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
-            eventHandler.processRollXPGain();
+            eventHandler.processXPGain(eventHandler.damage * Acrobatics.ROLL_XP_MODIFIER);
         }
         else if (!eventHandler.isFatal(event.getDamage())){
-            eventHandler.processFallXPGain();
+            eventHandler.processXPGain(eventHandler.damage * Acrobatics.FALL_XP_MODIFIER);
         }
     }
 
@@ -59,10 +55,10 @@ public class AcrobaticsManager {
 
         DodgeEventHandler eventHandler = new DodgeEventHandler(this, event);
 
-        if (random.nextInt(4000) <= eventHandler.getSkillModifier()) {
+        if (Acrobatics.getRandom().nextInt(4000) <= eventHandler.skillModifier && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
-            eventHandler.processXP();
+            eventHandler.processXPGain(eventHandler.damage * Acrobatics.DODGE_XP_MODIFIER);
         }
     }
 
