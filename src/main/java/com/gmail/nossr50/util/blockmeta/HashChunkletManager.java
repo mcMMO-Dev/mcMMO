@@ -229,7 +229,7 @@ public class HashChunkletManager implements ChunkletManager {
         } catch (IOException ex) {
             if (ex instanceof EOFException) {
                 // EOF should only happen on Chunklets that somehow have been corrupted.
-                mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read, data in this are will be lost.");
+                mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read, data in this area will be lost.");
                 return ChunkletStoreFactory.getChunkletStore();
             }
             ex.printStackTrace();
