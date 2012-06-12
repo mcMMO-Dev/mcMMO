@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -230,6 +231,10 @@ public class HashChunkletManager implements ChunkletManager {
             if (ex instanceof EOFException) {
                 // EOF should only happen on Chunklets that somehow have been corrupted.
                 mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read, data in this area will be lost.");
+                return ChunkletStoreFactory.getChunkletStore();
+            } else if (ex instanceof StreamCorruptedException) {
+                // StreamCorrupted happens when the chunklet is no good.
+                mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " is corrupted, data in this area will be lost.");
                 return ChunkletStoreFactory.getChunkletStore();
             }
             ex.printStackTrace();
