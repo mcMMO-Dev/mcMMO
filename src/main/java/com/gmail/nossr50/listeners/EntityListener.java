@@ -137,7 +137,7 @@ public class EntityListener implements Listener {
                 }
 
                 if (event.getDamage() >= 1) {
-                    PP.setRecentlyHurt(System.currentTimeMillis());
+                    PP.actualizeRecentlyHurt();
                 }
             }
         } else if (lEntity instanceof Tameable) {

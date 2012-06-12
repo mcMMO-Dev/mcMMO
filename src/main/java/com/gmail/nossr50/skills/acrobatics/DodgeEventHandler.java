@@ -38,8 +38,6 @@ public class DodgeEventHandler extends AcrobaticsEventHandler{
     }
 
     protected void processXPGain(int xp) {
-        if (manager.getPermissionsHandler().canGainXP()) {
-            Skills.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xp);
-        }
+        Skills.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xp);
     }
 }

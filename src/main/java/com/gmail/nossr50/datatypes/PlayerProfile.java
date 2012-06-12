@@ -26,7 +26,7 @@ public class PlayerProfile {
 
     /* HUD */
     private HUDType hud;
-    private int xpbarinc = 0;
+    private int xpbarinc;
     private SkillType lastgained;
     private SkillType skillLock;
 
@@ -35,16 +35,16 @@ public class PlayerProfile {
     private Party invite;
 
     /* Toggles */
-    private boolean loaded = false;
-    private boolean partyhud = true, spoutcraft = false, xpbarlocked = false;
-    private boolean placedAnvil = false;
-    private boolean partyChatMode = false, adminChatMode = false;
-    private boolean godMode = false;
+    private boolean loaded;
+    private boolean partyhud = true, spoutcraft, xpbarlocked;
+    private boolean placedAnvil;
+    private boolean partyChatMode, adminChatMode;
+    private boolean godMode;
     private boolean greenTerraMode, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, skullSplitterMode, berserkMode;
     private boolean greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true,
                     superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true;
-    private boolean hoePreparationMode = false, shovelPreparationMode = false, swordsPreparationMode = false, fistsPreparationMode = false,
-                    pickaxePreparationMode = false, axePreparationMode = false;
+    private boolean hoePreparationMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode,
+                    pickaxePreparationMode, axePreparationMode;
     private boolean abilityuse = true;
 
     /* Timestamps */
@@ -864,12 +864,16 @@ public class PlayerProfile {
      * Recently Hurt
      */
 
-    public long getRecentlyHurt() {
+    public int getRecentlyHurt() {
         return recentlyHurt;
     }
 
-    public void setRecentlyHurt(long newvalue) {
-        recentlyHurt = (int) (newvalue / 1000);
+    public void setRecentlyHurt(int value) {
+        recentlyHurt = value;
+    }
+
+    public void actualizeRecentlyHurt() {
+        respawnATS = (int) (System.currentTimeMillis() / 1000);
     }
 
     /*
@@ -914,7 +918,7 @@ public class PlayerProfile {
         return respawnATS;
     }
 
-    public void ActualizeRespawnATS() {
+    public void actualizeRespawnATS() {
         respawnATS = (int) (System.currentTimeMillis() / 1000);
     }
 

@@ -38,7 +38,7 @@ public class AcrobaticsManager {
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.ROLL_XP_MODIFIER);
         }
-        else if (!eventHandler.isFatal(event.getDamage())){
+        else if (!eventHandler.isFatal(event.getDamage()) && permHandler.canGainXP()){
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.FALL_XP_MODIFIER);
         }
     }
@@ -59,7 +59,7 @@ public class AcrobaticsManager {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
 
-            if (System.currentTimeMillis() >= profile.getRespawnATS() + 5) {
+            if (System.currentTimeMillis() >= profile.getRespawnATS() + 5 && permHandler.canGainXP()) {
                 eventHandler.processXPGain(eventHandler.damage * Acrobatics.DODGE_XP_MODIFIER);
             }
         }

@@ -8,13 +8,11 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Skills;
 
 public class RollEventHandler extends AcrobaticsEventHandler{
-    private AcrobaticsPermissionsHandler permHandler;
     private boolean isGraceful;
     private int damageThreshold;
 
     protected RollEventHandler(AcrobaticsManager manager, EntityDamageEvent event) {
         super(manager, event);
-        this.permHandler = manager.getPermissionsHandler();
 
         isGracefulRoll();
         calculateSkillModifier();
@@ -63,16 +61,14 @@ public class RollEventHandler extends AcrobaticsEventHandler{
 
 
     protected void processXPGain(int xpGain) {
-        if (permHandler.canGainXP()) {
-            Skills.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xpGain);
-        }
+        Skills.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xpGain);
     }
 
     /**
      * Check if this is a graceful roll.
      */
     private void isGracefulRoll() {
-        if (permHandler.canGracefulRoll()) {
+        if (manager.getPermissionsHandler().canGracefulRoll()) {
             this.isGraceful = player.isSneaking();
         }
         else {
