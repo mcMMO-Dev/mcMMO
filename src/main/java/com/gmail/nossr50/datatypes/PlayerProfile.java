@@ -48,7 +48,6 @@ public class PlayerProfile {
     private boolean abilityuse = true;
 
     /* Timestamps */
-    private int xpGainATS;
     private int recentlyHurt;
     private int respawnATS;
 
@@ -977,11 +976,10 @@ public class PlayerProfile {
      * @param newvalue The amount of XP to add
      */
     public void addXP(SkillType skillType, int newValue) {
-        if (System.currentTimeMillis() < ((xpGainATS * 1000) + 250) || player.getGameMode().equals(GameMode.CREATIVE)) {
+        if (player.getGameMode().equals(GameMode.CREATIVE)) {
             return;
         }
 
-        xpGainATS = (int) (System.currentTimeMillis() / 1000); //Setup a timestamp of when xp was given
         double bonusModifier = 0;
 
         if (inParty()) {
