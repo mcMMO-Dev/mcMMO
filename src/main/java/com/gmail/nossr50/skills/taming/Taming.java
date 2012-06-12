@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills.combat;
+package com.gmail.nossr50.skills.taming;
 
 import java.util.Random;
 
@@ -20,83 +20,24 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Taming {
+    public static final int FAST_FOOD_SERVICE_ACTIVATION_CHANCE = 50;
+    public static final int FAST_FOOD_SERVICE_ACTIVATION_LEVEL = 50;
+
+    public static final int GORE_BLEED_TICKS = 2;
+    public static final int GORE_MAX_BONUS_LEVEL = 1000;
+    public static final int GORE_MULTIPLIER = 2;
+
+    public static final int SHARPENED_CLAWS_ACTIVATION_LEVEL = 750;
+    public static final int SHARPENED_CLAWS_BONUS = 2;
+
     private static Random random = new Random();
-
-    /**
-     * Apply the Fast Food Service ability.
-     *
-     * @param PPo The PlayerProfile of the wolf's owner
-     * @param theWolf The wolf using the ability
-     * @param damage The damage being absorbed by the wolf
-     */
-    public static void fastFoodService (PlayerProfile PPo, Wolf theWolf, int damage) {
-        final int SKILL_ACTIVATION_LEVEL = 50;
-        final int ACTIVATION_CHANCE = 50;
-
-        int health = theWolf.getHealth();
-        int maxHealth = theWolf.getMaxHealth();
-
-        if (PPo.getSkillLevel(SkillType.TAMING) >= SKILL_ACTIVATION_LEVEL) {
-            if (health < maxHealth) {
-                if (random.nextInt(100) < ACTIVATION_CHANCE) {
-                    if (health + damage <= maxHealth) {
-                        theWolf.setHealth(health + damage);
-                    }
-                    else {
-                        theWolf.setHealth(maxHealth);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Apply the Sharpened Claws ability.
-     *
-     * @param PPo The PlayerProfile of the wolf's owner
-     * @param event The event to modify
-     */
-    public static void sharpenedClaws(PlayerProfile PPo, EntityDamageEvent event) {
-        final int SKILL_ACTIVATION_LEVEL = 750;
-        final int SHARPENED_CLAWS_BONUS = 2;
-
-        if (PPo.getSkillLevel(SkillType.TAMING) >= SKILL_ACTIVATION_LEVEL) {
-            event.setDamage(event.getDamage() + SHARPENED_CLAWS_BONUS);
-        }
-    }
-
-    /**
-     * Apply the Gore ability.
-     *
-     * @param PPo The PlayerProfile of the wolf's owner
-     * @param event The event to modify
-     * @param master The wolf's master
-     */
-    public static void gore(PlayerProfile PPo, EntityDamageEvent event, Player master) {
-        final int GORE_MULTIPLIER = 2;
-
-        if (random.nextInt(1000) <= PPo.getSkillLevel(SkillType.TAMING)) {
-            Entity entity = event.getEntity();
-            event.setDamage(event.getDamage() * GORE_MULTIPLIER);
-
-            if (entity instanceof Player) {
-                ((Player) entity).sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
-            }
-
-            BleedTimer.add((LivingEntity) entity, 2);
-
-            master.sendMessage(LocaleLoader.getString("Combat.Gore"));
-        }
-    }
 
     /**
      * Get the name of a tameable animal's owner.
@@ -283,5 +224,9 @@ public class Taming {
             message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", new Object[] {health, target.getMaxHealth()}));
             inspector.sendMessage(message);
         }
+    }
+
+    public static Random getRandom() {
+        return random;
     }
 }

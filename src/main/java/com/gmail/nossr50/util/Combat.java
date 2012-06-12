@@ -33,8 +33,9 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.combat.Archery;
 import com.gmail.nossr50.skills.combat.Axes;
 import com.gmail.nossr50.skills.combat.Swords;
-import com.gmail.nossr50.skills.combat.Taming;
 import com.gmail.nossr50.skills.combat.Unarmed;
+import com.gmail.nossr50.skills.taming.Taming;
+import com.gmail.nossr50.skills.taming.TamingManager;
 
 public class Combat {
     private static Config configInstance = Config.getInstance();
@@ -154,7 +155,6 @@ public class Combat {
 
             if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
                 Player master = (Player) wolf.getOwner();
-                PlayerProfile PPo = Users.getProfile(master);
 
                 if (!configInstance.getTamingPVP()) {
                     if (targetIsPlayer || targetIsTamedPet) {
@@ -168,21 +168,13 @@ public class Combat {
                     }
                 }
 
-                if (permInstance.fastFoodService(master)) {
-                    Taming.fastFoodService(PPo, wolf, event.getDamage());
-                }
+                TamingManager tamingManager = new TamingManager(master);
 
-                if (permInstance.sharpenedClaws(master)) {
-                    Taming.sharpenedClaws(PPo, event);
-                }
+                tamingManager.fastFoodService(wolf, event.getDamage());
+                tamingManager.sharpenedClaws(event);
+                tamingManager.gore(event);
 
-                if (permInstance.gore(master)) {
-                    Taming.gore(PPo, event, master);
-                }
-
-                if (permInstance.taming(master)) {
-                    startGainXp(master, PPo, target, SkillType.TAMING);
-                }
+                startGainXp(master, Users.getProfile(master), target, SkillType.TAMING);
             }
         }
         else if (damager instanceof Arrow) {
