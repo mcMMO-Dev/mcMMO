@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.acrobatics;
 
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
@@ -38,6 +39,10 @@ public class DodgeEventHandler extends AcrobaticsEventHandler{
     }
 
     protected void processXPGain(int xp) {
-        Skills.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xp);
+        PlayerProfile profile = manager.getProfile();
+
+        if (System.currentTimeMillis() >= profile.getRespawnATS() + 5) {
+            Skills.xpProcessing(player, profile, SkillType.ACROBATICS, xp);
+        }
     }
 }

@@ -460,7 +460,9 @@ public class Skills {
      * @param xp the amount of XP to gain
      */
     public static void xpProcessing(Player player, PlayerProfile profile, SkillType type, int xp) {
-        profile.addXP(type, xp);
-        xpCheckSkill(type, player, profile);
+        if (type.getPermissions(player)) {
+            profile.addXP(type, xp);
+            xpCheckSkill(type, player, profile);
+        }
     }
 }

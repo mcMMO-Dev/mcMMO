@@ -10,13 +10,11 @@ public class AcrobaticsPermissionsHandler {
     private boolean canDodge;
     private boolean canGracefulRoll;
     private boolean canRoll;
-    private boolean canGainXP;
 
     protected AcrobaticsPermissionsHandler (Player player) {
         this.canDodge = permInstance.dodge(player);
         this.canGracefulRoll = permInstance.gracefulRoll(player);
         this.canRoll = permInstance.roll(player);
-        this.canGainXP = permInstance.acrobatics(player);
     }
 
     protected boolean canDodge() {
@@ -29,10 +27,6 @@ public class AcrobaticsPermissionsHandler {
 
     protected boolean canRoll() {
         return canRoll;
-    }
-
-    protected boolean canGainXP() {
-        return canGainXP;
     }
 
     protected boolean hasRollPermissions() {
