@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.taming;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -68,7 +69,14 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void processResourceCost() {
-        player.getItemInHand().setAmount(inHand.getAmount() - summonAmount);
+        int newAmount = inHand.getAmount() - summonAmount;
+
+        if (newAmount == 0) {
+            player.setItemInHand(new ItemStack(Material.AIR));
+        }
+        else {
+            player.getItemInHand().setAmount(inHand.getAmount() - summonAmount);
+        }
     }
 
     protected void sendSuccessMessage() {
