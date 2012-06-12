@@ -8,7 +8,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Skills;
 
-public class DodgeEventHandler extends AcrobaticsEventHandler{
+public class DodgeEventHandler extends AcrobaticsEventHandler {
     protected DodgeEventHandler(AcrobaticsManager manager, EntityDamageByEntityEvent event) {
         super(manager, event);
 

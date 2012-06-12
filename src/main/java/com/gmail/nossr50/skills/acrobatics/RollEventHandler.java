@@ -7,7 +7,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Skills;
 
-public class RollEventHandler extends AcrobaticsEventHandler{
+public class RollEventHandler extends AcrobaticsEventHandler {
     private boolean isGraceful;
     private int damageThreshold;
 
