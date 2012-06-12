@@ -27,7 +27,7 @@ public class HashChunkletManager implements ChunkletManager {
         File czDir = new File(cxDir, "" + cz);
         if(!czDir.exists()) return;
 
-        for(int y = 1; y <= 4; y++) {
+        for(int y = 0; y < 4; y++) {
             File yFile = new File(czDir, "" + y);
             if(!yFile.exists()) {
                 continue;
@@ -44,7 +44,7 @@ public class HashChunkletManager implements ChunkletManager {
     public void chunkUnloaded(int cx, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
 
-        for(int y = 1; y <= 4; y++) {
+        for(int y = 0; y < 4; y++) {
             if(store.containsKey(world.getName() + "," + cx + "," + cz + "," + y)) {
                 File cxDir = new File(dataDir, "" + cx);
                 if(!cxDir.exists()) cxDir.mkdir();
