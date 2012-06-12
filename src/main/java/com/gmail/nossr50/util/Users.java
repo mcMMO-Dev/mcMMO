@@ -56,7 +56,7 @@ public class Users {
         }
 
         //New player, or already removed from the list
-        PlayerProfile playerProfile = new PlayerProfile(player, true);
+        PlayerProfile playerProfile = new PlayerProfile(player, playerName, true);
         
         profiles.add(playerProfile);
         return playerProfile;
@@ -76,29 +76,6 @@ public class Users {
      */
     public static List<PlayerProfile> getProfiles() {
         return profiles;
-    }
-
-    /**
-     * Remove a user from the database.
-     *
-     * @param player The player to remove
-     */
-    public static void removeUser(OfflinePlayer player) {
-        removeUser(player.getName());
-    }
-
-    /**
-     * Remove a user from the DB by name.
-     *
-     * @param playerName The name of the player to remove
-     */
-    public static void removeUser(String playerName) {
-        for (Iterator<PlayerProfile> it = profiles.iterator() ; it.hasNext() ; ) {
-            if (it.next().getPlayerName().equals(playerName)) {
-                it.remove();
-                return;
-            }
-        }
     }
 
     /**

@@ -396,7 +396,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (configInstance.getCommandMmoeditEnabled()) {
-            getCommand("mmoedit").setExecutor(new MmoeditCommand(this));
+            getCommand("mmoedit").setExecutor(new MmoeditCommand());
         }
 
         if (configInstance.getCommandInspectEnabled()) {

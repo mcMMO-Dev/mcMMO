@@ -7,7 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -17,16 +16,10 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class MmoeditCommand implements CommandExecutor {
-    private final mcMMO plugin;
-
-    public MmoeditCommand (mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer modifiedPlayer;
-        PlayerProfile PP;
+        PlayerProfile playerProfile;
         int newValue;
         SkillType skill;
         String skillName;
@@ -48,7 +41,7 @@ public class MmoeditCommand implements CommandExecutor {
                     modifiedPlayer = (Player) sender;
                     newValue = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
-                    PP = Users.getProfile(modifiedPlayer);
+                    playerProfile = Users.getProfile(modifiedPlayer);
 
                     if (skill.equals(SkillType.ALL)) {
                         skillName = "all skills";
@@ -57,7 +50,7 @@ public class MmoeditCommand implements CommandExecutor {
                         skillName = Misc.getCapitalized(skill.toString());
                     }
 
-                    PP.modifySkill(skill, newValue);
+                    playerProfile.modifySkill(skill, newValue);
                     sender.sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
                 }
                 else {
@@ -71,46 +64,47 @@ public class MmoeditCommand implements CommandExecutor {
             return true;
 
         case 3:
-            modifiedPlayer = plugin.getServer().getOfflinePlayer(args[0]);
-            String playerName = modifiedPlayer.getName();
-            PP = Users.getProfile(modifiedPlayer);
-
-            if (!PP.isLoaded()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+            if (!Misc.isInt(args[2])) {
+                sender.sendMessage(usage);
                 return true;
             }
 
-            if (!Skills.isSkill(args[1])) {
+            skill = Skills.getSkillType(args[1]);
+
+            if (skill == null) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
 
-            if (Misc.isInt(args[2])) {
-                newValue = Integer.valueOf(args[2]);
-                skill = Skills.getSkillType(args[1]);
-                String message;
+            if (skill.equals(SkillType.ALL)) {
+                skillName = "all skills";
+            }
+            else {
+                skillName = Misc.getCapitalized(skill.toString());
+            }
 
-                Users.getProfile(modifiedPlayer).modifySkill(skill, newValue);
+            newValue = Integer.valueOf(args[2]);
+            playerProfile = Users.getProfile(args[0]);
 
-                if (skill.equals(SkillType.ALL)) {
-                    skillName = "all skills";
-                    message = ChatColor.RED + "All skills have been modified for " + playerName + "."; //TODO: Use locale
-                }
-                else {
-                    skillName = Misc.getCapitalized(skill.toString());
-                    message = ChatColor.RED + skillName + " has been modified for " + playerName + "."; //TODO: Use locale
-                }
+            if (playerProfile != null) {
+                Player player = playerProfile.getPlayer();
 
-                sender.sendMessage(message);
-
-                if (modifiedPlayer.isOnline()) {
-                    ((Player) modifiedPlayer).sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
+                if (player.isOnline()) {
+                    player.sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
                 }
             }
             else {
-                sender.sendMessage(usage);
+                playerProfile = new PlayerProfile(null, args[0], false);
+
+                if (!playerProfile.isLoaded()) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                    return true;
+                }
             }
 
+            sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + args[0] + "."); //TODO: Use locale
+            playerProfile.modifySkill(skill, newValue);
+            playerProfile.save();
             return true;
 
         default:

@@ -63,10 +63,10 @@ public class PlayerProfile {
     private String playerName;
     private final static String location = mcMMO.usersFile;
 
-    public PlayerProfile(Player player, boolean addNew) {
+    public PlayerProfile(Player player, String playerName, boolean addNew) {
         hud = SpoutConfig.getInstance().defaulthud;
         this.player = player;
-        this.playerName = player.getName();
+        this.playerName = playerName;
 
         party = PartyManager.getInstance().getPlayerParty(playerName);
 
@@ -109,7 +109,7 @@ public class PlayerProfile {
     public boolean loadMySQL() {
         userid = mcMMO.database.getInt("SELECT id FROM " + Config.getInstance().getMySQLTablePrefix() + "users WHERE user = '" + playerName + "'");
 
-        if (userid <= 0) {
+        if (userid == 0) {
             return false;
         }
         else {
@@ -1067,8 +1067,6 @@ public class PlayerProfile {
             skills.put(skillType, newValue);
             skillsXp.put(skillType, 0);
         }
-
-        save();
     }
 
     /**
