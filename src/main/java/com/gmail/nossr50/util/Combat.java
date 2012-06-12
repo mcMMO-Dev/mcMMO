@@ -462,7 +462,7 @@ public class Combat {
 
             Player defender = (Player) target;
 
-            if (defender.getHealth() >= 1) {
+            if (System.currentTimeMillis() >= Users.getProfile(defender).getRespawnATS() + 5) {
                 baseXP = 20 * configInstance.getPlayerVersusPlayerXP();
             }
         }

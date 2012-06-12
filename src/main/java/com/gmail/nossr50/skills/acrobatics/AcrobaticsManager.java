@@ -58,7 +58,10 @@ public class AcrobaticsManager {
         if (Acrobatics.getRandom().nextInt(4000) <= eventHandler.skillModifier && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
-            eventHandler.processXPGain(eventHandler.damage * Acrobatics.DODGE_XP_MODIFIER);
+
+            if (System.currentTimeMillis() >= profile.getRespawnATS() + 5) {
+                eventHandler.processXPGain(eventHandler.damage * Acrobatics.DODGE_XP_MODIFIER);
+            }
         }
     }
 

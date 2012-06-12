@@ -48,12 +48,13 @@ public class PlayerProfile {
     private boolean abilityuse = true;
 
     /* Timestamps */
-    private int xpGainATS = 0;
-    private int recentlyHurt = 0;
+    private int xpGainATS;
+    private int recentlyHurt;
+    private int respawnATS;
 
     /* mySQL STUFF */
-    private int lastlogin = 0;
-    private int userid = 0;
+    private int lastlogin;
+    private int userid;
 
     HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and Levels
     HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and XP
@@ -68,6 +69,7 @@ public class PlayerProfile {
         hud = SpoutConfig.getInstance().defaulthud;
         this.player = player;
         this.playerName = player.getName();
+        lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
 
         party = PartyManager.getInstance().getPlayerParty(playerName);
 
@@ -92,8 +94,6 @@ public class PlayerProfile {
             addPlayer();
             loaded = true;
         }
-
-        lastlogin = ((Long) (System.currentTimeMillis() / 1000)).intValue();
     }
 
     public Player getPlayer() {
@@ -911,6 +911,18 @@ public class PlayerProfile {
         for (AbilityType x : skillsDATS.keySet()) {
             skillsDATS.put(x, 0);
         }
+    }
+
+    /*
+    * Exploit Prevention
+    */
+
+    public int getRespawnATS() {
+        return respawnATS;
+    }
+
+    public void ActualizeRespawnATS() {
+        respawnATS = (int) (System.currentTimeMillis() / 1000);
     }
 
     /*

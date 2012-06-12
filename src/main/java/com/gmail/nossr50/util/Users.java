@@ -40,8 +40,9 @@ public class Users {
      * Add a new user.
      *
      * @param player The player to create a user record for
+     * @return the player's profile
      */
-    public static void addUser(Player player) {
+    public static PlayerProfile addUser(Player player) {
         String playerName = player.getName();
 
         for (Iterator<PlayerProfile> it = profiles.iterator() ; it.hasNext() ; ) {
@@ -50,12 +51,15 @@ public class Users {
             if (playerProfile.getPlayerName().equals(playerName)) {
                 //The player object is different on each reconnection and must be updated
                 playerProfile.setPlayer(player);
-                return;
+                return playerProfile;
             }
         }
 
         //New player, or already removed from the list
-        profiles.add(new PlayerProfile(player, true));
+        PlayerProfile playerProfile = new PlayerProfile(player, true);
+        
+        profiles.add(playerProfile);
+        return playerProfile;
     }
 
     /**
