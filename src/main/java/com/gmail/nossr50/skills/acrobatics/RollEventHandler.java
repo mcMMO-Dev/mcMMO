@@ -18,8 +18,8 @@ public class RollEventHandler extends AcrobaticsEventHandler{
 
         isGracefulRoll();
         calculateSkillModifier();
-        calculateModifiedDamage();
         calculateDamageThreshold();
+        calculateModifiedDamage();
     }
 
     protected void calculateSkillModifier() {
