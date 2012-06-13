@@ -13,6 +13,7 @@ Version 1.3.09
  + Added API for plugins to add custom tools directly via Spout - repair / abilities do not work ATM
  + Added offline party members to the list displayed by /party
  + Added possibility to kick offline members from parties
+ = Fixed Vampirism not notifying the correct amount of stolen levels
  = Fixed bug with Acrobatics not saving you from deadly falls
  = Fixed /mcremove being applied only after a reload
  = Fixed Archery PVE disablement not working properly

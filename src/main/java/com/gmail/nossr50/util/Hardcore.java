@@ -55,7 +55,7 @@ public class Hardcore {
             if(newValue <= 0)
                 newValue = 1;
 
-            totalCount+=1;
+            totalCount += newValue;
 
             PPk.modifySkill(st, newValue+PPk.getSkillLevel(st));
             PPd.modifySkill(st, PPd.getSkillLevel(st)-newValue);
