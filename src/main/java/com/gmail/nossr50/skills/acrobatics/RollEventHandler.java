@@ -5,6 +5,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 
 public class RollEventHandler extends AcrobaticsEventHandler {
@@ -68,7 +69,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
      * Check if this is a graceful roll.
      */
     private void isGracefulRoll() {
-        if (manager.getPermissionsHandler().canGracefulRoll()) {
+        if (Permissions.getInstance().gracefulRoll(player)) {
             this.isGraceful = player.isSneaking();
         }
         else {

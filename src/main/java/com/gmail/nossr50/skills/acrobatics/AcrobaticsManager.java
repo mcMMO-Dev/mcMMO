@@ -5,19 +5,19 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class AcrobaticsManager {
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
-    private AcrobaticsPermissionsHandler permHandler;
+    private Permissions permissionInstance = Permissions.getInstance();
 
     public AcrobaticsManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
         this.skillLevel = profile.getSkillLevel(SkillType.ACROBATICS);
-        this.permHandler = new AcrobaticsPermissionsHandler(player);
     }
 
     /**
@@ -26,7 +26,7 @@ public class AcrobaticsManager {
      * @param event The event to check
      */
     public void rollCheck(EntityDamageEvent event) {
-        if (!permHandler.hasRollPermissions()) {
+        if (!permissionInstance.roll(player)) {
             return;
         }
 
@@ -48,7 +48,7 @@ public class AcrobaticsManager {
      * @param event The event to check
      */
     public void dodgeCheck(EntityDamageEvent event) {
-        if (!permHandler.canDodge()) {
+        if (!permissionInstance.dodge(player)) {
             return;
         }
 
@@ -71,9 +71,5 @@ public class AcrobaticsManager {
 
     protected int getSkillLevel() {
         return skillLevel;
-    }
-
-    protected AcrobaticsPermissionsHandler getPermissionsHandler() {
-        return permHandler;
     }
 }
