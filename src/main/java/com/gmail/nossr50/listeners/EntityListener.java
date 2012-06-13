@@ -34,7 +34,7 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
-import com.gmail.nossr50.skills.combat.Archery;
+import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.gathering.BlastMining;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.Combat;

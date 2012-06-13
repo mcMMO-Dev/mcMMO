@@ -30,7 +30,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.GainXp;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
-import com.gmail.nossr50.skills.combat.Archery;
+import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.combat.Axes;
 import com.gmail.nossr50.skills.combat.Swords;
 import com.gmail.nossr50.skills.combat.Unarmed;
@@ -274,17 +274,16 @@ public class Combat {
                 event.setDamage(damage + archeryBonus);
             }
 
-            if (target instanceof Player && permInstance.daze(shooter)) {
-                Archery.dazeCheck((Player) target, shooter, event);
+            ArcheryManager archeryManager = new ArcheryManager(shooter);
+
+            if (target instanceof Player) {
+                archeryManager.dazeCheck((Player) target, event);
             }
 
-            PlayerProfile PP = Users.getProfile(shooter);
-
-            if (permInstance.trackArrows(shooter)) {
-                Archery.trackArrows(target, PP);
-            }
+            archeryManager.trackArrows(target);
 
             if (target != shooter) {
+                PlayerProfile PP = Users.getProfile(shooter);
                 startGainXp(shooter, PP, target, SkillType.ARCHERY);
             }
         }
