@@ -1,9 +1,7 @@
 package com.gmail.nossr50.skills.archery;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -18,12 +16,12 @@ public class Archery {
 
     public static final int ARROW_TRACKING_MAX_BONUS_LEVEL = 1000;
 
+    public static final int BONUS_DAMAGE_INCREASE_LEVEL = 50;
+    public static final double BONUS_DAMAGE_INCREASE_PERCENT = 0.1D;
+    public static final double BONUS_DAMAGE_MAX_BONUS_PERCENTAGE = 2.0D;
+
     public static final int DAZE_MAX_BONUS_LEVEL = 1000;
     public static final int DAZE_MODIFIER = 4;
-
-//    protected static Set<Entry<Entity, Integer>> getEntitySet() {
-//        return arrowTracker.entrySet();
-//    }
 
     protected static boolean arrowTrackerContains(LivingEntity livingEntity) {
         return arrowTracker.containsKey(livingEntity);
@@ -43,14 +41,10 @@ public class Archery {
      * @param entity The entity hit by the arrows
      */
     public static void arrowRetrievalCheck(Entity entity) {
-        for (Iterator<Entry<LivingEntity, Integer>> it = arrowTracker.entrySet().iterator() ; it.hasNext() ; ) { //This is a wee bit confusing...
-            Entry<LivingEntity, Integer> entry = it.next();
+        Integer quantity = arrowTracker.remove(entity);
 
-            if (entry.getKey() == entity) { //Shouldn't we be using .equals() here?
-                Misc.dropItems(entity.getLocation(), new ItemStack(Material.ARROW), entry.getValue());
-                it.remove();
-                return;
-            }
+        if (quantity != null) {
+            Misc.dropItems(entity.getLocation(), new ItemStack(Material.ARROW), quantity);
         }
     }
 

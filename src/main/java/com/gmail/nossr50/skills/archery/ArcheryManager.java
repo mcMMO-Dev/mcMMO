@@ -1,19 +1,10 @@
 package com.gmail.nossr50.skills.archery;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
-
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -67,22 +58,23 @@ public class ArcheryManager {
         }
     }
 
-//    public void retrieveArrows() {
-//        if (!permissionsInstance.trackArrows(player)) {
-//            return;
-//        }
-//
-//        if ()
-//        for (Iterator<Map.Entry<Entity, Integer>> it = arrowTracker.entrySet().iterator() ; it.hasNext() ; ) { //This is a wee bit confusing...
-//            Entry<Entity, Integer> entry = it.next();
-//
-//            if (entry.getKey() == entity) { //Shouldn't we be using .equals() here?
-//                Misc.dropItems(entity.getLocation(), new ItemStack(Material.ARROW), entry.getValue());
-//                it.remove();
-//                return;
-//            }
-//        }
-//    }
+    /**
+     * Handle archery bonus damage.
+     *
+     * @param event The event to modify.
+     */
+    public void bonusDamage(EntityDamageEvent event) {
+        if (!permissionsInstance.archeryBonus(player)) {
+            return;
+        }
+
+        if (skillLevel >= Archery.BONUS_DAMAGE_INCREASE_LEVEL) {
+            BonusDamageEventHandler eventHandler = new BonusDamageEventHandler(this, event);
+
+            eventHandler.calculateDamageBonus();
+            eventHandler.modifyEventDamage();
+        }
+    }
 
     protected int getSkillLevel() {
         return skillLevel;

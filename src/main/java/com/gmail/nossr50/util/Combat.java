@@ -255,37 +255,19 @@ public class Combat {
             }
         }
 
-        if (permInstance.archery(shooter)) {
-            if (permInstance.archeryBonus(shooter)) {
-                /*Archery needs a damage bonus to be viable in PVP*/
-                int skillLvl = Users.getProfile(shooter).getSkillLevel(SkillType.ARCHERY);
-                double dmgBonusPercent = ((skillLvl / 50) * 0.1D);
+        ArcheryManager archeryManager = new ArcheryManager(shooter);
 
-                /* Cap maximum bonus at 200% */
-                if (dmgBonusPercent > 2) {
-                    dmgBonusPercent = 2;
-                }
+        archeryManager.bonusDamage(event);
 
-                /* Every 50 skill levels Archery gains 10% damage bonus, set that here */
-                //TODO: Work in progress for balancing out Archery, will work on it more later...
-                int damage = event.getDamage();
-                int archeryBonus = (int) (damage * dmgBonusPercent);
+        if (target instanceof Player) {
+            archeryManager.dazeCheck((Player) target, event);
+        }
 
-                event.setDamage(damage + archeryBonus);
-            }
+        archeryManager.trackArrows(target);
 
-            ArcheryManager archeryManager = new ArcheryManager(shooter);
-
-            if (target instanceof Player) {
-                archeryManager.dazeCheck((Player) target, event);
-            }
-
-            archeryManager.trackArrows(target);
-
-            if (target != shooter) {
-                PlayerProfile PP = Users.getProfile(shooter);
-                startGainXp(shooter, PP, target, SkillType.ARCHERY);
-            }
+        if (target != shooter) {
+            PlayerProfile PP = Users.getProfile(shooter);
+            startGainXp(shooter, PP, target, SkillType.ARCHERY);
         }
     }
 
