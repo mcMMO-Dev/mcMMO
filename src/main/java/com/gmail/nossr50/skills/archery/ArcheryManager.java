@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-
 public class ArcheryManager {
     private Player player;
     private PlayerProfile profile;
