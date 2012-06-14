@@ -430,11 +430,16 @@ public class Skills {
         case GIGA_DRILL_BREAKER:
         case SUPER_BREAKER:
         case LEAF_BLOWER:
+            if (!ability.blockCheck(block)) {
+                activate = false;
+                break;
+            }
+
             if (!Misc.blockBreakSimulate(block, player, true)) {
                 activate = false;
                 break;
             }
-            /* FALLS THROUGH */
+            break;
 
         case GREEN_TERRA:
             if (!ability.blockCheck(block)) {
