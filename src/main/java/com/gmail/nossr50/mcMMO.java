@@ -262,6 +262,19 @@ public class mcMMO extends JavaPlugin {
     }
 
     /**
+     * Get profile of the player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player player whose profile to get
+     * @return the PlayerProfile object
+     */
+    @Deprecated
+    public PlayerProfile getPlayerProfile(Player player) {
+        return Users.getProfile(player);
+    }
+
+    /**
      * Things to be run when the plugin is disabled.
      */
     @Override
