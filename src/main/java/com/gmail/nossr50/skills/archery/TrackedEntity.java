@@ -49,7 +49,7 @@ public class TrackedEntity {
             this.trackedEntity = trackedEntity;
             
             //Check if the entity is still active every 10 minutes
-            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(mcMMO.p, this, 20, 20);
+            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(mcMMO.p, this, 12000, 12000);
         }
 
         @Override
