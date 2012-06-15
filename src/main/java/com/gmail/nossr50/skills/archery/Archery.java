@@ -46,7 +46,6 @@ public class Archery {
 
         if (quantity != null) {
             Misc.dropItems(entity.getLocation(), new ItemStack(Material.ARROW), quantity);
-            arrowTracker.remove(entity);
         }
     }
 
