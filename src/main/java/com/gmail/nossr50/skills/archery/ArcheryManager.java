@@ -18,7 +18,7 @@ public class ArcheryManager {
     public ArcheryManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.TAMING);
+        this.skillLevel = profile.getSkillLevel(SkillType.ARCHERY);
         this.permissionsInstance =  Permissions.getInstance();
     }
 
