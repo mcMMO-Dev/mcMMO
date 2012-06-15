@@ -24,16 +24,6 @@ public class Archery {
     public static final int DAZE_MAX_BONUS_LEVEL = 1000;
     public static final int DAZE_MODIFIER = 4;
 
-    protected static boolean arrowTrackerContains(LivingEntity livingEntity) {
-        for (TrackedEntity trackedEntity : trackedEntities) {
-            if (trackedEntity.getLivingEntity() == livingEntity) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
         for (TrackedEntity trackedEntity : trackedEntities) {
             if (trackedEntity.getLivingEntity() == livingEntity) {
@@ -41,6 +31,9 @@ public class Archery {
                 return;
             }
         }
+
+        //If the entity isn't tracked yet
+        addToTracker(livingEntity);
     }
 
     protected static void addToTracker(LivingEntity livingEntity) {

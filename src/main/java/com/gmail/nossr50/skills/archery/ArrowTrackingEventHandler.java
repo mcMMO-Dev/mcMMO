@@ -22,11 +22,6 @@ public class ArrowTrackingEventHandler {
     }
 
     protected void addToTracker() {
-        if (Archery.arrowTrackerContains(entity)) {
-            Archery.incrementTrackerValue(entity);
-        }
-        else {
-            Archery.addToTracker(entity);
-        }
+        Archery.incrementTrackerValue(entity);
     }
 }
