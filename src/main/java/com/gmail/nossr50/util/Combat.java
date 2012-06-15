@@ -36,6 +36,7 @@ import com.gmail.nossr50.skills.combat.Axes;
 import com.gmail.nossr50.skills.combat.Swords;
 import com.gmail.nossr50.skills.combat.Unarmed;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 
 public class Combat {
     private static Config configInstance = Config.getInstance();
@@ -132,6 +133,8 @@ public class Combat {
                     }
                 }
 
+                UnarmedManager unarmedManager = new UnarmedManager(attacker);
+
                 if (permInstance.unarmedBonus(attacker)) {
                     Unarmed.unarmedBonus(PPa, event);
                 }
@@ -140,8 +143,8 @@ public class Combat {
                     event.setDamage((int) (event.getDamage() * 1.5));
                 }
 
-                if (targetIsPlayer && permInstance.disarm(attacker)) {
-                    Unarmed.disarmProcCheck(attacker, (Player) target);
+                if (targetIsPlayer) {
+                    unarmedManager.disarmCheck((Player) target);
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.UNARMED);
