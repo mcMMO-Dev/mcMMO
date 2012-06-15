@@ -17,7 +17,7 @@ public class UnarmedManager {
     public UnarmedManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.TAMING);
+        this.skillLevel = profile.getSkillLevel(SkillType.UNARMED);
         this.permissionsInstance =  Permissions.getInstance();
     }
 
