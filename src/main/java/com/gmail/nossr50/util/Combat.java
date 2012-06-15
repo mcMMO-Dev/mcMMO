@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
@@ -263,7 +264,9 @@ public class Combat {
             archeryManager.dazeCheck((Player) target, event);
         }
 
-        archeryManager.trackArrows(target);
+        if (!(shooter.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE))) {
+            archeryManager.trackArrows(target);
+        }
 
         if (target != shooter) {
             PlayerProfile PP = Users.getProfile(shooter);
