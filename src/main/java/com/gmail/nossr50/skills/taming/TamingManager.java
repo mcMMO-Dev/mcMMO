@@ -78,7 +78,7 @@ public class TamingManager {
 
         GoreEventHandler eventHandler = new GoreEventHandler(this, event);
 
-        if (Taming.getRandom().nextInt(1000) <= eventHandler.skillModifier) {
+        if (Taming.getRandom().nextInt(1000) < eventHandler.skillModifier) {
             eventHandler.modifyEventDamage();
             eventHandler.applyBleed();
             eventHandler.sendAbilityMessage();

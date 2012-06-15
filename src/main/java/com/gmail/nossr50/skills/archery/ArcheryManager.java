@@ -34,7 +34,7 @@ public class ArcheryManager {
 
         ArrowTrackingEventHandler eventHandler = new ArrowTrackingEventHandler(this, livingEntity);
 
-        if (Archery.getRandom().nextInt(1000) <= eventHandler.skillModifier) {
+        if (Archery.getRandom().nextInt(1000) < eventHandler.skillModifier) {
             eventHandler.addToTracker();
         }
     }
@@ -52,7 +52,7 @@ public class ArcheryManager {
 
         DazeEventHandler eventHandler = new DazeEventHandler(this, event, defender);
 
-        if (Archery.getRandom().nextInt(2000) <= eventHandler.skillModifier) {
+        if (Archery.getRandom().nextInt(2000) < eventHandler.skillModifier) {
             eventHandler.handleDazeEffect();
             eventHandler.sendAbilityMessages();
         }
