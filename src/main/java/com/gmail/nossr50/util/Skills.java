@@ -390,8 +390,10 @@ public class Skills {
             }
 
             int ticks = 2 + (PP.getSkillLevel(type) / 50);
-            if (ability.getMaxTicks() != 0 && ticks > ability.getMaxTicks()) {
-                ticks = ability.getMaxTicks();
+            int maxTicks = ability.getMaxTicks();
+
+            if (maxTicks != 0 && ticks > maxTicks) {
+                ticks = maxTicks;
             }
 
             if (!PP.getAbilityMode(ability) && cooldownOver(PP.getSkillDATS(ability), ability.getCooldown())) {
@@ -403,7 +405,7 @@ public class Skills {
                     }
                 }
 
-                PP.setSkillDATS(ability, System.currentTimeMillis()+(ticks * TIME_CONVERSION_FACTOR));
+                PP.setSkillDATS(ability, System.currentTimeMillis() + (ticks * TIME_CONVERSION_FACTOR));
                 PP.setAbilityMode(ability, true);
             }
         }
