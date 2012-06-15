@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.unarmed;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.util.Misc;
 

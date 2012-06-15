@@ -34,7 +34,6 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.combat.Axes;
 import com.gmail.nossr50.skills.combat.Swords;
-import com.gmail.nossr50.skills.combat.Unarmed;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 
@@ -135,9 +134,7 @@ public class Combat {
 
                 UnarmedManager unarmedManager = new UnarmedManager(attacker);
 
-                if (permInstance.unarmedBonus(attacker)) {
-                    Unarmed.unarmedBonus(PPa, event);
-                }
+                unarmedManager.bonusDamage(event);
 
                 if (PPa.getAbilityMode(AbilityType.BERSERK) && permInstance.berserk(attacker)) {
                     event.setDamage((int) (event.getDamage() * 1.5));
@@ -254,7 +251,8 @@ public class Combat {
 
             if (defender.getItemInHand().getType().equals(Material.AIR)) {
                 if (configInstance.getUnarmedPVP()) {
-                    Unarmed.deflectCheck(defender, event);
+                    UnarmedManager unarmedManager = new UnarmedManager(defender);
+                    unarmedManager.deflectCheck(event);
                 }
             }
         }

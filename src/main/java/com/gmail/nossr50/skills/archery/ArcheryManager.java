@@ -69,7 +69,7 @@ public class ArcheryManager {
         }
 
         if (skillLevel >= Archery.BONUS_DAMAGE_INCREASE_LEVEL) {
-            BonusDamageEventHandler eventHandler = new BonusDamageEventHandler(this, event);
+            ArcheryBonusDamageEventHandler eventHandler = new ArcheryBonusDamageEventHandler(this, event);
 
             eventHandler.calculateDamageBonus();
             eventHandler.modifyEventDamage();
