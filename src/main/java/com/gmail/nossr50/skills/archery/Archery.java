@@ -1,11 +1,11 @@
 package com.gmail.nossr50.skills.archery;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,7 +13,7 @@ import com.gmail.nossr50.util.Misc;
 
 public class Archery {
     private static Random random = new Random();
-    private static Map<LivingEntity, Integer> arrowTracker = new HashMap<LivingEntity, Integer>();
+    private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
     public static final int ARROW_TRACKING_MAX_BONUS_LEVEL = 1000;
 
@@ -25,15 +25,33 @@ public class Archery {
     public static final int DAZE_MODIFIER = 4;
 
     protected static boolean arrowTrackerContains(LivingEntity livingEntity) {
-        return arrowTracker.containsKey(livingEntity);
+        for (TrackedEntity trackedEntity : trackedEntities) {
+            if (trackedEntity.getLivingEntity() == livingEntity) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
-        arrowTracker.put(livingEntity, arrowTracker.get(livingEntity) + 1);
+        for (TrackedEntity trackedEntity : trackedEntities) {
+            if (trackedEntity.getLivingEntity() == livingEntity) {
+                trackedEntity.incrementArrowCount();
+                return;
+            }
+        }
     }
 
     protected static void addToTracker(LivingEntity livingEntity) {
-        arrowTracker.put(livingEntity, 1);
+        TrackedEntity trackedEntity = new TrackedEntity(livingEntity);
+
+        trackedEntity.incrementArrowCount();
+        trackedEntities.add(trackedEntity);
+    }
+
+    protected static void removeFromTracker(TrackedEntity trackedEntity) {
+        trackedEntities.remove(trackedEntity);
     }
 
     /**
@@ -41,11 +59,15 @@ public class Archery {
      *
      * @param entity The entity hit by the arrows
      */
-    public static void arrowRetrievalCheck(Entity entity) {
-        Integer quantity = arrowTracker.remove(entity);
+    public static void arrowRetrievalCheck(LivingEntity livingEntity) {
+        for (Iterator<TrackedEntity> it = trackedEntities.iterator() ; it.hasNext() ; ) {
+            TrackedEntity trackedEntity = it.next();
 
-        if (quantity != null) {
-            Misc.dropItems(entity.getLocation(), new ItemStack(Material.ARROW), quantity);
+            if (trackedEntity.getLivingEntity() == livingEntity) {
+                Misc.dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount());
+                it.remove();
+                return;
+            }
         }
     }
 
