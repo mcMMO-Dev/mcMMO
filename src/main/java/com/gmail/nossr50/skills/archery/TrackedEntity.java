@@ -12,9 +12,7 @@ public class TrackedEntity {
 
     public TrackedEntity(LivingEntity livingEntity) {
         this.livingEntity = livingEntity;
-
-        //Check if the entity is still active every 10 minutes
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(mcMMO.p, new CheckTrackedEntityExistence(this), 12000, 12000);
+        new CheckTrackedEntityExistence(this);
     }
 
     //LivingEntity.isDead() isn't a reliable way to know if an entity is still active
@@ -45,15 +43,20 @@ public class TrackedEntity {
 
     private class CheckTrackedEntityExistence implements Runnable {
         private TrackedEntity trackedEntity;
+        private int taskId;
 
         public CheckTrackedEntityExistence(TrackedEntity trackedEntity) {
             this.trackedEntity = trackedEntity;
+            
+            //Check if the entity is still active every 10 minutes
+            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(mcMMO.p, this, 20, 20);
         }
 
         @Override
         public void run() {
             if (!trackedEntity.isActive()) {
                 Archery.removeFromTracker(trackedEntity);
+                Bukkit.getScheduler().cancelTask(taskId);
             }
         }
     }
