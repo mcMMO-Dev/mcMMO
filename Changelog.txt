@@ -29,6 +29,7 @@ Version 1.3.09
  = Fixed bug with Tree Feller changing durability before checking for axe splintering
  = Fixed bug with Repair Mastery permission due to typo
  = Fixed bug with repairing items that use metadata
+ = Fixed bug with Chunklets not being reloaded on /reload
  ! API methods can now only be used in a static way
  ! Arrows shot from a bow having the Infitity enchantment can no longer be retrieved
  ! Changed Spout settings to be in their own config file (spout.yml)

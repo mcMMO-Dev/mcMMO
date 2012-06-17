@@ -9,6 +9,7 @@ import java.util.List;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -223,6 +224,10 @@ public class mcMMO extends JavaPlugin {
 
         // Get our ChunkletManager
         placeStore = ChunkletManagerFactory.getChunkletManager();
+
+        for (World world : getServer().getWorlds()) {
+            placeStore.loadWorld(world);
+        }
     }
 
     /**

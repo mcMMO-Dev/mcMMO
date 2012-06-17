@@ -11,6 +11,7 @@ import java.io.StreamCorruptedException;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
@@ -89,6 +90,13 @@ public class HashChunkletManager implements ChunkletManager {
             if(tempWorldName.equals(worldName)) {
                 store.remove(key);
             }
+        }
+    }
+
+    @Override
+    public void loadWorld(World world) {
+        for(Chunk chunk : world.getLoadedChunks()) {
+            this.chunkLoaded(chunk.getX(), chunk.getZ(), world);
         }
     }
 

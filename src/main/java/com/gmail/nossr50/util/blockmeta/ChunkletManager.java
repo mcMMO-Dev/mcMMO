@@ -37,6 +37,13 @@ public interface ChunkletManager {
     public void unloadWorld(World world);
 
     /**
+     * Load all ChunkletStores from all loaded chunks from this world into memory
+     *
+     * @param world World to load
+     */
+    public void loadWorld(World world);
+
+    /**
      * Save all ChunkletStores
      */
     public void saveAll();

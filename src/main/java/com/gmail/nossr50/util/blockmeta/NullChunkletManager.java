@@ -30,6 +30,11 @@ public class NullChunkletManager implements ChunkletManager {
     }
 
     @Override
+    public void loadWorld(World world) {
+        return;
+    }
+
+    @Override
     public void saveAll() {
         return;
     }
