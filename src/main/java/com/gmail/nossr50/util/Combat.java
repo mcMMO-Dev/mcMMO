@@ -33,7 +33,7 @@ import com.gmail.nossr50.runnables.GainXp;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.combat.Axes;
-import com.gmail.nossr50.skills.combat.Swords;
+import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 
@@ -362,9 +362,6 @@ public class Combat {
                 break;
             }
 
-            PlayerAnimationEvent armswing = new PlayerAnimationEvent(attacker);
-            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
-
             if (entity instanceof Player) {
                 Player defender = (Player) entity;
 
@@ -386,15 +383,12 @@ public class Combat {
                     continue;
                 }
             }
-            else if (entity instanceof Tameable) {
-                AnimalTamer tamer = ((Tameable) entity).getOwner();
-
-                if (tamer instanceof Player) {
-                    if (tamer.equals(attacker) || PartyManager.getInstance().inSameParty(attacker, (Player) tamer)) {
-                        continue;
-                    }
-                }
+            else if (!shouldBeAffected(attacker, target)) {
+                continue;
             }
+
+            PlayerAnimationEvent armswing = new PlayerAnimationEvent(attacker);
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
             switch (type) {
             case SWORDS:
@@ -522,5 +516,34 @@ public class Combat {
         if (baseXP != 0) {
             mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GainXp(attacker, PP, skillType, baseXP, target), 0);
         }
+    }
+
+    /**
+     * Check to see if the given LivingEntity should be affected by a combat ability.
+     *
+     * @param player The attacking Player
+     * @param livingEntity The defending LivingEntity
+     * @return true if the LivingEntity should be damaged, false otherwise.
+     */
+    public static boolean shouldBeAffected(Player player, LivingEntity livingEntity) {
+        boolean isAffected = true;
+
+        if (livingEntity instanceof Tameable) {
+            Tameable pet = (Tameable) livingEntity;
+
+            if (pet.isTamed()) {
+                AnimalTamer tamer = pet.getOwner();
+
+                if (tamer instanceof Player) {
+                    Player owner = (Player) tamer;
+
+                    if (owner == player || PartyManager.getInstance().inSameParty(player, owner)) {
+                        isAffected = false;
+                    }
+                }
+            }
+        }
+
+        return isAffected;
     }
 }
