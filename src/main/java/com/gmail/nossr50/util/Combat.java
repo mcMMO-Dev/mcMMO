@@ -34,6 +34,7 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.combat.Axes;
 import com.gmail.nossr50.skills.swords.Swords;
+import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 
@@ -64,7 +65,7 @@ public class Combat {
 
             combatAbilityChecks(attacker);
 
-            if (ItemChecks.isSword(itemInHand) && permInstance.swords(attacker)) {
+            if (ItemChecks.isSword(itemInHand)) {
                 if (!configInstance.getSwordsPVP()) {
                     if (targetIsPlayer || targetIsTamedPet) {
                         return;
@@ -77,13 +78,12 @@ public class Combat {
                     }
                 }
 
-                if (permInstance.swordsBleed(attacker)) {
-                    Swords.bleedCheck(attacker, target);
-                }
+                SwordsManager swordsManager = new SwordsManager(attacker);
 
-                if (PPa.getAbilityMode(AbilityType.SERRATED_STRIKES) && permInstance.serratedStrikes(attacker)) {
-                    applyAbilityAoE(attacker, target, event.getDamage() / 4, SkillType.SWORDS);
-                    BleedTimer.add(target, 5);
+                swordsManager.bleedCheck(target);
+
+                if (PPa.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
+                    swordsManager.serratedStrikes(target, event.getDamage());
                 }
 
                 startGainXp(attacker, PPa, target, SkillType.SWORDS);
@@ -199,14 +199,17 @@ public class Combat {
         }
 
         if (target instanceof Player) {
-            AcrobaticsManager acroManager = new AcrobaticsManager((Player) target);
+            Player player = (Player) target;
+
+            AcrobaticsManager acroManager = new AcrobaticsManager(player);
+            SwordsManager swordsManager = new SwordsManager(player);
 
             if (configInstance.getSwordsPVP() && damager instanceof Player) {
-                Swords.counterAttackChecks(damager, (Player) target, event.getDamage());
+                swordsManager.counterAttackChecks((Player) damager, event.getDamage());
             }
 
             if (configInstance.getSwordsPVE() && !(damager instanceof Player)) {
-                Swords.counterAttackChecks(damager, (Player) target, event.getDamage());
+                swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
             }
 
             if (configInstance.getAcrobaticsPVP() && damager instanceof Player) {
@@ -339,7 +342,7 @@ public class Combat {
      * @param damage The initial damage amount
      * @param type The type of skill being used
      */
-    private static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, SkillType type) {
+    public static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, SkillType type) {
         ItemStack inHand = attacker.getItemInHand();
 
         if (ModChecks.isCustomTool(inHand) && !ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
@@ -362,28 +365,7 @@ public class Combat {
                 break;
             }
 
-            if (entity instanceof Player) {
-                Player defender = (Player) entity;
-
-                if (!target.getWorld().getPVP()) {
-                    continue;
-                }
-
-                if (defender.getName().equals(attacker.getName())) {
-                    continue;
-                }
-
-                if (PartyManager.getInstance().inSameParty(attacker, defender)) {
-                    continue;
-                }
-
-                PlayerProfile playerProfile = Users.getProfile((Player) entity);
-
-                if (playerProfile.getGodMode()) {
-                    continue;
-                }
-            }
-            else if (!shouldBeAffected(attacker, target)) {
+            if (!shouldBeAffected(attacker, target)) {
                 continue;
             }
 
@@ -396,7 +378,7 @@ public class Combat {
                     ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
                 }
 
-                BleedTimer.add((LivingEntity) entity, 5);
+                BleedTimer.add((LivingEntity) entity, Swords.SERRATED_STRIKES_BLEED_TICKS);
 
                 break;
 
@@ -526,9 +508,26 @@ public class Combat {
      * @return true if the LivingEntity should be damaged, false otherwise.
      */
     public static boolean shouldBeAffected(Player player, LivingEntity livingEntity) {
-        boolean isAffected = true;
+        if (livingEntity instanceof Player) {
+            Player defender = (Player) livingEntity;
 
-        if (livingEntity instanceof Tameable) {
+            if (!defender.getWorld().getPVP()) {
+                return false;
+            }
+
+            if (defender.getName().equals(player.getName())) {
+                return false;
+            }
+
+            if (PartyManager.getInstance().inSameParty(player, defender)) {
+                return false;
+            }
+
+            if (Users.getProfile(defender).getGodMode()) {
+                return false;
+            }
+        }   
+        else if (livingEntity instanceof Tameable) {
             Tameable pet = (Tameable) livingEntity;
 
             if (pet.isTamed()) {
@@ -538,12 +537,12 @@ public class Combat {
                     Player owner = (Player) tamer;
 
                     if (owner == player || PartyManager.getInstance().inSameParty(player, owner)) {
-                        isAffected = false;
+                        return false;
                     }
                 }
             }
         }
 
-        return isAffected;
+        return true;
     }
 }
