@@ -62,24 +62,18 @@ public class EntityListener implements Listener {
         }
 
         Entity attacker = event.getDamager();
+        Entity defender = event.getEntity();
 
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
-
-            //There is no shooter when a projectile is thrown by a dispenser
-            if (attacker == null) {
-                return;
-            }
         }
         else if (attacker instanceof Tameable) {
             AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
 
-            if (animalTamer instanceof Player) {
-                attacker = (Player) animalTamer;
+            if (animalTamer instanceof Entity) {
+                attacker = (Entity) animalTamer;
             }
         }
-
-        Entity defender = event.getEntity();
 
         if (attacker instanceof Player && defender instanceof Player) {
             if (PartyManager.getInstance().inSameParty((Player) defender, (Player) attacker)) {

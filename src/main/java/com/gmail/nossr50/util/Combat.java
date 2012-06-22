@@ -173,8 +173,8 @@ public class Combat {
         case ARROW:
             LivingEntity shooter = ((Arrow) damager).getShooter();
 
-            if (shooter.getType() != EntityType.PLAYER) {
-                return;
+            if (shooter == null || shooter.getType() != EntityType.PLAYER) {
+                break;
             }
 
             if (targetIsPlayer || targetIsTamedPet) {
@@ -191,7 +191,7 @@ public class Combat {
             break;
         }
 
-        if (targetIsPlayer && damager instanceof LivingEntity) {
+        if (targetIsPlayer) {
             Player player = (Player) target;
 
             AcrobaticsManager acroManager = new AcrobaticsManager(player);
@@ -207,7 +207,7 @@ public class Combat {
                 }
             }
             else {
-                if (configInstance.getSwordsPVE()) {
+                if (configInstance.getSwordsPVE() && damager instanceof LivingEntity) {
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 

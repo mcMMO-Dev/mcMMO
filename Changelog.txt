@@ -35,6 +35,7 @@ Version 1.3.09
  = Fixed possible NPE when falling with no item in hand
  ! API methods can now only be used in a static way
  ! Arrows shot from a bow having the Infitity enchantment can no longer be retrieved
+ ! Arrows that aren't shot by an entity are now dodgeable (currently only from dispensers)
  ! Changed Spout settings to be in their own config file (spout.yml)
  ! Changed file format for parties (parties.yml), previous files are no longer used
  ! Changed mcMMO to inform on corrupt Chunklets and make new ones
