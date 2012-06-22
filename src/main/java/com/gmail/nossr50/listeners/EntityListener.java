@@ -129,7 +129,7 @@ public class EntityListener implements Listener {
             }
 
             if (!Misc.isInvincible(player, event)) {
-                if (cause == DamageCause.FALL && !player.isInsideVehicle() && !player.getItemInHand().getType().equals(Material.ENDER_PEARL)) {
+                if (cause == DamageCause.FALL && !player.isInsideVehicle() && !(player.getItemInHand().getType() == Material.ENDER_PEARL)) {
                     AcrobaticsManager acroManager = new AcrobaticsManager(player);
                     acroManager.rollCheck(event);
                 }
