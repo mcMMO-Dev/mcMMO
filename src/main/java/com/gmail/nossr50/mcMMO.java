@@ -107,6 +107,7 @@ public class mcMMO extends JavaPlugin {
     public static String usersFile;
     public static String leaderboardDirectory;
     public static String modDirectory;
+    public boolean pvpoff;
 
     //Spout Check
     public static boolean spoutEnabled;
