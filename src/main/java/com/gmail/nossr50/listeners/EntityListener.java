@@ -104,7 +104,12 @@ public class EntityListener implements Listener {
      * @param event The event to monitor
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onEntityDamage(EntityDamageEvent event) {
+    public void onEntityDamage(EntityDamageEvent event) 
+    {
+        if(plugin.pvpoff == true)
+        {
+			event.setCancelled(true);
+        }
         if (event instanceof FakeEntityDamageEvent) {
             return;
         }
