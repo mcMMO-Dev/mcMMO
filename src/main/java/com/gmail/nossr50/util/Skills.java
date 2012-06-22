@@ -384,54 +384,55 @@ public class Skills {
      */
     public static void abilityCheck(Player player, SkillType type) {
         PlayerProfile PP = Users.getProfile(player);
-        AbilityType ability = type.getAbility();
         ToolType tool = type.getTool();
 
-        if (type.getTool().inHand(player.getItemInHand())) {
-            if (PP.getToolPreparationMode(tool)) {
-                PP.setToolPreparationMode(tool, false);
-            }
+        if (!PP.getToolPreparationMode(tool)) {
+            return;
+        }
 
-            /* Axes and Woodcutting are odd because they share the same tool.
-             * We show them the too tired message when they take action.
-             */
-            if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
-                if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
-                    return;
+        PP.setToolPreparationMode(tool, false);
+
+        AbilityType ability = type.getAbility();
+
+        /* Axes and Woodcutting are odd because they share the same tool.
+         * We show them the too tired message when they take action.
+         */
+        if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
+            if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+                return;
+            }
+        }
+
+        int ticks = 2 + (PP.getSkillLevel(type) / 50);
+
+        if (player.hasPermission("mcmmo.perks.activationtime.twelveseconds")) {
+            ticks = ticks + 12;
+        }
+        else if (player.hasPermission("mcmmo.perks.activationtime.eightseconds")) {
+            ticks = ticks + 8;
+        }
+        else if (player.hasPermission("mcmmo.perks.activationtime.fourseconds")) {
+            ticks = ticks + 4;
+        }
+
+        int maxTicks = ability.getMaxTicks();
+
+        if (maxTicks != 0 && ticks > maxTicks) {
+            ticks = maxTicks;
+        }
+
+        if (!PP.getAbilityMode(ability) && cooldownOver(PP.getSkillDATS(ability), ability.getCooldown(), player)) {
+            player.sendMessage(ability.getAbilityOn());
+
+            for (Player y : player.getWorld().getPlayers()) {
+                if (y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
+                    y.sendMessage(ability.getAbilityPlayer(player));
                 }
             }
 
-            int ticks = 2 + (PP.getSkillLevel(type) / 50);
-
-            if (player.hasPermission("mcmmo.perks.activationtime.twelveseconds")) {
-                ticks = ticks + 12;
-            }
-            else if (player.hasPermission("mcmmo.perks.activationtime.eightseconds")) {
-                ticks = ticks + 8;
-            }
-            else if (player.hasPermission("mcmmo.perks.activationtime.fourseconds")) {
-                ticks = ticks + 4;
-            }
-
-            int maxTicks = ability.getMaxTicks();
-
-            if (maxTicks != 0 && ticks > maxTicks) {
-                ticks = maxTicks;
-            }
-
-            if (!PP.getAbilityMode(ability) && cooldownOver(PP.getSkillDATS(ability), ability.getCooldown(), player)) {
-                player.sendMessage(ability.getAbilityOn());
-
-                for (Player y : player.getWorld().getPlayers()) {
-                    if (y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
-                        y.sendMessage(ability.getAbilityPlayer(player));
-                    }
-                }
-
-                PP.setSkillDATS(ability, System.currentTimeMillis() + (ticks * TIME_CONVERSION_FACTOR));
-                PP.setAbilityMode(ability, true);
-            }
+            PP.setSkillDATS(ability, System.currentTimeMillis() + (ticks * TIME_CONVERSION_FACTOR));
+            PP.setAbilityMode(ability, true);
         }
     }
 

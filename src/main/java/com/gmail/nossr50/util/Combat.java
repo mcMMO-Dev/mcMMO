@@ -23,7 +23,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -64,8 +63,6 @@ public class Combat {
             ItemStack itemInHand = attacker.getItemInHand();
             PlayerProfile PPa = Users.getProfile(attacker);
 
-            combatAbilityChecks(attacker);
-
             if (ItemChecks.isSword(itemInHand)) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!configInstance.getSwordsPVP()) {
@@ -75,6 +72,8 @@ public class Combat {
                 else if (!configInstance.getSwordsPVE()) {
                     return;
                 }
+
+                Skills.abilityCheck(attacker, SkillType.SWORDS);
 
                 SwordsManager swordsManager = new SwordsManager(attacker);
 
@@ -95,6 +94,8 @@ public class Combat {
                 else if (!configInstance.getAxesPVE()) {
                     return;
                 }
+
+                Skills.abilityCheck(attacker, SkillType.AXES);
 
                 if (permInstance.axeBonus(attacker)) {
                     Axes.axesBonus(attacker, event);
@@ -123,6 +124,8 @@ public class Combat {
                 else if (!configInstance.getUnarmedPVE()) {
                     return;
                 }
+
+                Skills.abilityCheck(attacker, SkillType.UNARMED);
 
                 UnarmedManager unarmedManager = new UnarmedManager(attacker);
 
@@ -215,25 +218,6 @@ public class Combat {
                     acroManager.dodgeCheck(event);
                 }
             }
-        }
-    }
-
-    /**
-     * Process combat abilities based on weapon preparation modes.
-     *
-     * @param attacker The player attacking
-     */
-    public static void combatAbilityChecks(Player attacker) {
-        PlayerProfile PPa = Users.getProfile(attacker);
-
-        if (PPa.getToolPreparationMode(ToolType.AXE)) {
-            Skills.abilityCheck(attacker, SkillType.AXES);
-        }
-        else if (PPa.getToolPreparationMode(ToolType.SWORD)) {
-            Skills.abilityCheck(attacker, SkillType.SWORDS);
-        }
-        else if (PPa.getToolPreparationMode(ToolType.FISTS)) {
-            Skills.abilityCheck(attacker, SkillType.UNARMED);
         }
     }
 
