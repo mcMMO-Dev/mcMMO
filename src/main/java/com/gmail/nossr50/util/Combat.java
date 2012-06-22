@@ -345,7 +345,7 @@ public class Combat {
                 break;
             }
 
-            if (!shouldBeAffected(attacker, target)) {
+            if (!shouldBeAffected(attacker, entity)) {
                 continue;
             }
 
@@ -485,17 +485,17 @@ public class Combat {
      *
      * @param player The attacking Player
      * @param livingEntity The defending LivingEntity
-     * @return true if the LivingEntity should be damaged, false otherwise.
+     * @return true if the Entity should be damaged, false otherwise.
      */
-    public static boolean shouldBeAffected(Player player, LivingEntity livingEntity) {
-        if (livingEntity instanceof Player) {
-            Player defender = (Player) livingEntity;
+    public static boolean shouldBeAffected(Player player, Entity entity) {
+        if (entity instanceof Player) {
+            Player defender = (Player) entity;
 
             if (!defender.getWorld().getPVP()) {
                 return false;
             }
 
-            if (defender.getName().equals(player.getName())) {
+            if (defender == player) {
                 return false;
             }
 
@@ -507,8 +507,8 @@ public class Combat {
                 return false;
             }
         }   
-        else if (livingEntity instanceof Tameable) {
-            Tameable pet = (Tameable) livingEntity;
+        else if (entity instanceof Tameable) {
+            Tameable pet = (Tameable) entity;
 
             if (pet.isTamed()) {
                 AnimalTamer tamer = pet.getOwner();
