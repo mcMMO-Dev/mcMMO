@@ -32,6 +32,19 @@ public class PartyCommand implements CommandExecutor {
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party")) {
             return true;
+        }  
+        else if(label.equalsIgnoreCase("pvp") && party.isLeader(player))
+        {
+            if(pvpoff == true)
+        {
+             pvpoff = false;
+             player.sendMessage(ChatColor.RED + "Clan PvP is on, to turn off type /pvp");
+        }
+             if(pvpoff == false)
+             {
+                pvpoff = true;
+                player.sendMessage(ChatColor.GREEN + "Clan PvP is off, to turn on type /pvp");
+             }
         }
 
         Player player = (Player) sender;
