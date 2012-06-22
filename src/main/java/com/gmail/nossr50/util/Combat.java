@@ -209,7 +209,9 @@ public class Combat {
             }
 
             if (configInstance.getSwordsPVE() && !(damager instanceof Player)) {
-                swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
+                if (damager instanceof LivingEntity) {
+                    swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
+                }
             }
 
             if (configInstance.getAcrobaticsPVP() && damager instanceof Player) {
