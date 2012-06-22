@@ -43,13 +43,13 @@ public class Skills {
 
         //Reduced Cooldown Donor Perks
         if (player.hasPermission("mcmmo.perks.cooldowns.halved")) {
-            adjustedCooldown = adjustedCooldown / 2;
+            adjustedCooldown = (int) (adjustedCooldown * 0.5);
         }
         else if (player.hasPermission("mcmmo.perks.cooldowns.thirded")) {
-            adjustedCooldown = adjustedCooldown / 3;
+            adjustedCooldown = (int) (adjustedCooldown * 0.66);
         }
         else if (player.hasPermission("mcmmo.perks.cooldowns.quartered")) {
-            adjustedCooldown = adjustedCooldown / 4;
+            adjustedCooldown = (int) (adjustedCooldown * 0.75);
         }
 
         if (currentTime - oldTime >= (adjustedCooldown * TIME_CONVERSION_FACTOR)) {
