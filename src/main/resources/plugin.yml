@@ -138,6 +138,22 @@ permissions:
             mcmmo.tools.*: true
     mcmmo.admin:
         description: Allows access to mmoupdate and other sensitive commands
+    mcmmo.perks.cooldowns:
+        default: false
+        description: Reduced cooldown perks typically given to donors or VIPs
+        children:
+            mcmmo.perks.cooldowns.quartered: true
+            mcmmo.perks.cooldowns.thirded: true
+            mcmmo.perks.cooldowns.halved: true
+    mcmmo.perks.cooldowns.quartered:
+        default: false
+        description: Cuts cooldowns down by 1/4
+    mcmmo.perks.cooldowns.thirded:
+        default: false
+        description: Cuts cooldowns down by 1/3
+    mcmmo.perks.cooldowns.halved:
+        default: false
+        description: Cuts cooldowns down by 1/2
     mcmmo.perks.xp:
         default: false
         description: XP Perks typically given to donors or VIPs

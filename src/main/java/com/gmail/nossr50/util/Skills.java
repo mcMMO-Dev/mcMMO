@@ -34,12 +34,25 @@ public class Skills {
      *
      * @param oldTime The time the ability or item was last used
      * @param cooldown The amount of time that must pass between uses
+     * @param player The player whose cooldown is being checked
      * @return true if the cooldown is over, false otherwise
      */
-    public static boolean cooldownOver(long oldTime, int cooldown){
+    public static boolean cooldownOver(long oldTime, int cooldown, Player player){
         long currentTime = System.currentTimeMillis();
+        int adjustedCooldown = cooldown;
 
-        if (currentTime - oldTime >= (cooldown * TIME_CONVERSION_FACTOR)) {
+        //Reduced Cooldown Donor Perks
+        if (player.hasPermission("mcmmo.perks.cooldowns.halved")) {
+            adjustedCooldown = adjustedCooldown / 2;
+        }
+        else if (player.hasPermission("mcmmo.perks.cooldowns.thirded")) {
+            adjustedCooldown = adjustedCooldown / 3;
+        }
+        else if (player.hasPermission("mcmmo.perks.cooldowns.quartered")) {
+            adjustedCooldown = adjustedCooldown / 4;
+        }
+
+        if (currentTime - oldTime >= (adjustedCooldown * TIME_CONVERSION_FACTOR)) {
             return true;
         }
         else {
@@ -105,7 +118,7 @@ public class Skills {
          */
         if (ability.getPermissions(player) && tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
-                if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
+                if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
                     player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                     return;
                 }
@@ -383,7 +396,7 @@ public class Skills {
              * We show them the too tired message when they take action.
              */
             if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
-                if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown())) {
+                if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
                     player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                     return;
                 }
@@ -396,7 +409,7 @@ public class Skills {
                 ticks = maxTicks;
             }
 
-            if (!PP.getAbilityMode(ability) && cooldownOver(PP.getSkillDATS(ability), ability.getCooldown())) {
+            if (!PP.getAbilityMode(ability) && cooldownOver(PP.getSkillDATS(ability), ability.getCooldown(), player)) {
                 player.sendMessage(ability.getAbilityOn());
 
                 for (Player y : player.getWorld().getPlayers()) {
