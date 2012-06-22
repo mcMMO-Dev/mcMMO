@@ -403,6 +403,17 @@ public class Skills {
             }
 
             int ticks = 2 + (PP.getSkillLevel(type) / 50);
+
+            if (player.hasPermission("mcmmo.perks.activationtime.sixseconds")) {
+                ticks = ticks + 6;
+            }
+            else if (player.hasPermission("mcmmo.perks.activationtime.fourseconds")) {
+                ticks = ticks + 4;
+            }
+            else if (player.hasPermission("mcmmo.perks.activationtime.twoseconds")) {
+                ticks = ticks + 2;
+            }
+
             int maxTicks = ability.getMaxTicks();
 
             if (maxTicks != 0 && ticks > maxTicks) {

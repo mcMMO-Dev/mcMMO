@@ -137,7 +137,23 @@ permissions:
             mcmmo.admin: true
             mcmmo.tools.*: true
     mcmmo.admin:
-        description: Allows access to mmoupdate and other sensitive commands
+        description: Allows access to mmoupdate and other sensitive commands    
+    mcmmo.perks.activationtime:
+        default: false
+        description: Increased activation time perks typically given to donors or VIPs
+        children:
+            mcmmo.perks.activationtime.sixseconds: true
+            mcmmo.perks.activationtime.fourseconds: true
+            mcmmo.perks.activationtime.twoseconds: true
+    mcmmo.perks.activationtime.sixseconds:
+        default: false
+        description: Increases activation time by 6 seconds
+    mcmmo.perks.activationtime.fourseconds:
+        default: false
+        description: Increases activation time by 4 seconds
+    mcmmo.perks.activationtime.twoseconds:
+        default: false
+        description: Increases activation time by 2 seconds
     mcmmo.perks.cooldowns:
         default: false
         description: Reduced cooldown perks typically given to donors or VIPs
