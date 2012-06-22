@@ -55,10 +55,11 @@ public class Combat {
         Entity damager = event.getDamager();
         LivingEntity target = (LivingEntity) event.getEntity();
 
-        boolean targetIsPlayer = target instanceof Player;
+        boolean targetIsPlayer = (target.getType() == EntityType.PLAYER);
         boolean targetIsTamedPet = (target instanceof Tameable) ? ((Tameable) target).isTamed() : false;
 
-        if (damager instanceof Player) {
+        switch (damager.getType()) {
+        case PLAYER:
             Player attacker = (Player) event.getDamager();
             ItemStack itemInHand = attacker.getItemInHand();
             PlayerProfile PPa = Users.getProfile(attacker);
@@ -66,16 +67,13 @@ public class Combat {
             combatAbilityChecks(attacker);
 
             if (ItemChecks.isSword(itemInHand)) {
-                if (!configInstance.getSwordsPVP()) {
-                    if (targetIsPlayer || targetIsTamedPet) {
+                if (targetIsPlayer || targetIsTamedPet) {
+                    if (!configInstance.getSwordsPVP()) {
                         return;
                     }
                 }
-
-                if (!configInstance.getSwordsPVE()) {
-                    if (!targetIsPlayer || !targetIsTamedPet) {
-                        return;
-                    }
+                else if (!configInstance.getSwordsPVE()) {
+                    return;
                 }
 
                 SwordsManager swordsManager = new SwordsManager(attacker);
@@ -89,16 +87,13 @@ public class Combat {
                 startGainXp(attacker, PPa, target, SkillType.SWORDS);
             }
             else if (ItemChecks.isAxe(itemInHand) && permInstance.axes(attacker)) {
-                if (!configInstance.getAxesPVP()) {
-                    if (targetIsPlayer || targetIsTamedPet) {
+                if (targetIsPlayer || targetIsTamedPet) {
+                    if (!configInstance.getAxesPVP()) {
                         return;
                     }
                 }
-
-                if (!configInstance.getAxesPVE()) {
-                    if (!targetIsPlayer || !targetIsTamedPet) {
-                        return;
-                    }
+                else if (!configInstance.getAxesPVE()) {
+                    return;
                 }
 
                 if (permInstance.axeBonus(attacker)) {
@@ -119,17 +114,14 @@ public class Combat {
 
                 startGainXp(attacker, PPa, target, SkillType.AXES);
             }
-            else if (itemInHand.getType().equals(Material.AIR) && permInstance.unarmed(attacker)) {
-                if (!configInstance.getUnarmedPVP()) {
-                    if (targetIsPlayer || targetIsTamedPet) {
+            else if (itemInHand.getType() == Material.AIR && permInstance.unarmed(attacker)) {
+                if (targetIsPlayer || targetIsTamedPet) {
+                    if (!configInstance.getUnarmedPVP()) {
                         return;
                     }
                 }
-
-                if (!configInstance.getUnarmedPVE()) {
-                    if (!targetIsPlayer || !targetIsTamedPet) {
-                        return;
-                    }
+                else if (!configInstance.getUnarmedPVE()) {
+                    return;
                 }
 
                 UnarmedManager unarmedManager = new UnarmedManager(attacker);
@@ -151,23 +143,21 @@ public class Combat {
                 tamingManager.beastLore(target);
                 event.setCancelled(true);
             }
-        }
-        else if (damager instanceof Wolf) {
+
+            break;
+        case WOLF:
             Wolf wolf = (Wolf) damager;
 
             if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
                 Player master = (Player) wolf.getOwner();
 
-                if (!configInstance.getTamingPVP()) {
-                    if (targetIsPlayer || targetIsTamedPet) {
+                if (targetIsPlayer || targetIsTamedPet) {
+                    if (!configInstance.getTamingPVP()) {
                         return;
                     }
                 }
-
-                if (!configInstance.getTamingPVE()) {
-                    if (!targetIsPlayer || !targetIsTamedPet) {
-                        return;
-                    }
+                else if (!configInstance.getTamingPVE()) {
+                    return;
                 }
 
                 TamingManager tamingManager = new TamingManager(master);
@@ -178,8 +168,9 @@ public class Combat {
 
                 startGainXp(master, Users.getProfile(master), target, SkillType.TAMING);
             }
-        }
-        else if (damager instanceof Arrow) {
+
+            break;
+        case ARROW:
             LivingEntity shooter = ((Arrow) damager).getShooter();
 
             if (shooter.getType() != EntityType.PLAYER) {
@@ -196,30 +187,33 @@ public class Combat {
             }
 
             archeryCheck((Player) shooter, target, event);
+
+            break;
         }
 
-        if (target instanceof Player) {
+        if (targetIsPlayer && damager instanceof LivingEntity) {
             Player player = (Player) target;
 
             AcrobaticsManager acroManager = new AcrobaticsManager(player);
             SwordsManager swordsManager = new SwordsManager(player);
 
-            if (configInstance.getSwordsPVP() && damager instanceof Player) {
-                swordsManager.counterAttackChecks((Player) damager, event.getDamage());
-            }
-
-            if (configInstance.getSwordsPVE() && !(damager instanceof Player)) {
-                if (damager instanceof LivingEntity) {
+            if (damager.getType() == EntityType.PLAYER) {
+                if (configInstance.getSwordsPVP()) {
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
-            }
 
-            if (configInstance.getAcrobaticsPVP() && damager instanceof Player) {
-                acroManager.dodgeCheck(event);
+                if (configInstance.getAcrobaticsPVP()) {
+                    acroManager.dodgeCheck(event);
+                }
             }
+            else {
+                if (configInstance.getSwordsPVE()) {
+                    swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
+                }
 
-            if (configInstance.getAcrobaticsPVE() && !(damager instanceof Player)) {
-                acroManager.dodgeCheck(event);
+                if (configInstance.getAcrobaticsPVE()) {
+                    acroManager.dodgeCheck(event);
+                }
             }
         }
     }
