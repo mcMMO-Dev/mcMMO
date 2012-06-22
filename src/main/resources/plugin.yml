@@ -142,18 +142,18 @@ permissions:
         default: false
         description: Increased activation time perks typically given to donors or VIPs
         children:
-            mcmmo.perks.activationtime.sixseconds: true
+            mcmmo.perks.activationtime.twelveseconds: true
+            mcmmo.perks.activationtime.eightseconds: true
             mcmmo.perks.activationtime.fourseconds: true
-            mcmmo.perks.activationtime.twoseconds: true
-    mcmmo.perks.activationtime.sixseconds:
+    mcmmo.perks.activationtime.twelveseconds:
         default: false
-        description: Increases activation time by 6 seconds
+        description: Increases activation time by 12 seconds
+    mcmmo.perks.activationtime.eightseconds:
+        default: false
+        description: Increases activation time by 8 seconds
     mcmmo.perks.activationtime.fourseconds:
         default: false
         description: Increases activation time by 4 seconds
-    mcmmo.perks.activationtime.twoseconds:
-        default: false
-        description: Increases activation time by 2 seconds
     mcmmo.perks.cooldowns:
         default: false
         description: Reduced cooldown perks typically given to donors or VIPs
