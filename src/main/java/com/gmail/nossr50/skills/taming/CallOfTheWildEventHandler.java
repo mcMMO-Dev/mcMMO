@@ -55,6 +55,7 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void spawnCreature() {
+//        LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
         LivingEntity entity = player.getWorld().spawnCreature(player.getLocation(), type);
         entity.setMetadata("mcmmoSummoned", new FixedMetadataValue(mcMMO.p, true));
 

@@ -9,6 +9,7 @@ import java.util.Random;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -295,6 +296,7 @@ public class BlastMining {
         player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
         /* Create the TNT entity */
+//        TNTPrimed tnt = (TNTPrimed) player.getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
         TNTPrimed tnt = player.getWorld().spawn(block.getLocation(), TNTPrimed.class);
         plugin.addToTNTTracker(tnt.getEntityId(), player.getName());
         tnt.setFuseTicks(0);
