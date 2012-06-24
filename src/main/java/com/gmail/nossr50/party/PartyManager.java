@@ -42,7 +42,7 @@ public class PartyManager {
      */
     public boolean inSameParty(Player firstPlayer, Player secondPlayer) {
         if (Users.getProfile(firstPlayer).getParty() == null || Users.getProfile(secondPlayer).getParty() == null 
-                || Users.getProfile(firstPlayer).getParty().equals(Users.getProfile(secondPlayer).getParty())) {
+                || !Users.getProfile(firstPlayer).getParty().equals(Users.getProfile(secondPlayer).getParty())) {
             return false;
         }
 
