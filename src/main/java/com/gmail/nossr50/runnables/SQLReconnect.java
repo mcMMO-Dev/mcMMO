@@ -19,7 +19,7 @@ public class SQLReconnect implements Runnable {
         if (!Database.isConnected()) {
             Database.connect();
             if (Database.isConnected()) {
-                for (PlayerProfile playerProfile : Users.getProfiles()) {
+                for (PlayerProfile playerProfile : Users.getProfiles().values()) {
                     playerProfile.save(); //Save all profiles
                 }
 

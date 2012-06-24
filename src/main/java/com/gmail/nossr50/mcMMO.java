@@ -285,7 +285,7 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         //Make sure to save player information if the server shuts down
-        for (PlayerProfile playerProfile : Users.getProfiles()) {
+        for (PlayerProfile playerProfile : Users.getProfiles().values()) {
             playerProfile.save();
         }
 

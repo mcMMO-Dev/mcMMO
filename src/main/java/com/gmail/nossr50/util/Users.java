@@ -3,9 +3,8 @@ package com.gmail.nossr50.util;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -14,7 +13,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Users {
-    private static List<PlayerProfile> profiles = new ArrayList<PlayerProfile>();
+    private static Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
 
     /**
      * Load users.
@@ -44,21 +43,18 @@ public class Users {
      */
     public static PlayerProfile addUser(Player player) {
         String playerName = player.getName();
+        PlayerProfile playerProfile = profiles.get(playerName);
 
-        for (Iterator<PlayerProfile> it = profiles.iterator() ; it.hasNext() ; ) {
-            PlayerProfile playerProfile = it.next();
+        if (playerProfile != null) {
+            //The player object is different on each reconnection and must be updated
+            playerProfile.setPlayer(player);
+        }
+        else {
+            playerProfile = new PlayerProfile(player, playerName, true);
 
-            if (playerProfile.getPlayerName().equals(playerName)) {
-                //The player object is different on each reconnection and must be updated
-                playerProfile.setPlayer(player);
-                return playerProfile;
-            }
+            profiles.put(playerName, playerProfile);
         }
 
-        //New player, or already removed from the list
-        PlayerProfile playerProfile = new PlayerProfile(player, playerName, true);
-        
-        profiles.add(playerProfile);
         return playerProfile;
     }
 
@@ -74,7 +70,7 @@ public class Users {
      *
      * @return a HashMap containing the PlayerProfile of everyone in the database
      */
-    public static List<PlayerProfile> getProfiles() {
+    public static Map<String, PlayerProfile> getProfiles() {
         return profiles;
     }
 
@@ -95,14 +91,6 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfile(String playerName) {
-        for (Iterator<PlayerProfile> it = profiles.iterator() ; it.hasNext() ; ) {
-            PlayerProfile playerProfile = it.next();
-
-            if (playerProfile.getPlayerName().equals(playerName)) {
-                return playerProfile;
-            }
-        }
-
-        return null;
+        return profiles.get(playerName);
     }
 }

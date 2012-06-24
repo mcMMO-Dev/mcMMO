@@ -20,7 +20,7 @@ public class SaveTimer implements Runnable {
         int count = 1;
         BukkitScheduler bukkitScheduler = plugin.getServer().getScheduler();
 
-        for (PlayerProfile playerProfile : Users.getProfiles()) {
+        for (PlayerProfile playerProfile : Users.getProfiles().values()) {
             bukkitScheduler.scheduleSyncDelayedTask(plugin, new ProfileSaveTask(playerProfile), count);
             count++;
         }
