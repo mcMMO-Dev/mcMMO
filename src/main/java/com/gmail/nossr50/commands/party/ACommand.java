@@ -76,9 +76,9 @@ public class ACommand implements CommandExecutor {
 
                 plugin.getLogger().info("[A]<" + player.getName() + "> " + message);
 
-                for (Player p : plugin.getServer().getOnlinePlayers()) {
-                    if (Permissions.getInstance().adminChat(player) || player.isOp()) {
-                        p.sendMessage(prefix + message);
+                for (Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
+                    if (Permissions.getInstance().adminChat(otherPlayer) || otherPlayer.isOp()) {
+                        otherPlayer.sendMessage(prefix + message);
                     }
                 }
             }
