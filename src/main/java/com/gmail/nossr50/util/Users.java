@@ -58,11 +58,29 @@ public class Users {
         return playerProfile;
     }
 
+    /*
+     * Remove a user.
+     * 
+     * @param playerName The name of the player to remove
+     */
+    public static void remove(String playerName) {
+        profiles.remove(playerName);
+    }
+
     /**
      * Clear all users.
      */
-    public static void clearUsers() {
+    public static void clearAll() {
         profiles.clear();
+    }
+
+    /*
+     * Save all users.
+     */
+    public static void saveAll() {
+        for (PlayerProfile playerProfile : profiles.values()) {
+            playerProfile.save();
+        }
     }
 
     /**

@@ -26,7 +26,7 @@ public class MmoupdateCommand implements CommandExecutor {
         }
 
         sender.sendMessage(ChatColor.GRAY + "Starting conversion..."); //TODO: Needs more locale.
-        Users.clearUsers();
+        Users.clearAll();
         convertToMySQL();
 
         for (Player x : plugin.getServer().getOnlinePlayers()) {

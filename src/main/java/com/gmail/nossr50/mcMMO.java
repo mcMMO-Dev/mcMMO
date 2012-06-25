@@ -284,20 +284,11 @@ public class mcMMO extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        //Make sure to save player information if the server shuts down
-        for (PlayerProfile playerProfile : Users.getProfiles().values()) {
-            playerProfile.save();
-        }
-
+        Users.saveAll(); //Make sure to save player information if the server shuts down
         PartyManager.getInstance().saveParties();
-
         getServer().getScheduler().cancelTasks(this); //This removes our tasks
-
-        //Save our metadata
-        placeStore.saveAll();
-
-        //Cleanup empty metadata stores
-        placeStore.cleanUp();
+        placeStore.saveAll(); //Save our metadata
+        placeStore.cleanUp(); //Cleanup empty metadata stores
 
         //Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
         try {
