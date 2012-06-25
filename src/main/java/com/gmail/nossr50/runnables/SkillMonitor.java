@@ -38,7 +38,7 @@ public class SkillMonitor implements Runnable {
              */
             for (AbilityType ability : AbilityType.values()) {
                 if (ability.getCooldown() > 0 ) {
-                    Skills.watchCooldown(player, PP, curTime, ability);
+                    Skills.watchCooldown(player, PP, ability);
                 }
             }
         }

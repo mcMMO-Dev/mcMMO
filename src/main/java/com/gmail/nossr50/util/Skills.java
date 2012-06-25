@@ -76,11 +76,10 @@ public class Skills {
      *
      * @param player The player to send a message to
      * @param PP The profile of the player
-     * @param curTime The current system time
      * @param ability The ability to watch cooldowns for
      */
-    public static void watchCooldown(Player player, PlayerProfile PP, long curTime, AbilityType ability) {
-        if (!PP.getAbilityInformed(ability) && curTime - (PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR) >= (ability.getCooldown() * TIME_CONVERSION_FACTOR)) {
+    public static void watchCooldown(Player player, PlayerProfile PP, AbilityType ability) {
+        if (!PP.getAbilityInformed(ability) && cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
             PP.setAbilityInformed(ability, true);
             player.sendMessage(ability.getAbilityRefresh());
         }
