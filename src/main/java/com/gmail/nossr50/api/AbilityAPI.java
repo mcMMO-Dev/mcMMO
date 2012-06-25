@@ -34,4 +34,14 @@ public class AbilityAPI {
     public static boolean treeFellerEnabled(Player player) {
         return Users.getProfile(player).getAbilityMode(AbilityType.TREE_FELLER);
     }
+
+    public static boolean isAnyAbilityEnabled(Player player) {
+        for (AbilityType ability : AbilityType.values()) {
+            if (Users.getProfile(player).getAbilityMode(ability)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
