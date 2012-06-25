@@ -3,7 +3,9 @@ package com.gmail.nossr50.skills.unarmed;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 public class IronGripEventHandler {
     private UnarmedManager manager;
@@ -18,7 +20,7 @@ public class IronGripEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Unarmed.DISARM_MAX_BONUS_LEVEL);
+        this.skillModifier = Misc.skillCheck(Users.getProfile(defender).getSkillLevel(SkillType.UNARMED), Unarmed.IRON_GRIP_MAX_BONUS_LEVEL);
     }
 
     protected void sendAbilityMessages() {
