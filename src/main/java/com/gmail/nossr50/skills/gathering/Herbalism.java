@@ -17,6 +17,7 @@ import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.GreenThumbTimer;
 import com.gmail.nossr50.util.Misc;
@@ -281,7 +282,19 @@ public class Herbalism {
 
                 default:
                     if (customPlant) {
-                        Misc.dropItem(loc, is);
+                        CustomBlock customBlock = ModChecks.getCustomBlock(block);
+                        int minimumDropAmount = customBlock.getMinimumDropAmount();
+                        int maximumDropAmount = customBlock.getMaximumDropAmount();
+
+                        is = customBlock.getItemDrop();
+
+                        if (minimumDropAmount != maximumDropAmount) {
+                            Misc.dropItems(loc, is, minimumDropAmount);
+                            Misc.randomDropItems(loc, is, 50, maximumDropAmount - minimumDropAmount);
+                        }
+                        else {
+                            Misc.dropItems(loc, is, minimumDropAmount);
+                        }
                     }
                     break;
                 }

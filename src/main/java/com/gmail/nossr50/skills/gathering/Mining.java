@@ -15,6 +15,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
@@ -196,8 +197,19 @@ public class Mining {
 
         default:
             if (ModChecks.isCustomMiningBlock(block)) {
+                CustomBlock customBlock = ModChecks.getCustomBlock(block);
+                int minimumDropAmount = customBlock.getMinimumDropAmount();
+                int maximumDropAmount = customBlock.getMaximumDropAmount();
+
                 item = ModChecks.getCustomBlock(block).getItemDrop();
-                Misc.dropItem(loc, item);
+
+                if (minimumDropAmount != maximumDropAmount) {
+                    Misc.dropItems(loc, item, minimumDropAmount);
+                    Misc.randomDropItems(loc, item, 50, maximumDropAmount - minimumDropAmount);
+                }
+                else {
+                    Misc.dropItems(loc, item, minimumDropAmount);
+                }
             }
             break;
         }

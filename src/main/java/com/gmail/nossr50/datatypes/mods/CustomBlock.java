@@ -8,13 +8,17 @@ public class CustomBlock {
     private int xpGain;
     private int tier;
     private ItemStack itemDrop;
+    private int minimumDropAmount;
+    private int maximumDropAmount;
 
-    public CustomBlock(ItemStack itemDrop, int tier, int xpGain, byte dataValue, int itemID) {
+    public CustomBlock(int minimumDropAmount, int maximumDropAmount, ItemStack itemDrop, int tier, int xpGain, byte dataValue, int itemID) {
         this.itemID = itemID;
         this.dataValue = dataValue;
         this.xpGain = xpGain;
         this.tier = tier;
         this.itemDrop = itemDrop;
+        this.minimumDropAmount = minimumDropAmount;
+        this.maximumDropAmount = maximumDropAmount;
     }
 
     public int getItemID() {
@@ -55,5 +59,21 @@ public class CustomBlock {
 
     public void setItemDrop(ItemStack itemDrop) {
         this.itemDrop = itemDrop;
+    }
+
+    public int getMinimumDropAmount() {
+        return minimumDropAmount;
+    }
+
+    public void setMinimumDropAmount(int minimumDropAmount) {
+        this.minimumDropAmount = minimumDropAmount;
+    }
+
+    public int getMaximumDropAmount() {
+        return maximumDropAmount;
+    }
+
+    public void setMaximumDropAmount(int maximumDropAmount) {
+        this.maximumDropAmount = maximumDropAmount;
     }
 }

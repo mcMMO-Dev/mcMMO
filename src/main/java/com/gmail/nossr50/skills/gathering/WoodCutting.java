@@ -116,7 +116,18 @@ public class WoodCutting {
                         x.setData((byte) 0x0);
                         x.setType(Material.AIR);
 
-                        Misc.dropItem(x.getLocation(), item);
+                        int minimumDropAmount = block.getMinimumDropAmount();
+                        int maximumDropAmount = block.getMaximumDropAmount();
+
+                        item = block.getItemDrop();
+
+                        if (minimumDropAmount != maximumDropAmount) {
+                            Misc.dropItems(x.getLocation(), item, minimumDropAmount);
+                            Misc.randomDropItems(x.getLocation(), item, 50, maximumDropAmount - minimumDropAmount);
+                        }
+                        else {
+                            Misc.dropItems(x.getLocation(), item, minimumDropAmount);
+                        }
                     }
                     else if (ModChecks.isCustomLeafBlock(x)) {
                         CustomBlock block = ModChecks.getCustomBlock(x);
@@ -298,9 +309,20 @@ public class WoodCutting {
             Location location;
 
             if (configInstance.getBlockModsEnabled() && ModChecks.isCustomLogBlock(block)) {
-                item = ModChecks.getCustomBlock(block).getItemDrop();
+                CustomBlock customBlock = ModChecks.getCustomBlock(block);
+                int minimumDropAmount = customBlock.getMinimumDropAmount();
+                int maximumDropAmount = customBlock.getMaximumDropAmount();
+
+                item = customBlock.getItemDrop();
                 location = block.getLocation();
-                Misc.dropItem(location, item);
+
+                if (minimumDropAmount != maximumDropAmount) {
+                    Misc.dropItems(location, item, minimumDropAmount);
+                    Misc.randomDropItems(location, item, 50, maximumDropAmount - minimumDropAmount);
+                }
+                else {
+                    Misc.dropItems(location, item, minimumDropAmount);
+                }
                 return;
             }
             else {
