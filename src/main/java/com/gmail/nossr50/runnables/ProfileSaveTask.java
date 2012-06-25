@@ -15,7 +15,7 @@ public class ProfileSaveTask implements Runnable {
         playerProfile.save();
 
         if (!playerProfile.getPlayer().isOnline()) {
-            Users.getProfiles().remove(playerProfile);
+            Users.remove(playerProfile.getPlayerName());
         }
     }
 }
