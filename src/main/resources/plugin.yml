@@ -5,7 +5,7 @@ description: mcMMO takes core Minecraft game mechanics and expands them to add a
 author: nossr50
 authors: [NuclearW, gmcferrin, bm01]
 website: http://forums.bukkit.org/threads/rpg-mech-mcmmo-v1-3-05-rpg-addiction-redefined-multi-lingual-1-2-5-r1-0.68601/
-
+    
 main: com.gmail.nossr50.mcMMO
 softdepend: [Spout]
 load: STARTUP
@@ -349,6 +349,7 @@ permissions:
             mcmmo.ability.unarmed.disarm: true
             mcmmo.ability.unarmed.berserk: true
             mcmmo.ability.unarmed.deflect: true
+            mcmmo.ability.unarmed.irongrip: true
     mcmmo.ability.unarmed.bonusdamage:
         description: Allows bonus damage from Unarmed
     mcmmo.ability.unarmed.disarm:
@@ -357,6 +358,8 @@ permissions:
         description: Allows access to the Berserker ability
     mcmmo.ability.unarmed.deflect:
         description: Allows access to the Deflect ability
+    mcmmo.ability.unarmed.irongrip:
+        description: Allows access to the Iron Grip ability
     mcmmo.ability.archery.*:
         description: Allows access to all Archery abilities
         children:

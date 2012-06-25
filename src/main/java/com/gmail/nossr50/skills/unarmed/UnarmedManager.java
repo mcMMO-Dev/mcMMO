@@ -87,7 +87,9 @@ public class UnarmedManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        //TODO: Add permission for Iron Grip
+        if (!permissionsInstance.ironGrip(defender)) {
+            return false;
+        }
 
         IronGripEventHandler eventHandler = new IronGripEventHandler(this, defender);
 

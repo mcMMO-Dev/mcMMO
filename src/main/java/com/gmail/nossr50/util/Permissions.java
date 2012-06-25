@@ -228,6 +228,10 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.unarmed.deflect");
     }
 
+    public boolean ironGrip(Player player) {
+        return player.hasPermission("mcmmo.ability.unarmed.irongrip");
+    }
+
     /*
      * MCMMO.ABILITY.ARCHERY.*
      */
