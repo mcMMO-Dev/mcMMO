@@ -360,9 +360,9 @@ public class PlayerListener implements Listener {
 
             plugin.getLogger().info("[A]<" + playerName + "> " + chatEvent.getMessage());
 
-            for (Player p : plugin.getServer().getOnlinePlayers()) {
-                if (Permissions.getInstance().adminChat(player) || player.isOp()) {
-                    p.sendMessage(prefix + chatEvent.getMessage());
+            for (Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
+                if (Permissions.getInstance().adminChat(otherPlayer) || otherPlayer.isOp()) {
+                    otherPlayer.sendMessage(prefix + chatEvent.getMessage());
                 }
             }
 
