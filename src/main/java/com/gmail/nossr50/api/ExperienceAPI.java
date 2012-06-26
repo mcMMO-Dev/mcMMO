@@ -135,4 +135,43 @@ public final class ExperienceAPI {
     public static int getPowerLevel(Player player) {
         return Users.getProfile(player).getPowerLevel();
     }
+
+    /**
+     * Sets the level of a player in a specific skill type.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to set the level of
+     * @param skillType The skill to set the level for
+     * @param skillLevel The value to set the level to
+     */
+    public static void setLevel(Player player, SkillType skillType, int skillLevel) {
+        Users.getProfile(player).modifySkill(skillType, skillLevel);
+    }
+
+    /**
+     * Sets the XP of a player in a specific skill type.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to set the XP of
+     * @param skillType The skill to set the XP for
+     * @param newValue The value to set the XP to
+     */
+    public static void setXP(Player player, SkillType skillType, int newValue) {
+        Users.getProfile(player).setSkillXPLevel(skillType, newValue);
+    }
+
+    /**
+     * Sets the XP of a player in a specific skill type.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to change the XP of
+     * @param skillType The skill to change the XP for
+     * @param xp The amount of XP to remove
+     */
+    public static void removeXP(Player player, SkillType skillType, int xp) {
+        Users.getProfile(player).removeXP(skillType, xp);
+    }
 }

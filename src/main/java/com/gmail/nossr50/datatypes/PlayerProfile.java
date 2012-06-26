@@ -934,6 +934,10 @@ public class PlayerProfile {
         return skillsXp.get(skillType);
     }
 
+    public void setSkillXPLevel(SkillType skillType, int newValue) {
+        skillsXp.put(skillType, newValue);
+    }
+
     public void skillUp(SkillType skillType, int newValue) {
         skills.put(skillType, skills.get(skillType) + newValue);
     }
