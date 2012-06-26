@@ -181,7 +181,6 @@ public class EntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
-        System.out.println("ExplosionPrimeEvent fired!" + System.currentTimeMillis());
         Entity entity = event.getEntity();
 
         if (entity instanceof TNTPrimed) {
@@ -204,7 +203,6 @@ public class EntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEnitityExplode(EntityExplodeEvent event) {
-        System.out.println("ExplosionPrimeEvent fired!" + System.currentTimeMillis());
         Entity entity = event.getEntity();
 
         if (event.getEntity() instanceof TNTPrimed) {
