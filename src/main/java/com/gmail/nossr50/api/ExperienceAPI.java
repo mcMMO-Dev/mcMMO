@@ -163,7 +163,7 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Sets the XP of a player in a specific skill type.
+     * Removes XP from a player in a specific skill type.
      * </br>
      * This function is designed for API usage.
      *
