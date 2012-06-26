@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
+import java.io.UTFDataFormatException;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -235,18 +236,27 @@ public class HashChunkletManager implements ChunkletManager {
             storeIn = (ChunkletStore) objIn.readObject();
             objIn.close();
             fileIn.close();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             if (ex instanceof EOFException) {
                 // EOF should only happen on Chunklets that somehow have been corrupted.
-                mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read, data in this area will be lost.");
+                mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read due to an EOFException, data in this area will be lost.");
                 return ChunkletStoreFactory.getChunkletStore();
-            } else if (ex instanceof StreamCorruptedException) {
-                // StreamCorrupted happens when the chunklet is no good.
+            }
+            else if (ex instanceof StreamCorruptedException) {
+                // StreamCorrupted happens when the Chunklet is no good.
                 mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " is corrupted, data in this area will be lost.");
                 return ChunkletStoreFactory.getChunkletStore();
             }
+            else if (ex instanceof UTFDataFormatException) {
+                // UTF happens when the Chunklet cannot be read or is corrupted
+                mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read due to an UTFDataFormatException, data in this area will be lost.");
+                return ChunkletStoreFactory.getChunkletStore();
+            }
+
             ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
+        }
+        catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
 

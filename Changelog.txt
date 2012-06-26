@@ -13,6 +13,7 @@ Version 1.3.10-dev
  + Added Ability API functions
  = Fixed players never being removed from memory (memory leak)
  = Fixed admin chat being seen by everyone
+ = Fixed issue with UTFDataFormatException occurring on occasion when trying to load Chunklets
 
 Version 1.3.09
  + Added compatibility with AntiCheat (Which I highly recommend to prevent cheating)
