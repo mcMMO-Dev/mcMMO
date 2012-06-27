@@ -176,16 +176,24 @@ permissions:
         children:
             mcmmo.perks.xp.quadruple: true
             mcmmo.perks.xp.triple: true
+            mcmmo.perks.xp.150percentboost: true
             mcmmo.perks.xp.double: true
+            mcmmo.perks.xp.50percentboost: true
     mcmmo.perks.xp.quadruple:
         default: false
         description: Quadruples incoming XP
     mcmmo.perks.xp.triple:
         default: false
         description: Triples incoming XP
+    mcmmo.perks.xp.150percentboost:
+        default: false
+        description: Mulitplies incoming XP by 2.5
     mcmmo.perks.xp.double:
         default: false
         description: Doubles incoming XP
+    mcmmo.perks.xp.50percentboost:
+        default: false
+        description: Mulitplies incoming XP by 1.5
     mcmmo.bypass.*:
         default: false
         description: Implies all bypass permissions.
