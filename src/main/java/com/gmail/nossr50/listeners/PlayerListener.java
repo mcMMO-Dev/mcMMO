@@ -43,6 +43,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
+import com.garbagemule.MobArena.MobArena;
+import com.garbagemule.MobArena.MobArenaHandler;
+
 public class PlayerListener implements Listener {
     private final mcMMO plugin;
 
@@ -225,7 +228,15 @@ public class PlayerListener implements Listener {
 
             /* REPAIR CHECKS */
             if (Permissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
-                if (mcMMO.repairManager.isRepairable(inHand)) {
+                Plugin maPlugin = (MobArena) Bukkit.getServer().getPluginManager().getPlugin("MobArena");
+            	boolean inArena = false;
+            	if (maPlugin != null) {            		
+            		MobArenaHandler maHandler = new MobArenaHandler();
+            		if (maHandler.inRegion(block.getLocation()) && block.getTypeId() == 42) {
+            			inArena = true;
+            		}
+            	}		
+                if (mcMMO.repairManager.isRepairable(inHand) && !inArena) {
                     mcMMO.repairManager.handleRepair(player, inHand);
                     event.setCancelled(true);
                     player.updateInventory();
