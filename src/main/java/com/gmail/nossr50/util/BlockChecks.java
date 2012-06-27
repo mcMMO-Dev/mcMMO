@@ -97,6 +97,9 @@ public class BlockChecks {
         if (block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
             return false;
         }
+        else if (customBlocksEnabled && CustomBlocksConfig.getInstance().customAbilityBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            return false;
+        }
         else {
             return true;
         }

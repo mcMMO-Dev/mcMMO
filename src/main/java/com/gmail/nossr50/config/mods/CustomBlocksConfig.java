@@ -30,6 +30,7 @@ public class CustomBlocksConfig extends ModConfigLoader{
     public List<ItemStack> customOres = new ArrayList<ItemStack>();
     public List<ItemStack> customLogs = new ArrayList<ItemStack>();
     public List<ItemStack> customLeaves = new ArrayList<ItemStack>();
+    public List<ItemStack> customAbilityBlocks = new ArrayList<ItemStack>();
 
     public List<ItemStack> customItems = new ArrayList<ItemStack>();
     public List<CustomBlock> customBlocks = new ArrayList<CustomBlock>();
@@ -46,6 +47,7 @@ public class CustomBlocksConfig extends ModConfigLoader{
         loadBlocks("Herbalism", customHerbalismBlocks);
         loadBlocks("Mining", customMiningBlocks);
         loadBlocks("Woodcutting", customWoodcuttingBlocks);
+        loadBlocks("Ability_Blocks", customAbilityBlocks);
     }
 
     private void loadBlocks(String skillType, List<ItemStack> blockList) {
@@ -66,8 +68,18 @@ public class CustomBlocksConfig extends ModConfigLoader{
             int minimumDropAmount = config.getInt(skillType + "." + blockName + ".Min_Drop_Item_Amount", 1);
             int maxiumDropAmount = config.getInt(skillType + "." + blockName + ".Max_Drop_Item_Amount", 1);
 
+            CustomBlock block;
+            ItemStack itemDrop;
+            ItemStack blockItem;
+
             if (id == 0) {
                 plugin.getLogger().warning("Missing ID. This block will be skipped.");
+                continue;
+            }
+
+            if (skillType == "Ability_Blocks") {
+                blockItem = new ItemStack(id, 1, (short) 0, data);
+                blockList.add(blockItem);
                 continue;
             }
 
@@ -75,10 +87,6 @@ public class CustomBlocksConfig extends ModConfigLoader{
                 plugin.getLogger().warning("Incomplete item drop information. This block will drop itself.");
                 dropItem = false;
             }
-
-            CustomBlock block;
-            ItemStack itemDrop;
-            ItemStack blockItem;
 
             if (dropItem) {
                 itemDrop = new ItemStack(dropID, 1, (short) 0, dropData);
@@ -90,10 +98,10 @@ public class CustomBlocksConfig extends ModConfigLoader{
             block = new CustomBlock(minimumDropAmount, maxiumDropAmount, itemDrop, tier, xp, data, id);
             blockItem = new ItemStack(id, 1, (short) 0, data);
 
-            if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
+            if (skillType == "Mining" && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
                 customOres.add(blockItem);
             }
-            else if (skillType.equals("Woodcutting")) {
+            else if (skillType == "Woodcutting") {
                 if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
                     customLogs.add(blockItem);
                 }

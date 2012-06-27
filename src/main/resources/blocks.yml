@@ -95,3 +95,15 @@ Woodcutting:
         Drop_Item_Data_Value: 0
         Min_Drop_Item_Amount: 1
         Max_Drop_Item_Amount: 1
+
+#
+#  Settings for Custom Ability Blocks
+#  (These blocks don't trigger abilities)
+###
+Ability_Blocks:
+    Block_1:
+        ID: 999
+        Data_Value: 0
+    Block_2:
+        ID: 999
+        Data_Value: 0        
