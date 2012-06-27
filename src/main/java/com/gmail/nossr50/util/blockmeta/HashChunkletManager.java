@@ -10,7 +10,6 @@ import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import java.io.UTFDataFormatException;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -87,10 +86,11 @@ public class HashChunkletManager implements ChunkletManager {
 
         String worldName = world.getName();
 
-        for(Iterator<String> it = store.keySet().iterator() ; it.hasNext() ; ) {
-            String tempWorldName = it.next().split(",")[0];
+        for(String key : store.keySet()) {
+            String tempWorldName = key.split(",")[0];
             if(tempWorldName.equals(worldName)) {
-                it.remove();
+                store.remove(key);
+                return;
             }
         }
     }
