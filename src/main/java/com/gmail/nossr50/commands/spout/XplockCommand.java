@@ -52,6 +52,10 @@ public class XplockCommand implements CommandExecutor {
                 player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(lastGained.toString()) }));
                 return true;
             }
+            else {
+                player.sendMessage(usage);
+                return true;
+            }
 
         case 1:
             if (Skills.isSkill(args[0])) {
