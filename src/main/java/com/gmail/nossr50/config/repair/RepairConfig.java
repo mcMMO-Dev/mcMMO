@@ -1,4 +1,4 @@
-package com.gmail.nossr50.config;
+package com.gmail.nossr50.config.repair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.skills.repair.RepairItemType;
 import com.gmail.nossr50.skills.repair.RepairMaterialType;
 import com.gmail.nossr50.skills.repair.Repairable;

@@ -1,4 +1,4 @@
-package com.gmail.nossr50.config;
+package com.gmail.nossr50.config.repair;
 
 import java.io.File;
 import java.util.ArrayList;
