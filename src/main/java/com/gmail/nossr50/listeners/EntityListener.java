@@ -123,6 +123,11 @@ public class EntityListener implements Listener {
         if (lEntity instanceof Player) {
             /* Check for invincibility */
             Player player = (Player) entity;
+
+            if (!player.isOnline()) {
+                return;
+            }
+
             PlayerProfile PP = Users.getProfile(player);
 
             if (PP.getGodMode()) {
