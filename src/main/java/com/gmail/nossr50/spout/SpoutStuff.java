@@ -16,6 +16,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -573,5 +574,15 @@ public class SpoutStuff {
      */
     public static void updateXpBar(Player player) {
         playerHUDs.get(player).updateXpBarDisplay(Users.getProfile(player).getHUDType(), player); //Is there a reason we can't just do HUDmmo.updateXpBarDisplay?
+    }
+
+    /**
+     * Re-enable SpoutCraft for players after a /reload
+     */
+    public static void reloadSpoutPlayers() {
+        for (SpoutPlayer spoutPlayer : SpoutManager.getPlayerManager().getOnlinePlayers()) {
+          SpoutCraftEnableEvent spoutCraftEnableEvent = new SpoutCraftEnableEvent(spoutPlayer);
+          mcMMO.p.getServer().getPluginManager().callEvent(spoutCraftEnableEvent);
+      }
     }
 }

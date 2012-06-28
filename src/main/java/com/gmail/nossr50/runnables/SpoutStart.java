@@ -1,9 +1,7 @@
 package com.gmail.nossr50.runnables;
 
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.player.FileManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.SpoutConfig;
@@ -36,10 +34,7 @@ public class SpoutStart implements Runnable{
             FM.addToPreLoginCache(plugin, SpoutStuff.getFiles());
 
             //Handle spout players after a /reload
-            for (SpoutPlayer spoutPlayer : SpoutManager.getPlayerManager().getOnlinePlayers()) {
-                SpoutCraftEnableEvent spoutCraftEnableEvent = new SpoutCraftEnableEvent(spoutPlayer);
-                mcMMO.p.getServer().getPluginManager().callEvent(spoutCraftEnableEvent);
-            }
+            SpoutStuff.reloadSpoutPlayers();
         }
     }
 }
