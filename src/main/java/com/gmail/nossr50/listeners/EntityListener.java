@@ -75,10 +75,18 @@ public class EntityListener implements Listener {
             }
         }
 
-        if (attacker instanceof Player && defender instanceof Player) {
-            if (PartyManager.getInstance().inSameParty((Player) defender, (Player) attacker)) {
-                event.setCancelled(true);
+        if (defender instanceof Player) {
+            Player defendingPlayer = (Player) defender;
+
+            if (!defendingPlayer.isOnline()) {
                 return;
+            }
+
+            if (attacker instanceof Player) {
+                if (PartyManager.getInstance().inSameParty(defendingPlayer, (Player) attacker)) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
 
