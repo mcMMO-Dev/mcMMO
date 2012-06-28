@@ -323,12 +323,6 @@ public class Combat {
      * @param type The type of skill being used
      */
     public static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, SkillType type) {
-        ItemStack inHand = attacker.getItemInHand();
-
-        if (ModChecks.isCustomTool(inHand) && !ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
-            return;
-        }
-
         int numberOfTargets = Misc.getTier(attacker.getItemInHand()); //The higher the weapon tier, the more targets you hit
         int damageAmount = damage;
 

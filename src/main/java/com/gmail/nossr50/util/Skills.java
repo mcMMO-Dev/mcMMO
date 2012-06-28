@@ -101,6 +101,10 @@ public class Skills {
         ToolType tool = skill.getTool();
         ItemStack inHand = player.getItemInHand();
 
+        if (ModChecks.isCustomTool(inHand) && !ModChecks.getToolFromItemStack(inHand).isAbilityEnabled()) {
+            return;
+        }
+
         /* Check if any abilities are active */
         if (!PP.getAbilityUse()) {
             return;
