@@ -139,16 +139,14 @@ public class Database {
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            if (stmt.executeQuery() != null) {
-                stmt.executeQuery();
-                rs = stmt.getResultSet();
-                while (rs.next()) {
-                    ArrayList<String> Col = new ArrayList<String>();
-                    for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                        Col.add(rs.getString(i));
-                    }
-                    Rows.put(rs.getRow(), Col);
+            stmt.executeQuery();
+            rs = stmt.getResultSet();
+            while (rs.next()) {
+                ArrayList<String> Col = new ArrayList<String>();
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    Col.add(rs.getString(i));
                 }
+                Rows.put(rs.getRow(), Col);
             }
         }
         catch (SQLException ex) {
@@ -201,16 +199,13 @@ public class Database {
         if (isConnected()) {
             try {
                 PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt = conn.prepareStatement(sql);
-                if (stmt.executeQuery() != null) {
-                    stmt.executeQuery();
-                    rs = stmt.getResultSet();
-                    if (rs.next()) {
-                        result = rs.getInt(1);
-                    }
-                    else {
-                        result = 0;
-                    }
+                stmt.executeQuery();
+                rs = stmt.getResultSet();
+                if (rs.next()) {
+                   result = rs.getInt(1);
+                }
+                else {
+                    result = 0;
                 }
             }
             catch (SQLException ex) {
@@ -264,16 +259,14 @@ public class Database {
         if (isConnected()) {
             try {
                 PreparedStatement stmt = conn.prepareStatement(sql);
-                if (stmt.executeQuery() != null) {
-                    stmt.executeQuery();
-                    rs = stmt.getResultSet();
-                    while (rs.next()) {
-                        ArrayList<String> Col = new ArrayList<String>();
-                        for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                            Col.add(rs.getString(i));
-                        }
-                        Rows.put(rs.getRow(), Col);
+                stmt.executeQuery();
+                rs = stmt.getResultSet();
+                while (rs.next()) {
+                    ArrayList<String> Col = new ArrayList<String>();
+                    for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                        Col.add(rs.getString(i));
                     }
+                    Rows.put(rs.getRow(), Col);
                 }
             }
             catch (SQLException ex) {
