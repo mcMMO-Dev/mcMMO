@@ -224,7 +224,7 @@ public class BlockListener implements Listener {
         }
 
         //Remove metadata when broken
-        if (mcMMO.placeStore.isTrue(block) && BlockChecks.shouldBeWatched(block)) {
+        if (BlockChecks.shouldBeWatched(block)) {
             mcMMO.placeStore.setFalse(block);
         }
 

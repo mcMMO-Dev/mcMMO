@@ -9,7 +9,6 @@ import java.util.List;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -66,6 +65,7 @@ import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
+import com.gmail.nossr50.runnables.ChunkletUnloader;
 import com.gmail.nossr50.runnables.SaveTimer;
 import com.gmail.nossr50.runnables.SkillMonitor;
 import com.gmail.nossr50.runnables.SpoutStart;
@@ -183,12 +183,14 @@ public class mcMMO extends JavaPlugin {
 
         //Schedule Spout Activation 1 second after start-up
         scheduler.scheduleSyncDelayedTask(this, new SpoutStart(this), 20);
-        //Periodic save timer (Saves every 10 minutes)
+        //Periodic save timer (Saves every 10 minutes by default)
         scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(this), 0, configInstance.getSaveInterval() * 1200);
         //Regen & Cooldown timer (Runs every second)
         scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(this), 0, 20);
         //Bleed timer (Runs every two seconds)
         scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 0, 40);
+        //Chunklet unloader (Runs every 20 seconds by default)
+        scheduler.scheduleSyncRepeatingTask(this, new ChunkletUnloader(), 0, ChunkletUnloader.RUN_INTERVAL * 20);
 
         registerCommands();
 
@@ -224,10 +226,6 @@ public class mcMMO extends JavaPlugin {
 
         // Get our ChunkletManager
         placeStore = ChunkletManagerFactory.getChunkletManager();
-
-        for (World world : getServer().getWorlds()) {
-            placeStore.loadWorld(world);
-        }
     }
 
     /**

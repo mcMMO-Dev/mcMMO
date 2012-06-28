@@ -10,6 +10,11 @@ import org.bukkit.block.Block;
  */
 public class NullChunkletManager implements ChunkletManager {
     @Override
+    public void loadChunklet(int cx, int cy, int cz, World world) {
+        return;
+    }
+
+    @Override
     public void chunkLoaded(int cx, int cz, World world) {
         return;
     }

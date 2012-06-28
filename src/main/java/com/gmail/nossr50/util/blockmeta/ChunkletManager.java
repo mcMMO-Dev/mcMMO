@@ -5,10 +5,20 @@ import org.bukkit.block.Block;
 
 public interface ChunkletManager {
     /**
+     * Loads a specific chunklet
+     * 
+     * @param cx Chunklet X coordinate that needs to be loaded
+     * @param cy Chunklet Y coordinate that needs to be loaded
+     * @param cz Chunklet Z coordinate that needs to be loaded
+     * @param world World that the chunklet needs to be loaded in
+     */
+    public void loadChunklet(int cx, int cy, int cz, World world);
+
+    /**
      * Informs the ChunkletManager a chunk is loaded, it should load appropriate data
      *
-     * @param cx Chunk X coordiate that is loaded
-     * @param cz Chunk Z coordiate that is loaded
+     * @param cx Chunk X coordinate that is loaded
+     * @param cz Chunk Z coordinate that is loaded
      * @param world World that the chunk was loaded in
      */
     public void chunkLoaded(int cx, int cz, World world);
@@ -16,8 +26,8 @@ public interface ChunkletManager {
     /**
      * Informs the ChunkletManager a chunk is unloaded, it should unload and save appropriate data
      *
-     * @param cx Chunk X coordiate that is unloaded
-     * @param cz Chunk Z coordiate that is unloaded
+     * @param cx Chunk X coordinate that is unloaded
+     * @param cz Chunk Z coordinate that is unloaded
      * @param world World that the chunk was unloaded in
      */
     public void chunkUnloaded(int cx, int cz, World world);

@@ -12,7 +12,6 @@ import java.io.UTFDataFormatException;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
@@ -22,24 +21,40 @@ public class HashChunkletManager implements ChunkletManager {
     private HashMap<String, ChunkletStore> store = new HashMap<String, ChunkletStore>();
 
     @Override
-    public void chunkLoaded(int cx, int cz, World world) {
+    public void loadChunklet(int cx, int cy, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
         File cxDir = new File(dataDir, "" + cx);
         if(!cxDir.exists()) return;
         File czDir = new File(cxDir, "" + cz);
         if(!czDir.exists()) return;
+        File yFile = new File(czDir, "" + cy);
+        if(!yFile.exists()) return;
 
-        for(int y = 0; y < 4; y++) {
-            File yFile = new File(czDir, "" + y);
-            if(!yFile.exists()) {
-                continue;
-            } else {
-                ChunkletStore in = deserializeChunkletStore(yFile);
-                if(in != null) {
-                    store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
-                }
-            }
+        ChunkletStore in = deserializeChunkletStore(yFile);
+        if(in != null) {
+            store.put(world.getName() + "," + cx + "," + cz + "," + cy, in);
         }
+    }
+
+    @Override
+    public void chunkLoaded(int cx, int cz, World world) {
+        //File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
+        //File cxDir = new File(dataDir, "" + cx);
+        //if(!cxDir.exists()) return;
+        //File czDir = new File(cxDir, "" + cz);
+        //if(!czDir.exists()) return;
+
+        //for(int y = 0; y < 4; y++) {
+        //    File yFile = new File(czDir, "" + y);
+        //    if(!yFile.exists()) {
+        //        continue;
+        //    } else {
+        //        ChunkletStore in = deserializeChunkletStore(yFile);
+        //        if(in != null) {
+        //            store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
+        //        }
+        //    }
+        //}
     }
 
     @Override
@@ -97,9 +112,9 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public void loadWorld(World world) {
-        for(Chunk chunk : world.getLoadedChunks()) {
-            this.chunkLoaded(chunk.getX(), chunk.getZ(), world);
-        }
+        //for(Chunk chunk : world.getLoadedChunks()) {
+        //    this.chunkLoaded(chunk.getX(), chunk.getZ(), world);
+        //}
     }
 
     @Override
@@ -122,7 +137,15 @@ public class HashChunkletManager implements ChunkletManager {
         int cx = x / 16;
         int cz = z / 16;
         int cy = y / 64;
-        if(!store.containsKey(world.getName() + "," + cx + "," + cz + "," + cy)) return false;
+        String key = world.getName() + "," + cx + "," + cz + "," + cy;
+
+        if (!store.containsKey(key)) {
+            loadChunklet(cx, cy, cz, world);
+        }
+
+        if (!store.containsKey(key)) {
+            return false;
+        }
 
         ChunkletStore check = store.get(world.getName() + "," + cx + "," + cz + "," + cy);
         int ix = Math.abs(x) % 16;
@@ -147,13 +170,20 @@ public class HashChunkletManager implements ChunkletManager {
         int iz = Math.abs(z) % 16;
         int iy = Math.abs(y) % 64;
 
-        ChunkletStore cStore;
-        if(!store.containsKey(world.getName() + "," + cx + "," + cz + "," + cy)) {
+        String key = world.getName() + "," + cx + "," + cz + "," + cy;
+
+        if (!store.containsKey(key)) {
+            loadChunklet(cx, cy, cz, world);
+        }
+
+        ChunkletStore cStore = store.get(key);
+
+        if (cStore == null) {
             cStore = ChunkletStoreFactory.getChunkletStore();
+
             store.put(world.getName() + "," + cx + "," + cz + "," + cy, cStore);
         }
 
-        cStore = store.get(world.getName() + "," + cx + "," + cz + "," + cy);
         cStore.setTrue(ix, iy, iz);
     }
 
@@ -172,12 +202,18 @@ public class HashChunkletManager implements ChunkletManager {
         int iz = Math.abs(z) % 16;
         int iy = Math.abs(y) % 64;
 
-        ChunkletStore cStore;
-        if(!store.containsKey(world.getName() + "," + cx + "," + cz + "," + cy)) {
-            return;    // No need to make a store for something we will be setting to false
+        String key = world.getName() + "," + cx + "," + cz + "," + cy;
+
+        if (!store.containsKey(key)) {
+            loadChunklet(cx, cy, cz, world);
         }
 
-        cStore = store.get(world.getName() + "," + cx + "," + cz + "," + cy);
+        ChunkletStore cStore = store.get(key);
+
+        if (cStore == null) {
+            return; //No need to make a store for something we will be setting to false
+        }
+
         cStore.setFalse(ix, iy, iz);
     }
 
