@@ -41,18 +41,10 @@ public class PartyManager {
      * @return true if they are in the same party, false otherwise
      */
     public boolean inSameParty(Player firstPlayer, Player secondPlayer) {
-        if (Users.getProfile(firstPlayer) == null) {
-            plugin.getLogger().info("The defending player's profile was null.");
-            plugin.getLogger().info("This player is online: " + firstPlayer.isOnline());
-            return false;
-        }
+        Party firstParty = Users.getProfile(firstPlayer).getParty();
+        Party secondParty = Users.getProfile(secondPlayer).getParty();
 
-        if (Users.getProfile(secondPlayer) == null) {
-            plugin.getLogger().info("The attacking player's profile was null.");
-            plugin.getLogger().info("This player is online: " + secondPlayer.isOnline());
-            return false;
-        }
-        if (Users.getProfile(firstPlayer).getParty() == null || Users.getProfile(secondPlayer).getParty() == null || !Users.getProfile(firstPlayer).getParty().equals(Users.getProfile(secondPlayer).getParty())) {
+        if (firstParty == null || secondParty == null || firstParty != secondParty) {
             return false;
         }
 
