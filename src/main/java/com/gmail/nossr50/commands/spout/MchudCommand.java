@@ -9,20 +9,13 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.SpoutConfig;
-import com.gmail.nossr50.datatypes.HUDType;
-import com.gmail.nossr50.datatypes.HUDmmo;
+import com.gmail.nossr50.datatypes.HudType;
+import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Users;
 
 public class MchudCommand implements CommandExecutor {
-    private final mcMMO plugin;
-
-    public MchudCommand (mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String usage = ChatColor.RED + "Proper usage is /mchud <hud-type>"; //TODO: Locale
@@ -40,33 +33,24 @@ public class MchudCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             Player player = (Player) sender;
-            PlayerProfile PP = Users.getProfile(player);
-            HUDType hud;
+            PlayerProfile playerProfile = Users.getProfile(player);
 
-            if (args[0].equalsIgnoreCase("disabled")) {
-                hud = HUDType.DISABLED;
-            }
-            else if (args[0].equalsIgnoreCase("standard")) {
-                hud = HUDType.STANDARD;
-            }
-            else if (args[0].equalsIgnoreCase("small")) {
-                hud = HUDType.SMALL;
-            }
-            else if (args[0].equalsIgnoreCase("retro")) {
-                hud = HUDType.RETRO;
-            }
-            else {
-                player.sendMessage(invalid);
-                return true;
+            for (HudType hudType : HudType.values()) {
+                if (hudType.toString().equalsIgnoreCase(args[0])) {
+                    playerProfile.setHudType(hudType);
+
+                    SpoutHud spoutHud = playerProfile.getSpoutHud();
+
+                    if (spoutHud != null) {
+                        spoutHud.initializeXpBar();
+                        spoutHud.updateXpBar();
+                    }
+
+                    return true;
+                }
             }
 
-            if (SpoutStuff.playerHUDs.containsKey(player)) {
-                SpoutStuff.playerHUDs.get(player).resetHUD();
-                SpoutStuff.playerHUDs.remove(player);
-                PP.setHUDType(hud);
-                SpoutStuff.playerHUDs.put(player, new HUDmmo(player, plugin));
-            }
-
+            player.sendMessage(invalid);
             return true;
 
         default:

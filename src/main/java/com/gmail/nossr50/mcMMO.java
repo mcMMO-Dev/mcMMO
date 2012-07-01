@@ -421,7 +421,7 @@ public class mcMMO extends JavaPlugin {
             getCommand("xplock").setExecutor(new XplockCommand());
         }
 
-        getCommand("mchud").setExecutor(new MchudCommand(this));
+        getCommand("mchud").setExecutor(new MchudCommand());
     }
 
     /**

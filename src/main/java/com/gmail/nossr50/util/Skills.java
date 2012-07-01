@@ -230,7 +230,7 @@ public class Skills {
 
                 if (sPlayer.isSpoutCraftEnabled()) {
                     if (SpoutConfig.getInstance().getXPBarEnabled()) {
-                        SpoutStuff.updateXpBar(player);
+                        profile.updateXpBar();
                     }
 
                     SpoutStuff.levelUpNotification(skillType, sPlayer);
@@ -254,7 +254,7 @@ public class Skills {
             SpoutPlayer sPlayer = (SpoutPlayer) player;
             if (sPlayer.isSpoutCraftEnabled()) {
                 if (SpoutConfig.getInstance().getXPBarEnabled()) {
-                    SpoutStuff.updateXpBar(player);
+                    profile.updateXpBar();
                 }
             }
         }

@@ -13,7 +13,6 @@ import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
@@ -34,48 +33,47 @@ public class XplockCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile playerProfile = Users.getProfile(player);
 
         switch (args.length) {
         case 0:
-            if (PP.getXpBarLocked()) {
-                PP.toggleXpBarLocked();
+            if (playerProfile.getXpBarLocked()) {
+                playerProfile.toggleXpBarLocked();
                 player.sendMessage(LocaleLoader.getString("Commands.xplock.unlocked"));
                 return true;
             }
 
-            SkillType lastGained = PP.getLastGained();
+            SkillType lastGained = playerProfile.getLastGained();
 
             if (lastGained != null) {
-                PP.toggleXpBarLocked();
-                PP.setSkillLock(lastGained);
+                playerProfile.toggleXpBarLocked();
+                playerProfile.setSkillLock(lastGained);
                 player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(lastGained.toString()) }));
-                return true;
             }
             else {
                 player.sendMessage(usage);
-                return true;
             }
+
+            return true;
 
         case 1:
             if (Skills.isSkill(args[0])) {
                 if (Permissions.getInstance().permission(player, "mcmmo.skills." + args[0].toLowerCase())) {
-                    PP.setXpBarLocked(true);
-                    PP.setSkillLock(Skills.getSkillType(args[0]));
-                    SpoutStuff.updateXpBar(player);
+                    playerProfile.setXpBarLocked(true);
+                    playerProfile.setSkillLock(Skills.getSkillType(args[0]));
+                    playerProfile.updateXpBar();
 
                     player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(args[0]) }));
-                    return true;
                 }
                 else {
                     player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
-                    return true;
                 }
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-                return true;
             }
+
+            return true;
 
         default:
             player.sendMessage(usage);

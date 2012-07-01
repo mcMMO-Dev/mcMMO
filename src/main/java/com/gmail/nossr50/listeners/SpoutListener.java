@@ -7,28 +7,19 @@ import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.event.screen.ScreenCloseEvent;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
+import org.getspout.spoutapi.gui.Button;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.SpoutConfig;
-import com.gmail.nossr50.datatypes.HUDType;
-import com.gmail.nossr50.datatypes.HUDmmo;
+import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.buttons.ButtonEscape;
-import com.gmail.nossr50.datatypes.buttons.ButtonHUDStyle;
-import com.gmail.nossr50.datatypes.buttons.ButtonPartyToggle;
-import com.gmail.nossr50.datatypes.popups.PopupMMO;
+import com.gmail.nossr50.datatypes.buttons.McmmoButton;
+import com.gmail.nossr50.datatypes.popups.Menu;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Users;
 
 public class SpoutListener implements Listener {
-    private final mcMMO plugin;
-
-    public SpoutListener(mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     /**
      * Monitor SpoutCraftEnable events.
      *
@@ -36,19 +27,15 @@ public class SpoutListener implements Listener {
      */
     @EventHandler
     public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
-        SpoutPlayer sPlayer = event.getPlayer();
-        PlayerProfile PPs = Users.getProfile(sPlayer);
+        SpoutPlayer spoutPlayer = event.getPlayer();
+        PlayerProfile playerProfile = Users.getProfile(spoutPlayer);
 
         //TODO: Add custom titles based on skills
         if (SpoutConfig.getInstance().getShowPowerLevel()) {
-            sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(PPs.getPowerLevel()));
+            spoutPlayer.setTitle(spoutPlayer.getName() + "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(playerProfile.getPowerLevel()));
         }
 
-        if (sPlayer.isSpoutCraftEnabled()) {
-            SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer, plugin)); //Setup Party HUD stuff
-
-            PPs.toggleSpoutEnabled();
-        }
+        playerProfile.setSpoutHud(new SpoutHud(playerProfile)); //Setup Party HUD stuff
     }
 
     /**
@@ -58,48 +45,10 @@ public class SpoutListener implements Listener {
      */
     @EventHandler
     public void onButtonClick(ButtonClickEvent event) {
-        SpoutPlayer sPlayer = event.getPlayer();
-        PlayerProfile PP = Users.getProfile(sPlayer);
+        Button button = event.getButton();
 
-        if (event.getButton() instanceof ButtonHUDStyle) {
-            if (SpoutStuff.playerHUDs.containsKey(sPlayer)) {
-                SpoutStuff.playerHUDs.get(sPlayer).resetHUD();
-                SpoutStuff.playerHUDs.remove(sPlayer);
-
-                switch (PP.getHUDType()) {
-                case RETRO:
-                    PP.setHUDType(HUDType.STANDARD);
-                    break;
-
-                case STANDARD:
-                    PP.setHUDType(HUDType.SMALL);
-                    break;
-
-                case SMALL:
-                    PP.setHUDType(HUDType.DISABLED);
-                    break;
-
-                case DISABLED:
-                    PP.setHUDType(HUDType.RETRO);
-                    break;
-
-                default:
-                    break;
-                }
-
-                SpoutStuff.playerHUDs.put(sPlayer, new HUDmmo(sPlayer, plugin));
-                SpoutStuff.playerScreens.get(sPlayer).updateButtons(PP);
-            }
-        }
-        else if (event.getButton() instanceof ButtonEscape) {
-            sPlayer.getMainScreen().closePopup();
-        }
-        else if (event.getButton() instanceof ButtonPartyToggle) {
-            PP.togglePartyHUD();
-            ButtonPartyToggle bpt = (ButtonPartyToggle) event.getButton();
-            bpt.updateText(PP);
-            SpoutStuff.playerHUDs.get(sPlayer).resetHUD();
-            SpoutStuff.playerHUDs.get(sPlayer).initializeHUD(sPlayer);
+        if (button instanceof McmmoButton) {
+            ((McmmoButton) button).activate();
         }
     }
 
@@ -110,8 +59,11 @@ public class SpoutListener implements Listener {
      */
     @EventHandler
     public void onScreenClose(ScreenCloseEvent event) {
-        if (event.getScreen() instanceof PopupMMO) {
-            SpoutStuff.playerScreens.remove(event.getPlayer());
+        if (event.getScreen() instanceof Menu) {
+            SpoutPlayer spoutPlayer = event.getPlayer();
+
+            Users.getProfile(spoutPlayer).getSpoutHud().onMenuClose();
+            spoutPlayer.getMainScreen().setDirty(true);
         }
     }
 
@@ -122,23 +74,17 @@ public class SpoutListener implements Listener {
      */
     @EventHandler
     public void onKeyPressedEvent(KeyPressedEvent event) {
-        SpoutPlayer sPlayer = event.getPlayer();
+        SpoutPlayer spoutPlayer = event.getPlayer();
 
-        if (!sPlayer.isSpoutCraftEnabled() || sPlayer.getMainScreen().getActivePopup() != null || event.getScreenType() != ScreenType.GAME_SCREEN) {
+        if (spoutPlayer.getMainScreen().getActivePopup() != null || event.getScreenType() != ScreenType.GAME_SCREEN) {
             return;
         }
 
         if (event.getKey() == SpoutStuff.keypress) {
-            if (!SpoutStuff.playerScreens.containsKey(sPlayer)) {
-                PopupMMO mmoPop = new PopupMMO(sPlayer, Users.getProfile(sPlayer), plugin);
+            SpoutHud spoutHud = Users.getProfile(spoutPlayer).getSpoutHud();
 
-                SpoutStuff.playerScreens.put(sPlayer, mmoPop);
-                sPlayer.getMainScreen().attachPopupScreen(SpoutStuff.playerScreens.get(sPlayer));
-                sPlayer.getMainScreen().setDirty(true);
-            }
-            else {
-                sPlayer.getMainScreen().attachPopupScreen(SpoutStuff.playerScreens.get(sPlayer));
-                sPlayer.getMainScreen().setDirty(true);
+            if (!spoutHud.isMenuOpened()) {
+                spoutHud.openMenu();
             }
         }
     }

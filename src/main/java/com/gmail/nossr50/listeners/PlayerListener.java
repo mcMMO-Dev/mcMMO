@@ -36,7 +36,6 @@ import com.gmail.nossr50.skills.gathering.BlastMining;
 import com.gmail.nossr50.skills.gathering.Fishing;
 import com.gmail.nossr50.skills.gathering.Herbalism;
 import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Item;
 import com.gmail.nossr50.util.Permissions;
@@ -136,11 +135,6 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         /* GARBAGE COLLECTION */
-
-        //Remove Spout Stuff
-        if (mcMMO.spoutEnabled && SpoutStuff.playerHUDs.containsKey(player)) {
-            SpoutStuff.playerHUDs.remove(player);
-        }
 
         //Bleed it out
         BleedTimer.bleedOut(player);

@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -22,10 +21,8 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.SpoutConfig;
-import com.gmail.nossr50.datatypes.HUDmmo;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.datatypes.popups.PopupMMO;
 import com.gmail.nossr50.listeners.SpoutListener;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
@@ -39,11 +36,7 @@ public class SpoutStuff {
     public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
     public final static String soundDirectory = spoutDirectory + "Sound" + File.separator;
 
-    private final static SpoutListener spoutListener = new SpoutListener(plugin);
-
-    public static HashMap<Player, HUDmmo> playerHUDs = new HashMap<Player, HUDmmo>();
-    public static HashMap<SpoutPlayer, PopupMMO> playerScreens = new HashMap<SpoutPlayer, PopupMMO>();
-
+    private final static SpoutListener spoutListener = new SpoutListener();
     public static Keyboard keypress;
 
     /**
@@ -198,21 +191,6 @@ public class SpoutStuff {
      */
     public static void registerCustomEvent() {
         plugin.getServer().getPluginManager().registerEvents(spoutListener, plugin);
-    }
-
-    /**
-     * Gets a Spout player from a player name.
-     *
-     * @param playerName The player name
-     * @return the SpoutPlayer related to this player name, null if there's no player online with that name.
-     */
-    public static SpoutPlayer getSpoutPlayer(String playerName) {
-        for (Player x : plugin.getServer().getOnlinePlayers()) {
-            if (x.getName().equalsIgnoreCase(playerName)) {
-                return SpoutManager.getPlayer(x);
-            }
-        }
-        return null;
     }
 
     /**
@@ -568,21 +546,21 @@ public class SpoutStuff {
     }
 
     /**
-     * Update a player's Spout XP bar.
-     *
-     * @param player The player whose bar to update
-     */
-    public static void updateXpBar(Player player) {
-        playerHUDs.get(player).updateXpBarDisplay(Users.getProfile(player).getHUDType(), player); //Is there a reason we can't just do HUDmmo.updateXpBarDisplay?
-    }
-
-    /**
      * Re-enable SpoutCraft for players after a /reload
      */
     public static void reloadSpoutPlayers() {
         for (SpoutPlayer spoutPlayer : SpoutManager.getPlayerManager().getOnlinePlayers()) {
-          SpoutCraftEnableEvent spoutCraftEnableEvent = new SpoutCraftEnableEvent(spoutPlayer);
-          mcMMO.p.getServer().getPluginManager().callEvent(spoutCraftEnableEvent);
-      }
+            SpoutCraftEnableEvent spoutCraftEnableEvent = new SpoutCraftEnableEvent(spoutPlayer);
+            mcMMO.p.getServer().getPluginManager().callEvent(spoutCraftEnableEvent);
+        }
+    }
+
+    public static void reloadSpoutPlayer(Player player) {
+        SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+
+        if (spoutPlayer != null) {
+            SpoutCraftEnableEvent spoutCraftEnableEvent = new SpoutCraftEnableEvent(spoutPlayer);
+            mcMMO.p.getServer().getPluginManager().callEvent(spoutCraftEnableEvent);
+        }
     }
 }

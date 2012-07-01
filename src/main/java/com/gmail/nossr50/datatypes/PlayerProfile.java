@@ -25,9 +25,9 @@ import com.gmail.nossr50.util.Users;
 public class PlayerProfile {
 
     /* HUD */
-    private HUDType hud;
-    private int xpbarinc;
-    private SkillType lastgained;
+    private SpoutHud spoutHud;
+    private HudType hudType = SpoutConfig.getInstance().defaultHudType;
+    private SkillType lastGained;
     private SkillType skillLock;
 
     /* Party Stuff */
@@ -36,7 +36,7 @@ public class PlayerProfile {
 
     /* Toggles */
     private boolean loaded;
-    private boolean partyhud = true, spoutcraft, xpbarlocked;
+    private boolean xpBarLocked;
     private boolean placedAnvil;
     private boolean partyChatMode, adminChatMode;
     private boolean godMode;
@@ -45,14 +45,14 @@ public class PlayerProfile {
                     superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true;
     private boolean hoePreparationMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode,
                     pickaxePreparationMode, axePreparationMode;
-    private boolean abilityuse = true;
+    private boolean abilityUse = true;
 
     /* Timestamps */
     private int recentlyHurt;
     private int respawnATS;
 
     /* mySQL STUFF */
-    private int userid;
+    private int userId;
 
     HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and Levels
     HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and XP
@@ -64,7 +64,6 @@ public class PlayerProfile {
     private final static String location = mcMMO.usersFile;
 
     public PlayerProfile(Player player, String playerName, boolean addNew) {
-        hud = SpoutConfig.getInstance().defaulthud;
         this.player = player;
         this.playerName = playerName;
 
@@ -107,27 +106,22 @@ public class PlayerProfile {
     }
 
     public boolean loadMySQL() {
-        userid = mcMMO.database.getInt("SELECT id FROM " + Config.getInstance().getMySQLTablePrefix() + "users WHERE user = '" + playerName + "'");
+        userId = mcMMO.database.getInt("SELECT id FROM " + Config.getInstance().getMySQLTablePrefix() + "users WHERE user = '" + playerName + "'");
 
-        if (userid == 0) {
+        if (userId == 0) {
             return false;
         }
         else {
-            HashMap<Integer, ArrayList<String>> huds = mcMMO.database.read("SELECT hudtype FROM " + Config.getInstance().getMySQLTablePrefix() + "huds WHERE user_id = " + userid);
+            HashMap<Integer, ArrayList<String>> huds = mcMMO.database.read("SELECT hudtype FROM " + Config.getInstance().getMySQLTablePrefix() + "huds WHERE user_id = " + userId);
 
             if (huds.get(1) == null) {
-                mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "huds (user_id) VALUES (" + userid + ")");
+                mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "huds (user_id) VALUES (" + userId + ")");
             }
             else {
-                if (huds.get(1).get(0) != null) {
-                    for (HUDType x : HUDType.values()) {
-                        if (x.toString().equals(huds.get(1).get(0))) {
-                            hud = x;
-                        }
+                for (HudType hudType : HudType.values()) {
+                    if (hudType.toString().equals(huds.get(1).get(0))) {
+                        this.hudType = hudType;
                     }
-                }
-                else {
-                    hud = SpoutConfig.getInstance().defaulthud;
                 }
             }
 
@@ -135,10 +129,10 @@ public class PlayerProfile {
              * I'm still learning MySQL, this is a fix for adding a new table
              * its not pretty but it works
              */
-            HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + Config.getInstance().getMySQLTablePrefix() + "cooldowns WHERE user_id = " + userid);
+            HashMap<Integer, ArrayList<String>> cooldowns = mcMMO.database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + Config.getInstance().getMySQLTablePrefix() + "cooldowns WHERE user_id = " + userId);
 
             if(cooldowns.get(1) == null) {
-                mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "cooldowns (user_id) VALUES (" + userid + ")");
+                mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "cooldowns (user_id) VALUES (" + userId + ")");
             }
             else {
                 skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(cooldowns.get(1).get(0)));
@@ -151,7 +145,7 @@ public class PlayerProfile {
                 skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(cooldowns.get(1).get(7)));
             }
 
-            HashMap<Integer, ArrayList<String>> stats = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+Config.getInstance().getMySQLTablePrefix()+"skills WHERE user_id = " + userid);
+            HashMap<Integer, ArrayList<String>> stats = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+Config.getInstance().getMySQLTablePrefix()+"skills WHERE user_id = " + userId);
                 skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
                 skills.put(SkillType.MINING, Integer.valueOf(stats.get(1).get(1)));
                 skills.put(SkillType.REPAIR, Integer.valueOf(stats.get(1).get(2)));
@@ -164,7 +158,7 @@ public class PlayerProfile {
                 skills.put(SkillType.AXES, Integer.valueOf(stats.get(1).get(9)));
                 skills.put(SkillType.ACROBATICS, Integer.valueOf(stats.get(1).get(10)));
                 skills.put(SkillType.FISHING, Integer.valueOf(stats.get(1).get(11)));
-            HashMap<Integer, ArrayList<String>> experience = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+Config.getInstance().getMySQLTablePrefix()+"experience WHERE user_id = " + userid);
+            HashMap<Integer, ArrayList<String>> experience = mcMMO.database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+Config.getInstance().getMySQLTablePrefix()+"experience WHERE user_id = " + userId);
                 skillsXp.put(SkillType.TAMING, Integer.valueOf(experience.get(1).get(0)));
                 skillsXp.put(SkillType.MINING, Integer.valueOf(experience.get(1).get(1)));
                 skillsXp.put(SkillType.REPAIR, Integer.valueOf(experience.get(1).get(2)));
@@ -184,10 +178,10 @@ public class PlayerProfile {
 
     public void addMySQLPlayer() {
         mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 + ")");
-        userid = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix() + "users WHERE user = '" + playerName + "'");
-        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "cooldowns (user_id) VALUES (" + userid + ")");
-        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "skills (user_id) VALUES (" + userid + ")");
-        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "experience (user_id) VALUES (" + userid + ")");
+        userId = mcMMO.database.getInt("SELECT id FROM "+Config.getInstance().getMySQLTablePrefix() + "users WHERE user = '" + playerName + "'");
+        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "cooldowns (user_id) VALUES (" + userId + ")");
+        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "skills (user_id) VALUES (" + userId + ")");
+        mcMMO.database.write("INSERT INTO " + Config.getInstance().getMySQLTablePrefix() + "experience (user_id) VALUES (" + userId + ")");
     }
 
     public boolean load() {
@@ -264,9 +258,9 @@ public class PlayerProfile {
                 if (character.length > 32)
                     skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[32]));
                 if (character.length > 33) {
-                    for (HUDType x : HUDType.values()) {
-                        if (x.toString().equalsIgnoreCase(character[33])) {
-                            hud = x;
+                    for (HudType hudType : HudType.values()) {
+                        if (hudType.toString().equalsIgnoreCase(character[33])) {
+                            this.hudType = hudType;
                         }
                     }
                 }
@@ -295,8 +289,8 @@ public class PlayerProfile {
 
         // if we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
-            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "huds SET hudtype = '" + hud.toString() + "' WHERE user_id = " + userid);
-            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + userid);
+            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "huds SET hudtype = '" + hudType.toString() + "' WHERE user_id = " + userId);
+            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + userId);
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "cooldowns SET "
                     + " mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
                     + ", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
@@ -306,7 +300,7 @@ public class PlayerProfile {
                     + ", swords = " + skillsDATS.get(AbilityType.SERRATED_STRIKES)
                     + ", axes = " + skillsDATS.get(AbilityType.SKULL_SPLIITER)
                     + ", blast_mining = " + skillsDATS.get(AbilityType.BLAST_MINING)
-                    + " WHERE user_id = " + userid);
+                    + " WHERE user_id = " + userId);
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "skills SET "
                     + " taming = " + skills.get(SkillType.TAMING)
                     + ", mining = " + skills.get(SkillType.MINING)
@@ -320,7 +314,7 @@ public class PlayerProfile {
                     + ", axes = " + skills.get(SkillType.AXES)
                     + ", acrobatics = " + skills.get(SkillType.ACROBATICS)
                     + ", fishing = " + skills.get(SkillType.FISHING)
-                    + " WHERE user_id = " + userid);
+                    + " WHERE user_id = " + userId);
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "experience SET "
                     + "  taming = " + skillsXp.get(SkillType.TAMING)
                     + ", mining = " + skillsXp.get(SkillType.MINING)
@@ -334,7 +328,7 @@ public class PlayerProfile {
                     + ", axes = " + skillsXp.get(SkillType.AXES)
                     + ", acrobatics = " + skillsXp.get(SkillType.ACROBATICS)
                     + ", fishing = " + skillsXp.get(SkillType.FISHING)
-                    + " WHERE user_id = " + userid);
+                    + " WHERE user_id = " + userId);
         }
         else {
             // otherwise save to flatfile
@@ -389,7 +383,7 @@ public class PlayerProfile {
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.SERRATED_STRIKES)) + ":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.SKULL_SPLIITER)) + ":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.SUPER_BREAKER)) + ":");
-                        writer.append(hud.toString() + ":");
+                        writer.append(hudType.toString() + ":");
                         writer.append(skills.get(SkillType.FISHING) + ":");
                         writer.append(skillsXp.get(SkillType.FISHING) + ":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.BLAST_MINING)) + ":");
@@ -449,7 +443,7 @@ public class PlayerProfile {
             out.append(0 + ":"); //DATS
             out.append(0 + ":"); //DATS
             out.append(0 + ":"); //DATS
-            out.append(SpoutConfig.getInstance().defaulthud.toString() + ":");//HUD
+            out.append(SpoutConfig.getInstance().defaultHudType.toString() + ":");//HUD
             out.append(0 + ":"); //Fishing
             out.append(0 +":"); //FishingXP
             out.append(0 + ":"); //Blast Mining
@@ -468,7 +462,7 @@ public class PlayerProfile {
      */
 
     public int getMySQLuserId() {
-        return userid;
+        return userId;
     }
 
     public boolean isLoaded() {
@@ -503,45 +497,32 @@ public class PlayerProfile {
      * HUD Stuff
      */
 
-    public void togglePartyHUD() {
-        partyhud = !partyhud;
+    public HudType getHudType() {
+        return hudType;
     }
 
-    public boolean getPartyHUD() {
-        return partyhud;
+    public void setHudType(HudType hudType) {
+        this.hudType = hudType;
     }
 
-    public void toggleSpoutEnabled() {
-        spoutcraft = !spoutcraft;
+    public SpoutHud getSpoutHud() {
+        return spoutHud;
     }
 
-    public HUDType getHUDType() {
-        return hud;
-    }
-
-    public void setHUDType(HUDType type) {
-        hud = type;
-        save();
+    public void setSpoutHud(SpoutHud spoutHud) {
+        this.spoutHud = spoutHud;
     }
 
     public void setXpBarLocked(boolean locked) {
-        xpbarlocked = locked;
+        xpBarLocked = locked;
     }
 
     public boolean getXpBarLocked() {
-        return xpbarlocked;
+        return xpBarLocked;
     }
 
     public void toggleXpBarLocked() {
-        xpbarlocked = !xpbarlocked;
-    }
-
-    public int getXpBarInc() {
-        return xpbarinc;
-    }
-
-    public void setXpBarInc(int newvalue) {
-        xpbarinc = newvalue;
+        xpBarLocked = !xpBarLocked;
     }
 
     public void setSkillLock(SkillType newvalue) {
@@ -553,11 +534,15 @@ public class PlayerProfile {
     }
 
     public void setLastGained(SkillType newvalue) {
-        lastgained = newvalue;
+        lastGained = newvalue;
     }
 
     public SkillType getLastGained() {
-        return lastgained;
+        return lastGained;
+    }
+
+    public void updateXpBar() {
+        spoutHud.updateXpBar();
     }
 
     /*
@@ -853,11 +838,11 @@ public class PlayerProfile {
     }
 
     public boolean getAbilityUse() {
-        return abilityuse;
+        return abilityUse;
     }
 
     public void toggleAbilityUse() {
-        abilityuse = !abilityuse;
+        abilityUse = !abilityUse;
     }
 
     /*
@@ -962,7 +947,7 @@ public class PlayerProfile {
         else {
             mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, newValue));
             skillsXp.put(skillType, skillsXp.get(skillType) + newValue);
-            lastgained = skillType;
+            lastGained = skillType;
         }
     }
 
@@ -1033,7 +1018,7 @@ public class PlayerProfile {
 
         mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
         skillsXp.put(skillType, skillsXp.get(skillType) + xp);
-        lastgained = skillType;
+        lastGained = skillType;
     }
 
     /**
@@ -1101,8 +1086,6 @@ public class PlayerProfile {
             skills.put(skillType, skills.get(skillType) + levels);
             skillsXp.put(skillType, 0);
         }
-
-        save();
     }
 
     /**

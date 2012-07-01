@@ -16,6 +16,7 @@ import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Users;
 
 public class McremoveCommand implements CommandExecutor {
@@ -102,10 +103,12 @@ public class McremoveCommand implements CommandExecutor {
         PlayerProfile playerProfile = Users.getProfile(player);
 
         if (playerProfile != null) {
+            playerProfile.getSpoutHud().removeWidgets();
             Users.remove(player.getName());
 
             if (player.isOnline()) {
                 Users.addUser((Player) player);
+                SpoutStuff.reloadSpoutPlayer((Player) player);
             }
         }
 
