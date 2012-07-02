@@ -307,7 +307,13 @@ public class Mining {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        if (random.nextInt(1000) <= skillCheck && Permissions.getInstance().miningDoubleDrops(player)) {
+        int randomChance = 1000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.mining")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (random.nextInt(randomChance) <= skillCheck && Permissions.getInstance().miningDoubleDrops(player)) {
             if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
                 silkTouchDrops(block);
             }

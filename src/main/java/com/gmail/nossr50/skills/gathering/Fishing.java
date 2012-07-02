@@ -102,7 +102,13 @@ public class Fishing {
         if (Config.getInstance().getFishingDropsEnabled() && rewards.size() > 0 && Permissions.getInstance().fishingTreasures(player)) {
             FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
 
-            if (random.nextDouble() * 100 <= treasure.getDropChance()) {
+            int randomChance = 100;
+
+            if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
+                randomChance = (int) (randomChance * 0.75);
+            }
+
+            if (random.nextDouble() * randomChance <= treasure.getDropChance()) {
                 Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp());
                 theCatch.setItemStack(treasure.getDrop());
             }
@@ -138,8 +144,15 @@ public class Fishing {
             ItemStack fishingResults = theCatch.getItemStack();
 
             player.sendMessage(LocaleLoader.getString("Fishing.ItemFound"));
+
             if (ItemChecks.isArmor(fishingResults) || ItemChecks.isTool(fishingResults)) {
-                if (random.nextInt(100) <= ENCHANTMENT_CHANCE && Permissions.getInstance().fishingMagic(player)) {
+                int randomChance = 100;
+
+                if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
+                    randomChance = (int) (randomChance * 0.75);
+                }
+
+                if (random.nextInt(randomChance) <= ENCHANTMENT_CHANCE && Permissions.getInstance().fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
                             Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();
@@ -178,7 +191,13 @@ public class Fishing {
      * @param event The event to modify
      */
     public static void shakeMob(PlayerFishEvent event) {
-        final int DROP_NUMBER = random.nextInt(100);
+        int randomChance = 100;
+
+        if (event.getPlayer().hasPermission("mcmmo.perks.lucky.fishing")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        final int DROP_NUMBER = random.nextInt(randomChance);
 
         LivingEntity le = (LivingEntity) event.getCaught();
         EntityType type = le.getType();

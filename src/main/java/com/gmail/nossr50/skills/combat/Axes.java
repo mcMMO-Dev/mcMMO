@@ -75,7 +75,13 @@ public class Axes {
         int skillLevel = PPa.getSkillLevel(SkillType.AXES);
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        if (random.nextInt(2000) <= skillCheck && !entity.isDead()){
+        int randomChance = 2000;
+
+        if (attacker.hasPermission("mcmmo.perks.lucky.axes")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (random.nextInt(randomChance) <= skillCheck && !entity.isDead()){
             int damage = event.getDamage();
 
             if (entity instanceof Player){
@@ -139,7 +145,13 @@ public class Axes {
             return;
         }
 
-        if (random.nextInt(100) <= GREATER_IMPACT_CHANCE) {
+        int randomChance = 100;
+
+        if (attacker.hasPermission("mcmmo.perks.lucky.axes")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (random.nextInt(randomChance) <= GREATER_IMPACT_CHANCE) {
             event.setDamage(event.getDamage() + 2);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(GREATER_IMPACT_MULTIPLIER));
             attacker.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));

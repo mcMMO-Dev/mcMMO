@@ -36,7 +36,13 @@ public class UnarmedManager {
         if (eventHandler.isHoldingItem()) {
             eventHandler.calculateSkillModifier();
 
-            if (Unarmed.getRandom().nextInt(3000) < eventHandler.skillModifier) {
+            int randomChance = 3000;
+
+            if (player.hasPermission("mcmmo.perks.lucky.unarmed")) {
+                randomChance = (int) (randomChance * 0.75);
+            }
+
+            if (Unarmed.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
                 if (!hasIronGrip(defender)) {
                     eventHandler.sendAbilityMessage();
                     eventHandler.handleDisarm();
@@ -58,7 +64,13 @@ public class UnarmedManager {
 
         DeflectEventHandler eventHandler = new DeflectEventHandler(this, event);
 
-        if (Unarmed.getRandom().nextInt(2000) < eventHandler.skillModifier) {
+        int randomChance = 2000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.unarmed")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (Unarmed.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
             eventHandler.cancelEvent();
             eventHandler.sendAbilityMessage();
         }
@@ -93,7 +105,13 @@ public class UnarmedManager {
 
         IronGripEventHandler eventHandler = new IronGripEventHandler(this, defender);
 
-        if (Unarmed.getRandom().nextInt(1000) < eventHandler.skillModifier) {
+        int randomChance = 1000;
+
+        if (defender.hasPermission("mcmmo.perks.lucky.unarmed")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (Unarmed.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
             eventHandler.sendAbilityMessages();
             return true;
         }

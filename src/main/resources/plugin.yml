@@ -194,6 +194,58 @@ permissions:
     mcmmo.perks.xp.50percentboost:
         default: false
         description: Mulitplies incoming XP by 1.5
+    mcmmo.perks.lucky.*:
+        default: false
+        description: Gives all abilities & skills a 25% better chance to activate.
+        children:
+            mcmmo.perks.lucky.acrobatics: false
+            mcmmo.perks.lucky.archery: false
+            mcmmo.perks.lucky.axes: false
+            mcmmo.perks.lucky.excavation: false
+            mcmmo.perks.lucky.fishing: false
+            mcmmo.perks.lucky.herbalism: false
+            mcmmo.perks.lucky.mining: false
+            mcmmo.perks.lucky.repair: false
+            mcmmo.perks.lucky.swords: false
+            mcmmo.perks.lucky.taming: false
+            mcmmo.perks.lucky.unarmed: false
+            mcmmo.perks.lucky.woodcutting: false
+    mcmmo.perks.lucky.acrobatics:
+        default: false
+        description: Gives Acrobatics abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.archery:
+        default: false
+        description: Gives Archery abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.axes:
+        default: false
+        description: Gives Axes abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.excavation:
+        default: false
+        description: Gives Excavation abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.fishing:
+        default: false
+        description: Gives Fishing abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.herbalism:
+        default: false
+        description: Gives Herbalism abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.mining:
+        default: false
+        description: Gives Mining abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.repair:
+        default: false
+        description: Gives Repair abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.swords:
+        default: false
+        description: Gives Swords abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.taming:
+        default: false
+        description: Gives Taming abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.unarmed:
+        default: false
+        description: Gives Unarmed abilities & skills a 25% better chance to activate.
+    mcmmo.perks.lucky.woodcutting:
+        default: false
+        description: Gives Woodcutting abilities & skills a 25% better chance to activate.
     mcmmo.bypass.*:
         default: false
         description: Implies all bypass permissions.

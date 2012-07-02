@@ -104,11 +104,17 @@ public class Repair {
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             Enchantment enchantment = enchant.getKey();
 
-            if (random.nextInt(100) <= getEnchantChance(rank)) {
+            int randomChance = 100;
+
+            if (player.hasPermission("mcmmo.perks.lucky.repair")) {
+                randomChance = (int) (randomChance * 0.75);
+            }
+
+            if (random.nextInt(randomChance) <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
 
                 if (configInstance.getArcaneForgingDowngradeEnabled() && enchantLevel > 1) {
-                    if (random.nextInt(100) <= getDowngradeChance(rank)) {
+                    if (random.nextInt(randomChance) <= getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, --enchantLevel);
                         downgraded = true;
                     }
@@ -223,7 +229,13 @@ public class Repair {
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
-        if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= skillLevel) && permInstance.repairBonus(player)) {
+        int randomChance = 1000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.repair")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= skillLevel) && permInstance.repairBonus(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }

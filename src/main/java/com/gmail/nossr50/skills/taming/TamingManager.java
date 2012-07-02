@@ -41,7 +41,13 @@ public class TamingManager {
         }
 
         if (skillLevel >= Taming.FAST_FOOD_SERVICE_ACTIVATION_LEVEL) {
-            if (Taming.getRandom().nextInt(100) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
+            int randomChance = 100;
+
+            if (player.hasPermission("mcmmo.perks.lucky.taming")) {
+                randomChance = (int) (randomChance * 0.75);
+            }
+
+            if (Taming.getRandom().nextInt(randomChance) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
                 FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
 
                 eventHandler.modifyHealth(damage);
@@ -78,7 +84,13 @@ public class TamingManager {
 
         GoreEventHandler eventHandler = new GoreEventHandler(this, event);
 
-        if (Taming.getRandom().nextInt(1000) < eventHandler.skillModifier) {
+        int randomChance = 1000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.taming")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (Taming.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
             eventHandler.modifyEventDamage();
             eventHandler.applyBleed();
             eventHandler.sendAbilityMessage();

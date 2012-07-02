@@ -34,7 +34,13 @@ public class ArcheryManager {
 
         ArrowTrackingEventHandler eventHandler = new ArrowTrackingEventHandler(this, livingEntity);
 
-        if (Archery.getRandom().nextInt(1000) < eventHandler.skillModifier) {
+        int randomChance = 1000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.archery")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (Archery.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
             eventHandler.addToTracker();
         }
     }
@@ -52,7 +58,13 @@ public class ArcheryManager {
 
         DazeEventHandler eventHandler = new DazeEventHandler(this, event, defender);
 
-        if (Archery.getRandom().nextInt(2000) < eventHandler.skillModifier) {
+        int randomChance = 2000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.archery")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (Archery.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
             eventHandler.handleDazeEffect();
             eventHandler.sendAbilityMessages();
         }

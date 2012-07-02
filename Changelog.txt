@@ -12,6 +12,7 @@ Version 1.3.10-dev
  + Added ability for custom blocks to drop a range of items.
  + Added Ability API functions
  + Added 50% & 150% XP boost perks
+ + Added "lucky" perk for donors
  = Fixed "GenericLabel belonging to mcMMO..." message
  = Fixed menu exit button not working
  = Fixed Repair enchant downgrade not working

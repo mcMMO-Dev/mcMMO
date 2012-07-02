@@ -303,7 +303,13 @@ public class WoodCutting {
         Tree tree = (Tree) block.getState().getData();
         TreeSpecies species = tree.getSpecies();
 
-        if ((skillLevel > MAX_SKILL_LEVEL || random.nextInt(1000) <= skillLevel) && Permissions.getInstance().woodcuttingDoubleDrops(player)) {
+        int randomChance = 1000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if ((skillLevel > MAX_SKILL_LEVEL || random.nextInt(randomChance) <= skillLevel) && Permissions.getInstance().woodcuttingDoubleDrops(player)) {
             Config configInstance = Config.getInstance();
             ItemStack item;
             Location location;

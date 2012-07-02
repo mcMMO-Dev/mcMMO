@@ -92,6 +92,12 @@ public class Herbalism {
 
         boolean customPlant = false;
 
+        int randomChance = 1000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.herbalism")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
         switch (type) {
         case BROWN_MUSHROOM:
         case RED_MUSHROOM:
@@ -107,7 +113,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.CACTUS)) {
                     mat = Material.CACTUS;
                     if (!mcMMO.placeStore.isTrue(b)) {
-                        if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
+                        if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
                             catciDrops++;
                         }
                         xp += Config.getInstance().getHerbalismXPCactus();
@@ -163,7 +169,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
                     mat = Material.SUGAR_CANE;
                     if (!mcMMO.placeStore.isTrue(b)) {
-                        if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
+                        if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
                             caneDrops++;
                         }
                         xp += Config.getInstance().getHerbalismXPSugarCane();
@@ -208,7 +214,7 @@ public class Herbalism {
                 is = new ItemStack(mat);
             }
 
-            if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1000) <= herbLevel) {
+            if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
                 Config configInstance = Config.getInstance();
 
                 switch (type) {
@@ -321,7 +327,13 @@ public class Herbalism {
         boolean hasSeeds = inventory.contains(Material.SEEDS);
         Location loc = block.getLocation();
 
-        if (hasSeeds && PP.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(1500) <= herbLevel)) {
+        int randomChance = 1500;
+
+        if (player.hasPermission("mcmmo.perks.lucky.herbalism")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (hasSeeds && PP.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel)) {
             event.setCancelled(true);
 
             Misc.dropItem(loc, new ItemStack(Material.WHEAT));
@@ -350,7 +362,13 @@ public class Herbalism {
 
         player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
 
-        if (skillLevel > MAX_BONUS_LEVEL || random.nextInt(1500) <= skillLevel) {
+        int randomChance = 1500;
+
+        if (player.hasPermission("mcmmo.perks.lucky.herbalism")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (skillLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= skillLevel) {
             greenTerraConvert(player, block);
         }
         else {

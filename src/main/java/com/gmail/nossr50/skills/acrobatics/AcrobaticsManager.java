@@ -32,7 +32,13 @@ public class AcrobaticsManager {
 
         RollEventHandler eventHandler = new RollEventHandler(this, event);
 
-        if (Acrobatics.getRandom().nextInt(1000) <= eventHandler.skillModifier && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        int randomChance = 1000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.acrobatics")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (Acrobatics.getRandom().nextInt(randomChance) <= eventHandler.skillModifier && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.ROLL_XP_MODIFIER);
@@ -54,7 +60,13 @@ public class AcrobaticsManager {
 
         DodgeEventHandler eventHandler = new DodgeEventHandler(this, event);
 
-        if (Acrobatics.getRandom().nextInt(4000) <= eventHandler.skillModifier && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        int randomChance = 4000;
+
+        if (player.hasPermission("mcmmo.perks.lucky.acrobatics")) {
+            randomChance = (int) (randomChance * 0.75);
+        }
+
+        if (Acrobatics.getRandom().nextInt(randomChance) <= eventHandler.skillModifier && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.DODGE_XP_MODIFIER);

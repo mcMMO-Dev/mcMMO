@@ -35,7 +35,13 @@ public class SwordsManager {
         if (Combat.shouldBeAffected(player, defender)) {
             BleedEventHandler eventHandler = new BleedEventHandler(this, defender);
 
-            if (Swords.getRandom().nextInt(1000) < eventHandler.skillModifier) {
+            int randomChance = 1000;
+
+            if (player.hasPermission("mcmmo.perks.lucky.swords")) {
+                randomChance = (int) (randomChance * 0.75);
+            }
+
+            if (Swords.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
                 eventHandler.addBleedTicks();
                 eventHandler.sendAbilityMessages();
             }
@@ -52,7 +58,13 @@ public class SwordsManager {
         if (eventHandler.isHoldingSword()) {
             eventHandler.calculateSkillModifier();
 
-            if (Swords.getRandom().nextInt(2000) < eventHandler.skillModifier) {
+            int randomChance = 2000;
+
+            if (player.hasPermission("mcmmo.perks.lucky.swords")) {
+                randomChance = (int) (randomChance * 0.75);
+            }
+
+            if (Swords.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
                 eventHandler.dealDamage();
                 eventHandler.sendAbilityMessages();
             }
@@ -66,7 +78,7 @@ public class SwordsManager {
 
         SerratedStrikesEventHandler eventHandler = new SerratedStrikesEventHandler(this, target, damage);
 
-        eventHandler.applyAbilityEffects(); 
+        eventHandler.applyAbilityEffects();
     }
 
     protected int getSkillLevel() {

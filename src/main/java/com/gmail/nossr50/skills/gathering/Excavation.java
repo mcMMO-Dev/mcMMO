@@ -91,7 +91,13 @@ public class Excavation {
 
             for (ExcavationTreasure treasure : treasures) {
                 if (skillLevel >= treasure.getDropLevel()) {
-                    if (random.nextDouble() * 100 <= treasure.getDropChance()) {
+                    int randomChance = 100;
+
+                    if (player.hasPermission("mcmmo.perks.lucky.excavation")) {
+                        randomChance = (int) (randomChance * 0.75);
+                    }
+
+                    if (random.nextDouble() * randomChance <= treasure.getDropChance()) {
                         xp += treasure.getXp();
                         is.add(treasure.getDrop());
                     }
