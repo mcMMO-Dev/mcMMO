@@ -192,6 +192,9 @@ public class Combat {
             archeryCheck((Player) shooter, target, event);
 
             break;
+
+        default:
+            break;
         }
 
         if (targetIsPlayer) {

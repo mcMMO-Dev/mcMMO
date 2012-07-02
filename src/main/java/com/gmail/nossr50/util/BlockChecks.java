@@ -92,6 +92,9 @@ public class BlockChecks {
         case WOODEN_DOOR:
         case WORKBENCH:
             return false;
+
+        default:
+            break;
         }
 
         if (block.getTypeId() == Config.getInstance().getRepairAnvilId()) {

@@ -397,6 +397,9 @@ public class Mining {
                 if (mcMMO.spoutEnabled) {
                     SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
                 }
+
+            default:
+                break;
             }
         }
     }
