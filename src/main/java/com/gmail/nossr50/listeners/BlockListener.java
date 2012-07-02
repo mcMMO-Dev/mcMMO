@@ -28,6 +28,7 @@ import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.runnables.StickyPistonTracker;
 import com.gmail.nossr50.skills.gathering.Excavation;
 import com.gmail.nossr50.skills.gathering.Herbalism;
 import com.gmail.nossr50.skills.gathering.Mining;
@@ -99,11 +100,9 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
-        Block block = event.getRetractLocation().getBlock();
-
-        if (event.isSticky() && mcMMO.placeStore.isTrue(block)) {
-            mcMMO.placeStore.setFalse(block);
-            mcMMO.placeStore.setTrue(event.getBlock().getRelative(event.getDirection()));
+        if (event.isSticky()) {
+            //Needed only because under some circumstances Minecraft doesn't move the block
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new StickyPistonTracker(event), 0);
         }
     }
 
