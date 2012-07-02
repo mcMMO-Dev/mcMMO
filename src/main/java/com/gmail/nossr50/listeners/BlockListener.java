@@ -305,9 +305,11 @@ public class BlockListener implements Listener {
             Herbalism.greenTerra(player, block);
         }
         else if (PP.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
-            if (configInstance.getExcavationRequiresTool() && ItemChecks.isShovel(inHand)) {
-                event.setInstaBreak(true);
-                Excavation.gigaDrillBreaker(player, block);
+            if (configInstance.getExcavationRequiresTool()) {
+                if (ItemChecks.isShovel(inHand)) {
+                    event.setInstaBreak(true);
+                    Excavation.gigaDrillBreaker(player, block);
+                }
             }
             else {
                 event.setInstaBreak(true);
@@ -327,9 +329,11 @@ public class BlockListener implements Listener {
             }
         }
         else if (PP.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
-            if (configInstance.getMiningRequiresTool() && ItemChecks.isPickaxe(inHand)) {
-                event.setInstaBreak(true);
-                Mining.superBreakerBlockCheck(player, block);
+            if (configInstance.getMiningRequiresTool()) {
+                if (ItemChecks.isPickaxe(inHand)) {
+                    event.setInstaBreak(true);
+                    Mining.superBreakerBlockCheck(player, block);
+                }
             }
             else {
                 event.setInstaBreak(true);
