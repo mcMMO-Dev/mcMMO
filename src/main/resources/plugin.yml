@@ -198,18 +198,18 @@ permissions:
         default: false
         description: Gives all abilities & skills a 25% better chance to activate.
         children:
-            mcmmo.perks.lucky.acrobatics: false
-            mcmmo.perks.lucky.archery: false
-            mcmmo.perks.lucky.axes: false
-            mcmmo.perks.lucky.excavation: false
-            mcmmo.perks.lucky.fishing: false
-            mcmmo.perks.lucky.herbalism: false
-            mcmmo.perks.lucky.mining: false
-            mcmmo.perks.lucky.repair: false
-            mcmmo.perks.lucky.swords: false
-            mcmmo.perks.lucky.taming: false
-            mcmmo.perks.lucky.unarmed: false
-            mcmmo.perks.lucky.woodcutting: false
+            mcmmo.perks.lucky.acrobatics: true
+            mcmmo.perks.lucky.archery: true
+            mcmmo.perks.lucky.axes: true
+            mcmmo.perks.lucky.excavation: true
+            mcmmo.perks.lucky.fishing: true
+            mcmmo.perks.lucky.herbalism: true
+            mcmmo.perks.lucky.mining: true
+            mcmmo.perks.lucky.repair: true
+            mcmmo.perks.lucky.swords: true
+            mcmmo.perks.lucky.taming: true
+            mcmmo.perks.lucky.unarmed: true
+            mcmmo.perks.lucky.woodcutting: true
     mcmmo.perks.lucky.acrobatics:
         default: false
         description: Gives Acrobatics abilities & skills a 25% better chance to activate.
