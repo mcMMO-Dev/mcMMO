@@ -153,17 +153,22 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+        if (event instanceof FakeBlockBreakEvent) {
+            return;
+        }
+
         Player player = event.getPlayer();
         PlayerProfile PP = Users.getProfile(player);
+
+        if (PP == null) {
+            return;
+        }
+
         Block block = event.getBlock();
         ItemStack inHand = player.getItemInHand();
 
         Config configInstance = Config.getInstance();
         Permissions permInstance = Permissions.getInstance();
-
-        if (event instanceof FakeBlockBreakEvent) {
-            return;
-        }
 
         /* HERBALISM */
         if (BlockChecks.canBeGreenTerra(block)) {
@@ -264,6 +269,11 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
         PlayerProfile PP = Users.getProfile(player);
+
+        if (PP == null) {
+            return;
+        }
+
         ItemStack inHand = player.getItemInHand();
         Block block = event.getBlock();
         Material material = block.getType();
