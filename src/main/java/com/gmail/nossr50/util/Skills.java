@@ -161,9 +161,9 @@ public class Skills {
                 PP.setAbilityInformed(ability, false);
                 player.sendMessage(ability.getAbilityOff());
 
-                for (Player y : player.getWorld().getPlayers()) {
-                    if (y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
-                        y.sendMessage(ability.getAbilityPlayerOff(player));
+                for (Player nearbyPlayer : player.getWorld().getPlayers()) {
+                    if (nearbyPlayer != player && Misc.isNear(player.getLocation(), nearbyPlayer.getLocation(), MAX_DISTANCE_AWAY)) {
+                        nearbyPlayer.sendMessage(ability.getAbilityPlayerOff(player));
                     }
                 }
             }
