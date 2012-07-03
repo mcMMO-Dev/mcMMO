@@ -71,6 +71,10 @@ public class BlockChecks {
      * @return true if the block should allow ability activation, false otherwise
      */
     public static boolean abilityBlockCheck(Block block) {
+        if (customBlocksEnabled && CustomBlocksConfig.getInstance().customAbilityBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            return false;
+        }
+
         switch (block.getType()) {
         case BED_BLOCK:
         case BREWING_STAND:
@@ -94,17 +98,12 @@ public class BlockChecks {
             return false;
 
         default:
-            break;
-        }
-
-        if (block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
-            return false;
-        }
-        else if (customBlocksEnabled && CustomBlocksConfig.getInstance().customAbilityBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
-            return false;
-        }
-        else {
-            return true;
+            if (block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
+                return false;
+            }
+            else {
+                return true;
+            }
         }
     }
 

@@ -399,7 +399,7 @@ public class Mining {
                 }
 
             default:
-                break;
+                return;
             }
         }
     }

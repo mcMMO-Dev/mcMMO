@@ -148,6 +148,7 @@ public class Combat {
             }
 
             break;
+
         case WOLF:
             Wolf wolf = (Wolf) damager;
 
@@ -173,6 +174,7 @@ public class Combat {
             }
 
             break;
+
         case ARROW:
             LivingEntity shooter = ((Arrow) damager).getShooter();
 
@@ -190,7 +192,6 @@ public class Combat {
             }
 
             archeryCheck((Player) shooter, target, event);
-
             break;
 
         default:
