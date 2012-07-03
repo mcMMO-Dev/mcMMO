@@ -48,10 +48,11 @@ public class SpoutStuff {
     private static void writeFile(String theFileName, String theFilePath) {
         try {
             File currentFile = new File(theFilePath + theFileName);
-            
+
             JarFile jar = new JarFile(mcMMO.mcmmo);
             JarEntry entry = jar.getJarEntry("resources/" + theFileName);
             InputStream is = jar.getInputStream(entry);
+
 
             byte[] buf = new byte[2048];
             int nbRead;
@@ -64,6 +65,7 @@ public class SpoutStuff {
 
             os.flush();
             os.close();
+            jar.close();
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
