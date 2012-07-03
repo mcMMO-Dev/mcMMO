@@ -279,7 +279,7 @@ public class PlayerProfile {
 
             in.close();
         } catch (Exception e) {
-            mcMMO.p.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            e.printStackTrace();
         }
         return false;
     }
@@ -398,7 +398,7 @@ public class PlayerProfile {
                 out.close();
             }
             catch (Exception e) {
-                mcMMO.p.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+                e.printStackTrace();
             }
         }
     }
@@ -453,7 +453,7 @@ public class PlayerProfile {
             out.newLine();
             out.close();
         } catch (Exception e) {
-            mcMMO.p.getLogger().severe("Exception while writing to " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            e.printStackTrace();
         }
     }
 
