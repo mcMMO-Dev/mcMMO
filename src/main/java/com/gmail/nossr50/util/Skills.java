@@ -152,7 +152,10 @@ public class Skills {
 
         if (PP.getToolPreparationMode(tool) && curTime - (PP.getToolPreparationATS(tool) * TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
             PP.setToolPreparationMode(tool, false);
-            player.sendMessage(tool.getLowerTool());
+
+            if (Config.getInstance().getAbilityMessagesEnabled()) {
+                player.sendMessage(tool.getLowerTool());
+            }
         }
 
         if (ability.getPermissions(player)) {
