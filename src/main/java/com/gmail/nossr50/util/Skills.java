@@ -229,18 +229,18 @@ public class Skills {
 
             /* Spout Stuff */
             if (mcMMO.spoutEnabled && player instanceof SpoutPlayer) {
-                SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+                SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
-                if (sPlayer.isSpoutCraftEnabled()) {
+                if (spoutPlayer.isSpoutCraftEnabled()) {
                     if (SpoutConfig.getInstance().getXPBarEnabled()) {
                         profile.updateXpBar();
                     }
 
-                    SpoutStuff.levelUpNotification(skillType, sPlayer);
+                    SpoutStuff.levelUpNotification(skillType, spoutPlayer);
 
                     /* Update custom titles */
                     if (SpoutConfig.getInstance().getShowPowerLevel()) {
-                        sPlayer.setTitle(sPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(profile.getPowerLevel()));
+                        spoutPlayer.setTitle(spoutPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(profile.getPowerLevel()));
                     }
                 }
                 else {
@@ -254,8 +254,8 @@ public class Skills {
 
         /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
         if (skillups == 0 && mcMMO.spoutEnabled && player instanceof SpoutPlayer) {
-            SpoutPlayer sPlayer = (SpoutPlayer) player;
-            if (sPlayer.isSpoutCraftEnabled()) {
+            SpoutPlayer spoutPlayer = (SpoutPlayer) player;
+            if (spoutPlayer.isSpoutCraftEnabled()) {
                 if (SpoutConfig.getInstance().getXPBarEnabled()) {
                     profile.updateXpBar();
                 }

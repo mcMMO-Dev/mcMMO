@@ -19,10 +19,10 @@ public class SpoutSounds {
      * @param location The location the sound should come from
      */
     public static void playSoundForPlayer(SoundEffect effect, Player player, Location location) {
-        SoundManager SM = SpoutManager.getSoundManager();
-        SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+        SoundManager soundManager = SpoutManager.getSoundManager();
+        SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
-        SM.playSoundEffect(sPlayer, effect, location);
+        soundManager.playSoundEffect(spoutPlayer, effect, location);
     }
 
     /**
@@ -31,11 +31,11 @@ public class SpoutSounds {
      * @param player The player who repaired an item
      */
     public static void playRepairNoise(Player player, mcMMO plugin) {
-        SoundManager SM = SpoutManager.getSoundManager();
-        SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+        SoundManager soundManager = SpoutManager.getSoundManager();
+        SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
         //If this is pulling from online, why have it in the jar?
-        SM.playCustomSoundEffect(plugin, sPlayer, "repair.wav", false);
+        soundManager.playCustomSoundEffect(plugin, spoutPlayer, "repair.wav", false);
     }
 
     /**
@@ -44,10 +44,10 @@ public class SpoutSounds {
      * @param player The player who leveled up
      */
     protected static void playLevelUpNoise(Player player, mcMMO plugin) {
-        SoundManager SM = SpoutManager.getSoundManager();
-        SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+        SoundManager soundManager = SpoutManager.getSoundManager();
+        SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
         //If this is pulling from online, why have it in the jar?
-        SM.playCustomSoundEffect(plugin, sPlayer, "level.wav", false);
+        soundManager.playCustomSoundEffect(plugin, spoutPlayer, "level.wav", false);
     }
 }

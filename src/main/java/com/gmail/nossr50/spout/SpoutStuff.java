@@ -199,10 +199,10 @@ public class SpoutStuff {
      * Handle level-up notifications through Spout.
      *
      * @param skillType The skill that leveled up
-     * @param sPlayer The player that leveled up
+     * @param spoutPlayer The player that leveled up
      */
-    public static void levelUpNotification(SkillType skillType, SpoutPlayer sPlayer) {
-        PlayerProfile profile = Users.getProfile(sPlayer);
+    public static void levelUpNotification(SkillType skillType, SpoutPlayer spoutPlayer) {
+        PlayerProfile profile = Users.getProfile(spoutPlayer);
         int notificationTier = getNotificationTier(profile.getSkillLevel(skillType));
         Material mat = null;
 
@@ -519,8 +519,8 @@ public class SpoutStuff {
         }
 
         //TODO: Use Locale
-        sPlayer.sendNotification(ChatColor.GREEN + "Level Up!", ChatColor.YELLOW + Misc.getCapitalized(skillType.toString()) + ChatColor.DARK_AQUA + " (" + ChatColor.GREEN + profile.getSkillLevel(skillType) + ChatColor.DARK_AQUA + ")", mat);
-        SpoutSounds.playLevelUpNoise(sPlayer, plugin);
+        spoutPlayer.sendNotification(ChatColor.GREEN + "Level Up!", ChatColor.YELLOW + Misc.getCapitalized(skillType.toString()) + ChatColor.DARK_AQUA + " (" + ChatColor.GREEN + profile.getSkillLevel(skillType) + ChatColor.DARK_AQUA + ")", mat);
+        SpoutSounds.playLevelUpNoise(spoutPlayer, plugin);
     }
 
     /**

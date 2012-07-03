@@ -254,10 +254,10 @@ public class Repair {
 
         if (!profile.getPlacedAnvil()) {
             if (mcMMO.spoutEnabled) {
-                SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
+                SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
-                if (sPlayer.isSpoutCraftEnabled()) {
-                    sPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.getMaterial(anvilID)); //TODO: Use Locale
+                if (spoutPlayer.isSpoutCraftEnabled()) {
+                    spoutPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.getMaterial(anvilID)); //TODO: Use Locale
                 }
             }
             else {

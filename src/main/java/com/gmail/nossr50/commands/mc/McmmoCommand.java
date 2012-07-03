@@ -20,9 +20,9 @@ public class McmmoCommand implements CommandExecutor {
 
         if (Config.getInstance().getDonateMessageEnabled()) {
             if (mcMMO.spoutEnabled && sender instanceof SpoutPlayer) {
-                SpoutPlayer sPlayer = (SpoutPlayer) sender;
+                SpoutPlayer spoutPlayer = (SpoutPlayer) sender;
 
-                sPlayer.sendNotification(ChatColor.YELLOW + "[mcMMO]" + ChatColor.GOLD + " Donate!", ChatColor.GREEN + "mcmmodev@gmail.com", Material.DIAMOND);
+                spoutPlayer.sendNotification(ChatColor.YELLOW + "[mcMMO]" + ChatColor.GOLD + " Donate!", ChatColor.GREEN + "mcmmodev@gmail.com", Material.DIAMOND);
             }
 
             sender.sendMessage(ChatColor.DARK_AQUA + "Donation Info:");
