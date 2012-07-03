@@ -34,7 +34,7 @@ public class BleedTimer implements Runnable {
         for (Entry<LivingEntity, Integer> entry : bleedList.entrySet()) {
             LivingEntity entity = entry.getKey();
 
-            if (entry.getValue() <= 0 || entity.isDead() || entity == null) {
+            if (entry.getValue() <= 0 || entity.isDead()) {
                 remove(entity);
                 break;
             }

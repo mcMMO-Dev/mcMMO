@@ -23,7 +23,7 @@ public class CommandHelper {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (player != null && !Permissions.getInstance().permission(player, permission)) {
+            if (!Permissions.getInstance().permission(player, permission)) {
                 player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
                 return true;
             }
