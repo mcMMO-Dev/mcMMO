@@ -25,7 +25,7 @@ public class UnarmedBonusDamageEventHandler {
 
     protected void modifyEventDamage() {
         int damage = event.getDamage();
-        int unarmedBonus = (int) (damage + damageBonus);
+        int unarmedBonus = damage + damageBonus;
 
         event.setDamage(damage + unarmedBonus);
     }
