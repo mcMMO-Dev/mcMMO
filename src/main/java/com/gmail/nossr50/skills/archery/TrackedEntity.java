@@ -5,14 +5,15 @@ import org.bukkit.entity.LivingEntity;
 
 import com.gmail.nossr50.mcMMO;
 
-public class TrackedEntity {
+public class TrackedEntity implements Runnable {
     private LivingEntity livingEntity;
     private int arrowCount;
     private int previousTicksLived;
+    private int taskId;
 
     public TrackedEntity(LivingEntity livingEntity) {
         this.livingEntity = livingEntity;
-        new CheckTrackedEntityExistence(this);
+        taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(mcMMO.p, this, 12000, 12000);
     }
 
     //LivingEntity.isDead() isn't a reliable way to know if an entity is still active
@@ -23,14 +24,9 @@ public class TrackedEntity {
         if (currentTicksLived == previousTicksLived) {
             return false;
         }
-        else {
-            previousTicksLived = currentTicksLived;
-            return true;
-        }
-    }
 
-    public LivingEntity getLivingEntity() {
-        return livingEntity;
+        previousTicksLived = currentTicksLived;
+        return true;
     }
 
     public int getArrowCount() {
@@ -41,23 +37,11 @@ public class TrackedEntity {
         arrowCount++;
     }
 
-    private class CheckTrackedEntityExistence implements Runnable {
-        private TrackedEntity trackedEntity;
-        private int taskId;
-
-        public CheckTrackedEntityExistence(TrackedEntity trackedEntity) {
-            this.trackedEntity = trackedEntity;
-            
-            //Check if the entity is still active every 10 minutes
-            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(mcMMO.p, this, 12000, 12000);
-        }
-
-        @Override
-        public void run() {
-            if (!trackedEntity.isActive()) {
-                Archery.removeFromTracker(trackedEntity);
-                Bukkit.getScheduler().cancelTask(taskId);
-            }
+    @Override
+    public void run() {
+        if (!isActive()) {
+            Archery.removeFromTracker(this);
+            Bukkit.getScheduler().cancelTask(taskId);
         }
     }
 }
