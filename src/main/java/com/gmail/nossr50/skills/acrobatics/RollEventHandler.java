@@ -21,6 +21,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
         calculateModifiedDamage();
     }
 
+    @Override
     protected void calculateSkillModifier() {
         int skillModifer = manager.getSkillLevel();
 
@@ -32,6 +33,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
         this.skillModifier = skillModifer;
     }
 
+    @Override
     protected void calculateModifiedDamage() {
         int modifiedDamage = damage - damageThreshold;
 
@@ -42,6 +44,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
         this.modifiedDamage = modifiedDamage;
     }
 
+    @Override
     protected void modifyEventDamage() {
         event.setDamage(modifiedDamage);
 
@@ -51,6 +54,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
     }
 
 
+    @Override
     protected void sendAbilityMessage() {
         if (isGraceful) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
@@ -61,6 +65,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
     }
 
 
+    @Override
     protected void processXPGain(int xpGain) {
         Skills.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xpGain);
     }
