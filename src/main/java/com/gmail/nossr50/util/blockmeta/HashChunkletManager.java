@@ -249,14 +249,35 @@ public class HashChunkletManager implements ChunkletManager {
      * @param location Where on the disk to put it
      */
     private void serializeChunkletStore(ChunkletStore cStore, File location) {
+        FileOutputStream fileOut = null;
+        ObjectOutputStream objOut = null;
+
         try {
-            FileOutputStream fileOut = new FileOutputStream(location);
-            ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
+            fileOut = new FileOutputStream(location);
+            objOut = new ObjectOutputStream(fileOut);
             objOut.writeObject(cStore);
-            objOut.close();
-            fileOut.close();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             ex.printStackTrace();
+        }
+        finally {
+            if (fileOut != null) {
+                try {
+                    fileOut.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            if (objOut != null) {
+                try {
+                    objOut.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
@@ -266,13 +287,13 @@ public class HashChunkletManager implements ChunkletManager {
      */
     private ChunkletStore deserializeChunkletStore(File location) {
         ChunkletStore storeIn = null;
+        FileInputStream fileIn = null;
+        ObjectInputStream objIn = null;
 
         try {
-            FileInputStream fileIn = new FileInputStream(location);
-            ObjectInputStream objIn = new ObjectInputStream(fileIn);
+            fileIn = new FileInputStream(location);
+            objIn = new ObjectInputStream(fileIn);
             storeIn = (ChunkletStore) objIn.readObject();
-            objIn.close();
-            fileIn.close();
         }
         catch (IOException ex) {
             if (ex instanceof EOFException) {
@@ -295,6 +316,25 @@ public class HashChunkletManager implements ChunkletManager {
         }
         catch (ClassNotFoundException ex) {
             ex.printStackTrace();
+        }
+        finally {
+            if (fileIn != null) {
+                try {
+                    fileIn.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            if (objIn != null) {
+                try {
+                    objIn.close();
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
         }
 
         return storeIn;
