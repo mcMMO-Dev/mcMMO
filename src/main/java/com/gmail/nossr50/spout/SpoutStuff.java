@@ -202,8 +202,8 @@ public class SpoutStuff {
      * @param sPlayer The player that leveled up
      */
     public static void levelUpNotification(SkillType skillType, SpoutPlayer sPlayer) {
-        PlayerProfile PP = Users.getProfile(sPlayer);
-        int notificationTier = getNotificationTier(PP.getSkillLevel(skillType));
+        PlayerProfile profile = Users.getProfile(sPlayer);
+        int notificationTier = getNotificationTier(profile.getSkillLevel(skillType));
         Material mat = null;
 
         switch (skillType) {
@@ -519,7 +519,7 @@ public class SpoutStuff {
         }
 
         //TODO: Use Locale
-        sPlayer.sendNotification(ChatColor.GREEN + "Level Up!", ChatColor.YELLOW + Misc.getCapitalized(skillType.toString()) + ChatColor.DARK_AQUA + " (" + ChatColor.GREEN + PP.getSkillLevel(skillType) + ChatColor.DARK_AQUA + ")", mat);
+        sPlayer.sendNotification(ChatColor.GREEN + "Level Up!", ChatColor.YELLOW + Misc.getCapitalized(skillType.toString()) + ChatColor.DARK_AQUA + " (" + ChatColor.GREEN + profile.getSkillLevel(skillType) + ChatColor.DARK_AQUA + ")", mat);
         SpoutSounds.playLevelUpNoise(sPlayer, plugin);
     }
 

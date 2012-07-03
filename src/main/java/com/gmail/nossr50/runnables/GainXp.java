@@ -9,15 +9,15 @@ import com.gmail.nossr50.util.Skills;
 
 public class GainXp implements Runnable {
     private Player player = null;
-    private PlayerProfile PP = null;
+    private PlayerProfile profile = null;
     private double baseXp = 0;
     private SkillType skillType = null;
     private LivingEntity target = null;
     private int baseHealth = 0;
 
-    public GainXp(Player player, PlayerProfile PP, SkillType skillType, double baseXp, LivingEntity target) {
+    public GainXp(Player player, PlayerProfile profile, SkillType skillType, double baseXp, LivingEntity target) {
         this.player = player;
-        this.PP = PP;
+        this.profile = profile;
         this.skillType = skillType;
         this.baseXp = baseXp;
         this.target = target;
@@ -39,6 +39,6 @@ public class GainXp implements Runnable {
             damage += health;
         }
 
-        Skills.xpProcessing(player, PP, skillType, (int) (damage * baseXp));
+        Skills.xpProcessing(player, profile, skillType, (int) (damage * baseXp));
     }
 }

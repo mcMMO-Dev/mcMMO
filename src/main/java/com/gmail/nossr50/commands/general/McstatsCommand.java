@@ -19,7 +19,7 @@ public class McstatsCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
 
         player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));
         player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
@@ -28,7 +28,7 @@ public class McstatsCommand implements CommandExecutor {
         CommandHelper.printCombatSkills(player);
         CommandHelper.printMiscSkills(player);
 
-        player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { String.valueOf(PP.getPowerLevel()) }));
+        player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { String.valueOf(profile.getPowerLevel()) }));
 
         return true;
     }

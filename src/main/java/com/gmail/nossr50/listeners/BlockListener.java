@@ -158,9 +158,9 @@ public class BlockListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
 
-        if (PP == null) {
+        if (profile == null) {
             return;
         }
 
@@ -173,12 +173,12 @@ public class BlockListener implements Listener {
         /* HERBALISM */
         if (BlockChecks.canBeGreenTerra(block)) {
             /* Green Terra */
-            if (PP.getToolPreparationMode(ToolType.HOE) && permInstance.greenTerra(player)) {
+            if (profile.getToolPreparationMode(ToolType.HOE) && permInstance.greenTerra(player)) {
                 Skills.abilityCheck(player, SkillType.HERBALISM);
             }
 
             /* Triple drops */
-            if (PP.getAbilityMode(AbilityType.GREEN_TERRA)) {
+            if (profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
                 Herbalism.herbalismProcCheck(block, player, event, plugin);
             }
 
@@ -210,7 +210,7 @@ public class BlockListener implements Listener {
                 WoodCutting.woodcuttingBlockCheck(player, block);
             }
 
-            if (PP.getAbilityMode(AbilityType.TREE_FELLER) && permInstance.treeFeller(player) && ItemChecks.isAxe(inHand)) {
+            if (profile.getAbilityMode(AbilityType.TREE_FELLER) && permInstance.treeFeller(player) && ItemChecks.isAxe(inHand)) {
                 WoodCutting.treeFeller(event);
             }
         }
@@ -268,9 +268,9 @@ public class BlockListener implements Listener {
         final int LEAF_BLOWER_LEVEL = 100;
 
         Player player = event.getPlayer();
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
 
-        if (PP == null) {
+        if (profile == null) {
             return;
         }
 
@@ -285,35 +285,35 @@ public class BlockListener implements Listener {
          * ABILITY PREPARATION CHECKS
          */
         if (BlockChecks.abilityBlockCheck(block)) {
-            if (PP.getToolPreparationMode(ToolType.HOE) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.makeMossy(block))) {
+            if (profile.getToolPreparationMode(ToolType.HOE) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.makeMossy(block))) {
                 Skills.abilityCheck(player, SkillType.HERBALISM);
             }
-            else if (PP.getToolPreparationMode(ToolType.AXE) && BlockChecks.isLog(block) && permInstance.treeFeller(player)) {  //TODO: Why are we checking the permissions here?
+            else if (profile.getToolPreparationMode(ToolType.AXE) && BlockChecks.isLog(block) && permInstance.treeFeller(player)) {  //TODO: Why are we checking the permissions here?
                 Skills.abilityCheck(player, SkillType.WOODCUTTING);
             }
-            else if (PP.getToolPreparationMode(ToolType.PICKAXE) && BlockChecks.canBeSuperBroken(block)) {
+            else if (profile.getToolPreparationMode(ToolType.PICKAXE) && BlockChecks.canBeSuperBroken(block)) {
                 Skills.abilityCheck(player, SkillType.MINING);
             }
-            else if (PP.getToolPreparationMode(ToolType.SHOVEL) && BlockChecks.canBeGigaDrillBroken(block)) {
+            else if (profile.getToolPreparationMode(ToolType.SHOVEL) && BlockChecks.canBeGigaDrillBroken(block)) {
                 Skills.abilityCheck(player, SkillType.EXCAVATION);
             }
-            else if (PP.getToolPreparationMode(ToolType.FISTS) && (BlockChecks.canBeGigaDrillBroken(block) || material.equals(Material.SNOW))) {
+            else if (profile.getToolPreparationMode(ToolType.FISTS) && (BlockChecks.canBeGigaDrillBroken(block) || material.equals(Material.SNOW))) {
                 Skills.abilityCheck(player, SkillType.UNARMED);
             }
         }
 
         /* TREE FELLER SOUNDS */
-        if (mcMMO.spoutEnabled && BlockChecks.isLog(block) && PP.getAbilityMode(AbilityType.TREE_FELLER)) {
+        if (mcMMO.spoutEnabled && BlockChecks.isLog(block) && profile.getAbilityMode(AbilityType.TREE_FELLER)) {
             SpoutSounds.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
         }
 
         /*
          * ABILITY TRIGGER CHECKS
          */
-        if (PP.getAbilityMode(AbilityType.GREEN_TERRA) && permInstance.greenTerra(player) && BlockChecks.makeMossy(block)) {
+        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && permInstance.greenTerra(player) && BlockChecks.makeMossy(block)) {
             Herbalism.greenTerra(player, block);
         }
-        else if (PP.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
+        else if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
             if (configInstance.getExcavationRequiresTool()) {
                 if (ItemChecks.isShovel(inHand)) {
                     event.setInstaBreak(true);
@@ -325,7 +325,7 @@ public class BlockListener implements Listener {
                 Excavation.gigaDrillBreaker(player, block);
             }
         }
-        else if (PP.getAbilityMode(AbilityType.BERSERK) && Skills.triggerCheck(player, block, AbilityType.BERSERK)) {
+        else if (profile.getAbilityMode(AbilityType.BERSERK) && Skills.triggerCheck(player, block, AbilityType.BERSERK)) {
             if (inHand.getType().equals(Material.AIR)) {
                 FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
                 plugin.getServer().getPluginManager().callEvent(armswing);
@@ -337,7 +337,7 @@ public class BlockListener implements Listener {
                 SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
             }
         }
-        else if (PP.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
+        else if (profile.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
                     event.setInstaBreak(true);
@@ -349,7 +349,7 @@ public class BlockListener implements Listener {
                 Mining.superBreakerBlockCheck(player, block);
             }
         }
-        else if (PP.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && (material.equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block)))) {
+        else if (profile.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && (material.equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block)))) {
             if (Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
                 if (configInstance.getWoodcuttingRequiresTool()) {
                     if (ItemChecks.isAxe(inHand)) {

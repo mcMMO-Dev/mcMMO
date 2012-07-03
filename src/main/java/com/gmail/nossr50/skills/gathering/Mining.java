@@ -222,7 +222,7 @@ public class Mining {
      * @param block The block to award XP for
      */
     public static void miningXP(Player player, Block block) {
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
         Material type = block.getType();
         int xp = 0;
 
@@ -287,7 +287,7 @@ public class Mining {
             break;
         }
 
-        Skills.xpProcessing(player, PP, SkillType.MINING, xp);
+        Skills.xpProcessing(player, profile, SkillType.MINING, xp);
     }
 
     /**

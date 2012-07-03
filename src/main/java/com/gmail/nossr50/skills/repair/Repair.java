@@ -31,18 +31,18 @@ public class Repair {
      * Handle the XP gain for repair events.
      *
      * @param player Player repairing the item
-     * @param PP PlayerProfile of the repairing player
+     * @param profile PlayerProfile of the repairing player
      * @param is Item being repaired
      * @param durabilityBefore Durability of the item before repair
      * @param modify Amount to modify the durability by
      * @param boost True if the modifier is a boost, false if the modifier is a reduction
      */
-    protected static void xpHandler(Player player, PlayerProfile PP, short durabilityBefore, short durabilityAfter, double modify) {
+    protected static void xpHandler(Player player, PlayerProfile profile, short durabilityBefore, short durabilityAfter, double modify) {
         short dif = (short) (durabilityBefore - durabilityAfter);
 
         dif = (short) (dif * modify);
 
-        Skills.xpProcessing(player, PP, SkillType.REPAIR, dif * 10);
+        Skills.xpProcessing(player, profile, SkillType.REPAIR, dif * 10);
 
         //CLANG CLANG
         if (mcMMO.spoutEnabled) {
@@ -53,11 +53,11 @@ public class Repair {
     /**
      * Get current Arcane Forging rank.
      *
-     * @param skillLevel The skill level of the player whose rank is being checked
+     * @param profile The PlayerProfile of the player to get the rank for
      * @return The player's current Arcane Forging rank
      */
-    public static int getArcaneForgingRank(PlayerProfile PP) {
-        int skillLevel = PP.getSkillLevel(SkillType.REPAIR);
+    public static int getArcaneForgingRank(PlayerProfile profile) {
+        int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
 
         if (skillLevel >= configInstance.getArcaneForgingRankLevels4()) {
             return 4;
@@ -250,9 +250,9 @@ public class Repair {
      * @param anvilID The item ID of the anvil block
      */
     public static void placedAnvilCheck(Player player, int anvilID) {
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
 
-        if (!PP.getPlacedAnvil()) {
+        if (!profile.getPlacedAnvil()) {
             if (mcMMO.spoutEnabled) {
                 SpoutPlayer sPlayer = SpoutManager.getPlayer(player);
 
@@ -264,7 +264,7 @@ public class Repair {
                 player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil"));
             }
 
-            PP.togglePlacedAnvil();
+            profile.togglePlacedAnvil();
         }
     }
 }

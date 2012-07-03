@@ -26,13 +26,13 @@ public class Item {
     }
 
     private static void chimaeraWing(Player player) {
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
         ItemStack inHand = player.getItemInHand();
         Block block = player.getLocation().getBlock();
         int amount = inHand.getAmount();
 
         if (Permissions.getInstance().chimaeraWing(player) && inHand.getTypeId() == Config.getInstance().getChimaeraItemId()) {
-            if (Skills.cooldownOver(PP.getRecentlyHurt(), 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
+            if (Skills.cooldownOver(profile.getRecentlyHurt(), 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
                 player.setItemInHand(new ItemStack(Config.getInstance().getChimaeraItemId(), amount - Config.getInstance().getChimaeraCost()));
 
                 for (int y = 1; block.getY() + y < player.getWorld().getMaxHeight(); y++) {
@@ -52,8 +52,8 @@ public class Item {
 
                 player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
             }
-            else if (!Skills.cooldownOver(PP.getRecentlyHurt(), 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
-                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(PP.getRecentlyHurt(), 60)}));
+            else if (!Skills.cooldownOver(profile.getRecentlyHurt(), 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
+                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(profile.getRecentlyHurt(), 60)}));
             }
             else if (amount <= Config.getInstance().getChimaeraCost()) {
                 player.sendMessage(LocaleLoader.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + Misc.prettyItemString(Config.getInstance().getChimaeraItemId()));

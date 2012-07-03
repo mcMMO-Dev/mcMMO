@@ -23,7 +23,7 @@ public class ACommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PlayerProfile PP;
+        PlayerProfile profile;
         String usage = ChatColor.RED + "Proper usage is /a <message>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.chat.adminchat")) {
@@ -33,15 +33,15 @@ public class ACommand implements CommandExecutor {
         switch (args.length) {
         case 0:
             if (sender instanceof Player) {
-                PP = Users.getProfile((Player) sender);
+                profile = Users.getProfile((Player) sender);
 
-                if (PP.getPartyChatMode()) {
-                    PP.togglePartyChat();
+                if (profile.getPartyChatMode()) {
+                    profile.togglePartyChat();
                 }
 
-                PP.toggleAdminChat();
+                profile.toggleAdminChat();
 
-                if (PP.getAdminChatMode()) {
+                if (profile.getAdminChatMode()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.On"));
                 }
                 else {

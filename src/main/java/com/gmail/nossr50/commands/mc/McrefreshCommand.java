@@ -23,7 +23,7 @@ public class McrefreshCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer player;
-        PlayerProfile PP;
+        PlayerProfile profile;
         String usage = ChatColor.RED + "Proper usage is /mcrefresh [player]"; //TODO: Needs more locale
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcrefresh")) {
@@ -34,7 +34,7 @@ public class McrefreshCommand implements CommandExecutor {
         case 0:
             if (sender instanceof Player) {
                 player = (Player) sender;
-                PP = Users.getProfile(player);
+                profile = Users.getProfile(player);
             }
             else {
                 sender.sendMessage(usage);
@@ -44,10 +44,10 @@ public class McrefreshCommand implements CommandExecutor {
 
         case 1:
             player = plugin.getServer().getOfflinePlayer(args[0]);
-            PP = Users.getProfile(player);
+            profile = Users.getProfile(player);
             String playerName = player.getName();
 
-            if (!PP.isLoaded()) {
+            if (!profile.isLoaded()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return true;
             }
@@ -61,10 +61,10 @@ public class McrefreshCommand implements CommandExecutor {
             return true;
         }
 
-        PP.setRecentlyHurt(0);
-        PP.resetCooldowns();
-        PP.resetToolPrepMode();
-        PP.resetAbilityMode();
+        profile.setRecentlyHurt(0);
+        profile.resetCooldowns();
+        profile.resetToolPrepMode();
+        profile.resetAbilityMode();
 
         if (player.isOnline()) {
             ((Player) player).sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));

@@ -242,9 +242,9 @@ public class BlastMining {
      * @param plugin mcMMO plugin instance
      */
     public static void detonate(PlayerInteractEvent event, Player player, mcMMO plugin) {
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
 
-        if (PP.getSkillLevel(SkillType.MINING) < 125)
+        if (profile.getSkillLevel(SkillType.MINING) < 125)
             return;
 
         Block block = event.getClickedBlock();
@@ -279,8 +279,8 @@ public class BlastMining {
         AbilityType ability = AbilityType.BLAST_MINING;
 
         /* Check Cooldown */
-        if (!Skills.cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-            player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+        if (!Skills.cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+            player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
 
             return;
         }
@@ -303,7 +303,7 @@ public class BlastMining {
         /* Disable the original one */
         block.setType(Material.AIR);
 
-        PP.setSkillDATS(ability, System.currentTimeMillis()); //Save DATS for Blast Mining
-        PP.setAbilityInformed(ability, false);
+        profile.setSkillDATS(ability, System.currentTimeMillis()); //Save DATS for Blast Mining
+        profile.setAbilityInformed(ability, false);
     }
 }

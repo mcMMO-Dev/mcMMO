@@ -22,16 +22,16 @@ public class McabilityCommand implements CommandExecutor {
             return true;
         }
 
-        PlayerProfile PP = Users.getProfile((Player) sender);
+        PlayerProfile profile = Users.getProfile((Player) sender);
 
-        if (PP.getAbilityUse()) {
+        if (profile.getAbilityUse()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
         }
         else {
             sender.sendMessage(LocaleLoader.getString("Commands.Ability.On"));
         }
 
-        PP.toggleAbilityUse();
+        profile.toggleAbilityUse();
 
         return true;
     }

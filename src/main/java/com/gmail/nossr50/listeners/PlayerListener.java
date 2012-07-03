@@ -57,18 +57,18 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
 
-        if (PP.getGodMode()) {
+        if (profile.getGodMode()) {
             if (!Permissions.getInstance().mcgod(player)) {
-                PP.toggleGodMode();
+                profile.toggleGodMode();
                 player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
             }
         }
 
-        if (PP.inParty()) {
+        if (profile.inParty()) {
             if (!Permissions.getInstance().party(player)) {
-                PP.removeParty();
+                profile.removeParty();
                 player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
             }
         }
@@ -312,10 +312,10 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
 
-        if (PP.getPartyChatMode()) {
-            Party party = PP.getParty();
+        if (profile.getPartyChatMode()) {
+            Party party = profile.getParty();
 
             if (party == null) {
                 player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
@@ -341,7 +341,7 @@ public class PlayerListener implements Listener {
 
             event.setCancelled(true);
         }
-        else if (PP.getAdminChatMode()) {
+        else if (profile.getAdminChatMode()) {
             String playerName = player.getName();
             McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(playerName, event.getMessage());
             plugin.getServer().getPluginManager().callEvent(chatEvent);

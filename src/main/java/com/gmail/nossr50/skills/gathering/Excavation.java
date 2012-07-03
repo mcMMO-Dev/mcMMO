@@ -40,8 +40,8 @@ public class Excavation {
         Material type = block.getType();
         Location loc = block.getLocation();
 
-        PlayerProfile PP = Users.getProfile(player);
-        int skillLevel = PP.getSkillLevel(SkillType.EXCAVATION);
+        PlayerProfile profile = Users.getProfile(player);
+        int skillLevel = profile.getSkillLevel(SkillType.EXCAVATION);
         ArrayList<ItemStack> is = new ArrayList<ItemStack>();
 
         List<ExcavationTreasure> treasures = new ArrayList<ExcavationTreasure>();
@@ -112,7 +112,7 @@ public class Excavation {
             }
         }
 
-        Skills.xpProcessing(player, PP, SkillType.EXCAVATION, xp);
+        Skills.xpProcessing(player, profile, SkillType.EXCAVATION, xp);
     }
 
     /**

@@ -26,7 +26,7 @@ public class AddlevelsCommand implements CommandExecutor{
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer modifiedPlayer;
-        PlayerProfile PP;
+        PlayerProfile profile;
         int levels;
         SkillType skill;
         String skillName;
@@ -48,7 +48,7 @@ public class AddlevelsCommand implements CommandExecutor{
                     modifiedPlayer = (Player) sender;
                     levels = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
-                    PP = Users.getProfile(modifiedPlayer);
+                    profile = Users.getProfile(modifiedPlayer);
 
                     if (skill.equals(SkillType.ALL)) {
                         skillName = "all skills";
@@ -57,7 +57,7 @@ public class AddlevelsCommand implements CommandExecutor{
                         skillName = Misc.getCapitalized(skill.toString());
                     }
 
-                    PP.addLevels(skill, levels);
+                    profile.addLevels(skill, levels);
                     sender.sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
                 }
             }
@@ -70,9 +70,9 @@ public class AddlevelsCommand implements CommandExecutor{
         case 3:
             modifiedPlayer = plugin.getServer().getOfflinePlayer(args[0]);
             String playerName = modifiedPlayer.getName();
-            PP = Users.getProfile(modifiedPlayer);
+            profile = Users.getProfile(modifiedPlayer);
 
-            if (!PP.isLoaded()) {
+            if (!profile.isLoaded()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return true;
             }

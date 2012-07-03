@@ -37,11 +37,11 @@ public class Fishing {
     /**
      * Get the player's current fishing loot tier.
      *
-     * @param PP The profile of the player
+     * @param profile The profile of the player
      * @return the player's current fishing rank
      */
-    public static int getFishingLootTier(PlayerProfile PP) {
-        int level = PP.getSkillLevel(SkillType.FISHING);
+    public static int getFishingLootTier(PlayerProfile profile) {
+        int level = profile.getSkillLevel(SkillType.FISHING);
         int fishingTier;
 
         if (level >= Config.getInstance().getFishingTierLevelsTier5()) {
@@ -70,11 +70,11 @@ public class Fishing {
      * @param event The event to modify
      */
     private static void getFishingResults(Player player, PlayerFishEvent event) {
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
         List<FishingTreasure> rewards = new ArrayList<FishingTreasure>();
         Item theCatch = (Item) event.getCaught();
 
-        switch (getFishingLootTier(PP)) {
+        switch (getFishingLootTier(profile)) {
         case 1:
             rewards = TreasuresConfig.getInstance().fishingRewardsTier1;
             break;
@@ -123,7 +123,7 @@ public class Fishing {
             theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); //Change durability to random value
         }
 
-        Skills.xpProcessing(player, PP, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
+        Skills.xpProcessing(player, profile, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
     }
 
     /**
@@ -133,7 +133,7 @@ public class Fishing {
      */
     public static void processResults(PlayerFishEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
 
         getFishingResults(player, event);
         Item theCatch = (Item) event.getCaught();
@@ -164,7 +164,7 @@ public class Fishing {
                             }
 
                             /* Actual chance to have an enchantment is related to your fishing skill */
-                            if (random.nextInt(15) < Fishing.getFishingLootTier(PP)) {
+                            if (random.nextInt(15) < Fishing.getFishingLootTier(profile)) {
                                 enchanted = true;
                                 int randomEnchantLevel = random.nextInt(newEnchant.getMaxLevel()) + 1;
 

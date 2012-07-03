@@ -61,7 +61,7 @@ public class Combat {
         case PLAYER:
             Player attacker = (Player) event.getDamager();
             ItemStack itemInHand = attacker.getItemInHand();
-            PlayerProfile PPa = Users.getProfile(attacker);
+            PlayerProfile attackerProfile = Users.getProfile(attacker);
 
             if (ItemChecks.isSword(itemInHand)) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -79,11 +79,11 @@ public class Combat {
 
                 swordsManager.bleedCheck(target);
 
-                if (PPa.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
+                if (attackerProfile.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
                     swordsManager.serratedStrikes(target, event.getDamage());
                 }
 
-                startGainXp(attacker, PPa, target, SkillType.SWORDS);
+                startGainXp(attacker, attackerProfile, target, SkillType.SWORDS);
             }
             else if (ItemChecks.isAxe(itemInHand) && permInstance.axes(attacker)) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -109,11 +109,11 @@ public class Combat {
                     Axes.impact(attacker, target, event);
                 }
 
-                if (PPa.getAbilityMode(AbilityType.SKULL_SPLIITER) && permInstance.skullSplitter(attacker)) {
+                if (attackerProfile.getAbilityMode(AbilityType.SKULL_SPLIITER) && permInstance.skullSplitter(attacker)) {
                     applyAbilityAoE(attacker, target, event.getDamage() / 2, SkillType.AXES);
                 }
 
-                startGainXp(attacker, PPa, target, SkillType.AXES);
+                startGainXp(attacker, attackerProfile, target, SkillType.AXES);
             }
             else if (itemInHand.getType() == Material.AIR && permInstance.unarmed(attacker)) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -131,7 +131,7 @@ public class Combat {
 
                 unarmedManager.bonusDamage(event);
 
-                if (PPa.getAbilityMode(AbilityType.BERSERK) && permInstance.berserk(attacker)) {
+                if (attackerProfile.getAbilityMode(AbilityType.BERSERK) && permInstance.berserk(attacker)) {
                     event.setDamage((int) (event.getDamage() * 1.5));
                 }
 
@@ -139,7 +139,7 @@ public class Combat {
                     unarmedManager.disarmCheck((Player) target);
                 }
 
-                startGainXp(attacker, PPa, target, SkillType.UNARMED);
+                startGainXp(attacker, attackerProfile, target, SkillType.UNARMED);
             }
             else if (itemInHand.getType() == Material.BONE && target instanceof Tameable) {
                 TamingManager tamingManager = new TamingManager(attacker);
@@ -257,8 +257,8 @@ public class Combat {
         }
 
         if (target != shooter) {
-            PlayerProfile PP = Users.getProfile(shooter);
-            startGainXp(shooter, PP, target, SkillType.ARCHERY);
+            PlayerProfile profile = Users.getProfile(shooter);
+            startGainXp(shooter, profile, target, SkillType.ARCHERY);
         }
     }
 
@@ -380,11 +380,11 @@ public class Combat {
      * Start the task that gives combat XP.
      *
      * @param attacker The attacking player
-     * @param PP The player's PlayerProfile
+     * @param profile The player's PlayerProfile
      * @param target The defending entity
      * @param skillType The skill being used
      */
-    public static void startGainXp(Player attacker, PlayerProfile PP, LivingEntity target, SkillType skillType) {
+    public static void startGainXp(Player attacker, PlayerProfile profile, LivingEntity target, SkillType skillType) {
         double baseXP = 0;
 
         if (target instanceof Player) {
@@ -474,7 +474,7 @@ public class Combat {
         }
 
         if (baseXP != 0) {
-            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GainXp(attacker, PP, skillType, baseXP, target), 0);
+            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GainXp(attacker, profile, skillType, baseXP, target), 0);
         }
     }
 

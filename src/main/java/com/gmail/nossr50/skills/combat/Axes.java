@@ -71,8 +71,8 @@ public class Axes {
         final double PVP_MODIFIER = 1.5;
         final int PVE_MODIFIER = 2;
 
-        PlayerProfile PPa = Users.getProfile(attacker);
-        int skillLevel = PPa.getSkillLevel(SkillType.AXES);
+        PlayerProfile attackerProfile = Users.getProfile(attacker);
+        int skillLevel = attackerProfile.getSkillLevel(SkillType.AXES);
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         int randomChance = 2000;

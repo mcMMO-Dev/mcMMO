@@ -24,7 +24,7 @@ public class PCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PlayerProfile PP;
+        PlayerProfile profile;
         String usage = ChatColor.RED + "Proper usage is /p <party-name> <message>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party")) {
@@ -34,15 +34,15 @@ public class PCommand implements CommandExecutor {
         switch (args.length) {
         case 0:
             if (sender instanceof Player) {
-                PP = Users.getProfile((Player) sender);
+                profile = Users.getProfile((Player) sender);
 
-                if (PP.getAdminChatMode()) {
-                    PP.toggleAdminChat();
+                if (profile.getAdminChatMode()) {
+                    profile.toggleAdminChat();
                 }
 
-                PP.togglePartyChat();
+                profile.togglePartyChat();
 
-                if (PP.getPartyChatMode()) {
+                if (profile.getPartyChatMode()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.On"));
                 }
                 else {

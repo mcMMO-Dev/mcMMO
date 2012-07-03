@@ -37,9 +37,9 @@ public class PtpCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             Player player = (Player) sender;
-            PlayerProfile PP = Users.getProfile(player);
+            PlayerProfile profile = Users.getProfile(player);
 
-            if (PP.getRecentlyHurt() + (Config.getInstance().getPTPCommandCooldown() * 1000) > System.currentTimeMillis()) {
+            if (profile.getRecentlyHurt() + (Config.getInstance().getPTPCommandCooldown() * 1000) > System.currentTimeMillis()) {
                 player.sendMessage(LocaleLoader.getString("Party.Teleport.Hurt", new Object[] { Config.getInstance().getPTPCommandCooldown() }));
                 return true;
             }
@@ -62,7 +62,7 @@ public class PtpCommand implements CommandExecutor {
             }
 
             if (PartyManager.getInstance().inSameParty(player, target)) {
-                McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, PP.getParty().getName());
+                McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, profile.getParty().getName());
                 plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {

@@ -75,10 +75,10 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        final PlayerProfile PP = Users.getProfile(player);
+        final PlayerProfile profile = Users.getProfile(player);
         final int MAX_BONUS_LEVEL = 1000;
 
-        int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
+        int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         int id = block.getTypeId();
         Material type = block.getType();
 
@@ -307,7 +307,7 @@ public class Herbalism {
             }
         }
 
-        Skills.xpProcessing(player, PP, SkillType.HERBALISM, xp);
+        Skills.xpProcessing(player, profile, SkillType.HERBALISM, xp);
     }
 
     /**
@@ -321,8 +321,8 @@ public class Herbalism {
     private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
         final int MAX_BONUS_LEVEL = 1500;
 
-        PlayerProfile PP = Users.getProfile(player);
-        int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
+        PlayerProfile profile = Users.getProfile(player);
+        int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         PlayerInventory inventory = player.getInventory();
         boolean hasSeeds = inventory.contains(Material.SEEDS);
         Location loc = block.getLocation();
@@ -333,13 +333,13 @@ public class Herbalism {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (hasSeeds && PP.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel)) {
+        if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel)) {
             event.setCancelled(true);
 
             Misc.dropItem(loc, new ItemStack(Material.WHEAT));
             Misc.randomDropItems(loc, new ItemStack(Material.SEEDS), 50, 3);
 
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, PP), 1);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, profile), 1);
 
             inventory.removeItem(new ItemStack(Material.SEEDS));
             player.updateInventory();   // Needed until replacement available
@@ -356,8 +356,8 @@ public class Herbalism {
     public static void greenThumbBlocks(ItemStack is, Player player, Block block) {
         final int MAX_BONUS_LEVEL = 1500;
 
-        PlayerProfile PP = Users.getProfile(player);
-        int skillLevel = PP.getSkillLevel(SkillType.HERBALISM);
+        PlayerProfile profile = Users.getProfile(player);
+        int skillLevel = profile.getSkillLevel(SkillType.HERBALISM);
         int seeds = is.getAmount();
 
         player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));

@@ -22,16 +22,16 @@ public class McgodCommand implements CommandExecutor {
             return true;
         }
 
-        PlayerProfile PP = Users.getProfile((Player) sender);
+        PlayerProfile profile = Users.getProfile((Player) sender);
 
-        if (PP.getGodMode()) {
+        if (profile.getGodMode()) {
             sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
         }
         else {
             sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Enabled"));
         }
 
-        PP.toggleGodMode();
+        profile.toggleGodMode();
 
         return true;
     }

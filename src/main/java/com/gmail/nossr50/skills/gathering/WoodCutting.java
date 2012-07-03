@@ -41,12 +41,12 @@ public class WoodCutting {
     public static void treeFeller(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block firstBlock = event.getBlock();
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
         ArrayList<Block> toBeFelled = new ArrayList<Block>();
 
         /* NOTE: Tree Feller will cut upwards like how you actually fell trees */
         processTreeFelling(firstBlock, toBeFelled);
-        removeBlocks(toBeFelled, player, PP);
+        removeBlocks(toBeFelled, player, profile);
     }
 
     /**
@@ -54,9 +54,9 @@ public class WoodCutting {
      *
      * @param toBeFelled List of Blocks to be removed from the tree
      * @param player The player using the ability
-     * @param PP The PlayerProfile of the player
+     * @param profile The PlayerProfile of the player
      */
-    private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile PP) {
+    private static void removeBlocks(ArrayList<Block> toBeFelled, Player player, PlayerProfile profile) {
         if (toBeFelled.size() >= Config.getInstance().getTreeFellerThreshold()) {
             player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFellerThreshold"));
             return;
@@ -213,7 +213,7 @@ public class WoodCutting {
         }
 
         if (Permissions.getInstance().woodcutting(player)) {
-            Skills.xpProcessing(player, PP, SkillType.WOODCUTTING, xp);
+            Skills.xpProcessing(player, profile, SkillType.WOODCUTTING, xp);
         }
     }
 
@@ -375,7 +375,7 @@ public class WoodCutting {
      * @param block The block being broken
      */
     public static void woodcuttingBlockCheck(Player player, Block block) {
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
         int xp = 0;
         TreeSpecies species = TreeSpecies.getByData(block.getData());
 
@@ -410,7 +410,7 @@ public class WoodCutting {
         }
 
         WoodCutting.woodCuttingProcCheck(player, block);
-        Skills.xpProcessing(player, PP, SkillType.WOODCUTTING, xp);
+        Skills.xpProcessing(player, profile, SkillType.WOODCUTTING, xp);
     }
 
     /**

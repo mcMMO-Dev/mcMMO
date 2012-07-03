@@ -22,14 +22,14 @@ public class SkillMonitor implements Runnable {
 
         for (Player player : plugin.getServer().getOnlinePlayers()) {
 
-            PlayerProfile PP = Users.getProfile(player);
+            PlayerProfile profile = Users.getProfile(player);
 
             /*
              * MONITOR SKILLS
              */
             for (SkillType skill : SkillType.values()) {
                 if (skill.getTool() != null && skill.getAbility() != null) {
-                    Skills.monitorSkill(player, PP, curTime, skill);
+                    Skills.monitorSkill(player, profile, curTime, skill);
                 }
             }
 
@@ -38,7 +38,7 @@ public class SkillMonitor implements Runnable {
              */
             for (AbilityType ability : AbilityType.values()) {
                 if (ability.getCooldown() > 0 ) {
-                    Skills.watchCooldown(player, PP, ability);
+                    Skills.watchCooldown(player, profile, ability);
                 }
             }
         }

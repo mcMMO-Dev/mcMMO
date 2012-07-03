@@ -128,9 +128,9 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            PlayerProfile PP = Users.getProfile(player);
+            PlayerProfile profile = Users.getProfile(player);
 
-            if (PP.getGodMode()) {
+            if (profile.getGodMode()) {
                 event.setCancelled(true);
                 return;
             }
@@ -145,7 +145,7 @@ public class EntityListener implements Listener {
                 }
 
                 if (event.getDamage() >= 1) {
-                    PP.actualizeRecentlyHurt();
+                    profile.actualizeRecentlyHurt();
                 }
             }
         } else if (lEntity instanceof Tameable) {
@@ -238,7 +238,7 @@ public class EntityListener implements Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            PlayerProfile PP = Users.getProfile(player);
+            PlayerProfile profile = Users.getProfile(player);
             int currentFoodLevel = player.getFoodLevel();
             int newFoodLevel = event.getFoodLevel();
 
@@ -255,7 +255,7 @@ public class EntityListener implements Listener {
 
             if (newFoodLevel > currentFoodLevel) {
                 Material food = player.getItemInHand().getType();
-                int herbLevel = PP.getSkillLevel(SkillType.HERBALISM);
+                int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
                 int foodChange = newFoodLevel - currentFoodLevel;
                 int rankChange = 0;
 
@@ -312,7 +312,7 @@ public class EntityListener implements Listener {
         Player player = (Player) event.getOwner();
 
         if (Permissions.getInstance().taming(player) && !event.getEntity().hasMetadata("mcmmoSummoned")) {
-            PlayerProfile PP = Users.getProfile(player);
+            PlayerProfile profile = Users.getProfile(player);
             EntityType type = event.getEntityType();
             int xp = 0;
 
@@ -329,7 +329,7 @@ public class EntityListener implements Listener {
                 break;
             }
 
-            Skills.xpProcessing(player, PP, SkillType.TAMING, xp);
+            Skills.xpProcessing(player, profile, SkillType.TAMING, xp);
         }
     }
 }

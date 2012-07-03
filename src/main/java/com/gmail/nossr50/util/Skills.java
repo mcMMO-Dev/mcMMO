@@ -75,12 +75,12 @@ public class Skills {
      * Sends a message to the player when the cooldown expires.
      *
      * @param player The player to send a message to
-     * @param PP The profile of the player
+     * @param profile The profile of the player
      * @param ability The ability to watch cooldowns for
      */
-    public static void watchCooldown(Player player, PlayerProfile PP, AbilityType ability) {
-        if (!PP.getAbilityInformed(ability) && cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-            PP.setAbilityInformed(ability, true);
+    public static void watchCooldown(Player player, PlayerProfile profile, AbilityType ability) {
+        if (!profile.getAbilityInformed(ability) && cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+            profile.setAbilityInformed(ability, true);
             player.sendMessage(ability.getAbilityRefresh());
         }
     }
@@ -96,7 +96,7 @@ public class Skills {
             return;
         }
 
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
         AbilityType ability = skill.getAbility();
         ToolType tool = skill.getTool();
         ItemStack inHand = player.getItemInHand();
@@ -106,12 +106,12 @@ public class Skills {
         }
 
         /* Check if any abilities are active */
-        if (!PP.getAbilityUse()) {
+        if (!profile.getAbilityUse()) {
             return;
         }
 
         for (AbilityType x : AbilityType.values()) {
-            if (PP.getAbilityMode(x)) {
+            if (profile.getAbilityMode(x)) {
                 return;
             }
         }
@@ -119,10 +119,10 @@ public class Skills {
         /* Woodcutting & Axes need to be treated differently.
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
-        if (ability.getPermissions(player) && tool.inHand(inHand) && !PP.getToolPreparationMode(tool)) {
+        if (ability.getPermissions(player) && tool.inHand(inHand) && !profile.getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
-                if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+                if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                     return;
                 }
             }
@@ -131,8 +131,8 @@ public class Skills {
                 player.sendMessage(tool.getRaiseTool());
             }
 
-            PP.setToolPreparationATS(tool, System.currentTimeMillis());
-            PP.setToolPreparationMode(tool, true);
+            profile.setToolPreparationATS(tool, System.currentTimeMillis());
+            profile.setToolPreparationMode(tool, true);
         }
     }
 
@@ -140,18 +140,18 @@ public class Skills {
      * Monitors various things relating to skill abilities.
      *
      * @param player The player using the skill
-     * @param PP The profile of the player
+     * @param profile The profile of the player
      * @param curTime The current system time
      * @param skill The skill being monitored
      */
-    public static void monitorSkill(Player player, PlayerProfile PP, long curTime, SkillType skill) {
+    public static void monitorSkill(Player player, PlayerProfile profile, long curTime, SkillType skill) {
         final int FOUR_SECONDS = 4000;
 
         ToolType tool = skill.getTool();
         AbilityType ability = skill.getAbility();
 
-        if (PP.getToolPreparationMode(tool) && curTime - (PP.getToolPreparationATS(tool) * TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
-            PP.setToolPreparationMode(tool, false);
+        if (profile.getToolPreparationMode(tool) && curTime - (profile.getToolPreparationATS(tool) * TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
+            profile.setToolPreparationMode(tool, false);
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
                 player.sendMessage(tool.getLowerTool());
@@ -159,9 +159,9 @@ public class Skills {
         }
 
         if (ability.getPermissions(player)) {
-            if (PP.getAbilityMode(ability) && (PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR) <= curTime) {
-                PP.setAbilityMode(ability, false);
-                PP.setAbilityInformed(ability, false);
+            if (profile.getAbilityMode(ability) && (profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR) <= curTime) {
+                profile.setAbilityMode(ability, false);
+                profile.setAbilityInformed(ability, false);
                 player.sendMessage(ability.getAbilityOff());
 
                 for (Player nearbyPlayer : player.getWorld().getPlayers()) {
@@ -180,14 +180,14 @@ public class Skills {
      * @param player The player whose skill to update
      */
     public static void processLeaderboardUpdate(SkillType skillType, Player player) {
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
         PlayerStat ps = new PlayerStat();
 
         if (skillType != SkillType.ALL) {
-            ps.statVal = PP.getSkillLevel(skillType);
+            ps.statVal = profile.getSkillLevel(skillType);
         }
         else {
-            ps.statVal = PP.getPowerLevel();
+            ps.statVal = profile.getPowerLevel();
         }
 
         ps.name = player.getName();
@@ -389,14 +389,14 @@ public class Skills {
      * @param type The skill the ability is based on
      */
     public static void abilityCheck(Player player, SkillType type) {
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
         ToolType tool = type.getTool();
 
-        if (!PP.getToolPreparationMode(tool)) {
+        if (!profile.getToolPreparationMode(tool)) {
             return;
         }
 
-        PP.setToolPreparationMode(tool, false);
+        profile.setToolPreparationMode(tool, false);
 
         AbilityType ability = type.getAbility();
 
@@ -404,13 +404,13 @@ public class Skills {
          * We show them the too tired message when they take action.
          */
         if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
-            if (!PP.getAbilityMode(ability) && !cooldownOver(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(PP.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+            if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
                 return;
             }
         }
 
-        int ticks = 2 + (PP.getSkillLevel(type) / 50);
+        int ticks = 2 + (profile.getSkillLevel(type) / 50);
 
         if (player.hasPermission("mcmmo.perks.activationtime.twelveseconds")) {
             ticks = ticks + 12;
@@ -428,7 +428,7 @@ public class Skills {
             ticks = maxTicks;
         }
 
-        if (!PP.getAbilityMode(ability) && cooldownOver(PP.getSkillDATS(ability), ability.getCooldown(), player)) {
+        if (!profile.getAbilityMode(ability) && cooldownOver(profile.getSkillDATS(ability), ability.getCooldown(), player)) {
             player.sendMessage(ability.getAbilityOn());
 
             for (Player y : player.getWorld().getPlayers()) {
@@ -437,8 +437,8 @@ public class Skills {
                 }
             }
 
-            PP.setSkillDATS(ability, System.currentTimeMillis() + (ticks * TIME_CONVERSION_FACTOR));
-            PP.setAbilityMode(ability, true);
+            profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * TIME_CONVERSION_FACTOR));
+            profile.setAbilityMode(ability, true);
         }
     }
 

@@ -60,10 +60,10 @@ public class SimpleRepairManager implements RepairManager {
     @Override
     public void handleRepair(Player player, ItemStack item) {
         // Load some variables for use
-        PlayerProfile PP = Users.getProfile(player);
+        PlayerProfile profile = Users.getProfile(player);
         short startDurability = item.getDurability();
         PlayerInventory inventory = player.getInventory();
-        int skillLevel = PP.getSkillLevel(SkillType.REPAIR);
+        int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
         Repairable repairable = repairables.get(item.getTypeId());
 
         // Permissions checks on material and item types
@@ -147,7 +147,7 @@ public class SimpleRepairManager implements RepairManager {
         removeOneFrom(inventory, repairItemLocation);
 
         // Give out XP like candy
-        Repair.xpHandler(player, PP, startDurability, newDurability, repairable.getXpMultiplier());
+        Repair.xpHandler(player, profile, startDurability, newDurability, repairable.getXpMultiplier());
 
         // Repair the item!
         item.setDurability(newDurability);
