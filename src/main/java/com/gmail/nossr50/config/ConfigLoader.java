@@ -19,16 +19,16 @@ public abstract class ConfigLoader {
     public ConfigLoader(String relativePath, String fileName){
         this.fileName = fileName;
         configFile = new File(plugin.getDataFolder(), relativePath + File.separator + fileName);
-        load();
+        loadFile();
     }
 
     public ConfigLoader(String fileName){
         this.fileName = fileName;
         configFile = new File(plugin.getDataFolder(), fileName);
-        load();
+        loadFile();
     }
 
-    protected void load() {
+    protected void loadFile() {
         if (!configFile.exists()) {
             plugin.getLogger().info("Creating mcMMO " + fileName + " File...");
             createFile();

@@ -26,6 +26,7 @@ public class CustomArmorConfig extends ConfigLoader{
 
     public CustomArmorConfig() {
         super("ModConfigs", "armor.yml");
+        loadKeys();
     }
 
     public static CustomArmorConfig getInstance() {

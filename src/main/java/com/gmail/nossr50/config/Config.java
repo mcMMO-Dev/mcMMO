@@ -12,6 +12,7 @@ public class Config extends ConfigLoader {
     private Config() {
         super("config.yml");
         xpGainMultiplier = getExperienceGainsGlobalMultiplier();
+        loadKeys();
     }
 
     public static Config getInstance() {

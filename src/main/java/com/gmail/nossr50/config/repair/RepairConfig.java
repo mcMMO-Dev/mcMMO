@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.skills.repair.RepairItemType;
@@ -18,7 +17,7 @@ public class RepairConfig extends ConfigLoader {
 
     public RepairConfig(String fileName) {
         super(fileName);
-        this.config = YamlConfiguration.loadConfiguration(this.configFile);
+        loadKeys();
     }
 
     @Override

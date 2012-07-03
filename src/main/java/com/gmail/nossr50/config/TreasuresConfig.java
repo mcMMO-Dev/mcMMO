@@ -32,6 +32,7 @@ public class TreasuresConfig extends ConfigLoader{
 
     private TreasuresConfig() {
         super("treasures.yml");
+        loadKeys();
     }
 
     public static TreasuresConfig getInstance() {

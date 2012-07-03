@@ -28,6 +28,7 @@ public class CustomToolsConfig extends ConfigLoader {
 
     private CustomToolsConfig() {
         super("ModConfigs", "tools.yml");
+        loadKeys();
     }
 
     public static CustomToolsConfig getInstance() {

@@ -26,6 +26,7 @@ public class CustomBlocksConfig extends ConfigLoader {
 
     public CustomBlocksConfig() {
         super("ModConfigs", "blocks.yml");
+        loadKeys();
     }
 
     public static CustomBlocksConfig getInstance() {

@@ -8,6 +8,7 @@ public class SpoutConfig extends ConfigLoader {
 
     private SpoutConfig() {
         super("spout.yml");
+        loadKeys();
     }
 
     public static SpoutConfig getInstance() {
