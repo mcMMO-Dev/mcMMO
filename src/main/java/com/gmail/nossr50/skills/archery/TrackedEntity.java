@@ -29,6 +29,10 @@ public class TrackedEntity implements Runnable {
         return true;
     }
 
+    public LivingEntity getLivingEntity() {
+        return livingEntity;
+    }
+
     public int getArrowCount() {
         return arrowCount;
     }
