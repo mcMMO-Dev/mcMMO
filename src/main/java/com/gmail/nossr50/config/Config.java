@@ -5,20 +5,25 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.gmail.nossr50.mcMMO;
-
 public class Config extends ConfigLoader {
-    public int xpGainMultiplier = 1;
     private static Config instance;
+    public int xpGainMultiplier = 1;
+
+    private Config() {
+        super("config.yml");
+        xpGainMultiplier = getExperienceGainsGlobalMultiplier();
+    }
 
     public static Config getInstance() {
         if (instance == null) {
-            instance = new Config(mcMMO.p);
-            instance.load();
+            instance = new Config();
         }
 
         return instance;
     }
+
+    @Override
+    protected void loadKeys() {}
 
     /*
      * GENERAL SETTINGS
@@ -370,19 +375,4 @@ public class Config extends ConfigLoader {
     public double getFormulaMultiplierAxes() { return config.getDouble("Experience.Formula.Multiplier.Axes", 1.0); }
     public double getFormulaMultiplierAcrobatics() { return config.getDouble("Experience.Formula.Multiplier.Acrobatics", 1.0); }
     public double getFormulaMultiplierFishing() { return config.getDouble("Experience.Formula.Multiplier.Fishing", 1.0); }
-
-    /*
-     * CONFIG LOADING
-     */
-
-    private Config(mcMMO plugin) {
-        super(plugin, "config.yml");
-        saveIfNotExist();
-        xpGainMultiplier = getExperienceGainsGlobalMultiplier();
-    }
-
-    @Override
-    protected void loadKeys() {
-        plugin.getLogger().info("Loading mcMMO config.yml File...");
-    }
 }

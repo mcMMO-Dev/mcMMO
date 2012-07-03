@@ -22,22 +22,18 @@ public class RepairConfigManager {
             plugin.saveResource("repair.vanilla.yml", false);
         }
 
-        for (String location : dataFolder.list()) {
-            if (!pattern.matcher(location).matches()) {
+        for (String fileName : dataFolder.list()) {
+            if (!pattern.matcher(fileName).matches()) {
                 continue;
             }
 
-            plugin.getLogger().info("Loading " + location + " repair config file...");
-
-            File file = new File(dataFolder, location);
+            File file = new File(dataFolder, fileName);
 
             if (file.isDirectory()) {
                 continue;
             }
 
-            RepairConfig rConfig = new RepairConfig(plugin, location);
-            rConfig.load();
-
+            RepairConfig rConfig = new RepairConfig(fileName);
             List<Repairable> rConfigRepairables = rConfig.getLoadedRepairables();
 
             if (rConfigRepairables != null) {

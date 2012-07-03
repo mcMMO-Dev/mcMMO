@@ -8,41 +8,36 @@ import java.util.Set;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 
-public class CustomBlocksConfig extends ModConfigLoader{
+public class CustomBlocksConfig extends ConfigLoader {
     private static CustomBlocksConfig instance;
+    public List<ItemStack> customExcavationBlocks = new ArrayList<ItemStack>();
+    public List<ItemStack> customHerbalismBlocks = new ArrayList<ItemStack>();
+    public List<ItemStack> customMiningBlocks = new ArrayList<ItemStack>();
+    public List<ItemStack> customWoodcuttingBlocks = new ArrayList<ItemStack>();
+    public List<ItemStack> customOres = new ArrayList<ItemStack>();
+    public List<ItemStack> customLogs = new ArrayList<ItemStack>();
+    public List<ItemStack> customLeaves = new ArrayList<ItemStack>();
+    public List<ItemStack> customAbilityBlocks = new ArrayList<ItemStack>();
+    public List<ItemStack> customItems = new ArrayList<ItemStack>();
+    public List<CustomBlock> customBlocks = new ArrayList<CustomBlock>();
+
+    public CustomBlocksConfig() {
+        super("ModConfigs", "blocks.yml");
+    }
 
     public static CustomBlocksConfig getInstance() {
         if (instance == null) {
-            instance = new CustomBlocksConfig(mcMMO.p);
+            instance = new CustomBlocksConfig();
         }
 
         return instance;
     }
 
-    public List<ItemStack> customExcavationBlocks = new ArrayList<ItemStack>();
-    public List<ItemStack> customHerbalismBlocks = new ArrayList<ItemStack>();
-    public List<ItemStack> customMiningBlocks = new ArrayList<ItemStack>();
-    public List<ItemStack> customWoodcuttingBlocks = new ArrayList<ItemStack>();
-
-    public List<ItemStack> customOres = new ArrayList<ItemStack>();
-    public List<ItemStack> customLogs = new ArrayList<ItemStack>();
-    public List<ItemStack> customLeaves = new ArrayList<ItemStack>();
-    public List<ItemStack> customAbilityBlocks = new ArrayList<ItemStack>();
-
-    public List<ItemStack> customItems = new ArrayList<ItemStack>();
-    public List<CustomBlock> customBlocks = new ArrayList<CustomBlock>();
-
-    public CustomBlocksConfig(mcMMO plugin) {
-        super(plugin, "blocks.yml");
-    }
-
     @Override
     protected void loadKeys() {
-        plugin.getLogger().info("Loading mcMMO blocks.yml File...");
-
         loadBlocks("Excavation", customExcavationBlocks);
         loadBlocks("Herbalism", customHerbalismBlocks);
         loadBlocks("Mining", customMiningBlocks);

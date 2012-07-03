@@ -8,42 +8,38 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableFactory;
 
-public class CustomToolsConfig extends ModConfigLoader {
+public class CustomToolsConfig extends ConfigLoader {
     private static CustomToolsConfig instance;
-
-    public static CustomToolsConfig getInstance() {
-        if (instance == null) {
-            instance = new CustomToolsConfig(mcMMO.p);
-        }
-
-        return instance;
-    }
-
     private List<Repairable> repairables;
-
     public List<Integer> customAxeIDs = new ArrayList<Integer>();
     public List<Integer> customBowIDs = new ArrayList<Integer>();
     public List<Integer> customHoeIDs = new ArrayList<Integer>();
     public List<Integer> customPickaxeIDs = new ArrayList<Integer>();
     public List<Integer> customShovelIDs = new ArrayList<Integer>();
     public List<Integer> customSwordIDs = new ArrayList<Integer>();
-
     public List<Integer> customIDs = new ArrayList<Integer>();
     public List<CustomTool> customToolList = new ArrayList<CustomTool>();
     public HashMap<Integer, CustomTool> customTools = new HashMap<Integer, CustomTool>();
 
-    private CustomToolsConfig(mcMMO plugin) {
-        super(plugin, "tools.yml");
+    private CustomToolsConfig() {
+        super("ModConfigs", "tools.yml");
+    }
+
+    public static CustomToolsConfig getInstance() {
+        if (instance == null) {
+            instance = new CustomToolsConfig();
+        }
+
+        return instance;
     }
 
     @Override
     protected void loadKeys() {
-        plugin.getLogger().info("Loading mcMMO tools.yml File...");
         repairables = new ArrayList<Repairable>();
 
         loadTool("Axes", customAxeIDs);

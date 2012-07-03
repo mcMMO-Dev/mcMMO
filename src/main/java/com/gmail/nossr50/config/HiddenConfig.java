@@ -4,40 +4,30 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.mcMMO;
 
-public class HiddenConfig extends ConfigLoader {
-    private static String fileName;
+public class HiddenConfig {
     private static HiddenConfig instance;
+    private static String fileName;
     private static YamlConfiguration config;
-
     private static boolean chunkletsEnabled;
 
-    public HiddenConfig(mcMMO plugin, String fileName) {
-        super(plugin, fileName);
+    public HiddenConfig(String fileName) {
         HiddenConfig.fileName = fileName;
+        load();
     }
-
 
     public static HiddenConfig getInstance() {
         if (instance == null) {
-            instance = new HiddenConfig(mcMMO.p, "hidden.yml");
-            instance.load();
+            instance = new HiddenConfig("hidden.yml");
         }
 
         return instance;
     }
 
-    @Override
     public void load() {
-        if (plugin.getResource(fileName) != null) {
-            loadKeys();
+        if (mcMMO.p.getResource(fileName) != null) {
+            config = YamlConfiguration.loadConfiguration(mcMMO.p.getResource(fileName));
+            chunkletsEnabled = config.getBoolean("Options.Chunklets", true);
         }
-    }
-
-    @Override
-    protected void loadKeys() {
-        config = YamlConfiguration.loadConfiguration(plugin.getResource(fileName));
-
-        chunkletsEnabled = config.getBoolean("Options.Chunklets", true);
     }
 
     public boolean getChunkletsEnabled() {

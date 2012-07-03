@@ -127,17 +127,15 @@ public class mcMMO extends JavaPlugin {
         List<Repairable> repairables = new ArrayList<Repairable>();
 
         if (configInstance.getToolModsEnabled()) {
-            CustomToolsConfig.getInstance().load();
             repairables.addAll(CustomToolsConfig.getInstance().getLoadedRepairables());
         }
 
         if (configInstance.getArmorModsEnabled()) {
-            CustomArmorConfig.getInstance().load();
             repairables.addAll(CustomArmorConfig.getInstance().getLoadedRepairables());
         }
 
         if (configInstance.getBlockModsEnabled()) {
-            CustomBlocksConfig.getInstance().load();
+            CustomBlocksConfig.getInstance();
         }
 
         //Load repair configs, make manager, and register them at this time

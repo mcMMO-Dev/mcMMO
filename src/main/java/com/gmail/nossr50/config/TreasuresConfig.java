@@ -11,23 +11,12 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.Treasure;
 
 public class TreasuresConfig extends ConfigLoader{
     private static TreasuresConfig instance;
-
-    public static TreasuresConfig getInstance() {
-        if (instance == null) {
-            instance = new TreasuresConfig(mcMMO.p);
-            instance.load();
-        }
-
-        return instance;
-    }
-
     public List<ExcavationTreasure> excavationFromDirt = new ArrayList<ExcavationTreasure>();
     public List<ExcavationTreasure> excavationFromGrass = new ArrayList<ExcavationTreasure>();
     public List<ExcavationTreasure> excavationFromSand = new ArrayList<ExcavationTreasure>();
@@ -41,15 +30,20 @@ public class TreasuresConfig extends ConfigLoader{
     public List<FishingTreasure> fishingRewardsTier4 = new ArrayList<FishingTreasure>();
     public List<FishingTreasure> fishingRewardsTier5 = new ArrayList<FishingTreasure>();
 
-    private TreasuresConfig(mcMMO plugin) {
-        super(plugin, "treasures.yml");
-        saveIfNotExist();
+    private TreasuresConfig() {
+        super("treasures.yml");
+    }
+
+    public static TreasuresConfig getInstance() {
+        if (instance == null) {
+            instance = new TreasuresConfig();
+        }
+
+        return instance;
     }
 
     @Override
     protected void loadKeys() {
-        plugin.getLogger().info("Loading mcMMO treasures.yml File...");
-
         Map<String, Treasure> treasures = new HashMap<String, Treasure>();
         ConfigurationSection treasureSection = config.getConfigurationSection("Treasures");
         Set<String> treasureConfigSet = treasureSection.getKeys(false);

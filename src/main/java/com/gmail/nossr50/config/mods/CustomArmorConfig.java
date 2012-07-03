@@ -8,40 +8,36 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableFactory;
 
-public class CustomArmorConfig extends ModConfigLoader{
+public class CustomArmorConfig extends ConfigLoader{
     private static CustomArmorConfig instance;
+    private List<Repairable> repairables;
+    public List<Integer> customBootIDs = new ArrayList<Integer>();
+    public List<Integer> customChestplateIDs = new ArrayList<Integer>();
+    public List<Integer> customHelmetIDs = new ArrayList<Integer>();
+    public List<Integer> customLeggingIDs = new ArrayList<Integer>();
+    public List<Integer> customIDs = new ArrayList<Integer>();
+    public List<CustomItem> customArmorList = new ArrayList<CustomItem>();
+    public HashMap<Integer, CustomItem> customArmor = new HashMap<Integer, CustomItem>();
+
+    public CustomArmorConfig() {
+        super("ModConfigs", "armor.yml");
+    }
 
     public static CustomArmorConfig getInstance() {
         if (instance == null) {
-            instance = new CustomArmorConfig(mcMMO.p);
+            instance = new CustomArmorConfig();
         }
 
         return instance;
     }
 
-    private List<Repairable> repairables;
-
-    public List<Integer> customBootIDs = new ArrayList<Integer>();
-    public List<Integer> customChestplateIDs = new ArrayList<Integer>();
-    public List<Integer> customHelmetIDs = new ArrayList<Integer>();
-    public List<Integer> customLeggingIDs = new ArrayList<Integer>();
-
-    public List<Integer> customIDs = new ArrayList<Integer>();
-    public List<CustomItem> customArmorList = new ArrayList<CustomItem>();
-    public HashMap<Integer, CustomItem> customArmor = new HashMap<Integer, CustomItem>();
-
-    public CustomArmorConfig(mcMMO plugin) {
-        super(plugin, "armor.yml");
-    }
-
     @Override
     protected void loadKeys() {
-        plugin.getLogger().info("Loading mcMMO armor.yml File...");
         repairables = new ArrayList<Repairable>();
 
         loadArmor("Boots", customBootIDs);

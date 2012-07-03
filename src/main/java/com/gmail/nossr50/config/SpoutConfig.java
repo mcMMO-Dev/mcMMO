@@ -1,25 +1,38 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.HudType;
 
 public class SpoutConfig extends ConfigLoader {
     private static SpoutConfig instance;
+    public HudType defaultHudType;
+
+    private SpoutConfig() {
+        super("spout.yml");
+    }
 
     public static SpoutConfig getInstance() {
         if (instance == null) {
-            instance = new SpoutConfig(mcMMO.p);
-            instance.load();
+            instance = new SpoutConfig();
         }
 
         return instance;
     }
 
-    public HudType defaultHudType;
+    @Override
+    protected void loadKeys() {
+        // Setup default HUD
+        String temp = config.getString("Spout.HUD.Default", "STANDARD");
 
-    private SpoutConfig(mcMMO plugin) {
-        super(plugin, "spout.yml");
-        saveIfNotExist();
+        for (HudType hudType : HudType.values()) {
+            if (hudType.toString().equalsIgnoreCase(temp.toString())) {
+                defaultHudType = hudType;
+                break;
+            }
+        }
+
+        if (defaultHudType == null) {
+            defaultHudType = HudType.STANDARD;
+        }
     }
 
     public boolean getShowPowerLevel() { return config.getBoolean("HUD.Show_Power_Level", true); }
@@ -77,23 +90,4 @@ public class SpoutConfig extends ConfigLoader {
     public double getRetroHUDFishingRed() { return config.getDouble("HUD.Retro.Colors.Fishing.RED", 0.3); }
     public double getRetroHUDFishingGreen() { return config.getDouble("HUD.Retro.Colors.Fishing.GREEN", 0.3); }
     public double getRetroHUDFishingBlue() { return config.getDouble("HUD.Retro.Colors.Fishing.BLUE", 0.75); }
-
-    @Override
-    protected void loadKeys() {
-        plugin.getLogger().info("Loading mcMMO spout.yml File...");
-
-        // Setup default HUD
-        String temp = config.getString("Spout.HUD.Default", "STANDARD");
-
-        for (HudType hudType : HudType.values()) {
-            if (hudType.toString().equalsIgnoreCase(temp.toString())) {
-                defaultHudType = hudType;
-                break;
-            }
-        }
-
-        if (defaultHudType == null) {
-            defaultHudType = HudType.STANDARD;
-        }
-    }
 }

@@ -7,7 +7,6 @@ import java.util.Set;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.skills.repair.RepairItemType;
 import com.gmail.nossr50.skills.repair.RepairMaterialType;
@@ -17,14 +16,9 @@ import com.gmail.nossr50.skills.repair.RepairableFactory;
 public class RepairConfig extends ConfigLoader {
     private List<Repairable> repairables;
 
-    public RepairConfig(mcMMO plugin, String fileName) {
-        super(plugin, fileName);
+    public RepairConfig(String fileName) {
+        super(fileName);
         this.config = YamlConfiguration.loadConfiguration(this.configFile);
-    }
-
-    @Override
-    public void load() {
-        loadKeys();
     }
 
     @Override
