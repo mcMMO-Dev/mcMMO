@@ -21,8 +21,7 @@ public class Users {
     public static void loadUsers() {
         new File(mcMMO.flatFileDirectory).mkdir();
         new File(mcMMO.leaderboardDirectory).mkdir();
-
-        File theDir = new File(mcMMO.usersFile);
+        new File(mcMMO.usersFile).createNewFile();
 
         if (!theDir.exists()) {
             try {
