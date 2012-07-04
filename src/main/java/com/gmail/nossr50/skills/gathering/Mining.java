@@ -85,7 +85,7 @@ public class Mining {
                 Misc.dropItem(loc, item);
             }
             break;
-
+        // While using silk touch with custom blocks it return blocks without metadata !!!
         default:
             if (ModChecks.isCustomMiningBlock(block)) {
                 Misc.dropItem(loc, item);
