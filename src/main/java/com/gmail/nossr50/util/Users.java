@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,16 +20,12 @@ public class Users {
     public static void loadUsers() {
         new File(mcMMO.flatFileDirectory).mkdir();
         new File(mcMMO.leaderboardDirectory).mkdir();
-        new File(mcMMO.usersFile).createNewFile();
 
-        if (!theDir.exists()) {
-            try {
-                FileWriter writer = new FileWriter(theDir);
-                writer.close();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            new File(mcMMO.usersFile).createNewFile();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
