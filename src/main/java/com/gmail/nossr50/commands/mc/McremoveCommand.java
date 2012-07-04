@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.mc;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -118,9 +119,12 @@ public class McremoveCommand implements CommandExecutor {
     private boolean removeFlatFileUser(String playerName) {
         boolean worked = false;
 
+        BufferedReader in = null;
+        FileWriter out = null;
+
         try {
             FileReader file = new FileReader(location);
-            BufferedReader in = new BufferedReader(file);
+            in = new BufferedReader(file);
             StringBuilder writer = new StringBuilder();
             String line = "";
 
@@ -137,16 +141,32 @@ public class McremoveCommand implements CommandExecutor {
                 }
             }
 
-            in.close();
-            FileWriter out = new FileWriter(location); //Write out the new file
+            out = new FileWriter(location); //Write out the new file
             out.write(writer.toString());
-            out.close();
-
-            return worked;
         }
         catch (Exception e) {
             plugin.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
-            return worked;
         }
+        finally {
+            if (in != null) {
+                try {
+                    in.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            if (out != null) {
+                try {
+                    out.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return worked;
     }
 }
