@@ -148,16 +148,16 @@ public class mcMMO extends JavaPlugin {
             Users.loadUsers();
         }
 
-        PluginManager pm = getServer().getPluginManager();
+        PluginManager pluginManager = getServer().getPluginManager();
 
         //Register events
-        pm.registerEvents(playerListener, this);
-        pm.registerEvents(blockListener, this);
-        pm.registerEvents(entityListener, this);
-        pm.registerEvents(worldListener, this);
+        pluginManager.registerEvents(playerListener, this);
+        pluginManager.registerEvents(blockListener, this);
+        pluginManager.registerEvents(entityListener, this);
+        pluginManager.registerEvents(worldListener, this);
 
         if (configInstance.getHardcoreEnabled()) {
-            pm.registerEvents(hardcoreListener, this);
+            pluginManager.registerEvents(hardcoreListener, this);
         }
 
         PluginDescriptionFile pdfFile = getDescription();
@@ -198,7 +198,7 @@ public class mcMMO extends JavaPlugin {
 
                 Graph graph = metrics.createGraph("Percentage of servers using timings");
 
-                if (pm.useTimings()) {
+                if (pluginManager.useTimings()) {
                     graph.addPlotter(new Metrics.Plotter("Enabled") {
                         @Override
                         public int getValue() {
