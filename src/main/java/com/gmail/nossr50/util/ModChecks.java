@@ -45,7 +45,7 @@ public class ModChecks {
      * Get the custom block associated with an block.
      *
      * @param block The block to check
-     * @return the armor if it exists, null otherwise
+     * @return the block if it exists, null otherwise
      */
     public static CustomBlock getCustomBlock(Block block) {
         if (!blocksInstance.customItems.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
