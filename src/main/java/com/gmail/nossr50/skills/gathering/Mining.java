@@ -88,7 +88,7 @@ public class Mining {
 
         default:
             if (ModChecks.isCustomMiningBlock(block)) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(loc, new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()));
             }
             break;
         }
