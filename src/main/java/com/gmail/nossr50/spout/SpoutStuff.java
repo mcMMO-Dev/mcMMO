@@ -46,32 +46,50 @@ public class SpoutStuff {
      * @param theFilePath The name of the file path
      */
     private static void writeFile(String theFileName, String theFilePath) {
+        OutputStream os = null;
+        JarFile jar = null;
+
         try {
             File currentFile = new File(theFilePath + theFileName);
 
-            JarFile jar = new JarFile(mcMMO.mcmmo);
+            jar = new JarFile(mcMMO.mcmmo);
             JarEntry entry = jar.getJarEntry("resources/" + theFileName);
             InputStream is = jar.getInputStream(entry);
-
 
             byte[] buf = new byte[2048];
             int nbRead;
 
-            OutputStream os = new BufferedOutputStream(new FileOutputStream(currentFile));
+            os = new BufferedOutputStream(new FileOutputStream(currentFile));
 
             while ((nbRead = is.read(buf)) != -1) {
                 os.write(buf, 0, nbRead);
             }
-
-            os.flush();
-            os.close();
-            jar.close();
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+        finally {
+            if (os != null) {
+                try {
+                    os.flush();
+                    os.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            if (jar != null) {
+                try {
+                    jar.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
