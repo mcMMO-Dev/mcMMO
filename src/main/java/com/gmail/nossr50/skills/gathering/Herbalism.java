@@ -83,7 +83,7 @@ public class Herbalism {
         Material type = block.getType();
 
         Byte data = block.getData();
-        Location loc = block.getLocation();
+        Location location = block.getLocation();
         Material mat = null;
 
         int xp = 0;
@@ -220,69 +220,69 @@ public class Herbalism {
                 switch (type) {
                 case BROWN_MUSHROOM:
                     if (configInstance.getBrownMushroomsDoubleDropsEnabled()) {
-                        Misc.dropItem(loc, is);
+                        Misc.dropItem(location, is);
                     }
                     break;
 
                 case CACTUS:
                     if (configInstance.getCactiDoubleDropsEnabled()) {
-                        Misc.dropItems(loc, is, catciDrops);
+                        Misc.dropItems(location, is, catciDrops);
                     }
                     break;
 
                 case CROPS:
                     if (configInstance.getWheatDoubleDropsEnabled()) {
-                        Misc.dropItem(loc, is);
+                        Misc.dropItem(location, is);
                     }
                     break;
 
                 case MELON_BLOCK:
                     if (configInstance.getMelonsDoubleDropsEnabled()) {
-                        Misc.dropItems(loc, is, 3);
-                        Misc.randomDropItems(loc, is, 50, 4);
+                        Misc.dropItems(location, is, 3);
+                        Misc.randomDropItems(location, is, 50, 4);
                     }
                     break;
 
                 case NETHER_WARTS:
                     if (configInstance.getNetherWartsDoubleDropsEnabled()) {
-                        Misc.dropItems(loc, is, 2);
-                        Misc.randomDropItems(loc, is, 50, 3);
+                        Misc.dropItems(location, is, 2);
+                        Misc.randomDropItems(location, is, 50, 3);
                     }
                     break;
 
                 case PUMPKIN:
                     if (configInstance.getPumpkinsDoubleDropsEnabled()) {
-                        Misc.dropItem(loc, is);
+                        Misc.dropItem(location, is);
                     }
                     break;
 
                 case RED_MUSHROOM:
                     if (configInstance.getRedMushroomsDoubleDropsEnabled()) {
-                        Misc.dropItem(loc, is);
+                        Misc.dropItem(location, is);
                     }
                     break;
 
                 case SUGAR_CANE_BLOCK:
                     if (configInstance.getSugarCaneDoubleDropsEnabled()) {
-                        Misc.dropItems(loc, is, caneDrops);
+                        Misc.dropItems(location, is, caneDrops);
                     }
                     break;
 
                 case VINE:
                     if (configInstance.getVinesDoubleDropsEnabled()) {
-                        Misc.dropItem(loc, is);
+                        Misc.dropItem(location, is);
                     }
                     break;
 
                 case WATER_LILY:
                     if (configInstance.getWaterLiliesDoubleDropsEnabled()) {
-                        Misc.dropItem(loc, is);
+                        Misc.dropItem(location, is);
                     }
                     break;
 
                 case YELLOW_FLOWER:
                     if (configInstance.getYellowFlowersDoubleDropsEnabled()) {
-                        Misc.dropItem(loc, is);
+                        Misc.dropItem(location, is);
                     }
                     break;
 
@@ -295,11 +295,11 @@ public class Herbalism {
                         is = customBlock.getItemDrop();
 
                         if (minimumDropAmount != maximumDropAmount) {
-                            Misc.dropItems(loc, is, minimumDropAmount);
-                            Misc.randomDropItems(loc, is, 50, maximumDropAmount - minimumDropAmount);
+                            Misc.dropItems(location, is, minimumDropAmount);
+                            Misc.randomDropItems(location, is, 50, maximumDropAmount - minimumDropAmount);
                         }
                         else {
-                            Misc.dropItems(loc, is, minimumDropAmount);
+                            Misc.dropItems(location, is, minimumDropAmount);
                         }
                     }
                     break;
@@ -325,7 +325,7 @@ public class Herbalism {
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         PlayerInventory inventory = player.getInventory();
         boolean hasSeeds = inventory.contains(Material.SEEDS);
-        Location loc = block.getLocation();
+        Location location = block.getLocation();
 
         int randomChance = 1500;
 
@@ -336,8 +336,8 @@ public class Herbalism {
         if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel)) {
             event.setCancelled(true);
 
-            Misc.dropItem(loc, new ItemStack(Material.WHEAT));
-            Misc.randomDropItems(loc, new ItemStack(Material.SEEDS), 50, 3);
+            Misc.dropItem(location, new ItemStack(Material.WHEAT));
+            Misc.randomDropItems(location, new ItemStack(Material.SEEDS), 50, 3);
 
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, profile), 1);
 

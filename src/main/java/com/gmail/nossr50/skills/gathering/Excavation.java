@@ -38,7 +38,7 @@ public class Excavation {
      */
     public static void excavationProcCheck(Block block, Player player) {
         Material type = block.getType();
-        Location loc = block.getLocation();
+        Location location = block.getLocation();
 
         PlayerProfile profile = Users.getProfile(player);
         int skillLevel = profile.getSkillLevel(SkillType.EXCAVATION);
@@ -107,7 +107,7 @@ public class Excavation {
             //Drop items
             for (ItemStack x : is) {
                 if (x != null) {
-                    Misc.dropItem(loc, x);
+                    Misc.dropItem(location, x);
                 }
             }
         }

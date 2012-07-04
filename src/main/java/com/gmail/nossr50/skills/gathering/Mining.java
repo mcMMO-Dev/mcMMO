@@ -33,7 +33,7 @@ public class Mining {
      * @param block The block to process drops for
      */
     private static void silkTouchDrops(Block block) {
-        Location loc = block.getLocation();
+        Location location = block.getLocation();
         Material type = block.getType();
         ItemStack item = new ItemStack(type);
         Config configInstance = Config.getInstance();
@@ -51,44 +51,44 @@ public class Mining {
 
         case COAL_ORE:
             if (configInstance.getCoalDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case DIAMOND_ORE:
             if (configInstance.getDiamondDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
             if (configInstance.getRedstoneDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case GLOWSTONE:
             if (configInstance.getGlowstoneDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case LAPIS_ORE:
             if (configInstance.getLapisDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case STONE:
             if (configInstance.getStoneDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         default:
             if (ModChecks.isCustomMiningBlock(block)) {
-                Misc.dropItem(loc, new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()));
+                Misc.dropItem(location, new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()));
             }
             break;
         }
@@ -101,7 +101,7 @@ public class Mining {
      * @param block The block to process drops for
      */
     public static void miningDrops(Block block) {
-        Location loc = block.getLocation();
+        Location location = block.getLocation();
         Material type = block.getType();
         ItemStack item = new ItemStack(type);
         Config configInstance = Config.getInstance();
@@ -110,20 +110,20 @@ public class Mining {
         case COAL_ORE:
             if (configInstance.getCoalDoubleDropsEnabled()) {
                 item = new ItemStack(Material.COAL, 1, (short) 0, CoalType.COAL.getData());
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case DIAMOND_ORE:
             if (configInstance.getDiamondDoubleDropsEnabled()) {
                 item = new ItemStack(Material.DIAMOND);
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case ENDER_STONE:
             if (configInstance.getEndStoneDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
@@ -131,67 +131,67 @@ public class Mining {
         case REDSTONE_ORE:
             if (configInstance.getRedstoneDoubleDropsEnabled()) {
                 item = new ItemStack(Material.REDSTONE);
-                Misc.dropItems(loc, item, 4);
-                Misc.randomDropItem(loc, item, 50);
+                Misc.dropItems(location, item, 4);
+                Misc.randomDropItem(location, item, 50);
             }
             break;
 
         case GLOWSTONE:
             if (configInstance.getGlowstoneDoubleDropsEnabled()) {
                 item = new ItemStack(Material.GLOWSTONE_DUST);
-                Misc.dropItems(loc, item, 2);
-                Misc.randomDropItems(loc, item, 50, 2);
+                Misc.dropItems(location, item, 2);
+                Misc.randomDropItems(location, item, 50, 2);
             }
             break;
 
         case GOLD_ORE:
             if (configInstance.getGoldDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case IRON_ORE:
             if (configInstance.getIronDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case LAPIS_ORE:
             if (configInstance.getLapisDoubleDropsEnabled()) {
                 item = new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x4);
-                Misc.dropItems(loc, item, 4);
-                Misc.randomDropItems(loc, item, 50, 4);
+                Misc.dropItems(location, item, 4);
+                Misc.randomDropItems(location, item, 50, 4);
             }
             break;
 
         case MOSSY_COBBLESTONE:
             if (configInstance.getMossyCobblestoneDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case NETHERRACK:
             if (configInstance.getNetherrackDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case OBSIDIAN:
             if (configInstance.getObsidianDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case SANDSTONE:
             if (configInstance.getSandstoneDoubleDropsEnabled()) {
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
         case STONE:
             if (configInstance.getStoneDoubleDropsEnabled()) {
                 item = new ItemStack(Material.COBBLESTONE);
-                Misc.dropItem(loc, item);
+                Misc.dropItem(location, item);
             }
             break;
 
@@ -204,11 +204,11 @@ public class Mining {
                 item = ModChecks.getCustomBlock(block).getItemDrop();
 
                 if (minimumDropAmount != maximumDropAmount) {
-                    Misc.dropItems(loc, item, minimumDropAmount);
-                    Misc.randomDropItems(loc, item, 50, maximumDropAmount - minimumDropAmount);
+                    Misc.dropItems(location, item, minimumDropAmount);
+                    Misc.randomDropItems(location, item, 50, maximumDropAmount - minimumDropAmount);
                 }
                 else {
-                    Misc.dropItems(loc, item, minimumDropAmount);
+                    Misc.dropItems(location, item, minimumDropAmount);
                 }
             }
             break;
