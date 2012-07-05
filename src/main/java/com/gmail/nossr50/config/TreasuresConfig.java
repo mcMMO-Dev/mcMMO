@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.Material;
@@ -189,11 +190,13 @@ public class TreasuresConfig extends ConfigLoader{
 
         List<String> excavationTreasures = config.getStringList("Excavation.Treasure");
         List<String> fishingTreasures = config.getStringList("Fishing.Treasure");
-        Iterator<String> treasureIterator = treasures.keySet().iterator();
+//        Iterator<String> treasureIterator = treasures.keySet().iterator();
+        Iterator<Entry<String,Treasure>> treasureIterator = treasures.entrySet().iterator();
 
         while (treasureIterator.hasNext()) {
-            String treasureKey = treasureIterator.next();
-            Treasure treasure = treasures.get(treasureKey);
+            Entry<String,Treasure> nextEntry = treasureIterator.next();
+            String treasureKey = nextEntry.getKey();
+            Treasure treasure = nextEntry.getValue();
 
             if (treasure instanceof FishingTreasure) {
                 if (!fishingTreasures.contains(treasureKey)) {
