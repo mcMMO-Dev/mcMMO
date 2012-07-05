@@ -65,11 +65,15 @@ public class PCommand implements CommandExecutor {
                     return true;
                 }
 
-                String message = args[0];
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(args[0]);
 
                 for (int i = 1; i < args.length; i++) {
-                    message = message + " " + args [i];
+                    buffer.append(" ");
+                    buffer.append(args[i]);
                 }
+
+                String message = buffer.toString();
 
                 McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), party.getName(), message);
                 plugin.getServer().getPluginManager().callEvent(chatEvent);
@@ -98,11 +102,15 @@ public class PCommand implements CommandExecutor {
                     return true;
                 }
 
-                String message = args[1];
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(args[1]);
 
                 for (int i = 2; i < args.length; i++) {
-                    message = message + " " + args [i];
+                    buffer.append(" ");
+                    buffer.append(args[i]);
                 }
+
+                String message = buffer.toString();
 
                 McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent("Console", args[0], message);
                 plugin.getServer().getPluginManager().callEvent(chatEvent);
