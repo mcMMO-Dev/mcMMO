@@ -314,6 +314,10 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = Users.getProfile(player);
 
+        if (profile == null) {
+            return;
+        }
+
         if (profile.getPartyChatMode()) {
             Party party = profile.getParty();
 
