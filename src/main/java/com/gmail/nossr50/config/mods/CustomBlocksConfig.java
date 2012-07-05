@@ -73,7 +73,7 @@ public class CustomBlocksConfig extends ConfigLoader {
                 continue;
             }
 
-            if (skillType == "Ability_Blocks") {
+            if (skillType.equals("Ability_Blocks")) {
                 blockItem = new ItemStack(id, 1, (short) 0, data);
                 blockList.add(blockItem);
                 continue;
@@ -94,10 +94,10 @@ public class CustomBlocksConfig extends ConfigLoader {
             block = new CustomBlock(minimumDropAmount, maxiumDropAmount, itemDrop, tier, xp, data, id);
             blockItem = new ItemStack(id, 1, (short) 0, data);
 
-            if (skillType == "Mining" && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
+            if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
                 customOres.add(blockItem);
             }
-            else if (skillType == "Woodcutting") {
+            else if (skillType.equals("Woodcutting")) {
                 if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
                     customLogs.add(blockItem);
                 }

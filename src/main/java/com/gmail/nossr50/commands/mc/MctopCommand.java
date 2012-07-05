@@ -107,7 +107,7 @@ public class MctopCommand implements CommandExecutor {
     private void flatfileDisplay(int page, String skill, CommandSender sender) {
         String[] info = Leaderboard.retrieveInfo(skill, page);
 
-        if (skill == "ALL") {
+        if (skill.equals("ALL")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
@@ -136,7 +136,7 @@ public class MctopCommand implements CommandExecutor {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
 
-        if (query == "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing") {
+        if (query.equals("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
