@@ -12,7 +12,7 @@ import com.gmail.nossr50.mcMMO;
 public class ChunkletUnloader implements Runnable {
     private static Map<Chunk, Integer> unloadedChunks = new HashMap<Chunk, Integer>();
     private static int minimumInactiveTime = 60; //Should be a multiple of RUN_INTERVAL for best performance
-    public static int RUN_INTERVAL = 20;
+    public final static int RUN_INTERVAL = 20;
 
     public static void addToList(Chunk chunk) {
         //Unfortunately we can't use Map.contains() because Chunks are always new objects
