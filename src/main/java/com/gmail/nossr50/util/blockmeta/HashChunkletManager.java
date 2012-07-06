@@ -263,6 +263,7 @@ public class HashChunkletManager implements ChunkletManager {
         finally {
             if (objOut != null) {
                 try {
+                    objOut.flush();
                     objOut.close();
                 }
                 catch (IOException ex) {
