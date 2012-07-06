@@ -11,11 +11,11 @@ public final class SpoutToolsAPI {
 
     private SpoutToolsAPI() {}
 
-    public final static List<ItemStack> spoutSwords = new ArrayList<ItemStack>();
-    public final static List<ItemStack> spoutAxes = new ArrayList<ItemStack>();
-    public final static List<ItemStack> spoutPickaxes = new ArrayList<ItemStack>();
-    public final static List<ItemStack> spoutHoes = new ArrayList<ItemStack>();
-    public final static List<ItemStack> spoutShovels = new ArrayList<ItemStack>();
+    public static final List<ItemStack> spoutSwords = new ArrayList<ItemStack>();
+    public static final List<ItemStack> spoutAxes = new ArrayList<ItemStack>();
+    public static final List<ItemStack> spoutPickaxes = new ArrayList<ItemStack>();
+    public static final List<ItemStack> spoutHoes = new ArrayList<ItemStack>();
+    public static final List<ItemStack> spoutShovels = new ArrayList<ItemStack>();
 
     /**
      * Add a custom Spout tool to mcMMO for XP gain & ability use.
