@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -63,9 +64,9 @@ public class PlayerProfile {
     private String playerName;
     private final static String location = mcMMO.usersFile;
 
-    public PlayerProfile(Player player, String playerName, boolean addNew) {
-        this.player = player;
-        this.playerName = playerName;
+    public PlayerProfile(OfflinePlayer offlinePlayer, boolean addNew) {
+        this.player = player.getPlayer();
+        this.playerName = player.getName();
 
         party = PartyManager.getInstance().getPlayerParty(playerName);
 

@@ -44,7 +44,7 @@ public class Users {
             playerProfile.setPlayer(player);
         }
         else {
-            playerProfile = new PlayerProfile(player, playerName, true);
+            playerProfile = new PlayerProfile(player, true);
 
             profiles.put(playerName, playerProfile);
         }

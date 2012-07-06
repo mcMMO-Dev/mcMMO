@@ -35,6 +35,7 @@ public class InspectCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             target = plugin.getServer().getOfflinePlayer(args[0]);
+            profile = Users.getProfile(target);
 
             if (target.isOnline()) {
                 Player player = (Player) target;
@@ -59,8 +60,7 @@ public class InspectCommand implements CommandExecutor {
                     return true;
                 }
 
-                //Temporary profile, it would be better to be able to create it with an OfflinePlayer instead
-                profile = new PlayerProfile(null, target.getName(), false);
+                profile = new PlayerProfile(target, false); //Temporary Profile
 
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));

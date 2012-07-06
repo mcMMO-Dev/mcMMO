@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -16,10 +17,16 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class MmoeditCommand implements CommandExecutor {
+    private final mcMMO plugin;
+
+    public MmoeditCommand (mcMMO plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer modifiedPlayer;
-        PlayerProfile playerProfile;
+        PlayerProfile orofile;
         int newValue;
         SkillType skill;
         String skillName;
@@ -41,7 +48,7 @@ public class MmoeditCommand implements CommandExecutor {
                     modifiedPlayer = (Player) sender;
                     newValue = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
-                    playerProfile = Users.getProfile(modifiedPlayer);
+                    orofile = Users.getProfile(modifiedPlayer);
 
                     if (skill.equals(SkillType.ALL)) {
                         skillName = "all skills";
@@ -50,7 +57,7 @@ public class MmoeditCommand implements CommandExecutor {
                         skillName = Misc.getCapitalized(skill.toString());
                     }
 
-                    playerProfile.modifySkill(skill, newValue);
+                    orofile.modifySkill(skill, newValue);
                     sender.sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
                 }
                 else {
@@ -84,29 +91,28 @@ public class MmoeditCommand implements CommandExecutor {
             }
 
             newValue = Integer.valueOf(args[2]);
-            playerProfile = Users.getProfile(args[0]);
+            modifiedPlayer = plugin.getServer().getOfflinePlayer(args[0]);
 
-            if (playerProfile != null) {
-                Player player = playerProfile.getPlayer();
+            if (modifiedPlayer.isOnline()) {
+                orofile = Users.getProfile(modifiedPlayer);
 
-                if (player.isOnline()) {
-                    player.sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
-                }
+                ((Player) modifiedPlayer).sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
+                sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + args[0] + "."); //TODO: Use locale
+
+                orofile.modifySkill(skill, newValue);
+                orofile.save();
+                return true;
             }
             else {
-                //Temporary profile, it would be better to be able to create it with an OfflinePlayer instead
-                playerProfile = new PlayerProfile(null, args[0], false);
+                orofile = new PlayerProfile(modifiedPlayer, false); //Temporary Profile
 
-                if (!playerProfile.isLoaded()) {
+                if (!orofile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                     return true;
                 }
             }
 
-            sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + args[0] + "."); //TODO: Use locale
-            playerProfile.modifySkill(skill, newValue);
-            playerProfile.save();
-            return true;
+
 
         default:
             sender.sendMessage(usage);
