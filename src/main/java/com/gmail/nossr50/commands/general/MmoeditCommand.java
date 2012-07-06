@@ -26,7 +26,7 @@ public class MmoeditCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer modifiedPlayer;
-        PlayerProfile orofile;
+        PlayerProfile profile;
         int newValue;
         SkillType skill;
         String skillName;
@@ -48,7 +48,7 @@ public class MmoeditCommand implements CommandExecutor {
                     modifiedPlayer = (Player) sender;
                     newValue = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
-                    orofile = Users.getProfile(modifiedPlayer);
+                    profile = Users.getProfile(modifiedPlayer);
 
                     if (skill.equals(SkillType.ALL)) {
                         skillName = "all skills";
@@ -57,7 +57,7 @@ public class MmoeditCommand implements CommandExecutor {
                         skillName = Misc.getCapitalized(skill.toString());
                     }
 
-                    orofile.modifySkill(skill, newValue);
+                    profile.modifySkill(skill, newValue);
                     sender.sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
                 }
                 else {
@@ -94,19 +94,19 @@ public class MmoeditCommand implements CommandExecutor {
             modifiedPlayer = plugin.getServer().getOfflinePlayer(args[0]);
 
             if (modifiedPlayer.isOnline()) {
-                orofile = Users.getProfile(modifiedPlayer);
+                profile = Users.getProfile(modifiedPlayer);
 
                 ((Player) modifiedPlayer).sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
                 sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + args[0] + "."); //TODO: Use locale
 
-                orofile.modifySkill(skill, newValue);
-                orofile.save();
+                profile.modifySkill(skill, newValue);
+                profile.save();
                 return true;
             }
             else {
-                orofile = new PlayerProfile(modifiedPlayer, false); //Temporary Profile
+                profile = new PlayerProfile(modifiedPlayer, false); //Temporary Profile
 
-                if (!orofile.isLoaded()) {
+                if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                     return true;
                 }
