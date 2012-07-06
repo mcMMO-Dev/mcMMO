@@ -76,7 +76,7 @@ public class PrimitiveChunkletStore implements ChunkletStore {
 
             for(int i = 0; i < 8; i++) {
                 for(int j = 0; j < 8; j++) {
-                    yColumn[j + (i * 8)] = (temp[i + 1] & 1 << j) != 0;
+                    yColumn[j + (i * 8)] = (temp[i + 1] & (1 << j)) != 0;
                 }
             }
 
