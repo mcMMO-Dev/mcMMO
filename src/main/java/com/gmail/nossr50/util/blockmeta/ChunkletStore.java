@@ -1,8 +1,9 @@
 package com.gmail.nossr50.util.blockmeta;
 
+import java.io.Externalizable;
 import java.io.Serializable;
 
-public interface ChunkletStore extends Serializable {
+public interface ChunkletStore extends Serializable, Externalizable {
     /**
      * Checks the value at the given coordinates
      *
