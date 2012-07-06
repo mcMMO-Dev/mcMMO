@@ -261,18 +261,18 @@ public class HashChunkletManager implements ChunkletManager {
             ex.printStackTrace();
         }
         finally {
-            if (fileOut != null) {
+            if (objOut != null) {
                 try {
-                    fileOut.close();
+                    objOut.close();
                 }
                 catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
 
-            if (objOut != null) {
+            if (fileOut != null) {
                 try {
-                    objOut.close();
+                    fileOut.close();
                 }
                 catch (IOException ex) {
                     ex.printStackTrace();
@@ -318,20 +318,20 @@ public class HashChunkletManager implements ChunkletManager {
             ex.printStackTrace();
         }
         finally {
-            if (fileIn != null) {
-                try {
-                    fileIn.close();
-                }
-                catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-
             if (objIn != null) {
                 try {
                     objIn.close();
                 }
                 catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+
+            if (fileIn != null) {
+                try {
+                    fileIn.close();
+                }
+                catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
