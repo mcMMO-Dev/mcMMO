@@ -323,7 +323,7 @@ public class HashChunkletManager implements ChunkletManager {
                 try {
                     objIn.close();
                 }
-                catch (IOException ex){
+                catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
