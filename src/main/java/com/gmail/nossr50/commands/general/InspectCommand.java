@@ -59,9 +59,9 @@ public class InspectCommand implements CommandExecutor {
                     return true;
                 }
 
-                //Temporary profile, it would be better to be able to create if with an OfflinePlayer instead
-
+                //Temporary profile, it would be better to be able to create it with an OfflinePlayer instead
                 profile = new PlayerProfile(null, target.getName(), false);
+
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                     return true;

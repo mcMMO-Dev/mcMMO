@@ -94,7 +94,7 @@ public class MmoeditCommand implements CommandExecutor {
                 }
             }
             else {
-                //Temporary profile, it would be better to be able to create if with an OfflinePlayer instead
+                //Temporary profile, it would be better to be able to create it with an OfflinePlayer instead
                 playerProfile = new PlayerProfile(null, args[0], false);
 
                 if (!playerProfile.isLoaded()) {
