@@ -84,6 +84,31 @@ public class PrimitiveChunkletStore implements ChunkletStore {
         }
     }
 
+    /*
+     * The column: An array of 9 bytes which represent all y values for a given (x,z) Chunklet-coordinate
+     *
+     * The first byte is an address byte, this provides the x and z values.
+     * The next 8 bytes are all y values from 0 to 63, with each byte containing 8 bits of true/false data
+     *
+     * Each of these 8 bytes address to a y value from right to left
+     *
+     * Examples:
+     * 00000001 represents that the lowest y value in this byte is true, all others are off
+     * 10000000 represents that the highest y value in this byte is true, all others are off
+     * 10000001 represents that the lowest and highest y values in this byte are true, all others are off
+     *
+     * Full columns:
+     * See comment on Address byte for information on how to use that byte
+     *
+     * Example:
+     * ADDRESS_BYTE 10000000 00000001 00000000 00000000 00000000 00000000 00000000 00000000
+     *  - x, z from ADDRESS_BYTE
+     *  - The next byte contains data from 0 to 7
+     *    - 1 is set in the highest bit position, this is 7 in y coordinate
+     *  - The next byte contains data from 8 to 15
+     *    - 1 is set in the lowest bit position, this is 8 in the y coordinate
+     *  Therefore, for this column: There are true values at (x, 7, z) and (x, 8, z)
+     */
     private byte[] constructColumn(int x, int z) {
         byte[] column = new byte[9];
         int index = 1;
