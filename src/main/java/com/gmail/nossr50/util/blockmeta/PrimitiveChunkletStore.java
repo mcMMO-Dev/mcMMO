@@ -122,7 +122,7 @@ public class PrimitiveChunkletStore implements ChunkletStore {
 
             for(int y = subColumnIndex; y < subColumnEnd; y++) {
                 if(store[x][z][y]) {
-                    yCompressed |= 1 << y % 8; 
+                    yCompressed |= 1 << (y % 8);
                 }
             }
 
