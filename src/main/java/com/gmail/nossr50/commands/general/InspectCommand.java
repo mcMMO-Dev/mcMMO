@@ -35,10 +35,10 @@ public class InspectCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             target = plugin.getServer().getOfflinePlayer(args[0]);
-            profile = Users.getProfile(target);
 
             if (target.isOnline()) {
                 Player player = (Player) target;
+                profile = Users.getProfile(player);
 
                 if (sender instanceof Player && !sender.isOp() && !Misc.isNear(((Player) sender).getLocation(), player.getLocation(), 5.0) && !Permissions.getInstance().inspectDistanceBypass((Player) sender)) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
@@ -59,6 +59,9 @@ public class InspectCommand implements CommandExecutor {
                     return true;
                 }
 
+                //Temporary profile, it would be better to be able to create if with an OfflinePlayer instead
+
+                profile = new PlayerProfile(null, target.getName(), false);
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                     return true;
