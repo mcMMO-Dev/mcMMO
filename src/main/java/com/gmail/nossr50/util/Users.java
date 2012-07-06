@@ -9,10 +9,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
 public class Users {
-    private static Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
+    private static Map<String, McMMOPlayer> players = new HashMap<String, McMMOPlayer>();
 
     /**
      * Load users.
@@ -33,57 +34,50 @@ public class Users {
      * Add a new user.
      *
      * @param player The player to create a user record for
-     * @return the player's profile
+     * @return the player's {@link McMMOPlayer} object
      */
-    public static PlayerProfile addUser(Player player) {
+    public static McMMOPlayer addUser(Player player) {
         String playerName = player.getName();
-        PlayerProfile playerProfile = profiles.get(playerName);
+        McMMOPlayer mcMMOPlayer = players.get(playerName);
 
-        if (playerProfile != null) {
-            //The player object is different on each reconnection and must be updated
-            playerProfile.setPlayer(player);
+        if (mcMMOPlayer != null) {
+            mcMMOPlayer.setPlayer(player); //The player object is different on each reconnection and must be updated
         }
         else {
-            playerProfile = new PlayerProfile(player, true);
-
-            profiles.put(playerName, playerProfile);
+            mcMMOPlayer = new McMMOPlayer(player);
+            players.put(playerName, mcMMOPlayer);
         }
 
-        return playerProfile;
+        return mcMMOPlayer;
     }
 
-    /*
+    /**
      * Remove a user.
-     * 
+     *
      * @param playerName The name of the player to remove
      */
     public static void remove(String playerName) {
-        profiles.remove(playerName);
+        players.remove(playerName);
     }
 
     /**
      * Clear all users.
      */
     public static void clearAll() {
-        profiles.clear();
-    }
-
-    /*
-     * Save all users.
-     */
-    public static void saveAll() {
-        for (PlayerProfile playerProfile : profiles.values()) {
-            playerProfile.save();
-        }
+        players.clear();
     }
 
     /**
-     * Get all PlayerProfiles.
-     *
-     * @return a HashMap containing the PlayerProfile of everyone in the database
+     * Save all users.
      */
-    public static Map<String, PlayerProfile> getProfiles() {
-        return profiles;
+    public static void saveAll() {
+        for (McMMOPlayer mcMMOPlayer : players.values()) {
+            mcMMOPlayer.getProfile().save();
+        }
+    }
+
+    public static Map<String, McMMOPlayer> getPlayers() {
+        return players;
     }
 
     /**
@@ -103,6 +97,26 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfile(String playerName) {
-        return profiles.get(playerName);
+        return players.get(playerName).getProfile();
+    }
+
+    /**
+     * Get the McMMOPlayer of a player by name.
+     *
+     * @param player The name of the player whose McMMOPlayer to retrieve
+     * @return the player's McMMOPlayer object
+     */
+    public static McMMOPlayer getPlayer(String playerName) {
+        return players.get(playerName);
+    }
+
+    /**
+     * Get the McMMOPlayer of a player.
+     *
+     * @param player The player whose McMMOPlayer to retrieve
+     * @return the player's McMMOPlayer object
+     */
+    public static McMMOPlayer getPlayer(Player player) {
+        return getPlayer(player.getName());
     }
 }

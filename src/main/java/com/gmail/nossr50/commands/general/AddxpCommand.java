@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -49,7 +50,8 @@ public class AddxpCommand implements CommandExecutor {
                     skill = Skills.getSkillType(args[0]);
 
                     PlayerProfile profile = Users.getProfile(modifiedPlayer);
-                    profile.addXPOverride(skill, xp);
+                    McMMOPlayer mcMMOPlayer = Users.getPlayer(modifiedPlayer);
+                    mcMMOPlayer.addXPOverride(skill, xp);
 
                     if (skill.equals(SkillType.ALL)) {
                         skillName = "all skills";
@@ -80,6 +82,7 @@ public class AddxpCommand implements CommandExecutor {
         case 3:
             modifiedPlayer = plugin.getServer().getPlayer(args[0]);
             String playerName = modifiedPlayer.getName();
+            McMMOPlayer mcMMOPlayer = Users.getPlayer(modifiedPlayer);
             PlayerProfile profile = Users.getProfile(modifiedPlayer);
 
             if (!profile.isLoaded()) {
@@ -97,7 +100,7 @@ public class AddxpCommand implements CommandExecutor {
                 skill = Skills.getSkillType(args[1]);
                 String message;
 
-                profile.addXPOverride(skill, xp);
+                mcMMOPlayer.addXPOverride(skill, xp);
 
                 if (skill.equals(SkillType.ALL)) {
                     skillName = "all skills";

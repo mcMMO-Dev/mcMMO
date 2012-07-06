@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes;
 
+import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
 
 import com.gmail.nossr50.mcMMO;
@@ -8,13 +9,20 @@ import com.gmail.nossr50.datatypes.popups.Menu;
 import com.gmail.nossr50.datatypes.popups.XpBar;
 
 public class SpoutHud {
-    private PlayerProfile playerProfile;
+    private Player player;
+    private PlayerProfile profile;
+
+    private HudType hudType = SpoutConfig.getInstance().defaultHudType;
+    private SkillType lastGained;
+    private SkillType skillLock;
+    private boolean xpBarLocked;
 
     private Menu menu;
     private XpBar xpBar;
 
-    public SpoutHud(PlayerProfile playerProfile) {
-        this.playerProfile = playerProfile;
+    public SpoutHud(McMMOPlayer mcMMOPlayer) {
+        this.player = mcMMOPlayer.getPlayer();
+        this.profile = mcMMOPlayer.getProfile();
 
         initializeXpBar();
     }
@@ -28,7 +36,7 @@ public class SpoutHud {
                 xpBar.removeWidgets();
             }
 
-            xpBar = new XpBar(SpoutManager.getPlayer(playerProfile.getPlayer()), playerProfile.getHudType());
+            xpBar = new XpBar(SpoutManager.getPlayer(player), hudType);
         }
     }
 
@@ -36,13 +44,13 @@ public class SpoutHud {
      * Update the XP bar.
      */
     public void updateXpBar() {
-        SkillType skillType = playerProfile.getXpBarLocked() ? playerProfile.getSkillLock() : playerProfile.getLastGained();
+        SkillType skillType = xpBarLocked ? skillLock : lastGained;
 
         if (skillType == null) {
             return;
         }
 
-        xpBar.update(skillType, playerProfile);
+        xpBar.update(skillType, profile);
     }
 
     public boolean isMenuOpened() {
@@ -50,7 +58,7 @@ public class SpoutHud {
     }
 
     public void openMenu() {
-        menu = new Menu(SpoutManager.getPlayer(playerProfile.getPlayer()), playerProfile);
+        menu = new Menu(SpoutManager.getPlayer(player), profile);
     }
 
     public void onMenuClose() {
@@ -62,6 +70,42 @@ public class SpoutHud {
             menu.close();
         }
 
-        SpoutManager.getPlayer(playerProfile.getPlayer()).getMainScreen().removeWidgets(mcMMO.p);
+        SpoutManager.getPlayer(player).getMainScreen().removeWidgets(mcMMO.p);
+    }
+
+    public HudType getHudType() {
+        return hudType;
+    }
+
+    public void setHudType(HudType type) {
+        this.hudType = type;
+    }
+
+    public SkillType getLastGained() {
+        return lastGained;
+    }
+
+    public void setLastGained(SkillType type) {
+        this.lastGained = type;
+    }
+
+    public boolean getXpBarLocked() {
+        return xpBarLocked;
+    }
+
+    public void setXpBarLocked(boolean locked) {
+        this.xpBarLocked = locked;
+    }
+
+    public void toggleXpBarLocked() {
+        xpBarLocked = !xpBarLocked;
+    }
+
+    public SkillType getSkillLock() {
+        return skillLock;
+    }
+
+    public void setSkillLock(SkillType type) {
+        this.skillLock = type;
     }
 }

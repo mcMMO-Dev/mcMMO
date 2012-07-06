@@ -35,7 +35,7 @@ public final class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public static void addRawXP(Player player, SkillType skillType, int XP) {
-        Users.getProfile(player).addXPOverride(skillType, XP);
+        Users.getPlayer(player).addXPOverride(skillType, XP);
         checkXP(player, skillType);
     }
 
@@ -49,7 +49,7 @@ public final class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public static void addMultipliedXP(Player player, SkillType skillType, int XP) {
-        Users.getProfile(player).addXPOverrideBonus(skillType, XP);
+        Users.getPlayer(player).addXPOverrideBonus(skillType, XP);
         checkXP(player, skillType);
     }
 
@@ -63,7 +63,7 @@ public final class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public static void addXP(Player player, SkillType skillType, int XP) {
-        Users.getProfile(player).addXP(skillType, XP);
+        Users.getPlayer(player).addXP(skillType, XP);
         checkXP(player, skillType);
     }
 
@@ -133,7 +133,7 @@ public final class ExperienceAPI {
      * @return the power level of the player
      */
     public static int getPowerLevel(Player player) {
-        return Users.getProfile(player).getPowerLevel();
+        return Users.getPlayer(player).getPowerLevel();
     }
 
     /**

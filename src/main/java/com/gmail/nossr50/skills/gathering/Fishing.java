@@ -109,7 +109,7 @@ public class Fishing {
             }
 
             if (random.nextDouble() * randomChance <= treasure.getDropChance()) {
-                Users.getProfile(player).addXP(SkillType.FISHING, treasure.getXp());
+                Users.getPlayer(player).addXP(SkillType.FISHING, treasure.getXp());
                 theCatch.setItemStack(treasure.getDrop());
             }
         }

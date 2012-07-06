@@ -122,7 +122,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent event) {
-        Users.addUser(event.getPlayer()).actualizeRespawnATS();
+        Users.addUser(event.getPlayer()).getProfile().actualizeRespawnATS();
     }
 
     /**

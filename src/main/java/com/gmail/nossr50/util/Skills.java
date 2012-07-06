@@ -14,6 +14,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -180,14 +181,15 @@ public class Skills {
      * @param player The player whose skill to update
      */
     public static void processLeaderboardUpdate(SkillType skillType, Player player) {
-        PlayerProfile profile = Users.getProfile(player);
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+        PlayerProfile profile = mcMMOPlayer.getProfile();
         PlayerStat ps = new PlayerStat();
 
         if (skillType != SkillType.ALL) {
             ps.statVal = profile.getSkillLevel(skillType);
         }
         else {
-            ps.statVal = profile.getPowerLevel();
+            ps.statVal = mcMMOPlayer.getPowerLevel();
         }
 
         ps.name = player.getName();
@@ -207,7 +209,7 @@ public class Skills {
         if (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
 
             while (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
-                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Misc.getPowerLevelCap() >= profile.getPowerLevel() + 1)) {
+                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Misc.getPowerLevelCap() >= Users.getPlayer(player).getPowerLevel() + 1)) {
                     profile.removeXP(skillType, profile.getXpToLevel(skillType));
                     skillups++;
                     profile.skillUp(skillType, 1);
@@ -240,7 +242,7 @@ public class Skills {
 
                     /* Update custom titles */
                     if (SpoutConfig.getInstance().getShowPowerLevel()) {
-                        spoutPlayer.setTitle(spoutPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(profile.getPowerLevel()));
+                        spoutPlayer.setTitle(spoutPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(Users.getPlayer(player).getPowerLevel()));
                     }
                 }
                 else {
@@ -499,7 +501,7 @@ public class Skills {
      */
     public static void xpProcessing(Player player, PlayerProfile profile, SkillType type, int xp) {
         if (type.getPermissions(player)) {
-            profile.addXP(type, xp);
+            Users.getPlayer(player).addXP(type, xp);
             xpCheckSkill(type, player, profile);
         }
     }

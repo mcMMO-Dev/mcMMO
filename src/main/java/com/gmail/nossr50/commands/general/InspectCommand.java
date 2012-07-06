@@ -50,7 +50,7 @@ public class InspectCommand implements CommandExecutor {
                 CommandHelper.printGatheringSkills(player, sender);
                 CommandHelper.printCombatSkills(player, sender);
                 CommandHelper.printMiscSkills(player, sender);
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { profile.getPowerLevel() }));
+                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { Users.getPlayer(player).getPowerLevel() }));
 
                 return true;
             }

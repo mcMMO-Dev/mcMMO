@@ -12,6 +12,7 @@ import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.config.SpoutConfig;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.buttons.McmmoButton;
@@ -28,14 +29,15 @@ public class SpoutListener implements Listener {
     @EventHandler
     public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
         SpoutPlayer spoutPlayer = event.getPlayer();
-        PlayerProfile playerProfile = Users.getProfile(spoutPlayer);
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(spoutPlayer);
+        PlayerProfile profile = mcMMOPlayer.getProfile();
 
         //TODO: Add custom titles based on skills
         if (SpoutConfig.getInstance().getShowPowerLevel()) {
-            spoutPlayer.setTitle(spoutPlayer.getName() + "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(playerProfile.getPowerLevel()));
+            spoutPlayer.setTitle(spoutPlayer.getName() + "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(mcMMOPlayer.getPowerLevel()));
         }
 
-        playerProfile.setSpoutHud(new SpoutHud(playerProfile)); //Setup Party HUD stuff
+        profile.setSpoutHud(new SpoutHud(mcMMOPlayer)); //Setup Party HUD stuff
     }
 
     /**

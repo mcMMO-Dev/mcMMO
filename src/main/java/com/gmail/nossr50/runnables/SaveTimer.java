@@ -3,7 +3,7 @@ package com.gmail.nossr50.runnables;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
@@ -20,8 +20,8 @@ public class SaveTimer implements Runnable {
         int count = 1;
         BukkitScheduler bukkitScheduler = plugin.getServer().getScheduler();
 
-        for (PlayerProfile playerProfile : Users.getProfiles().values()) {
-            bukkitScheduler.scheduleSyncDelayedTask(plugin, new ProfileSaveTask(playerProfile), count);
+        for (McMMOPlayer mcMMOPlayer : Users.getPlayers().values()) {
+            bukkitScheduler.scheduleSyncDelayedTask(plugin, new ProfileSaveTask(mcMMOPlayer), count);
             count++;
         }
 

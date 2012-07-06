@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.popups;
 
 import org.bukkit.ChatColor;
-import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.InGameHUD;
@@ -22,7 +21,7 @@ public class Menu extends GenericPopup {
     private static int centerX = 427 / 2;
     private static int centerY = 240 / 2;
 
-    public Menu(SpoutPlayer spoutPlayer, final PlayerProfile playerProfile) {
+    public Menu(final SpoutPlayer spoutPlayer, final PlayerProfile playerProfile) {
         //240, 427 are the bottom right
         titleLabel.setText(ChatColor.GOLD + "~mcMMO Menu~"); //TODO: Needs more locale
         titleLabel.setWidth(100);
@@ -63,7 +62,7 @@ public class Menu extends GenericPopup {
         escapeButton.connect(new Slot() {
             @Override
             public void activate() {
-                SpoutManager.getPlayer(playerProfile.getPlayer()).getMainScreen().closePopup();
+                spoutPlayer.getMainScreen().closePopup();
             }
         });
 
