@@ -108,6 +108,25 @@ public class PrimitiveChunkletStore implements ChunkletStore {
         return column;
     }
 
+    /*
+     * The address byte: A single byte which contains x and z values which correspond to the x and z Chunklet-coordinates
+     *
+     * In Chunklet-coordinates, the only valid values are 0-15, so we can fit both into a single byte.
+     *
+     * The top 4 bits of the address byte are for the x value
+     * The bottom 4 bits of the address byte are for the z value
+     *
+     * Examples:
+     * An address byte with a value 00000001 would be split like so:
+     *  - x = 0000 = 0
+     *  - z = 0001 = 1
+     *  => Chunklet coordinates (0, 1)
+     *
+     * 01011111
+     *  - x = 0101 = 5
+     *  - z = 1111 = 15
+     *  => Chunklet coordinates (5, 15)
+     */
     private static byte makeAddressByte(int x, int z) {
         return (byte) ((x << 4) + z);
     }
