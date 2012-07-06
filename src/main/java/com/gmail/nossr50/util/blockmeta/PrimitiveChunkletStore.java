@@ -63,6 +63,27 @@ public class PrimitiveChunkletStore implements ChunkletStore {
         out.flush();
     }
 
+    // For this we assume that store has been initialized to be all false by now
+    @Override
+    public void readExternal(ObjectInput in) throws IOException {
+        byte[] temp = new byte[9];
+
+        // Could probably reorganize this loop to print nasty things if it does not equal 9 or -1
+        while(in.read(temp, 0, 9) == 9) {
+            int x = addressByteX(temp[0]);
+            int z = addressByteZ(temp[0]);
+            boolean[] yColumn = new boolean[64];
+
+            for(int i = 0; i < 8; i++) {
+                for(int j = 0; j < 8; j++) {
+                    yColumn[j + (i * 8)] = (temp[++i] & 1 << j) != 0;
+                }
+            }
+
+            store[x][z] = yColumn;
+        }
+    }
+
     private byte[] constructColumn(int x, int z) {
         byte[] column = new byte[9];
         int index = 1;
@@ -89,27 +110,6 @@ public class PrimitiveChunkletStore implements ChunkletStore {
 
     private static byte makeAddressByte(int x, int z) {
         return (byte) ((x << 4) + z);
-    }
-
-    // For this we assume that store has been initialized to be all false by now
-    @Override
-    public void readExternal(ObjectInput in) throws IOException {
-        byte[] temp = new byte[9];
-
-        // Could probably reorganize this loop to print nasty things if it does not equal 9 or -1
-        while(in.read(temp, 0, 9) == 9) {
-            int x = addressByteX(temp[0]);
-            int z = addressByteZ(temp[0]);
-            boolean[] yColumn = new boolean[64];
-
-            for(int i = 0; i < 8; i++) {
-                for(int j = 0; j < 8; j++) {
-                    yColumn[j + (i * 8)] = (temp[++i] & 1 << j) != 0;
-                }
-            }
-
-            store[x][z] = yColumn;
-        }
     }
 
     private static int addressByteX(byte address) {
