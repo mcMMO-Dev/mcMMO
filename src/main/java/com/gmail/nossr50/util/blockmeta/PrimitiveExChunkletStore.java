@@ -6,7 +6,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
-	private static final long serialVersionUID = 8603603827094383873L;
+    private static final long serialVersionUID = 8603603827094383873L;
 
     /** X, Z, Y */
     private boolean[][][] store = new boolean[16][16][64];
