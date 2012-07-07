@@ -370,7 +370,9 @@ public class HashChunkletManager implements ChunkletManager {
         // IMPORTANT! If ChunkletStoreFactory is going to be returning something other than PrimitiveEx we need to remove this, as it will be breaking time for old maps
         if(!(storeIn instanceof PrimitiveExChunkletStore)) {
             ChunkletStore tempStore = ChunkletStoreFactory.getChunkletStore();
-            tempStore.copyFrom(storeIn);
+            if(storeIn != null) {
+                tempStore.copyFrom(storeIn);
+            }
             storeIn = tempStore;
         }
 
