@@ -100,6 +100,7 @@ public class MmoeditCommand implements CommandExecutor {
                     return true;
                 }
 
+                profile.modifySkill(skill, newValue);
                 profile.save();
             }
             return true;
