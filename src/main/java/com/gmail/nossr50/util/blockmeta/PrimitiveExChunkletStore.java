@@ -164,15 +164,15 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
      *  - z = 1111 = 15
      *  => Chunklet coordinates (5, 15)
      */
-    private static byte makeAddressByte(int x, int z) {
+    protected static byte makeAddressByte(int x, int z) {
         return (byte) ((x << 4) + z);
     }
 
-    private static int addressByteX(byte address) {
+    protected static int addressByteX(byte address) {
         return (address & 0xF0) >>> 4;
     }
 
-    private static int addressByteZ(byte address) {
+    protected static int addressByteZ(byte address) {
         return address & 0x0F;
     }
 }
