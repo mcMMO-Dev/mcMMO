@@ -1,14 +1,13 @@
 package com.gmail.nossr50.commands.general;
 
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -17,15 +16,8 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class MmoeditCommand implements CommandExecutor {
-    private final mcMMO plugin;
-
-    public MmoeditCommand (mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        OfflinePlayer modifiedPlayer;
         PlayerProfile profile;
         int newValue;
         SkillType skill;
@@ -45,10 +37,10 @@ public class MmoeditCommand implements CommandExecutor {
                 }
 
                 if (Misc.isInt(args[1])) {
-                    modifiedPlayer = (Player) sender;
+                    Player player = (Player) sender;
                     newValue = Integer.valueOf(args[1]);
                     skill = Skills.getSkillType(args[0]);
-                    profile = Users.getProfile(modifiedPlayer);
+                    profile = Users.getProfile(player);
 
                     if (skill.equals(SkillType.ALL)) {
                         skillName = "all skills";
@@ -91,20 +83,16 @@ public class MmoeditCommand implements CommandExecutor {
             }
 
             newValue = Integer.valueOf(args[2]);
-            modifiedPlayer = plugin.getServer().getOfflinePlayer(args[0]);
+            McMMOPlayer mcmmoPlayer = Users.getPlayer(args[0]);
 
-            if (modifiedPlayer.isOnline()) {
-                profile = Users.getProfile(modifiedPlayer);
+            if (mcmmoPlayer != null) {
+                profile = mcmmoPlayer.getProfile();
 
-                ((Player) modifiedPlayer).sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
+                mcmmoPlayer.getPlayer().sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
                 sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + args[0] + "."); //TODO: Use locale
-
-                profile.modifySkill(skill, newValue);
-                profile.save();
-                return true;
             }
             else {
-                profile = new PlayerProfile(modifiedPlayer.getName(), false); //Temporary Profile
+                profile = new PlayerProfile(args[0], false); //Temporary Profile
 
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
@@ -112,7 +100,9 @@ public class MmoeditCommand implements CommandExecutor {
                 }
             }
 
-
+            profile.modifySkill(skill, newValue);
+            profile.save();
+            return true;
 
         default:
             sender.sendMessage(usage);
