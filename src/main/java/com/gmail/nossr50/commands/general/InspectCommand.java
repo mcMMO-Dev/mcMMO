@@ -1,13 +1,12 @@
 package com.gmail.nossr50.commands.general;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -16,15 +15,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class InspectCommand implements CommandExecutor {
-    private final mcMMO plugin;
-
-    public InspectCommand (mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        OfflinePlayer target;
+        Player target;
         PlayerProfile profile;
         String usage = "Proper usage is /inspect <player>"; //TODO: Needs more locale.
 
@@ -34,23 +27,22 @@ public class InspectCommand implements CommandExecutor {
 
         switch (args.length) {
         case 1:
-            target = plugin.getServer().getOfflinePlayer(args[0]);
-            profile = Users.getProfile(target);
+            McMMOPlayer mcmmoPlayer = Users.getPlayer(args[0]);
 
-            if (target.isOnline()) {
-                Player player = (Player) target;
-                profile = Users.getProfile(player);
+            if (mcmmoPlayer != null) {
+                target = mcmmoPlayer.getPlayer();
+                profile = mcmmoPlayer.getProfile();
 
-                if (sender instanceof Player && !sender.isOp() && !Misc.isNear(((Player) sender).getLocation(), player.getLocation(), 5.0) && !Permissions.getInstance().inspectDistanceBypass((Player) sender)) {
+                if (sender instanceof Player && !sender.isOp() && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0) && !Permissions.getInstance().inspectDistanceBypass((Player) sender)) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
                     return true;
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Inspect.Stats", new Object[] { target.getName() }));
-                CommandHelper.printGatheringSkills(player, sender);
-                CommandHelper.printCombatSkills(player, sender);
-                CommandHelper.printMiscSkills(player, sender);
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { Users.getPlayer(player).getPowerLevel() }));
+                CommandHelper.printGatheringSkills(target, sender);
+                CommandHelper.printCombatSkills(target, sender);
+                CommandHelper.printMiscSkills(target, sender);
+                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { mcmmoPlayer.getPowerLevel() }));
 
                 return true;
             }
@@ -60,7 +52,7 @@ public class InspectCommand implements CommandExecutor {
                     return true;
                 }
 
-                profile = new PlayerProfile(target.getName(), false); //Temporary Profile
+                profile = new PlayerProfile(args[0], false); //Temporary Profile
 
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));

@@ -405,7 +405,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (configInstance.getCommandInspectEnabled()) {
-            getCommand("inspect").setExecutor(new InspectCommand(this));
+            getCommand("inspect").setExecutor(new InspectCommand());
         }
 
         if (configInstance.getCommandXPRateEnabled()) {
