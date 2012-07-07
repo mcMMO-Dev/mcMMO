@@ -1,9 +1,11 @@
 package com.gmail.nossr50.util.blockmeta;
 
-import java.io.Externalizable;
 import java.io.Serializable;
 
-public interface ChunkletStore extends Serializable, Externalizable {
+/**
+ * A ChunkletStore should be responsible for a 16x16x64 area of data
+ */
+public interface ChunkletStore extends Serializable {
     /**
      * Checks the value at the given coordinates
      *
@@ -36,4 +38,11 @@ public interface ChunkletStore extends Serializable, Externalizable {
      * @return true if all values in the chunklet are false, false if otherwise
      */
     public boolean isEmpty();
+
+    /**
+     * Set all values in this ChunkletStore to the values from another provided ChunkletStore
+     *
+     * @param otherStore Another ChunkletStore that this one should copy all data from
+     */
+    public void copyFrom(ChunkletStore otherStore);
 }
