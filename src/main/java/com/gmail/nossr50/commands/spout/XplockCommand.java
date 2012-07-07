@@ -12,6 +12,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -34,20 +35,26 @@ public class XplockCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         PlayerProfile playerProfile = Users.getProfile(player);
+        SpoutHud spoutHud = playerProfile.getSpoutHud();
+
+        if (spoutHud == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
+            return true;
+        }
 
         switch (args.length) {
         case 0:
-            if (playerProfile.getXpBarLocked()) {
-                playerProfile.toggleXpBarLocked();
+            if (spoutHud.getXpBarLocked()) {
+                spoutHud.toggleXpBarLocked();
                 player.sendMessage(LocaleLoader.getString("Commands.xplock.unlocked"));
                 return true;
             }
 
-            SkillType lastGained = playerProfile.getLastGained();
+            SkillType lastGained = spoutHud.getLastGained();
 
             if (lastGained != null) {
-                playerProfile.toggleXpBarLocked();
-                playerProfile.setSkillLock(lastGained);
+                spoutHud.toggleXpBarLocked();
+                spoutHud.setSkillLock(lastGained);
                 player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(lastGained.toString()) }));
             }
             else {
@@ -59,9 +66,9 @@ public class XplockCommand implements CommandExecutor {
         case 1:
             if (Skills.isSkill(args[0])) {
                 if (Permissions.getInstance().permission(player, "mcmmo.skills." + args[0].toLowerCase())) {
-                    playerProfile.setXpBarLocked(true);
-                    playerProfile.setSkillLock(Skills.getSkillType(args[0]));
-                    playerProfile.updateXpBar();
+                    spoutHud.setXpBarLocked(true);
+                    spoutHud.setSkillLock(Skills.getSkillType(args[0]));
+                    spoutHud.updateXpBar();
 
                     player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(args[0]) }));
                 }

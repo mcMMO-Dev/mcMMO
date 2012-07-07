@@ -92,7 +92,12 @@ public class McMMOPlayer {
         else {
             mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
             profile.setSkillXPLevel(skillType, profile.getSkillXpLevel(skillType) + xp);
-            profile.setLastGained(skillType);
+
+            SpoutHud spoutHud = profile.getSpoutHud();
+
+            if (spoutHud != null) {
+                spoutHud.setLastGained(skillType);
+            }
         }
     }
 
@@ -162,7 +167,12 @@ public class McMMOPlayer {
 
         mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
         profile.setSkillXPLevel(skillType, profile.getSkillXpLevel(skillType) + xp);
-        profile.setLastGained(skillType);
+
+        SpoutHud spoutHud = profile.getSpoutHud();
+
+        if (spoutHud != null) {
+            spoutHud.setLastGained(skillType);
+        }
     }
 
     // Players & Profiles

@@ -230,14 +230,10 @@ public class Skills {
             String capitalized = Misc.getCapitalized(skillType.toString());
 
             /* Spout Stuff */
-            if (mcMMO.spoutEnabled && player instanceof SpoutPlayer) {
+            if (mcMMO.spoutEnabled) {
                 SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
-                if (spoutPlayer.isSpoutCraftEnabled()) {
-                    if (SpoutConfig.getInstance().getXPBarEnabled()) {
-                        profile.updateXpBar();
-                    }
-
+                if (spoutPlayer != null && spoutPlayer.isSpoutCraftEnabled()) {
                     SpoutStuff.levelUpNotification(skillType, spoutPlayer);
 
                     /* Update custom titles */
@@ -254,12 +250,12 @@ public class Skills {
             }
         }
 
-        /* Always update XP Bar (Check if no levels were gained first to remove redundancy) */
-        if (skillups == 0 && mcMMO.spoutEnabled && player instanceof SpoutPlayer) {
+        if (mcMMO.spoutEnabled) {
             SpoutPlayer spoutPlayer = (SpoutPlayer) player;
-            if (spoutPlayer.isSpoutCraftEnabled()) {
+
+            if (spoutPlayer != null && spoutPlayer.isSpoutCraftEnabled()) {
                 if (SpoutConfig.getInstance().getXPBarEnabled()) {
-                    profile.updateXpBar();
+                    profile.getSpoutHud().updateXpBar();
                 }
             }
         }

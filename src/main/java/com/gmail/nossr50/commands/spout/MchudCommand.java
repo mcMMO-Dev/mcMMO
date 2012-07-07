@@ -30,21 +30,22 @@ public class MchudCommand implements CommandExecutor {
             return true;
         }
 
+        Player player = (Player) sender;
+        PlayerProfile playerProfile = Users.getProfile(player);
+        SpoutHud spoutHud = playerProfile.getSpoutHud();
+
+        if (spoutHud == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
+            return true;
+        }
+
         switch (args.length) {
         case 1:
-            Player player = (Player) sender;
-            PlayerProfile playerProfile = Users.getProfile(player);
-
             for (HudType hudType : HudType.values()) {
                 if (hudType.toString().equalsIgnoreCase(args[0])) {
                     playerProfile.setHudType(hudType);
-
-                    SpoutHud spoutHud = playerProfile.getSpoutHud();
-
-                    if (spoutHud != null) {
-                        spoutHud.initializeXpBar();
-                        spoutHud.updateXpBar();
-                    }
+                    spoutHud.initializeXpBar();
+                    spoutHud.updateXpBar();
 
                     return true;
                 }
@@ -54,7 +55,7 @@ public class MchudCommand implements CommandExecutor {
             return true;
 
         default:
-            sender.sendMessage(usage);
+            player.sendMessage(usage);
             return true;
         }
     }

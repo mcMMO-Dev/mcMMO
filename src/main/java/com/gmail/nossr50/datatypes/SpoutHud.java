@@ -12,7 +12,6 @@ public class SpoutHud {
     private Player player;
     private PlayerProfile profile;
 
-    private HudType hudType = SpoutConfig.getInstance().defaultHudType;
     private SkillType lastGained;
     private SkillType skillLock;
     private boolean xpBarLocked;
@@ -36,7 +35,7 @@ public class SpoutHud {
                 xpBar.removeWidgets();
             }
 
-            xpBar = new XpBar(SpoutManager.getPlayer(player), hudType);
+            xpBar = new XpBar(SpoutManager.getPlayer(player), profile.getHudType());
         }
     }
 
@@ -71,14 +70,6 @@ public class SpoutHud {
         }
 
         SpoutManager.getPlayer(player).getMainScreen().removeWidgets(mcMMO.p);
-    }
-
-    public HudType getHudType() {
-        return hudType;
-    }
-
-    public void setHudType(HudType type) {
-        this.hudType = type;
     }
 
     public SkillType getLastGained() {

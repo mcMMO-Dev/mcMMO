@@ -20,6 +20,7 @@ public class PlayerProfile {
     
     /* HUD */
     private SpoutHud spoutHud;
+    private HudType hudType = SpoutConfig.getInstance().defaultHudType;
 
     /* Party Stuff */
     private Party party;
@@ -98,7 +99,7 @@ public class PlayerProfile {
             else {
                 for (HudType type : HudType.values()) {
                     if (type.toString().equals(huds.get(1).get(0))) {
-                        spoutHud.setHudType(type);
+                        hudType = type;
                     }
                 }
             }
@@ -238,7 +239,7 @@ public class PlayerProfile {
                 if (character.length > 33) {
                     for (HudType type : HudType.values()) {
                         if (type.toString().equalsIgnoreCase(character[33])) {
-                            spoutHud.setHudType(type);
+                            hudType = type;
                         }
                     }
                 }
@@ -267,7 +268,7 @@ public class PlayerProfile {
 
         // if we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
-            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "huds SET hudtype = '" + spoutHud.getHudType().toString() + "' WHERE user_id = " + userId);
+            mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "huds SET hudtype = '" + hudType.toString() + "' WHERE user_id = " + userId);
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + userId);
             mcMMO.database.write("UPDATE " + Config.getInstance().getMySQLTablePrefix() + "cooldowns SET "
                     + " mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
@@ -361,7 +362,7 @@ public class PlayerProfile {
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.SERRATED_STRIKES)) + ":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.SKULL_SPLIITER)) + ":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.SUPER_BREAKER)) + ":");
-                        writer.append(spoutHud.getHudType().toString() + ":");
+                        writer.append(hudType.toString() + ":");
                         writer.append(skills.get(SkillType.FISHING) + ":");
                         writer.append(skillsXp.get(SkillType.FISHING) + ":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.BLAST_MINING)) + ":");
@@ -475,6 +476,10 @@ public class PlayerProfile {
      * HUD Stuff
      */
 
+    public HudType getHudType() {
+        return hudType;
+    }
+
     public SpoutHud getSpoutHud() {
         return spoutHud;
     }
@@ -483,44 +488,8 @@ public class PlayerProfile {
         this.spoutHud = spoutHud;
     }
 
-    public void setXpBarLocked(boolean locked) {
-        spoutHud.setXpBarLocked(locked);
-    }
-
-    public boolean getXpBarLocked() {
-        return spoutHud.getXpBarLocked();
-    }
-
-    public void toggleXpBarLocked() {
-        spoutHud.toggleXpBarLocked();
-    }
-
-    public void setSkillLock(SkillType type) {
-        spoutHud.setSkillLock(type);
-    }
-
-    public SkillType getSkillLock() {
-        return spoutHud.getSkillLock();
-    }
-
-    public HudType getHudType() {
-        return spoutHud.getHudType();
-    }
-
-    public void setHudType(HudType type) {
-        spoutHud.setHudType(type);
-    }
-
-    public void setLastGained(SkillType type) {
-        spoutHud.setLastGained(type);
-    }
-
-    public SkillType getLastGained() {
-        return spoutHud.getLastGained();
-    }
-
-    public void updateXpBar() {
-        spoutHud.updateXpBar();
+    public void setHudType(HudType hudType) {
+        this.hudType = hudType;
     }
 
     /*
