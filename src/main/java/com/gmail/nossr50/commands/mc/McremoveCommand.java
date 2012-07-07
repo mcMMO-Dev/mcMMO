@@ -15,7 +15,9 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Users;
@@ -100,16 +102,21 @@ public class McremoveCommand implements CommandExecutor {
         }
 
         //Force PlayerProfile stuff to update
-        OfflinePlayer player = plugin.getServer().getOfflinePlayer(playerName);
-        PlayerProfile playerProfile = Users.getProfile(player);
+        McMMOPlayer mcmmoPlayer = Users.getPlayer(playerName);
 
-        if (playerProfile != null) {
-            playerProfile.getSpoutHud().removeWidgets();
-            Users.remove(player.getName());
+        if (mcmmoPlayer != null) {
+            Player player = mcmmoPlayer.getPlayer();
+            SpoutHud spoutHud = mcmmoPlayer.getProfile().getSpoutHud();
+
+            if (spoutHud != null) {
+                spoutHud.removeWidgets();
+            }
+
+            Users.remove(playerName);
 
             if (player.isOnline()) {
-                Users.addUser((Player) player);
-                SpoutStuff.reloadSpoutPlayer((Player) player);
+                Users.addUser(player);
+                SpoutStuff.reloadSpoutPlayer(player);
             }
         }
 
