@@ -28,6 +28,7 @@ Version 1.3.10-dev
  = Fixed custom tools not properly respecting the Ability_Enabled flag.
  = Fixed "lower tool" messages still being displayed even when ability messages are disabled.
  = Fixed custom blocks not dropping the proper item with Super Breaker when Silk Touch is used
+ ! Changed the format by which Chunklets are stored to be much smaller, and much faster to load
  ! Optimized how player placed blocks are tracked
 
 Version 1.3.09
