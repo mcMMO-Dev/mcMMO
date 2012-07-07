@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,7 +15,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -116,7 +114,10 @@ public class McremoveCommand implements CommandExecutor {
 
             if (player.isOnline()) {
                 Users.addUser(player);
-                SpoutStuff.reloadSpoutPlayer(player);
+
+                if (mcMMO.spoutEnabled) {
+                    SpoutStuff.reloadSpoutPlayer(player);
+                }
             }
         }
 
