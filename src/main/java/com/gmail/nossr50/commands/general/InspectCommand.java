@@ -60,7 +60,7 @@ public class InspectCommand implements CommandExecutor {
                     return true;
                 }
 
-                profile = new PlayerProfile(target, false); //Temporary Profile
+                profile = new PlayerProfile(target.getName(), false); //Temporary Profile
 
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));

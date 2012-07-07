@@ -7,9 +7,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.SpoutConfig;
@@ -19,6 +16,8 @@ import com.gmail.nossr50.util.Misc;
 
 public class PlayerProfile {
 
+    private String playerName;
+    
     /* HUD */
     private SpoutHud spoutHud;
 
@@ -51,14 +50,10 @@ public class PlayerProfile {
     HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>();
     HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
 
-    private OfflinePlayer player;
-    private String playerName;
     private final static String location = mcMMO.usersFile;
 
-    public PlayerProfile(OfflinePlayer player, boolean addNew) {
-        this.player = player;
-        this.playerName = player.getName();
-
+    public PlayerProfile(String playerName, boolean addNew) {
+        this.playerName = playerName;
         party = PartyManager.getInstance().getPlayerParty(playerName);
 
         for (AbilityType abilityType : AbilityType.values()) {
@@ -84,17 +79,8 @@ public class PlayerProfile {
         }
     }
 
-//    public Player getPlayer() {
-//        return player;
-//    }
-
     public String getPlayerName() {
         return playerName;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-        this.playerName = player.getName();
     }
 
     public boolean loadMySQL() {

@@ -104,7 +104,7 @@ public class MmoeditCommand implements CommandExecutor {
                 return true;
             }
             else {
-                profile = new PlayerProfile(modifiedPlayer, false); //Temporary Profile
+                profile = new PlayerProfile(modifiedPlayer.getName(), false); //Temporary Profile
 
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));

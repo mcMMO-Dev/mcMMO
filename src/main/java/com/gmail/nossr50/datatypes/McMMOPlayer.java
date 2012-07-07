@@ -22,9 +22,10 @@ public class McMMOPlayer {
     private Party invite;
 
     public McMMOPlayer (Player player) {
+        String playerName = player.getName();
         this.player = player;
-        this.profile = new PlayerProfile(player, true);
-        this.party = PartyManager.getInstance().getPlayerParty(player.getName());
+        this.profile = new PlayerProfile(playerName, true);
+        this.party = PartyManager.getInstance().getPlayerParty(playerName);
     }
 
     /**
