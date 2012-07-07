@@ -4,7 +4,7 @@ public class PrimitiveChunkletStore implements ChunkletStore {
     private static final long serialVersionUID = -3453078050608607478L;
 
     /** X, Z, Y */
-    protected boolean[][][] store = new boolean[16][16][64];
+    private boolean[][][] store = new boolean[16][16][64];
 
     @Override
     public boolean isTrue(int x, int y, int z) {
