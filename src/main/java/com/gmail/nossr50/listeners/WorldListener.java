@@ -33,6 +33,6 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
-        ChunkletUnloader.addToList(event.getChunk());
+        mcMMO.placeStore.chunkUnloaded(event.getChunk().getX(), event.getChunk().getZ(), event.getWorld());
     }
 }

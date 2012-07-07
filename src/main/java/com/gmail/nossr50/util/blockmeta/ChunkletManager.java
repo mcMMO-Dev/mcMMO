@@ -15,7 +15,35 @@ public interface ChunkletManager {
     public void loadChunklet(int cx, int cy, int cz, World world);
 
     /**
-     * Informs the ChunkletManager a chunk is loaded, it should load appropriate data
+     * Unload a specific chunklet
+     *
+     * @param cx Chunklet X coordinate that needs to be unloaded
+     * @param cy Chunklet Y coordinate that needs to be unloaded
+     * @param cz Chunklet Z coordinate that needs to be unloaded
+     * @param world World that the chunklet needs to be unloaded from
+     */
+    public void unloadChunklet(int cx, int cy, int cz, World world);
+
+    /**
+     * Load a given Chunk's Chunklet data
+     *
+     * @param cx Chunk X coordinate that is to be loaded
+     * @param cz Chunk Z coordinate that is to be loaded
+     * @param world World that the Chunk is in
+     */
+    public void loadChunk(int cx, int cz, World world);
+
+    /**
+     * Unload a given Chunk's Chunklet data
+     *
+     * @param cx Chunk X coordinate that is to be unloaded
+     * @param cz Chunk Z coordinate that is to be unloaded
+     * @param world World that the Chunk is in
+     */
+    public void unloadChunk(int cx, int cz, World world);
+
+    /**
+     * Informs the ChunkletManager a chunk is loaded
      *
      * @param cx Chunk X coordinate that is loaded
      * @param cz Chunk Z coordinate that is loaded
@@ -24,7 +52,7 @@ public interface ChunkletManager {
     public void chunkLoaded(int cx, int cz, World world);
 
     /**
-     * Informs the ChunkletManager a chunk is unloaded, it should unload and save appropriate data
+     * Informs the ChunkletManager a chunk is unloaded
      *
      * @param cx Chunk X coordinate that is unloaded
      * @param cz Chunk Z coordinate that is unloaded

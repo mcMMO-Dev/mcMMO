@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Chunk;
+import org.bukkit.World;
 
 import com.gmail.nossr50.mcMMO;
 
@@ -26,6 +27,10 @@ public class ChunkletUnloader implements Runnable {
         unloadedChunks.put(chunk, 0);
     }
 
+    public static void addToList(int cx, int cz, World world) {
+        addToList(world.getChunkAt(cx, cz));
+    }
+
     @Override
     public void run() {
         for (Iterator<Entry<Chunk, Integer>> it = unloadedChunks.entrySet().iterator() ; it.hasNext() ; ) {
@@ -37,7 +42,7 @@ public class ChunkletUnloader implements Runnable {
 
                 //Chunklets are unloaded only if their chunk has been unloaded for minimumInactiveTime
                 if (inactiveTime >= minimumInactiveTime) {
-                    mcMMO.placeStore.chunkUnloaded(chunk.getX(), chunk.getZ(), chunk.getWorld());
+                    mcMMO.placeStore.unloadChunk(chunk.getX(), chunk.getZ(), chunk.getWorld());
                     it.remove();
                     continue;
                 }

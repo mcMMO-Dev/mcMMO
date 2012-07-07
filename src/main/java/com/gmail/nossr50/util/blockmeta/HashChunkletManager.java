@@ -16,6 +16,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.ChunkletUnloader;
 
 public class HashChunkletManager implements ChunkletManager {
     private HashMap<String, ChunkletStore> store = new HashMap<String, ChunkletStore>();
@@ -37,28 +38,44 @@ public class HashChunkletManager implements ChunkletManager {
     }
 
     @Override
-    public void chunkLoaded(int cx, int cz, World world) {
-        //File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
-        //File cxDir = new File(dataDir, "" + cx);
-        //if(!cxDir.exists()) return;
-        //File czDir = new File(cxDir, "" + cz);
-        //if(!czDir.exists()) return;
+    public void unloadChunklet(int cx, int cy, int cz, World world) {
+        File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
+        if(store.containsKey(world.getName() + "," + cx + "," + cz + "," + cy)) {
+            File cxDir = new File(dataDir, "" + cx);
+            if(!cxDir.exists()) cxDir.mkdir();
+            File czDir = new File(cxDir, "" + cz);
+            if(!czDir.exists()) czDir.mkdir();
+            File yFile = new File(czDir, "" + cy);
 
-        //for(int y = 0; y < 4; y++) {
-        //    File yFile = new File(czDir, "" + y);
-        //    if(!yFile.exists()) {
-        //        continue;
-        //    } else {
-        //        ChunkletStore in = deserializeChunkletStore(yFile);
-        //        if(in != null) {
-        //            store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
-        //        }
-        //    }
-        //}
+            ChunkletStore out = store.get(world.getName() + "," + cx + "," + cz + "," + cy);
+            serializeChunkletStore(out, yFile);
+            store.remove(world.getName() + "," + cx + "," + cz + "," + cy);
+        }
     }
 
     @Override
-    public void chunkUnloaded(int cx, int cz, World world) {
+    public void loadChunk(int cx, int cz, World world) {
+        File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
+        File cxDir = new File(dataDir, "" + cx);
+        if(!cxDir.exists()) return;
+        File czDir = new File(cxDir, "" + cz);
+        if(!czDir.exists()) return;
+
+        for(int y = 0; y < 4; y++) {
+            File yFile = new File(czDir, "" + y);
+            if(!yFile.exists()) {
+                continue;
+            } else {
+                ChunkletStore in = deserializeChunkletStore(yFile);
+                if(in != null) {
+                    store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void unloadChunk(int cx, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
 
         for(int y = 0; y < 4; y++) {
@@ -74,6 +91,16 @@ public class HashChunkletManager implements ChunkletManager {
                 store.remove(world.getName() + "," + cx + "," + cz + "," + y);
             }
         }
+    }
+
+    @Override
+    public void chunkLoaded(int cx, int cz, World world) {
+        //loadChunk(cx, cz, world);
+    }
+
+    @Override
+    public void chunkUnloaded(int cx, int cz, World world) {
+        ChunkletUnloader.addToList(cx, cx, world);
     }
 
     @Override

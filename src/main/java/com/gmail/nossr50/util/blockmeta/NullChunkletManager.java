@@ -14,6 +14,21 @@ public class NullChunkletManager implements ChunkletManager {
         return;
     }
 
+	@Override
+	public void unloadChunklet(int cx, int cy, int cz, World world) {
+		return;
+	}
+
+	@Override
+	public void loadChunk(int cx, int cz, World world) {
+		return;
+	}
+
+	@Override
+	public void unloadChunk(int cx, int cz, World world) {
+		return;
+	}
+
     @Override
     public void chunkLoaded(int cx, int cz, World world) {
         return;
