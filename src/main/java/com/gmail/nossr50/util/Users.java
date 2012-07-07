@@ -97,7 +97,9 @@ public class Users {
      * @return the player's profile
      */
     public static PlayerProfile getProfile(String playerName) {
-        return players.get(playerName).getProfile();
+        McMMOPlayer mcmmoPlayer = players.get(playerName);
+
+        return (mcmmoPlayer != null) ? mcmmoPlayer.getProfile() : null;
     }
 
     /**
