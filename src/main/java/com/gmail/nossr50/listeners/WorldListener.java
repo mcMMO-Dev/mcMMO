@@ -10,7 +10,6 @@ import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.ChunkletUnloader;
 
 public class WorldListener implements Listener {
     @EventHandler
