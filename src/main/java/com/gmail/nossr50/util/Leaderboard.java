@@ -15,8 +15,8 @@ import com.gmail.nossr50.datatypes.Tree;
 
 public class Leaderboard {
     private static mcMMO plugin = mcMMO.p;
-    private static String leaderboardsDirectory = mcMMO.leaderboardDirectory;
-    private final static String location = mcMMO.usersFile;
+    private static String leaderboardsDirectory = mcMMO.getLeaderboardDirectory();
+    private final static String location = mcMMO.getUsersFile();
 
     /**
      * Create the leaderboards.

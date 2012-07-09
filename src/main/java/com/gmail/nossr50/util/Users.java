@@ -19,11 +19,11 @@ public class Users {
      * Load users.
      */
     public static void loadUsers() {
-        new File(mcMMO.flatFileDirectory).mkdir();
-        new File(mcMMO.leaderboardDirectory).mkdir();
+        new File(mcMMO.getFlatFileDirectory()).mkdir();
+        new File(mcMMO.getLeaderboardDirectory()).mkdir();
 
         try {
-            new File(mcMMO.usersFile).createNewFile();
+            new File(mcMMO.getUsersFile()).createNewFile();
         }
         catch (IOException e) {
             e.printStackTrace();

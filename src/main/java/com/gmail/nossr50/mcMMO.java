@@ -102,11 +102,11 @@ public class mcMMO extends JavaPlugin {
     public static File mcmmo;
 
     //File Paths
-    public static String mainDirectory;
-    public static String flatFileDirectory;
-    public static String usersFile;
-    public static String leaderboardDirectory;
-    public static String modDirectory;
+    private static String mainDirectory;
+    private static String flatFileDirectory;
+    private static String usersFile;
+    private static String leaderboardDirectory;
+    private static String modDirectory;
 
     //Spout Check
     public static boolean spoutEnabled;
@@ -480,4 +480,25 @@ public class mcMMO extends JavaPlugin {
     public void removeFromTNTTracker(int tntID) {
         tntTracker.remove(tntID);
     }
+
+    public static String getMainDirectory() {
+        return mainDirectory;
+    }
+
+    public static String getFlatFileDirectory() {
+        return flatFileDirectory;
+    }
+
+    public static String getUsersFile() {
+        return usersFile;
+    }
+
+    public static String getLeaderboardDirectory() {
+        return leaderboardDirectory;
+    }
+
+    public static String getModDirectory() {
+        return modDirectory;
+    }
 }
+

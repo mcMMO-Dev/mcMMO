@@ -51,7 +51,7 @@ public class PlayerProfile {
     HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>();
     HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
 
-    private final static String location = mcMMO.usersFile;
+    private final static String location = mcMMO.getUsersFile();
 
     public PlayerProfile(String playerName, boolean addNew) {
         this.playerName = playerName;
