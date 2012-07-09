@@ -91,7 +91,6 @@ public class mcMMO extends JavaPlugin {
     private HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
     private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
 
-    public static File versionFile;
     private static Database database;
     public static mcMMO p;
 
