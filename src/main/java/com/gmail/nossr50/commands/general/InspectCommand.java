@@ -17,8 +17,6 @@ import com.gmail.nossr50.util.Users;
 public class InspectCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player target;
-        PlayerProfile profile;
         String usage = "Proper usage is /inspect <player>"; //TODO: Needs more locale.
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.inspect")) {
@@ -30,8 +28,7 @@ public class InspectCommand implements CommandExecutor {
             McMMOPlayer mcmmoPlayer = Users.getPlayer(args[0]);
 
             if (mcmmoPlayer != null) {
-                target = mcmmoPlayer.getPlayer();
-                profile = mcmmoPlayer.getProfile();
+                Player target = mcmmoPlayer.getPlayer();
 
                 if (sender instanceof Player && !sender.isOp() && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0) && !Permissions.getInstance().inspectDistanceBypass((Player) sender)) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
@@ -52,7 +49,7 @@ public class InspectCommand implements CommandExecutor {
                     return true;
                 }
 
-                profile = new PlayerProfile(args[0], false); //Temporary Profile
+                PlayerProfile profile = new PlayerProfile(args[0], false); //Temporary Profile
 
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
