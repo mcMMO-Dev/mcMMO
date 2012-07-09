@@ -300,9 +300,6 @@ public class WoodCutting {
         byte type = block.getData();
         Material mat = Material.getMaterial(block.getTypeId());
 
-        Tree tree = (Tree) block.getState().getData();
-        TreeSpecies species = tree.getSpecies();
-
         int randomChance = 1000;
 
         if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
@@ -329,41 +326,42 @@ public class WoodCutting {
                 else {
                     Misc.dropItems(location, item, minimumDropAmount);
                 }
-                return;
             }
             else {
                 item = new ItemStack(mat, 1, (short) 0, type);
                 location = block.getLocation();
-            }
 
-            /* Drop the block */
-            switch (species) {
-            case GENERIC:
-                if (configInstance.getOakDoubleDropsEnabled()) {
-                    Misc.dropItem(location, item);
+                TreeSpecies species = TreeSpecies.getByData(type);
+
+                /* Drop the block */
+                switch (species) {
+                case GENERIC:
+                    if (configInstance.getOakDoubleDropsEnabled()) {
+                        Misc.dropItem(location, item);
+                    }
+                    break;
+
+                case REDWOOD:
+                    if (configInstance.getSpruceDoubleDropsEnabled()) {
+                        Misc.dropItem(location, item);
+                    }
+                    break;
+
+                case BIRCH:
+                    if (configInstance.getBirchDoubleDropsEnabled()) {
+                        Misc.dropItem(location, item);
+                    }
+                    break;
+
+                case JUNGLE:
+                    if (configInstance.getJungleDoubleDropsEnabled()) {
+                        Misc.dropItem(location, item);
+                    }
+                    break;
+
+                default:
+                    break;
                 }
-                break;
-
-            case REDWOOD:
-                if (configInstance.getSpruceDoubleDropsEnabled()) {
-                    Misc.dropItem(location, item);
-                }
-                break;
-
-            case BIRCH:
-                if (configInstance.getBirchDoubleDropsEnabled()) {
-                    Misc.dropItem(location, item);
-                }
-                break;
-
-            case JUNGLE:
-                if (configInstance.getJungleDoubleDropsEnabled()) {
-                    Misc.dropItem(location, item);
-                }
-                break;
-
-            default:
-                break;
             }
         }
     }
@@ -377,7 +375,6 @@ public class WoodCutting {
     public static void woodcuttingBlockCheck(Player player, Block block) {
         PlayerProfile profile = Users.getProfile(player);
         int xp = 0;
-        TreeSpecies species = TreeSpecies.getByData(block.getData());
 
         if (mcMMO.placeStore.isTrue(block)) {
             return;
@@ -387,6 +384,8 @@ public class WoodCutting {
             xp = ModChecks.getCustomBlock(block).getXpGain();
         }
         else {
+            TreeSpecies species = TreeSpecies.getByData(block.getData());
+
             switch (species) {
             case GENERIC:
                 xp += Config.getInstance().getWoodcuttingXPOak();
