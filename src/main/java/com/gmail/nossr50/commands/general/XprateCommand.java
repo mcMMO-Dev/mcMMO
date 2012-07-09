@@ -13,8 +13,8 @@ import com.gmail.nossr50.util.Misc;
 
 public class XprateCommand implements CommandExecutor {
     private final mcMMO plugin;
-    private static int oldrate = Config.getInstance().xpGainMultiplier;
-    private static boolean xpevent = false;
+    private static int oldRate = Config.getInstance().xpGainMultiplier;
+    private static boolean xpEvent = false;
 
     public XprateCommand (mcMMO plugin) {
         this.plugin = plugin;
@@ -33,16 +33,16 @@ public class XprateCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             if (args[0].equalsIgnoreCase("reset")) {
-                if (xpevent) {
+                if (xpEvent) {
                     for (Player x : plugin.getServer().getOnlinePlayers()) {
                         x.sendMessage(LocaleLoader.getString("Commands.xprate.over"));
                     }
 
-                    xpevent = !xpevent;
-                    Config.getInstance().xpGainMultiplier = oldrate;
+                    xpEvent = !xpEvent;
+                    Config.getInstance().xpGainMultiplier = oldRate;
                 }
                 else {
-                    Config.getInstance().xpGainMultiplier = oldrate;
+                    Config.getInstance().xpGainMultiplier = oldRate;
                 }
             }
             else if (Misc.isInt(args[0])) {
@@ -56,10 +56,10 @@ public class XprateCommand implements CommandExecutor {
 
         case 2:
             if (Misc.isInt(args[0])) {
-                oldrate = Config.getInstance().xpGainMultiplier;
+                oldRate = Config.getInstance().xpGainMultiplier;
 
                 if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {
-                    xpevent = Boolean.valueOf(args[1]);
+                    xpEvent = Boolean.valueOf(args[1]);
                 }
                 else {
                     sender.sendMessage(usage3);
@@ -67,7 +67,7 @@ public class XprateCommand implements CommandExecutor {
 
                 Config.getInstance().xpGainMultiplier = Misc.getInt(args[0]);
 
-                if (xpevent) {
+                if (xpEvent) {
                     for (Player x : plugin.getServer().getOnlinePlayers()) {
                         x.sendMessage(LocaleLoader.getString("Commands.xprate.started.0"));
                         x.sendMessage(LocaleLoader.getString("Commands.xprate.started.1", new Object[] {Config.getInstance().xpGainMultiplier}));
@@ -92,6 +92,6 @@ public class XprateCommand implements CommandExecutor {
     }
 
     public static boolean isXpEventRunning() {
-        return xpevent;
+        return xpEvent;
     }
 }
