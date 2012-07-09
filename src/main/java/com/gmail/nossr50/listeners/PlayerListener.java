@@ -183,7 +183,7 @@ public class PlayerListener implements Listener {
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
-        if (XprateCommand.xpevent) {
+        if (XprateCommand.isXpEventRunning()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", new Object[] {Config.getInstance().xpGainMultiplier}));
         }
     }

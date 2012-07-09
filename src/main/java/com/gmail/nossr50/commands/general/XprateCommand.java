@@ -14,7 +14,7 @@ import com.gmail.nossr50.util.Misc;
 public class XprateCommand implements CommandExecutor {
     private final mcMMO plugin;
     private static int oldrate = Config.getInstance().xpGainMultiplier;
-    public static boolean xpevent = false;
+    private static boolean xpevent = false;
 
     public XprateCommand (mcMMO plugin) {
         this.plugin = plugin;
@@ -89,5 +89,9 @@ public class XprateCommand implements CommandExecutor {
             sender.sendMessage(usage2);
             return true;
         }
+    }
+
+    public static boolean isXpEventRunning() {
+        return xpevent;
     }
 }
