@@ -92,7 +92,7 @@ public class mcMMO extends JavaPlugin {
     private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
 
     public static File versionFile;
-    public static Database database;
+    private static Database database;
     public static mcMMO p;
 
     public static ChunkletManager placeStore;
@@ -499,6 +499,10 @@ public class mcMMO extends JavaPlugin {
 
     public static String getModDirectory() {
         return modDirectory;
+    }
+
+    public static Database getPlayerDatabase() {
+        return database;
     }
 }
 

@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Skills;
@@ -134,7 +135,9 @@ public class MctopCommand implements CommandExecutor {
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-        HashMap<Integer, ArrayList<String>> userslist = mcMMO.database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
+        Database database = mcMMO.getPlayerDatabase();
+
+        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
 
         if (query.equals("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
@@ -144,11 +147,11 @@ public class MctopCommand implements CommandExecutor {
         }
 
         for (int i = (page * 10) - 9; i <= (page * 10); i++) {
-            if (i > userslist.size() || mcMMO.database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null) {
+            if (i > userslist.size() || database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null) {
                 break;
             }
 
-            HashMap<Integer, ArrayList<String>> username = mcMMO.database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+            HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
             sender.sendMessage(String.valueOf(i) + ". " + ChatColor.GREEN + userslist.get(i).get(0) + " - " + ChatColor.WHITE + username.get(1).get(0));
         }
     }
