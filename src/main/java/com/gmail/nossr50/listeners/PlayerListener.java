@@ -59,6 +59,10 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = Users.getProfile(player);
 
+        if (profile == null) {
+            return;
+        }
+
         if (profile.getGodMode()) {
             if (!Permissions.getInstance().mcgod(player)) {
                 profile.toggleGodMode();
@@ -110,7 +114,13 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        if (Users.getProfile(event.getPlayer()).getAbilityMode(AbilityType.BERSERK)) {
+        PlayerProfile profile = Users.getProfile(event.getPlayer());
+
+        if (profile == null) {
+            return;
+        }
+
+        if (profile.getAbilityMode(AbilityType.BERSERK)) {
              event.setCancelled(true);
         }
     }
@@ -190,7 +200,11 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Users.getProfile(event.getPlayer()).actualizeRespawnATS();
+        PlayerProfile profile = Users.getProfile(event.getPlayer());
+
+        if (profile != null) {
+            profile.actualizeRespawnATS();
+        }
     }
 
     /**

@@ -41,8 +41,15 @@ public class PartyManager {
      * @return true if they are in the same party, false otherwise
      */
     public boolean inSameParty(Player firstPlayer, Player secondPlayer) {
-        Party firstParty = Users.getProfile(firstPlayer).getParty();
-        Party secondParty = Users.getProfile(secondPlayer).getParty();
+        PlayerProfile firstProfile = Users.getProfile(firstPlayer);
+        PlayerProfile secondProfile = Users.getProfile(secondPlayer);
+
+        if (firstProfile == null || secondProfile == null) {
+            return false;
+        }
+
+        Party firstParty = firstProfile.getParty();
+        Party secondParty = secondProfile.getParty();
 
         if (firstParty == null || secondParty == null || firstParty != secondParty) {
             return false;

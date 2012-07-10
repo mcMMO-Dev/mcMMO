@@ -107,6 +107,10 @@ public class Skills {
         }
 
         /* Check if any abilities are active */
+        if (profile == null) {
+            return;
+        }
+
         if (!profile.getAbilityUse()) {
             return;
         }
@@ -150,6 +154,10 @@ public class Skills {
 
         ToolType tool = skill.getTool();
         AbilityType ability = skill.getAbility();
+
+        if (profile == null) {
+            return;
+        }
 
         if (profile.getToolPreparationMode(tool) && curTime - (profile.getToolPreparationATS(tool) * TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
             profile.setToolPreparationMode(tool, false);

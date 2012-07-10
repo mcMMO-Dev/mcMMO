@@ -130,6 +130,10 @@ public class EntityListener implements Listener {
 
             PlayerProfile profile = Users.getProfile(player);
 
+            if (profile == null) {
+                return;
+            }
+
             if (profile.getGodMode()) {
                 event.setCancelled(true);
                 return;
