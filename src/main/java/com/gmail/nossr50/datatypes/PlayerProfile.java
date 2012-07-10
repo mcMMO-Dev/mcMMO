@@ -116,6 +116,7 @@ public class PlayerProfile {
 
             if (cooldowns.get(1) == null) {
                 database.write("INSERT INTO " + tablePrefix + "cooldowns (user_id) VALUES (" + userId + ")");
+                mcMMO.p.getLogger().warning(playerName + "does not exist in the cooldown table. Their cooldowns will be reset.");
             }
             else {
                 skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(cooldowns.get(1).get(0)));
@@ -132,6 +133,7 @@ public class PlayerProfile {
 
             if (stats.get(1) == null) {
                 database.write("INSERT INTO " + tablePrefix + "skills (user_id) VALUES (" + userId + ")");
+                mcMMO.p.getLogger().warning(playerName + "does not exist in the skills table. Their stats will be reset.");
             }
             else {
                 skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
@@ -152,6 +154,7 @@ public class PlayerProfile {
 
             if (experience.get(1) == null) {
                 database.write("INSERT INTO " + tablePrefix + "experience (user_id) VALUES (" + userId + ")");
+                mcMMO.p.getLogger().warning(playerName + "does not exist in the experience table. Their experience will be reset.");
             }
             else {
                 skillsXp.put(SkillType.TAMING, Integer.valueOf(experience.get(1).get(0)));
