@@ -114,7 +114,7 @@ public class PlayerProfile {
              */
             HashMap<Integer, ArrayList<String>> cooldowns = database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + tablePrefix + "cooldowns WHERE user_id = " + userId);
 
-            if(cooldowns.get(1) == null) {
+            if (cooldowns.get(1) == null) {
                 database.write("INSERT INTO " + tablePrefix + "cooldowns (user_id) VALUES (" + userId + ")");
             }
             else {
@@ -128,7 +128,12 @@ public class PlayerProfile {
                 skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(cooldowns.get(1).get(7)));
             }
 
-            HashMap<Integer, ArrayList<String>> stats = database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+tablePrefix+"skills WHERE user_id = " + userId);
+            HashMap<Integer, ArrayList<String>> stats = database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM " + tablePrefix + "skills WHERE user_id = " + userId);
+
+            if (stats.get(1) == null) {
+                database.write("INSERT INTO " + tablePrefix + "skills (user_id) VALUES (" + userId + ")");
+            }
+            else {
                 skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
                 skills.put(SkillType.MINING, Integer.valueOf(stats.get(1).get(1)));
                 skills.put(SkillType.REPAIR, Integer.valueOf(stats.get(1).get(2)));
@@ -141,7 +146,14 @@ public class PlayerProfile {
                 skills.put(SkillType.AXES, Integer.valueOf(stats.get(1).get(9)));
                 skills.put(SkillType.ACROBATICS, Integer.valueOf(stats.get(1).get(10)));
                 skills.put(SkillType.FISHING, Integer.valueOf(stats.get(1).get(11)));
-            HashMap<Integer, ArrayList<String>> experience = database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM "+tablePrefix+"experience WHERE user_id = " + userId);
+            }
+
+            HashMap<Integer, ArrayList<String>> experience = database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM " + tablePrefix + "experience WHERE user_id = " + userId);
+
+            if (experience.get(1) == null) {
+                database.write("INSERT INTO " + tablePrefix + "experience (user_id) VALUES (" + userId + ")");
+            }
+            else {
                 skillsXp.put(SkillType.TAMING, Integer.valueOf(experience.get(1).get(0)));
                 skillsXp.put(SkillType.MINING, Integer.valueOf(experience.get(1).get(1)));
                 skillsXp.put(SkillType.REPAIR, Integer.valueOf(experience.get(1).get(2)));
@@ -154,6 +166,8 @@ public class PlayerProfile {
                 skillsXp.put(SkillType.AXES, Integer.valueOf(experience.get(1).get(9)));
                 skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(experience.get(1).get(10)));
                 skillsXp.put(SkillType.FISHING, Integer.valueOf(experience.get(1).get(11)));
+            }
+
             loaded = true;
             return true;
         }
