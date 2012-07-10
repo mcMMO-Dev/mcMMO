@@ -113,62 +113,65 @@ public class PlayerProfile {
              * its not pretty but it works
              */
             HashMap<Integer, ArrayList<String>> cooldowns = database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + tablePrefix + "cooldowns WHERE user_id = " + userId);
+            ArrayList<String> cooldownValues = cooldowns.get(1);
 
-            if (cooldowns.get(1) == null) {
+            if (cooldownValues == null) {
                 database.write("INSERT INTO " + tablePrefix + "cooldowns (user_id) VALUES (" + userId + ")");
                 mcMMO.p.getLogger().warning(playerName + "does not exist in the cooldown table. Their cooldowns will be reset.");
             }
             else {
-                skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(cooldowns.get(1).get(0)));
-                skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(cooldowns.get(1).get(1)));
-                skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(cooldowns.get(1).get(2)));
-                skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(cooldowns.get(1).get(3)));
-                skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(cooldowns.get(1).get(4)));
-                skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(cooldowns.get(1).get(5)));
-                skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(cooldowns.get(1).get(6)));
-                skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(cooldowns.get(1).get(7)));
+                skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(cooldownValues.get(0)));
+                skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(cooldownValues.get(1)));
+                skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(cooldownValues.get(2)));
+                skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(cooldownValues.get(3)));
+                skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(cooldownValues.get(4)));
+                skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(cooldownValues.get(5)));
+                skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(cooldownValues.get(6)));
+                skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(cooldownValues.get(7)));
             }
 
             HashMap<Integer, ArrayList<String>> stats = database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM " + tablePrefix + "skills WHERE user_id = " + userId);
+            ArrayList<String> statValues = stats.get(1);
 
-            if (stats.get(1) == null) {
+            if (statValues == null) {
                 database.write("INSERT INTO " + tablePrefix + "skills (user_id) VALUES (" + userId + ")");
                 mcMMO.p.getLogger().warning(playerName + "does not exist in the skills table. Their stats will be reset.");
             }
             else {
-                skills.put(SkillType.TAMING, Integer.valueOf(stats.get(1).get(0)));
-                skills.put(SkillType.MINING, Integer.valueOf(stats.get(1).get(1)));
-                skills.put(SkillType.REPAIR, Integer.valueOf(stats.get(1).get(2)));
-                skills.put(SkillType.WOODCUTTING, Integer.valueOf(stats.get(1).get(3)));
-                skills.put(SkillType.UNARMED, Integer.valueOf(stats.get(1).get(4)));
-                skills.put(SkillType.HERBALISM, Integer.valueOf(stats.get(1).get(5)));
-                skills.put(SkillType.EXCAVATION, Integer.valueOf(stats.get(1).get(6)));
-                skills.put(SkillType.ARCHERY, Integer.valueOf(stats.get(1).get(7)));
-                skills.put(SkillType.SWORDS, Integer.valueOf(stats.get(1).get(8)));
-                skills.put(SkillType.AXES, Integer.valueOf(stats.get(1).get(9)));
-                skills.put(SkillType.ACROBATICS, Integer.valueOf(stats.get(1).get(10)));
-                skills.put(SkillType.FISHING, Integer.valueOf(stats.get(1).get(11)));
+                skills.put(SkillType.TAMING, Integer.valueOf(statValues.get(0)));
+                skills.put(SkillType.MINING, Integer.valueOf(statValues.get(1)));
+                skills.put(SkillType.REPAIR, Integer.valueOf(statValues.get(2)));
+                skills.put(SkillType.WOODCUTTING, Integer.valueOf(statValues.get(3)));
+                skills.put(SkillType.UNARMED, Integer.valueOf(statValues.get(4)));
+                skills.put(SkillType.HERBALISM, Integer.valueOf(statValues.get(5)));
+                skills.put(SkillType.EXCAVATION, Integer.valueOf(statValues.get(6)));
+                skills.put(SkillType.ARCHERY, Integer.valueOf(statValues.get(7)));
+                skills.put(SkillType.SWORDS, Integer.valueOf(statValues.get(8)));
+                skills.put(SkillType.AXES, Integer.valueOf(statValues.get(9)));
+                skills.put(SkillType.ACROBATICS, Integer.valueOf(statValues.get(10)));
+                skills.put(SkillType.FISHING, Integer.valueOf(statValues.get(11)));
             }
 
             HashMap<Integer, ArrayList<String>> experience = database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM " + tablePrefix + "experience WHERE user_id = " + userId);
+            ArrayList<String> experienceValues = experience.get(1);
 
-            if (experience.get(1) == null) {
+            if (experienceValues == null) {
                 database.write("INSERT INTO " + tablePrefix + "experience (user_id) VALUES (" + userId + ")");
                 mcMMO.p.getLogger().warning(playerName + "does not exist in the experience table. Their experience will be reset.");
             }
             else {
-                skillsXp.put(SkillType.TAMING, Integer.valueOf(experience.get(1).get(0)));
-                skillsXp.put(SkillType.MINING, Integer.valueOf(experience.get(1).get(1)));
-                skillsXp.put(SkillType.REPAIR, Integer.valueOf(experience.get(1).get(2)));
-                skillsXp.put(SkillType.WOODCUTTING, Integer.valueOf(experience.get(1).get(3)));
-                skillsXp.put(SkillType.UNARMED, Integer.valueOf(experience.get(1).get(4)));
-                skillsXp.put(SkillType.HERBALISM, Integer.valueOf(experience.get(1).get(5)));
-                skillsXp.put(SkillType.EXCAVATION, Integer.valueOf(experience.get(1).get(6)));
-                skillsXp.put(SkillType.ARCHERY, Integer.valueOf(experience.get(1).get(7)));
-                skillsXp.put(SkillType.SWORDS, Integer.valueOf(experience.get(1).get(8)));
-                skillsXp.put(SkillType.AXES, Integer.valueOf(experience.get(1).get(9)));
-                skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(experience.get(1).get(10)));
-                skillsXp.put(SkillType.FISHING, Integer.valueOf(experience.get(1).get(11)));
+                skillsXp.put(SkillType.TAMING, Integer.valueOf(experienceValues.get(0)));
+                skillsXp.put(SkillType.MINING, Integer.valueOf(experienceValues.get(1)));
+                skillsXp.put(SkillType.REPAIR, Integer.valueOf(experienceValues.get(2)));
+                skillsXp.put(SkillType.WOODCUTTING, Integer.valueOf(experienceValues.get(3)));
+                skillsXp.put(SkillType.UNARMED, Integer.valueOf(experienceValues.get(4)));
+                skillsXp.put(SkillType.HERBALISM, Integer.valueOf(experienceValues.get(5)));
+                skillsXp.put(SkillType.EXCAVATION, Integer.valueOf(experienceValues.get(6)));
+                skillsXp.put(SkillType.ARCHERY, Integer.valueOf(experienceValues.get(7)));
+                skillsXp.put(SkillType.SWORDS, Integer.valueOf(experienceValues.get(8)));
+                skillsXp.put(SkillType.AXES, Integer.valueOf(experienceValues.get(9)));
+                skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(experienceValues.get(10)));
+                skillsXp.put(SkillType.FISHING, Integer.valueOf(experienceValues.get(11)));
             }
 
             loaded = true;
