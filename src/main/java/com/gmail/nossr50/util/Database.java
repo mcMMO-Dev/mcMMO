@@ -16,9 +16,11 @@ import com.gmail.nossr50.runnables.SQLReconnect;
 
 public class Database {
 
-    private static String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName() + "?user=" + Config.getInstance().getMySQLUserName() + "&password=" + Config.getInstance().getMySQLUserPassword();
-    private static String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-    private static Connection conn = null;
+    private static Config configInstance = Config.getInstance();
+
+    private static String connectionString = "jdbc:mysql://" + configInstance.getMySQLServerName() + ":" + configInstance.getMySQLServerPort() + "/" + configInstance.getMySQLDatabaseName() + "?user=" + configInstance.getMySQLUserName() + "&password=" + configInstance.getMySQLUserPassword();
+    private static String tablePrefix = configInstance.getMySQLTablePrefix();
+    private static Connection connection = null;
     private static mcMMO plugin = null;
     private static long reconnectTimestamp = 0;
 
@@ -46,10 +48,12 @@ public class Database {
     public static void connect() {
         try {
             System.out.println("[mcMMO] Attempting connection to MySQL...");
-            Properties conProperties = new Properties();
-            conProperties.put("autoReconnect", "false");
-            conProperties.put("maxReconnects", "0");
-            conn = DriverManager.getConnection(connectionString, conProperties);
+
+            Properties connectionProperties = new Properties();
+            connectionProperties.put("autoReconnect", "false");
+            connectionProperties.put("maxReconnects", "0");
+            connection = DriverManager.getConnection(connectionString, connectionProperties);
+
             System.out.println("[mcMMO] Connection to MySQL was a success!");
         }
         catch (SQLException ex) {
@@ -123,41 +127,53 @@ public class Database {
      */
     public void checkDatabaseStructure(DatabaseUpdate update) {
         String sql = null;
-        ResultSet rs = null;
-        HashMap<Integer, ArrayList<String>> Rows = new HashMap<Integer, ArrayList<String>>();
+        ResultSet resultSet;
+        HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
 
         switch (update) {
         case BLAST_MINING:
-            sql = "SELECT * FROM  `"+tablePrefix+"cooldowns` ORDER BY  `"+tablePrefix+"cooldowns`.`blast_mining` ASC LIMIT 0 , 30";
+            sql = "SELECT * FROM  `" + tablePrefix + "cooldowns` ORDER BY  `" + tablePrefix + "cooldowns`.`blast_mining` ASC LIMIT 0 , 30";
             break;
+
         case FISHING:
-            sql = "SELECT * FROM  `"+tablePrefix+"experience` ORDER BY  `"+tablePrefix+"experience`.`fishing` ASC LIMIT 0 , 30";
+            sql = "SELECT * FROM  `" + tablePrefix + "experience` ORDER BY  `" + tablePrefix + "experience`.`fishing` ASC LIMIT 0 , 30";
             break;
+
         default:
             break;
         }
 
         try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.executeQuery();
-            rs = stmt.getResultSet();
-            while (rs.next()) {
-                ArrayList<String> Col = new ArrayList<String>();
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    Col.add(rs.getString(i));
+            PreparedStatement statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                ArrayList<String> column = new ArrayList<String>();
+
+                for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+                    column.add(resultSet.getString(i));
                 }
-                Rows.put(rs.getRow(), Col);
+
+                rows.put(resultSet.getRow(), column);
             }
+
+            statement.close();
         }
         catch (SQLException ex) {
-            if (update.equals(DatabaseUpdate.BLAST_MINING)) {
+            switch (update) {
+            case BLAST_MINING:
                 System.out.println("Updating mcMMO MySQL tables for Blast Mining...");
                 write("ALTER TABLE `"+tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0' ;");
-            }
-            else if (update.equals(DatabaseUpdate.FISHING)) {
+                break;
+
+            case FISHING:
                 System.out.println("Updating mcMMO MySQL tables for Fishing...");
                 write("ALTER TABLE `"+tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
                 write("ALTER TABLE `"+tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
+                break;
+
+            default:
+                break;
             }
         }
     }
@@ -171,8 +187,9 @@ public class Database {
     public boolean write(String sql) {
         if (isConnected()) {
             try {
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.executeUpdate();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.executeUpdate();
+                statement.close();
                 return true;
             }
             catch (SQLException ex) {
@@ -183,6 +200,7 @@ public class Database {
         else {
             attemptReconnect();
         }
+
         return false;
     }
 
@@ -192,21 +210,23 @@ public class Database {
      * @param sql SQL query to execute
      * @return the value in the first row / first field
      */
-    public Integer getInt(String sql) {
-        ResultSet rs = null;
-        Integer result = 0;
+    public int getInt(String sql) {
+        ResultSet resultSet;
+        int result = 0;
 
         if (isConnected()) {
             try {
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.executeQuery();
-                rs = stmt.getResultSet();
-                if (rs.next()) {
-                   result = rs.getInt(1);
+                PreparedStatement statement = connection.prepareStatement(sql);
+                resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    result = resultSet.getInt(1);
                 }
                 else {
                     result = 0;
                 }
+
+                statement.close();
             }
             catch (SQLException ex) {
                 printErrors(ex);
@@ -215,6 +235,7 @@ public class Database {
         else {
             attemptReconnect();
         }
+
         return result;
     }
 
@@ -224,12 +245,14 @@ public class Database {
      * @return the boolean value for whether or not we are connected
      */
     public static boolean isConnected() {
-        if(conn == null)
+        if (connection == null) {
             return false;
+        }
 
         try {
-            return conn.isValid(3);
-        } catch (SQLException e) {
+            return connection.isValid(3);
+        }
+        catch (SQLException e) {
             return false;
         }
     }
@@ -239,10 +262,13 @@ public class Database {
      * This will check for a connection being present or not to prevent unneeded reconnection attempts
      */
     public static void attemptReconnect() {
-        if(reconnectTimestamp + 60000 < System.currentTimeMillis()) {
+        final int RECONNECT_WAIT_TICKS = 60000;
+        final int RECONNECT_DELAY_TICKS = 1200;
+
+        if (reconnectTimestamp + RECONNECT_WAIT_TICKS < System.currentTimeMillis()) {
             System.out.println("[mcMMO] Connection to MySQL was lost! Attempting to reconnect in 60 seconds..."); //Only reconnect if another attempt hasn't been made recently
             reconnectTimestamp = System.currentTimeMillis();
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(plugin), 1200);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(plugin), RECONNECT_DELAY_TICKS);
         }
     }
 
@@ -253,21 +279,25 @@ public class Database {
      * @return the rows in this SQL query
      */
     public HashMap<Integer, ArrayList<String>> read(String sql) {
-        ResultSet rs = null;
-        HashMap<Integer, ArrayList<String>> Rows = new HashMap<Integer, ArrayList<String>>();
+        ResultSet resultSet;
+        HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
 
         if (isConnected()) {
             try {
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.executeQuery();
-                rs = stmt.getResultSet();
-                while (rs.next()) {
-                    ArrayList<String> Col = new ArrayList<String>();
-                    for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                        Col.add(rs.getString(i));
+                PreparedStatement statement = connection.prepareStatement(sql);
+                resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    ArrayList<String> column = new ArrayList<String>();
+
+                    for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+                        column.add(resultSet.getString(i));
                     }
-                    Rows.put(rs.getRow(), Col);
+
+                    rows.put(resultSet.getRow(), column);
                 }
+
+                statement.close();
             }
             catch (SQLException ex) {
                 printErrors(ex);
@@ -276,7 +306,8 @@ public class Database {
         else {
             attemptReconnect();
         }
-        return Rows;
+
+        return rows;
     }
 
     private static void printErrors(SQLException ex) {
