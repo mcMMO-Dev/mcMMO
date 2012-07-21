@@ -191,6 +191,10 @@ public class Fishing {
      * @param event The event to modify
      */
     public static void shakeMob(PlayerFishEvent event) {
+        if (!(event.getCaught() instanceof LivingEntity)) {
+            return;
+        }
+
         int randomChance = 100;
 
         if (event.getPlayer().hasPermission("mcmmo.perks.lucky.fishing")) {
