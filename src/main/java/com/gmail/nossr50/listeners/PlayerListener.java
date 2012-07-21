@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -96,6 +97,10 @@ public class PlayerListener implements Listener {
                 break;
 
             case CAUGHT_ENTITY:
+                if (!(event.getCaught() instanceof LivingEntity)) {
+                    return;
+                }
+
                 if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) >= 150 && Permissions.getInstance().shakeMob(player)) {
                     Fishing.shakeMob(event);
                 }
