@@ -82,7 +82,7 @@ public class EntityListener implements Listener {
         Entity defender = event.getEntity();
 
         if (attacker instanceof Player && defender instanceof Player) {
-            if (PartyManager.getInstance().inSameParty((Player) defender, (Player) attacker) && pvpoff == true) {
+            if (PartyManager.getInstance().inSameParty((Player) defender, (Player) attacker) && pvpoff) {
                 event.setCancelled(true);
                 return;
             }
