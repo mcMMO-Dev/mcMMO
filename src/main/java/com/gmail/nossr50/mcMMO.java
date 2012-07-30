@@ -366,7 +366,7 @@ public class mcMMO extends JavaPlugin {
             getCommand("mcstats").setExecutor(new McstatsCommand());
         }
 
-        if (configInstance.getCommandMCStatsEnabled()) {
+        if (configInstance.getCommandSkillResetEnabled()) {
             getCommand("skillreset").setExecutor(new SkillResetCommand());
         }
 
