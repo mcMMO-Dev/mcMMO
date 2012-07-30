@@ -21,6 +21,7 @@ import com.gmail.nossr50.commands.general.InspectCommand;
 import com.gmail.nossr50.commands.general.McstatsCommand;
 import com.gmail.nossr50.commands.general.MmoeditCommand;
 import com.gmail.nossr50.commands.general.MmoupdateCommand;
+import com.gmail.nossr50.commands.general.SkillResetCommand;
 import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.commands.mc.McabilityCommand;
 import com.gmail.nossr50.commands.mc.MccCommand;
@@ -363,6 +364,10 @@ public class mcMMO extends JavaPlugin {
 
         if (configInstance.getCommandMCStatsEnabled()) {
             getCommand("mcstats").setExecutor(new McstatsCommand());
+        }
+
+        if (configInstance.getCommandMCStatsEnabled()) {
+            getCommand("skillreset").setExecutor(new SkillResetCommand());
         }
 
         //Party commands

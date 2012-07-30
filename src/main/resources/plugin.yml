@@ -73,6 +73,9 @@ commands:
     p:
         aliases: [pc]
         description: Toggle Party chat or send party chat messages
+    skillreset:
+        aliases: []
+        description: Reset the level of one or all of your skills
     excavation:
         aliases: []
         description: Detailed skill info
@@ -584,3 +587,5 @@ permissions:
         description: Allows access to the Axes skill
     mcmmo.skills.acrobatics:
         description: Allows access to the Acrobatics skill
+    mcmmo.skillreset:
+        description: Allow reset of skill levels

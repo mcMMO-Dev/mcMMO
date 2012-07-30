@@ -903,6 +903,21 @@ public class PlayerProfile {
     public void skillUp(SkillType skillType, int newValue) {
         skills.put(skillType, skills.get(skillType) + newValue);
     }
+    
+    public void resetSkill(SkillType skillType)
+    {
+    	//do a single skilltype
+    	if (skillType != SkillType.ALL)
+    		skills.put(skillType, 0);
+    	else //do them all
+    	{
+    		for(SkillType skill : SkillType.values()) //iterate over all items in the enumeration
+    		{
+    			if (skill != SkillType.ALL) // skip the "all" value
+    				skills.put(skill,  0);
+    		}
+    	}
+    }
 
 //    /**
 //     * Adds XP to the player, doesn't calculate for XP Rate

@@ -77,6 +77,7 @@ public class Config extends ConfigLoader {
     public boolean getCommandMCCEnabled() { return config.getBoolean("Commands.mcc.Enabled", true); }
     public boolean getCommandMCGodEnabled() { return config.getBoolean("Commands.mcgod.Enabled", true); }
     public boolean getCommandMCStatsEnabled() { return config.getBoolean("Commands.mcstats.Enabled", true); }
+    public boolean getCommandSkillResetEnabled() { return config.getBoolean("Commands.skillreset.Enabled", true); }
     public boolean getCommandMmoeditEnabled() { return config.getBoolean("Commands.mmoedit.Enabled", true); }
     public boolean getCommandMCRemoveEnabled() { return config.getBoolean("Commands.mcremove.Enable", true); }
     public boolean getCommandPTPEnabled() { return config.getBoolean("Commands.ptp.Enabled", true); }
