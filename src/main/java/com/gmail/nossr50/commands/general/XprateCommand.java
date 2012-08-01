@@ -13,7 +13,7 @@ import com.gmail.nossr50.util.Misc;
 
 public class XprateCommand implements CommandExecutor {
     private final mcMMO plugin;
-    private static int oldRate = Config.getInstance().xpGainMultiplier;
+    private static double oldRate = Config.getInstance().xpGainMultiplier;
     private static boolean xpEvent = false;
 
     public XprateCommand (mcMMO plugin) {

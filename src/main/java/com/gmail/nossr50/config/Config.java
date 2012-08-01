@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class Config extends ConfigLoader {
     private static Config instance;
-    public int xpGainMultiplier = 1;
+    public double xpGainMultiplier = 1;
 
     private Config() {
         super("config.yml");
@@ -343,7 +343,7 @@ public class Config extends ConfigLoader {
     /* General Settings */
     public boolean getExperienceGainsMobspawnersEnabled() { return config.getBoolean("Experience.Gains.Mobspawners.Enabled", false); }
     public boolean getExperienceGainsPlayerVersusPlayerEnabled() { return config.getBoolean("Experience.PVP.Rewards", true); }
-    public int getExperienceGainsGlobalMultiplier() { return config.getInt("Experience.Gains.Multiplier.Global", 1); }
+    public double getExperienceGainsGlobalMultiplier() { return config.getDouble("Experience.Gains.Multiplier.Global", 1.0); }
 
     /* Combat XP Multipliers */
     public double getPlayerVersusPlayerXP() { return config.getDouble("Experience.Gains.Multiplier.PVP", 1.0); }
