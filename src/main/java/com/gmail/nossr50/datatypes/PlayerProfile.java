@@ -352,7 +352,7 @@ public class PlayerProfile {
                 while ((line = in.readLine()) != null) {
                     //Read the line in and copy it to the output it's not the player
                     //we want to edit
-                    if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
+                    if (!line.split(":")[0].equals(playerName)) {
                         writer.append(line).append("\r\n");
                     }
                     else {
