@@ -329,7 +329,7 @@ public class PlayerListener implements Listener {
      * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         PlayerProfile profile = Users.getProfile(player);
 
