@@ -10,7 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
@@ -241,7 +241,7 @@ public class PlayerListener implements Listener {
                 if (mcMMO.repairManager.isRepairable(inHand)) {
                     mcMMO.repairManager.handleRepair(player, inHand);
                     event.setCancelled(true);
-                    player.updateInventory();
+                    player.updateInventory(); //says The method updateInventory() from the type Player is deprecated
                 }
             }
 
@@ -329,7 +329,7 @@ public class PlayerListener implements Listener {
      * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         PlayerProfile profile = Users.getProfile(player);
 
