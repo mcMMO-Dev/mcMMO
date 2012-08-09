@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 
@@ -44,6 +45,10 @@ public class MccCommand implements CommandExecutor {
         player.sendMessage("/mcstats " + LocaleLoader.getString("Commands.Stats"));
         player.sendMessage("/mctop " + LocaleLoader.getString("Commands.Leaderboards"));
 
+        if (Config.getInstance().getCommandSkillResetEnabled() && Permissions.getInstance().skillReset(player)) {
+            player.sendMessage("/skillreset <skill|all> " + LocaleLoader.getString("Commands.Reset"));
+        }
+        
         if (Permissions.getInstance().mcAbility(player)) {
             player.sendMessage("/mcability " + LocaleLoader.getString("Commands.ToggleAbility"));
         }
