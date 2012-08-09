@@ -108,7 +108,7 @@ public class McMMOPlayer {
      * @param newValue The amount of XP to add
      */
     public void addXPOverrideBonus(SkillType skillType, int xp) {
-        int modifiedXp = xp * Config.getInstance().xpGainMultiplier;
+        int modifiedXp = (int)Math.floor(xp * Config.getInstance().xpGainMultiplier);
         addXPOverride(skillType, modifiedXp);
     }
 
@@ -129,7 +129,7 @@ public class McMMOPlayer {
             bonusModifier = calculatePartyXPModifier(skillType);
         }
 
-        int xp = (int) (newValue / skillType.getXpModifier()) * Config.getInstance().xpGainMultiplier;
+        int xp = (int)Math.floor((newValue / skillType.getXpModifier()) * Config.getInstance().xpGainMultiplier);
 
         if (bonusModifier > 0) {
             if (bonusModifier >= 2) {

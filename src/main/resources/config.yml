@@ -321,6 +321,8 @@ Commands:
         Enabled: true
     mcstats:
         Enabled: true
+    skillreset:
+        Enabled: true
     mcability:
         Enabled: true
     party:

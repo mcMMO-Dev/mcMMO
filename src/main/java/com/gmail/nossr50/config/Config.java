@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class Config extends ConfigLoader {
     private static Config instance;
-    public int xpGainMultiplier = 1;
+    public double xpGainMultiplier = 1;
 
     private Config() {
         super("config.yml");
@@ -77,6 +77,7 @@ public class Config extends ConfigLoader {
     public boolean getCommandMCCEnabled() { return config.getBoolean("Commands.mcc.Enabled", true); }
     public boolean getCommandMCGodEnabled() { return config.getBoolean("Commands.mcgod.Enabled", true); }
     public boolean getCommandMCStatsEnabled() { return config.getBoolean("Commands.mcstats.Enabled", true); }
+    public boolean getCommandSkillResetEnabled() { return config.getBoolean("Commands.skillreset.Enabled", true); }
     public boolean getCommandMmoeditEnabled() { return config.getBoolean("Commands.mmoedit.Enabled", true); }
     public boolean getCommandMCRemoveEnabled() { return config.getBoolean("Commands.mcremove.Enable", true); }
     public boolean getCommandPTPEnabled() { return config.getBoolean("Commands.ptp.Enabled", true); }
@@ -342,7 +343,7 @@ public class Config extends ConfigLoader {
     /* General Settings */
     public boolean getExperienceGainsMobspawnersEnabled() { return config.getBoolean("Experience.Gains.Mobspawners.Enabled", false); }
     public boolean getExperienceGainsPlayerVersusPlayerEnabled() { return config.getBoolean("Experience.PVP.Rewards", true); }
-    public int getExperienceGainsGlobalMultiplier() { return config.getInt("Experience.Gains.Multiplier.Global", 1); }
+    public double getExperienceGainsGlobalMultiplier() { return config.getDouble("Experience.Gains.Multiplier.Global", 1.0); }
 
     /* Combat XP Multipliers */
     public double getPlayerVersusPlayerXP() { return config.getDouble("Experience.Gains.Multiplier.PVP", 1.0); }

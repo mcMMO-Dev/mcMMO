@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
 
@@ -26,7 +27,12 @@ public class McstatsCommand implements CommandExecutor {
         CommandHelper.printCombatSkills(player);
         CommandHelper.printMiscSkills(player);
 
-        player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()) }));
+        int powerLevelCap = Config.getInstance().getPowerLevelCap();
+        
+        if (powerLevelCap > 0)
+        	player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()), String.valueOf(powerLevelCap) }));
+        else
+        	player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()) }));        	
 
         return true;
     }
