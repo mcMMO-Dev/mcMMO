@@ -9,6 +9,7 @@ Key:
 
 Version 1.3.11
  + Added compatibility with bow-wielding NPCs from Citizens/NPC mods
+ + Added compatibility for pvp-prevention plugins for Serrated Strikes
  = Fixed bug where mcMMO could throw NPE errors if trees cut down were from a custom mod and had an id of 17
  = Fixed bug where mcMMO would ignore other block-protection plugins for various abilities
  
