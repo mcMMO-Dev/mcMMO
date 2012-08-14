@@ -340,7 +340,7 @@ public class Mining {
                 return;
             }
 
-            if (mcMMO.placeStore.isTrue(block)) {
+            if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
                 return;
             }
 
