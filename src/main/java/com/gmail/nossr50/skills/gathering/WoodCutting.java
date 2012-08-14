@@ -385,6 +385,11 @@ public class WoodCutting {
         }
         else {
             TreeSpecies species = TreeSpecies.getByData(block.getData());
+            
+            //Apparently species can be null in certain cases (custom server mods?)
+            //https://github.com/mcMMO-Dev/mcMMO/issues/229
+            if(species == null)
+                return;
 
             switch (species) {
             case GENERIC:

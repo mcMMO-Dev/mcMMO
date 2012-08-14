@@ -18,6 +18,11 @@ public class ArcheryManager {
     public ArcheryManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
+        
+        //Compatibility with Citizens, Citizens NPCs won't create a profile so we'll check for it here
+        if(this.profile == null)
+            return;
+        
         this.skillLevel = profile.getSkillLevel(SkillType.ARCHERY);
         this.permissionsInstance =  Permissions.getInstance();
     }
