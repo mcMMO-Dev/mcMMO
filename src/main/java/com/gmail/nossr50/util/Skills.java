@@ -396,6 +396,9 @@ public class Skills {
      */
     public static void abilityCheck(Player player, SkillType type) {
         PlayerProfile profile = Users.getProfile(player);
+        if (profile == null) {
+            return;
+        }
         ToolType tool = type.getTool();
 
         if (!profile.getToolPreparationMode(tool)) {
