@@ -385,7 +385,7 @@ public class Mining {
             case NETHERRACK:
             case SANDSTONE:
             case STONE:
-                if (mcMMO.placeStore.isTrue(block)) {
+                if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
                     return;
                 }
 
