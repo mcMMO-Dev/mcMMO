@@ -22,7 +22,7 @@ public class HardcoreListener implements Listener {
         Player player = event.getEntity(); //Note this returns a Player object for this subevent
 
         if (!Permissions.getInstance().hardcoremodeBypass(player)) {
-            if (Config.getInstance().getHardcoreVampirismEnabled()) {
+            if (player.getKiller() != null && Config.getInstance().getHardcoreVampirismEnabled()) {
                 Hardcore.invokeVampirism(player.getKiller(), player);
             }
 
