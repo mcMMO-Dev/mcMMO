@@ -114,7 +114,7 @@ public class Repair {
                 int enchantLevel = enchant.getValue();
 
                 if (configInstance.getArcaneForgingDowngradeEnabled() && enchantLevel > 1) {
-                    if (random.nextInt(100) <= getDowngradeChance(rank)) {
+                    if (random.nextInt(100) < getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, --enchantLevel);
                         downgraded = true;
                     }
