@@ -113,7 +113,7 @@ public class Axes {
             short durabilityDamage = 5; //Start with 5 durability damage
 
             /* Every 30 Skill Levels you gain 1 durability damage */
-            durabilityDamage += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/30;
+            durabilityDamage += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/90;
 
             if (!hasArmor(targetPlayer)) {
                 applyGreaterImpact(attacker, target, event);
