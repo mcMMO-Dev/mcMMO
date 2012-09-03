@@ -23,7 +23,7 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        impactDamage = String.valueOf(5 + ((int) skillValue / 30));
+        impactDamage = String.valueOf(1 + ((int) skillValue / 50));
         skullSplitterLength = String.valueOf(2 + ((int) skillValue / 50));
         greaterImpactDamage = "2";
 

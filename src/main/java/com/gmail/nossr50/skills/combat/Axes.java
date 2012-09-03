@@ -102,6 +102,7 @@ public class Axes {
      * @param target The defending entity
      * @param event The event to modify
      */
+    @SuppressWarnings("deprecation")
     public static void impact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
 
         /*
@@ -110,17 +111,18 @@ public class Axes {
          */
         if (target instanceof Player) {
             Player targetPlayer = (Player) target;
-            short durabilityDamage = 5; //Start with 5 durability damage
+            short durabilityDamage = 1; //Start with 1 durability damage
 
             /* Every 30 Skill Levels you gain 1 durability damage */
-            durabilityDamage += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/30;
+            durabilityDamage += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/50;
 
             if (!hasArmor(targetPlayer)) {
                 applyGreaterImpact(attacker, target, event);
             }
             else {
                 for (ItemStack armor : targetPlayer.getInventory().getArmorContents()) {
-                    armor.setDurability((short) (armor.getDurability() + durabilityDamage)); //Damage armor piece
+                    if(Math.random() * 100 > 75)
+                        armor.setDurability((short) (armor.getDurability() + durabilityDamage)); //Damage armor piece
                 }
                 targetPlayer.updateInventory();
             }
