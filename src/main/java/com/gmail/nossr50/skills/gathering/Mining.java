@@ -85,6 +85,12 @@ public class Mining {
                 Misc.dropItem(location, item);
             }
             break;
+            
+        case EMERALD_ORE:
+            if (configInstance.getEmeraldDoubleDropsEnabled()) {
+                Misc.dropItem(location, item);
+            }
+            break;
 
         default:
             if (ModChecks.isCustomMiningBlock(block)) {
@@ -194,6 +200,13 @@ public class Mining {
                 Misc.dropItem(location, item);
             }
             break;
+        
+        case EMERALD_ORE:
+            if (configInstance.getEmeraldDoubleDropsEnabled()) {
+                item = new ItemStack(Material.EMERALD);
+                Misc.dropItem(location, item);
+            }
+            break;
 
         default:
             if (ModChecks.isCustomMiningBlock(block)) {
@@ -278,6 +291,10 @@ public class Mining {
 
         case STONE:
             xp += Config.getInstance().getMiningXPStone();
+            break;
+            
+        case EMERALD_ORE:
+            xp += Config.getInstance().getMiningXPEmeraldOre();
             break;
 
         default:
@@ -367,6 +384,7 @@ public class Mining {
             case GOLD_ORE:
             case LAPIS_ORE:
             case REDSTONE_ORE:
+            case EMERALD_ORE;
                 if (tier < 3) {
                     return;
                 }
