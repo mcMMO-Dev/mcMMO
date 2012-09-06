@@ -164,6 +164,7 @@ public class Config extends ConfigLoader {
     public int getHerbalismXPNetherWart() { return config.getInt("Experience.Herbalism.Nether_Wart", 50); }
     public int getHerbalismXPLilyPads() { return config.getInt("Experience.Herbalism.Lily_Pads", 100); }
     public int getHerbalismXPVines() { return config.getInt("Experience.Herbalism.Vines", 10); }
+    public int getHerbalismXPCocoa() { return config.getInt("Experience.Herbalism.Cocoa",30); }
 
     public boolean getHerbalismGreenThumbCobbleToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true); }
     public boolean getHerbalismGreenThumbSmoothbrickToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true); }
@@ -181,6 +182,7 @@ public class Config extends ConfigLoader {
     public boolean getVinesDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Vines", true); }
     public boolean getWaterLiliesDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Water_Lilies", true); }
     public boolean getYellowFlowersDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Yellow_Flowers", true); }
+    public boolean getCocoaDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Cocoa", true); }
 
     public boolean herbalismDoubleDropsDisabled() {
         ConfigurationSection section = config.getConfigurationSection("Double_Drops.Herbalism");
@@ -215,6 +217,7 @@ public class Config extends ConfigLoader {
     public int getMiningXPSandstone() { return config.getInt("Experience.Mining.Sandstone", 30); }
     public int getMiningXPEndStone() { return config.getInt("Experience.Mining.End_Stone", 150); }
     public int getMiningXPMossyStone() { return config.getInt("Experience.Mining.Moss_Stone", 30); }
+    public int getMiningXPEmeraldOre() { return config.getInt("Experience.Mining.Emerald", 1000); }
 
     public boolean getCoalDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Coal", true); }
     public boolean getDiamondDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Diamond", true); }
@@ -229,6 +232,7 @@ public class Config extends ConfigLoader {
     public boolean getRedstoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Redstone", true); }
     public boolean getSandstoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Sandstone", true); }
     public boolean getStoneDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Stone", true); }
+    public boolean getEmeraldDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Emerald", true); }
 
     public boolean miningDoubleDropsDisabled() {
         ConfigurationSection section = config.getConfigurationSection("Double_Drops.Mining");
