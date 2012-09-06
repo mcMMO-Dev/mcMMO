@@ -191,6 +191,13 @@ public class Herbalism {
                 xp = Config.getInstance().getHerbalismXPLilyPads();
             }
             break;
+            
+        case COCOA:
+            if (data == (byte) 0x2) {
+                mat = Material.COCOA;
+                xp = Config.getInstance().getHerbalismXPCocoa();
+            }
+            break;
 
         default:
             if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
@@ -283,6 +290,12 @@ public class Herbalism {
                 case YELLOW_FLOWER:
                     if (configInstance.getYellowFlowersDoubleDropsEnabled()) {
                         Misc.dropItem(location, is);
+                    }
+                    break;
+                    
+                case COCOA:
+                    if (configInstance.getCocoaDoubleDropsEnabled()) {
+                        Misc.dropItems(location, is);
                     }
                     break;
 
