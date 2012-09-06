@@ -197,6 +197,7 @@ Double_Drops:
         Water_Lilies: true
         Wheat: true
         Yellow_Flowers: true
+        Cocoa: true
     Mining:
         Coal: true
         Diamond: true
@@ -211,6 +212,7 @@ Double_Drops:
         Redstone: true
         Sandstone: true
         Stone: true
+        Emerald: true
     Woodcutting:
         Oak: true
         Birch: true
@@ -264,6 +266,7 @@ Experience:
         Nether_Wart: 50
         Lily_Pads: 100
         Vines: 10
+        Cocoa: 30
     Mining:
         Sandstone: 30
         Glowstone: 30
@@ -278,6 +281,7 @@ Experience:
         Iron: 250
         End_Stone: 150
         Moss_Stone: 30
+        Emerald: 1000
     Taming:
         Animal_Taming:
             Wolf: 250
