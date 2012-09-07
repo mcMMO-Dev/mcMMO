@@ -295,7 +295,7 @@ public class Herbalism {
                     
                 case COCOA:
                     if (configInstance.getCocoaDoubleDropsEnabled()) {
-                        Misc.dropItems(location, is);
+                        Misc.dropItem(location, is);
                     }
                     break;
 

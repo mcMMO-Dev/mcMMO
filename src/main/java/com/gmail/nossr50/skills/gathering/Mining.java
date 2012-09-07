@@ -384,7 +384,7 @@ public class Mining {
             case GOLD_ORE:
             case LAPIS_ORE:
             case REDSTONE_ORE:
-            case EMERALD_ORE;
+            case EMERALD_ORE:
                 if (tier < 3) {
                     return;
                 }
