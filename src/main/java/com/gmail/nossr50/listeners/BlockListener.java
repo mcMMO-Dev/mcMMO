@@ -58,11 +58,15 @@ public class BlockListener implements Listener {
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         List<Block> blocks = event.getBlocks();
         BlockFace direction = event.getDirection();
+        // Block that would be air after piston is finished
+        Block futureEmptyBlock = event.getBlock().getRelative(direction);
 
         for (Block b : blocks) {
             if (mcMMO.placeStore.isTrue(b)) {
                 b.getRelative(direction).setMetadata("pistonTrack", new FixedMetadataValue(plugin, true));
-                mcMMO.placeStore.setFalse(b);
+                if (b.equals(futureEmptyBlock)) {
+                    mcMMO.placeStore.setFalse(b);
+                }
             }
         }
 
