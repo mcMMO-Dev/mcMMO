@@ -83,6 +83,7 @@ public class BlockChecks {
         case CAKE_BLOCK:
         case CHEST:
         case DISPENSER:
+        case ENDER_CHEST:            
         case ENCHANTMENT_TABLE:
         case FENCE_GATE:
         case FURNACE:
