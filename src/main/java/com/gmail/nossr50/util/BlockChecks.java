@@ -84,6 +84,7 @@ public class BlockChecks {
         case CHEST:
         case DISPENSER:
         case ENCHANTMENT_TABLE:
+        case ENDER_CHEST:
         case FENCE_GATE:
         case FURNACE:
         case IRON_DOOR_BLOCK:
