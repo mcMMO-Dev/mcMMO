@@ -193,7 +193,7 @@ public class Herbalism {
             break;
             
         case COCOA:
-            if (data == (byte) 0x2) {
+            if ((((byte) data) & 0x8) == 0x8) {
                 mat = Material.COCOA;
                 xp = Config.getInstance().getHerbalismXPCocoa();
             }
