@@ -193,7 +193,7 @@ public class Herbalism {
             break;
             
         case COCOA:
-            if (data == (byte) 0x2) {
+            if ((((byte) data) & 0x8) == 0x8) {
                 mat = Material.COCOA;
                 xp = Config.getInstance().getHerbalismXPCocoa();
             }
@@ -218,7 +218,12 @@ public class Herbalism {
                 is = new ItemStack(ModChecks.getCustomBlock(block).getItemDrop());
             }
             else {
-                is = new ItemStack(mat);
+                if (mat == Material.COCOA) {
+                    is = new ItemStack(Material.INK_SACK, 1, (short) 3);
+                }
+                else {
+                    is = new ItemStack(mat);
+                }
             }
 
             if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
