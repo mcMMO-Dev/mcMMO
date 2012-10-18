@@ -52,8 +52,8 @@ public class BlockChecks {
         case VINE:
         case WATER_LILY:
         case YELLOW_FLOWER:
-	case COCOA:
-	case EMERALD_ORE:
+        case COCOA:
+        case EMERALD_ORE:
             return true;
 
         default:
@@ -125,7 +125,7 @@ public class BlockChecks {
         case IRON_ORE:
         case LAPIS_ORE:
         case REDSTONE_ORE:
-	case EMERALD_ORE:
+        case EMERALD_ORE:
             return true;
 
         default:
@@ -178,7 +178,7 @@ public class BlockChecks {
         case VINE:
         case WATER_LILY:
         case YELLOW_FLOWER:
-	case COCOA:
+        case COCOA:
             return true;
 
         case CROPS:
@@ -221,7 +221,7 @@ public class BlockChecks {
         case REDSTONE_ORE:
         case SANDSTONE:
         case STONE:
-	case EMERALD_ORE:
+        case EMERALD_ORE:
             return true;
 
         default:

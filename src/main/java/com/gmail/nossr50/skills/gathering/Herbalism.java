@@ -218,7 +218,12 @@ public class Herbalism {
                 is = new ItemStack(ModChecks.getCustomBlock(block).getItemDrop());
             }
             else {
-                is = new ItemStack(mat);
+                if (mat == Material.COCOA) {
+                    is = new ItemStack(Material.INK_SACK, 1, (short) 3);
+                }
+                else {
+                    is = new ItemStack(mat);
+                }
             }
 
             if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
