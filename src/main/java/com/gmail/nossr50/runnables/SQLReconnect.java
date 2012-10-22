@@ -15,15 +15,12 @@ public class SQLReconnect implements Runnable {
 
     @Override
     public void run() {
-        if (!Database.isConnected()) {
-            Database.connect();
-            if (Database.isConnected()) {
-                Users.saveAll(); //Save all profiles
-                Users.clearAll(); //Clear the profiles
+        if (Database.checkConnection()) {
+            Users.saveAll(); //Save all profiles
+            Users.clearAll(); //Clear the profiles
 
-                for (Player player : plugin.getServer().getOnlinePlayers()) {
-                    Users.addUser(player); //Add in new profiles, forcing them to 'load' again from MySQL
-                }
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                Users.addUser(player); //Add in new profiles, forcing them to 'load' again from MySQL
             }
         }
     }

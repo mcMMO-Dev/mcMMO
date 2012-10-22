@@ -22,24 +22,28 @@ public class Database {
     private static String tablePrefix = configInstance.getMySQLTablePrefix();
     private static Connection connection = null;
     private static mcMMO plugin = null;
-    private static long reconnectTimestamp = 0;
+
+    // Scale waiting time by this much per failed attempt
+    private static final double SCALING_FACTOR = 5;
+    
+    // Minimum wait in nanoseconds (default 500ms)
+    private static final long MIN_WAIT = 500*100000L;
+
+    // Maximum time to wait between reconnects (default 5 minutes)
+    private static final long MAX_WAIT = 5*60000000000L;
+
+    // How long to wait when checking if connection is valid (default 3 seconds)
+    private static final int VALID_TIMEOUT = 3;
+
+    // When next to try connecting to Database in nanoseconds
+    private static long nextReconnectTimestamp = 0L;
+    
+    // How many connection attemtps have failed
+    private static int reconnectAttempt = 0;
 
     public Database(mcMMO instance) {
         plugin = instance;
-        connect(); //Connect to MySQL
-
-        // Load the driver instance
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            DriverManager.getConnection(connectionString);
-        }
-        catch (ClassNotFoundException e) {
-            plugin.getLogger().warning(e.getLocalizedMessage());
-        }
-        catch (SQLException ex) {
-            plugin.getLogger().warning(ex.getLocalizedMessage());
-            printErrors(ex);
-        }
+        checkConnected(); //Connect to MySQL
     }
 
     /**
@@ -49,6 +53,8 @@ public class Database {
         try {
             System.out.println("[mcMMO] Attempting connection to MySQL...");
 
+            // Force driver to load if not yet loaded
+            Class.forName("com.mysql.jdbc.Driver");
             Properties connectionProperties = new Properties();
             connectionProperties.put("autoReconnect", "false");
             connectionProperties.put("maxReconnects", "0");
@@ -57,10 +63,15 @@ public class Database {
             System.out.println("[mcMMO] Connection to MySQL was a success!");
         }
         catch (SQLException ex) {
+        	connection = null;
             System.out.println("[mcMMO] Connection to MySQL failed!");
             ex.printStackTrace();
             printErrors(ex);
-        }
+        } catch (ClassNotFoundException ex) {
+        	connection = null;
+            System.out.println("[mcMMO] MySQL database driver not found!");
+            ex.printStackTrace();
+		}
     }
 
     /**
@@ -185,7 +196,7 @@ public class Database {
      * @return true if the query was successfully written, false otherwise.
      */
     public boolean write(String sql) {
-        if (isConnected()) {
+        if (checkConnected()) {
             try {
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.executeUpdate();
@@ -196,9 +207,6 @@ public class Database {
                 printErrors(ex);
                 return false;
             }
-        }
-        else {
-            attemptReconnect();
         }
 
         return false;
@@ -214,7 +222,7 @@ public class Database {
         ResultSet resultSet;
         int result = 0;
 
-        if (isConnected()) {
+        if (checkConnected()) {
             try {
                 PreparedStatement statement = connection.prepareStatement(sql);
                 resultSet = statement.executeQuery();
@@ -232,44 +240,100 @@ public class Database {
                 printErrors(ex);
             }
         }
-        else {
-            attemptReconnect();
-        }
 
         return result;
     }
 
     /**
-     * Get connection status
+     * Check connection status and re-establish if dead or stale.
+     *
+     * If the very first immediate attempt fails, further attempts 
+     * will be made in progressively larger intervals up to MAX_WAIT 
+     * intervals. 
+     *
+     * This allows for MySQL to time out idle connections as needed by 
+     * server operator, without affecting McMMO, while still providing 
+     * protection against a database outage taking down Bukkit's tick  
+     * processing loop due to attemping a database connection each
+     * time McMMO needs the database.
      *
      * @return the boolean value for whether or not we are connected
      */
-    public static boolean isConnected() {
-        if (connection == null) {
-            return false;
-        }
+    public static boolean checkConnected() {
+    	boolean isClosed = true;
+    	boolean isValid = false;
+    	boolean exists = (connection != null);
 
-        try {
-            return connection.isValid(3);
-        }
-        catch (SQLException e) {
-            return false;
-        }
-    }
+    	// Initialized as needed later
+    	long timestamp=0;
+    	
+    	// If we're waiting for server to recover then leave early
+    	if (nextReconnectTimestamp > 0 && nextReconnectTimestamp > System.nanoTime()) {
+    		return false;
+    	}
+    	
+    	if (exists) {
+            try {
+            	isClosed = connection.isClosed();
+    		} catch (SQLException e) {
+    			isClosed = true;
+    			e.printStackTrace();
+    			printErrors(e);
+    		}
+            
+            if (!isClosed) {
+                try {
+                	isValid = connection.isValid(VALID_TIMEOUT);
+        		} catch (SQLException e) {
+        			// Don't print stack trace because it's valid to lose idle connections 
+        			// to the server and have to restart them.
+        			isValid = false;
+        		}
+            }
+    	}
 
-    /**
-     * Schedules a Sync Delayed Task with the Bukkit Scheduler to attempt reconnection after a minute has elapsed
-     * This will check for a connection being present or not to prevent unneeded reconnection attempts
-     */
-    public static void attemptReconnect() {
-        final int RECONNECT_WAIT_TICKS = 60000;
-        final int RECONNECT_DELAY_TICKS = 1200;
+    	// Leave if all ok
+    	if (exists && !isClosed && isValid) {
+    		// Housekeeping
+    		nextReconnectTimestamp = 0;
+			reconnectAttempt = 0;
+    		return true;
+    	}
+ 
+    	// Cleanup after ourselves for GC and MySQL's sake
+    	if (exists && !isClosed) {
+    		try { 
+    			connection.close();
+    		} catch (SQLException ex) {
+    			// This is a housekeeping exercise, ignore errors
+    		}
+    	}
 
-        if (reconnectTimestamp + RECONNECT_WAIT_TICKS < System.currentTimeMillis()) {
-            System.out.println("[mcMMO] Connection to MySQL was lost! Attempting to reconnect in 60 seconds..."); //Only reconnect if another attempt hasn't been made recently
-            reconnectTimestamp = System.currentTimeMillis();
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(plugin), RECONNECT_DELAY_TICKS);
-        }
+    	// Try to connect again
+    	connect();
+
+    	// Leave if connection is good
+    	try {
+			if (connection != null && !connection.isClosed()) {
+				// Schedule a database save if we really had an outage
+				if (reconnectAttempt > 1) {
+		            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(plugin), 5);
+				}
+				nextReconnectTimestamp = 0;
+				reconnectAttempt = 0;
+				return true;
+			}
+		} catch (SQLException e) {
+			// Failed to check isClosed, so presume connection is bad and attempt later
+			e.printStackTrace();
+			printErrors(e);
+		}
+
+    	reconnectAttempt++;
+    		
+   		nextReconnectTimestamp = (long)(System.nanoTime() + Math.min(MAX_WAIT, (reconnectAttempt*SCALING_FACTOR*MIN_WAIT)));
+   		
+   		return false;
     }
 
     /**
@@ -282,7 +346,7 @@ public class Database {
         ResultSet resultSet;
         HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
 
-        if (isConnected()) {
+        if (checkConnected()) {
             try {
                 PreparedStatement statement = connection.prepareStatement(sql);
                 resultSet = statement.executeQuery();
@@ -302,9 +366,6 @@ public class Database {
             catch (SQLException ex) {
                 printErrors(ex);
             }
-        }
-        else {
-            attemptReconnect();
         }
 
         return rows;
