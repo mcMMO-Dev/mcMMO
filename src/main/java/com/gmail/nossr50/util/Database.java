@@ -225,7 +225,7 @@ public class Database {
                     try {
 						statement.close();
 					} catch (SQLException e) {
-		                printErrors(ex);
+		                printErrors(e);
 		                return false;
 					}
             	}

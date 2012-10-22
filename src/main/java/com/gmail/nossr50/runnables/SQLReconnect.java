@@ -15,7 +15,7 @@ public class SQLReconnect implements Runnable {
 
     @Override
     public void run() {
-        if (Database.checkConnection()) {
+        if (Database.checkConnected()) {
             Users.saveAll(); //Save all profiles
             Users.clearAll(); //Clear the profiles
 
