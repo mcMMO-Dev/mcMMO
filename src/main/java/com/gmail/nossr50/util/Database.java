@@ -138,7 +138,7 @@ public class Database {
      */
     public void checkDatabaseStructure(DatabaseUpdate update) {
         String sql = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
 
         switch (update) {
@@ -154,8 +154,9 @@ public class Database {
             break;
         }
 
+        PreparedStatement statement = null;
         try {
-            PreparedStatement statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -167,8 +168,6 @@ public class Database {
 
                 rows.put(resultSet.getRow(), column);
             }
-
-            statement.close();
         }
         catch (SQLException ex) {
             switch (update) {
@@ -186,6 +185,21 @@ public class Database {
             default:
                 break;
             }
+        } finally {
+        	if (resultSet != null) {
+        		try {
+					resultSet.close();
+				} catch (SQLException e) {
+					// Ignore the error, we're leaving
+				}
+        	}
+        	if (statement != null) {
+                try {
+					statement.close();
+				} catch (SQLException e) {
+					// Ignore the error, we're leaving
+				}
+        	}
         }
     }
 
@@ -197,15 +211,24 @@ public class Database {
      */
     public boolean write(String sql) {
         if (checkConnected()) {
+        	PreparedStatement statement = null;
             try {
-                PreparedStatement statement = connection.prepareStatement(sql);
+                statement = connection.prepareStatement(sql);
                 statement.executeUpdate();
-                statement.close();
                 return true;
             }
             catch (SQLException ex) {
                 printErrors(ex);
                 return false;
+            } finally {
+            	if (statement != null) {
+                    try {
+						statement.close();
+					} catch (SQLException e) {
+		                printErrors(ex);
+		                return false;
+					}
+            	}
             }
         }
 
