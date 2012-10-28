@@ -123,6 +123,8 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
         int id = block.getTypeId();
         Material type = block.getType();
+        
+        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         /* Code to prevent issues with placed falling Sand/Gravel not being tracked */
         if (type.equals(Material.SAND) || type.equals(Material.GRAVEL)) {
@@ -162,6 +164,9 @@ public class BlockListener implements Listener {
         }
 
         Player player = event.getPlayer();
+        
+        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        
         PlayerProfile profile = Users.getProfile(player);
 
         if (profile == null) {
@@ -272,8 +277,11 @@ public class BlockListener implements Listener {
         final int LEAF_BLOWER_LEVEL = 100;
 
         Player player = event.getPlayer();
+        
+        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        
         PlayerProfile profile = Users.getProfile(player);
-
+        
         if (profile == null) {
             return;
         }
