@@ -165,6 +165,8 @@ public class Config extends ConfigLoader {
     public int getHerbalismXPLilyPads() { return config.getInt("Experience.Herbalism.Lily_Pads", 100); }
     public int getHerbalismXPVines() { return config.getInt("Experience.Herbalism.Vines", 10); }
     public int getHerbalismXPCocoa() { return config.getInt("Experience.Herbalism.Cocoa",30); }
+    public int getHerbalismXPCarrot() { return config.getInt("Experience.Herbalism.Carrot",30); }
+    public int getHerbalismXPPotato() { return config.getInt("Experience.Herbalism.Potato",30); }
 
     public boolean getHerbalismGreenThumbCobbleToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true); }
     public boolean getHerbalismGreenThumbSmoothbrickToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true); }
@@ -183,6 +185,8 @@ public class Config extends ConfigLoader {
     public boolean getWaterLiliesDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Water_Lilies", true); }
     public boolean getYellowFlowersDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Yellow_Flowers", true); }
     public boolean getCocoaDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Cocoa", true); }
+    public boolean getCarrotDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Carrot", true); }
+    public boolean getPotatoDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Potato", true); }
 
     public boolean herbalismDoubleDropsDisabled() {
         ConfigurationSection section = config.getConfigurationSection("Double_Drops.Herbalism");
