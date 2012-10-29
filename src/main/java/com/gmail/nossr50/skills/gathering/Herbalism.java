@@ -62,8 +62,6 @@ public class Herbalism {
             }
             else if (Config.getInstance().getHerbalismGreenThumbCobbleToMossy() && type == Material.COBBLESTONE) {
                 block.setType(Material.MOSSY_COBBLESTONE);
-                // Don't award double drops to mossified cobblestone
-                mcMMO.placeStore.setTrue(block);
             }
         }
     }
@@ -202,14 +200,14 @@ public class Herbalism {
             break;
 
         case CARROT:
-            if (((byte) data) == 0x3) {
+            if (data == CropState.RIPE.getData()) {
                 mat = Material.CARROT;
                 xp = Config.getInstance().getHerbalismXPCarrot();
             }
             break;
 
         case POTATO:
-            if (((byte) data) == 0x3) {
+            if (data == CropState.RIPE.getData()) {
                 mat = Material.POTATO;
                 xp = Config.getInstance().getHerbalismXPPotato();
             }
