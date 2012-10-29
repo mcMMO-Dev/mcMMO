@@ -284,6 +284,35 @@ public class EntityListener implements Listener {
                     rankChange = 200;
                     break;
 
+                case CARROT_ITEM:
+                    /* CARROT RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
+                    rankChange = 200;
+                    break;
+
+                case POTATO_ITEM:
+                    /* POTATO RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                    rankChange = 400;
+                    break;
+
+                case BAKED_POTATO:
+                    /* BAKED POTATO RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
+                    rankChange = 200;
+                    break;
+
+                case POISONOUS_POTATO:
+                    /* POISONOUS POTATO RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                    rankChange = 400;
+                    break;
+
+                case GOLDEN_CARROT:
+                    /* GOLDEN CARROT RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
+                    rankChange = 200;
+                    break;
+
+                case PUMPKIN_PIE:
+                    /* PUMPKIN PIE RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+                    rankChange = 200;
+                    break;
                 default:
                     return;
                 }
