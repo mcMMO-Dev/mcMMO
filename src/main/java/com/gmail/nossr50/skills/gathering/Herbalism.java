@@ -325,6 +325,18 @@ public class Herbalism {
                     }
                     break;
 
+                case CARROT:
+                    if (configInstance.getCarrotDoubleDropsEnabled()) {
+                        Misc.dropItem(location, is);
+                    }
+                    break;
+
+                case POTATO:
+                    if (configInstance.getPotatoDoubleDropsEnabled()) {
+                        Misc.dropItem(location, is);
+                    }
+                    break;
+
                 default:
                     if (customPlant) {
                         CustomBlock customBlock = ModChecks.getCustomBlock(block);
