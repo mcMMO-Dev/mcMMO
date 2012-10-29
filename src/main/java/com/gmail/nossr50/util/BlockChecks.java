@@ -54,6 +54,8 @@ public class BlockChecks {
         case YELLOW_FLOWER:
         case COCOA:
         case EMERALD_ORE:
+        case CARROT:
+        case POTATO:
             return true;
 
         default:
@@ -98,6 +100,8 @@ public class BlockChecks {
         case WALL_SIGN:
         case WOODEN_DOOR:
         case WORKBENCH:
+        case BEACON:
+        case ANVIL:
             return false;
 
         default:
@@ -179,6 +183,8 @@ public class BlockChecks {
         case WATER_LILY:
         case YELLOW_FLOWER:
         case COCOA:
+        case CARROT:
+        case POTATO:
             return true;
 
         case CROPS:
