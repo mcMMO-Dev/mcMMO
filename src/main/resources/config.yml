@@ -198,6 +198,8 @@ Double_Drops:
         Wheat: true
         Yellow_Flowers: true
         Cocoa: true
+        Carrot: true
+        Potato: true
     Mining:
         Coal: true
         Diamond: true
@@ -267,6 +269,8 @@ Experience:
         Lily_Pads: 100
         Vines: 10
         Cocoa: 30
+        Carrot: 50
+        Potato: 50
     Mining:
         Sandstone: 30
         Glowstone: 30

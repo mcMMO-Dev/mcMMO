@@ -201,6 +201,20 @@ public class Herbalism {
             }
             break;
 
+        case CARROT:
+            if (((byte) data) == 0x3) {
+                mat = Material.CARROT;
+                xp = Config.getInstance().getHerbalismXPCarrot();
+            }
+            break;
+
+        case POTATO:
+            if (((byte) data) == 0x3) {
+                mat = Material.POTATO;
+                xp = Config.getInstance().getHerbalismXPPotato();
+            }
+            break;
+
         default:
             if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
                 customPlant = true;
@@ -223,6 +237,13 @@ public class Herbalism {
                 if (mat == Material.COCOA) {
                     is = new ItemStack(Material.INK_SACK, 1, (short) 3);
                 }
+                else if (mat == Material.COCOA) {
+                    is = new ItemStack(Material.CARROT_ITEM, 1, (short) 0);
+                }
+                else if (mat == Material.COCOA) {
+                    is = new ItemStack(Material.POTATO_ITEM, 1, (short) 0);
+                }
+
                 else {
                     is = new ItemStack(mat);
                 }
@@ -302,6 +323,18 @@ public class Herbalism {
                     
                 case COCOA:
                     if (configInstance.getCocoaDoubleDropsEnabled()) {
+                        Misc.dropItem(location, is);
+                    }
+                    break;
+
+                case CARROT:
+                    if (configInstance.getCarrotDoubleDropsEnabled()) {
+                        Misc.dropItem(location, is);
+                    }
+                    break;
+
+                case POTATO:
+                    if (configInstance.getPotatoDoubleDropsEnabled()) {
                         Misc.dropItem(location, is);
                     }
                     break;
