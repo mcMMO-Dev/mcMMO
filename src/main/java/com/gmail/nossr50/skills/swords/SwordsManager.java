@@ -28,6 +28,9 @@ public class SwordsManager {
      * @param defender The defending entity
      */
     public void bleedCheck(LivingEntity defender) {
+        if(player == null)
+            return;
+
         if (!permissionsInstance.swordsBleed(player)) {
             return;
         }

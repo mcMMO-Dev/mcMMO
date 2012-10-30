@@ -33,6 +33,9 @@ public class ArcheryManager {
      * @param livingEntity Entity damaged by the arrow
      */
     public void trackArrows(LivingEntity livingEntity) {
+        if(player == null)
+            return;
+
         if (!permissionsInstance.trackArrows(player)) {
             return;
         }
@@ -57,6 +60,9 @@ public class ArcheryManager {
      * @param event The event to modify
      */
     public void dazeCheck(Player defender, EntityDamageEvent event) {
+        if(player == null)
+            return;
+
         if (!permissionsInstance.daze(player)) {
             return;
         }
@@ -81,6 +87,9 @@ public class ArcheryManager {
      * @param event The event to modify.
      */
     public void bonusDamage(EntityDamageEvent event) {
+        if(player == null)
+            return;
+
         if (!permissionsInstance.archeryBonus(player)) {
             return;
         }

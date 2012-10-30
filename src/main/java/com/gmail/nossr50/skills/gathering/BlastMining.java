@@ -82,6 +82,9 @@ public class BlastMining {
      * @param event Event whose explosion is being processed
      */
     public static void dropProcessing(Player player, EntityExplodeEvent event) {
+        if(player == null)
+            return;
+
         final int RANK_1_LEVEL = 125;
         final int RANK_2_LEVEL = 250;
         final int RANK_3_LEVEL = 375;
@@ -172,6 +175,9 @@ public class BlastMining {
      * @param event Event whose explosion radius is being changed
      */
     public static void biggerBombs(Player player, ExplosionPrimeEvent event) {
+        if(player == null)
+            return;
+
         final int RANK_1_LEVEL = 250;
         final int RANK_2_LEVEL = 500;
         final int RANK_3_LEVEL = 750;
@@ -210,6 +216,9 @@ public class BlastMining {
      * @param event Event whose explosion damage is being reduced
      */
     public static void demolitionsExpertise(Player player, EntityDamageEvent event) {
+        if(player == null)
+            return;
+
         final int RANK_1_LEVEL = 500;
         final int RANK_2_LEVEL = 750;
         final int RANK_3_LEVEL = 1000;
@@ -242,6 +251,9 @@ public class BlastMining {
      * @param plugin mcMMO plugin instance
      */
     public static void detonate(PlayerInteractEvent event, Player player, mcMMO plugin) {
+        if(player == null)
+            return;
+
         PlayerProfile profile = Users.getProfile(player);
 
         if (profile.getSkillLevel(SkillType.MINING) < 125)

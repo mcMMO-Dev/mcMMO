@@ -72,6 +72,9 @@ public class Fishing {
      * @param event The event to modify
      */
     private static void getFishingResults(Player player, PlayerFishEvent event) {
+        if(player == null)
+            return;
+
         PlayerProfile profile = Users.getProfile(player);
         List<FishingTreasure> rewards = new ArrayList<FishingTreasure>();
         Item theCatch = (Item) event.getCaught();
@@ -135,6 +138,9 @@ public class Fishing {
      */
     public static void processResults(PlayerFishEvent event) {
         Player player = event.getPlayer();
+        if(player == null)
+            return;
+
         PlayerProfile profile = Users.getProfile(player);
 
         getFishingResults(player, event);

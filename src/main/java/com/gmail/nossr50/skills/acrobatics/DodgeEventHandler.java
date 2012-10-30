@@ -39,11 +39,17 @@ public class DodgeEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void sendAbilityMessage() {
+        if(player == null)
+            return;
+
         player.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
     }
 
     @Override
     protected void processXPGain(int xp) {
+        if(player == null)
+            return;
+
         PlayerProfile profile = manager.getProfile();
 
         if (System.currentTimeMillis() >= profile.getRespawnATS() + 5) {
