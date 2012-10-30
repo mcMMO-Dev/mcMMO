@@ -17,6 +17,8 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
+import org.bukkit.craftbukkit.entity.CraftSkeleton;
+
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -242,7 +244,12 @@ public class Fishing {
             break;
 
         case CREEPER:
-            Misc.dropItem(location, new ItemStack(Material.SULPHUR));
+            if (DROP_NUMBER > 99) {
+                Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 4));
+            }
+            else {
+                Misc.dropItem(location, new ItemStack(Material.SULPHUR));
+            }
             break;
 
         case ENDERMAN:
@@ -255,6 +262,18 @@ public class Fishing {
             }
             else {
                 Misc.dropItem(location, new ItemStack(Material.GHAST_TEAR));
+            }
+            break;
+
+        case IRON_GOLEM:
+            if (DROP_NUMBER > 99) {
+                Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
+            }
+            else if (DROP_NUMBER > 90) {
+                Misc.dropItem(location, new ItemStack(Material.IRON_INGOT));
+            }
+            else {
+                Misc.dropItem(location, new ItemStack(Material.RED_ROSE));
             }
             break;
 
@@ -309,11 +328,27 @@ public class Fishing {
             break;
 
         case SKELETON:
-            if (DROP_NUMBER > 50) {
-                Misc.dropItem(location, new ItemStack(Material.BONE));
+            if(((CraftSkeleton) le).getHandle().getSkeletonType() == 1) {
+                if (DROP_NUMBER > 97) {
+                    Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 1));
+                }	
+                else if (DROP_NUMBER > 50) {
+                    Misc.dropItem(location, new ItemStack(Material.BONE));
+                }
+                else {
+                    Misc.dropItems(location, new ItemStack(Material.COAL), 3);
+                }
             }
             else {
-                Misc.dropItems(location, new ItemStack(Material.ARROW), 3);
+                if (DROP_NUMBER > 99) {
+                    Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM));
+                }	
+                else if (DROP_NUMBER > 50) {
+                    Misc.dropItem(location, new ItemStack(Material.BONE));
+                }
+                else {
+                    Misc.dropItems(location, new ItemStack(Material.ARROW), 3);
+                }
             }
             break;
 
@@ -343,8 +378,54 @@ public class Fishing {
             Misc.dropItem(location, new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x0));
             break;
 
+        case WITCH:
+            final int DROP_NUMBER_2 = random.nextInt(randomChance);
+            if (DROP_NUMBER > 97) {
+                if(DROP_NUMBER_2 > 66) {
+                    Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8197));
+                }
+                else if(DROP_NUMBER_2 > 33) {
+                    Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8195));
+                }
+                else {
+                    Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8194));
+                }
+            }
+            else {
+                if(DROP_NUMBER_2 > 88) {
+                    Misc.dropItem(location, new ItemStack(Material.GLASS_BOTTLE));
+                }
+                else if(DROP_NUMBER_2 > 75) {
+                    Misc.dropItem(location, new ItemStack(Material.GLOWSTONE_DUST));
+                }
+                else if(DROP_NUMBER_2 > 63) {
+                    Misc.dropItem(location, new ItemStack(Material.SULPHUR));
+                }
+                else if(DROP_NUMBER_2 > 50) {
+                    Misc.dropItem(location, new ItemStack(Material.REDSTONE));
+                }
+                else if(DROP_NUMBER_2 > 38) {
+                    Misc.dropItem(location, new ItemStack(Material.SPIDER_EYE));
+                }
+                else if(DROP_NUMBER_2 > 25) {
+                    Misc.dropItem(location, new ItemStack(Material.STICK));
+                }
+                else if(DROP_NUMBER_2 > 13) {
+                    Misc.dropItem(location, new ItemStack(Material.SUGAR));
+                }
+                else {
+                    Misc.dropItem(location, new ItemStack(Material.POTION));
+                }
+            }
+            break;
+
         case ZOMBIE:
-            Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));
+            if (DROP_NUMBER > 99) {
+                Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 2));
+            }
+            else {
+                Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));
+            }
             break;
 
         default:
