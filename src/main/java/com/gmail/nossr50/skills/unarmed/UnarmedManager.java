@@ -30,6 +30,9 @@ public class UnarmedManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.disarm(player)) {
             return;
         }
@@ -64,6 +67,9 @@ public class UnarmedManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.deflect(player)) {
             return;
         }
@@ -91,6 +97,9 @@ public class UnarmedManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.unarmedBonus(player)) {
             return;
         }
@@ -109,6 +118,9 @@ public class UnarmedManager {
      */
     private boolean hasIronGrip(Player defender) {
         if(defender == null)
+            return false;
+
+        if(permissionsInstance == null)
             return false;
 
         if (!permissionsInstance.ironGrip(defender)) {

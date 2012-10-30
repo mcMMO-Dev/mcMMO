@@ -36,6 +36,9 @@ public class ArcheryManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.trackArrows(player)) {
             return;
         }
@@ -63,6 +66,9 @@ public class ArcheryManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.daze(player)) {
             return;
         }
@@ -88,6 +94,9 @@ public class ArcheryManager {
      */
     public void bonusDamage(EntityDamageEvent event) {
         if(player == null)
+            return;
+
+        if(permissionsInstance == null)
             return;
 
         if (!permissionsInstance.archeryBonus(player)) {

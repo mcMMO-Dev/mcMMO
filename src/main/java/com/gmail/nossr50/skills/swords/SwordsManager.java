@@ -31,6 +31,9 @@ public class SwordsManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.swordsBleed(player)) {
             return;
         }
@@ -52,6 +55,12 @@ public class SwordsManager {
     }
 
     public void counterAttackChecks(LivingEntity attacker, int damage) {
+        if(player == null)
+            return;
+
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.counterAttack(player)) {
             return;
         }
@@ -75,6 +84,12 @@ public class SwordsManager {
     }
 
     public void serratedStrikes(LivingEntity target, int damage) {
+        if(player == null)
+            return;
+
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.serratedStrikes(player)) {
             return;
         }

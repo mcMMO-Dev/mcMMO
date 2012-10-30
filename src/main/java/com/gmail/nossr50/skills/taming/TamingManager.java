@@ -39,6 +39,9 @@ public class TamingManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.fastFoodService(player)) {
             return;
         }
@@ -67,6 +70,9 @@ public class TamingManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.sharpenedClaws(player)) {
             return;
         }
@@ -85,6 +91,9 @@ public class TamingManager {
      */
     public void gore(EntityDamageEvent event) {
         if(player == null)
+            return;
+
+        if(permissionsInstance == null)
             return;
 
         if (!permissionsInstance.gore(player)) {
@@ -162,6 +171,9 @@ public class TamingManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.beastLore(player)) {
             return;
         }
@@ -179,6 +191,9 @@ public class TamingManager {
      */
     private void callOfTheWild(EntityType type, int summonAmount) {
         if(player == null)
+            return;
+
+        if(permissionsInstance == null)
             return;
 
         if (!permissionsInstance.callOfTheWild(player)) {
@@ -216,6 +231,9 @@ public class TamingManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.environmentallyAware(player)) {
             return;
         }
@@ -251,6 +269,9 @@ public class TamingManager {
         if(player == null)
             return;
 
+        if(permissionsInstance == null)
+            return;
+
         if (!permissionsInstance.thickFur(player)) {
             return;
         }
@@ -269,6 +290,9 @@ public class TamingManager {
      */
     private void shockProof(EntityDamageEvent event) {
         if(player == null)
+            return;
+
+        if(permissionsInstance == null)
             return;
 
         if (!permissionsInstance.shockProof(player)) {
