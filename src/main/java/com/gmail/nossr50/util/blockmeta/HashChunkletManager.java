@@ -107,6 +107,8 @@ public class HashChunkletManager implements ChunkletManager {
     public void saveWorld(World world) {
         String worldName = world.getName();
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
+        if(!dataDir.exists())
+            dataDir.mkdirs();
 
         for(String key : store.keySet()) {
             String[] info = key.split(",");
@@ -280,6 +282,8 @@ public class HashChunkletManager implements ChunkletManager {
         ObjectOutputStream objOut = null;
 
         try {
+            if(!location.exists())
+                location.createNewFile();
             fileOut = new FileOutputStream(location);
             objOut = new ObjectOutputStream(fileOut);
             objOut.writeObject(cStore);
