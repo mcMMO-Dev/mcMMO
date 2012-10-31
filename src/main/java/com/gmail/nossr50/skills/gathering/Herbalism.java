@@ -37,9 +37,6 @@ public class Herbalism {
      * @param block The block to be changed by Green Terra
      */
     public static void greenTerra(Player player, Block block) {
-        if(player == null)
-            return;
-
         PlayerInventory inventory = player.getInventory();
         boolean hasSeeds = inventory.contains(Material.SEEDS);
 
@@ -54,9 +51,6 @@ public class Herbalism {
     }
 
     public static void greenTerraConvert(Player player, Block block) {
-        if(player == null)
-            return;
-
         Material type = block.getType();
 
         if (Misc.blockBreakSimulate(block, player, false)) {
@@ -83,9 +77,6 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        if(player == null)
-            return;
-
         final PlayerProfile profile = Users.getProfile(player);
         final int MAX_BONUS_LEVEL = 1000;
 
@@ -381,9 +372,6 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        if(player == null)
-            return;
-
         final int MAX_BONUS_LEVEL = 1500;
 
         PlayerProfile profile = Users.getProfile(player);
@@ -419,9 +407,6 @@ public class Herbalism {
      * @param block The block being used in the ability
      */
     public static void greenThumbBlocks(ItemStack is, Player player, Block block) {
-        if(player == null)
-            return;
-
         final int MAX_BONUS_LEVEL = 1500;
 
         PlayerProfile profile = Users.getProfile(player);
