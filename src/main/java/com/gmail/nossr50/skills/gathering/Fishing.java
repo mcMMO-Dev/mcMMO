@@ -153,7 +153,7 @@ public class Fishing {
 
             player.sendMessage(LocaleLoader.getString("Fishing.ItemFound"));
 
-            if (ItemChecks.isArmor(fishingResults) || ItemChecks.isTool(fishingResults)) {
+            if (ItemChecks.isEnchantable(fishingResults)) {
                 int randomChance = 100;
 
                 if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
@@ -205,7 +205,7 @@ public class Fishing {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        final int DROP_NUMBER = random.nextInt(randomChance);
+        final int DROP_NUMBER = random.nextInt(randomChance) + 1;
 
         LivingEntity le = (LivingEntity) event.getCaught();
         EntityType type = le.getType();
@@ -385,7 +385,7 @@ public class Fishing {
             break;
 
         case WITCH:
-            final int DROP_NUMBER_2 = random.nextInt(randomChance);
+            final int DROP_NUMBER_2 = random.nextInt(randomChance) + 1;
             if (DROP_NUMBER > 97) {
                 if(DROP_NUMBER_2 > 66) {
                     Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8197));

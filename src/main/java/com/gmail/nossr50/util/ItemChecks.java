@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.api.SpoutToolsAPI;
@@ -462,5 +463,15 @@ public class ItemChecks {
         default:
             return false;
         }
+    }
+
+    /**
+     * Checks to see if an item is enchantable.
+     *
+     * @param is Item to check
+     * @return true if the item is enchantable, false otherwise
+     */
+    public static boolean isEnchantable(ItemStack is) {
+        return isArmor(is) || isSword(is) || isAxe(is) || isShovel(is) || isPickaxe(is) || (is.getType() == Material.BOW);
     }
 }
