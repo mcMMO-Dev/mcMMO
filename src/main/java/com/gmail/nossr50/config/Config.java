@@ -164,9 +164,9 @@ public class Config extends ConfigLoader {
     public int getHerbalismXPNetherWart() { return config.getInt("Experience.Herbalism.Nether_Wart", 50); }
     public int getHerbalismXPLilyPads() { return config.getInt("Experience.Herbalism.Lily_Pads", 100); }
     public int getHerbalismXPVines() { return config.getInt("Experience.Herbalism.Vines", 10); }
-    public int getHerbalismXPCocoa() { return config.getInt("Experience.Herbalism.Cocoa",30); }
-    public int getHerbalismXPCarrot() { return config.getInt("Experience.Herbalism.Carrot",30); }
-    public int getHerbalismXPPotato() { return config.getInt("Experience.Herbalism.Potato",30); }
+    public int getHerbalismXPCocoa() { return config.getInt("Experience.Herbalism.Cocoa", 30); }
+    public int getHerbalismXPCarrot() { return config.getInt("Experience.Herbalism.Carrot", 50); }
+    public int getHerbalismXPPotato() { return config.getInt("Experience.Herbalism.Potato", 50); }
 
     public boolean getHerbalismGreenThumbCobbleToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true); }
     public boolean getHerbalismGreenThumbSmoothbrickToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true); }
