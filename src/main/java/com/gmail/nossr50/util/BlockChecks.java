@@ -152,6 +152,7 @@ public class BlockChecks {
         switch (block.getType()) {
         case COBBLESTONE:
         case DIRT:
+        case COBBLE_WALL
             return true;
         case SMOOTH_BRICK:
             if (block.getData() == 0) {
