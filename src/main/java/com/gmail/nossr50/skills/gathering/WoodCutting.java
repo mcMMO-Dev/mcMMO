@@ -261,6 +261,39 @@ public class WoodCutting {
             }
         }
 
+        byte data = currentBlock.getData();
+
+        if((data & 0x4) == 0x4)
+            data ^= 0x4;
+
+        if((data & 0x8) == 0x8)
+            data ^= 0x8;
+
+        if(TreeSpecies.getByData(data) == TreeSpecies.JUNGLE) {
+            Block corner1 = currentBlock.getRelative(1, 0, 1);
+            Block corner2 = currentBlock.getRelative(1, 0, -1);
+            Block corner3 = currentBlock.getRelative(-1, 0, 1);
+            Block corner4 = currentBlock.getRelative(-1, 0, -1);
+
+            if (!mcMMO.placeStore.isTrue(currentBlock)) {
+                if (!isTooAggressive(currentBlock, corner1) && BlockChecks.treeFellerCompatible(corner1) && !toBeFelled.contains(corner1)) {
+                    processTreeFelling(corner1, toBeFelled);
+                }
+
+                if (!isTooAggressive(currentBlock, corner2) && BlockChecks.treeFellerCompatible(corner2) && !toBeFelled.contains(corner2)) {
+                    processTreeFelling(corner2, toBeFelled);
+                }
+
+                if (!isTooAggressive(currentBlock, corner3) && BlockChecks.treeFellerCompatible(corner3) && !toBeFelled.contains(corner3)) {
+                    processTreeFelling(corner3, toBeFelled);
+                }
+
+                if (!isTooAggressive(currentBlock, corner4) && BlockChecks.treeFellerCompatible(corner4) && !toBeFelled.contains(corner4)) {
+                    processTreeFelling(corner4, toBeFelled);
+                }
+            }
+        }
+
         if (BlockChecks.treeFellerCompatible(yPositive)) {
             if(!mcMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
                 processTreeFelling(yPositive, toBeFelled);
