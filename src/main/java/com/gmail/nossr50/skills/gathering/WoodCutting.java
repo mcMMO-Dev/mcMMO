@@ -298,6 +298,13 @@ public class WoodCutting {
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING);
         byte type = block.getData();
+
+        if((type & 0x4) == 0x4)
+            type ^= 0x4;
+
+        if((type & 0x8) == 0x8)
+            type ^= 0x8;
+
         Material mat = Material.getMaterial(block.getTypeId());
 
         int randomChance = 1000;
