@@ -24,6 +24,11 @@ public class McabilityCommand implements CommandExecutor {
 
         PlayerProfile profile = Users.getProfile((Player) sender);
 
+        if (profile == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+            return true;
+        }
+
         if (profile.getAbilityUse()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
         }

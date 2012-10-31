@@ -46,6 +46,11 @@ public abstract class SkillCommand implements CommandExecutor {
         player = (Player) sender;
         profile = Users.getProfile(player);
 
+        if (profile == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+            return true;
+        }
+
         skillValue = profile.getSkillLevel(skill);
         dataCalculations();
         permissionsCheck();
