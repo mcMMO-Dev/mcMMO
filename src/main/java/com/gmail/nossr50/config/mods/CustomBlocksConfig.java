@@ -48,6 +48,10 @@ public class CustomBlocksConfig extends ConfigLoader {
 
     private void loadBlocks(String skillType, List<ItemStack> blockList) {
         ConfigurationSection skillSection = config.getConfigurationSection(skillType);
+
+        if(skillSection == null)
+            return;
+
         Set<String> skillConfigSet = skillSection.getKeys(false);
         Iterator<String> iterator = skillConfigSet.iterator();
 
