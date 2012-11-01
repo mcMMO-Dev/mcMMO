@@ -166,9 +166,8 @@ public class Fishing {
                             Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();
 
                             for (Enchantment oldEnchant : resultEnchantments.keySet()) {
-                                if (oldEnchant.conflictsWith(newEnchant)) {
-                                    return;
-                                }
+                                if (oldEnchant.conflictsWith(newEnchant))
+                                    continue;
                             }
 
                             /* Actual chance to have an enchantment is related to your fishing skill */
@@ -179,6 +178,9 @@ public class Fishing {
                                 if (randomEnchantLevel < newEnchant.getStartLevel()) {
                                     randomEnchantLevel = newEnchant.getStartLevel();
                                 }
+
+                                if(randomEnchantLevel >= 1000)
+                                    continue;
 
                                 fishingResults.addEnchantment(newEnchant, randomEnchantLevel);
                             }
