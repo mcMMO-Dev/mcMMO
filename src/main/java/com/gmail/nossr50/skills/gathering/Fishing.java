@@ -72,6 +72,9 @@ public class Fishing {
      * @param event The event to modify
      */
     private static void getFishingResults(Player player, PlayerFishEvent event) {
+        if(player == null)
+            return;
+
         PlayerProfile profile = Users.getProfile(player);
         List<FishingTreasure> rewards = new ArrayList<FishingTreasure>();
         Item theCatch = (Item) event.getCaught();
@@ -135,6 +138,9 @@ public class Fishing {
      */
     public static void processResults(PlayerFishEvent event) {
         Player player = event.getPlayer();
+        if(player == null)
+            return;
+
         PlayerProfile profile = Users.getProfile(player);
 
         getFishingResults(player, event);
@@ -147,11 +153,11 @@ public class Fishing {
 
             player.sendMessage(LocaleLoader.getString("Fishing.ItemFound"));
 
-            if (ItemChecks.isArmor(fishingResults) || ItemChecks.isTool(fishingResults)) {
+            if (ItemChecks.isEnchantable(fishingResults)) {
                 int randomChance = 100;
 
                 if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
-                    randomChance = (int) (randomChance * 0.75);
+                    randomChance = (int) (randomChance * 1.25);
                 }
 
                 if (random.nextInt(randomChance) <= ENCHANTMENT_CHANCE && Permissions.getInstance().fishingMagic(player)) {
@@ -160,9 +166,8 @@ public class Fishing {
                             Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();
 
                             for (Enchantment oldEnchant : resultEnchantments.keySet()) {
-                                if (oldEnchant.conflictsWith(newEnchant)) {
-                                    return;
-                                }
+                                if (oldEnchant.conflictsWith(newEnchant))
+                                    continue;
                             }
 
                             /* Actual chance to have an enchantment is related to your fishing skill */
@@ -173,6 +178,9 @@ public class Fishing {
                                 if (randomEnchantLevel < newEnchant.getStartLevel()) {
                                     randomEnchantLevel = newEnchant.getStartLevel();
                                 }
+
+                                if(randomEnchantLevel >= 1000)
+                                    continue;
 
                                 fishingResults.addEnchantment(newEnchant, randomEnchantLevel);
                             }
@@ -199,7 +207,7 @@ public class Fishing {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        final int DROP_NUMBER = random.nextInt(randomChance);
+        final int DROP_NUMBER = random.nextInt(randomChance) + 1;
 
         LivingEntity le = (LivingEntity) event.getCaught();
         EntityType type = le.getType();
@@ -379,7 +387,7 @@ public class Fishing {
             break;
 
         case WITCH:
-            final int DROP_NUMBER_2 = random.nextInt(randomChance);
+            final int DROP_NUMBER_2 = random.nextInt(randomChance) + 1;
             if (DROP_NUMBER > 97) {
                 if(DROP_NUMBER_2 > 66) {
                     Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8197));

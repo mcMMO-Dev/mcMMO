@@ -84,6 +84,11 @@ public class AddxpCommand implements CommandExecutor {
             String playerName = modifiedPlayer.getName();
             McMMOPlayer mcMMOPlayer = Users.getPlayer(modifiedPlayer);
             PlayerProfile profile = Users.getProfile(modifiedPlayer);
+	    
+            if (profile == null) {
+                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                return true;
+            }
 
             if (!profile.isLoaded()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));

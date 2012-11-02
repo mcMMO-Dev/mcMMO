@@ -72,6 +72,7 @@ public class PtpCommand implements CommandExecutor {
                 player.teleport(target);
                 player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", new Object[] { target.getName() }));
                 target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", new Object[] { player.getName() }));
+                profile.setRecentlyHurt(System.currentTimeMillis());
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] { target.getName() }));

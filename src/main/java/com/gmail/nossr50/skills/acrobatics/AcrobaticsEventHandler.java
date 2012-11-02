@@ -51,6 +51,9 @@ public abstract class AcrobaticsEventHandler {
      * @return true if the damage is fatal, false otherwise
      */
     protected boolean isFatal(int damage) {
+        if(player == null)
+            return true;
+
         if (player.getHealth() - damage < 1) {
             return true;
         }

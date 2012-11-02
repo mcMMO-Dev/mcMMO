@@ -29,10 +29,16 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void sendInsufficientAmountMessage() {
+        if(player == null)
+            return;
+
         player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.GRAY + Misc.prettyItemString(inHand.getTypeId()));
     }
 
     protected boolean nearbyEntityExists() {
+        if(player == null)
+            return false;
+
         boolean entityExists = false;
 
         for (Entity entity : player.getNearbyEntities(40, 40, 40)) {
@@ -46,6 +52,9 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void sendFailureMessage() {
+        if(player == null)
+            return;
+
         if (type == EntityType.OCELOT) {
             player.sendMessage(LocaleLoader.getString("Taming.Summon.Fail.Ocelot"));
         }
@@ -55,6 +64,9 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void spawnCreature() {
+        if(player == null)
+            return;
+
         LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
         entity.setMetadata("mcmmoSummoned", new FixedMetadataValue(mcMMO.p, true));
 
@@ -69,6 +81,9 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void processResourceCost() {
+        if(player == null)
+            return;
+
         int newAmount = inHand.getAmount() - summonAmount;
 
         if (newAmount == 0) {
@@ -80,6 +95,9 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void sendSuccessMessage() {
+        if(player == null)
+            return;
+
         player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete"));
     }
 }

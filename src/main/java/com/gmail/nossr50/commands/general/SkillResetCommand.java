@@ -45,6 +45,12 @@ public class SkillResetCommand implements CommandExecutor {
         
         //reset the values in the hash table and persist them
         PlayerProfile profile = Users.getProfile((Player)sender);
+
+        if (profile == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+            return true;
+        }
+
         profile.resetSkill(skillType);
         profile.save();
         

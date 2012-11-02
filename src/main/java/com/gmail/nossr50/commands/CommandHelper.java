@@ -51,6 +51,11 @@ public class CommandHelper {
         if (Skills.hasGatheringSkills(inspect)) {
             PlayerProfile profile = Users.getProfile(inspect);
 
+            if (profile == null) {
+                display.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                return;
+            }
+
             display.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
 
             if (Permissions.getInstance().excavation(inspect)) {
@@ -89,6 +94,11 @@ public class CommandHelper {
         if (Skills.hasCombatSkills(inspect)) {
             PlayerProfile profile = Users.getProfile(inspect);
 
+            if (profile == null) {
+                display.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                return;
+            }
+
             display.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
 
             if (Permissions.getInstance().axes(inspect)) {
@@ -126,6 +136,12 @@ public class CommandHelper {
     public static void printMiscSkills(Player inspect, CommandSender display) {
         if (Skills.hasMiscSkills(inspect)) {
             PlayerProfile profile = Users.getProfile(inspect);
+
+            if (profile == null) {
+                display.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                return;
+            }
+
             display.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
 
             if (Permissions.getInstance().acrobatics(inspect)) {

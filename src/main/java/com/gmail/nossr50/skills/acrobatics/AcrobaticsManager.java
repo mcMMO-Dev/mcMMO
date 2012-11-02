@@ -26,6 +26,9 @@ public class AcrobaticsManager {
      * @param event The event to check
      */
     public void rollCheck(EntityDamageEvent event) {
+        if(player == null)
+            return;
+
         if (!permissionInstance.roll(player)) {
             return;
         }
@@ -54,6 +57,9 @@ public class AcrobaticsManager {
      * @param event The event to check
      */
     public void dodgeCheck(EntityDamageEvent event) {
+        if(player == null)
+            return;
+
         if (!permissionInstance.dodge(player)) {
             return;
         }
