@@ -107,7 +107,7 @@ public class Fishing {
             int randomChance = 100;
 
             if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
-                randomChance = (int) (randomChance * 0.75);
+                randomChance = (int) (randomChance * 1.75);
             }
 
             if (random.nextDouble() * randomChance <= treasure.getDropChance()) {
