@@ -9,7 +9,7 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
     private static final long serialVersionUID = 8603603827094383873L;
 
     /** X, Z, Y */
-    private boolean[][][] store = new boolean[16][16][64];
+    public boolean[][][] store = new boolean[16][16][64];
 
     @Override
     public boolean isTrue(int x, int y, int z) {
