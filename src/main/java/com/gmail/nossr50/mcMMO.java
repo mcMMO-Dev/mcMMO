@@ -14,6 +14,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.World;
 
 import com.gmail.nossr50.commands.general.AddlevelsCommand;
 import com.gmail.nossr50.commands.general.AddxpCommand;
@@ -78,8 +79,9 @@ import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Metrics;
 import com.gmail.nossr50.util.Metrics.Graph;
 import com.gmail.nossr50.util.Users;
-import com.gmail.nossr50.util.blockmeta.ChunkletManager;
-import com.gmail.nossr50.util.blockmeta.ChunkletManagerFactory;
+import com.gmail.nossr50.util.blockmeta.ChunkManager;
+import com.gmail.nossr50.util.blockmeta.ChunkManagerFactory;
+
 
 public class mcMMO extends JavaPlugin {
 
@@ -95,7 +97,7 @@ public class mcMMO extends JavaPlugin {
     private static Database database;
     public static mcMMO p;
 
-    public static ChunkletManager placeStore;
+    public static ChunkManager placeStore;
     public static RepairManager repairManager;
 
     /* Jar Stuff */
@@ -223,7 +225,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         // Get our ChunkletManager
-        placeStore = ChunkletManagerFactory.getChunkletManager();
+        placeStore = ChunkManagerFactory.getChunkManager();
     }
 
     /**

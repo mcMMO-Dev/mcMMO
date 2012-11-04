@@ -5,3 +5,5 @@
 Options:
     # true to use Chunklets metadata store system, false to disable
     Chunklets: true
+    # Square root of the number of chunks to convert per tick.
+    ConversionRate: 1

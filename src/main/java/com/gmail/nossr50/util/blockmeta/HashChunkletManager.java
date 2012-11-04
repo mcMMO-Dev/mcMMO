@@ -19,7 +19,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.ChunkletUnloader;
 
 public class HashChunkletManager implements ChunkletManager {
-    private HashMap<String, ChunkletStore> store = new HashMap<String, ChunkletStore>();
+    public HashMap<String, ChunkletStore> store = new HashMap<String, ChunkletStore>();
 
     @Override
     public void loadChunklet(int cx, int cy, int cz, World world) {
