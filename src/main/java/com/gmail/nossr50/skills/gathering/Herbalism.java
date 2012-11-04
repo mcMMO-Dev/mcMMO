@@ -237,10 +237,10 @@ public class Herbalism {
                 if (mat == Material.COCOA) {
                     is = new ItemStack(Material.INK_SACK, 1, (short) 3);
                 }
-                else if (mat == Material.COCOA) {
+                else if (mat == Material.CARROT) {
                     is = new ItemStack(Material.CARROT_ITEM, 1, (short) 0);
                 }
-                else if (mat == Material.COCOA) {
+                else if (mat == Material.POTATO) {
                     is = new ItemStack(Material.POTATO_ITEM, 1, (short) 0);
                 }
 
