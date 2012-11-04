@@ -88,12 +88,22 @@ public class MmoeditCommand implements CommandExecutor {
             if (mcmmoPlayer != null) {
                 profile = mcmmoPlayer.getProfile();
 
+                if (profile == null) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                    return true;
+                }
+
                 profile.modifySkill(skill, newValue);
                 mcmmoPlayer.getPlayer().sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
                 sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + args[0] + "."); //TODO: Use locale
             }
             else {
                 profile = new PlayerProfile(args[0], false); //Temporary Profile
+
+                if (profile == null) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                    return true;
+                }
 
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));

@@ -56,6 +56,9 @@ public class RollEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void sendAbilityMessage() {
+        if(player == null)
+            return;
+
         if (isGraceful) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
         }
@@ -67,6 +70,9 @@ public class RollEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void processXPGain(int xpGain) {
+        if(player == null)
+            return;
+
         Skills.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xpGain);
     }
 
@@ -74,6 +80,9 @@ public class RollEventHandler extends AcrobaticsEventHandler {
      * Check if this is a graceful roll.
      */
     private void isGracefulRoll() {
+        if(player == null)
+            return;
+
         if (Permissions.getInstance().gracefulRoll(player)) {
             this.isGraceful = player.isSneaking();
         }

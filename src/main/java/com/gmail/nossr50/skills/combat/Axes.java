@@ -30,6 +30,9 @@ public class Axes {
      * @param event The event to modify
      */
     public static void axesBonus(Player attacker, EntityDamageByEntityEvent event) {
+        if(attacker == null)
+            return;
+
         final int MAX_BONUS = 4;
 
         /* Add 1 DMG for every 50 skill levels */
@@ -49,6 +52,9 @@ public class Axes {
      * @param event The event to modify
      */
     public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event) {
+        if(attacker == null)
+            return;
+
         Entity entity = event.getEntity();
 
         if (entity instanceof Tameable) {
@@ -104,6 +110,8 @@ public class Axes {
      */
     @SuppressWarnings("deprecation")
     public static void impact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
+        if(attacker == null)
+            return;
 
         /*
          * TODO: Finish this skill. The idea is you will greatly damage an opponents armor.
@@ -140,6 +148,9 @@ public class Axes {
      * @param event The event to modify
      */
     private static void applyGreaterImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
+        if(attacker == null)
+            return;
+
         final int GREATER_IMPACT_CHANCE = 25;
         final double GREATER_IMPACT_MULTIPLIER = 1.5;
 
@@ -167,6 +178,9 @@ public class Axes {
      * @return true if the player has armor, false otherwise
      */
     private static boolean hasArmor(Player player) {
+        if(player == null)
+            return false;
+
         PlayerInventory inventory = player.getInventory();
 
         if (inventory.getBoots() != null || inventory.getChestplate() != null || inventory.getHelmet() != null || inventory.getLeggings() != null) {

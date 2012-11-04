@@ -49,6 +49,10 @@ public class CustomArmorConfig extends ConfigLoader{
 
     private void loadArmor(String armorType, List<Integer> idList) {
         ConfigurationSection armorSection = config.getConfigurationSection(armorType);
+
+        if(armorSection == null)
+            return;
+
         Set<String> armorConfigSet = armorSection.getKeys(false);
         Iterator<String> iterator = armorConfigSet.iterator();
 

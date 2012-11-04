@@ -53,6 +53,10 @@ public class CustomToolsConfig extends ConfigLoader {
 
     private void loadTool(String toolType, List<Integer> idList) {
         ConfigurationSection toolSection = config.getConfigurationSection(toolType);
+
+        if(toolSection == null)
+            return;
+
         Set<String> toolConfigSet = toolSection.getKeys(false);
         Iterator<String> iterator = toolConfigSet.iterator();
 

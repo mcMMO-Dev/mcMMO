@@ -18,6 +18,9 @@ public class EnvironmentallyAwareEventHandler {
     }
 
     protected void teleportWolf() {
+        if(player == null)
+            return;
+
         if (event.getDamage() > wolf.getHealth()) {
             return;
         }
@@ -26,6 +29,9 @@ public class EnvironmentallyAwareEventHandler {
     }
 
     protected void sendAbilityMessage() {
+        if(player == null)
+            return;
+
         player.sendMessage(LocaleLoader.getString("Taming.Listener.Wolf"));
     }
 

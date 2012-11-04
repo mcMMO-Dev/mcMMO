@@ -72,6 +72,11 @@ public class AddlevelsCommand implements CommandExecutor{
             String playerName = modifiedPlayer.getName();
             profile = Users.getProfile(modifiedPlayer);
 
+            if (profile == null) {
+                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                return true;
+            }
+
             if (!profile.isLoaded()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return true;

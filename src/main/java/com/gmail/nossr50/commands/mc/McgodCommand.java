@@ -24,6 +24,11 @@ public class McgodCommand implements CommandExecutor {
 
         PlayerProfile profile = Users.getProfile((Player) sender);
 
+        if (profile == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+            return true;
+        }
+
         if (profile.getGodMode()) {
             sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
         }
