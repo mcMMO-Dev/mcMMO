@@ -7,6 +7,8 @@ import java.lang.String;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.blockmeta.ChunkletStore;
+import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveExChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveChunkStore;
 import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
@@ -20,7 +22,9 @@ public class BlockStoreConversionZDirectory implements Runnable {
     private File xDir, dataDir;
     private HashChunkletManager manager;
     private HashChunkManager newManager;
-    private PrimitiveExChunkletStore currentChunklet;
+    private ChunkletStore tempChunklet;
+    private PrimitiveChunkletStore primitiveChunklet = null;
+    private PrimitiveExChunkletStore primitiveExChunklet = null;
     private PrimitiveChunkStore currentChunk;
     private boolean[] oldArray, newArray;
 
@@ -80,8 +84,12 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
         for(this.y = 0; this.y < 4; this.y++) {
             this.chunkletName = this.world.getName() + "," + this.cx + "," + this.cz + "," + this.y;
-            this.currentChunklet = (PrimitiveExChunkletStore) this.manager.store.get(this.chunkletName);
-            if(this.currentChunklet == null) {
+	    this.tempChunklet = this.manager.store.get(this.chunkletName);
+            if(this.tempChunklet instanceof PrimitiveChunkletStore)
+                this.primitiveChunklet = (PrimitiveChunkletStore) this.tempChunklet;
+            else if(this.tempChunklet instanceof PrimitiveExChunkletStore)
+                this.primitiveExChunklet = (PrimitiveExChunkletStore) this.tempChunklet;
+            if(this.tempChunklet == null) {
                 continue;
             } else {
                 this.chunkName = this.world.getName() + "," + this.cx + "," + this.cz;
@@ -113,7 +121,12 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
                 for(this.x = 0; this.x < 16; this.x++) {
                     for(this.z = 0; this.z < 16; this.z++) {
-                        this.oldArray = this.currentChunklet.store[x][z];
+                        if(this.primitiveChunklet != null)
+                            this.oldArray = this.primitiveChunklet.store[x][z];
+                        if(this.primitiveExChunklet != null)
+                            this.oldArray = this.primitiveExChunklet.store[x][z];
+                        else
+                            return;
                         this.newArray = this.currentChunk.store[x][z];
                         System.arraycopy(this.oldArray, 0, this.newArray, (this.y * 64), 64);
                     }
@@ -148,7 +161,9 @@ public class BlockStoreConversionZDirectory implements Runnable {
         this.manager = null;
         this.xDir = null;
         this.dataDir = null;
-        this.currentChunklet = null;
+        this.tempChunklet = null;
+        this.primitiveChunklet = null;
+        this.primitiveExChunklet = null;
         this.currentChunk = null;
     }
 }
