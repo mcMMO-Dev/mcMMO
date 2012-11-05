@@ -65,7 +65,7 @@ public class Herbalism {
                 // Don't award double drops to mossified cobblestone
                 mcMMO.placeStore.setTrue(block);
             }
-            else if (Config.getInstance().getHerbalismGreenThumbCobbleWallToMossyWall() && type == Material.COBBLESTONE) {
+            else if (Config.getInstance().getHerbalismGreenThumbCobbleWallToMossyWall() && type == Material.COBBLE_WALL) {
                 block.setData((byte) 1);
             }
         }
