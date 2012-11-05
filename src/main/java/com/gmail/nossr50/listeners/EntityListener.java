@@ -229,10 +229,12 @@ public class EntityListener implements Listener {
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEnitityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
+
+        if(entity == null) return;
         
         if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
-        if (event.getEntity() instanceof TNTPrimed) {
+        if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
 
             if (plugin.tntIsTracked(id)) {
