@@ -151,6 +151,7 @@ Skills:
         Level_Cap: 0
         Green_Thumb:
             Cobble_To_Mossy: true
+            CobbleWall_To_MossyWall: true
             SmoothBrick_To_MossyBrick: true
             Dirt_To_Grass: true
     Mining:

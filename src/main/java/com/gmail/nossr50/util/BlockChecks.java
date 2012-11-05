@@ -154,6 +154,7 @@ public class BlockChecks {
         case DIRT:
             return true;
         case SMOOTH_BRICK:
+        case COBBLE_WALL:
             if (block.getData() == 0) {
                 return true;
             }
