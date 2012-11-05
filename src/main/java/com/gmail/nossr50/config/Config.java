@@ -169,6 +169,7 @@ public class Config extends ConfigLoader {
     public int getHerbalismXPPotato() { return config.getInt("Experience.Herbalism.Potato", 50); }
 
     public boolean getHerbalismGreenThumbCobbleToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true); }
+    public boolean getHerbalismGreenThumbCobbleWallToMossyWall() { return config.getBoolean("Skills.Herbalism.Green_Thumb.CobbleWall_To_MossyWall", true); }
     public boolean getHerbalismGreenThumbSmoothbrickToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true); }
     public boolean getHerbalismGreenThumbDirtToGrass() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Dirt_To_Grass", true); }
 
