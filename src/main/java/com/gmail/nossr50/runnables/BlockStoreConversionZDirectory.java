@@ -82,7 +82,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
         this.manager.loadChunk(this.cx, this.cz, this.world);
 
-        for(this.y = 0; this.y < 4; this.y++) {
+        for(this.y = 0; this.y < (this.world.getMaxHeight() / 64); this.y++) {
             this.chunkletName = this.world.getName() + "," + this.cx + "," + this.cz + "," + this.y;
 	    this.tempChunklet = this.manager.store.get(this.chunkletName);
             if(this.tempChunklet instanceof PrimitiveChunkletStore)
@@ -128,6 +128,10 @@ public class BlockStoreConversionZDirectory implements Runnable {
                         else
                             return;
                         this.newArray = this.currentChunk.store[x][z];
+                        if(this.oldArray.length < 64)
+                            return;
+                        else if(this.newArray.length < ((this.y * 64) + 64))
+                            return;
                         System.arraycopy(this.oldArray, 0, this.newArray, (this.y * 64), 64);
                     }
                 }

@@ -71,7 +71,7 @@ public class WorldListener implements Listener {
 
         manager.loadChunk(cx, cz, world);
 
-        for(int y = 0; y < 4; y++) {
+        for(int y = 0; y < (world.getMaxHeight() / 64); y++) {
             String chunkletName = world.getName() + "," + cx + "," + cz + "," + y;
 	    ChunkletStore tempChunklet = manager.store.get(chunkletName);
             PrimitiveChunkletStore primitiveChunklet = null;
@@ -120,6 +120,10 @@ public class WorldListener implements Listener {
                         else
                             return;
                         boolean[] newArray = cChunk.store[x][z];
+                        if(oldArray.length < 64)
+                            return;
+                        else if(newArray.length < ((y * 64) + 64))
+                            return;
                         System.arraycopy(oldArray, 0, newArray, (y * 64), 64);
                     }
                 }
