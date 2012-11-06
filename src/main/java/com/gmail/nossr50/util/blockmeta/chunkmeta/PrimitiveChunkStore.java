@@ -15,7 +15,7 @@ public class PrimitiveChunkStore implements ChunkStore {
     transient private boolean dirty = false;
     /** X, Z, Y */
     public boolean[][][] store;
-    private static final int CURRENT_VERSION = 4;
+    private static final int CURRENT_VERSION = 5;
     private static final int MAGIC_NUMBER = 0xEA5EDEBB;
     private int cx;
     private int cz;
@@ -34,7 +34,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         this.xBitShifts = 11;
         this.zBitShifts = 7;
 
-        this.store = new boolean[16][16][this.worldHeight - 1];
+        this.store = new boolean[16][16][this.worldHeight];
 
         conversionNeeded = false;
     }
@@ -139,7 +139,23 @@ public class PrimitiveChunkStore implements ChunkStore {
         store = (boolean[][][]) in.readObject();
 
         if (fileVersionNumber < CURRENT_VERSION) {
+            fixArray();
             dirty = true;
+        }
+    }
+
+    private void fixArray() {
+        boolean[][][] temp = this.store;
+        this.store = new boolean[16][16][this.worldHeight];
+        for(int x = 0; x < 16; x++) {
+            for(int z = 0; z < 16; z++) {
+                for(int y = 0; y < this.worldHeight; y++) {
+                    try {
+                        store[x][z][y] = temp[x][y][z];
+                    }
+                    catch(Exception e) {}
+                }
+            }
         }
     }
 }
