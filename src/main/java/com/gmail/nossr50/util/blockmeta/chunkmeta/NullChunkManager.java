@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util.blockmeta;
+package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
 import java.io.IOException;
 

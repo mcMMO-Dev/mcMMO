@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
-public class SimpleRegionFile {
+public class mcMMOSimpleRegionFile {
 	private RandomAccessFile file;
 	private final int[] dataStart = new int[1024];
 	private final int[] dataActualLength = new int[1024];
@@ -46,11 +46,11 @@ public class SimpleRegionFile {
 	@SuppressWarnings("unused")
 	private static long TIMEOUT_TIME = 300000; // 5 min
 
-	public SimpleRegionFile(File f, int rx, int rz) {
+	public mcMMOSimpleRegionFile(File f, int rx, int rz) {
 		this(f, rx, rz, 10);
 	}
 
-	public SimpleRegionFile(File f, int rx, int rz, int defaultSegmentSize) {
+	public mcMMOSimpleRegionFile(File f, int rx, int rz, int defaultSegmentSize) {
 		this.rx = rx;
 		this.rz = rz;
 		this.defaultSegmentSize = defaultSegmentSize;
@@ -160,7 +160,7 @@ public class SimpleRegionFile {
 
 	public DataOutputStream getOutputStream(int x, int z) {
 		int index = getChunkIndex(x, z);
-		return new DataOutputStream(new DeflaterOutputStream(new SimpleChunkBuffer(this, index)));
+		return new DataOutputStream(new DeflaterOutputStream(new mcMMOSimpleChunkBuffer(this, index)));
 	}
 
 	public DataInputStream getInputStream(int x, int z) throws IOException {

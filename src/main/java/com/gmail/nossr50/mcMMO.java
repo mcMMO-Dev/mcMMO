@@ -79,8 +79,8 @@ import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Metrics;
 import com.gmail.nossr50.util.Metrics.Graph;
 import com.gmail.nossr50.util.Users;
-import com.gmail.nossr50.util.blockmeta.ChunkManager;
-import com.gmail.nossr50.util.blockmeta.ChunkManagerFactory;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 
 
 public class mcMMO extends JavaPlugin {

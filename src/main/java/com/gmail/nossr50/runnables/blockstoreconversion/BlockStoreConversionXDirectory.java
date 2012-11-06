@@ -1,4 +1,4 @@
-package com.gmail.nossr50.runnables;
+package com.gmail.nossr50.runnables.blockstoreconversion;
 
 import java.io.File;
 import java.lang.Runnable;

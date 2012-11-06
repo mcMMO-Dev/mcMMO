@@ -22,11 +22,11 @@ package org.getspout.spoutapi.chunkstore;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class SimpleChunkBuffer extends ByteArrayOutputStream {
-	final SimpleRegionFile rf;
+public class mcMMOSimpleChunkBuffer extends ByteArrayOutputStream {
+	final mcMMOSimpleRegionFile rf;
 	final int index;
 
-	SimpleChunkBuffer(SimpleRegionFile rf, int index) {
+	mcMMOSimpleChunkBuffer(mcMMOSimpleRegionFile rf, int index) {
 		super(1024);
 		this.rf = rf;
 		this.index = index;

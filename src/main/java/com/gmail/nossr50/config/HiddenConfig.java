@@ -28,7 +28,7 @@ public class HiddenConfig {
         if (mcMMO.p.getResource(fileName) != null) {
             config = YamlConfiguration.loadConfiguration(mcMMO.p.getResource(fileName));
             chunkletsEnabled = config.getBoolean("Options.Chunklets", true);
-            conversionRate = config.getInt("Options.ConversionRate", 1);
+            conversionRate = config.getInt("Options.ConversionRate", 3);
         }
     }
 

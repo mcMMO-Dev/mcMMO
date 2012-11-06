@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util.blockmeta;
+package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.bukkit.World;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 
 public class PrimitiveChunkStore implements ChunkStore {
     private static final long serialVersionUID = -1L;

@@ -1,4 +1,4 @@
-package com.gmail.nossr50.runnables;
+package com.gmail.nossr50.runnables.blockstoreconversion;
 
 import java.io.File;
 import java.lang.Runnable;
@@ -10,9 +10,9 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveExChunkletStore;
-import com.gmail.nossr50.util.blockmeta.PrimitiveChunkStore;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore;
 import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
-import com.gmail.nossr50.util.blockmeta.HashChunkManager;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.HashChunkManager;
 
 public class BlockStoreConversionZDirectory implements Runnable {
     private int taskID, cx, cz, x, y, z, y2, xPos, zPos, cxPos, czPos;
