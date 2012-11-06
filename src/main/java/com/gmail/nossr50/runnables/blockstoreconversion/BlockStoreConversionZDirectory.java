@@ -105,10 +105,13 @@ public class BlockStoreConversionZDirectory implements Runnable {
                             this.czPos = this.zPos + this.z;
 
                             for(this.y2 = (64 * this.y); this.y2 < (64 * this.y + 64); this.y2++) {
-                                if(!this.manager.isTrue(this.cxPos, this.y2, this.czPos, this.world))
-                                    continue;
+                                try {
+                                    if(!this.manager.isTrue(this.cxPos, this.y2, this.czPos, this.world))
+                                        continue;
 
-                                this.newManager.setTrue(this.cxPos, this.y2, this.czPos, this.world);
+                                    this.newManager.setTrue(this.cxPos, this.y2, this.czPos, this.world);
+                                }
+                                catch(Exception e) {}
                             }
                         }
                     }
