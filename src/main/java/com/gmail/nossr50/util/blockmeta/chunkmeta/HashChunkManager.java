@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.Integer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
@@ -17,6 +18,7 @@ import org.bukkit.block.Block;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.ChunkletUnloader;
+import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionZDirectory;
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveExChunkletStore;
@@ -27,6 +29,7 @@ import org.getspout.spoutapi.chunkstore.mcMMOSimpleRegionFile;
 public class HashChunkManager implements ChunkManager {
     private HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>>();
     public HashMap<String, ChunkStore> store = new HashMap<String, ChunkStore>();
+    public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<BlockStoreConversionZDirectory>();
 
     @Override
     public void closeAll() {
@@ -377,88 +380,32 @@ public class HashChunkManager implements ChunkManager {
     public void cleanUp() {}
 
     public void convertChunk(File dataDir, int cx, int cz, World world) {
-        HashChunkletManager manager = new HashChunkletManager();
-        manager.loadChunk(cx, cz, world);
-
-        for(int y = 0; y < (world.getMaxHeight() / 64); y++) {
-            String chunkletName = world.getName() + "," + cx + "," + cz + "," + y;
-	    ChunkletStore tempChunklet = manager.store.get(chunkletName);
-            PrimitiveChunkletStore primitiveChunklet = null;
-            PrimitiveExChunkletStore primitiveExChunklet = null;
-            if(tempChunklet instanceof PrimitiveChunkletStore)
-                primitiveChunklet = (PrimitiveChunkletStore) tempChunklet;
-            else if(tempChunklet instanceof PrimitiveExChunkletStore)
-                primitiveExChunklet = (PrimitiveExChunkletStore) tempChunklet;
-            if(tempChunklet == null) {
-                continue;
-            } else {
-                String chunkName = world.getName() + "," + cx + "," + cz;
-                PrimitiveChunkStore cChunk = (PrimitiveChunkStore) store.get(chunkName);
-
-                if(cChunk != null) {
-                    int xPos = cx * 16;
-                    int zPos = cz * 16;
-
-                    for(int x = 0; x < 16; x++) {
-                        for(int z = 0; z < 16; z++) {
-                            int cxPos = xPos + x;
-                            int czPos = zPos + z;
-
-                            for(int y2 = (64 * y); y2 < (64 * y + 64); y2++) {
-                                if(!manager.isTrue(cxPos, y2, czPos, world))
-                                    continue;
-
-                                setTrue(cxPos, y2, czPos, world);
-                            }
-                        }
-                    }
-                    continue;
-                }
-
-                setTrue(cx * 16, 0, cz * 16, world);
-		setFalse(cx * 16, 0, cz * 16, world);
-                cChunk = (PrimitiveChunkStore) store.get(chunkName);
-
-                for(int x = 0; x < 16; x++) {
-                    for(int z = 0; z < 16; z++) {
-                        boolean[] oldArray;
-                        if(primitiveChunklet != null)
-                            oldArray = primitiveChunklet.store[x][z];
-                        if(primitiveExChunklet != null)
-                            oldArray = primitiveExChunklet.store[x][z];
-                        else
-                            return;
-                        boolean[] newArray = cChunk.store[x][z];
-                        if(oldArray.length < 64)
-                            return;
-                        else if(newArray.length < ((y * 64) + 64))
-                            return;
-                        System.arraycopy(oldArray, 0, newArray, (y * 64), 64);
-                    }
-                }
-            }
-        }
-
-        manager.unloadChunk(cx, cz, world);
-        unloadChunk(cx, cz, world);
-
+        if(!dataDir.exists()) return;
         File cxDir = new File(dataDir, "" + cx);
         if(!cxDir.exists()) return;
         File czDir = new File(cxDir, "" + cz);
         if(!czDir.exists()) return;
 
-        for(File yFile : czDir.listFiles()) {
-            if(!yFile.exists())
+        boolean conversionSet = false;
+
+        for(BlockStoreConversionZDirectory converter : this.converters) {
+            if(converter == null)
                 continue;
 
-            yFile.delete();
+            if(converter.taskID >= 0)
+                continue;
+
+            if(conversionSet)
+                converters.remove(converter);
+
+            converter.start(world, cxDir, czDir);
+            conversionSet = true;
         }
 
-        if(czDir.listFiles().length <= 0)
-            czDir.delete();
-        if(cxDir.listFiles().length <= 0)
-            cxDir.delete();
-        if(dataDir.listFiles().length <= 0)
-            dataDir.delete();
+        if(!conversionSet) {
+            BlockStoreConversionZDirectory converter = new BlockStoreConversionZDirectory();
+            converter.start(world, cxDir, czDir);
+            converters.add(converter);
+        }
     }
 }

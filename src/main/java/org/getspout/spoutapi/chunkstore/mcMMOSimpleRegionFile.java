@@ -102,7 +102,7 @@ public class mcMMOSimpleRegionFile {
 		}
 	}
 
-	public final RandomAccessFile getFile() {
+	public synchronized final RandomAccessFile getFile() {
 		lastAccessTime = System.currentTimeMillis();
 		if (file == null) {
 			try {
@@ -150,7 +150,7 @@ public class mcMMOSimpleRegionFile {
 		return file;
 	}
 
-	public boolean testCloseTimeout() {
+	public synchronized boolean testCloseTimeout() {
 		/*if (System.currentTimeMillis() - TIMEOUT_TIME > lastAccessTime) {
 			close();
 			return true;
@@ -158,12 +158,12 @@ public class mcMMOSimpleRegionFile {
 		return false;
 	}
 
-	public DataOutputStream getOutputStream(int x, int z) {
+	public synchronized DataOutputStream getOutputStream(int x, int z) {
 		int index = getChunkIndex(x, z);
 		return new DataOutputStream(new DeflaterOutputStream(new mcMMOSimpleChunkBuffer(this, index)));
 	}
 
-	public DataInputStream getInputStream(int x, int z) throws IOException {
+	public synchronized DataInputStream getInputStream(int x, int z) throws IOException {
 		int index = getChunkIndex(x, z);
 		int actualLength = dataActualLength[index];
 		if (actualLength == 0) {
@@ -176,7 +176,7 @@ public class mcMMOSimpleRegionFile {
 		return new DataInputStream(new InflaterInputStream(new ByteArrayInputStream(data)));
 	}
 
-	void write(int index, byte[] buffer, int size) throws IOException {
+	synchronized void write(int index, byte[] buffer, int size) throws IOException {
 		int oldStart = setInUse(index, false);
 		int start = findSpace(oldStart, size);
 		getFile().seek(start << segmentSize);
@@ -188,7 +188,7 @@ public class mcMMOSimpleRegionFile {
 		saveFAT();
 	}
 
-	public void close() {
+	public synchronized void close() {
 		try {
 			if (file != null) {
 				file.seek(4096 * 2);
@@ -200,7 +200,7 @@ public class mcMMOSimpleRegionFile {
 		}
 	}
 
-	private int setInUse(int index, boolean used) {
+	private synchronized int setInUse(int index, boolean used) {
 		if (dataActualLength[index] == 0) {
 			return dataStart[index];
 		}
@@ -225,7 +225,7 @@ public class mcMMOSimpleRegionFile {
 		return dataStart[index];
 	}
 
-	private void extendFile() throws IOException {
+	private synchronized void extendFile() throws IOException {
 		long extend = (-getFile().length()) & segmentMask;
 
 		getFile().seek(getFile().length());
@@ -235,7 +235,7 @@ public class mcMMOSimpleRegionFile {
 		}
 	}
 
-	private int findSpace(int oldStart, int size) {
+	private synchronized int findSpace(int oldStart, int size) {
 		int segments = sizeToSegments(size);
 
 		boolean oldFree = true;
@@ -268,7 +268,7 @@ public class mcMMOSimpleRegionFile {
 		return start;
 	}
 
-	private int sizeToSegments(int size) {
+	private synchronized int sizeToSegments(int size) {
 		if (size <= 0) {
 			return 1;
 		} else {
@@ -276,7 +276,7 @@ public class mcMMOSimpleRegionFile {
 		}
 	}
 
-	private Integer getChunkIndex(int x, int z) {
+	private synchronized Integer getChunkIndex(int x, int z) {
 		if (rx != (x >> 5) || rz != (z >> 5)) {
 			throw new RuntimeException(x + ", " + z + " not in region " + rx + ", " + rz);
 		}
@@ -287,7 +287,7 @@ public class mcMMOSimpleRegionFile {
 		return (x << 5) + z;
 	}
 
-	private void saveFAT() throws IOException {
+	private synchronized void saveFAT() throws IOException {
 		getFile().seek(0);
 		for (int i = 0; i < 1024; i++) {
 			getFile().writeInt(dataStart[i]);
