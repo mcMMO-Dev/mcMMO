@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.Integer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
@@ -17,6 +18,7 @@ import org.bukkit.block.Block;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.ChunkletUnloader;
+import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionZDirectory;
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveExChunkletStore;
@@ -27,9 +29,10 @@ import org.getspout.spoutapi.chunkstore.mcMMOSimpleRegionFile;
 public class HashChunkManager implements ChunkManager {
     private HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>>();
     public HashMap<String, ChunkStore> store = new HashMap<String, ChunkStore>();
+    public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<BlockStoreConversionZDirectory>();
 
     @Override
-    public void closeAll() {
+    public synchronized void closeAll() {
         for (UUID uid : regionFiles.keySet()) {
             HashMap<Long, mcMMOSimpleRegionFile> worldRegions = regionFiles.get(uid);
             Iterator<mcMMOSimpleRegionFile> itr = worldRegions.values().iterator();
@@ -45,7 +48,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public ChunkStore readChunkStore(World world, int x, int z) throws IOException {
+    public synchronized ChunkStore readChunkStore(World world, int x, int z) throws IOException {
         mcMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
         InputStream in = rf.getInputStream(x, z);
         if (in == null) {
@@ -72,7 +75,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void writeChunkStore(World world, int x, int z, ChunkStore data) {
+    public synchronized void writeChunkStore(World world, int x, int z, ChunkStore data) {
         if (!data.isDirty()) {
             return;
         }
@@ -89,14 +92,14 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void closeChunkStore(World world, int x, int z) {
+    public synchronized void closeChunkStore(World world, int x, int z) {
         mcMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
         if (rf != null) {
             rf.close();
         }
     }
 
-    private mcMMOSimpleRegionFile getSimpleRegionFile(World world, int x, int z) {
+    private synchronized mcMMOSimpleRegionFile getSimpleRegionFile(World world, int x, int z) {
         File directory = new File(world.getWorldFolder(), "mcmmo_regions");
 
         directory.mkdirs();
@@ -127,17 +130,17 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void loadChunklet(int cx, int cy, int cz, World world) {
+    public synchronized void loadChunklet(int cx, int cy, int cz, World world) {
         loadChunk(cx, cz, world);
     }
 
     @Override
-    public void unloadChunklet(int cx, int cy, int cz, World world) {
+    public synchronized void unloadChunklet(int cx, int cy, int cz, World world) {
         unloadChunk(cx, cz, world);
     }
 
     @Override
-    public void loadChunk(int cx, int cz, World world) {
+    public synchronized void loadChunk(int cx, int cz, World world) {
         if(world == null)
             return;
 
@@ -145,6 +148,10 @@ public class HashChunkManager implements ChunkManager {
             return;
 
         ChunkStore in = null;
+
+        File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
+        if(dataDir.exists())
+            convertChunk(dataDir, cx, cz, world, true);
 
         try {
             in = readChunkStore(world, cx, cz);
@@ -157,7 +164,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void unloadChunk(int cx, int cz, World world) {
+    public synchronized void unloadChunk(int cx, int cz, World world) {
         saveChunk(cx, cz, world);
 
         if(store.containsKey(world.getName() + "," + cx + "," + cz)) {
@@ -166,7 +173,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void saveChunk(int cx, int cz, World world) {
+    public synchronized void saveChunk(int cx, int cz, World world) {
         if(world == null)
             return;
 
@@ -181,7 +188,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public boolean isChunkLoaded(int cx, int cz, World world) {
+    public synchronized boolean isChunkLoaded(int cx, int cz, World world) {
         if(world == null)
             return false;
 
@@ -189,10 +196,10 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void chunkLoaded(int cx, int cz, World world) {}
+    public synchronized void chunkLoaded(int cx, int cz, World world) {}
 
     @Override
-    public void chunkUnloaded(int cx, int cz, World world) {
+    public synchronized void chunkUnloaded(int cx, int cz, World world) {
         if(world == null)
             return;
 
@@ -200,7 +207,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void saveWorld(World world) {
+    public synchronized void saveWorld(World world) {
         if(world == null)
             return;
 
@@ -226,7 +233,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void unloadWorld(World world) {
+    public synchronized void unloadWorld(World world) {
         if(world == null)
             return;
 
@@ -252,10 +259,10 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void loadWorld(World world) {}
+    public synchronized void loadWorld(World world) {}
 
     @Override
-    public void saveAll() {
+    public synchronized void saveAll() {
         closeAll();
 
         for(World world : Bukkit.getWorlds()) {
@@ -264,7 +271,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void unloadAll() {
+    public synchronized void unloadAll() {
         closeAll();
 
         for(World world : Bukkit.getWorlds()) {
@@ -273,7 +280,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public boolean isTrue(int x, int y, int z, World world) {
+    public synchronized boolean isTrue(int x, int y, int z, World world) {
         if(world == null)
             return false;
 
@@ -297,7 +304,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public boolean isTrue(Block block) {
+    public synchronized boolean isTrue(Block block) {
         if(block == null)
             return false;
 
@@ -305,7 +312,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void setTrue(int x, int y, int z, World world) {
+    public synchronized void setTrue(int x, int y, int z, World world) {
         if(world == null)
             return;
 
@@ -332,7 +339,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void setTrue(Block block) {
+    public synchronized void setTrue(Block block) {
         if(block == null)
             return;
 
@@ -340,7 +347,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void setFalse(int x, int y, int z, World world) {
+    public synchronized void setFalse(int x, int y, int z, World world) {
         if(world == null)
             return;
 
@@ -366,7 +373,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void setFalse(Block block) {
+    public synchronized void setFalse(Block block) {
         if(block == null)
             return;
 
@@ -374,91 +381,39 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void cleanUp() {}
+    public synchronized void cleanUp() {}
 
-    public void convertChunk(File dataDir, int cx, int cz, World world) {
-        HashChunkletManager manager = new HashChunkletManager();
-        manager.loadChunk(cx, cz, world);
+    public synchronized void convertChunk(File dataDir, int cx, int cz, World world) {
+        convertChunk(dataDir, cx, cz, world, false);
+    }
 
-        for(int y = 0; y < (world.getMaxHeight() / 64); y++) {
-            String chunkletName = world.getName() + "," + cx + "," + cz + "," + y;
-	    ChunkletStore tempChunklet = manager.store.get(chunkletName);
-            PrimitiveChunkletStore primitiveChunklet = null;
-            PrimitiveExChunkletStore primitiveExChunklet = null;
-            if(tempChunklet instanceof PrimitiveChunkletStore)
-                primitiveChunklet = (PrimitiveChunkletStore) tempChunklet;
-            else if(tempChunklet instanceof PrimitiveExChunkletStore)
-                primitiveExChunklet = (PrimitiveExChunkletStore) tempChunklet;
-            if(tempChunklet == null) {
-                continue;
-            } else {
-                String chunkName = world.getName() + "," + cx + "," + cz;
-                PrimitiveChunkStore cChunk = (PrimitiveChunkStore) store.get(chunkName);
-
-                if(cChunk != null) {
-                    int xPos = cx * 16;
-                    int zPos = cz * 16;
-
-                    for(int x = 0; x < 16; x++) {
-                        for(int z = 0; z < 16; z++) {
-                            int cxPos = xPos + x;
-                            int czPos = zPos + z;
-
-                            for(int y2 = (64 * y); y2 < (64 * y + 64); y2++) {
-                                if(!manager.isTrue(cxPos, y2, czPos, world))
-                                    continue;
-
-                                setTrue(cxPos, y2, czPos, world);
-                            }
-                        }
-                    }
-                    continue;
-                }
-
-                setTrue(cx * 16, 0, cz * 16, world);
-		setFalse(cx * 16, 0, cz * 16, world);
-                cChunk = (PrimitiveChunkStore) store.get(chunkName);
-
-                for(int x = 0; x < 16; x++) {
-                    for(int z = 0; z < 16; z++) {
-                        boolean[] oldArray;
-                        if(primitiveChunklet != null)
-                            oldArray = primitiveChunklet.store[x][z];
-                        if(primitiveExChunklet != null)
-                            oldArray = primitiveExChunklet.store[x][z];
-                        else
-                            return;
-                        boolean[] newArray = cChunk.store[x][z];
-                        if(oldArray.length < 64)
-                            return;
-                        else if(newArray.length < ((y * 64) + 64))
-                            return;
-                        System.arraycopy(oldArray, 0, newArray, (y * 64), 64);
-                    }
-                }
-            }
-        }
-
-        manager.unloadChunk(cx, cz, world);
-        unloadChunk(cx, cz, world);
-
+    public synchronized void convertChunk(File dataDir, int cx, int cz, World world, boolean actually) {
+        if(!actually)
+            return;
+        if(!dataDir.exists()) return;
         File cxDir = new File(dataDir, "" + cx);
         if(!cxDir.exists()) return;
         File czDir = new File(cxDir, "" + cz);
         if(!czDir.exists()) return;
 
-        for(File yFile : czDir.listFiles()) {
-            if(!yFile.exists())
+        boolean conversionSet = false;
+
+        for(BlockStoreConversionZDirectory converter : this.converters) {
+            if(converter == null)
                 continue;
 
-            yFile.delete();
+            if(converter.taskID >= 0)
+                continue;
+
+            converter.start(world, cxDir, czDir);
+            conversionSet = true;
+            break;
         }
 
-        if(czDir.listFiles().length <= 0)
-            czDir.delete();
-        if(cxDir.listFiles().length <= 0)
-            cxDir.delete();
-        if(dataDir.listFiles().length <= 0)
-            dataDir.delete();
+        if(!conversionSet) {
+            BlockStoreConversionZDirectory converter = new BlockStoreConversionZDirectory();
+            converter.start(world, cxDir, czDir);
+            converters.add(converter);
+        }
     }
 }
