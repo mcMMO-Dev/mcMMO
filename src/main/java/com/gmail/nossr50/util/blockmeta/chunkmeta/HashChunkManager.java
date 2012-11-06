@@ -149,6 +149,10 @@ public class HashChunkManager implements ChunkManager {
 
         ChunkStore in = null;
 
+        File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
+        if(dataDir.exists())
+            convertChunk(dataDir, cx, cz, world, true);
+
         try {
             in = readChunkStore(world, cx, cz);
         }
@@ -380,6 +384,12 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void cleanUp() {}
 
     public synchronized void convertChunk(File dataDir, int cx, int cz, World world) {
+        convertChunk(dataDir, cx, cz, world, false);
+    }
+
+    public synchronized void convertChunk(File dataDir, int cx, int cz, World world, boolean actually) {
+        if(!actually)
+            return;
         if(!dataDir.exists()) return;
         File cxDir = new File(dataDir, "" + cx);
         if(!cxDir.exists()) return;
