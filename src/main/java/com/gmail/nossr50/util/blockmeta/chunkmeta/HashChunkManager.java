@@ -32,7 +32,7 @@ public class HashChunkManager implements ChunkManager {
     public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<BlockStoreConversionZDirectory>();
 
     @Override
-    public void closeAll() {
+    public synchronized void closeAll() {
         for (UUID uid : regionFiles.keySet()) {
             HashMap<Long, mcMMOSimpleRegionFile> worldRegions = regionFiles.get(uid);
             Iterator<mcMMOSimpleRegionFile> itr = worldRegions.values().iterator();
@@ -48,7 +48,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public ChunkStore readChunkStore(World world, int x, int z) throws IOException {
+    public synchronized ChunkStore readChunkStore(World world, int x, int z) throws IOException {
         mcMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
         InputStream in = rf.getInputStream(x, z);
         if (in == null) {
@@ -75,7 +75,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void writeChunkStore(World world, int x, int z, ChunkStore data) {
+    public synchronized void writeChunkStore(World world, int x, int z, ChunkStore data) {
         if (!data.isDirty()) {
             return;
         }
@@ -92,14 +92,14 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void closeChunkStore(World world, int x, int z) {
+    public synchronized void closeChunkStore(World world, int x, int z) {
         mcMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
         if (rf != null) {
             rf.close();
         }
     }
 
-    private mcMMOSimpleRegionFile getSimpleRegionFile(World world, int x, int z) {
+    private synchronized mcMMOSimpleRegionFile getSimpleRegionFile(World world, int x, int z) {
         File directory = new File(world.getWorldFolder(), "mcmmo_regions");
 
         directory.mkdirs();
@@ -130,17 +130,17 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void loadChunklet(int cx, int cy, int cz, World world) {
+    public synchronized void loadChunklet(int cx, int cy, int cz, World world) {
         loadChunk(cx, cz, world);
     }
 
     @Override
-    public void unloadChunklet(int cx, int cy, int cz, World world) {
+    public synchronized void unloadChunklet(int cx, int cy, int cz, World world) {
         unloadChunk(cx, cz, world);
     }
 
     @Override
-    public void loadChunk(int cx, int cz, World world) {
+    public synchronized void loadChunk(int cx, int cz, World world) {
         if(world == null)
             return;
 
@@ -160,7 +160,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void unloadChunk(int cx, int cz, World world) {
+    public synchronized void unloadChunk(int cx, int cz, World world) {
         saveChunk(cx, cz, world);
 
         if(store.containsKey(world.getName() + "," + cx + "," + cz)) {
@@ -169,7 +169,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void saveChunk(int cx, int cz, World world) {
+    public synchronized void saveChunk(int cx, int cz, World world) {
         if(world == null)
             return;
 
@@ -184,7 +184,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public boolean isChunkLoaded(int cx, int cz, World world) {
+    public synchronized boolean isChunkLoaded(int cx, int cz, World world) {
         if(world == null)
             return false;
 
@@ -192,10 +192,10 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void chunkLoaded(int cx, int cz, World world) {}
+    public synchronized void chunkLoaded(int cx, int cz, World world) {}
 
     @Override
-    public void chunkUnloaded(int cx, int cz, World world) {
+    public synchronized void chunkUnloaded(int cx, int cz, World world) {
         if(world == null)
             return;
 
@@ -203,7 +203,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void saveWorld(World world) {
+    public synchronized void saveWorld(World world) {
         if(world == null)
             return;
 
@@ -229,7 +229,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void unloadWorld(World world) {
+    public synchronized void unloadWorld(World world) {
         if(world == null)
             return;
 
@@ -255,10 +255,10 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void loadWorld(World world) {}
+    public synchronized void loadWorld(World world) {}
 
     @Override
-    public void saveAll() {
+    public synchronized void saveAll() {
         closeAll();
 
         for(World world : Bukkit.getWorlds()) {
@@ -267,7 +267,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void unloadAll() {
+    public synchronized void unloadAll() {
         closeAll();
 
         for(World world : Bukkit.getWorlds()) {
@@ -276,7 +276,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public boolean isTrue(int x, int y, int z, World world) {
+    public synchronized boolean isTrue(int x, int y, int z, World world) {
         if(world == null)
             return false;
 
@@ -300,7 +300,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public boolean isTrue(Block block) {
+    public synchronized boolean isTrue(Block block) {
         if(block == null)
             return false;
 
@@ -308,7 +308,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void setTrue(int x, int y, int z, World world) {
+    public synchronized void setTrue(int x, int y, int z, World world) {
         if(world == null)
             return;
 
@@ -335,7 +335,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void setTrue(Block block) {
+    public synchronized void setTrue(Block block) {
         if(block == null)
             return;
 
@@ -343,7 +343,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void setFalse(int x, int y, int z, World world) {
+    public synchronized void setFalse(int x, int y, int z, World world) {
         if(world == null)
             return;
 
@@ -369,7 +369,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void setFalse(Block block) {
+    public synchronized void setFalse(Block block) {
         if(block == null)
             return;
 
@@ -377,9 +377,9 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public void cleanUp() {}
+    public synchronized void cleanUp() {}
 
-    public void convertChunk(File dataDir, int cx, int cz, World world) {
+    public synchronized void convertChunk(File dataDir, int cx, int cz, World world) {
         if(!dataDir.exists()) return;
         File cxDir = new File(dataDir, "" + cx);
         if(!cxDir.exists()) return;
@@ -395,11 +395,9 @@ public class HashChunkManager implements ChunkManager {
             if(converter.taskID >= 0)
                 continue;
 
-            if(conversionSet)
-                converters.remove(converter);
-
             converter.start(world, cxDir, czDir);
             conversionSet = true;
+            break;
         }
 
         if(!conversionSet) {
