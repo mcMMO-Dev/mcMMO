@@ -15,7 +15,7 @@ import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.HashChunkManager;
 
 public class BlockStoreConversionZDirectory implements Runnable {
-    private int taskID, cx, cz, x, y, z, y2, xPos, zPos, cxPos, czPos;
+    public int taskID, cx, cz, x, y, z, y2, xPos, zPos, cxPos, czPos;
     private String cxs, czs, chunkletName, chunkName;
     private org.bukkit.World world;
     private BukkitScheduler scheduler;
