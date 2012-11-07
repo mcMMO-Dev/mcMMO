@@ -157,7 +157,7 @@ public class Fishing {
                 int randomChance = 100;
 
                 if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
-                    randomChance = (int) (randomChance * 1.25);
+                    randomChance = (int) (randomChance * 0.75);
                 }
 
                 if (random.nextInt(randomChance) <= ENCHANTMENT_CHANCE && Permissions.getInstance().fishingMagic(player)) {
@@ -204,7 +204,7 @@ public class Fishing {
         int randomChance = 100;
 
         if (event.getPlayer().hasPermission("mcmmo.perks.lucky.fishing")) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = (int) (randomChance * 1.25);
         }
 
         final Player player = event.getPlayer();
