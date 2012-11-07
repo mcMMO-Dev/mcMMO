@@ -214,23 +214,23 @@ public class Fishing {
 
         switch (getFishingLootTier(profile)) {
         case 1:
-        	dropChance = 10;
+        	dropChance = Config.getInstance().getShakeChanceRank1();
         	break;
 
         case 2:
-        	dropChance = 30;
+        	dropChance = Config.getInstance().getShakeChanceRank2();
         	break;
 
         case 3:
-        	dropChance = 50;
+        	dropChance = Config.getInstance().getShakeChanceRank3();
         	break;
 
         case 4:
-        	dropChance = 60;
+        	dropChance = Config.getInstance().getShakeChanceRank4();
         	break;
 
         case 5:
-        	dropChance = 75;
+        	dropChance = Config.getInstance().getShakeChanceRank5();
         	break;
 
         default:
