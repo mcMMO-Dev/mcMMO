@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.lang.Boolean;
 import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public class HashChunkManager implements ChunkManager {
     private HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>>();
     public HashMap<String, ChunkStore> store = new HashMap<String, ChunkStore>();
     public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<BlockStoreConversionZDirectory>();
+    private HashMap<UUID, Boolean> oldData = new HashMap<UUID, Boolean>();
 
     @Override
     public synchronized void closeAll() {
@@ -149,9 +151,12 @@ public class HashChunkManager implements ChunkManager {
 
         ChunkStore in = null;
 
-        File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
-        if(dataDir.exists())
-            convertChunk(dataDir, cx, cz, world, true);
+        UUID key = world.getUID();
+        if(!this.oldData.containsKey(key))
+            this.oldData.put(key, (new File(world.getWorldFolder(), "mcmmo_data")).exists());
+
+        if(this.oldData.containsKey(key) && oldData.get(key))
+            convertChunk(new File(world.getWorldFolder(), "mcmmo_data"), cx, cz, world, true);
 
         try {
             in = readChunkStore(world, cx, cz);

@@ -49,19 +49,4 @@ public class WorldListener implements Listener {
     public void onChunkUnload(ChunkUnloadEvent event) {
         mcMMO.placeStore.chunkUnloaded(event.getChunk().getX(), event.getChunk().getZ(), event.getWorld());
     }
-
-    @EventHandler
-    public void onChunkLoad(ChunkLoadEvent event) {
-	File dataDir = new File(event.getChunk().getWorld().getWorldFolder(), "mcmmo_data");
-
-        if(!dataDir.exists() || !dataDir.isDirectory()) {
-            return;
-        }
-
-        World world = event.getChunk().getWorld();
-        int cx = event.getChunk().getX();
-        int cz = event.getChunk().getZ();
-
-        ((HashChunkManager) mcMMO.p.placeStore).convertChunk(dataDir, cx, cz, world);
-    }
 }
