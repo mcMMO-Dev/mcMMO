@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.commands.SkillCommand;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.gathering.Fishing;
@@ -8,6 +9,7 @@ import com.gmail.nossr50.skills.gathering.Fishing;
 public class FishingCommand extends SkillCommand {
     private int lootTier;
     private String magicChance;
+    private String shakeChance;
 
     private boolean canTreasureHunt;
     private boolean canMagicHunt;
@@ -21,6 +23,7 @@ public class FishingCommand extends SkillCommand {
     protected void dataCalculations() {
         lootTier = Fishing.getFishingLootTier(profile);
         magicChance = percent.format((float) lootTier / 15);
+        shakeChance = String.valueOf(Fishing.getShakeChance(lootTier));
     }
 
     @Override
@@ -66,12 +69,11 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canShake) {
-            //TODO: Do we really need to display this twice? Not like there are any associated stats.
             if (skillValue < 150) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0") }));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake"));
+                player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }));
             }
         }
     }
