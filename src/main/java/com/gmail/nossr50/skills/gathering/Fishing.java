@@ -209,33 +209,10 @@ public class Fishing {
 
         final Player player = event.getPlayer();
         final PlayerProfile profile = Users.getProfile(player);
+    	int lootTier = getFishingLootTier(profile);
 
-        int dropChance = 10;
-
-        switch (getFishingLootTier(profile)) {
-        case 1:
-        	dropChance = Config.getInstance().getShakeChanceRank1();
-        	break;
-
-        case 2:
-        	dropChance = Config.getInstance().getShakeChanceRank2();
-        	break;
-
-        case 3:
-        	dropChance = Config.getInstance().getShakeChanceRank3();
-        	break;
-
-        case 4:
-        	dropChance = Config.getInstance().getShakeChanceRank4();
-        	break;
-
-        case 5:
-        	dropChance = Config.getInstance().getShakeChanceRank5();
-        	break;
-
-        default:
-        	break;
-        }
+        int dropChance = getShakeChance(lootTier);
+        
         if (event.getPlayer().hasPermission("mcmmo.perks.lucky.fishing")) {
         	dropChance = (int) (dropChance * 1.25); //With lucky perk on max level tier, its 100%
         }
@@ -447,4 +424,31 @@ public class Fishing {
 
         Combat.dealDamage(le, 1);
     }
+    /**
+     * Gets chance of shake success.
+     *
+     * @param rank Treasure hunter rank
+     * @return The chance of a successful shake
+     */
+    public static int getShakeChance(int lootTier) {
+        switch (lootTier) {
+        case 1:
+            return Config.getInstance().getShakeChanceRank1();
+
+        case 2:
+            return Config.getInstance().getShakeChanceRank2();
+
+        case 3:
+            return Config.getInstance().getShakeChanceRank3();
+
+        case 4:
+            return Config.getInstance().getShakeChanceRank4();
+
+        case 5:
+            return Config.getInstance().getShakeChanceRank5();
+
+        default:
+            return 10;
+        }
+    } 
 }
