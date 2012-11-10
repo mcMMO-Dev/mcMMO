@@ -184,7 +184,7 @@ public class WoodCutting {
                                 break;
 
                             case JUNGLE:
-                                xp += Config.getInstance().getWoodcuttingXPJungle() / 4; //Nerf XP from Jungle Trees when using Tree Feller
+                                xp += Config.getInstance().getWoodcuttingXPJungle() / 2; //Nerf XP from Jungle Trees when using Tree Feller
                                 break;
 
                             default:
