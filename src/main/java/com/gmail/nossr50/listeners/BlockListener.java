@@ -78,11 +78,14 @@ public class BlockListener implements Listener {
         }
     }
 
+
     /**
      * Monitor BlockPhysics events.
      *
      * @param event The event to monitor
      */
+     // Disabled until a better patch can be applied. This does nothing but flag the wrong block.
+/*
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPhysics(BlockPhysicsEvent event) {
         //TODO: Figure out how to REMOVE metadata from the location the sand/gravel fell from.
@@ -96,6 +99,7 @@ public class BlockListener implements Listener {
             }
         }
     }
+*/
 
     /**
      * Monitor BlockPistonRetract events.

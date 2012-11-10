@@ -80,6 +80,9 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
+        if(player == null)
+            return;
+
         final PlayerProfile profile = Users.getProfile(player);
         final int MAX_BONUS_LEVEL = 1000;
 
@@ -149,6 +152,10 @@ public class Herbalism {
             if (data == (byte) 0x3) {
                 mat = Material.NETHER_STALK;
                 xp = Config.getInstance().getHerbalismXPNetherWart();
+
+                if (Permissions.getInstance().greenThumbNetherwart(player)) {
+                    greenThumbWheat(block, player, event, plugin);
+                }
             }
             break;
 
@@ -201,6 +208,11 @@ public class Herbalism {
             if ((((byte) data) & 0x8) == 0x8) {
                 mat = Material.COCOA;
                 xp = Config.getInstance().getHerbalismXPCocoa();
+
+
+                if (Permissions.getInstance().greenThumbCocoa(player)) {
+                    greenThumbWheat(block, player, event, plugin);
+                }
             }
             break;
 
@@ -208,6 +220,11 @@ public class Herbalism {
             if (data == CropState.RIPE.getData()) {
                 mat = Material.CARROT;
                 xp = Config.getInstance().getHerbalismXPCarrot();
+
+
+                if (Permissions.getInstance().greenThumbCarrots(player)) {
+                    greenThumbWheat(block, player, event, plugin);
+                }
             }
             break;
 
@@ -215,6 +232,10 @@ public class Herbalism {
             if (data == CropState.RIPE.getData()) {
                 mat = Material.POTATO;
                 xp = Config.getInstance().getHerbalismXPPotato();
+
+                if (Permissions.getInstance().greenThumbPotatoes(player)) {
+                    greenThumbWheat(block, player, event, plugin);
+                }
             }
             break;
 
@@ -363,6 +384,9 @@ public class Herbalism {
             }
         }
 
+        if(Config.getInstance().getHerbalismAFKDisabled() && player.isInsideVehicle())
+            return;
+
         Skills.xpProcessing(player, profile, SkillType.HERBALISM, xp);
     }
 
@@ -380,8 +404,28 @@ public class Herbalism {
         PlayerProfile profile = Users.getProfile(player);
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         PlayerInventory inventory = player.getInventory();
-        boolean hasSeeds = inventory.contains(Material.SEEDS);
+        boolean hasSeeds = false;
         Location location = block.getLocation();
+        Material type = block.getType();
+
+        switch(type) {
+        case CROPS:
+            hasSeeds = inventory.contains(Material.SEEDS);
+            break;
+        case COCOA:
+            // Broken: Requires an update to bukkit to enable seaching for variable-sized ItemStacks.
+            hasSeeds = inventory.contains(new ItemStack(Material.INK_SACK, 1, (short) 3), 1);
+            break;
+        case CARROT:
+            hasSeeds = inventory.contains(Material.CARROT_ITEM);
+            break;
+        case POTATO:
+            hasSeeds = inventory.contains(Material.POTATO_ITEM);
+            break;
+        case NETHER_WARTS:
+            hasSeeds = inventory.contains(Material.NETHER_STALK);
+            break;
+        }
 
         int randomChance = 1500;
 
@@ -392,12 +436,35 @@ public class Herbalism {
         if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel)) {
             event.setCancelled(true);
 
-            Misc.dropItem(location, new ItemStack(Material.WHEAT));
-            Misc.randomDropItems(location, new ItemStack(Material.SEEDS), 50, 3);
+            switch(type) {
+            case CROPS:
+                Misc.dropItem(location, new ItemStack(Material.WHEAT));
+                Misc.randomDropItems(location, new ItemStack(Material.SEEDS), 50, 3);
+                inventory.removeItem(new ItemStack(Material.SEEDS));
+                break;
+            case COCOA:
+                Misc.dropItem(location, new ItemStack(Material.INK_SACK, 3, (short) 3));
+                inventory.removeItem(new ItemStack(Material.INK_SACK, 1, (short) 3));
+                break;
+            case CARROT:
+                Misc.dropItem(location, new ItemStack(Material.CARROT_ITEM));
+                Misc.randomDropItems(location, new ItemStack(Material.CARROT_ITEM), 50, 3);
+                inventory.removeItem(new ItemStack(Material.POTATO_ITEM));
+                break;
+            case POTATO:
+                Misc.dropItem(location, new ItemStack(Material.POTATO_ITEM));
+                Misc.randomDropItems(location, new ItemStack(Material.POTATO_ITEM), 50, 3);
+                Misc.randomDropItem(location, new ItemStack(Material.POISONOUS_POTATO), 2);
+                inventory.removeItem(new ItemStack(Material.POTATO_ITEM));
+                break;
+            case NETHER_WARTS:
+                Misc.dropItem(location, new ItemStack(Material.NETHER_STALK, 2));
+                Misc.randomDropItems(location, new ItemStack(Material.NETHER_STALK), 50, 2);
+                inventory.removeItem(new ItemStack(Material.NETHER_STALK));
+                break;
+            }
 
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, profile), 1);
-
-            inventory.removeItem(new ItemStack(Material.SEEDS));
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, profile, type), 1);
             player.updateInventory();   // Needed until replacement available
         }
     }

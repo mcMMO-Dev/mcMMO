@@ -184,7 +184,7 @@ public class WoodCutting {
                                 break;
 
                             case JUNGLE:
-                                xp += Config.getInstance().getWoodcuttingXPJungle() / 4; //Nerf XP from Jungle Trees when using Tree Feller
+                                xp += Config.getInstance().getWoodcuttingXPJungle() / 2; //Nerf XP from Jungle Trees when using Tree Feller
                                 break;
 
                             default:
@@ -424,7 +424,15 @@ public class WoodCutting {
             xp = ModChecks.getCustomBlock(block).getXpGain();
         }
         else {
-            TreeSpecies species = TreeSpecies.getByData(block.getData());
+            byte type = block.getData();
+
+            if((type & 0x4) == 0x4)
+                type ^= 0x4;
+
+            if((type & 0x8) == 0x8)
+                type ^= 0x8;
+
+            TreeSpecies species = TreeSpecies.getByData(type);
             
             //Apparently species can be null in certain cases (custom server mods?)
             //https://github.com/mcMMO-Dev/mcMMO/issues/229
