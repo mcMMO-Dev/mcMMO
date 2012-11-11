@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.acrobatics;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Permissions;
@@ -32,6 +33,9 @@ public class AcrobaticsManager {
         if (!permissionInstance.roll(player)) {
             return;
         }
+
+        if(Config.getInstance().getAcrobaticsAFKDisabled() && player.isInsideVehicle())
+            return;
 
         RollEventHandler eventHandler = new RollEventHandler(this, event);
 

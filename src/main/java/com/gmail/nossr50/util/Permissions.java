@@ -264,6 +264,22 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.herbalism.greenthumbblocks");
     }
 
+    public boolean greenThumbCarrots(Player player) {
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbcarrots");
+    }
+
+    public boolean greenThumbCocoa(Player player) {
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbcocoa");
+    }
+
+    public boolean greenThumbNetherwart(Player player) {
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbnetherwart");
+    }
+
+    public boolean greenThumbPotatoes(Player player) {
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbpotatoes");
+    }
+
     public boolean greenThumbWheat(Player player) {
         return player.hasPermission("mcmmo.ability.herbalism.greenthumbwheat");
     }

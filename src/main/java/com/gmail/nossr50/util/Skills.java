@@ -80,6 +80,9 @@ public class Skills {
      * @param ability The ability to watch cooldowns for
      */
     public static void watchCooldown(Player player, PlayerProfile profile, AbilityType ability) {
+        if(player == null || profile == null || ability == null)
+            return;
+
         if (!profile.getAbilityInformed(ability) && cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
             profile.setAbilityInformed(ability, true);
             player.sendMessage(ability.getAbilityRefresh());

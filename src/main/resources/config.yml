@@ -133,6 +133,7 @@ Skills:
     Acrobatics:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
+        Prevent_AFK_Leveling: true
         Level_Cap: 0 
     Archery:
         Enabled_For_PVP: true
@@ -149,6 +150,7 @@ Skills:
         Level_Cap: 0
     Herbalism:
         Level_Cap: 0
+        Prevent_AFK_Leveling: true
         Green_Thumb:
             Cobble_To_Mossy: true
             CobbleWall_To_MossyWall: true
