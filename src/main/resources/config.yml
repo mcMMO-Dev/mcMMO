@@ -92,6 +92,14 @@ Fishing:
     Tier3: 400
     Tier4: 600
     Tier5: 800
+    
+Shake:
+  Chance:
+    Rank_1: 25
+    Rank_2: 40
+    Rank_3: 55
+    Rank_4: 60
+    Rank_5: 75
 
 #
 #  Settings for Abilities
