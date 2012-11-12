@@ -294,6 +294,14 @@ public class BlockListener implements Listener {
         Block block = event.getBlock();
         Material material = block.getType();
 
+        FakeBlockBreakEvent fakeEvent = new FakeBlockBreakEvent(block, player);
+        mcMMO.p.getServer().getPluginManager().callEvent(fakeEvent);
+
+        if(fakeEvent.isCancelled())
+            return;
+        else
+            fakeEvent.setCancelled(true);
+
         Config configInstance = Config.getInstance();
         Permissions permInstance = Permissions.getInstance();
 
