@@ -34,6 +34,7 @@ import com.gmail.nossr50.skills.gathering.Herbalism;
 import com.gmail.nossr50.skills.gathering.Mining;
 import com.gmail.nossr50.skills.gathering.WoodCutting;
 import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ItemChecks;
@@ -153,6 +154,9 @@ public class BlockListener implements Listener {
 
         if (id == configInstance.getRepairAnvilId() && configInstance.getRepairAnvilMessagesEnabled()) {
             Repair.placedAnvilCheck(player, id);
+        }
+        if (id == configInstance.getSalvageAnvilId() && configInstance.getRepairAnvilMessagesEnabled()) {
+            Salvage.placedAnvilCheck(player, id);
         }
     }
 

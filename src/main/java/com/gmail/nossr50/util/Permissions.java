@@ -212,6 +212,11 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.repair.stringrepair");
     }
 
+    public boolean salvage(Player player) {
+        return player.hasPermission("mcmmo.ability.repair.salvage");
+    }
+
+
     /*
      * MCMMO.ABILITY.UNARMED.*
      */

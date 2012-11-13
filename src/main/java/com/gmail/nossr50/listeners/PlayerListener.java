@@ -1,6 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
@@ -36,6 +37,7 @@ import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.gathering.BlastMining;
 import com.gmail.nossr50.skills.gathering.Fishing;
 import com.gmail.nossr50.skills.gathering.Herbalism;
+import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Item;
@@ -318,6 +320,15 @@ public class PlayerListener implements Listener {
             if (Permissions.getInstance().repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
                 if (mcMMO.repairManager.isRepairable(inHand)) {
                     mcMMO.repairManager.handleRepair(player, inHand);
+                    event.setCancelled(true);
+                    player.updateInventory();
+                }
+            }
+            /* SALVAGE CHECKS */
+            if (Permissions.getInstance().salvage(player) && block.getTypeId() == Config.getInstance().getSalvageAnvilId()) {
+                if (Salvage.isSalvageable(inHand)) {
+					final Location location = block.getLocation();
+                	Salvage.handleSalvage(player, location, inHand);
                     event.setCancelled(true);
                     player.updateInventory();
                 }

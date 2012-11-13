@@ -369,6 +369,7 @@ permissions:
             mcmmo.ability.repair.repairbonus: true
             mcmmo.ability.repair.repairmastery: true
             mcmmo.ability.repair.arcaneforging: true
+            mcmmo.ability.repair.salvage: true
             mcmmo.ability.repair.woodrepair: true
             mcmmo.ability.repair.stonerepair: true
             mcmmo.ability.repair.leatherrepair: true
@@ -386,6 +387,8 @@ permissions:
         description: Allows access to Repair Mastery
     mcmmo.ability.repair.arcaneforging:
         description: Allows access to the Arcane Forging ability
+    mcmmo.ability.repair.salvage:
+        description: Allows access to the Salvage ability
     mcmmo.ability.repair.woodrepair:
         description: Allows ability to repair Wood tools
     mcmmo.ability.repair.stonerepair:
