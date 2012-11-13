@@ -16,6 +16,7 @@ public class RepairCommand extends SkillCommand {
     private boolean canSuperRepair;
     private boolean canMasterRepair;
     private boolean canArcaneForge;
+    private boolean canSalvage;
     private boolean canRepairStone;
     private boolean canRepairIron;
     private boolean canRepairGold;
@@ -24,6 +25,7 @@ public class RepairCommand extends SkillCommand {
     private boolean canRepairLeather;
     private boolean canRepairWood;
 
+    private int salvageLevel;
     private int diamondLevel;
     private int goldLevel;
     private int ironLevel;
@@ -45,6 +47,8 @@ public class RepairCommand extends SkillCommand {
         goldLevel = (goldRepairable == null) ? 0 : goldRepairable.getMinimumLevel();
         ironLevel = (ironRepairable == null) ? 0 : ironRepairable.getMinimumLevel();
         stoneLevel = (stoneRepairable == null) ? 0 : stoneRepairable.getMinimumLevel();
+        
+        salvageLevel = Config.getInstance().getSalvageUnlockLevel();
 
         repairMasteryBonus = percent.format(skillValue / 500);
 
@@ -63,6 +67,7 @@ public class RepairCommand extends SkillCommand {
         canSuperRepair = permInstance.repairBonus(player);
         canMasterRepair = permInstance.repairMastery(player);
         canArcaneForge = permInstance.arcaneForging(player);
+        canSalvage = permInstance.salvage(player);
         canRepairDiamond = permInstance.diamondRepair(player);
         canRepairGold = permInstance.goldRepair(player);
         canRepairIron = permInstance.ironRepair(player);
@@ -74,7 +79,7 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return canArcaneForge || canRepairDiamond || canRepairGold || canRepairIron || canMasterRepair || canRepairStone || canSuperRepair || canRepairString || canRepairWood || canRepairLeather;
+        return canArcaneForge || canSalvage || canRepairDiamond || canRepairGold || canRepairIron || canMasterRepair || canRepairStone || canSuperRepair || canRepairString || canRepairWood || canRepairLeather;
     }
 
     @Override
@@ -105,6 +110,10 @@ public class RepairCommand extends SkillCommand {
 
         if (canRepairDiamond && diamondLevel > 0) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.6", new Object[] { diamondLevel }), LocaleLoader.getString("Repair.Effect.7") }));
+        }
+
+        if (canSalvage && salvageLevel > 0) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.16", new Object[] { salvageLevel }), LocaleLoader.getString("Repair.Effect.17") }));
         }
 
         if (canArcaneForge) {

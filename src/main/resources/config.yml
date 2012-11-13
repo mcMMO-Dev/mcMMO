@@ -172,6 +172,11 @@ Skills:
         Level_Cap: 0
         Anvil_Messages: true
         Anvil_ID: 42
+        Salvage_enabled: true
+        Salvage_Anvil_ID: 41
+        Salvage_UnlockLevel: 600
+        Salvage_tools: true
+        Salvage_armor: true
     Swords:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
