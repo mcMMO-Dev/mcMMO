@@ -120,6 +120,10 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.fishing.magic");
     }
 
+    public boolean fishermansDiet(Player player) {
+        return player.hasPermission("mcmmo.ability.fishing.fishermansdiet");
+    }
+
     /*
      * MCMMO.ABILITY.MINING.*
      */

@@ -261,10 +261,6 @@ public class EntityListener implements Listener {
             int currentFoodLevel = player.getFoodLevel();
             int newFoodLevel = event.getFoodLevel();
 
-            if (!Permissions.getInstance().farmersDiet(player)) {
-                return;
-            }
-
             /*
              * Some foods have 3 ranks
              * Some foods have 5 ranks
@@ -275,65 +271,97 @@ public class EntityListener implements Listener {
             if (newFoodLevel > currentFoodLevel) {
                 Material food = player.getItemInHand().getType();
                 int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
+                int fishLevel = profile.getSkillLevel(SkillType.FISHING);
                 int foodChange = newFoodLevel - currentFoodLevel;
                 int rankChange = 0;
+                boolean fish = false;
+                boolean herb = false;
 
                 switch (food) {
                 case BREAD:
                     /* BREAD RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
                     rankChange = 200;
+                    herb = true;
                     break;
 
                 case COOKIE:
                     /* COOKIE RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                     rankChange = 400;
+                    herb = true;
                     break;
 
                 case MELON:
                     /* MELON RESTORES  1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                     rankChange = 400;
+                    herb = true;
                     break;
 
                 case MUSHROOM_SOUP:
                     /* MUSHROOM SOUP RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                     rankChange = 200;
+                    herb = true;
                     break;
 
                 case CARROT_ITEM:
                     /* CARROT RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
                     rankChange = 200;
+                    herb = true;
                     break;
 
                 case POTATO_ITEM:
                     /* POTATO RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                     rankChange = 400;
+                    herb = true;
                     break;
 
                 case BAKED_POTATO:
                     /* BAKED POTATO RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
                     rankChange = 200;
+                    herb = true;
                     break;
 
                 case POISONOUS_POTATO:
                     /* POISONOUS POTATO RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                     rankChange = 400;
+                    herb = true;
                     break;
 
                 case GOLDEN_CARROT:
                     /* GOLDEN CARROT RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
                     rankChange = 200;
+                    herb = true;
                     break;
 
                 case PUMPKIN_PIE:
                     /* PUMPKIN PIE RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                     rankChange = 200;
+                    herb = true;
+                    break;
+
+                case RAW_FISH:
+                    /* RAW FISH RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                    rankChange = 400;
+                    fish = true;
+                    break;
+
+                case COOKED_FISH:
+                    /* COOKED FISH RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+                    rankChange = 200;
+                    fish = true;
                     break;
                 default:
                     return;
                 }
 
+                if (herb && !Permissions.getInstance().farmersDiet(player)) {
+                    return;
+                }
+                else if (fish && !Permissions.getInstance().fishermansDiet(player)) {
+                    return;
+                }
+
                 for (int i = 200; i <= 1000; i += rankChange) {
-                    if (herbLevel >= i) {
+                    if ((herb && herbLevel >= i) || (fish && fishLevel >= i)) {
                         foodChange++;
                     }
                 }
