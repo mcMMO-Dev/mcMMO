@@ -196,13 +196,76 @@ public class PlayerListener implements Listener {
             }   
 
             if (player.hasPermission("mcmmo.perks.xp.quadruple")) {
-                player.sendMessage(perkPrefix + ChatColor.DARK_AQUA + "Quadruple XP - Receive 4x XP.");
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 4 }) }));
             }
             else if (player.hasPermission("mcmmo.perks.xp.triple")) {
-                player.sendMessage(perkPrefix + ChatColor.DARK_AQUA + "Triple XP - Receive 3x XP.");
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 3 }) }));
+            }
+            else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 2.5 }) }));
             }
             else if (player.hasPermission("mcmmo.perks.xp.double")) {
-                player.sendMessage(perkPrefix + ChatColor.DARK_AQUA + "Double XP - Receive 2x XP.");
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 2 }) }));
+            }
+            else if (player.hasPermission("mcmmo.perks.xp.50percentboost")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 1.5 }) }));
+            }
+
+            if (player.hasPermission("mcmmo.perks.cooldowns.halved")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/2" }) }));
+            }
+            else if (player.hasPermission("mcmmo.perks.cooldowns.thirded")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/3" }) }));
+            }
+            else if (player.hasPermission("mcmmo.perks.cooldowns.quartered")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/4" }) }));
+            }
+
+            if (player.hasPermission("mcmmo.perks.activationtime.twelveseconds")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 12 }) }));
+            }
+            else if (player.hasPermission("mcmmo.perks.activationtime.eightseconds")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 8 }) }));
+            }
+            else if (player.hasPermission("mcmmo.perks.activationtime.fourseconds")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 4 }) }));
+            }
+
+            if (player.hasPermission("mcmmo.perks.lucky.acrobatics")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Acrobatics" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.archery")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Archery" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.axes")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Axes" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.excavation")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Excavation" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Fishing" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.herbalism")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Herbalism" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.mining")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Mining" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.repair")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Repair" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.swords")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Swords" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.taming")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Taming" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.unarmed")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Unarmed" }) }));
+            }
+            if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Woodcutting" }) }));
             }
 
             player.sendMessage(ChatColor.GOLD+"[mcMMO] " + ChatColor.GREEN + "http://www.mcmmo.info" + ChatColor.YELLOW + " - mcMMO Website & Forums"); //TODO: Locale
