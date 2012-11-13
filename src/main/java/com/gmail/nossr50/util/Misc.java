@@ -217,7 +217,7 @@ public class Misc {
      * @param is The item to drop
      * @param chance The percentage chance for the item to drop
      */
-    public static void randomDropItem(Location location, ItemStack is, double chance) {
+    public static void randomDropItem(Location location, ItemStack is, int chance) {
         if (random.nextInt(100) < chance) {
             dropItem(location, is);
         }
