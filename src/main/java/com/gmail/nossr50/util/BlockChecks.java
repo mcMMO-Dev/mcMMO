@@ -105,7 +105,7 @@ public class BlockChecks {
             return false;
 
         default:
-            if (block.getTypeId() == Config.getInstance().getRepairAnvilId() | block.getTypeId() == Config.getInstance().getSalvageAnvilId()) {
+            if (block.getTypeId() == Config.getInstance().getRepairAnvilId() || block.getTypeId() == Config.getInstance().getSalvageAnvilId()) {
                 return false;
             }
             else {
