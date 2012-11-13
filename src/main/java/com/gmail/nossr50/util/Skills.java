@@ -68,8 +68,21 @@ public class Skills {
      * @param cooldown The length of the cooldown
      * @return the number of seconds remaining before the cooldown expires
      */
-    public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown) {
-        return (int) (((deactivatedTimeStamp + (cooldown * TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / TIME_CONVERSION_FACTOR);
+    public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, Player player) {
+        int adjustedCooldown = cooldown;
+
+        //Reduced Cooldown Donor Perks
+        if (player.hasPermission("mcmmo.perks.cooldowns.halved")) {
+            adjustedCooldown = (int) (adjustedCooldown * 0.5);
+        }
+        else if (player.hasPermission("mcmmo.perks.cooldowns.thirded")) {
+            adjustedCooldown = (int) (adjustedCooldown * 0.66);
+        }
+        else if (player.hasPermission("mcmmo.perks.cooldowns.quartered")) {
+            adjustedCooldown = (int) (adjustedCooldown * 0.75);
+        }
+
+        return (int) (((deactivatedTimeStamp + (adjustedCooldown * TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / TIME_CONVERSION_FACTOR);
     }
 
     /**
@@ -130,7 +143,7 @@ public class Skills {
         if (ability.getPermissions(player) && tool.inHand(inHand) && !profile.getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
                 if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
                     return;
                 }
             }
@@ -417,7 +430,7 @@ public class Skills {
          */
         if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
             if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
                 return;
             }
         }
