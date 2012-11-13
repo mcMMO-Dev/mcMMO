@@ -57,9 +57,11 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event instanceof FakeEntityDamageByEntityEvent) {
+        if (event instanceof FakeEntityDamageByEntityEvent)
             return;
-        }
+
+        if(event.getDamage() <= 0)
+            return;
 
         Entity attacker = event.getDamager();
         Entity defender = event.getEntity();
