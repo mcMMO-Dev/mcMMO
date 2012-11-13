@@ -31,6 +31,7 @@ public class PlayerProfile {
     private boolean loaded;
 
     private boolean placedAnvil;
+    private boolean placedSalvageAnvil;
     private boolean partyChatMode, adminChatMode;
     private boolean godMode;
     private boolean greenTerraMode, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, skullSplitterMode, berserkMode;
@@ -491,7 +492,7 @@ public class PlayerProfile {
     }
 
     /*
-     * Anvil Placement
+     * Repair Anvil Placement
      */
 
     public void togglePlacedAnvil() {
@@ -500,6 +501,16 @@ public class PlayerProfile {
 
     public Boolean getPlacedAnvil() {
         return placedAnvil;
+    }
+    /*
+     * Salvage Anvil Placement
+     */
+    public void togglePlacedSalvageAnvil() {
+    	placedSalvageAnvil = !placedSalvageAnvil;
+    }
+
+    public Boolean getPlacedSalvageAnvil() {
+        return placedSalvageAnvil;
     }
 
     /*
