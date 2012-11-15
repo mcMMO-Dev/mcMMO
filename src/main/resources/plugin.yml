@@ -448,6 +448,9 @@ permissions:
             mcmmo.ability.herbalism.greenterra: true
             mcmmo.ability.herbalism.greenthumbblocks: true
             mcmmo.ability.herbalism.greenthumbwheat: true
+            mcmmo.ability.herbalism.greenthumbcarrots: true
+            mcmmo.ability.herbalism.greenthumbpotatoes: true
+            mcmmo.ability.herbalism.greenthumbnetherwart: true
             mcmmo.ability.herbalism.farmersdiet: true
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
@@ -457,6 +460,12 @@ permissions:
         description: Allows access to the Green Thumb ability for blocks
     mcmmo.ability.herbalism.greenthumbwheat:
         description: Allows access to the Green Thumb ability for wheat
+    mcmmo.ability.herbalism.greenthumbcarrots:
+        description: Allows access to the Green Thumb ability for carrots
+    mcmmo.ability.herbalism.greenthumbpotatoes:
+        description: Allows access to the Green Thumb ability for potatoes
+    mcmmo.ability.herbalism.greenthumbnetherwart:
+        description: Allows access to the Green Thumb ability for netherwart
     mcmmo.ability.herbalism.farmersdiet:
         description: Allows access to the Farmer's Diet ability
     mcmmo.ability.excavation.*:
