@@ -446,7 +446,7 @@ public class Herbalism {
             case CARROT:
                 Misc.dropItem(location, new ItemStack(Material.CARROT_ITEM));
                 Misc.randomDropItems(location, new ItemStack(Material.CARROT_ITEM), 50, 3);
-                inventory.removeItem(new ItemStack(Material.POTATO_ITEM));
+                inventory.removeItem(new ItemStack(Material.CARROT_ITEM));
                 break;
             case POTATO:
                 Misc.dropItem(location, new ItemStack(Material.POTATO_ITEM));
