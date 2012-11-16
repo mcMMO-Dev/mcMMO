@@ -208,7 +208,7 @@ public class HashChunkManager implements ChunkManager {
         if(world == null)
             return;
 
-        ChunkletUnloader.addToList(cx, cx, world);
+        ChunkletUnloader.addToList(cx, cz, world);
     }
 
     @Override

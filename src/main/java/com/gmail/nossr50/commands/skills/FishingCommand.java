@@ -10,10 +10,12 @@ public class FishingCommand extends SkillCommand {
     private int lootTier;
     private String magicChance;
     private String shakeChance;
+    private String fishermansDietRank;
 
     private boolean canTreasureHunt;
     private boolean canMagicHunt;
     private boolean canShake;
+    private boolean canFishermansDiet;
 
     public FishingCommand() {
         super(SkillType.FISHING);
@@ -23,7 +25,27 @@ public class FishingCommand extends SkillCommand {
     protected void dataCalculations() {
         lootTier = Fishing.getFishingLootTier(profile);
         magicChance = percent.format((float) lootTier / 15);
-        shakeChance = String.valueOf(Fishing.getShakeChance(lootTier));
+        int dropChance = Fishing.getShakeChance(lootTier);
+        if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
+            dropChance = (int) (dropChance * 1.25);
+        }
+        shakeChance = String.valueOf(dropChance);
+
+        if (skillValue >= 1000) {
+            fishermansDietRank = "5";
+        }
+        else if (skillValue >= 800) {
+            fishermansDietRank = "4";
+        }
+        else if (skillValue >= 600) {
+            fishermansDietRank = "3";
+        }
+        else if (skillValue >= 400) {
+            fishermansDietRank = "2";
+        }
+        else {
+            fishermansDietRank = "1";
+        }
     }
 
     @Override
@@ -31,6 +53,7 @@ public class FishingCommand extends SkillCommand {
         canTreasureHunt = permInstance.fishingTreasures(player);
         canMagicHunt = permInstance.fishingMagic(player);
         canShake = permInstance.shakeMob(player);
+        canFishermansDiet = permInstance.fishermansDiet(player);
     }
 
     @Override
@@ -50,6 +73,10 @@ public class FishingCommand extends SkillCommand {
 
         if (canShake) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Fishing.Effect.4"), LocaleLoader.getString("Fishing.Effect.5") }));
+        }
+
+        if (canFishermansDiet) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Fishing.Effect.6"), LocaleLoader.getString("Fishing.Effect.7") }));
         }
     }
 
@@ -75,6 +102,10 @@ public class FishingCommand extends SkillCommand {
             else {
                 player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }));
             }
+        }
+
+        if (canFishermansDiet) {
+            player.sendMessage(LocaleLoader.getString("Fishing.Ability.FD", new Object[] { fishermansDietRank }));
         }
     }
 }

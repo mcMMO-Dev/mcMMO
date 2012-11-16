@@ -267,7 +267,6 @@ public class Herbalism {
                 else if (mat == Material.POTATO) {
                     is = new ItemStack(Material.POTATO_ITEM, 1, (short) 0);
                 }
-
                 else {
                     is = new ItemStack(mat);
                 }
@@ -297,15 +296,13 @@ public class Herbalism {
 
                 case MELON_BLOCK:
                     if (configInstance.getMelonsDoubleDropsEnabled()) {
-                        Misc.dropItems(location, is, 3);
-                        Misc.randomDropItems(location, is, 50, 4);
+                        Misc.dropItem(location, is);
                     }
                     break;
 
                 case NETHER_WARTS:
                     if (configInstance.getNetherWartsDoubleDropsEnabled()) {
-                        Misc.dropItems(location, is, 2);
-                        Misc.randomDropItems(location, is, 50, 3);
+                        Misc.dropItem(location, is);
                     }
                     break;
 
@@ -449,7 +446,7 @@ public class Herbalism {
             case CARROT:
                 Misc.dropItem(location, new ItemStack(Material.CARROT_ITEM));
                 Misc.randomDropItems(location, new ItemStack(Material.CARROT_ITEM), 50, 3);
-                inventory.removeItem(new ItemStack(Material.POTATO_ITEM));
+                inventory.removeItem(new ItemStack(Material.CARROT_ITEM));
                 break;
             case POTATO:
                 Misc.dropItem(location, new ItemStack(Material.POTATO_ITEM));
