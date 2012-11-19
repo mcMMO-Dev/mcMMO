@@ -121,7 +121,7 @@ public class Misc {
         FakeBlockBreakEvent breakEvent = new FakeBlockBreakEvent(block, player);
         pluginManger.callEvent(breakEvent);
 
-        if (!damageEvent.isCancelled() || !breakEvent.isCancelled()) {
+        if (!damageEvent.isCancelled() && !breakEvent.isCancelled()) {
             return true;
         }
         else {
