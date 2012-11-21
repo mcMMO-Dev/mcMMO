@@ -53,7 +53,7 @@ public class Item {
                 player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
             }
             else if (!Skills.cooldownOver(profile.getRecentlyHurt(), 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
-                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(profile.getRecentlyHurt(), 60)}));
+                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(profile.getRecentlyHurt(), 60, player)}));
             }
             else if (amount <= Config.getInstance().getChimaeraCost()) {
                 player.sendMessage(LocaleLoader.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + Misc.prettyItemString(Config.getInstance().getChimaeraItemId()));

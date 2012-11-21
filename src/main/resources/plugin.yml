@@ -333,12 +333,15 @@ permissions:
             mcmmo.ability.fishing.shakemob: true
             mcmmo.ability.fishing.treasures: true
             mcmmo.ability.fishing.magic: true
+            mcmmo.ability.fishing.fishermansdiet: true
     mcmmo.ability.fishing.shakemob:
         description: Allows access to the Shake Mob ability
     mcmmo.ability.fishing.treasures:
         description: Allows treasure drops from Fishing
     mcmmo.ability.fishing.magic:
         description: Allows enchanted drops from Fishing
+    mcmmo.ability.fishing.fishermansdiet:
+        description: Allows access to the Fishermans's Diet ability
     mcmmo.ability.mining.*:
         description: Allows access to all Mining abilities
         children:
@@ -366,6 +369,7 @@ permissions:
             mcmmo.ability.repair.repairbonus: true
             mcmmo.ability.repair.repairmastery: true
             mcmmo.ability.repair.arcaneforging: true
+            mcmmo.ability.repair.salvage: true
             mcmmo.ability.repair.woodrepair: true
             mcmmo.ability.repair.stonerepair: true
             mcmmo.ability.repair.leatherrepair: true
@@ -383,6 +387,8 @@ permissions:
         description: Allows access to Repair Mastery
     mcmmo.ability.repair.arcaneforging:
         description: Allows access to the Arcane Forging ability
+    mcmmo.ability.repair.salvage:
+        description: Allows access to the Salvage ability
     mcmmo.ability.repair.woodrepair:
         description: Allows ability to repair Wood tools
     mcmmo.ability.repair.stonerepair:
@@ -442,6 +448,9 @@ permissions:
             mcmmo.ability.herbalism.greenterra: true
             mcmmo.ability.herbalism.greenthumbblocks: true
             mcmmo.ability.herbalism.greenthumbwheat: true
+            mcmmo.ability.herbalism.greenthumbcarrots: true
+            mcmmo.ability.herbalism.greenthumbpotatoes: true
+            mcmmo.ability.herbalism.greenthumbnetherwart: true
             mcmmo.ability.herbalism.farmersdiet: true
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
@@ -451,6 +460,12 @@ permissions:
         description: Allows access to the Green Thumb ability for blocks
     mcmmo.ability.herbalism.greenthumbwheat:
         description: Allows access to the Green Thumb ability for wheat
+    mcmmo.ability.herbalism.greenthumbcarrots:
+        description: Allows access to the Green Thumb ability for carrots
+    mcmmo.ability.herbalism.greenthumbpotatoes:
+        description: Allows access to the Green Thumb ability for potatoes
+    mcmmo.ability.herbalism.greenthumbnetherwart:
+        description: Allows access to the Green Thumb ability for netherwart
     mcmmo.ability.herbalism.farmersdiet:
         description: Allows access to the Farmer's Diet ability
     mcmmo.ability.excavation.*:

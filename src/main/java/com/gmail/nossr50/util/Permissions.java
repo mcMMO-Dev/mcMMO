@@ -120,6 +120,10 @@ public class Permissions {
         return player.hasPermission("mcmmo.ability.fishing.magic");
     }
 
+    public boolean fishermansDiet(Player player) {
+        return player.hasPermission("mcmmo.ability.fishing.fishermansdiet");
+    }
+
     /*
      * MCMMO.ABILITY.MINING.*
      */
@@ -207,6 +211,11 @@ public class Permissions {
     public boolean stringRepair(Player player) {
         return player.hasPermission("mcmmo.ability.repair.stringrepair");
     }
+
+    public boolean salvage(Player player) {
+        return player.hasPermission("mcmmo.ability.repair.salvage");
+    }
+
 
     /*
      * MCMMO.ABILITY.UNARMED.*

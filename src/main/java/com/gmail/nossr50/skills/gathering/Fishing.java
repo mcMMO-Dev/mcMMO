@@ -209,12 +209,12 @@ public class Fishing {
 
         final Player player = event.getPlayer();
         final PlayerProfile profile = Users.getProfile(player);
-    	int lootTier = getFishingLootTier(profile);
+        int lootTier = getFishingLootTier(profile);
 
         int dropChance = getShakeChance(lootTier);
         
         if (event.getPlayer().hasPermission("mcmmo.perks.lucky.fishing")) {
-        	dropChance = (int) (dropChance * 1.25); //With lucky perk on max level tier, its 100%
+            dropChance = (int) (dropChance * 1.25); //With lucky perk on max level tier, its 100%
         }
 
         final int DROP_CHANCE = random.nextInt(100);
@@ -226,200 +226,204 @@ public class Fishing {
 
         if (DROP_CHANCE < dropChance) {
 
-        	switch (type) {
-        	case BLAZE:
-        		Misc.dropItem(location, new ItemStack(Material.BLAZE_ROD));
-        		break;
+            switch (type) {
+            case BLAZE:
+                Misc.dropItem(location, new ItemStack(Material.BLAZE_ROD));
+                break;
 
-        	case CAVE_SPIDER:
-        		if (DROP_NUMBER > 50) {
-        			Misc.dropItem(location, new ItemStack(Material.SPIDER_EYE));
-        		} else {
-        			Misc.dropItem(location, new ItemStack(Material.STRING));
-        		}
-        		break;
+            case CAVE_SPIDER:
+                if (DROP_NUMBER > 50) {
+                    Misc.dropItem(location, new ItemStack(Material.SPIDER_EYE));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.STRING));
+                }
+                break;
 
-        	case CHICKEN:
-        		if (DROP_NUMBER > 66) {
-        			Misc.dropItem(location, new ItemStack(Material.FEATHER));
-        		} else if (DROP_NUMBER > 33) {
-        			Misc.dropItem(location, new ItemStack(Material.RAW_CHICKEN));
-        		} else {
-        			Misc.dropItem(location, new ItemStack(Material.EGG));
-        		}
-        		break;
+            case CHICKEN:
+                if (DROP_NUMBER > 66) {
+                    Misc.dropItem(location, new ItemStack(Material.FEATHER));
+                } else if (DROP_NUMBER > 33) {
+                    Misc.dropItem(location, new ItemStack(Material.RAW_CHICKEN));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.EGG));
+                }
+                break;
 
-        	case COW:
-        		if (DROP_NUMBER > 99) {
-        			Misc.dropItem(location, new ItemStack(Material.MILK_BUCKET));
-        		} else if (DROP_NUMBER > 50) {
-        			Misc.dropItem(location, new ItemStack(Material.LEATHER));
-        		} else {
-        			Misc.dropItem(location, new ItemStack(Material.RAW_BEEF));
-        		}
-        		break;
+            case COW:
+                if (DROP_NUMBER > 95) {
+                    Misc.dropItem(location, new ItemStack(Material.MILK_BUCKET));
+                } else if (DROP_NUMBER > 50) {
+                    Misc.dropItem(location, new ItemStack(Material.LEATHER));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.RAW_BEEF));
+                }
+                break;
 
-        	case CREEPER:
-        		if (DROP_NUMBER > 99) {
-        			Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 4));
-        		} else {
-        			Misc.dropItem(location, new ItemStack(Material.SULPHUR));
-        		}
-        		break;
+            case CREEPER:
+                if (DROP_NUMBER > 95) {
+                    Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 4));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.SULPHUR));
+                }
+                break;
 
-        	case ENDERMAN:
-        		Misc.dropItem(location, new ItemStack(Material.ENDER_PEARL));
-        		break;
+            case ENDERMAN:
+                Misc.dropItem(location, new ItemStack(Material.ENDER_PEARL));
+                break;
 
-        	case GHAST:
-        		if (DROP_NUMBER > 50) {
-        			Misc.dropItem(location, new ItemStack(Material.SULPHUR));
-        		} else {
-        			Misc.dropItem(location, new ItemStack(Material.GHAST_TEAR));
-        		}
-        		break;
+            case GHAST:
+                if (DROP_NUMBER > 50) {
+                    Misc.dropItem(location, new ItemStack(Material.SULPHUR));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.GHAST_TEAR));
+                }
+                break;
 
-        	case IRON_GOLEM:
-        		if (DROP_NUMBER > 99) {
-        			Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
-        		} else if (DROP_NUMBER > 90) {
-        			Misc.dropItem(location, new ItemStack(Material.IRON_INGOT));
-        		} else {
-        			Misc.dropItem(location, new ItemStack(Material.RED_ROSE));
-        		}
-        		break;
+            case IRON_GOLEM:
+                if (DROP_NUMBER > 95) {
+                    Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
+                } else if (DROP_NUMBER > 85) {
+                    Misc.dropItem(location, new ItemStack(Material.IRON_INGOT));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.RED_ROSE));
+                }
+                break;
 
-        	case MAGMA_CUBE:
-        		Misc.dropItem(location, new ItemStack(Material.MAGMA_CREAM));
-        		break;
+            case MAGMA_CUBE:
+                Misc.dropItem(location, new ItemStack(Material.MAGMA_CREAM));
+                break;
 
-        	case MUSHROOM_COW:
-        		if (DROP_NUMBER > 99) {
-        			Misc.dropItem(location, new ItemStack(Material.MILK_BUCKET));
-        		} else if (DROP_NUMBER > 98) {
-        			Misc.dropItem(location, new ItemStack(Material.MUSHROOM_SOUP));
-        		} else if (DROP_NUMBER > 66) {
-        			Misc.dropItem(location, new ItemStack(Material.LEATHER));
-        		} else if (DROP_NUMBER > 33) {
-        			Misc.dropItem(location, new ItemStack(Material.RAW_BEEF));
-        		} else {
-        			Misc.dropItems(location, new ItemStack(Material.RED_MUSHROOM), 3);
-        		}
-        		break;
+            case MUSHROOM_COW:
+                if (DROP_NUMBER > 95) {
+                    Misc.dropItem(location, new ItemStack(Material.MILK_BUCKET));
+                } else if (DROP_NUMBER > 90) {
+                    Misc.dropItem(location, new ItemStack(Material.MUSHROOM_SOUP));
+                } else if (DROP_NUMBER > 60) {
+                    Misc.dropItem(location, new ItemStack(Material.LEATHER));
+                } else if (DROP_NUMBER > 30) {
+                    Misc.dropItem(location, new ItemStack(Material.RAW_BEEF));
+                } else {
+                                Misc.dropItem(location, new ItemStack(Material.RED_MUSHROOM));
+                Misc.randomDropItems(location, new ItemStack(Material.RED_MUSHROOM), 50, 2);
+                }
+                break;
 
-        	case PIG:
-        		Misc.dropItem(location, new ItemStack(Material.PORK));
-        		break;
+            case PIG:
+                Misc.dropItem(location, new ItemStack(Material.PORK));
+                break;
 
-        	case PIG_ZOMBIE:
-        		if (DROP_NUMBER > 50) {
-        			Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));
-        		} else {
-        			Misc.dropItem(location, new ItemStack(Material.GOLD_NUGGET));
-        		}
-        		break;
+            case PIG_ZOMBIE:
+                if (DROP_NUMBER > 50) {
+                    Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.GOLD_NUGGET));
+                }
+                break;
 
-        	case SHEEP:
-        		final Sheep sheep = (Sheep) le;
+            case SHEEP:
+                final Sheep sheep = (Sheep) le;
 
-        		if (!sheep.isSheared()) {
-        			final Wool wool = new Wool();
-        			wool.setColor(sheep.getColor());
+                if (!sheep.isSheared()) {
+                    final Wool wool = new Wool();
+                    wool.setColor(sheep.getColor());
 
-        			final ItemStack theWool = wool.toItemStack();
-        			theWool.setAmount(1 + random.nextInt(6));
+                    final ItemStack theWool = wool.toItemStack();
+                    theWool.setAmount(1 + random.nextInt(6));
 
-        			Misc.dropItem(location, theWool);
-        			sheep.setSheared(true);
-        		}
-        		break;
+                    Misc.dropItem(location, theWool);
+                    sheep.setSheared(true);
+                }
+                break;
 
-        	case SKELETON:
-        		if (((CraftSkeleton) le).getHandle().getSkeletonType() == 1) {
-        			if (DROP_NUMBER > 97) {
-        				Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 1));
-        			} else if (DROP_NUMBER > 50) {
-        				Misc.dropItem(location, new ItemStack(Material.BONE));
-        			} else {
-        				Misc.dropItems(location, new ItemStack(Material.COAL), 3);
-        			}
-        		} else {
-        			if (DROP_NUMBER > 99) {
-        				Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM));
-        			} else if (DROP_NUMBER > 50) {
-        				Misc.dropItem(location, new ItemStack(Material.BONE));
-        			} else {
-        				Misc.dropItems(location, new ItemStack(Material.ARROW), 3);
-        			}
-        		}
-        		break;
+            case SKELETON:
+                if (((CraftSkeleton) le).getHandle().getSkeletonType() == 1) {
+                    if (DROP_NUMBER > 95) {
+                        Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 1));
+                    } else if (DROP_NUMBER > 50) {
+                        Misc.dropItem(location, new ItemStack(Material.BONE));
+                    } else {
+                        Misc.dropItem(location, new ItemStack(Material.COAL));
+                    Misc.randomDropItems(location, new ItemStack(Material.COAL), 50, 2);
+                    }
+                } else {
+                    if (DROP_NUMBER > 95) {
+                        Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM));
+                    } else if (DROP_NUMBER > 50) {
+                        Misc.dropItem(location, new ItemStack(Material.BONE));
+                    } else {
+                        Misc.dropItem(location, new ItemStack(Material.ARROW));
+                    Misc.randomDropItems(location, new ItemStack(Material.ARROW), 50, 2);
+                    }
+                }
+                break;
 
-        	case SLIME:
-        		Misc.dropItem(location, new ItemStack(Material.SLIME_BALL));
-        		break;
+            case SLIME:
+                Misc.dropItem(location, new ItemStack(Material.SLIME_BALL));
+                break;
 
-        	case SNOWMAN:
-        		if (DROP_NUMBER > 99) {
-        			Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
-        		} else {
-        			Misc.dropItems(location, new ItemStack(Material.SNOW_BALL), 5);
-        		}
-        		break;
+            case SNOWMAN:
+                if (DROP_NUMBER > 95) {
+                    Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.SNOW_BALL));
+                Misc.randomDropItems(location, new ItemStack(Material.SNOW_BALL), 50, 4);
+                }
+                break;
 
-        	case SPIDER:
-        		if (DROP_NUMBER > 50) {
-        			Misc.dropItem(location, new ItemStack(Material.SPIDER_EYE));
-        		} else {
-        			Misc.dropItem(location, new ItemStack(Material.STRING));
-        		}
-        		break;
+            case SPIDER:
+                if (DROP_NUMBER > 50) {
+                    Misc.dropItem(location, new ItemStack(Material.SPIDER_EYE));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.STRING));
+                }
+                break;
 
-        	case SQUID:
-        		Misc.dropItem(location, new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x0));
-        		break;
+            case SQUID:
+                Misc.dropItem(location, new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x0));
+                break;
 
-        	case WITCH:
-        		final int DROP_NUMBER_2 = random.nextInt(randomChance) + 1;
-        		if (DROP_NUMBER > 97) {
-        			if (DROP_NUMBER_2 > 66) {
-        				Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8197));
-        			} else if (DROP_NUMBER_2 > 33) {
-        				Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8195));
-        			} else {
-        				Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8194));
-        			}
-        		} else {
-        			if (DROP_NUMBER_2 > 88) {
-        				Misc.dropItem(location, new ItemStack(Material.GLASS_BOTTLE));
-        			} else if (DROP_NUMBER_2 > 75) {
-        				Misc.dropItem(location, new ItemStack(Material.GLOWSTONE_DUST));
-        			} else if (DROP_NUMBER_2 > 63) {
-        				Misc.dropItem(location, new ItemStack(Material.SULPHUR));
-        			} else if (DROP_NUMBER_2 > 50) {
-        				Misc.dropItem(location, new ItemStack(Material.REDSTONE));
-        			} else if (DROP_NUMBER_2 > 38) {
-        				Misc.dropItem(location, new ItemStack(Material.SPIDER_EYE));
-        			} else if (DROP_NUMBER_2 > 25) {
-        				Misc.dropItem(location, new ItemStack(Material.STICK));
-        			} else if (DROP_NUMBER_2 > 13) {
-        				Misc.dropItem(location, new ItemStack(Material.SUGAR));
-        			} else {
-        				Misc.dropItem(location, new ItemStack(Material.POTION));
-        			}
-        		}
-        		break;
+            case WITCH:
+                final int DROP_NUMBER_2 = random.nextInt(randomChance) + 1;
+                if (DROP_NUMBER > 95) {
+                    if (DROP_NUMBER_2 > 66) {
+                        Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8197));
+                    } else if (DROP_NUMBER_2 > 33) {
+                        Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8195));
+                    } else {
+                        Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8194));
+                    }
+                } else {
+                    if (DROP_NUMBER_2 > 88) {
+                        Misc.dropItem(location, new ItemStack(Material.GLASS_BOTTLE));
+                    } else if (DROP_NUMBER_2 > 75) {
+                        Misc.dropItem(location, new ItemStack(Material.GLOWSTONE_DUST));
+                    } else if (DROP_NUMBER_2 > 63) {
+                        Misc.dropItem(location, new ItemStack(Material.SULPHUR));
+                    } else if (DROP_NUMBER_2 > 50) {
+                        Misc.dropItem(location, new ItemStack(Material.REDSTONE));
+                    } else if (DROP_NUMBER_2 > 38) {
+                        Misc.dropItem(location, new ItemStack(Material.SPIDER_EYE));
+                    } else if (DROP_NUMBER_2 > 25) {
+                        Misc.dropItem(location, new ItemStack(Material.STICK));
+                    } else if (DROP_NUMBER_2 > 13) {
+                        Misc.dropItem(location, new ItemStack(Material.SUGAR));
+                    } else {
+                        Misc.dropItem(location, new ItemStack(Material.POTION));
+                    }
+                }
+                break;
 
-        	case ZOMBIE:
-        		if (DROP_NUMBER > 99) {
-        			Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 2));
-        		} else {
-        			Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));
-        		}
-        		break;
+            case ZOMBIE:
+                if (DROP_NUMBER > 95) {
+                    Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 2));
+                } else {
+                    Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));
+                }
+                break;
 
-        	default:
-        		break;
-        	}
+            default:
+                break;
+            }
         }
 
         Combat.dealDamage(le, 1);

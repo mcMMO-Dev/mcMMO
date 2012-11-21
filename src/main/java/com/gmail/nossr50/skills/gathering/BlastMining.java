@@ -292,7 +292,7 @@ public class BlastMining {
 
         /* Check Cooldown */
         if (!Skills.cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-            player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown()) + "s)");
+            player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
 
             return;
         }

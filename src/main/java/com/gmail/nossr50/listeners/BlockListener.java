@@ -34,6 +34,7 @@ import com.gmail.nossr50.skills.gathering.Herbalism;
 import com.gmail.nossr50.skills.gathering.Mining;
 import com.gmail.nossr50.skills.gathering.WoodCutting;
 import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ItemChecks;
@@ -153,6 +154,9 @@ public class BlockListener implements Listener {
 
         if (id == configInstance.getRepairAnvilId() && configInstance.getRepairAnvilMessagesEnabled()) {
             Repair.placedAnvilCheck(player, id);
+        }
+        if (id == configInstance.getSalvageAnvilId() && configInstance.getRepairAnvilMessagesEnabled()) {
+            Salvage.placedAnvilCheck(player, id);
         }
     }
 
@@ -293,6 +297,14 @@ public class BlockListener implements Listener {
         ItemStack inHand = player.getItemInHand();
         Block block = event.getBlock();
         Material material = block.getType();
+
+        FakeBlockBreakEvent fakeEvent = new FakeBlockBreakEvent(block, player);
+        mcMMO.p.getServer().getPluginManager().callEvent(fakeEvent);
+
+        if(fakeEvent.isCancelled())
+            return;
+        else
+            fakeEvent.setCancelled(true);
 
         Config configInstance = Config.getInstance();
         Permissions permInstance = Permissions.getInstance();
