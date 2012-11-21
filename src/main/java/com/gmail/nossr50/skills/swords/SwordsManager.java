@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.swords;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Combat;
@@ -41,13 +42,16 @@ public class SwordsManager {
         if (Combat.shouldBeAffected(player, defender)) {
             BleedEventHandler eventHandler = new BleedEventHandler(this, defender);
 
-            int randomChance = 1000;
+            int bleedChanceMax = AdvancedConfig.getInstance().getBleedChanceMax();
+            int bleedMaxLevel = AdvancedConfig.getInstance().getBleedMaxBonusLevel();
+            int randomChance = 100;
 
             if (player.hasPermission("mcmmo.perks.lucky.swords")) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            if (Swords.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
+            final float chance = (bleedChanceMax / bleedMaxLevel) * skillLevel;
+            if (chance > Swords.getRandom().nextInt(randomChance)) {
                 eventHandler.addBleedTicks();
                 eventHandler.sendAbilityMessages();
             }
@@ -69,14 +73,16 @@ public class SwordsManager {
 
         if (eventHandler.isHoldingSword()) {
             eventHandler.calculateSkillModifier();
-
-            int randomChance = 2000;
+            int counterChanceMax = AdvancedConfig.getInstance().getCounterChanceMax();
+            int counterMaxLevel = AdvancedConfig.getInstance().getCounterMaxBonusLevel();
+            int randomChance = 100;
 
             if (player.hasPermission("mcmmo.perks.lucky.swords")) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            if (Swords.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
+            final float chance = (counterChanceMax / counterMaxLevel) * skillLevel;
+            if (chance > Swords.getRandom().nextInt(randomChance)) {
                 eventHandler.dealDamage();
                 eventHandler.sendAbilityMessages();
             }

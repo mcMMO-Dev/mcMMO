@@ -1,14 +1,28 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.text.DecimalFormat;
+
 import com.gmail.nossr50.commands.SkillCommand;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class SwordsCommand extends SkillCommand {
+	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+	
     private String counterAttackChance;
     private String bleedLength;
     private String bleedChance;
     private String serratedStrikesLength;
+
+    private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
+    private float bleedChanceMax = advancedConfig.getBleedChanceMax();
+    private float bleedMaxLevel = advancedConfig.getBleedMaxBonusLevel();
+    private int bleedMaxTicks = advancedConfig.getBleedMaxTicks();
+    private int bleedBaseTicks = advancedConfig.getBleedBaseTicks();
+    private float counterChanceMax = advancedConfig.getCounterChanceMax();
+    private float counterMaxLevel = advancedConfig.getCounterMaxBonusLevel();
+    private int serratedBleedTicks = advancedConfig.getSerratedStrikesTicks();
 
     private boolean canCounter;
     private boolean canSerratedStrike;
@@ -20,23 +34,19 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        serratedStrikesLength = String.valueOf(2 + ((int) skillValue / 50));
+		DecimalFormat df = new DecimalFormat("#.0");
+        serratedStrikesLength = String.valueOf(2 + ((int) skillValue / abilityLengthIncreaseLevel));
+        
+        if (skillValue >= bleedMaxLevel) bleedLength = String.valueOf(bleedMaxTicks);
+        else bleedLength = String.valueOf(bleedBaseTicks);
 
-        if (skillValue >= 750) {
-            bleedLength = "3";
-            bleedChance = "75.00%";
-            counterAttackChance = "30.00%";
-        }
-        else if (skillValue >= 600) {
-            bleedLength = "2";
-            bleedChance = percent.format(skillValue / 1000);
-            counterAttackChance = "30.00%";
-        }
-        else {
-            bleedLength = "2";
-            bleedChance = percent.format(skillValue / 1000);
-            counterAttackChance = percent.format(skillValue / 2000);
-        }
+		if(skillValue >= bleedMaxLevel) bleedChance = df.format(bleedChanceMax);
+		else bleedChance = df.format((bleedChanceMax / bleedMaxLevel) * skillValue);
+        
+		if(skillValue >= counterMaxLevel) counterAttackChance = df.format(counterChanceMax);
+		else counterAttackChance = df.format((counterChanceMax / counterMaxLevel) * skillValue);
+		
+		serratedStrikesLength = String.valueOf(serratedBleedTicks);
     }
 
     @Override

@@ -1,14 +1,18 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.commands.SkillCommand;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.gathering.Fishing;
 
 public class FishingCommand extends SkillCommand {
+
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    
     private int lootTier;
     private String magicChance;
+    private int shakeUnlockLevel;
     private String shakeChance;
 
     private boolean canTreasureHunt;
@@ -23,6 +27,7 @@ public class FishingCommand extends SkillCommand {
     protected void dataCalculations() {
         lootTier = Fishing.getFishingLootTier(profile);
         magicChance = percent.format((float) lootTier / 15);
+        shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
         shakeChance = String.valueOf(Fishing.getShakeChance(lootTier));
     }
 
@@ -69,8 +74,8 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canShake) {
-            if (skillValue < 150) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0") }));
+            if (skillValue < advancedConfig.getShakeUnlockLevel()) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0", new Object[] { shakeUnlockLevel }) }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }));

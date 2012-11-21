@@ -1,14 +1,26 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.text.DecimalFormat;
+
 import com.gmail.nossr50.commands.SkillCommand;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class UnarmedCommand extends SkillCommand {
+	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String berserkLength;
     private String deflectChance;
     private String disarmChance;
     private String ironArmBonus;
+
+    private float disarmChanceMax = advancedConfig.getDisarmChanceMax();
+    private float disarmMaxLevel = advancedConfig.getDisarmMaxBonusLevel();
+    private float deflectChanceMax = advancedConfig.getDeflectChanceMax();
+    private float deflectMaxLevel = advancedConfig.getDeflectMaxBonusLevel();
+    private float ironArmMaxBonus = advancedConfig.getIronArmBonus();
+    private int ironArmIncreaseLevel = advancedConfig.getIronArmIncreaseLevel();
+	private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private boolean canBerserk;
     private boolean canDisarm;
@@ -21,23 +33,18 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        berserkLength = String.valueOf(2 + ((int) skillValue / 50));
+		DecimalFormat df = new DecimalFormat("#.0");
+        berserkLength = String.valueOf(2 + ((int) skillValue / abilityLengthIncreaseLevel));
 
-        if (skillValue >= 1000) {
-            disarmChance = "33.33%";
-            deflectChance = "50.00%";
-            ironArmBonus = "8";
-        }
-        else if (skillValue >= 250) {
-            disarmChance = percent.format(skillValue / 3000);
-            deflectChance = percent.format(skillValue / 2000);
-            ironArmBonus = "8";
-        }
-        else {
-            disarmChance = percent.format(skillValue / 3000);
-            deflectChance = percent.format(skillValue / 2000);
-            ironArmBonus = String.valueOf(3 + ((int) skillValue / 50));
-        }    }
+        if(skillValue >= disarmMaxLevel) disarmChance = df.format(disarmChanceMax);
+		else disarmChance = df.format((disarmChanceMax / disarmMaxLevel) * skillValue);
+        
+        if(skillValue >= deflectMaxLevel) deflectChance = df.format(deflectChanceMax);
+        else deflectChance = df.format((deflectChanceMax / deflectMaxLevel) * skillValue);
+
+        if (skillValue >= 250) ironArmBonus = String.valueOf(ironArmMaxBonus);
+        else ironArmBonus = String.valueOf(3 + ((int) skillValue / ironArmIncreaseLevel));
+    }
 
     @Override
     protected void permissionsCheck() {

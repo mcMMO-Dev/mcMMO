@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.general.XprateCommand;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -46,6 +47,7 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class PlayerListener implements Listener {
+    
     private final mcMMO plugin;
 
     public PlayerListener(final mcMMO plugin) {
@@ -91,6 +93,8 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
+    	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+        int shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
         Player player = event.getPlayer();
         
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
@@ -108,7 +112,7 @@ public class PlayerListener implements Listener {
                     return;
                 }
 
-                if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) >= 150 && Permissions.getInstance().shakeMob(player)) {
+                if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) >= shakeUnlockLevel && Permissions.getInstance().shakeMob(player)) {
                     Fishing.shakeMob(event);
                 }
                 break;

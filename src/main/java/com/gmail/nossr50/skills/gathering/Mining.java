@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -26,6 +27,7 @@ import com.gmail.nossr50.util.Users;
 
 public class Mining {
     private static Random random = new Random();
+	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     /**
      * Handle double drops when using Silk Touch.
@@ -320,17 +322,20 @@ public class Mining {
 
         miningXP(player, block);
 
-        final int MAX_BONUS_LEVEL = 1000;
+        final int MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
+        int	MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
+        
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        int randomChance = 1000;
+        int randomChance = 100;
+        int chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillLevel;
 
         if (player.hasPermission("mcmmo.perks.lucky.mining")) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (random.nextInt(randomChance) <= skillCheck && Permissions.getInstance().miningDoubleDrops(player)) {
+        if (chance > random.nextInt(randomChance) && Permissions.getInstance().miningDoubleDrops(player)) {
             if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
                 silkTouchDrops(block);
             }

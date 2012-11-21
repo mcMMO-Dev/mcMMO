@@ -12,6 +12,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -26,6 +27,13 @@ public class Repair {
     private static Random random = new Random();
     private static Config configInstance = Config.getInstance();
     private static Permissions permInstance = Permissions.getInstance();
+
+	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+
+	private static int repairMasteryChanceMax = advancedConfig.getRepairMasteryChanceMax();
+	private static int repairMasteryMaxBonusLevel = advancedConfig.getRepairMasteryMaxLevel();
+	private static int superRepairChanceMax = advancedConfig.getSuperRepairChanceMax();
+	private static int superRepairMaxBonusLevel = advancedConfig.getSuperRepairMaxLevel();
 
     /**
      * Handle the XP gain for repair events.
@@ -198,7 +206,10 @@ public class Repair {
      * @return The final amount of durability repaired to the item
      */
     protected static short repairCalculate(Player player, int skillLevel, short durability, int repairAmount) {
-        float bonus = (float) skillLevel / 500;
+//        float bonus = (float) skillLevel / 500;
+    	float bonus;
+		if(skillLevel >= repairMasteryMaxBonusLevel) bonus = repairMasteryChanceMax;
+		else bonus = (repairMasteryChanceMax / repairMasteryMaxBonusLevel) * skillLevel;
 
         if (permInstance.repairMastery(player)) {
             bonus = (repairAmount * bonus);
@@ -225,21 +236,21 @@ public class Repair {
      * @return true if bonus granted, false otherwise
      */
     public static boolean checkPlayerProcRepair(Player player) {
-        final int MAX_BONUS_LEVEL = 1000;
+    	final int MAX_CHANCE = superRepairChanceMax;
+        final int MAX_BONUS_LEVEL = superRepairMaxBonusLevel;
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
-        int randomChance = 1000;
+        int randomChance = 100;
+        int chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillLevel;
+        if (skillLevel >= MAX_BONUS_LEVEL) chance = MAX_CHANCE;
 
-        if (player.hasPermission("mcmmo.perks.lucky.repair")) {
-            randomChance = (int) (randomChance * 0.75);
+        if (player.hasPermission("mcmmo.perks.lucky.repair")) randomChance = (int) (randomChance * 0.75);
+        
+        if (chance > random.nextInt(randomChance) && permInstance.repairBonus(player)){
+        	player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
+        	return true;
         }
-
-        if ((skillLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= skillLevel) && permInstance.repairBonus(player)) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
-            return true;
-        }
-
         return false;
     }
 

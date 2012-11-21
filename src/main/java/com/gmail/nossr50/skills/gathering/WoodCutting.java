@@ -14,6 +14,7 @@ import org.bukkit.material.Tree;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -31,6 +32,7 @@ import com.gmail.nossr50.util.Users;
 
 public class WoodCutting {
 
+	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private static Random random = new Random();
 
     /**
@@ -327,7 +329,9 @@ public class WoodCutting {
      * @param block The block being broken
      */
     private static void woodCuttingProcCheck(Player player, Block block) {
-        final int MAX_SKILL_LEVEL = 1000;
+
+    	final int MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
+        final int MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING);
         byte type = block.getData();
@@ -340,13 +344,14 @@ public class WoodCutting {
 
         Material mat = Material.getMaterial(block.getTypeId());
 
-        int randomChance = 1000;
+        int randomChance = 100;
+        int chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillLevel;
 
         if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if ((skillLevel > MAX_SKILL_LEVEL || random.nextInt(randomChance) <= skillLevel) && Permissions.getInstance().woodcuttingDoubleDrops(player)) {
+        if (chance > random.nextInt(randomChance) && Permissions.getInstance().woodcuttingDoubleDrops(player)) {
             Config configInstance = Config.getInstance();
             ItemStack item;
             Location location;
