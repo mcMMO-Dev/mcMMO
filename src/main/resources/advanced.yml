@@ -1,0 +1,116 @@
+#
+#  Advanced configuration
+#  
+#  For advanced users only! There is no need to change anything here. 
+#
+#  You can customize almost every aspect of every skill here.  
+#  Its mainly here if you've changed "Experience.Formula.Curve_Modifier"
+#  Configure at what level you get better with certain abilities.
+#
+#####
+
+#
+#  Settings for the Skills
+###
+Skills:
+    General:
+        Ability_IncreaseLevel: 50
+    Acrobatics:
+        Dodge_ChanceMax: 20
+        Dodge_MaxBonusLevel: 800
+        Roll_ChanceMax: 100
+        Roll_MaxBonusLevel: 1000
+        GracefulRoll_ChanceMax: 100
+        GracefulRoll_MaxBonusLevel: 500
+        Dodge_XP_Modifier: 120
+        Roll_XP_Modifier: 80
+        Fall_XP_Modifier: 120
+    Archery:
+        SkillShot_IncreaseLevel: 50
+        SkillShot_IncreasePercentage: 0.1D
+        SkillShot_MaxBonus: 2.0D
+        Daze_MaxChance: 50
+        Daze_MaxBonusLevel: 1000
+        Daze_Modifier: 4
+        Retrieve_MaxBonus: 100
+        Retrieve_MaxBonusLevel: 1000
+    Axes:
+        DamageIncrease_MaxBonus: 4
+        DamageIncrease_MaxBonusLevel: 200
+        AxesCritical_MaxChance: 37.50
+        AxesCritical_MaxBonusLevel: 750
+        AxesCritical_PVP_Modifier: 1.5
+        AxesCritical_PVE_Modifier: 2
+        GreaterImpact_Chance: 25
+        GreaterImpact_IncreaseLevel: 50
+        GreaterImpact_KnockbackModifier: 1.5
+        GreaterImpact_BonusDamage: 2
+    Fishing:
+        Shake_UnlockLevel: 150
+        Enchantment_Chance: 10
+    Herbalism:
+        Food_RankChange: 200
+        GreenThumb_StageChange: 200
+        GreenThumb_ChanceMax: 100
+        GreenThumb_MaxBonusLevel: 1500
+        DoubleDrops_ChanceMax: 100
+        DoubleDrops_MaxBonusLevel: 1000
+    Mining:
+        DoubleDrops_ChanceMax: 100
+        DoubleDrops_MaxBonusLevel: 1000
+        BlastMining_Rank1: 125
+        BlastMining_Rank2: 250
+        BlastMining_Rank3: 375
+        BlastMining_Rank4: 500
+        BlastMining_Rank5: 625
+        BlastMining_Rank6: 750
+        BlastMining_Rank7: 875
+        BlastMining_Rank8: 1000
+    Repair:
+        RepairMastery_ChanceMax: 200
+        RepairMastery_MaxBonusLevel: 1000
+        SuperRepair_ChanceMax: 100
+        SuperRepair_MaxBonusLevel: 1000
+    Swords:
+        Bleed_ChanceMax: 75
+        Bleed_MaxBonusLevel: 750
+        Bleed_MaxTicks: 3
+        Bleed_BaseTicks: 2
+        CounterAttack_ChanceMax: 30
+        CounterAttack_MaxBonusLevel: 600
+        Counter_DamageModifier: 2
+        SerratedStrikes_DamageModifier: 4
+        SerratedStrikes_BleedTicks: 5
+    Taming:
+        Gore_ChanceMax: 100
+        Gore_MaxBonusLevel: 1000
+        Gore_BleedTicks: 2
+        Gore_Modifier: 2
+        FastFood_UnlockLevel: 50
+        FastFood_Chance: 50
+        EnvironmentallyAware_UnlockLevel: 100
+        ThickFur_UnlockLevel: 250
+        ThickFur_Modifier: 2
+        ShockProof_UnlockLevel: 500
+        ShockProof_Modifier: 6
+        SharpenedClaws_UnlockLevel: 750
+        SharpenedClaws_Bonus: 2
+    Unarmed:
+        Disarm_ChanceMax: 33
+        Disarm_MaxBonusLevel: 1000
+        Deflect_ChanceMax: 50
+        Deflect_MaxBonusLevel: 1000
+        IronGrip_ChanceMax: 100
+        IronGrip_MaxBonusLevel: 1000
+        IronArmBonus: 8
+        IronArm_IncreaseLevel: 50
+    Woodcutting:
+        LeafBlower_UnlockLevel: 100
+        DoubleDrops_ChanceMax: 100
+        DoubleDrops_MaxBonusLevel: 1000
+Spout:
+    Notifications:
+        Tier1: 200
+        Tier2: 400
+        Tier3: 600
+        Tier4: 800

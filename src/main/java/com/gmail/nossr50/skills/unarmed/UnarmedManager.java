@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.unarmed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Permissions;
@@ -42,13 +43,16 @@ public class UnarmedManager {
         if (eventHandler.isHoldingItem()) {
             eventHandler.calculateSkillModifier();
 
-            int randomChance = 3000;
+            int disarmChanceMax = AdvancedConfig.getInstance().getDisarmChanceMax();
+            int disarmMaxLevel = AdvancedConfig.getInstance().getDisarmMaxBonusLevel();
+            int randomChance = 100;
 
             if (player.hasPermission("mcmmo.perks.lucky.unarmed")) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            if (Unarmed.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
+            final float chance = (disarmChanceMax / disarmMaxLevel) * skillLevel;
+            if (chance > Unarmed.getRandom().nextInt(randomChance)) {
                 if (!hasIronGrip(defender)) {
                     eventHandler.sendAbilityMessage();
                     eventHandler.handleDisarm();
@@ -76,13 +80,16 @@ public class UnarmedManager {
 
         DeflectEventHandler eventHandler = new DeflectEventHandler(this, event);
 
-        int randomChance = 2000;
-
+        int deflectChanceMax = AdvancedConfig.getInstance().getDeflectChanceMax();
+        int deflectMaxLevel = AdvancedConfig.getInstance().getDeflectMaxBonusLevel();
+        int randomChance = 100;
+        
         if (player.hasPermission("mcmmo.perks.lucky.unarmed")) {
             randomChance = (int) (randomChance * 0.75);
         }
-
-        if (Unarmed.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
+        
+        final float chance = (deflectChanceMax / deflectMaxLevel) * skillLevel;
+        if (chance > Unarmed.getRandom().nextInt(randomChance)) {
             eventHandler.cancelEvent();
             eventHandler.sendAbilityMessage();
         }
@@ -129,13 +136,16 @@ public class UnarmedManager {
 
         IronGripEventHandler eventHandler = new IronGripEventHandler(this, defender);
 
-        int randomChance = 1000;
+        int ironGripChanceMax = AdvancedConfig.getInstance().getIronGripChanceMax();
+        int ironGripMaxLevel = AdvancedConfig.getInstance().getIronGripMaxBonusLevel();
+        int randomChance = 100;
 
         if (defender.hasPermission("mcmmo.perks.lucky.unarmed")) {
             randomChance = (int) (randomChance * 0.75);
         }
-
-        if (Unarmed.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
+        
+        final float chance = (ironGripChanceMax / ironGripMaxLevel) * skillLevel;
+        if (chance > Unarmed.getRandom().nextInt(randomChance)) {
             eventHandler.sendAbilityMessages();
             return true;
         }

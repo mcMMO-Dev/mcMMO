@@ -4,17 +4,25 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class ArcheryManager {
+	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+	
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
     private Permissions permissionsInstance;
 
+	private float dazeBonusMax = advancedConfig.getDazeBonusMax();
+	private float dazeMaxBonusLevel = advancedConfig.getDazeMaxBonusLevel();
+	private float retrieveBonusMax = advancedConfig.getRetrieveBonusMax();
+	private float retrieveMaxBonusLevel = advancedConfig.getRetrieveMaxBonusLevel();
+	
     public ArcheryManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
@@ -45,13 +53,12 @@ public class ArcheryManager {
 
         ArrowTrackingEventHandler eventHandler = new ArrowTrackingEventHandler(this, livingEntity);
 
-        int randomChance = 1000;
-
+        int randomChance = 100;
         if (player.hasPermission("mcmmo.perks.lucky.archery")) {
             randomChance = (int) (randomChance * 0.75);
         }
-
-        if (Archery.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
+        final float chance = (retrieveBonusMax / retrieveMaxBonusLevel) * skillLevel;
+        if (chance > Archery.getRandom().nextInt(randomChance)) {
             eventHandler.addToTracker();
         }
     }
@@ -74,16 +81,17 @@ public class ArcheryManager {
         }
 
         DazeEventHandler eventHandler = new DazeEventHandler(this, event, defender);
-
-        int randomChance = 2000;
-
+        
+        int randomChance = 100;
+        
         if (player.hasPermission("mcmmo.perks.lucky.archery")) {
             randomChance = (int) (randomChance * 0.75);
         }
-
-        if (Archery.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
-            eventHandler.handleDazeEffect();
-            eventHandler.sendAbilityMessages();
+        
+        final float chance = (dazeBonusMax / dazeMaxBonusLevel) * skillLevel;
+        if (chance > Archery.getRandom().nextInt(randomChance)) {
+        	eventHandler.handleDazeEffect();
+        	eventHandler.sendAbilityMessages();
         }
     }
 

@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -101,14 +102,17 @@ public class TamingManager {
         }
 
         GoreEventHandler eventHandler = new GoreEventHandler(this, event);
-
-        int randomChance = 1000;
+        
+        int goreChanceMax = AdvancedConfig.getInstance().getGoreChanceMax();
+        int goreMaxLevel = AdvancedConfig.getInstance().getGoreMaxBonusLevel();
+        int randomChance = 100;
 
         if (player.hasPermission("mcmmo.perks.lucky.taming")) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (Taming.getRandom().nextInt(randomChance) < eventHandler.skillModifier) {
+        final float chance = (goreChanceMax / goreMaxLevel) * skillLevel;
+        if (chance > Taming.getRandom().nextInt(randomChance)) {
             eventHandler.modifyEventDamage();
             eventHandler.applyBleed();
             eventHandler.sendAbilityMessage();

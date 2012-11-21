@@ -20,6 +20,7 @@ import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -29,6 +30,7 @@ import com.gmail.nossr50.util.Users;
 
 public class SpoutStuff {
     private static mcMMO plugin = mcMMO.p;
+	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     public final static String spoutDirectory = mcMMO.getMainDirectory() + "Resources" + File.separator;
     public final static String hudDirectory = spoutDirectory + "HUD" + File.separator;
@@ -548,16 +550,16 @@ public class SpoutStuff {
      * @return the notification tier of the skill
      */
     private static Integer getNotificationTier(Integer level) {
-        if (level >= 800) {
+        if (level >= advancedConfig.getSpoutNotificationTier4()) {
             return 5;
         }
-        else if (level >= 600) {
+        else if (level >= advancedConfig.getSpoutNotificationTier3()) {
             return 4;
         }
-        else if (level >= 400) {
+        else if (level >= advancedConfig.getSpoutNotificationTier2()) {
             return 3;
         }
-        else if (level >= 200) {
+        else if (level >= advancedConfig.getSpoutNotificationTier1()) {
             return 2;
         }
         else {

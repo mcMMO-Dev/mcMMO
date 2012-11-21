@@ -51,6 +51,7 @@ import com.gmail.nossr50.commands.skills.UnarmedCommand;
 import com.gmail.nossr50.commands.skills.WoodcuttingCommand;
 import com.gmail.nossr50.commands.spout.MchudCommand;
 import com.gmail.nossr50.commands.spout.XplockCommand;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.TreasuresConfig;
@@ -125,6 +126,7 @@ public class mcMMO extends JavaPlugin {
         Config configInstance = Config.getInstance();
         TreasuresConfig.getInstance();
         HiddenConfig.getInstance();
+        AdvancedConfig.getInstance();
 
         List<Repairable> repairables = new ArrayList<Repairable>();
 

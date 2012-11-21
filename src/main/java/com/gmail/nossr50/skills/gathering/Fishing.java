@@ -19,6 +19,7 @@ import org.bukkit.material.Wool;
 
 import org.bukkit.craftbukkit.entity.CraftSkeleton;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -35,6 +36,7 @@ import com.gmail.nossr50.util.Users;
 public class Fishing {
 
     private static Random random = new Random();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     /**
      * Get the player's current fishing loot tier.
@@ -147,7 +149,7 @@ public class Fishing {
         Item theCatch = (Item) event.getCaught();
 
         if (theCatch.getItemStack().getType() != Material.RAW_FISH) {
-            final int ENCHANTMENT_CHANCE = 10;
+            final int ENCHANTMENT_CHANCE = advancedConfig.getFishingEnchantmentChance();
             boolean enchanted = false;
             ItemStack fishingResults = theCatch.getItemStack();
 
