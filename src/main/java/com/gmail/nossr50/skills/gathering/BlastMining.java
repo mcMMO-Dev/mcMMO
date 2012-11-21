@@ -17,6 +17,7 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -27,9 +28,18 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class BlastMining {
+	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     private static Random random = new Random();
-
+    
+	private static int blastMiningRank1 = advancedConfig.getBlastMiningRank1();
+	private static int blastMiningRank2 = advancedConfig.getBlastMiningRank2();
+	private static int blastMiningRank3 = advancedConfig.getBlastMiningRank3();
+	private static int blastMiningRank4 = advancedConfig.getBlastMiningRank4();
+	private static int blastMiningRank5 = advancedConfig.getBlastMiningRank5();
+	private static int blastMiningRank6 = advancedConfig.getBlastMiningRank6();
+	private static int blastMiningRank7 = advancedConfig.getBlastMiningRank7();
+	private static int blastMiningRank8 = advancedConfig.getBlastMiningRank8();
     /**
      * Handler for what blocks drop from the explosion.
      *
@@ -85,14 +95,14 @@ public class BlastMining {
         if(player == null)
             return;
 
-        final int RANK_1_LEVEL = 125;
-        final int RANK_2_LEVEL = 250;
-        final int RANK_3_LEVEL = 375;
-        final int RANK_4_LEVEL = 500;
-        final int RANK_5_LEVEL = 625;
-        final int RANK_6_LEVEL = 750;
-        final int RANK_7_LEVEL = 875;
-        final int RANK_8_LEVEL = 1000;
+        final int RANK_1_LEVEL = blastMiningRank1;
+        final int RANK_2_LEVEL = blastMiningRank2;
+        final int RANK_3_LEVEL = blastMiningRank3;
+        final int RANK_4_LEVEL = blastMiningRank4;
+        final int RANK_5_LEVEL = blastMiningRank5;
+        final int RANK_6_LEVEL = blastMiningRank6;
+        final int RANK_7_LEVEL = blastMiningRank7;
+        final int RANK_8_LEVEL = blastMiningRank8;
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
         float yield = event.getYield();
@@ -178,10 +188,10 @@ public class BlastMining {
         if(player == null)
             return;
 
-        final int RANK_1_LEVEL = 250;
-        final int RANK_2_LEVEL = 500;
-        final int RANK_3_LEVEL = 750;
-        final int RANK_4_LEVEL = 1000;
+        final int RANK_1_LEVEL = blastMiningRank2;
+        final int RANK_2_LEVEL = blastMiningRank4;
+        final int RANK_3_LEVEL = blastMiningRank6;
+        final int RANK_4_LEVEL = blastMiningRank8;
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
         float radius = event.getRadius();
@@ -219,9 +229,9 @@ public class BlastMining {
         if(player == null)
             return;
 
-        final int RANK_1_LEVEL = 500;
-        final int RANK_2_LEVEL = 750;
-        final int RANK_3_LEVEL = 1000;
+        final int RANK_1_LEVEL = blastMiningRank4;
+        final int RANK_2_LEVEL = blastMiningRank6;
+        final int RANK_3_LEVEL = blastMiningRank8;
 
         int skill = Users.getProfile(player).getSkillLevel(SkillType.MINING);
         int damage = event.getDamage();

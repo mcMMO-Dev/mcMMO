@@ -26,6 +26,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -254,6 +255,7 @@ public class EntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.LOW)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
+    	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             
@@ -278,66 +280,69 @@ public class EntityListener implements Listener {
                 int rankChange = 0;
                 boolean fish = false;
                 boolean herb = false;
+                int FoodRank1 = advancedConfig.getFarmerDietRankChange();
+                int FoodRank2 = advancedConfig.getFarmerDietRankChange() * 2;
+                int FoodRankMax = advancedConfig.getFarmerDietRankChange() * 5;
 
                 switch (food) {
                 case BREAD:
                     /* BREAD RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                    rankChange = 200;
                     herb = true;
+                    rankChange = FoodRank1;
                     break;
 
                 case COOKIE:
                     /* COOKIE RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                    rankChange = 400;
                     herb = true;
+                    rankChange = FoodRank2;
                     break;
 
                 case MELON:
                     /* MELON RESTORES  1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    rankChange = 400;
                     herb = true;
+                    rankChange = FoodRank2;
                     break;
 
                 case MUSHROOM_SOUP:
                     /* MUSHROOM SOUP RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                    rankChange = 200;
                     herb = true;
+                    rankChange = FoodRank1;
                     break;
 
                 case CARROT_ITEM:
                     /* CARROT RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
-                    rankChange = 200;
                     herb = true;
+                    rankChange = FoodRank1;
                     break;
 
                 case POTATO_ITEM:
                     /* POTATO RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                    rankChange = 400;
                     herb = true;
+                    rankChange = FoodRank2;
                     break;
 
                 case BAKED_POTATO:
                     /* BAKED POTATO RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-                    rankChange = 200;
                     herb = true;
+                    rankChange = FoodRank1;
                     break;
 
                 case POISONOUS_POTATO:
                     /* POISONOUS POTATO RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    rankChange = 400;
                     herb = true;
+                    rankChange = FoodRank2;
                     break;
 
                 case GOLDEN_CARROT:
                     /* GOLDEN CARROT RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-                    rankChange = 200;
                     herb = true;
+                    rankChange = FoodRank1;
                     break;
 
                 case PUMPKIN_PIE:
                     /* PUMPKIN PIE RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                    rankChange = 200;
                     herb = true;
+                    rankChange = FoodRank1;
                     break;
 
                 case RAW_FISH:
@@ -350,6 +355,7 @@ public class EntityListener implements Listener {
                     /* COOKED FISH RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
                     rankChange = 200;
                     fish = true;
+
                     break;
                 default:
                     return;
@@ -362,7 +368,7 @@ public class EntityListener implements Listener {
                     return;
                 }
 
-                for (int i = 200; i <= 1000; i += rankChange) {
+                for (int i = FoodRank1; i <= FoodRankMax; i += rankChange) {
                     if ((herb && herbLevel >= i) || (fish && fishLevel >= i)) {
                         foodChange++;
                     }

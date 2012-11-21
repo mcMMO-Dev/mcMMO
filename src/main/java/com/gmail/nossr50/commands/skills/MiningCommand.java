@@ -1,17 +1,34 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.text.DecimalFormat;
+
 import com.gmail.nossr50.commands.SkillCommand;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 
 public class MiningCommand extends SkillCommand {
+	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String doubleDropChance;
     private String superBreakerLength;
     private String blastMiningRank;
     private String blastRadiusIncrease;
     private String blastDamageDecrease;
+
+	private int blastMiningRank1 = advancedConfig.getBlastMiningRank1();
+	private int blastMiningRank2 = advancedConfig.getBlastMiningRank2();
+	private int blastMiningRank3 = advancedConfig.getBlastMiningRank3();
+	private int blastMiningRank4 = advancedConfig.getBlastMiningRank4();
+	private int blastMiningRank5 = advancedConfig.getBlastMiningRank5();
+	private int blastMiningRank6 = advancedConfig.getBlastMiningRank6();
+	private int blastMiningRank7 = advancedConfig.getBlastMiningRank7();
+	private int blastMiningRank8 = advancedConfig.getBlastMiningRank8();
+
+	private double doubleDropsMaxBonus = advancedConfig.getMiningDoubleDropChance();
+	private int doubleDropsMaxLevel = advancedConfig.getMiningDoubleDropMaxLevel();
+	public int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private boolean canSuperBreaker;
     private boolean canDoubleDrop;
@@ -26,61 +43,55 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        superBreakerLength = String.valueOf(2 + ((int) skillValue / 50));
-
-        if (skillValue >= 1000) {
+    	DecimalFormat df = new DecimalFormat("#.0");
+        superBreakerLength = String.valueOf(2 + ((int) skillValue / abilityLengthIncreaseLevel));
+    	if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
+    	else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+        
+        if (skillValue >= blastMiningRank8) {
             blastMiningRank = "8";
             blastDamageDecrease = "100.00%";
             blastRadiusIncrease = "4";
-            doubleDropChance = "100.00%";
         }
-        else if (skillValue >= 875) {
+        else if (skillValue >= blastMiningRank7) {
             blastMiningRank = "7";
             blastDamageDecrease = "50.00%";
             blastRadiusIncrease = "3";
-            doubleDropChance = percent.format(skillValue / 1000);
         }
-        else if (skillValue >= 750) {
+        else if (skillValue >= blastMiningRank6) {
             blastMiningRank = "6";
             blastDamageDecrease = "50.00%";
             blastRadiusIncrease = "3";
-            doubleDropChance = percent.format(skillValue / 1000);
         }
-        else if (skillValue >= 625) {
+        else if (skillValue >= blastMiningRank5) {
             blastMiningRank = "5";
             blastDamageDecrease = "25.00%";
             blastRadiusIncrease = "2";
-            doubleDropChance = percent.format(skillValue / 1000);
         }
-        else if (skillValue >= 500) {
+        else if (skillValue >= blastMiningRank4) {
             blastMiningRank = "4";
             blastDamageDecrease = "25.00%";
             blastRadiusIncrease = "2";
-            doubleDropChance = percent.format(skillValue / 1000);
         }
-        else if (skillValue >= 375) {
+        else if (skillValue >= blastMiningRank3) {
             blastMiningRank = "3";
             blastDamageDecrease = "0.00%";
             blastRadiusIncrease = "1";
-            doubleDropChance = percent.format(skillValue / 1000);
         }
-        else if (skillValue >= 250) {
+        else if (skillValue >= blastMiningRank2) {
             blastMiningRank = "2";
             blastDamageDecrease = "0.00%";
             blastRadiusIncrease = "1";
-            doubleDropChance = percent.format(skillValue / 1000);
         }
-        else if (skillValue >= 125) {
+        else if (skillValue >= blastMiningRank1) {
             blastMiningRank = "1";
             blastDamageDecrease = "0.00%";
             blastRadiusIncrease = "0";
-            doubleDropChance = percent.format(skillValue / 1000);
         }
         else {
             blastMiningRank = "0";
             blastDamageDecrease = "0.00%";
             blastRadiusIncrease = "0";
-            doubleDropChance = percent.format(skillValue / 1000);
         }
     }
 
@@ -140,8 +151,8 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canBlast) {
-            if (skillValue < 125) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.0") }));
+            if (skillValue < blastMiningRank1) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.0", new Object[] { blastMiningRank1 })  }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Mining.Blast.Rank", new Object[] { blastMiningRank, LocaleLoader.getString("Mining.Blast.Effect." + (Misc.getInt(blastMiningRank) - 1)) }));
@@ -149,8 +160,8 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canBiggerBombs) {
-            if (skillValue < 250) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.1") }));
+            if (skillValue < blastMiningRank2) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.1", new Object[] { blastMiningRank2 }) }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Mining.Blast.Radius.Increase", new Object[] { blastRadiusIncrease }));
@@ -158,8 +169,8 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canDemoExpert) {
-            if (skillValue < 500) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.2") }));
+            if (skillValue < blastMiningRank4) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.2", new Object[] { blastMiningRank4 }) }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Mining.Effect.Decrease", new Object[] { blastDamageDecrease }));

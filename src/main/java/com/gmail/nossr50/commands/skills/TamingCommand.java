@@ -1,13 +1,26 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.text.DecimalFormat;
+
 import com.gmail.nossr50.commands.SkillCommand;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class TamingCommand extends SkillCommand {
+	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String goreChance;
 
+	private float goreChanceMax = advancedConfig.getGoreChanceMax();
+	private float goreMaxLevel = advancedConfig.getGoreMaxBonusLevel();
+	private int fastFoodUnlock = advancedConfig.getFastFoodUnlock();
+	private float fastFoodChance = advancedConfig.getFastFoodChance();
+	private int enviromentallyAwareUnlock = advancedConfig.getEnviromentallyAwareUnlock();
+	private int thickFurUnlock = advancedConfig.getThickFurUnlock();
+	private int shockProofUnlock = advancedConfig.getShockProofUnlock();
+	private int sharpenedClawUnlock = advancedConfig.getSharpenedClawsUnlock();
+   
     private boolean canBeastLore;
     private boolean canGore;
     private boolean canSharpenedClaws;
@@ -23,12 +36,10 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        if (skillValue >= 1000) {
-            goreChance = "100.00%";
-        }
-        else {
-            goreChance = percent.format(skillValue / 1000);
-        }    }
+    	DecimalFormat df = new DecimalFormat("#.0");
+    	if(skillValue >= goreMaxLevel) goreChance = df.format(goreChanceMax);
+    	else goreChance = df.format((goreChanceMax / goreMaxLevel) * skillValue);
+    }    
 
     @Override
     protected void permissionsCheck() {
@@ -94,17 +105,17 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canFastFood) {
-            if (skillValue < 50) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.4") }));
+            if (skillValue < fastFoodUnlock) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.4", new Object[] { fastFoodUnlock } ) }));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9") }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9", new Object[] { fastFoodChance } ) }));
             }
         }
 
         if (canEnvironmentallyAware) {
-            if (skillValue < 100) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.0") }));
+            if (skillValue < enviromentallyAwareUnlock) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.0", new Object[] { enviromentallyAwareUnlock } ) }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.0"), LocaleLoader.getString("Taming.Ability.Bonus.1") }));
@@ -112,8 +123,8 @@ public class TamingCommand extends SkillCommand {
         }
 
         if (canThickFur) {
-            if (skillValue < 250) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.1") }));
+            if (skillValue < thickFurUnlock) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.1", new Object[] { thickFurUnlock } ) }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.2"), LocaleLoader.getString("Taming.Ability.Bonus.3") }));
@@ -121,8 +132,8 @@ public class TamingCommand extends SkillCommand {
         }
 
         if (canShockProof) {
-            if (skillValue < 500) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.2") }));
+            if (skillValue < shockProofUnlock) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.2", new Object[] { shockProofUnlock } ) }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.4"), LocaleLoader.getString("Taming.Ability.Bonus.5") }));
@@ -130,8 +141,8 @@ public class TamingCommand extends SkillCommand {
         }
 
         if (canSharpenedClaws) {
-            if (skillValue < 750) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.3") }));
+            if (skillValue < sharpenedClawUnlock) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.3", new Object[] { sharpenedClawUnlock } ) }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.6"), LocaleLoader.getString("Taming.Ability.Bonus.7") }));

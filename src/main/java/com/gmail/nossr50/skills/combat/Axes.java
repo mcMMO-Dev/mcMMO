@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -20,6 +21,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Axes {
+	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     private static Random random = new Random();
 
@@ -33,10 +35,12 @@ public class Axes {
         if(attacker == null)
             return;
 
-        final int MAX_BONUS = 4;
+        final int MAX_BONUS = advancedConfig.getBonusDamageAxesBonusMax();
+        final int MAX_LEVEL = advancedConfig.getBonusDamageAxesMaxBonusLevel();
+        final int INCREASE_LEVEL = MAX_LEVEL / MAX_BONUS;
 
         /* Add 1 DMG for every 50 skill levels */
-        int bonus = Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / 50;
+        int bonus = Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / INCREASE_LEVEL;
 
         if (bonus > MAX_BONUS) {
             bonus = MAX_BONUS;
@@ -73,21 +77,24 @@ public class Axes {
             }
         }
 
-        final int MAX_BONUS_LEVEL = 750;
-        final double PVP_MODIFIER = 1.5;
-        final int PVE_MODIFIER = 2;
+        final int MAX_BONUS_LEVEL = advancedConfig.getAxesCriticalMaxBonusLevel();
+        final double MAX_CHANCE = advancedConfig.getAxesCriticalChance();
+        final double PVP_MODIFIER = advancedConfig.getAxesCriticalPVPModifier();
+        final int PVE_MODIFIER = advancedConfig.getAxesCriticalPVEModifier();
 
         PlayerProfile attackerProfile = Users.getProfile(attacker);
         int skillLevel = attackerProfile.getSkillLevel(SkillType.AXES);
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
-        int randomChance = 2000;
+        int randomChance = 100;
+        double chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillCheck;
 
         if (attacker.hasPermission("mcmmo.perks.lucky.axes")) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (random.nextInt(randomChance) <= skillCheck && !entity.isDead()){
+        if (chance > random.nextInt(randomChance) && !entity.isDead()){
+//        if (random.nextInt(randomChance) <= skillCheck && !entity.isDead()){
             int damage = event.getDamage();
 
             if (entity instanceof Player){
@@ -122,7 +129,8 @@ public class Axes {
             short durabilityDamage = 1; //Start with 1 durability damage
 
             /* Every 30 Skill Levels you gain 1 durability damage */
-            durabilityDamage += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/50;
+            int impactIncreaseLevel = advancedConfig.getGreaterImpactIncreaseLevel();
+            durabilityDamage += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/impactIncreaseLevel;
 
             if (!hasArmor(targetPlayer)) {
                 applyGreaterImpact(attacker, target, event);
@@ -150,9 +158,10 @@ public class Axes {
     private static void applyGreaterImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
         if(attacker == null)
             return;
-
-        final int GREATER_IMPACT_CHANCE = 25;
-        final double GREATER_IMPACT_MULTIPLIER = 1.5;
+    	
+        final int GREATER_IMPACT_CHANCE = advancedConfig.getGreaterImpactChance();
+        final double GREATER_IMPACT_MULTIPLIER = advancedConfig.getGreaterImpactModifier();
+        final int GREATER_IMPACT_DAMAGE = advancedConfig.getGreaterImpactBonusDamage();
 
         if (!Permissions.getInstance().greaterImpact(attacker)) {
             return;
@@ -165,7 +174,7 @@ public class Axes {
         }
 
         if (random.nextInt(randomChance) <= GREATER_IMPACT_CHANCE) {
-            event.setDamage(event.getDamage() + 2);
+            event.setDamage(event.getDamage() + GREATER_IMPACT_DAMAGE);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(GREATER_IMPACT_MULTIPLIER));
             attacker.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
         }

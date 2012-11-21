@@ -1,80 +1,99 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.text.DecimalFormat;
+
 import com.gmail.nossr50.commands.SkillCommand;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class ArcheryCommand extends SkillCommand {
-    private String skillShotBonus;
-    private String dazeChance;
-    private String retrieveChance;
+	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
-    private boolean canSkillShot;
-    private boolean canDaze;
-    private boolean canRetrieve;
+	private String skillShotBonus;
+	private String dazeChance;
+	private String retrieveChance;
 
-    public ArcheryCommand() {
-        super(SkillType.ARCHERY);
-    }
+	private int skillShotIncreaseLevel = advancedConfig.getSkillShotIncreaseLevel();
+	private double skillShotIncreasePercentage = advancedConfig.getSkillShotIncreasePercentage();
+	private double skillShotBonusMax = advancedConfig.getSkillShotBonusMax();
 
-    @Override
-    protected void dataCalculations() {
-        if (skillValue >= 1000) {
-            skillShotBonus = "200.00%";
-            dazeChance = "50.00%";
-            retrieveChance = "100.00%";
-        }
-        else {
-            skillShotBonus = percent.format(((int) skillValue / 50) * 0.1D); //TODO: Not sure if this is the best way to calculate this or not...
-            dazeChance = percent.format(skillValue / 2000);
-            retrieveChance = percent.format(skillValue / 1000);
-        }
-    }
+	private float dazeBonusMax = advancedConfig.getDazeBonusMax();
+	private float dazeMaxBonusLevel = advancedConfig.getDazeMaxBonusLevel();
 
-    @Override
-    protected void permissionsCheck() {
-        canSkillShot = permInstance.archeryBonus(player);
-        canDaze = permInstance.daze(player);
-        canRetrieve = permInstance.trackArrows(player);
-    }
+	private float retrieveBonusMax = advancedConfig.getRetrieveBonusMax();
+	private float retrieveMaxBonusLevel = advancedConfig.getRetrieveMaxBonusLevel();
 
-    @Override
-    protected boolean effectsHeaderPermissions() {
-        return canSkillShot || canDaze || canRetrieve;
-    }
 
-    @Override
-    protected void effectsDisplay() {
-        if (canSkillShot) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.0"), LocaleLoader.getString("Archery.Effect.1") }));
-        }
+	private boolean canSkillShot;
+	private boolean canDaze;
+	private boolean canRetrieve;
 
-        if (canDaze) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.2"), LocaleLoader.getString("Archery.Effect.3") }));
-        }
+	public ArcheryCommand() {
+		super(SkillType.ARCHERY);
+	}
 
-        if (canRetrieve) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.4"), LocaleLoader.getString("Archery.Effect.5") }));
-        }
-    }
+	@Override
+	protected void dataCalculations() {
+		DecimalFormat df = new DecimalFormat("#.0");
+		// SkillShot
+        double bonus = (int)(skillValue / skillShotIncreaseLevel) * skillShotIncreasePercentage;
+        if (bonus > skillShotBonusMax) skillShotBonus = percent.format(skillShotBonusMax);
+        else skillShotBonus = percent.format(bonus);
+        
+		// Daze
+		if(skillValue >= dazeMaxBonusLevel) dazeChance = df.format(dazeBonusMax);
+		else dazeChance = df.format((dazeBonusMax / dazeMaxBonusLevel) * skillValue);
 
-    @Override
-    protected boolean statsHeaderPermissions() {
-        return canSkillShot || canDaze || canRetrieve;
-    }
+		// Retrieve
+		if(skillValue >= retrieveMaxBonusLevel)	retrieveChance = df.format(retrieveBonusMax);
+		else retrieveChance = df.format((retrieveBonusMax / retrieveMaxBonusLevel) * skillValue);
+	}
 
-    @Override
-    protected void statsDisplay() {
-        if (canSkillShot) {
-            player.sendMessage(LocaleLoader.getString("Archery.Combat.SkillshotBonus", new Object[] { skillShotBonus }));
-        }
+	@Override
+	protected void permissionsCheck() {
+		canSkillShot = permInstance.archeryBonus(player);
+		canDaze = permInstance.daze(player);
+		canRetrieve = permInstance.trackArrows(player);
+	}
 
-        if (canDaze) {
-            player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }));
-        }
+	@Override
+	protected boolean effectsHeaderPermissions() {
+		return canSkillShot || canDaze || canRetrieve;
+	}
 
-        if (canRetrieve) {
-            player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }));
-        }
-    }
+	@Override
+	protected void effectsDisplay() {
+		if (canSkillShot) {
+			player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.0"), LocaleLoader.getString("Archery.Effect.1") }));
+		}
+
+		if (canDaze) {
+			player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.2"), LocaleLoader.getString("Archery.Effect.3") }));
+		}
+
+		if (canRetrieve) {
+			player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.4"), LocaleLoader.getString("Archery.Effect.5") }));
+		}
+	}
+
+	@Override
+	protected boolean statsHeaderPermissions() {
+		return canSkillShot || canDaze || canRetrieve;
+	}
+
+	@Override
+	protected void statsDisplay() {
+		if (canSkillShot) {
+			player.sendMessage(LocaleLoader.getString("Archery.Combat.SkillshotBonus", new Object[] { skillShotBonus }));
+		}
+
+		if (canDaze) {
+			player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }));
+		}
+
+		if (canRetrieve) {
+			player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }));
+		}
+	}
 }
