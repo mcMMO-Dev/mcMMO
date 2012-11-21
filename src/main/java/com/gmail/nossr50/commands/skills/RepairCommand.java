@@ -1,7 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.text.DecimalFormat;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.SkillCommand;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -9,9 +12,15 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Repairable;
 
 public class RepairCommand extends SkillCommand {
+	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private int arcaneForgingRank;
     private String repairMasteryBonus;
     private String superRepairChance;
+
+	private float repairMasteryChanceMax = advancedConfig.getRepairMasteryChanceMax();
+	private float repairMasteryMaxBonusLevel = advancedConfig.getRepairMasteryMaxLevel();
+	private float superRepairChanceMax = advancedConfig.getSuperRepairChanceMax();
+	private float superRepairMaxBonusLevel = advancedConfig.getSuperRepairMaxLevel();
 
     private boolean canSuperRepair;
     private boolean canMasterRepair;
@@ -37,6 +46,7 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
+		DecimalFormat df = new DecimalFormat("#.0");
         // We're using pickaxes here, not the best but it works
         Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
         Repairable goldRepairable = mcMMO.repairManager.getRepairable(285);
@@ -47,17 +57,14 @@ public class RepairCommand extends SkillCommand {
         goldLevel = (goldRepairable == null) ? 0 : goldRepairable.getMinimumLevel();
         ironLevel = (ironRepairable == null) ? 0 : ironRepairable.getMinimumLevel();
         stoneLevel = (stoneRepairable == null) ? 0 : stoneRepairable.getMinimumLevel();
-        
+
         salvageLevel = Config.getInstance().getSalvageUnlockLevel();
 
-        repairMasteryBonus = percent.format(skillValue / 500);
+        if(skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = df.format(repairMasteryChanceMax);
+		else repairMasteryBonus = df.format((repairMasteryChanceMax / repairMasteryMaxBonusLevel) * skillValue);
 
-        if (skillValue >= 1000) {
-            superRepairChance = "100.00%";
-        }
-        else {
-            superRepairChance = percent.format(skillValue / 1000);
-        }
+        if(skillValue >= superRepairMaxBonusLevel) superRepairChance = df.format(superRepairChanceMax);
+		else superRepairChance = df.format((superRepairChanceMax / superRepairMaxBonusLevel) * skillValue);
 
         arcaneForgingRank = Repair.getArcaneForgingRank(profile);
     }

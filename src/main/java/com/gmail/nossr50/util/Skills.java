@@ -11,6 +11,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
@@ -24,6 +25,8 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class Skills {
+	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+	public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private final static int TIME_CONVERSION_FACTOR = 1000;
     private final static double MAX_DISTANCE_AWAY = 10.0;
@@ -435,7 +438,7 @@ public class Skills {
             }
         }
 
-        int ticks = 2 + (profile.getSkillLevel(type) / 50);
+        int ticks = 2 + (profile.getSkillLevel(type) / abilityLengthIncreaseLevel);
 
         if (player.hasPermission("mcmmo.perks.activationtime.twelveseconds")) {
             ticks = ticks + 12;

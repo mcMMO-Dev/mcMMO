@@ -7,6 +7,23 @@ Key:
   ! Change
   - Removal
 
+Version 1.3.12
+ + Added Craftbukkit 1.4.5 compatibility
+ + Added new items from Minecraft 1.4 to Herbalism (potatoes & carrots)
+ + Added new mobs from Minecraft 1.4 checks for every ability
+ + Added new active ability for Repair: Salvage
+ + Added options to 'config.yml' configure shake chance
+ + Added the option to negate experience earned for Herbalism while in a minecart to prevent afk leveling
+ + Added Green thumb now converts cobble walls to mossy cobble walls
+ + Added beacons and anvils to list of blocks that don't trigger abilities
+ ! Changed Fishing, Shake drops changed from guaranteed to based upon fishing level and perks
+ ! Changed Woodcutting, the amount of experience earned when using Tree Feller on jungle trees has increased
+ ! Changed filesystem usage, it's reduced a lot. Should help reduce lag on larger servers
+ = Fixed Woodcutting bug, excessive null chunk before earning Woodcutting experience
+ = Fixed a null pointer error related to skill cooldowns
+ = Fixed more NPE ?? Needs better explanation
+ - Removed nothing
+
 Version 1.3.11
  ! Changed axes to start with 1 durability damage instead of 5, gain 1 durability damage every 50 levels instead of 30, and only have a 25% chance on hit to damage armor (per armor piece)
  + Added compatibility with bow-wielding NPCs from Citizens/NPC mods
