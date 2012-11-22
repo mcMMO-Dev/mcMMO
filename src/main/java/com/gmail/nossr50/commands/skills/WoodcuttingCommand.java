@@ -2,6 +2,8 @@ package com.gmail.nossr50.commands.skills;
 
 import java.text.DecimalFormat;
 
+import org.bukkit.ChatColor;
+
 import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -53,6 +55,11 @@ public class WoodcuttingCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
+        if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
+            String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Woodcutting" }) }));
+        }
+
         if (canTreeFell) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.0"), LocaleLoader.getString("Woodcutting.Effect.1") }));
         }
