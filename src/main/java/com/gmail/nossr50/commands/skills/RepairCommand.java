@@ -2,6 +2,8 @@ package com.gmail.nossr50.commands.skills;
 
 import java.text.DecimalFormat;
 
+import org.bukkit.ChatColor;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -91,6 +93,11 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
+        if (player.hasPermission("mcmmo.perks.lucky.repair")) {
+            String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Repair" }) }));
+        }
+
         player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.0"), LocaleLoader.getString("Repair.Effect.1") }));
 
         if (canMasterRepair) {

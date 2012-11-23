@@ -2,6 +2,8 @@ package com.gmail.nossr50.commands.skills;
 
 import java.text.DecimalFormat;
 
+import org.bukkit.ChatColor;
+
 import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -57,6 +59,11 @@ public class AcrobaticsCommand extends SkillCommand {
 
 	@Override
 	protected void effectsDisplay() {
+                if (player.hasPermission("mcmmo.perks.lucky.acrobatics")) {
+                    String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
+                    player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Acrobatics" }) }));
+                }
+
 		if (canRoll) {
 			player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Acrobatics.Effect.0"), LocaleLoader.getString("Acrobatics.Effect.1") }));
 		}

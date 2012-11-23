@@ -2,6 +2,8 @@ package com.gmail.nossr50.commands.skills;
 
 import java.text.DecimalFormat;
 
+import org.bukkit.ChatColor;
+
 import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
@@ -66,6 +68,11 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
+        if (player.hasPermission("mcmmo.perks.lucky.axes")) {
+            String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Axes" }) }));
+        }
+
         if (canSkullSplitter) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Axes.Effect.0"), LocaleLoader.getString("Axes.Effect.1") }));
         }
