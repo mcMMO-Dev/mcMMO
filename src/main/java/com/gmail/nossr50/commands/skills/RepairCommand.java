@@ -14,15 +14,15 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Repairable;
 
 public class RepairCommand extends SkillCommand {
-	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private int arcaneForgingRank;
     private String repairMasteryBonus;
     private String superRepairChance;
 
-	private float repairMasteryChanceMax = advancedConfig.getRepairMasteryChanceMax();
-	private float repairMasteryMaxBonusLevel = advancedConfig.getRepairMasteryMaxLevel();
-	private float superRepairChanceMax = advancedConfig.getSuperRepairChanceMax();
-	private float superRepairMaxBonusLevel = advancedConfig.getSuperRepairMaxLevel();
+    private float repairMasteryChanceMax = advancedConfig.getRepairMasteryChanceMax();
+    private float repairMasteryMaxBonusLevel = advancedConfig.getRepairMasteryMaxLevel();
+    private float superRepairChanceMax = advancedConfig.getSuperRepairChanceMax();
+    private float superRepairMaxBonusLevel = advancedConfig.getSuperRepairMaxLevel();
 
     private boolean canSuperRepair;
     private boolean canMasterRepair;
@@ -35,6 +35,7 @@ public class RepairCommand extends SkillCommand {
     private boolean canRepairString;
     private boolean canRepairLeather;
     private boolean canRepairWood;
+    private boolean arcaneBypass;
 
     private int salvageLevel;
     private int diamondLevel;
@@ -48,7 +49,7 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-		DecimalFormat df = new DecimalFormat("#.0");
+        DecimalFormat df = new DecimalFormat("#.0");
         // We're using pickaxes here, not the best but it works
         Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
         Repairable goldRepairable = mcMMO.repairManager.getRepairable(285);
@@ -63,10 +64,10 @@ public class RepairCommand extends SkillCommand {
         salvageLevel = Config.getInstance().getSalvageUnlockLevel();
 
         if(skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = df.format(repairMasteryChanceMax);
-		else repairMasteryBonus = df.format((repairMasteryChanceMax / repairMasteryMaxBonusLevel) * skillValue);
+            else repairMasteryBonus = df.format((repairMasteryChanceMax / repairMasteryMaxBonusLevel) * skillValue);
 
         if(skillValue >= superRepairMaxBonusLevel) superRepairChance = df.format(superRepairChanceMax);
-		else superRepairChance = df.format((superRepairChanceMax / superRepairMaxBonusLevel) * skillValue);
+            else superRepairChance = df.format((superRepairChanceMax / superRepairMaxBonusLevel) * skillValue);
 
         arcaneForgingRank = Repair.getArcaneForgingRank(profile);
     }
@@ -84,6 +85,7 @@ public class RepairCommand extends SkillCommand {
         canRepairString = permInstance.stringRepair(player);
         canRepairLeather = permInstance.leatherRepair(player);
         canRepairWood = permInstance.woodRepair(player);
+	arcaneBypass = permInstance.arcaneBypass(player);
     }
 
     @Override
@@ -154,11 +156,11 @@ public class RepairCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", new Object[] { arcaneForgingRank }));
 
             if (Config.getInstance().getArcaneForgingEnchantLossEnabled()) {
-                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", new Object[] { Repair.getEnchantChance(arcaneForgingRank) }));
+                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", new Object[] { (arcaneBypass ? 100 : Repair.getEnchantChance(arcaneForgingRank)) }));
             }
 
             if (Config.getInstance().getArcaneForgingDowngradeEnabled()) {
-                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", new Object[] { Repair.getDowngradeChance(arcaneForgingRank) }));
+                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", new Object[] { (arcaneBypass ? 0 : Repair.getDowngradeChance(arcaneForgingRank)) }));
             }
         }
     }

@@ -91,6 +91,10 @@ public class Repair {
      * @param is Item being repaired
      */
     protected static void addEnchants(Player player, ItemStack is) {
+        if(permInstance.arcaneBypass(player)) {
+            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Perfect"));
+            return;
+        }
         Map<Enchantment, Integer> enchants = is.getEnchantments();
 
         if (enchants.size() == 0) {
@@ -122,7 +126,7 @@ public class Repair {
                 int enchantLevel = enchant.getValue();
 
                 if (configInstance.getArcaneForgingDowngradeEnabled() && enchantLevel > 1) {
-                    if (random.nextInt(100) < getDowngradeChance(rank)) {
+                    if (random.nextInt(randomChance) < getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, --enchantLevel);
                         downgraded = true;
                     }
@@ -209,7 +213,7 @@ public class Repair {
 //        float bonus = (float) skillLevel / 500;
     	float bonus;
 		if(skillLevel >= repairMasteryMaxBonusLevel) bonus = repairMasteryChanceMax;
-		else bonus = (repairMasteryChanceMax / repairMasteryMaxBonusLevel) * skillLevel;
+		else bonus = ((float) skillLevel / (float) repairMasteryMaxBonusLevel) * (float) repairMasteryChanceMax;
 
         if (permInstance.repairMastery(player)) {
             bonus = (repairAmount * bonus);
