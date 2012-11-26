@@ -13,7 +13,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.Misc;
 
 public class Archery {
-	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private static Random random = new Random();
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 

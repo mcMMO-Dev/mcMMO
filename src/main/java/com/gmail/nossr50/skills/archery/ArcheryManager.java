@@ -11,18 +11,18 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class ArcheryManager {
-	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-	
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
     private Permissions permissionsInstance;
 
-	private float dazeBonusMax = advancedConfig.getDazeBonusMax();
-	private float dazeMaxBonusLevel = advancedConfig.getDazeMaxBonusLevel();
-	private float retrieveBonusMax = advancedConfig.getRetrieveBonusMax();
-	private float retrieveMaxBonusLevel = advancedConfig.getRetrieveMaxBonusLevel();
-	
+    private float dazeBonusMax = advancedConfig.getDazeBonusMax();
+    private float dazeMaxBonusLevel = advancedConfig.getDazeMaxBonusLevel();
+    private float retrieveBonusMax = advancedConfig.getRetrieveBonusMax();
+    private float retrieveMaxBonusLevel = advancedConfig.getRetrieveMaxBonusLevel();
+    
     public ArcheryManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
@@ -57,7 +57,7 @@ public class ArcheryManager {
         if (player.hasPermission("mcmmo.perks.lucky.archery")) {
             randomChance = (int) (randomChance * 0.75);
         }
-        final float chance = (retrieveBonusMax / retrieveMaxBonusLevel) * skillLevel;
+        final float chance = (float) (((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * (double) skillLevel);
         if (chance > Archery.getRandom().nextInt(randomChance)) {
             eventHandler.addToTracker();
         }
@@ -88,10 +88,10 @@ public class ArcheryManager {
             randomChance = (int) (randomChance * 0.75);
         }
         
-        final float chance = (dazeBonusMax / dazeMaxBonusLevel) * skillLevel;
+        final float chance = (float) (((double) dazeBonusMax / (double) dazeMaxBonusLevel) * (double) skillLevel);
         if (chance > Archery.getRandom().nextInt(randomChance)) {
-        	eventHandler.handleDazeEffect();
-        	eventHandler.sendAbilityMessages();
+            eventHandler.handleDazeEffect();
+            eventHandler.sendAbilityMessages();
         }
     }
 

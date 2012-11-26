@@ -32,7 +32,7 @@ import com.gmail.nossr50.util.Users;
 
 public class WoodCutting {
 
-	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private static Random random = new Random();
 
     /**
@@ -330,7 +330,7 @@ public class WoodCutting {
      */
     private static void woodCuttingProcCheck(Player player, Block block) {
 
-    	final int MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
+        final int MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
         final int MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
 
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING);
@@ -345,7 +345,7 @@ public class WoodCutting {
         Material mat = Material.getMaterial(block.getTypeId());
 
         int randomChance = 100;
-        int chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillLevel;
+        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * (double) skillLevel);
 
         if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
             randomChance = (int) (randomChance * 0.75);

@@ -11,15 +11,15 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class WoodcuttingCommand extends SkillCommand {
-	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String treeFellerLength;
     private String doubleDropChance;
 
-	private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
-	private double doubleDropsMaxBonus = advancedConfig.getWoodcuttingDoubleDropChance();
-	private int doubleDropsMaxLevel = advancedConfig.getWoodcuttingDoubleDropMaxLevel();
-	private int leafBlowUnlock = advancedConfig.getLeafBlowUnlockLevel();
-	
+    private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
+    private double doubleDropsMaxBonus = advancedConfig.getWoodcuttingDoubleDropChance();
+    private int doubleDropsMaxLevel = advancedConfig.getWoodcuttingDoubleDropMaxLevel();
+    private int leafBlowUnlock = advancedConfig.getLeafBlowUnlockLevel();
+    
     private boolean canTreeFell;
     private boolean canLeafBlow;
     private boolean canDoubleDrop;
@@ -31,11 +31,11 @@ public class WoodcuttingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-    	DecimalFormat df = new DecimalFormat("0.0");
+        DecimalFormat df = new DecimalFormat("0.0");
 
-        treeFellerLength = String.valueOf(2 + ((int) skillValue / abilityLengthIncreaseLevel));
-    	if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
-    	else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+        treeFellerLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
+        else doubleDropChance = df.format(((double) doubleDropsMaxBonus / (double) doubleDropsMaxLevel) * (double) skillValue);
     }
 
     @Override

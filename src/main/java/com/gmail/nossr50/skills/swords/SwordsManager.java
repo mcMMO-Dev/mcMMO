@@ -50,7 +50,7 @@ public class SwordsManager {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            final float chance = (bleedChanceMax / bleedMaxLevel) * skillLevel;
+            final float chance = (float) (((double) bleedChanceMax / (double) bleedMaxLevel) * (double) skillLevel);
             if (chance > Swords.getRandom().nextInt(randomChance)) {
                 eventHandler.addBleedTicks();
                 eventHandler.sendAbilityMessages();
@@ -81,7 +81,7 @@ public class SwordsManager {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            final float chance = (counterChanceMax / counterMaxLevel) * skillLevel;
+            final float chance = (float) (((double) counterChanceMax / (double) counterMaxLevel) * (double) skillLevel);
             if (chance > Swords.getRandom().nextInt(randomChance)) {
                 eventHandler.dealDamage();
                 eventHandler.sendAbilityMessages();

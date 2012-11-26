@@ -12,25 +12,25 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 
 public class MiningCommand extends SkillCommand {
-	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String doubleDropChance;
     private String superBreakerLength;
     private String blastMiningRank;
     private String blastRadiusIncrease;
     private String blastDamageDecrease;
 
-	private int blastMiningRank1 = advancedConfig.getBlastMiningRank1();
-	private int blastMiningRank2 = advancedConfig.getBlastMiningRank2();
-	private int blastMiningRank3 = advancedConfig.getBlastMiningRank3();
-	private int blastMiningRank4 = advancedConfig.getBlastMiningRank4();
-	private int blastMiningRank5 = advancedConfig.getBlastMiningRank5();
-	private int blastMiningRank6 = advancedConfig.getBlastMiningRank6();
-	private int blastMiningRank7 = advancedConfig.getBlastMiningRank7();
-	private int blastMiningRank8 = advancedConfig.getBlastMiningRank8();
+    private int blastMiningRank1 = advancedConfig.getBlastMiningRank1();
+    private int blastMiningRank2 = advancedConfig.getBlastMiningRank2();
+    private int blastMiningRank3 = advancedConfig.getBlastMiningRank3();
+    private int blastMiningRank4 = advancedConfig.getBlastMiningRank4();
+    private int blastMiningRank5 = advancedConfig.getBlastMiningRank5();
+    private int blastMiningRank6 = advancedConfig.getBlastMiningRank6();
+    private int blastMiningRank7 = advancedConfig.getBlastMiningRank7();
+    private int blastMiningRank8 = advancedConfig.getBlastMiningRank8();
 
-	private double doubleDropsMaxBonus = advancedConfig.getMiningDoubleDropChance();
-	private int doubleDropsMaxLevel = advancedConfig.getMiningDoubleDropMaxLevel();
-	public int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
+    private double doubleDropsMaxBonus = advancedConfig.getMiningDoubleDropChance();
+    private int doubleDropsMaxLevel = advancedConfig.getMiningDoubleDropMaxLevel();
+    public int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private boolean canSuperBreaker;
     private boolean canDoubleDrop;
@@ -45,10 +45,10 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-    	DecimalFormat df = new DecimalFormat("#.0");
-        superBreakerLength = String.valueOf(2 + ((int) skillValue / abilityLengthIncreaseLevel));
-    	if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
-    	else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+        DecimalFormat df = new DecimalFormat("#.0");
+        superBreakerLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
+        else doubleDropChance = df.format(((double) doubleDropsMaxBonus / (double) doubleDropsMaxLevel) * (double) skillValue);
         
         if (skillValue >= blastMiningRank8) {
             blastMiningRank = "8";

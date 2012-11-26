@@ -28,18 +28,18 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class BlastMining {
-	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     private static Random random = new Random();
     
-	private static int blastMiningRank1 = advancedConfig.getBlastMiningRank1();
-	private static int blastMiningRank2 = advancedConfig.getBlastMiningRank2();
-	private static int blastMiningRank3 = advancedConfig.getBlastMiningRank3();
-	private static int blastMiningRank4 = advancedConfig.getBlastMiningRank4();
-	private static int blastMiningRank5 = advancedConfig.getBlastMiningRank5();
-	private static int blastMiningRank6 = advancedConfig.getBlastMiningRank6();
-	private static int blastMiningRank7 = advancedConfig.getBlastMiningRank7();
-	private static int blastMiningRank8 = advancedConfig.getBlastMiningRank8();
+    private static int blastMiningRank1 = advancedConfig.getBlastMiningRank1();
+    private static int blastMiningRank2 = advancedConfig.getBlastMiningRank2();
+    private static int blastMiningRank3 = advancedConfig.getBlastMiningRank3();
+    private static int blastMiningRank4 = advancedConfig.getBlastMiningRank4();
+    private static int blastMiningRank5 = advancedConfig.getBlastMiningRank5();
+    private static int blastMiningRank6 = advancedConfig.getBlastMiningRank6();
+    private static int blastMiningRank7 = advancedConfig.getBlastMiningRank7();
+    private static int blastMiningRank8 = advancedConfig.getBlastMiningRank8();
     /**
      * Handler for what blocks drop from the explosion.
      *

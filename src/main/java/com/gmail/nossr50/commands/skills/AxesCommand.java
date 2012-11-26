@@ -11,21 +11,21 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 
 public class AxesCommand extends SkillCommand {
-	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-	
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    
     private String critChance;
     private String bonusDamage;
     private String impactDamage;
     private String greaterImpactDamage;
     private String skullSplitterLength;
 
-	private int bonusDamageAxesBonusMax = advancedConfig.getBonusDamageAxesBonusMax();
-	private int bonusDamageAxesMaxBonusLevel = advancedConfig.getBonusDamageAxesMaxBonusLevel();
-	private double critMaxChance = advancedConfig.getAxesCriticalChance();
-	private int critMaxBonusLevel = advancedConfig.getAxesCriticalMaxBonusLevel();
-	private int greaterImpactIncreaseLevel = advancedConfig.getGreaterImpactIncreaseLevel();
-//	private double greaterImpactModifier = advancedConfig.getGreaterImpactModifier();
-	private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
+    private int bonusDamageAxesBonusMax = advancedConfig.getBonusDamageAxesBonusMax();
+    private int bonusDamageAxesMaxBonusLevel = advancedConfig.getBonusDamageAxesMaxBonusLevel();
+    private double critMaxChance = advancedConfig.getAxesCriticalChance();
+    private int critMaxBonusLevel = advancedConfig.getAxesCriticalMaxBonusLevel();
+    private int greaterImpactIncreaseLevel = advancedConfig.getGreaterImpactIncreaseLevel();
+//    private double greaterImpactModifier = advancedConfig.getGreaterImpactModifier();
+    private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private boolean canSkullSplitter;
     private boolean canCritical;
@@ -39,17 +39,17 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-    	DecimalFormat df = new DecimalFormat("#.0");
-    	int skillCheck = Misc.skillCheck((int)skillValue, critMaxBonusLevel);
+        DecimalFormat df = new DecimalFormat("#.0");
+        int skillCheck = Misc.skillCheck((int)skillValue, critMaxBonusLevel);
 
-    	impactDamage = String.valueOf(1 + ((int) skillValue / greaterImpactIncreaseLevel));
-    	skullSplitterLength = String.valueOf(2 + ((int) skillValue / abilityLengthIncreaseLevel));
-    	greaterImpactDamage = "2";
+        impactDamage = String.valueOf(1 + ((double) skillValue / (double) greaterImpactIncreaseLevel));
+        skullSplitterLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        greaterImpactDamage = "2";
 
-    	if (skillValue >= critMaxBonusLevel) critChance = df.format(critMaxChance);
-    	else critChance = String.valueOf((critMaxChance / critMaxBonusLevel) * (float)skillCheck);
-    	if (skillValue >= bonusDamageAxesMaxBonusLevel) bonusDamage = String.valueOf(bonusDamageAxesBonusMax);
-    	else bonusDamage = String.valueOf((int) skillValue / (bonusDamageAxesMaxBonusLevel / bonusDamageAxesBonusMax));
+        if (skillValue >= critMaxBonusLevel) critChance = df.format(critMaxChance);
+        else critChance = String.valueOf(((double) critMaxChance / (double) critMaxBonusLevel) * (double) skillCheck);
+        if (skillValue >= bonusDamageAxesMaxBonusLevel) bonusDamage = String.valueOf(bonusDamageAxesBonusMax);
+        else bonusDamage = String.valueOf((double) skillValue / ((double) bonusDamageAxesMaxBonusLevel / (double) bonusDamageAxesBonusMax));
     }
 
     @Override

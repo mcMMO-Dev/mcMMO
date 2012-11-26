@@ -10,8 +10,8 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class SwordsCommand extends SkillCommand {
-	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-	
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    
     private String counterAttackChance;
     private String bleedLength;
     private String bleedChance;
@@ -36,19 +36,19 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-		DecimalFormat df = new DecimalFormat("#.0");
-        serratedStrikesLength = String.valueOf(2 + ((int) skillValue / abilityLengthIncreaseLevel));
+        DecimalFormat df = new DecimalFormat("#.0");
+        serratedStrikesLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
         
         if (skillValue >= bleedMaxLevel) bleedLength = String.valueOf(bleedMaxTicks);
         else bleedLength = String.valueOf(bleedBaseTicks);
 
-		if(skillValue >= bleedMaxLevel) bleedChance = df.format(bleedChanceMax);
-		else bleedChance = df.format((bleedChanceMax / bleedMaxLevel) * skillValue);
+        if(skillValue >= bleedMaxLevel) bleedChance = df.format(bleedChanceMax);
+        else bleedChance = df.format(((double) bleedChanceMax / (double) bleedMaxLevel) * (double) skillValue);
         
-		if(skillValue >= counterMaxLevel) counterAttackChance = df.format(counterChanceMax);
-		else counterAttackChance = df.format((counterChanceMax / counterMaxLevel) * skillValue);
-		
-		serratedStrikesLength = String.valueOf(serratedBleedTicks);
+        if(skillValue >= counterMaxLevel) counterAttackChance = df.format(counterChanceMax);
+        else counterAttackChance = df.format(((double) counterChanceMax / (double) counterMaxLevel) * (double) skillValue);
+        
+        serratedStrikesLength = String.valueOf(serratedBleedTicks);
     }
 
     @Override
