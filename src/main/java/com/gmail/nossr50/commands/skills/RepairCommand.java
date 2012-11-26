@@ -64,10 +64,10 @@ public class RepairCommand extends SkillCommand {
         salvageLevel = Config.getInstance().getSalvageUnlockLevel();
 
         if(skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = df.format(repairMasteryChanceMax);
-            else repairMasteryBonus = df.format((repairMasteryChanceMax / repairMasteryMaxBonusLevel) * skillValue);
+            else repairMasteryBonus = df.format(((double) repairMasteryChanceMax / (double) repairMasteryMaxBonusLevel) * (double) skillValue);
 
         if(skillValue >= superRepairMaxBonusLevel) superRepairChance = df.format(superRepairChanceMax);
-            else superRepairChance = df.format((superRepairChanceMax / superRepairMaxBonusLevel) * skillValue);
+            else superRepairChance = df.format(((double) superRepairChanceMax / (double) superRepairMaxBonusLevel) * (double) skillValue);
 
         arcaneForgingRank = Repair.getArcaneForgingRank(profile);
     }

@@ -30,10 +30,10 @@ public class FishingCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         lootTier = Fishing.getFishingLootTier(profile);
-        magicChance = percent.format((float) lootTier / 15);
+        magicChance = percent.format((double) lootTier / 15D);
         int dropChance = Fishing.getShakeChance(lootTier);
         if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
-            dropChance = (int) (dropChance * 1.25);
+            dropChance = (int) ((double) dropChance * 1.25D);
         }
         shakeChance = String.valueOf(dropChance);
 
