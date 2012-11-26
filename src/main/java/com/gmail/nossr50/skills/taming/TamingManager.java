@@ -111,7 +111,7 @@ public class TamingManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        final float chance = (goreChanceMax / goreMaxLevel) * skillLevel;
+        final float chance = (float) (((double) goreChanceMax / (double) goreMaxLevel) * (double) skillLevel);
         if (chance > Taming.getRandom().nextInt(randomChance)) {
             eventHandler.modifyEventDamage();
             eventHandler.applyBleed();

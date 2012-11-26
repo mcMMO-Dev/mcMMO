@@ -21,7 +21,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Axes {
-	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     private static Random random = new Random();
 
@@ -40,7 +40,7 @@ public class Axes {
         final int INCREASE_LEVEL = MAX_LEVEL / MAX_BONUS;
 
         /* Add 1 DMG for every 50 skill levels */
-        int bonus = Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / INCREASE_LEVEL;
+        int bonus = (int) ((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) INCREASE_LEVEL);
 
         if (bonus > MAX_BONUS) {
             bonus = MAX_BONUS;
@@ -87,7 +87,7 @@ public class Axes {
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         int randomChance = 100;
-        double chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillCheck;
+        double chance = ((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * (double) skillCheck;
 
         if (attacker.hasPermission("mcmmo.perks.lucky.axes")) {
             randomChance = (int) (randomChance * 0.75);
@@ -130,7 +130,7 @@ public class Axes {
 
             /* Every 30 Skill Levels you gain 1 durability damage */
             int impactIncreaseLevel = advancedConfig.getGreaterImpactIncreaseLevel();
-            durabilityDamage += Users.getProfile(attacker).getSkillLevel(SkillType.AXES)/impactIncreaseLevel;
+            durabilityDamage += (int) ((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) impactIncreaseLevel);
 
             if (!hasArmor(targetPlayer)) {
                 applyGreaterImpact(attacker, target, event);
@@ -158,7 +158,7 @@ public class Axes {
     private static void applyGreaterImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
         if(attacker == null)
             return;
-    	
+        
         final int GREATER_IMPACT_CHANCE = advancedConfig.getGreaterImpactChance();
         final double GREATER_IMPACT_MULTIPLIER = advancedConfig.getGreaterImpactModifier();
         final int GREATER_IMPACT_DAMAGE = advancedConfig.getGreaterImpactBonusDamage();

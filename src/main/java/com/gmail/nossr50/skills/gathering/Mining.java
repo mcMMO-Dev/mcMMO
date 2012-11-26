@@ -27,7 +27,7 @@ import com.gmail.nossr50.util.Users;
 
 public class Mining {
     private static Random random = new Random();
-	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     /**
      * Handle double drops when using Silk Touch.
@@ -323,7 +323,7 @@ public class Mining {
         miningXP(player, block);
 
         final int MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
-        int	MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
+        int    MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
         
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);

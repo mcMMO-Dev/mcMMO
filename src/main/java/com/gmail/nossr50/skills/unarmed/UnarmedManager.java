@@ -51,7 +51,7 @@ public class UnarmedManager {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            final float chance = (disarmChanceMax / disarmMaxLevel) * skillLevel;
+            final float chance = (float) (((double) disarmChanceMax / (double) disarmMaxLevel) * (double) skillLevel);
             if (chance > Unarmed.getRandom().nextInt(randomChance)) {
                 if (!hasIronGrip(defender)) {
                     eventHandler.sendAbilityMessage();
@@ -88,7 +88,7 @@ public class UnarmedManager {
             randomChance = (int) (randomChance * 0.75);
         }
         
-        final float chance = (deflectChanceMax / deflectMaxLevel) * skillLevel;
+        final float chance = (float) (((double) deflectChanceMax / (double) deflectMaxLevel) * (double) skillLevel);
         if (chance > Unarmed.getRandom().nextInt(randomChance)) {
             eventHandler.cancelEvent();
             eventHandler.sendAbilityMessage();
@@ -144,7 +144,7 @@ public class UnarmedManager {
             randomChance = (int) (randomChance * 0.75);
         }
         
-        final float chance = (ironGripChanceMax / ironGripMaxLevel) * skillLevel;
+        final float chance = (float) (((double) ironGripChanceMax / (double) ironGripMaxLevel) * (double) skillLevel);
         if (chance > Unarmed.getRandom().nextInt(randomChance)) {
             eventHandler.sendAbilityMessages();
             return true;
