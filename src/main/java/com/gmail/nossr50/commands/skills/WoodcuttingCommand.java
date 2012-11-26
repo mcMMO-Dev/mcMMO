@@ -33,7 +33,7 @@ public class WoodcuttingCommand extends SkillCommand {
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
 
-        treeFellerLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        treeFellerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
         else doubleDropChance = df.format(((double) doubleDropsMaxBonus / (double) doubleDropsMaxLevel) * (double) skillValue);
     }
