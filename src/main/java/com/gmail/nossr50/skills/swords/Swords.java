@@ -5,8 +5,8 @@ import java.util.Random;
 import com.gmail.nossr50.config.AdvancedConfig;
 
 public class Swords {
-	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-	
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    
     public static final int BLEED_MAX_BONUS_LEVEL = advancedConfig.getBleedMaxBonusLevel();
     public static final int MAX_BLEED_TICKS = advancedConfig.getBleedMaxTicks();
     public static final int BASE_BLEED_TICKS = advancedConfig.getBleedBaseTicks();

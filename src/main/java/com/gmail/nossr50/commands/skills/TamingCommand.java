@@ -11,17 +11,17 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class TamingCommand extends SkillCommand {
-	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String goreChance;
 
-	private float goreChanceMax = advancedConfig.getGoreChanceMax();
-	private float goreMaxLevel = advancedConfig.getGoreMaxBonusLevel();
-	private int fastFoodUnlock = advancedConfig.getFastFoodUnlock();
-	private float fastFoodChance = advancedConfig.getFastFoodChance();
-	private int enviromentallyAwareUnlock = advancedConfig.getEnviromentallyAwareUnlock();
-	private int thickFurUnlock = advancedConfig.getThickFurUnlock();
-	private int shockProofUnlock = advancedConfig.getShockProofUnlock();
-	private int sharpenedClawUnlock = advancedConfig.getSharpenedClawsUnlock();
+    private float goreChanceMax = advancedConfig.getGoreChanceMax();
+    private float goreMaxLevel = advancedConfig.getGoreMaxBonusLevel();
+    private int fastFoodUnlock = advancedConfig.getFastFoodUnlock();
+    private float fastFoodChance = advancedConfig.getFastFoodChance();
+    private int enviromentallyAwareUnlock = advancedConfig.getEnviromentallyAwareUnlock();
+    private int thickFurUnlock = advancedConfig.getThickFurUnlock();
+    private int shockProofUnlock = advancedConfig.getShockProofUnlock();
+    private int sharpenedClawUnlock = advancedConfig.getSharpenedClawsUnlock();
    
     private boolean canBeastLore;
     private boolean canGore;
@@ -38,9 +38,9 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-    	DecimalFormat df = new DecimalFormat("#.0");
-    	if(skillValue >= goreMaxLevel) goreChance = df.format(goreChanceMax);
-    	else goreChance = df.format((goreChanceMax / goreMaxLevel) * skillValue);
+        DecimalFormat df = new DecimalFormat("#.0");
+        if(skillValue >= goreMaxLevel) goreChance = df.format(goreChanceMax);
+        else goreChance = df.format(((double) goreChanceMax / (double) goreMaxLevel) * (double) skillValue);
     }    
 
     @Override

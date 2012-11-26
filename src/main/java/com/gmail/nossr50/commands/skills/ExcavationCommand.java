@@ -8,7 +8,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class ExcavationCommand extends SkillCommand {
-	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String gigaDrillBreakerLength;
 
     private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
@@ -22,7 +22,7 @@ public class ExcavationCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        gigaDrillBreakerLength = String.valueOf(2 + ((int) skillValue / abilityLengthIncreaseLevel));
+        gigaDrillBreakerLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
     }
 
     @Override

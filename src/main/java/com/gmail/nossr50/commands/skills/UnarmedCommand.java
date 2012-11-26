@@ -10,7 +10,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class UnarmedCommand extends SkillCommand {
-	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String berserkLength;
     private String deflectChance;
     private String disarmChance;
@@ -22,7 +22,7 @@ public class UnarmedCommand extends SkillCommand {
     private float deflectMaxLevel = advancedConfig.getDeflectMaxBonusLevel();
     private float ironArmMaxBonus = advancedConfig.getIronArmBonus();
     private int ironArmIncreaseLevel = advancedConfig.getIronArmIncreaseLevel();
-	private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
+    private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private boolean canBerserk;
     private boolean canDisarm;
@@ -35,17 +35,17 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-		DecimalFormat df = new DecimalFormat("#.0");
-        berserkLength = String.valueOf(2 + ((int) skillValue / abilityLengthIncreaseLevel));
+        DecimalFormat df = new DecimalFormat("#.0");
+        berserkLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
 
         if(skillValue >= disarmMaxLevel) disarmChance = df.format(disarmChanceMax);
-		else disarmChance = df.format((disarmChanceMax / disarmMaxLevel) * skillValue);
+        else disarmChance = df.format(((double) disarmChanceMax / (double) disarmMaxLevel) * (double) skillValue);
         
         if(skillValue >= deflectMaxLevel) deflectChance = df.format(deflectChanceMax);
-        else deflectChance = df.format((deflectChanceMax / deflectMaxLevel) * skillValue);
+        else deflectChance = df.format(((double) deflectChanceMax / (double) deflectMaxLevel) * (double) skillValue);
 
         if (skillValue >= 250) ironArmBonus = String.valueOf(ironArmMaxBonus);
-        else ironArmBonus = String.valueOf(3 + ((int) skillValue / ironArmIncreaseLevel));
+        else ironArmBonus = String.valueOf(3 + ((double) skillValue / (double) ironArmIncreaseLevel));
     }
 
     @Override

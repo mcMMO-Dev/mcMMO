@@ -5,7 +5,7 @@ import java.util.Random;
 import com.gmail.nossr50.config.AdvancedConfig;
 
 public class Acrobatics {
-	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     public static final int DODGE_MAX_BONUS_LEVEL = advancedConfig.getDodgeMaxBonusLevel();
     public static final int DODGE_XP_MODIFIER = advancedConfig.getDodgeXPModifier();
 
