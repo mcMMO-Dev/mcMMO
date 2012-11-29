@@ -43,7 +43,7 @@ public class HerbalismCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("#.0");
-        greenTerraLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        greenTerraLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         //FARMERS DIET
         if(skillValue >= farmersDietMaxLevel) farmersDietRank = "5";
         else farmersDietRank = String.valueOf((double) skillValue / (double) farmersDietRankChange);

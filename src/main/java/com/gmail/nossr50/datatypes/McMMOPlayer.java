@@ -119,6 +119,11 @@ public class McMMOPlayer {
      * @param newvalue The amount of XP to add
      */
     public void addXP(SkillType skillType, int newValue) {
+        if(player == null)
+            return;
+        else if(player.getGameMode() == null)
+            return;
+
         if (player.getGameMode().equals(GameMode.CREATIVE)) {
             return;
         }

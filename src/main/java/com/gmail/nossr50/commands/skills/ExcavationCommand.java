@@ -22,7 +22,7 @@ public class ExcavationCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        gigaDrillBreakerLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        gigaDrillBreakerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
     }
 
     @Override

@@ -43,7 +43,7 @@ public class AxesCommand extends SkillCommand {
         int skillCheck = Misc.skillCheck((int)skillValue, critMaxBonusLevel);
 
         impactDamage = String.valueOf(1 + ((double) skillValue / (double) greaterImpactIncreaseLevel));
-        skullSplitterLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        skullSplitterLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         greaterImpactDamage = "2";
 
         if (skillValue >= critMaxBonusLevel) critChance = df.format(critMaxChance);

@@ -37,7 +37,7 @@ public class SwordsCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("#.0");
-        serratedStrikesLength = String.valueOf(2 + ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        serratedStrikesLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         
         if (skillValue >= bleedMaxLevel) bleedLength = String.valueOf(bleedMaxTicks);
         else bleedLength = String.valueOf(bleedBaseTicks);
