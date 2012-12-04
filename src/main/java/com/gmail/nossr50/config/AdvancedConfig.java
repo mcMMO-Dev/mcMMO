@@ -57,9 +57,10 @@ public class AdvancedConfig extends ConfigLoader {
     public int getAxesCriticalPVEModifier() { return config.getInt("Skills.Axes.AxesCritical_PVE_Modifier", 2); }
     
     public int getGreaterImpactChance() { return config.getInt("Skills.Axes.GreaterImpact_Chance", 25); }
-    public int getGreaterImpactIncreaseLevel() { return config.getInt("Skills.Axes.GreaterImpact_IncreaseLevel", 50); }
     public double getGreaterImpactModifier() { return config.getDouble("Skills.Axes.GreaterImpact_KnockbackModifier", 1.5); }
     public int getGreaterImpactBonusDamage() { return config.getInt("Skills.Axes.GreaterImpact_BonusDamage", 2); }
+
+    public int getArmorImpactIncreaseLevel() { return config.getInt("Skills.Axes.ArmorImpact_IncreaseLevel", 50); }
     
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml

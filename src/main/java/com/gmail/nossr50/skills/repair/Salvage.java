@@ -27,27 +27,29 @@ public class Salvage {
             return;
         }
 
-        final PlayerProfile profile = Users.getProfile(player);
-        final int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
-        final int unlockLevel = configInstance.getSalvageUnlockLevel();
+        if (player.getGameMode().equals(0)){
+        	final PlayerProfile profile = Users.getProfile(player);
+        	final int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
+        	final int unlockLevel = configInstance.getSalvageUnlockLevel();
 
-        if (skillLevel >= unlockLevel) {
-            final World world = player.getWorld();
-            final float currentdura = inHand.getDurability();
+        	if (skillLevel >= unlockLevel) {
+        		final World world = player.getWorld();
+        		final float currentdura = inHand.getDurability();
 
-            if (currentdura == 0) {
-                final int salvagedAmount = getSalvagedAmount(inHand);
-                final int itemID = getSalvagedItemID(inHand);
+        		if (currentdura == 0) {
+        			final int salvagedAmount = getSalvagedAmount(inHand);
+        			final int itemID = getSalvagedItemID(inHand);
 
-                player.setItemInHand(new ItemStack(0));
-                location.setY(location.getY() + 1);
-                world.dropItem(location, new ItemStack(itemID, salvagedAmount));
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
-            } else {
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
-            }
-        } else {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
+        			player.setItemInHand(new ItemStack(0));
+        			location.setY(location.getY() + 1);
+        			world.dropItem(location, new ItemStack(itemID, salvagedAmount));
+        			player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
+        		} else {
+        			player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
+        		}
+        	} else {
+        		player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
+        	}
         }
     }
 
