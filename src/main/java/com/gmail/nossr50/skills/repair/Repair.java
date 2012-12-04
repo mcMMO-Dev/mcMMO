@@ -210,19 +210,21 @@ public class Repair {
      * @return The final amount of durability repaired to the item
      */
     protected static short repairCalculate(Player player, int skillLevel, short durability, int repairAmount) {
-//        float bonus = (float) skillLevel / 500;
-        float bonus;
-        if(skillLevel >= repairMasteryMaxBonusLevel) bonus = repairMasteryChanceMax;
-        else bonus = ((float) skillLevel / (float) repairMasteryMaxBonusLevel) * (float) repairMasteryChanceMax;
+        double  bonus;
+        if(skillLevel >= repairMasteryMaxBonusLevel) bonus = (double) repairMasteryChanceMax;
+        else bonus = ((double) skillLevel / (double) repairMasteryMaxBonusLevel) * (double) repairMasteryChanceMax;
 
         if (permInstance.repairMastery(player)) {
-            bonus = (repairAmount * bonus);
-            repairAmount += bonus;
+            bonus = ((double) repairAmount * bonus);
+            repairAmount += (int) bonus;
         }
 
         if (checkPlayerProcRepair(player)) {
-            repairAmount = (short) (repairAmount * 2);
+            repairAmount = (int) (repairAmount * 2D);
         }
+
+        if(repairAmount <= 0 || repairAmount > 32767)
+		repairAmount = 32767;
 
         durability -= repairAmount;
 

@@ -30,7 +30,7 @@ import com.gmail.nossr50.util.Users;
 
 public class SpoutStuff {
     private static mcMMO plugin = mcMMO.p;
-	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     public final static String spoutDirectory = mcMMO.getMainDirectory() + "Resources" + File.separator;
     public final static String hudDirectory = spoutDirectory + "HUD" + File.separator;

@@ -63,7 +63,7 @@ public class Herbalism {
             else if (Config.getInstance().getHerbalismGreenThumbCobbleToMossy() && type == Material.COBBLESTONE) {
                 block.setType(Material.MOSSY_COBBLESTONE);
                 // Don't award double drops to mossified cobblestone
-                mcMMO.placeStore.setTrue(block);
+                mcMMO.p.placeStore.setTrue(block);
             }
             else if (Config.getInstance().getHerbalismGreenThumbCobbleWallToMossyWall() && type == Material.COBBLE_WALL) {
                 block.setData((byte) 1);
@@ -109,7 +109,7 @@ public class Herbalism {
         switch (type) {
         case BROWN_MUSHROOM:
         case RED_MUSHROOM:
-            if (!mcMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.p.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPMushrooms();
             }
@@ -120,7 +120,7 @@ public class Herbalism {
                 Block b = block.getRelative(0, y, 0);
                 if (b.getType().equals(Material.CACTUS)) {
                     mat = Material.CACTUS;
-                    if (!mcMMO.placeStore.isTrue(b)) {
+                    if (!mcMMO.p.placeStore.isTrue(b)) {
                         if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
                             catciDrops++;
                         }
@@ -142,7 +142,7 @@ public class Herbalism {
             break;
 
         case MELON_BLOCK:
-            if (!mcMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.p.placeStore.isTrue(block)) {
                 mat = Material.MELON;
                 xp = Config.getInstance().getHerbalismXPMelon();
             }
@@ -161,7 +161,7 @@ public class Herbalism {
 
         case PUMPKIN:
         case JACK_O_LANTERN:
-            if (!mcMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.p.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPPumpkin();
             }
@@ -169,7 +169,7 @@ public class Herbalism {
 
         case RED_ROSE:
         case YELLOW_FLOWER:
-            if (!mcMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.p.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPFlowers();
             }
@@ -180,7 +180,7 @@ public class Herbalism {
                 Block b = block.getRelative(0, y, 0);
                 if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
                     mat = Material.SUGAR_CANE;
-                    if (!mcMMO.placeStore.isTrue(b)) {
+                    if (!mcMMO.p.placeStore.isTrue(b)) {
                         if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
                             caneDrops++;
                         }
@@ -191,14 +191,14 @@ public class Herbalism {
             break;
 
         case VINE:
-            if (!mcMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.p.placeStore.isTrue(block)) {
                 mat = type;
                 xp = Config.getInstance().getHerbalismXPVines();
             }
             break;
 
         case WATER_LILY:
-            if (!mcMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.p.placeStore.isTrue(block)) {
                 mat = type;
                 xp = Config.getInstance().getHerbalismXPLilyPads();
             }
