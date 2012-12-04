@@ -42,9 +42,9 @@ Skills:
         AxesCritical_PVP_Modifier: 1.5
         AxesCritical_PVE_Modifier: 2
         GreaterImpact_Chance: 25
-        GreaterImpact_IncreaseLevel: 50
         GreaterImpact_KnockbackModifier: 1.5
         GreaterImpact_BonusDamage: 2
+        ArmorImpact_IncreaseLevel: 50
     Fishing:
         Shake_UnlockLevel: 150
         Enchantment_Chance: 10
