@@ -123,7 +123,7 @@
         </dependency>
         <dependency>
             <groupId>org.getspout</groupId>
-            <artifactId>spoutpluginapi</artifactId>
+            <artifactId>spoutplugin</artifactId>
             <version>dev-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
