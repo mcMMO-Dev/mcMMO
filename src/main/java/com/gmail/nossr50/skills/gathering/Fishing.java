@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.gathering;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,6 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
-
-import org.bukkit.craftbukkit.entity.CraftSkeleton;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -338,7 +337,28 @@ public class Fishing {
                 break;
 
             case SKELETON:
-                if (((CraftSkeleton) le).getHandle().getSkeletonType() == 1) {
+                Object o;
+                Class  c;
+                Method m;
+
+                o = le;
+                c = o.getClass();
+
+                boolean isWitherSkeleton = false;
+
+		try {
+                    m = c.getDeclaredMethod("getHandle");
+                    o = m.invoke(o);
+
+                    c = o.getClass();
+                    m = c.getDeclaredMethod("getSkeletonType");
+                    o = m.invoke(o);
+
+                    if(o instanceof Integer)
+                        isWitherSkeleton = (((Integer) o) == 1);
+                } catch(Exception e) {}
+
+                if (isWitherSkeleton) {
                     if (DROP_NUMBER > 95) {
                         Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 1));
                     } else if (DROP_NUMBER > 50) {
