@@ -23,7 +23,7 @@ public class AxesCommand extends SkillCommand {
     private int bonusDamageAxesMaxBonusLevel = advancedConfig.getBonusDamageAxesMaxBonusLevel();
     private double critMaxChance = advancedConfig.getAxesCriticalChance();
     private int critMaxBonusLevel = advancedConfig.getAxesCriticalMaxBonusLevel();
-    private int greaterImpactIncreaseLevel = advancedConfig.getGreaterImpactIncreaseLevel();
+    private int greaterImpactIncreaseLevel = advancedConfig.getArmorImpactIncreaseLevel();
 //    private double greaterImpactModifier = advancedConfig.getGreaterImpactModifier();
     private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 

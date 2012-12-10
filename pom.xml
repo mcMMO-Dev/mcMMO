@@ -122,15 +122,8 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>LATEST</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.getspout</groupId>
-            <artifactId>spoutpluginapi</artifactId>
+            <artifactId>spoutplugin</artifactId>
             <version>dev-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
