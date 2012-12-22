@@ -14,8 +14,11 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -337,28 +340,7 @@ public class Fishing {
                 break;
 
             case SKELETON:
-                Object o;
-                Class  c;
-                Method m;
-
-                o = le;
-                c = o.getClass();
-
-                boolean isWitherSkeleton = false;
-
-		try {
-                    m = c.getDeclaredMethod("getHandle");
-                    o = m.invoke(o);
-
-                    c = o.getClass();
-                    m = c.getDeclaredMethod("getSkeletonType");
-                    o = m.invoke(o);
-
-                    if(o instanceof Integer)
-                        isWitherSkeleton = (((Integer) o) == 1);
-                } catch(Exception e) {}
-
-                if (isWitherSkeleton) {
+            	if (((Skeleton)le).getSkeletonType() == SkeletonType.WITHER) {
                     if (DROP_NUMBER > 95) {
                         Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 1));
                     } else if (DROP_NUMBER > 50) {
@@ -401,7 +383,7 @@ public class Fishing {
                 break;
 
             case SQUID:
-                Misc.dropItem(location, new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x0));
+            	Misc.dropItem(location, new ItemStack(new MaterialData(Material.INK_SACK, (byte) 0).toItemStack()));
                 break;
 
             case WITCH:
