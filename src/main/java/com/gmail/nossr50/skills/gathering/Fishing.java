@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.gathering;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -264,7 +263,7 @@ public class Fishing {
                 break;
 
             case CREEPER:
-                if (DROP_NUMBER > 95) {
+                if (DROP_NUMBER > 98) {
                     Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 4));
                 } else {
                     Misc.dropItem(location, new ItemStack(Material.SULPHUR));
@@ -341,7 +340,7 @@ public class Fishing {
 
             case SKELETON:
             	if (((Skeleton)le).getSkeletonType() == SkeletonType.WITHER) {
-                    if (DROP_NUMBER > 95) {
+                    if (DROP_NUMBER > 98) {
                         Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 1));
                     } else if (DROP_NUMBER > 50) {
                         Misc.dropItem(location, new ItemStack(Material.BONE));
@@ -350,7 +349,7 @@ public class Fishing {
                     Misc.randomDropItems(location, new ItemStack(Material.COAL), 50, 2);
                     }
                 } else {
-                    if (DROP_NUMBER > 95) {
+                    if (DROP_NUMBER > 98) {
                         Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM));
                     } else if (DROP_NUMBER > 50) {
                         Misc.dropItem(location, new ItemStack(Material.BONE));
@@ -418,7 +417,7 @@ public class Fishing {
                 break;
 
             case ZOMBIE:
-                if (DROP_NUMBER > 95) {
+                if (DROP_NUMBER > 98) {
                     Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 2));
                 } else {
                     Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));
