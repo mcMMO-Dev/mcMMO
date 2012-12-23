@@ -17,7 +17,6 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -283,7 +282,7 @@ public class Fishing {
                 break;
 
             case IRON_GOLEM:
-                if (DROP_NUMBER > 95) {
+                if (DROP_NUMBER > 97) {
                     Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
                 } else if (DROP_NUMBER > 85) {
                     Misc.dropItem(location, new ItemStack(Material.IRON_INGOT));
@@ -365,7 +364,7 @@ public class Fishing {
                 break;
 
             case SNOWMAN:
-                if (DROP_NUMBER > 95) {
+                if (DROP_NUMBER > 97) {
                     Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
                 } else {
                     Misc.dropItem(location, new ItemStack(Material.SNOW_BALL));
