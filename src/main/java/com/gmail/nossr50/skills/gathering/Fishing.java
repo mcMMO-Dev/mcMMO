@@ -382,7 +382,7 @@ public class Fishing {
                 break;
 
             case SQUID:
-            	Misc.dropItem(location, new ItemStack(new MaterialData(Material.INK_SACK, (byte) 0).toItemStack()));
+            	Misc.dropItem(location, new ItemStack(Material.INK_SACK, 1, (short) 0));
                 break;
 
             case WITCH:
