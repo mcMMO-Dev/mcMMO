@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.util.ArrayList;
@@ -17,13 +16,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.ChunkletUnloader;
 import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionZDirectory;
-import com.gmail.nossr50.util.blockmeta.ChunkletStore;
-import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
-import com.gmail.nossr50.util.blockmeta.PrimitiveExChunkletStore;
-import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
 
 import org.getspout.spoutapi.chunkstore.mcMMOSimpleRegionFile;
 
