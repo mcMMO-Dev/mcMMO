@@ -109,7 +109,7 @@ public class WoodCutting {
                         CustomBlock block = ModChecks.getCustomBlock(x);
                         item = block.getItemDrop();
 
-                        if (!mcMMO.p.placeStore.isTrue(x)) {
+                        if (!mcMMO.placeStore.isTrue(x)) {
                             WoodCutting.woodCuttingProcCheck(player, x);
                             xp = block.getXpGain();
                         }
@@ -169,7 +169,7 @@ public class WoodCutting {
                         break;
                     }
 
-                    if (!mcMMO.p.placeStore.isTrue(x)) {
+                    if (!mcMMO.placeStore.isTrue(x)) {
                         WoodCutting.woodCuttingProcCheck(player, x);
 
                         switch (species) {
@@ -245,7 +245,7 @@ public class WoodCutting {
         Block zNegative = currentBlock.getRelative(0, 0, -1);
         Block yPositive = currentBlock.getRelative(0, 1, 0);
 
-        if (!mcMMO.p.placeStore.isTrue(currentBlock)) {
+        if (!mcMMO.placeStore.isTrue(currentBlock)) {
             if (!isTooAggressive(currentBlock, xPositive) && BlockChecks.treeFellerCompatible(xPositive) && !toBeFelled.contains(xPositive)) {
                 processTreeFelling(xPositive, toBeFelled);
             }
@@ -277,7 +277,7 @@ public class WoodCutting {
             Block corner3 = currentBlock.getRelative(-1, 0, 1);
             Block corner4 = currentBlock.getRelative(-1, 0, -1);
 
-            if (!mcMMO.p.placeStore.isTrue(currentBlock)) {
+            if (!mcMMO.placeStore.isTrue(currentBlock)) {
                 if (!isTooAggressive(currentBlock, corner1) && BlockChecks.treeFellerCompatible(corner1) && !toBeFelled.contains(corner1)) {
                     processTreeFelling(corner1, toBeFelled);
                 }
@@ -297,7 +297,7 @@ public class WoodCutting {
         }
 
         if (BlockChecks.treeFellerCompatible(yPositive)) {
-            if(!mcMMO.p.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
+            if(!mcMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
                 processTreeFelling(yPositive, toBeFelled);
             }
         }
@@ -421,7 +421,7 @@ public class WoodCutting {
         PlayerProfile profile = Users.getProfile(player);
         int xp = 0;
 
-        if (mcMMO.p.placeStore.isTrue(block)) {
+        if (mcMMO.placeStore.isTrue(block)) {
             return;
         }
 

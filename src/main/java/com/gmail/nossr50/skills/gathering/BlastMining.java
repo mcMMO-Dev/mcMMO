@@ -62,7 +62,7 @@ public class BlastMining {
                 blocksDropped.add(temp);
                 Mining.miningDrops(temp);
 
-                if (!mcMMO.p.placeStore.isTrue(temp)) {
+                if (!mcMMO.placeStore.isTrue(temp)) {
                     for (int i = 1 ; i < extraDrops ; i++) {
                         blocksDropped.add(temp);
                         Mining.miningDrops(temp);
@@ -172,7 +172,7 @@ public class BlastMining {
         }
 
         for (Block block : xp) {
-            if (!mcMMO.p.placeStore.isTrue(block)) {
+            if (!mcMMO.placeStore.isTrue(block)) {
                 Mining.miningXP(player, block);
             }
         }

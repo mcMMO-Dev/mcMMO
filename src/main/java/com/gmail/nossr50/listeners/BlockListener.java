@@ -62,17 +62,17 @@ public class BlockListener implements Listener {
         Block futureEmptyBlock = event.getBlock().getRelative(direction);
 
         for (Block b : blocks) {
-            if (mcMMO.p.placeStore.isTrue(b)) {
+            if (mcMMO.placeStore.isTrue(b)) {
                 b.getRelative(direction).setMetadata("pistonTrack", new FixedMetadataValue(plugin, true));
                 if (b.equals(futureEmptyBlock)) {
-                    mcMMO.p.placeStore.setFalse(b);
+                    mcMMO.placeStore.setFalse(b);
                 }
             }
         }
 
         for (Block b : blocks) {
             if (b.getRelative(direction).hasMetadata("pistonTrack")) {
-                mcMMO.p.placeStore.setTrue(b.getRelative(direction));
+                mcMMO.placeStore.setTrue(b.getRelative(direction));
                 b.getRelative(direction).removeMetadata("pistonTrack", plugin);
             }
         }
@@ -95,7 +95,7 @@ public class BlockListener implements Listener {
             Block fallenBlock = event.getBlock().getRelative(BlockFace.UP);
 
             if (fallenBlock.getType() == type) {
-                mcMMO.p.placeStore.setTrue(fallenBlock);
+                mcMMO.placeStore.setTrue(fallenBlock);
             }
         }
     }
@@ -138,7 +138,7 @@ public class BlockListener implements Listener {
                 }
                 else {
                     Block newLocation = block.getRelative(0, y + 1, 0);
-                    mcMMO.p.placeStore.setTrue(newLocation);
+                    mcMMO.placeStore.setTrue(newLocation);
                     break;
                 }
             }
@@ -147,7 +147,7 @@ public class BlockListener implements Listener {
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(block)) {
             if (!((type == Material.SAND || type == Material.GRAVEL) && block.getRelative(BlockFace.DOWN).getType() == Material.AIR)) { //Don't wanna track sand that's gonna fall.
-                mcMMO.p.placeStore.setTrue(block);
+                mcMMO.placeStore.setTrue(block);
             }
         }
 
@@ -232,7 +232,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockChecks.canBeGigaDrillBroken(block) && permInstance.excavation(player) && !mcMMO.p.placeStore.isTrue(block)) {
+        else if (BlockChecks.canBeGigaDrillBroken(block) && permInstance.excavation(player) && !mcMMO.placeStore.isTrue(block)) {
             if (configInstance.getExcavationRequiresTool()) {
                 if (ItemChecks.isShovel(inHand)) {
                     Excavation.excavationProcCheck(block, player);
@@ -245,7 +245,7 @@ public class BlockListener implements Listener {
 
         //Remove metadata when broken
         if (BlockChecks.shouldBeWatched(block)) {
-            mcMMO.p.placeStore.setFalse(block);
+            mcMMO.placeStore.setFalse(block);
         }
 
         //Remove metadata from fallen sand/gravel
@@ -256,11 +256,11 @@ public class BlockListener implements Listener {
                 Block relative = block.getRelative(0, y, 0);
                 Material relativeType = relative.getType();
 
-                if ((relativeType == Material.SAND || relativeType == Material.GRAVEL) && mcMMO.p.placeStore.isTrue(relative)) {
-                    mcMMO.p.placeStore.setFalse(relative);
+                if ((relativeType == Material.SAND || relativeType == Material.GRAVEL) && mcMMO.placeStore.isTrue(relative)) {
+                    mcMMO.placeStore.setFalse(relative);
                 }
-                else if (!BlockChecks.shouldBeWatched(relative) && mcMMO.p.placeStore.isTrue(relative)){
-                    mcMMO.p.placeStore.setFalse(relative);
+                else if (!BlockChecks.shouldBeWatched(relative) && mcMMO.placeStore.isTrue(relative)){
+                    mcMMO.placeStore.setFalse(relative);
                 }
                 else {
                     break;

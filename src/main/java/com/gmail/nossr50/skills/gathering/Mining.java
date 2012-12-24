@@ -316,7 +316,7 @@ public class Mining {
      * @param block The block being broken
      */
     public static void miningBlockCheck(Player player, Block block) {
-        if (mcMMO.p.placeStore.isTrue(block)) {
+        if (mcMMO.placeStore.isTrue(block)) {
             return;
         }
 
@@ -362,7 +362,7 @@ public class Mining {
                 return;
             }
 
-            if (mcMMO.p.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
+            if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
                 return;
             }
 
@@ -408,7 +408,7 @@ public class Mining {
             case NETHERRACK:
             case SANDSTONE:
             case STONE:
-                if (mcMMO.p.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
+                if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
                     return;
                 }
 
