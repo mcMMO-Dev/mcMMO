@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.gathering;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
@@ -261,7 +262,7 @@ public class Fishing {
                 break;
 
             case CREEPER:
-                if (DROP_NUMBER > 95) {
+                if (DROP_NUMBER > 97) {
                     Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 4));
                 } else {
                     Misc.dropItem(location, new ItemStack(Material.SULPHUR));
@@ -281,7 +282,7 @@ public class Fishing {
                 break;
 
             case IRON_GOLEM:
-                if (DROP_NUMBER > 95) {
+                if (DROP_NUMBER > 97) {
                     Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
                 } else if (DROP_NUMBER > 85) {
                     Misc.dropItem(location, new ItemStack(Material.IRON_INGOT));
@@ -337,29 +338,8 @@ public class Fishing {
                 break;
 
             case SKELETON:
-                Object o;
-                Class  c;
-                Method m;
-
-                o = le;
-                c = o.getClass();
-
-                boolean isWitherSkeleton = false;
-
-		try {
-                    m = c.getDeclaredMethod("getHandle");
-                    o = m.invoke(o);
-
-                    c = o.getClass();
-                    m = c.getDeclaredMethod("getSkeletonType");
-                    o = m.invoke(o);
-
-                    if(o instanceof Integer)
-                        isWitherSkeleton = (((Integer) o) == 1);
-                } catch(Exception e) {}
-
-                if (isWitherSkeleton) {
-                    if (DROP_NUMBER > 95) {
+            	if (((Skeleton)le).getSkeletonType() == SkeletonType.WITHER) {
+                    if (DROP_NUMBER > 97) {
                         Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 1));
                     } else if (DROP_NUMBER > 50) {
                         Misc.dropItem(location, new ItemStack(Material.BONE));
@@ -368,7 +348,7 @@ public class Fishing {
                     Misc.randomDropItems(location, new ItemStack(Material.COAL), 50, 2);
                     }
                 } else {
-                    if (DROP_NUMBER > 95) {
+                    if (DROP_NUMBER > 97) {
                         Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM));
                     } else if (DROP_NUMBER > 50) {
                         Misc.dropItem(location, new ItemStack(Material.BONE));
@@ -384,7 +364,7 @@ public class Fishing {
                 break;
 
             case SNOWMAN:
-                if (DROP_NUMBER > 95) {
+                if (DROP_NUMBER > 97) {
                     Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
                 } else {
                     Misc.dropItem(location, new ItemStack(Material.SNOW_BALL));
@@ -401,7 +381,7 @@ public class Fishing {
                 break;
 
             case SQUID:
-                Misc.dropItem(location, new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x0));
+            	Misc.dropItem(location, new ItemStack(Material.INK_SACK, 1, (short) 0));
                 break;
 
             case WITCH:
@@ -436,7 +416,7 @@ public class Fishing {
                 break;
 
             case ZOMBIE:
-                if (DROP_NUMBER > 95) {
+                if (DROP_NUMBER > 97) {
                     Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 2));
                 } else {
                     Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));

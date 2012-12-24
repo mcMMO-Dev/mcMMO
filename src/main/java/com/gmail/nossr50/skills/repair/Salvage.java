@@ -1,8 +1,8 @@
 package com.gmail.nossr50.skills.repair;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
@@ -14,6 +14,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -27,13 +28,12 @@ public class Salvage {
             return;
         }
 
-        if (player.getGameMode().equals(0)){
+        if(player.getGameMode() == GameMode.SURVIVAL) {
         	final PlayerProfile profile = Users.getProfile(player);
         	final int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
         	final int unlockLevel = configInstance.getSalvageUnlockLevel();
 
         	if (skillLevel >= unlockLevel) {
-        		final World world = player.getWorld();
         		final float currentdura = inHand.getDurability();
 
         		if (currentdura == 0) {
@@ -42,7 +42,7 @@ public class Salvage {
 
         			player.setItemInHand(new ItemStack(0));
         			location.setY(location.getY() + 1);
-        			world.dropItem(location, new ItemStack(itemID, salvagedAmount));
+        			Misc.dropItem(location, new ItemStack(itemID, salvagedAmount));
         			player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
         		} else {
         			player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
