@@ -307,7 +307,7 @@ public class PlayerProfile {
             String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
             database.write("UPDATE " + tablePrefix + "huds SET hudtype = '" + hudType.toString() + "' WHERE user_id = " + userId);
-            database.write("UPDATE " + tablePrefix + "users SET lastlogin = " + timestamp.intValue() + " WHERE id = " + userId);
+            database.write("UPDATE " + tablePrefix + "users SET lastlogin = " + ((int) (timestamp / 1000L)) + " WHERE id = " + userId);
             database.write("UPDATE " + tablePrefix + "cooldowns SET "
                     + " mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
                     + ", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
@@ -418,6 +418,7 @@ public class PlayerProfile {
                 e.printStackTrace();
             }
         }
+	lastSave = timestamp;
     }
 
     public void addPlayer() {
