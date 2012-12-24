@@ -44,6 +44,7 @@ public class PlayerProfile {
     /* Timestamps */
     private long recentlyHurt;
     private int respawnATS;
+    private long lastSave = 0L;
 
     /* mySQL STUFF */
     private int userId;
@@ -292,7 +293,13 @@ public class PlayerProfile {
     }
 
     public void save() {
-        Long timestamp = System.currentTimeMillis() / 1000;
+        save(true);
+    }
+
+    public void save(boolean override) {
+        Long timestamp = System.currentTimeMillis();
+        if(timestamp < (lastSave + ((long) Config.getInstance().getSaveInterval() * 60000)) && !override)
+            return;
 
         // if we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
@@ -909,10 +916,12 @@ public class PlayerProfile {
 
     public void setSkillXPLevel(SkillType skillType, int newValue) {
         skillsXp.put(skillType, newValue);
+        save(false);
     }
 
     public void skillUp(SkillType skillType, int newValue) {
         skills.put(skillType, skills.get(skillType) + newValue);
+        save(false);
     }
     
     public void resetSkill(SkillType skillType)
@@ -928,6 +937,7 @@ public class PlayerProfile {
     				skills.put(skill,  0);
     		}
     	}
+        save(false);
     }
 
 //    /**
@@ -1043,6 +1053,7 @@ public class PlayerProfile {
         else {
             skillsXp.put(skillType, skillsXp.get(skillType) - xp);
         }
+        save(false);
     }
 
     /**
@@ -1066,6 +1077,7 @@ public class PlayerProfile {
             skills.put(skillType, newValue);
             skillsXp.put(skillType, 0);
         }
+        save(false);
     }
 
     /**
@@ -1089,6 +1101,7 @@ public class PlayerProfile {
             skills.put(skillType, skills.get(skillType) + levels);
             skillsXp.put(skillType, 0);
         }
+        save(false);
     }
 
     /**
@@ -1168,6 +1181,7 @@ public class PlayerProfile {
 
     public void setParty(Party party) {
         this.party = party;
+        save(false);
     }
 
     public Party getParty() {
@@ -1185,6 +1199,7 @@ public class PlayerProfile {
 
     public void removeParty() {
         party = null;
+        save(false);
     }
 
     public void removeInvite() {
