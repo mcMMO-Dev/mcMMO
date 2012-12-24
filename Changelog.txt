@@ -7,6 +7,12 @@ Key:
   ! Change
   - Removal
 
+Version 1.3.13
+ + Added Craftbukkit 1.4.6 compatibility
+ + Added default cases to several switch/case statements
+ ! GJ stopped being a lazy slacker and got stuff done
+ - Removed dead code relating to null profiles
+
 Version 1.3.12
  + Added Craftbukkit 1.4.5 compatibility
  + Added new items from Minecraft 1.4 to Herbalism (potatoes & carrots)

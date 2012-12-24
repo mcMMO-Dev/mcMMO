@@ -422,6 +422,8 @@ public class Herbalism {
         case NETHER_WARTS:
             hasSeeds = inventory.contains(Material.NETHER_STALK);
             break;
+        default:
+            break;
         }
 
         int randomChance = 1500;
@@ -458,6 +460,8 @@ public class Herbalism {
                 Misc.dropItem(location, new ItemStack(Material.NETHER_STALK, 2));
                 Misc.randomDropItems(location, new ItemStack(Material.NETHER_STALK), 50, 2);
                 inventory.removeItem(new ItemStack(Material.NETHER_STALK));
+                break;
+            default:
                 break;
             }
 

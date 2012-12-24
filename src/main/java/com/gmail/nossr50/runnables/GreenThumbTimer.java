@@ -79,6 +79,8 @@ public class GreenThumbTimer implements Runnable {
                 this.block.setData((byte) ((this.block.getData() ^ ((byte) 0xc)) | ((byte) 4)));
             }
             break;
+        default:
+            break;
         }
     }
 }
