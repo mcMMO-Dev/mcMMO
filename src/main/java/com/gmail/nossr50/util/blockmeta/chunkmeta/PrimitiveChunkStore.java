@@ -28,7 +28,7 @@ public class PrimitiveChunkStore implements ChunkStore {
     public PrimitiveChunkStore(World world, int cx, int cz) {
         this.cx = cx;
         this.cz = cz;
-	this.worldUid = world.getUID();
+        this.worldUid = world.getUID();
 
         this.worldHeight = world != null ? world.getMaxHeight() : 128;
         this.xBitShifts = 11;
@@ -108,7 +108,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         out.writeLong(worldUid.getMostSignificantBits());
         out.writeInt(cx);
         out.writeInt(cz);
-	out.writeObject(store);
+        out.writeObject(store);
 
         dirty = false;
     }

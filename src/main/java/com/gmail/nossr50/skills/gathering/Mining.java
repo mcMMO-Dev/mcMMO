@@ -87,7 +87,7 @@ public class Mining {
                 Misc.dropItem(location, item);
             }
             break;
-            
+
         case EMERALD_ORE:
             if (configInstance.getEmeraldDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
@@ -202,7 +202,7 @@ public class Mining {
                 Misc.dropItem(location, item);
             }
             break;
-        
+
         case EMERALD_ORE:
             if (configInstance.getEmeraldDoubleDropsEnabled()) {
                 item = new ItemStack(Material.EMERALD);
@@ -294,7 +294,7 @@ public class Mining {
         case STONE:
             xp += Config.getInstance().getMiningXPStone();
             break;
-            
+
         case EMERALD_ORE:
             xp += Config.getInstance().getMiningXPEmeraldOre();
             break;
@@ -324,12 +324,12 @@ public class Mining {
 
         final int MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
         int    MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
-        
+
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         int randomChance = 100;
-        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * (double) skillCheck);
+        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillCheck);
 
         if (player.hasPermission("mcmmo.perks.lucky.mining")) {
             randomChance = (int) (randomChance * 0.75);

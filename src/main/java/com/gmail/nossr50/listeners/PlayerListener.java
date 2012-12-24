@@ -47,7 +47,7 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class PlayerListener implements Listener {
-    
+
     private final mcMMO plugin;
 
     public PlayerListener(final mcMMO plugin) {
@@ -62,9 +62,9 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        
+
         PlayerProfile profile = Users.getProfile(player);
 
         if (profile == null) {
@@ -93,10 +93,10 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
-    	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+        AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
         int shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
         Player player = event.getPlayer();
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (Permissions.getInstance().fishing(player)) {
@@ -130,9 +130,9 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-    	
-    	 if(event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-    	
+
+        if(event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+
         PlayerProfile profile = Users.getProfile(event.getPlayer());
 
         if (profile == null) {
@@ -140,7 +140,7 @@ public class PlayerListener implements Listener {
         }
 
         if (profile.getAbilityMode(AbilityType.BERSERK)) {
-             event.setCancelled(true);
+            event.setCancelled(true);
         }
     }
 
@@ -151,7 +151,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent event) {
-    	if(event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if(event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
         Users.addUser(event.getPlayer()).getProfile().actualizeRespawnATS();
     }
 
@@ -163,7 +163,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         /* GARBAGE COLLECTION */
@@ -180,7 +180,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         //TODO: Locale ALL the things.
@@ -199,7 +199,7 @@ public class PlayerListener implements Listener {
                     player.sendMessage(prefix + ChatColor.DARK_RED + "Hardcore enabled.");
                     player.sendMessage(prefix + ChatColor.DARK_AQUA + "Skill Death Penalty: " + ChatColor.DARK_RED + Config.getInstance().getHardcoreDeathStatPenaltyPercentage() + "%");
                 }
-            }   
+            }
 
             if (player.hasPermission("mcmmo.perks.xp.quadruple")) {
                 player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 4 }) }));
@@ -287,7 +287,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-    	if(event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if(event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
         PlayerProfile profile = Users.getProfile(event.getPlayer());
 
         if (profile != null) {
@@ -331,8 +331,8 @@ public class PlayerListener implements Listener {
             /* SALVAGE CHECKS */
             if (Permissions.getInstance().salvage(player) && block.getTypeId() == Config.getInstance().getSalvageAnvilId()) {
                 if (Salvage.isSalvageable(inHand)) {
-					final Location location = block.getLocation();
-                	Salvage.handleSalvage(player, location, inHand);
+                    final Location location = block.getLocation();
+                    Salvage.handleSalvage(player, location, inHand);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
@@ -424,9 +424,9 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        
+
         PlayerProfile profile = Users.getProfile(player);
 
         if (profile == null) {

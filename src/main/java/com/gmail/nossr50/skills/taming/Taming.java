@@ -6,7 +6,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 
 public class Taming {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    
+
     public static final int ENVIRONMENTALLY_AWARE_ACTIVATION_LEVEL = advancedConfig.getEnviromentallyAwareUnlock();
 
     public static final int FAST_FOOD_SERVICE_ACTIVATION_CHANCE = advancedConfig.getFastFoodChance();

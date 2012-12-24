@@ -32,7 +32,7 @@ public class XpBar {
         case RETRO:
             initializeXpBarRetro();
             break;
-            
+
         case STANDARD:
             initializeXpBarStandard();
             break;
@@ -44,7 +44,7 @@ public class XpBar {
         case DISABLED:
             break;
         }
-        
+
         spoutPlayer.getMainScreen().setDirty(true);
     }
 
@@ -77,7 +77,7 @@ public class XpBar {
         xpFill.setTopColor(green);
         xpFill.setPriority(RenderPriority.Lowest);
         spoutPlayer.getMainScreen().attachWidget(mcMMO.p, xpFill);
-        
+
         xpBackground.setWidth(126);
         xpBackground.setHeight(2);
         xpBackground.setX(150);
@@ -231,44 +231,44 @@ public class XpBar {
 
     private static Color getRetroColor(SkillType type) {
         switch (type) {
-            case ACROBATICS:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDAcrobaticsRed(), (float) SpoutConfig.getInstance().getRetroHUDAcrobaticsGreen(), (float) SpoutConfig.getInstance().getRetroHUDAcrobaticsBlue(), 1f);
+        case ACROBATICS:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDAcrobaticsRed(), (float) SpoutConfig.getInstance().getRetroHUDAcrobaticsGreen(), (float) SpoutConfig.getInstance().getRetroHUDAcrobaticsBlue(), 1f);
 
-            case ARCHERY:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDArcheryRed(), (float) SpoutConfig.getInstance().getRetroHUDArcheryGreen(), (float) SpoutConfig.getInstance().getRetroHUDArcheryBlue(), 1f);
+        case ARCHERY:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDArcheryRed(), (float) SpoutConfig.getInstance().getRetroHUDArcheryGreen(), (float) SpoutConfig.getInstance().getRetroHUDArcheryBlue(), 1f);
 
-            case AXES:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDAxesRed(), (float) SpoutConfig.getInstance().getRetroHUDAxesGreen(), (float) SpoutConfig.getInstance().getRetroHUDAxesBlue(), 1f);
+        case AXES:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDAxesRed(), (float) SpoutConfig.getInstance().getRetroHUDAxesGreen(), (float) SpoutConfig.getInstance().getRetroHUDAxesBlue(), 1f);
 
-            case EXCAVATION:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDExcavationRed(), (float) SpoutConfig.getInstance().getRetroHUDExcavationGreen(), (float) SpoutConfig.getInstance().getRetroHUDExcavationBlue(), 1f);
+        case EXCAVATION:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDExcavationRed(), (float) SpoutConfig.getInstance().getRetroHUDExcavationGreen(), (float) SpoutConfig.getInstance().getRetroHUDExcavationBlue(), 1f);
 
-            case HERBALISM:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDHerbalismRed(), (float) SpoutConfig.getInstance().getRetroHUDHerbalismGreen(), (float) SpoutConfig.getInstance().getRetroHUDHerbalismBlue(), 1f);
+        case HERBALISM:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDHerbalismRed(), (float) SpoutConfig.getInstance().getRetroHUDHerbalismGreen(), (float) SpoutConfig.getInstance().getRetroHUDHerbalismBlue(), 1f);
 
-            case MINING:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDMiningRed(), (float) SpoutConfig.getInstance().getRetroHUDMiningGreen(), (float) SpoutConfig.getInstance().getRetroHUDMiningBlue(), 1f);
+        case MINING:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDMiningRed(), (float) SpoutConfig.getInstance().getRetroHUDMiningGreen(), (float) SpoutConfig.getInstance().getRetroHUDMiningBlue(), 1f);
 
-            case REPAIR:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDRepairRed(), (float) SpoutConfig.getInstance().getRetroHUDRepairGreen(), (float) SpoutConfig.getInstance().getRetroHUDRepairBlue(), 1f);
+        case REPAIR:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDRepairRed(), (float) SpoutConfig.getInstance().getRetroHUDRepairGreen(), (float) SpoutConfig.getInstance().getRetroHUDRepairBlue(), 1f);
 
-            case SWORDS:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDSwordsRed(), (float) SpoutConfig.getInstance().getRetroHUDSwordsGreen(), (float) SpoutConfig.getInstance().getRetroHUDSwordsBlue(), 1f);
+        case SWORDS:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDSwordsRed(), (float) SpoutConfig.getInstance().getRetroHUDSwordsGreen(), (float) SpoutConfig.getInstance().getRetroHUDSwordsBlue(), 1f);
 
-            case TAMING:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDTamingRed(), (float) SpoutConfig.getInstance().getRetroHUDTamingGreen(), (float) SpoutConfig.getInstance().getRetroHUDTamingBlue(), 1f);
+        case TAMING:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDTamingRed(), (float) SpoutConfig.getInstance().getRetroHUDTamingGreen(), (float) SpoutConfig.getInstance().getRetroHUDTamingBlue(), 1f);
 
-            case UNARMED:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDUnarmedRed(), (float) SpoutConfig.getInstance().getRetroHUDUnarmedGreen(), (float) SpoutConfig.getInstance().getRetroHUDUnarmedBlue(), 1f);
+        case UNARMED:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDUnarmedRed(), (float) SpoutConfig.getInstance().getRetroHUDUnarmedGreen(), (float) SpoutConfig.getInstance().getRetroHUDUnarmedBlue(), 1f);
 
-            case WOODCUTTING:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDWoodcuttingRed(), (float) SpoutConfig.getInstance().getRetroHUDWoodcuttingGreen(), (float) SpoutConfig.getInstance().getRetroHUDWoodcuttingBlue(), 1f);
+        case WOODCUTTING:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDWoodcuttingRed(), (float) SpoutConfig.getInstance().getRetroHUDWoodcuttingGreen(), (float) SpoutConfig.getInstance().getRetroHUDWoodcuttingBlue(), 1f);
 
-            case FISHING:
-                return new Color((float) SpoutConfig.getInstance().getRetroHUDFishingRed(), (float) SpoutConfig.getInstance().getRetroHUDFishingGreen(), (float) SpoutConfig.getInstance().getRetroHUDFishingBlue(), 1f);
+        case FISHING:
+            return new Color((float) SpoutConfig.getInstance().getRetroHUDFishingRed(), (float) SpoutConfig.getInstance().getRetroHUDFishingGreen(), (float) SpoutConfig.getInstance().getRetroHUDFishingBlue(), 1f);
 
-            default:
-                return new Color(0.3f, 0.3f, 0.75f, 1f);
+        default:
+            return new Color(0.3f, 0.3f, 0.75f, 1f);
         }
     }
 

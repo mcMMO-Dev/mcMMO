@@ -394,12 +394,12 @@ public class ItemChecks {
      */
     public static boolean isStringTool(ItemStack is) {
         switch (is.getType()) {
-            case BOW:
-            case FISHING_ROD:
-                return true;
+        case BOW:
+        case FISHING_ROD:
+            return true;
 
-            default:
-                return false;
+        default:
+            return false;
         }
     }
 

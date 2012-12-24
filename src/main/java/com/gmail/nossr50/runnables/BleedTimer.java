@@ -91,7 +91,7 @@ public class BleedTimer implements Runnable {
         if (bleedList.containsKey(entity)) {
             Combat.dealDamage(entity, bleedList.get(entity) * 2);
             bleedList.remove(entity);
-       }
+        }
     }
 
     /**

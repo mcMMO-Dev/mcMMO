@@ -10,7 +10,7 @@ public interface ChunkManager {
     public ChunkStore readChunkStore(World world, int x, int z) throws IOException;
     public void writeChunkStore(World world, int x, int z, ChunkStore data);
     public void closeChunkStore(World world, int x, int z);
-    
+
     /**
      * Loads a specific chunklet
      * 

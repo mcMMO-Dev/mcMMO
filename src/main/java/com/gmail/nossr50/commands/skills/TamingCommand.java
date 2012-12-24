@@ -22,7 +22,7 @@ public class TamingCommand extends SkillCommand {
     private int thickFurUnlock = advancedConfig.getThickFurUnlock();
     private int shockProofUnlock = advancedConfig.getShockProofUnlock();
     private int sharpenedClawUnlock = advancedConfig.getSharpenedClawsUnlock();
-   
+
     private boolean canBeastLore;
     private boolean canGore;
     private boolean canSharpenedClaws;
@@ -40,8 +40,8 @@ public class TamingCommand extends SkillCommand {
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("#.0");
         if(skillValue >= goreMaxLevel) goreChance = df.format(goreChanceMax);
-        else goreChance = df.format(((double) goreChanceMax / (double) goreMaxLevel) * (double) skillValue);
-    }    
+        else goreChance = df.format(((double) goreChanceMax / (double) goreMaxLevel) * skillValue);
+    }
 
     @Override
     protected void permissionsCheck() {

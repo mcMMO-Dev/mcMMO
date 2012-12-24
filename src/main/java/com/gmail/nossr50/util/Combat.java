@@ -504,7 +504,7 @@ public class Combat {
             if (Users.getProfile(defender).getGodMode()) {
                 return false;
             }
-            
+
             //It may seem a bit redundant but we need a check here to prevent bleed from being applied in applyAbilityAoE()
             EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);

@@ -40,8 +40,9 @@ public class Fishing {
 
     /**
      * Get the player's current fishing loot tier.
-     *
-     * @param profile The profile of the player
+     * 
+     * @param profile
+     *            The profile of the player
      * @return the player's current fishing rank
      */
     public static int getFishingLootTier(PlayerProfile profile) {
@@ -50,18 +51,14 @@ public class Fishing {
 
         if (level >= Config.getInstance().getFishingTierLevelsTier5()) {
             fishingTier = 5;
-        }
-        else if (level >= Config.getInstance().getFishingTierLevelsTier4()) {
+        } else if (level >= Config.getInstance().getFishingTierLevelsTier4()) {
             fishingTier = 4;
-        }
-        else if (level >= Config.getInstance().getFishingTierLevelsTier3()) {
-            fishingTier =  3;
-        }
-        else if (level >= Config.getInstance().getFishingTierLevelsTier2()) {
-            fishingTier =  2;
-        }
-        else {
-            fishingTier =  1;
+        } else if (level >= Config.getInstance().getFishingTierLevelsTier3()) {
+            fishingTier = 3;
+        } else if (level >= Config.getInstance().getFishingTierLevelsTier2()) {
+            fishingTier = 2;
+        } else {
+            fishingTier = 1;
         }
 
         return fishingTier;
@@ -69,12 +66,14 @@ public class Fishing {
 
     /**
      * Get item results from Fishing.
-     *
-     * @param player The player that was fishing
-     * @param event The event to modify
+     * 
+     * @param player
+     *            The player that was fishing
+     * @param event
+     *            The event to modify
      */
     private static void getFishingResults(Player player, PlayerFishEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         PlayerProfile profile = Users.getProfile(player);
@@ -106,8 +105,10 @@ public class Fishing {
             break;
         }
 
-        if (Config.getInstance().getFishingDropsEnabled() && rewards.size() > 0 && Permissions.getInstance().fishingTreasures(player)) {
-            FishingTreasure treasure = rewards.get(random.nextInt(rewards.size()));
+        if (Config.getInstance().getFishingDropsEnabled() && rewards.size() > 0
+                && Permissions.getInstance().fishingTreasures(player)) {
+            FishingTreasure treasure = rewards.get(random.nextInt(rewards
+                    .size()));
 
             int randomChance = 100;
 
@@ -116,31 +117,37 @@ public class Fishing {
             }
 
             if (random.nextDouble() * randomChance <= treasure.getDropChance()) {
-                Users.getPlayer(player).addXP(SkillType.FISHING, treasure.getXp());
+                Users.getPlayer(player).addXP(SkillType.FISHING,
+                        treasure.getXp());
                 theCatch.setItemStack(treasure.getDrop());
             }
-        }
-        else {
+        } else {
             theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
         }
 
-        short maxDurability = theCatch.getItemStack().getType().getMaxDurability();
+        short maxDurability = theCatch.getItemStack().getType()
+                .getMaxDurability();
 
         if (maxDurability > 0) {
-            theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); //Change durability to random value
+            theCatch.getItemStack().setDurability(
+                    (short) (random.nextInt(maxDurability))); // Change
+            // durability to
+            // random value
         }
 
-        Skills.xpProcessing(player, profile, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
+        Skills.xpProcessing(player, profile, SkillType.FISHING, Config
+                .getInstance().getFishingBaseXP());
     }
 
     /**
      * Process results from Fishing.
-     *
-     * @param event The event to modify
+     * 
+     * @param event
+     *            The event to modify
      */
     public static void processResults(PlayerFishEvent event) {
         Player player = event.getPlayer();
-        if(player == null)
+        if (player == null)
             return;
 
         PlayerProfile profile = Users.getProfile(player);
@@ -149,7 +156,8 @@ public class Fishing {
         Item theCatch = (Item) event.getCaught();
 
         if (theCatch.getItemStack().getType() != Material.RAW_FISH) {
-            final int ENCHANTMENT_CHANCE = advancedConfig.getFishingEnchantmentChance();
+            final int ENCHANTMENT_CHANCE = advancedConfig
+                    .getFishingEnchantmentChance();
             boolean enchanted = false;
             ItemStack fishingResults = theCatch.getItemStack();
 
@@ -162,29 +170,40 @@ public class Fishing {
                     randomChance = (int) (randomChance * 0.75);
                 }
 
-                if (random.nextInt(randomChance) <= ENCHANTMENT_CHANCE && Permissions.getInstance().fishingMagic(player)) {
+                if (random.nextInt(randomChance) <= ENCHANTMENT_CHANCE
+                        && Permissions.getInstance().fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
-                            Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();
+                            Map<Enchantment, Integer> resultEnchantments = fishingResults
+                                    .getEnchantments();
 
-                            for (Enchantment oldEnchant : resultEnchantments.keySet()) {
+                            for (Enchantment oldEnchant : resultEnchantments
+                                    .keySet()) {
                                 if (oldEnchant.conflictsWith(newEnchant))
                                     continue;
                             }
 
-                            /* Actual chance to have an enchantment is related to your fishing skill */
-                            if (random.nextInt(15) < Fishing.getFishingLootTier(profile)) {
+                            /*
+                             * Actual chance to have an enchantment is related
+                             * to your fishing skill
+                             */
+                            if (random.nextInt(15) < Fishing
+                                    .getFishingLootTier(profile)) {
                                 enchanted = true;
-                                int randomEnchantLevel = random.nextInt(newEnchant.getMaxLevel()) + 1;
+                                int randomEnchantLevel = random
+                                        .nextInt(newEnchant.getMaxLevel()) + 1;
 
-                                if (randomEnchantLevel < newEnchant.getStartLevel()) {
-                                    randomEnchantLevel = newEnchant.getStartLevel();
+                                if (randomEnchantLevel < newEnchant
+                                        .getStartLevel()) {
+                                    randomEnchantLevel = newEnchant
+                                            .getStartLevel();
                                 }
 
-                                if(randomEnchantLevel >= 1000)
+                                if (randomEnchantLevel >= 1000)
                                     continue;
 
-                                fishingResults.addEnchantment(newEnchant, randomEnchantLevel);
+                                fishingResults.addEnchantment(newEnchant,
+                                        randomEnchantLevel);
                             }
                         }
                     }
@@ -199,8 +218,9 @@ public class Fishing {
 
     /**
      * Shake a mob, have them drop an item.
-     *
-     * @param event The event to modify
+     * 
+     * @param event
+     *            The event to modify
      */
     public static void shakeMob(PlayerFishEvent event) {
         int randomChance = 100;
@@ -214,9 +234,10 @@ public class Fishing {
         int lootTier = getFishingLootTier(profile);
 
         int dropChance = getShakeChance(lootTier);
-        
+
         if (event.getPlayer().hasPermission("mcmmo.perks.lucky.fishing")) {
-            dropChance = (int) (dropChance * 1.25); //With lucky perk on max level tier, its 100%
+            dropChance = (int) (dropChance * 1.25); // With lucky perk on max
+            // level tier, its 100%
         }
 
         final int DROP_CHANCE = random.nextInt(100);
@@ -263,7 +284,8 @@ public class Fishing {
 
             case CREEPER:
                 if (DROP_NUMBER > 97) {
-                    Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 4));
+                    Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM,
+                            1, (short) 4));
                 } else {
                     Misc.dropItem(location, new ItemStack(Material.SULPHUR));
                 }
@@ -299,14 +321,17 @@ public class Fishing {
                 if (DROP_NUMBER > 95) {
                     Misc.dropItem(location, new ItemStack(Material.MILK_BUCKET));
                 } else if (DROP_NUMBER > 90) {
-                    Misc.dropItem(location, new ItemStack(Material.MUSHROOM_SOUP));
+                    Misc.dropItem(location, new ItemStack(
+                            Material.MUSHROOM_SOUP));
                 } else if (DROP_NUMBER > 60) {
                     Misc.dropItem(location, new ItemStack(Material.LEATHER));
                 } else if (DROP_NUMBER > 30) {
                     Misc.dropItem(location, new ItemStack(Material.RAW_BEEF));
                 } else {
-                                Misc.dropItem(location, new ItemStack(Material.RED_MUSHROOM));
-                Misc.randomDropItems(location, new ItemStack(Material.RED_MUSHROOM), 50, 2);
+                    Misc.dropItem(location,
+                            new ItemStack(Material.RED_MUSHROOM));
+                    Misc.randomDropItems(location, new ItemStack(
+                            Material.RED_MUSHROOM), 50, 2);
                 }
                 break;
 
@@ -316,7 +341,8 @@ public class Fishing {
 
             case PIG_ZOMBIE:
                 if (DROP_NUMBER > 50) {
-                    Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));
+                    Misc.dropItem(location,
+                            new ItemStack(Material.ROTTEN_FLESH));
                 } else {
                     Misc.dropItem(location, new ItemStack(Material.GOLD_NUGGET));
                 }
@@ -338,23 +364,27 @@ public class Fishing {
                 break;
 
             case SKELETON:
-            	if (((Skeleton)le).getSkeletonType() == SkeletonType.WITHER) {
+                if (((Skeleton) le).getSkeletonType() == SkeletonType.WITHER) {
                     if (DROP_NUMBER > 97) {
-                        Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 1));
+                        Misc.dropItem(location, new ItemStack(
+                                Material.SKULL_ITEM, 1, (short) 1));
                     } else if (DROP_NUMBER > 50) {
                         Misc.dropItem(location, new ItemStack(Material.BONE));
                     } else {
                         Misc.dropItem(location, new ItemStack(Material.COAL));
-                    Misc.randomDropItems(location, new ItemStack(Material.COAL), 50, 2);
+                        Misc.randomDropItems(location, new ItemStack(
+                                Material.COAL), 50, 2);
                     }
                 } else {
                     if (DROP_NUMBER > 97) {
-                        Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM));
+                        Misc.dropItem(location, new ItemStack(
+                                Material.SKULL_ITEM));
                     } else if (DROP_NUMBER > 50) {
                         Misc.dropItem(location, new ItemStack(Material.BONE));
                     } else {
                         Misc.dropItem(location, new ItemStack(Material.ARROW));
-                    Misc.randomDropItems(location, new ItemStack(Material.ARROW), 50, 2);
+                        Misc.randomDropItems(location, new ItemStack(
+                                Material.ARROW), 50, 2);
                     }
                 }
                 break;
@@ -368,7 +398,8 @@ public class Fishing {
                     Misc.dropItem(location, new ItemStack(Material.PUMPKIN));
                 } else {
                     Misc.dropItem(location, new ItemStack(Material.SNOW_BALL));
-                Misc.randomDropItems(location, new ItemStack(Material.SNOW_BALL), 50, 4);
+                    Misc.randomDropItems(location, new ItemStack(
+                            Material.SNOW_BALL), 50, 4);
                 }
                 break;
 
@@ -381,30 +412,38 @@ public class Fishing {
                 break;
 
             case SQUID:
-            	Misc.dropItem(location, new ItemStack(Material.INK_SACK, 1, (short) 0));
+                Misc.dropItem(location, new ItemStack(Material.INK_SACK, 1,
+                        (short) 0));
                 break;
 
             case WITCH:
                 final int DROP_NUMBER_2 = random.nextInt(randomChance) + 1;
                 if (DROP_NUMBER > 95) {
                     if (DROP_NUMBER_2 > 66) {
-                        Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8197));
+                        Misc.dropItem(location, new ItemStack(Material.POTION,
+                                1, (short) 8197));
                     } else if (DROP_NUMBER_2 > 33) {
-                        Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8195));
+                        Misc.dropItem(location, new ItemStack(Material.POTION,
+                                1, (short) 8195));
                     } else {
-                        Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8194));
+                        Misc.dropItem(location, new ItemStack(Material.POTION,
+                                1, (short) 8194));
                     }
                 } else {
                     if (DROP_NUMBER_2 > 88) {
-                        Misc.dropItem(location, new ItemStack(Material.GLASS_BOTTLE));
+                        Misc.dropItem(location, new ItemStack(
+                                Material.GLASS_BOTTLE));
                     } else if (DROP_NUMBER_2 > 75) {
-                        Misc.dropItem(location, new ItemStack(Material.GLOWSTONE_DUST));
+                        Misc.dropItem(location, new ItemStack(
+                                Material.GLOWSTONE_DUST));
                     } else if (DROP_NUMBER_2 > 63) {
                         Misc.dropItem(location, new ItemStack(Material.SULPHUR));
                     } else if (DROP_NUMBER_2 > 50) {
-                        Misc.dropItem(location, new ItemStack(Material.REDSTONE));
+                        Misc.dropItem(location,
+                                new ItemStack(Material.REDSTONE));
                     } else if (DROP_NUMBER_2 > 38) {
-                        Misc.dropItem(location, new ItemStack(Material.SPIDER_EYE));
+                        Misc.dropItem(location, new ItemStack(
+                                Material.SPIDER_EYE));
                     } else if (DROP_NUMBER_2 > 25) {
                         Misc.dropItem(location, new ItemStack(Material.STICK));
                     } else if (DROP_NUMBER_2 > 13) {
@@ -417,9 +456,11 @@ public class Fishing {
 
             case ZOMBIE:
                 if (DROP_NUMBER > 97) {
-                    Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM, 1, (short) 2));
+                    Misc.dropItem(location, new ItemStack(Material.SKULL_ITEM,
+                            1, (short) 2));
                 } else {
-                    Misc.dropItem(location, new ItemStack(Material.ROTTEN_FLESH));
+                    Misc.dropItem(location,
+                            new ItemStack(Material.ROTTEN_FLESH));
                 }
                 break;
 
@@ -430,10 +471,12 @@ public class Fishing {
 
         Combat.dealDamage(le, 1);
     }
+
     /**
      * Gets chance of shake success.
-     *
-     * @param rank Treasure hunter rank
+     * 
+     * @param rank
+     *            Treasure hunter rank
      * @return The chance of a successful shake
      */
     public static int getShakeChance(int lootTier) {
@@ -456,5 +499,5 @@ public class Fishing {
         default:
             return 10;
         }
-    } 
+    }
 }

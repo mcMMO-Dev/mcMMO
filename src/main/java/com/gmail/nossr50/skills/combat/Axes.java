@@ -87,14 +87,14 @@ public class Axes {
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         int randomChance = 100;
-        double chance = ((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * (double) skillCheck;
+        double chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillCheck;
 
         if (attacker.hasPermission("mcmmo.perks.lucky.axes")) {
             randomChance = (int) (randomChance * 0.75);
         }
 
         if (chance > random.nextInt(randomChance) && !entity.isDead()){
-//        if (random.nextInt(randomChance) <= skillCheck && !entity.isDead()){
+            //        if (random.nextInt(randomChance) <= skillCheck && !entity.isDead()){
             int damage = event.getDamage();
 
             if (entity instanceof Player){
@@ -158,7 +158,7 @@ public class Axes {
     private static void applyGreaterImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
         if(attacker == null)
             return;
-        
+
         final int GREATER_IMPACT_CHANCE = advancedConfig.getGreaterImpactChance();
         final double GREATER_IMPACT_MULTIPLIER = advancedConfig.getGreaterImpactModifier();
         final int GREATER_IMPACT_DAMAGE = advancedConfig.getGreaterImpactBonusDamage();

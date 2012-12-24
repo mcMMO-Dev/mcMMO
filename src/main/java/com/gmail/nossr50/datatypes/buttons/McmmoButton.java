@@ -9,7 +9,7 @@ public class McmmoButton extends GenericButton {
         this.setText(text);
         this.setTooltip(toolTip);
     }
-    
+
     public void connect(Slot slot) {
         this.slot = slot;
     }

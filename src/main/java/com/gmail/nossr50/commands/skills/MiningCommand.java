@@ -48,8 +48,8 @@ public class MiningCommand extends SkillCommand {
         DecimalFormat df = new DecimalFormat("#.0");
         superBreakerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
-        else doubleDropChance = df.format(((double) doubleDropsMaxBonus / (double) doubleDropsMaxLevel) * (double) skillValue);
-        
+        else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+
         if (skillValue >= blastMiningRank8) {
             blastMiningRank = "8";
             blastDamageDecrease = "100.00%";

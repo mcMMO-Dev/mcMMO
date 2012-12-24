@@ -18,7 +18,7 @@ import com.gmail.nossr50.util.Misc;
 public class PlayerProfile {
 
     private String playerName;
-    
+
     /* HUD */
     private SpoutHud spoutHud;
     private HudType hudType = SpoutConfig.getInstance().defaultHudType;
@@ -36,9 +36,9 @@ public class PlayerProfile {
     private boolean godMode;
     private boolean greenTerraMode, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, skullSplitterMode, berserkMode;
     private boolean greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true,
-                    superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true;
+            superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true;
     private boolean hoePreparationMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode,
-                    pickaxePreparationMode, axePreparationMode;
+    pickaxePreparationMode, axePreparationMode;
     private boolean abilityUse = true;
 
     /* Timestamps */
@@ -278,7 +278,7 @@ public class PlayerProfile {
                     skillsXp.put(SkillType.FISHING, Integer.valueOf(character[35]));
                 if (character.length > 36)
                     skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[36]));
- 
+
                 loaded = true;
 
                 in.close();
@@ -364,7 +364,7 @@ public class PlayerProfile {
                         writer.append(line).append("\r\n");
                     }
                     else {
-                      //Otherwise write the new player information
+                        //Otherwise write the new player information
                         writer.append(playerName + ":");
                         writer.append(skills.get(SkillType.MINING) + ":");
                         writer.append("" + ":");
@@ -513,7 +513,7 @@ public class PlayerProfile {
      * Salvage Anvil Placement
      */
     public void togglePlacedSalvageAnvil() {
-    	placedSalvageAnvil = !placedSalvageAnvil;
+        placedSalvageAnvil = !placedSalvageAnvil;
     }
 
     public Boolean getPlacedSalvageAnvil() {
@@ -891,8 +891,8 @@ public class PlayerProfile {
     }
 
     /*
-    * Exploit Prevention
-    */
+     * Exploit Prevention
+     */
 
     public int getRespawnATS() {
         return respawnATS;
@@ -923,116 +923,116 @@ public class PlayerProfile {
         skills.put(skillType, skills.get(skillType) + newValue);
         save(false);
     }
-    
+
     public void resetSkill(SkillType skillType)
     {
-    	//do a single skilltype
-    	if (skillType != SkillType.ALL)
-    		skills.put(skillType, 0);
-    	else //do them all
-    	{
-    		for(SkillType skill : SkillType.values()) //iterate over all items in the enumeration
-    		{
-    			if (skill != SkillType.ALL) // skip the "all" value
-    				skills.put(skill,  0);
-    		}
-    	}
+        //do a single skilltype
+        if (skillType != SkillType.ALL)
+            skills.put(skillType, 0);
+        else //do them all
+        {
+            for(SkillType skill : SkillType.values()) //iterate over all items in the enumeration
+            {
+                if (skill != SkillType.ALL) // skip the "all" value
+                    skills.put(skill,  0);
+            }
+        }
         save(false);
     }
 
-//    /**
-//     * Adds XP to the player, doesn't calculate for XP Rate
-//     *
-//     * @param skillType The skill to add XP to
-//     * @param newValue The amount of XP to add
-//     */
-//    public void addXPOverride(SkillType skillType, int newValue) {
-//        if (skillType.equals(SkillType.ALL)) {
-//            for (SkillType x : SkillType.values()) {
-//                if (x.equals(SkillType.ALL)) {
-//                    continue;
-//                }
-//
-//                mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, x, newValue));
-//                skillsXp.put(x, skillsXp.get(x) + newValue);
-//            }
-//        }
-//        else {
-//            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, newValue));
-//            skillsXp.put(skillType, skillsXp.get(skillType) + newValue);
-//            spoutHud.setLastGained(skillType);
-//        }
-//    }
+    //    /**
+    //     * Adds XP to the player, doesn't calculate for XP Rate
+    //     *
+    //     * @param skillType The skill to add XP to
+    //     * @param newValue The amount of XP to add
+    //     */
+    //    public void addXPOverride(SkillType skillType, int newValue) {
+    //        if (skillType.equals(SkillType.ALL)) {
+    //            for (SkillType x : SkillType.values()) {
+    //                if (x.equals(SkillType.ALL)) {
+    //                    continue;
+    //                }
+    //
+    //                mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, x, newValue));
+    //                skillsXp.put(x, skillsXp.get(x) + newValue);
+    //            }
+    //        }
+    //        else {
+    //            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, newValue));
+    //            skillsXp.put(skillType, skillsXp.get(skillType) + newValue);
+    //            spoutHud.setLastGained(skillType);
+    //        }
+    //    }
 
-//    /**
-//     * Adds XP to the player, this ignores skill modifiers.
-//     *
-//     * @param skillType The skill to add XP to
-//     * @param newValue The amount of XP to add
-//     */
-//    public void addXPOverrideBonus(SkillType skillType, int newValue) {
-//        int xp = newValue * Config.getInstance().xpGainMultiplier;
-//        addXPOverride(skillType, xp);
-//    }
+    //    /**
+    //     * Adds XP to the player, this ignores skill modifiers.
+    //     *
+    //     * @param skillType The skill to add XP to
+    //     * @param newValue The amount of XP to add
+    //     */
+    //    public void addXPOverrideBonus(SkillType skillType, int newValue) {
+    //        int xp = newValue * Config.getInstance().xpGainMultiplier;
+    //        addXPOverride(skillType, xp);
+    //    }
 
-//    /**
-//     * Adds XP to the player, this is affected by skill modifiers and XP Rate and Permissions
-//     *
-//     * @param skillType The skill to add XP to
-//     * @param newvalue The amount of XP to add
-//     */
-//    public void addXP(SkillType skillType, int newValue) {
-//        if (player.getGameMode().equals(GameMode.CREATIVE)) {
-//            return;
-//        }
-//
-//        double bonusModifier = 0;
-//
-//        if (inParty()) {
-//            bonusModifier = partyModifier(skillType);
-//        }
-//
-//        int xp = (int) (newValue / skillType.getXpModifier()) * Config.getInstance().xpGainMultiplier;
-//
-//        if (bonusModifier > 0) {
-//            if (bonusModifier >= 2) {
-//                bonusModifier = 2;
-//            }
-//
-//            double trueBonus = bonusModifier * xp;
-//            xp += trueBonus;
-//        }
-//
-//        if (Config.getInstance().getToolModsEnabled()) {
-//            ItemStack item = player.getItemInHand();
-//            CustomTool tool = ModChecks.getToolFromItemStack(item);
-//
-//            if (tool != null) {
-//                xp = (int) (xp * tool.getXpMultiplier());
-//            }
-//        }
-//
-//        //TODO: Can we make this so we do perks by doing "mcmmo.perks.xp.[multiplier]" ?
-//        if (player.hasPermission("mcmmo.perks.xp.quadruple")) {
-//            xp = xp * 4;
-//        }
-//        else if (player.hasPermission("mcmmo.perks.xp.triple")) {
-//            xp = xp * 3;
-//        }
-//        else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
-//            xp = (int) (xp * 2.5);
-//        }
-//        else if (player.hasPermission("mcmmo.perks.xp.double")) {
-//            xp = xp * 2;
-//        }
-//        else if (player.hasPermission("mcmmo.perks.xp.50percentboost")) {
-//            xp = (int) (xp * 1.5);
-//        }
-//
-//        mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
-//        skillsXp.put(skillType, skillsXp.get(skillType) + xp);
-//        spoutHud.setLastGained(skillType);
-//    }
+    //    /**
+    //     * Adds XP to the player, this is affected by skill modifiers and XP Rate and Permissions
+    //     *
+    //     * @param skillType The skill to add XP to
+    //     * @param newvalue The amount of XP to add
+    //     */
+    //    public void addXP(SkillType skillType, int newValue) {
+    //        if (player.getGameMode().equals(GameMode.CREATIVE)) {
+    //            return;
+    //        }
+    //
+    //        double bonusModifier = 0;
+    //
+    //        if (inParty()) {
+    //            bonusModifier = partyModifier(skillType);
+    //        }
+    //
+    //        int xp = (int) (newValue / skillType.getXpModifier()) * Config.getInstance().xpGainMultiplier;
+    //
+    //        if (bonusModifier > 0) {
+    //            if (bonusModifier >= 2) {
+    //                bonusModifier = 2;
+    //            }
+    //
+    //            double trueBonus = bonusModifier * xp;
+    //            xp += trueBonus;
+    //        }
+    //
+    //        if (Config.getInstance().getToolModsEnabled()) {
+    //            ItemStack item = player.getItemInHand();
+    //            CustomTool tool = ModChecks.getToolFromItemStack(item);
+    //
+    //            if (tool != null) {
+    //                xp = (int) (xp * tool.getXpMultiplier());
+    //            }
+    //        }
+    //
+    //        //TODO: Can we make this so we do perks by doing "mcmmo.perks.xp.[multiplier]" ?
+    //        if (player.hasPermission("mcmmo.perks.xp.quadruple")) {
+    //            xp = xp * 4;
+    //        }
+    //        else if (player.hasPermission("mcmmo.perks.xp.triple")) {
+    //            xp = xp * 3;
+    //        }
+    //        else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
+    //            xp = (int) (xp * 2.5);
+    //        }
+    //        else if (player.hasPermission("mcmmo.perks.xp.double")) {
+    //            xp = xp * 2;
+    //        }
+    //        else if (player.hasPermission("mcmmo.perks.xp.50percentboost")) {
+    //            xp = (int) (xp * 1.5);
+    //        }
+    //
+    //        mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
+    //        skillsXp.put(skillType, skillsXp.get(skillType) + xp);
+    //        spoutHud.setLastGained(skillType);
+    //    }
 
     /**
      * Remove XP from a skill.
@@ -1114,49 +1114,49 @@ public class PlayerProfile {
         return 1020 + (skills.get(skillType) *  Config.getInstance().getFormulaMultiplierCurve());
     }
 
-//    /**
-//     * Gets the power level of a player.
-//     *
-//     * @return the power level of the player
-//     */
-//    public int getPowerLevel() {
-//        int powerLevel = 0;
-//
-//        for (SkillType type : SkillType.values()) {
-//            if (type.getPermissions(player)) {
-//                powerLevel += getSkillLevel(type);
-//            }
-//        }
-//
-//        return powerLevel;
-//    }
+    //    /**
+    //     * Gets the power level of a player.
+    //     *
+    //     * @return the power level of the player
+    //     */
+    //    public int getPowerLevel() {
+    //        int powerLevel = 0;
+    //
+    //        for (SkillType type : SkillType.values()) {
+    //            if (type.getPermissions(player)) {
+    //                powerLevel += getSkillLevel(type);
+    //            }
+    //        }
+    //
+    //        return powerLevel;
+    //    }
 
-//    /**
-//     * Calculate the party XP modifier.
-//     *
-//     * @param skillType Type of skill to check
-//     * @return the party bonus multiplier
-//     */
-//    private double partyModifier(SkillType skillType) {
-//        double bonusModifier = 0.0;
-//
-//        for (Player member : party.getOnlineMembers()) {
-//            if (party.getLeader().equals(member.getName())) {
-//                if (Misc.isNear(player.getLocation(), member.getLocation(), 25.0)) {
-//                    PlayerProfile PartyLeader = Users.getProfile(member);
-//                    int leaderSkill = PartyLeader.getSkillLevel(skillType);
-//                    int playerSkill = getSkillLevel(skillType);
-//
-//                    if (leaderSkill >= playerSkill) {
-//                        int difference = leaderSkill - playerSkill;
-//                        bonusModifier = (difference * 0.75) / 100.0;
-//                    }
-//                }
-//            }
-//        }
-//
-//        return bonusModifier;
-//    }
+    //    /**
+    //     * Calculate the party XP modifier.
+    //     *
+    //     * @param skillType Type of skill to check
+    //     * @return the party bonus multiplier
+    //     */
+    //    private double partyModifier(SkillType skillType) {
+    //        double bonusModifier = 0.0;
+    //
+    //        for (Player member : party.getOnlineMembers()) {
+    //            if (party.getLeader().equals(member.getName())) {
+    //                if (Misc.isNear(player.getLocation(), member.getLocation(), 25.0)) {
+    //                    PlayerProfile PartyLeader = Users.getProfile(member);
+    //                    int leaderSkill = PartyLeader.getSkillLevel(skillType);
+    //                    int playerSkill = getSkillLevel(skillType);
+    //
+    //                    if (leaderSkill >= playerSkill) {
+    //                        int difference = leaderSkill - playerSkill;
+    //                        bonusModifier = (difference * 0.75) / 100.0;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //
+    //        return bonusModifier;
+    //    }
 
     /*
      * Party Stuff

@@ -38,12 +38,12 @@ public class SimpleRepairable implements Repairable {
 
     @Override
     public RepairItemType getRepairItemType() {
-    	return repairItemType;
+        return repairItemType;
     }
 
     @Override
     public RepairMaterialType getRepairMaterialType() {
-    	return repairMaterialType;
+        return repairMaterialType;
     }
 
     @Override

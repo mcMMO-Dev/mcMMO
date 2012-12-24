@@ -47,6 +47,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
         return;
     }
 
+    @Override
     public void run() {
         if(!this.dataDir.exists()) {
             stop();
@@ -84,7 +85,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
         for(this.y = 0; this.y < (this.world.getMaxHeight() / 64); this.y++) {
             this.chunkletName = this.world.getName() + "," + this.cx + "," + this.cz + "," + this.y;
-	    this.tempChunklet = this.manager.store.get(this.chunkletName);
+            this.tempChunklet = this.manager.store.get(this.chunkletName);
             if(this.tempChunklet instanceof PrimitiveChunkletStore)
                 this.primitiveChunklet = (PrimitiveChunkletStore) this.tempChunklet;
             else if(this.tempChunklet instanceof PrimitiveExChunkletStore)
@@ -119,7 +120,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
                 }
 
                 this.newManager.setTrue(this.cx * 16, 0, this.cz * 16, this.world);
-		this.newManager.setFalse(this.cx * 16, 0, this.cz * 16, this.world);
+                this.newManager.setFalse(this.cx * 16, 0, this.cz * 16, this.world);
                 this.currentChunk = (PrimitiveChunkStore) this.newManager.store.get(this.chunkName);
 
                 for(this.x = 0; this.x < 16; this.x++) {

@@ -51,7 +51,7 @@ public class UnarmedManager {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            final float chance = (float) (((double) disarmChanceMax / (double) disarmMaxLevel) * (double) skillLevel);
+            final float chance = (float) (((double) disarmChanceMax / (double) disarmMaxLevel) * skillLevel);
             if (chance > Unarmed.getRandom().nextInt(randomChance)) {
                 if (!hasIronGrip(defender)) {
                     eventHandler.sendAbilityMessage();
@@ -83,12 +83,12 @@ public class UnarmedManager {
         int deflectChanceMax = AdvancedConfig.getInstance().getDeflectChanceMax();
         int deflectMaxLevel = AdvancedConfig.getInstance().getDeflectMaxBonusLevel();
         int randomChance = 100;
-        
+
         if (player.hasPermission("mcmmo.perks.lucky.unarmed")) {
             randomChance = (int) (randomChance * 0.75);
         }
-        
-        final float chance = (float) (((double) deflectChanceMax / (double) deflectMaxLevel) * (double) skillLevel);
+
+        final float chance = (float) (((double) deflectChanceMax / (double) deflectMaxLevel) * skillLevel);
         if (chance > Unarmed.getRandom().nextInt(randomChance)) {
             eventHandler.cancelEvent();
             eventHandler.sendAbilityMessage();
@@ -143,8 +143,8 @@ public class UnarmedManager {
         if (defender.hasPermission("mcmmo.perks.lucky.unarmed")) {
             randomChance = (int) (randomChance * 0.75);
         }
-        
-        final float chance = (float) (((double) ironGripChanceMax / (double) ironGripMaxLevel) * (double) skillLevel);
+
+        final float chance = (float) (((double) ironGripChanceMax / (double) ironGripMaxLevel) * skillLevel);
         if (chance > Unarmed.getRandom().nextInt(randomChance)) {
             eventHandler.sendAbilityMessages();
             return true;

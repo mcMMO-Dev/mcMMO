@@ -11,7 +11,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 
 public class SwordsCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    
+
     private String counterAttackChance;
     private String bleedLength;
     private String bleedChance;
@@ -38,16 +38,16 @@ public class SwordsCommand extends SkillCommand {
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("#.0");
         serratedStrikesLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
-        
+
         if (skillValue >= bleedMaxLevel) bleedLength = String.valueOf(bleedMaxTicks);
         else bleedLength = String.valueOf(bleedBaseTicks);
 
         if(skillValue >= bleedMaxLevel) bleedChance = df.format(bleedChanceMax);
-        else bleedChance = df.format(((double) bleedChanceMax / (double) bleedMaxLevel) * (double) skillValue);
-        
+        else bleedChance = df.format(((double) bleedChanceMax / (double) bleedMaxLevel) * skillValue);
+
         if(skillValue >= counterMaxLevel) counterAttackChance = df.format(counterChanceMax);
-        else counterAttackChance = df.format(((double) counterChanceMax / (double) counterMaxLevel) * (double) skillValue);
-        
+        else counterAttackChance = df.format(((double) counterChanceMax / (double) counterMaxLevel) * skillValue);
+
         serratedStrikesLength = String.valueOf(serratedBleedTicks);
     }
 

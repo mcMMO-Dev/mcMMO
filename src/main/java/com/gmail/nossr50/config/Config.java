@@ -152,7 +152,7 @@ public class Config extends ConfigLoader {
     public int getFishingTierLevelsTier3() { return config.getInt("Fishing.Tier_Levels.Tier3", 400); }
     public int getFishingTierLevelsTier4() { return config.getInt("Fishing.Tier_Levels.Tier4", 600); }
     public int getFishingTierLevelsTier5() { return config.getInt("Fishing.Tier_Levels.Tier5", 800); }
-    
+
     /* Shake */
     public int getShakeChanceRank1() { return config.getInt("Shake.Chance.Rank_1", 25); }
     public int getShakeChanceRank2() { return config.getInt("Shake.Chance.Rank_2", 40); }

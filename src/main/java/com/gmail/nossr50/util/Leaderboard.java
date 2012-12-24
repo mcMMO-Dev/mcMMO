@@ -217,7 +217,7 @@ public class Leaderboard {
             BufferedReader in = new BufferedReader(file);
             int destination;
 
-          //How many lines to skip through
+            //How many lines to skip through
             if (pagenumber == 1) {
                 destination = 0;
             }

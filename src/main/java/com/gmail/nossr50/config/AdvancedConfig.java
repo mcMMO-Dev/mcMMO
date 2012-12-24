@@ -2,7 +2,7 @@ package com.gmail.nossr50.config;
 
 public class AdvancedConfig extends ConfigLoader {
     private static AdvancedConfig instance;
-    
+
     private AdvancedConfig() {
         super("advanced.yml");
         loadKeys();
@@ -13,28 +13,28 @@ public class AdvancedConfig extends ConfigLoader {
         }
         return instance;
     }
-    
+
     @Override
     protected void loadKeys() {
         // TODO Do I need to use this?
     }
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability_IncreaseLevel", 50); }
-    
+
     /* ACROBATICS */
     public int getDodgeChanceMax() { return config.getInt("Skills.Acrobatics.Dodge_ChanceMax", 20); }
     public int getDodgeMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Dodge_MaxBonusLevel", 800); }
-    
+
     public int getRollChanceMax() { return config.getInt("Skills.Acrobatics.Roll_ChanceMax", 100); }
     public int getRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Roll_MaxBonusLevel", 1000); }
-    
+
     public int getGracefulRollChanceMax() { return config.getInt("Skills.Acrobatics.GracefulRoll_ChanceMax", 100); }
     public int getGracefulRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.GracefulRoll_MaxBonusLevel", 500); }
 
     public int getDodgeXPModifier() { return config.getInt("Skills.Acrobatics.Dodge_XP_Modifier", 120); }
     public int getRollXPModifier() { return config.getInt("Skills.Acrobatics.Roll_XP_Modifier", 80); }
     public int getFallXPModifier() { return config.getInt("Skills.Acrobatics.Fall_XP_Modifier", 120); }
-    
+
     /* ARCHERY */
     public int getSkillShotIncreaseLevel() { return config.getInt("Skills.Archery.SkillShot_IncreaseLevel", 50); }
     public double getSkillShotIncreasePercentage() { return config.getDouble("Skills.Archery.SkillShot_IncreasePercentage", 0.1D); }
@@ -46,7 +46,7 @@ public class AdvancedConfig extends ConfigLoader {
 
     public int getRetrieveBonusMax() { return config.getInt("Skills.Archery.Retrieve_MaxBonus", 100); }
     public int getRetrieveMaxBonusLevel() { return config.getInt("Skills.Archery.Retrieve_MaxBonusLevel", 1000); }
-    
+
     /* AXES */
     public int getBonusDamageAxesBonusMax() { return config.getInt("Skills.Axes.DamageIncrease_MaxBonus", 4); }
     public int getBonusDamageAxesMaxBonusLevel() { return config.getInt("Skills.Axes.DamageIncrease_MaxBonusLevel", 200); }
@@ -55,30 +55,30 @@ public class AdvancedConfig extends ConfigLoader {
     public int getAxesCriticalMaxBonusLevel() { return config.getInt("Skills.Axes.AxesCritical_MaxBonusLevel", 750); }
     public double getAxesCriticalPVPModifier() { return config.getDouble("Skills.Axes.AxesCritical_PVP_Modifier", 1.5); }
     public int getAxesCriticalPVEModifier() { return config.getInt("Skills.Axes.AxesCritical_PVE_Modifier", 2); }
-    
+
     public int getGreaterImpactChance() { return config.getInt("Skills.Axes.GreaterImpact_Chance", 25); }
     public double getGreaterImpactModifier() { return config.getDouble("Skills.Axes.GreaterImpact_KnockbackModifier", 1.5); }
     public int getGreaterImpactBonusDamage() { return config.getInt("Skills.Axes.GreaterImpact_BonusDamage", 2); }
 
     public int getArmorImpactIncreaseLevel() { return config.getInt("Skills.Axes.ArmorImpact_IncreaseLevel", 50); }
-    
+
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml
-    
+
     /* FISHING */
     public int getShakeUnlockLevel() { return config.getInt("Skills.Fishing.Shake_UnlockLevel", 150); }
     public int getFishingEnchantmentChance() { return config.getInt("Skills.Fishing.Enchantment_Chance", 10); }
-    
+
     /* HERBALISM */
     public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.Food_RankChange", 200); }
-    
+
     public int getGreenThumbStageChange() { return config.getInt("Skills.Herbalism.GreenThumb_StageChange", 200); }
     public int getGreenThumbChanceMax() { return config.getInt("Skills.Herbalism.GreenThumb_ChanceMax", 100); }
     public int getGreenThumbMaxLevel() { return config.getInt("Skills.Herbalism.GreenThumb_MaxBonusLevel", 1500); }
-    
+
     public int getHerbalismDoubleDropsChanceMax() { return config.getInt("Skills.Herbalism.DoubleDrops_ChanceMax", 100); }
     public int getHerbalismDoubleDropsMaxLevel() { return config.getInt("Skills.Herbalism.DoubleDrops_MaxBonusLevel", 1000); }
-    
+
     /* MINING */
     public int getMiningDoubleDropChance() { return config.getInt("Skills.Mining.DoubleDrops_ChanceMax", 100); }
     public int getMiningDoubleDropMaxLevel() { return config.getInt("Skills.Mining.DoubleDrops_MaxBonusLevel", 1000); }
@@ -96,7 +96,7 @@ public class AdvancedConfig extends ConfigLoader {
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery_MaxBonusLevel", 1000); }
     public int getSuperRepairChanceMax() { return config.getInt("Skills.Repair.SuperRepair_ChanceMax", 100); }
     public int getSuperRepairMaxLevel() { return config.getInt("Skills.Repair.SuperRepair_MaxBonusLevel", 1000); }
-    
+
     /* SWORDS */
     public int getBleedChanceMax() { return config.getInt("Skills.Sword.Bleed_ChanceMax", 75); }
     public int getBleedMaxBonusLevel() { return config.getInt("Skills.Sword.Bleed_MaxBonusLevel", 750); }
@@ -106,7 +106,7 @@ public class AdvancedConfig extends ConfigLoader {
     public int getCounterChanceMax() { return config.getInt("Skills.Sword.Counter_ChanceMax", 30); }
     public int getCounterMaxBonusLevel() { return config.getInt("Skills.Sword.Counter_MaxBonusLevel", 600); }
     public int getCounterModifier() { return config.getInt("Skills.Sword.Counter_DamageModifier", 2); }
-    
+
     public int getSerratedStrikesModifier() { return config.getInt("Skills.Sword.SerratedStrikes_DamageModifier", 4); }
     public int getSerratedStrikesTicks() { return config.getInt("Skills.Sword.SerratedStrikes_BleedTicks", 5); }
     /* TAMING */
@@ -117,12 +117,12 @@ public class AdvancedConfig extends ConfigLoader {
 
     public int getFastFoodUnlock() { return config.getInt("Skills.Taming.FastFood_UnlockLevel", 50); }
     public int getFastFoodChance() { return config.getInt("Skills.Taming.FastFood_Chance", 50); }
-    
+
     public int getEnviromentallyAwareUnlock() { return config.getInt("Skills.Taming.EnvironmentallyAware_UnlockLevel", 100); }
 
     public int getThickFurUnlock() { return config.getInt("Skills.Taming.ThickFur_UnlockLevel", 250); }
     public int getThickFurModifier() { return config.getInt("Skills.Taming.ThickFur_Modifier", 2); }
-    
+
     public int getShockProofUnlock() { return config.getInt("Skills.Taming.ShockProof_UnlockLevel", 500); }
     public int getShockProofModifier() { return config.getInt("Skills.Taming.ShockProof_Modifier", 6); }
 
@@ -141,13 +141,13 @@ public class AdvancedConfig extends ConfigLoader {
     public int getLeafBlowUnlockLevel() { return config.getInt("Skills.Woodcutting.LeafBlower_UnlockLevel", 100); }
     public int getWoodcuttingDoubleDropChance() { return config.getInt("Skills.Woodcutting.DoubleDrops_ChanceMax", 100); }
     public int getWoodcuttingDoubleDropMaxLevel() { return config.getInt("Skills.Woodcutting.DoubleDrops_MaxBonusLevel", 1000); }
-    
+
     /* SPOUT STUFF*/
     public int getSpoutNotificationTier1() { return config.getInt("Spout.Notifications.Tier1", 200); }
     public int getSpoutNotificationTier2() { return config.getInt("Spout.Notifications.Tier2", 400); }
     public int getSpoutNotificationTier3() { return config.getInt("Spout.Notifications.Tier3", 600); }
     public int getSpoutNotificationTier4() { return config.getInt("Spout.Notifications.Tier4", 800); }
     //TODO Make the sounds configurable! :D
-//    public String getSpoutSoundRepair() { return config.getString("Spout.Sounds.RepairSound", "url here"); }
-//    public String getSpoutSoundLevelUp() { return config.getString("Spout.Sounds.LevelUp", "url here"); }
+    //    public String getSpoutSoundRepair() { return config.getString("Spout.Sounds.RepairSound", "url here"); }
+    //    public String getSpoutSoundLevelUp() { return config.getString("Spout.Sounds.LevelUp", "url here"); }
 }

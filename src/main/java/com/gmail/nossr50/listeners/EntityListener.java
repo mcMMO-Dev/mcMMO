@@ -66,7 +66,7 @@ public class EntityListener implements Listener {
 
         Entity attacker = event.getDamager();
         Entity defender = event.getEntity();
-        
+
         if(attacker.hasMetadata("NPC") || defender.hasMetadata("NPC")) return; // Check if either players is are Citizens NPCs
 
         if (attacker instanceof Projectile) {
@@ -120,7 +120,7 @@ public class EntityListener implements Listener {
         DamageCause cause = event.getCause();
 
         if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        
+
         if (!(entity instanceof LivingEntity)) {
             return;
         }
@@ -178,7 +178,7 @@ public class EntityListener implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
-        
+
         if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         entity.setFireTicks(0);
@@ -208,9 +208,9 @@ public class EntityListener implements Listener {
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         Entity entity = event.getEntity();
-        
+
         if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        
+
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
 
@@ -234,7 +234,7 @@ public class EntityListener implements Listener {
         Entity entity = event.getEntity();
 
         if(entity == null) return;
-        
+
         if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (entity instanceof TNTPrimed) {
@@ -255,12 +255,12 @@ public class EntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.LOW)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-    	AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+        AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            
+
             if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-            
+
             PlayerProfile profile = Users.getProfile(player);
             int currentFoodLevel = player.getFoodLevel();
             int newFoodLevel = event.getFoodLevel();
@@ -394,9 +394,9 @@ public class EntityListener implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        
+
         if (Permissions.getInstance().taming(player) && !event.getEntity().hasMetadata("mcmmoSummoned")) {
             PlayerProfile profile = Users.getProfile(player);
             EntityType type = event.getEntityType();

@@ -408,11 +408,11 @@ public class Permissions {
     public boolean party(Player player) {
         return player.hasPermission("mcmmo.commands.party");
     }
-    
+
     public boolean skillReset(Player player) {
         return player.hasPermission("mcmmo.skillreset");
     }
-    
+
 
     /*
      * MCMMO.CHAT.*

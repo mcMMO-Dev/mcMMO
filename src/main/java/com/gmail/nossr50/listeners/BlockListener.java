@@ -84,8 +84,8 @@ public class BlockListener implements Listener {
      *
      * @param event The event to monitor
      */
-     // Disabled until a better patch can be applied. This does nothing but flag the wrong block.
-/*
+    // Disabled until a better patch can be applied. This does nothing but flag the wrong block.
+    /*
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPhysics(BlockPhysicsEvent event) {
         //TODO: Figure out how to REMOVE metadata from the location the sand/gravel fell from.
@@ -99,7 +99,7 @@ public class BlockListener implements Listener {
             }
         }
     }
-*/
+     */
 
     /**
      * Monitor BlockPistonRetract events.
@@ -127,7 +127,7 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
         int id = block.getTypeId();
         Material type = block.getType();
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         /* Code to prevent issues with placed falling Sand/Gravel not being tracked */
@@ -171,9 +171,9 @@ public class BlockListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        
+
         PlayerProfile profile = Users.getProfile(player);
 
         if (profile == null) {
@@ -284,11 +284,11 @@ public class BlockListener implements Listener {
         final int LEAF_BLOWER_LEVEL = 100;
 
         Player player = event.getPlayer();
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        
+
         PlayerProfile profile = Users.getProfile(player);
-        
+
         if (profile == null) {
             return;
         }

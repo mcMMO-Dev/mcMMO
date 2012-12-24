@@ -203,9 +203,9 @@ public class Herbalism {
                 xp = Config.getInstance().getHerbalismXPLilyPads();
             }
             break;
-            
+
         case COCOA:
-            if ((((byte) data) & 0x8) == 0x8) {
+            if (((data) & 0x8) == 0x8) {
                 mat = Material.COCOA;
                 xp = Config.getInstance().getHerbalismXPCocoa();
 
@@ -341,7 +341,7 @@ public class Herbalism {
                         Misc.dropItem(location, is);
                     }
                     break;
-                    
+
                 case COCOA:
                     if (configInstance.getCocoaDoubleDropsEnabled()) {
                         Misc.dropItem(location, is);

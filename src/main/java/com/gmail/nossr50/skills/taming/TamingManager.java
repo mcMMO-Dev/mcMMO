@@ -102,7 +102,7 @@ public class TamingManager {
         }
 
         GoreEventHandler eventHandler = new GoreEventHandler(this, event);
-        
+
         int goreChanceMax = AdvancedConfig.getInstance().getGoreChanceMax();
         int goreMaxLevel = AdvancedConfig.getInstance().getGoreMaxBonusLevel();
         int randomChance = 100;
@@ -111,7 +111,7 @@ public class TamingManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        final float chance = (float) (((double) goreChanceMax / (double) goreMaxLevel) * (double) skillLevel);
+        final float chance = (float) (((double) goreChanceMax / (double) goreMaxLevel) * skillLevel);
         if (chance > Taming.getRandom().nextInt(randomChance)) {
             eventHandler.modifyEventDamage();
             eventHandler.applyBleed();
@@ -281,9 +281,9 @@ public class TamingManager {
         }
 
         if (skillLevel >= Taming.THICK_FUR_ACTIVATION_LEVEL) {
-           ThickFurEventHandler eventHandler = new ThickFurEventHandler(event, cause);
+            ThickFurEventHandler eventHandler = new ThickFurEventHandler(event, cause);
 
-           eventHandler.modifyEventDamage();
+            eventHandler.modifyEventDamage();
         }
     }
 

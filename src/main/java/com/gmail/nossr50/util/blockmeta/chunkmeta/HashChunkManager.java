@@ -112,7 +112,7 @@ public class HashChunkManager implements ChunkManager {
         int rx = x >> 5;
         int rz = z >> 5;
 
-        long key2 = (((long) rx) << 32) | (((long) rz) & 0xFFFFFFFFL);
+        long key2 = (((long) rx) << 32) | ((rz) & 0xFFFFFFFFL);
 
         mcMMOSimpleRegionFile regionFile = worldRegions.get(key2);
 
@@ -221,9 +221,9 @@ public class HashChunkManager implements ChunkManager {
 
                 try {
                     cx = Integer.parseInt(info[1]);
-		    cz = Integer.parseInt(info[2]);
+                    cz = Integer.parseInt(info[2]);
                 }
-		catch(Exception e) {
+                catch(Exception e) {
                     return;
                 }
                 saveChunk(cx, cz, world);
@@ -247,9 +247,9 @@ public class HashChunkManager implements ChunkManager {
 
                 try {
                     cx = Integer.parseInt(info[1]);
-		    cz = Integer.parseInt(info[2]);
+                    cz = Integer.parseInt(info[2]);
                 }
-		catch(Exception e) {
+                catch(Exception e) {
                     return;
                 }
                 unloadChunk(cx, cz, world);

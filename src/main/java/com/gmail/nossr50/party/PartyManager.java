@@ -374,7 +374,7 @@ public class PartyManager {
      */
     private void loadParties() {
         File file = new File(partiesFilePath);
-        
+
         if (!file.exists()) {
             return;
         }

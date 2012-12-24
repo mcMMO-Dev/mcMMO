@@ -85,5 +85,5 @@ public class PtpCommand implements CommandExecutor {
             sender.sendMessage(usage);
             return true;
         }
-   }
+    }
 }

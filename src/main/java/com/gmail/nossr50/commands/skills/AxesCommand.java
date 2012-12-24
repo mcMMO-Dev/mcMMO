@@ -12,7 +12,7 @@ import com.gmail.nossr50.util.Misc;
 
 public class AxesCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    
+
     private String critChance;
     private String bonusDamage;
     private String impactDamage;
@@ -24,7 +24,7 @@ public class AxesCommand extends SkillCommand {
     private double critMaxChance = advancedConfig.getAxesCriticalChance();
     private int critMaxBonusLevel = advancedConfig.getAxesCriticalMaxBonusLevel();
     private int greaterImpactIncreaseLevel = advancedConfig.getArmorImpactIncreaseLevel();
-//    private double greaterImpactModifier = advancedConfig.getGreaterImpactModifier();
+    //    private double greaterImpactModifier = advancedConfig.getGreaterImpactModifier();
     private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private boolean canSkullSplitter;
@@ -47,9 +47,9 @@ public class AxesCommand extends SkillCommand {
         greaterImpactDamage = "2";
 
         if (skillValue >= critMaxBonusLevel) critChance = df.format(critMaxChance);
-        else critChance = String.valueOf(((double) critMaxChance / (double) critMaxBonusLevel) * (double) skillCheck);
+        else critChance = String.valueOf((critMaxChance / critMaxBonusLevel) * skillCheck);
         if (skillValue >= bonusDamageAxesMaxBonusLevel) bonusDamage = String.valueOf(bonusDamageAxesBonusMax);
-        else bonusDamage = String.valueOf((double) skillValue / ((double) bonusDamageAxesMaxBonusLevel / (double) bonusDamageAxesBonusMax));
+        else bonusDamage = String.valueOf(skillValue / ((double) bonusDamageAxesMaxBonusLevel / (double) bonusDamageAxesBonusMax));
     }
 
     @Override

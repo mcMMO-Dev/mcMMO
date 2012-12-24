@@ -12,7 +12,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 
 public class HerbalismCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    
+
     private String greenTerraLength;
     private String greenThumbChance;
     private String greenThumbStage;
@@ -28,7 +28,7 @@ public class HerbalismCommand extends SkillCommand {
     private int greenThumbMaxLevel = advancedConfig.getGreenThumbMaxLevel();
     private double doubleDropsMaxBonus = advancedConfig.getHerbalismDoubleDropsChanceMax();
     private int doubleDropsMaxLevel = advancedConfig.getHerbalismDoubleDropsMaxLevel();
-    
+
     private boolean canGreenTerra;
     private boolean canGreenThumbWheat;
     private boolean canGreenThumbBlocks;
@@ -50,13 +50,13 @@ public class HerbalismCommand extends SkillCommand {
         //GREEN THUMB
         if(skillValue >= greenThumbStageMaxLevel) greenThumbStage = "4";
         else greenThumbStage = String.valueOf((double) skillValue / (double) greenThumbStageChange);
-        
-        
+
+
         if(skillValue >= greenThumbMaxLevel) greenThumbChance = String.valueOf(greenThumbMaxBonus);
-        else greenThumbChance = String.valueOf(((double) greenThumbMaxBonus / (double) greenThumbMaxLevel) * (double) skillValue);
+        else greenThumbChance = String.valueOf((greenThumbMaxBonus / greenThumbMaxLevel) * skillValue);
         //DOUBLE DROPS
         if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
-        else doubleDropChance = df.format(((double) doubleDropsMaxBonus / (double) doubleDropsMaxLevel) * (double) skillValue);
+        else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
     }
 
     @Override

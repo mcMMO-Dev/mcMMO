@@ -48,7 +48,7 @@ public class MccCommand implements CommandExecutor {
         if (Config.getInstance().getCommandSkillResetEnabled() && Permissions.getInstance().skillReset(player)) {
             player.sendMessage("/skillreset <skill|all> " + LocaleLoader.getString("Commands.Reset"));
         }
-        
+
         if (Permissions.getInstance().mcAbility(player)) {
             player.sendMessage("/mcability " + LocaleLoader.getString("Commands.ToggleAbility"));
         }

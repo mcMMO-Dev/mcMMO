@@ -20,7 +20,7 @@ public class HardcoreListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity(); //Note this returns a Player object for this subevent
-        
+
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (!Permissions.getInstance().hardcoremodeBypass(player)) {

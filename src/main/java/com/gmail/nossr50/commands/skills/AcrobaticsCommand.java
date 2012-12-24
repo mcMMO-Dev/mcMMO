@@ -36,13 +36,13 @@ public class AcrobaticsCommand extends SkillCommand {
         DecimalFormat df = new DecimalFormat("#.0");
         // DODGE
         if(skillValue >= dodgeMaxBonusLevel) dodgeChance = df.format(dodgeChanceMax);
-        else dodgeChance = df.format(((double) dodgeChanceMax / (double) dodgeMaxBonusLevel) * (double) skillValue);
+        else dodgeChance = df.format(((double) dodgeChanceMax / (double) dodgeMaxBonusLevel) * skillValue);
         // ROLL
         if(skillValue >= rollMaxBonusLevel) rollChance = df.format(rollChanceMax);
-        else rollChance = df.format(((double) rollChanceMax / (double) rollMaxBonusLevel) * (double) skillValue);            
+        else rollChance = df.format(((double) rollChanceMax / (double) rollMaxBonusLevel) * skillValue);
         // GRACEFULROLL
         if(skillValue >= gracefulRollMaxBonusLevel) gracefulRollChance = df.format(gracefulRollChanceMax);
-        else gracefulRollChance = df.format(((double) gracefulRollChanceMax / (double) gracefulRollMaxBonusLevel) * (double) skillValue);
+        else gracefulRollChance = df.format(((double) gracefulRollChanceMax / (double) gracefulRollMaxBonusLevel) * skillValue);
     }
 
     @Override
@@ -59,10 +59,10 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-                if (player.hasPermission("mcmmo.perks.lucky.acrobatics")) {
-                    String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
-                    player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Acrobatics" }) }));
-                }
+        if (player.hasPermission("mcmmo.perks.lucky.acrobatics")) {
+            String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Acrobatics" }) }));
+        }
 
         if (canRoll) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Acrobatics.Effect.0"), LocaleLoader.getString("Acrobatics.Effect.1") }));

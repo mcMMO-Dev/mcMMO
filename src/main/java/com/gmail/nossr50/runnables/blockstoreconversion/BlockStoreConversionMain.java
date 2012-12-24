@@ -20,8 +20,8 @@ public class BlockStoreConversionMain implements Runnable {
         this.taskID = -1;
         this.world = world;
         this.scheduler = mcMMO.p.getServer().getScheduler();
-	this.dataDir = new File(this.world.getWorldFolder(), "mcmmo_data");
-	this.converters = new BlockStoreConversionXDirectory[HiddenConfig.getInstance().getConversionRate()];
+        this.dataDir = new File(this.world.getWorldFolder(), "mcmmo_data");
+        this.converters = new BlockStoreConversionXDirectory[HiddenConfig.getInstance().getConversionRate()];
     }
 
     public void start() {
@@ -32,6 +32,7 @@ public class BlockStoreConversionMain implements Runnable {
         return;
     }
 
+    @Override
     public void run() {
         if(!this.dataDir.exists()) {
             softStop();

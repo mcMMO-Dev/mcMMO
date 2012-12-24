@@ -49,7 +49,7 @@ public class InviteCommand implements CommandExecutor {
             if (target != null) {
                 if (PartyManager.getInstance().canInvite(player, playerProfile)) {
                     Party party = playerProfile.getParty();
-                    
+
                     Users.getProfile(target).setInvite(party);
                     player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
                     target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", new Object[] {party.getName(), player.getName()}));

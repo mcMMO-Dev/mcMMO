@@ -64,10 +64,10 @@ public class RepairCommand extends SkillCommand {
         salvageLevel = Config.getInstance().getSalvageUnlockLevel();
 
         if(skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = df.format(repairMasteryChanceMax);
-            else repairMasteryBonus = df.format(((double) repairMasteryChanceMax / (double) repairMasteryMaxBonusLevel) * (double) skillValue);
+        else repairMasteryBonus = df.format(((double) repairMasteryChanceMax / (double) repairMasteryMaxBonusLevel) * skillValue);
 
         if(skillValue >= superRepairMaxBonusLevel) superRepairChance = df.format(superRepairChanceMax);
-            else superRepairChance = df.format(((double) superRepairChanceMax / (double) superRepairMaxBonusLevel) * (double) skillValue);
+        else superRepairChance = df.format(((double) superRepairChanceMax / (double) superRepairMaxBonusLevel) * skillValue);
 
         arcaneForgingRank = Repair.getArcaneForgingRank(profile);
     }
@@ -85,7 +85,7 @@ public class RepairCommand extends SkillCommand {
         canRepairString = permInstance.stringRepair(player);
         canRepairLeather = permInstance.leatherRepair(player);
         canRepairWood = permInstance.woodRepair(player);
-	arcaneBypass = permInstance.arcaneBypass(player);
+        arcaneBypass = permInstance.arcaneBypass(player);
     }
 
     @Override

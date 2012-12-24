@@ -12,7 +12,7 @@ import com.gmail.nossr50.util.Users;
 
 public class ArcheryManager {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    
+
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
@@ -22,15 +22,15 @@ public class ArcheryManager {
     private float dazeMaxBonusLevel = advancedConfig.getDazeMaxBonusLevel();
     private float retrieveBonusMax = advancedConfig.getRetrieveBonusMax();
     private float retrieveMaxBonusLevel = advancedConfig.getRetrieveMaxBonusLevel();
-    
+
     public ArcheryManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
-        
+
         //Compatibility with Citizens, Citizens NPCs won't create a profile so we'll check for it here
         if(this.profile == null)
             return;
-        
+
         this.skillLevel = profile.getSkillLevel(SkillType.ARCHERY);
         this.permissionsInstance =  Permissions.getInstance();
     }
@@ -57,7 +57,7 @@ public class ArcheryManager {
         if (player.hasPermission("mcmmo.perks.lucky.archery")) {
             randomChance = (int) (randomChance * 0.75);
         }
-        final float chance = (float) (((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * (double) skillLevel);
+        final float chance = (float) (((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * skillLevel);
         if (chance > Archery.getRandom().nextInt(randomChance)) {
             eventHandler.addToTracker();
         }
@@ -81,14 +81,14 @@ public class ArcheryManager {
         }
 
         DazeEventHandler eventHandler = new DazeEventHandler(this, event, defender);
-        
+
         int randomChance = 100;
-        
+
         if (player.hasPermission("mcmmo.perks.lucky.archery")) {
             randomChance = (int) (randomChance * 0.75);
         }
-        
-        final float chance = (float) (((double) dazeBonusMax / (double) dazeMaxBonusLevel) * (double) skillLevel);
+
+        final float chance = (float) (((double) dazeBonusMax / (double) dazeMaxBonusLevel) * skillLevel);
         if (chance > Archery.getRandom().nextInt(randomChance)) {
             eventHandler.handleDazeEffect();
             eventHandler.sendAbilityMessages();

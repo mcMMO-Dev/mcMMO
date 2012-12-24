@@ -19,7 +19,7 @@ public class WoodcuttingCommand extends SkillCommand {
     private double doubleDropsMaxBonus = advancedConfig.getWoodcuttingDoubleDropChance();
     private int doubleDropsMaxLevel = advancedConfig.getWoodcuttingDoubleDropMaxLevel();
     private int leafBlowUnlock = advancedConfig.getLeafBlowUnlockLevel();
-    
+
     private boolean canTreeFell;
     private boolean canLeafBlow;
     private boolean canDoubleDrop;
@@ -35,7 +35,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
         treeFellerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
-        else doubleDropChance = df.format(((double) doubleDropsMaxBonus / (double) doubleDropsMaxLevel) * (double) skillValue);
+        else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
     }
 
     @Override

@@ -25,8 +25,8 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutStuff;
 
 public class Skills {
-	static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-	public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private final static int TIME_CONVERSION_FACTOR = 1000;
     private final static double MAX_DISTANCE_AWAY = 10.0;
@@ -530,7 +530,7 @@ public class Skills {
             return;
 
         if (type.getPermissions(player)) {
-	    if(Users.getPlayer(player) == null)
+            if(Users.getPlayer(player) == null)
                 return;
 
             Users.getPlayer(player).addXP(type, xp);

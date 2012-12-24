@@ -11,7 +11,7 @@ import com.gmail.nossr50.skills.gathering.Fishing;
 public class FishingCommand extends SkillCommand {
 
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    
+
     private int lootTier;
     private String magicChance;
     private int shakeUnlockLevel;
@@ -30,10 +30,10 @@ public class FishingCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         lootTier = Fishing.getFishingLootTier(profile);
-        magicChance = percent.format((double) lootTier / 15D);
+        magicChance = percent.format(lootTier / 15D);
         int dropChance = Fishing.getShakeChance(lootTier);
         if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
-            dropChance = (int) ((double) dropChance * 1.25D);
+            dropChance = (int) (dropChance * 1.25D);
         }
         shakeChance = String.valueOf(dropChance);
 

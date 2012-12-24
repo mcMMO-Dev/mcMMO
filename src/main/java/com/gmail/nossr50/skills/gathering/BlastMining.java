@@ -31,7 +31,7 @@ public class BlastMining {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     private static Random random = new Random();
-    
+
     private static int blastMiningRank1 = advancedConfig.getBlastMiningRank1();
     private static int blastMiningRank2 = advancedConfig.getBlastMiningRank2();
     private static int blastMiningRank3 = advancedConfig.getBlastMiningRank3();
@@ -317,7 +317,7 @@ public class BlastMining {
         player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
         /* Create the TNT entity */
-//        TNTPrimed tnt = (TNTPrimed) player.getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
+        //        TNTPrimed tnt = (TNTPrimed) player.getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
         TNTPrimed tnt = player.getWorld().spawn(block.getLocation(), TNTPrimed.class);
         plugin.addToTNTTracker(tnt.getEntityId(), player.getName());
         tnt.setFuseTicks(0);

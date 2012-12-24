@@ -224,7 +224,7 @@ public class Repair {
         }
 
         if(repairAmount <= 0 || repairAmount > 32767)
-		repairAmount = 32767;
+            repairAmount = 32767;
 
         durability -= repairAmount;
 
@@ -248,11 +248,11 @@ public class Repair {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
         int randomChance = 100;
-        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * (double) skillLevel);
+        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
         if (skillLevel >= MAX_BONUS_LEVEL) chance = MAX_CHANCE;
 
         if (player.hasPermission("mcmmo.perks.lucky.repair")) randomChance = (int) (randomChance * 0.75);
-        
+
         if (chance > random.nextInt(randomChance) && permInstance.repairBonus(player)){
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;

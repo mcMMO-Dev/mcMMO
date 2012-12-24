@@ -25,7 +25,7 @@ public class Database {
 
     // Scale waiting time by this much per failed attempt
     private static final double SCALING_FACTOR = 5;
-    
+
     // Minimum wait in nanoseconds (default 500ms)
     private static final long MIN_WAIT = 500*100000L;
 
@@ -37,7 +37,7 @@ public class Database {
 
     // When next to try connecting to Database in nanoseconds
     private static long nextReconnectTimestamp = 0L;
-    
+
     // How many connection attemtps have failed
     private static int reconnectAttempt = 0;
 
@@ -63,15 +63,15 @@ public class Database {
             System.out.println("[mcMMO] Connection to MySQL was a success!");
         }
         catch (SQLException ex) {
-        	connection = null;
+            connection = null;
             System.out.println("[mcMMO] Connection to MySQL failed!");
             ex.printStackTrace();
             printErrors(ex);
         } catch (ClassNotFoundException ex) {
-        	connection = null;
+            connection = null;
             System.out.println("[mcMMO] MySQL database driver not found!");
             ex.printStackTrace();
-		}
+        }
     }
 
     /**
@@ -186,20 +186,20 @@ public class Database {
                 break;
             }
         } finally {
-        	if (resultSet != null) {
-        		try {
-					resultSet.close();
-				} catch (SQLException e) {
-					// Ignore the error, we're leaving
-				}
-        	}
-        	if (statement != null) {
+            if (resultSet != null) {
                 try {
-					statement.close();
-				} catch (SQLException e) {
-					// Ignore the error, we're leaving
-				}
-        	}
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore the error, we're leaving
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore the error, we're leaving
+                }
+            }
         }
     }
 
@@ -211,7 +211,7 @@ public class Database {
      */
     public boolean write(String sql) {
         if (checkConnected()) {
-        	PreparedStatement statement = null;
+            PreparedStatement statement = null;
             try {
                 statement = connection.prepareStatement(sql);
                 statement.executeUpdate();
@@ -221,14 +221,14 @@ public class Database {
                 printErrors(ex);
                 return false;
             } finally {
-            	if (statement != null) {
+                if (statement != null) {
                     try {
-						statement.close();
-					} catch (SQLException e) {
-		                printErrors(e);
-		                return false;
-					}
-            	}
+                        statement.close();
+                    } catch (SQLException e) {
+                        printErrors(e);
+                        return false;
+                    }
+                }
             }
         }
 
@@ -270,93 +270,93 @@ public class Database {
     /**
      * Check connection status and re-establish if dead or stale.
      *
-     * If the very first immediate attempt fails, further attempts 
-     * will be made in progressively larger intervals up to MAX_WAIT 
-     * intervals. 
+     * If the very first immediate attempt fails, further attempts
+     * will be made in progressively larger intervals up to MAX_WAIT
+     * intervals.
      *
-     * This allows for MySQL to time out idle connections as needed by 
-     * server operator, without affecting McMMO, while still providing 
-     * protection against a database outage taking down Bukkit's tick  
+     * This allows for MySQL to time out idle connections as needed by
+     * server operator, without affecting McMMO, while still providing
+     * protection against a database outage taking down Bukkit's tick
      * processing loop due to attemping a database connection each
      * time McMMO needs the database.
      *
      * @return the boolean value for whether or not we are connected
      */
     public static boolean checkConnected() {
-    	boolean isClosed = true;
-    	boolean isValid = false;
-    	boolean exists = (connection != null);
+        boolean isClosed = true;
+        boolean isValid = false;
+        boolean exists = (connection != null);
 
-    	// Initialized as needed later
-    	long timestamp=0;
-    	
-    	// If we're waiting for server to recover then leave early
-    	if (nextReconnectTimestamp > 0 && nextReconnectTimestamp > System.nanoTime()) {
-    		return false;
-    	}
-    	
-    	if (exists) {
+        // Initialized as needed later
+        long timestamp=0;
+
+        // If we're waiting for server to recover then leave early
+        if (nextReconnectTimestamp > 0 && nextReconnectTimestamp > System.nanoTime()) {
+            return false;
+        }
+
+        if (exists) {
             try {
-            	isClosed = connection.isClosed();
-    		} catch (SQLException e) {
-    			isClosed = true;
-    			e.printStackTrace();
-    			printErrors(e);
-    		}
-            
+                isClosed = connection.isClosed();
+            } catch (SQLException e) {
+                isClosed = true;
+                e.printStackTrace();
+                printErrors(e);
+            }
+
             if (!isClosed) {
                 try {
-                	isValid = connection.isValid(VALID_TIMEOUT);
-        		} catch (SQLException e) {
-        			// Don't print stack trace because it's valid to lose idle connections 
-        			// to the server and have to restart them.
-        			isValid = false;
-        		}
+                    isValid = connection.isValid(VALID_TIMEOUT);
+                } catch (SQLException e) {
+                    // Don't print stack trace because it's valid to lose idle connections
+                    // to the server and have to restart them.
+                    isValid = false;
+                }
             }
-    	}
+        }
 
-    	// Leave if all ok
-    	if (exists && !isClosed && isValid) {
-    		// Housekeeping
-    		nextReconnectTimestamp = 0;
-			reconnectAttempt = 0;
-    		return true;
-    	}
- 
-    	// Cleanup after ourselves for GC and MySQL's sake
-    	if (exists && !isClosed) {
-    		try { 
-    			connection.close();
-    		} catch (SQLException ex) {
-    			// This is a housekeeping exercise, ignore errors
-    		}
-    	}
+        // Leave if all ok
+        if (exists && !isClosed && isValid) {
+            // Housekeeping
+            nextReconnectTimestamp = 0;
+            reconnectAttempt = 0;
+            return true;
+        }
 
-    	// Try to connect again
-    	connect();
+        // Cleanup after ourselves for GC and MySQL's sake
+        if (exists && !isClosed) {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                // This is a housekeeping exercise, ignore errors
+            }
+        }
 
-    	// Leave if connection is good
-    	try {
-			if (connection != null && !connection.isClosed()) {
-				// Schedule a database save if we really had an outage
-				if (reconnectAttempt > 1) {
-		            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(plugin), 5);
-				}
-				nextReconnectTimestamp = 0;
-				reconnectAttempt = 0;
-				return true;
-			}
-		} catch (SQLException e) {
-			// Failed to check isClosed, so presume connection is bad and attempt later
-			e.printStackTrace();
-			printErrors(e);
-		}
+        // Try to connect again
+        connect();
 
-    	reconnectAttempt++;
-    		
-   		nextReconnectTimestamp = (long)(System.nanoTime() + Math.min(MAX_WAIT, (reconnectAttempt*SCALING_FACTOR*MIN_WAIT)));
-   		
-   		return false;
+        // Leave if connection is good
+        try {
+            if (connection != null && !connection.isClosed()) {
+                // Schedule a database save if we really had an outage
+                if (reconnectAttempt > 1) {
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(plugin), 5);
+                }
+                nextReconnectTimestamp = 0;
+                reconnectAttempt = 0;
+                return true;
+            }
+        } catch (SQLException e) {
+            // Failed to check isClosed, so presume connection is bad and attempt later
+            e.printStackTrace();
+            printErrors(e);
+        }
+
+        reconnectAttempt++;
+
+        nextReconnectTimestamp = (long)(System.nanoTime() + Math.min(MAX_WAIT, (reconnectAttempt*SCALING_FACTOR*MIN_WAIT)));
+
+        return false;
     }
 
     /**

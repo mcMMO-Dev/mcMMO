@@ -221,9 +221,9 @@ public class SQLConversionTask implements Runnable {
                             + playerName + "',"
                             + System.currentTimeMillis() / 1000 + ")");
                     id = database.getInt("SELECT id FROM "
-                                    + tablePrefix
-                                    + "users WHERE user = '"
-                                    + playerName + "'");
+                            + tablePrefix
+                            + "users WHERE user = '"
+                            + playerName + "'");
                     database.write("INSERT INTO "
                             + tablePrefix
                             + "skills (user_id) VALUES (" + id + ")");

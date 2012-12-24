@@ -28,11 +28,11 @@ public class McstatsCommand implements CommandExecutor {
         CommandHelper.printMiscSkills(player);
 
         int powerLevelCap = Config.getInstance().getPowerLevelCap();
-        
+
         if (powerLevelCap > 0)
-        	player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()), String.valueOf(powerLevelCap) }));
+            player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()), String.valueOf(powerLevelCap) }));
         else
-        	player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()) }));        	
+            player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()) }));
 
         return true;
     }

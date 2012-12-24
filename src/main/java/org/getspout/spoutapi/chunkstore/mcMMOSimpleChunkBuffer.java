@@ -23,17 +23,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class mcMMOSimpleChunkBuffer extends ByteArrayOutputStream {
-	final mcMMOSimpleRegionFile rf;
-	final int index;
+    final mcMMOSimpleRegionFile rf;
+    final int index;
 
-	mcMMOSimpleChunkBuffer(mcMMOSimpleRegionFile rf, int index) {
-		super(1024);
-		this.rf = rf;
-		this.index = index;
-	}
+    mcMMOSimpleChunkBuffer(mcMMOSimpleRegionFile rf, int index) {
+        super(1024);
+        this.rf = rf;
+        this.index = index;
+    }
 
-	@Override
-	public void close() throws IOException {
-		rf.write(index, buf, count);
-	}
+    @Override
+    public void close() throws IOException {
+        rf.write(index, buf, count);
+    }
 }

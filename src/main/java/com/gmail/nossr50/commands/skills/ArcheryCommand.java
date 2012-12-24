@@ -39,17 +39,17 @@ public class ArcheryCommand extends SkillCommand {
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("#.0");
         // SkillShot
-        double bonus = (int)((double) skillValue / (double) skillShotIncreaseLevel) * (double) skillShotIncreasePercentage;
+        double bonus = (int)((double) skillValue / (double) skillShotIncreaseLevel) * skillShotIncreasePercentage;
         if (bonus > skillShotBonusMax) skillShotBonus = percent.format(skillShotBonusMax);
         else skillShotBonus = percent.format(bonus);
-        
+
         // Daze
         if(skillValue >= dazeMaxBonusLevel) dazeChance = df.format(dazeBonusMax);
-        else dazeChance = df.format(((double) dazeBonusMax / (double) dazeMaxBonusLevel) * (double) skillValue);
+        else dazeChance = df.format(((double) dazeBonusMax / (double) dazeMaxBonusLevel) * skillValue);
 
         // Retrieve
         if(skillValue >= retrieveMaxBonusLevel)    retrieveChance = df.format(retrieveBonusMax);
-        else retrieveChance = df.format(((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * (double) skillValue);
+        else retrieveChance = df.format(((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * skillValue);
     }
 
     @Override
@@ -66,10 +66,10 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-                if (player.hasPermission("mcmmo.perks.lucky.archery")) {
-                    String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
-                    player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Archery" }) }));
-                }
+        if (player.hasPermission("mcmmo.perks.lucky.archery")) {
+            String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Archery" }) }));
+        }
 
         if (canSkillShot) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.0"), LocaleLoader.getString("Archery.Effect.1") }));

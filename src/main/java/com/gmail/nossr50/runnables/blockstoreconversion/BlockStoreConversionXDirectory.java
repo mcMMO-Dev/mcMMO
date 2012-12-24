@@ -33,6 +33,7 @@ public class BlockStoreConversionXDirectory implements Runnable {
         return;
     }
 
+    @Override
     public void run() {
         if(!this.dataDir.exists()) {
             stop();
@@ -51,7 +52,7 @@ public class BlockStoreConversionXDirectory implements Runnable {
             return;
         }
 
-       this.zDirs = this.dataDir.listFiles();
+        this.zDirs = this.dataDir.listFiles();
 
         for (this.i = 0; (this.i < HiddenConfig.getInstance().getConversionRate()) && (this.i < this.zDirs.length); this.i++) {
             if(this.converters[this.i] == null)
@@ -70,10 +71,10 @@ public class BlockStoreConversionXDirectory implements Runnable {
         this.scheduler.cancelTask(this.taskID);
         this.taskID = -1;
 
-	this.dataDir = null;
-	this.zDirs = null;
-	this.world = null;
-	this.scheduler = null;
-	this.converters = null;
+        this.dataDir = null;
+        this.zDirs = null;
+        this.world = null;
+        this.scheduler = null;
+        this.converters = null;
     }
 }

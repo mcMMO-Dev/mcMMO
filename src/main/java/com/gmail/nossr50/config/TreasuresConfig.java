@@ -190,7 +190,7 @@ public class TreasuresConfig extends ConfigLoader{
 
         List<String> excavationTreasures = config.getStringList("Excavation.Treasure");
         List<String> fishingTreasures = config.getStringList("Fishing.Treasure");
-//        Iterator<String> treasureIterator = treasures.keySet().iterator();
+        //        Iterator<String> treasureIterator = treasures.keySet().iterator();
         Iterator<Entry<String,Treasure>> treasureIterator = treasures.entrySet().iterator();
 
         while (treasureIterator.hasNext()) {

@@ -173,24 +173,24 @@ public class WoodCutting {
                         WoodCutting.woodCuttingProcCheck(player, x);
 
                         switch (species) {
-                            case GENERIC:
-                                xp += Config.getInstance().getWoodcuttingXPOak();
-                                break;
+                        case GENERIC:
+                            xp += Config.getInstance().getWoodcuttingXPOak();
+                            break;
 
-                            case REDWOOD:
-                                xp += Config.getInstance().getWoodcuttingXPSpruce();
-                                break;
+                        case REDWOOD:
+                            xp += Config.getInstance().getWoodcuttingXPSpruce();
+                            break;
 
-                            case BIRCH:
-                                xp += Config.getInstance().getWoodcuttingXPBirch();
-                                break;
+                        case BIRCH:
+                            xp += Config.getInstance().getWoodcuttingXPBirch();
+                            break;
 
-                            case JUNGLE:
-                                xp += Config.getInstance().getWoodcuttingXPJungle() / 2; //Nerf XP from Jungle Trees when using Tree Feller
-                                break;
+                        case JUNGLE:
+                            xp += Config.getInstance().getWoodcuttingXPJungle() / 2; //Nerf XP from Jungle Trees when using Tree Feller
+                            break;
 
-                            default:
-                                break;
+                        default:
+                            break;
                         }
                     }
 
@@ -345,7 +345,7 @@ public class WoodCutting {
         Material mat = Material.getMaterial(block.getTypeId());
 
         int randomChance = 100;
-        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * (double) skillLevel);
+        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
 
         if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
             randomChance = (int) (randomChance * 0.75);
@@ -438,7 +438,7 @@ public class WoodCutting {
                 type ^= 0x8;
 
             TreeSpecies species = TreeSpecies.getByData(type);
-            
+
             //Apparently species can be null in certain cases (custom server mods?)
             //https://github.com/mcMMO-Dev/mcMMO/issues/229
             if(species == null)

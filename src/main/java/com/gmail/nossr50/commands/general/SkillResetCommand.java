@@ -18,31 +18,31 @@ public class SkillResetCommand implements CommandExecutor {
         if (CommandHelper.noConsoleUsage(sender)) {
             return true;
         }
-        
+
         //ensure they have the skillreset perm
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.skillreset")) {
             return true;
         }
-        
+
         SkillType skillType = null; //simple initialization
-        
+
         //make sure there's only one argument.  output at least some kind of error if not
         if (args.length != 1 && args[0] != null) {
-        	sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
             return true;
         }
-        
-        
+
+
         //parse the skilltype that they sent
         try
         {
-        	skillType = SkillType.valueOf(args[0].toUpperCase().trim());  //ucase needed to match enum since it's case sensitive. trim to be nice
+            skillType = SkillType.valueOf(args[0].toUpperCase().trim());  //ucase needed to match enum since it's case sensitive. trim to be nice
         }catch(IllegalArgumentException ex)
-    	{
-        	sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+        {
+            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
             return true;
-    	}
-        
+        }
+
         //reset the values in the hash table and persist them
         PlayerProfile profile = Users.getProfile((Player)sender);
 
@@ -53,13 +53,13 @@ public class SkillResetCommand implements CommandExecutor {
 
         profile.resetSkill(skillType);
         profile.save();
-        
+
         //display a success message to the user
         if (skillType == SkillType.ALL)
-        	sender.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
         else
-        	sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", new Object[] { args[0] }));    
-        
+            sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", new Object[] { args[0] }));
+
         return true;
     }
 }

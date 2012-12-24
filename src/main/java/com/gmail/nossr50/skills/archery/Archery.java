@@ -18,7 +18,7 @@ public class Archery {
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
     public static final int ARROW_TRACKING_MAX_BONUS_LEVEL = advancedConfig.getRetrieveMaxBonusLevel();
-    
+
     public static final int BONUS_DAMAGE_INCREASE_LEVEL = advancedConfig.getSkillShotIncreaseLevel();
     public static final double BONUS_DAMAGE_INCREASE_PERCENT = advancedConfig.getSkillShotIncreasePercentage();
     public static final double BONUS_DAMAGE_MAX_BONUS_PERCENTAGE = advancedConfig.getSkillShotBonusMax();
