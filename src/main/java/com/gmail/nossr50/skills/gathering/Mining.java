@@ -329,7 +329,7 @@ public class Mining {
         int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
 
         int randomChance = 100;
-        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * (double) skillLevel);
+        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * (double) skillCheck);
 
         if (player.hasPermission("mcmmo.perks.lucky.mining")) {
             randomChance = (int) (randomChance * 0.75);
