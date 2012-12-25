@@ -46,6 +46,6 @@ public class MmoupdateCommand implements CommandExecutor {
             return;
         }
 
-        plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new SQLConversionTask(plugin), 1);
+        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new SQLConversionTask(plugin), 1);
     }
 }
