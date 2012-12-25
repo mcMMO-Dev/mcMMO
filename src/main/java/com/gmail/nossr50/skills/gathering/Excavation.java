@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
@@ -51,7 +52,10 @@ public class Excavation {
 
         int xp;
 
-        if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
+        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+
+        if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
             xp = ModChecks.getCustomBlock(block).getXpGain();
         }
         else {

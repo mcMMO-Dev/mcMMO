@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
@@ -48,7 +49,10 @@ public class ModChecks {
      * @return the block if it exists, null otherwise
      */
     public static CustomBlock getCustomBlock(Block block) {
-        if (!blocksInstance.customItems.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
+        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+
+        if (!blocksInstance.customItems.contains(item)) {
             return null;
         }
 
@@ -68,7 +72,10 @@ public class ModChecks {
      * @return true if the block is custom, false otherwise
      */
     public static boolean isCustomMiningBlock(Block block) {
-        if (customBlocksEnabled && blocksInstance.customMiningBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
+        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+
+        if (customBlocksEnabled && blocksInstance.customMiningBlocks.contains(item)) {
             return true;
         }
         else {
@@ -83,7 +90,10 @@ public class ModChecks {
      * @return true if the block represents leaves, false otherwise
      */
     public static boolean isCustomLeafBlock(Block block) {
-        if (blocksInstance.customLeaves.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
+        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+
+        if (blocksInstance.customLeaves.contains(item)) {
             return true;
         }
         else {
@@ -98,7 +108,10 @@ public class ModChecks {
      * @return true if the block represents a log, false otherwise
      */
     public static boolean isCustomLogBlock(Block block) {
-        if (blocksInstance.customLogs.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
+        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+
+        if (blocksInstance.customLogs.contains(item)) {
             return true;
         }
         else {
@@ -113,7 +126,10 @@ public class ModChecks {
      * @return true if the block represents an ore, false otherwise
      */
     public static boolean isCustomOreBlock(Block block) {
-        if (blocksInstance.customOres.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
+        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+
+        if (blocksInstance.customOres.contains(item)) {
             return true;
         }
         else {

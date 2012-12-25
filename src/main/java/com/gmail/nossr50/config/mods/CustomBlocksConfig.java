@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
@@ -78,7 +79,9 @@ public class CustomBlocksConfig extends ConfigLoader {
             }
 
             if (skillType.equals("Ability_Blocks")) {
-                blockItem = new ItemStack(id, 1, (short) 0, data);
+                blockItem = new ItemStack(id, 1, (short) 0);
+                blockItem.setData(new MaterialData(id, data));
+
                 blockList.add(blockItem);
                 continue;
             }
@@ -89,14 +92,17 @@ public class CustomBlocksConfig extends ConfigLoader {
             }
 
             if (dropItem) {
-                itemDrop = new ItemStack(dropID, 1, (short) 0, dropData);
+                itemDrop = new ItemStack(dropID, 1, (short) 0);
+                itemDrop.setData(new MaterialData(dropID, dropData));
             }
             else {
-                itemDrop = new ItemStack(id, 1, (short) 0, data);
+                itemDrop = new ItemStack(id, 1, (short) 0);
+                itemDrop.setData(new MaterialData(id, data));
             }
 
             block = new CustomBlock(minimumDropAmount, maxiumDropAmount, itemDrop, tier, xp, data, id);
-            blockItem = new ItemStack(id, 1, (short) 0, data);
+            blockItem = new ItemStack(id, 1, (short) 0);
+            blockItem.setData(new MaterialData(id, data));
 
             if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
                 customOres.add(blockItem);

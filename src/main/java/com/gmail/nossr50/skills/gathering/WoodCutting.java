@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.material.Tree;
 import org.getspout.spoutapi.sound.SoundEffect;
 
@@ -97,11 +98,15 @@ public class WoodCutting {
 
         //Prepare ItemStacks
         ItemStack item = null;
-        ItemStack oak = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.GENERIC.getData());
-        ItemStack spruce = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.REDWOOD.getData());
-        ItemStack birch = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.BIRCH.getData());
-        ItemStack jungle = new ItemStack(Material.LOG, 1, (short) 0, TreeSpecies.JUNGLE.getData());
+        ItemStack oak = new ItemStack(Material.LOG, 1, (short) 0);
+        ItemStack spruce = new ItemStack(Material.LOG, 1, (short) 0);
+        ItemStack birch = new ItemStack(Material.LOG, 1, (short) 0);
+        ItemStack jungle = new ItemStack(Material.LOG, 1, (short) 0);
 
+        oak.setData(new MaterialData(Material.LOG, TreeSpecies.GENERIC.getData()));
+        spruce.setData(new MaterialData(Material.LOG, TreeSpecies.REDWOOD.getData()));
+        birch.setData(new MaterialData(Material.LOG, TreeSpecies.BIRCH.getData()));
+        jungle.setData(new MaterialData(Material.LOG, TreeSpecies.JUNGLE.getData()));
         for (Block x : toBeFelled) {
             if (Misc.blockBreakSimulate(x, player, true)) {
                 if (Config.getInstance().getBlockModsEnabled()) {
@@ -204,7 +209,9 @@ public class WoodCutting {
                 else if (x.getType() == Material.LEAVES) {
                     final int SAPLING_DROP_CHANCE = 10;
 
-                    item = new ItemStack(Material.SAPLING, 1, (short) 0, (byte) (x.getData() & 3)); //Drop the right type of sapling
+                    item = new ItemStack(Material.SAPLING, 1, (short) 0); 
+                    item.setData(new MaterialData(Material.SAPLING, (byte) (x.getData() & 3))); //Drop the right type of sapling
+
                     Misc.randomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
 
                     //Remove the block
@@ -373,7 +380,9 @@ public class WoodCutting {
                 }
             }
             else {
-                item = new ItemStack(mat, 1, (short) 0, type);
+                item = new ItemStack(mat, 1, (short) 0);
+                item.setData(new MaterialData(mat, type));
+
                 location = block.getLocation();
 
                 TreeSpecies species = TreeSpecies.getByData(type);

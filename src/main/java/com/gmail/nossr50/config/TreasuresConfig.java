@@ -11,6 +11,7 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
@@ -125,7 +126,8 @@ public class TreasuresConfig extends ConfigLoader{
              * Drops From & Max Level
              */
 
-            ItemStack item = new ItemStack(id, amount, (short) 0, (byte) data);
+            ItemStack item = new ItemStack(id, amount, (short) 0);
+            item.setData(new MaterialData(id, (byte) data));
 
             if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Fishing", false)) {
                 if (config.getConfigurationSection("Treasures." + treasureName + ".Drops_From").getKeys(false).size() != 1) {

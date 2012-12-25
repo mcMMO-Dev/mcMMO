@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -240,7 +241,10 @@ public class Herbalism {
             break;
 
         default:
-            if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()))) {
+            ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
+            item.setData(new MaterialData(block.getTypeId(), block.getData()));
+
+            if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
                 customPlant = true;
                 xp = ModChecks.getCustomBlock(block).getXpGain();
             }

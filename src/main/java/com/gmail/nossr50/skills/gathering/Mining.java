@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
@@ -96,7 +97,10 @@ public class Mining {
 
         default:
             if (ModChecks.isCustomMiningBlock(block)) {
-                Misc.dropItem(location, new ItemStack(block.getTypeId(), 1, (short) 0, block.getData()));
+                ItemStack dropItem = new ItemStack(block.getTypeId(), 1, (short) 0);
+                dropItem.setData(new MaterialData(block.getTypeId(), block.getData()));
+
+                Misc.dropItem(location, dropItem);
             }
             break;
         }
@@ -117,7 +121,9 @@ public class Mining {
         switch (type) {
         case COAL_ORE:
             if (configInstance.getCoalDoubleDropsEnabled()) {
-                item = new ItemStack(Material.COAL, 1, (short) 0, CoalType.COAL.getData());
+                item = new ItemStack(Material.COAL, 1, (short) 0);
+                item.setData(new MaterialData(Material.COAL, CoalType.COAL.getData()));
+
                 Misc.dropItem(location, item);
             }
             break;
@@ -166,7 +172,9 @@ public class Mining {
 
         case LAPIS_ORE:
             if (configInstance.getLapisDoubleDropsEnabled()) {
-                item = new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 0x4);
+                item = new ItemStack(Material.INK_SACK, 1, (short) 0);
+                item.setData(new MaterialData(Material.INK_SACK, (byte) 0x4));
+
                 Misc.dropItems(location, item, 4);
                 Misc.randomDropItems(location, item, 50, 4);
             }
