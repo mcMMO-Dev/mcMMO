@@ -103,6 +103,7 @@ public class BlockChecks {
         case LEVER:
         case NOTE_BLOCK:
         case STONE_BUTTON:
+        case WOOD_BUTTON:
         case TRAP_DOOR:
         case WALL_SIGN:
         case WOODEN_DOOR:
