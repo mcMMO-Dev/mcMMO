@@ -571,7 +571,7 @@ public class SpoutStuff {
      * Re-enable SpoutCraft for players after a /reload
      */
     public static void reloadSpoutPlayers() {
-        for (SpoutPlayer spoutPlayer : SpoutManager.getPlayerManager().getOnlinePlayers()) {
+        for (SpoutPlayer spoutPlayer : SpoutManager.getPlayerChunkMap().getOnlinePlayers()) {
             SpoutCraftEnableEvent spoutCraftEnableEvent = new SpoutCraftEnableEvent(spoutPlayer);
             mcMMO.p.getServer().getPluginManager().callEvent(spoutCraftEnableEvent);
         }
