@@ -27,7 +27,7 @@ public class SkillResetCommand implements CommandExecutor {
         SkillType skillType = null; //simple initialization
 
         //make sure there's only one argument.  output at least some kind of error if not
-        if (args.length != 1 && args[0] != null) {
+        if (args.length == 0 || (args.length != 1 && args[0] != null)) {
             sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
             return true;
         }
