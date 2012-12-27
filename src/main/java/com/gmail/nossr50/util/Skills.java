@@ -533,6 +533,9 @@ public class Skills {
             if(Users.getPlayer(player) == null)
                 return;
 
+            if((type.getMaxLevel() < profile.getSkillLevel(type) + 1) || (Misc.getPowerLevelCap() < Users.getPlayer(player).getPowerLevel() + 1))
+                return;
+
             Users.getPlayer(player).addXP(type, xp);
             xpCheckSkill(type, player, profile);
         }

@@ -345,7 +345,10 @@ public class Config extends ConfigLoader {
     public int getLevelCapTaming() { return config.getInt("Skills.Taming.Level_Cap", 0); }
     public int getLevelCapUnarmed() { return config.getInt("Skills.Unarmed.Level_Cap", 0); }
     public int getLevelCapWoodcutting() { return config.getInt("Skills.Woodcutting.Level_Cap", 0); }
-    public int getPowerLevelCap() { return config.getInt("General.Power_Level_Cap", 0); }
+    public int getPowerLevelCap() {
+        int cap = config.getInt("General.Power_Level_Cap", 0);
+        return ((cap == 0) ? Integer.MAX_VALUE : cap);
+    }
 
     /* PVP & PVE Settings */
     public boolean getAcrobaticsPVP() { return config.getBoolean("Skills.Acrobatics.Enabled_For_PVP", true); }
