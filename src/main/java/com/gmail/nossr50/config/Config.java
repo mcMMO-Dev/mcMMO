@@ -40,19 +40,28 @@ public class Config extends ConfigLoader {
     /* mySQL */
     public boolean getUseMySQL() { return config.getBoolean("MySQL.Enabled", false); }
     public String getMySQLTablePrefix() { return config.getString("MySQL.Database.TablePrefix", "mcmmo_"); }
-    public String getMySQLDatabaseName() { return config.getString("MySQL.Database.Name", "DatabaseName"); }
-    public String getMySQLUserName() { return config.getString("MySQL.Database.User_Name", "UserName"); } //Really should be labeled under MySQL.User_Name instead...
+    public String getMySQLDatabaseName() { return getStringIncludingInts(config, "MySQL.Database.Name"); }
+    public String getMySQLUserName() { return getStringIncludingInts(config, "MySQL.Database.User_Name"); }
     public int getMySQLServerPort() { return config.getInt("MySQL.Server.Port", 3306); }
     public String getMySQLServerName() { return config.getString("MySQL.Server.Address", "localhost"); }
 
     public String getMySQLUserPassword() {
-        if (config.getString("MySQL.Database.User_Password", null) != null) {
-            return config.getString("MySQL.Database.User_Password", null);
+        if (getStringIncludingInts(config, "MySQL.Database.User_Password") != null) {
+            return getStringIncludingInts(config, "MySQL.Database.User_Password");
         }
         else {
             return "";
         }
     }
+
+    private static String getStringIncludingInts(ConfigurationSection cfg, String key) {
+		String str = cfg.getString(key);
+		if (str == null)
+			str = String.valueOf(cfg.getInt(key));
+		if (str == null)
+			str = "No value set for '" + key + "'";
+		return str;
+	}
 
     /* Hardcore Mode */
     public boolean getHardcoreEnabled() { return config.getBoolean("Hardcore.Enabled", false); }
