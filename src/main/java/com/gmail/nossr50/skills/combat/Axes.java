@@ -16,6 +16,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -130,6 +131,8 @@ public class Axes {
 
             /* Every 30 Skill Levels you gain 1 durability damage */
             int impactIncreaseLevel = advancedConfig.getArmorImpactIncreaseLevel();
+            float impactMaxDamage = (float) advancedConfig.getArmorImpactMaxDurabilityDamage() / 100F;
+            short maxDurability;
             durabilityDamage += (int) ((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) impactIncreaseLevel);
 
             if (!hasArmor(targetPlayer)) {
@@ -137,8 +140,11 @@ public class Axes {
             }
             else {
                 for (ItemStack armor : targetPlayer.getInventory().getArmorContents()) {
-                    if(Math.random() * 100 > 75)
+                    if(Math.random() * 100 > 75) {
+                        maxDurability = (short) (ItemChecks.getMaxDurabilityArmor(armor) * impactMaxDamage);
+                    	if (durabilityDamage > maxDurability) durabilityDamage = (short) maxDurability;
                         armor.setDurability((short) (armor.getDurability() + durabilityDamage)); //Damage armor piece
+                    }
                 }
                 targetPlayer.updateInventory();
             }

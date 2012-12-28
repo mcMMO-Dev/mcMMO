@@ -45,7 +45,7 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("#.0");
+        DecimalFormat df = new DecimalFormat("0.0");
         superBreakerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
         else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);

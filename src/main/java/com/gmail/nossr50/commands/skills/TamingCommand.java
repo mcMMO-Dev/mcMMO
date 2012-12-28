@@ -38,7 +38,7 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("#.0");
+        DecimalFormat df = new DecimalFormat("0.0");
         if(skillValue >= goreMaxLevel) goreChance = df.format(goreChanceMax);
         else goreChance = df.format(((double) goreChanceMax / (double) goreMaxLevel) * skillValue);
     }

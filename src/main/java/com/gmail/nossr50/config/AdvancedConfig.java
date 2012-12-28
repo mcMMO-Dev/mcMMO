@@ -61,6 +61,7 @@ public class AdvancedConfig extends ConfigLoader {
     public int getGreaterImpactBonusDamage() { return config.getInt("Skills.Axes.GreaterImpact_BonusDamage", 2); }
 
     public int getArmorImpactIncreaseLevel() { return config.getInt("Skills.Axes.ArmorImpact_IncreaseLevel", 50); }
+    public int getArmorImpactMaxDurabilityDamage() { return config.getInt("Skills.Axes.ArmorImpact_MaxPercentageDurabilityDamage", 20); }
 
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml

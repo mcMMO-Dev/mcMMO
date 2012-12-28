@@ -35,7 +35,7 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("#.0");
+        DecimalFormat df = new DecimalFormat("0.0");
         berserkLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
 
         if(skillValue >= disarmMaxLevel) disarmChance = df.format(disarmChanceMax);

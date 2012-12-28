@@ -17,20 +17,20 @@ import com.gmail.nossr50.runnables.SQLReconnect;
 public class Database {
 
     private static Config configInstance = Config.getInstance();
+    private static String connectionString;
 
-    private static String connectionString = "jdbc:mysql://" + configInstance.getMySQLServerName() + ":" + configInstance.getMySQLServerPort() + "/" + configInstance.getMySQLDatabaseName() + "?user=" + configInstance.getMySQLUserName() + "&password=" + configInstance.getMySQLUserPassword();
     private static String tablePrefix = configInstance.getMySQLTablePrefix();
     private static Connection connection = null;
     private static mcMMO plugin = null;
 
     // Scale waiting time by this much per failed attempt
-    private static final double SCALING_FACTOR = 5;
+    private static final double SCALING_FACTOR = 10;
 
     // Minimum wait in nanoseconds (default 500ms)
-    private static final long MIN_WAIT = 500*100000L;
+    private static final long MIN_WAIT = 500L*1000000L;
 
     // Maximum time to wait between reconnects (default 5 minutes)
-    private static final long MAX_WAIT = 5*60000000000L;
+    private static final long MAX_WAIT = 5L * 60L * 1000L * 1000000L;
 
     // How long to wait when checking if connection is valid (default 3 seconds)
     private static final int VALID_TIMEOUT = 3;
@@ -50,28 +50,27 @@ public class Database {
      * Attempt to connect to the mySQL database.
      */
     public static void connect() {
-        try {
-            System.out.println("[mcMMO] Attempting connection to MySQL...");
+    	connectionString = "jdbc:mysql://" + configInstance.getMySQLServerName() + ":" + configInstance.getMySQLServerPort() + "/" + configInstance.getMySQLDatabaseName();
+    	try {
+    		mcMMO.p.getLogger().info("Attempting connection to MySQL...");
 
-            // Force driver to load if not yet loaded
-            Class.forName("com.mysql.jdbc.Driver");
-            Properties connectionProperties = new Properties();
-            connectionProperties.put("autoReconnect", "false");
-            connectionProperties.put("maxReconnects", "0");
-            connection = DriverManager.getConnection(connectionString, connectionProperties);
+    		// Force driver to load if not yet loaded
+    		Class.forName("com.mysql.jdbc.Driver");
+    		Properties connectionProperties = new Properties();
+    		connectionProperties.put("user", configInstance.getMySQLUserName());
+    		connectionProperties.put("password", configInstance.getMySQLUserPassword());
+    		connectionProperties.put("autoReconnect", "false");
+    		connectionProperties.put("maxReconnects", "0");
+    		connection = DriverManager.getConnection(connectionString, connectionProperties);
 
-            System.out.println("[mcMMO] Connection to MySQL was a success!");
-        }
-        catch (SQLException ex) {
-            connection = null;
-            System.out.println("[mcMMO] Connection to MySQL failed!");
-            ex.printStackTrace();
-            printErrors(ex);
-        } catch (ClassNotFoundException ex) {
-            connection = null;
-            System.out.println("[mcMMO] MySQL database driver not found!");
-            ex.printStackTrace();
-        }
+    		mcMMO.p.getLogger().info("Connection to MySQL was a success!");
+    	} catch (SQLException ex) {
+    		connection = null;
+    		if(reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("Connection to MySQL failed!");
+    	} catch (ClassNotFoundException ex) {
+    		connection = null;
+    		if(reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("MySQL database driver not found!");
+    	}
     }
 
     /**
@@ -156,6 +155,7 @@ public class Database {
 
         PreparedStatement statement = null;
         try {
+        	if(!checkConnected()) return;
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
 
@@ -172,12 +172,12 @@ public class Database {
         catch (SQLException ex) {
             switch (update) {
             case BLAST_MINING:
-                System.out.println("Updating mcMMO MySQL tables for Blast Mining...");
+            	mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
                 write("ALTER TABLE `"+tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0' ;");
                 break;
 
             case FISHING:
-                System.out.println("Updating mcMMO MySQL tables for Fishing...");
+            	mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
                 write("ALTER TABLE `"+tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
                 write("ALTER TABLE `"+tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
                 break;

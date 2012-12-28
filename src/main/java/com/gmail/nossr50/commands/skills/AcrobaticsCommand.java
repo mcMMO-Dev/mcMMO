@@ -33,7 +33,7 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("#.0");
+        DecimalFormat df = new DecimalFormat("0.0");
         // DODGE
         if(skillValue >= dodgeMaxBonusLevel) dodgeChance = df.format(dodgeChanceMax);
         else dodgeChance = df.format(((double) dodgeChanceMax / (double) dodgeMaxBonusLevel) * skillValue);

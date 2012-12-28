@@ -49,7 +49,7 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("#.0");
+        DecimalFormat df = new DecimalFormat("0.0");
         // We're using pickaxes here, not the best but it works
         Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
         Repairable goldRepairable = mcMMO.repairManager.getRepairable(285);
