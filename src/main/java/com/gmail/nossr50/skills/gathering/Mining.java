@@ -308,7 +308,7 @@ public class Mining {
             break;
 
         default:
-            if (ModChecks.isCustomMiningBlock(block)) {
+            if (ModChecks.isCustomMiningBlock(block) && ModChecks.getCustomBlock(block) != null) {
                 xp += ModChecks.getCustomBlock(block).getXpGain();
             }
             break;
