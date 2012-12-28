@@ -45,6 +45,7 @@ Skills:
         GreaterImpact_KnockbackModifier: 1.5
         GreaterImpact_BonusDamage: 2
         ArmorImpact_IncreaseLevel: 50
+        ArmorImpact_MaxPercentageDurabilityDamage: 20
     Fishing:
         Shake_UnlockLevel: 150
         Enchantment_Chance: 10

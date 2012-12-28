@@ -39,7 +39,7 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("#.0");
+        DecimalFormat df = new DecimalFormat("0.0");
         int skillCheck = Misc.skillCheck((int)skillValue, critMaxBonusLevel);
 
         impactDamage = String.valueOf(1 + ((double) skillValue / (double) greaterImpactIncreaseLevel));

@@ -474,4 +474,39 @@ public class ItemChecks {
     public static boolean isEnchantable(ItemStack is) {
         return isArmor(is) || isSword(is) || isAxe(is) || isShovel(is) || isPickaxe(is) || (is.getType() == Material.BOW);
     }
+
+    /**
+     * Get the maximum durability of an armor type.
+     *
+     * @param is Item to check
+     * @return maximum durability value.
+     */
+    public static int getMaxDurabilityArmor(ItemStack is) {
+    	int durability = 0;
+    	if (isDiamondArmor(is)) {
+    		if (isHelmet(is)) durability = 364;
+    		else if (isChestplate(is)) durability = 529;
+    		else if (isPants(is)) durability = 496;
+    		else if (isBoots(is)) durability = 430;
+    	}
+    	else if (isIronArmor(is)) {
+    		if (isHelmet(is)) durability = 166;
+    		else if (isChestplate(is)) durability = 242;
+    		else if (isPants(is)) durability = 226;
+    		else if (isBoots(is)) durability = 196;
+    	}
+    	else if (isGoldArmor(is)) {
+    		if (isHelmet(is)) durability = 78;
+    		else if (isChestplate(is)) durability = 114;
+    		else if (isPants(is)) durability = 106;
+    		else if (isBoots(is)) durability = 92;
+    	}
+    	else if (isLeatherArmor(is)) {
+    		if (isHelmet(is)) durability = 56;
+    		else if (isChestplate(is)) durability = 82;
+    		else if (isPants(is)) durability = 76;
+    		else if (isBoots(is)) durability = 66;
+    	}
+    	return durability;
+    }
 }

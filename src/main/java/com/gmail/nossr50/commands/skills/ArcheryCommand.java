@@ -37,7 +37,7 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("#.0");
+        DecimalFormat df = new DecimalFormat("0.0");
         // SkillShot
         double bonus = (int)((double) skillValue / (double) skillShotIncreaseLevel) * skillShotIncreasePercentage;
         if (bonus > skillShotBonusMax) skillShotBonus = percent.format(skillShotBonusMax);

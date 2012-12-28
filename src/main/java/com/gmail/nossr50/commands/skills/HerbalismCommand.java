@@ -42,18 +42,18 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("#.0");
+        DecimalFormat df = new DecimalFormat("0.0");
         greenTerraLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         //FARMERS DIET
         if(skillValue >= farmersDietMaxLevel) farmersDietRank = "5";
-        else farmersDietRank = String.valueOf((double) skillValue / (double) farmersDietRankChange);
+        else farmersDietRank = String.valueOf((int) ((double) skillValue / (double) farmersDietRankChange));
         //GREEN THUMB
         if(skillValue >= greenThumbStageMaxLevel) greenThumbStage = "4";
-        else greenThumbStage = String.valueOf((double) skillValue / (double) greenThumbStageChange);
+        else greenThumbStage = String.valueOf((int) ((double) skillValue / (double) greenThumbStageChange));
 
 
         if(skillValue >= greenThumbMaxLevel) greenThumbChance = String.valueOf(greenThumbMaxBonus);
-        else greenThumbChance = String.valueOf((greenThumbMaxBonus / greenThumbMaxLevel) * skillValue);
+        else greenThumbChance = df.format((greenThumbMaxBonus / greenThumbMaxLevel) * skillValue);
         //DOUBLE DROPS
         if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
         else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
