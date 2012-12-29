@@ -17,6 +17,7 @@ Version 1.3.13-dev
  = Fixed Async deprecation issues
  = Fixed some issues with mySQL databases (non-alphanumeric characters preventing MySQL)
  = Fixed skill commands displaying .x% instead of 0.x%
+ = Fixed Unbreaking enchantments being ignored when using Treefelling and when hit by Armor Impact
  ! GJ stopped being a lazy slacker and got stuff done
  - Removed dead code relating to null profiles
  - Removed unused imports

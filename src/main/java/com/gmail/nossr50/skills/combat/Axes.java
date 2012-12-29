@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.combat;
 
 import java.util.Random;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -16,7 +17,6 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -141,7 +141,13 @@ public class Axes {
             else {
                 for (ItemStack armor : targetPlayer.getInventory().getArmorContents()) {
                     if(Math.random() * 100 > 75) {
-                        maxDurability = (short) (ItemChecks.getMaxDurabilityArmor(armor) * impactMaxDamage);
+                    	if (armor.containsEnchantment(Enchantment.DURABILITY)) {
+                    		int level = armor.getEnchantmentLevel(Enchantment.DURABILITY);
+                    		if (random.nextInt(level + 1) > 0) {
+                    			return;
+                    		}
+                    	}
+                        maxDurability = (short) (armor.getType().getMaxDurability() * impactMaxDamage);
                     	if (durabilityDamage > maxDurability) durabilityDamage = (short) maxDurability;
                         armor.setDurability((short) (armor.getDurability() + durabilityDamage)); //Damage armor piece
                     }
