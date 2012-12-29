@@ -137,6 +137,13 @@ public class PartyCommand implements CommandExecutor {
                 }
             }
             else {
+                Party newParty = partyManagerInstance.getParty(args[0]);
+
+                // Check to see if the party exists, and if it does, can the player join it?
+                if (newParty != null && !partyManagerInstance.checkJoinability(player, playerProfile, newParty, null)) {
+                    return true; // End before any event is fired.
+                }
+
                 if (party != null) {
                     McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), args[0], EventReason.CHANGED_PARTIES);
                     plugin.getServer().getPluginManager().callEvent(event);
@@ -208,6 +215,13 @@ public class PartyCommand implements CommandExecutor {
                     }
                 }
                 else {
+                    Party newParty = partyManagerInstance.getParty(args[0]);
+
+                    // Check to see if the party exists, and if it does, can the player join it?
+                    if (newParty != null && !partyManagerInstance.checkJoinability(player, playerProfile, newParty, args[1])) {
+                        return true; // End before any event is fired.
+                    }
+
                     McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), args[0], EventReason.CHANGED_PARTIES);
                     plugin.getServer().getPluginManager().callEvent(event);
 
@@ -220,6 +234,13 @@ public class PartyCommand implements CommandExecutor {
                 }
             }
             else {
+                Party newParty = partyManagerInstance.getParty(args[0]);
+
+                // Check to see if the party exists, and if it does, can the player join it?
+                if (newParty != null && !partyManagerInstance.checkJoinability(player, playerProfile, newParty, args[1])) {
+                    return true; // End before any event is fired.
+                }
+
                 McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, args[0], EventReason.JOINED_PARTY);
                 plugin.getServer().getPluginManager().callEvent(event);
 

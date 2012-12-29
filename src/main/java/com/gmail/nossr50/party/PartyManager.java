@@ -241,7 +241,7 @@ public class PartyManager {
      * @param password The password provided by the player
      * @return true if the player can join the party
      */
-    private boolean checkJoinability(Player player, PlayerProfile playerProfile, Party party, String password) {
+    public boolean checkJoinability(Player player, PlayerProfile playerProfile, Party party, String password) {
         //Don't care about passwords if it isn't locked
         if (party.isLocked()) {
             String partyPassword = party.getPassword();
