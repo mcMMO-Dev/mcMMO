@@ -49,8 +49,7 @@ public class ModChecks {
      * @return the block if it exists, null otherwise
      */
     public static CustomBlock getCustomBlock(Block block) {
-        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
         if (!blocksInstance.customItems.contains(item)) {
             return null;
@@ -72,8 +71,7 @@ public class ModChecks {
      * @return true if the block is custom, false otherwise
      */
     public static boolean isCustomMiningBlock(Block block) {
-        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
         if (customBlocksEnabled && blocksInstance.customMiningBlocks.contains(item)) {
             for (CustomBlock b : blocksInstance.customBlocks) {
@@ -93,8 +91,7 @@ public class ModChecks {
      * @return true if the block represents leaves, false otherwise
      */
     public static boolean isCustomLeafBlock(Block block) {
-        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
         if (blocksInstance.customLeaves.contains(item)) {
             for (CustomBlock b : blocksInstance.customBlocks) {
@@ -114,8 +111,7 @@ public class ModChecks {
      * @return true if the block represents a log, false otherwise
      */
     public static boolean isCustomLogBlock(Block block) {
-        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
         if (blocksInstance.customLogs.contains(item)) {
             for (CustomBlock b : blocksInstance.customBlocks) {
@@ -135,8 +131,7 @@ public class ModChecks {
      * @return true if the block represents an ore, false otherwise
      */
     public static boolean isCustomOreBlock(Block block) {
-        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
         if (blocksInstance.customOres.contains(item)) {
             for (CustomBlock b : blocksInstance.customBlocks) {

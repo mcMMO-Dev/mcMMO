@@ -98,18 +98,14 @@ public class WoodCutting {
 
         //Prepare ItemStacks
         ItemStack item = null;
-        ItemStack oak = new ItemStack(Material.LOG, 1, (short) 0);
-        ItemStack spruce = new ItemStack(Material.LOG, 1, (short) 0);
-        ItemStack birch = new ItemStack(Material.LOG, 1, (short) 0);
-        ItemStack jungle = new ItemStack(Material.LOG, 1, (short) 0);
+        ItemStack oak = (new MaterialData(Material.LOG, TreeSpecies.GENERIC.getData())).toItemStack(1);
+        ItemStack spruce = (new MaterialData(Material.LOG, TreeSpecies.REDWOOD.getData())).toItemStack(1);
+        ItemStack birch = (new MaterialData(Material.LOG, TreeSpecies.BIRCH.getData())).toItemStack(1);
+        ItemStack jungle = (new MaterialData(Material.LOG, TreeSpecies.JUNGLE.getData())).toItemStack(1);
 
-        oak.setData(new MaterialData(Material.LOG, TreeSpecies.GENERIC.getData()));
-        spruce.setData(new MaterialData(Material.LOG, TreeSpecies.REDWOOD.getData()));
-        birch.setData(new MaterialData(Material.LOG, TreeSpecies.BIRCH.getData()));
-        jungle.setData(new MaterialData(Material.LOG, TreeSpecies.JUNGLE.getData()));
         for (Block x : toBeFelled) {
             if (Misc.blockBreakSimulate(x, player, true)) {
-                if (Config.getInstance().getBlockModsEnabled()) {
+                if (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(x)) {
                     if (ModChecks.isCustomLogBlock(x)) {
                         CustomBlock block = ModChecks.getCustomBlock(x);
                         item = block.getItemDrop();
@@ -209,8 +205,8 @@ public class WoodCutting {
                 else if (x.getType() == Material.LEAVES) {
                     final int SAPLING_DROP_CHANCE = 10;
 
-                    item = new ItemStack(Material.SAPLING, 1, (short) 0); 
-                    item.setData(new MaterialData(Material.SAPLING, (byte) (x.getData() & 3))); //Drop the right type of sapling
+                    //Drop the right type of sapling    
+                    item = (new MaterialData(Material.SAPLING, (byte) (x.getData() & 3))).toItemStack(1); 
 
                     Misc.randomDropItem(x.getLocation(), item, SAPLING_DROP_CHANCE);
 
@@ -380,8 +376,7 @@ public class WoodCutting {
                 }
             }
             else {
-                item = new ItemStack(mat, 1, (short) 0);
-                item.setData(new MaterialData(mat, type));
+                item = (new MaterialData(mat, type)).toItemStack(1);
 
                 location = block.getLocation();
 
