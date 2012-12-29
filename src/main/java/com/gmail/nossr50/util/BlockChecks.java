@@ -60,8 +60,7 @@ public class BlockChecks {
             return true;
 
         default:
-            ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-            item.setData(new MaterialData(block.getTypeId(), block.getData()));
+            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customItems.contains(item)) {
                 return true;
@@ -79,8 +78,7 @@ public class BlockChecks {
      * @return true if the block should allow ability activation, false otherwise
      */
     public static boolean abilityBlockCheck(Block block) {
-        ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-        item.setData(new MaterialData(block.getTypeId(), block.getData()));
+        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
         if (customBlocksEnabled && CustomBlocksConfig.getInstance().customAbilityBlocks.contains(item)) {
             return false;
@@ -205,8 +203,7 @@ public class BlockChecks {
             }
 
         default:
-            ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-            item.setData(new MaterialData(block.getTypeId(), block.getData()));
+            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
                 return true;
@@ -243,8 +240,7 @@ public class BlockChecks {
             return true;
 
         default:
-            ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-            item.setData(new MaterialData(block.getTypeId(), block.getData()));
+            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customMiningBlocks.contains(item)) {
                 return true;
@@ -273,8 +269,7 @@ public class BlockChecks {
             return true;
 
         default:
-            ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-            item.setData(new MaterialData(block.getTypeId(), block.getData()));
+            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
                 return true;
@@ -299,8 +294,7 @@ public class BlockChecks {
             return true;
 
         default:
-            ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-            item.setData(new MaterialData(block.getTypeId(), block.getData()));
+            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customWoodcuttingBlocks.contains(item)) {
                 return true;

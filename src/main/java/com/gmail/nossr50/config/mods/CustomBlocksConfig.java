@@ -79,8 +79,7 @@ public class CustomBlocksConfig extends ConfigLoader {
             }
 
             if (skillType.equals("Ability_Blocks")) {
-                blockItem = new ItemStack(id, 1, (short) 0);
-                blockItem.setData(new MaterialData(id, data));
+                blockItem = (new MaterialData(id, data)).toItemStack(1);
 
                 blockList.add(blockItem);
                 continue;
@@ -92,17 +91,14 @@ public class CustomBlocksConfig extends ConfigLoader {
             }
 
             if (dropItem) {
-                itemDrop = new ItemStack(dropID, 1, (short) 0);
-                itemDrop.setData(new MaterialData(dropID, dropData));
+                itemDrop = (new MaterialData(dropID, dropData)).toItemStack(1);
             }
             else {
-                itemDrop = new ItemStack(id, 1, (short) 0);
-                itemDrop.setData(new MaterialData(id, data));
+                itemDrop = (new MaterialData(id, data)).toItemStack(1);
             }
 
             block = new CustomBlock(minimumDropAmount, maxiumDropAmount, itemDrop, tier, xp, data, id);
-            blockItem = new ItemStack(id, 1, (short) 0);
-            blockItem.setData(new MaterialData(id, data));
+            blockItem = (new MaterialData(id, data)).toItemStack(1);
 
             if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
                 customOres.add(blockItem);

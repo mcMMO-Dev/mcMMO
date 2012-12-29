@@ -97,8 +97,7 @@ public class Mining {
 
         default:
             if (ModChecks.isCustomMiningBlock(block)) {
-                ItemStack dropItem = new ItemStack(block.getTypeId(), 1, (short) 0);
-                dropItem.setData(new MaterialData(block.getTypeId(), block.getData()));
+                ItemStack dropItem = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
                 Misc.dropItem(location, dropItem);
             }
@@ -121,8 +120,7 @@ public class Mining {
         switch (type) {
         case COAL_ORE:
             if (configInstance.getCoalDoubleDropsEnabled()) {
-                item = new ItemStack(Material.COAL, 1, (short) 0);
-                item.setData(new MaterialData(Material.COAL, CoalType.COAL.getData()));
+                item = (new MaterialData(Material.COAL, CoalType.COAL.getData())).toItemStack(1);
 
                 Misc.dropItem(location, item);
             }
@@ -172,8 +170,7 @@ public class Mining {
 
         case LAPIS_ORE:
             if (configInstance.getLapisDoubleDropsEnabled()) {
-                item = new ItemStack(Material.INK_SACK, 1, (short) 0);
-                item.setData(new MaterialData(Material.INK_SACK, (byte) 0x4));
+                item = (new MaterialData(Material.INK_SACK, (byte) 0x4)).toItemStack(1);
 
                 Misc.dropItems(location, item, 4);
                 Misc.randomDropItems(location, item, 50, 4);
