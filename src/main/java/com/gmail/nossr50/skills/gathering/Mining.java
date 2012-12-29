@@ -219,7 +219,7 @@ public class Mining {
             break;
 
         default:
-            if (ModChecks.isCustomMiningBlock(block) && ModChecks.getCustomBlock(block) != null) {
+            if (ModChecks.isCustomMiningBlock(block)) {
                 CustomBlock customBlock = ModChecks.getCustomBlock(block);
                 int minimumDropAmount = customBlock.getMinimumDropAmount();
                 int maximumDropAmount = customBlock.getMaximumDropAmount();
@@ -308,7 +308,7 @@ public class Mining {
             break;
 
         default:
-            if (ModChecks.isCustomMiningBlock(block) && ModChecks.getCustomBlock(block) != null) {
+            if (ModChecks.isCustomMiningBlock(block)) {
                 xp += ModChecks.getCustomBlock(block).getXpGain();
             }
             break;
@@ -365,7 +365,7 @@ public class Mining {
         int durabilityLoss = Config.getInstance().getAbilityToolDamage();
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 
-        if (ModChecks.isCustomMiningBlock(block) && ModChecks.getCustomBlock(block) != null) {
+        if (ModChecks.isCustomMiningBlock(block)) {
             if (ModChecks.getCustomBlock(block).getTier() < tier) {
                 return;
             }
