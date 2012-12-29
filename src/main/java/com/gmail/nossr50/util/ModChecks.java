@@ -76,11 +76,14 @@ public class ModChecks {
         item.setData(new MaterialData(block.getTypeId(), block.getData()));
 
         if (customBlocksEnabled && blocksInstance.customMiningBlocks.contains(item)) {
-            return true;
+            for (CustomBlock b : blocksInstance.customBlocks) {
+                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
+                    return true;
+                }
+            }
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -94,11 +97,14 @@ public class ModChecks {
         item.setData(new MaterialData(block.getTypeId(), block.getData()));
 
         if (blocksInstance.customLeaves.contains(item)) {
-            return true;
+            for (CustomBlock b : blocksInstance.customBlocks) {
+                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
+                    return true;
+                }
+            }
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -112,11 +118,14 @@ public class ModChecks {
         item.setData(new MaterialData(block.getTypeId(), block.getData()));
 
         if (blocksInstance.customLogs.contains(item)) {
-            return true;
+            for (CustomBlock b : blocksInstance.customBlocks) {
+                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
+                    return true;
+                }
+            }
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -130,11 +139,14 @@ public class ModChecks {
         item.setData(new MaterialData(block.getTypeId(), block.getData()));
 
         if (blocksInstance.customOres.contains(item)) {
-            return true;
+            for (CustomBlock b : blocksInstance.customBlocks) {
+                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
+                    return true;
+                }
+            }
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
