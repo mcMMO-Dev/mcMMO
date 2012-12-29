@@ -241,8 +241,7 @@ public class Herbalism {
             break;
 
         default:
-            ItemStack item = new ItemStack(block.getTypeId(), 1, (short) 0);
-            item.setData(new MaterialData(block.getTypeId(), block.getData()));
+            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
             if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
                 customPlant = true;

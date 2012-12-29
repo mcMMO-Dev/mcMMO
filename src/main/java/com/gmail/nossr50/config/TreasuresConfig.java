@@ -126,8 +126,7 @@ public class TreasuresConfig extends ConfigLoader{
              * Drops From & Max Level
              */
 
-            ItemStack item = new ItemStack(id, amount, (short) 0);
-            item.setData(new MaterialData(id, (byte) data));
+            ItemStack item = (new MaterialData(id, (byte) data)).toItemStack(amount);
 
             if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Fishing", false)) {
                 if (config.getConfigurationSection("Treasures." + treasureName + ".Drops_From").getKeys(false).size() != 1) {
