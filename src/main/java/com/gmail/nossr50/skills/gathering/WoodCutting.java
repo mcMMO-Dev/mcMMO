@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -65,9 +66,13 @@ public class WoodCutting {
             return;
         }
 
-        int durabilityLoss = durabilityLossCalulate(toBeFelled);
         int xp = 0;
         ItemStack inHand = player.getItemInHand();
+        int level = 0;
+        if (inHand.containsEnchantment(Enchantment.DURABILITY)) {
+            level = inHand.getEnchantmentLevel(Enchantment.DURABILITY);
+        }
+        int durabilityLoss = durabilityLossCalulate(toBeFelled, level);
 
         /* This is to prevent using wood axes everytime you tree fell */
         if (ModChecks.isCustomTool(inHand)) {
@@ -79,7 +84,6 @@ public class WoodCutting {
                 if (health >= 2) {
                     Combat.dealDamage(player, random.nextInt(health - 1));
                 }
-                return;
             }
         }
         else if ((inHand.getDurability() + durabilityLoss >= inHand.getType().getMaxDurability()) || inHand.getType().equals(Material.AIR)) {
@@ -90,7 +94,6 @@ public class WoodCutting {
             if (health >= 2) {
                 Combat.dealDamage(player, random.nextInt(health - 1));
             }
-            return;
         }
 
         /* Damage the tool */
@@ -493,11 +496,11 @@ public class WoodCutting {
         }
     }
 
-    private static int durabilityLossCalulate(ArrayList<Block> toBeFelled) {
+    private static int durabilityLossCalulate(ArrayList<Block> toBeFelled, int level) {
         int durabilityLoss = 0;
         for (Block x : toBeFelled) {
-            if (x.getType().equals(Material.LOG) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(x))) {
-                durabilityLoss++;
+        	if (random.nextInt(level + 1) > 0) {}//Don't add durabilityLoss, because Unbreaking enchantment does it's work.
+        	else if (x.getType().equals(Material.LOG) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(x))) {
                 durabilityLoss = durabilityLoss + Config.getInstance().getAbilityToolDamage();
             }
         }

@@ -148,7 +148,7 @@ public class mcMMO extends JavaPlugin {
 
         //Check if Repair Anvil and Salvage Anvil have different itemID's
         if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()){
-            System.out.println("[WARNING!] Can't use the same itemID for Repair/Salvage Anvils!" );
+            getLogger().warning("Can't use the same itemID for Repair/Salvage Anvils!");
         }
 
         if (!configInstance.getUseMySQL()) {
@@ -182,7 +182,7 @@ public class mcMMO extends JavaPlugin {
             Users.addUser(player); //In case of reload add all users back into PlayerProfile
         }
 
-        System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+        getLogger().info("Version " + pdfFile.getVersion() + " is enabled!");
 
         BukkitScheduler scheduler = getServer().getScheduler();
 
@@ -301,7 +301,7 @@ public class mcMMO extends JavaPlugin {
             getLogger().severe(e.toString());
         }
 
-        System.out.println("mcMMO was disabled."); //How informative!
+        getLogger().info("Was disabled."); //How informative!
     }
 
     /**

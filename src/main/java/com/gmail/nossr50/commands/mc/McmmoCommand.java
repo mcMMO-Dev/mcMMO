@@ -28,6 +28,7 @@ public class McmmoCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.DARK_AQUA + "Donation Info:");
             sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "mcmmodev@gmail.com" + ChatColor.GOLD + " Paypal");
         }
+        sender.sendMessage(ChatColor.YELLOW + "Running version: " + ChatColor.DARK_AQUA + mcMMO.p.getDescription().getVersion());
 
         return true;
     }
