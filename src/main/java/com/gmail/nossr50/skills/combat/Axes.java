@@ -133,7 +133,7 @@ public class Axes {
             int impactIncreaseLevel = advancedConfig.getArmorImpactIncreaseLevel();
             float impactMaxDamage = (float) advancedConfig.getArmorImpactMaxDurabilityDamage() / 100F;
             short maxDurability;
-            durabilityDamage += (int) (((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) impactIncreaseLevel));
+            durabilityDamage += (int) ((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) impactIncreaseLevel);
 
             if (!hasArmor(targetPlayer)) {
                 applyGreaterImpact(attacker, target, event);
@@ -141,7 +141,7 @@ public class Axes {
             else {
                 for (ItemStack armor : targetPlayer.getInventory().getArmorContents()) {
                     if(Math.random() * 100 > 75) {
-                        int lowerdamage = 0;
+                    	int lowerdamage = 0;
                     	for (int i = 0; i <= durabilityDamage; i ++) {
                     		if (armor.containsEnchantment(Enchantment.DURABILITY)) {
                         		int level = armor.getEnchantmentLevel(Enchantment.DURABILITY);

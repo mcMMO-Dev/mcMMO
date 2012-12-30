@@ -10,6 +10,7 @@ Key:
 Version 1.3.13-dev
  + Added Craftbukkit 1.4.6 compatibility
  + Added a configurable durability cap for ArmorImpact to advanced.yml
+ + Added version number to /mcmmo
  = Fixed issue with missing default cases from several switch/case statements
  = Fixed issue with Mining using actual skill level rather than max skill level
  = Fixed some issues with static access
