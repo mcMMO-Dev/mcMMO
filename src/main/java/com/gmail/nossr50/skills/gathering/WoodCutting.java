@@ -504,9 +504,8 @@ public class WoodCutting {
     private static int durabilityLossCalulate(ArrayList<Block> toBeFelled, int level) {
         int durabilityLoss = 0;
         for (Block x : toBeFelled) {
-        	if (random.nextInt(level + 1) > 0) {}//Don't add durabilityLoss, because Unbreaking enchantment does it work.
+        	if (random.nextInt(level + 1) > 0) {}//Don't add durabilityLoss, because Unbreaking enchantment does it's work.
         	else if (x.getType().equals(Material.LOG) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(x))) {
-        		durabilityLoss++;
                 durabilityLoss = durabilityLoss + Config.getInstance().getAbilityToolDamage();
             }
         }

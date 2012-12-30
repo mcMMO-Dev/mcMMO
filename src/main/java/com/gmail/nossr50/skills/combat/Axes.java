@@ -40,7 +40,7 @@ public class Axes {
         final int MAX_LEVEL = advancedConfig.getBonusDamageAxesMaxBonusLevel();
         final int INCREASE_LEVEL = MAX_LEVEL / MAX_BONUS;
 
-        /* Add 1 DMG for every 50 skill levels */
+        /* Add 1 DMG for every 50 skill levels (default value) */
         int bonus = (int) ((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) INCREASE_LEVEL);
 
         if (bonus > MAX_BONUS) {
@@ -129,11 +129,12 @@ public class Axes {
             Player targetPlayer = (Player) target;
             short durabilityDamage = 1; //Start with 1 durability damage
 
-            /* Every 30 Skill Levels you gain 1 durability damage */
+            /* Every 50 Skill Levels you gain 1 durability damage (default values) */
             int impactIncreaseLevel = advancedConfig.getArmorImpactIncreaseLevel();
             float impactMaxDamage = (float) advancedConfig.getArmorImpactMaxDurabilityDamage() / 100F;
             short maxDurability;
-            durabilityDamage += (int) ((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) impactIncreaseLevel);
+            int lowerdamage = 0;
+            durabilityDamage += (int) (((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) impactIncreaseLevel));
 
             if (!hasArmor(targetPlayer)) {
                 applyGreaterImpact(attacker, target, event);
@@ -141,15 +142,18 @@ public class Axes {
             else {
                 for (ItemStack armor : targetPlayer.getInventory().getArmorContents()) {
                     if(Math.random() * 100 > 75) {
-                    	if (armor.containsEnchantment(Enchantment.DURABILITY)) {
-                    		int level = armor.getEnchantmentLevel(Enchantment.DURABILITY);
-                    		if (random.nextInt(level + 1) > 0) {
-                    			return;
-                    		}
+                    	for (int i = 0; i <= durabilityDamage; i ++) {
+                    		if (armor.containsEnchantment(Enchantment.DURABILITY)) {
+                        		int level = armor.getEnchantmentLevel(Enchantment.DURABILITY);
+                        		if (random.nextInt(level + 1) > 0) {
+                        			lowerdamage++;
+                        		}
+                        	}	
                     	}
+                    	int newDurabilityDamage = durabilityDamage - lowerdamage;
                         maxDurability = (short) (armor.getType().getMaxDurability() * impactMaxDamage);
-                    	if (durabilityDamage > maxDurability) durabilityDamage = (short) maxDurability;
-                        armor.setDurability((short) (armor.getDurability() + durabilityDamage)); //Damage armor piece
+                    	if (newDurabilityDamage > maxDurability) newDurabilityDamage = (short) maxDurability;
+                        armor.setDurability((short) (armor.getDurability() + newDurabilityDamage)); //Damage armor piece
                     }
                 }
                 targetPlayer.updateInventory();
