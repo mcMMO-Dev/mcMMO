@@ -25,6 +25,7 @@
 
 # Mac filesystem dust
 /.DS_Store
+*.DS_Store
 
 # intellij
 *.iml
@@ -40,6 +41,3 @@
 
 # Atlassian Stuff
 /atlassian-ide-plugin.xml
-src/.DS_Store
-
-src/main/.DS_Store
