@@ -323,6 +323,10 @@ Experience:
             Slime: 2.0
             Ghast: 3.0
             Iron_Golem: 2.0
+            Giant: 4.0
+            Wither: 7.0
+            Wither_Skeleton: 4.0
+            Witch: 4.0
 #
 #  Settings for commands
 ###
