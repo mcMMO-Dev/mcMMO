@@ -24,6 +24,7 @@ Version 1.3.13-dev
  = Fixed a bug where only 1 diamond was needed to fully repair a broken item: Repaired the Repair skill!
  = Fixed a bug where a infinite loop of errors caused by mySQL database could cause the server to crash
  = Fixed a bug where PartyChangeEvent was fired even when a player isn't able to change parties
+ = Fixed a bug which caused advanced.yml not to work for Swords
  = Fixed a NPE with custom blocks
  ! GJ stopped being a lazy slacker and got stuff done
  ! Changed code that uses SpoutPlugin to make it compatible with the latest version
