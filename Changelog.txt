@@ -10,34 +10,66 @@ Key:
 Version 1.3.13-dev
  + Added Craftbukkit 1.4.6 compatibility
  + Added a configurable durability cap for ArmorImpact to advanced.yml
- + Added version number to /mcmmo
+ + Added the version number to /mcmmo
+ + Added wooden button to the list of items that shouldn't trigger abilities
  = Fixed issue with missing default cases from several switch/case statements
  = Fixed issue with Mining using actual skill level rather than max skill level
  = Fixed some issues with static access
  = Fixed ItemStack deprecation issues
  = Fixed Async deprecation issues
- = Fixed some issues with mySQL databases (non-alphanumeric characters preventing MySQL)
- = Fixed skill commands displaying .x% instead of 0.x%
- = Fixed Unbreaking enchantments being ignored when using Treefelling and when hit by Armor Impact
+ = Fixed a bug with MySQL databases (non-alphanumeric characters preventing MySQL access)
+ = Fixed a bug where the /skillreset command was broken
+ = Fixed a bug where skill commands displaying .x% instead of 0.x%
+ = Fixed a bug Unbreaking enchantments being ignored when using Treefelling and when hit by Armor Impact
+ = Fixed a bug where only 1 diamond was needed to fully repair a broken item: Repaired the Repair skill!
+ = Fixed a bug where a infinite loop of errors caused by mySQL database could cause the server to crash
+ = Fixed a bug where PartyChangeEvent was fired even when a player isn't able to change parties
+ = Fixed a NPE with custom blocks
  ! GJ stopped being a lazy slacker and got stuff done
+ ! Changed code that uses SpoutPlugin to make it compatible with the latest version
+ ! Changed Reimplemented skill level and power level caps.
  - Removed dead code relating to null profiles
  - Removed unused imports
 
 Version 1.3.12
  + Added Craftbukkit 1.4.5 compatibility
+ + Added the new 1.3.2 items, xp and double drops for Cocao beans & Emeralds, EnderChest to the list of blocks that shouldn't trigger abilities
  + Added new items from Minecraft 1.4 to Herbalism (potatoes & carrots)
+ + Added new configuration file for advanced users.
+ + Added new permission nodes to greenthumb for the 1.4 items
  + Added new mobs from Minecraft 1.4 checks for every ability
  + Added new active ability for Repair: Salvage
  + Added options to 'config.yml' configure shake chance
  + Added the option to negate experience earned for Herbalism while in a minecart to prevent afk leveling
  + Added Green thumb now converts cobble walls to mossy cobble walls
  + Added beacons and anvils to list of blocks that don't trigger abilities
+ + Added a configuration option to disable experience gains when in a minecraft for Acrobatics and Herbalism, to prevent AFK leveling
+ + Added a new passive ability for Fishing, Fishermans diet. Increases hunger restored from fish
+ + Added a feature to display all active perks on login
  ! Changed Fishing, Shake drops changed from guaranteed to based upon fishing level and perks
  ! Changed Woodcutting, the amount of experience earned when using Tree Feller on jungle trees has increased
+ ! Changed Herbalism double drop rates for melons and netherwart
  ! Changed filesystem usage, it's reduced a lot. Should help reduce lag on larger servers
- = Fixed Woodcutting bug, excessive null chunk before earning Woodcutting experience
- = Fixed a null pointer error related to skill cooldowns
- = Fixed more NPE ?? Needs better explanation
+ ! Changed database connection handling. Support for aggressive connection timeouts, with exponential backoff for multiple failures
+ ! Changed Cobblestone walls are now mossy-able with Greenthumb
+ ! Changed the skull drop rates of the shake ability to 3%
+ = Fixed a NPE when Citizens perform certain tasks
+ = Fixed a NPE with Woodcutting, excessive null chunk before earning Woodcutting experience
+ = Fixed a NPE related to skill cooldowns
+ = Fixed a NPE when a players profile was null
+ = Fixed a NPE involving certain explosions
+ = Fixed a dupe bug when for players who were using a 'nuker' client
+ = Fixed a dupe bug where pistons were used to dupe ores
+ = Fixed a dupe bug with Salvage when players were in Creative mode
+ = Fixed a bug where the player was displayed an incorrect cooldown time
+ = Fixed a bug where players could earn experience when they were dealing 0 damage
+ = Fixed a bug where players could get double drops from mossified Cobblestone
+ = Fixed a bug where Herablism magically converted potatoes to carrots
+ = Fixed a bug where you couldn't modify the stats of offline players
+ = Fixed a bug where treefeller didn't work properly on tree's with side-way logs
+ = Fixed a bug where the Arcane forging downgrade chance should've been 0, but actually wasn't
+ = Fixed a bug where Fishing would sometimes give items with empty enchantments
+ = Fixed a bug where the lucky perk for Fishing was actually an unlucky perk
  - Removed nothing
 
 Version 1.3.11
