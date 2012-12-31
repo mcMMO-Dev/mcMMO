@@ -97,7 +97,8 @@ public class WoodCutting {
         }
 
         /* Damage the tool */
-        inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
+        if (inHand.getDurability() + durabilityLoss > inHand.getType().getMaxDurability()) inHand.setDurability((short) (inHand.getType().getMaxDurability()));
+        else inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
 
         //Prepare ItemStacks
         ItemStack item = null;
