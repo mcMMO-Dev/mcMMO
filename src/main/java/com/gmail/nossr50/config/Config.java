@@ -438,10 +438,10 @@ public class Config extends ConfigLoader {
     public double getMagmaCubeXP() { return config.getDouble("Experience.Combat.Multiplier.Magma_Cube", 2.0); }
     public double getEnderDragonXP() { return config.getDouble("Experience.Combat.Multiplier.Ender_Dragon", 8.0); }
     public double getIronGolemXP() { return config.getDouble("Experience.Combat.Multiplier.Iron_Golem", 2.0); }
-    public double getGiantXP() { return config.getDouble("Experience.Combat.Multiplier.Giant", 2.0); }
-    public double getWitherXP() { return config.getDouble("Experience.Combat.Multiplier.Wither", 2.0); }
-    public double getWitherSkeletonXP() { return config.getDouble("Experience.Combat.Multiplier.Wither_Skeleton", 2.0); }
-    public double getWitchXP() { return config.getDouble("Experience.Combat.Multiplier.Witch", 2.0); }
+    public double getGiantXP() { return config.getDouble("Experience.Combat.Multiplier.Giant", 4.0); }
+    public double getWitherXP() { return config.getDouble("Experience.Combat.Multiplier.Wither", 7.0); }
+    public double getWitherSkeletonXP() { return config.getDouble("Experience.Combat.Multiplier.Wither_Skeleton", 4.0); }
+    public double getWitchXP() { return config.getDouble("Experience.Combat.Multiplier.Witch", 4.0); }
 
     /* XP Formula Multiplier */
     public int getFormulaMultiplierCurve() { return config.getInt("Experience.Formula.Curve_Modifier", 20); }

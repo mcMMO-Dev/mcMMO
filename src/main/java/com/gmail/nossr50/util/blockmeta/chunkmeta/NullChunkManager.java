@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 
 public class NullChunkManager implements ChunkManager {
 
@@ -86,4 +87,11 @@ public class NullChunkManager implements ChunkManager {
 
     @Override
     public void cleanUp() {}
+
+    public boolean isSpawnedMob(Entity entity) {return false;}
+    public boolean isSpawnedPet(Entity entity) {return false;}
+    public void addSpawnedMob(Entity entity) {}
+    public void addSpawnedPet(Entity entity) {}
+    public void removeSpawnedMob(Entity entity) {}
+    public void removeSpawnedPet(Entity entity) {}
 }

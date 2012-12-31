@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldSaveEvent;
@@ -45,5 +46,11 @@ public class WorldListener implements Listener {
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
         mcMMO.placeStore.chunkUnloaded(event.getChunk().getX(), event.getChunk().getZ(), event.getWorld());
+    }
+
+    @EventHandler
+    public void onChunkLoad(ChunkLoadEvent event) {
+        if(event.getChunk().getEntities().length > 0)
+            mcMMO.p.placeStore.loadChunk(event.getChunk().getX(), event.getChunk().getZ(), event.getWorld());
     }
 }
