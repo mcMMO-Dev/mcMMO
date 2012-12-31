@@ -1,6 +1,8 @@
 package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.UUID;
 
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 
@@ -71,4 +73,15 @@ public interface ChunkStore extends Serializable {
      * @param otherStore Another ChunkletStore that this one should copy all data from
      */
     public void copyFrom(ChunkletStore otherStore);
+
+    public boolean isSpawnedMob(UUID id);
+    public boolean isSpawnedPet(UUID id);
+    public void addSpawnedMob(UUID id);
+    public void addSpawnedPet(UUID id);
+    public void removeSpawnedMob(UUID id);
+    public void removeSpawnedPet(UUID id);
+    public void clearSpawnedMobs();
+    public void clearSpawnedPets();
+    public List<UUID> getSpawnedMobs();
+    public List<UUID> getSpawnedPets();
 }

@@ -10,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -398,14 +399,18 @@ public class Combat {
                 baseXP = 20 * configInstance.getPlayerVersusPlayerXP();
             }
         }
-        else if (!target.hasMetadata("mcmmoFromMobSpawner")) {
-            if (target instanceof Animals && !target.hasMetadata("mcmmoSummoned")) {
+        else if (!mcMMO.p.placeStore.isSpawnedMob(((Entity) target))) {
+            if (target instanceof Animals && !mcMMO.p.placeStore.isSpawnedPet((Entity) target)) {
                 baseXP = configInstance.getAnimalsXP();
             }
             else {
                 EntityType type = target.getType();
 
                 switch (type) {
+                case BAT:
+                    baseXP = configInstance.getAnimalsXP();
+                    break;
+
                 case BLAZE:
                     baseXP = configInstance.getBlazeXP();
                     break;
@@ -430,6 +435,10 @@ public class Combat {
                     baseXP = configInstance.getGhastXP();
                     break;
 
+                case GIANT:
+                    baseXP = configInstance.getGiantXP();
+                    break;
+
                 case MAGMA_CUBE:
                     baseXP = configInstance.getMagmaCubeXP();
                     break;
@@ -450,15 +459,28 @@ public class Combat {
                     break;
 
                 case SKELETON:
-                    baseXP = configInstance.getSkeletonXP();
-                    break;
-
+                    switch(((Skeleton) target).getSkeletonType()) {
+                    case WITHER:
+                        baseXP = configInstance.getWitherSkeletonXP();
+                        break;
+                    default:
+                        baseXP = configInstance.getSkeletonXP();
+                        break;
+                    }
                 case SLIME:
                     baseXP = configInstance.getSlimeXP();
                     break;
 
                 case SPIDER:
                     baseXP = configInstance.getSpiderXP();
+                    break;
+
+                case WITCH:
+                    baseXP = configInstance.getWitchXP();
+                    break;
+
+                case WITHER:
+                    baseXP = configInstance.getWitherXP();
                     break;
 
                 case ZOMBIE:

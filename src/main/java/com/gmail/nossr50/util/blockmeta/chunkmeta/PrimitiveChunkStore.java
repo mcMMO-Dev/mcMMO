@@ -3,6 +3,8 @@ package com.gmail.nossr50.util.blockmeta.chunkmeta;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.World;
@@ -15,11 +17,13 @@ public class PrimitiveChunkStore implements ChunkStore {
     transient private boolean dirty = false;
     /** X, Z, Y */
     public boolean[][][] store;
-    private static final int CURRENT_VERSION = 5;
+    private static final int CURRENT_VERSION = 6;
     private static final int MAGIC_NUMBER = 0xEA5EDEBB;
     private int cx;
     private int cz;
     private UUID worldUid;
+    private List spawnedMobs = new ArrayList<UUID>();
+    private List spawnedPets = new ArrayList<UUID>();
     transient private int worldHeight;
     transient private int xBitShifts;
     transient private int zBitShifts;
@@ -100,6 +104,64 @@ public class PrimitiveChunkStore implements ChunkStore {
         dirty = true;
     }
 
+    public boolean isSpawnedMob(UUID id) {
+        return spawnedMobs.contains(id);
+    }
+
+    public boolean isSpawnedPet(UUID id) {
+        return spawnedPets.contains(id);
+    }
+
+    public void addSpawnedMob(UUID id) {
+        if(!isSpawnedMob(id)) {
+            spawnedMobs.add(id);
+            dirty = true;
+        }
+    }
+
+    public void addSpawnedPet(UUID id) {
+        if(!isSpawnedPet(id)) {
+            spawnedPets.add(id);
+            dirty = true;
+        }
+    }
+
+    public void removeSpawnedMob(UUID id) {
+        if(isSpawnedMob(id)) {
+            spawnedMobs.remove(id);
+            dirty = true;
+        }
+    }
+
+    public void removeSpawnedPet(UUID id) {
+        if(isSpawnedPet(id)) {
+            spawnedPets.remove(id);
+            dirty = true;
+        }
+    }
+
+    public void clearSpawnedMobs() {
+        if(!spawnedMobs.isEmpty()) {
+            spawnedMobs.clear();
+            dirty = true;
+        }
+    }
+
+    public void clearSpawnedPets() {
+        if(!spawnedPets.isEmpty()) {
+            spawnedPets.clear();
+            dirty = true;
+        }
+    }
+
+    public List<UUID> getSpawnedMobs() {
+        return spawnedMobs;
+    }
+
+    public List<UUID> getSpawnedPets() {
+        return spawnedPets;
+    }
+
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.writeInt(MAGIC_NUMBER);
         out.writeInt(CURRENT_VERSION);
@@ -109,6 +171,9 @@ public class PrimitiveChunkStore implements ChunkStore {
         out.writeInt(cx);
         out.writeInt(cz);
         out.writeObject(store);
+
+        out.writeObject(spawnedMobs);
+        out.writeObject(spawnedPets);
 
         dirty = false;
     }
@@ -139,8 +204,18 @@ public class PrimitiveChunkStore implements ChunkStore {
         store = (boolean[][][]) in.readObject();
 
         if (fileVersionNumber < CURRENT_VERSION) {
-            fixArray();
+            if(fileVersionNumber < 5)
+                fixArray();
+            if(fileVersionNumber < 6) {
+                spawnedMobs = new ArrayList<UUID>();
+                spawnedPets = new ArrayList<UUID>();
+            }
             dirty = true;
+        }
+
+        if(fileVersionNumber >= 6) {
+            spawnedMobs = (ArrayList) in.readObject();
+            spawnedPets = (ArrayList) in.readObject();
         }
     }
 
