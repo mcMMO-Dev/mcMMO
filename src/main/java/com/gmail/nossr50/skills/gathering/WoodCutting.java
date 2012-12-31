@@ -84,6 +84,8 @@ public class WoodCutting {
                 if (health >= 2) {
                     Combat.dealDamage(player, random.nextInt(health - 1));
                 }
+                inHand.setDurability((short) (inHand.getType().getMaxDurability()));
+                return;
             }
         }
         else if ((inHand.getDurability() + durabilityLoss >= inHand.getType().getMaxDurability()) || inHand.getType().equals(Material.AIR)) {
@@ -94,11 +96,12 @@ public class WoodCutting {
             if (health >= 2) {
                 Combat.dealDamage(player, random.nextInt(health - 1));
             }
+            inHand.setDurability((short) (inHand.getType().getMaxDurability()));
+            return;
         }
 
         /* Damage the tool */
-        if (inHand.getDurability() + durabilityLoss > inHand.getType().getMaxDurability()) inHand.setDurability((short) (inHand.getType().getMaxDurability()));
-        else inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
+        inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
 
         //Prepare ItemStacks
         ItemStack item = null;
