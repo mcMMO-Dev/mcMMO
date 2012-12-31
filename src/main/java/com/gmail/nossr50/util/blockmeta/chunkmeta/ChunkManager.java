@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 
 public interface ChunkManager {
     public void closeAll();
@@ -165,4 +166,11 @@ public interface ChunkManager {
      * Delete any ChunkletStores that are empty
      */
     public void cleanUp();
+
+    public boolean isSpawnedMob(Entity entity);
+    public boolean isSpawnedPet(Entity entity);
+    public void addSpawnedMob(Entity entity);
+    public void addSpawnedPet(Entity entity);
+    public void removeSpawnedMob(Entity entity);
+    public void removeSpawnedPet(Entity entity);
 }

@@ -184,6 +184,8 @@ public class EntityListener implements Listener {
         entity.setFireTicks(0);
         BleedTimer.remove(entity);
         Archery.arrowRetrievalCheck(entity);
+        mcMMO.p.placeStore.removeSpawnedMob(((Entity) entity));
+        mcMMO.p.placeStore.removeSpawnedPet(((Entity) entity));
     }
 
     /**
@@ -196,7 +198,7 @@ public class EntityListener implements Listener {
         SpawnReason reason = event.getSpawnReason();
 
         if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !Config.getInstance().getExperienceGainsMobspawnersEnabled()) {
-            event.getEntity().setMetadata("mcmmoFromMobSpawner", new FixedMetadataValue(plugin, true));
+            mcMMO.p.placeStore.addSpawnedMob(((Entity) event.getEntity()));
         }
     }
 
@@ -397,7 +399,7 @@ public class EntityListener implements Listener {
 
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
-        if (Permissions.getInstance().taming(player) && !event.getEntity().hasMetadata("mcmmoSummoned")) {
+        if (Permissions.getInstance().taming(player) && !mcMMO.p.placeStore.isSpawnedPet((Entity) event.getEntity())) {
             PlayerProfile profile = Users.getProfile(player);
             EntityType type = event.getEntityType();
             int xp = 0;
