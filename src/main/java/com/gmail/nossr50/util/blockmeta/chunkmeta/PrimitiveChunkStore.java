@@ -22,8 +22,8 @@ public class PrimitiveChunkStore implements ChunkStore {
     private int cx;
     private int cz;
     private UUID worldUid;
-    private List spawnedMobs = new ArrayList<UUID>();
-    private List spawnedPets = new ArrayList<UUID>();
+    private List<UUID> spawnedMobs = new ArrayList<UUID>();
+    private List<UUID> spawnedPets = new ArrayList<UUID>();
     transient private int worldHeight;
     transient private int xBitShifts;
     transient private int zBitShifts;
@@ -214,6 +214,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         }
 
         if(fileVersionNumber >= 6) {
+            //What do we want to do about this? These casts are unchecked.
             spawnedMobs = (ArrayList<UUID>) in.readObject();
             spawnedPets = (ArrayList<UUID>) in.readObject();
         }
