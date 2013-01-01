@@ -19,7 +19,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.ChunkletUnloader;
 import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionZDirectory;
 
