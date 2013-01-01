@@ -253,7 +253,7 @@ public class Misc {
             return;
         }
 
-        location.getWorld().dropItemNaturally(location, itemStack);
+        location.getWorld().dropItemNaturally(location, itemStack).setItemStack(itemStack);
     }
 
     /**
