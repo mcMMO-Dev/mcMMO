@@ -109,7 +109,7 @@ public class Repair {
                 is.removeEnchantment(x);
             }
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Lost"));
-            clearEnchantTag(is, player);
+            clearEnchantTag(is);
             return;
         }
 
@@ -143,7 +143,7 @@ public class Repair {
 
         if (newEnchants.isEmpty()) {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Fail"));
-            clearEnchantTag(is, player);
+            clearEnchantTag(is);
         }
         else if (downgraded || newEnchants.size() < enchants.size()) {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Downgrade"));
@@ -153,7 +153,7 @@ public class Repair {
         }
     }
 
-    private static void clearEnchantTag(ItemStack is, Player player) {
+    private static void clearEnchantTag(ItemStack is) {
         Object o;
         Class c;
         Field f;

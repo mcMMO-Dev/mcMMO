@@ -6,12 +6,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.datatypes.Tree;
 
 public class Leaderboard {
     private static mcMMO plugin = mcMMO.p;
@@ -22,22 +24,22 @@ public class Leaderboard {
      * Create the leaderboards.
      */
     public static void makeLeaderboards() {
-        //Make Trees
-        Tree Mining = new Tree();
-        Tree WoodCutting = new Tree();
-        Tree Herbalism = new Tree();
-        Tree Excavation = new Tree();
-        Tree Acrobatics = new Tree();
-        Tree Repair = new Tree();
-        Tree Swords = new Tree();
-        Tree Axes = new Tree();
-        Tree Archery = new Tree();
-        Tree Unarmed = new Tree();
-        Tree Taming = new Tree();
-        Tree Fishing = new Tree();
-        Tree PowerLevel = new Tree();
+        //Make Lists
+        List<PlayerStat> Mining = new ArrayList<PlayerStat>();
+        List<PlayerStat> WoodCutting = new ArrayList<PlayerStat>();
+        List<PlayerStat> Herbalism = new ArrayList<PlayerStat>();
+        List<PlayerStat> Excavation = new ArrayList<PlayerStat>();
+        List<PlayerStat> Acrobatics = new ArrayList<PlayerStat>();
+        List<PlayerStat> Repair = new ArrayList<PlayerStat>();
+        List<PlayerStat> Swords = new ArrayList<PlayerStat>();
+        List<PlayerStat> Axes = new ArrayList<PlayerStat>();
+        List<PlayerStat> Archery = new ArrayList<PlayerStat>();
+        List<PlayerStat> Unarmed = new ArrayList<PlayerStat>();
+        List<PlayerStat> Taming = new ArrayList<PlayerStat>();
+        List<PlayerStat> Fishing = new ArrayList<PlayerStat>();
+        List<PlayerStat> PowerLevel = new ArrayList<PlayerStat>();
 
-        //Add Data To Trees
+        //Add Data To Lists
         try {
             FileReader file = new FileReader(location);
             BufferedReader in = new BufferedReader(file);
@@ -58,66 +60,66 @@ public class Leaderboard {
                 }
 
                 if (character.length > 1 && Misc.isInt(character[1])) {
-                    Mining.add(p, Integer.valueOf(character[1]));
+                    Mining.add(new PlayerStat(p, Integer.valueOf(character[1])));
                     powerLevel += Integer.valueOf(character[1]);
                 }
 
                 if (character.length > 5 && Misc.isInt(character[5])) {
-                    WoodCutting.add(p, Integer.valueOf(character[5]));
+                    WoodCutting.add(new PlayerStat(p, Integer.valueOf(character[5])));
                     powerLevel += Integer.valueOf(character[5]);
                 }
 
                 if (character.length > 7 && Misc.isInt(character[7])) {
-                    Repair.add(p, Integer.valueOf(character[7]));
+                    Repair.add(new PlayerStat(p, Integer.valueOf(character[7])));
                     powerLevel += Integer.valueOf(character[7]);
                 }
 
                 if (character.length > 8 && Misc.isInt(character[8])) {
-                    Unarmed.add(p, Integer.valueOf(character[8]));
+                    Unarmed.add(new PlayerStat(p, Integer.valueOf(character[8])));
                     powerLevel += Integer.valueOf(character[8]);
                 }
 
                 if (character.length > 9 && Misc.isInt(character[9])) {
-                    Herbalism.add(p, Integer.valueOf(character[9]));
+                    Herbalism.add(new PlayerStat(p, Integer.valueOf(character[9])));
                     powerLevel += Integer.valueOf(character[9]);
                 }
 
                 if (character.length > 10 && Misc.isInt(character[10])) {
-                    Excavation.add(p, Integer.valueOf(character[10]));
+                    Excavation.add(new PlayerStat(p, Integer.valueOf(character[10])));
                     powerLevel += Integer.valueOf(character[10]);
                 }
 
                 if (character.length > 11 && Misc.isInt(character[11])) {
-                    Archery.add(p, Integer.valueOf(character[11]));
+                    Archery.add(new PlayerStat(p, Integer.valueOf(character[11])));
                     powerLevel += Integer.valueOf(character[11]);
                 }
 
                 if (character.length > 12 && Misc.isInt(character[12])) {
-                    Swords.add(p, Integer.valueOf(character[12]));
+                    Swords.add(new PlayerStat(p, Integer.valueOf(character[12])));
                     powerLevel += Integer.valueOf(character[12]);
                 }
 
                 if (character.length > 13 && Misc.isInt(character[13])) {
-                    Axes.add(p, Integer.valueOf(character[13]));
+                    Axes.add(new PlayerStat(p, Integer.valueOf(character[13])));
                     powerLevel += Integer.valueOf(character[13]);
                 }
 
                 if (character.length > 14 && Misc.isInt(character[14])) {
-                    Acrobatics.add(p, Integer.valueOf(character[14]));
+                    Acrobatics.add(new PlayerStat(p, Integer.valueOf(character[14])));
                     powerLevel += Integer.valueOf(character[14]);
                 }
 
                 if (character.length > 24 && Misc.isInt(character[24])) {
-                    Taming.add(p, Integer.valueOf(character[24]));
+                    Taming.add(new PlayerStat(p, Integer.valueOf(character[24])));
                     powerLevel += Integer.valueOf(character[24]);
                 }
 
                 if (character.length > 34 && Misc.isInt(character[34])) {
-                    Fishing.add(p, Integer.valueOf(character[34]));
+                    Fishing.add(new PlayerStat(p, Integer.valueOf(character[34])));
                     powerLevel += Integer.valueOf(character[34]);
                 }
 
-                PowerLevel.add(p, powerLevel);
+                PowerLevel.add(new PlayerStat(p, powerLevel));
             }
             in.close();
         }
@@ -125,20 +127,37 @@ public class Leaderboard {
             plugin.getLogger().severe(("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString()));
         }
 
+        //Sort the leader boards
+        SkillComparator c = new SkillComparator();
+        Collections.sort(Mining, c);
+        Collections.sort(WoodCutting, c);
+        Collections.sort(Repair, c);
+        Collections.sort(Unarmed, c);
+        Collections.sort(Herbalism, c);
+        Collections.sort(Excavation, c);
+        Collections.sort(Archery, c);
+        Collections.sort(Swords, c);
+        Collections.sort(Axes, c);
+        Collections.sort(Acrobatics, c);
+        Collections.sort(Taming, c);
+        Collections.sort(Fishing, c);
+        Collections.sort(PowerLevel, c);
+
         //Write the leader board files
-        leaderWrite(Mining.inOrder(), SkillType.MINING);
-        leaderWrite(WoodCutting.inOrder(), SkillType.WOODCUTTING);
-        leaderWrite(Repair.inOrder(), SkillType.REPAIR);
-        leaderWrite(Unarmed.inOrder(), SkillType.UNARMED);
-        leaderWrite(Herbalism.inOrder(), SkillType.HERBALISM);
-        leaderWrite(Excavation.inOrder(), SkillType.EXCAVATION);
-        leaderWrite(Archery.inOrder(), SkillType.ARCHERY);
-        leaderWrite(Swords.inOrder(), SkillType.SWORDS);
-        leaderWrite(Axes.inOrder(), SkillType.AXES);
-        leaderWrite(Acrobatics.inOrder(), SkillType.ACROBATICS);
-        leaderWrite(Taming.inOrder(), SkillType.TAMING);
-        leaderWrite(Fishing.inOrder(), SkillType.FISHING);
-        leaderWrite(PowerLevel.inOrder(), SkillType.ALL);
+        PlayerStat[] a = new PlayerStat[1];
+        leaderWrite(Mining.toArray(a), SkillType.MINING);
+        leaderWrite(WoodCutting.toArray(a), SkillType.WOODCUTTING);
+        leaderWrite(Repair.toArray(a), SkillType.REPAIR);
+        leaderWrite(Unarmed.toArray(a), SkillType.UNARMED);
+        leaderWrite(Herbalism.toArray(a), SkillType.HERBALISM);
+        leaderWrite(Excavation.toArray(a), SkillType.EXCAVATION);
+        leaderWrite(Archery.toArray(a), SkillType.ARCHERY);
+        leaderWrite(Swords.toArray(a), SkillType.SWORDS);
+        leaderWrite(Axes.toArray(a), SkillType.AXES);
+        leaderWrite(Acrobatics.toArray(a), SkillType.ACROBATICS);
+        leaderWrite(Taming.toArray(a), SkillType.TAMING);
+        leaderWrite(Fishing.toArray(a), SkillType.FISHING);
+        leaderWrite(PowerLevel.toArray(a), SkillType.ALL);
     }
 
     /**
@@ -296,6 +315,12 @@ public class Leaderboard {
         }
         catch (Exception e) {
             plugin.getLogger().severe("Exception while writing to " + theLocation + " (Are you sure you formatted it correctly?)" + e.toString());
+        }
+    }
+    private static class SkillComparator implements Comparator<PlayerStat> {
+        @Override
+        public int compare(PlayerStat o1, PlayerStat o2) {
+            return (o2.statVal - o1.statVal);
         }
     }
 }
