@@ -30,7 +30,7 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.runnables.StickyPistonTracker;
 import com.gmail.nossr50.skills.gathering.Excavation;
 import com.gmail.nossr50.skills.gathering.Herbalism;
-import com.gmail.nossr50.skills.gathering.Mining;
+import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.gathering.WoodCutting;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
