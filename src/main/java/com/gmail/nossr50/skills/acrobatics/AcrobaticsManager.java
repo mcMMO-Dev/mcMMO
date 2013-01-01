@@ -13,12 +13,13 @@ public class AcrobaticsManager {
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
-    private Permissions permissionInstance = Permissions.getInstance();
+    private Permissions permissionInstance;
 
     public AcrobaticsManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
         this.skillLevel = profile.getSkillLevel(SkillType.ACROBATICS);
+        this.permissionInstance = Permissions.getInstance();
     }
 
     /**
