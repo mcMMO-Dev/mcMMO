@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills.gathering;
+package com.gmail.nossr50.skills.mining;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,7 +22,6 @@ import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Skills;

@@ -214,8 +214,8 @@ public class PrimitiveChunkStore implements ChunkStore {
         }
 
         if(fileVersionNumber >= 6) {
-            spawnedMobs = (ArrayList) in.readObject();
-            spawnedPets = (ArrayList) in.readObject();
+            spawnedMobs = (ArrayList<UUID>) in.readObject();
+            spawnedPets = (ArrayList<UUID>) in.readObject();
         }
     }
 
