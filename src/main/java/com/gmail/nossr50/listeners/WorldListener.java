@@ -51,6 +51,6 @@ public class WorldListener implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         if(event.getChunk().getEntities().length > 0)
-            mcMMO.p.placeStore.loadChunk(event.getChunk().getX(), event.getChunk().getZ(), event.getWorld());
+            mcMMO.placeStore.loadChunk(event.getChunk().getX(), event.getChunk().getZ(), event.getWorld());
     }
 }
