@@ -9,7 +9,6 @@ import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;

@@ -23,7 +23,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
