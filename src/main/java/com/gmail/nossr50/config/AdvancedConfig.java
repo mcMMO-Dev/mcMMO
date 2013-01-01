@@ -99,17 +99,17 @@ public class AdvancedConfig extends ConfigLoader {
     public int getSuperRepairMaxLevel() { return config.getInt("Skills.Repair.SuperRepair_MaxBonusLevel", 1000); }
 
     /* SWORDS */
-    public int getBleedChanceMax() { return config.getInt("Skills.Sword.Bleed_ChanceMax", 75); }
-    public int getBleedMaxBonusLevel() { return config.getInt("Skills.Sword.Bleed_MaxBonusLevel", 750); }
-    public int getBleedMaxTicks() { return config.getInt("Skills.Sword.Bleed_MaxTicks", 3); }
-    public int getBleedBaseTicks() { return config.getInt("Skills.Sword.Bleed_BaseTicks", 2); }
+    public int getBleedChanceMax() { return config.getInt("Skills.Swords.Bleed_ChanceMax", 75); }
+    public int getBleedMaxBonusLevel() { return config.getInt("Skills.Swords.Bleed_MaxBonusLevel", 750); }
+    public int getBleedMaxTicks() { return config.getInt("Skills.Swords.Bleed_MaxTicks", 3); }
+    public int getBleedBaseTicks() { return config.getInt("Skills.Swords.Bleed_BaseTicks", 2); }
 
-    public int getCounterChanceMax() { return config.getInt("Skills.Sword.Counter_ChanceMax", 30); }
-    public int getCounterMaxBonusLevel() { return config.getInt("Skills.Sword.Counter_MaxBonusLevel", 600); }
-    public int getCounterModifier() { return config.getInt("Skills.Sword.Counter_DamageModifier", 2); }
+    public int getCounterChanceMax() { return config.getInt("Skills.Swords.Counter_ChanceMax", 30); }
+    public int getCounterMaxBonusLevel() { return config.getInt("Skills.Swords.Counter_MaxBonusLevel", 600); }
+    public int getCounterModifier() { return config.getInt("Skills.Swords.Counter_DamageModifier", 2); }
 
-    public int getSerratedStrikesModifier() { return config.getInt("Skills.Sword.SerratedStrikes_DamageModifier", 4); }
-    public int getSerratedStrikesTicks() { return config.getInt("Skills.Sword.SerratedStrikes_BleedTicks", 5); }
+    public int getSerratedStrikesModifier() { return config.getInt("Skills.Swords.SerratedStrikes_DamageModifier", 4); }
+    public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes_BleedTicks", 5); }
     /* TAMING */
     public int getGoreChanceMax() { return config.getInt("Skills.Taming.Gore_ChanceMax", 100); }
     public int getGoreMaxBonusLevel() { return config.getInt("Skills.Taming.Gore_MaxBonusLevel", 1000); }
