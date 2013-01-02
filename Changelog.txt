@@ -28,6 +28,7 @@ Version 1.3.13-dev
  = Fixed a bug where PartyChangeEvent was fired even when a player isn't able to change parties
  = Fixed a bug which caused advanced.yml not to work for Swords
  = Fixed a bug which caused advanced.yml not to respect every MaxChance node
+ = Fixed a bug where GreenThumb_StageChange wasn't read from advanced.yml
  = Fixed a bug where Repair would remove enchantments but the glow effect remained
  = Fixed a bug where dropped items did not retain custom NBT data
  = Fixed a bug which caused a potentially infinite recursion in a btree structure
