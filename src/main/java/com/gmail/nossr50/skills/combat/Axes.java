@@ -89,6 +89,7 @@ public class Axes {
 
         int randomChance = 100;
         double chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillCheck;
+        if (chance > MAX_CHANCE) chance = MAX_CHANCE;
 
         if (attacker.hasPermission("mcmmo.perks.lucky.axes")) {
             randomChance = (int) (randomChance * 0.75);
