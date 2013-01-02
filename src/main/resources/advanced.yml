@@ -14,51 +14,91 @@
 ###
 Skills:
     General:
+        # This setting will determine when the length of every ability gets longer with 1 second
         Ability_IncreaseLevel: 50
     Acrobatics:
+        # Maximum chance of dodging when on Dodge_MaxBonusLevel or higher
         Dodge_ChanceMax: 20
+        # On this level or higher, the dodge chance will not go higher than Dodge_ChanceMax
         Dodge_MaxBonusLevel: 800
+        # Maximum chance of rolling when on Roll_MaxBonusLevel or higher
         Roll_ChanceMax: 100
+        # On this level or higher, the roll chance will not go higher than Roll_ChanceMax
         Roll_MaxBonusLevel: 1000
+        # Maximum chance of graceful rolling when on GracefulRoll_MaxBonusLevel or higher
         GracefulRoll_ChanceMax: 100
+        # On this level or higher, the graceful roll chance will not go higher than GracefulRoll_ChanceMax
         GracefulRoll_MaxBonusLevel: 500
+        # Amount of experience for performing a dodge
         Dodge_XP_Modifier: 120
+        # Amount of experience for performing a roll
         Roll_XP_Modifier: 80
+        # Amount of experience for performing a fall
         Fall_XP_Modifier: 120
     Archery:
+        # Every "SkillShot_IncreaseLevel" the skillshot bonus will go up by "SkillShot_IncreasePercentage"
         SkillShot_IncreaseLevel: 50
+        # This is a percentage value, 0.1 = 10%
         SkillShot_IncreasePercentage: 0.1D
+        # When the SkillShot_MaxBonus has been reached, the bonus percentage will not go up anymore. 2.0 = 200%
         SkillShot_MaxBonus: 2.0D
+        # Maximum chance of causing daze to opponents
         Daze_MaxChance: 50
+        # Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be "Daze_MaxChance"
         Daze_MaxBonusLevel: 1000
+        # Extra damage for arrows that cause a daze (2 damage = 1 heart)
         Daze_Modifier: 4
+        # Maximum chance or retrieving arrows
         Retrieve_MaxBonus: 100
+        # Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is Retrieve_MaxBonus
         Retrieve_MaxBonusLevel: 1000
     Axes:
+        # Maximum bonus damage
         DamageIncrease_MaxBonus: 4
+        # Level where the maximum bonus is reached
         DamageIncrease_MaxBonusLevel: 200
+        # Maximum chance of causing a critical hit
         AxesCritical_MaxChance: 37.50
+        # Level where the maximum chance of causing critical hits is reached
         AxesCritical_MaxBonusLevel: 750
+        # Damage modifier of critical hits for PVP, when causing a critical hit the damage gets multiplied by the modifier
         AxesCritical_PVP_Modifier: 1.5
+        # Damage modifier of critical hits for PVE, when causing a critical hit the damage gets multiplied by the modifier
         AxesCritical_PVE_Modifier: 2
+        # Chance of hitting with GreaterImpact, knocksbacks mobs
         GreaterImpact_Chance: 25
+        # Velocity modifier of GreaterImpact hits, this determines how great the knockback is
         GreaterImpact_KnockbackModifier: 1.5
+        # Extra damage for GreaterImpact hits
         GreaterImpact_BonusDamage: 2
+        # Every "IncreaseLevel" the durability damage goes up with 1
         ArmorImpact_IncreaseLevel: 50
+        # Durability damage cap for ArmorImpact, 20% means that you can never destroy a piece of armor in less than 5 hits
         ArmorImpact_MaxPercentageDurabilityDamage: 20
     Fishing:
+        # Fishing level when the Shake ability unlocks
         Shake_UnlockLevel: 150
+        # Chance of getting fishing treasure with enchantments
         Enchantment_Chance: 10
     Herbalism:
+        # This determines when Farmersdiet and Fishermans diet add extra hunger recovery to food
         Food_RankChange: 200
+        # Level value when the GreenThumb stage level goes up
         GreenThumb_StageChange: 200
+        # Maximum chance of converting cobblestone to mossystone
         GreenThumb_ChanceMax: 100
+        # Maximum level when chance = chancemax
         GreenThumb_MaxBonusLevel: 1500
+        # Maximum chance of receiving double drops
         DoubleDrops_ChanceMax: 100
+        # Level when the maximum chance of receiving double drops is reached
         DoubleDrops_MaxBonusLevel: 1000
     Mining:
+        # Maximum chance of receiving double drops
         DoubleDrops_ChanceMax: 100
+        # Level when the maximum chance of receiving double drops is reached
         DoubleDrops_MaxBonusLevel: 1000
+        # BlastMining rank unlocks
         BlastMining_Rank1: 125
         BlastMining_Rank2: 250
         BlastMining_Rank3: 375
