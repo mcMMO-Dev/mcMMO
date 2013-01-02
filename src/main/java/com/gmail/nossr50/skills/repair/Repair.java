@@ -31,10 +31,10 @@ public class Repair {
 
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
-    private static int repairMasteryChanceMax = advancedConfig.getRepairMasteryChanceMax();
-    private static int repairMasteryMaxBonusLevel = advancedConfig.getRepairMasteryMaxLevel();
-    private static int superRepairChanceMax = advancedConfig.getSuperRepairChanceMax();
-    private static int superRepairMaxBonusLevel = advancedConfig.getSuperRepairMaxLevel();
+    public static final int REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryChanceMax();
+    public static final int REPAIR_MASTERY_MAX_BONUS_LEVEL = advancedConfig.getRepairMasteryMaxLevel();
+    public static final int SUPER_REPAIR_CHANCE_MAX = advancedConfig.getSuperRepairChanceMax();
+    public static final int SUPER_REPAIR_MAX_BONUS_LEVEL = advancedConfig.getSuperRepairMaxLevel();
 
     /**
      * Handle the XP gain for repair events.
@@ -241,8 +241,8 @@ public class Repair {
      */
     protected static short repairCalculate(Player player, int skillLevel, short durability, int repairAmount) {
         float  bonus;
-        if(skillLevel >= repairMasteryMaxBonusLevel) bonus = ((float) repairMasteryChanceMax / 100F);
-        else bonus = (((float) skillLevel) / ((float) repairMasteryMaxBonusLevel)) * (((float) repairMasteryChanceMax) / 100F);
+        if(skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = ((float) REPAIR_MASTERY_CHANCE_MAX / 100F);
+        else bonus = (((float) skillLevel) / ((float) REPAIR_MASTERY_MAX_BONUS_LEVEL)) * (((float) REPAIR_MASTERY_CHANCE_MAX) / 100F);
 
         if (permInstance.repairMastery(player)) {
             bonus = (((float) repairAmount) * bonus);
@@ -272,14 +272,11 @@ public class Repair {
      * @return true if bonus granted, false otherwise
      */
     public static boolean checkPlayerProcRepair(Player player) {
-        final int MAX_CHANCE = superRepairChanceMax;
-        final int MAX_BONUS_LEVEL = superRepairMaxBonusLevel;
-
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
         int randomChance = 100;
-        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
-        if (skillLevel >= MAX_BONUS_LEVEL) chance = MAX_CHANCE;
+        int chance = (int) (((double) SUPER_REPAIR_CHANCE_MAX / (double) SUPER_REPAIR_MAX_BONUS_LEVEL) * skillLevel);
+        if (skillLevel >= SUPER_REPAIR_MAX_BONUS_LEVEL) chance = SUPER_REPAIR_CHANCE_MAX;
 
         if (player.hasPermission("mcmmo.perks.lucky.repair")) randomChance = (int) (randomChance * 0.75);
 

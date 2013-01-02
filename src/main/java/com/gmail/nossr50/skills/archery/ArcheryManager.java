@@ -49,7 +49,10 @@ public class ArcheryManager {
         if (player.hasPermission("mcmmo.perks.lucky.archery")) {
             randomChance = (int) (randomChance * 0.75);
         }
-        final float chance = (float) (((double) Archery.ARROW_TRACKING_MAX_BONUS / (double) Archery.ARROW_TRACKING_MAX_BONUS_LEVEL) * skillLevel);
+
+        float chance = (float) (((double) Archery.ARROW_TRACKING_MAX_BONUS / (double) Archery.ARROW_TRACKING_MAX_BONUS_LEVEL) * skillLevel);
+        if (chance > Archery.ARROW_TRACKING_MAX_BONUS) chance = Archery.ARROW_TRACKING_MAX_BONUS;
+
         if (chance > Archery.getRandom().nextInt(randomChance)) {
             eventHandler.addToTracker();
         }
@@ -80,7 +83,9 @@ public class ArcheryManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        final float chance = (float) (((double) Archery.DAZE_MAX_BONUS / (double) Archery.DAZE_MAX_BONUS_LEVEL) * skillLevel);
+        float chance = (float) (((double) Archery.DAZE_MAX_BONUS / (double) Archery.DAZE_MAX_BONUS_LEVEL) * skillLevel);
+        if (chance > Archery.DAZE_MAX_BONUS) chance = Archery.DAZE_MAX_BONUS;
+
         if (chance > Archery.getRandom().nextInt(randomChance)) {
             eventHandler.handleDazeEffect();
             eventHandler.sendAbilityMessages();

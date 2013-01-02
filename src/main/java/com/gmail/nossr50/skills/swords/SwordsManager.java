@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.swords;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Combat;
@@ -42,15 +41,15 @@ public class SwordsManager {
         if (Combat.shouldBeAffected(player, defender)) {
             BleedEventHandler eventHandler = new BleedEventHandler(this, defender);
 
-            int bleedChanceMax = AdvancedConfig.getInstance().getBleedChanceMax();
-            int bleedMaxLevel = AdvancedConfig.getInstance().getBleedMaxBonusLevel();
             int randomChance = 100;
 
             if (player.hasPermission("mcmmo.perks.lucky.swords")) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            final float chance = (float) (((double) bleedChanceMax / (double) bleedMaxLevel) * skillLevel);
+            float chance = (float) (((double) Swords.BLEED_CHANCE_MAX / (double) Swords.BLEED_MAX_BONUS_LEVEL) * skillLevel);
+            if (chance > Swords.BLEED_CHANCE_MAX) chance = Swords.BLEED_CHANCE_MAX;
+
             if (chance > Swords.getRandom().nextInt(randomChance)) {
                 eventHandler.addBleedTicks();
                 eventHandler.sendAbilityMessages();
@@ -73,15 +72,16 @@ public class SwordsManager {
 
         if (eventHandler.isHoldingSword()) {
             eventHandler.calculateSkillModifier();
-            int counterChanceMax = AdvancedConfig.getInstance().getCounterChanceMax();
-            int counterMaxLevel = AdvancedConfig.getInstance().getCounterMaxBonusLevel();
+
             int randomChance = 100;
 
             if (player.hasPermission("mcmmo.perks.lucky.swords")) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            final float chance = (float) (((double) counterChanceMax / (double) counterMaxLevel) * skillLevel);
+            float chance = (float) (((double) Swords.COUNTER_ATTACK_CHANCE_MAX / (double) Swords.COUNTER_ATTACK_MAX_BONUS_LEVEL) * skillLevel);
+            if (chance > Swords.COUNTER_ATTACK_CHANCE_MAX) chance = Swords.COUNTER_ATTACK_CHANCE_MAX;
+
             if (chance > Swords.getRandom().nextInt(randomChance)) {
                 eventHandler.dealDamage();
                 eventHandler.sendAbilityMessages();

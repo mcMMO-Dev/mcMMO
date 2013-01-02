@@ -12,6 +12,7 @@ public class Taming {
     public static final int FAST_FOOD_SERVICE_ACTIVATION_CHANCE = advancedConfig.getFastFoodChance();
     public static final int FAST_FOOD_SERVICE_ACTIVATION_LEVEL = advancedConfig.getFastFoodUnlock();
 
+    public static final int GORE_CHANCE_MAX = AdvancedConfig.getInstance().getGoreChanceMax();
     public static final int GORE_BLEED_TICKS = advancedConfig.getGoreBleedTicks();
     public static final int GORE_MAX_BONUS_LEVEL = advancedConfig.getGoreMaxBonusLevel();
     public static final int GORE_MULTIPLIER = advancedConfig.getGoreModifier();

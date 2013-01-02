@@ -356,6 +356,7 @@ public class WoodCutting {
 
         int randomChance = 100;
         int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
+        if (chance > MAX_CHANCE) chance = MAX_CHANCE;
 
         if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
             randomChance = (int) (randomChance * 0.75);
