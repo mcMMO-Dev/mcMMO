@@ -4,11 +4,13 @@ import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 
 public class GreenThumbTimer implements Runnable {
+    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private Block block;
     private PlayerProfile profile;
     private Material type;
@@ -24,19 +26,26 @@ public class GreenThumbTimer implements Runnable {
         if(this.block.getType() != this.type)
             this.block.setType(this.type);
 
+        int skillLevel = this.profile.getSkillLevel(SkillType.HERBALISM);
+
+    	final int STAGE_CHANGE = advancedConfig.getGreenThumbStageChange();
+
+        int greenThumbStage = (int) ((double) skillLevel / (double) STAGE_CHANGE);
+        if (greenThumbStage > 4) greenThumbStage = 4;
+
         switch(this.type) {
         case CROPS:
         case CARROT:
         case POTATO:
             //This replants the wheat at a certain stage in development based on Herbalism Skill
             if (!this.profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-                if (this.profile.getSkillLevel(SkillType.HERBALISM) >= 600) {
+                if (greenThumbStage == 3) {
                     this.block.setData(CropState.MEDIUM.getData());
                 }
-                else if (this.profile.getSkillLevel(SkillType.HERBALISM) >= 400) {
+                else if (greenThumbStage == 2) {
                     this.block.setData(CropState.SMALL.getData());
                 }
-                else if (this.profile.getSkillLevel(SkillType.HERBALISM) >= 200) {
+                else if (greenThumbStage == 1) {
                     this.block.setData(CropState.VERY_SMALL.getData());
                 }
                 else {
@@ -49,10 +58,10 @@ public class GreenThumbTimer implements Runnable {
             break;
         case NETHER_WARTS:
             if (!this.profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-                if (this.profile.getSkillLevel(SkillType.HERBALISM) >= 600) {
+                if (greenThumbStage == 3) {
                     this.block.setData((byte) 2);
                 }
-                else if (this.profile.getSkillLevel(SkillType.HERBALISM) >= 400) {
+                else if (greenThumbStage == 2) {
                     this.block.setData((byte) 1);
                 }
                 else {
@@ -65,10 +74,10 @@ public class GreenThumbTimer implements Runnable {
             break;
         case COCOA:
             if (!this.profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-                if (this.profile.getSkillLevel(SkillType.HERBALISM) >= 600) {
+                if (greenThumbStage == 3) {
                     this.block.setData((byte) ((this.block.getData() ^ ((byte) 0xc)) | ((byte) 4)));
                 }
-                else if (this.profile.getSkillLevel(SkillType.HERBALISM) >= 400) {
+                else if (greenThumbStage == 2) {
                     this.block.setData((byte) ((this.block.getData() ^ ((byte) 0xc)) | ((byte) 4)));
                 }
                 else {
