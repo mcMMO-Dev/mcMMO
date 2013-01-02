@@ -222,7 +222,8 @@ public class HashChunkManager implements ChunkManager {
 
         boolean unloaded = false;
         if(!store.containsKey(world.getName() + "," + cx + "," + cz)) {
-            for(Entity entity : spawnedMobs) {
+            List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+            for(Entity entity : tempSpawnedMobs) {
                 if(!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
@@ -232,7 +233,8 @@ public class HashChunkManager implements ChunkManager {
             }
 
             if(!unloaded) {
-                for(Entity entity : spawnedPets) {
+                List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+                for(Entity entity : tempSpawnedPets) {
                     if(!isEntityInChunk(entity, cx, cz, world))
                         continue;
 
