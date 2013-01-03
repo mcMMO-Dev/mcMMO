@@ -253,14 +253,16 @@ public class HashChunkManager implements ChunkManager {
         if(store.containsKey(world.getName() + "," + cx + "," + cz)) {
             ChunkStore out = store.get(world.getName() + "," + cx + "," + cz);
 
-            for(Entity entity : spawnedMobs) {
+            List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+            for(Entity entity : tempSpawnedMobs) {
                 if(!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 out.addSpawnedMob(entity.getUniqueId());
             }
 
-            for(Entity entity : spawnedPets) {
+            List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+            for(Entity entity : tempSpawnedPets) {
                 if(!isEntityInChunk(entity, cx, cz, world))
                     continue;
 

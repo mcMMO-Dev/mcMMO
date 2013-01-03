@@ -5,6 +5,7 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -253,7 +254,12 @@ public class Misc {
             return;
         }
 
-        location.getWorld().dropItemNaturally(location, itemStack).setItemStack(itemStack);
+        Item newItem = location.getWorld().dropItemNaturally(location, itemStack);
+
+        ItemStack cloned = itemStack.clone();
+        cloned.setAmount(newItem.getItemStack().getAmount());
+
+        newItem.setItemStack(cloned);
     }
 
     /**
