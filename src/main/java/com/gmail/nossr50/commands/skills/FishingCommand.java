@@ -18,6 +18,9 @@ public class FishingCommand extends SkillCommand {
     private String shakeChance;
     private String fishermansDietRank;
 
+    private int fishermansDietRankChange = advancedConfig.getFarmerDietRankChange();
+    private int fishermansDietRankMaxLevel = fishermansDietRankChange * 5;
+
     private boolean canTreasureHunt;
     private boolean canMagicHunt;
     private boolean canShake;
@@ -37,21 +40,9 @@ public class FishingCommand extends SkillCommand {
         }
         shakeChance = String.valueOf(dropChance);
 
-        if (skillValue >= 1000) {
-            fishermansDietRank = "5";
-        }
-        else if (skillValue >= 800) {
-            fishermansDietRank = "4";
-        }
-        else if (skillValue >= 600) {
-            fishermansDietRank = "3";
-        }
-        else if (skillValue >= 400) {
-            fishermansDietRank = "2";
-        }
-        else {
-            fishermansDietRank = "1";
-        }
+        if(skillValue >= fishermansDietRankMaxLevel) fishermansDietRank = "5";
+        else fishermansDietRank = String.valueOf((int) ((double) skillValue / (double) fishermansDietRankChange));
+
         shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
     }
 
