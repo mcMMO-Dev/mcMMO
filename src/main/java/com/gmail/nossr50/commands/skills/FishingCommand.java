@@ -1,5 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.text.DecimalFormat;
+
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.commands.SkillCommand;
@@ -16,7 +18,11 @@ public class FishingCommand extends SkillCommand {
     private String magicChance;
     private int shakeUnlockLevel;
     private String shakeChance;
+    private String shakeChanceLucky;
     private String fishermansDietRank;
+
+    private int fishermansDietRankChange = advancedConfig.getFarmerDietRankChange();
+    private int fishermansDietRankMaxLevel = fishermansDietRankChange * 5;
 
     private boolean canTreasureHunt;
     private boolean canMagicHunt;
@@ -29,30 +35,20 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
+        DecimalFormat df = new DecimalFormat("0.0");
+        //Treasure Hunter
         lootTier = Fishing.getFishingLootTier(profile);
         magicChance = percent.format(lootTier / 15D);
+        //Shake
         int dropChance = Fishing.getShakeChance(lootTier);
-        if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
-            dropChance = (int) (dropChance * 1.25D);
-        }
-        shakeChance = String.valueOf(dropChance);
-
-        if (skillValue >= 1000) {
-            fishermansDietRank = "5";
-        }
-        else if (skillValue >= 800) {
-            fishermansDietRank = "4";
-        }
-        else if (skillValue >= 600) {
-            fishermansDietRank = "3";
-        }
-        else if (skillValue >= 400) {
-            fishermansDietRank = "2";
-        }
-        else {
-            fishermansDietRank = "1";
-        }
+        shakeChance = df.format(dropChance);
+        if(dropChance + dropChance * 0.3333D >= 100D) shakeChanceLucky = df.format(100D);
+        else shakeChanceLucky = df.format(dropChance + dropChance * 0.3333D);
         shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
+
+        //Fishermans Diet
+        if(skillValue >= fishermansDietRankMaxLevel) fishermansDietRank = "5";
+        else fishermansDietRank = String.valueOf((int) ((double) skillValue / (double) fishermansDietRankChange));
     }
 
     @Override
@@ -112,7 +108,10 @@ public class FishingCommand extends SkillCommand {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0", new Object[] { shakeUnlockLevel }) }));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }));
+                if (player.hasPermission("mcmmo.perks.lucky.fishing"))
+                    player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { shakeChanceLucky }));
+                else
+                    player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }));
             }
         }
 

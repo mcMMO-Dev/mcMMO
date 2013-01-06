@@ -348,13 +348,13 @@ public class EntityListener implements Listener {
 
                 case RAW_FISH:
                     /* RAW FISH RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    rankChange = 400;
+                    rankChange = FoodRank2;
                     fish = true;
                     break;
 
                 case COOKED_FISH:
                     /* COOKED FISH RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                    rankChange = 200;
+                    rankChange = FoodRank1;
                     fish = true;
 
                     break;
