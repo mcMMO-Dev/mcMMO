@@ -14,6 +14,7 @@ public class AxesCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     private String critChance;
+    private String critChanceLucky;
     private String bonusDamage;
     private String impactDamage;
     private String greaterImpactDamage;
@@ -24,7 +25,7 @@ public class AxesCommand extends SkillCommand {
     private double critMaxChance = advancedConfig.getAxesCriticalChance();
     private int critMaxBonusLevel = advancedConfig.getAxesCriticalMaxBonusLevel();
     private int greaterImpactIncreaseLevel = advancedConfig.getArmorImpactIncreaseLevel();
-    //    private double greaterImpactModifier = advancedConfig.getGreaterImpactModifier();
+    private double greaterImpactBonusDamage = advancedConfig.getGreaterImpactBonusDamage();
     private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private boolean canSkullSplitter;
@@ -40,14 +41,22 @@ public class AxesCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
+        float critChanceF;
         int skillCheck = Misc.skillCheck((int)skillValue, critMaxBonusLevel);
 
+        //Armor Impact
         impactDamage = String.valueOf(1 + ((double) skillValue / (double) greaterImpactIncreaseLevel));
+        //Skull Splitter
         skullSplitterLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
-        greaterImpactDamage = "2";
-
-        if (skillValue >= critMaxBonusLevel) critChance = df.format(critMaxChance);
-        else critChance = String.valueOf((critMaxChance / critMaxBonusLevel) * skillCheck);
+        //Greater Impact
+        greaterImpactDamage = String.valueOf(greaterImpactBonusDamage);
+        //Critical Strikes
+        if (skillValue >= critMaxBonusLevel) critChanceF = (float) critMaxChance;
+        else critChanceF = (float) ((critMaxChance / critMaxBonusLevel) * skillCheck);
+        critChance = df.format(critChanceF);
+        if(critChanceF + critChanceF * 0.3333D >= 100D) critChanceLucky = df.format(100D);
+        else critChanceLucky = df.format(critChanceF + critChanceF * 0.3333D);
+        //Axe Mastery
         if (skillValue >= bonusDamageAxesMaxBonusLevel) bonusDamage = String.valueOf(bonusDamageAxesBonusMax);
         else bonusDamage = String.valueOf(skillValue / ((double) bonusDamageAxesMaxBonusLevel / (double) bonusDamageAxesBonusMax));
     }
@@ -113,8 +122,11 @@ public class AxesCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", new Object[] {greaterImpactDamage}) }));
         }
 
-        if (canCritical) {
-            player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", new Object[] { critChance }));
+        if (canCritical){
+            if (player.hasPermission("mcmmo.perks.lucky.axes"))
+                player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", new Object[] { critChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { critChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", new Object[] { critChance }));
         }
 
         if (canSkullSplitter) {

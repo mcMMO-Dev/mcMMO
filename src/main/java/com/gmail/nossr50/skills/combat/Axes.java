@@ -96,7 +96,6 @@ public class Axes {
         }
 
         if (chance > random.nextInt(randomChance) && !entity.isDead()){
-            //        if (random.nextInt(randomChance) <= skillCheck && !entity.isDead()){
             int damage = event.getDamage();
 
             if (entity instanceof Player){

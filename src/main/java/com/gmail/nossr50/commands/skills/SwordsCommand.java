@@ -13,8 +13,10 @@ public class SwordsCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     private String counterAttackChance;
+    private String counterAttackChanceLucky;
     private String bleedLength;
     private String bleedChance;
+    private String bleedChanceLucky;
     private String serratedStrikesLength;
 
     private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
@@ -37,16 +39,24 @@ public class SwordsCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
+        float bleedChanceF;
+        float counterAttackChanceF;
         serratedStrikesLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
 
         if (skillValue >= bleedMaxLevel) bleedLength = String.valueOf(bleedMaxTicks);
         else bleedLength = String.valueOf(bleedBaseTicks);
 
-        if(skillValue >= bleedMaxLevel) bleedChance = df.format(bleedChanceMax);
-        else bleedChance = df.format(((double) bleedChanceMax / (double) bleedMaxLevel) * skillValue);
+        if(skillValue >= bleedMaxLevel) bleedChanceF = bleedChanceMax;
+        else bleedChanceF = (float) (((double) bleedChanceMax / (double) bleedMaxLevel) * skillValue);
+        bleedChance = df.format(bleedChanceF);
+        if(bleedChanceF + bleedChanceF * 0.3333D >= 100D) bleedChanceLucky = df.format(100D);
+        else bleedChanceLucky = df.format(bleedChanceF + bleedChanceF * 0.3333D);
 
-        if(skillValue >= counterMaxLevel) counterAttackChance = df.format(counterChanceMax);
-        else counterAttackChance = df.format(((double) counterChanceMax / (double) counterMaxLevel) * skillValue);
+        if(skillValue >= counterMaxLevel) counterAttackChanceF = counterChanceMax;
+        else counterAttackChanceF = (float) (((double) counterChanceMax / (double) counterMaxLevel) * skillValue);
+        counterAttackChance = df.format(counterAttackChanceF);
+        if(counterAttackChanceF + counterAttackChanceF * 0.3333D >= 100D) counterAttackChanceLucky = df.format(100D);
+        else counterAttackChanceLucky = df.format(counterAttackChanceF + counterAttackChanceF * 0.3333D);
 
         serratedStrikesLength = String.valueOf(serratedBleedTicks);
     }
@@ -92,13 +102,19 @@ public class SwordsCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canCounter) {
-            player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.swords"))
+                player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { counterAttackChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }));
         }
 
         if (canBleed) {
             player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Length", new Object[] { bleedLength }));
             player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Note"));
-            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.swords"))
+                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { bleedChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }));
         }
 
         if (canSerratedStrike) {

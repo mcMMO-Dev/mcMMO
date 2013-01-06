@@ -15,9 +15,11 @@ public class HerbalismCommand extends SkillCommand {
 
     private String greenTerraLength;
     private String greenThumbChance;
+    private String greenThumbChanceLucky;
     private String greenThumbStage;
     private String farmersDietRank;
     private String doubleDropChance;
+    private String doubleDropChanceLucky;
 
     private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
     private int farmersDietRankChange = advancedConfig.getFarmerDietRankChange();
@@ -43,6 +45,8 @@ public class HerbalismCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
+        float greenThumbChanceF;
+        float doubleDropChanceF;
         greenTerraLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         //FARMERS DIET
         if(skillValue >= farmersDietMaxLevel) farmersDietRank = "5";
@@ -51,12 +55,17 @@ public class HerbalismCommand extends SkillCommand {
         if(skillValue >= greenThumbStageMaxLevel) greenThumbStage = "4";
         else greenThumbStage = String.valueOf((int) ((double) skillValue / (double) greenThumbStageChange));
 
-
-        if(skillValue >= greenThumbMaxLevel) greenThumbChance = String.valueOf(greenThumbMaxBonus);
-        else greenThumbChance = df.format((greenThumbMaxBonus / greenThumbMaxLevel) * skillValue);
+        if(skillValue >= greenThumbMaxLevel) greenThumbChanceF = (float) (greenThumbMaxBonus);
+        else greenThumbChanceF = (float) ((greenThumbMaxBonus / greenThumbMaxLevel) * skillValue);
+        greenThumbChance = df.format(greenThumbChanceF);
+        if(greenThumbChanceF + greenThumbChanceF * 0.3333D >= 100D) greenThumbChanceLucky = df.format(100D);
+        else greenThumbChanceLucky = df.format(greenThumbChanceF + greenThumbChanceF * 0.3333D);
         //DOUBLE DROPS
-        if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
-        else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+        if(skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
+        else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+        doubleDropChance = df.format(doubleDropChanceF);
+        if(doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = df.format(100D);
+        else doubleDropChanceLucky = df.format(doubleDropChanceF + doubleDropChanceF * 0.3333D);
     }
 
     @Override
@@ -116,7 +125,10 @@ public class HerbalismCommand extends SkillCommand {
         }
 
         if (canGreenThumbBlocks || canGreenThumbWheat) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.herbalism"))
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { greenThumbChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }));
         }
 
         if (canGreenThumbWheat) {
@@ -128,7 +140,10 @@ public class HerbalismCommand extends SkillCommand {
         }
 
         if (canDoubleDrop && !doubleDropsDisabled) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.herbalism"))
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }));
         }
     }
 }

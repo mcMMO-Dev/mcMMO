@@ -14,7 +14,9 @@ public class ArcheryCommand extends SkillCommand {
 
     private String skillShotBonus;
     private String dazeChance;
+    private String dazeChanceLucky;
     private String retrieveChance;
+    private String retrieveChanceLucky;
 
     private int skillShotIncreaseLevel = advancedConfig.getSkillShotIncreaseLevel();
     private double skillShotIncreasePercentage = advancedConfig.getSkillShotIncreasePercentage();
@@ -25,7 +27,6 @@ public class ArcheryCommand extends SkillCommand {
 
     private float retrieveBonusMax = advancedConfig.getRetrieveBonusMax();
     private float retrieveMaxBonusLevel = advancedConfig.getRetrieveMaxBonusLevel();
-
 
     private boolean canSkillShot;
     private boolean canDaze;
@@ -38,18 +39,27 @@ public class ArcheryCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
+        float dazeChanceF;
+        float retrieveChanceF;
+
         // SkillShot
         double bonus = (int)((double) skillValue / (double) skillShotIncreaseLevel) * skillShotIncreasePercentage;
         if (bonus > skillShotBonusMax) skillShotBonus = percent.format(skillShotBonusMax);
         else skillShotBonus = percent.format(bonus);
 
         // Daze
-        if(skillValue >= dazeMaxBonusLevel) dazeChance = df.format(dazeBonusMax);
-        else dazeChance = df.format(((double) dazeBonusMax / (double) dazeMaxBonusLevel) * skillValue);
+        if(skillValue >= dazeMaxBonusLevel) dazeChanceF = dazeBonusMax;
+        else dazeChanceF = (float) (((double) dazeBonusMax / (double) dazeMaxBonusLevel) * skillValue);
+        dazeChance = df.format(dazeChanceF);
+        if(dazeChanceF + dazeChanceF * 0.3333D >= 100D) dazeChanceLucky = df.format(100D);
+        else dazeChanceLucky = df.format(dazeChanceF + dazeChanceF * 0.3333D);
 
         // Retrieve
-        if(skillValue >= retrieveMaxBonusLevel)    retrieveChance = df.format(retrieveBonusMax);
-        else retrieveChance = df.format(((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * skillValue);
+        if(skillValue >= retrieveMaxBonusLevel) retrieveChanceF = retrieveBonusMax;
+        else retrieveChanceF = (float) (((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * skillValue);
+        retrieveChance = df.format(retrieveChanceF);
+        if(retrieveChanceF + retrieveChanceF * 0.3333D >= 100D) retrieveChanceLucky = df.format(100D);
+        else retrieveChanceLucky = df.format(retrieveChanceF + retrieveChanceF * 0.3333D);
     }
 
     @Override
@@ -92,15 +102,21 @@ public class ArcheryCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canSkillShot) {
-            player.sendMessage(LocaleLoader.getString("Archery.Combat.SkillshotBonus", new Object[] { skillShotBonus }));
+        	player.sendMessage(LocaleLoader.getString("Archery.Combat.SkillshotBonus", new Object[] { skillShotBonus }));
         }
 
         if (canDaze) {
-            player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }));
+        	if (player.hasPermission("mcmmo.perks.lucky.archery"))
+        		player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { dazeChanceLucky }));
+        	else
+        		player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }));
         }
 
         if (canRetrieve) {
-            player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }));
+        	if (player.hasPermission("mcmmo.perks.lucky.archery"))
+        		player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { retrieveChanceLucky }));
+        	else
+        		player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }));
         }
     }
 }
