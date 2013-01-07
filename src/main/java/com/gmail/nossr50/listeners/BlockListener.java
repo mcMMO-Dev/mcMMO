@@ -31,6 +31,7 @@ import com.gmail.nossr50.runnables.StickyPistonTracker;
 import com.gmail.nossr50.skills.gathering.Excavation;
 import com.gmail.nossr50.skills.gathering.Herbalism;
 import com.gmail.nossr50.skills.mining.Mining;
+import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.gathering.WoodCutting;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
@@ -204,13 +205,14 @@ public class BlockListener implements Listener {
 
         /* MINING */
         else if (BlockChecks.canBeSuperBroken(block) && Permissions.mining(player)) {
+            MiningManager manager = new MiningManager(player);
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
-                    Mining.miningBlockCheck(player, block);
+                    manager.miningBlockCheck(block);
                 }
             }
             else {
-                Mining.miningBlockCheck(player, block);
+                manager.miningBlockCheck(block);
             }
         }
 

@@ -6,7 +6,6 @@ import org.bukkit.CoalType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -22,20 +21,186 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Mining {
-    private static Random random = new Random();
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    private static Random random = new Random();
+
+    public static final int DOUBLE_DROPS_MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
+    public static final int DOUBLE_DROPS_MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
+
+    /**
+     * Award XP for Mining blocks.
+     *
+     * @param player The player to award XP to
+     * @param block The block to award XP for
+     */
+    public static void miningXP(Player player, Block block) {
+        PlayerProfile profile = Users.getProfile(player);
+        Material type = block.getType();
+        int xp = 0;
+
+        switch (type) {
+        case COAL_ORE:
+            xp += Config.getInstance().getMiningXPCoalOre();
+            break;
+
+        case DIAMOND_ORE:
+            xp += Config.getInstance().getMiningXPDiamondOre();
+            break;
+
+        case ENDER_STONE:
+            xp += Config.getInstance().getMiningXPEndStone();
+            break;
+
+        case GLOWING_REDSTONE_ORE:
+        case REDSTONE_ORE:
+            xp += Config.getInstance().getMiningXPRedstoneOre();
+            break;
+
+        case GLOWSTONE:
+            xp += Config.getInstance().getMiningXPGlowstone();
+            break;
+
+        case GOLD_ORE:
+            xp += Config.getInstance().getMiningXPGoldOre();
+            break;
+
+        case IRON_ORE:
+            xp += Config.getInstance().getMiningXPIronOre();
+            break;
+
+        case LAPIS_ORE:
+            xp += Config.getInstance().getMiningXPLapisOre();
+            break;
+
+        case MOSSY_COBBLESTONE:
+            xp += Config.getInstance().getMiningXPMossyStone();
+            break;
+
+        case NETHERRACK:
+            xp += Config.getInstance().getMiningXPNetherrack();
+            break;
+
+        case OBSIDIAN:
+            xp += Config.getInstance().getMiningXPObsidian();
+            break;
+
+        case SANDSTONE:
+            xp += Config.getInstance().getMiningXPSandstone();
+            break;
+
+        case STONE:
+            xp += Config.getInstance().getMiningXPStone();
+            break;
+
+        case EMERALD_ORE:
+            xp += Config.getInstance().getMiningXPEmeraldOre();
+            break;
+
+        default:
+            if (ModChecks.isCustomMiningBlock(block)) {
+                xp += ModChecks.getCustomBlock(block).getXpGain();
+            }
+            break;
+        }
+
+        Skills.xpProcessing(player, profile, SkillType.MINING, xp);
+    }
+
+    /**
+     * Handle the Super Breaker ability.
+     *
+     * @param player The player using the ability
+     * @param block The block being affected
+     */
+    public static void superBreakerBlockCheck(Player player, Block block) {
+        Material type = block.getType();
+        int tier = Misc.getTier(player.getItemInHand());
+        int durabilityLoss = Config.getInstance().getAbilityToolDamage();
+        FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
+
+        if (ModChecks.isCustomMiningBlock(block)) {
+            if (ModChecks.getCustomBlock(block).getTier() < tier) {
+                return;
+            }
+
+            if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
+                return;
+            }
+
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
+            Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
+
+            MiningManager manager = new MiningManager(player);
+            manager.miningBlockCheck(block);
+
+            if (mcMMO.spoutEnabled) {
+                SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+            }
+        }
+        else {
+            switch (type) {
+            case OBSIDIAN:
+                if (tier < 4) {
+                    return;
+                }
+                durabilityLoss = durabilityLoss * 5; //Obsidian needs to do more damage than normal
+                /* FALL THROUGH */
+
+            case DIAMOND_ORE:
+            case GLOWING_REDSTONE_ORE:
+            case GOLD_ORE:
+            case LAPIS_ORE:
+            case REDSTONE_ORE:
+            case EMERALD_ORE:
+                if (tier < 3) {
+                    return;
+                }
+                /* FALL THROUGH */
+
+            case IRON_ORE:
+                if (tier < 2) {
+                    return;
+                }
+                /* FALL THROUGH */
+
+            case COAL_ORE:
+            case ENDER_STONE:
+            case GLOWSTONE:
+            case MOSSY_COBBLESTONE:
+            case NETHERRACK:
+            case SANDSTONE:
+            case STONE:
+                if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
+                    return;
+                }
+
+                mcMMO.p.getServer().getPluginManager().callEvent(armswing);
+                Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
+
+                MiningManager manager = new MiningManager(player);
+                manager.miningBlockCheck(block);
+
+                if (mcMMO.spoutEnabled) {
+                    SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
+                }
+
+            default:
+                return;
+            }
+        }
+    }
+
 
     /**
      * Handle double drops when using Silk Touch.
      *
      * @param block The block to process drops for
      */
-    private static void silkTouchDrops(Block block) {
+    protected static void silkTouchDrops(Block block) {
         Location location = block.getLocation();
         Material type = block.getType();
         ItemStack item = new ItemStack(type);
@@ -111,7 +276,7 @@ public class Mining {
      *
      * @param block The block to process drops for
      */
-    public static void miningDrops(Block block) {
+    protected static void miningDrops(Block block) {
         Location location = block.getLocation();
         Material type = block.getType();
         ItemStack item = new ItemStack(type);
@@ -235,200 +400,7 @@ public class Mining {
         }
     }
 
-    /**
-     * Award XP for Mining blocks.
-     *
-     * @param player The player to award XP to
-     * @param block The block to award XP for
-     */
-    public static void miningXP(Player player, Block block) {
-        PlayerProfile profile = Users.getProfile(player);
-        Material type = block.getType();
-        int xp = 0;
-
-        switch (type) {
-        case COAL_ORE:
-            xp += Config.getInstance().getMiningXPCoalOre();
-            break;
-
-        case DIAMOND_ORE:
-            xp += Config.getInstance().getMiningXPDiamondOre();
-            break;
-
-        case ENDER_STONE:
-            xp += Config.getInstance().getMiningXPEndStone();
-            break;
-
-        case GLOWING_REDSTONE_ORE:
-        case REDSTONE_ORE:
-            xp += Config.getInstance().getMiningXPRedstoneOre();
-            break;
-
-        case GLOWSTONE:
-            xp += Config.getInstance().getMiningXPGlowstone();
-            break;
-
-        case GOLD_ORE:
-            xp += Config.getInstance().getMiningXPGoldOre();
-            break;
-
-        case IRON_ORE:
-            xp += Config.getInstance().getMiningXPIronOre();
-            break;
-
-        case LAPIS_ORE:
-            xp += Config.getInstance().getMiningXPLapisOre();
-            break;
-
-        case MOSSY_COBBLESTONE:
-            xp += Config.getInstance().getMiningXPMossyStone();
-            break;
-
-        case NETHERRACK:
-            xp += Config.getInstance().getMiningXPNetherrack();
-            break;
-
-        case OBSIDIAN:
-            xp += Config.getInstance().getMiningXPObsidian();
-            break;
-
-        case SANDSTONE:
-            xp += Config.getInstance().getMiningXPSandstone();
-            break;
-
-        case STONE:
-            xp += Config.getInstance().getMiningXPStone();
-            break;
-
-        case EMERALD_ORE:
-            xp += Config.getInstance().getMiningXPEmeraldOre();
-            break;
-
-        default:
-            if (ModChecks.isCustomMiningBlock(block)) {
-                xp += ModChecks.getCustomBlock(block).getXpGain();
-            }
-            break;
-        }
-
-        Skills.xpProcessing(player, profile, SkillType.MINING, xp);
-    }
-
-    /**
-     * Process Mining block drops.
-     *
-     * @param player The player mining the block
-     * @param block The block being broken
-     */
-    public static void miningBlockCheck(Player player, Block block) {
-        if (mcMMO.placeStore.isTrue(block)) {
-            return;
-        }
-
-        miningXP(player, block);
-
-        final int MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
-        int    MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
-
-        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
-        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
-
-        int randomChance = 100;
-        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillCheck);
-
-        if (Permissions.luckyMining(player)) {
-            randomChance = (int) (randomChance * 0.75);
-        }
-
-        if (chance > random.nextInt(randomChance) && Permissions.miningDoubleDrops(player)) {
-            if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
-                silkTouchDrops(block);
-            }
-            else {
-                miningDrops(block);
-            }
-        }
-    }
-
-    /**
-     * Handle the Super Breaker ability.
-     *
-     * @param player The player using the ability
-     * @param block The block being affected
-     */
-    public static void superBreakerBlockCheck(Player player, Block block) {
-        Material type = block.getType();
-        int tier = Misc.getTier(player.getItemInHand());
-        int durabilityLoss = Config.getInstance().getAbilityToolDamage();
-        FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-
-        if (ModChecks.isCustomMiningBlock(block)) {
-            if (ModChecks.getCustomBlock(block).getTier() < tier) {
-                return;
-            }
-
-            if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
-                return;
-            }
-
-            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
-            Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
-
-            miningBlockCheck(player, block);
-
-            if (mcMMO.spoutEnabled) {
-                SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-            }
-        }
-        else {
-            switch (type) {
-            case OBSIDIAN:
-                if (tier < 4) {
-                    return;
-                }
-                durabilityLoss = durabilityLoss * 5; //Obsidian needs to do more damage than normal
-                /* FALL THROUGH */
-
-            case DIAMOND_ORE:
-            case GLOWING_REDSTONE_ORE:
-            case GOLD_ORE:
-            case LAPIS_ORE:
-            case REDSTONE_ORE:
-            case EMERALD_ORE:
-                if (tier < 3) {
-                    return;
-                }
-                /* FALL THROUGH */
-
-            case IRON_ORE:
-                if (tier < 2) {
-                    return;
-                }
-                /* FALL THROUGH */
-
-            case COAL_ORE:
-            case ENDER_STONE:
-            case GLOWSTONE:
-            case MOSSY_COBBLESTONE:
-            case NETHERRACK:
-            case SANDSTONE:
-            case STONE:
-                if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
-                    return;
-                }
-
-                mcMMO.p.getServer().getPluginManager().callEvent(armswing);
-                Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
-
-                miningBlockCheck(player, block);
-
-                if (mcMMO.spoutEnabled) {
-                    SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-                }
-
-            default:
-                return;
-            }
-        }
+    protected static Random getRandom() {
+        return random;
     }
 }
