@@ -90,7 +90,7 @@ public class Axes {
         int randomChance = 100;
         double chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillCheck;
 
-        if (attacker.hasPermission("mcmmo.perks.lucky.axes")) {
+        if (Permissions.luckyAxes(attacker)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
@@ -179,13 +179,13 @@ public class Axes {
         final double GREATER_IMPACT_MULTIPLIER = advancedConfig.getGreaterImpactModifier();
         final int GREATER_IMPACT_DAMAGE = advancedConfig.getGreaterImpactBonusDamage();
 
-        if (!Permissions.getInstance().greaterImpact(attacker)) {
+        if (!Permissions.greaterImpact(attacker)) {
             return;
         }
 
         int randomChance = 100;
 
-        if (attacker.hasPermission("mcmmo.perks.lucky.axes")) {
+        if (Permissions.luckyAxes(attacker)) {
             randomChance = (int) (randomChance * 0.75);
         }
 

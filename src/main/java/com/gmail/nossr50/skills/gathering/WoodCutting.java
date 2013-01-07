@@ -220,7 +220,7 @@ public class WoodCutting {
             }
         }
 
-        if (Permissions.getInstance().woodcutting(player)) {
+        if (Permissions.woodcutting(player)) {
             Skills.xpProcessing(player, profile, SkillType.WOODCUTTING, xp);
         }
     }
@@ -353,11 +353,11 @@ public class WoodCutting {
         int randomChance = 100;
         int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
 
-        if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
+        if (Permissions.luckyWoodcutting(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (chance > random.nextInt(randomChance) && Permissions.getInstance().woodcuttingDoubleDrops(player)) {
+        if (chance > random.nextInt(randomChance) && Permissions.woodcuttingDoubleDrops(player)) {
             Config configInstance = Config.getInstance();
             ItemStack item;
             Location location;

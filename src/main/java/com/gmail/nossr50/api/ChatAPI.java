@@ -64,7 +64,7 @@ public final class ChatAPI {
         mcMMO.p.getLogger().info("[A]<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-            if (Permissions.getInstance().adminChat(player) || player.isOp())
+            if (Permissions.adminChat(player) || player.isOp())
                 player.sendMessage(aPrefix + chatEvent.getMessage());
         }
     }

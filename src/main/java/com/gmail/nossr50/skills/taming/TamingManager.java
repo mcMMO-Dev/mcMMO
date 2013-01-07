@@ -19,14 +19,12 @@ public class TamingManager {
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
-    private Permissions permissionsInstance;
     private Config configInstance;
 
     public TamingManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
         this.skillLevel = profile.getSkillLevel(SkillType.TAMING);
-        this.permissionsInstance =  Permissions.getInstance();
         this.configInstance = Config.getInstance();
     }
 
@@ -40,17 +38,14 @@ public class TamingManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.fastFoodService(player)) {
+        if (!Permissions.fastFoodService(player)) {
             return;
         }
 
         if (skillLevel >= Taming.FAST_FOOD_SERVICE_ACTIVATION_LEVEL) {
             int randomChance = 100;
 
-            if (player.hasPermission("mcmmo.perks.lucky.taming")) {
+            if (Permissions.luckyTaming(player)) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
@@ -71,10 +66,7 @@ public class TamingManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.sharpenedClaws(player)) {
+        if (!Permissions.sharpenedClaws(player)) {
             return;
         }
 
@@ -94,10 +86,7 @@ public class TamingManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.gore(player)) {
+        if (!Permissions.gore(player)) {
             return;
         }
 
@@ -107,7 +96,7 @@ public class TamingManager {
         int goreMaxLevel = AdvancedConfig.getInstance().getGoreMaxBonusLevel();
         int randomChance = 100;
 
-        if (player.hasPermission("mcmmo.perks.lucky.taming")) {
+        if (Permissions.luckyTaming(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
@@ -175,10 +164,7 @@ public class TamingManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.beastLore(player)) {
+        if (!Permissions.beastLore(player)) {
             return;
         }
 
@@ -197,10 +183,7 @@ public class TamingManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.callOfTheWild(player)) {
+        if (!Permissions.callOfTheWild(player)) {
             return;
         }
 
@@ -235,10 +218,7 @@ public class TamingManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.environmentallyAware(player)) {
+        if (!Permissions.environmentallyAware(player)) {
             return;
         }
 
@@ -273,10 +253,7 @@ public class TamingManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.thickFur(player)) {
+        if (!Permissions.thickFur(player)) {
             return;
         }
 
@@ -296,10 +273,7 @@ public class TamingManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.shockProof(player)) {
+        if (!Permissions.shockProof(player)) {
             return;
         }
 

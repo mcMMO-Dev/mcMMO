@@ -103,7 +103,7 @@ public class Herbalism {
 
         int randomChance = 1000;
 
-        if (player.hasPermission("mcmmo.perks.lucky.herbalism")) {
+        if (Permissions.luckyHerbalism(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
@@ -136,7 +136,7 @@ public class Herbalism {
                 mat = Material.WHEAT;
                 xp = Config.getInstance().getHerbalismXPWheat();
 
-                if (Permissions.getInstance().greenThumbWheat(player)) {
+                if (Permissions.greenThumbWheat(player)) {
                     greenThumbWheat(block, player, event, plugin);
                 }
             }
@@ -154,7 +154,7 @@ public class Herbalism {
                 mat = Material.NETHER_STALK;
                 xp = Config.getInstance().getHerbalismXPNetherWart();
 
-                if (Permissions.getInstance().greenThumbNetherwart(player)) {
+                if (Permissions.greenThumbNetherwart(player)) {
                     greenThumbWheat(block, player, event, plugin);
                 }
             }
@@ -211,7 +211,7 @@ public class Herbalism {
                 xp = Config.getInstance().getHerbalismXPCocoa();
 
 
-                if (Permissions.getInstance().greenThumbCocoa(player)) {
+                if (Permissions.greenThumbCocoa(player)) {
                     greenThumbWheat(block, player, event, plugin);
                 }
             }
@@ -223,7 +223,7 @@ public class Herbalism {
                 xp = Config.getInstance().getHerbalismXPCarrot();
 
 
-                if (Permissions.getInstance().greenThumbCarrots(player)) {
+                if (Permissions.greenThumbCarrots(player)) {
                     greenThumbWheat(block, player, event, plugin);
                 }
             }
@@ -234,7 +234,7 @@ public class Herbalism {
                 mat = Material.POTATO;
                 xp = Config.getInstance().getHerbalismXPPotato();
 
-                if (Permissions.getInstance().greenThumbPotatoes(player)) {
+                if (Permissions.greenThumbPotatoes(player)) {
                     greenThumbWheat(block, player, event, plugin);
                 }
             }
@@ -254,7 +254,7 @@ public class Herbalism {
             return;
         }
 
-        if (Permissions.getInstance().herbalismDoubleDrops(player)) {
+        if (Permissions.herbalismDoubleDrops(player)) {
             ItemStack is = null;
 
             if (customPlant) {
@@ -431,7 +431,7 @@ public class Herbalism {
 
         int randomChance = 1500;
 
-        if (player.hasPermission("mcmmo.perks.lucky.herbalism")) {
+        if (Permissions.luckyHerbalism(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
@@ -491,7 +491,7 @@ public class Herbalism {
 
         int randomChance = 1500;
 
-        if (player.hasPermission("mcmmo.perks.lucky.herbalism")) {
+        if (Permissions.luckyHerbalism(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 

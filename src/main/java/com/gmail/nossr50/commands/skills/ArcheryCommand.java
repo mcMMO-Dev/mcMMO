@@ -8,6 +8,7 @@ import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 
 public class ArcheryCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -30,6 +31,7 @@ public class ArcheryCommand extends SkillCommand {
     private boolean canSkillShot;
     private boolean canDaze;
     private boolean canRetrieve;
+    private boolean lucky;
 
     public ArcheryCommand() {
         super(SkillType.ARCHERY);
@@ -54,9 +56,10 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canSkillShot = permInstance.archeryBonus(player);
-        canDaze = permInstance.daze(player);
-        canRetrieve = permInstance.trackArrows(player);
+        canSkillShot = Permissions.archeryBonus(player);
+        canDaze = Permissions.daze(player);
+        canRetrieve = Permissions.trackArrows(player);
+        lucky = Permissions.luckyArchery(player);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.archery")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Archery" }) }));
         }

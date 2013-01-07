@@ -151,7 +151,7 @@ public class EntityListener implements Listener {
                     AcrobaticsManager acroManager = new AcrobaticsManager(player);
                     acroManager.rollCheck(event);
                 }
-                else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.getInstance().demolitionsExpertise(player)) {
+                else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.demolitionsExpertise(player)) {
                     BlastMining.demolitionsExpertise(player, event);
                 }
 
@@ -219,7 +219,7 @@ public class EntityListener implements Listener {
             if (plugin.tntIsTracked(id)) {
                 Player player = plugin.getTNTPlayer(id);
 
-                if (Permissions.getInstance().biggerBombs(player)) {
+                if (Permissions.biggerBombs(player)) {
                     BlastMining.biggerBombs(player, event);
                 }
             }
@@ -363,10 +363,10 @@ public class EntityListener implements Listener {
                     return;
                 }
 
-                if (herb && !Permissions.getInstance().farmersDiet(player)) {
+                if (herb && !Permissions.farmersDiet(player)) {
                     return;
                 }
-                else if (fish && !Permissions.getInstance().fishermansDiet(player)) {
+                else if (fish && !Permissions.fishermansDiet(player)) {
                     return;
                 }
 
@@ -399,7 +399,7 @@ public class EntityListener implements Listener {
 
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
-        if (Permissions.getInstance().taming(player) && !mcMMO.p.placeStore.isSpawnedPet((Entity) event.getEntity())) {
+        if (Permissions.taming(player) && !mcMMO.p.placeStore.isSpawnedPet((Entity) event.getEntity())) {
             PlayerProfile profile = Users.getProfile(player);
             EntityType type = event.getEntityType();
             int xp = 0;

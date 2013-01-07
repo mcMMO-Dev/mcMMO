@@ -14,13 +14,11 @@ public class SwordsManager {
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
-    private Permissions permissionsInstance;
 
     public SwordsManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
         this.skillLevel = profile.getSkillLevel(SkillType.SWORDS);
-        this.permissionsInstance =  Permissions.getInstance();
     }
 
     /**
@@ -32,10 +30,7 @@ public class SwordsManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.swordsBleed(player)) {
+        if (!Permissions.swordsBleed(player)) {
             return;
         }
 
@@ -46,7 +41,7 @@ public class SwordsManager {
             int bleedMaxLevel = AdvancedConfig.getInstance().getBleedMaxBonusLevel();
             int randomChance = 100;
 
-            if (player.hasPermission("mcmmo.perks.lucky.swords")) {
+            if (Permissions.luckySwords(player)) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
@@ -62,10 +57,7 @@ public class SwordsManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.counterAttack(player)) {
+        if (!Permissions.counterAttack(player)) {
             return;
         }
 
@@ -77,7 +69,7 @@ public class SwordsManager {
             int counterMaxLevel = AdvancedConfig.getInstance().getCounterMaxBonusLevel();
             int randomChance = 100;
 
-            if (player.hasPermission("mcmmo.perks.lucky.swords")) {
+            if (Permissions.luckySwords(player)) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
@@ -93,10 +85,7 @@ public class SwordsManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.serratedStrikes(player)) {
+        if (!Permissions.serratedStrikes(player)) {
             return;
         }
 

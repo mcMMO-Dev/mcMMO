@@ -13,13 +13,11 @@ public class UnarmedManager {
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
-    private Permissions permissionsInstance;
 
     public UnarmedManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
         this.skillLevel = profile.getSkillLevel(SkillType.UNARMED);
-        this.permissionsInstance =  Permissions.getInstance();
     }
 
     /**
@@ -31,10 +29,7 @@ public class UnarmedManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.disarm(player)) {
+        if (!Permissions.disarm(player)) {
             return;
         }
 
@@ -47,7 +42,7 @@ public class UnarmedManager {
             int disarmMaxLevel = AdvancedConfig.getInstance().getDisarmMaxBonusLevel();
             int randomChance = 100;
 
-            if (player.hasPermission("mcmmo.perks.lucky.unarmed")) {
+            if (Permissions.luckyUnarmed(player)) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
@@ -71,10 +66,7 @@ public class UnarmedManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.deflect(player)) {
+        if (!Permissions.deflect(player)) {
             return;
         }
 
@@ -84,7 +76,7 @@ public class UnarmedManager {
         int deflectMaxLevel = AdvancedConfig.getInstance().getDeflectMaxBonusLevel();
         int randomChance = 100;
 
-        if (player.hasPermission("mcmmo.perks.lucky.unarmed")) {
+        if (Permissions.luckyUnarmed(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
@@ -104,10 +96,7 @@ public class UnarmedManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.unarmedBonus(player)) {
+        if (!Permissions.unarmedBonus(player)) {
             return;
         }
 
@@ -127,10 +116,7 @@ public class UnarmedManager {
         if(defender == null)
             return false;
 
-        if(permissionsInstance == null)
-            return false;
-
-        if (!permissionsInstance.ironGrip(defender)) {
+        if (!Permissions.ironGrip(defender)) {
             return false;
         }
 
@@ -140,7 +126,7 @@ public class UnarmedManager {
         int ironGripMaxLevel = AdvancedConfig.getInstance().getIronGripMaxBonusLevel();
         int randomChance = 100;
 
-        if (defender.hasPermission("mcmmo.perks.lucky.unarmed")) {
+        if (Permissions.luckyUnarmed(defender)) {
             randomChance = (int) (randomChance * 0.75);
         }
 

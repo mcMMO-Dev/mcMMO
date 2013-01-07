@@ -9,6 +9,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 
 public class TamingCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -31,6 +32,7 @@ public class TamingCommand extends SkillCommand {
     private boolean canShockProof;
     private boolean canCallWild;
     private boolean canFastFood;
+    private boolean lucky;
 
     public TamingCommand() {
         super(SkillType.TAMING);
@@ -45,14 +47,15 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canBeastLore = permInstance.beastLore(player);
-        canCallWild = permInstance.callOfTheWild(player);
-        canEnvironmentallyAware = permInstance.environmentallyAware(player);
-        canFastFood = permInstance.fastFoodService(player);
-        canGore = permInstance.gore(player);
-        canSharpenedClaws = permInstance.sharpenedClaws(player);
-        canShockProof = permInstance.shockProof(player);
-        canThickFur = permInstance.thickFur(player);
+        canBeastLore = Permissions.beastLore(player);
+        canCallWild = Permissions.callOfTheWild(player);
+        canEnvironmentallyAware = Permissions.environmentallyAware(player);
+        canFastFood = Permissions.fastFoodService(player);
+        canGore = Permissions.gore(player);
+        canSharpenedClaws = Permissions.sharpenedClaws(player);
+        canShockProof = Permissions.shockProof(player);
+        canThickFur = Permissions.thickFur(player);
+        lucky = Permissions.luckyTaming(player);
     }
 
     @Override
@@ -62,7 +65,7 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.taming")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Taming" }) }));
         }

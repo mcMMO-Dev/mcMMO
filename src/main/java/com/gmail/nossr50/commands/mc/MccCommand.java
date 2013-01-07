@@ -24,19 +24,19 @@ public class MccCommand implements CommandExecutor {
 
         player.sendMessage(ChatColor.RED + "---[]" + ChatColor.YELLOW + "mcMMO Commands" + ChatColor.RED + "[]---"); //TODO: Needs more locale.
 
-        if (Permissions.getInstance().party(player)) {
+        if (Permissions.party(player)) {
             player.sendMessage(LocaleLoader.getString("Commands.Party.Commands"));
             player.sendMessage("/party " + LocaleLoader.getString("Commands.Party"));
             player.sendMessage("/party q " + LocaleLoader.getString("Commands.Party.Quit"));
 
-            if (Permissions.getInstance().partyChat(player)) {
+            if (Permissions.partyChat(player)) {
                 player.sendMessage("/p " + LocaleLoader.getString("Commands.Party.Toggle"));
             }
 
             player.sendMessage("/invite " + LocaleLoader.getString("Commands.Party.Invite"));
             player.sendMessage("/accept " + LocaleLoader.getString("Commands.Party.Accept"));
 
-            if (Permissions.getInstance().partyTeleport(player)) {
+            if (Permissions.partyTeleport(player)) {
                 player.sendMessage("/ptp " + LocaleLoader.getString("Commands.Party.Teleport"));
             }
         }
@@ -45,27 +45,27 @@ public class MccCommand implements CommandExecutor {
         player.sendMessage("/mcstats " + LocaleLoader.getString("Commands.Stats"));
         player.sendMessage("/mctop " + LocaleLoader.getString("Commands.Leaderboards"));
 
-        if (Config.getInstance().getCommandSkillResetEnabled() && Permissions.getInstance().skillReset(player)) {
+        if (Config.getInstance().getCommandSkillResetEnabled() && Permissions.skillReset(player)) {
             player.sendMessage("/skillreset <skill|all> " + LocaleLoader.getString("Commands.Reset"));
         }
 
-        if (Permissions.getInstance().mcAbility(player)) {
+        if (Permissions.mcAbility(player)) {
             player.sendMessage("/mcability " + LocaleLoader.getString("Commands.ToggleAbility"));
         }
 
-        if (Permissions.getInstance().adminChat(player)) {
+        if (Permissions.adminChat(player)) {
             player.sendMessage("/a " + LocaleLoader.getString("Commands.AdminToggle"));
         }
 
-        if (Permissions.getInstance().inspect(player)) {
+        if (Permissions.inspect(player)) {
             player.sendMessage("/inspect " + LocaleLoader.getString("Commands.Inspect"));
         }
 
-        if (Permissions.getInstance().mmoedit(player)) {
+        if (Permissions.mmoedit(player)) {
             player.sendMessage("/mmoedit " + LocaleLoader.getString("Commands.mmoedit"));
         }
 
-        if (Permissions.getInstance().mcgod(player)) {
+        if (Permissions.mcgod(player)) {
             player.sendMessage("/mcgod " + LocaleLoader.getString("Commands.mcgod"));
         }
 

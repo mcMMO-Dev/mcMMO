@@ -184,12 +184,11 @@ public class BlockListener implements Listener {
         ItemStack inHand = player.getItemInHand();
 
         Config configInstance = Config.getInstance();
-        Permissions permInstance = Permissions.getInstance();
 
         /* HERBALISM */
         if (BlockChecks.canBeGreenTerra(block)) {
             /* Green Terra */
-            if (profile.getToolPreparationMode(ToolType.HOE) && permInstance.greenTerra(player)) {
+            if (profile.getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(player)) {
                 Skills.abilityCheck(player, SkillType.HERBALISM);
             }
 
@@ -198,13 +197,13 @@ public class BlockListener implements Listener {
                 Herbalism.herbalismProcCheck(block, player, event, plugin);
             }
 
-            if (permInstance.herbalism(player)) {
+            if (Permissions.herbalism(player)) {
                 Herbalism.herbalismProcCheck(block, player, event, plugin);
             }
         }
 
         /* MINING */
-        else if (BlockChecks.canBeSuperBroken(block) && permInstance.mining(player)) {
+        else if (BlockChecks.canBeSuperBroken(block) && Permissions.mining(player)) {
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
                     Mining.miningBlockCheck(player, block);
@@ -216,7 +215,7 @@ public class BlockListener implements Listener {
         }
 
         /* WOOD CUTTING */
-        else if (BlockChecks.isLog(block) && permInstance.woodcutting(player)) {
+        else if (BlockChecks.isLog(block) && Permissions.woodcutting(player)) {
             if (configInstance.getWoodcuttingRequiresTool()) {
                 if (ItemChecks.isAxe(inHand)) {
                     WoodCutting.woodcuttingBlockCheck(player, block);
@@ -226,13 +225,13 @@ public class BlockListener implements Listener {
                 WoodCutting.woodcuttingBlockCheck(player, block);
             }
 
-            if (profile.getAbilityMode(AbilityType.TREE_FELLER) && permInstance.treeFeller(player) && ItemChecks.isAxe(inHand)) {
+            if (profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(inHand)) {
                 WoodCutting.treeFeller(event);
             }
         }
 
         /* EXCAVATION */
-        else if (BlockChecks.canBeGigaDrillBroken(block) && permInstance.excavation(player) && !mcMMO.placeStore.isTrue(block)) {
+        else if (BlockChecks.canBeGigaDrillBroken(block) && Permissions.excavation(player) && !mcMMO.placeStore.isTrue(block)) {
             if (configInstance.getExcavationRequiresTool()) {
                 if (ItemChecks.isShovel(inHand)) {
                     Excavation.excavationProcCheck(block, player);
@@ -298,7 +297,6 @@ public class BlockListener implements Listener {
         Material material = block.getType();
 
         Config configInstance = Config.getInstance();
-        Permissions permInstance = Permissions.getInstance();
 
         /*
          * ABILITY PREPARATION CHECKS
@@ -307,7 +305,7 @@ public class BlockListener implements Listener {
             if (profile.getToolPreparationMode(ToolType.HOE) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.makeMossy(block))) {
                 Skills.abilityCheck(player, SkillType.HERBALISM);
             }
-            else if (profile.getToolPreparationMode(ToolType.AXE) && BlockChecks.isLog(block) && permInstance.treeFeller(player)) {  //TODO: Why are we checking the permissions here?
+            else if (profile.getToolPreparationMode(ToolType.AXE) && BlockChecks.isLog(block) && Permissions.treeFeller(player)) {  //TODO: Why are we checking the permissions here?
                 Skills.abilityCheck(player, SkillType.WOODCUTTING);
             }
             else if (profile.getToolPreparationMode(ToolType.PICKAXE) && BlockChecks.canBeSuperBroken(block)) {
@@ -329,7 +327,7 @@ public class BlockListener implements Listener {
         /*
          * ABILITY TRIGGER CHECKS
          */
-        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && permInstance.greenTerra(player) && BlockChecks.makeMossy(block)) {
+        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && Permissions.greenTerra(player) && BlockChecks.makeMossy(block)) {
             Herbalism.greenTerra(player, block);
         }
         else if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {

@@ -6,6 +6,7 @@ import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 
 public class ExcavationCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -15,6 +16,7 @@ public class ExcavationCommand extends SkillCommand {
 
     private boolean canGigaDrill;
     private boolean canTreasureHunt;
+    private boolean lucky;
 
     public ExcavationCommand() {
         super(SkillType.EXCAVATION);
@@ -27,8 +29,9 @@ public class ExcavationCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canGigaDrill = permInstance.gigaDrillBreaker(player);
-        canTreasureHunt = permInstance.excavationTreasures(player);
+        canGigaDrill = Permissions.gigaDrillBreaker(player);
+        canTreasureHunt = Permissions.excavationTreasures(player);
+        lucky = Permissions.luckyExcavation(player);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class ExcavationCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.excavation")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Excavation" }) }));
         }

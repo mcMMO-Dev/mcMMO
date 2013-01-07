@@ -40,7 +40,6 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 
 public class Combat {
     private static Config configInstance = Config.getInstance();
-    private static Permissions permInstance = Permissions.getInstance();
 
     /**
      * Apply combat modifiers and process and XP gain.
@@ -86,7 +85,7 @@ public class Combat {
 
                 startGainXp(attacker, attackerProfile, target, SkillType.SWORDS);
             }
-            else if (ItemChecks.isAxe(itemInHand) && permInstance.axes(attacker)) {
+            else if (ItemChecks.isAxe(itemInHand) && Permissions.axes(attacker)) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!configInstance.getAxesPVP()) {
                         return;
@@ -98,25 +97,25 @@ public class Combat {
 
                 Skills.abilityCheck(attacker, SkillType.AXES);
 
-                if (permInstance.axeBonus(attacker)) {
+                if (Permissions.axeBonus(attacker)) {
                     Axes.axesBonus(attacker, event);
                 }
 
-                if (permInstance.criticalHit(attacker)) {
+                if (Permissions.criticalHit(attacker)) {
                     Axes.axeCriticalCheck(attacker, event);
                 }
 
-                if (permInstance.impact(attacker)) {
+                if (Permissions.impact(attacker)) {
                     Axes.impact(attacker, target, event);
                 }
 
-                if (attackerProfile.getAbilityMode(AbilityType.SKULL_SPLIITER) && permInstance.skullSplitter(attacker)) {
+                if (attackerProfile.getAbilityMode(AbilityType.SKULL_SPLIITER) && Permissions.skullSplitter(attacker)) {
                     applyAbilityAoE(attacker, target, event.getDamage() / 2, SkillType.AXES);
                 }
 
                 startGainXp(attacker, attackerProfile, target, SkillType.AXES);
             }
-            else if (itemInHand.getType() == Material.AIR && permInstance.unarmed(attacker)) {
+            else if (itemInHand.getType() == Material.AIR && Permissions.unarmed(attacker)) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!configInstance.getUnarmedPVP()) {
                         return;
@@ -132,7 +131,7 @@ public class Combat {
 
                 unarmedManager.bonusDamage(event);
 
-                if (attackerProfile.getAbilityMode(AbilityType.BERSERK) && permInstance.berserk(attacker)) {
+                if (attackerProfile.getAbilityMode(AbilityType.BERSERK) && Permissions.berserk(attacker)) {
                     event.setDamage((int) (event.getDamage() * 1.5));
                 }
 

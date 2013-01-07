@@ -138,7 +138,7 @@ public class SimpleRepairManager implements RepairManager {
         }
 
         // Handle the enchants
-        if (Config.getInstance().getArcaneForgingEnchantLossEnabled() && !Permissions.getInstance().arcaneBypass(player)) {
+        if (Config.getInstance().getArcaneForgingEnchantLossEnabled() && !Permissions.arcaneBypass(player)) {
             // Generalize away enchantment work
             Repair.addEnchants(player, item);
         }

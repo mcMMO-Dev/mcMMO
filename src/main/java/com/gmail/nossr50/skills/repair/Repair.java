@@ -27,7 +27,6 @@ public class Repair {
 
     private static Random random = new Random();
     private static Config configInstance = Config.getInstance();
-    private static Permissions permInstance = Permissions.getInstance();
 
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
@@ -92,7 +91,7 @@ public class Repair {
      * @param is Item being repaired
      */
     protected static void addEnchants(Player player, ItemStack is) {
-        if(permInstance.arcaneBypass(player)) {
+        if(Permissions.arcaneBypass(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Perfect"));
             return;
         }
@@ -104,7 +103,7 @@ public class Repair {
 
         int rank = getArcaneForgingRank(Users.getProfile(player));
 
-        if (rank == 0 || !permInstance.arcaneForging(player)) {
+        if (rank == 0 || !Permissions.arcaneForging(player)) {
             for (Enchantment x : enchants.keySet()) {
                 is.removeEnchantment(x);
             }
@@ -120,7 +119,7 @@ public class Repair {
 
             int randomChance = 100;
 
-            if (player.hasPermission("mcmmo.perks.lucky.repair")) {
+            if (Permissions.luckyRepair(player)) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
@@ -244,7 +243,7 @@ public class Repair {
         if(skillLevel >= repairMasteryMaxBonusLevel) bonus = ((float) repairMasteryChanceMax / 100F);
         else bonus = (((float) skillLevel) / ((float) repairMasteryMaxBonusLevel)) * (((float) repairMasteryChanceMax) / 100F);
 
-        if (permInstance.repairMastery(player)) {
+        if (Permissions.repairMastery(player)) {
             bonus = (((float) repairAmount) * bonus);
             repairAmount += (int) bonus;
         }
@@ -281,9 +280,9 @@ public class Repair {
         int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
         if (skillLevel >= MAX_BONUS_LEVEL) chance = MAX_CHANCE;
 
-        if (player.hasPermission("mcmmo.perks.lucky.repair")) randomChance = (int) (randomChance * 0.75);
+        if (Permissions.luckyRepair(player)) randomChance = (int) (randomChance * 0.75);
 
-        if (chance > random.nextInt(randomChance) && permInstance.repairBonus(player)){
+        if (chance > random.nextInt(randomChance) && Permissions.repairBonus(player)){
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }

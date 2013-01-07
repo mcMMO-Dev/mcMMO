@@ -144,35 +144,34 @@ public enum AbilityType {
      * @return true if the player has permissions, false otherwise
      */
     public boolean getPermissions(Player player) {
-        Permissions permInstance = Permissions.getInstance();
 
         switch (this) {
         case BERSERK:
-            return permInstance.berserk(player);
+            return Permissions.berserk(player);
 
         case BLAST_MINING:
-            return permInstance.blastMining(player);
+            return Permissions.blastMining(player);
 
         case GIGA_DRILL_BREAKER:
-            return permInstance.gigaDrillBreaker(player);
+            return Permissions.gigaDrillBreaker(player);
 
         case GREEN_TERRA:
-            return permInstance.greenTerra(player);
+            return Permissions.greenTerra(player);
 
         case LEAF_BLOWER:
-            return permInstance.leafBlower(player);
+            return Permissions.leafBlower(player);
 
         case SERRATED_STRIKES:
-            return permInstance.serratedStrikes(player);
+            return Permissions.serratedStrikes(player);
 
         case SKULL_SPLIITER:
-            return permInstance.skullSplitter(player);
+            return Permissions.skullSplitter(player);
 
         case SUPER_BREAKER:
-            return permInstance.superBreaker(player);
+            return Permissions.superBreaker(player);
 
         case TREE_FELLER:
-            return permInstance.treeFeller(player);
+            return Permissions.treeFeller(player);
 
         default:
             return false;

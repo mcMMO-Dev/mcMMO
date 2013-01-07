@@ -13,7 +13,6 @@ public class AcrobaticsManager {
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
-    private Permissions permissionInstance = Permissions.getInstance();
 
     public AcrobaticsManager (Player player) {
         this.player = player;
@@ -30,7 +29,7 @@ public class AcrobaticsManager {
         if(player == null)
             return;
 
-        if (!permissionInstance.roll(player)) {
+        if (!Permissions.roll(player)) {
             return;
         }
 
@@ -41,7 +40,7 @@ public class AcrobaticsManager {
 
         int randomChance = 1000;
 
-        if (player.hasPermission("mcmmo.perks.lucky.acrobatics")) {
+        if (Permissions.luckyAcrobatics(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
@@ -64,7 +63,7 @@ public class AcrobaticsManager {
         if(player == null)
             return;
 
-        if (!permissionInstance.dodge(player)) {
+        if (!Permissions.dodge(player)) {
             return;
         }
 
@@ -72,7 +71,7 @@ public class AcrobaticsManager {
 
         int randomChance = 4000;
 
-        if (player.hasPermission("mcmmo.perks.lucky.acrobatics")) {
+        if (Permissions.luckyAcrobatics(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 

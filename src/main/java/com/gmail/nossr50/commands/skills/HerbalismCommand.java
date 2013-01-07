@@ -9,6 +9,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 
 public class HerbalismCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -35,6 +36,7 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canFarmersDiet;
     private boolean canDoubleDrop;
     private boolean doubleDropsDisabled;
+    private boolean lucky;
 
     public HerbalismCommand() {
         super(SkillType.HERBALISM);
@@ -63,12 +65,13 @@ public class HerbalismCommand extends SkillCommand {
     protected void permissionsCheck() {
         Config configInstance = Config.getInstance();
 
-        canGreenTerra = permInstance.greenTerra(player);
-        canGreenThumbWheat = permInstance.greenThumbWheat(player);
-        canGreenThumbBlocks = permInstance.greenThumbBlocks(player);
-        canFarmersDiet = permInstance.farmersDiet(player);
-        canDoubleDrop = permInstance.herbalismDoubleDrops(player);
+        canGreenTerra = Permissions.greenTerra(player);
+        canGreenThumbWheat = Permissions.greenThumbWheat(player);
+        canGreenThumbBlocks = Permissions.greenThumbBlocks(player);
+        canFarmersDiet = Permissions.farmersDiet(player);
+        canDoubleDrop = Permissions.herbalismDoubleDrops(player);
         doubleDropsDisabled = configInstance.herbalismDoubleDropsDisabled();
+        lucky = Permissions.luckyHerbalism(player);
     }
 
     @Override
@@ -78,7 +81,7 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.herbalism")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Herbalism" }) }));
         }
