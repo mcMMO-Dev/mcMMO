@@ -9,6 +9,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 
 public class AxesCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -32,6 +33,7 @@ public class AxesCommand extends SkillCommand {
     private boolean canBonusDamage;
     private boolean canImpact;
     private boolean canGreaterImpact;
+    private boolean lucky;
 
     public AxesCommand() {
         super(SkillType.AXES);
@@ -54,11 +56,12 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canSkullSplitter = permInstance.skullSplitter(player);
-        canCritical = permInstance.criticalHit(player);
-        canBonusDamage = permInstance.axeBonus(player);
-        canImpact = permInstance.impact(player);
-        canGreaterImpact = permInstance.greaterImpact(player);
+        canSkullSplitter = Permissions.skullSplitter(player);
+        canCritical = Permissions.criticalHit(player);
+        canBonusDamage = Permissions.axeBonus(player);
+        canImpact = Permissions.impact(player);
+        canGreaterImpact = Permissions.greaterImpact(player);
+        lucky = Permissions.luckyAxes(player);
     }
 
     @Override
@@ -68,7 +71,7 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.axes")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Axes" }) }));
         }

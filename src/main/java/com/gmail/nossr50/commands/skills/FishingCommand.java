@@ -7,6 +7,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.gathering.Fishing;
+import com.gmail.nossr50.util.Permissions;
 
 public class FishingCommand extends SkillCommand {
 
@@ -22,6 +23,7 @@ public class FishingCommand extends SkillCommand {
     private boolean canMagicHunt;
     private boolean canShake;
     private boolean canFishermansDiet;
+    private boolean lucky;
 
     public FishingCommand() {
         super(SkillType.FISHING);
@@ -32,7 +34,7 @@ public class FishingCommand extends SkillCommand {
         lootTier = Fishing.getFishingLootTier(profile);
         magicChance = percent.format(lootTier / 15D);
         int dropChance = Fishing.getShakeChance(lootTier);
-        if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
+        if (Permissions.luckyFishing(player)) {
             dropChance = (int) (dropChance * 1.25D);
         }
         shakeChance = String.valueOf(dropChance);
@@ -57,10 +59,11 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canTreasureHunt = permInstance.fishingTreasures(player);
-        canMagicHunt = permInstance.fishingMagic(player);
-        canShake = permInstance.shakeMob(player);
-        canFishermansDiet = permInstance.fishermansDiet(player);
+        canTreasureHunt = Permissions.fishingTreasures(player);
+        canMagicHunt = Permissions.fishingMagic(player);
+        canShake = Permissions.shakeMob(player);
+        canFishermansDiet = Permissions.fishermansDiet(player);
+        lucky = Permissions.luckyFishing(player);
     }
 
     @Override
@@ -70,7 +73,7 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Fishing" }) }));
         }

@@ -12,6 +12,7 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class McMMOPlayer {
@@ -154,19 +155,19 @@ public class McMMOPlayer {
             }
         }
 
-        if (player.hasPermission("mcmmo.perks.xp.quadruple")) {
+        if (Permissions.xpQuadruple(player)) {
             xp = xp * 4;
         }
-        else if (player.hasPermission("mcmmo.perks.xp.triple")) {
+        else if (Permissions.xpTriple(player)) {
             xp = xp * 3;
         }
-        else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
+        else if (Permissions.xpDoubleAndOneHalf(player)) {
             xp = (int) (xp * 2.5);
         }
-        else if (player.hasPermission("mcmmo.perks.xp.double")) {
+        else if (Permissions.xpDouble(player)) {
             xp = xp * 2;
         }
-        else if (player.hasPermission("mcmmo.perks.xp.50percentboost")) {
+        else if (Permissions.xpOneAndOneHalf(player)) {
             xp = (int) (xp * 1.5);
         }
 

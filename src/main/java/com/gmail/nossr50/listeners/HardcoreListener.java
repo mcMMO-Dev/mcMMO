@@ -23,7 +23,7 @@ public class HardcoreListener implements Listener {
 
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
-        if (!Permissions.getInstance().hardcoremodeBypass(player)) {
+        if (!Permissions.hardcoremodeBypass(player)) {
             if (player.getKiller() != null && Config.getInstance().getHardcoreVampirismEnabled()) {
                 Hardcore.invokeVampirism(player.getKiller(), player);
             }

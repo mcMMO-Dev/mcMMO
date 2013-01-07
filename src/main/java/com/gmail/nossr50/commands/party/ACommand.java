@@ -81,7 +81,7 @@ public class ACommand implements CommandExecutor {
                 plugin.getLogger().info("[A]<" + player.getName() + "> " + message);
 
                 for (Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
-                    if (Permissions.getInstance().adminChat(otherPlayer) || otherPlayer.isOp()) {
+                    if (Permissions.adminChat(otherPlayer) || otherPlayer.isOp()) {
                         otherPlayer.sendMessage(prefix + message);
                     }
                 }
@@ -100,7 +100,7 @@ public class ACommand implements CommandExecutor {
                 plugin.getLogger().info("[A]<*Console*> " + message);
 
                 for (Player player : plugin.getServer().getOnlinePlayers()) {
-                    if (Permissions.getInstance().adminChat(player) || player.isOp()) {
+                    if (Permissions.adminChat(player) || player.isOp()) {
                         player.sendMessage(prefix + message);
                     }
                 }

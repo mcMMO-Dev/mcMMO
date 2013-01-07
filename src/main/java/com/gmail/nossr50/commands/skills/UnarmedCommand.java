@@ -8,6 +8,7 @@ import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 
 public class UnarmedCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -28,6 +29,7 @@ public class UnarmedCommand extends SkillCommand {
     private boolean canDisarm;
     private boolean canBonusDamage;
     private boolean canDeflect;
+    private boolean lucky;
 
     public UnarmedCommand() {
         super(SkillType.UNARMED);
@@ -50,10 +52,11 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canBerserk = permInstance.berserk(player);
-        canBonusDamage = permInstance.unarmedBonus(player);
-        canDeflect = permInstance.deflect(player);
-        canDisarm = permInstance.disarm(player);
+        canBerserk = Permissions.berserk(player);
+        canBonusDamage = Permissions.unarmedBonus(player);
+        canDeflect = Permissions.deflect(player);
+        canDisarm = Permissions.disarm(player);
+        lucky = Permissions.luckyUnarmed(player);
     }
 
     @Override
@@ -63,7 +66,7 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.unarmed")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Unarmed" }) }));
         }

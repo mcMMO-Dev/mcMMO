@@ -23,28 +23,28 @@ public enum RepairMaterialType {
     public boolean getPermissions(Player player) {
         switch (this) {
         case STRING:
-            return Permissions.getInstance().stringRepair(player);
+            return Permissions.stringRepair(player);
 
         case LEATHER:
-            return Permissions.getInstance().leatherRepair(player);
+            return Permissions.leatherRepair(player);
 
         case WOOD:
-            return Permissions.getInstance().woodRepair(player);
+            return Permissions.woodRepair(player);
 
         case STONE:
-            return Permissions.getInstance().stoneRepair(player);
+            return Permissions.stoneRepair(player);
 
         case IRON:
-            return Permissions.getInstance().ironRepair(player);
+            return Permissions.ironRepair(player);
 
         case GOLD:
-            return Permissions.getInstance().goldRepair(player);
+            return Permissions.goldRepair(player);
 
         case DIAMOND:
-            return Permissions.getInstance().diamondRepair(player);
+            return Permissions.diamondRepair(player);
 
         case OTHER:
-            return Permissions.getInstance().otherMaterialRepair(player);
+            return Permissions.otherMaterialRepair(player);
 
         default:
             return false;

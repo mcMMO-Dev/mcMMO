@@ -75,40 +75,40 @@ public enum SkillType {
     public boolean getPermissions(Player player) {
         switch (this) {
         case ACROBATICS:
-            return Permissions.getInstance().acrobatics(player);
+            return Permissions.acrobatics(player);
 
         case ARCHERY:
-            return Permissions.getInstance().archery(player);
+            return Permissions.archery(player);
 
         case AXES:
-            return Permissions.getInstance().axes(player);
+            return Permissions.axes(player);
 
         case EXCAVATION:
-            return Permissions.getInstance().excavation(player);
+            return Permissions.excavation(player);
 
         case FISHING:
-            return Permissions.getInstance().fishing(player);
+            return Permissions.fishing(player);
 
         case HERBALISM:
-            return Permissions.getInstance().herbalism(player);
+            return Permissions.herbalism(player);
 
         case MINING:
-            return Permissions.getInstance().mining(player);
+            return Permissions.mining(player);
 
         case REPAIR:
-            return Permissions.getInstance().repair(player);
+            return Permissions.repair(player);
 
         case SWORDS:
-            return Permissions.getInstance().swords(player);
+            return Permissions.swords(player);
 
         case TAMING:
-            return Permissions.getInstance().taming(player);
+            return Permissions.taming(player);
 
         case UNARMED:
-            return Permissions.getInstance().unarmed(player);
+            return Permissions.unarmed(player);
 
         case WOODCUTTING:
-            return Permissions.getInstance().woodcutting(player);
+            return Permissions.woodcutting(player);
 
         default:
             return false;

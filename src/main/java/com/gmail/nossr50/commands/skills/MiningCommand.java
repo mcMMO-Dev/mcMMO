@@ -10,6 +10,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 
 public class MiningCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -38,6 +39,7 @@ public class MiningCommand extends SkillCommand {
     private boolean canBiggerBombs;
     private boolean canDemoExpert;
     private boolean doubleDropsDisabled;
+    private boolean lucky;
 
     public MiningCommand() {
         super(SkillType.MINING);
@@ -101,12 +103,13 @@ public class MiningCommand extends SkillCommand {
     protected void permissionsCheck() {
         Config configInstance = Config.getInstance();
 
-        canBiggerBombs = permInstance.biggerBombs(player);
-        canBlast = permInstance.blastMining(player);
-        canDemoExpert = permInstance.demolitionsExpertise(player);
-        canDoubleDrop = permInstance.miningDoubleDrops(player);
-        canSuperBreaker = permInstance.superBreaker(player);
+        canBiggerBombs = Permissions.biggerBombs(player);
+        canBlast = Permissions.blastMining(player);
+        canDemoExpert = Permissions.demolitionsExpertise(player);
+        canDoubleDrop = Permissions.miningDoubleDrops(player);
+        canSuperBreaker = Permissions.superBreaker(player);
         doubleDropsDisabled = configInstance.miningDoubleDropsDisabled();
+        lucky = Permissions.luckyMining(player);
     }
 
     @Override
@@ -116,7 +119,7 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.mining")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Mining" }) }));
         }

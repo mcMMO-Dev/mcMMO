@@ -61,7 +61,7 @@ public class Excavation {
             xp = Config.getInstance().getExcavationBaseXP();
         }
 
-        if (Permissions.getInstance().excavationTreasures(player)) {
+        if (Permissions.excavationTreasures(player)) {
             switch (type) {
             case DIRT:
                 treasures = TreasuresConfig.getInstance().excavationFromDirt;
@@ -99,7 +99,7 @@ public class Excavation {
                 if (skillLevel >= treasure.getDropLevel()) {
                     int randomChance = 100;
 
-                    if (player.hasPermission("mcmmo.perks.lucky.excavation")) {
+                    if (Permissions.luckyExcavation(player)) {
                         randomChance = (int) (randomChance * 0.75);
                     }
 

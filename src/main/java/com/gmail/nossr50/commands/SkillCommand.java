@@ -25,7 +25,6 @@ public abstract class SkillCommand implements CommandExecutor {
     protected float skillValue;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
-    protected Permissions permInstance = Permissions.getInstance();
 
     public SkillCommand(SkillType skill) {
         this.skill = skill;

@@ -46,13 +46,13 @@ public class Skills {
         int adjustedCooldown = cooldown;
 
         //Reduced Cooldown Donor Perks
-        if (player.hasPermission("mcmmo.perks.cooldowns.halved")) {
+        if (Permissions.cooldownsHalved(player)) {
             adjustedCooldown = (int) (adjustedCooldown * 0.5);
         }
-        else if (player.hasPermission("mcmmo.perks.cooldowns.thirded")) {
+        else if (Permissions.cooldownsThirded(player)) {
             adjustedCooldown = (int) (adjustedCooldown * 0.66);
         }
-        else if (player.hasPermission("mcmmo.perks.cooldowns.quartered")) {
+        else if (Permissions.cooldownsQuartered(player)) {
             adjustedCooldown = (int) (adjustedCooldown * 0.75);
         }
 
@@ -75,13 +75,13 @@ public class Skills {
         int adjustedCooldown = cooldown;
 
         //Reduced Cooldown Donor Perks
-        if (player.hasPermission("mcmmo.perks.cooldowns.halved")) {
+        if (Permissions.cooldownsHalved(player)) {
             adjustedCooldown = (int) (adjustedCooldown * 0.5);
         }
-        else if (player.hasPermission("mcmmo.perks.cooldowns.thirded")) {
+        else if (Permissions.cooldownsThirded(player)) {
             adjustedCooldown = (int) (adjustedCooldown * 0.66);
         }
-        else if (player.hasPermission("mcmmo.perks.cooldowns.quartered")) {
+        else if (Permissions.cooldownsQuartered(player)) {
             adjustedCooldown = (int) (adjustedCooldown * 0.75);
         }
 
@@ -343,11 +343,11 @@ public class Skills {
      * @return true if the player has combat skills, false otherwise
      */
     public static boolean hasCombatSkills(Player player) {
-        if (Permissions.getInstance().axes(player)
-                || Permissions.getInstance().archery(player)
-                || Permissions.getInstance().swords(player)
-                || Permissions.getInstance().taming(player)
-                || Permissions.getInstance().unarmed(player)) {
+        if (Permissions.axes(player)
+                || Permissions.archery(player)
+                || Permissions.swords(player)
+                || Permissions.taming(player)
+                || Permissions.unarmed(player)) {
             return true;
         }
         else {
@@ -362,11 +362,11 @@ public class Skills {
      * @return true if the player has gathering skills, false otherwise
      */
     public static boolean hasGatheringSkills(Player player) {
-        if (Permissions.getInstance().excavation(player)
-                || Permissions.getInstance().fishing(player)
-                || Permissions.getInstance().herbalism(player)
-                || Permissions.getInstance().mining(player)
-                || Permissions.getInstance().woodcutting(player)) {
+        if (Permissions.excavation(player)
+                || Permissions.fishing(player)
+                || Permissions.herbalism(player)
+                || Permissions.mining(player)
+                || Permissions.woodcutting(player)) {
             return true;
         }
         else {
@@ -381,7 +381,7 @@ public class Skills {
      * @return true if the player has misc skills, false otherwise
      */
     public static boolean hasMiscSkills(Player player) {
-        if (Permissions.getInstance().acrobatics(player) || Permissions.getInstance().repair(player)) {
+        if (Permissions.acrobatics(player) || Permissions.repair(player)) {
             return true;
         }
         else {
@@ -440,13 +440,13 @@ public class Skills {
 
         int ticks = 2 + (profile.getSkillLevel(type) / abilityLengthIncreaseLevel);
 
-        if (player.hasPermission("mcmmo.perks.activationtime.twelveseconds")) {
+        if (Permissions.activationTwelve(player)) {
             ticks = ticks + 12;
         }
-        else if (player.hasPermission("mcmmo.perks.activationtime.eightseconds")) {
+        else if (Permissions.activationEight(player)) {
             ticks = ticks + 8;
         }
-        else if (player.hasPermission("mcmmo.perks.activationtime.fourseconds")) {
+        else if (Permissions.activationFour(player)) {
             ticks = ticks + 4;
         }
 

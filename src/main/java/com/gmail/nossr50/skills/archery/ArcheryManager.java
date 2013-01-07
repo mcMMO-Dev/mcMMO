@@ -13,7 +13,6 @@ public class ArcheryManager {
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
-    private Permissions permissionsInstance;
 
     public ArcheryManager (Player player) {
         this.player = player;
@@ -24,7 +23,6 @@ public class ArcheryManager {
             return;
 
         this.skillLevel = profile.getSkillLevel(SkillType.ARCHERY);
-        this.permissionsInstance =  Permissions.getInstance();
     }
 
     /**
@@ -36,17 +34,14 @@ public class ArcheryManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.trackArrows(player)) {
+        if (!Permissions.trackArrows(player)) {
             return;
         }
 
         ArrowTrackingEventHandler eventHandler = new ArrowTrackingEventHandler(this, livingEntity);
 
         int randomChance = 100;
-        if (player.hasPermission("mcmmo.perks.lucky.archery")) {
+        if (Permissions.luckyArchery(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
@@ -68,10 +63,7 @@ public class ArcheryManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.daze(player)) {
+        if (!Permissions.daze(player)) {
             return;
         }
 
@@ -79,7 +71,7 @@ public class ArcheryManager {
 
         int randomChance = 100;
 
-        if (player.hasPermission("mcmmo.perks.lucky.archery")) {
+        if (Permissions.luckyArchery(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
@@ -101,10 +93,7 @@ public class ArcheryManager {
         if(player == null)
             return;
 
-        if(permissionsInstance == null)
-            return;
-
-        if (!permissionsInstance.archeryBonus(player)) {
+        if (!Permissions.archeryBonus(player)) {
             return;
         }
 

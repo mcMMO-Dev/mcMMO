@@ -9,6 +9,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 
 public class WoodcuttingCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -24,6 +25,7 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canLeafBlow;
     private boolean canDoubleDrop;
     private boolean doubleDropsDisabled;
+    private boolean lucky;
 
     public WoodcuttingCommand() {
         super(SkillType.WOODCUTTING);
@@ -42,10 +44,11 @@ public class WoodcuttingCommand extends SkillCommand {
     protected void permissionsCheck() {
         Config configInstance = Config.getInstance();
 
-        canTreeFell = permInstance.treeFeller(player);
-        canDoubleDrop = permInstance.woodcuttingDoubleDrops(player);
-        canLeafBlow = permInstance.leafBlower(player);
+        canTreeFell = Permissions.treeFeller(player);
+        canDoubleDrop = Permissions.woodcuttingDoubleDrops(player);
+        canLeafBlow = Permissions.leafBlower(player);
         doubleDropsDisabled = configInstance.woodcuttingDoubleDropsDisabled();
+        lucky = Permissions.luckyWoodcutting(player);
     }
 
     @Override
@@ -55,7 +58,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.woodcutting")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Woodcutting" }) }));
         }
