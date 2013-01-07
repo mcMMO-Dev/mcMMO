@@ -18,7 +18,6 @@ public class AcrobaticsManager {
         this.player = player;
         this.profile = Users.getProfile(player);
         this.skillLevel = profile.getSkillLevel(SkillType.ACROBATICS);
-        this.permissionInstance = Permissions.getInstance();
     }
 
     /**
