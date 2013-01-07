@@ -23,7 +23,7 @@ public class CommandHelper {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!Permissions.getInstance().permission(player, permission)) {
+            if (!Permissions.hasPermission(player, permission)) {
                 player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
                 return true;
             }
@@ -58,23 +58,23 @@ public class CommandHelper {
 
             display.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
 
-            if (Permissions.getInstance().excavation(inspect)) {
+            if (Permissions.excavation(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Excavation.Listener"), profile.getSkillLevel(SkillType.EXCAVATION), profile.getSkillXpLevel(SkillType.EXCAVATION), profile.getXpToLevel(SkillType.EXCAVATION) }));
             }
 
-            if (Permissions.getInstance().fishing(inspect)) {
+            if (Permissions.fishing(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Fishing.Listener"), profile.getSkillLevel(SkillType.FISHING), profile.getSkillXpLevel(SkillType.FISHING), profile.getXpToLevel(SkillType.FISHING) }));
             }
 
-            if (Permissions.getInstance().herbalism(inspect)) {
+            if (Permissions.herbalism(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Herbalism.Listener"), profile.getSkillLevel(SkillType.HERBALISM), profile.getSkillXpLevel(SkillType.HERBALISM), profile.getXpToLevel(SkillType.HERBALISM) }));
             }
 
-            if (Permissions.getInstance().mining(inspect)) {
+            if (Permissions.mining(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Mining.Listener"), profile.getSkillLevel(SkillType.MINING), profile.getSkillXpLevel(SkillType.MINING), profile.getXpToLevel(SkillType.MINING) }));
             }
 
-            if (Permissions.getInstance().woodcutting(inspect)) {
+            if (Permissions.woodcutting(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Woodcutting.Listener"), profile.getSkillLevel(SkillType.WOODCUTTING), profile.getSkillXpLevel(SkillType.WOODCUTTING), profile.getXpToLevel(SkillType.WOODCUTTING) }));
             }
         }
@@ -101,23 +101,23 @@ public class CommandHelper {
 
             display.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
 
-            if (Permissions.getInstance().axes(inspect)) {
+            if (Permissions.axes(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Axes.Listener"), profile.getSkillLevel(SkillType.AXES), profile.getSkillXpLevel(SkillType.AXES), profile.getXpToLevel(SkillType.AXES) }));
             }
 
-            if (Permissions.getInstance().archery(inspect)) {
+            if (Permissions.archery(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Archery.Listener"), profile.getSkillLevel(SkillType.ARCHERY), profile.getSkillXpLevel(SkillType.ARCHERY), profile.getXpToLevel(SkillType.ARCHERY) }));
             }
 
-            if (Permissions.getInstance().swords(inspect)) {
+            if (Permissions.swords(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Swords.Listener"), profile.getSkillLevel(SkillType.SWORDS), profile.getSkillXpLevel(SkillType.SWORDS), profile.getXpToLevel(SkillType.SWORDS) }));
             }
 
-            if (Permissions.getInstance().taming(inspect)) {
+            if (Permissions.taming(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Taming.Listener"), profile.getSkillLevel(SkillType.TAMING), profile.getSkillXpLevel(SkillType.TAMING), profile.getXpToLevel(SkillType.TAMING) }));
             }
 
-            if (Permissions.getInstance().unarmed(inspect)) {
+            if (Permissions.unarmed(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Unarmed.Listener"), profile.getSkillLevel(SkillType.UNARMED), profile.getSkillXpLevel(SkillType.UNARMED), profile.getXpToLevel(SkillType.UNARMED) }));
             }
         }
@@ -144,11 +144,11 @@ public class CommandHelper {
 
             display.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
 
-            if (Permissions.getInstance().acrobatics(inspect)) {
+            if (Permissions.acrobatics(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Acrobatics.Listener"), profile.getSkillLevel(SkillType.ACROBATICS), profile.getSkillXpLevel(SkillType.ACROBATICS), profile.getXpToLevel(SkillType.ACROBATICS) }));
             }
 
-            if (Permissions.getInstance().repair(inspect)) {
+            if (Permissions.repair(inspect)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", new Object[] { LocaleLoader.getString("Repair.Listener"), profile.getSkillLevel(SkillType.REPAIR), profile.getSkillXpLevel(SkillType.REPAIR), profile.getXpToLevel(SkillType.REPAIR) }));
             }
         }

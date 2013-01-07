@@ -30,7 +30,7 @@ public class InspectCommand implements CommandExecutor {
             if (mcmmoPlayer != null) {
                 Player target = mcmmoPlayer.getPlayer();
 
-                if (sender instanceof Player && !sender.isOp() && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0) && !Permissions.getInstance().inspectDistanceBypass((Player) sender)) {
+                if (sender instanceof Player && !sender.isOp() && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0) && !Permissions.inspectDistanceBypass((Player) sender)) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
                     return true;
                 }
@@ -44,7 +44,7 @@ public class InspectCommand implements CommandExecutor {
                 return true;
             }
             else {
-                if (sender instanceof Player && !sender.isOp() && !Permissions.getInstance().inspectOfflineBypass((Player) sender)) {
+                if (sender instanceof Player && !sender.isOp() && !Permissions.inspectOfflineBypass((Player) sender)) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
                     return true;
                 }

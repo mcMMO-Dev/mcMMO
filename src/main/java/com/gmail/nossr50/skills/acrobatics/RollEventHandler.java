@@ -83,7 +83,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
         if(player == null)
             return;
 
-        if (Permissions.getInstance().gracefulRoll(player)) {
+        if (Permissions.gracefulRoll(player)) {
             this.isGraceful = player.isSneaking();
         }
         else {

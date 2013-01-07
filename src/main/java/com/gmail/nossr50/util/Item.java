@@ -31,7 +31,7 @@ public class Item {
         Block block = player.getLocation().getBlock();
         int amount = inHand.getAmount();
 
-        if (Permissions.getInstance().chimaeraWing(player) && inHand.getTypeId() == Config.getInstance().getChimaeraItemId()) {
+        if (Permissions.chimaeraWing(player) && inHand.getTypeId() == Config.getInstance().getChimaeraItemId()) {
             if (Skills.cooldownOver(profile.getRecentlyHurt(), 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
                 player.setItemInHand(new ItemStack(Config.getInstance().getChimaeraItemId(), amount - Config.getInstance().getChimaeraCost()));
 

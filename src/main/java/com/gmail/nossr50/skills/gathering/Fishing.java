@@ -107,13 +107,13 @@ public class Fishing {
         }
 
         if (Config.getInstance().getFishingDropsEnabled() && rewards.size() > 0
-                && Permissions.getInstance().fishingTreasures(player)) {
+                && Permissions.fishingTreasures(player)) {
             FishingTreasure treasure = rewards.get(random.nextInt(rewards
                     .size()));
 
             int randomChance = 100;
 
-            if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
+            if (Permissions.luckyFishing(player)) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
@@ -167,12 +167,12 @@ public class Fishing {
             if (ItemChecks.isEnchantable(fishingResults)) {
                 int randomChance = 100;
 
-                if (player.hasPermission("mcmmo.perks.lucky.fishing")) {
+                if (Permissions.luckyFishing(player)) {
                     randomChance = (int) (randomChance * 0.75);
                 }
 
                 if (random.nextInt(randomChance) <= ENCHANTMENT_CHANCE
-                        && Permissions.getInstance().fishingMagic(player)) {
+                        && Permissions.fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
                             Map<Enchantment, Integer> resultEnchantments = fishingResults
@@ -226,7 +226,7 @@ public class Fishing {
     public static void shakeMob(PlayerFishEvent event) {
         int randomChance = 100;
 
-        if (event.getPlayer().hasPermission("mcmmo.perks.lucky.fishing")) {
+        if (Permissions.luckyFishing(event.getPlayer())) {
             randomChance = (int) (randomChance * 1.25);
         }
 
@@ -236,7 +236,7 @@ public class Fishing {
 
         int dropChance = getShakeChance(lootTier);
 
-        if (event.getPlayer().hasPermission("mcmmo.perks.lucky.fishing")) {
+        if (Permissions.luckyFishing(player)) {
             dropChance = (int) (dropChance * 1.25); // With lucky perk on max
             // level tier, its 100%
         }

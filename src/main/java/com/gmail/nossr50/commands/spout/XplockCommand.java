@@ -65,7 +65,7 @@ public class XplockCommand implements CommandExecutor {
 
         case 1:
             if (Skills.isSkill(args[0])) {
-                if (Permissions.getInstance().permission(player, "mcmmo.skills." + args[0].toLowerCase())) {
+                if (Permissions.hasPermission(player, "mcmmo.skills." + args[0].toLowerCase())) {
                     spoutHud.setXpBarLocked(true);
                     spoutHud.setSkillLock(Skills.getSkillType(args[0]));
                     spoutHud.updateXpBar();

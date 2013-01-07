@@ -12,6 +12,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Repairable;
+import com.gmail.nossr50.util.Permissions;
 
 public class RepairCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -36,6 +37,7 @@ public class RepairCommand extends SkillCommand {
     private boolean canRepairLeather;
     private boolean canRepairWood;
     private boolean arcaneBypass;
+    private boolean lucky;
 
     private int salvageLevel;
     private int diamondLevel;
@@ -74,18 +76,19 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canSuperRepair = permInstance.repairBonus(player);
-        canMasterRepair = permInstance.repairMastery(player);
-        canArcaneForge = permInstance.arcaneForging(player);
-        canSalvage = permInstance.salvage(player);
-        canRepairDiamond = permInstance.diamondRepair(player);
-        canRepairGold = permInstance.goldRepair(player);
-        canRepairIron = permInstance.ironRepair(player);
-        canRepairStone = permInstance.stoneRepair(player);
-        canRepairString = permInstance.stringRepair(player);
-        canRepairLeather = permInstance.leatherRepair(player);
-        canRepairWood = permInstance.woodRepair(player);
-        arcaneBypass = permInstance.arcaneBypass(player);
+        canSuperRepair = Permissions.repairBonus(player);
+        canMasterRepair = Permissions.repairMastery(player);
+        canArcaneForge = Permissions.arcaneForging(player);
+        canSalvage = Permissions.salvage(player);
+        canRepairDiamond = Permissions.diamondRepair(player);
+        canRepairGold = Permissions.goldRepair(player);
+        canRepairIron = Permissions.ironRepair(player);
+        canRepairStone = Permissions.stoneRepair(player);
+        canRepairString = Permissions.stringRepair(player);
+        canRepairLeather = Permissions.leatherRepair(player);
+        canRepairWood = Permissions.woodRepair(player);
+        arcaneBypass = Permissions.arcaneBypass(player);
+        lucky = Permissions.luckyRepair(player);
     }
 
     @Override
@@ -95,7 +98,7 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (player.hasPermission("mcmmo.perks.lucky.repair")) {
+        if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Repair" }) }));
         }
