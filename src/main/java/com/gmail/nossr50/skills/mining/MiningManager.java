@@ -45,7 +45,7 @@ public class MiningManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        float chance = (float) (((double) Mining.DOUBLE_DROPS_MAX_CHANCE / (double) Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL) * blockHandler.skillModifier);
+        float chance = (float) (((double) Mining.DOUBLE_DROPS_MAX_CHANCE / Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL) * blockHandler.skillModifier);
 
         if (chance > Mining.getRandom().nextInt(randomChance)) {
             blockHandler.processDrops();
