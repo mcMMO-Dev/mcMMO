@@ -336,7 +336,8 @@ public class HashChunkManager implements ChunkManager {
             }
         }
 
-        for(Entity entity : spawnedMobs) {
+        List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+        for(Entity entity : tempSpawnedMobs) {
             World entityWorld = entity.getWorld();
 
             if(world != entityWorld)
@@ -348,7 +349,8 @@ public class HashChunkManager implements ChunkManager {
             saveChunk(cx, cz, world);
         }
 
-        for(Entity entity : spawnedPets) {
+        List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+        for(Entity entity : tempSpawnedPets) {
             World entityWorld = entity.getWorld();
 
             if(world != entityWorld)
@@ -388,7 +390,8 @@ public class HashChunkManager implements ChunkManager {
 
         safeToRemoveMobs = false;
 
-        for(Entity entity : spawnedMobs) {
+        List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+        for(Entity entity : tempSpawnedMobs) {
             World entityWorld = entity.getWorld();
 
             if(world != entityWorld)
@@ -400,7 +403,8 @@ public class HashChunkManager implements ChunkManager {
             unloadChunk(cx, cz, world);
         }
 
-        for(Entity entity : spawnedPets) {
+	List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+        for(Entity entity : tempSpawnedPets) {
             World entityWorld = entity.getWorld();
 
             if(world != entityWorld)
