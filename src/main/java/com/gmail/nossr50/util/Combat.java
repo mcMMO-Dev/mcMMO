@@ -398,8 +398,8 @@ public class Combat {
                 baseXP = 20 * configInstance.getPlayerVersusPlayerXP();
             }
         }
-        else if (!mcMMO.placeStore.isSpawnedMob(((Entity) target))) {
-            if (target instanceof Animals && !mcMMO.placeStore.isSpawnedPet((Entity) target)) {
+        else if (!mcMMO.placeStore.isSpawnedMob(target)) {
+            if (target instanceof Animals && !mcMMO.placeStore.isSpawnedPet(target)) {
                 baseXP = configInstance.getAnimalsXP();
             }
             else {

@@ -175,10 +175,10 @@ public class HashChunkManager implements ChunkManager {
 
             for(LivingEntity entity : world.getLivingEntities()) {
                 if(mobs.contains(entity.getUniqueId()))
-                    addSpawnedMob((Entity) entity);
+                    addSpawnedMob(entity);
 
                 if(pets.contains(entity.getUniqueId()))
-                    addSpawnedPet((Entity) entity);
+                    addSpawnedPet(entity);
             }
 
             in.clearSpawnedMobs();

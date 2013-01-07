@@ -244,7 +244,7 @@ public class Repair {
         else bonus = (((float) skillLevel) / ((float) REPAIR_MASTERY_MAX_BONUS_LEVEL)) * (((float) REPAIR_MASTERY_CHANCE_MAX) / 100F);
 
         if (Permissions.repairMastery(player)) {
-            bonus = (((float) repairAmount) * bonus);
+            bonus = repairAmount * bonus;
             repairAmount += (int) bonus;
         }
 

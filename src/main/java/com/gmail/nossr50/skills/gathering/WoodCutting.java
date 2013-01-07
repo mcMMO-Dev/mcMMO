@@ -84,7 +84,7 @@ public class WoodCutting {
                 if (health >= 2) {
                     Combat.dealDamage(player, random.nextInt(health - 1));
                 }
-                inHand.setDurability((short) (inHand.getType().getMaxDurability()));
+                inHand.setDurability(inHand.getType().getMaxDurability());
                 return;
             }
         }
@@ -96,7 +96,7 @@ public class WoodCutting {
             if (health >= 2) {
                 Combat.dealDamage(player, random.nextInt(health - 1));
             }
-            inHand.setDurability((short) (inHand.getType().getMaxDurability()));
+            inHand.setDurability(inHand.getType().getMaxDurability());
             return;
         }
 
