@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills.gathering;
+package com.gmail.nossr50.skills.mining;
 
 import java.util.ArrayList;
 import java.util.HashSet;

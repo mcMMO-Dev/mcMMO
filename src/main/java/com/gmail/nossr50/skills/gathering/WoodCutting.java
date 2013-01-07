@@ -84,6 +84,8 @@ public class WoodCutting {
                 if (health >= 2) {
                     Combat.dealDamage(player, random.nextInt(health - 1));
                 }
+                inHand.setDurability((short) (inHand.getType().getMaxDurability()));
+                return;
             }
         }
         else if ((inHand.getDurability() + durabilityLoss >= inHand.getType().getMaxDurability()) || inHand.getType().equals(Material.AIR)) {
@@ -94,6 +96,8 @@ public class WoodCutting {
             if (health >= 2) {
                 Combat.dealDamage(player, random.nextInt(health - 1));
             }
+            inHand.setDurability((short) (inHand.getType().getMaxDurability()));
+            return;
         }
 
         /* Damage the tool */
@@ -352,6 +356,7 @@ public class WoodCutting {
 
         int randomChance = 100;
         int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
+        if (chance > MAX_CHANCE) chance = MAX_CHANCE;
 
         if (Permissions.luckyWoodcutting(player)) {
             randomChance = (int) (randomChance * 0.75);

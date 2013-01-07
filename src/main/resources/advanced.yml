@@ -77,8 +77,8 @@ Skills:
         Bleed_MaxBonusLevel: 750
         Bleed_MaxTicks: 3
         Bleed_BaseTicks: 2
-        CounterAttack_ChanceMax: 30
-        CounterAttack_MaxBonusLevel: 600
+        Counter_ChanceMax: 30
+        Counter_MaxBonusLevel: 600
         Counter_DamageModifier: 2
         SerratedStrikes_DamageModifier: 4
         SerratedStrikes_BleedTicks: 5

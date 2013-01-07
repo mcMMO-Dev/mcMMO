@@ -9,7 +9,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 
 public class RollEventHandler extends AcrobaticsEventHandler {
-    private boolean isGraceful;
+    public boolean isGraceful;
     private int damageThreshold;
 
     protected RollEventHandler(AcrobaticsManager manager, EntityDamageEvent event) {

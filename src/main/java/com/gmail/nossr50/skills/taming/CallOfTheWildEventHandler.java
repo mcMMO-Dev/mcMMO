@@ -9,7 +9,6 @@ import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -68,7 +67,7 @@ public class CallOfTheWildEventHandler {
             return;
 
         LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
-        mcMMO.p.placeStore.addSpawnedPet((Entity) entity);
+        mcMMO.placeStore.addSpawnedPet((Entity) entity);
 
         ((Tameable) entity).setOwner(player);
 

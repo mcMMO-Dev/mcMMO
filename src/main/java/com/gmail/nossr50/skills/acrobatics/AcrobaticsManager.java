@@ -18,6 +18,7 @@ public class AcrobaticsManager {
         this.player = player;
         this.profile = Users.getProfile(player);
         this.skillLevel = profile.getSkillLevel(SkillType.ACROBATICS);
+        this.permissionInstance = Permissions.getInstance();
     }
 
     /**
@@ -38,13 +39,20 @@ public class AcrobaticsManager {
 
         RollEventHandler eventHandler = new RollEventHandler(this, event);
 
-        int randomChance = 1000;
+        int randomChance = 100;
 
         if (Permissions.luckyAcrobatics(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (Acrobatics.getRandom().nextInt(randomChance) <= eventHandler.skillModifier && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        float chance = (float) (((double) Acrobatics.ROLL_MAX_CHANCE / (double) Acrobatics.ROLL_MAX_BONUS_LEVEL) * skillLevel);
+        if (chance > Acrobatics.ROLL_MAX_CHANCE) chance = Acrobatics.ROLL_MAX_CHANCE;
+        if (eventHandler.isGraceful) {
+        	chance = (float) (((double) Acrobatics.GRACEFUL_MAX_CHANCE / (double) Acrobatics.GRACEFUL_MAX_BONUS_LEVEL) * skillLevel);
+        	if (chance > Acrobatics.GRACEFUL_MAX_CHANCE) chance = Acrobatics.GRACEFUL_MAX_CHANCE;
+        }
+
+        if (chance > Acrobatics.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.ROLL_XP_MODIFIER);
@@ -69,13 +77,16 @@ public class AcrobaticsManager {
 
         DodgeEventHandler eventHandler = new DodgeEventHandler(this, event);
 
-        int randomChance = 4000;
+        int randomChance = 100;
 
         if (Permissions.luckyAcrobatics(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (Acrobatics.getRandom().nextInt(randomChance) <= eventHandler.skillModifier && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        float chance = (float) (((double) Acrobatics.DODGE_MAX_CHANCE / (double) Acrobatics.DODGE_MAX_BONUS_LEVEL) * skillLevel);
+        if (chance > Acrobatics.DODGE_MAX_CHANCE) chance = Acrobatics.DODGE_MAX_CHANCE;
+
+        if (chance > Acrobatics.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.DODGE_XP_MODIFIER);

@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.unarmed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Permissions;
@@ -38,15 +37,15 @@ public class UnarmedManager {
         if (eventHandler.isHoldingItem()) {
             eventHandler.calculateSkillModifier();
 
-            int disarmChanceMax = AdvancedConfig.getInstance().getDisarmChanceMax();
-            int disarmMaxLevel = AdvancedConfig.getInstance().getDisarmMaxBonusLevel();
             int randomChance = 100;
 
             if (Permissions.luckyUnarmed(player)) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            final float chance = (float) (((double) disarmChanceMax / (double) disarmMaxLevel) * skillLevel);
+            float chance = (float) (((double) Unarmed.DISARM_MAX_CHANCE / (double) Unarmed.DISARM_MAX_BONUS_LEVEL) * skillLevel);
+            if (chance > Unarmed.DISARM_MAX_CHANCE) chance = Unarmed.DISARM_MAX_CHANCE;
+
             if (chance > Unarmed.getRandom().nextInt(randomChance)) {
                 if (!hasIronGrip(defender)) {
                     eventHandler.sendAbilityMessage();
@@ -72,15 +71,15 @@ public class UnarmedManager {
 
         DeflectEventHandler eventHandler = new DeflectEventHandler(this, event);
 
-        int deflectChanceMax = AdvancedConfig.getInstance().getDeflectChanceMax();
-        int deflectMaxLevel = AdvancedConfig.getInstance().getDeflectMaxBonusLevel();
         int randomChance = 100;
 
         if (Permissions.luckyUnarmed(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        final float chance = (float) (((double) deflectChanceMax / (double) deflectMaxLevel) * skillLevel);
+        float chance = (float) (((double) Unarmed.DEFLECT_MAX_CHANCE / (double) Unarmed.DEFLECT_MAX_BONUS_LEVEL) * skillLevel);
+        if (chance > Unarmed.DEFLECT_MAX_CHANCE) chance = Unarmed.DEFLECT_MAX_CHANCE;
+
         if (chance > Unarmed.getRandom().nextInt(randomChance)) {
             eventHandler.cancelEvent();
             eventHandler.sendAbilityMessage();
@@ -122,15 +121,15 @@ public class UnarmedManager {
 
         IronGripEventHandler eventHandler = new IronGripEventHandler(this, defender);
 
-        int ironGripChanceMax = AdvancedConfig.getInstance().getIronGripChanceMax();
-        int ironGripMaxLevel = AdvancedConfig.getInstance().getIronGripMaxBonusLevel();
         int randomChance = 100;
 
         if (Permissions.luckyUnarmed(defender)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        final float chance = (float) (((double) ironGripChanceMax / (double) ironGripMaxLevel) * skillLevel);
+        float chance = (float) (((double) Unarmed.IRON_GRIP_MAX_CHANCE / (double) Unarmed.IRON_GRIP_MAX_BONUS_LEVEL) * skillLevel);
+        if (chance > Unarmed.IRON_GRIP_MAX_CHANCE) chance = Unarmed.IRON_GRIP_MAX_CHANCE;
+
         if (chance > Unarmed.getRandom().nextInt(randomChance)) {
             eventHandler.sendAbilityMessages();
             return true;

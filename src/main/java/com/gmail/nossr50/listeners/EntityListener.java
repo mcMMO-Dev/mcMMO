@@ -23,7 +23,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -36,7 +35,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
-import com.gmail.nossr50.skills.gathering.BlastMining;
+import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
@@ -184,8 +183,8 @@ public class EntityListener implements Listener {
         entity.setFireTicks(0);
         BleedTimer.remove(entity);
         Archery.arrowRetrievalCheck(entity);
-        mcMMO.p.placeStore.removeSpawnedMob(((Entity) entity));
-        mcMMO.p.placeStore.removeSpawnedPet(((Entity) entity));
+        mcMMO.placeStore.removeSpawnedMob(((Entity) entity));
+        mcMMO.placeStore.removeSpawnedPet(((Entity) entity));
     }
 
     /**
@@ -198,7 +197,7 @@ public class EntityListener implements Listener {
         SpawnReason reason = event.getSpawnReason();
 
         if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !Config.getInstance().getExperienceGainsMobspawnersEnabled()) {
-            mcMMO.p.placeStore.addSpawnedMob(((Entity) event.getEntity()));
+            mcMMO.placeStore.addSpawnedMob(((Entity) event.getEntity()));
         }
     }
 
@@ -399,7 +398,7 @@ public class EntityListener implements Listener {
 
         if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
-        if (Permissions.taming(player) && !mcMMO.p.placeStore.isSpawnedPet((Entity) event.getEntity())) {
+        if (Permissions.taming(player) && !mcMMO.placeStore.isSpawnedPet((Entity) event.getEntity())) {
             PlayerProfile profile = Users.getProfile(player);
             EntityType type = event.getEntityType();
             int xp = 0;

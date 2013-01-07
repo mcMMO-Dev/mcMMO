@@ -13,6 +13,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
@@ -30,6 +31,7 @@ import com.gmail.nossr50.util.Users;
 public class Herbalism {
 
     private static Random random = new Random();
+    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     /**
      * Activate the Green Terra ability.
@@ -85,7 +87,8 @@ public class Herbalism {
             return;
 
         final PlayerProfile profile = Users.getProfile(player);
-        final int MAX_BONUS_LEVEL = 1000;
+        final double MAX_CHANCE = advancedConfig.getHerbalismDoubleDropsChanceMax();
+        final int MAX_BONUS_LEVEL = advancedConfig.getHerbalismDoubleDropsMaxLevel();
 
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         int id = block.getTypeId();
@@ -101,11 +104,14 @@ public class Herbalism {
 
         boolean customPlant = false;
 
-        int randomChance = 1000;
+        int randomChance = 100;
 
         if (Permissions.luckyHerbalism(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
+
+        float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * herbLevel);
+        if (chance > MAX_CHANCE) chance = (float) MAX_CHANCE;
 
         switch (type) {
         case BROWN_MUSHROOM:
@@ -122,7 +128,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.CACTUS)) {
                     mat = Material.CACTUS;
                     if (!mcMMO.placeStore.isTrue(b)) {
-                        if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
+                    	if (chance > random.nextInt(randomChance)) {
                             catciDrops++;
                         }
                         xp += Config.getInstance().getHerbalismXPCactus();
@@ -182,7 +188,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
                     mat = Material.SUGAR_CANE;
                     if (!mcMMO.placeStore.isTrue(b)) {
-                        if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
+                    	if (chance > random.nextInt(randomChance)) {
                             caneDrops++;
                         }
                         xp += Config.getInstance().getHerbalismXPSugarCane();
@@ -275,7 +281,7 @@ public class Herbalism {
                 }
             }
 
-            if (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel) {
+            if (chance > random.nextInt(randomChance)) {
                 Config configInstance = Config.getInstance();
 
                 switch (type) {
@@ -399,7 +405,8 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        final int MAX_BONUS_LEVEL = 1500;
+    	final int MAX_CHANCE = advancedConfig.getGreenThumbChanceMax();
+    	final int MAX_BONUS_LEVEL = advancedConfig.getGreenThumbMaxLevel();
 
         PlayerProfile profile = Users.getProfile(player);
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
@@ -429,13 +436,16 @@ public class Herbalism {
             break;
         }
 
-        int randomChance = 1500;
+        int randomChance = 100;
 
         if (Permissions.luckyHerbalism(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (herbLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= herbLevel)) {
+        float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * herbLevel);
+        if (chance > MAX_CHANCE) chance = (float) MAX_CHANCE;
+
+        if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (chance > random.nextInt(randomChance))) {
             event.setCancelled(true);
 
             switch(type) {
@@ -481,7 +491,8 @@ public class Herbalism {
      * @param block The block being used in the ability
      */
     public static void greenThumbBlocks(ItemStack is, Player player, Block block) {
-        final int MAX_BONUS_LEVEL = 1500;
+    	final int MAX_CHANCE = advancedConfig.getGreenThumbChanceMax();
+    	final int MAX_BONUS_LEVEL = advancedConfig.getGreenThumbMaxLevel();
 
         PlayerProfile profile = Users.getProfile(player);
         int skillLevel = profile.getSkillLevel(SkillType.HERBALISM);
@@ -489,13 +500,16 @@ public class Herbalism {
 
         player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
 
-        int randomChance = 1500;
+        int randomChance = 100;
 
         if (Permissions.luckyHerbalism(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (skillLevel > MAX_BONUS_LEVEL || random.nextInt(randomChance) <= skillLevel) {
+        float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
+        if (chance > MAX_CHANCE) chance = (float) MAX_CHANCE;
+
+        if (chance > random.nextInt(randomChance)) {
             greenTerraConvert(player, block);
         }
         else {
