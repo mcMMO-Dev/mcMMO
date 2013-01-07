@@ -25,7 +25,8 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Mining {
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    private static Config config  = Config.getInstance();
     private static Random random = new Random();
 
     public static final int DOUBLE_DROPS_MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
@@ -40,64 +41,65 @@ public class Mining {
     public static void miningXP(Player player, Block block) {
         PlayerProfile profile = Users.getProfile(player);
         Material type = block.getType();
+        
         int xp = 0;
 
         switch (type) {
         case COAL_ORE:
-            xp += Config.getInstance().getMiningXPCoalOre();
+            xp += config.getMiningXPCoalOre();
             break;
 
         case DIAMOND_ORE:
-            xp += Config.getInstance().getMiningXPDiamondOre();
+            xp += config.getMiningXPDiamondOre();
             break;
 
         case ENDER_STONE:
-            xp += Config.getInstance().getMiningXPEndStone();
+            xp += config.getMiningXPEndStone();
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
-            xp += Config.getInstance().getMiningXPRedstoneOre();
+            xp += config.getMiningXPRedstoneOre();
             break;
 
         case GLOWSTONE:
-            xp += Config.getInstance().getMiningXPGlowstone();
+            xp += config.getMiningXPGlowstone();
             break;
 
         case GOLD_ORE:
-            xp += Config.getInstance().getMiningXPGoldOre();
+            xp += config.getMiningXPGoldOre();
             break;
 
         case IRON_ORE:
-            xp += Config.getInstance().getMiningXPIronOre();
+            xp += config.getMiningXPIronOre();
             break;
 
         case LAPIS_ORE:
-            xp += Config.getInstance().getMiningXPLapisOre();
+            xp += config.getMiningXPLapisOre();
             break;
 
         case MOSSY_COBBLESTONE:
-            xp += Config.getInstance().getMiningXPMossyStone();
+            xp += config.getMiningXPMossyStone();
             break;
 
         case NETHERRACK:
-            xp += Config.getInstance().getMiningXPNetherrack();
+            xp += config.getMiningXPNetherrack();
             break;
 
         case OBSIDIAN:
-            xp += Config.getInstance().getMiningXPObsidian();
+            xp += config.getMiningXPObsidian();
             break;
 
         case SANDSTONE:
-            xp += Config.getInstance().getMiningXPSandstone();
+            xp += config.getMiningXPSandstone();
             break;
 
         case STONE:
-            xp += Config.getInstance().getMiningXPStone();
+            xp += config.getMiningXPStone();
             break;
 
         case EMERALD_ORE:
-            xp += Config.getInstance().getMiningXPEmeraldOre();
+            xp += config.getMiningXPEmeraldOre();
             break;
 
         default:
@@ -119,7 +121,7 @@ public class Mining {
     public static void superBreakerBlockCheck(Player player, Block block) {
         Material type = block.getType();
         int tier = Misc.getTier(player.getItemInHand());
-        int durabilityLoss = Config.getInstance().getAbilityToolDamage();
+        int durabilityLoss = config.getAbilityToolDamage();
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
 
         if (ModChecks.isCustomMiningBlock(block)) {
@@ -204,7 +206,6 @@ public class Mining {
         Location location = block.getLocation();
         Material type = block.getType();
         ItemStack item = new ItemStack(type);
-        Config configInstance = Config.getInstance();
 
         switch (type) {
         case ENDER_STONE:
@@ -218,44 +219,44 @@ public class Mining {
             break;
 
         case COAL_ORE:
-            if (configInstance.getCoalDoubleDropsEnabled()) {
+            if (config.getCoalDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case DIAMOND_ORE:
-            if (configInstance.getDiamondDoubleDropsEnabled()) {
+            if (config.getDiamondDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
-            if (configInstance.getRedstoneDoubleDropsEnabled()) {
+            if (config.getRedstoneDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case GLOWSTONE:
-            if (configInstance.getGlowstoneDoubleDropsEnabled()) {
+            if (config.getGlowstoneDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case LAPIS_ORE:
-            if (configInstance.getLapisDoubleDropsEnabled()) {
+            if (config.getLapisDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case STONE:
-            if (configInstance.getStoneDoubleDropsEnabled()) {
+            if (config.getStoneDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case EMERALD_ORE:
-            if (configInstance.getEmeraldDoubleDropsEnabled()) {
+            if (config.getEmeraldDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
@@ -280,11 +281,10 @@ public class Mining {
         Location location = block.getLocation();
         Material type = block.getType();
         ItemStack item = new ItemStack(type);
-        Config configInstance = Config.getInstance();
 
         switch (type) {
         case COAL_ORE:
-            if (configInstance.getCoalDoubleDropsEnabled()) {
+            if (config.getCoalDoubleDropsEnabled()) {
                 item = (new MaterialData(Material.COAL, CoalType.COAL.getData())).toItemStack(1);
 
                 Misc.dropItem(location, item);
@@ -292,21 +292,21 @@ public class Mining {
             break;
 
         case DIAMOND_ORE:
-            if (configInstance.getDiamondDoubleDropsEnabled()) {
+            if (config.getDiamondDoubleDropsEnabled()) {
                 item = new ItemStack(Material.DIAMOND);
                 Misc.dropItem(location, item);
             }
             break;
 
         case ENDER_STONE:
-            if (configInstance.getEndStoneDoubleDropsEnabled()) {
+            if (config.getEndStoneDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case GLOWING_REDSTONE_ORE:
         case REDSTONE_ORE:
-            if (configInstance.getRedstoneDoubleDropsEnabled()) {
+            if (config.getRedstoneDoubleDropsEnabled()) {
                 item = new ItemStack(Material.REDSTONE);
                 Misc.dropItems(location, item, 4);
                 Misc.randomDropItem(location, item, 50);
@@ -314,7 +314,7 @@ public class Mining {
             break;
 
         case GLOWSTONE:
-            if (configInstance.getGlowstoneDoubleDropsEnabled()) {
+            if (config.getGlowstoneDoubleDropsEnabled()) {
                 item = new ItemStack(Material.GLOWSTONE_DUST);
                 Misc.dropItems(location, item, 2);
                 Misc.randomDropItems(location, item, 50, 2);
@@ -322,19 +322,19 @@ public class Mining {
             break;
 
         case GOLD_ORE:
-            if (configInstance.getGoldDoubleDropsEnabled()) {
+            if (config.getGoldDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case IRON_ORE:
-            if (configInstance.getIronDoubleDropsEnabled()) {
+            if (config.getIronDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case LAPIS_ORE:
-            if (configInstance.getLapisDoubleDropsEnabled()) {
+            if (config.getLapisDoubleDropsEnabled()) {
                 item = (new MaterialData(Material.INK_SACK, (byte) 0x4)).toItemStack(1);
 
                 Misc.dropItems(location, item, 4);
@@ -343,38 +343,38 @@ public class Mining {
             break;
 
         case MOSSY_COBBLESTONE:
-            if (configInstance.getMossyCobblestoneDoubleDropsEnabled()) {
+            if (config.getMossyCobblestoneDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case NETHERRACK:
-            if (configInstance.getNetherrackDoubleDropsEnabled()) {
+            if (config.getNetherrackDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case OBSIDIAN:
-            if (configInstance.getObsidianDoubleDropsEnabled()) {
+            if (config.getObsidianDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case SANDSTONE:
-            if (configInstance.getSandstoneDoubleDropsEnabled()) {
+            if (config.getSandstoneDoubleDropsEnabled()) {
                 Misc.dropItem(location, item);
             }
             break;
 
         case STONE:
-            if (configInstance.getStoneDoubleDropsEnabled()) {
+            if (config.getStoneDoubleDropsEnabled()) {
                 item = new ItemStack(Material.COBBLESTONE);
                 Misc.dropItem(location, item);
             }
             break;
 
         case EMERALD_ORE:
-            if (configInstance.getEmeraldDoubleDropsEnabled()) {
+            if (config.getEmeraldDoubleDropsEnabled()) {
                 item = new ItemStack(Material.EMERALD);
                 Misc.dropItem(location, item);
             }
