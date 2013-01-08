@@ -108,7 +108,6 @@ public class Repair {
                 is.removeEnchantment(x);
             }
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Lost"));
-            clearEnchantTag(is);
             return;
         }
 
@@ -142,7 +141,6 @@ public class Repair {
 
         if (newEnchants.isEmpty()) {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Fail"));
-            clearEnchantTag(is);
         }
         else if (downgraded || newEnchants.size() < enchants.size()) {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Downgrade"));
@@ -150,33 +148,6 @@ public class Repair {
         else {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Perfect"));
         }
-    }
-
-    private static void clearEnchantTag(ItemStack is) {
-        Object o;
-        Class c;
-        Field f;
-
-        o = is;
-        c = o.getClass();
-
-        try {
-            f = c.getDeclaredField("handle");
-            f.setAccessible(true);
-            o = f.get(o);
-
-            c = o.getClass();
-            f = c.getDeclaredField("tag");
-            o = f.get(o);
-
-            c = o.getClass();
-            f = c.getDeclaredField("map");
-            f.setAccessible(true);
-            Map tagMap = (Map) f.get(o);
-
-            tagMap.remove("ench");
-        }
-        catch(Exception e) {}
     }
 
     /**
