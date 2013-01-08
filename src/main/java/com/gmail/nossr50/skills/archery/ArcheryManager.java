@@ -6,6 +6,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -17,11 +18,6 @@ public class ArcheryManager {
     public ArcheryManager (Player player) {
         this.player = player;
         this.profile = Users.getProfile(player);
-
-        //Compatibility with Citizens, Citizens NPCs won't create a profile so we'll check for it here
-        if(this.profile == null)
-            return;
-
         this.skillLevel = profile.getSkillLevel(SkillType.ARCHERY);
     }
 
@@ -31,10 +27,7 @@ public class ArcheryManager {
      * @param livingEntity Entity damaged by the arrow
      */
     public void trackArrows(LivingEntity livingEntity) {
-        if(player == null)
-            return;
-
-        if (!Permissions.trackArrows(player)) {
+        if (Misc.isCitizensNPC(player) || !Permissions.trackArrows(player)) {
             return;
         }
 
@@ -45,8 +38,7 @@ public class ArcheryManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        float chance = (float) (((double) Archery.ARROW_TRACKING_MAX_BONUS / (double) Archery.ARROW_TRACKING_MAX_BONUS_LEVEL) * skillLevel);
-        if (chance > Archery.ARROW_TRACKING_MAX_BONUS) chance = Archery.ARROW_TRACKING_MAX_BONUS;
+        float chance = ((float) Archery.ARROW_TRACKING_MAX_BONUS / Archery.ARROW_TRACKING_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
         if (chance > Archery.getRandom().nextInt(randomChance)) {
             eventHandler.addToTracker();
@@ -60,23 +52,18 @@ public class ArcheryManager {
      * @param event The event to modify
      */
     public void dazeCheck(Player defender, EntityDamageEvent event) {
-        if(player == null)
-            return;
-
-        if (!Permissions.daze(player)) {
+        if (Misc.isCitizensNPC(player) || !Permissions.daze(player)) {
             return;
         }
 
         DazeEventHandler eventHandler = new DazeEventHandler(this, event, defender);
 
         int randomChance = 100;
-
         if (Permissions.luckyArchery(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        float chance = (float) (((double) Archery.DAZE_MAX_BONUS / (double) Archery.DAZE_MAX_BONUS_LEVEL) * skillLevel);
-        if (chance > Archery.DAZE_MAX_BONUS) chance = Archery.DAZE_MAX_BONUS;
+        float chance = ((float) Archery.DAZE_MAX_BONUS / Archery.DAZE_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
         if (chance > Archery.getRandom().nextInt(randomChance)) {
             eventHandler.handleDazeEffect();
@@ -90,10 +77,7 @@ public class ArcheryManager {
      * @param event The event to modify.
      */
     public void bonusDamage(EntityDamageEvent event) {
-        if(player == null)
-            return;
-
-        if (!Permissions.archeryBonus(player)) {
+        if (Misc.isCitizensNPC(player) || !Permissions.archeryBonus(player)) {
             return;
         }
 

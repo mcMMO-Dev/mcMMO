@@ -12,6 +12,8 @@ public class DazeEventHandler {
     private EntityDamageEvent event;
     private Player defender;
 
+    private final static int DAZE_CHANCE = 50;
+
     protected int skillModifier;
 
     protected DazeEventHandler (ArcheryManager manager, EntityDamageEvent event, Player defender) {
@@ -29,7 +31,7 @@ public class DazeEventHandler {
     protected void handleDazeEffect() {
         Location location = defender.getLocation();
 
-        if (Archery.getRandom().nextInt(10) > 5) {
+        if (Archery.getRandom().nextInt(100) > DAZE_CHANCE) {
             location.setPitch(90);
         }
         else {
