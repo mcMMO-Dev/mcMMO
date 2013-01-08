@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.mining;
 import java.util.Random;
 
 import org.bukkit.CoalType;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -331,7 +332,7 @@ public class Mining {
 
         case LAPIS_ORE:
             if (config.getLapisDoubleDropsEnabled()) {
-                item = (new MaterialData(Material.INK_SACK, (byte) 0x4)).toItemStack(1);
+                item = (new MaterialData(Material.INK_SACK, DyeColor.BLUE.getDyeData())).toItemStack(1);
 
                 Misc.dropItems(location, item, 4);
                 Misc.randomDropItems(location, item, 50, 4);

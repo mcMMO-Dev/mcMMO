@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -404,7 +405,7 @@ public class Fishing {
 
             case SQUID:
                 ItemStack item = new ItemStack(Material.INK_SACK, 1, (short) 0);
-                item.setData(new MaterialData(Material.INK_SACK, (byte) 0x0));
+                item.setData(new MaterialData(Material.INK_SACK, DyeColor.BLACK.getDyeData()));
 
                 Misc.dropItem(location, item);
                 break;
