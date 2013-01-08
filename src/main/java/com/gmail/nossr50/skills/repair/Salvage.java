@@ -39,7 +39,7 @@ public class Salvage {
                     final int salvagedAmount = getSalvagedAmount(inHand);
                     final int itemID = getSalvagedItemID(inHand);
 
-                    player.setItemInHand(new ItemStack(0));
+                    player.setItemInHand(new ItemStack(Material.AIR));
                     location.setY(location.getY() + 1);
                     Misc.dropItem(location, new ItemStack(itemID, salvagedAmount));
                     player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
