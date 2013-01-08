@@ -178,7 +178,7 @@ public class BlastMining {
 
         for (Block block : xp) {
             if (!mcMMO.placeStore.isTrue(block)) {
-                Mining.miningXP(player, block);
+                Mining.miningXP(player, Users.getProfile(player), block, block.getType());
             }
         }
     }

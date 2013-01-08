@@ -38,10 +38,7 @@ public class Mining {
      * @param player The player to award XP to
      * @param block The block to award XP for
      */
-    public static void miningXP(Player player, Block block) {
-        PlayerProfile profile = Users.getProfile(player);
-        Material type = block.getType();
-        
+    protected static void miningXP(Player player, PlayerProfile profile, Block block, Material type) {
         int xp = 0;
 
         switch (type) {

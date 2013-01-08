@@ -32,13 +32,13 @@ public class MiningManager {
             return;
         }
 
-        Mining.miningXP(player, block);
+        MiningBlockEventHandler eventHandler = new MiningBlockEventHandler(this, block);
+
+        eventHandler.processXP();
 
         if (!Permissions.miningDoubleDrops(player)) {
             return;
         }
-
-        MiningBlockEventHandler eventHandler = new MiningBlockEventHandler(this, block);
 
         int randomChance = 100;
         if (Permissions.luckyMining(player)) {
@@ -62,5 +62,9 @@ public class MiningManager {
 
     protected Player getPlayer() {
         return player;
+    }
+
+    protected PlayerProfile getProfile() {
+        return profile;
     }
 }

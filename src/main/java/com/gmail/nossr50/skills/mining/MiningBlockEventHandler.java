@@ -44,4 +44,8 @@ public class MiningBlockEventHandler {
             Mining.miningDrops(block, blockLocation, blockType);
         }
     }
+
+    protected void processXP() {
+        Mining.miningXP(manager.getPlayer(), manager.getProfile(), block, blockType);
+    }
 }
