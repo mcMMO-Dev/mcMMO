@@ -269,7 +269,12 @@ public class Herbalism {
             }
             else {
                 if (mat == Material.COCOA) {
-                    is = new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData());
+                    try {
+                        is = new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData());
+                    }
+                    catch (Exception e) {
+                        is = new ItemStack(Material.INK_SACK, 1, (short) 3);
+                    }
                 }
                 else if (mat == Material.CARROT) {
                     is = new ItemStack(Material.CARROT_ITEM, 1, (short) 0);
@@ -422,7 +427,12 @@ public class Herbalism {
             break;
         case COCOA:
             // Broken: Requires an update to bukkit to enable seaching for variable-sized ItemStacks.
-            hasSeeds = inventory.contains(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 1);
+            try {
+                hasSeeds = inventory.contains(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 1);
+            }
+            catch(Exception e) {
+                hasSeeds = inventory.contains(new ItemStack(Material.INK_SACK, 1, (short) 3), 1);
+            }
             break;
         case CARROT:
             hasSeeds = inventory.contains(Material.CARROT_ITEM);
@@ -456,8 +466,14 @@ public class Herbalism {
                 inventory.removeItem(new ItemStack(Material.SEEDS));
                 break;
             case COCOA:
-                Misc.dropItem(location, new ItemStack(Material.INK_SACK, 3, DyeColor.BROWN.getDyeData()));
-                inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()));
+                try {
+                    Misc.dropItem(location, new ItemStack(Material.INK_SACK, 3, DyeColor.BROWN.getDyeData()));
+                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()));
+                }
+                catch(Exception e) {
+                    Misc.dropItem(location, new ItemStack(Material.INK_SACK, 3, (short) 3));
+                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, (short) 3));
+                }
                 break;
             case CARROT:
                 Misc.dropItem(location, new ItemStack(Material.CARROT_ITEM));
