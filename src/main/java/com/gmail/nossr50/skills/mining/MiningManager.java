@@ -38,17 +38,17 @@ public class MiningManager {
             return;
         }
 
-        MiningDropsBlockHandler blockHandler = new MiningDropsBlockHandler(this, block);
+        MiningBlockEventHandler eventHandler = new MiningBlockEventHandler(this, block);
 
         int randomChance = 100;
         if (Permissions.luckyMining(player)) {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        float chance = (float) (((double) Mining.DOUBLE_DROPS_MAX_CHANCE / Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL) * blockHandler.skillModifier);
+        float chance = (float) (((double) Mining.DOUBLE_DROPS_MAX_CHANCE / Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL) * eventHandler.skillModifier);
 
         if (chance > Mining.getRandom().nextInt(randomChance)) {
-            blockHandler.processDrops();
+            eventHandler.processDrops();
         }
     }
 

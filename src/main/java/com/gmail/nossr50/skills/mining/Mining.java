@@ -201,10 +201,10 @@ public class Mining {
      * Handle double drops when using Silk Touch.
      *
      * @param block The block to process drops for
+     * @param location The location of the block
+     * @param type The material type of the block
      */
-    protected static void silkTouchDrops(Block block) {
-        Location location = block.getLocation();
-        Material type = block.getType();
+    protected static void silkTouchDrops(Block block, Location location, Material type) {
         ItemStack item = new ItemStack(type);
 
         switch (type) {
@@ -215,7 +215,7 @@ public class Mining {
         case NETHERRACK:
         case OBSIDIAN:
         case SANDSTONE:
-            miningDrops(block);
+            miningDrops(block, location, type);
             break;
 
         case COAL_ORE:
@@ -276,10 +276,10 @@ public class Mining {
      * Drop items from Mining & Blast Mining skills.
      *
      * @param block The block to process drops for
+     * @param location The location of the block
+     * @param type The material type of the block
      */
-    protected static void miningDrops(Block block) {
-        Location location = block.getLocation();
-        Material type = block.getType();
+    protected static void miningDrops(Block block, Location location, Material type) {
         ItemStack item = new ItemStack(type);
 
         switch (type) {
