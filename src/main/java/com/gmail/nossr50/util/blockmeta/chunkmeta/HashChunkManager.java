@@ -167,8 +167,8 @@ public class HashChunkManager implements ChunkManager {
         if(in != null) {
             store.put(world.getName() + "," + cx + "," + cz, in);
 
-            List mobs = in.getSpawnedMobs();
-            List pets = in.getSpawnedPets();
+            List<UUID> mobs = in.getSpawnedMobs();
+            List<UUID> pets = in.getSpawnedPets();
 
             if(mobs.isEmpty() && pets.isEmpty())
                 return;

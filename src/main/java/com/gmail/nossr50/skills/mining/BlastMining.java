@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -57,15 +58,17 @@ public class BlastMining {
 
         while (oresIterator.hasNext()) {
             Block temp = oresIterator.next();
+            Location tempLocation = temp.getLocation();
+            Material tempType = temp.getType();
 
             if (random.nextFloat() < (yield + oreBonus)) {
                 blocksDropped.add(temp);
-                Mining.miningDrops(temp);
+                Mining.miningDrops(temp, tempLocation, tempType);
 
                 if (!mcMMO.placeStore.isTrue(temp)) {
                     for (int i = 1 ; i < extraDrops ; i++) {
                         blocksDropped.add(temp);
-                        Mining.miningDrops(temp);
+                        Mining.miningDrops(temp, tempLocation, tempType);
                     }
                 }
             }
@@ -76,9 +79,11 @@ public class BlastMining {
 
             while (debrisIterator.hasNext()) {
                 Block temp = debrisIterator.next();
+                Location tempLocation = temp.getLocation();
+                Material tempType = temp.getType();
 
                 if (random.nextFloat() < (yield - debrisReduction))
-                    Mining.miningDrops(temp);
+                    Mining.miningDrops(temp, tempLocation, tempType);
             }
         }
 
@@ -173,7 +178,7 @@ public class BlastMining {
 
         for (Block block : xp) {
             if (!mcMMO.placeStore.isTrue(block)) {
-                Mining.miningXP(player, block);
+                Mining.miningXP(player, Users.getProfile(player), block, block.getType());
             }
         }
     }

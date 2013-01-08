@@ -14,13 +14,11 @@ public class ArcheryBonusDamageEventHandler {
     }
 
     protected void calculateDamageBonus() {
-        double damageBonus = ((manager.getSkillLevel() / Archery.BONUS_DAMAGE_INCREASE_LEVEL) * Archery.BONUS_DAMAGE_INCREASE_PERCENT);
+        this.damageBonusPercent = ((manager.getSkillLevel() / Archery.BONUS_DAMAGE_INCREASE_LEVEL) * Archery.BONUS_DAMAGE_INCREASE_PERCENT);
 
-        if (damageBonus > Archery.BONUS_DAMAGE_MAX_BONUS_PERCENTAGE) {
-            damageBonus = Archery.BONUS_DAMAGE_MAX_BONUS_PERCENTAGE;
+        if (damageBonusPercent > Archery.BONUS_DAMAGE_MAX_BONUS_PERCENTAGE) {
+            damageBonusPercent = Archery.BONUS_DAMAGE_MAX_BONUS_PERCENTAGE;
         }
-
-        this.damageBonusPercent = damageBonus;
     }
 
     protected void modifyEventDamage() {

@@ -287,9 +287,6 @@ public class Database {
         boolean isValid = false;
         boolean exists = (connection != null);
 
-        // Initialized as needed later
-        long timestamp=0;
-
         // If we're waiting for server to recover then leave early
         if (nextReconnectTimestamp > 0 && nextReconnectTimestamp > System.nanoTime()) {
             return false;

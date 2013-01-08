@@ -20,8 +20,18 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 
 public class Misc {
-
     private static Random random = new Random();
+
+    public static final int TOOL_DURABILITY_LOSS = Config.getInstance().getAbilityToolDamage();
+    public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
+
+    public static boolean isCitizensNPC(Player player) {
+        if (player == null || Users.getProfile(player) == null || player.hasMetadata("NPC")) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Gets a capitalized version of the target string.

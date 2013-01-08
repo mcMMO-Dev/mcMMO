@@ -30,7 +30,6 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.runnables.StickyPistonTracker;
 import com.gmail.nossr50.skills.gathering.Excavation;
 import com.gmail.nossr50.skills.gathering.Herbalism;
-import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.gathering.WoodCutting;
 import com.gmail.nossr50.skills.repair.Repair;
@@ -357,15 +356,17 @@ public class BlockListener implements Listener {
             }
         }
         else if (profile.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
+            MiningManager manager = new MiningManager(player);
+
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
                     event.setInstaBreak(true);
-                    Mining.superBreakerBlockCheck(player, block);
+                    manager.superBreakerBlockCheck(block);
                 }
             }
             else {
                 event.setInstaBreak(true);
-                Mining.superBreakerBlockCheck(player, block);
+                manager.superBreakerBlockCheck(block);
             }
         }
         else if (profile.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && (material.equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block)))) {

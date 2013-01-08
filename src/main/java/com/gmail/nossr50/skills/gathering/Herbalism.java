@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.gathering;
 import java.util.Random;
 
 import org.bukkit.CropState;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -268,7 +269,7 @@ public class Herbalism {
             }
             else {
                 if (mat == Material.COCOA) {
-                    is = new ItemStack(Material.INK_SACK, 1, (short) 3);
+                    is = new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData());
                 }
                 else if (mat == Material.CARROT) {
                     is = new ItemStack(Material.CARROT_ITEM, 1, (short) 0);
@@ -421,7 +422,7 @@ public class Herbalism {
             break;
         case COCOA:
             // Broken: Requires an update to bukkit to enable seaching for variable-sized ItemStacks.
-            hasSeeds = inventory.contains(new ItemStack(Material.INK_SACK, 1, (short) 3), 1);
+            hasSeeds = inventory.contains(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 1);
             break;
         case CARROT:
             hasSeeds = inventory.contains(Material.CARROT_ITEM);
@@ -455,8 +456,8 @@ public class Herbalism {
                 inventory.removeItem(new ItemStack(Material.SEEDS));
                 break;
             case COCOA:
-                Misc.dropItem(location, new ItemStack(Material.INK_SACK, 3, (short) 3));
-                inventory.removeItem(new ItemStack(Material.INK_SACK, 1, (short) 3));
+                Misc.dropItem(location, new ItemStack(Material.INK_SACK, 3, DyeColor.BROWN.getDyeData()));
+                inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()));
                 break;
             case CARROT:
                 Misc.dropItem(location, new ItemStack(Material.CARROT_ITEM));
