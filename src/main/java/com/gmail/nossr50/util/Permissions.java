@@ -4,8 +4,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Permissions {
-    private static volatile Permissions instance;
-
     public static boolean hasPermission(CommandSender sender, String perm)
     {
         if(sender.hasPermission(perm))
