@@ -59,7 +59,7 @@ public class MiningManager {
      * @param block The block being affected
      */
     public void superBreakerBlockCheck(Block block) {
-        if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
+        if (mcMMO.placeStore.isTrue(block) || !Misc.blockBreakSimulate(block, player, true)) {
             return;
         }
 
