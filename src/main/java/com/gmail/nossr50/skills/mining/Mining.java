@@ -22,7 +22,6 @@ import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Skills;
-import com.gmail.nossr50.util.Users;
 
 public class Mining {
     private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();

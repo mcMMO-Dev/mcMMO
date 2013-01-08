@@ -13,7 +13,6 @@ public class MiningManager {
     private Player player;
     private PlayerProfile profile;
     private int skillLevel;
-    private Permissions permissionsInstance;
 
     public MiningManager (Player player) {
         this.player = player;
@@ -54,10 +53,6 @@ public class MiningManager {
 
     protected int getSkillLevel() {
         return skillLevel;
-    }
-
-    protected Permissions getPermissionsInstance() {
-        return permissionsInstance;
     }
 
     protected Player getPlayer() {
