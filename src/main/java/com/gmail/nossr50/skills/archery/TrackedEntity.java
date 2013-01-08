@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.archery;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.gmail.nossr50.mcMMO;
 
@@ -10,10 +11,12 @@ public class TrackedEntity implements Runnable {
     private int arrowCount;
     private int previousTicksLived;
     private int taskId;
+    private BukkitScheduler scheduler;
 
     protected TrackedEntity(LivingEntity livingEntity) {
         this.livingEntity = livingEntity;
-        taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(mcMMO.p, this, 12000, 12000);
+        this.scheduler = Bukkit.getScheduler();
+        this.taskId = scheduler.scheduleSyncRepeatingTask(mcMMO.p, this, 12000, 12000);
     }
 
     //LivingEntity.isDead() isn't a reliable way to know if an entity is still active
@@ -45,7 +48,7 @@ public class TrackedEntity implements Runnable {
     public void run() {
         if (!isActive()) {
             Archery.removeFromTracker(this);
-            Bukkit.getScheduler().cancelTask(taskId);
+           scheduler.cancelTask(taskId);
         }
     }
 }
