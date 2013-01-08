@@ -56,12 +56,12 @@ public class Archery {
      * @param entity The entity hit by the arrows
      */
     public static void arrowRetrievalCheck(LivingEntity livingEntity) {
-        for (Iterator<TrackedEntity> it = trackedEntities.iterator() ; it.hasNext() ; ) {
-            TrackedEntity trackedEntity = it.next();
+        for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext(); ) {
+            TrackedEntity trackedEntity = entityIterator.next();
 
-            if (trackedEntity.getLivingEntity() == livingEntity) {
+            if (trackedEntity.getLivingEntity().getEntityId() == livingEntity.getEntityId()) {
                 Misc.dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount());
-                it.remove();
+                entityIterator.remove();
                 return;
             }
         }
