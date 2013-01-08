@@ -63,8 +63,7 @@ public class MiningManager {
             return;
         }
 
-        MiningManager manager = new MiningManager(player);
-        SuperBreakerEventHandler eventHandler = new SuperBreakerEventHandler(manager, block);
+        SuperBreakerEventHandler eventHandler = new SuperBreakerEventHandler(this, block);
 
         if (eventHandler.tierCheck()) {
             return;

@@ -3,6 +3,8 @@ package com.gmail.nossr50.skills.acrobatics;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.gmail.nossr50.util.Misc;
+
 public abstract class AcrobaticsEventHandler {
     protected AcrobaticsManager manager;
     protected Player player;
@@ -51,14 +53,10 @@ public abstract class AcrobaticsEventHandler {
      * @return true if the damage is fatal, false otherwise
      */
     protected boolean isFatal(int damage) {
-        if(player == null)
+        if (Misc.isCitizensNPC(player) || player.getHealth() - damage < 1) {
             return true;
+        }
 
-        if (player.getHealth() - damage < 1) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return false;
     }
 }

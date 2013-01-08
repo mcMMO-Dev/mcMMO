@@ -23,6 +23,11 @@ public class Misc {
     private static Random random = new Random();
 
     public static final int TOOL_DURABILITY_LOSS = Config.getInstance().getAbilityToolDamage();
+    public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
+
+    public static boolean isCitizensNPC(Player player) {
+        return player.hasMetadata("NPC");
+    }
 
     /**
      * Gets a capitalized version of the target string.
