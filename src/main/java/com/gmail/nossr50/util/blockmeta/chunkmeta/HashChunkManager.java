@@ -319,7 +319,8 @@ public class HashChunkManager implements ChunkManager {
         closeAll();
         String worldName = world.getName();
 
-        for(String key : store.keySet()) {
+        List<String> keys = new ArrayList<String>(store.keySet());
+        for(String key : keys) {
             String[] info = key.split(",");
             if(worldName.equals(info[0])) {
                 int cx = 0;
@@ -371,7 +372,8 @@ public class HashChunkManager implements ChunkManager {
         closeAll();
         String worldName = world.getName();
 
-        for(String key : store.keySet()) {
+        List<String> keys = new ArrayList<String>(store.keySet());
+        for(String key : keys) {
             String[] info = key.split(",");
             if(worldName.equals(info[0])) {
                 int cx = 0;
