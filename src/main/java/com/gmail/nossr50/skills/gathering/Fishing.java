@@ -20,6 +20,8 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -419,11 +421,11 @@ public class Fishing {
                 final int DROP_NUMBER_2 = random.nextInt(randomChance) + 1;
                 if (DROP_NUMBER > 95) {
                     if (DROP_NUMBER_2 > 66) {
-                        Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8197));
+                        Misc.dropItem(location, new Potion(PotionType.INSTANT_HEAL).toItemStack(1));
                     } else if (DROP_NUMBER_2 > 33) {
-                        Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8195));
+                        Misc.dropItem(location, new Potion(PotionType.FIRE_RESISTANCE).toItemStack(1));
                     } else {
-                        Misc.dropItem(location, new ItemStack(Material.POTION, 1, (short) 8194));
+                        Misc.dropItem(location, new Potion(PotionType.SPEED).toItemStack(1));
                     }
                 } else {
                     if (DROP_NUMBER_2 > 88) {
