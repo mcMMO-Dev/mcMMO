@@ -404,8 +404,13 @@ public class Fishing {
                 break;
 
             case SQUID:
-                ItemStack item = new ItemStack(Material.INK_SACK, 1, (short) 0);
-                item.setData(new MaterialData(Material.INK_SACK, DyeColor.BLACK.getDyeData()));
+                ItemStack item;
+                try {
+                    item = (new MaterialData(Material.INK_SACK, DyeColor.BLACK.getDyeData())).toItemStack(1);
+                }
+		catch(Exception e) {
+                    item = (new MaterialData(Material.INK_SACK, (byte) 0)).toItemStack(1);
+                }
 
                 Misc.dropItem(location, item);
                 break;
