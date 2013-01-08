@@ -126,10 +126,12 @@ commands:
         description: Toggle Admin chat or send admin chat messages
 permissions:
     mcmmo.*:
+        default: false
         description: Implies all mcmmo permissions.
         children:
             mcmmo.all: true
     mcmmo.all:
+        default: false
         description: Implies all mcmmo permissions.
         children:
             mcmmo.defaults: true
