@@ -410,7 +410,7 @@ public class Fishing {
                 try {
                     item = (new MaterialData(Material.INK_SACK, DyeColor.BLACK.getDyeData())).toItemStack(1);
                 }
-		catch(Exception e) {
+                catch(Exception e) {
                     item = (new MaterialData(Material.INK_SACK, (byte) 0)).toItemStack(1);
                 }
 

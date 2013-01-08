@@ -277,10 +277,10 @@ public class Herbalism {
                     }
                 }
                 else if (mat == Material.CARROT) {
-                    is = new ItemStack(Material.CARROT_ITEM, 1, (short) 0);
+                    is = new ItemStack(Material.CARROT_ITEM);
                 }
                 else if (mat == Material.POTATO) {
-                    is = new ItemStack(Material.POTATO_ITEM, 1, (short) 0);
+                    is = new ItemStack(Material.POTATO_ITEM);
                 }
                 else {
                     is = new ItemStack(mat);
@@ -467,11 +467,11 @@ public class Herbalism {
                 break;
             case COCOA:
                 try {
-                    Misc.dropItem(location, new ItemStack(Material.INK_SACK, 3, DyeColor.BROWN.getDyeData()));
+                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 3);
                     inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()));
                 }
                 catch(Exception e) {
-                    Misc.dropItem(location, new ItemStack(Material.INK_SACK, 3, (short) 3));
+                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, (short) 3), 3);
                     inventory.removeItem(new ItemStack(Material.INK_SACK, 1, (short) 3));
                 }
                 break;
@@ -487,7 +487,7 @@ public class Herbalism {
                 inventory.removeItem(new ItemStack(Material.POTATO_ITEM));
                 break;
             case NETHER_WARTS:
-                Misc.dropItem(location, new ItemStack(Material.NETHER_STALK, 2));
+                Misc.dropItems(location, new ItemStack(Material.NETHER_STALK), 2);
                 Misc.randomDropItems(location, new ItemStack(Material.NETHER_STALK), 50, 2);
                 inventory.removeItem(new ItemStack(Material.NETHER_STALK));
                 break;
@@ -508,8 +508,8 @@ public class Herbalism {
      * @param block The block being used in the ability
      */
     public static void greenThumbBlocks(ItemStack is, Player player, Block block) {
-    	final int MAX_CHANCE = advancedConfig.getGreenThumbChanceMax();
-    	final int MAX_BONUS_LEVEL = advancedConfig.getGreenThumbMaxLevel();
+        final int MAX_CHANCE = advancedConfig.getGreenThumbChanceMax();
+        final int MAX_BONUS_LEVEL = advancedConfig.getGreenThumbMaxLevel();
 
         PlayerProfile profile = Users.getProfile(player);
         int skillLevel = profile.getSkillLevel(SkillType.HERBALISM);
