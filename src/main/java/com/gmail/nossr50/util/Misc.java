@@ -26,7 +26,11 @@ public class Misc {
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
 
     public static boolean isCitizensNPC(Player player) {
-        return player.hasMetadata("NPC");
+        if (player == null || Users.getProfile(player) == null) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

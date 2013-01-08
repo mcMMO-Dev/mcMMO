@@ -13,7 +13,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.Misc;
 
 public class Archery {
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private static Random random = new Random();
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
@@ -30,14 +30,13 @@ public class Archery {
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
         for (TrackedEntity trackedEntity : trackedEntities) {
-            if (trackedEntity.getLivingEntity() == livingEntity) {
+            if (trackedEntity.getLivingEntity().getEntityId() == livingEntity.getEntityId()) {
                 trackedEntity.incrementArrowCount();
                 return;
             }
         }
 
-        //If the entity isn't tracked yet
-        addToTracker(livingEntity);
+        addToTracker(livingEntity); //If the entity isn't tracked yet
     }
 
     protected static void addToTracker(LivingEntity livingEntity) {
