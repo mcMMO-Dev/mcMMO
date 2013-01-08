@@ -4,11 +4,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.util.Misc;
 
 public class MiningBlockEventHandler {
     private MiningManager manager;
+    private Player player;
 
     private Block block;
     private Location blockLocation;
@@ -18,6 +20,7 @@ public class MiningBlockEventHandler {
 
     protected MiningBlockEventHandler(MiningManager manager, Block block) {
         this.manager = manager;
+        this.player = manager.getPlayer();
 
         this.block = block;
         this.blockLocation = block.getLocation();
@@ -37,7 +40,7 @@ public class MiningBlockEventHandler {
      * @param block The block being broken
      */
     protected void processDrops() {
-        if (manager.getPlayer().getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+        if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
             Mining.silkTouchDrops(block, blockLocation, blockType);
         }
         else {
@@ -46,6 +49,6 @@ public class MiningBlockEventHandler {
     }
 
     protected void processXP() {
-        Mining.miningXP(manager.getPlayer(), manager.getProfile(), block, blockType);
+        Mining.miningXP(player, manager.getProfile(), block, blockType);
     }
 }

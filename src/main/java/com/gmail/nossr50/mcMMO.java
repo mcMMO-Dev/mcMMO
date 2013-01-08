@@ -83,7 +83,6 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 
 
 public class mcMMO extends JavaPlugin {
-
     private final PlayerListener playerListener = new PlayerListener(this);
     private final BlockListener blockListener = new BlockListener(this);
     private final EntityListener entityListener = new EntityListener(this);

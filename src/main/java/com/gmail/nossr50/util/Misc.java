@@ -20,8 +20,9 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 
 public class Misc {
-
     private static Random random = new Random();
+
+    public static final int TOOL_DURABILITY_LOSS = Config.getInstance().getAbilityToolDamage();
 
     /**
      * Gets a capitalized version of the target string.

@@ -10,16 +10,12 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
-import org.getspout.spoutapi.sound.SoundEffect;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
-import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
-import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Skills;
@@ -32,13 +28,17 @@ public class Mining {
     public static final int DOUBLE_DROPS_MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
     public static final int DOUBLE_DROPS_MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
 
+    public static final int DIAMOND_TOOL_TIER = 4;
+    public static final int IRON_TOOL_TIER = 3;
+    public static final int STONE_TOOL_TIER = 2;
+
     /**
      * Award XP for Mining blocks.
      *
      * @param player The player to award XP to
      * @param block The block to award XP for
      */
-    protected static void miningXP(Player player, PlayerProfile profile, Block block, Material type) {
+     protected static void miningXP(Player player, PlayerProfile profile, Block block, Material type) {
         int xp = 0;
 
         switch (type) {
@@ -108,91 +108,6 @@ public class Mining {
 
         Skills.xpProcessing(player, profile, SkillType.MINING, xp);
     }
-
-    /**
-     * Handle the Super Breaker ability.
-     *
-     * @param player The player using the ability
-     * @param block The block being affected
-     */
-    public static void superBreakerBlockCheck(Player player, Block block) {
-        Material type = block.getType();
-        int tier = Misc.getTier(player.getItemInHand());
-        int durabilityLoss = config.getAbilityToolDamage();
-        FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-
-        if (ModChecks.isCustomMiningBlock(block)) {
-            if (ModChecks.getCustomBlock(block).getTier() < tier) {
-                return;
-            }
-
-            if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
-                return;
-            }
-
-            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
-            Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
-
-            MiningManager manager = new MiningManager(player);
-            manager.miningBlockCheck(block);
-
-            if (mcMMO.spoutEnabled) {
-                SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-            }
-        }
-        else {
-            switch (type) {
-            case OBSIDIAN:
-                if (tier < 4) {
-                    return;
-                }
-                durabilityLoss = durabilityLoss * 5; //Obsidian needs to do more damage than normal
-                /* FALL THROUGH */
-
-            case DIAMOND_ORE:
-            case GLOWING_REDSTONE_ORE:
-            case GOLD_ORE:
-            case LAPIS_ORE:
-            case REDSTONE_ORE:
-            case EMERALD_ORE:
-                if (tier < 3) {
-                    return;
-                }
-                /* FALL THROUGH */
-
-            case IRON_ORE:
-                if (tier < 2) {
-                    return;
-                }
-                /* FALL THROUGH */
-
-            case COAL_ORE:
-            case ENDER_STONE:
-            case GLOWSTONE:
-            case MOSSY_COBBLESTONE:
-            case NETHERRACK:
-            case SANDSTONE:
-            case STONE:
-                if (mcMMO.placeStore.isTrue(block) || Misc.blockBreakSimulate(block, player, true)) {
-                    return;
-                }
-
-                mcMMO.p.getServer().getPluginManager().callEvent(armswing);
-                Skills.abilityDurabilityLoss(player.getItemInHand(), durabilityLoss);
-
-                MiningManager manager = new MiningManager(player);
-                manager.miningBlockCheck(block);
-
-                if (mcMMO.spoutEnabled) {
-                    SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-                }
-
-            default:
-                return;
-            }
-        }
-    }
-
 
     /**
      * Handle double drops when using Silk Touch.
@@ -266,7 +181,6 @@ public class Mining {
             }
             break;
         }
-
     }
 
     /**
