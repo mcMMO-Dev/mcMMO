@@ -357,15 +357,17 @@ public class BlockListener implements Listener {
             }
         }
         else if (profile.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
+            MiningManager manager = new MiningManager(player);
+
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
                     event.setInstaBreak(true);
-                    Mining.superBreakerBlockCheck(player, block);
+                    manager.superBreakerBlockCheck(block);
                 }
             }
             else {
                 event.setInstaBreak(true);
-                Mining.superBreakerBlockCheck(player, block);
+                manager.superBreakerBlockCheck(block);
             }
         }
         else if (profile.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && (material.equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block)))) {
