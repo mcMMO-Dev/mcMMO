@@ -155,7 +155,7 @@ public class Database {
 
         PreparedStatement statement = null;
         try {
-        	if(!checkConnected()) return;
+            if(!checkConnected()) return;
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
 
