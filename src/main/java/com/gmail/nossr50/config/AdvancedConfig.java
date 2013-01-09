@@ -148,7 +148,4 @@ public class AdvancedConfig extends ConfigLoader {
     public int getSpoutNotificationTier2() { return config.getInt("Spout.Notifications.Tier2", 400); }
     public int getSpoutNotificationTier3() { return config.getInt("Spout.Notifications.Tier3", 600); }
     public int getSpoutNotificationTier4() { return config.getInt("Spout.Notifications.Tier4", 800); }
-    //TODO Make the sounds configurable! :D
-    //    public String getSpoutSoundRepair() { return config.getString("Spout.Sounds.RepairSound", "url here"); }
-    //    public String getSpoutSoundLevelUp() { return config.getString("Spout.Sounds.LevelUp", "url here"); }
 }

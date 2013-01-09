@@ -15,6 +15,7 @@ import com.gmail.nossr50.util.Permissions;
 public class MiningCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String doubleDropChance;
+    private String doubleDropChanceLucky;
     private String superBreakerLength;
     private String blastMiningRank;
     private String blastRadiusIncrease;
@@ -48,10 +49,17 @@ public class MiningCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
+        float doubleDropChanceF;
+        //Super Breaker
         superBreakerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
-        if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
-        else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+        //Double Drops
+        if(skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
+        else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+        doubleDropChance = df.format(doubleDropChanceF);
+        if(doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = df.format(100D);
+        else doubleDropChanceLucky = df.format(doubleDropChanceF + doubleDropChanceF * 0.3333D);
 
+        //Blast Mining
         if (skillValue >= blastMiningRank8) {
             blastMiningRank = "8";
             blastDamageDecrease = "100.00%";
@@ -153,7 +161,10 @@ public class MiningCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canDoubleDrop && !doubleDropsDisabled) {
-            player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.mining"))
+                player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }));
         }
 
         if (canSuperBreaker) {
