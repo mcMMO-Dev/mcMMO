@@ -87,7 +87,7 @@ public class PartyCommand implements CommandExecutor {
                     player.sendMessage(LocaleLoader.getString("Commands.Party.Leave"));
                 }
                 else {
-                    player.sendMessage("Commands.Party.None");
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 }
             }
             else if (args[0].equals("?")) {
