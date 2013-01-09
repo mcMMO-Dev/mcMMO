@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.Permissions;
 public class TamingCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String goreChance;
+    private String goreChanceLucky;
 
     private float goreChanceMax = advancedConfig.getGoreChanceMax();
     private float goreMaxLevel = advancedConfig.getGoreMaxBonusLevel();
@@ -41,8 +42,12 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
-        if(skillValue >= goreMaxLevel) goreChance = df.format(goreChanceMax);
-        else goreChance = df.format(((double) goreChanceMax / (double) goreMaxLevel) * skillValue);
+        float goreChanceF;
+        if(skillValue >= goreMaxLevel) goreChanceF = (goreChanceMax);
+        else goreChanceF = (float) (((double) goreChanceMax / (double) goreMaxLevel) * skillValue);
+        goreChance = df.format(goreChanceF);
+        if(goreChanceF + goreChanceF * 0.3333D >= 100D) goreChanceLucky = df.format(100D);
+        else goreChanceLucky = df.format(goreChanceF + goreChanceF * 0.3333D);
     }
 
     @Override
@@ -160,7 +165,10 @@ public class TamingCommand extends SkillCommand {
         }
 
         if (canGore) {
-            player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", new Object[] { goreChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.taming"))
+                player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", new Object[] { goreChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { goreChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", new Object[] { goreChance }));
         }
     }
 }

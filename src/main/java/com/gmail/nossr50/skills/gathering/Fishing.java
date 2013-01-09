@@ -111,8 +111,8 @@ public class Fishing {
 
         if (Config.getInstance().getFishingDropsEnabled() && rewards.size() > 0
                 && Permissions.fishingTreasures(player)) {
-            FishingTreasure treasure = rewards.get(random.nextInt(rewards
-                    .size()));
+            FishingTreasure treasure;
+            treasure = rewards.get(random.nextInt(rewards.size()));
 
             int randomChance = 100;
 
@@ -121,26 +121,20 @@ public class Fishing {
             }
 
             if (random.nextDouble() * randomChance <= treasure.getDropChance()) {
-                Users.getPlayer(player).addXP(SkillType.FISHING,
-                        treasure.getXp());
+                Users.getPlayer(player).addXP(SkillType.FISHING,treasure.getXp());
                 theCatch.setItemStack(treasure.getDrop());
             }
         } else {
             theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
         }
 
-        short maxDurability = theCatch.getItemStack().getType()
-                .getMaxDurability();
+        short maxDurability = theCatch.getItemStack().getType().getMaxDurability();
 
         if (maxDurability > 0) {
-            theCatch.getItemStack().setDurability(
-                    (short) (random.nextInt(maxDurability))); // Change
-            // durability to
-            // random value
+            theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); // Change durability to random value
         }
 
-        Skills.xpProcessing(player, profile, SkillType.FISHING, Config
-                .getInstance().getFishingBaseXP());
+        Skills.xpProcessing(player, profile, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
     }
 
     /**
@@ -160,8 +154,7 @@ public class Fishing {
         Item theCatch = (Item) event.getCaught();
 
         if (theCatch.getItemStack().getType() != Material.RAW_FISH) {
-            final int ENCHANTMENT_CHANCE = advancedConfig
-                    .getFishingEnchantmentChance();
+            final int ENCHANTMENT_CHANCE = advancedConfig.getFishingEnchantmentChance();
             boolean enchanted = false;
             ItemStack fishingResults = theCatch.getItemStack();
 
@@ -178,11 +171,9 @@ public class Fishing {
                         && Permissions.fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
-                            Map<Enchantment, Integer> resultEnchantments = fishingResults
-                                    .getEnchantments();
+                            Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();
 
-                            for (Enchantment oldEnchant : resultEnchantments
-                                    .keySet()) {
+                            for (Enchantment oldEnchant : resultEnchantments.keySet()) {
                                 if (oldEnchant.conflictsWith(newEnchant))
                                     continue;
                             }
@@ -191,23 +182,18 @@ public class Fishing {
                              * Actual chance to have an enchantment is related
                              * to your fishing skill
                              */
-                            if (random.nextInt(15) < Fishing
-                                    .getFishingLootTier(profile)) {
+                            if (random.nextInt(15) < Fishing.getFishingLootTier(profile)) {
                                 enchanted = true;
-                                int randomEnchantLevel = random
-                                        .nextInt(newEnchant.getMaxLevel()) + 1;
+                                int randomEnchantLevel = random.nextInt(newEnchant.getMaxLevel()) + 1;
 
-                                if (randomEnchantLevel < newEnchant
-                                        .getStartLevel()) {
-                                    randomEnchantLevel = newEnchant
-                                            .getStartLevel();
+                                if (randomEnchantLevel < newEnchant.getStartLevel()) {
+                                    randomEnchantLevel = newEnchant.getStartLevel();
                                 }
 
                                 if (randomEnchantLevel >= 1000)
                                     continue;
 
-                                fishingResults.addEnchantment(newEnchant,
-                                        randomEnchantLevel);
+                                fishingResults.addEnchantment(newEnchant,randomEnchantLevel);
                             }
                         }
                     }
@@ -240,8 +226,8 @@ public class Fishing {
         int dropChance = getShakeChance(lootTier);
 
         if (Permissions.luckyFishing(player)) {
-            dropChance = (int) (dropChance * 1.25); // With lucky perk on max
-            // level tier, its 100%
+            // With lucky perk on max level tier, its 100%
+            dropChance = (int) (dropChance * 1.25);
         }
 
         final int DROP_CHANCE = random.nextInt(100);

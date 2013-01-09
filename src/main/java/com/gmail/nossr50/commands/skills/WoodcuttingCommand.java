@@ -15,6 +15,7 @@ public class WoodcuttingCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String treeFellerLength;
     private String doubleDropChance;
+    private String doubleDropChanceLucky;
 
     private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
     private double doubleDropsMaxBonus = advancedConfig.getWoodcuttingDoubleDropChance();
@@ -34,10 +35,14 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
+        float doubleDropChanceF;
 
         treeFellerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
-        if(skillValue >= doubleDropsMaxLevel) doubleDropChance = df.format(doubleDropsMaxBonus);
-        else doubleDropChance = df.format((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+        if(skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
+        else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
+        doubleDropChance = df.format(doubleDropChanceF);
+        if(doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = df.format(100D);
+        else doubleDropChanceLucky = df.format(doubleDropChanceF + doubleDropChanceF * 0.3333D);
     }
 
     @Override
@@ -94,7 +99,10 @@ public class WoodcuttingCommand extends SkillCommand {
         }
 
         if (canDoubleDrop && !doubleDropsDisabled) {
-            player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.woodcutting"))
+                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }));
         }
 
         if (canTreeFell) {
