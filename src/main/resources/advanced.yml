@@ -126,7 +126,7 @@ Skills:
         DoubleDrops_ChanceMax: 100
         DoubleDrops_MaxBonusLevel: 1000
 
-        # BlastMining rank unlocks
+        # BlastMining_Rank: BlastMining rank unlocks
         BlastMining_Rank1: 125
         BlastMining_Rank2: 250
         BlastMining_Rank3: 375
@@ -135,49 +135,117 @@ Skills:
         BlastMining_Rank6: 750
         BlastMining_Rank7: 875
         BlastMining_Rank8: 1000
+    #
+    #  Settings for Repair
+    ###
     Repair:
-        RepairMastery_ChanceMax: 200
+        # RepairMastery_ChanceMax: Maximum bonus percentage for Repair Mastery
+        # RepairMastery_MaxBonusLevel: On this level, the maximum bonus is reached
+        RepairMastery_MaxBonusPercentage: 200
         RepairMastery_MaxBonusLevel: 1000
+
+        # SuperRepair_ChanceMax: Maximum chance of Super Repair
+        # SuperRepair_MaxBonusLevel: On this level, Super Repair chance will be SuperRepair_ChanceMax
         SuperRepair_ChanceMax: 100
         SuperRepair_MaxBonusLevel: 1000
+    #
+    #  Settings for Swords
+    ###
     Swords:
+        # Bleed_ChanceMax: Maximum chance of triggering bleeding
+        # Bleed_MaxBonusLevel: On this level, the chance to cause Bleeding will be Bleed_ChanceMax
         Bleed_ChanceMax: 75
         Bleed_MaxBonusLevel: 750
+        # These settings determine how long the Bleeding effect lasts
         Bleed_MaxTicks: 3
         Bleed_BaseTicks: 2
+
+        # Counter_ChanceMax: Maximum chance of triggering a counter attack
+        # Counter_MaxBonusLevel: On this level, the chance to Counter will be Counter_ChanceMax
         Counter_ChanceMax: 30
         Counter_MaxBonusLevel: 600
+
+        # Counter_DamageModifier: Damaged caused by the damager will get divided by this modifier and dealt back to the damager
         Counter_DamageModifier: 2
+
+        # SerratedStrikes_DamageModifier: Damage will get divided by this modifier
+        # SerratedStrikes_BleedTicks: This determines how long the bleeding effect of SerratedStrikes lasts
         SerratedStrikes_DamageModifier: 4
         SerratedStrikes_BleedTicks: 5
+    #
+    #  Settings for Taming
+    ###
     Taming:
+        # Gore_ChanceMax: Maximum chance of triggering gore
+        # Gore_MaxBonusLevel: On this level, the chance to cause Gore will be Gore_ChanceMax
         Gore_ChanceMax: 100
         Gore_MaxBonusLevel: 1000
+
+        # Gore_BleedTicks: Determines the length of the bleeding effect
+        # Gore_Modifier: Damage will get multiplied by this modifier
         Gore_BleedTicks: 2
         Gore_Modifier: 2
+
+        # FastFood_UnlockLevel: Level when FastFood unlocks
+        # FastFood_Chance: The chance for wolves to heal hp when inflicting damage
         FastFood_UnlockLevel: 50
         FastFood_Chance: 50
+
+        # EnvironmentallyAware_UnlockLevel: Level when EnvironmentallyAware unlocks
         EnvironmentallyAware_UnlockLevel: 100
+
+        # ThickFur_UnlockLevel: Level when ThickFur unlocks
+        # ThickFur_Modifier: Damage will get divided by this modifier
         ThickFur_UnlockLevel: 250
         ThickFur_Modifier: 2
+
+        # ShockProof_UnlockLevel: Level when ShockProof unlocks
+        # ShockProof_Modifier: Damage will get divided by this modifier
         ShockProof_UnlockLevel: 500
         ShockProof_Modifier: 6
+
+        # SharpenedClaws_UnlockLevel: Level when SharpenedClaws unlocks
+        # SharpenedClaws_Bonus: This bonus will get added to the damage caused
         SharpenedClaws_UnlockLevel: 750
         SharpenedClaws_Bonus: 2
+    #
+    #  Settings for Unarmed
+    ###
     Unarmed:
+        # Disarm_ChanceMax: Maximum chance of disarming other players
+        # Disarm_MaxBonusLevel: Level when the maximum chance to disarm is reached
         Disarm_ChanceMax: 33
         Disarm_MaxBonusLevel: 1000
+
+        # Deflect_ChanceMax: Maximum chance of deflecting arrows
+        # Deflect_MaxBonusLevel: Level when the maximum chance to deflect is reached
         Deflect_ChanceMax: 50
         Deflect_MaxBonusLevel: 1000
+
+        # IronGrip_ChanceMax: Maximum chance of preventing being disarmed
+        # IronGrip_MaxBonusLevel: Level when the maximum chance to prevent being disarmed is reached
         IronGrip_ChanceMax: 100
         IronGrip_MaxBonusLevel: 1000
-        IronArmBonus: 8
+
+        # IronArmBonusMax: Maximum bonus damage for unarmed
+        # IronArm_IncreaseLevel: Bonus damage increases every increase level
+        IronArmBonusMax: 8
         IronArm_IncreaseLevel: 50
+    #
+    #  Settings for Woodcutting
+    ###
     Woodcutting:
+        # LeafBlower_UnlockLevel: At this level, the passive ability LeafBlower unlocks
         LeafBlower_UnlockLevel: 100
+
+        # DoubleDrops_ChanceMax: Maximum chance of receiving double drops
+        # DoubleDrops_MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
         DoubleDrops_ChanceMax: 100
         DoubleDrops_MaxBonusLevel: 1000
 Spout:
+    #
+    #  Settings for the Spout notifications, when a player reaches a higher tier, the image of the notification will change.
+    ###
     Notifications:
         Tier1: 200
         Tier2: 400
