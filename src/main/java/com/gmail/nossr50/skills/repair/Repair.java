@@ -29,7 +29,7 @@ public class Repair {
 
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
-    public static final int REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryChanceMax();
+    public static final int REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryMaxBonus();
     public static final int REPAIR_MASTERY_MAX_BONUS_LEVEL = advancedConfig.getRepairMasteryMaxLevel();
     public static final int SUPER_REPAIR_CHANCE_MAX = advancedConfig.getSuperRepairChanceMax();
     public static final int SUPER_REPAIR_MAX_BONUS_LEVEL = advancedConfig.getSuperRepairMaxLevel();

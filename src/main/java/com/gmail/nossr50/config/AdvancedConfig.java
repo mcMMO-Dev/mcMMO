@@ -93,7 +93,7 @@ public class AdvancedConfig extends ConfigLoader {
     public int getBlastMiningRank7() { return config.getInt("Skills.Mining.BlastMining_Rank7", 875); }
     public int getBlastMiningRank8() { return config.getInt("Skills.Mining.BlastMining_Rank8", 1000); }
     /* REPAIR */
-    public int getRepairMasteryChanceMax() { return config.getInt("Skills.Repair.RepairMastery_ChanceMax", 200); }
+    public int getRepairMasteryMaxBonus() { return config.getInt("Skills.Repair.RepairMastery_MaxBonusPercentage", 200); }
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery_MaxBonusLevel", 1000); }
     public int getSuperRepairChanceMax() { return config.getInt("Skills.Repair.SuperRepair_ChanceMax", 100); }
     public int getSuperRepairMaxLevel() { return config.getInt("Skills.Repair.SuperRepair_MaxBonusLevel", 1000); }
