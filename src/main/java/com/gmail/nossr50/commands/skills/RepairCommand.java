@@ -19,6 +19,7 @@ public class RepairCommand extends SkillCommand {
     private int arcaneForgingRank;
     private String repairMasteryBonus;
     private String superRepairChance;
+    private String superRepairChanceLucky;
 
     private float repairMasteryChanceMax = advancedConfig.getRepairMasteryChanceMax();
     private float repairMasteryMaxBonusLevel = advancedConfig.getRepairMasteryMaxLevel();
@@ -52,6 +53,7 @@ public class RepairCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
+        float superRepairChanceF;
         // We're using pickaxes here, not the best but it works
         Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
         Repairable goldRepairable = mcMMO.repairManager.getRepairable(285);
@@ -68,8 +70,11 @@ public class RepairCommand extends SkillCommand {
         if(skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = df.format(repairMasteryChanceMax);
         else repairMasteryBonus = df.format(((double) repairMasteryChanceMax / (double) repairMasteryMaxBonusLevel) * skillValue);
 
-        if(skillValue >= superRepairMaxBonusLevel) superRepairChance = df.format(superRepairChanceMax);
-        else superRepairChance = df.format(((double) superRepairChanceMax / (double) superRepairMaxBonusLevel) * skillValue);
+        if(skillValue >= superRepairMaxBonusLevel) superRepairChanceF = superRepairChanceMax;
+        else superRepairChanceF = (float) (((double) superRepairChanceMax / (double) superRepairMaxBonusLevel) * skillValue);
+        superRepairChance = df.format(superRepairChanceF);
+        if(superRepairChanceF + superRepairChanceF * 0.3333D >= 100D) superRepairChanceLucky = df.format(100D);
+        else superRepairChanceLucky = df.format(superRepairChanceF + superRepairChanceF * 0.3333D);
 
         arcaneForgingRank = Repair.getArcaneForgingRank(profile);
     }
@@ -152,7 +157,10 @@ public class RepairCommand extends SkillCommand {
         }
 
         if (canSuperRepair) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.repair"))
+                player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { superRepairChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }));
         }
 
         if (canArcaneForge) {

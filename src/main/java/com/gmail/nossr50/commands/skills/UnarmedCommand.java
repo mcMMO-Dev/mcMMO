@@ -14,7 +14,9 @@ public class UnarmedCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String berserkLength;
     private String deflectChance;
+    private String deflectChanceLucky;
     private String disarmChance;
+    private String disarmChanceLucky;
     private String ironArmBonus;
 
     private float disarmChanceMax = advancedConfig.getDisarmChanceMax();
@@ -38,13 +40,21 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
+        float disarmChanceF;
+        float deflectChanceF;
         berserkLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
 
-        if(skillValue >= disarmMaxLevel) disarmChance = df.format(disarmChanceMax);
-        else disarmChance = df.format(((double) disarmChanceMax / (double) disarmMaxLevel) * skillValue);
+        if(skillValue >= disarmMaxLevel) disarmChanceF = disarmChanceMax;
+        else disarmChanceF = (float) (((double) disarmChanceMax / (double) disarmMaxLevel) * skillValue);
+        disarmChance = df.format(disarmChanceF);
+        if(disarmChanceF + disarmChanceF * 0.3333D >= 100D) disarmChanceLucky = df.format(100D);
+        else disarmChanceLucky = df.format(disarmChanceF + disarmChanceF * 0.3333D);
 
-        if(skillValue >= deflectMaxLevel) deflectChance = df.format(deflectChanceMax);
-        else deflectChance = df.format(((double) deflectChanceMax / (double) deflectMaxLevel) * skillValue);
+        if(skillValue >= deflectMaxLevel) deflectChanceF = deflectChanceMax;
+        else deflectChanceF = (float) (((double) deflectChanceMax / (double) deflectMaxLevel) * skillValue);
+        deflectChance = df.format(deflectChanceF);
+        if(deflectChanceF + deflectChanceF * 0.3333D >= 100D) deflectChanceLucky = df.format(100D);
+        else deflectChanceLucky = df.format(deflectChanceF + deflectChanceF * 0.3333D);
 
         if (skillValue >= 250) ironArmBonus = String.valueOf(ironArmMaxBonus);
         else ironArmBonus = String.valueOf(3 + ((double) skillValue / (double) ironArmIncreaseLevel));
@@ -100,11 +110,17 @@ public class UnarmedCommand extends SkillCommand {
         }
 
         if (canDeflect) {
-            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", new Object[] { deflectChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.unarmed"))
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", new Object[] { deflectChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { deflectChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", new Object[] { deflectChance }));
         }
 
         if (canDisarm) {
-            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", new Object[] { disarmChance }));
+            if (player.hasPermission("mcmmo.perks.lucky.unarmed"))
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", new Object[] { disarmChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { disarmChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", new Object[] { disarmChance }));
         }
 
         if (canBerserk) {

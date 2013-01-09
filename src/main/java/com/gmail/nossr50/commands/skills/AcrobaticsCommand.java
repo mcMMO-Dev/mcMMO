@@ -14,8 +14,11 @@ public class AcrobaticsCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     private String dodgeChance;
+    private String dodgeChanceLucky;
     private String rollChance;
+    private String rollChanceLucky;
     private String gracefulRollChance;
+    private String gracefulRollChanceLucky;
 
     private float dodgeChanceMax = advancedConfig.getDodgeChanceMax();
     private float dodgeMaxBonusLevel = advancedConfig.getDodgeMaxBonusLevel();
@@ -36,15 +39,30 @@ public class AcrobaticsCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
+        float dodgeChanceF;
+        float rollChanceF;
+        float gracefulRollChanceF;
+
         // DODGE
-        if(skillValue >= dodgeMaxBonusLevel) dodgeChance = df.format(dodgeChanceMax);
-        else dodgeChance = df.format(((double) dodgeChanceMax / (double) dodgeMaxBonusLevel) * skillValue);
+        if(skillValue >= dodgeMaxBonusLevel) dodgeChanceF = dodgeChanceMax;
+        else dodgeChanceF = (float) (((double) dodgeChanceMax / (double) dodgeMaxBonusLevel) * skillValue);
+        dodgeChance = df.format(dodgeChanceF);
+        if(dodgeChanceF + dodgeChanceF * 0.3333D >= 100D) dodgeChanceLucky = df.format(100D);
+        else dodgeChanceLucky = df.format(dodgeChanceF + dodgeChanceF * 0.3333D);
+
         // ROLL
-        if(skillValue >= rollMaxBonusLevel) rollChance = df.format(rollChanceMax);
-        else rollChance = df.format(((double) rollChanceMax / (double) rollMaxBonusLevel) * skillValue);
+        if(skillValue >= rollMaxBonusLevel) rollChanceF = rollChanceMax;
+        else rollChanceF = (float) (((double) rollChanceMax / (double) rollMaxBonusLevel) * skillValue);
+        rollChance = df.format(rollChanceF);
+        if(rollChanceF + rollChanceF * 0.3333D >= 100D) rollChanceLucky = df.format(100D);
+        else rollChanceLucky = df.format(rollChanceF + rollChanceF * 0.3333D);
+
         // GRACEFULROLL
-        if(skillValue >= gracefulRollMaxBonusLevel) gracefulRollChance = df.format(gracefulRollChanceMax);
-        else gracefulRollChance = df.format(((double) gracefulRollChanceMax / (double) gracefulRollMaxBonusLevel) * skillValue);
+        if(skillValue >= gracefulRollMaxBonusLevel) gracefulRollChanceF = gracefulRollChanceMax;
+        else gracefulRollChanceF = (float) (((double) gracefulRollChanceMax / (double) gracefulRollMaxBonusLevel) * skillValue);
+        gracefulRollChance = df.format(gracefulRollChanceF);
+        if(gracefulRollChanceF + gracefulRollChanceF * 0.3333D >= 100D) gracefulRollChanceLucky = df.format(100D);
+        else gracefulRollChanceLucky = df.format(gracefulRollChanceF + gracefulRollChanceF * 0.3333D);
     }
 
     @Override
@@ -88,15 +106,24 @@ public class AcrobaticsCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canRoll) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }));
+        	if (player.hasPermission("mcmmo.perks.lucky.acrobatics"))
+                player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { rollChanceLucky }));
+        	else
+                player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }));
         }
 
         if (canGracefulRoll) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }));
+        	if (player.hasPermission("mcmmo.perks.lucky.acrobatics"))
+                player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { gracefulRollChanceLucky }));
+        	else
+                player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }));
         }
 
         if (canDodge) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }));
+        	if (player.hasPermission("mcmmo.perks.lucky.acrobatics"))
+                player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { dodgeChanceLucky }));
+        	else
+                player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }));
         }
     }
 }
