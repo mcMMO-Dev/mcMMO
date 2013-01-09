@@ -59,8 +59,6 @@ public class SwordsCommand extends SkillCommand {
         counterAttackChance = df.format(counterAttackChanceF);
         if(counterAttackChanceF + counterAttackChanceF * 0.3333D >= 100D) counterAttackChanceLucky = df.format(100D);
         else counterAttackChanceLucky = df.format(counterAttackChanceF + counterAttackChanceF * 0.3333D);
-
-        serratedStrikesLength = String.valueOf(serratedBleedTicks);
     }
 
     @Override
