@@ -153,19 +153,7 @@ public class Config extends ConfigLoader {
 
     /* Fishing */
     public int getFishingBaseXP() { return config.getInt("Experience.Fishing.Base", 800); }
-    public boolean getFishingDropsEnabled() { return config.getBoolean("Fishing.Drops_Enabled", true); }
-    public int getFishingTierLevelsTier1() { return config.getInt("Fishing.Tier_Levels.Tier1", 0); }
-    public int getFishingTierLevelsTier2() { return config.getInt("Fishing.Tier_Levels.Tier2", 200); }
-    public int getFishingTierLevelsTier3() { return config.getInt("Fishing.Tier_Levels.Tier3", 400); }
-    public int getFishingTierLevelsTier4() { return config.getInt("Fishing.Tier_Levels.Tier4", 600); }
-    public int getFishingTierLevelsTier5() { return config.getInt("Fishing.Tier_Levels.Tier5", 800); }
-
-    /* Shake */
-    public int getShakeChanceRank1() { return config.getInt("Shake.Chance.Rank_1", 25); }
-    public int getShakeChanceRank2() { return config.getInt("Shake.Chance.Rank_2", 40); }
-    public int getShakeChanceRank3() { return config.getInt("Shake.Chance.Rank_3", 55); }
-    public int getShakeChanceRank4() { return config.getInt("Shake.Chance.Rank_4", 60); }
-    public int getShakeChanceRank5() { return config.getInt("Shake.Chance.Rank_5", 75); }
+    public boolean getFishingDropsEnabled() { return config.getBoolean("Skills.Fishing.Drops_Enabled", true); }
 
     /* Herbalism */
     public int getHerbalismXPSugarCane() { return config.getInt("Experience.Herbalism.Sugar_Cane", 30); }
@@ -277,22 +265,6 @@ public class Config extends ConfigLoader {
     /* AFK Leveling */
     public boolean getAcrobaticsAFKDisabled() { return config.getBoolean("Skills.Acrobatics.Prevent_AFK_Leveling", true); }
     public boolean getHerbalismAFKDisabled() { return config.getBoolean("Skills.Herbalism.Prevent_AFK_Leveling", true); }
-
-    /* Arcane Forging */
-    public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Arcane_Forging.Downgrades.Enabled", true); }
-    public int getArcaneForgingDowngradeChanceRank1() { return config.getInt("Arcane_Forging.Downgrades.Chance.Rank_1", 75); }
-    public int getArcaneForgingDowngradeChanceRank2() { return config.getInt("Arcane_Forging.Downgrades.Chance.Rank_2", 50); }
-    public int getArcaneForgingDowngradeChanceRank3() { return config.getInt("Arcane_Forging.Downgrades.Chance.Rank_3", 25); }
-    public int getArcaneForgingDowngradeChanceRank4() { return config.getInt("Arcane_Forging.Downgrades.Chance.Rank_4", 15); }
-    public boolean getArcaneForgingEnchantLossEnabled() { return config.getBoolean("Arcane_Forging.May_Lose_Enchants", true); }
-    public int getArcaneForgingKeepEnchantsChanceRank1() { return config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10); }
-    public int getArcaneForgingKeepEnchantsChanceRank2() { return config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20); }
-    public int getArcaneForgingKeepEnchantsChanceRank3() { return config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30); }
-    public int getArcaneForgingKeepEnchantsChanceRank4() { return config.getInt("Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40); }
-    public int getArcaneForgingRankLevels1() { return config.getInt("Arcane_Forging.Rank_Levels.Rank_1", 100); }
-    public int getArcaneForgingRankLevels2() { return config.getInt("Arcane_Forging.Rank_Levels.Rank_2", 250); }
-    public int getArcaneForgingRankLevels3() { return config.getInt("Arcane_Forging.Rank_Levels.Rank_3", 500); }
-    public int getArcaneForgingRankLevels4() { return config.getInt("Arcane_Forging.Rank_Levels.Rank_4", 750); }
 
     /* Level Caps */
     public int getLevelCapAcrobatics() {
