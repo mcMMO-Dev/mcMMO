@@ -53,7 +53,7 @@ public class AcrobaticsManager {
             chance = ((float) Acrobatics.ROLL_MAX_CHANCE / Acrobatics.ROLL_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
         }
 
-        if (chance > Acrobatics.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.ROLL_XP_MODIFIER);
@@ -82,7 +82,7 @@ public class AcrobaticsManager {
 
         float chance = ((float) Acrobatics.DODGE_MAX_CHANCE / Acrobatics.DODGE_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
-        if (chance > Acrobatics.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.DODGE_XP_MODIFIER);

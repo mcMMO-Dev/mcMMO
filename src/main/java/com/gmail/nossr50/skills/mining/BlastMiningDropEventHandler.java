@@ -62,7 +62,7 @@ public class BlastMiningDropEventHandler {
             Location location = block.getLocation();
             Material type = block.getType();
 
-            if (BlastMining.getRandom().nextFloat() < (yield + oreBonus)) {
+            if (Misc.getRandom().nextFloat() < (yield + oreBonus)) {
                 droppedOres.add(block);
                 Mining.miningDrops(block, location, type);
 
@@ -82,7 +82,7 @@ public class BlastMiningDropEventHandler {
                 Location location = block.getLocation();
                 Material type = block.getType();
 
-                if (BlastMining.getRandom().nextFloat() < debrisYield) {
+                if (Misc.getRandom().nextFloat() < debrisYield) {
                     Misc.dropItem(location, new ItemStack(type));
                 }
             }

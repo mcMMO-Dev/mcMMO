@@ -5,6 +5,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -46,7 +47,7 @@ public class UnarmedManager {
             float chance = (float) (((double) Unarmed.DISARM_MAX_CHANCE / (double) Unarmed.DISARM_MAX_BONUS_LEVEL) * skillLevel);
             if (chance > Unarmed.DISARM_MAX_CHANCE) chance = Unarmed.DISARM_MAX_CHANCE;
 
-            if (chance > Unarmed.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(randomChance)) {
                 if (!hasIronGrip(defender)) {
                     eventHandler.sendAbilityMessage();
                     eventHandler.handleDisarm();
@@ -80,7 +81,7 @@ public class UnarmedManager {
         float chance = (float) (((double) Unarmed.DEFLECT_MAX_CHANCE / (double) Unarmed.DEFLECT_MAX_BONUS_LEVEL) * skillLevel);
         if (chance > Unarmed.DEFLECT_MAX_CHANCE) chance = Unarmed.DEFLECT_MAX_CHANCE;
 
-        if (chance > Unarmed.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.cancelEvent();
             eventHandler.sendAbilityMessage();
         }
@@ -130,7 +131,7 @@ public class UnarmedManager {
         float chance = (float) (((double) Unarmed.IRON_GRIP_MAX_CHANCE / (double) Unarmed.IRON_GRIP_MAX_BONUS_LEVEL) * skillLevel);
         if (chance > Unarmed.IRON_GRIP_MAX_CHANCE) chance = Unarmed.IRON_GRIP_MAX_CHANCE;
 
-        if (chance > Unarmed.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.sendAbilityMessages();
             return true;
         }

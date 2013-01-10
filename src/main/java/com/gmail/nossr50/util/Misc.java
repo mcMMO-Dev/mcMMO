@@ -308,4 +308,8 @@ public class Misc {
 
         return Integer.MAX_VALUE;
     }
+
+    public static Random getRandom() {
+        return random;
+    }
 }

@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.gathering;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -38,8 +37,6 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Fishing {
-
-    private static Random random = new Random();
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     /**
@@ -112,7 +109,7 @@ public class Fishing {
         if (Config.getInstance().getFishingDropsEnabled() && rewards.size() > 0
                 && Permissions.fishingTreasures(player)) {
             FishingTreasure treasure;
-            treasure = rewards.get(random.nextInt(rewards.size()));
+            treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
 
             int randomChance = 100;
 
@@ -120,7 +117,7 @@ public class Fishing {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            if (random.nextDouble() * randomChance <= treasure.getDropChance()) {
+            if (Misc.getRandom().nextDouble() * randomChance <= treasure.getDropChance()) {
                 Users.getPlayer(player).addXP(SkillType.FISHING,treasure.getXp());
                 theCatch.setItemStack(treasure.getDrop());
             }
@@ -131,7 +128,7 @@ public class Fishing {
         short maxDurability = theCatch.getItemStack().getType().getMaxDurability();
 
         if (maxDurability > 0) {
-            theCatch.getItemStack().setDurability((short) (random.nextInt(maxDurability))); // Change durability to random value
+            theCatch.getItemStack().setDurability((short) (Misc.getRandom().nextInt(maxDurability))); // Change durability to random value
         }
 
         Skills.xpProcessing(player, profile, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
@@ -167,7 +164,7 @@ public class Fishing {
                     randomChance = (int) (randomChance * 0.75);
                 }
 
-                if (random.nextInt(randomChance) <= ENCHANTMENT_CHANCE
+                if (Misc.getRandom().nextInt(randomChance) <= ENCHANTMENT_CHANCE
                         && Permissions.fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
@@ -182,9 +179,9 @@ public class Fishing {
                              * Actual chance to have an enchantment is related
                              * to your fishing skill
                              */
-                            if (random.nextInt(15) < Fishing.getFishingLootTier(profile)) {
+                            if (Misc.getRandom().nextInt(15) < Fishing.getFishingLootTier(profile)) {
                                 enchanted = true;
-                                int randomEnchantLevel = random.nextInt(newEnchant.getMaxLevel()) + 1;
+                                int randomEnchantLevel = Misc.getRandom().nextInt(newEnchant.getMaxLevel()) + 1;
 
                                 if (randomEnchantLevel < newEnchant.getStartLevel()) {
                                     randomEnchantLevel = newEnchant.getStartLevel();
@@ -230,8 +227,8 @@ public class Fishing {
             dropChance = (int) (dropChance * 1.25);
         }
 
-        final int DROP_CHANCE = random.nextInt(100);
-        final int DROP_NUMBER = random.nextInt(randomChance) + 1;
+        final int DROP_CHANCE = Misc.getRandom().nextInt(100);
+        final int DROP_NUMBER = Misc.getRandom().nextInt(randomChance) + 1;
 
         LivingEntity le = (LivingEntity) event.getCaught();
         EntityType type = le.getType();
@@ -341,7 +338,7 @@ public class Fishing {
                     wool.setColor(sheep.getColor());
 
                     final ItemStack theWool = wool.toItemStack();
-                    theWool.setAmount(1 + random.nextInt(6));
+                    theWool.setAmount(1 + Misc.getRandom().nextInt(6));
 
                     Misc.dropItem(location, theWool);
                     sheep.setSheared(true);
@@ -404,7 +401,7 @@ public class Fishing {
                 break;
 
             case WITCH:
-                final int DROP_NUMBER_2 = random.nextInt(randomChance) + 1;
+                final int DROP_NUMBER_2 = Misc.getRandom().nextInt(randomChance) + 1;
                 if (DROP_NUMBER > 95) {
                     if (DROP_NUMBER_2 > 66) {
                         Misc.dropItem(location, new Potion(PotionType.INSTANT_HEAL).toItemStack(1));

@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.repair;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -18,13 +17,12 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Repair {
-
-    private static Random random = new Random();
     private static Config configInstance = Config.getInstance();
 
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -121,11 +119,11 @@ public class Repair {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            if (random.nextInt(randomChance) <= getEnchantChance(rank)) {
+            if (Misc.getRandom().nextInt(randomChance) <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
 
                 if (configInstance.getArcaneForgingDowngradeEnabled() && enchantLevel > 1) {
-                    if (random.nextInt(randomChance) < getDowngradeChance(rank)) {
+                    if (Misc.getRandom().nextInt(randomChance) < getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, --enchantLevel);
                         downgraded = true;
                     }
@@ -249,7 +247,7 @@ public class Repair {
 
         if (Permissions.luckyRepair(player)) randomChance = (int) (randomChance * 0.75);
 
-        if (chance > random.nextInt(randomChance) && Permissions.repairBonus(player)) {
+        if (chance > Misc.getRandom().nextInt(randomChance) && Permissions.repairBonus(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }

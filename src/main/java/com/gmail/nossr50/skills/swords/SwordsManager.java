@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -45,7 +46,7 @@ public class SwordsManager {
             float chance = (float) (((double) Swords.BLEED_CHANCE_MAX / (double) Swords.BLEED_MAX_BONUS_LEVEL) * skillLevel);
             if (chance > Swords.BLEED_CHANCE_MAX) chance = Swords.BLEED_CHANCE_MAX;
 
-            if (chance > Swords.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(randomChance)) {
                 eventHandler.addBleedTicks();
                 eventHandler.sendAbilityMessages();
             }
@@ -74,7 +75,7 @@ public class SwordsManager {
             float chance = (float) (((double) Swords.COUNTER_ATTACK_CHANCE_MAX / (double) Swords.COUNTER_ATTACK_MAX_BONUS_LEVEL) * skillLevel);
             if (chance > Swords.COUNTER_ATTACK_CHANCE_MAX) chance = Swords.COUNTER_ATTACK_CHANCE_MAX;
 
-            if (chance > Swords.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(randomChance)) {
                 eventHandler.dealDamage();
                 eventHandler.sendAbilityMessages();
             }

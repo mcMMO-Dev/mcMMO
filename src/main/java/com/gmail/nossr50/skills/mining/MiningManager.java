@@ -147,7 +147,7 @@ public class MiningManager {
 
         float chance = ((float) Mining.DOUBLE_DROPS_MAX_CHANCE / Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
-        if (chance > Mining.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.processDrops();
         }
     }

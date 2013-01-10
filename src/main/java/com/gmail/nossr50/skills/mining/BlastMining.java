@@ -1,12 +1,9 @@
 package com.gmail.nossr50.skills.mining;
 
-import java.util.Random;
-
 import com.gmail.nossr50.config.AdvancedConfig;
 
 public class BlastMining {
     private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    private static Random random = new Random();
 
     public final static int BLAST_MINING_RANK_1 = advancedConfig.getBlastMiningRank1();
     public final static int BLAST_MINING_RANK_2 = advancedConfig.getBlastMiningRank2();
@@ -18,8 +15,4 @@ public class BlastMining {
     public final static int BLAST_MINING_RANK_8 = advancedConfig.getBlastMiningRank8();
 
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
-
-    protected static Random getRandom() {
-        return random;
-    }
 }

@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.gathering;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,8 +27,6 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Excavation {
-
-    private static Random random = new Random();
 
     /**
      * Check to see if treasures were found.
@@ -103,7 +100,7 @@ public class Excavation {
                         randomChance = (int) (randomChance * 0.75);
                     }
 
-                    if (random.nextDouble() * randomChance <= treasure.getDropChance()) {
+                    if (Misc.getRandom().nextDouble() * randomChance <= treasure.getDropChance()) {
                         xp += treasure.getXp();
                         is.add(treasure.getDrop());
                     }

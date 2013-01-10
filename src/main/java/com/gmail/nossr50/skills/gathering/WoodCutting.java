@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.gathering;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +34,6 @@ import com.gmail.nossr50.util.Users;
 public class WoodCutting {
 
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    private static Random random = new Random();
 
     /**
      * Handle the Tree Feller ability.
@@ -82,7 +80,7 @@ public class WoodCutting {
                 int health = player.getHealth();
 
                 if (health >= 2) {
-                    Combat.dealDamage(player, random.nextInt(health - 1));
+                    Combat.dealDamage(player, Misc.getRandom().nextInt(health - 1));
                 }
                 inHand.setDurability(inHand.getType().getMaxDurability());
                 return;
@@ -94,7 +92,7 @@ public class WoodCutting {
             int health = player.getHealth();
 
             if (health >= 2) {
-                Combat.dealDamage(player, random.nextInt(health - 1));
+                Combat.dealDamage(player, Misc.getRandom().nextInt(health - 1));
             }
             inHand.setDurability(inHand.getType().getMaxDurability());
             return;
@@ -361,7 +359,7 @@ public class WoodCutting {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (chance > random.nextInt(randomChance) && Permissions.woodcuttingDoubleDrops(player)) {
+        if (chance > Misc.getRandom().nextInt(randomChance) && Permissions.woodcuttingDoubleDrops(player)) {
             Config configInstance = Config.getInstance();
             ItemStack item;
             Location location;
@@ -503,7 +501,7 @@ public class WoodCutting {
     private static int durabilityLossCalulate(ArrayList<Block> toBeFelled, int level) {
         int durabilityLoss = 0;
         for (Block x : toBeFelled) {
-        	if (random.nextInt(level + 1) > 0) {}//Don't add durabilityLoss, because Unbreaking enchantment does it's work.
+        	if (Misc.getRandom().nextInt(level + 1) > 0) {}//Don't add durabilityLoss, because Unbreaking enchantment does it's work.
         	else if (x.getType().equals(Material.LOG) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(x))) {
                 durabilityLoss = durabilityLoss + Config.getInstance().getAbilityToolDamage();
             }

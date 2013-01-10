@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.gathering;
 
-import java.util.Random;
-
 import org.bukkit.CropState;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -30,8 +28,6 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Herbalism {
-
-    private static Random random = new Random();
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     /**
@@ -129,7 +125,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.CACTUS)) {
                     mat = Material.CACTUS;
                     if (!mcMMO.placeStore.isTrue(b)) {
-                    	if (chance > random.nextInt(randomChance)) {
+                    	if (chance > Misc.getRandom().nextInt(randomChance)) {
                             catciDrops++;
                         }
                         xp += Config.getInstance().getHerbalismXPCactus();
@@ -189,7 +185,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
                     mat = Material.SUGAR_CANE;
                     if (!mcMMO.placeStore.isTrue(b)) {
-                    	if (chance > random.nextInt(randomChance)) {
+                    	if (chance > Misc.getRandom().nextInt(randomChance)) {
                             caneDrops++;
                         }
                         xp += Config.getInstance().getHerbalismXPSugarCane();
@@ -287,7 +283,7 @@ public class Herbalism {
                 }
             }
 
-            if (chance > random.nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(randomChance)) {
                 Config configInstance = Config.getInstance();
 
                 switch (type) {
@@ -456,7 +452,7 @@ public class Herbalism {
         float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * herbLevel);
         if (chance > MAX_CHANCE) chance = (float) MAX_CHANCE;
 
-        if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (chance > random.nextInt(randomChance))) {
+        if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (chance > Misc.getRandom().nextInt(randomChance))) {
             event.setCancelled(true);
 
             switch(type) {
@@ -526,7 +522,7 @@ public class Herbalism {
         float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
         if (chance > MAX_CHANCE) chance = (float) MAX_CHANCE;
 
-        if (chance > random.nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             greenTerraConvert(player, block);
         }
         else {

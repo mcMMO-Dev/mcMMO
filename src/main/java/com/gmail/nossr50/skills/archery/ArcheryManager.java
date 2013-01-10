@@ -40,7 +40,7 @@ public class ArcheryManager {
 
         float chance = ((float) Archery.ARROW_TRACKING_MAX_BONUS / Archery.ARROW_TRACKING_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
-        if (chance > Archery.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.addToTracker();
         }
     }
@@ -65,7 +65,7 @@ public class ArcheryManager {
 
         float chance = ((float) Archery.DAZE_MAX_BONUS / Archery.DAZE_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
-        if (chance > Archery.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.handleDazeEffect();
             eventHandler.sendAbilityMessages();
         }

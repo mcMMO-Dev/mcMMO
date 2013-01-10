@@ -31,7 +31,7 @@ public class DazeEventHandler {
     protected void handleDazeEffect() {
         Location location = defender.getLocation();
 
-        if (Archery.getRandom().nextInt(100) > DAZE_CHANCE) {
+        if (Misc.getRandom().nextInt(100) > DAZE_CHANCE) {
             location.setPitch(90);
         }
         else {

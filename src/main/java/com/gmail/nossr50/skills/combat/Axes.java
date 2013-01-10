@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.combat;
 
-import java.util.Random;
-
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
@@ -23,8 +21,6 @@ import com.gmail.nossr50.util.Users;
 
 public class Axes {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-
-    private static Random random = new Random();
 
     /**
      * Apply bonus to damage done by axes.
@@ -95,7 +91,7 @@ public class Axes {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (chance > random.nextInt(randomChance) && !entity.isDead()) {
+        if (chance > Misc.getRandom().nextInt(randomChance) && !entity.isDead()) {
             int damage = event.getDamage();
 
             if (entity instanceof Player) {
@@ -145,7 +141,7 @@ public class Axes {
                     	for (int i = 0; i <= durabilityDamage; i ++) {
                     		if (armor.containsEnchantment(Enchantment.DURABILITY)) {
                         		int level = armor.getEnchantmentLevel(Enchantment.DURABILITY);
-                        		if (random.nextInt(level + 1) > 0) {
+                        		if (Misc.getRandom().nextInt(level + 1) > 0) {
                         			lowerdamage++;
                         		}
                         	}	
@@ -189,7 +185,7 @@ public class Axes {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (random.nextInt(randomChance) <= GREATER_IMPACT_CHANCE) {
+        if (Misc.getRandom().nextInt(randomChance) <= GREATER_IMPACT_CHANCE) {
             event.setDamage(event.getDamage() + GREATER_IMPACT_DAMAGE);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(GREATER_IMPACT_MULTIPLIER));
             attacker.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));

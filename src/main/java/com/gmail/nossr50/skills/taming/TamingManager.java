@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -48,7 +49,7 @@ public class TamingManager {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            if (Taming.getRandom().nextInt(randomChance) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
+            if (Misc.getRandom().nextInt(randomChance) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
                 FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
 
                 eventHandler.modifyHealth(damage);
@@ -100,7 +101,7 @@ public class TamingManager {
         float chance = (float) (((double) Taming.GORE_CHANCE_MAX / (double) Taming.GORE_MAX_BONUS_LEVEL) * skillLevel);
         if (chance > Taming.GORE_CHANCE_MAX) chance = Taming.GORE_CHANCE_MAX;
 
-        if (chance > Taming.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.modifyEventDamage();
             eventHandler.applyBleed();
             eventHandler.sendAbilityMessage();

@@ -72,7 +72,7 @@ public class CallOfTheWildEventHandler {
         ((Tameable) entity).setOwner(player);
 
         if (type == EntityType.OCELOT) {
-            ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Taming.getRandom().nextInt(3)));
+            ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Misc.getRandom().nextInt(3)));
         }
         else {
             entity.setHealth(entity.getMaxHealth());

@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.mining;
 
-import java.util.Random;
-
 import org.bukkit.CoalType;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -23,7 +21,6 @@ import com.gmail.nossr50.util.Skills;
 public class Mining {
     private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private static Config config  = Config.getInstance();
-    private static Random random = new Random();
 
     public static final int DOUBLE_DROPS_MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
     public static final int DOUBLE_DROPS_MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
@@ -314,9 +311,5 @@ public class Mining {
             }
             break;
         }
-    }
-
-    protected static Random getRandom() {
-        return random;
     }
 }

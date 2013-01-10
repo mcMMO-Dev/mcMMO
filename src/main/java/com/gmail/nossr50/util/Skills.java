@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util;
 
-import java.util.Random;
-
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -27,8 +25,6 @@ import com.gmail.nossr50.spout.SpoutStuff;
 public class Skills {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
-
-    private final static Random random = new Random();
 
     /**
      * Checks to see if the cooldown for an item or ability is expired.
@@ -387,7 +383,7 @@ public class Skills {
         if (Config.getInstance().getAbilitiesDamageTools()) {
             if (inHand.containsEnchantment(Enchantment.DURABILITY)) {
                 int level = inHand.getEnchantmentLevel(Enchantment.DURABILITY);
-                if (random.nextInt(level + 1) > 0) {
+                if (Misc.getRandom().nextInt(level + 1) > 0) {
                     return;
                 }
             }
