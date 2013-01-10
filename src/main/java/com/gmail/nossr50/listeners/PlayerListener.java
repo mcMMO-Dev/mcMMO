@@ -37,7 +37,7 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.gathering.Fishing;
 import com.gmail.nossr50.skills.gathering.Herbalism;
-import com.gmail.nossr50.skills.mining.BlastMining;
+import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockChecks;
@@ -364,7 +364,8 @@ public class PlayerListener implements Listener {
 
             /* BLAST MINING CHECK */
             if (player.isSneaking() && inHand.getTypeId() == Config.getInstance().getDetonatorItemID() && Permissions.blastMining(player)) {
-                BlastMining.detonate(event, player, plugin);
+                MiningManager miningManager = new MiningManager(player);
+                miningManager.detonate(event);
             }
 
             break;
@@ -387,7 +388,8 @@ public class PlayerListener implements Listener {
 
             /* BLAST MINING CHECK */
             if (player.isSneaking() && inHand.getTypeId() == Config.getInstance().getDetonatorItemID() && Permissions.blastMining(player)) {
-                BlastMining.detonate(event, player, plugin);
+                MiningManager miningManager = new MiningManager(player);
+                miningManager.detonate(event);
             }
 
             break;

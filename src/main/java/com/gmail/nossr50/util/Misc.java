@@ -24,6 +24,8 @@ public class Misc {
 
     public static final int TOOL_DURABILITY_LOSS = Config.getInstance().getAbilityToolDamage();
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
+    public static final int TIME_CONVERSION_FACTOR = 1000;
+    public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
 
     public static boolean isCitizensNPC(Player player) {
         if (player == null || Users.getProfile(player) == null || player.hasMetadata("NPC")) {
@@ -31,6 +33,14 @@ public class Misc {
         }
 
         return false;
+    }
+
+    public static void sendSkillMessage(Player player, String message) {
+        for (Player otherPlayer : player.getWorld().getPlayers()) {
+            if (otherPlayer != player && Misc.isNear(player.getLocation(), otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
+                otherPlayer.sendMessage(message);
+            }
+        }
     }
 
     /**
