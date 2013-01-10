@@ -38,6 +38,8 @@ public class WorldListener implements Listener {
         mcMMO.placeStore.unloadWorld(event.getWorld());
     }
 
+    // This gets called every 45 seconds, by default.
+    // The call can and does result in excessive lag, especially on larger servers.
     //@EventHandler
     //public void onWorldSave(WorldSaveEvent event) {
     //    mcMMO.placeStore.saveWorld(event.getWorld());
