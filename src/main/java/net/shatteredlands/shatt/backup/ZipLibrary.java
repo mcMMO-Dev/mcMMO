@@ -84,9 +84,8 @@ public class ZipLibrary {
         if (path == null || path.isEmpty()) {
             return file;
         }
-        else {
-            return path + File.separator + file;
-        }
+
+        return path + File.separator + file;
     }
 
     private static void zipDir(ZipOutputStream zos, String path, File dir) throws IOException {

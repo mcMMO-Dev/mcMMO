@@ -265,11 +265,10 @@ public class TreasuresConfig extends ConfigLoader{
         if (issues.isEmpty()) {
             return true;
         }
-        else {
-            for (String issue : issues) {
-                plugin.getLogger().warning(issue);
-            }
-            return false;
+
+        for (String issue : issues) {
+            plugin.getLogger().warning(issue);
         }
+        return false;
     }
 }

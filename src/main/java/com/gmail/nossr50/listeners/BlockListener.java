@@ -136,11 +136,10 @@ public class BlockListener implements Listener {
                 if (block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
                     continue;
                 }
-                else {
-                    Block newLocation = block.getRelative(0, y + 1, 0);
-                    mcMMO.placeStore.setTrue(newLocation);
-                    break;
-                }
+
+                Block newLocation = block.getRelative(0, y + 1, 0);
+                mcMMO.placeStore.setTrue(newLocation);
+                break;
             }
         }
 

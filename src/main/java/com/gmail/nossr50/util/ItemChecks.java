@@ -172,9 +172,8 @@ public class ItemChecks {
             if (customArmorEnabled && CustomArmorConfig.getInstance().customHelmetIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -196,9 +195,8 @@ public class ItemChecks {
             if (customArmorEnabled && CustomArmorConfig.getInstance().customChestplateIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -220,9 +218,8 @@ public class ItemChecks {
             if (customArmorEnabled && CustomArmorConfig.getInstance().customLeggingIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -244,9 +241,8 @@ public class ItemChecks {
             if (customArmorEnabled && CustomArmorConfig.getInstance().customBootIDs.contains(is.getTypeId())) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 

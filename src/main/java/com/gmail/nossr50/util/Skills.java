@@ -56,9 +56,8 @@ public class Skills {
         if (currentTime - oldTime >= (adjustedCooldown * Misc.TIME_CONVERSION_FACTOR)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -324,9 +323,8 @@ public class Skills {
         if (getSkillType(skillName) != null) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -343,9 +341,8 @@ public class Skills {
                 || Permissions.unarmed(player)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -362,9 +359,8 @@ public class Skills {
                 || Permissions.woodcutting(player)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -377,9 +373,8 @@ public class Skills {
         if (Permissions.acrobatics(player) || Permissions.repair(player)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**

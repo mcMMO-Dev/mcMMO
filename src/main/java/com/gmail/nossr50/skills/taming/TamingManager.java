@@ -195,15 +195,14 @@ public class TamingManager {
             eventHandler.sendInsufficientAmountMessage();
             return;
         }
+
+        if (eventHandler.nearbyEntityExists()) {
+            eventHandler.sendFailureMessage();
+        }
         else {
-            if (eventHandler.nearbyEntityExists()) {
-                eventHandler.sendFailureMessage();
-            }
-            else {
-                eventHandler.spawnCreature();
-                eventHandler.processResourceCost();
-                eventHandler.sendSuccessMessage();
-            }
+            eventHandler.spawnCreature();
+            eventHandler.processResourceCost();
+            eventHandler.sendSuccessMessage();
         }
     }
 

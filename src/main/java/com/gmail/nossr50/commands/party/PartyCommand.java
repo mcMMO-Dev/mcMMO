@@ -186,18 +186,17 @@ public class PartyCommand implements CommandExecutor {
                             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
                             return true;
                         }
-                        else {
-                            String partyName = party.getName();
-                            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, partyName, null, EventReason.KICKED_FROM_PARTY);
 
-                            plugin.getServer().getPluginManager().callEvent(event);
+                        String partyName = party.getName();
+                        McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, partyName, null, EventReason.KICKED_FROM_PARTY);
 
-                            if (event.isCancelled()) {
-                                return true;
-                            }
+                        plugin.getServer().getPluginManager().callEvent(event);
 
-                            partyManagerInstance.removeFromParty(args[1], party);
+                        if (event.isCancelled()) {
+                            return true;
                         }
+
+                        partyManagerInstance.removeFromParty(args[1], party);
                     }
                     else {
                         player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
@@ -209,9 +208,8 @@ public class PartyCommand implements CommandExecutor {
                             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
                             return true;
                         }
-                        else {
-                            partyManagerInstance.setPartyLeader(args[1], party);
-                        }
+
+                        partyManagerInstance.setPartyLeader(args[1], party);
                     }
                 }
                 else {

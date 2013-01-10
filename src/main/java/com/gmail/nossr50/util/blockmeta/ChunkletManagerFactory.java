@@ -8,8 +8,8 @@ public class ChunkletManagerFactory {
 
         if(hConfig.getChunkletsEnabled()) {
             return new HashChunkletManager();
-        } else {
-            return new NullChunkletManager();
         }
+
+        return new NullChunkletManager();
     }
 }

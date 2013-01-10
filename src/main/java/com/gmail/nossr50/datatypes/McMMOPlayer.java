@@ -209,9 +209,8 @@ public class McMMOPlayer {
         if (invite != null) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     public void setParty(Party party) {
@@ -226,9 +225,8 @@ public class McMMOPlayer {
         if (party != null) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     public void removeParty() {

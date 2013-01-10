@@ -211,8 +211,7 @@ public class Axes {
         if (inventory.getBoots() != null || inventory.getChestplate() != null || inventory.getHelmet() != null || inventory.getLeggings() != null) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 }

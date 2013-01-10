@@ -15,8 +15,8 @@ public class Page {
         String[] addressSplit = LocaleLoader.getString(address).split("\n");
         if(addressSplit.length <= 8)
             return 1;
-        else
-            return (addressSplit.length/8)+1;
+
+        return (addressSplit.length/8)+1;
     }
 
     public static ArrayList<String> grabPageContents(String header, String address, int pagenum)

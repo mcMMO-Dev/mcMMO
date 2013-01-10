@@ -187,9 +187,8 @@ public class SimpleRepairManager implements RepairManager {
         if (inventory.getItem(location).getTypeId() == itemId) {
             return location;
         }
-        else {
-            return -1;
-        }
+
+        return -1;
     }
 
     /**

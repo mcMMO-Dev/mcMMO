@@ -69,47 +69,45 @@ public class SuperBreakerEventHandler {
             if (ModChecks.getCustomBlock(block).getTier() < tier) {
                 return false;
             }
-            else {
-                return true;
-            }
+
+            return true;
         }
-        else {
-            switch (blockType) {
-            case OBSIDIAN:
-                if (tier < Mining.DIAMOND_TOOL_TIER) {
-                    return false;
-                }
-                /* FALL THROUGH */
 
-            case DIAMOND_ORE:
-            case GLOWING_REDSTONE_ORE:
-            case GOLD_ORE:
-            case LAPIS_ORE:
-            case REDSTONE_ORE:
-            case EMERALD_ORE:
-                if (tier < Mining.IRON_TOOL_TIER) {
-                    return false;
-                }
-                /* FALL THROUGH */
-
-            case IRON_ORE:
-                if (tier < Mining.STONE_TOOL_TIER) {
-                    return false;
-                }
-                /* FALL THROUGH */
-
-            case COAL_ORE:
-            case ENDER_STONE:
-            case GLOWSTONE:
-            case MOSSY_COBBLESTONE:
-            case NETHERRACK:
-            case SANDSTONE:
-            case STONE:
-                return true;
-
-            default:
+        switch (blockType) {
+        case OBSIDIAN:
+            if (tier < Mining.DIAMOND_TOOL_TIER) {
                 return false;
             }
+            /* FALL THROUGH */
+
+        case DIAMOND_ORE:
+        case GLOWING_REDSTONE_ORE:
+        case GOLD_ORE:
+        case LAPIS_ORE:
+        case REDSTONE_ORE:
+        case EMERALD_ORE:
+            if (tier < Mining.IRON_TOOL_TIER) {
+                return false;
+            }
+            /* FALL THROUGH */
+
+        case IRON_ORE:
+            if (tier < Mining.STONE_TOOL_TIER) {
+                return false;
+            }
+            /* FALL THROUGH */
+
+        case COAL_ORE:
+        case ENDER_STONE:
+        case GLOWSTONE:
+        case MOSSY_COBBLESTONE:
+        case NETHERRACK:
+        case SANDSTONE:
+        case STONE:
+            return true;
+
+        default:
+            return false;
         }
     }
 

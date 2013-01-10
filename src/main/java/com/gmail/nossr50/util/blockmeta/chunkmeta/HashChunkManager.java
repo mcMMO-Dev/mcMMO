@@ -61,9 +61,9 @@ public class HashChunkManager implements ChunkManager {
             Object o = objectStream.readObject();
             if (o instanceof ChunkStore) {
                 return (ChunkStore) o;
-            } else {
-                throw new RuntimeException("Wrong class type read for chunk meta data for " + x + ", " + z);
             }
+
+            throw new RuntimeException("Wrong class type read for chunk meta data for " + x + ", " + z);
         } catch (IOException e) {
             // Assume the format changed
             return null;

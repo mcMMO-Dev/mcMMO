@@ -44,8 +44,7 @@ public class BeastLoreEventHandler {
         if (tamer instanceof Player) {
             return ((Player) tamer).getName();
         }
-        else {
-            return "Offline Master";
-        }
+
+        return "Offline Master";
     }
 }

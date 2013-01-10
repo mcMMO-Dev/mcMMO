@@ -48,9 +48,8 @@ public class Config extends ConfigLoader {
         if (getStringIncludingInts(config, "MySQL.Database.User_Password") != null) {
             return getStringIncludingInts(config, "MySQL.Database.User_Password");
         }
-        else {
-            return "";
-        }
+
+        return "";
     }
 
     private static String getStringIncludingInts(ConfigurationSection cfg, String key) {

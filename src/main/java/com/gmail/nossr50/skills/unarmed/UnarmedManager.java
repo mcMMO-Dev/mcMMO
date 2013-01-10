@@ -134,9 +134,8 @@ public class UnarmedManager {
             eventHandler.sendAbilityMessages();
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     protected int getSkillLevel() {

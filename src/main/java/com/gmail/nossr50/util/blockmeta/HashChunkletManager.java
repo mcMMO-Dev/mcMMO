@@ -65,11 +65,11 @@ public class HashChunkletManager implements ChunkletManager {
             File yFile = new File(czDir, "" + y);
             if(!yFile.exists()) {
                 continue;
-            } else {
-                ChunkletStore in = deserializeChunkletStore(yFile);
-                if(in != null) {
-                    store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
-                }
+            }
+
+            ChunkletStore in = deserializeChunkletStore(yFile);
+            if(in != null) {
+                store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
             }
         }
     }

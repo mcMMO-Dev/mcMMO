@@ -327,9 +327,8 @@ public class WoodCutting {
         if ((currentType.equals(Material.LEAVES) || currentType.equals(Material.AIR) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLeafBlock(currentBlock))) && (newType.equals(Material.LEAVES) || newType.equals(Material.AIR) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLeafBlock(currentBlock)))) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**

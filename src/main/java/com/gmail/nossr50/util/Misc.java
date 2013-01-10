@@ -92,9 +92,8 @@ public class Misc {
         if (isInt(string)) {
             return Integer.parseInt(string);
         }
-        else {
-            return 0;
-        }
+
+        return 0;
     }
 
     /**
@@ -113,9 +112,8 @@ public class Misc {
         if (le.getNoDamageTicks() > le.getMaximumNoDamageTicks() / 2.0F && event.getDamage() <= le.getLastDamage()) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -145,9 +143,8 @@ public class Misc {
         if (!damageEvent.isCancelled() && !breakEvent.isCancelled()) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -197,9 +194,8 @@ public class Misc {
         if (first.distanceSquared(second) < (maxDistance * maxDistance)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -294,9 +290,8 @@ public class Misc {
         if (skillLevel > maxLevel) {
             return maxLevel;
         }
-        else {
-            return skillLevel;
-        }
+
+        return skillLevel;
     }
 
     /**
@@ -310,8 +305,7 @@ public class Misc {
         if (levelCap > 0) {
             return levelCap;
         }
-        else {
-            return Integer.MAX_VALUE;
-        }
+
+        return Integer.MAX_VALUE;
     }
 }

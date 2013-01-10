@@ -65,9 +65,8 @@ public class BlockChecks {
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customItems.contains(item)) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -114,9 +113,8 @@ public class BlockChecks {
             if (block.getTypeId() == Config.getInstance().getRepairAnvilId() || block.getTypeId() == Config.getInstance().getSalvageAnvilId()) {
                 return false;
             }
-            else {
-                return true;
-            }
+
+            return true;
         }
     }
 
@@ -142,9 +140,8 @@ public class BlockChecks {
             if (customBlocksEnabled && ModChecks.isCustomOreBlock(block)) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -198,9 +195,8 @@ public class BlockChecks {
             if (block.getData() == CropState.RIPE.getData()) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
 
         default:
             ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
@@ -208,9 +204,8 @@ public class BlockChecks {
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -245,9 +240,8 @@ public class BlockChecks {
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customMiningBlocks.contains(item)) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -274,9 +268,8 @@ public class BlockChecks {
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -299,9 +292,8 @@ public class BlockChecks {
             if (customBlocksEnabled && CustomBlocksConfig.getInstance().customWoodcuttingBlocks.contains(item)) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -309,8 +301,7 @@ public class BlockChecks {
         if (block.getType().equals(Material.LOG) || (customBlocksEnabled && ModChecks.isCustomLogBlock(block))) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 }

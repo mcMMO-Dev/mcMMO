@@ -55,9 +55,8 @@ public class Leaderboard {
                 if (players.contains(p)) {
                     continue;
                 }
-                else {
-                    players.add(p);
-                }
+
+                players.add(p);
 
                 if (character.length > 1 && Misc.isInt(character[1])) {
                     Mining.add(new PlayerStat(p, Integer.valueOf(character[1])));
