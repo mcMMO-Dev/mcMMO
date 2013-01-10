@@ -154,9 +154,8 @@ public class ModChecks {
         if (customToolsEnabled && toolInstance.customTools.containsKey(item.getTypeId())) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -169,8 +168,7 @@ public class ModChecks {
         if (customArmorEnabled && armorInstance.customArmor.containsKey(item.getTypeId())) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 }

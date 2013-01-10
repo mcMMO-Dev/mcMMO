@@ -6,10 +6,10 @@ public class ChunkletManagerFactory {
     public static ChunkletManager getChunkletManager() {
         HiddenConfig hConfig = HiddenConfig.getInstance();
 
-        if(hConfig.getChunkletsEnabled()) {
+        if (hConfig.getChunkletsEnabled()) {
             return new HashChunkletManager();
-        } else {
-            return new NullChunkletManager();
         }
+
+        return new NullChunkletManager();
     }
 }

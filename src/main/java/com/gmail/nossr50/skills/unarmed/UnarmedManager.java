@@ -3,20 +3,14 @@ package com.gmail.nossr50.skills.unarmed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class UnarmedManager {
-    private Player player;
-    private PlayerProfile profile;
-    private int skillLevel;
-
+public class UnarmedManager extends SkillManager {
     public UnarmedManager (Player player) {
-        this.player = player;
-        this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.UNARMED);
+        super(player, SkillType.UNARMED);
     }
 
     /**
@@ -25,7 +19,7 @@ public class UnarmedManager {
      * @param defender The defending player
      */
     public void disarmCheck(Player defender) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.disarm(player)) {
@@ -46,7 +40,7 @@ public class UnarmedManager {
             float chance = (float) (((double) Unarmed.DISARM_MAX_CHANCE / (double) Unarmed.DISARM_MAX_BONUS_LEVEL) * skillLevel);
             if (chance > Unarmed.DISARM_MAX_CHANCE) chance = Unarmed.DISARM_MAX_CHANCE;
 
-            if (chance > Unarmed.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(randomChance)) {
                 if (!hasIronGrip(defender)) {
                     eventHandler.sendAbilityMessage();
                     eventHandler.handleDisarm();
@@ -62,7 +56,7 @@ public class UnarmedManager {
      * @param event The event to modify
      */
     public void deflectCheck(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.deflect(player)) {
@@ -80,7 +74,7 @@ public class UnarmedManager {
         float chance = (float) (((double) Unarmed.DEFLECT_MAX_CHANCE / (double) Unarmed.DEFLECT_MAX_BONUS_LEVEL) * skillLevel);
         if (chance > Unarmed.DEFLECT_MAX_CHANCE) chance = Unarmed.DEFLECT_MAX_CHANCE;
 
-        if (chance > Unarmed.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.cancelEvent();
             eventHandler.sendAbilityMessage();
         }
@@ -92,7 +86,7 @@ public class UnarmedManager {
      * @param event The event to modify.
      */
     public void bonusDamage(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.unarmedBonus(player)) {
@@ -112,7 +106,7 @@ public class UnarmedManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        if(defender == null)
+        if (defender == null)
             return false;
 
         if (!Permissions.ironGrip(defender)) {
@@ -130,20 +124,11 @@ public class UnarmedManager {
         float chance = (float) (((double) Unarmed.IRON_GRIP_MAX_CHANCE / (double) Unarmed.IRON_GRIP_MAX_BONUS_LEVEL) * skillLevel);
         if (chance > Unarmed.IRON_GRIP_MAX_CHANCE) chance = Unarmed.IRON_GRIP_MAX_CHANCE;
 
-        if (chance > Unarmed.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.sendAbilityMessages();
             return true;
         }
-        else {
-            return false;
-        }
-    }
 
-    protected int getSkillLevel() {
-        return skillLevel;
-    }
-
-    protected Player getPlayer() {
-        return player;
+        return false;
     }
 }

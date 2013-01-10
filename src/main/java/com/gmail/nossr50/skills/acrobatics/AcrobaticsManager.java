@@ -4,23 +4,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class AcrobaticsManager {
+public class AcrobaticsManager extends SkillManager {
     private static Config config = Config.getInstance();
 
-    private Player player;
-    private PlayerProfile profile;
-    private int skillLevel;
-
     public AcrobaticsManager (Player player) {
-        this.player = player;
-        this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.ACROBATICS);
+        super(player, SkillType.ACROBATICS);
     }
 
     /**
@@ -29,7 +22,7 @@ public class AcrobaticsManager {
      * @param event The event to check
      */
     public void rollCheck(EntityDamageEvent event) {
-        if (Misc.isCitizensNPC(player) || !Permissions.roll(player)) {
+        if (Misc.isNPC(player) || !Permissions.roll(player)) {
             return;
         }
 
@@ -53,7 +46,7 @@ public class AcrobaticsManager {
             chance = ((float) Acrobatics.ROLL_MAX_CHANCE / Acrobatics.ROLL_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
         }
 
-        if (chance > Acrobatics.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.ROLL_XP_MODIFIER);
@@ -69,7 +62,7 @@ public class AcrobaticsManager {
      * @param event The event to check
      */
     public void dodgeCheck(EntityDamageEvent event) {
-        if (Misc.isCitizensNPC(player) || !Permissions.dodge(player)) {
+        if (Misc.isNPC(player) || !Permissions.dodge(player)) {
             return;
         }
 
@@ -82,22 +75,10 @@ public class AcrobaticsManager {
 
         float chance = ((float) Acrobatics.DODGE_MAX_CHANCE / Acrobatics.DODGE_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
-        if (chance > Acrobatics.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.DODGE_XP_MODIFIER);
         }
-    }
-
-    protected Player getPlayer() {
-        return player;
-    }
-
-    protected PlayerProfile getProfile() {
-        return profile;
-    }
-
-    protected int getSkillLevel() {
-        return skillLevel;
     }
 }

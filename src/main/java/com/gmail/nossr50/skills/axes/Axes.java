@@ -1,6 +1,4 @@
-package com.gmail.nossr50.skills.combat;
-
-import java.util.Random;
+package com.gmail.nossr50.skills.axes;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AnimalTamer;
@@ -24,8 +22,6 @@ import com.gmail.nossr50.util.Users;
 public class Axes {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
-    private static Random random = new Random();
-
     /**
      * Apply bonus to damage done by axes.
      *
@@ -33,7 +29,7 @@ public class Axes {
      * @param event The event to modify
      */
     public static void axesBonus(Player attacker, EntityDamageByEntityEvent event) {
-        if(attacker == null)
+        if (attacker == null)
             return;
 
         final int MAX_BONUS = advancedConfig.getBonusDamageAxesBonusMax();
@@ -57,7 +53,7 @@ public class Axes {
      * @param event The event to modify
      */
     public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event) {
-        if(attacker == null)
+        if (attacker == null)
             return;
 
         Entity entity = event.getEntity();
@@ -95,10 +91,10 @@ public class Axes {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (chance > random.nextInt(randomChance) && !entity.isDead()){
+        if (chance > Misc.getRandom().nextInt(randomChance) && !entity.isDead()) {
             int damage = event.getDamage();
 
-            if (entity instanceof Player){
+            if (entity instanceof Player) {
                 event.setDamage((int) (damage * PVP_MODIFIER));
                 ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
             }
@@ -118,7 +114,7 @@ public class Axes {
      */
     @SuppressWarnings("deprecation")
     public static void impact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
-        if(attacker == null)
+        if (attacker == null)
             return;
 
         /*
@@ -140,12 +136,12 @@ public class Axes {
             }
             else {
                 for (ItemStack armor : targetPlayer.getInventory().getArmorContents()) {
-                    if(Math.random() * 100 > 75) {
+                    if (Math.random() * 100 > 75) {
                     	int lowerdamage = 0;
                     	for (int i = 0; i <= durabilityDamage; i ++) {
                     		if (armor.containsEnchantment(Enchantment.DURABILITY)) {
                         		int level = armor.getEnchantmentLevel(Enchantment.DURABILITY);
-                        		if (random.nextInt(level + 1) > 0) {
+                        		if (Misc.getRandom().nextInt(level + 1) > 0) {
                         			lowerdamage++;
                         		}
                         	}	
@@ -172,7 +168,7 @@ public class Axes {
      * @param event The event to modify
      */
     private static void applyGreaterImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
-        if(attacker == null)
+        if (attacker == null)
             return;
 
         final int GREATER_IMPACT_CHANCE = advancedConfig.getGreaterImpactChance();
@@ -189,7 +185,7 @@ public class Axes {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (random.nextInt(randomChance) <= GREATER_IMPACT_CHANCE) {
+        if (Misc.getRandom().nextInt(randomChance) <= GREATER_IMPACT_CHANCE) {
             event.setDamage(event.getDamage() + GREATER_IMPACT_DAMAGE);
             target.setVelocity(attacker.getLocation().getDirection().normalize().multiply(GREATER_IMPACT_MULTIPLIER));
             attacker.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
@@ -203,7 +199,7 @@ public class Axes {
      * @return true if the player has armor, false otherwise
      */
     private static boolean hasArmor(Player player) {
-        if(player == null)
+        if (player == null)
             return false;
 
         PlayerInventory inventory = player.getInventory();
@@ -211,8 +207,7 @@ public class Axes {
         if (inventory.getBoots() != null || inventory.getChestplate() != null || inventory.getHelmet() != null || inventory.getLeggings() != null) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 }

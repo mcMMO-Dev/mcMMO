@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.mods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -54,15 +53,12 @@ public class CustomToolsConfig extends ConfigLoader {
     private void loadTool(String toolType, List<Integer> idList) {
         ConfigurationSection toolSection = config.getConfigurationSection(toolType);
 
-        if(toolSection == null)
+        if (toolSection == null)
             return;
 
         Set<String> toolConfigSet = toolSection.getKeys(false);
-        Iterator<String> iterator = toolConfigSet.iterator();
 
-        while (iterator.hasNext()) {
-            String toolName = iterator.next();
-
+        for (String toolName : toolConfigSet) {
             int id = config.getInt(toolType + "." + toolName + ".ID", 0);
             double multiplier = config.getDouble(toolType + "." + toolName + ".XP_Modifier", 1.0);
             boolean abilityEnabled = config.getBoolean(toolType + "." + toolName + ".Ability_Enabled", true);
@@ -99,7 +95,7 @@ public class CustomToolsConfig extends ConfigLoader {
     }
 
     public List<Repairable> getLoadedRepairables() {
-        if(repairables == null) return new ArrayList<Repairable>();
+        if (repairables == null) return new ArrayList<Repairable>();
         return repairables;
     }
 }

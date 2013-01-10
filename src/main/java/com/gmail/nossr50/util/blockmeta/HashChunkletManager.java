@@ -25,14 +25,14 @@ public class HashChunkletManager implements ChunkletManager {
     public void loadChunklet(int cx, int cy, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
         File cxDir = new File(dataDir, "" + cx);
-        if(!cxDir.exists()) return;
+        if (!cxDir.exists()) return;
         File czDir = new File(cxDir, "" + cz);
-        if(!czDir.exists()) return;
+        if (!czDir.exists()) return;
         File yFile = new File(czDir, "" + cy);
-        if(!yFile.exists()) return;
+        if (!yFile.exists()) return;
 
         ChunkletStore in = deserializeChunkletStore(yFile);
-        if(in != null) {
+        if (in != null) {
             store.put(world.getName() + "," + cx + "," + cz + "," + cy, in);
         }
     }
@@ -40,11 +40,11 @@ public class HashChunkletManager implements ChunkletManager {
     @Override
     public void unloadChunklet(int cx, int cy, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
-        if(store.containsKey(world.getName() + "," + cx + "," + cz + "," + cy)) {
+        if (store.containsKey(world.getName() + "," + cx + "," + cz + "," + cy)) {
             File cxDir = new File(dataDir, "" + cx);
-            if(!cxDir.exists()) cxDir.mkdir();
+            if (!cxDir.exists()) cxDir.mkdir();
             File czDir = new File(cxDir, "" + cz);
-            if(!czDir.exists()) czDir.mkdir();
+            if (!czDir.exists()) czDir.mkdir();
             File yFile = new File(czDir, "" + cy);
 
             ChunkletStore out = store.get(world.getName() + "," + cx + "," + cz + "," + cy);
@@ -57,19 +57,19 @@ public class HashChunkletManager implements ChunkletManager {
     public void loadChunk(int cx, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
         File cxDir = new File(dataDir, "" + cx);
-        if(!cxDir.exists()) return;
+        if (!cxDir.exists()) return;
         File czDir = new File(cxDir, "" + cz);
-        if(!czDir.exists()) return;
+        if (!czDir.exists()) return;
 
-        for(int y = 0; y < 4; y++) {
+        for (int y = 0; y < 4; y++) {
             File yFile = new File(czDir, "" + y);
-            if(!yFile.exists()) {
+            if (!yFile.exists()) {
                 continue;
-            } else {
-                ChunkletStore in = deserializeChunkletStore(yFile);
-                if(in != null) {
-                    store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
-                }
+            }
+
+            ChunkletStore in = deserializeChunkletStore(yFile);
+            if (in != null) {
+                store.put(world.getName() + "," + cx + "," + cz + "," + y, in);
             }
         }
     }
@@ -78,12 +78,12 @@ public class HashChunkletManager implements ChunkletManager {
     public void unloadChunk(int cx, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
 
-        for(int y = 0; y < 4; y++) {
-            if(store.containsKey(world.getName() + "," + cx + "," + cz + "," + y)) {
+        for (int y = 0; y < 4; y++) {
+            if (store.containsKey(world.getName() + "," + cx + "," + cz + "," + y)) {
                 File cxDir = new File(dataDir, "" + cx);
-                if(!cxDir.exists()) cxDir.mkdir();
+                if (!cxDir.exists()) cxDir.mkdir();
                 File czDir = new File(cxDir, "" + cz);
-                if(!czDir.exists()) czDir.mkdir();
+                if (!czDir.exists()) czDir.mkdir();
                 File yFile = new File(czDir, "" + y);
 
                 ChunkletStore out = store.get(world.getName() + "," + cx + "," + cz + "," + y);
@@ -107,16 +107,16 @@ public class HashChunkletManager implements ChunkletManager {
     public void saveWorld(World world) {
         String worldName = world.getName();
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
-        if(!dataDir.exists())
+        if (!dataDir.exists())
             dataDir.mkdirs();
 
-        for(String key : store.keySet()) {
+        for (String key : store.keySet()) {
             String[] info = key.split(",");
-            if(worldName.equals(info[0])) {
+            if (worldName.equals(info[0])) {
                 File cxDir = new File(dataDir, "" + info[1]);
-                if(!cxDir.exists()) cxDir.mkdir();
+                if (!cxDir.exists()) cxDir.mkdir();
                 File czDir = new File(cxDir, "" + info[2]);
-                if(!czDir.exists()) czDir.mkdir();
+                if (!czDir.exists()) czDir.mkdir();
 
                 File yFile = new File(czDir, "" + info[3]);
                 serializeChunkletStore(store.get(key), yFile);
@@ -130,9 +130,9 @@ public class HashChunkletManager implements ChunkletManager {
 
         String worldName = world.getName();
 
-        for(String key : store.keySet()) {
+        for (String key : store.keySet()) {
             String tempWorldName = key.split(",")[0];
-            if(tempWorldName.equals(worldName)) {
+            if (tempWorldName.equals(worldName)) {
                 store.remove(key);
                 return;
             }
@@ -141,14 +141,14 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public void loadWorld(World world) {
-        //for(Chunk chunk : world.getLoadedChunks()) {
+        //for (Chunk chunk : world.getLoadedChunks()) {
         //    this.chunkLoaded(chunk.getX(), chunk.getZ(), world);
         //}
     }
 
     @Override
     public void saveAll() {
-        for(World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             saveWorld(world);
         }
     }
@@ -156,7 +156,7 @@ public class HashChunkletManager implements ChunkletManager {
     @Override
     public void unloadAll() {
         saveAll();
-        for(World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             unloadWorld(world);
         }
     }
@@ -253,22 +253,22 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public void cleanUp() {
-        for(String key : store.keySet()) {
-            if(store.get(key).isEmpty()) {
+        for (String key : store.keySet()) {
+            if (store.get(key).isEmpty()) {
                 String[] info = key.split(",");
                 File dataDir = new File(Bukkit.getWorld(info[0]).getWorldFolder(), "mcmmo_data");
 
                 File cxDir = new File(dataDir, "" + info[1]);
-                if(!cxDir.exists()) continue;
+                if (!cxDir.exists()) continue;
                 File czDir = new File(cxDir, "" + info[2]);
-                if(!czDir.exists()) continue;
+                if (!czDir.exists()) continue;
 
                 File yFile = new File(czDir, "" + info[3]);
                 yFile.delete();
 
                 //Delete empty directories
-                if(czDir.list().length == 0) czDir.delete();
-                if(cxDir.list().length == 0) cxDir.delete();
+                if (czDir.list().length == 0) czDir.delete();
+                if (cxDir.list().length == 0) cxDir.delete();
             }
         }
     }
@@ -282,7 +282,7 @@ public class HashChunkletManager implements ChunkletManager {
         ObjectOutputStream objOut = null;
 
         try {
-            if(!location.exists())
+            if (!location.exists())
                 location.createNewFile();
             fileOut = new FileOutputStream(location);
             objOut = new ObjectOutputStream(fileOut);
@@ -374,9 +374,9 @@ public class HashChunkletManager implements ChunkletManager {
         // IMPORTANT! If ChunkletStoreFactory is going to be returning something other than PrimitiveEx we need to remove this, as it will be breaking time for old maps
 
         /*
-        if(!(storeIn instanceof PrimitiveExChunkletStore)) {
+        if (!(storeIn instanceof PrimitiveExChunkletStore)) {
             ChunkletStore tempStore = ChunkletStoreFactory.getChunkletStore();
-            if(storeIn != null) {
+            if (storeIn != null) {
                 tempStore.copyFrom(storeIn);
             }
             storeIn = tempStore;

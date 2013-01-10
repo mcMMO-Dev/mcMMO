@@ -35,7 +35,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
-import com.gmail.nossr50.skills.mining.BlastMining;
+import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
@@ -60,13 +60,13 @@ public class EntityListener implements Listener {
         if (event instanceof FakeEntityDamageByEntityEvent)
             return;
 
-        if(event.getDamage() <= 0)
+        if (event.getDamage() <= 0)
             return;
 
         Entity attacker = event.getDamager();
         Entity defender = event.getEntity();
 
-        if(attacker.hasMetadata("NPC") || defender.hasMetadata("NPC")) return; // Check if either players is are Citizens NPCs
+        if (attacker.hasMetadata("NPC") || defender.hasMetadata("NPC")) return; // Check if either players is are Citizens NPCs
 
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
@@ -118,7 +118,7 @@ public class EntityListener implements Listener {
         Entity entity = event.getEntity();
         DamageCause cause = event.getCause();
 
-        if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (!(entity instanceof LivingEntity)) {
             return;
@@ -151,7 +151,8 @@ public class EntityListener implements Listener {
                     acroManager.rollCheck(event);
                 }
                 else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.demolitionsExpertise(player)) {
-                    BlastMining.demolitionsExpertise(player, event);
+                    MiningManager miningManager = new MiningManager(player); 
+                    miningManager.demolitionsExpertise(event);
                 }
 
                 if (event.getDamage() >= 1) {
@@ -178,7 +179,7 @@ public class EntityListener implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
 
-        if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         entity.setFireTicks(0);
         BleedTimer.remove(entity);
@@ -210,7 +211,7 @@ public class EntityListener implements Listener {
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         Entity entity = event.getEntity();
 
-        if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
@@ -219,7 +220,8 @@ public class EntityListener implements Listener {
                 Player player = plugin.getTNTPlayer(id);
 
                 if (Permissions.biggerBombs(player)) {
-                    BlastMining.biggerBombs(player, event);
+                    MiningManager miningManager = new MiningManager(player);
+                    miningManager.biggerBombs(event);
                 }
             }
         }
@@ -234,16 +236,17 @@ public class EntityListener implements Listener {
     public void onEnitityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
-        if(entity == null) return;
+        if (entity == null) return;
 
-        if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
 
             if (plugin.tntIsTracked(id)) {
                 Player player = plugin.getTNTPlayer(id);
-                BlastMining.dropProcessing(player, event);
+                MiningManager miningManager = new MiningManager(player);
+                miningManager.blastMiningDropProcessing(event);
                 plugin.removeFromTNTTracker(id);
             }
         }
@@ -260,7 +263,7 @@ public class EntityListener implements Listener {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
-            if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+            if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
             PlayerProfile profile = Users.getProfile(player);
             int currentFoodLevel = player.getFoodLevel();
@@ -396,7 +399,7 @@ public class EntityListener implements Listener {
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (Permissions.taming(player) && !mcMMO.placeStore.isSpawnedPet(event.getEntity())) {
             PlayerProfile profile = Users.getProfile(player);

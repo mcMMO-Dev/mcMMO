@@ -57,9 +57,8 @@ public enum SkillType {
         if (maxLevel > 0) {
             return maxLevel;
         }
-        else {
-            return Integer.MAX_VALUE;
-        }
+
+        return Integer.MAX_VALUE;
     }
 
     public ToolType getTool() {

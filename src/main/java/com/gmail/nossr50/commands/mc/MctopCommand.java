@@ -62,46 +62,45 @@ public class MctopCommand implements CommandExecutor {
                 return true;
             }
         }
-        else {
-            String powerlevel = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
 
-            switch (args.length) {
-            case 0:
-                sqlDisplay(1, powerlevel, sender);
-                return true;
+        String powerlevel = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
 
-            case 1:
-                if (Misc.isInt(args[0])) {
-                    sqlDisplay(Integer.valueOf(args[0]), powerlevel, sender);
-                }
-                else if (Skills.isSkill(args[0])) {
-                    sqlDisplay(1, args[0].toLowerCase(), sender);
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-                }
+        switch (args.length) {
+        case 0:
+            sqlDisplay(1, powerlevel, sender);
+            return true;
 
-                return true;
+        case 1:
+            if (Misc.isInt(args[0])) {
+                sqlDisplay(Integer.valueOf(args[0]), powerlevel, sender);
+            }
+            else if (Skills.isSkill(args[0])) {
+                sqlDisplay(1, args[0].toLowerCase(), sender);
+            }
+            else {
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+            }
 
-            case 2:
-                if (!Skills.isSkill(args[0])) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-                    return true;
-                }
+            return true;
 
-                if (Misc.isInt(args[1])) {
-                    sqlDisplay(Integer.valueOf(args[1]), args[0].toLowerCase(), sender);
-                }
-                else {
-                    sender.sendMessage(usage);
-                }
-
-                return true;
-
-            default:
-                sender.sendMessage(usage);
+        case 2:
+            if (!Skills.isSkill(args[0])) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
+
+            if (Misc.isInt(args[1])) {
+                sqlDisplay(Integer.valueOf(args[1]), args[0].toLowerCase(), sender);
+            }
+            else {
+                sender.sendMessage(usage);
+            }
+
+            return true;
+
+        default:
+            sender.sendMessage(usage);
+            return true;
         }
     }
 

@@ -32,7 +32,7 @@ import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.GainXp;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
-import com.gmail.nossr50.skills.combat.Axes;
+import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -335,6 +335,12 @@ public class Combat {
         }
 
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
+            if (entity instanceof Player) {
+                if (Misc.isNPC((Player) entity)) {
+                    continue;
+                }
+            }
+
             if (!(entity instanceof LivingEntity)) {
                 continue;
             }

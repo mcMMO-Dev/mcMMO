@@ -3,21 +3,15 @@ package com.gmail.nossr50.skills.swords;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class SwordsManager {
-    private Player player;
-    private PlayerProfile profile;
-    private int skillLevel;
-
+public class SwordsManager extends SkillManager {
     public SwordsManager (Player player) {
-        this.player = player;
-        this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.SWORDS);
+        super(player, SkillType.SWORDS);
     }
 
     /**
@@ -26,7 +20,7 @@ public class SwordsManager {
      * @param defender The defending entity
      */
     public void bleedCheck(LivingEntity defender) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.swordsBleed(player)) {
@@ -45,7 +39,7 @@ public class SwordsManager {
             float chance = (float) (((double) Swords.BLEED_CHANCE_MAX / (double) Swords.BLEED_MAX_BONUS_LEVEL) * skillLevel);
             if (chance > Swords.BLEED_CHANCE_MAX) chance = Swords.BLEED_CHANCE_MAX;
 
-            if (chance > Swords.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(randomChance)) {
                 eventHandler.addBleedTicks();
                 eventHandler.sendAbilityMessages();
             }
@@ -53,7 +47,7 @@ public class SwordsManager {
     }
 
     public void counterAttackChecks(LivingEntity attacker, int damage) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.counterAttack(player)) {
@@ -74,7 +68,7 @@ public class SwordsManager {
             float chance = (float) (((double) Swords.COUNTER_ATTACK_CHANCE_MAX / (double) Swords.COUNTER_ATTACK_MAX_BONUS_LEVEL) * skillLevel);
             if (chance > Swords.COUNTER_ATTACK_CHANCE_MAX) chance = Swords.COUNTER_ATTACK_CHANCE_MAX;
 
-            if (chance > Swords.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(randomChance)) {
                 eventHandler.dealDamage();
                 eventHandler.sendAbilityMessages();
             }
@@ -82,7 +76,7 @@ public class SwordsManager {
     }
 
     public void serratedStrikes(LivingEntity target, int damage) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.serratedStrikes(player)) {
@@ -92,13 +86,5 @@ public class SwordsManager {
         SerratedStrikesEventHandler eventHandler = new SerratedStrikesEventHandler(this, target, damage);
 
         eventHandler.applyAbilityEffects();
-    }
-
-    protected int getSkillLevel() {
-        return skillLevel;
-    }
-
-    protected Player getPlayer() {
-        return player;
     }
 }

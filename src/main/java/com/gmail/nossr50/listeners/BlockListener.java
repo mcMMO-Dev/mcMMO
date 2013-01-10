@@ -128,7 +128,7 @@ public class BlockListener implements Listener {
         int id = block.getTypeId();
         Material type = block.getType();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         /* Code to prevent issues with placed falling Sand/Gravel not being tracked */
         if (type.equals(Material.SAND) || type.equals(Material.GRAVEL)) {
@@ -136,11 +136,10 @@ public class BlockListener implements Listener {
                 if (block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
                     continue;
                 }
-                else {
-                    Block newLocation = block.getRelative(0, y + 1, 0);
-                    mcMMO.placeStore.setTrue(newLocation);
-                    break;
-                }
+
+                Block newLocation = block.getRelative(0, y + 1, 0);
+                mcMMO.placeStore.setTrue(newLocation);
+                break;
             }
         }
 
@@ -172,7 +171,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         PlayerProfile profile = Users.getProfile(player);
 
@@ -204,14 +203,14 @@ public class BlockListener implements Listener {
 
         /* MINING */
         else if (BlockChecks.canBeSuperBroken(block) && Permissions.mining(player)) {
-            MiningManager manager = new MiningManager(player);
+            MiningManager miningManager = new MiningManager(player);
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
-                    manager.miningBlockCheck(block);
+                    miningManager.miningBlockCheck(block);
                 }
             }
             else {
-                manager.miningBlockCheck(block);
+                miningManager.miningBlockCheck(block);
             }
         }
 
@@ -259,7 +258,7 @@ public class BlockListener implements Listener {
                 if ((relativeType == Material.SAND || relativeType == Material.GRAVEL) && mcMMO.placeStore.isTrue(relative)) {
                     mcMMO.placeStore.setFalse(relative);
                 }
-                else if (!BlockChecks.shouldBeWatched(relative) && mcMMO.placeStore.isTrue(relative)){
+                else if (!BlockChecks.shouldBeWatched(relative) && mcMMO.placeStore.isTrue(relative)) {
                     mcMMO.placeStore.setFalse(relative);
                 }
                 else {
@@ -285,7 +284,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         PlayerProfile profile = Users.getProfile(player);
 
@@ -356,17 +355,17 @@ public class BlockListener implements Listener {
             }
         }
         else if (profile.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
-            MiningManager manager = new MiningManager(player);
+            MiningManager miningManager = new MiningManager(player);
 
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
                     event.setInstaBreak(true);
-                    manager.superBreakerBlockCheck(block);
+                    miningManager.superBreakerBlockCheck(block);
                 }
             }
             else {
                 event.setInstaBreak(true);
-                manager.superBreakerBlockCheck(block);
+                miningManager.superBreakerBlockCheck(block);
             }
         }
         else if (profile.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && (material.equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block)))) {

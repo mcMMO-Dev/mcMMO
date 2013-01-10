@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.repair;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -18,18 +17,17 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutSounds;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Repair {
-
-    private static Random random = new Random();
     private static Config configInstance = Config.getInstance();
 
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
-    public static final int REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryChanceMax();
+    public static final int REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryMaxBonus();
     public static final int REPAIR_MASTERY_MAX_BONUS_LEVEL = advancedConfig.getRepairMasteryMaxLevel();
     public static final int SUPER_REPAIR_CHANCE_MAX = advancedConfig.getSuperRepairChanceMax();
     public static final int SUPER_REPAIR_MAX_BONUS_LEVEL = advancedConfig.getSuperRepairMaxLevel();
@@ -90,7 +88,7 @@ public class Repair {
      * @param is Item being repaired
      */
     protected static void addEnchants(Player player, ItemStack is) {
-        if(Permissions.arcaneBypass(player)) {
+        if (Permissions.arcaneBypass(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Perfect"));
             return;
         }
@@ -121,11 +119,11 @@ public class Repair {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            if (random.nextInt(randomChance) <= getEnchantChance(rank)) {
+            if (Misc.getRandom().nextInt(randomChance) <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
 
                 if (configInstance.getArcaneForgingDowngradeEnabled() && enchantLevel > 1) {
-                    if (random.nextInt(randomChance) < getDowngradeChance(rank)) {
+                    if (Misc.getRandom().nextInt(randomChance) < getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, --enchantLevel);
                         downgraded = true;
                     }
@@ -210,7 +208,7 @@ public class Repair {
      */
     protected static short repairCalculate(Player player, int skillLevel, short durability, int repairAmount) {
         float  bonus;
-        if(skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = ((float) REPAIR_MASTERY_CHANCE_MAX / 100F);
+        if (skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = ((float) REPAIR_MASTERY_CHANCE_MAX / 100F);
         else bonus = (((float) skillLevel) / ((float) REPAIR_MASTERY_MAX_BONUS_LEVEL)) * (((float) REPAIR_MASTERY_CHANCE_MAX) / 100F);
 
         if (Permissions.repairMastery(player)) {
@@ -222,7 +220,7 @@ public class Repair {
             repairAmount = (int) (repairAmount * 2D);
         }
 
-        if(repairAmount <= 0 || repairAmount > 32767)
+        if (repairAmount <= 0 || repairAmount > 32767)
             repairAmount = 32767;
 
         durability -= repairAmount;
@@ -249,7 +247,7 @@ public class Repair {
 
         if (Permissions.luckyRepair(player)) randomChance = (int) (randomChance * 0.75);
 
-        if (chance > random.nextInt(randomChance) && Permissions.repairBonus(player)){
+        if (chance > Misc.getRandom().nextInt(randomChance) && Permissions.repairBonus(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }

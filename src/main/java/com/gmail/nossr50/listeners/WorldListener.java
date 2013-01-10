@@ -20,11 +20,11 @@ public class WorldListener implements Listener {
     @EventHandler
     public void onWorldInit(WorldInitEvent event) {
         File dataDir = new File(event.getWorld().getWorldFolder(), "mcmmo_data");
-        if(!dataDir.exists()) {
+        if (!dataDir.exists()) {
             return;
         }
 
-        if(mcMMO.p == null)
+        if (mcMMO.p == null)
             return;
 
         mcMMO.p.getLogger().info("Converting block storage for " + event.getWorld().getName() + " to a new format.");
@@ -50,7 +50,7 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        if(event.getChunk().getEntities().length > 0)
+        if (event.getChunk().getEntities().length > 0)
             mcMMO.placeStore.loadChunk(event.getChunk().getX(), event.getChunk().getZ(), event.getWorld());
     }
 }

@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.gathering;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,8 +28,6 @@ import com.gmail.nossr50.util.Users;
 
 public class Excavation {
 
-    private static Random random = new Random();
-
     /**
      * Check to see if treasures were found.
      *
@@ -38,7 +35,7 @@ public class Excavation {
      * @param player The player who broke the block
      */
     public static void excavationProcCheck(Block block, Player player) {
-        if(player == null)
+        if (player == null)
             return;
 
         Material type = block.getType();
@@ -103,7 +100,7 @@ public class Excavation {
                         randomChance = (int) (randomChance * 0.75);
                     }
 
-                    if (random.nextDouble() * randomChance <= treasure.getDropChance()) {
+                    if (Misc.getRandom().nextDouble() * randomChance <= treasure.getDropChance()) {
                         xp += treasure.getXp();
                         is.add(treasure.getDrop());
                     }
@@ -128,7 +125,7 @@ public class Excavation {
      * @param block The block to check
      */
     public static void gigaDrillBreaker(Player player, Block block) {
-        if(player == null)
+        if (player == null)
             return;
 
         Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());

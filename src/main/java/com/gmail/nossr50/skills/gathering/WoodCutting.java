@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.gathering;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +34,6 @@ import com.gmail.nossr50.util.Users;
 public class WoodCutting {
 
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    private static Random random = new Random();
 
     /**
      * Handle the Tree Feller ability.
@@ -82,7 +80,7 @@ public class WoodCutting {
                 int health = player.getHealth();
 
                 if (health >= 2) {
-                    Combat.dealDamage(player, random.nextInt(health - 1));
+                    Combat.dealDamage(player, Misc.getRandom().nextInt(health - 1));
                 }
                 inHand.setDurability(inHand.getType().getMaxDurability());
                 return;
@@ -94,7 +92,7 @@ public class WoodCutting {
             int health = player.getHealth();
 
             if (health >= 2) {
-                Combat.dealDamage(player, random.nextInt(health - 1));
+                Combat.dealDamage(player, Misc.getRandom().nextInt(health - 1));
             }
             inHand.setDurability(inHand.getType().getMaxDurability());
             return;
@@ -275,13 +273,13 @@ public class WoodCutting {
 
         byte data = currentBlock.getData();
 
-        if((data & 0x4) == 0x4)
+        if ((data & 0x4) == 0x4)
             data ^= 0x4;
 
-        if((data & 0x8) == 0x8)
+        if ((data & 0x8) == 0x8)
             data ^= 0x8;
 
-        if(TreeSpecies.getByData(data) == TreeSpecies.JUNGLE) {
+        if (TreeSpecies.getByData(data) == TreeSpecies.JUNGLE) {
             Block corner1 = currentBlock.getRelative(1, 0, 1);
             Block corner2 = currentBlock.getRelative(1, 0, -1);
             Block corner3 = currentBlock.getRelative(-1, 0, 1);
@@ -307,7 +305,7 @@ public class WoodCutting {
         }
 
         if (BlockChecks.treeFellerCompatible(yPositive)) {
-            if(!mcMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
+            if (!mcMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
                 processTreeFelling(yPositive, toBeFelled);
             }
         }
@@ -327,9 +325,8 @@ public class WoodCutting {
         if ((currentType.equals(Material.LEAVES) || currentType.equals(Material.AIR) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLeafBlock(currentBlock))) && (newType.equals(Material.LEAVES) || newType.equals(Material.AIR) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLeafBlock(currentBlock)))) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -346,10 +343,10 @@ public class WoodCutting {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING);
         byte type = block.getData();
 
-        if((type & 0x4) == 0x4)
+        if ((type & 0x4) == 0x4)
             type ^= 0x4;
 
-        if((type & 0x8) == 0x8)
+        if ((type & 0x8) == 0x8)
             type ^= 0x8;
 
         Material mat = Material.getMaterial(block.getTypeId());
@@ -362,7 +359,7 @@ public class WoodCutting {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (chance > random.nextInt(randomChance) && Permissions.woodcuttingDoubleDrops(player)) {
+        if (chance > Misc.getRandom().nextInt(randomChance) && Permissions.woodcuttingDoubleDrops(player)) {
             Config configInstance = Config.getInstance();
             ItemStack item;
             Location location;
@@ -443,17 +440,17 @@ public class WoodCutting {
         else {
             byte type = block.getData();
 
-            if((type & 0x4) == 0x4)
+            if ((type & 0x4) == 0x4)
                 type ^= 0x4;
 
-            if((type & 0x8) == 0x8)
+            if ((type & 0x8) == 0x8)
                 type ^= 0x8;
 
             TreeSpecies species = TreeSpecies.getByData(type);
 
             //Apparently species can be null in certain cases (custom server mods?)
             //https://github.com/mcMMO-Dev/mcMMO/issues/229
-            if(species == null)
+            if (species == null)
                 return;
 
             switch (species) {
@@ -504,7 +501,7 @@ public class WoodCutting {
     private static int durabilityLossCalulate(ArrayList<Block> toBeFelled, int level) {
         int durabilityLoss = 0;
         for (Block x : toBeFelled) {
-        	if (random.nextInt(level + 1) > 0) {}//Don't add durabilityLoss, because Unbreaking enchantment does it's work.
+        	if (Misc.getRandom().nextInt(level + 1) > 0) {}//Don't add durabilityLoss, because Unbreaking enchantment does it's work.
         	else if (x.getType().equals(Material.LOG) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(x))) {
                 durabilityLoss = durabilityLoss + Config.getInstance().getAbilityToolDamage();
             }

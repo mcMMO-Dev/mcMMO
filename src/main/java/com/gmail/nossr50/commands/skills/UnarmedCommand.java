@@ -44,16 +44,16 @@ public class UnarmedCommand extends SkillCommand {
         float deflectChanceF;
         berserkLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
 
-        if(skillValue >= disarmMaxLevel) disarmChanceF = disarmChanceMax;
+        if (skillValue >= disarmMaxLevel) disarmChanceF = disarmChanceMax;
         else disarmChanceF = (float) (((double) disarmChanceMax / (double) disarmMaxLevel) * skillValue);
         disarmChance = df.format(disarmChanceF);
-        if(disarmChanceF + disarmChanceF * 0.3333D >= 100D) disarmChanceLucky = df.format(100D);
+        if (disarmChanceF + disarmChanceF * 0.3333D >= 100D) disarmChanceLucky = df.format(100D);
         else disarmChanceLucky = df.format(disarmChanceF + disarmChanceF * 0.3333D);
 
-        if(skillValue >= deflectMaxLevel) deflectChanceF = deflectChanceMax;
+        if (skillValue >= deflectMaxLevel) deflectChanceF = deflectChanceMax;
         else deflectChanceF = (float) (((double) deflectChanceMax / (double) deflectMaxLevel) * skillValue);
         deflectChance = df.format(deflectChanceF);
-        if(deflectChanceF + deflectChanceF * 0.3333D >= 100D) deflectChanceLucky = df.format(100D);
+        if (deflectChanceF + deflectChanceF * 0.3333D >= 100D) deflectChanceLucky = df.format(100D);
         else deflectChanceLucky = df.format(deflectChanceF + deflectChanceF * 0.3333D);
 
         if (skillValue >= 250) ironArmBonus = String.valueOf(ironArmMaxBonus);

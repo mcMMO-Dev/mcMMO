@@ -23,7 +23,7 @@ public class GreenThumbTimer implements Runnable {
 
     @Override
     public void run() {
-        if(this.block.getType() != this.type)
+        if (this.block.getType() != this.type)
             this.block.setType(this.type);
 
         int skillLevel = this.profile.getSkillLevel(SkillType.HERBALISM);

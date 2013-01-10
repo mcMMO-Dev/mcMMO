@@ -45,12 +45,12 @@ public class FishingCommand extends SkillCommand {
         int dropChance = Fishing.getShakeChance(lootTier);
 
         shakeChance = df.format(dropChance);
-        if(dropChance + (dropChance * 0.3333D) >= 100D) shakeChanceLucky = df.format(100D);
+        if (dropChance + (dropChance * 0.3333D) >= 100D) shakeChanceLucky = df.format(100D);
         else shakeChanceLucky = df.format(dropChance + (dropChance * 0.3333D));
         shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
 
         //Fishermans Diet
-        if(skillValue >= fishermansDietRankMaxLevel) fishermansDietRank = "5";
+        if (skillValue >= fishermansDietRankMaxLevel) fishermansDietRank = "5";
         else fishermansDietRank = String.valueOf((int) ((double) skillValue / (double) fishermansDietRankChange));
     }
 

@@ -19,7 +19,7 @@ public class SerratedStrikesEventHandler {
     }
 
     protected void applyAbilityEffects() {
-        if(player == null)
+        if (player == null)
             return;
 
         Combat.applyAbilityAoE(player, target, damage / Swords.SERRATED_STRIKES_MODIFIER, SkillType.SWORDS);

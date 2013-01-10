@@ -27,7 +27,7 @@ public class Salvage {
             return;
         }
 
-        if(player.getGameMode() == GameMode.SURVIVAL) {
+        if (player.getGameMode() == GameMode.SURVIVAL) {
             final PlayerProfile profile = Users.getProfile(player);
             final int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
             final int unlockLevel = configInstance.getSalvageUnlockLevel();

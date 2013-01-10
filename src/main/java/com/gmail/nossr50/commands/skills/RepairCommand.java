@@ -21,7 +21,7 @@ public class RepairCommand extends SkillCommand {
     private String superRepairChance;
     private String superRepairChanceLucky;
 
-    private float repairMasteryChanceMax = advancedConfig.getRepairMasteryChanceMax();
+    private float repairMasteryMaxBonus = advancedConfig.getRepairMasteryMaxBonus();
     private float repairMasteryMaxBonusLevel = advancedConfig.getRepairMasteryMaxLevel();
     private float superRepairChanceMax = advancedConfig.getSuperRepairChanceMax();
     private float superRepairMaxBonusLevel = advancedConfig.getSuperRepairMaxLevel();
@@ -67,13 +67,13 @@ public class RepairCommand extends SkillCommand {
 
         salvageLevel = Config.getInstance().getSalvageUnlockLevel();
 
-        if(skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = df.format(repairMasteryChanceMax);
-        else repairMasteryBonus = df.format(((double) repairMasteryChanceMax / (double) repairMasteryMaxBonusLevel) * skillValue);
+        if (skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = df.format(repairMasteryMaxBonus);
+        else repairMasteryBonus = df.format(((double) repairMasteryMaxBonus / (double) repairMasteryMaxBonusLevel) * skillValue);
 
-        if(skillValue >= superRepairMaxBonusLevel) superRepairChanceF = superRepairChanceMax;
+        if (skillValue >= superRepairMaxBonusLevel) superRepairChanceF = superRepairChanceMax;
         else superRepairChanceF = (float) (((double) superRepairChanceMax / (double) superRepairMaxBonusLevel) * skillValue);
         superRepairChance = df.format(superRepairChanceF);
-        if(superRepairChanceF + superRepairChanceF * 0.3333D >= 100D) superRepairChanceLucky = df.format(100D);
+        if (superRepairChanceF + superRepairChanceF * 0.3333D >= 100D) superRepairChanceLucky = df.format(100D);
         else superRepairChanceLucky = df.format(superRepairChanceF + superRepairChanceF * 0.3333D);
 
         arcaneForgingRank = Repair.getArcaneForgingRank(profile);

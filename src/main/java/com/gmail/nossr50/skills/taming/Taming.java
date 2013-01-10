@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.taming;
 
-import java.util.Random;
-
 import com.gmail.nossr50.config.AdvancedConfig;
 
 public class Taming {
@@ -25,10 +23,4 @@ public class Taming {
 
     public static final int THICK_FUR_ACTIVATION_LEVEL = advancedConfig.getThickFurUnlock();
     public static final int THICK_FUR_MODIFIER = advancedConfig.getThickFurModifier();
-
-    private static Random random = new Random();
-
-    public static Random getRandom() {
-        return random;
-    }
 }

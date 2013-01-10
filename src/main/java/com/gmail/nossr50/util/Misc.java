@@ -24,13 +24,23 @@ public class Misc {
 
     public static final int TOOL_DURABILITY_LOSS = Config.getInstance().getAbilityToolDamage();
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
+    public static final int TIME_CONVERSION_FACTOR = 1000;
+    public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
 
-    public static boolean isCitizensNPC(Player player) {
+    public static boolean isNPC(Player player) {
         if (player == null || Users.getProfile(player) == null || player.hasMetadata("NPC")) {
             return true;
         }
 
         return false;
+    }
+
+    public static void sendSkillMessage(Player player, String message) {
+        for (Player otherPlayer : player.getWorld().getPlayers()) {
+            if (otherPlayer != player && Misc.isNear(player.getLocation(), otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
+                otherPlayer.sendMessage(message);
+            }
+        }
     }
 
     /**
@@ -82,9 +92,8 @@ public class Misc {
         if (isInt(string)) {
             return Integer.parseInt(string);
         }
-        else {
-            return 0;
-        }
+
+        return 0;
     }
 
     /**
@@ -103,9 +112,8 @@ public class Misc {
         if (le.getNoDamageTicks() > le.getMaximumNoDamageTicks() / 2.0F && event.getDamage() <= le.getLastDamage()) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -135,9 +143,8 @@ public class Misc {
         if (!damageEvent.isCancelled() && !breakEvent.isCancelled()) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -187,9 +194,8 @@ public class Misc {
         if (first.distanceSquared(second) < (maxDistance * maxDistance)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -243,7 +249,7 @@ public class Misc {
      * @param quantity The amount of items to drop
      */
     public static void randomDropItems(Location location, ItemStack is, int chance, int quantity) {
-        for(int i = 0; i < quantity; i++) {
+        for (int i = 0; i < quantity; i++) {
             randomDropItem(location, is, chance);
         }
     }
@@ -284,9 +290,8 @@ public class Misc {
         if (skillLevel > maxLevel) {
             return maxLevel;
         }
-        else {
-            return skillLevel;
-        }
+
+        return skillLevel;
     }
 
     /**
@@ -300,8 +305,11 @@ public class Misc {
         if (levelCap > 0) {
             return levelCap;
         }
-        else {
-            return Integer.MAX_VALUE;
-        }
+
+        return Integer.MAX_VALUE;
+    }
+
+    public static Random getRandom() {
+        return random;
     }
 }

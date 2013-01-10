@@ -53,7 +53,7 @@ public abstract class AcrobaticsEventHandler {
      * @return true if the damage is fatal, false otherwise
      */
     protected boolean isFatal(int damage) {
-        if (Misc.isCitizensNPC(player) || player.getHealth() - damage < 1) {
+        if (Misc.isNPC(player) || player.getHealth() - damage < 1) {
             return true;
         }
 

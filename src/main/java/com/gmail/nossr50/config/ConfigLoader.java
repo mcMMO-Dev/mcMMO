@@ -16,13 +16,13 @@ public abstract class ConfigLoader {
     protected File configFile;
     protected FileConfiguration config;
 
-    public ConfigLoader(String relativePath, String fileName){
+    public ConfigLoader(String relativePath, String fileName) {
         this.fileName = fileName;
         configFile = new File(plugin.getDataFolder(), relativePath + File.separator + fileName);
         loadFile();
     }
 
-    public ConfigLoader(String fileName){
+    public ConfigLoader(String fileName) {
         this.fileName = fileName;
         configFile = new File(plugin.getDataFolder(), fileName);
         loadFile();

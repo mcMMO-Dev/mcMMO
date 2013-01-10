@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util;
 
-import java.util.Random;
-
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -28,11 +26,6 @@ public class Skills {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
-    private final static int TIME_CONVERSION_FACTOR = 1000;
-    private final static double MAX_DISTANCE_AWAY = 10.0;
-
-    private final static Random random = new Random();
-
     /**
      * Checks to see if the cooldown for an item or ability is expired.
      *
@@ -41,7 +34,7 @@ public class Skills {
      * @param player The player whose cooldown is being checked
      * @return true if the cooldown is over, false otherwise
      */
-    public static boolean cooldownOver(long oldTime, int cooldown, Player player){
+    public static boolean cooldownOver(long oldTime, int cooldown, Player player) {
         long currentTime = System.currentTimeMillis();
         int adjustedCooldown = cooldown;
 
@@ -56,12 +49,11 @@ public class Skills {
             adjustedCooldown = (int) (adjustedCooldown * 0.75);
         }
 
-        if (currentTime - oldTime >= (adjustedCooldown * TIME_CONVERSION_FACTOR)) {
+        if (currentTime - oldTime >= (adjustedCooldown * Misc.TIME_CONVERSION_FACTOR)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -85,7 +77,7 @@ public class Skills {
             adjustedCooldown = (int) (adjustedCooldown * 0.75);
         }
 
-        return (int) (((deactivatedTimeStamp + (adjustedCooldown * TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / TIME_CONVERSION_FACTOR);
+        return (int) (((deactivatedTimeStamp + (adjustedCooldown * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /**
@@ -96,10 +88,10 @@ public class Skills {
      * @param ability The ability to watch cooldowns for
      */
     public static void watchCooldown(Player player, PlayerProfile profile, AbilityType ability) {
-        if(player == null || profile == null || ability == null)
+        if (player == null || profile == null || ability == null)
             return;
 
-        if (!profile.getAbilityInformed(ability) && cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+        if (!profile.getAbilityInformed(ability) && cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
             profile.setAbilityInformed(ability, true);
             player.sendMessage(ability.getAbilityRefresh());
         }
@@ -145,8 +137,8 @@ public class Skills {
          */
         if (ability.getPermissions(player) && tool.inHand(inHand) && !profile.getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
-                if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
+                if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
                     return;
                 }
             }
@@ -178,7 +170,7 @@ public class Skills {
             return;
         }
 
-        if (profile.getToolPreparationMode(tool) && curTime - (profile.getToolPreparationATS(tool) * TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
+        if (profile.getToolPreparationMode(tool) && curTime - (profile.getToolPreparationATS(tool) * Misc.TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
             profile.setToolPreparationMode(tool, false);
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
@@ -187,16 +179,12 @@ public class Skills {
         }
 
         if (ability.getPermissions(player)) {
-            if (profile.getAbilityMode(ability) && (profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR) <= curTime) {
+            if (profile.getAbilityMode(ability) && (profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR) <= curTime) {
                 profile.setAbilityMode(ability, false);
                 profile.setAbilityInformed(ability, false);
                 player.sendMessage(ability.getAbilityOff());
 
-                for (Player nearbyPlayer : player.getWorld().getPlayers()) {
-                    if (nearbyPlayer != player && Misc.isNear(player.getLocation(), nearbyPlayer.getLocation(), MAX_DISTANCE_AWAY)) {
-                        nearbyPlayer.sendMessage(ability.getAbilityPlayerOff(player));
-                    }
-                }
+                Misc.sendSkillMessage(player, ability.getAbilityPlayerOff(player));
             }
         }
     }
@@ -331,9 +319,8 @@ public class Skills {
         if (getSkillType(skillName) != null) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -350,9 +337,8 @@ public class Skills {
                 || Permissions.unarmed(player)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -369,9 +355,8 @@ public class Skills {
                 || Permissions.woodcutting(player)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -384,9 +369,8 @@ public class Skills {
         if (Permissions.acrobatics(player) || Permissions.repair(player)) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -399,7 +383,7 @@ public class Skills {
         if (Config.getInstance().getAbilitiesDamageTools()) {
             if (inHand.containsEnchantment(Enchantment.DURABILITY)) {
                 int level = inHand.getEnchantmentLevel(Enchantment.DURABILITY);
-                if (random.nextInt(level + 1) > 0) {
+                if (Misc.getRandom().nextInt(level + 1) > 0) {
                     return;
                 }
             }
@@ -432,8 +416,8 @@ public class Skills {
          * We show them the too tired message when they take action.
          */
         if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
-            if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
+            if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
                 return;
             }
         }
@@ -459,13 +443,9 @@ public class Skills {
         if (!profile.getAbilityMode(ability) && cooldownOver(profile.getSkillDATS(ability), ability.getCooldown(), player)) {
             player.sendMessage(ability.getAbilityOn());
 
-            for (Player y : player.getWorld().getPlayers()) {
-                if (y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
-                    y.sendMessage(ability.getAbilityPlayer(player));
-                }
-            }
+            Misc.sendSkillMessage(player, ability.getAbilityPlayer(player));
 
-            profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * TIME_CONVERSION_FACTOR));
+            profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
             profile.setAbilityMode(ability, true);
         }
     }
@@ -526,14 +506,14 @@ public class Skills {
      * @param xp the amount of XP to gain
      */
     public static void xpProcessing(Player player, PlayerProfile profile, SkillType type, int xp) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (type.getPermissions(player)) {
-            if(Users.getPlayer(player) == null)
+            if (Users.getPlayer(player) == null)
                 return;
 
-            if((type.getMaxLevel() < profile.getSkillLevel(type) + 1) || (Misc.getPowerLevelCap() < Users.getPlayer(player).getPowerLevel() + 1))
+            if ((type.getMaxLevel() < profile.getSkillLevel(type) + 1) || (Misc.getPowerLevelCap() < Users.getPlayer(player).getPowerLevel() + 1))
                 return;
 
             Users.getPlayer(player).addXP(type, xp);

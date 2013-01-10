@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.swords;
 
-import java.util.Random;
-
 import com.gmail.nossr50.config.AdvancedConfig;
 
 public class Swords {
@@ -18,10 +16,4 @@ public class Swords {
 
     public static final int SERRATED_STRIKES_MODIFIER = advancedConfig.getSerratedStrikesModifier();
     public static final int SERRATED_STRIKES_BLEED_TICKS = advancedConfig.getSerratedStrikesTicks();
-
-    private static Random random = new Random();
-
-    protected static Random getRandom() {
-        return random;
-    }
 }

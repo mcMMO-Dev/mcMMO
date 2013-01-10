@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -49,9 +48,8 @@ public class Config extends ConfigLoader {
         if (getStringIncludingInts(config, "MySQL.Database.User_Password") != null) {
             return getStringIncludingInts(config, "MySQL.Database.User_Password");
         }
-        else {
-            return "";
-        }
+
+        return "";
     }
 
     private static String getStringIncludingInts(ConfigurationSection cfg, String key) {
@@ -206,22 +204,7 @@ public class Config extends ConfigLoader {
     public boolean getPotatoDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Potato", true); }
 
     public boolean herbalismDoubleDropsDisabled() {
-        ConfigurationSection section = config.getConfigurationSection("Double_Drops.Herbalism");
-        Set<String> keys = section.getKeys(false);
-        Iterator<String> iterator = keys.iterator();
-
-        boolean disabled = true;
-
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-
-            if (config.getBoolean("Double_Drops.Herbalism." + key)) {
-                disabled = false;
-                break;
-            }
-        }
-
-        return disabled;
+        return doubleDropsDisabled("Herbalism");
     }
 
     /* Mining */
@@ -256,22 +239,7 @@ public class Config extends ConfigLoader {
     public boolean getEmeraldDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Mining.Emerald", true); }
 
     public boolean miningDoubleDropsDisabled() {
-        ConfigurationSection section = config.getConfigurationSection("Double_Drops.Mining");
-        Set<String> keys = section.getKeys(false);
-        Iterator<String> iterator = keys.iterator();
-
-        boolean disabled = true;
-
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-
-            if (config.getBoolean("Double_Drops.Mining." + key)) {
-                disabled = false;
-                break;
-            }
-        }
-
-        return disabled;
+        return doubleDropsDisabled("Mining");
     }
 
     public int getDetonatorItemID() { return config.getInt("Skills.Mining.Detonator_ID", 259); }
@@ -303,22 +271,7 @@ public class Config extends ConfigLoader {
     public boolean getJungleDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Jungle", true); }
 
     public boolean woodcuttingDoubleDropsDisabled() {
-        ConfigurationSection section = config.getConfigurationSection("Double_Drops.Woodcutting");
-        Set<String> keys = section.getKeys(false);
-        Iterator<String> iterator = keys.iterator();
-
-        boolean disabled = true;
-
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-
-            if (config.getBoolean("Double_Drops.Woodcutting." + key)) {
-                disabled = false;
-                break;
-            }
-        }
-
-        return disabled;
+        return doubleDropsDisabled("Woodcutting");
     }
 
     /* AFK Leveling */
@@ -343,68 +296,55 @@ public class Config extends ConfigLoader {
 
     /* Level Caps */
     public int getLevelCapAcrobatics() {
-        int cap = config.getInt("Skills.Acrobatics.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Acrobatics.Level_Cap");
     }
 
     public int getLevelCapArchery() {
-        int cap = config.getInt("Skills.Archery.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Archery.Level_Cap");
     }
 
     public int getLevelCapAxes() {
-        int cap = config.getInt("Skills.Axes.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Axes.Level_Cap");
     }
 
     public int getLevelCapExcavation() {
-        int cap = config.getInt("Skills.Excavation.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Excavation.Level_Cap");
     }
 
     public int getLevelCapFishing() {
-        int cap = config.getInt("Skills.Fishing.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Fishing.Level_Cap");
     }
 
     public int getLevelCapHerbalism() {
-        int cap = config.getInt("Skills.Herbalism.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Herbalism.Level_Cap");
     }
 
     public int getLevelCapMining() {
-        int cap = config.getInt("Skills.Mining.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Mining.Level_Cap");
     }
 
     public int getLevelCapRepair() {
-        int cap = config.getInt("Skills.Repair.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Repair.Level_Cap");
     }
 
     public int getLevelCapSwords() {
-        int cap = config.getInt("Skills.Swords.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Swords.Level_Cap");
     }
 
     public int getLevelCapTaming() {
-        int cap = config.getInt("Skills.Taming.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Taming.Level_Cap");
     }
 
     public int getLevelCapUnarmed() {
-        int cap = config.getInt("Skills.Unarmed.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Unarmed.Level_Cap");
     }
 
     public int getLevelCapWoodcutting() {
-        int cap = config.getInt("Skills.Woodcutting.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Woodcutting.Level_Cap");
     }
 
     public int getPowerLevelCap() {
-        int cap = config.getInt("General.Power_Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("General.Power_Level_Cap");
     }
 
     /* PVP & PVE Settings */
@@ -466,4 +406,25 @@ public class Config extends ConfigLoader {
     public double getFormulaMultiplierAxes() { return config.getDouble("Experience.Formula.Multiplier.Axes", 1.0); }
     public double getFormulaMultiplierAcrobatics() { return config.getDouble("Experience.Formula.Multiplier.Acrobatics", 1.0); }
     public double getFormulaMultiplierFishing() { return config.getDouble("Experience.Formula.Multiplier.Fishing", 1.0); }
+
+    private boolean doubleDropsDisabled(String skillName) {
+        ConfigurationSection section = config.getConfigurationSection("Double_Drops." + skillName);
+        Set<String> keys = section.getKeys(false);
+
+        boolean disabled = true;
+
+        for (String key : keys) {
+            if (config.getBoolean("Double_Drops." + skillName + "." + key)) {
+                disabled = false;
+                break;
+            }
+        }
+
+        return disabled;
+    }
+
+    private int getLevelCap(String configString) {
+        int cap = config.getInt(configString, 0);
+        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+    }
 }

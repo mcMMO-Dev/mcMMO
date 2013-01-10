@@ -82,10 +82,10 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     @Override
     public boolean isEmpty() {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < this.worldHeight; y++) {
-                    if(store[x][z][y]) return false;
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < this.worldHeight; y++) {
+                    if (store[x][z][y]) return false;
                 }
             }
         }
@@ -94,9 +94,9 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     @Override
     public void copyFrom(ChunkletStore otherStore) {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < this.worldHeight; y++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < this.worldHeight; y++) {
                     store[x][z][y] = otherStore.isTrue(x, y, z);
                 }
             }
@@ -113,42 +113,42 @@ public class PrimitiveChunkStore implements ChunkStore {
     }
 
     public void addSpawnedMob(UUID id) {
-        if(!isSpawnedMob(id)) {
+        if (!isSpawnedMob(id)) {
             spawnedMobs.add(id);
             dirty = true;
         }
     }
 
     public void addSpawnedPet(UUID id) {
-        if(!isSpawnedPet(id)) {
+        if (!isSpawnedPet(id)) {
             spawnedPets.add(id);
             dirty = true;
         }
     }
 
     public void removeSpawnedMob(UUID id) {
-        if(isSpawnedMob(id)) {
+        if (isSpawnedMob(id)) {
             spawnedMobs.remove(id);
             dirty = true;
         }
     }
 
     public void removeSpawnedPet(UUID id) {
-        if(isSpawnedPet(id)) {
+        if (isSpawnedPet(id)) {
             spawnedPets.remove(id);
             dirty = true;
         }
     }
 
     public void clearSpawnedMobs() {
-        if(!spawnedMobs.isEmpty()) {
+        if (!spawnedMobs.isEmpty()) {
             spawnedMobs.clear();
             dirty = true;
         }
     }
 
     public void clearSpawnedPets() {
-        if(!spawnedPets.isEmpty()) {
+        if (!spawnedPets.isEmpty()) {
             spawnedPets.clear();
             dirty = true;
         }
@@ -204,16 +204,16 @@ public class PrimitiveChunkStore implements ChunkStore {
         store = (boolean[][][]) in.readObject();
 
         if (fileVersionNumber < CURRENT_VERSION) {
-            if(fileVersionNumber < 5)
+            if (fileVersionNumber < 5)
                 fixArray();
-            if(fileVersionNumber < 6) {
+            if (fileVersionNumber < 6) {
                 spawnedMobs = new ArrayList<UUID>();
                 spawnedPets = new ArrayList<UUID>();
             }
             dirty = true;
         }
 
-        if(fileVersionNumber >= 6) {
+        if (fileVersionNumber >= 6) {
             //What do we want to do about this? These casts are unchecked.
             spawnedMobs = (ArrayList<UUID>) in.readObject();
             spawnedPets = (ArrayList<UUID>) in.readObject();
@@ -223,9 +223,9 @@ public class PrimitiveChunkStore implements ChunkStore {
     private void fixArray() {
         boolean[][][] temp = this.store;
         this.store = new boolean[16][16][this.worldHeight];
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < this.worldHeight; y++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < this.worldHeight; y++) {
                     try {
                         store[x][z][y] = temp[x][y][z];
                     }

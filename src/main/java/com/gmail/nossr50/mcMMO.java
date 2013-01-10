@@ -146,7 +146,7 @@ public class mcMMO extends JavaPlugin {
         repairManager.registerRepairables(repairables);
 
         //Check if Repair Anvil and Salvage Anvil have different itemID's
-        if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()){
+        if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()) {
             getLogger().warning("Can't use the same itemID for Repair/Salvage Anvils!");
         }
 

@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import java.util.Random;
-
 import com.gmail.nossr50.config.AdvancedConfig;
 
 public class Unarmed {
@@ -17,11 +15,5 @@ public class Unarmed {
     public static final int DISARM_MAX_BONUS_LEVEL = advancedConfig.getDeflectMaxBonusLevel();
 
     public static final int IRON_GRIP_MAX_CHANCE = advancedConfig.getIronGripChanceMax();
-    public static final int IRON_GRIP_MAX_BONUS_LEVEL = advancedConfig.getIronGripMaxBonusLevel();
-
-    private static Random random = new Random();
-
-    protected static Random getRandom() {
-        return random;
-    }
+    public static final int IRON_GRIP_MAX_BONUS_LEVEL = advancedConfig.getIronGripMaxBonusLevel(); 
 }

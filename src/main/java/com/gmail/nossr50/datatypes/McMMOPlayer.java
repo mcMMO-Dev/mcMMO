@@ -120,9 +120,9 @@ public class McMMOPlayer {
      * @param newvalue The amount of XP to add
      */
     public void addXP(SkillType skillType, int newValue) {
-        if(player == null)
+        if (player == null)
             return;
-        else if(player.getGameMode() == null)
+        else if (player.getGameMode() == null)
             return;
 
         if (player.getGameMode().equals(GameMode.CREATIVE)) {
@@ -209,9 +209,8 @@ public class McMMOPlayer {
         if (invite != null) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     public void setParty(Party party) {
@@ -226,9 +225,8 @@ public class McMMOPlayer {
         if (party != null) {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     public void removeParty() {

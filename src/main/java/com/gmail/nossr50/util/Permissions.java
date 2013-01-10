@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 public class Permissions {
     public static boolean hasPermission(CommandSender sender, String perm)
     {
-        if(sender.hasPermission(perm))
+        if (sender.hasPermission(perm))
             return true;
 
         return false;
@@ -14,7 +14,7 @@ public class Permissions {
 
     public static boolean hasPermission(Player sender, String perm)
     {        
-        if(sender.hasPermission(perm))
+        if (sender.hasPermission(perm))
             return true;
 
         return false;

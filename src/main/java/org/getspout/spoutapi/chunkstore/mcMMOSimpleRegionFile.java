@@ -216,9 +216,9 @@ public class mcMMOSimpleRegionFile {
             if (old != null && old == used) {
                 if (old) {
                     throw new IllegalStateException("Attempting to overwrite an in-use segment");
-                } else {
-                    throw new IllegalStateException("Attempting to delete empty segment");
                 }
+
+                throw new IllegalStateException("Attempting to delete empty segment");
             }
         }
 
@@ -271,9 +271,9 @@ public class mcMMOSimpleRegionFile {
     private synchronized int sizeToSegments(int size) {
         if (size <= 0) {
             return 1;
-        } else {
-            return ((size - 1) >> segmentSize) + 1;
         }
+
+        return ((size - 1) >> segmentSize) + 1;
     }
 
     private synchronized Integer getChunkIndex(int x, int z) {

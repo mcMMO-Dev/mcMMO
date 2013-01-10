@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.archery;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -14,7 +13,6 @@ import com.gmail.nossr50.util.Misc;
 
 public class Archery {
     private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    private static Random random = new Random();
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
     public static final int ARROW_TRACKING_MAX_BONUS_LEVEL = advancedConfig.getRetrieveMaxBonusLevel();
@@ -65,9 +63,5 @@ public class Archery {
                 return;
             }
         }
-    }
-
-    protected static Random getRandom() {
-        return random;
     }
 }

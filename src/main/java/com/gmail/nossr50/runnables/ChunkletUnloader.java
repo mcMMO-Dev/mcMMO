@@ -33,8 +33,8 @@ public class ChunkletUnloader implements Runnable {
 
     @Override
     public void run() {
-        for (Iterator<Entry<Chunk, Integer>> it = unloadedChunks.entrySet().iterator() ; it.hasNext() ; ) {
-            Entry<Chunk, Integer> entry = it.next();
+        for (Iterator<Entry<Chunk, Integer>> unloadedChunkIterator = unloadedChunks.entrySet().iterator() ; unloadedChunkIterator.hasNext() ; ) {
+            Entry<Chunk, Integer> entry = unloadedChunkIterator.next();
             Chunk chunk = entry.getKey();
 
             if (!chunk.isLoaded()) {
@@ -42,11 +42,11 @@ public class ChunkletUnloader implements Runnable {
 
                 //Chunklets are unloaded only if their chunk has been unloaded for minimumInactiveTime
                 if (inactiveTime >= minimumInactiveTime) {
-                    if(mcMMO.placeStore == null)
+                    if (mcMMO.placeStore == null)
                         continue;
 
                     mcMMO.placeStore.unloadChunk(chunk.getX(), chunk.getZ(), chunk.getWorld());
-                    it.remove();
+                    unloadedChunkIterator.remove();
                     continue;
                 }
 
@@ -54,7 +54,7 @@ public class ChunkletUnloader implements Runnable {
             }
             else {
                 //Just remove the entry if the chunk has been reloaded.
-                it.remove();
+                unloadedChunkIterator.remove();
             }
         }
     }

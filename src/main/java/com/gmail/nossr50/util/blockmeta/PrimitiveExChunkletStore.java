@@ -28,10 +28,10 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
 
     @Override
     public boolean isEmpty() {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < 64; y++) {
-                    if(store[x][z][y]) return false;
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < 64; y++) {
+                    if (store[x][z][y]) return false;
                 }
             }
         }
@@ -40,9 +40,9 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
 
     @Override
     public void copyFrom(ChunkletStore otherStore) {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < 64; y++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < 64; y++) {
                     store[x][z][y] = otherStore.isTrue(x, y, z);
                 }
             }
@@ -54,13 +54,13 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
         byte[] buffer = new byte[2304]; // 2304 is 16*16*9
         int bufferIndex = 0;
 
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < 64; y++) {
-                    if(store[x][z][y]) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < 64; y++) {
+                    if (store[x][z][y]) {
                         byte[] temp = constructColumn(x, z);
 
-                        for(int i = 0; i < 9; i++) {
+                        for (int i = 0; i < 9; i++) {
                             buffer[bufferIndex] = temp[i];
                             bufferIndex++;
                         }
@@ -81,13 +81,13 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
         byte[] temp = new byte[9];
 
         // Could probably reorganize this loop to print nasty things if it does not equal 9 or -1
-        while(in.read(temp, 0, 9) == 9) {
+        while (in.read(temp, 0, 9) == 9) {
             int x = addressByteX(temp[0]);
             int z = addressByteZ(temp[0]);
             boolean[] yColumn = new boolean[64];
 
-            for(int i = 0; i < 8; i++) {
-                for(int j = 0; j < 8; j++) {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
                     yColumn[j + (i * 8)] = (temp[i + 1] & (1 << j)) != 0;
                 }
             }
@@ -127,13 +127,13 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
 
         column[0] = makeAddressByte(x, z);
 
-        for (int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++) {
             byte yCompressed = 0x0;
             int subColumnIndex = 8 * i;
             int subColumnEnd = subColumnIndex + 8;
 
-            for(int y = subColumnIndex; y < subColumnEnd; y++) {
-                if(store[x][z][y]) {
+            for (int y = subColumnIndex; y < subColumnEnd; y++) {
+                if (store[x][z][y]) {
                     yCompressed |= 1 << (y % 8);
                 }
             }

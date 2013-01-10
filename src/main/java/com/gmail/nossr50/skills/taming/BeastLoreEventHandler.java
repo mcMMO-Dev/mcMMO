@@ -19,7 +19,7 @@ public class BeastLoreEventHandler {
     }
 
     protected void sendInspectMessage() {
-        if(player == null)
+        if (player == null)
             return;
 
         String message = LocaleLoader.getString("Combat.BeastLore") + " ";
@@ -44,8 +44,7 @@ public class BeastLoreEventHandler {
         if (tamer instanceof Player) {
             return ((Player) tamer).getName();
         }
-        else {
-            return "Offline Master";
-        }
+
+        return "Offline Master";
     }
 }

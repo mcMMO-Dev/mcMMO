@@ -28,14 +28,14 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void sendInsufficientAmountMessage() {
-        if(player == null)
+        if (player == null)
             return;
 
         player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.GRAY + Misc.prettyItemString(inHand.getTypeId()));
     }
 
     protected boolean nearbyEntityExists() {
-        if(player == null)
+        if (player == null)
             return false;
 
         boolean entityExists = false;
@@ -51,7 +51,7 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void sendFailureMessage() {
-        if(player == null)
+        if (player == null)
             return;
 
         if (type == EntityType.OCELOT) {
@@ -63,7 +63,7 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void spawnCreature() {
-        if(player == null)
+        if (player == null)
             return;
 
         LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
@@ -72,7 +72,7 @@ public class CallOfTheWildEventHandler {
         ((Tameable) entity).setOwner(player);
 
         if (type == EntityType.OCELOT) {
-            ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Taming.getRandom().nextInt(3)));
+            ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Misc.getRandom().nextInt(3)));
         }
         else {
             entity.setHealth(entity.getMaxHealth());
@@ -80,7 +80,7 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void processResourceCost() {
-        if(player == null)
+        if (player == null)
             return;
 
         int newAmount = inHand.getAmount() - summonAmount;
@@ -94,7 +94,7 @@ public class CallOfTheWildEventHandler {
     }
 
     protected void sendSuccessMessage() {
-        if(player == null)
+        if (player == null)
             return;
 
         player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete"));

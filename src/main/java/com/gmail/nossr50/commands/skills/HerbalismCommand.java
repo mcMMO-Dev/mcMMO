@@ -51,22 +51,22 @@ public class HerbalismCommand extends SkillCommand {
         float doubleDropChanceF;
         greenTerraLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
         //FARMERS DIET
-        if(skillValue >= farmersDietMaxLevel) farmersDietRank = "5";
+        if (skillValue >= farmersDietMaxLevel) farmersDietRank = "5";
         else farmersDietRank = String.valueOf((int) ((double) skillValue / (double) farmersDietRankChange));
         //GREEN THUMB
-        if(skillValue >= greenThumbStageMaxLevel) greenThumbStage = "4";
+        if (skillValue >= greenThumbStageMaxLevel) greenThumbStage = "4";
         else greenThumbStage = String.valueOf((int) ((double) skillValue / (double) greenThumbStageChange));
 
-        if(skillValue >= greenThumbMaxLevel) greenThumbChanceF = (float) (greenThumbMaxBonus);
+        if (skillValue >= greenThumbMaxLevel) greenThumbChanceF = (float) (greenThumbMaxBonus);
         else greenThumbChanceF = (float) ((greenThumbMaxBonus / greenThumbMaxLevel) * skillValue);
         greenThumbChance = df.format(greenThumbChanceF);
-        if(greenThumbChanceF + greenThumbChanceF * 0.3333D >= 100D) greenThumbChanceLucky = df.format(100D);
+        if (greenThumbChanceF + greenThumbChanceF * 0.3333D >= 100D) greenThumbChanceLucky = df.format(100D);
         else greenThumbChanceLucky = df.format(greenThumbChanceF + greenThumbChanceF * 0.3333D);
         //DOUBLE DROPS
-        if(skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
+        if (skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
         else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
         doubleDropChance = df.format(doubleDropChanceF);
-        if(doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = df.format(100D);
+        if (doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = df.format(100D);
         else doubleDropChanceLucky = df.format(doubleDropChanceF + doubleDropChanceF * 0.3333D);
     }
 

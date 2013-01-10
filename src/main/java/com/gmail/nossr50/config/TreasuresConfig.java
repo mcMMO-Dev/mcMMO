@@ -2,7 +2,6 @@ package com.gmail.nossr50.config;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,10 +49,8 @@ public class TreasuresConfig extends ConfigLoader{
         Map<String, Treasure> treasures = new HashMap<String, Treasure>();
         ConfigurationSection treasureSection = config.getConfigurationSection("Treasures");
         Set<String> treasureConfigSet = treasureSection.getKeys(false);
-        Iterator<String> iterator = treasureConfigSet.iterator();
 
-        while (iterator.hasNext()) {
-            String treasureName = iterator.next();
+        for (String treasureName : treasureConfigSet) {
 
             // Validate all the things!
             List<String> reason = new ArrayList<String>();
@@ -191,11 +188,8 @@ public class TreasuresConfig extends ConfigLoader{
 
         List<String> excavationTreasures = config.getStringList("Excavation.Treasure");
         List<String> fishingTreasures = config.getStringList("Fishing.Treasure");
-        //        Iterator<String> treasureIterator = treasures.keySet().iterator();
-        Iterator<Entry<String,Treasure>> treasureIterator = treasures.entrySet().iterator();
 
-        while (treasureIterator.hasNext()) {
-            Entry<String,Treasure> nextEntry = treasureIterator.next();
+        for (Entry<String,Treasure> nextEntry : treasures.entrySet()) {
             String treasureKey = nextEntry.getKey();
             Treasure treasure = nextEntry.getValue();
 
@@ -208,11 +202,11 @@ public class TreasuresConfig extends ConfigLoader{
                 int dropLevel = fTreasure.getDropLevel();
                 int maxLevel = fTreasure.getMaxLevel();
 
-                if(dropLevel <= Config.getInstance().getFishingTierLevelsTier1() && maxLevel >= Config.getInstance().getFishingTierLevelsTier1()) {
+                if (dropLevel <= Config.getInstance().getFishingTierLevelsTier1() && maxLevel >= Config.getInstance().getFishingTierLevelsTier1()) {
                     fishingRewardsTier1.add(fTreasure);
                 }
 
-                if(dropLevel <= Config.getInstance().getFishingTierLevelsTier2() && maxLevel >= Config.getInstance().getFishingTierLevelsTier2()) {
+                if (dropLevel <= Config.getInstance().getFishingTierLevelsTier2() && maxLevel >= Config.getInstance().getFishingTierLevelsTier2()) {
                     fishingRewardsTier2.add(fTreasure);
                 }
 
@@ -271,11 +265,10 @@ public class TreasuresConfig extends ConfigLoader{
         if (issues.isEmpty()) {
             return true;
         }
-        else {
-            for (String issue : issues) {
-                plugin.getLogger().warning(issue);
-            }
-            return false;
+
+        for (String issue : issues) {
+            plugin.getLogger().warning(issue);
         }
+        return false;
     }
 }

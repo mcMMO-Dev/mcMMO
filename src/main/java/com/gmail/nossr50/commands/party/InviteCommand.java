@@ -56,15 +56,13 @@ public class InviteCommand implements CommandExecutor {
                     target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.1"));
                     return true;
                 }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Party.Locked"));
-                    return true;
-                }
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
+
+                player.sendMessage(LocaleLoader.getString("Party.Locked"));
                 return true;
             }
+
+            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
+            return true;
 
         default:
             sender.sendMessage(usage);

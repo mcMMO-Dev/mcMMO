@@ -9,21 +9,16 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class TamingManager {
-    private Player player;
-    private PlayerProfile profile;
-    private int skillLevel;
+public class TamingManager extends SkillManager {
     private Config configInstance;
 
     public TamingManager (Player player) {
-        this.player = player;
-        this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.TAMING);
+        super(player, SkillType.TAMING);
         this.configInstance = Config.getInstance();
     }
 
@@ -34,7 +29,7 @@ public class TamingManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, int damage) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.fastFoodService(player)) {
@@ -48,7 +43,7 @@ public class TamingManager {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            if (Taming.getRandom().nextInt(randomChance) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
+            if (Misc.getRandom().nextInt(randomChance) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
                 FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
 
                 eventHandler.modifyHealth(damage);
@@ -62,7 +57,7 @@ public class TamingManager {
      * @param event The event to modify
      */
     public void sharpenedClaws(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.sharpenedClaws(player)) {
@@ -82,7 +77,7 @@ public class TamingManager {
      * @param event The event to modify
      */
     public void gore(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.gore(player)) {
@@ -100,7 +95,7 @@ public class TamingManager {
         float chance = (float) (((double) Taming.GORE_CHANCE_MAX / (double) Taming.GORE_MAX_BONUS_LEVEL) * skillLevel);
         if (chance > Taming.GORE_CHANCE_MAX) chance = Taming.GORE_CHANCE_MAX;
 
-        if (chance > Taming.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.modifyEventDamage();
             eventHandler.applyBleed();
             eventHandler.sendAbilityMessage();
@@ -160,7 +155,7 @@ public class TamingManager {
      * @param livingEntity The entity to examine
      */
     public void beastLore(LivingEntity livingEntity) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.beastLore(player)) {
@@ -179,7 +174,7 @@ public class TamingManager {
      * @param summonAmount The amount of material needed to summon the entity
      */
     private void callOfTheWild(EntityType type, int summonAmount) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.callOfTheWild(player)) {
@@ -195,15 +190,14 @@ public class TamingManager {
             eventHandler.sendInsufficientAmountMessage();
             return;
         }
+
+        if (eventHandler.nearbyEntityExists()) {
+            eventHandler.sendFailureMessage();
+        }
         else {
-            if (eventHandler.nearbyEntityExists()) {
-                eventHandler.sendFailureMessage();
-            }
-            else {
-                eventHandler.spawnCreature();
-                eventHandler.processResourceCost();
-                eventHandler.sendSuccessMessage();
-            }
+            eventHandler.spawnCreature();
+            eventHandler.processResourceCost();
+            eventHandler.sendSuccessMessage();
         }
     }
 
@@ -214,7 +208,7 @@ public class TamingManager {
      * @param cause The damage cause of the event
      */
     private void environmentallyAware(EntityDamageEvent event, DamageCause cause) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.environmentallyAware(player)) {
@@ -249,7 +243,7 @@ public class TamingManager {
      * @param cause The damage cause of the event
      */
     private void thickFur(EntityDamageEvent event, DamageCause cause) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.thickFur(player)) {
@@ -269,7 +263,7 @@ public class TamingManager {
      * @param event The event to modify
      */
     private void shockProof(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.shockProof(player)) {
@@ -281,13 +275,5 @@ public class TamingManager {
 
             eventHandler.modifyEventDamage();
         }
-    }
-
-    protected int getSkillLevel() {
-        return skillLevel;
-    }
-
-    protected Player getPlayer() {
-        return player;
     }
 }

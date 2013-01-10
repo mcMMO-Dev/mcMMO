@@ -87,7 +87,7 @@ public class PartyCommand implements CommandExecutor {
                     player.sendMessage(LocaleLoader.getString("Commands.Party.Leave"));
                 }
                 else {
-                    player.sendMessage("Commands.Party.None");
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 }
             }
             else if (args[0].equals("?")) {
@@ -140,7 +140,7 @@ public class PartyCommand implements CommandExecutor {
                 Party newParty = partyManagerInstance.getParty(args[0]);
 
                 // Check to see if the party exists, and if it does, can the player join it?
-                if (newParty != null && !partyManagerInstance.checkJoinability(player, playerProfile, newParty, null)) {
+                if (newParty != null && !partyManagerInstance.checkJoinability(player, newParty, null)) {
                     return true; // End before any event is fired.
                 }
 
@@ -186,18 +186,17 @@ public class PartyCommand implements CommandExecutor {
                             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
                             return true;
                         }
-                        else {
-                            String partyName = party.getName();
-                            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, partyName, null, EventReason.KICKED_FROM_PARTY);
 
-                            plugin.getServer().getPluginManager().callEvent(event);
+                        String partyName = party.getName();
+                        McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, partyName, null, EventReason.KICKED_FROM_PARTY);
 
-                            if (event.isCancelled()) {
-                                return true;
-                            }
+                        plugin.getServer().getPluginManager().callEvent(event);
 
-                            partyManagerInstance.removeFromParty(args[1], party);
+                        if (event.isCancelled()) {
+                            return true;
                         }
+
+                        partyManagerInstance.removeFromParty(args[1], party);
                     }
                     else {
                         player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
@@ -209,16 +208,15 @@ public class PartyCommand implements CommandExecutor {
                             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
                             return true;
                         }
-                        else {
-                            partyManagerInstance.setPartyLeader(args[1], party);
-                        }
+
+                        partyManagerInstance.setPartyLeader(args[1], party);
                     }
                 }
                 else {
                     Party newParty = partyManagerInstance.getParty(args[0]);
 
                     // Check to see if the party exists, and if it does, can the player join it?
-                    if (newParty != null && !partyManagerInstance.checkJoinability(player, playerProfile, newParty, args[1])) {
+                    if (newParty != null && !partyManagerInstance.checkJoinability(player, newParty, args[1])) {
                         return true; // End before any event is fired.
                     }
 
@@ -237,7 +235,7 @@ public class PartyCommand implements CommandExecutor {
                 Party newParty = partyManagerInstance.getParty(args[0]);
 
                 // Check to see if the party exists, and if it does, can the player join it?
-                if (newParty != null && !partyManagerInstance.checkJoinability(player, playerProfile, newParty, args[1])) {
+                if (newParty != null && !partyManagerInstance.checkJoinability(player, newParty, args[1])) {
                     return true; // End before any event is fired.
                 }
 

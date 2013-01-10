@@ -4,21 +4,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class ArcheryManager {
-    private Player player;
-    private PlayerProfile profile;
-    private int skillLevel;
-
+public class ArcheryManager extends SkillManager {
     public ArcheryManager (Player player) {
-        this.player = player;
-        this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.ARCHERY);
+        super(player, SkillType.ARCHERY);
     }
 
     /**
@@ -27,7 +20,7 @@ public class ArcheryManager {
      * @param livingEntity Entity damaged by the arrow
      */
     public void trackArrows(LivingEntity livingEntity) {
-        if (Misc.isCitizensNPC(player) || !Permissions.trackArrows(player)) {
+        if (Misc.isNPC(player) || !Permissions.trackArrows(player)) {
             return;
         }
 
@@ -40,7 +33,7 @@ public class ArcheryManager {
 
         float chance = ((float) Archery.ARROW_TRACKING_MAX_BONUS / Archery.ARROW_TRACKING_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
-        if (chance > Archery.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.addToTracker();
         }
     }
@@ -52,7 +45,7 @@ public class ArcheryManager {
      * @param event The event to modify
      */
     public void dazeCheck(Player defender, EntityDamageEvent event) {
-        if (Misc.isCitizensNPC(player) || !Permissions.daze(player)) {
+        if (Misc.isNPC(player) || !Permissions.daze(player)) {
             return;
         }
 
@@ -65,7 +58,7 @@ public class ArcheryManager {
 
         float chance = ((float) Archery.DAZE_MAX_BONUS / Archery.DAZE_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
-        if (chance > Archery.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.handleDazeEffect();
             eventHandler.sendAbilityMessages();
         }
@@ -77,7 +70,7 @@ public class ArcheryManager {
      * @param event The event to modify.
      */
     public void bonusDamage(EntityDamageEvent event) {
-        if (Misc.isCitizensNPC(player) || !Permissions.archeryBonus(player)) {
+        if (Misc.isNPC(player) || !Permissions.archeryBonus(player)) {
             return;
         }
 
@@ -87,13 +80,5 @@ public class ArcheryManager {
             eventHandler.calculateDamageBonus();
             eventHandler.modifyEventDamage();
         }
-    }
-
-    protected int getSkillLevel() {
-        return skillLevel;
-    }
-
-    protected Player getPlayer() {
-        return player;
     }
 }

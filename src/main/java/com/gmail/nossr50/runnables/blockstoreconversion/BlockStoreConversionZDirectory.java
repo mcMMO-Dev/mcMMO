@@ -40,7 +40,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
         this.dataDir = dataDir;
         this.xDir = xDir;
 
-        if(this.taskID >= 0)
+        if (this.taskID >= 0)
             return;
 
         this.taskID = this.scheduler.scheduleSyncDelayedTask(mcMMO.p, this, 1);
@@ -49,18 +49,18 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
     @Override
     public void run() {
-        if(!this.dataDir.exists()) {
+        if (!this.dataDir.exists()) {
             stop();
             return;
         }
 
-        if(!this.dataDir.isDirectory()) {
+        if (!this.dataDir.isDirectory()) {
             this.dataDir.delete();
             stop();
             return;
         }
 
-        if(this.dataDir.listFiles().length <= 0) {
+        if (this.dataDir.listFiles().length <= 0) {
             this.dataDir.delete();
             stop();
             return;
@@ -83,61 +83,65 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
         this.manager.loadChunk(this.cx, this.cz, this.world);
 
-        for(this.y = 0; this.y < (this.world.getMaxHeight() / 64); this.y++) {
+        for (this.y = 0; this.y < (this.world.getMaxHeight() / 64); this.y++) {
             this.chunkletName = this.world.getName() + "," + this.cx + "," + this.cz + "," + this.y;
             this.tempChunklet = this.manager.store.get(this.chunkletName);
-            if(this.tempChunklet instanceof PrimitiveChunkletStore)
+
+            if (this.tempChunklet instanceof PrimitiveChunkletStore) {
                 this.primitiveChunklet = (PrimitiveChunkletStore) this.tempChunklet;
-            else if(this.tempChunklet instanceof PrimitiveExChunkletStore)
+            }
+            else if (this.tempChunklet instanceof PrimitiveExChunkletStore) {
                 this.primitiveExChunklet = (PrimitiveExChunkletStore) this.tempChunklet;
-            if(this.tempChunklet == null) {
+            }
+
+            if (this.tempChunklet == null) {
                 continue;
-            } else {
-                this.chunkName = this.world.getName() + "," + this.cx + "," + this.cz;
-                this.currentChunk = (PrimitiveChunkStore) this.newManager.store.get(this.chunkName);
+            }
 
-                if(this.currentChunk != null) {
-                    this.xPos = this.cx * 16;
-                    this.zPos = this.cz * 16;
+            this.chunkName = this.world.getName() + "," + this.cx + "," + this.cz;
+            this.currentChunk = (PrimitiveChunkStore) this.newManager.store.get(this.chunkName);
 
-                    for(this.x = 0; this.x < 16; this.x++) {
-                        for(this.z = 0; this.z < 16; this.z++) {
-                            this.cxPos = this.xPos + this.x;
-                            this.czPos = this.zPos + this.z;
+            if (this.currentChunk != null) {
+                this.xPos = this.cx * 16;
+                this.zPos = this.cz * 16;
 
-                            for(this.y2 = (64 * this.y); this.y2 < (64 * this.y + 64); this.y2++) {
-                                try {
-                                    if(!this.manager.isTrue(this.cxPos, this.y2, this.czPos, this.world))
-                                        continue;
+                for (this.x = 0; this.x < 16; this.x++) {
+                    for (this.z = 0; this.z < 16; this.z++) {
+                        this.cxPos = this.xPos + this.x;
+                        this.czPos = this.zPos + this.z;
 
-                                    this.newManager.setTrue(this.cxPos, this.y2, this.czPos, this.world);
-                                }
-                                catch(Exception e) {}
+                        for (this.y2 = (64 * this.y); this.y2 < (64 * this.y + 64); this.y2++) {
+                            try {
+                                if (!this.manager.isTrue(this.cxPos, this.y2, this.czPos, this.world))
+                                    continue;
+
+                                this.newManager.setTrue(this.cxPos, this.y2, this.czPos, this.world);
                             }
+                            catch(Exception e) {}
                         }
                     }
-                    continue;
                 }
+                continue;
+            }
 
-                this.newManager.setTrue(this.cx * 16, 0, this.cz * 16, this.world);
-                this.newManager.setFalse(this.cx * 16, 0, this.cz * 16, this.world);
-                this.currentChunk = (PrimitiveChunkStore) this.newManager.store.get(this.chunkName);
+            this.newManager.setTrue(this.cx * 16, 0, this.cz * 16, this.world);
+            this.newManager.setFalse(this.cx * 16, 0, this.cz * 16, this.world);
+            this.currentChunk = (PrimitiveChunkStore) this.newManager.store.get(this.chunkName);
 
-                for(this.x = 0; this.x < 16; this.x++) {
-                    for(this.z = 0; this.z < 16; this.z++) {
-                        if(this.primitiveChunklet != null)
-                            this.oldArray = this.primitiveChunklet.store[x][z];
-                        if(this.primitiveExChunklet != null)
-                            this.oldArray = this.primitiveExChunklet.store[x][z];
-                        else
-                            return;
-                        this.newArray = this.currentChunk.store[x][z];
-                        if(this.oldArray.length < 64)
-                            return;
-                        else if(this.newArray.length < ((this.y * 64) + 64))
-                            return;
-                        System.arraycopy(this.oldArray, 0, this.newArray, (this.y * 64), 64);
-                    }
+            for (this.x = 0; this.x < 16; this.x++) {
+                for (this.z = 0; this.z < 16; this.z++) {
+                    if (this.primitiveChunklet != null)
+                        this.oldArray = this.primitiveChunklet.store[x][z];
+                    if (this.primitiveExChunklet != null)
+                        this.oldArray = this.primitiveExChunklet.store[x][z];
+                    else
+                        return;
+                    this.newArray = this.currentChunk.store[x][z];
+                    if (this.oldArray.length < 64)
+                        return;
+                    else if (this.newArray.length < ((this.y * 64) + 64))
+                        return;
+                    System.arraycopy(this.oldArray, 0, this.newArray, (this.y * 64), 64);
                 }
             }
         }
@@ -145,8 +149,8 @@ public class BlockStoreConversionZDirectory implements Runnable {
         this.manager.unloadChunk(this.cx, this.cz, this.world);
         this.newManager.unloadChunk(this.cx, this.cz, this.world);
 
-        for(File yFile : dataDir.listFiles()) {
-            if(!yFile.exists())
+        for (File yFile : dataDir.listFiles()) {
+            if (!yFile.exists())
                 continue;
 
             yFile.delete();
@@ -156,7 +160,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
     }
 
     public void stop() {
-        if(this.taskID < 0)
+        if (this.taskID < 0)
             return;
 
         this.scheduler.cancelTask(taskID);
