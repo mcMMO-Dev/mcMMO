@@ -931,7 +931,7 @@ public class PlayerProfile {
             skills.put(skillType, 0);
         else //do them all
         {
-            for(SkillType skill : SkillType.values()) //iterate over all items in the enumeration
+            for (SkillType skill : SkillType.values()) //iterate over all items in the enumeration
             {
                 if (skill != SkillType.ALL) // skip the "all" value
                     skills.put(skill,  0);

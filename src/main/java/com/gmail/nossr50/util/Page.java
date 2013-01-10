@@ -50,7 +50,7 @@ public class Page {
 
     public static void clearChat(Player player)
     {
-        for(int x = 0; x < 20; x++)
+        for (int x = 0; x < 20; x++)
         {
             player.sendMessage("");
         }
@@ -70,14 +70,14 @@ public class Page {
                 if (args.length > 1 && Misc.isInt(args[1]) && Misc.getInt(args[1]) <= Page.getTotalPageNumber(address))
                 {
                     Page.clearChat(player);
-                    for(String target : Page.grabPageContents(capitalized+" Guide", address, Misc.getInt(args[1])))
+                    for (String target : Page.grabPageContents(capitalized+" Guide", address, Misc.getInt(args[1])))
                     {
                         player.sendMessage(target);
                     }
                 } else if (args.length == 1)
                 {
                     Page.clearChat(player);
-                    for(String target : Page.grabPageContents(capitalized+" Guide", address, 1))
+                    for (String target : Page.grabPageContents(capitalized+" Guide", address, 1))
                     {
                         player.sendMessage(target);
                     }

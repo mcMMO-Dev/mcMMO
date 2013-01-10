@@ -106,11 +106,11 @@ public class BlockStoreConversionZDirectory implements Runnable {
                 this.zPos = this.cz * 16;
 
                 for (this.x = 0; this.x < 16; this.x++) {
-                    for(this.z = 0; this.z < 16; this.z++) {
+                    for (this.z = 0; this.z < 16; this.z++) {
                         this.cxPos = this.xPos + this.x;
                         this.czPos = this.zPos + this.z;
 
-                        for(this.y2 = (64 * this.y); this.y2 < (64 * this.y + 64); this.y2++) {
+                        for (this.y2 = (64 * this.y); this.y2 < (64 * this.y + 64); this.y2++) {
                             try {
                                 if (!this.manager.isTrue(this.cxPos, this.y2, this.czPos, this.world))
                                     continue;
@@ -128,8 +128,8 @@ public class BlockStoreConversionZDirectory implements Runnable {
             this.newManager.setFalse(this.cx * 16, 0, this.cz * 16, this.world);
             this.currentChunk = (PrimitiveChunkStore) this.newManager.store.get(this.chunkName);
 
-            for(this.x = 0; this.x < 16; this.x++) {
-                for(this.z = 0; this.z < 16; this.z++) {
+            for (this.x = 0; this.x < 16; this.x++) {
+                for (this.z = 0; this.z < 16; this.z++) {
                     if (this.primitiveChunklet != null)
                         this.oldArray = this.primitiveChunklet.store[x][z];
                     if (this.primitiveExChunklet != null)
@@ -149,7 +149,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
         this.manager.unloadChunk(this.cx, this.cz, this.world);
         this.newManager.unloadChunk(this.cx, this.cz, this.world);
 
-        for(File yFile : dataDir.listFiles()) {
+        for (File yFile : dataDir.listFiles()) {
             if (!yFile.exists())
                 continue;
 

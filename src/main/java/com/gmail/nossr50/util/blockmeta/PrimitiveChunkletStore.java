@@ -23,9 +23,9 @@ public class PrimitiveChunkletStore implements ChunkletStore {
 
     @Override
     public boolean isEmpty() {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < 64; y++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < 64; y++) {
                     if (store[x][z][y]) return false;
                 }
             }
@@ -35,9 +35,9 @@ public class PrimitiveChunkletStore implements ChunkletStore {
 
     @Override
     public void copyFrom(ChunkletStore otherStore) {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < 64; y++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < 64; y++) {
                     store[x][z][y] = otherStore.isTrue(x, y, z);
                 }
             }

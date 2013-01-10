@@ -10,8 +10,8 @@ public class PrimitiveExChunkletStoreTest {
 
     @Before
     public void populateAddresses() {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
                 addresses[x][z] = PrimitiveExChunkletStore.makeAddressByte(x, z);
             }
         }
@@ -25,8 +25,8 @@ public class PrimitiveExChunkletStoreTest {
 
     @Test
     public void addressReverseTest() {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
                 assertEquals(x, PrimitiveExChunkletStore.addressByteX(addresses[x][z]));
                 assertEquals(z, PrimitiveExChunkletStore.addressByteZ(addresses[x][z]));
             }

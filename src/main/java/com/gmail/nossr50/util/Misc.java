@@ -249,7 +249,7 @@ public class Misc {
      * @param quantity The amount of items to drop
      */
     public static void randomDropItems(Location location, ItemStack is, int chance, int quantity) {
-        for(int i = 0; i < quantity; i++) {
+        for (int i = 0; i < quantity; i++) {
             randomDropItem(location, is, chance);
         }
     }

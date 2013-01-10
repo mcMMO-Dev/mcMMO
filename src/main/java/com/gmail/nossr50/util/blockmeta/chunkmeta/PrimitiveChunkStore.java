@@ -82,9 +82,9 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     @Override
     public boolean isEmpty() {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < this.worldHeight; y++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < this.worldHeight; y++) {
                     if (store[x][z][y]) return false;
                 }
             }
@@ -94,9 +94,9 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     @Override
     public void copyFrom(ChunkletStore otherStore) {
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < this.worldHeight; y++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < this.worldHeight; y++) {
                     store[x][z][y] = otherStore.isTrue(x, y, z);
                 }
             }
@@ -223,9 +223,9 @@ public class PrimitiveChunkStore implements ChunkStore {
     private void fixArray() {
         boolean[][][] temp = this.store;
         this.store = new boolean[16][16][this.worldHeight];
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < this.worldHeight; y++) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 0; y < this.worldHeight; y++) {
                     try {
                         store[x][z][y] = temp[x][y][z];
                     }

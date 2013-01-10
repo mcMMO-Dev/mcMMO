@@ -61,7 +61,7 @@ public class HashChunkletManager implements ChunkletManager {
         File czDir = new File(cxDir, "" + cz);
         if (!czDir.exists()) return;
 
-        for(int y = 0; y < 4; y++) {
+        for (int y = 0; y < 4; y++) {
             File yFile = new File(czDir, "" + y);
             if (!yFile.exists()) {
                 continue;
@@ -78,7 +78,7 @@ public class HashChunkletManager implements ChunkletManager {
     public void unloadChunk(int cx, int cz, World world) {
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
 
-        for(int y = 0; y < 4; y++) {
+        for (int y = 0; y < 4; y++) {
             if (store.containsKey(world.getName() + "," + cx + "," + cz + "," + y)) {
                 File cxDir = new File(dataDir, "" + cx);
                 if (!cxDir.exists()) cxDir.mkdir();
@@ -110,7 +110,7 @@ public class HashChunkletManager implements ChunkletManager {
         if (!dataDir.exists())
             dataDir.mkdirs();
 
-        for(String key : store.keySet()) {
+        for (String key : store.keySet()) {
             String[] info = key.split(",");
             if (worldName.equals(info[0])) {
                 File cxDir = new File(dataDir, "" + info[1]);
@@ -130,7 +130,7 @@ public class HashChunkletManager implements ChunkletManager {
 
         String worldName = world.getName();
 
-        for(String key : store.keySet()) {
+        for (String key : store.keySet()) {
             String tempWorldName = key.split(",")[0];
             if (tempWorldName.equals(worldName)) {
                 store.remove(key);
@@ -141,14 +141,14 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public void loadWorld(World world) {
-        //for(Chunk chunk : world.getLoadedChunks()) {
+        //for (Chunk chunk : world.getLoadedChunks()) {
         //    this.chunkLoaded(chunk.getX(), chunk.getZ(), world);
         //}
     }
 
     @Override
     public void saveAll() {
-        for(World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             saveWorld(world);
         }
     }
@@ -156,7 +156,7 @@ public class HashChunkletManager implements ChunkletManager {
     @Override
     public void unloadAll() {
         saveAll();
-        for(World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             unloadWorld(world);
         }
     }
@@ -253,7 +253,7 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public void cleanUp() {
-        for(String key : store.keySet()) {
+        for (String key : store.keySet()) {
             if (store.get(key).isEmpty()) {
                 String[] info = key.split(",");
                 File dataDir = new File(Bukkit.getWorld(info[0]).getWorldFolder(), "mcmmo_data");
