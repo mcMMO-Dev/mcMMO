@@ -296,68 +296,55 @@ public class Config extends ConfigLoader {
 
     /* Level Caps */
     public int getLevelCapAcrobatics() {
-        int cap = config.getInt("Skills.Acrobatics.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Acrobatics.Level_Cap");
     }
 
     public int getLevelCapArchery() {
-        int cap = config.getInt("Skills.Archery.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Archery.Level_Cap");
     }
 
     public int getLevelCapAxes() {
-        int cap = config.getInt("Skills.Axes.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Axes.Level_Cap");
     }
 
     public int getLevelCapExcavation() {
-        int cap = config.getInt("Skills.Excavation.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Excavation.Level_Cap");
     }
 
     public int getLevelCapFishing() {
-        int cap = config.getInt("Skills.Fishing.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Fishing.Level_Cap");
     }
 
     public int getLevelCapHerbalism() {
-        int cap = config.getInt("Skills.Herbalism.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Herbalism.Level_Cap");
     }
 
     public int getLevelCapMining() {
-        int cap = config.getInt("Skills.Mining.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Mining.Level_Cap");
     }
 
     public int getLevelCapRepair() {
-        int cap = config.getInt("Skills.Repair.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Repair.Level_Cap");
     }
 
     public int getLevelCapSwords() {
-        int cap = config.getInt("Skills.Swords.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Swords.Level_Cap");
     }
 
     public int getLevelCapTaming() {
-        int cap = config.getInt("Skills.Taming.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Taming.Level_Cap");
     }
 
     public int getLevelCapUnarmed() {
-        int cap = config.getInt("Skills.Unarmed.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Unarmed.Level_Cap");
     }
 
     public int getLevelCapWoodcutting() {
-        int cap = config.getInt("Skills.Woodcutting.Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("Skills.Woodcutting.Level_Cap");
     }
 
     public int getPowerLevelCap() {
-        int cap = config.getInt("General.Power_Level_Cap", 0);
-        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+        return getLevelCap("General.Power_Level_Cap");
     }
 
     /* PVP & PVE Settings */
@@ -434,5 +421,10 @@ public class Config extends ConfigLoader {
         }
 
         return disabled;
+    }
+
+    private int getLevelCap(String configString) {
+        int cap = config.getInt(configString, 0);
+        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
     }
 }
