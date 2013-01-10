@@ -28,9 +28,6 @@ public class Skills {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
-    private final static int TIME_CONVERSION_FACTOR = 1000;
-    private final static double MAX_DISTANCE_AWAY = 10.0;
-
     private final static Random random = new Random();
 
     /**
@@ -56,7 +53,7 @@ public class Skills {
             adjustedCooldown = (int) (adjustedCooldown * 0.75);
         }
 
-        if (currentTime - oldTime >= (adjustedCooldown * TIME_CONVERSION_FACTOR)) {
+        if (currentTime - oldTime >= (adjustedCooldown * Misc.TIME_CONVERSION_FACTOR)) {
             return true;
         }
         else {
@@ -85,7 +82,7 @@ public class Skills {
             adjustedCooldown = (int) (adjustedCooldown * 0.75);
         }
 
-        return (int) (((deactivatedTimeStamp + (adjustedCooldown * TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / TIME_CONVERSION_FACTOR);
+        return (int) (((deactivatedTimeStamp + (adjustedCooldown * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /**
@@ -99,7 +96,7 @@ public class Skills {
         if(player == null || profile == null || ability == null)
             return;
 
-        if (!profile.getAbilityInformed(ability) && cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+        if (!profile.getAbilityInformed(ability) && cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
             profile.setAbilityInformed(ability, true);
             player.sendMessage(ability.getAbilityRefresh());
         }
@@ -145,8 +142,8 @@ public class Skills {
          */
         if (ability.getPermissions(player) && tool.inHand(inHand) && !profile.getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
-                if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
+                if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
                     return;
                 }
             }
@@ -178,7 +175,7 @@ public class Skills {
             return;
         }
 
-        if (profile.getToolPreparationMode(tool) && curTime - (profile.getToolPreparationATS(tool) * TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
+        if (profile.getToolPreparationMode(tool) && curTime - (profile.getToolPreparationATS(tool) * Misc.TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
             profile.setToolPreparationMode(tool, false);
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
@@ -187,7 +184,7 @@ public class Skills {
         }
 
         if (ability.getPermissions(player)) {
-            if (profile.getAbilityMode(ability) && (profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR) <= curTime) {
+            if (profile.getAbilityMode(ability) && (profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR) <= curTime) {
                 profile.setAbilityMode(ability, false);
                 profile.setAbilityInformed(ability, false);
                 player.sendMessage(ability.getAbilityOff());
@@ -428,8 +425,8 @@ public class Skills {
          * We show them the too tired message when they take action.
          */
         if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
-            if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
+            if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player) + "s)");
                 return;
             }
         }
@@ -457,7 +454,7 @@ public class Skills {
 
             Misc.sendSkillMessage(player, ability.getAbilityPlayer(player));
 
-            profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * TIME_CONVERSION_FACTOR));
+            profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
             profile.setAbilityMode(ability, true);
         }
     }
