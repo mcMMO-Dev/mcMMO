@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills.combat;
+package com.gmail.nossr50.skills.axes;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AnimalTamer;
