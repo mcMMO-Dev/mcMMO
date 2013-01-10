@@ -42,7 +42,7 @@ public class ChunkletUnloader implements Runnable {
 
                 //Chunklets are unloaded only if their chunk has been unloaded for minimumInactiveTime
                 if (inactiveTime >= minimumInactiveTime) {
-                    if(mcMMO.placeStore == null)
+                    if (mcMMO.placeStore == null)
                         continue;
 
                     mcMMO.placeStore.unloadChunk(chunk.getX(), chunk.getZ(), chunk.getWorld());

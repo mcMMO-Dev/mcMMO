@@ -84,7 +84,7 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        if(player == null)
+        if (player == null)
             return;
 
         final PlayerProfile profile = Users.getProfile(player);
@@ -396,7 +396,7 @@ public class Herbalism {
             }
         }
 
-        if(Config.getInstance().getHerbalismAFKDisabled() && player.isInsideVehicle())
+        if (Config.getInstance().getHerbalismAFKDisabled() && player.isInsideVehicle())
             return;
 
         Skills.xpProcessing(player, profile, SkillType.HERBALISM, xp);

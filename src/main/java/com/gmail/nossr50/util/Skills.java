@@ -38,7 +38,7 @@ public class Skills {
      * @param player The player whose cooldown is being checked
      * @return true if the cooldown is over, false otherwise
      */
-    public static boolean cooldownOver(long oldTime, int cooldown, Player player){
+    public static boolean cooldownOver(long oldTime, int cooldown, Player player) {
         long currentTime = System.currentTimeMillis();
         int adjustedCooldown = cooldown;
 
@@ -92,7 +92,7 @@ public class Skills {
      * @param ability The ability to watch cooldowns for
      */
     public static void watchCooldown(Player player, PlayerProfile profile, AbilityType ability) {
-        if(player == null || profile == null || ability == null)
+        if (player == null || profile == null || ability == null)
             return;
 
         if (!profile.getAbilityInformed(ability) && cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
@@ -510,14 +510,14 @@ public class Skills {
      * @param xp the amount of XP to gain
      */
     public static void xpProcessing(Player player, PlayerProfile profile, SkillType type, int xp) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (type.getPermissions(player)) {
-            if(Users.getPlayer(player) == null)
+            if (Users.getPlayer(player) == null)
                 return;
 
-            if((type.getMaxLevel() < profile.getSkillLevel(type) + 1) || (Misc.getPowerLevelCap() < Users.getPlayer(player).getPowerLevel() + 1))
+            if ((type.getMaxLevel() < profile.getSkillLevel(type) + 1) || (Misc.getPowerLevelCap() < Users.getPlayer(player).getPowerLevel() + 1))
                 return;
 
             Users.getPlayer(player).addXP(type, xp);

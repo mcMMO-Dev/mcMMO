@@ -53,7 +53,7 @@ public class CustomToolsConfig extends ConfigLoader {
     private void loadTool(String toolType, List<Integer> idList) {
         ConfigurationSection toolSection = config.getConfigurationSection(toolType);
 
-        if(toolSection == null)
+        if (toolSection == null)
             return;
 
         Set<String> toolConfigSet = toolSection.getKeys(false);
@@ -95,7 +95,7 @@ public class CustomToolsConfig extends ConfigLoader {
     }
 
     public List<Repairable> getLoadedRepairables() {
-        if(repairables == null) return new ArrayList<Repairable>();
+        if (repairables == null) return new ArrayList<Repairable>();
         return repairables;
     }
 }

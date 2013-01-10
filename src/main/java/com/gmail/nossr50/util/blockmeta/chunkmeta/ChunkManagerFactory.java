@@ -6,7 +6,7 @@ public class ChunkManagerFactory {
     public static ChunkManager getChunkManager() {
         HiddenConfig hConfig = HiddenConfig.getInstance();
 
-        if(hConfig.getChunkletsEnabled()) {
+        if (hConfig.getChunkletsEnabled()) {
             return new HashChunkManager();
         }
 

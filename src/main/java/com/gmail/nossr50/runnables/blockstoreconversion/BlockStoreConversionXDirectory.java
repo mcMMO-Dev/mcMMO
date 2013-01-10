@@ -26,7 +26,7 @@ public class BlockStoreConversionXDirectory implements Runnable {
         this.converters = new BlockStoreConversionZDirectory[HiddenConfig.getInstance().getConversionRate()];
         this.dataDir = dataDir;
 
-        if(this.taskID >= 0)
+        if (this.taskID >= 0)
             return;
 
         this.taskID = this.scheduler.scheduleSyncDelayedTask(mcMMO.p, this, 1);
@@ -35,18 +35,18 @@ public class BlockStoreConversionXDirectory implements Runnable {
 
     @Override
     public void run() {
-        if(!this.dataDir.exists()) {
+        if (!this.dataDir.exists()) {
             stop();
             return;
         }
 
-        if(!this.dataDir.isDirectory()) {
+        if (!this.dataDir.isDirectory()) {
             this.dataDir.delete();
             stop();
             return;
         }
 
-        if(this.dataDir.listFiles().length <= 0) {
+        if (this.dataDir.listFiles().length <= 0) {
             this.dataDir.delete();
             stop();
             return;
@@ -55,7 +55,7 @@ public class BlockStoreConversionXDirectory implements Runnable {
         this.zDirs = this.dataDir.listFiles();
 
         for (this.i = 0; (this.i < HiddenConfig.getInstance().getConversionRate()) && (this.i < this.zDirs.length); this.i++) {
-            if(this.converters[this.i] == null)
+            if (this.converters[this.i] == null)
                 this.converters[this.i] = new BlockStoreConversionZDirectory();
 
             this.converters[this.i].start(this.world, this.dataDir, this.zDirs[this.i]);
@@ -65,7 +65,7 @@ public class BlockStoreConversionXDirectory implements Runnable {
     }
 
     public void stop() {
-        if(this.taskID < 0)
+        if (this.taskID < 0)
             return;
 
         this.scheduler.cancelTask(this.taskID);

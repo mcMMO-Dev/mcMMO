@@ -90,7 +90,7 @@ public class Repair {
      * @param is Item being repaired
      */
     protected static void addEnchants(Player player, ItemStack is) {
-        if(Permissions.arcaneBypass(player)) {
+        if (Permissions.arcaneBypass(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Perfect"));
             return;
         }
@@ -210,7 +210,7 @@ public class Repair {
      */
     protected static short repairCalculate(Player player, int skillLevel, short durability, int repairAmount) {
         float  bonus;
-        if(skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = ((float) REPAIR_MASTERY_CHANCE_MAX / 100F);
+        if (skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = ((float) REPAIR_MASTERY_CHANCE_MAX / 100F);
         else bonus = (((float) skillLevel) / ((float) REPAIR_MASTERY_MAX_BONUS_LEVEL)) * (((float) REPAIR_MASTERY_CHANCE_MAX) / 100F);
 
         if (Permissions.repairMastery(player)) {
@@ -222,7 +222,7 @@ public class Repair {
             repairAmount = (int) (repairAmount * 2D);
         }
 
-        if(repairAmount <= 0 || repairAmount > 32767)
+        if (repairAmount <= 0 || repairAmount > 32767)
             repairAmount = 32767;
 
         durability -= repairAmount;
@@ -249,7 +249,7 @@ public class Repair {
 
         if (Permissions.luckyRepair(player)) randomChance = (int) (randomChance * 0.75);
 
-        if (chance > random.nextInt(randomChance) && Permissions.repairBonus(player)){
+        if (chance > random.nextInt(randomChance) && Permissions.repairBonus(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }

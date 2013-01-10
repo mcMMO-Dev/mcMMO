@@ -24,7 +24,7 @@ public class CounterAttackEventHandler {
     }
 
     protected boolean isHoldingSword() {
-        if(player == null)
+        if (player == null)
             return false;
 
         return ItemChecks.isSword(player.getItemInHand());
@@ -39,7 +39,7 @@ public class CounterAttackEventHandler {
     }
 
     protected void sendAbilityMessages() {
-        if(player == null)
+        if (player == null)
             return;
 
         player.sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));

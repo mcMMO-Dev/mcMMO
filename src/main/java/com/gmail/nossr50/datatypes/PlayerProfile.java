@@ -297,7 +297,7 @@ public class PlayerProfile {
 
     public void save(boolean override) {
         Long timestamp = System.currentTimeMillis();
-        if(timestamp < (lastSave + ((long) Config.getInstance().getSaveInterval() * 60000)) && !override)
+        if (timestamp < (lastSave + ((long) Config.getInstance().getSaveInterval() * 60000)) && !override)
             return;
 
         // if we are using mysql save to database

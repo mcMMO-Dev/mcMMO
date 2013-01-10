@@ -143,19 +143,19 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void loadChunk(int cx, int cz, World world) {
-        if(world == null)
+        if (world == null)
             return;
 
-        if(store.containsKey(world.getName() + "," + cx + "," + cz))
+        if (store.containsKey(world.getName() + "," + cx + "," + cz))
             return;
 
         ChunkStore in = null;
 
         UUID key = world.getUID();
-        if(!this.oldData.containsKey(key))
+        if (!this.oldData.containsKey(key))
             this.oldData.put(key, (new File(world.getWorldFolder(), "mcmmo_data")).exists());
 
-        if(this.oldData.containsKey(key) && oldData.get(key))
+        if (this.oldData.containsKey(key) && oldData.get(key))
             convertChunk(new File(world.getWorldFolder(), "mcmmo_data"), cx, cz, world, true);
 
         try {
@@ -163,20 +163,20 @@ public class HashChunkManager implements ChunkManager {
         }
         catch(Exception e) {}
 
-        if(in != null) {
+        if (in != null) {
             store.put(world.getName() + "," + cx + "," + cz, in);
 
             List<UUID> mobs = in.getSpawnedMobs();
             List<UUID> pets = in.getSpawnedPets();
 
-            if(mobs.isEmpty() && pets.isEmpty())
+            if (mobs.isEmpty() && pets.isEmpty())
                 return;
 
             for(LivingEntity entity : world.getLivingEntities()) {
-                if(mobs.contains(entity.getUniqueId()))
+                if (mobs.contains(entity.getUniqueId()))
                     addSpawnedMob(entity);
 
-                if(pets.contains(entity.getUniqueId()))
+                if (pets.contains(entity.getUniqueId()))
                     addSpawnedPet(entity);
             }
 
@@ -189,24 +189,24 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void unloadChunk(int cx, int cz, World world) {
         saveChunk(cx, cz, world);
 
-        if(store.containsKey(world.getName() + "," + cx + "," + cz)) {
+        if (store.containsKey(world.getName() + "," + cx + "," + cz)) {
             store.remove(world.getName() + "," + cx + "," + cz);
 
             for(Entity entity : spawnedMobs) {
-                if(!isEntityInChunk(entity, cx, cz, world))
+                if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 mobsToRemove.add(entity);
             }
 
             for(Entity entity : spawnedPets) {
-                if(!isEntityInChunk(entity, cx, cz, world))
+                if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 mobsToRemove.add(entity);
             }
 
-            if(safeToRemoveMobs) {
+            if (safeToRemoveMobs) {
                 spawnedMobs.remove(mobsToRemove);
                 spawnedPets.remove(mobsToRemove);
                 mobsToRemove.clear();
@@ -216,14 +216,14 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void saveChunk(int cx, int cz, World world) {
-        if(world == null)
+        if (world == null)
             return;
 
         boolean unloaded = false;
-        if(!store.containsKey(world.getName() + "," + cx + "," + cz)) {
+        if (!store.containsKey(world.getName() + "," + cx + "," + cz)) {
             List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
             for(Entity entity : tempSpawnedMobs) {
-                if(!isEntityInChunk(entity, cx, cz, world))
+                if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 loadChunk(cx, cz, world);
@@ -231,10 +231,10 @@ public class HashChunkManager implements ChunkManager {
                 break;
             }
 
-            if(!unloaded) {
+            if (!unloaded) {
                 List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
                 for(Entity entity : tempSpawnedPets) {
-                    if(!isEntityInChunk(entity, cx, cz, world))
+                    if (!isEntityInChunk(entity, cx, cz, world))
                         continue;
 
                     loadChunk(cx, cz, world);
@@ -244,17 +244,17 @@ public class HashChunkManager implements ChunkManager {
             }
         }
 
-        if(!store.containsKey(world.getName() + "," + cx + "," + cz) && unloaded) {
+        if (!store.containsKey(world.getName() + "," + cx + "," + cz) && unloaded) {
             ChunkStore cStore = ChunkStoreFactory.getChunkStore(world, cx, cz);
             store.put(world.getName() + "," + cx + "," + cz, cStore);
         }
 
-        if(store.containsKey(world.getName() + "," + cx + "," + cz)) {
+        if (store.containsKey(world.getName() + "," + cx + "," + cz)) {
             ChunkStore out = store.get(world.getName() + "," + cx + "," + cz);
 
             List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
             for(Entity entity : tempSpawnedMobs) {
-                if(!isEntityInChunk(entity, cx, cz, world))
+                if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 out.addSpawnedMob(entity.getUniqueId());
@@ -262,13 +262,13 @@ public class HashChunkManager implements ChunkManager {
 
             List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
             for(Entity entity : tempSpawnedPets) {
-                if(!isEntityInChunk(entity, cx, cz, world))
+                if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 out.addSpawnedPet(entity.getUniqueId());
             }
 
-            if(!out.isDirty())
+            if (!out.isDirty())
                 return;
 
             writeChunkStore(world, cx, cz, out);
@@ -276,16 +276,16 @@ public class HashChunkManager implements ChunkManager {
     }
 
     private boolean isEntityInChunk(Entity entity, int cx, int cz, World world) {
-        if(entity == null || world == null)
+        if (entity == null || world == null)
             return false;
 
-        if(entity.getLocation().getChunk().getX() != cx)
+        if (entity.getLocation().getChunk().getX() != cx)
             return false;
 
-        if(entity.getLocation().getChunk().getZ() != cz)
+        if (entity.getLocation().getChunk().getZ() != cz)
             return false;
 
-        if(entity.getWorld() != world)
+        if (entity.getWorld() != world)
             return false;
 
         return true;
@@ -293,7 +293,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized boolean isChunkLoaded(int cx, int cz, World world) {
-        if(world == null)
+        if (world == null)
             return false;
 
         return store.containsKey(world.getName() + "," + cx + "," + cz);
@@ -304,7 +304,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void chunkUnloaded(int cx, int cz, World world) {
-        if(world == null)
+        if (world == null)
             return;
 
         ChunkletUnloader.addToList(cx, cz, world);
@@ -312,7 +312,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void saveWorld(World world) {
-        if(world == null)
+        if (world == null)
             return;
 
         closeAll();
@@ -321,7 +321,7 @@ public class HashChunkManager implements ChunkManager {
         List<String> keys = new ArrayList<String>(store.keySet());
         for(String key : keys) {
             String[] info = key.split(",");
-            if(worldName.equals(info[0])) {
+            if (worldName.equals(info[0])) {
                 int cx = 0;
                 int cz = 0;
 
@@ -340,7 +340,7 @@ public class HashChunkManager implements ChunkManager {
         for(Entity entity : tempSpawnedMobs) {
             World entityWorld = entity.getWorld();
 
-            if(world != entityWorld)
+            if (world != entityWorld)
                 continue;
 
             int cx = entity.getLocation().getChunk().getX();
@@ -353,7 +353,7 @@ public class HashChunkManager implements ChunkManager {
         for(Entity entity : tempSpawnedPets) {
             World entityWorld = entity.getWorld();
 
-            if(world != entityWorld)
+            if (world != entityWorld)
                 continue;
 
             int cx = entity.getLocation().getChunk().getX();
@@ -365,7 +365,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void unloadWorld(World world) {
-        if(world == null)
+        if (world == null)
             return;
 
         closeAll();
@@ -374,7 +374,7 @@ public class HashChunkManager implements ChunkManager {
         List<String> keys = new ArrayList<String>(store.keySet());
         for(String key : keys) {
             String[] info = key.split(",");
-            if(worldName.equals(info[0])) {
+            if (worldName.equals(info[0])) {
                 int cx = 0;
                 int cz = 0;
 
@@ -395,7 +395,7 @@ public class HashChunkManager implements ChunkManager {
         for(Entity entity : tempSpawnedMobs) {
             World entityWorld = entity.getWorld();
 
-            if(world != entityWorld)
+            if (world != entityWorld)
                 continue;
 
             int cx = entity.getLocation().getChunk().getX();
@@ -408,7 +408,7 @@ public class HashChunkManager implements ChunkManager {
         for(Entity entity : tempSpawnedPets) {
             World entityWorld = entity.getWorld();
 
-            if(world != entityWorld)
+            if (world != entityWorld)
                 continue;
 
             int cx = entity.getLocation().getChunk().getX();
@@ -447,7 +447,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized boolean isTrue(int x, int y, int z, World world) {
-        if(world == null)
+        if (world == null)
             return false;
 
         int cx = x / 16;
@@ -471,7 +471,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized boolean isTrue(Block block) {
-        if(block == null)
+        if (block == null)
             return false;
 
         return isTrue(block.getX(), block.getY(), block.getZ(), block.getWorld());
@@ -479,7 +479,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void setTrue(int x, int y, int z, World world) {
-        if(world == null)
+        if (world == null)
             return;
 
         int cx = x / 16;
@@ -506,7 +506,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void setTrue(Block block) {
-        if(block == null)
+        if (block == null)
             return;
 
         setTrue(block.getX(), block.getY(), block.getZ(), block.getWorld());
@@ -514,7 +514,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void setFalse(int x, int y, int z, World world) {
-        if(world == null)
+        if (world == null)
             return;
 
         int cx = x / 16;
@@ -540,7 +540,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void setFalse(Block block) {
-        if(block == null)
+        if (block == null)
             return;
 
         setFalse(block.getX(), block.getY(), block.getZ(), block.getWorld());
@@ -554,21 +554,21 @@ public class HashChunkManager implements ChunkManager {
     }
 
     public synchronized void convertChunk(File dataDir, int cx, int cz, World world, boolean actually) {
-        if(!actually)
+        if (!actually)
             return;
-        if(!dataDir.exists()) return;
+        if (!dataDir.exists()) return;
         File cxDir = new File(dataDir, "" + cx);
-        if(!cxDir.exists()) return;
+        if (!cxDir.exists()) return;
         File czDir = new File(cxDir, "" + cz);
-        if(!czDir.exists()) return;
+        if (!czDir.exists()) return;
 
         boolean conversionSet = false;
 
         for(BlockStoreConversionZDirectory converter : this.converters) {
-            if(converter == null)
+            if (converter == null)
                 continue;
 
-            if(converter.taskID >= 0)
+            if (converter.taskID >= 0)
                 continue;
 
             converter.start(world, cxDir, czDir);
@@ -576,7 +576,7 @@ public class HashChunkManager implements ChunkManager {
             break;
         }
 
-        if(!conversionSet) {
+        if (!conversionSet) {
             BlockStoreConversionZDirectory converter = new BlockStoreConversionZDirectory();
             converter.start(world, cxDir, czDir);
             converters.add(converter);
@@ -592,22 +592,22 @@ public class HashChunkManager implements ChunkManager {
     }
 
     public void addSpawnedMob(Entity entity) {
-        if(!isSpawnedMob(entity))
+        if (!isSpawnedMob(entity))
             spawnedMobs.add(entity);
     }
 
     public void addSpawnedPet(Entity entity) {
-        if(!isSpawnedPet(entity))
+        if (!isSpawnedPet(entity))
             spawnedPets.add(entity);
     }
 
     public void removeSpawnedMob(Entity entity) {
-        if(isSpawnedMob(entity))
+        if (isSpawnedMob(entity))
             spawnedMobs.remove(entity);
     }
 
     public void removeSpawnedPet(Entity entity) {
-        if(isSpawnedPet(entity))
+        if (isSpawnedPet(entity))
             spawnedPets.remove(entity);
     }
 }

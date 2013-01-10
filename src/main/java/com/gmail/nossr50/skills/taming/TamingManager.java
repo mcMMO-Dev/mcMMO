@@ -34,7 +34,7 @@ public class TamingManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, int damage) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.fastFoodService(player)) {
@@ -62,7 +62,7 @@ public class TamingManager {
      * @param event The event to modify
      */
     public void sharpenedClaws(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.sharpenedClaws(player)) {
@@ -82,7 +82,7 @@ public class TamingManager {
      * @param event The event to modify
      */
     public void gore(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.gore(player)) {
@@ -160,7 +160,7 @@ public class TamingManager {
      * @param livingEntity The entity to examine
      */
     public void beastLore(LivingEntity livingEntity) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.beastLore(player)) {
@@ -179,7 +179,7 @@ public class TamingManager {
      * @param summonAmount The amount of material needed to summon the entity
      */
     private void callOfTheWild(EntityType type, int summonAmount) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.callOfTheWild(player)) {
@@ -213,7 +213,7 @@ public class TamingManager {
      * @param cause The damage cause of the event
      */
     private void environmentallyAware(EntityDamageEvent event, DamageCause cause) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.environmentallyAware(player)) {
@@ -248,7 +248,7 @@ public class TamingManager {
      * @param cause The damage cause of the event
      */
     private void thickFur(EntityDamageEvent event, DamageCause cause) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.thickFur(player)) {
@@ -268,7 +268,7 @@ public class TamingManager {
      * @param event The event to modify
      */
     private void shockProof(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.shockProof(player)) {

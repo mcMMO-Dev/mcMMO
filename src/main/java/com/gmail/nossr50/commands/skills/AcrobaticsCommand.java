@@ -44,24 +44,24 @@ public class AcrobaticsCommand extends SkillCommand {
         float gracefulRollChanceF;
 
         // DODGE
-        if(skillValue >= dodgeMaxBonusLevel) dodgeChanceF = dodgeChanceMax;
+        if (skillValue >= dodgeMaxBonusLevel) dodgeChanceF = dodgeChanceMax;
         else dodgeChanceF = (float) (((double) dodgeChanceMax / (double) dodgeMaxBonusLevel) * skillValue);
         dodgeChance = df.format(dodgeChanceF);
-        if(dodgeChanceF + dodgeChanceF * 0.3333D >= 100D) dodgeChanceLucky = df.format(100D);
+        if (dodgeChanceF + dodgeChanceF * 0.3333D >= 100D) dodgeChanceLucky = df.format(100D);
         else dodgeChanceLucky = df.format(dodgeChanceF + dodgeChanceF * 0.3333D);
 
         // ROLL
-        if(skillValue >= rollMaxBonusLevel) rollChanceF = rollChanceMax;
+        if (skillValue >= rollMaxBonusLevel) rollChanceF = rollChanceMax;
         else rollChanceF = (float) (((double) rollChanceMax / (double) rollMaxBonusLevel) * skillValue);
         rollChance = df.format(rollChanceF);
-        if(rollChanceF + rollChanceF * 0.3333D >= 100D) rollChanceLucky = df.format(100D);
+        if (rollChanceF + rollChanceF * 0.3333D >= 100D) rollChanceLucky = df.format(100D);
         else rollChanceLucky = df.format(rollChanceF + rollChanceF * 0.3333D);
 
         // GRACEFULROLL
-        if(skillValue >= gracefulRollMaxBonusLevel) gracefulRollChanceF = gracefulRollChanceMax;
+        if (skillValue >= gracefulRollMaxBonusLevel) gracefulRollChanceF = gracefulRollChanceMax;
         else gracefulRollChanceF = (float) (((double) gracefulRollChanceMax / (double) gracefulRollMaxBonusLevel) * skillValue);
         gracefulRollChance = df.format(gracefulRollChanceF);
-        if(gracefulRollChanceF + gracefulRollChanceF * 0.3333D >= 100D) gracefulRollChanceLucky = df.format(100D);
+        if (gracefulRollChanceF + gracefulRollChanceF * 0.3333D >= 100D) gracefulRollChanceLucky = df.format(100D);
         else gracefulRollChanceLucky = df.format(gracefulRollChanceF + gracefulRollChanceF * 0.3333D);
     }
 

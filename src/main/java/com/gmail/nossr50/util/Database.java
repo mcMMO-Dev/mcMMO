@@ -66,10 +66,10 @@ public class Database {
     		mcMMO.p.getLogger().info("Connection to MySQL was a success!");
     	} catch (SQLException ex) {
     		connection = null;
-    		if(reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("Connection to MySQL failed!");
+    		if (reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("Connection to MySQL failed!");
     	} catch (ClassNotFoundException ex) {
     		connection = null;
-    		if(reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("MySQL database driver not found!");
+    		if (reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("MySQL database driver not found!");
     	}
     }
 
@@ -155,7 +155,7 @@ public class Database {
 
         PreparedStatement statement = null;
         try {
-            if(!checkConnected()) return;
+            if (!checkConnected()) return;
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
 

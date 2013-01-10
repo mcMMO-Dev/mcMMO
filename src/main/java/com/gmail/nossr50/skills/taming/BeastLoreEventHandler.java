@@ -19,7 +19,7 @@ public class BeastLoreEventHandler {
     }
 
     protected void sendInspectMessage() {
-        if(player == null)
+        if (player == null)
             return;
 
         String message = LocaleLoader.getString("Combat.BeastLore") + " ";

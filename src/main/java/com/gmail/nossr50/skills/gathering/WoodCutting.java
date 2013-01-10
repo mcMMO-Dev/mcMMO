@@ -275,13 +275,13 @@ public class WoodCutting {
 
         byte data = currentBlock.getData();
 
-        if((data & 0x4) == 0x4)
+        if ((data & 0x4) == 0x4)
             data ^= 0x4;
 
-        if((data & 0x8) == 0x8)
+        if ((data & 0x8) == 0x8)
             data ^= 0x8;
 
-        if(TreeSpecies.getByData(data) == TreeSpecies.JUNGLE) {
+        if (TreeSpecies.getByData(data) == TreeSpecies.JUNGLE) {
             Block corner1 = currentBlock.getRelative(1, 0, 1);
             Block corner2 = currentBlock.getRelative(1, 0, -1);
             Block corner3 = currentBlock.getRelative(-1, 0, 1);
@@ -307,7 +307,7 @@ public class WoodCutting {
         }
 
         if (BlockChecks.treeFellerCompatible(yPositive)) {
-            if(!mcMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
+            if (!mcMMO.placeStore.isTrue(currentBlock) && !toBeFelled.contains(yPositive)) {
                 processTreeFelling(yPositive, toBeFelled);
             }
         }
@@ -345,10 +345,10 @@ public class WoodCutting {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING);
         byte type = block.getData();
 
-        if((type & 0x4) == 0x4)
+        if ((type & 0x4) == 0x4)
             type ^= 0x4;
 
-        if((type & 0x8) == 0x8)
+        if ((type & 0x8) == 0x8)
             type ^= 0x8;
 
         Material mat = Material.getMaterial(block.getTypeId());
@@ -442,17 +442,17 @@ public class WoodCutting {
         else {
             byte type = block.getData();
 
-            if((type & 0x4) == 0x4)
+            if ((type & 0x4) == 0x4)
                 type ^= 0x4;
 
-            if((type & 0x8) == 0x8)
+            if ((type & 0x8) == 0x8)
                 type ^= 0x8;
 
             TreeSpecies species = TreeSpecies.getByData(type);
 
             //Apparently species can be null in certain cases (custom server mods?)
             //https://github.com/mcMMO-Dev/mcMMO/issues/229
-            if(species == null)
+            if (species == null)
                 return;
 
             switch (species) {

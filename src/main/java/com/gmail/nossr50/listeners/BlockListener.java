@@ -128,7 +128,7 @@ public class BlockListener implements Listener {
         int id = block.getTypeId();
         Material type = block.getType();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         /* Code to prevent issues with placed falling Sand/Gravel not being tracked */
         if (type.equals(Material.SAND) || type.equals(Material.GRAVEL)) {
@@ -171,7 +171,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         PlayerProfile profile = Users.getProfile(player);
 
@@ -258,7 +258,7 @@ public class BlockListener implements Listener {
                 if ((relativeType == Material.SAND || relativeType == Material.GRAVEL) && mcMMO.placeStore.isTrue(relative)) {
                     mcMMO.placeStore.setFalse(relative);
                 }
-                else if (!BlockChecks.shouldBeWatched(relative) && mcMMO.placeStore.isTrue(relative)){
+                else if (!BlockChecks.shouldBeWatched(relative) && mcMMO.placeStore.isTrue(relative)) {
                     mcMMO.placeStore.setFalse(relative);
                 }
                 else {
@@ -284,7 +284,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         PlayerProfile profile = Users.getProfile(player);
 

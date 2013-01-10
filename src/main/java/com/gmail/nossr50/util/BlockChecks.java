@@ -173,7 +173,7 @@ public class BlockChecks {
      * @param block Block to check
      * @return true if the block is affected, false otherwise
      */
-    public static boolean canBeGreenTerra(Block block){
+    public static boolean canBeGreenTerra(Block block) {
         switch (block.getType()) {
         case BROWN_MUSHROOM:
         case CACTUS:
@@ -297,7 +297,7 @@ public class BlockChecks {
         }
     }
 
-    public static boolean isLog (Block block){
+    public static boolean isLog (Block block) {
         if (block.getType().equals(Material.LOG) || (customBlocksEnabled && ModChecks.isCustomLogBlock(block))) {
             return true;
         }

@@ -33,7 +33,7 @@ public class Axes {
      * @param event The event to modify
      */
     public static void axesBonus(Player attacker, EntityDamageByEntityEvent event) {
-        if(attacker == null)
+        if (attacker == null)
             return;
 
         final int MAX_BONUS = advancedConfig.getBonusDamageAxesBonusMax();
@@ -57,7 +57,7 @@ public class Axes {
      * @param event The event to modify
      */
     public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event) {
-        if(attacker == null)
+        if (attacker == null)
             return;
 
         Entity entity = event.getEntity();
@@ -95,10 +95,10 @@ public class Axes {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        if (chance > random.nextInt(randomChance) && !entity.isDead()){
+        if (chance > random.nextInt(randomChance) && !entity.isDead()) {
             int damage = event.getDamage();
 
-            if (entity instanceof Player){
+            if (entity instanceof Player) {
                 event.setDamage((int) (damage * PVP_MODIFIER));
                 ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
             }
@@ -118,7 +118,7 @@ public class Axes {
      */
     @SuppressWarnings("deprecation")
     public static void impact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
-        if(attacker == null)
+        if (attacker == null)
             return;
 
         /*
@@ -140,7 +140,7 @@ public class Axes {
             }
             else {
                 for (ItemStack armor : targetPlayer.getInventory().getArmorContents()) {
-                    if(Math.random() * 100 > 75) {
+                    if (Math.random() * 100 > 75) {
                     	int lowerdamage = 0;
                     	for (int i = 0; i <= durabilityDamage; i ++) {
                     		if (armor.containsEnchantment(Enchantment.DURABILITY)) {
@@ -172,7 +172,7 @@ public class Axes {
      * @param event The event to modify
      */
     private static void applyGreaterImpact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
-        if(attacker == null)
+        if (attacker == null)
             return;
 
         final int GREATER_IMPACT_CHANCE = advancedConfig.getGreaterImpactChance();
@@ -203,7 +203,7 @@ public class Axes {
      * @return true if the player has armor, false otherwise
      */
     private static boolean hasArmor(Player player) {
-        if(player == null)
+        if (player == null)
             return false;
 
         PlayerInventory inventory = player.getInventory();

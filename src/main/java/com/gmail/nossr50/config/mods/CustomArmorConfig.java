@@ -49,7 +49,7 @@ public class CustomArmorConfig extends ConfigLoader{
     private void loadArmor(String armorType, List<Integer> idList) {
         ConfigurationSection armorSection = config.getConfigurationSection(armorType);
 
-        if(armorSection == null)
+        if (armorSection == null)
             return;
 
         Set<String> armorConfigSet = armorSection.getKeys(false);
@@ -88,7 +88,7 @@ public class CustomArmorConfig extends ConfigLoader{
     }
 
     public List<Repairable> getLoadedRepairables() {
-        if(repairables == null) return new ArrayList<Repairable>();
+        if (repairables == null) return new ArrayList<Repairable>();
         return repairables;
     }
 }

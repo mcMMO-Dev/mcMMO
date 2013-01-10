@@ -25,7 +25,7 @@ public class UnarmedManager {
      * @param defender The defending player
      */
     public void disarmCheck(Player defender) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.disarm(player)) {
@@ -62,7 +62,7 @@ public class UnarmedManager {
      * @param event The event to modify
      */
     public void deflectCheck(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.deflect(player)) {
@@ -92,7 +92,7 @@ public class UnarmedManager {
      * @param event The event to modify.
      */
     public void bonusDamage(EntityDamageEvent event) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.unarmedBonus(player)) {
@@ -112,7 +112,7 @@ public class UnarmedManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        if(defender == null)
+        if (defender == null)
             return false;
 
         if (!Permissions.ironGrip(defender)) {

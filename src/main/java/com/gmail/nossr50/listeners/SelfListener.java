@@ -19,7 +19,7 @@ public class SelfListener implements Listener {
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
         int xp = event.getXpGained();
 
-        if(xp < 0) {
+        if (xp < 0) {
             try {
                 throw new Exception("Gained negative XP!");
             }

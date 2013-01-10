@@ -38,7 +38,7 @@ public class Excavation {
      * @param player The player who broke the block
      */
     public static void excavationProcCheck(Block block, Player player) {
-        if(player == null)
+        if (player == null)
             return;
 
         Material type = block.getType();
@@ -128,7 +128,7 @@ public class Excavation {
      * @param block The block to check
      */
     public static void gigaDrillBreaker(Player player, Block block) {
-        if(player == null)
+        if (player == null)
             return;
 
         Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());

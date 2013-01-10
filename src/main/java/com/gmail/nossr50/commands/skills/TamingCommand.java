@@ -43,10 +43,10 @@ public class TamingCommand extends SkillCommand {
     protected void dataCalculations() {
         DecimalFormat df = new DecimalFormat("0.0");
         float goreChanceF;
-        if(skillValue >= goreMaxLevel) goreChanceF = (goreChanceMax);
+        if (skillValue >= goreMaxLevel) goreChanceF = (goreChanceMax);
         else goreChanceF = (float) (((double) goreChanceMax / (double) goreMaxLevel) * skillValue);
         goreChance = df.format(goreChanceF);
-        if(goreChanceF + goreChanceF * 0.3333D >= 100D) goreChanceLucky = df.format(100D);
+        if (goreChanceF + goreChanceF * 0.3333D >= 100D) goreChanceLucky = df.format(100D);
         else goreChanceLucky = df.format(goreChanceF + goreChanceF * 0.3333D);
     }
 

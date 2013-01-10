@@ -56,7 +56,7 @@ public class AxesCommand extends SkillCommand {
         if (skillValue >= critMaxBonusLevel) critChanceF = (float) critMaxChance;
         else critChanceF = (float) ((critMaxChance / critMaxBonusLevel) * skillCheck);
         critChance = df.format(critChanceF);
-        if(critChanceF + critChanceF * 0.3333D >= 100D) critChanceLucky = df.format(100D);
+        if (critChanceF + critChanceF * 0.3333D >= 100D) critChanceLucky = df.format(100D);
         else critChanceLucky = df.format(critChanceF + critChanceF * 0.3333D);
         //Axe Mastery
         if (skillValue >= bonusDamageAxesMaxBonusLevel) bonusDamage = String.valueOf(bonusDamageAxesBonusMax);
@@ -125,7 +125,7 @@ public class AxesCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", new Object[] {greaterImpactDamage}) }));
         }
 
-        if (canCritical){
+        if (canCritical) {
             if (player.hasPermission("mcmmo.perks.lucky.axes"))
                 player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", new Object[] { critChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { critChanceLucky }));
             else

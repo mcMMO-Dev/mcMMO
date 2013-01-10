@@ -60,13 +60,13 @@ public class EntityListener implements Listener {
         if (event instanceof FakeEntityDamageByEntityEvent)
             return;
 
-        if(event.getDamage() <= 0)
+        if (event.getDamage() <= 0)
             return;
 
         Entity attacker = event.getDamager();
         Entity defender = event.getEntity();
 
-        if(attacker.hasMetadata("NPC") || defender.hasMetadata("NPC")) return; // Check if either players is are Citizens NPCs
+        if (attacker.hasMetadata("NPC") || defender.hasMetadata("NPC")) return; // Check if either players is are Citizens NPCs
 
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
@@ -118,7 +118,7 @@ public class EntityListener implements Listener {
         Entity entity = event.getEntity();
         DamageCause cause = event.getCause();
 
-        if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (!(entity instanceof LivingEntity)) {
             return;
@@ -179,7 +179,7 @@ public class EntityListener implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
 
-        if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         entity.setFireTicks(0);
         BleedTimer.remove(entity);
@@ -211,7 +211,7 @@ public class EntityListener implements Listener {
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         Entity entity = event.getEntity();
 
-        if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
@@ -236,9 +236,9 @@ public class EntityListener implements Listener {
     public void onEnitityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
-        if(entity == null) return;
+        if (entity == null) return;
 
-        if(entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
@@ -263,7 +263,7 @@ public class EntityListener implements Listener {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
-            if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+            if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
             PlayerProfile profile = Users.getProfile(player);
             int currentFoodLevel = player.getFoodLevel();
@@ -399,7 +399,7 @@ public class EntityListener implements Listener {
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (Permissions.taming(player) && !mcMMO.placeStore.isSpawnedPet(event.getEntity())) {
             PlayerProfile profile = Users.getProfile(player);

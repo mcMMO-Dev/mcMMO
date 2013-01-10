@@ -63,7 +63,7 @@ public class PlayerListener implements Listener {
     public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         PlayerProfile profile = Users.getProfile(player);
 
@@ -97,7 +97,7 @@ public class PlayerListener implements Listener {
         int shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
         Player player = event.getPlayer();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (Permissions.fishing(player)) {
             State state = event.getState();
@@ -131,7 +131,7 @@ public class PlayerListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 
-        if(event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         PlayerProfile profile = Users.getProfile(event.getPlayer());
 
@@ -151,7 +151,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent event) {
-        if(event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
         Users.addUser(event.getPlayer()).getProfile().actualizeRespawnATS();
     }
 
@@ -164,7 +164,7 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         /* GARBAGE COLLECTION */
 
@@ -181,7 +181,7 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         //TODO: Locale ALL the things.
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
@@ -287,7 +287,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if(event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
         PlayerProfile profile = Users.getProfile(event.getPlayer());
 
         if (profile != null) {
@@ -303,7 +303,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
         Action action = event.getAction();
         Block block = event.getClickedBlock();
         ItemStack inHand = player.getItemInHand();
@@ -427,7 +427,7 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if(player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         PlayerProfile profile = Users.getProfile(player);
 

@@ -301,7 +301,7 @@ public class Leaderboard {
                 }
             }
 
-            if(!inserted) {
+            if (!inserted) {
                 writer.append(ps.name + ":" + ps.statVal).append("\r\n");
             }
 

@@ -26,7 +26,7 @@ public class SwordsManager {
      * @param defender The defending entity
      */
     public void bleedCheck(LivingEntity defender) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.swordsBleed(player)) {
@@ -53,7 +53,7 @@ public class SwordsManager {
     }
 
     public void counterAttackChecks(LivingEntity attacker, int damage) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.counterAttack(player)) {
@@ -82,7 +82,7 @@ public class SwordsManager {
     }
 
     public void serratedStrikes(LivingEntity target, int damage) {
-        if(player == null)
+        if (player == null)
             return;
 
         if (!Permissions.serratedStrikes(player)) {
