@@ -543,6 +543,7 @@ permissions:
             mcmmo.ability.herbalism.greenthumbblocks: true
             mcmmo.ability.herbalism.greenthumbwheat: true
             mcmmo.ability.herbalism.greenthumbcarrots: true
+            mcmmo.ability.herbalism.greenthumbcocoa: true
             mcmmo.ability.herbalism.greenthumbpotatoes: true
             mcmmo.ability.herbalism.greenthumbnetherwart: true
             mcmmo.ability.herbalism.farmersdiet: true
@@ -556,6 +557,8 @@ permissions:
         description: Allows access to the Green Thumb ability for wheat
     mcmmo.ability.herbalism.greenthumbcarrots:
         description: Allows access to the Green Thumb ability for carrots
+    mcmmo.ability.herbalism.greenthumbcocoa:
+        description: Allows access to the Green Thumb ability for cocoa
     mcmmo.ability.herbalism.greenthumbpotatoes:
         description: Allows access to the Green Thumb ability for potatoes
     mcmmo.ability.herbalism.greenthumbnetherwart:
