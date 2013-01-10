@@ -38,10 +38,10 @@ public class WorldListener implements Listener {
         mcMMO.placeStore.unloadWorld(event.getWorld());
     }
 
-    @EventHandler
-    public void onWorldSave(WorldSaveEvent event) {
-        mcMMO.placeStore.saveWorld(event.getWorld());
-    }
+    //@EventHandler
+    //public void onWorldSave(WorldSaveEvent event) {
+    //    mcMMO.placeStore.saveWorld(event.getWorld());
+    //}
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
