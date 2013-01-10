@@ -112,7 +112,7 @@ public class FishingCommand extends SkillCommand {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0", new Object[] { shakeUnlockLevel }) }));
             }
             else {
-                if (player.hasPermission("mcmmo.perks.lucky.fishing"))
+                if (lucky)
                     player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { shakeChanceLucky }));
                 else
                     player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }));

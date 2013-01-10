@@ -161,7 +161,7 @@ public class MiningCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canDoubleDrop && !doubleDropsDisabled) {
-            if (player.hasPermission("mcmmo.perks.lucky.mining"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }));

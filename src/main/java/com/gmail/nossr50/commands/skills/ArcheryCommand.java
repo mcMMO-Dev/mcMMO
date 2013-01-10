@@ -109,14 +109,14 @@ public class ArcheryCommand extends SkillCommand {
         }
 
         if (canDaze) {
-        	if (player.hasPermission("mcmmo.perks.lucky.archery"))
+            if (lucky)
         		player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { dazeChanceLucky }));
         	else
         		player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }));
         }
 
         if (canRetrieve) {
-        	if (player.hasPermission("mcmmo.perks.lucky.archery"))
+            if (lucky)
         		player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { retrieveChanceLucky }));
         	else
         		player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }));

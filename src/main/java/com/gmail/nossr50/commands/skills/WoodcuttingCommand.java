@@ -99,7 +99,7 @@ public class WoodcuttingCommand extends SkillCommand {
         }
 
         if (canDoubleDrop && !doubleDropsDisabled) {
-            if (player.hasPermission("mcmmo.perks.lucky.woodcutting"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }));

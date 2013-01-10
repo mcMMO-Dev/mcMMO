@@ -27,7 +27,6 @@ public class SwordsCommand extends SkillCommand {
     private int bleedBaseTicks = advancedConfig.getBleedBaseTicks();
     private float counterChanceMax = advancedConfig.getCounterChanceMax();
     private float counterMaxLevel = advancedConfig.getCounterMaxBonusLevel();
-    private int serratedBleedTicks = advancedConfig.getSerratedStrikesTicks();
 
     private boolean canCounter;
     private boolean canSerratedStrike;
@@ -103,7 +102,7 @@ public class SwordsCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canCounter) {
-            if (player.hasPermission("mcmmo.perks.lucky.swords"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { counterAttackChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }));
@@ -112,7 +111,7 @@ public class SwordsCommand extends SkillCommand {
         if (canBleed) {
             player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Length", new Object[] { bleedLength }));
             player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Note"));
-            if (player.hasPermission("mcmmo.perks.lucky.swords"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { bleedChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }));

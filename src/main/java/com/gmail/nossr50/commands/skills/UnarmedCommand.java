@@ -110,14 +110,14 @@ public class UnarmedCommand extends SkillCommand {
         }
 
         if (canDeflect) {
-            if (player.hasPermission("mcmmo.perks.lucky.unarmed"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", new Object[] { deflectChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { deflectChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", new Object[] { deflectChance }));
         }
 
         if (canDisarm) {
-            if (player.hasPermission("mcmmo.perks.lucky.unarmed"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", new Object[] { disarmChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { disarmChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", new Object[] { disarmChance }));

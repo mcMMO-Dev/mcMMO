@@ -157,7 +157,7 @@ public class RepairCommand extends SkillCommand {
         }
 
         if (canSuperRepair) {
-            if (player.hasPermission("mcmmo.perks.lucky.repair"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { superRepairChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }));

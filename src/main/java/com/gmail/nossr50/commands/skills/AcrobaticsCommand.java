@@ -106,21 +106,21 @@ public class AcrobaticsCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canRoll) {
-        	if (player.hasPermission("mcmmo.perks.lucky.acrobatics"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { rollChanceLucky }));
         	else
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }));
         }
 
         if (canGracefulRoll) {
-        	if (player.hasPermission("mcmmo.perks.lucky.acrobatics"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { gracefulRollChanceLucky }));
         	else
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }));
         }
 
         if (canDodge) {
-        	if (player.hasPermission("mcmmo.perks.lucky.acrobatics"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { dodgeChanceLucky }));
         	else
                 player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }));

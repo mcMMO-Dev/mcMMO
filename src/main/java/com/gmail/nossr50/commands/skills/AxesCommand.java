@@ -126,7 +126,7 @@ public class AxesCommand extends SkillCommand {
         }
 
         if (canCritical) {
-            if (player.hasPermission("mcmmo.perks.lucky.axes"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", new Object[] { critChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { critChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", new Object[] { critChance }));

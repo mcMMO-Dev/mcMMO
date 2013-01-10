@@ -165,7 +165,7 @@ public class TamingCommand extends SkillCommand {
         }
 
         if (canGore) {
-            if (player.hasPermission("mcmmo.perks.lucky.taming"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", new Object[] { goreChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { goreChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", new Object[] { goreChance }));

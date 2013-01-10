@@ -128,7 +128,7 @@ public class HerbalismCommand extends SkillCommand {
         }
 
         if (canGreenThumbBlocks || canGreenThumbWheat) {
-            if (player.hasPermission("mcmmo.perks.lucky.herbalism"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { greenThumbChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }));
@@ -143,7 +143,7 @@ public class HerbalismCommand extends SkillCommand {
         }
 
         if (canDoubleDrop && !doubleDropsDisabled) {
-            if (player.hasPermission("mcmmo.perks.lucky.herbalism"))
+            if (lucky)
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
             else
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }));
