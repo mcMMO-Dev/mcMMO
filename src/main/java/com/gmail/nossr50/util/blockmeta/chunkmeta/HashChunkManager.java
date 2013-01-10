@@ -32,7 +32,9 @@ public class HashChunkManager implements ChunkManager {
     private List<Entity> spawnedMobs = new ArrayList<Entity>();
     private List<Entity> spawnedPets = new ArrayList<Entity>();
     private List<Entity> mobsToRemove = new ArrayList<Entity>();
+    private List<String> savedChunks = new ArrayList<String>();
     private boolean safeToRemoveMobs = true;
+    private boolean savingWorld = false;
 
     @Override
     public synchronized void closeAll() {
@@ -219,6 +221,9 @@ public class HashChunkManager implements ChunkManager {
         if (world == null)
             return;
 
+        if(savingWorld && savedChunks.contains(world.getName() + "," + cx + "," + cz))
+            return;
+
         boolean unloaded = false;
         if (!store.containsKey(world.getName() + "," + cx + "," + cz)) {
             List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
@@ -240,7 +245,7 @@ public class HashChunkManager implements ChunkManager {
                     loadChunk(cx, cz, world);
                     unloaded = true;
                     break;
-		}
+                }
             }
         }
 
@@ -273,6 +278,9 @@ public class HashChunkManager implements ChunkManager {
 
             writeChunkStore(world, cx, cz, out);
         }
+
+        if(savingWorld)
+            savedChunks.add(world.getName() + "," + cx + "," + cz);
     }
 
     private boolean isEntityInChunk(Entity entity, int cx, int cz, World world) {
@@ -317,6 +325,7 @@ public class HashChunkManager implements ChunkManager {
 
         closeAll();
         String worldName = world.getName();
+        savingWorld = true;
 
         List<String> keys = new ArrayList<String>(store.keySet());
         for (String key : keys) {
@@ -361,6 +370,9 @@ public class HashChunkManager implements ChunkManager {
 
             saveChunk(cx, cz, world);
         }
+
+        savingWorld = false;
+        savedChunks.clear();
     }
 
     @Override
@@ -370,6 +382,7 @@ public class HashChunkManager implements ChunkManager {
 
         closeAll();
         String worldName = world.getName();
+        savingWorld = true;
 
         List<String> keys = new ArrayList<String>(store.keySet());
         for (String key : keys) {
@@ -404,7 +417,7 @@ public class HashChunkManager implements ChunkManager {
             unloadChunk(cx, cz, world);
         }
 
-	List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+        List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
         for (Entity entity : tempSpawnedPets) {
             World entityWorld = entity.getWorld();
 
@@ -422,6 +435,8 @@ public class HashChunkManager implements ChunkManager {
         spawnedMobs.remove(mobsToRemove);
         spawnedPets.remove(mobsToRemove);
         mobsToRemove.clear();
+        savingWorld = false;
+        savedChunks.clear();
     }
 
     @Override
