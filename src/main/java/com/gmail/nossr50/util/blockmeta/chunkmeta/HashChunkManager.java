@@ -38,12 +38,11 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void closeAll() {
         for (UUID uid : regionFiles.keySet()) {
             HashMap<Long, mcMMOSimpleRegionFile> worldRegions = regionFiles.get(uid);
-            Iterator<mcMMOSimpleRegionFile> itr = worldRegions.values().iterator();
-            while (itr.hasNext()) {
-                mcMMOSimpleRegionFile rf = itr.next();
+            for (Iterator<mcMMOSimpleRegionFile> worldRegionIterator = worldRegions.values().iterator(); worldRegionIterator.hasNext();) {
+                mcMMOSimpleRegionFile rf = worldRegionIterator.next();
                 if (rf != null) {
                     rf.close();
-                    itr.remove();
+                    worldRegionIterator.remove();
                 }
             }
         }

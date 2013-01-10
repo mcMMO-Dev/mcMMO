@@ -1,7 +1,6 @@
 package com.gmail.nossr50.config.mods;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -54,11 +53,8 @@ public class CustomBlocksConfig extends ConfigLoader {
             return;
 
         Set<String> skillConfigSet = skillSection.getKeys(false);
-        Iterator<String> iterator = skillConfigSet.iterator();
 
-        while (iterator.hasNext()) {
-            String blockName = iterator.next();
-
+        for (String blockName : skillConfigSet) {
             int id = config.getInt(skillType + "." + blockName + ".ID", 0);
             byte data = (byte) config.getInt(skillType + "." + blockName + ".Data_Value", 0);
             int xp = config.getInt(skillType + "." + blockName + ".XP_Gain", 0);

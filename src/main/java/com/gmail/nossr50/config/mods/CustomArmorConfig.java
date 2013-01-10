@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.mods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -54,11 +53,8 @@ public class CustomArmorConfig extends ConfigLoader{
             return;
 
         Set<String> armorConfigSet = armorSection.getKeys(false);
-        Iterator<String> iterator = armorConfigSet.iterator();
 
-        while (iterator.hasNext()) {
-            String armorName = iterator.next();
-
+        for (String armorName : armorConfigSet) {
             int id = config.getInt(armorType + "." + armorName + ".ID", 0);
             boolean repairable = config.getBoolean(armorType + "." + armorName + ".Repairable");
             int repairID = config.getInt(armorType + "." + armorName + ".Repair_Material_ID", 0);
