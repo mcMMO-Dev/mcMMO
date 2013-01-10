@@ -192,11 +192,7 @@ public class Skills {
                 profile.setAbilityInformed(ability, false);
                 player.sendMessage(ability.getAbilityOff());
 
-                for (Player nearbyPlayer : player.getWorld().getPlayers()) {
-                    if (nearbyPlayer != player && Misc.isNear(player.getLocation(), nearbyPlayer.getLocation(), MAX_DISTANCE_AWAY)) {
-                        nearbyPlayer.sendMessage(ability.getAbilityPlayerOff(player));
-                    }
-                }
+                Misc.sendSkillMessage(player, ability.getAbilityPlayerOff(player));
             }
         }
     }
@@ -459,11 +455,7 @@ public class Skills {
         if (!profile.getAbilityMode(ability) && cooldownOver(profile.getSkillDATS(ability), ability.getCooldown(), player)) {
             player.sendMessage(ability.getAbilityOn());
 
-            for (Player y : player.getWorld().getPlayers()) {
-                if (y != player && Misc.isNear(player.getLocation(), y.getLocation(), MAX_DISTANCE_AWAY)) {
-                    y.sendMessage(ability.getAbilityPlayer(player));
-                }
-            }
+            Misc.sendSkillMessage(player, ability.getAbilityPlayer(player));
 
             profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * TIME_CONVERSION_FACTOR));
             profile.setAbilityMode(ability, true);
