@@ -422,12 +422,11 @@ public class Herbalism {
             hasSeeds = inventory.contains(Material.SEEDS);
             break;
         case COCOA:
-            // Broken: Requires an update to bukkit to enable seaching for variable-sized ItemStacks.
             try {
-                hasSeeds = inventory.contains(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 1);
+                hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 1);
             }
             catch(Exception e) {
-                hasSeeds = inventory.contains(new ItemStack(Material.INK_SACK, 1, (short) 3), 1);
+                hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, (short) 3), 1);
             }
             break;
         case CARROT:
