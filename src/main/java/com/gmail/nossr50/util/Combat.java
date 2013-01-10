@@ -336,7 +336,7 @@ public class Combat {
 
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
             if (entity instanceof Player) {
-                if (Misc.isCitizensNPC((Player) entity)) {
+                if (Misc.isNPC((Player) entity)) {
                     continue;
                 }
             }

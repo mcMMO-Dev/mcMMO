@@ -22,7 +22,7 @@ public class AcrobaticsManager extends SkillManager {
      * @param event The event to check
      */
     public void rollCheck(EntityDamageEvent event) {
-        if (Misc.isCitizensNPC(player) || !Permissions.roll(player)) {
+        if (Misc.isNPC(player) || !Permissions.roll(player)) {
             return;
         }
 
@@ -62,7 +62,7 @@ public class AcrobaticsManager extends SkillManager {
      * @param event The event to check
      */
     public void dodgeCheck(EntityDamageEvent event) {
-        if (Misc.isCitizensNPC(player) || !Permissions.dodge(player)) {
+        if (Misc.isNPC(player) || !Permissions.dodge(player)) {
             return;
         }
 

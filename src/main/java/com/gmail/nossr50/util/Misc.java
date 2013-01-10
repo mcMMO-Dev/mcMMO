@@ -27,7 +27,7 @@ public class Misc {
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
 
-    public static boolean isCitizensNPC(Player player) {
+    public static boolean isNPC(Player player) {
         if (player == null || Users.getProfile(player) == null || player.hasMetadata("NPC")) {
             return true;
         }
