@@ -20,6 +20,7 @@ public class AxesCommand extends SkillCommand {
     private String impactDamage;
     private String greaterImpactDamage;
     private String skullSplitterLength;
+    private String skullSplitterLengthEndurance;
 
     private int bonusDamageAxesBonusMax = advancedConfig.getBonusDamageAxesBonusMax();
     private int bonusDamageAxesMaxBonusLevel = advancedConfig.getBonusDamageAxesMaxBonusLevel();
@@ -35,6 +36,7 @@ public class AxesCommand extends SkillCommand {
     private boolean canImpact;
     private boolean canGreaterImpact;
     private boolean lucky;
+    private boolean endurance;
 
     public AxesCommand() {
         super(SkillType.AXES);
@@ -49,7 +51,24 @@ public class AxesCommand extends SkillCommand {
         //Armor Impact
         impactDamage = String.valueOf(1 + ((double) skillValue / (double) greaterImpactIncreaseLevel));
         //Skull Splitter
-        skullSplitterLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        int length = 2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel);
+        skullSplitterLength = String.valueOf(length);
+
+        if (Permissions.activationTwelve(player)) {
+            length = length + 12;
+        }
+        else if (Permissions.activationEight(player)) {
+            length = length + 8;
+        }
+        else if (Permissions.activationFour(player)) {
+            length = length + 4;
+        }
+        int maxLength = SkillType.AXES.getAbility().getMaxTicks();
+        if (maxLength != 0 && length > maxLength) {
+            length = maxLength;
+        }
+        skullSplitterLengthEndurance = String.valueOf(length);
+
         //Greater Impact
         greaterImpactDamage = String.valueOf(greaterImpactBonusDamage);
         //Critical Strikes
@@ -71,6 +90,7 @@ public class AxesCommand extends SkillCommand {
         canImpact = Permissions.impact(player);
         canGreaterImpact = Permissions.greaterImpact(player);
         lucky = Permissions.luckyAxes(player);
+        endurance = Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player);
     }
 
     @Override
@@ -133,7 +153,10 @@ public class AxesCommand extends SkillCommand {
         }
 
         if (canSkullSplitter) {
-            player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", new Object[] { skullSplitterLength }));
+            if (endurance)
+                player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", new Object[] { skullSplitterLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { skullSplitterLengthEndurance }));
+            else
+                player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", new Object[] { skullSplitterLength }));
         }
     }
 }

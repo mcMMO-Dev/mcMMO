@@ -15,6 +15,7 @@ public class HerbalismCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     private String greenTerraLength;
+    private String greenTerraLengthEndurance;
     private String greenThumbChance;
     private String greenThumbChanceLucky;
     private String greenThumbStage;
@@ -39,6 +40,7 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canDoubleDrop;
     private boolean doubleDropsDisabled;
     private boolean lucky;
+    private boolean endurance;
 
     public HerbalismCommand() {
         super(SkillType.HERBALISM);
@@ -49,7 +51,24 @@ public class HerbalismCommand extends SkillCommand {
         DecimalFormat df = new DecimalFormat("0.0");
         float greenThumbChanceF;
         float doubleDropChanceF;
-        greenTerraLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
+
+        int length = 2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel);
+        greenTerraLength = String.valueOf(length);
+
+        if (Permissions.activationTwelve(player)) {
+            length = length + 12;
+        }
+        else if (Permissions.activationEight(player)) {
+            length = length + 8;
+        }
+        else if (Permissions.activationFour(player)) {
+            length = length + 4;
+        }
+        int maxLength = SkillType.HERBALISM.getAbility().getMaxTicks();
+        if (maxLength != 0 && length > maxLength) {
+            length = maxLength;
+        }
+        greenTerraLengthEndurance = String.valueOf(length);
         //FARMERS DIET
         if (skillValue >= farmersDietMaxLevel) farmersDietRank = "5";
         else farmersDietRank = String.valueOf((int) ((double) skillValue / (double) farmersDietRankChange));
@@ -81,6 +100,7 @@ public class HerbalismCommand extends SkillCommand {
         canDoubleDrop = Permissions.herbalismDoubleDrops(player);
         doubleDropsDisabled = configInstance.herbalismDoubleDropsDisabled();
         lucky = Permissions.luckyHerbalism(player);
+        endurance = Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player);
     }
 
     @Override
@@ -124,7 +144,10 @@ public class HerbalismCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canGreenTerra) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", new Object[] { greenTerraLength }));
+            if (endurance)
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", new Object[] { greenTerraLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { greenTerraLengthEndurance }));
+            else
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", new Object[] { greenTerraLength }));
         }
 
         if (canGreenThumbBlocks || canGreenThumbWheat) {

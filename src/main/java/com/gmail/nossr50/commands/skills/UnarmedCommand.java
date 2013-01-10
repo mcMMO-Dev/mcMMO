@@ -13,6 +13,7 @@ import com.gmail.nossr50.util.Permissions;
 public class UnarmedCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String berserkLength;
+    private String berserkLengthEndurance;
     private String deflectChance;
     private String deflectChanceLucky;
     private String disarmChance;
@@ -32,6 +33,7 @@ public class UnarmedCommand extends SkillCommand {
     private boolean canBonusDamage;
     private boolean canDeflect;
     private boolean lucky;
+    private boolean endurance;
 
     public UnarmedCommand() {
         super(SkillType.UNARMED);
@@ -42,20 +44,40 @@ public class UnarmedCommand extends SkillCommand {
         DecimalFormat df = new DecimalFormat("0.0");
         float disarmChanceF;
         float deflectChanceF;
-        berserkLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        //Berserk
+        int length = 2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel);
+        berserkLength = String.valueOf(length);
 
+        if (Permissions.activationTwelve(player)) {
+            length = length + 12;
+        }
+        else if (Permissions.activationEight(player)) {
+            length = length + 8;
+        }
+        else if (Permissions.activationFour(player)) {
+            length = length + 4;
+        }
+        int maxLength = SkillType.UNARMED.getAbility().getMaxTicks();
+        if (maxLength != 0 && length > maxLength) {
+            length = maxLength;
+        }
+        berserkLengthEndurance = String.valueOf(length);
+
+        //Disarm
         if (skillValue >= disarmMaxLevel) disarmChanceF = disarmChanceMax;
         else disarmChanceF = (float) (((double) disarmChanceMax / (double) disarmMaxLevel) * skillValue);
         disarmChance = df.format(disarmChanceF);
         if (disarmChanceF + disarmChanceF * 0.3333D >= 100D) disarmChanceLucky = df.format(100D);
         else disarmChanceLucky = df.format(disarmChanceF + disarmChanceF * 0.3333D);
 
+        //Deflect
         if (skillValue >= deflectMaxLevel) deflectChanceF = deflectChanceMax;
         else deflectChanceF = (float) (((double) deflectChanceMax / (double) deflectMaxLevel) * skillValue);
         deflectChance = df.format(deflectChanceF);
         if (deflectChanceF + deflectChanceF * 0.3333D >= 100D) deflectChanceLucky = df.format(100D);
         else deflectChanceLucky = df.format(deflectChanceF + deflectChanceF * 0.3333D);
 
+        //Iron Arm
         if (skillValue >= 250) ironArmBonus = String.valueOf(ironArmMaxBonus);
         else ironArmBonus = String.valueOf(3 + ((double) skillValue / (double) ironArmIncreaseLevel));
     }
@@ -67,6 +89,7 @@ public class UnarmedCommand extends SkillCommand {
         canDeflect = Permissions.deflect(player);
         canDisarm = Permissions.disarm(player);
         lucky = Permissions.luckyUnarmed(player);
+        endurance = Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player);
     }
 
     @Override
@@ -124,7 +147,10 @@ public class UnarmedCommand extends SkillCommand {
         }
 
         if (canBerserk) {
-            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", new Object[] { berserkLength }));
+            if (endurance)
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", new Object[] { berserkLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { berserkLengthEndurance }));
+            else
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", new Object[] { berserkLength }));
         }
     }
 }

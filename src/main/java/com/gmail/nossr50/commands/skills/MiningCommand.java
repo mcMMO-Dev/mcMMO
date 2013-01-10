@@ -17,6 +17,7 @@ public class MiningCommand extends SkillCommand {
     private String doubleDropChance;
     private String doubleDropChanceLucky;
     private String superBreakerLength;
+    private String superBreakerLengthEndurance;
     private String blastMiningRank;
     private String blastRadiusIncrease;
     private String blastDamageDecrease;
@@ -41,6 +42,7 @@ public class MiningCommand extends SkillCommand {
     private boolean canDemoExpert;
     private boolean doubleDropsDisabled;
     private boolean lucky;
+    private boolean endurance;
 
     public MiningCommand() {
         super(SkillType.MINING);
@@ -51,7 +53,23 @@ public class MiningCommand extends SkillCommand {
         DecimalFormat df = new DecimalFormat("0.0");
         float doubleDropChanceF;
         //Super Breaker
-        superBreakerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        int length = 2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel);
+        superBreakerLength = String.valueOf(length);
+
+        if (Permissions.activationTwelve(player)) {
+            length = length + 12;
+        }
+        else if (Permissions.activationEight(player)) {
+            length = length + 8;
+        }
+        else if (Permissions.activationFour(player)) {
+            length = length + 4;
+        }
+        int maxLength = SkillType.MINING.getAbility().getMaxTicks();
+        if (maxLength != 0 && length > maxLength) {
+            length = maxLength;
+        }
+        superBreakerLengthEndurance = String.valueOf(length);
         //Double Drops
         if (skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
         else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
@@ -118,6 +136,7 @@ public class MiningCommand extends SkillCommand {
         canSuperBreaker = Permissions.superBreaker(player);
         doubleDropsDisabled = configInstance.miningDoubleDropsDisabled();
         lucky = Permissions.luckyMining(player);
+        endurance = Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player);
     }
 
     @Override
@@ -168,7 +187,10 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canSuperBreaker) {
-            player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", new Object[] { superBreakerLength }));
+            if (endurance)
+                player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", new Object[] { superBreakerLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { superBreakerLengthEndurance }));
+            else
+                player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", new Object[] { superBreakerLength }));
         }
 
         if (canBlast) {

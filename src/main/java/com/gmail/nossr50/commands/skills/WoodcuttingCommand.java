@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.Permissions;
 public class WoodcuttingCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String treeFellerLength;
+    private String treeFellerLengthEndurance;
     private String doubleDropChance;
     private String doubleDropChanceLucky;
 
@@ -27,6 +28,7 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canDoubleDrop;
     private boolean doubleDropsDisabled;
     private boolean lucky;
+    private boolean endurance;
 
     public WoodcuttingCommand() {
         super(SkillType.WOODCUTTING);
@@ -37,7 +39,26 @@ public class WoodcuttingCommand extends SkillCommand {
         DecimalFormat df = new DecimalFormat("0.0");
         float doubleDropChanceF;
 
-        treeFellerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        //Tree Feller
+        int length = 2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel);
+        treeFellerLength = String.valueOf(length);
+
+        if (Permissions.activationTwelve(player)) {
+            length = length + 12;
+        }
+        else if (Permissions.activationEight(player)) {
+            length = length + 8;
+        }
+        else if (Permissions.activationFour(player)) {
+            length = length + 4;
+        }
+        int maxLength = SkillType.WOODCUTTING.getAbility().getMaxTicks();
+        if (maxLength != 0 && length > maxLength) {
+            length = maxLength;
+        }
+        treeFellerLengthEndurance = String.valueOf(length);
+
+        //Double Drops
         if (skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
         else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
         doubleDropChance = df.format(doubleDropChanceF);
@@ -54,6 +75,7 @@ public class WoodcuttingCommand extends SkillCommand {
         canLeafBlow = Permissions.leafBlower(player);
         doubleDropsDisabled = configInstance.woodcuttingDoubleDropsDisabled();
         lucky = Permissions.luckyWoodcutting(player);
+        endurance = Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player);
     }
 
     @Override
@@ -106,7 +128,10 @@ public class WoodcuttingCommand extends SkillCommand {
         }
 
         if (canTreeFell) {
-            player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", new Object[] { treeFellerLength }));
+            if (endurance)
+                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", new Object[] { treeFellerLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { treeFellerLengthEndurance }));
+            else
+                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", new Object[] { treeFellerLength }));
         }
     }
 }

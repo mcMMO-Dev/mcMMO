@@ -11,12 +11,14 @@ import com.gmail.nossr50.util.Permissions;
 public class ExcavationCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String gigaDrillBreakerLength;
+    private String gigaDrillBreakerLengthEndurance;
 
     private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
 
     private boolean canGigaDrill;
     private boolean canTreasureHunt;
     private boolean lucky;
+    private boolean endurance;
 
     public ExcavationCommand() {
         super(SkillType.EXCAVATION);
@@ -24,7 +26,23 @@ public class ExcavationCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        gigaDrillBreakerLength = String.valueOf(2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel));
+        int length = 2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel);
+        gigaDrillBreakerLength = String.valueOf(length);
+
+        if (Permissions.activationTwelve(player)) {
+            length = length + 12;
+        }
+        else if (Permissions.activationEight(player)) {
+            length = length + 8;
+        }
+        else if (Permissions.activationFour(player)) {
+            length = length + 4;
+        }
+        int maxLength = SkillType.EXCAVATION.getAbility().getMaxTicks();
+        if (maxLength != 0 && length > maxLength) {
+            length = maxLength;
+        }
+        gigaDrillBreakerLengthEndurance = String.valueOf(length);
     }
 
     @Override
@@ -32,6 +50,7 @@ public class ExcavationCommand extends SkillCommand {
         canGigaDrill = Permissions.gigaDrillBreaker(player);
         canTreasureHunt = Permissions.excavationTreasures(player);
         lucky = Permissions.luckyExcavation(player);
+        endurance = Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player);
     }
 
     @Override
@@ -63,7 +82,10 @@ public class ExcavationCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canGigaDrill) {
-            player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", new Object[] { gigaDrillBreakerLength }));
+            if (endurance)
+                player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", new Object[] { gigaDrillBreakerLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { gigaDrillBreakerLengthEndurance }));
+            else
+                player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", new Object[] { gigaDrillBreakerLength }));
         }
     }
 }
