@@ -40,7 +40,7 @@ public class FishingCommand extends SkillCommand {
         DecimalFormat df = new DecimalFormat("0.0");
         //Treasure Hunter
         lootTier = Fishing.getFishingLootTier(profile);
-        magicChance = percent.format(lootTier / 15D);
+        magicChance = percent.format(lootTier / 20D);
         //Shake
         int dropChance = Fishing.getShakeChance(lootTier);
 
