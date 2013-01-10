@@ -58,50 +58,6 @@ Items:
         Item_ID: 288
 
 #
-#  Settings for Arcane Forging
-###
-Arcane_Forging:
-    May_Lose_Enchants: true
-    Rank_Levels:
-        Rank_1: 100
-        Rank_2: 250
-        Rank_3: 500
-        Rank_4: 750
-    Keep_Enchants:
-        Chance:
-            Rank_4: 40
-            Rank_3: 30
-            Rank_2: 20
-            Rank_1: 10
-    Downgrades:
-        Enabled: true
-        Chance:
-            Rank_4: 15
-            Rank_3: 25
-            Rank_2: 50
-            Rank_1: 75
-
-#
-#  Settings for Fishing
-###
-Fishing:
-  Drops_Enabled: true
-  Tier_Levels:
-    Tier1: 0
-    Tier2: 200
-    Tier3: 400
-    Tier4: 600
-    Tier5: 800
-    
-Shake:
-  Chance:
-    Rank_1: 25
-    Rank_2: 40
-    Rank_3: 55
-    Rank_4: 60
-    Rank_5: 75
-
-#
 #  Settings for Abilities
 ###
 Abilities:
@@ -155,6 +111,7 @@ Skills:
         Level_Cap: 0
         Requires_Shovel: true
     Fishing:
+        Drops_Enabled: true
         Level_Cap: 0
     Herbalism:
         Level_Cap: 0

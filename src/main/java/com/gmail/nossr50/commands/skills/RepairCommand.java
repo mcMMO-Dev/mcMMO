@@ -166,11 +166,11 @@ public class RepairCommand extends SkillCommand {
         if (canArcaneForge) {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", new Object[] { arcaneForgingRank }));
 
-            if (Config.getInstance().getArcaneForgingEnchantLossEnabled()) {
+            if (advancedConfig.getArcaneForgingEnchantLossEnabled()) {
                 player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", new Object[] { (arcaneBypass ? 100 : Repair.getEnchantChance(arcaneForgingRank)) }));
             }
 
-            if (Config.getInstance().getArcaneForgingDowngradeEnabled()) {
+            if (advancedConfig.getArcaneForgingDowngradeEnabled()) {
                 player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", new Object[] { (arcaneBypass ? 0 : Repair.getDowngradeChance(arcaneForgingRank)) }));
             }
         }

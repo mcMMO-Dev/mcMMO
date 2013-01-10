@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
@@ -139,7 +138,7 @@ public class SimpleRepairManager implements RepairManager {
         }
 
         // Handle the enchants
-        if (Config.getInstance().getArcaneForgingEnchantLossEnabled() && !Permissions.arcaneBypass(player)) {
+        if (Repair.advancedConfig.getArcaneForgingEnchantLossEnabled() && !Permissions.arcaneBypass(player)) {
             // Generalize away enchantment work
             Repair.addEnchants(player, item);
         }

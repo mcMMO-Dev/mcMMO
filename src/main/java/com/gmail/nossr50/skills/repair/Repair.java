@@ -12,7 +12,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -23,8 +22,6 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Repair {
-    private static Config configInstance = Config.getInstance();
-
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     public static final int REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryMaxBonus();
@@ -64,16 +61,16 @@ public class Repair {
     public static int getArcaneForgingRank(PlayerProfile profile) {
         int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
 
-        if (skillLevel >= configInstance.getArcaneForgingRankLevels4()) {
+        if (skillLevel >= advancedConfig.getArcaneForgingRankLevels4()) {
             return 4;
         }
-        else if (skillLevel >= configInstance.getArcaneForgingRankLevels3()) {
+        else if (skillLevel >= advancedConfig.getArcaneForgingRankLevels3()) {
             return 3;
         }
-        else if (skillLevel >= configInstance.getArcaneForgingRankLevels2()) {
+        else if (skillLevel >= advancedConfig.getArcaneForgingRankLevels2()) {
             return 2;
         }
-        else if (skillLevel >= configInstance.getArcaneForgingRankLevels1()) {
+        else if (skillLevel >= advancedConfig.getArcaneForgingRankLevels1()) {
             return 1;
         }
         else {
@@ -122,7 +119,7 @@ public class Repair {
             if (Misc.getRandom().nextInt(randomChance) <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
 
-                if (configInstance.getArcaneForgingDowngradeEnabled() && enchantLevel > 1) {
+                if (advancedConfig.getArcaneForgingDowngradeEnabled() && enchantLevel > 1) {
                     if (Misc.getRandom().nextInt(randomChance) < getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, --enchantLevel);
                         downgraded = true;
@@ -156,16 +153,16 @@ public class Repair {
     public static int getEnchantChance(int rank) {
         switch (rank) {
         case 4:
-            return configInstance.getArcaneForgingKeepEnchantsChanceRank4();
+            return advancedConfig.getArcaneForgingKeepEnchantsChanceRank4();
 
         case 3:
-            return configInstance.getArcaneForgingKeepEnchantsChanceRank3();
+            return advancedConfig.getArcaneForgingKeepEnchantsChanceRank3();
 
         case 2:
-            return configInstance.getArcaneForgingKeepEnchantsChanceRank2();
+            return advancedConfig.getArcaneForgingKeepEnchantsChanceRank2();
 
         case 1:
-            return configInstance.getArcaneForgingKeepEnchantsChanceRank1();
+            return advancedConfig.getArcaneForgingKeepEnchantsChanceRank1();
 
         default:
             return 0;
@@ -181,16 +178,16 @@ public class Repair {
     public static int getDowngradeChance(int rank) {
         switch (rank) {
         case 4:
-            return configInstance.getArcaneForgingDowngradeChanceRank4();
+            return advancedConfig.getArcaneForgingDowngradeChanceRank4();
 
         case 3:
-            return configInstance.getArcaneForgingDowngradeChanceRank3();
+            return advancedConfig.getArcaneForgingDowngradeChanceRank3();
 
         case 2:
-            return configInstance.getArcaneForgingDowngradeChanceRank2();
+            return advancedConfig.getArcaneForgingDowngradeChanceRank2();
 
         case 1:
-            return configInstance.getArcaneForgingDowngradeChanceRank1();
+            return advancedConfig.getArcaneForgingDowngradeChanceRank1();
 
         default:
             return 100;

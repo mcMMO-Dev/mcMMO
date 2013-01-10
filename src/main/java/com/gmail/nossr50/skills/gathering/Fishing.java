@@ -49,13 +49,13 @@ public class Fishing {
         int level = profile.getSkillLevel(SkillType.FISHING);
         int fishingTier;
 
-        if (level >= Config.getInstance().getFishingTierLevelsTier5()) {
+        if (level >= advancedConfig.getFishingTierLevelsTier5()) {
             fishingTier = 5;
-        } else if (level >= Config.getInstance().getFishingTierLevelsTier4()) {
+        } else if (level >= advancedConfig.getFishingTierLevelsTier4()) {
             fishingTier = 4;
-        } else if (level >= Config.getInstance().getFishingTierLevelsTier3()) {
+        } else if (level >= advancedConfig.getFishingTierLevelsTier3()) {
             fishingTier = 3;
-        } else if (level >= Config.getInstance().getFishingTierLevelsTier2()) {
+        } else if (level >= advancedConfig.getFishingTierLevelsTier2()) {
             fishingTier = 2;
         } else {
             fishingTier = 1;
@@ -469,19 +469,19 @@ public class Fishing {
     public static int getShakeChance(int lootTier) {
         switch (lootTier) {
         case 1:
-            return Config.getInstance().getShakeChanceRank1();
+            return advancedConfig.getShakeChanceRank1();
 
         case 2:
-            return Config.getInstance().getShakeChanceRank2();
+            return advancedConfig.getShakeChanceRank2();
 
         case 3:
-            return Config.getInstance().getShakeChanceRank3();
+            return advancedConfig.getShakeChanceRank3();
 
         case 4:
-            return Config.getInstance().getShakeChanceRank4();
+            return advancedConfig.getShakeChanceRank4();
 
         case 5:
-            return Config.getInstance().getShakeChanceRank5();
+            return advancedConfig.getShakeChanceRank5();
 
         default:
             return 10;
