@@ -97,8 +97,8 @@ Skills:
         # Shake_UnlockLevel: Fishing level when the Shake ability unlocks
         Shake_UnlockLevel: 150
 
-        # Enchantment_Chance: Chance of getting fishing treasure with enchantments
-        Enchantment_Chance: 10
+        # MagicHunter_Multiplier: Determines the chance of fishing enchanted items. The chance is calculated by getting the fishing TreasureHunt tier and multiplying it with MagicHunter_Multiplier
+        MagicHunter_Multiplier: 5
     #
     #  Settings for Herbalism
     ###

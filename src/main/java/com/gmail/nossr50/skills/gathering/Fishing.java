@@ -151,6 +151,7 @@ public class Fishing {
 
         if (theCatch.getItemStack().getType() != Material.RAW_FISH) {
             int lootTier = Fishing.getFishingLootTier(profile);
+            int magicHunterMultiplier = advancedConfig.getFishingMagicMultiplier();
             int specificChance = 1;
             boolean enchanted = false;
             ItemStack fishingResults = theCatch.getItemStack();
@@ -171,7 +172,7 @@ public class Fishing {
                  * 20% - Tier 4
                  * 25% - Tier 5
                  */
-                if (Misc.getRandom().nextInt(randomChance) <= (lootTier * 5) && Permissions.fishingMagic(player)) {
+                if (Misc.getRandom().nextInt(randomChance) <= (lootTier * magicHunterMultiplier) && Permissions.fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
                             specificChance++;

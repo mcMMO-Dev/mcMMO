@@ -68,7 +68,7 @@ public class AdvancedConfig extends ConfigLoader {
 
     /* FISHING */
     public int getShakeUnlockLevel() { return config.getInt("Skills.Fishing.Shake_UnlockLevel", 150); }
-    public int getFishingEnchantmentChance() { return config.getInt("Skills.Fishing.Enchantment_Chance", 10); }
+    public int getFishingMagicMultiplier() { return config.getInt("Skills.Fishing.MagicHunter_Multiplier", 5); }
 
     /* HERBALISM */
     public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.Food_RankChange", 200); }
