@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.gathering;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -151,7 +150,8 @@ public class Fishing {
         Item theCatch = (Item) event.getCaught();
 
         if (theCatch.getItemStack().getType() != Material.RAW_FISH) {
-            final int ENCHANTMENT_CHANCE = advancedConfig.getFishingEnchantmentChance();
+            int lootTier = Fishing.getFishingLootTier(profile);
+            int specificChance = 1;
             boolean enchanted = false;
             ItemStack fishingResults = theCatch.getItemStack();
 
@@ -164,22 +164,35 @@ public class Fishing {
                     randomChance = (int) (randomChance * 0.75);
                 }
 
-                if (Misc.getRandom().nextInt(randomChance) <= ENCHANTMENT_CHANCE
-                        && Permissions.fishingMagic(player)) {
+                /* CHANCE OF ITEM BEING ENCHANTED
+                 * 10% - Tier 1
+                 * 20% - Tier 2
+                 * 30% - Tier 3
+                 * 40% - Tier 4
+                 * 50% - Tier 5
+                 */
+                if (Misc.getRandom().nextInt(randomChance) <= (lootTier * 10) && Permissions.fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
-                            Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();
+                            specificChance++;
 
-                            for (Enchantment oldEnchant : resultEnchantments.keySet()) {
+                            for (Enchantment oldEnchant : fishingResults.getEnchantments().keySet()) {
                                 if (oldEnchant.conflictsWith(newEnchant))
+                                    specificChance--;
                                     continue;
                             }
 
-                            /*
-                             * Actual chance to have an enchantment is related
-                             * to your fishing skill
+                            /* CHANCE OF GETTING EACH ENCHANTMENT
+                             * 50% - 1st Enchantment
+                             * 33% - 2nd Enchantment
+                             * 25% - 3rd Enchantment
+                             * 20% - 4th Enchantment
+                             * 16.66% - 5th Enchantment
+                             * 14.29% - 6th Enchantment
+                             * 12.5% - 7th Enchantment
+                             * 11.11% - 8th Enchantment
                              */
-                            if (Misc.getRandom().nextInt(15) < Fishing.getFishingLootTier(profile)) {
+                            if (Misc.getRandom().nextInt(specificChance) < 1) {
                                 enchanted = true;
                                 int randomEnchantLevel = Misc.getRandom().nextInt(newEnchant.getMaxLevel()) + 1;
 
@@ -187,10 +200,8 @@ public class Fishing {
                                     randomEnchantLevel = newEnchant.getStartLevel();
                                 }
 
-                                if (randomEnchantLevel >= 1000)
-                                    continue;
 
-                                fishingResults.addEnchantment(newEnchant,randomEnchantLevel);
+                                fishingResults.addEnchantment(newEnchant, randomEnchantLevel);
                             }
                         }
                     }
