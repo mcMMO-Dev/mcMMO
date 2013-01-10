@@ -9,22 +9,16 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class TamingManager {
-    private Player player;
-    private PlayerProfile profile;
-    private int skillLevel;
+public class TamingManager extends SkillManager {
     private Config configInstance;
 
     public TamingManager (Player player) {
-        this.player = player;
-        this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.TAMING);
+        super(player, SkillType.TAMING);
         this.configInstance = Config.getInstance();
     }
 
@@ -281,13 +275,5 @@ public class TamingManager {
 
             eventHandler.modifyEventDamage();
         }
-    }
-
-    protected int getSkillLevel() {
-        return skillLevel;
-    }
-
-    protected Player getPlayer() {
-        return player;
     }
 }

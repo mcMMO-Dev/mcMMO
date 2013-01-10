@@ -3,22 +3,15 @@ package com.gmail.nossr50.skills.swords;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class SwordsManager {
-    private Player player;
-    private PlayerProfile profile;
-    private int skillLevel;
-
+public class SwordsManager extends SkillManager {
     public SwordsManager (Player player) {
-        this.player = player;
-        this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.SWORDS);
+        super(player, SkillType.SWORDS);
     }
 
     /**
@@ -93,13 +86,5 @@ public class SwordsManager {
         SerratedStrikesEventHandler eventHandler = new SerratedStrikesEventHandler(this, target, damage);
 
         eventHandler.applyAbilityEffects();
-    }
-
-    protected int getSkillLevel() {
-        return skillLevel;
-    }
-
-    protected Player getPlayer() {
-        return player;
     }
 }

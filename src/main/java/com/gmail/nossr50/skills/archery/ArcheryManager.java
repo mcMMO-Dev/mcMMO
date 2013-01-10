@@ -4,21 +4,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
-public class ArcheryManager {
-    private Player player;
-    private PlayerProfile profile;
-    private int skillLevel;
-
+public class ArcheryManager extends SkillManager {
     public ArcheryManager (Player player) {
-        this.player = player;
-        this.profile = Users.getProfile(player);
-        this.skillLevel = profile.getSkillLevel(SkillType.ARCHERY);
+        super(player, SkillType.ARCHERY);
     }
 
     /**
@@ -87,13 +80,5 @@ public class ArcheryManager {
             eventHandler.calculateDamageBonus();
             eventHandler.modifyEventDamage();
         }
-    }
-
-    protected int getSkillLevel() {
-        return skillLevel;
-    }
-
-    protected Player getPlayer() {
-        return player;
     }
 }
