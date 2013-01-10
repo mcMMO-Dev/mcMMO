@@ -94,4 +94,5 @@ public class NullChunkManager implements ChunkManager {
     public void addSpawnedPet(Entity entity) {}
     public void removeSpawnedMob(Entity entity) {}
     public void removeSpawnedPet(Entity entity) {}
+    public synchronized void cleanMobLists() {}
 }
