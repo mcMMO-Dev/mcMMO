@@ -17,11 +17,13 @@ public class FishingCommand extends SkillCommand {
 
     private int lootTier;
     private String magicChance;
+    private String magicChanceLucky;
     private int shakeUnlockLevel;
     private String shakeChance;
     private String shakeChanceLucky;
     private String fishermansDietRank;
 
+    private int magicHunterMultiplier = advancedConfig.getFishingMagicMultiplier();
     private int fishermansDietRankChange = advancedConfig.getFarmerDietRankChange();
     private int fishermansDietRankMaxLevel = fishermansDietRankChange * 5;
 
@@ -40,10 +42,13 @@ public class FishingCommand extends SkillCommand {
         DecimalFormat df = new DecimalFormat("0.0");
         //Treasure Hunter
         lootTier = Fishing.getFishingLootTier(profile);
-        magicChance = percent.format(lootTier / 20D);
+        int magicChanceInt = (lootTier * magicHunterMultiplier);
+        magicChance = df.format(magicChanceInt);
+        if (magicChanceInt + (magicChanceInt * 0.3333D) >= 100D) magicChanceLucky = df.format(100D);
+        else magicChanceLucky = df.format(magicChanceInt + (magicChanceInt * 0.3333D));
+
         //Shake
         int dropChance = Fishing.getShakeChance(lootTier);
-
         shakeChance = df.format(dropChance);
         if (dropChance + (dropChance * 0.3333D) >= 100D) shakeChanceLucky = df.format(100D);
         else shakeChanceLucky = df.format(dropChance + (dropChance * 0.3333D));
@@ -104,7 +109,10 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canMagicHunt) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance }));
+            if (lucky)
+                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { magicChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance }));
         }
 
         if (canShake) {
