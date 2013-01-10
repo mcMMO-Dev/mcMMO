@@ -165,13 +165,13 @@ public class Fishing {
                 }
 
                 /* CHANCE OF ITEM BEING ENCHANTED
-                 * 10% - Tier 1
-                 * 20% - Tier 2
-                 * 30% - Tier 3
-                 * 40% - Tier 4
-                 * 50% - Tier 5
+                 * 5% - Tier 1
+                 * 10% - Tier 2
+                 * 15% - Tier 3
+                 * 20% - Tier 4
+                 * 25% - Tier 5
                  */
-                if (Misc.getRandom().nextInt(randomChance) <= (lootTier * 10) && Permissions.fishingMagic(player)) {
+                if (Misc.getRandom().nextInt(randomChance) <= (lootTier * 5) && Permissions.fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
                             specificChance++;
