@@ -202,23 +202,23 @@ public class TreasuresConfig extends ConfigLoader{
                 int dropLevel = fTreasure.getDropLevel();
                 int maxLevel = fTreasure.getMaxLevel();
 
-                if (dropLevel <= Config.getInstance().getFishingTierLevelsTier1() && maxLevel >= Config.getInstance().getFishingTierLevelsTier1()) {
+                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier1() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier1()) {
                     fishingRewardsTier1.add(fTreasure);
                 }
 
-                if (dropLevel <= Config.getInstance().getFishingTierLevelsTier2() && maxLevel >= Config.getInstance().getFishingTierLevelsTier2()) {
+                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier2() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier2()) {
                     fishingRewardsTier2.add(fTreasure);
                 }
 
-                if (dropLevel <= Config.getInstance().getFishingTierLevelsTier3() && maxLevel >= Config.getInstance().getFishingTierLevelsTier3()) {
+                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier3() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier3()) {
                     fishingRewardsTier3.add(fTreasure);
                 }
 
-                if (dropLevel <= Config.getInstance().getFishingTierLevelsTier4() && maxLevel >= Config.getInstance().getFishingTierLevelsTier4()) {
+                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier4() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier4()) {
                     fishingRewardsTier4.add(fTreasure);
                 }
 
-                if (dropLevel <= Config.getInstance().getFishingTierLevelsTier5() && maxLevel >= Config.getInstance().getFishingTierLevelsTier5()) {
+                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier5() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier5()) {
                     fishingRewardsTier5.add(fTreasure);
                 }
 
