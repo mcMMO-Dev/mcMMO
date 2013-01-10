@@ -35,7 +35,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
-import com.gmail.nossr50.skills.mining.BlastMining;
+import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.Combat;
 import com.gmail.nossr50.util.Misc;
@@ -151,7 +151,8 @@ public class EntityListener implements Listener {
                     acroManager.rollCheck(event);
                 }
                 else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.demolitionsExpertise(player)) {
-                    BlastMining.demolitionsExpertise(player, event);
+                    MiningManager miningManager = new MiningManager(player); 
+                    miningManager.demolitionsExpertise(event);
                 }
 
                 if (event.getDamage() >= 1) {
@@ -219,7 +220,8 @@ public class EntityListener implements Listener {
                 Player player = plugin.getTNTPlayer(id);
 
                 if (Permissions.biggerBombs(player)) {
-                    BlastMining.biggerBombs(player, event);
+                    MiningManager miningManager = new MiningManager(player);
+                    miningManager.biggerBombs(event);
                 }
             }
         }
@@ -243,7 +245,8 @@ public class EntityListener implements Listener {
 
             if (plugin.tntIsTracked(id)) {
                 Player player = plugin.getTNTPlayer(id);
-                BlastMining.dropProcessing(player, event);
+                MiningManager miningManager = new MiningManager(player);
+                miningManager.blastMiningDropProcessing(event);
                 plugin.removeFromTNTTracker(id);
             }
         }

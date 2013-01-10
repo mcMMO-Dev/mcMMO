@@ -1,20 +1,13 @@
 package com.gmail.nossr50.skills.mining;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.gmail.nossr50.mcMMO;
@@ -23,240 +16,22 @@ import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class BlastMining {
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-
+    private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private static Random random = new Random();
 
-    private static int blastMiningRank1 = advancedConfig.getBlastMiningRank1();
-    private static int blastMiningRank2 = advancedConfig.getBlastMiningRank2();
-    private static int blastMiningRank3 = advancedConfig.getBlastMiningRank3();
-    private static int blastMiningRank4 = advancedConfig.getBlastMiningRank4();
-    private static int blastMiningRank5 = advancedConfig.getBlastMiningRank5();
-    private static int blastMiningRank6 = advancedConfig.getBlastMiningRank6();
-    private static int blastMiningRank7 = advancedConfig.getBlastMiningRank7();
-    private static int blastMiningRank8 = advancedConfig.getBlastMiningRank8();
-    /**
-     * Handler for what blocks drop from the explosion.
-     *
-     * @param ores List of ore blocks destroyed by the explosion
-     * @param debris List of non-ore blocks destroyed by the explosion
-     * @param yield Percentage of blocks to drop
-     * @param oreBonus Percentage bonus for ore drops
-     * @param debrisReduction Percentage reduction for non-ore drops
-     * @param extraDrops Number of times to drop each block
-     * @return A list of blocks dropped from the explosion
-     */
-    private static List<Block> explosionYields(List<Block> ores, List<Block> debris, float yield, float oreBonus, float debrisReduction, int extraDrops) {
-        Iterator<Block> oresIterator = ores.iterator();
-        List<Block> blocksDropped = new ArrayList<Block>();
-
-        while (oresIterator.hasNext()) {
-            Block temp = oresIterator.next();
-            Location tempLocation = temp.getLocation();
-            Material tempType = temp.getType();
-
-            if (random.nextFloat() < (yield + oreBonus)) {
-                blocksDropped.add(temp);
-                Mining.miningDrops(temp, tempLocation, tempType);
-
-                if (!mcMMO.placeStore.isTrue(temp)) {
-                    for (int i = 1 ; i < extraDrops ; i++) {
-                        blocksDropped.add(temp);
-                        Mining.miningDrops(temp, tempLocation, tempType);
-                    }
-                }
-            }
-        }
-
-        if (yield - debrisReduction > 0) {
-            Iterator<Block> debrisIterator = debris.iterator();
-
-            while (debrisIterator.hasNext()) {
-                Block temp = debrisIterator.next();
-                Location tempLocation = temp.getLocation();
-                Material tempType = temp.getType();
-
-                if (random.nextFloat() < (yield - debrisReduction))
-                    Mining.miningDrops(temp, tempLocation, tempType);
-            }
-        }
-
-        return blocksDropped;
-    }
-
-    /**
-     * Handler for explosion drops and XP gain.
-     *
-     * @param player Player triggering the explosion
-     * @param event Event whose explosion is being processed
-     */
-    public static void dropProcessing(Player player, EntityExplodeEvent event) {
-        if(player == null)
-            return;
-
-        final int RANK_1_LEVEL = blastMiningRank1;
-        final int RANK_2_LEVEL = blastMiningRank2;
-        final int RANK_3_LEVEL = blastMiningRank3;
-        final int RANK_4_LEVEL = blastMiningRank4;
-        final int RANK_5_LEVEL = blastMiningRank5;
-        final int RANK_6_LEVEL = blastMiningRank6;
-        final int RANK_7_LEVEL = blastMiningRank7;
-        final int RANK_8_LEVEL = blastMiningRank8;
-
-        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
-        float yield = event.getYield();
-        List<Block> blocks = event.blockList();
-        Iterator<Block> iterator = blocks.iterator();
-
-        List<Block> ores = new ArrayList<Block>();
-        List<Block> debris = new ArrayList<Block>();
-        List<Block> xp = new ArrayList<Block>();
-
-        while (iterator.hasNext()) {
-            Block temp = iterator.next();
-
-            if (BlockChecks.isOre(temp)) {
-                ores.add(temp);
-            }
-            else {
-                debris.add(temp);
-            }
-        }
-
-        //Normal explosion
-        if (skillLevel < RANK_1_LEVEL) {
-            return;
-        }
-
-        event.setYield(0);
-
-        //Triple Drops, No debris, +70% ores
-        if (skillLevel >= RANK_8_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .70f, .30f, 3);
-        }
-
-        //Triple Drops, No debris, +65% ores
-        else if (skillLevel >= RANK_7_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .65f, .30f, 3);
-        }
-
-        //Double Drops, No Debris, +60% ores
-        else if (skillLevel >= RANK_6_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .60f, .30f, 2);
-        }
-
-        //Double Drops, No Debris, +55% ores
-        else if (skillLevel >= RANK_5_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .55f, .30f, 2);
-        }
-
-        //No debris, +50% ores
-        else if (skillLevel >= RANK_4_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .50f, .30f, 1);
-        }
-
-        //No debris, +45% ores
-        else if (skillLevel >= RANK_3_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .45f, .30f, 1);
-        }
-
-        //+40% ores, -20% debris
-        else if (skillLevel >= RANK_2_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .40f, .20f, 1);
-        }
-
-        //+35% ores, -10% debris
-        else if (skillLevel >= RANK_1_LEVEL) {
-            xp = explosionYields(ores, debris, yield, .35f, .10f, 1);
-        }
-
-        for (Block block : xp) {
-            if (!mcMMO.placeStore.isTrue(block)) {
-                Mining.miningXP(player, Users.getProfile(player), block, block.getType());
-            }
-        }
-    }
-
-    /**
-     * Increases the blast radius of the explosion.
-     *
-     * @param player Player triggering the explosion
-     * @param event Event whose explosion radius is being changed
-     */
-    public static void biggerBombs(Player player, ExplosionPrimeEvent event) {
-        if(player == null)
-            return;
-
-        final int RANK_1_LEVEL = blastMiningRank2;
-        final int RANK_2_LEVEL = blastMiningRank4;
-        final int RANK_3_LEVEL = blastMiningRank6;
-        final int RANK_4_LEVEL = blastMiningRank8;
-
-        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.MINING);
-        float radius = event.getRadius();
-
-        if (skillLevel < RANK_1_LEVEL) {
-            return;
-        }
-
-        if (skillLevel >= RANK_1_LEVEL) {
-            radius++;
-        }
-
-        if (skillLevel >= RANK_2_LEVEL) {
-            radius++;
-        }
-
-        if (skillLevel >= RANK_3_LEVEL) {
-            radius++;
-        }
-
-        if (skillLevel >= RANK_4_LEVEL) {
-            radius++;
-        }
-
-        event.setRadius(radius);
-    }
-
-    /**
-     * Decreases damage dealt by the explosion.
-     *
-     * @param player Player triggering the explosion
-     * @param event Event whose explosion damage is being reduced
-     */
-    public static void demolitionsExpertise(Player player, EntityDamageEvent event) {
-        if(player == null)
-            return;
-
-        final int RANK_1_LEVEL = blastMiningRank4;
-        final int RANK_2_LEVEL = blastMiningRank6;
-        final int RANK_3_LEVEL = blastMiningRank8;
-
-        int skill = Users.getProfile(player).getSkillLevel(SkillType.MINING);
-        int damage = event.getDamage();
-
-        if (skill < RANK_1_LEVEL) {
-            return;
-        }
-
-        if (skill >= RANK_3_LEVEL) {
-            damage = 0;
-        }
-        else if (skill >= RANK_2_LEVEL) {
-            damage = damage / 2;
-        }
-        else if (skill >= RANK_1_LEVEL) {
-            damage = damage/4;
-        }
-
-        event.setDamage(damage);
-    }
+    public final static int BLAST_MINING_RANK_1 = advancedConfig.getBlastMiningRank1();
+    public final static int BLAST_MINING_RANK_2 = advancedConfig.getBlastMiningRank2();
+    public final static int BLAST_MINING_RANK_3 = advancedConfig.getBlastMiningRank3();
+    public final static int BLAST_MINING_RANK_4 = advancedConfig.getBlastMiningRank4();
+    public final static int BLAST_MINING_RANK_5 = advancedConfig.getBlastMiningRank5();
+    public final static int BLAST_MINING_RANK_6 = advancedConfig.getBlastMiningRank6();
+    public final static int BLAST_MINING_RANK_7 = advancedConfig.getBlastMiningRank7();
+    public final static int BLAST_MINING_RANK_8 = advancedConfig.getBlastMiningRank8();
 
     /**
      * Detonate TNT for Blast Mining
@@ -332,5 +107,9 @@ public class BlastMining {
 
         profile.setSkillDATS(ability, System.currentTimeMillis()); //Save DATS for Blast Mining
         profile.setAbilityInformed(ability, false);
+    }
+
+    protected static Random getRandom() {
+        return random;
     }
 }

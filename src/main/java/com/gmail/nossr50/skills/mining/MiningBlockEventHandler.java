@@ -29,7 +29,7 @@ public class MiningBlockEventHandler {
         calculateSkillModifier();
     }
 
-    protected void calculateSkillModifier() {
+    private void calculateSkillModifier() {
         this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL);
     }
 
@@ -48,7 +48,7 @@ public class MiningBlockEventHandler {
         }
     }
 
-    protected void processXP() {
+    protected void processXPGain() {
         Mining.miningXP(player, manager.getProfile(), block, blockType);
     }
 }

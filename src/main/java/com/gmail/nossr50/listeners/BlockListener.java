@@ -204,14 +204,14 @@ public class BlockListener implements Listener {
 
         /* MINING */
         else if (BlockChecks.canBeSuperBroken(block) && Permissions.mining(player)) {
-            MiningManager manager = new MiningManager(player);
+            MiningManager miningManager = new MiningManager(player);
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
-                    manager.miningBlockCheck(block);
+                    miningManager.miningBlockCheck(block);
                 }
             }
             else {
-                manager.miningBlockCheck(block);
+                miningManager.miningBlockCheck(block);
             }
         }
 
@@ -356,17 +356,17 @@ public class BlockListener implements Listener {
             }
         }
         else if (profile.getAbilityMode(AbilityType.SUPER_BREAKER) && Skills.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
-            MiningManager manager = new MiningManager(player);
+            MiningManager miningManager = new MiningManager(player);
 
             if (configInstance.getMiningRequiresTool()) {
                 if (ItemChecks.isPickaxe(inHand)) {
                     event.setInstaBreak(true);
-                    manager.superBreakerBlockCheck(block);
+                    miningManager.superBreakerBlockCheck(block);
                 }
             }
             else {
                 event.setInstaBreak(true);
-                manager.superBreakerBlockCheck(block);
+                miningManager.superBreakerBlockCheck(block);
             }
         }
         else if (profile.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && (material.equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block)))) {

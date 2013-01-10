@@ -2,6 +2,9 @@ package com.gmail.nossr50.skills.mining;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -22,6 +25,65 @@ public class MiningManager {
         this.skillLevel = profile.getSkillLevel(SkillType.MINING);
     }
 
+
+    /**
+     * Handler for explosion drops and XP gain.
+     *
+     * @param event Event whose explosion is being processed
+     */
+    public void blastMiningDropProcessing(EntityExplodeEvent event) {
+        if (Misc.isCitizensNPC(player)) {
+            return;
+        }
+
+        if (skillLevel < BlastMining.BLAST_MINING_RANK_1) {
+            return;
+        }
+
+        BlastMiningDropEventHandler eventHandler = new BlastMiningDropEventHandler(this, event);
+
+        eventHandler.sortExplosionBlocks();
+        eventHandler.modifyEventYield();
+
+        eventHandler.calcuateDropModifiers();
+        eventHandler.processDroppedBlocks();
+
+        eventHandler.processXPGain();
+    }
+
+    /**
+     * Decreases damage dealt by the explosion from TNT activated by Blast Mining.
+     *
+     * @param event Event whose explosion damage is being reduced
+     */
+    public void demolitionsExpertise(EntityDamageEvent event) {
+        if (Misc.isCitizensNPC(player)) {
+            return;
+        }
+
+        DemoltionsExpertiseEventHandler eventHandler = new DemoltionsExpertiseEventHandler(this, event);
+
+        eventHandler.calculateDamageModifier();
+        eventHandler.modifyEventDamage();
+    }
+
+    /**
+     * Increases the blast radius of the explosion.
+     *
+     * @param player Player triggering the explosion
+     * @param event Event whose explosion radius is being changed
+     */
+    public void biggerBombs(ExplosionPrimeEvent event) {
+        if (Misc.isCitizensNPC(player)) {
+            return;
+        }
+
+        BiggerBombsEventHandler eventHandler = new BiggerBombsEventHandler(this, event);
+
+        eventHandler.calculateRadiusIncrease();
+        eventHandler.modifyBlastRadius();
+    }
+
     /**
      * Process Mining block drops.
      *
@@ -34,7 +96,7 @@ public class MiningManager {
 
         MiningBlockEventHandler eventHandler = new MiningBlockEventHandler(this, block);
 
-        eventHandler.processXP();
+        eventHandler.processXPGain();
 
         if (!Permissions.miningDoubleDrops(player)) {
             return;
