@@ -173,4 +173,5 @@ public interface ChunkManager {
     public void addSpawnedPet(Entity entity);
     public void removeSpawnedMob(Entity entity);
     public void removeSpawnedPet(Entity entity);
+    public void cleanMobLists();
 }

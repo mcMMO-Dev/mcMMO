@@ -67,6 +67,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.ChunkletUnloader;
+import com.gmail.nossr50.runnables.MobStoreCleaner;
 import com.gmail.nossr50.runnables.SaveTimer;
 import com.gmail.nossr50.runnables.SkillMonitor;
 import com.gmail.nossr50.runnables.SpoutStart;
@@ -230,6 +231,9 @@ public class mcMMO extends JavaPlugin {
 
         // Get our ChunkletManager
         placeStore = ChunkManagerFactory.getChunkManager();
+
+        // Automatically starts and stores itself
+        MobStoreCleaner cleaner = new MobStoreCleaner();
     }
 
     /**
