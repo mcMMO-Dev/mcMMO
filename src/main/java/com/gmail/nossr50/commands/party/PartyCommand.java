@@ -140,7 +140,7 @@ public class PartyCommand implements CommandExecutor {
                 Party newParty = partyManagerInstance.getParty(args[0]);
 
                 // Check to see if the party exists, and if it does, can the player join it?
-                if (newParty != null && !partyManagerInstance.checkJoinability(player, playerProfile, newParty, null)) {
+                if (newParty != null && !partyManagerInstance.checkJoinability(player, newParty, null)) {
                     return true; // End before any event is fired.
                 }
 
@@ -216,7 +216,7 @@ public class PartyCommand implements CommandExecutor {
                     Party newParty = partyManagerInstance.getParty(args[0]);
 
                     // Check to see if the party exists, and if it does, can the player join it?
-                    if (newParty != null && !partyManagerInstance.checkJoinability(player, playerProfile, newParty, args[1])) {
+                    if (newParty != null && !partyManagerInstance.checkJoinability(player, newParty, args[1])) {
                         return true; // End before any event is fired.
                     }
 
@@ -235,7 +235,7 @@ public class PartyCommand implements CommandExecutor {
                 Party newParty = partyManagerInstance.getParty(args[0]);
 
                 // Check to see if the party exists, and if it does, can the player join it?
-                if (newParty != null && !partyManagerInstance.checkJoinability(player, playerProfile, newParty, args[1])) {
+                if (newParty != null && !partyManagerInstance.checkJoinability(player, newParty, args[1])) {
                     return true; // End before any event is fired.
                 }
 
