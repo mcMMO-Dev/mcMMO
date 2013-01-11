@@ -197,8 +197,15 @@ public class mcMMO extends JavaPlugin {
         scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 0, 40);
         //Chunklet unloader (Runs every 20 seconds by default)
         scheduler.scheduleSyncRepeatingTask(this, new ChunkletUnloader(), 0, ChunkletUnloader.RUN_INTERVAL * 20);
-        //Old & Powerless User remover (Runs every 6 hours)
-        scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), 0, 21600 * 20);
+
+        //Old & Powerless User remover
+        int purgeInterval = Config.getInstance().getPurgeInterval();
+        if (purgeInterval == 0) {
+            scheduler.runTask(this, new UserPurgeTask());
+        }
+        else if (purgeInterval > 0) {
+            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), 0, purgeInterval * 60L * 60L * 20L);
+        }
 
         registerCommands();
 

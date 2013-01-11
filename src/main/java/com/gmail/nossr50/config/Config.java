@@ -35,6 +35,7 @@ public class Config extends ConfigLoader {
     public int getSaveInterval() { return config.getInt("General.Save_Interval", 10); }
     public boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking", true); }
     public boolean getEventCallbackEnabled() { return config.getBoolean("General.Event_Callback", true); }
+    public int getPurgeInterval() { return config.getInt("General.Purge_Interval", 0); }
 
     /* mySQL */
     public boolean getUseMySQL() { return config.getBoolean("MySQL.Enabled", false); }
