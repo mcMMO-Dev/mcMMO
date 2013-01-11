@@ -41,7 +41,7 @@ public class UserPurgeTask implements Runnable {
             int userId = Integer.valueOf(userslist.get(i).get(1));
             HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + userId + "'");
 
-            if (Bukkit.getPlayer(username.get(1).get(0)).isOnline()) {
+            if (username != null && Bukkit.getOfflinePlayer(username.get(1).get(0)).isOnline()) {
                 continue;
             }
 
