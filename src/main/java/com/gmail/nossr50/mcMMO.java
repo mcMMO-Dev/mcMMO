@@ -76,6 +76,7 @@ import com.gmail.nossr50.runnables.UserPurgeTask;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
+import com.gmail.nossr50.util.Anniversary;
 import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Metrics;
@@ -245,6 +246,10 @@ public class mcMMO extends JavaPlugin {
 
         // Automatically starts and stores itself
         MobStoreCleaner cleaner = new MobStoreCleaner();
+
+        // Create Anniversary files
+        Anniversary anniversary = new Anniversary();
+        anniversary.createAnniversaryFile();
     }
 
     /**
