@@ -29,7 +29,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
             skillModifer = skillModifer * 2;
         }
 
-        skillModifer = Misc.skillCheck(skillModifer, Acrobatics.ROLL_MAX_BONUS_LEVEL);
+        skillModifer = Misc.skillCheck(skillModifer, Acrobatics.maxRollBonusLevel);
         this.skillModifier = skillModifer;
     }
 

@@ -48,7 +48,7 @@ public class TrackedEntity implements Runnable {
     public void run() {
         if (!isActive()) {
             Archery.removeFromTracker(this);
-           scheduler.cancelTask(taskId);
+            scheduler.cancelTask(taskId);
         }
     }
 }

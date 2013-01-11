@@ -31,7 +31,7 @@ public class ArcheryManager extends SkillManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        float chance = ((float) Archery.ARROW_TRACKING_MAX_BONUS / Archery.ARROW_TRACKING_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
+        float chance = ((float) Archery.arrowTrackingMaxBonus / Archery.arrowTrackingMaxBonusLevel) * eventHandler.skillModifier;
 
         if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.addToTracker();
@@ -56,7 +56,7 @@ public class ArcheryManager extends SkillManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        float chance = ((float) Archery.DAZE_MAX_BONUS / Archery.DAZE_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
+        float chance = ((float) Archery.dazeMaxBonus / Archery.dazeMaxBonusLevel) * eventHandler.skillModifier;
 
         if (chance > Misc.getRandom().nextInt(randomChance)) {
             eventHandler.handleDazeEffect();
@@ -74,7 +74,7 @@ public class ArcheryManager extends SkillManager {
             return;
         }
 
-        if (skillLevel >= Archery.BONUS_DAMAGE_INCREASE_LEVEL) {
+        if (skillLevel >= Archery.skillShotIncreaseLevel) {
             ArcheryBonusDamageEventHandler eventHandler = new ArcheryBonusDamageEventHandler(this, event);
 
             eventHandler.calculateDamageBonus();

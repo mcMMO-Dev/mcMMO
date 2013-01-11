@@ -10,8 +10,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class AcrobaticsManager extends SkillManager {
-    private static Config config = Config.getInstance();
-
     public AcrobaticsManager (Player player) {
         super(player, SkillType.ACROBATICS);
     }
@@ -26,7 +24,7 @@ public class AcrobaticsManager extends SkillManager {
             return;
         }
 
-        if (config.getAcrobaticsAFKDisabled() && player.isInsideVehicle()) {
+        if (Config.getInstance().getAcrobaticsAFKDisabled() && player.isInsideVehicle()) {
             return;
         }
 
@@ -40,19 +38,19 @@ public class AcrobaticsManager extends SkillManager {
         float chance;
 
         if (eventHandler.isGraceful) {
-            chance = ((float) Acrobatics.GRACEFUL_MAX_CHANCE / Acrobatics.GRACEFUL_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
+            chance = ((float) Acrobatics.maxGracefulRollChance / Acrobatics.maxGracefulRollBonusLevel) * eventHandler.skillModifier;
         }
         else {
-            chance = ((float) Acrobatics.ROLL_MAX_CHANCE / Acrobatics.ROLL_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
+            chance = ((float) Acrobatics.maxRollChance / Acrobatics.maxRollBonusLevel) * eventHandler.skillModifier;
         }
 
         if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
-            eventHandler.processXPGain(eventHandler.damage * Acrobatics.ROLL_XP_MODIFIER);
+            eventHandler.processXPGain(eventHandler.damage * Acrobatics.rollXpModifier);
         }
         else if (!eventHandler.isFatal(event.getDamage())) {
-            eventHandler.processXPGain(eventHandler.damage * Acrobatics.FALL_XP_MODIFIER);
+            eventHandler.processXPGain(eventHandler.damage * Acrobatics.fallXpModifier);
         }
     }
 
@@ -73,12 +71,12 @@ public class AcrobaticsManager extends SkillManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        float chance = ((float) Acrobatics.DODGE_MAX_CHANCE / Acrobatics.DODGE_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
+        float chance = ((float) Acrobatics.maxDodgeChance / Acrobatics.maxDodgeBonusLevel) * eventHandler.skillModifier;
 
         if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
-            eventHandler.processXPGain(eventHandler.damage * Acrobatics.DODGE_XP_MODIFIER);
+            eventHandler.processXPGain(eventHandler.damage * Acrobatics.dodgeXpModifier);
         }
     }
 }

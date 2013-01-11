@@ -25,7 +25,7 @@ public class DazeEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Archery.DAZE_MAX_BONUS_LEVEL);
+        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Archery.dazeMaxBonusLevel);
     }
 
     protected void handleDazeEffect() {
@@ -39,7 +39,7 @@ public class DazeEventHandler {
         }
 
         defender.teleport(location);
-        event.setDamage(event.getDamage() + Archery.DAZE_MODIFIER);
+        event.setDamage(event.getDamage() + Archery.dazeModifier);
     }
 
     protected void sendAbilityMessages() {

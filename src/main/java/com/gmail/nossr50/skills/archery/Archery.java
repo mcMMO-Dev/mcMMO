@@ -12,19 +12,18 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.Misc;
 
 public class Archery {
-    private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
-    public static final int ARROW_TRACKING_MAX_BONUS_LEVEL = advancedConfig.getRetrieveMaxBonusLevel();
-    public static final int ARROW_TRACKING_MAX_BONUS = advancedConfig.getRetrieveBonusMax();
+    public static int arrowTrackingMaxBonusLevel = AdvancedConfig.getInstance().getRetrieveMaxBonusLevel();
+    public static int arrowTrackingMaxBonus = AdvancedConfig.getInstance().getRetrieveBonusMax();
 
-    public static final int BONUS_DAMAGE_INCREASE_LEVEL = advancedConfig.getSkillShotIncreaseLevel();
-    public static final double BONUS_DAMAGE_INCREASE_PERCENT = advancedConfig.getSkillShotIncreasePercentage();
-    public static final double BONUS_DAMAGE_MAX_BONUS_PERCENTAGE = advancedConfig.getSkillShotBonusMax();
+    public static int skillShotIncreaseLevel = AdvancedConfig.getInstance().getSkillShotIncreaseLevel();
+    public static double skillShotIncreasePercentage = AdvancedConfig.getInstance().getSkillShotIncreasePercentage();
+    public static double skillShotMaxBonusPercentage = AdvancedConfig.getInstance().getSkillShotBonusMax();
 
-    public static final int DAZE_MAX_BONUS_LEVEL = advancedConfig.getDazeMaxBonusLevel();
-    public static final int DAZE_MAX_BONUS = advancedConfig.getDazeBonusMax();
-    public static final int DAZE_MODIFIER = advancedConfig.getDazeModifier();
+    public static int dazeMaxBonusLevel = AdvancedConfig.getInstance().getDazeMaxBonusLevel();
+    public static int dazeMaxBonus = AdvancedConfig.getInstance().getDazeBonusMax();
+    public static int dazeModifier = AdvancedConfig.getInstance().getDazeModifier();
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
         for (TrackedEntity trackedEntity : trackedEntities) {

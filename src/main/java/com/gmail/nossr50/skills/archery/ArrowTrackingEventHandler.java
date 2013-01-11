@@ -18,7 +18,7 @@ public class ArrowTrackingEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Archery.ARROW_TRACKING_MAX_BONUS_LEVEL);
+        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Archery.arrowTrackingMaxBonusLevel);
     }
 
     protected void addToTracker() {
