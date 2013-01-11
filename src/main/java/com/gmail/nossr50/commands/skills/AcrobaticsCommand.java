@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.commands.SkillCommand;
@@ -38,7 +36,6 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("0.0");
         float dodgeChanceF;
         float rollChanceF;
         float gracefulRollChanceF;
@@ -46,23 +43,23 @@ public class AcrobaticsCommand extends SkillCommand {
         // DODGE
         if (skillValue >= dodgeMaxBonusLevel) dodgeChanceF = dodgeChanceMax;
         else dodgeChanceF = (float) (((double) dodgeChanceMax / (double) dodgeMaxBonusLevel) * skillValue);
-        dodgeChance = df.format(dodgeChanceF);
-        if (dodgeChanceF + dodgeChanceF * 0.3333D >= 100D) dodgeChanceLucky = df.format(100D);
-        else dodgeChanceLucky = df.format(dodgeChanceF + dodgeChanceF * 0.3333D);
+        dodgeChance = percent.format(dodgeChanceF / 100D);
+        if (dodgeChanceF + dodgeChanceF * 0.3333D >= 100D) dodgeChanceLucky = percent.format(1D);
+        else dodgeChanceLucky = percent.format((dodgeChanceF + dodgeChanceF * 0.3333D) / 100D);
 
         // ROLL
         if (skillValue >= rollMaxBonusLevel) rollChanceF = rollChanceMax;
         else rollChanceF = (float) (((double) rollChanceMax / (double) rollMaxBonusLevel) * skillValue);
-        rollChance = df.format(rollChanceF);
-        if (rollChanceF + rollChanceF * 0.3333D >= 100D) rollChanceLucky = df.format(100D);
-        else rollChanceLucky = df.format(rollChanceF + rollChanceF * 0.3333D);
+        rollChance = percent.format(rollChanceF / 100D);
+        if (rollChanceF + rollChanceF * 0.3333D >= 100D) rollChanceLucky = percent.format(1D);
+        else rollChanceLucky = percent.format((rollChanceF + rollChanceF * 0.3333D) / 100D);
 
         // GRACEFULROLL
         if (skillValue >= gracefulRollMaxBonusLevel) gracefulRollChanceF = gracefulRollChanceMax;
         else gracefulRollChanceF = (float) (((double) gracefulRollChanceMax / (double) gracefulRollMaxBonusLevel) * skillValue);
-        gracefulRollChance = df.format(gracefulRollChanceF);
-        if (gracefulRollChanceF + gracefulRollChanceF * 0.3333D >= 100D) gracefulRollChanceLucky = df.format(100D);
-        else gracefulRollChanceLucky = df.format(gracefulRollChanceF + gracefulRollChanceF * 0.3333D);
+        gracefulRollChance = percent.format(gracefulRollChanceF / 100D);
+        if (gracefulRollChanceF + gracefulRollChanceF * 0.3333D >= 100D) gracefulRollChanceLucky = percent.format(1D);
+        else gracefulRollChanceLucky = percent.format((gracefulRollChanceF + gracefulRollChanceF * 0.3333D) / 100D);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.commands.SkillCommand;
@@ -50,7 +48,6 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("0.0");
         float doubleDropChanceF;
         //Super Breaker
         int length = 2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel);
@@ -73,9 +70,9 @@ public class MiningCommand extends SkillCommand {
         //Double Drops
         if (skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
         else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
-        doubleDropChance = df.format(doubleDropChanceF);
-        if (doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = df.format(100D);
-        else doubleDropChanceLucky = df.format(doubleDropChanceF + doubleDropChanceF * 0.3333D);
+        doubleDropChance = percent.format(doubleDropChanceF / 100D);
+        if (doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = percent.format(1D);
+        else doubleDropChanceLucky = percent.format((doubleDropChanceF + doubleDropChanceF * 0.3333D) / 100D);
 
         //Blast Mining
         if (skillValue >= blastMiningRank8) {

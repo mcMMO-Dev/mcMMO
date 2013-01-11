@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.commands.SkillCommand;
@@ -48,7 +46,6 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("0.0");
         float greenThumbChanceF;
         float doubleDropChanceF;
 
@@ -78,15 +75,15 @@ public class HerbalismCommand extends SkillCommand {
 
         if (skillValue >= greenThumbMaxLevel) greenThumbChanceF = (float) (greenThumbMaxBonus);
         else greenThumbChanceF = (float) ((greenThumbMaxBonus / greenThumbMaxLevel) * skillValue);
-        greenThumbChance = df.format(greenThumbChanceF);
-        if (greenThumbChanceF + greenThumbChanceF * 0.3333D >= 100D) greenThumbChanceLucky = df.format(100D);
-        else greenThumbChanceLucky = df.format(greenThumbChanceF + greenThumbChanceF * 0.3333D);
+        greenThumbChance = percent.format(greenThumbChanceF / 100D);
+        if (greenThumbChanceF + greenThumbChanceF * 0.3333D >= 100D) greenThumbChanceLucky = percent.format(1D);
+        else greenThumbChanceLucky = percent.format((greenThumbChanceF + greenThumbChanceF * 0.3333D) / 100D);
         //DOUBLE DROPS
         if (skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
         else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
-        doubleDropChance = df.format(doubleDropChanceF);
-        if (doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = df.format(100D);
-        else doubleDropChanceLucky = df.format(doubleDropChanceF + doubleDropChanceF * 0.3333D);
+        doubleDropChance = percent.format(doubleDropChanceF / 100D);
+        if (doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = percent.format(1D);
+        else doubleDropChanceLucky = percent.format((doubleDropChanceF + doubleDropChanceF * 0.3333D) / 100D);
     }
 
     @Override

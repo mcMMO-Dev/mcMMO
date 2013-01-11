@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.mcMMO;
@@ -52,7 +50,6 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("0.0");
         float superRepairChanceF;
         // We're using pickaxes here, not the best but it works
         Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
@@ -67,14 +64,14 @@ public class RepairCommand extends SkillCommand {
 
         salvageLevel = Config.getInstance().getSalvageUnlockLevel();
 
-        if (skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = df.format(repairMasteryMaxBonus);
-        else repairMasteryBonus = df.format(((double) repairMasteryMaxBonus / (double) repairMasteryMaxBonusLevel) * skillValue);
+        if (skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = percent.format(repairMasteryMaxBonus / 100D);
+        else repairMasteryBonus = percent.format((((double) repairMasteryMaxBonus / (double) repairMasteryMaxBonusLevel) * skillValue) / 100D);
 
         if (skillValue >= superRepairMaxBonusLevel) superRepairChanceF = superRepairChanceMax;
         else superRepairChanceF = (float) (((double) superRepairChanceMax / (double) superRepairMaxBonusLevel) * skillValue);
-        superRepairChance = df.format(superRepairChanceF);
-        if (superRepairChanceF + superRepairChanceF * 0.3333D >= 100D) superRepairChanceLucky = df.format(100D);
-        else superRepairChanceLucky = df.format(superRepairChanceF + superRepairChanceF * 0.3333D);
+        superRepairChance = percent.format(superRepairChanceF / 100D);
+        if (superRepairChanceF + superRepairChanceF * 0.3333D >= 100D) superRepairChanceLucky = percent.format(1D);
+        else superRepairChanceLucky = percent.format((superRepairChanceF + superRepairChanceF * 0.3333D) / 100D);
 
         arcaneForgingRank = Repair.getArcaneForgingRank(profile);
     }

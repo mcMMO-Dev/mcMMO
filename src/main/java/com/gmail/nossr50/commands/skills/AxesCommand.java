@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.commands.SkillCommand;
@@ -44,7 +42,6 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("0.0");
         float critChanceF;
         int skillCheck = Misc.skillCheck((int)skillValue, critMaxBonusLevel);
 
@@ -74,9 +71,9 @@ public class AxesCommand extends SkillCommand {
         //Critical Strikes
         if (skillValue >= critMaxBonusLevel) critChanceF = (float) critMaxChance;
         else critChanceF = (float) ((critMaxChance / critMaxBonusLevel) * skillCheck);
-        critChance = df.format(critChanceF);
-        if (critChanceF + critChanceF * 0.3333D >= 100D) critChanceLucky = df.format(100D);
-        else critChanceLucky = df.format(critChanceF + critChanceF * 0.3333D);
+        critChance = percent.format(critChanceF / 100D);
+        if (critChanceF + critChanceF * 0.3333D >= 100D) critChanceLucky = percent.format(1D);
+        else critChanceLucky = percent.format((critChanceF + critChanceF * 0.3333D) / 100D);
         //Axe Mastery
         if (skillValue >= bonusDamageAxesMaxBonusLevel) bonusDamage = String.valueOf(bonusDamageAxesBonusMax);
         else bonusDamage = String.valueOf(skillValue / ((double) bonusDamageAxesMaxBonusLevel / (double) bonusDamageAxesBonusMax));

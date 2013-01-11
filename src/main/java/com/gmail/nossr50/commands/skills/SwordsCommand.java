@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.commands.SkillCommand;
@@ -41,7 +39,6 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("0.0");
         float bleedChanceF;
         float counterAttackChanceF;
         //Serrated Strikes
@@ -69,16 +66,16 @@ public class SwordsCommand extends SkillCommand {
 
         if (skillValue >= bleedMaxLevel) bleedChanceF = bleedChanceMax;
         else bleedChanceF = (float) (((double) bleedChanceMax / (double) bleedMaxLevel) * skillValue);
-        bleedChance = df.format(bleedChanceF);
-        if (bleedChanceF + bleedChanceF * 0.3333D >= 100D) bleedChanceLucky = df.format(100D);
-        else bleedChanceLucky = df.format(bleedChanceF + bleedChanceF * 0.3333D);
+        bleedChance = percent.format(bleedChanceF / 100D);
+        if (bleedChanceF + bleedChanceF * 0.3333D >= 100D) bleedChanceLucky = percent.format(1D);
+        else bleedChanceLucky = percent.format((bleedChanceF + bleedChanceF * 0.3333D) / 100D);
 
         //Counter Attack
         if (skillValue >= counterMaxLevel) counterAttackChanceF = counterChanceMax;
         else counterAttackChanceF = (float) (((double) counterChanceMax / (double) counterMaxLevel) * skillValue);
-        counterAttackChance = df.format(counterAttackChanceF);
-        if (counterAttackChanceF + counterAttackChanceF * 0.3333D >= 100D) counterAttackChanceLucky = df.format(100D);
-        else counterAttackChanceLucky = df.format(counterAttackChanceF + counterAttackChanceF * 0.3333D);
+        counterAttackChance = percent.format(counterAttackChanceF / 100D);
+        if (counterAttackChanceF + counterAttackChanceF * 0.3333D >= 100D) counterAttackChanceLucky = percent.format(1D);
+        else counterAttackChanceLucky = percent.format((counterAttackChanceF + counterAttackChanceF * 0.3333D) / 100D);
     }
 
     @Override

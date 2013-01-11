@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.commands.SkillCommand;
@@ -39,19 +37,18 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("0.0");
         //Treasure Hunter
         lootTier = Fishing.getFishingLootTier(profile);
         int magicChanceInt = (lootTier * magicHunterMultiplier);
-        magicChance = df.format(magicChanceInt);
-        if (magicChanceInt + (magicChanceInt * 0.3333D) >= 100D) magicChanceLucky = df.format(100D);
-        else magicChanceLucky = df.format(magicChanceInt + (magicChanceInt * 0.3333D));
+        magicChance = percent.format(magicChanceInt / 100D);
+        if (magicChanceInt + (magicChanceInt * 0.3333D) >= 100D) magicChanceLucky = percent.format(1D);
+        else magicChanceLucky = percent.format((magicChanceInt + (magicChanceInt * 0.3333D)) / 100D);
 
         //Shake
         int dropChance = Fishing.getShakeChance(lootTier);
-        shakeChance = df.format(dropChance);
-        if (dropChance + (dropChance * 0.3333D) >= 100D) shakeChanceLucky = df.format(100D);
-        else shakeChanceLucky = df.format(dropChance + (dropChance * 0.3333D));
+        shakeChance = percent.format(dropChance / 100D);
+        if (dropChance + (dropChance * 0.3333D) >= 100D) shakeChanceLucky = percent.format(1D);
+        else shakeChanceLucky = percent.format((dropChance + (dropChance * 0.3333D)) / 100D);
         shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
 
         //Fishermans Diet

@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.commands.SkillCommand;
@@ -41,7 +39,6 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("0.0");
         float disarmChanceF;
         float deflectChanceF;
         //Berserk
@@ -66,16 +63,16 @@ public class UnarmedCommand extends SkillCommand {
         //Disarm
         if (skillValue >= disarmMaxLevel) disarmChanceF = disarmChanceMax;
         else disarmChanceF = (float) (((double) disarmChanceMax / (double) disarmMaxLevel) * skillValue);
-        disarmChance = df.format(disarmChanceF);
-        if (disarmChanceF + disarmChanceF * 0.3333D >= 100D) disarmChanceLucky = df.format(100D);
-        else disarmChanceLucky = df.format(disarmChanceF + disarmChanceF * 0.3333D);
+        disarmChance = percent.format(disarmChanceF / 100D);
+        if (disarmChanceF + disarmChanceF * 0.3333D >= 100D) disarmChanceLucky = percent.format(1D);
+        else disarmChanceLucky = percent.format((disarmChanceF + disarmChanceF * 0.3333D) / 100D);
 
         //Deflect
         if (skillValue >= deflectMaxLevel) deflectChanceF = deflectChanceMax;
         else deflectChanceF = (float) (((double) deflectChanceMax / (double) deflectMaxLevel) * skillValue);
-        deflectChance = df.format(deflectChanceF);
-        if (deflectChanceF + deflectChanceF * 0.3333D >= 100D) deflectChanceLucky = df.format(100D);
-        else deflectChanceLucky = df.format(deflectChanceF + deflectChanceF * 0.3333D);
+        deflectChance = percent.format(deflectChanceF / 100D);
+        if (deflectChanceF + deflectChanceF * 0.3333D >= 100D) deflectChanceLucky = percent.format(1D);
+        else deflectChanceLucky = percent.format((deflectChanceF + deflectChanceF * 0.3333D) / 100D);
 
         //Iron Arm
         if (skillValue >= 250) ironArmBonus = String.valueOf(ironArmMaxBonus);

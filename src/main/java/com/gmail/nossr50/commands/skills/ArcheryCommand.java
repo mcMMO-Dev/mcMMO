@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import java.text.DecimalFormat;
-
 import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.commands.SkillCommand;
@@ -40,7 +38,6 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        DecimalFormat df = new DecimalFormat("0.0");
         float dazeChanceF;
         float retrieveChanceF;
 
@@ -52,16 +49,16 @@ public class ArcheryCommand extends SkillCommand {
         // Daze
         if (skillValue >= dazeMaxBonusLevel) dazeChanceF = dazeBonusMax;
         else dazeChanceF = (float) (((double) dazeBonusMax / (double) dazeMaxBonusLevel) * skillValue);
-        dazeChance = df.format(dazeChanceF);
-        if (dazeChanceF + dazeChanceF * 0.3333D >= 100D) dazeChanceLucky = df.format(100D);
-        else dazeChanceLucky = df.format(dazeChanceF + dazeChanceF * 0.3333D);
+        dazeChance = percent.format(dazeChanceF / 100D);
+        if (dazeChanceF + dazeChanceF * 0.3333D >= 100D) dazeChanceLucky = percent.format(1D);
+        else dazeChanceLucky = percent.format((dazeChanceF + dazeChanceF * 0.3333D) / 100D);
 
         // Retrieve
         if (skillValue >= retrieveMaxBonusLevel) retrieveChanceF = retrieveBonusMax;
         else retrieveChanceF = (float) (((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * skillValue);
-        retrieveChance = df.format(retrieveChanceF);
-        if (retrieveChanceF + retrieveChanceF * 0.3333D >= 100D) retrieveChanceLucky = df.format(100D);
-        else retrieveChanceLucky = df.format(retrieveChanceF + retrieveChanceF * 0.3333D);
+        retrieveChance = percent.format(retrieveChanceF / 100D);
+        if (retrieveChanceF + retrieveChanceF * 0.3333D >= 100D) retrieveChanceLucky = percent.format(1D);
+        else retrieveChanceLucky = percent.format((retrieveChanceF + retrieveChanceF * 0.3333D) / 100D);
     }
 
     @Override
