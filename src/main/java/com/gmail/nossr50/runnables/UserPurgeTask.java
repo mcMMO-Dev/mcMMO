@@ -28,7 +28,7 @@ public class UserPurgeTask implements Runnable {
     @Override
     public void run() {
         if (Config.getInstance().getUseMySQL()) {
-            purgePowerlessSQL();
+            purgePowerlessSQLFaster();
             purgeOldSQL();
         }
         else {
@@ -58,6 +58,66 @@ public class UserPurgeTask implements Runnable {
             }
 
             deleteFromSQL(userId, playerName);
+            purgedUsers++;
+        }
+
+        plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");
+    }
+
+    private void purgePowerlessSQLFaster() {
+        plugin.getLogger().info("Purging powerless users...");
+        String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
+        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " = 0 ORDER BY " + query + " DESC ");
+
+        int purgedUsers = 0;
+        String userIdString = "(";
+
+        for (int i = 1; i <= userslist.size(); i++) {
+            int userId = Integer.valueOf(userslist.get(i).get(1));
+
+            if (i == userslist.size()) {
+                userIdString = userIdString + userId + ")";
+            }
+            else {
+                userIdString = userIdString + userId + ",";
+            }
+        }
+
+        HashMap<Integer, ArrayList<String>> usernames = database.read("SELECT user FROM " + tablePrefix + "users WHERE id IN " + userIdString);
+
+        database.write("DELETE FROM "
+                + databaseName + "."
+                + tablePrefix + "users WHERE "
+                + tablePrefix + "users.id IN " + userIdString);
+    
+        database.write("DELETE FROM "
+                + databaseName + "."
+                + tablePrefix + "cooldowns WHERE "
+                + tablePrefix + "cooldowns.user_id IN " + userIdString);
+
+        database.write("DELETE FROM "
+                + databaseName + "."
+                + tablePrefix + "huds WHERE "
+                + tablePrefix + "huds.user_id IN " + userIdString);
+
+        database.write("DELETE FROM "
+                + databaseName + "."
+                + tablePrefix + "skills WHERE "
+                + tablePrefix + "skills.user_id IN " + userIdString);
+
+        database.write("DELETE FROM "
+                + databaseName + "."
+                + tablePrefix + "experience WHERE "
+                + tablePrefix + "experience.user_id IN " + userIdString);
+
+        for (int i = 1; i <= usernames.size(); i++) {
+            String playerName = usernames.get(i).get(0);
+
+            if (playerName == null || Bukkit.getOfflinePlayer(playerName).isOnline()) {
+                continue;
+            }
+
+            profileCleanup(playerName);
             purgedUsers++;
         }
 
