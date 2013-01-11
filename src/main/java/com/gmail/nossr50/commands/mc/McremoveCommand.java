@@ -60,31 +60,7 @@ public class McremoveCommand implements CommandExecutor {
             userId = database.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
 
             if (userId > 0) {
-                database.write("DELETE FROM "
-                        + databaseName + "."
-                        + tablePrefix + "users WHERE "
-                        + tablePrefix + "users.id=" + userId);
-
-                database.write("DELETE FROM "
-                        + databaseName + "."
-                        + tablePrefix + "cooldowns WHERE "
-                        + tablePrefix + "cooldowns.user_id=" + userId);
-
-                database.write("DELETE FROM "
-                        + databaseName + "."
-                        + tablePrefix + "huds WHERE "
-                        + tablePrefix + "huds.user_id=" + userId);
-
-                database.write("DELETE FROM "
-                        + databaseName + "."
-                        + tablePrefix + "skills WHERE "
-                        + tablePrefix + "skills.user_id=" + userId);
-
-                database.write("DELETE FROM "
-                        + databaseName + "."
-                        + tablePrefix + "experience WHERE "
-                        + tablePrefix + "experience.user_id=" + userId);
-
+                database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userId);
                 sender.sendMessage(success);
 
             }

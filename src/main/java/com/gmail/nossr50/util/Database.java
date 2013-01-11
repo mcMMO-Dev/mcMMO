@@ -77,15 +77,20 @@ public class Database {
      * Attempt to create the database structure.
      */
     public void createStructure() {
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` (`user_id` int(10) unsigned NOT NULL,"
-                + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
-                + "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
+                + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
                 + "`lastlogin` int(32) unsigned NOT NULL,"
                 + "PRIMARY KEY (`id`),"
                 + "UNIQUE KEY `user` (`user`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` (`user_id` int(10) unsigned NOT NULL,"
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
+                + "`user_id` int(10) unsigned NOT NULL,"
+                + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
+                + "PRIMARY KEY (`user_id`)"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`)"
+                + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
+                + "`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`mining` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`woodcutting` int(32) unsigned NOT NULL DEFAULT '0',"
@@ -98,8 +103,11 @@ public class Database {
                 + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` (`user_id` int(10) unsigned NOT NULL,"
+                + "PRIMARY KEY (`user_id`)"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`)"
+                + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
+                + "`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -111,8 +119,11 @@ public class Database {
                 + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` (`user_id` int(10) unsigned NOT NULL,"
+                + "PRIMARY KEY (`user_id`)"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`)"
+                + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
+                + "`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -124,7 +135,9 @@ public class Database {
                 + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+                + "PRIMARY KEY (`user_id`)"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`)"
+                + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
         checkDatabaseStructure(DatabaseUpdate.FISHING);
         checkDatabaseStructure(DatabaseUpdate.BLAST_MINING);

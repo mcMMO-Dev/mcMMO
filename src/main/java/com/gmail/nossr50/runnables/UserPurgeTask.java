@@ -57,7 +57,9 @@ public class UserPurgeTask implements Runnable {
                 continue;
             }
 
-            deleteFromSQL(userId, playerName);
+            database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userId);
+            profileCleanup(playerName);
+
             purgedUsers++;
         }
 
@@ -84,31 +86,7 @@ public class UserPurgeTask implements Runnable {
         }
 
         HashMap<Integer, ArrayList<String>> usernames = database.read("SELECT user FROM " + tablePrefix + "users WHERE id IN " + userIdString);
-
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "users WHERE "
-                + tablePrefix + "users.id IN " + userIdString);
-    
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "cooldowns WHERE "
-                + tablePrefix + "cooldowns.user_id IN " + userIdString);
-
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "huds WHERE "
-                + tablePrefix + "huds.user_id IN " + userIdString);
-
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "skills WHERE "
-                + tablePrefix + "skills.user_id IN " + userIdString);
-
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "experience WHERE "
-                + tablePrefix + "experience.user_id IN " + userIdString);
+        database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userIdString);
 
         for (int i = 1; i <= usernames.size(); i++) {
             String playerName = usernames.get(i).get(0);
@@ -141,41 +119,14 @@ public class UserPurgeTask implements Runnable {
             long loginDifference = currentTime - lastLoginTime;
 
             if (loginDifference > 2630000000L) {
-                deleteFromSQL(userId, playerName);
+                database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userId);
+                profileCleanup(playerName);
+
                 purgedUsers++;
             }
         }
 
         plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");
-    }
-
-    private void deleteFromSQL(int userId, String playerName) {
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "users WHERE "
-                + tablePrefix + "users.id=" + userId);
-    
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "cooldowns WHERE "
-                + tablePrefix + "cooldowns.user_id=" + userId);
-
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "huds WHERE "
-                + tablePrefix + "huds.user_id=" + userId);
-
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "skills WHERE "
-                + tablePrefix + "skills.user_id=" + userId);
-
-        database.write("DELETE FROM "
-                + databaseName + "."
-                + tablePrefix + "experience WHERE "
-                + tablePrefix + "experience.user_id=" + userId);
-
-        profileCleanup(playerName);
     }
 
     private void profileCleanup(String playerName) {
