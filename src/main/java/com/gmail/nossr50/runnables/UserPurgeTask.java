@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.Database;
 
 public class UserPurgeTask implements Runnable {
-
+    private Plugin plugin;
     private Database database = mcMMO.getPlayerDatabase();
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
     private String databaseName = Config.getInstance().getMySQLDatabaseName();
+
+    public UserPurgeTask(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void run() {
@@ -28,8 +33,9 @@ public class UserPurgeTask implements Runnable {
 
     private void purgePowerlessSQL() {
         String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
-
         HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
+
+        int purgedUsers = 0;
 
         for (int i = 1; i <= userslist.size(); i++) {
             int userId = Integer.valueOf(userslist.get(i).get(1));
@@ -40,13 +46,17 @@ public class UserPurgeTask implements Runnable {
             }
 
             deleteFromSQL(userId);
+            purgedUsers++;
         }
+
+        plugin.getLogger().info("Purged " + purgedUsers + "users from the database.");
     }
 
     private void purgeOldSQL() {
         String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
-
         HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
+
+        int purgedUsers = 0;
 
         for (int i = 1; i <= userslist.size(); i++) {
             int userId = Integer.valueOf(userslist.get(i).get(1));
@@ -55,8 +65,11 @@ public class UserPurgeTask implements Runnable {
 
             if (loginDifference > 2630000000L) {
                 deleteFromSQL(userId);
+                purgedUsers++;
             }
         }
+
+        plugin.getLogger().info("Purged " + purgedUsers + "users from the database.");
     }
 
     private void deleteFromSQL(int userId) {

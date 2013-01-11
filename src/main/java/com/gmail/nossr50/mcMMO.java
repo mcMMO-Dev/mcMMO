@@ -201,10 +201,10 @@ public class mcMMO extends JavaPlugin {
         //Old & Powerless User remover
         int purgeInterval = Config.getInstance().getPurgeInterval();
         if (purgeInterval == 0) {
-            scheduler.runTask(this, new UserPurgeTask());
+            scheduler.runTask(this, new UserPurgeTask(this));
         }
         else if (purgeInterval > 0) {
-            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), 0, purgeInterval * 60L * 60L * 20L);
+            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(this), 0, purgeInterval * 60L * 60L * 20L);
         }
 
         registerCommands();
