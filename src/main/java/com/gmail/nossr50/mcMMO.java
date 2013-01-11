@@ -71,6 +71,7 @@ import com.gmail.nossr50.runnables.MobStoreCleaner;
 import com.gmail.nossr50.runnables.SaveTimer;
 import com.gmail.nossr50.runnables.SkillMonitor;
 import com.gmail.nossr50.runnables.SpoutStart;
+import com.gmail.nossr50.runnables.UserPurgeTask;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
@@ -196,6 +197,8 @@ public class mcMMO extends JavaPlugin {
         scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 0, 40);
         //Chunklet unloader (Runs every 20 seconds by default)
         scheduler.scheduleSyncRepeatingTask(this, new ChunkletUnloader(), 0, ChunkletUnloader.RUN_INTERVAL * 20);
+        //Old & Powerless User remover (Runs every 6 hours)
+        scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), 0, 21600 * 20);
 
         registerCommands();
 

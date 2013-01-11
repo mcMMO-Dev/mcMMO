@@ -146,11 +146,12 @@ public class MctopCommand implements CommandExecutor {
         }
 
         for (int i = (page * 10) - 9; i <= (page * 10); i++) {
-            if (i > userslist.size() || database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'") == null) {
+            HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
+
+            if (i > userslist.size() || username == null) {
                 break;
             }
 
-            HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
             sender.sendMessage(String.valueOf(i) + ". " + ChatColor.GREEN + userslist.get(i).get(0) + " - " + ChatColor.WHITE + username.get(1).get(0));
         }
     }
