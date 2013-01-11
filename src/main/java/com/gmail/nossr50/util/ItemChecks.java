@@ -468,6 +468,9 @@ public class ItemChecks {
      * @return true if the item is enchantable, false otherwise
      */
     public static boolean isEnchantable(ItemStack is) {
-        return isArmor(is) || isSword(is) || isAxe(is) || isShovel(is) || isPickaxe(is) || (is.getType() == Material.BOW);
+        Material type = is.getType();
+        return isArmor(is) || isSword(is) || isAxe(is) || isShovel(is) || isPickaxe(is) ||
+               type == Material.SHEARS || type == Material.FISHING_ROD || type == Material.CARROT_STICK ||
+               type == Material.FLINT_AND_STEEL || type == Material.BOW;
     }
 }
