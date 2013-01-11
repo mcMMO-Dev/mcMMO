@@ -124,6 +124,9 @@ commands:
     a:
         aliases: [ac]
         description: Toggle Admin chat or send admin chat messages
+    mcpurge:
+        aliases: []
+        description: Purge users with 0 powerlevel and/or who haven't connected in over 30 days from the server DB.
 permissions:
     mcmmo.*:
         default: false
@@ -341,7 +344,7 @@ permissions:
     mcmmo.tools.mcgod:
         description: Allows access to mcgod command
     mcmmo.tools.mcremove:
-        decription: Allows access to mcremove command
+        decription: Allows access to mcremove and mcpurge command
     mcmmo.ability.*:
         description: Implies all mcmmo.ability permissions.
         children:

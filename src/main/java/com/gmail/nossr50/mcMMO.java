@@ -26,6 +26,7 @@ import com.gmail.nossr50.commands.mc.McabilityCommand;
 import com.gmail.nossr50.commands.mc.MccCommand;
 import com.gmail.nossr50.commands.mc.McgodCommand;
 import com.gmail.nossr50.commands.mc.McmmoCommand;
+import com.gmail.nossr50.commands.mc.McpurgeCommand;
 import com.gmail.nossr50.commands.mc.McrefreshCommand;
 import com.gmail.nossr50.commands.mc.McremoveCommand;
 import com.gmail.nossr50.commands.mc.MctopCommand;
@@ -354,6 +355,9 @@ public class mcMMO extends JavaPlugin {
         Config configInstance = Config.getInstance();
 
         //mc* commands
+        if (configInstance.getCommandMCPurgeEnabled()) {
+            getCommand("mcpurge").setExecutor(new McpurgeCommand(this));
+        }
         if (configInstance.getCommandMCRemoveEnabled()) {
             getCommand("mcremove").setExecutor(new McremoveCommand(this));
         }

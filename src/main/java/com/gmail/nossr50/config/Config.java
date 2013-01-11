@@ -88,6 +88,7 @@ public class Config extends ConfigLoader {
     public boolean getCommandSkillResetEnabled() { return config.getBoolean("Commands.skillreset.Enabled", true); }
     public boolean getCommandMmoeditEnabled() { return config.getBoolean("Commands.mmoedit.Enabled", true); }
     public boolean getCommandMCRemoveEnabled() { return config.getBoolean("Commands.mcremove.Enable", true); }
+    public boolean getCommandMCPurgeEnabled() { return config.getBoolean("Commands.mcpurge.Enable", true); }
     public boolean getCommandPTPEnabled() { return config.getBoolean("Commands.ptp.Enabled", true); }
     public boolean getCommandPartyEnabled() { return config.getBoolean("Commands.party.Enabled", true); }
     public boolean getCommandInspectEnabled() { return config.getBoolean("Commands.inspect.Enabled", true); }

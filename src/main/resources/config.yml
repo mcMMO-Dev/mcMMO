@@ -302,6 +302,8 @@ Commands:
         Enabled: true
     mcc:
         Enabled: true
+    mcpurge:
+        Enabled: true
     mcremove:
         Enabled: true
     mmoedit:
