@@ -25,11 +25,7 @@ public class TreasuresConfig extends ConfigLoader{
     public List<ExcavationTreasure> excavationFromClay = new ArrayList<ExcavationTreasure>();
     public List<ExcavationTreasure> excavationFromMycel = new ArrayList<ExcavationTreasure>();
     public List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
-    public List<FishingTreasure> fishingRewardsTier1 = new ArrayList<FishingTreasure>();
-    public List<FishingTreasure> fishingRewardsTier2 = new ArrayList<FishingTreasure>();
-    public List<FishingTreasure> fishingRewardsTier3 = new ArrayList<FishingTreasure>();
-    public List<FishingTreasure> fishingRewardsTier4 = new ArrayList<FishingTreasure>();
-    public List<FishingTreasure> fishingRewardsTier5 = new ArrayList<FishingTreasure>();
+    public List<FishingTreasure> fishingRewards = new ArrayList<FishingTreasure>();
 
     private TreasuresConfig() {
         super("treasures.yml");
@@ -198,30 +194,7 @@ public class TreasuresConfig extends ConfigLoader{
                     continue;
                 }
 
-                FishingTreasure fTreasure = (FishingTreasure) treasure;
-                int dropLevel = fTreasure.getDropLevel();
-                int maxLevel = fTreasure.getMaxLevel();
-
-                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier1() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier1()) {
-                    fishingRewardsTier1.add(fTreasure);
-                }
-
-                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier2() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier2()) {
-                    fishingRewardsTier2.add(fTreasure);
-                }
-
-                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier3() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier3()) {
-                    fishingRewardsTier3.add(fTreasure);
-                }
-
-                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier4() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier4()) {
-                    fishingRewardsTier4.add(fTreasure);
-                }
-
-                if (dropLevel <= AdvancedConfig.getInstance().getFishingTierLevelsTier5() && maxLevel >= AdvancedConfig.getInstance().getFishingTierLevelsTier5()) {
-                    fishingRewardsTier5.add(fTreasure);
-                }
-
+                fishingRewards.add((FishingTreasure) treasure);
             }
             else if (treasure instanceof ExcavationTreasure) {
                 if (!excavationTreasures.contains(treasureKey)) {

@@ -77,50 +77,35 @@ public class Fishing {
             return;
 
         PlayerProfile profile = Users.getProfile(player);
-        List<FishingTreasure> rewards = new ArrayList<FishingTreasure>();
         Item theCatch = (Item) event.getCaught();
 
-        switch (getFishingLootTier(profile)) {
-        case 1:
-            rewards = TreasuresConfig.getInstance().fishingRewardsTier1;
-            break;
+        if (Config.getInstance().getFishingDropsEnabled() && Permissions.fishingTreasures(player)) {
+            int skillLevel = profile.getSkillLevel(SkillType.FISHING);
+            List<FishingTreasure> rewards = new ArrayList<FishingTreasure>();
 
-        case 2:
-            rewards = TreasuresConfig.getInstance().fishingRewardsTier2;
-            break;
+            for (FishingTreasure treasure : TreasuresConfig.getInstance().fishingRewards) {
+                if (treasure.getDropLevel() <= skillLevel && treasure.getMaxLevel() >= skillLevel) {
+                    rewards.add(treasure);
+                }
+            }
 
-        case 3:
-            rewards = TreasuresConfig.getInstance().fishingRewardsTier3;
-            break;
+            if (rewards.size() <= 0) {
+                return;
+            }
 
-        case 4:
-            rewards = TreasuresConfig.getInstance().fishingRewardsTier4;
-            break;
-
-        case 5:
-            rewards = TreasuresConfig.getInstance().fishingRewardsTier5;
-            break;
-
-        default:
-            break;
-        }
-
-        if (Config.getInstance().getFishingDropsEnabled() && rewards.size() > 0
-                && Permissions.fishingTreasures(player)) {
-            FishingTreasure treasure;
-            treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
+            FishingTreasure foundTreasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
 
             int randomChance = 100;
-
             if (Permissions.luckyFishing(player)) {
                 randomChance = (int) (randomChance * 0.75);
             }
 
-            if (Misc.getRandom().nextDouble() * randomChance <= treasure.getDropChance()) {
-                Users.getPlayer(player).addXP(SkillType.FISHING,treasure.getXp());
-                theCatch.setItemStack(treasure.getDrop());
+            if (Misc.getRandom().nextDouble() * randomChance <= foundTreasure.getDropChance()) {
+                Users.getPlayer(player).addXP(SkillType.FISHING, foundTreasure.getXp());
+                theCatch.setItemStack(foundTreasure.getDrop());
             }
-        } else {
+        }
+        else {
             theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
         }
 
