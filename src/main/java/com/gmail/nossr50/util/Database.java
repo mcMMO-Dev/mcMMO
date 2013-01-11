@@ -24,7 +24,7 @@ public class Database {
     private static mcMMO plugin = null;
 
     // Scale waiting time by this much per failed attempt
-    private static final double SCALING_FACTOR = 10;
+    private static final double SCALING_FACTOR = 40;
 
     // Minimum wait in nanoseconds (default 500ms)
     private static final long MIN_WAIT = 500L*1000000L;

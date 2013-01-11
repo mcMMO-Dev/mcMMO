@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.SpoutHud;
+import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Database;
+import com.gmail.nossr50.util.Users;
 
 public class UserPurgeTask implements Runnable {
     private Plugin plugin;
@@ -34,7 +39,7 @@ public class UserPurgeTask implements Runnable {
     private void purgePowerlessSQL() {
         System.out.println("Purging powerless users...");
         String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
+        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " = 0 ORDER BY " + query + " DESC ");
 
         int purgedUsers = 0;
 
@@ -42,16 +47,17 @@ public class UserPurgeTask implements Runnable {
             System.out.println("Checking user " + i + "/" + userslist.size());
             int userId = Integer.valueOf(userslist.get(i).get(1));
             HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + userId + "'");
+            String playerName = username.get(1).get(0);
 
-            if (username != null && Bukkit.getOfflinePlayer(username.get(1).get(0)).isOnline()) {
+            if (Bukkit.getOfflinePlayer(playerName).isOnline()) {
                 continue;
             }
 
-            deleteFromSQL(userId);
+            deleteFromSQL(userId, playerName);
             purgedUsers++;
         }
 
-        plugin.getLogger().info("Purged " + purgedUsers + "users from the database.");
+        plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");
     }
 
     private void purgeOldSQL() {
@@ -65,19 +71,22 @@ public class UserPurgeTask implements Runnable {
         for (int i = 1; i <= userslist.size(); i++) {
             System.out.println("Checking user " + i + "/" + userslist.size());
             int userId = Integer.valueOf(userslist.get(i).get(1));
+            HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + userId + "'");
+            String playerName = username.get(1).get(0);
+
             long lastLoginTime = database.getInt("SELECT lastlogin FROM " + tablePrefix + "users WHERE id = '" + userId + "'") * 1000L;
             long loginDifference = currentTime - lastLoginTime;
 
             if (loginDifference > 2630000000L) {
-                deleteFromSQL(userId);
+                deleteFromSQL(userId, playerName);
                 purgedUsers++;
             }
         }
 
-        plugin.getLogger().info("Purged " + purgedUsers + "users from the database.");
+        plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");
     }
 
-    private void deleteFromSQL(int userId) {
+    private void deleteFromSQL(int userId, String playerName) {
         System.out.println("Deleting user " + userId);
         database.write("DELETE FROM "
                 + databaseName + "."
@@ -104,6 +113,31 @@ public class UserPurgeTask implements Runnable {
                 + tablePrefix + "experience WHERE "
                 + tablePrefix + "experience.user_id=" + userId);
 
+        profileCleanup(playerName);
+
         System.out.println("User " + userId + " was successfully removed!");
+    }
+
+    private void profileCleanup(String playerName) {
+        McMMOPlayer mcmmoPlayer = Users.getPlayer(playerName);
+
+        if (mcmmoPlayer != null) {
+            Player player = mcmmoPlayer.getPlayer();
+            SpoutHud spoutHud = mcmmoPlayer.getProfile().getSpoutHud();
+
+            if (spoutHud != null) {
+                spoutHud.removeWidgets();
+            }
+
+            Users.remove(playerName);
+
+            if (player.isOnline()) {
+                Users.addUser(player);
+
+                if (mcMMO.spoutEnabled) {
+                    SpoutStuff.reloadSpoutPlayer(player);
+                }
+            }
+        }
     }
 }
