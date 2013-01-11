@@ -32,12 +32,14 @@ public class UserPurgeTask implements Runnable {
     }
 
     private void purgePowerlessSQL() {
+        System.out.println("Purging powerless users...");
         String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
         HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
 
         int purgedUsers = 0;
 
         for (int i = 1; i <= userslist.size(); i++) {
+            System.out.println("Checking user " + i + "/" + userslist.size());
             int userId = Integer.valueOf(userslist.get(i).get(1));
             HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + userId + "'");
 
@@ -53,15 +55,18 @@ public class UserPurgeTask implements Runnable {
     }
 
     private void purgeOldSQL() {
+        System.out.println("Purging old users...");
+        long currentTime = System.currentTimeMillis();
         String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
         HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
 
         int purgedUsers = 0;
 
         for (int i = 1; i <= userslist.size(); i++) {
+            System.out.println("Checking user " + i + "/" + userslist.size());
             int userId = Integer.valueOf(userslist.get(i).get(1));
             long lastLoginTime = database.getInt("SELECT lastlogin FROM " + tablePrefix + "users WHERE id = '" + userId + "'") * 1000L;
-            long loginDifference = System.currentTimeMillis() - lastLoginTime;
+            long loginDifference = currentTime - lastLoginTime;
 
             if (loginDifference > 2630000000L) {
                 deleteFromSQL(userId);
@@ -73,6 +78,7 @@ public class UserPurgeTask implements Runnable {
     }
 
     private void deleteFromSQL(int userId) {
+        System.out.println("Deleting user " + userId);
         database.write("DELETE FROM "
                 + databaseName + "."
                 + tablePrefix + "users WHERE "
@@ -97,5 +103,7 @@ public class UserPurgeTask implements Runnable {
                 + databaseName + "."
                 + tablePrefix + "experience WHERE "
                 + tablePrefix + "experience.user_id=" + userId);
+
+        System.out.println("User " + userId + " was successfully removed!");
     }
 }
