@@ -20,7 +20,7 @@ General:
     #Amount of time (in hours) to wait between database purging
     #To only run at server start, set to 0
     #To never run, set to -1
-    Purge_Interval: 0
+    Purge_Interval: -1
 
 #
 #  Settings for using a mySQL database
