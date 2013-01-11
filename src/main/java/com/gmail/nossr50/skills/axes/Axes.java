@@ -20,31 +20,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Axes {
+    public static int maxBonusDamage = AdvancedConfig.getInstance().getBonusDamageAxesBonusMax();
+    public static int maxBonusLevel = AdvancedConfig.getInstance().getBonusDamageAxesMaxBonusLevel();
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-
-    /**
-     * Apply bonus to damage done by axes.
-     *
-     * @param attacker The attacking player
-     * @param event The event to modify
-     */
-    public static void axesBonus(Player attacker, EntityDamageByEntityEvent event) {
-        if (attacker == null)
-            return;
-
-        final int MAX_BONUS = advancedConfig.getBonusDamageAxesBonusMax();
-        final int MAX_LEVEL = advancedConfig.getBonusDamageAxesMaxBonusLevel();
-        final int INCREASE_LEVEL = MAX_LEVEL / MAX_BONUS;
-
-        /* Add 1 DMG for every 50 skill levels (default value) */
-        int bonus = (int) ((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) INCREASE_LEVEL);
-
-        if (bonus > MAX_BONUS) {
-            bonus = MAX_BONUS;
-        }
-
-        event.setDamage(event.getDamage() + bonus);
-    }
 
     /**
      * Check for critical chances on axe damage.
@@ -112,7 +90,6 @@ public class Axes {
      * @param target The defending entity
      * @param event The event to modify
      */
-    @SuppressWarnings("deprecation")
     public static void impact(Player attacker, LivingEntity target, EntityDamageByEntityEvent event) {
         if (attacker == null)
             return;

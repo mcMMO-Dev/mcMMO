@@ -32,6 +32,7 @@ import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.GainXp;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
+import com.gmail.nossr50.skills.axes.AxeManager;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
@@ -96,9 +97,10 @@ public class Combat {
                 }
 
                 Skills.abilityCheck(attacker, SkillType.AXES);
+                AxeManager axeManager = new AxeManager(attacker);
 
                 if (Permissions.axeBonus(attacker)) {
-                    Axes.axesBonus(attacker, event);
+                    axeManager.bonusDamage(event);
                 }
 
                 if (Permissions.criticalHit(attacker)) {
