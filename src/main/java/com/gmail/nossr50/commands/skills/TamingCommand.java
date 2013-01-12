@@ -43,8 +43,8 @@ public class TamingCommand extends SkillCommand {
         if (skillValue >= goreMaxLevel) goreChanceF = (goreChanceMax);
         else goreChanceF = (float) (((double) goreChanceMax / (double) goreMaxLevel) * skillValue);
         goreChance = percent.format(goreChanceF / 100D);
-        if (goreChanceF + goreChanceF * 0.3333D >= 100D) goreChanceLucky = percent.format(1D);
-        else goreChanceLucky = percent.format((goreChanceF + goreChanceF * 0.3333D) / 100D);
+        if (goreChanceF * 1.3333D >= 100D) goreChanceLucky = percent.format(1D);
+        else goreChanceLucky = percent.format(goreChanceF * 1.3333D / 100D);
     }
 
     @Override

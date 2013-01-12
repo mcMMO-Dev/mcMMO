@@ -44,22 +44,22 @@ public class AcrobaticsCommand extends SkillCommand {
         if (skillValue >= dodgeMaxBonusLevel) dodgeChanceF = dodgeChanceMax;
         else dodgeChanceF = (float) (((double) dodgeChanceMax / (double) dodgeMaxBonusLevel) * skillValue);
         dodgeChance = percent.format(dodgeChanceF / 100D);
-        if (dodgeChanceF + dodgeChanceF * 0.3333D >= 100D) dodgeChanceLucky = percent.format(1D);
-        else dodgeChanceLucky = percent.format((dodgeChanceF + dodgeChanceF * 0.3333D) / 100D);
+        if (dodgeChanceF * 1.3333D >= 100D) dodgeChanceLucky = percent.format(1D);
+        else dodgeChanceLucky = percent.format(dodgeChanceF * 1.3333D / 100D);
 
         // ROLL
         if (skillValue >= rollMaxBonusLevel) rollChanceF = rollChanceMax;
         else rollChanceF = (float) (((double) rollChanceMax / (double) rollMaxBonusLevel) * skillValue);
         rollChance = percent.format(rollChanceF / 100D);
-        if (rollChanceF + rollChanceF * 0.3333D >= 100D) rollChanceLucky = percent.format(1D);
-        else rollChanceLucky = percent.format((rollChanceF + rollChanceF * 0.3333D) / 100D);
+        if (rollChanceF * 1.3333D >= 100D) rollChanceLucky = percent.format(1D);
+        else rollChanceLucky = percent.format(rollChanceF * 1.3333D / 100D);
 
         // GRACEFULROLL
         if (skillValue >= gracefulRollMaxBonusLevel) gracefulRollChanceF = gracefulRollChanceMax;
         else gracefulRollChanceF = (float) (((double) gracefulRollChanceMax / (double) gracefulRollMaxBonusLevel) * skillValue);
         gracefulRollChance = percent.format(gracefulRollChanceF / 100D);
-        if (gracefulRollChanceF + gracefulRollChanceF * 0.3333D >= 100D) gracefulRollChanceLucky = percent.format(1D);
-        else gracefulRollChanceLucky = percent.format((gracefulRollChanceF + gracefulRollChanceF * 0.3333D) / 100D);
+        if (gracefulRollChanceF * 1.3333D >= 100D) gracefulRollChanceLucky = percent.format(1D);
+        else gracefulRollChanceLucky = percent.format(gracefulRollChanceF * 1.3333D / 100D);
     }
 
     @Override

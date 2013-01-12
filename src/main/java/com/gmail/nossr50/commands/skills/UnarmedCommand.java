@@ -64,15 +64,15 @@ public class UnarmedCommand extends SkillCommand {
         if (skillValue >= disarmMaxLevel) disarmChanceF = disarmChanceMax;
         else disarmChanceF = (float) (((double) disarmChanceMax / (double) disarmMaxLevel) * skillValue);
         disarmChance = percent.format(disarmChanceF / 100D);
-        if (disarmChanceF + disarmChanceF * 0.3333D >= 100D) disarmChanceLucky = percent.format(1D);
-        else disarmChanceLucky = percent.format((disarmChanceF + disarmChanceF * 0.3333D) / 100D);
+        if (disarmChanceF * 1.3333D >= 100D) disarmChanceLucky = percent.format(1D);
+        else disarmChanceLucky = percent.format(disarmChanceF * 1.3333D / 100D);
 
         //Deflect
         if (skillValue >= deflectMaxLevel) deflectChanceF = deflectChanceMax;
         else deflectChanceF = (float) (((double) deflectChanceMax / (double) deflectMaxLevel) * skillValue);
         deflectChance = percent.format(deflectChanceF / 100D);
-        if (deflectChanceF + deflectChanceF * 0.3333D >= 100D) deflectChanceLucky = percent.format(1D);
-        else deflectChanceLucky = percent.format((deflectChanceF + deflectChanceF * 0.3333D) / 100D);
+        if (deflectChanceF * 1.3333D >= 100D) deflectChanceLucky = percent.format(1D);
+        else deflectChanceLucky = percent.format(deflectChanceF * 1.3333D / 100D);
 
         //Iron Arm
         if (skillValue >= 250) ironArmBonus = String.valueOf(ironArmMaxBonus);

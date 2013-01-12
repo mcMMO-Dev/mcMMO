@@ -71,8 +71,8 @@ public class MiningCommand extends SkillCommand {
         if (skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
         else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
         doubleDropChance = percent.format(doubleDropChanceF / 100D);
-        if (doubleDropChanceF + doubleDropChanceF * 0.3333D >= 100D) doubleDropChanceLucky = percent.format(1D);
-        else doubleDropChanceLucky = percent.format((doubleDropChanceF + doubleDropChanceF * 0.3333D) / 100D);
+        if (doubleDropChanceF * 1.3333D >= 100D) doubleDropChanceLucky = percent.format(1D);
+        else doubleDropChanceLucky = percent.format(doubleDropChanceF * 1.3333D / 100D);
 
         //Blast Mining
         if (skillValue >= blastMiningRank8) {

@@ -49,14 +49,14 @@ public class FishingCommand extends SkillCommand {
             magicChanceInt = (int) (magicChanceInt * 1.1D);
         }
         magicChance = percent.format(magicChanceInt / 100D);
-        if (magicChanceInt + (magicChanceInt * 0.3333D) >= 100D) magicChanceLucky = percent.format(1D);
-        else magicChanceLucky = percent.format((magicChanceInt + (magicChanceInt * 0.3333D)) / 100D);
+        if (magicChanceInt * 1.3333D >= 100D) magicChanceLucky = percent.format(1D);
+        else magicChanceLucky = percent.format(magicChanceInt * 1.3333D / 100D);
 
         //Shake
         int dropChance = Fishing.getShakeChance(lootTier);
         shakeChance = percent.format(dropChance / 100D);
-        if (dropChance + (dropChance * 0.3333D) >= 100D) shakeChanceLucky = percent.format(1D);
-        else shakeChanceLucky = percent.format((dropChance + (dropChance * 0.3333D)) / 100D);
+        if (dropChance * 1.3333D >= 100D) shakeChanceLucky = percent.format(1D);
+        else shakeChanceLucky = percent.format(dropChance * 1.3333D / 100D);
         shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
 
         //Fishermans Diet

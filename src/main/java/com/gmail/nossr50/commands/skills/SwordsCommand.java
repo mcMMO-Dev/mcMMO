@@ -67,15 +67,15 @@ public class SwordsCommand extends SkillCommand {
         if (skillValue >= bleedMaxLevel) bleedChanceF = bleedChanceMax;
         else bleedChanceF = (float) (((double) bleedChanceMax / (double) bleedMaxLevel) * skillValue);
         bleedChance = percent.format(bleedChanceF / 100D);
-        if (bleedChanceF + bleedChanceF * 0.3333D >= 100D) bleedChanceLucky = percent.format(1D);
-        else bleedChanceLucky = percent.format((bleedChanceF + bleedChanceF * 0.3333D) / 100D);
+        if (bleedChanceF * 1.3333D >= 100D) bleedChanceLucky = percent.format(1D);
+        else bleedChanceLucky = percent.format(bleedChanceF * 1.3333D / 100D);
 
         //Counter Attack
         if (skillValue >= counterMaxLevel) counterAttackChanceF = counterChanceMax;
         else counterAttackChanceF = (float) (((double) counterChanceMax / (double) counterMaxLevel) * skillValue);
         counterAttackChance = percent.format(counterAttackChanceF / 100D);
-        if (counterAttackChanceF + counterAttackChanceF * 0.3333D >= 100D) counterAttackChanceLucky = percent.format(1D);
-        else counterAttackChanceLucky = percent.format((counterAttackChanceF + counterAttackChanceF * 0.3333D) / 100D);
+        if (counterAttackChanceF * 1.3333D >= 100D) counterAttackChanceLucky = percent.format(1D);
+        else counterAttackChanceLucky = percent.format(counterAttackChanceF * 1.3333D / 100D);
     }
 
     @Override

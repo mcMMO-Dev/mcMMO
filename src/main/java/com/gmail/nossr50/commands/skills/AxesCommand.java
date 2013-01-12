@@ -72,8 +72,8 @@ public class AxesCommand extends SkillCommand {
         if (skillValue >= critMaxBonusLevel) critChanceF = (float) critMaxChance;
         else critChanceF = (float) ((critMaxChance / critMaxBonusLevel) * skillCheck);
         critChance = percent.format(critChanceF / 100D);
-        if (critChanceF + critChanceF * 0.3333D >= 100D) critChanceLucky = percent.format(1D);
-        else critChanceLucky = percent.format((critChanceF + critChanceF * 0.3333D) / 100D);
+        if (critChanceF * 1.3333D >= 100D) critChanceLucky = percent.format(1D);
+        else critChanceLucky = percent.format(critChanceF * 1.3333D / 100D);
         //Axe Mastery
         if (skillValue >= bonusDamageAxesMaxBonusLevel) bonusDamage = String.valueOf(bonusDamageAxesBonusMax);
         else bonusDamage = String.valueOf(skillValue / ((double) bonusDamageAxesMaxBonusLevel / (double) bonusDamageAxesBonusMax));

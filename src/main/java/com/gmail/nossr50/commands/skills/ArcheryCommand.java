@@ -50,15 +50,15 @@ public class ArcheryCommand extends SkillCommand {
         if (skillValue >= dazeMaxBonusLevel) dazeChanceF = dazeBonusMax;
         else dazeChanceF = (float) (((double) dazeBonusMax / (double) dazeMaxBonusLevel) * skillValue);
         dazeChance = percent.format(dazeChanceF / 100D);
-        if (dazeChanceF + dazeChanceF * 0.3333D >= 100D) dazeChanceLucky = percent.format(1D);
-        else dazeChanceLucky = percent.format((dazeChanceF + dazeChanceF * 0.3333D) / 100D);
+        if (dazeChanceF * 1.3333D >= 100D) dazeChanceLucky = percent.format(1D);
+        else dazeChanceLucky = percent.format(dazeChanceF * 1.3333D / 100D);
 
         // Retrieve
         if (skillValue >= retrieveMaxBonusLevel) retrieveChanceF = retrieveBonusMax;
         else retrieveChanceF = (float) (((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * skillValue);
         retrieveChance = percent.format(retrieveChanceF / 100D);
-        if (retrieveChanceF + retrieveChanceF * 0.3333D >= 100D) retrieveChanceLucky = percent.format(1D);
-        else retrieveChanceLucky = percent.format((retrieveChanceF + retrieveChanceF * 0.3333D) / 100D);
+        if (retrieveChanceF * 1.3333D >= 100D) retrieveChanceLucky = percent.format(1D);
+        else retrieveChanceLucky = percent.format(retrieveChanceF * 1.3333D / 100D);
     }
 
     @Override

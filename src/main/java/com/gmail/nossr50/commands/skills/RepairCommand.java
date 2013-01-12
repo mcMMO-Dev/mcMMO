@@ -70,8 +70,8 @@ public class RepairCommand extends SkillCommand {
         if (skillValue >= superRepairMaxBonusLevel) superRepairChanceF = superRepairChanceMax;
         else superRepairChanceF = (float) (((double) superRepairChanceMax / (double) superRepairMaxBonusLevel) * skillValue);
         superRepairChance = percent.format(superRepairChanceF / 100D);
-        if (superRepairChanceF + superRepairChanceF * 0.3333D >= 100D) superRepairChanceLucky = percent.format(1D);
-        else superRepairChanceLucky = percent.format((superRepairChanceF + superRepairChanceF * 0.3333D) / 100D);
+        if (superRepairChanceF * 1.3333D >= 100D) superRepairChanceLucky = percent.format(1D);
+        else superRepairChanceLucky = percent.format((superRepairChanceF * 1.3333D) / 100D);
 
         arcaneForgingRank = Repair.getArcaneForgingRank(profile);
     }
