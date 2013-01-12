@@ -87,7 +87,7 @@ public class Database {
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
                 + "PRIMARY KEY (`user_id`)"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`)"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`"
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
@@ -104,7 +104,7 @@ public class Database {
                 + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`)"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`"
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
@@ -120,7 +120,7 @@ public class Database {
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`)"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`"
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
@@ -136,11 +136,12 @@ public class Database {
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`)"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`"
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
         checkDatabaseStructure(DatabaseUpdate.FISHING);
         checkDatabaseStructure(DatabaseUpdate.BLAST_MINING);
+        checkDatabaseStructure(DatabaseUpdate.CASCADE_DELETE);
     }
 
     /**
@@ -200,7 +201,7 @@ public class Database {
             }
         } finally {
             if (resultSet != null) {
-                try {
+                try     {
                     resultSet.close();
                 } catch (SQLException e) {
                     // Ignore the error, we're leaving
