@@ -43,14 +43,14 @@ public class FishingCommand extends SkillCommand {
         chanceRaining = "";
         //Treasure Hunter
         lootTier = Fishing.getFishingLootTier(profile);
-        int magicChanceInt = (lootTier * magicHunterMultiplier);
+        double magicChanceD = (int) (lootTier * magicHunterMultiplier);
         if (raining) {
             chanceRaining = LocaleLoader.getString("Fishing.Chance.Raining");
-            magicChanceInt = (int) (magicChanceInt * 1.1D);
+            magicChanceD = magicChanceD * 1.1D;
         }
-        magicChance = percent.format(magicChanceInt / 100D);
-        if (magicChanceInt * 1.3333D >= 100D) magicChanceLucky = percent.format(1D);
-        else magicChanceLucky = percent.format(magicChanceInt * 1.3333D / 100D);
+        magicChance = percent.format(magicChanceD / 100D);
+        if (magicChanceD * 1.3333D >= 100D) magicChanceLucky = percent.format(1D);
+        else magicChanceLucky = percent.format(magicChanceD * 1.3333D / 100D);
 
         //Shake
         int dropChance = Fishing.getShakeChance(lootTier);
