@@ -86,7 +86,7 @@ public class Database {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
-                + "PRIMARY KEY (`user_id`)"
+                + "PRIMARY KEY (`user_id`),"
                 + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
@@ -103,7 +103,7 @@ public class Database {
                 + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`)"
+                + "PRIMARY KEY (`user_id`),"
                 + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
@@ -119,7 +119,7 @@ public class Database {
                 + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`)"
+                + "PRIMARY KEY (`user_id`),"
                 + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
@@ -135,7 +135,7 @@ public class Database {
                 + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`)"
+                + "PRIMARY KEY (`user_id`),"
                 + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
