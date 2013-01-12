@@ -87,7 +87,7 @@ public class Database {
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
                 + "PRIMARY KEY (`user_id`)"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
@@ -104,7 +104,7 @@ public class Database {
                 + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
@@ -120,7 +120,7 @@ public class Database {
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
@@ -136,7 +136,7 @@ public class Database {
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`"
+                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
         checkDatabaseStructure(DatabaseUpdate.FISHING);
@@ -147,7 +147,7 @@ public class Database {
     /**
      * Check database structure for missing values.
      *
-     * @param update Type of data to check updates for
+     * @param update Type of data to check updates for  
      */
     public void checkDatabaseStructure(DatabaseUpdate update) {
         String sql = null;
@@ -158,6 +158,12 @@ public class Database {
         case BLAST_MINING:
             sql = "SELECT * FROM  `" + tablePrefix + "cooldowns` ORDER BY  `" + tablePrefix + "cooldowns`.`blast_mining` ASC LIMIT 0 , 30";
             break;
+
+        case CASCADE_DELETE:
+            write("ALTER TABLE `" + tablePrefix + "huds` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
+            write("ALTER TABLE `" + tablePrefix + "experience` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
+            write("ALTER TABLE `" + tablePrefix + "cooldowns` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
+            write("ALTER TABLE `" + tablePrefix + "skills` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
 
         case FISHING:
             sql = "SELECT * FROM  `" + tablePrefix + "experience` ORDER BY  `" + tablePrefix + "experience`.`fishing` ASC LIMIT 0 , 30";
