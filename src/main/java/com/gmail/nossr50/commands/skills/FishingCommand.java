@@ -16,6 +16,7 @@ public class FishingCommand extends SkillCommand {
     private int lootTier;
     private String magicChance;
     private String magicChanceLucky;
+    private String chanceRaining;
     private int shakeUnlockLevel;
     private String shakeChance;
     private String shakeChanceLucky;
@@ -30,6 +31,7 @@ public class FishingCommand extends SkillCommand {
     private boolean canShake;
     private boolean canFishermansDiet;
     private boolean lucky;
+    private boolean raining;
 
     public FishingCommand() {
         super(SkillType.FISHING);
@@ -37,9 +39,15 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
+        raining = player.getWorld().hasStorm();
+        chanceRaining = "";
         //Treasure Hunter
         lootTier = Fishing.getFishingLootTier(profile);
         int magicChanceInt = (lootTier * magicHunterMultiplier);
+        if (raining) {
+            chanceRaining = LocaleLoader.getString("Fishing.Chance.Raining");
+            magicChanceInt = (int) (magicChanceInt * 1.1D);
+        }
         magicChance = percent.format(magicChanceInt / 100D);
         if (magicChanceInt + (magicChanceInt * 0.3333D) >= 100D) magicChanceLucky = percent.format(1D);
         else magicChanceLucky = percent.format((magicChanceInt + (magicChanceInt * 0.3333D)) / 100D);
@@ -107,9 +115,9 @@ public class FishingCommand extends SkillCommand {
 
         if (canMagicHunt) {
             if (lucky)
-                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { magicChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance}) + chanceRaining +  LocaleLoader.getString("Perks.lucky.bonus", new Object[] { magicChanceLucky }));
             else
-                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance }));
+                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance}) + chanceRaining);
         }
 
         if (canShake) {

@@ -150,6 +150,10 @@ public class Fishing {
                     randomChance = (int) (randomChance * 0.75);
                 }
 
+                if (player.getWorld().hasStorm()) {
+                    randomChance = (int) (randomChance * 0.909);
+                }
+
                 /* CHANCE OF ITEM BEING ENCHANTED
                  * 5% - Tier 1
                  * 10% - Tier 2
