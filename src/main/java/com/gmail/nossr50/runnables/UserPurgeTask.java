@@ -28,7 +28,7 @@ public class UserPurgeTask implements Runnable {
     @Override
     public void run() {
         if (Config.getInstance().getUseMySQL()) {
-            purgePowerlessSQLFaster();
+            purgePowerlessSQL();
             purgeOldSQL();
         }
         else {
@@ -38,55 +38,8 @@ public class UserPurgeTask implements Runnable {
 
     private void purgePowerlessSQL() {
         plugin.getLogger().info("Purging powerless users...");
-        String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " = 0 ORDER BY " + query + " DESC ");
-
-        int purgedUsers = 0;
-
-        for (int i = 1; i <= userslist.size(); i++) {
-            int userId = Integer.valueOf(userslist.get(i).get(1));
-            HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + userId + "'");
-
-            if (username == null) {
-                continue;
-            }
-
-            String playerName = username.get(1).get(0);
-
-            if (Bukkit.getOfflinePlayer(playerName).isOnline()) {
-                continue;
-            }
-
-            database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userId);
-            profileCleanup(playerName);
-
-            purgedUsers++;
-        }
-
-        plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");
-    }
-
-    private void purgePowerlessSQLFaster() {
-        plugin.getLogger().info("Purging powerless users...");
-        String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " = 0 ORDER BY " + query + " DESC ");
-
-        int purgedUsers = 0;
-        String userIdString = "(";
-
-        for (int i = 1; i <= userslist.size(); i++) {
-            int userId = Integer.valueOf(userslist.get(i).get(1));
-
-            if (i == userslist.size()) {
-                userIdString = userIdString + userId + ")";
-            }
-            else {
-                userIdString = userIdString + userId + ",";
-            }
-        }
-
-        HashMap<Integer, ArrayList<String>> usernames = database.read("SELECT user FROM " + tablePrefix + "users WHERE id IN " + userIdString);
-        database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userIdString);
+        HashMap<Integer, ArrayList<String>> usernames = database.read("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
+        database.write("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.id IN (SELECT * FROM (SELECT u.id FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0) AS p)");
 
         for (int i = 1; i <= usernames.size(); i++) {
             String playerName = usernames.get(i).get(0);
