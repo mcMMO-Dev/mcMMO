@@ -1,8 +1,10 @@
 package com.gmail.nossr50.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +23,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+
 import com.gmail.nossr50.mcMMO;
 
 public class Anniversary {
@@ -40,12 +43,11 @@ public class Anniversary {
                 System.out.println(ex);
             }
         }
-
         hasCelebrated = new ArrayList<String>();
 
         try {
             hasCelebrated.clear();
-            BufferedReader reader = new BufferedReader(new FileReader(mcMMO.p.getDataFolder().getAbsolutePath() + File.separator + "players"));
+            BufferedReader reader = new BufferedReader(new FileReader(mcMMO.p.getDataFolder().getAbsolutePath() + File.separator + "anniversary"));
             String line = reader.readLine();
 
             while (line != null) {
@@ -59,35 +61,47 @@ public class Anniversary {
         }
     }
 
+    //This gets called onDisable
+    public void saveAnniversaryFiles() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(mcMMO.p.getDataFolder().getAbsolutePath() + File.separator + "anniversary"));
+            for (String player : hasCelebrated) {
+                writer.write(player);
+                writer.newLine();
+            }
+            writer.close();
+        }
+        catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
     //This gets called from /mcmmo command
     public void anniversaryCheck(final CommandSender sender) {
-        GregorianCalendar anniversaryStart = new GregorianCalendar(2013, Calendar.FEBRUARY, 3);
-        GregorianCalendar anniversaryEnd = new GregorianCalendar(2013, Calendar.FEBRUARY, 6);
-        GregorianCalendar day = new GregorianCalendar();
-        int celebrationCheck = 0;
+        if (sender instanceof Player) {
+            GregorianCalendar anniversaryStart = new GregorianCalendar(2013, Calendar.FEBRUARY, 3);
+            GregorianCalendar anniversaryEnd = new GregorianCalendar(2013, Calendar.FEBRUARY, 6);
+            GregorianCalendar day = new GregorianCalendar();
 
-        for (String celebrated : hasCelebrated) {
-            if (sender.getName().equalsIgnoreCase(celebrated)) {
-                celebrationCheck = 1;
-            }
-        }
-
-        if (celebrationCheck == 0) {
-            if (getDateRange(day.getTime(), anniversaryStart.getTime(), anniversaryEnd.getTime())) {
-                sender.sendMessage(ChatColor.BLUE + "Happy 2 Year Anniversary!  In honor of all of");
-                sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
-                final int firework_amount = 10;
-                for (int i = 0; i < firework_amount; i++) {
-                    int delay = (int) (Math.random() * 3) + 4;
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
-                        @Override
-                        public void run() {
-                            spawnFireworks((Player) sender);
-                        }
-                    }, 20 * delay);
+            if (hasCelebrated.contains(sender.getName())) {
+                return; 
+            } else {
+                if (getDateRange(day.getTime(), anniversaryStart.getTime(), anniversaryEnd.getTime())) {
+                    sender.sendMessage(ChatColor.BLUE + "Happy 2 Year Anniversary!  In honor of all of");
+                    sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
+                    final int firework_amount = 10;
+                    for (int i = 0; i < firework_amount; i++) {
+                        int delay = (int) (Math.random() * 3) + 4;
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+                            @Override
+                            public void run() {
+                                spawnFireworks((Player) sender);
+                            }
+                        }, 20 * delay);
+                    }
                 }
+                hasCelebrated.add(sender.getName());
             }
-            hasCelebrated.add(sender.getName());
         }
     }
 

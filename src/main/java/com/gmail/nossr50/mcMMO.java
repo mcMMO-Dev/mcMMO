@@ -319,6 +319,8 @@ public class mcMMO extends JavaPlugin {
         catch (IOException e) {
             getLogger().severe(e.toString());
         }
+        Anniversary anniversary = new Anniversary();
+        anniversary.saveAnniversaryFiles();
 
         getLogger().info("Was disabled."); //How informative!
     }
