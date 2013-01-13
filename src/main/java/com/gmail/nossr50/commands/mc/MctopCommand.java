@@ -147,7 +147,7 @@ public class MctopCommand implements CommandExecutor {
         int place = ((page * 10) - 9);
         for (ArrayList<String> entry : userslist.values()) {
             sender.sendMessage(String.valueOf(place) + ". " + ChatColor.GREEN + entry.get(1) + " - " + ChatColor.WHITE + entry.get(0));
-			place++;
+            place++;
         }
     }
 }
