@@ -63,7 +63,7 @@ public class MctopCommand implements CommandExecutor {
             }
         }
 
-        String powerlevel = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
+        String powerlevel = "taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing";
 
         switch (args.length) {
         case 0:
@@ -136,23 +136,21 @@ public class MctopCommand implements CommandExecutor {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         Database database = mcMMO.getPlayerDatabase();
 
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
+        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT s." + query + ", u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE (s.user_id = u.id) AND s." + query + " > 0 ORDER BY s." + query + " DESC LIMIT "+((page * 10) - 10)+",10");
 
-        if (query.equals("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
+        if (query.equals("taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
             sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", new Object[] { Misc.getCapitalized(query) }));
         }
-
-        for (int i = (page * 10) - 9; i <= (page * 10); i++) {
-            HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + Integer.valueOf(userslist.get(i).get(1)) + "'");
-
-            if (i > userslist.size() || username == null) {
+        int place = (page * 10) - 9;
+        for (int i =0; i < 10; i++) {
+            if(userslist.get(i) == null) {
                 break;
             }
-
-            sender.sendMessage(String.valueOf(i) + ". " + ChatColor.GREEN + userslist.get(i).get(0) + " - " + ChatColor.WHITE + username.get(1).get(0));
+            sender.sendMessage(String.valueOf(place) + ". " + ChatColor.GREEN + userslist.get(i).get(1) + " - " + ChatColor.WHITE + userslist.get(i).get(0));
+            place++;
         }
     }
 }
