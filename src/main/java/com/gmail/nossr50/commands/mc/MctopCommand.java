@@ -144,9 +144,12 @@ public class MctopCommand implements CommandExecutor {
         else {
             sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", new Object[] { Misc.getCapitalized(query) }));
         }
-        int place = ((page * 10) - 9);
-        for (ArrayList<String> entry : userslist.values()) {
-            sender.sendMessage(String.valueOf(place) + ". " + ChatColor.GREEN + entry.get(1) + " - " + ChatColor.WHITE + entry.get(0));
+        int place = (page * 10) - 9;
+        for (int i =0; i < 10; i++) {
+            if(userslist.get(i) == null) {
+                break;
+            }
+            sender.sendMessage(String.valueOf(place) + ". " + ChatColor.GREEN + userslist.get(i).get(1) + " - " + ChatColor.WHITE + userslist.get(i).get(0));
             place++;
         }
     }
