@@ -145,7 +145,7 @@ public class MctopCommand implements CommandExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", new Object[] { Misc.getCapitalized(query) }));
         }
         int place = (page * 10) - 9;
-        for (int i =0; i < 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             if(userslist.get(i) == null) {
                 break;
             }
