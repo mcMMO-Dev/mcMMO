@@ -16,7 +16,7 @@ public class AdvancedConfig extends ConfigLoader {
 
     @Override
     protected void loadKeys() {
-        // TODO Do I need to use this?
+        // TODO Do we need to use this?
     }
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability_IncreaseLevel", 50); }
@@ -73,6 +73,8 @@ public class AdvancedConfig extends ConfigLoader {
     public int getFishingTierLevelsTier4() { return config.getInt("Skills.Fishing.Tier_Levels.Tier4", 600); }
     public int getFishingTierLevelsTier5() { return config.getInt("Skills.Fishing.Tier_Levels.Tier5", 800); }
 
+    public int getFishingMagicMultiplier() { return config.getInt("Skills.Fishing.MagicHunter_Multiplier", 5); }
+
     /* Shake */
     public int getShakeUnlockLevel() { return config.getInt("Skills.Fishing.Shake_UnlockLevel", 150); }
     public int getShakeChanceRank1() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_1", 25); }
@@ -80,8 +82,6 @@ public class AdvancedConfig extends ConfigLoader {
     public int getShakeChanceRank3() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_3", 55); }
     public int getShakeChanceRank4() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_4", 60); }
     public int getShakeChanceRank5() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_5", 75); }
-
-    public int getFishingMagicMultiplier() { return config.getInt("Skills.Fishing.MagicHunter_Multiplier", 5); }
 
     /* HERBALISM */
     public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.Food_RankChange", 200); }
@@ -105,6 +105,7 @@ public class AdvancedConfig extends ConfigLoader {
     public int getBlastMiningRank6() { return config.getInt("Skills.Mining.BlastMining_Rank6", 750); }
     public int getBlastMiningRank7() { return config.getInt("Skills.Mining.BlastMining_Rank7", 875); }
     public int getBlastMiningRank8() { return config.getInt("Skills.Mining.BlastMining_Rank8", 1000); }
+
     /* REPAIR */
     public int getRepairMasteryMaxBonus() { return config.getInt("Skills.Repair.RepairMastery_MaxBonusPercentage", 200); }
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery_MaxBonusLevel", 1000); }
@@ -139,6 +140,7 @@ public class AdvancedConfig extends ConfigLoader {
 
     public int getSerratedStrikesModifier() { return config.getInt("Skills.Swords.SerratedStrikes_DamageModifier", 4); }
     public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes_BleedTicks", 5); }
+
     /* TAMING */
     public int getGoreChanceMax() { return config.getInt("Skills.Taming.Gore_ChanceMax", 100); }
     public int getGoreMaxBonusLevel() { return config.getInt("Skills.Taming.Gore_MaxBonusLevel", 1000); }
@@ -158,6 +160,7 @@ public class AdvancedConfig extends ConfigLoader {
 
     public int getSharpenedClawsUnlock() { return config.getInt("Skills.Taming.SharpenedClaws_UnlockLevel", 750); }
     public int getSharpenedClawsBonus() { return config.getInt("Skills.Taming.SharpenedClaws_Bonus", 2); }
+
     /* UNARMED */
     public int getDisarmChanceMax() { return config.getInt("Skills.Unarmed.Disarm_ChanceMax", 33); }
     public int getDisarmMaxBonusLevel() { return config.getInt("Skills.Unarmed.Disarm_MaxBonusLevel", 1000); }
@@ -167,6 +170,7 @@ public class AdvancedConfig extends ConfigLoader {
     public int getIronGripMaxBonusLevel() { return config.getInt("Skills.Unarmed.IronGrip_MaxBonusLevel", 1000); }
     public int getIronArmBonus() { return config.getInt("Skills.Unarmed.IronArm_BonusMax", 8); }
     public int getIronArmIncreaseLevel() { return config.getInt("Skills.Unarmed.IronArm_IncreaseLevel", 50); }
+
     /* WOODCUTTING */
     public int getLeafBlowUnlockLevel() { return config.getInt("Skills.Woodcutting.LeafBlower_UnlockLevel", 100); }
     public int getWoodcuttingDoubleDropChance() { return config.getInt("Skills.Woodcutting.DoubleDrops_ChanceMax", 100); }
