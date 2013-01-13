@@ -170,19 +170,19 @@ Skills:
                 Rank_2: 250
                 Rank_3: 500
                 Rank_4: 750
-        Keep_Enchants:
-            Chance:
-                Rank_4: 40
-                Rank_3: 30
-                Rank_2: 20
-                Rank_1: 10
-        Downgrades:
-             Enabled: true
-             Chance:
-                 Rank_4: 15
-                 Rank_3: 25
-                 Rank_2: 50
-                 Rank_1: 75
+            Keep_Enchants:
+                Chance:
+                    Rank_4: 40
+                    Rank_3: 30
+                    Rank_2: 20
+                    Rank_1: 10
+            Downgrades:
+                Enabled: true
+                Chance:
+                    Rank_4: 15
+                    Rank_3: 25
+                    Rank_2: 50
+                    Rank_1: 75
     #
     #  Settings for Swords
     ###
