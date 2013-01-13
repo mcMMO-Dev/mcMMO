@@ -268,6 +268,9 @@ public class Config extends ConfigLoader {
     public boolean getAcrobaticsAFKDisabled() { return config.getBoolean("Skills.Acrobatics.Prevent_AFK_Leveling", true); }
     public boolean getHerbalismAFKDisabled() { return config.getBoolean("Skills.Herbalism.Prevent_AFK_Leveling", true); }
 
+    /* Dogde Lightning */
+    public boolean getDodgeLightningDisabled() {return config.getBoolean("Skills.Acrobatics.Prevent_Dodge_Lightning", false); }
+
     /* Level Caps */
     public int getLevelCapAcrobatics() {
         return getLevelCap("Skills.Acrobatics.Level_Cap");

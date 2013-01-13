@@ -8,6 +8,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
@@ -221,6 +222,10 @@ public class Combat {
                 }
 
                 if (configInstance.getAcrobaticsPVE()) {
+                    if (damager instanceof LightningStrike && configInstance.getDodgeLightningDisabled()) {
+                        return;
+                    }
+
                     acroManager.dodgeCheck(event);
                 }
             }
