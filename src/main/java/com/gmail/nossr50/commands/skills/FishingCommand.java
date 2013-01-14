@@ -43,7 +43,7 @@ public class FishingCommand extends SkillCommand {
         chanceRaining = "";
         //Treasure Hunter
         lootTier = Fishing.getFishingLootTier(profile);
-        double magicChanceD = (int) (lootTier * magicHunterMultiplier);
+        double magicChanceD = lootTier * magicHunterMultiplier;
         if (raining) {
             chanceRaining = LocaleLoader.getString("Fishing.Chance.Raining");
             magicChanceD = magicChanceD * 1.1D;
