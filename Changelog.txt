@@ -8,8 +8,8 @@ Key:
   - Removal
 
 Version 1.3.13-dev
- + Overall SQL query improvements
- + Reduced number of SQL queries for mcTop command from 11 to 1, speeding it up immensely
+ ! Overall SQL query improvements
+ ! Reduced number of SQL queries for mcTop command from 11 to 1, speeding it up immensely
  + Added task to prune old and powerless users from the SQL database.
     *** WARNING: THIS WILL RUN AUTOMATICALLY ON YOUR DB. IF YOU ARE WORRIED ***
     *** ABOUT DATA LOSS, BACK UP YOUR SQL DATA BEFORE INSTALLING THIS BUILD ***
