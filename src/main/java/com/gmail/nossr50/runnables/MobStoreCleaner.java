@@ -37,6 +37,6 @@ public class MobStoreCleaner implements Runnable
 
     public void run()
     {
-        mcMMO.p.placeStore.cleanMobLists();
+        mcMMO.placeStore.cleanMobLists();
     }
 }
