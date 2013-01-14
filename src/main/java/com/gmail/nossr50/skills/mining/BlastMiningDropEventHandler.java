@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -20,9 +21,9 @@ public class BlastMiningDropEventHandler {
     private float yield;
     private List<Block> blocks;
 
-    private List<Block> ores;
-    private List<Block> debris;
-    private List<Block> droppedOres;
+    private List<Block> ores = new ArrayList<Block>();
+    private List<Block> debris = new ArrayList<Block>();
+    private List<Block> droppedOres = new ArrayList<Block>();
 
     private float oreBonus;
     private float debrisReduction;
