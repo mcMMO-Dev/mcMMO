@@ -85,23 +85,23 @@ public class Anniversary {
 
             if (hasCelebrated.contains(sender.getName())) {
                 return; 
-            } else {
-                if (getDateRange(day.getTime(), anniversaryStart.getTime(), anniversaryEnd.getTime())) {
-                    sender.sendMessage(ChatColor.BLUE + "Happy 2 Year Anniversary!  In honor of all of");
-                    sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
-                    final int firework_amount = 10;
-                    for (int i = 0; i < firework_amount; i++) {
-                        int delay = (int) (Math.random() * 3) + 4;
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
-                            @Override
-                            public void run() {
-                                spawnFireworks((Player) sender);
-                            }
-                        }, 20 * delay);
-                    }
-                }
-                hasCelebrated.add(sender.getName());
             }
+
+            if (getDateRange(day.getTime(), anniversaryStart.getTime(), anniversaryEnd.getTime())) {
+                sender.sendMessage(ChatColor.BLUE + "Happy 2 Year Anniversary!  In honor of all of");
+                sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
+                final int firework_amount = 10;
+                for (int i = 0; i < firework_amount; i++) {
+                    int delay = (int) (Math.random() * 3) + 4;
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+                        @Override
+                        public void run() {
+                            spawnFireworks((Player) sender);
+                        }
+                    }, 20 * delay);
+                }
+            }
+            hasCelebrated.add(sender.getName());
         }
     }
 
