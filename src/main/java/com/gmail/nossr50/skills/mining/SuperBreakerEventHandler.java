@@ -53,6 +53,7 @@ public class SuperBreakerEventHandler {
 
     protected void processDropsAndXP() {
         manager.miningBlockCheck(block);
+        manager.miningBlockCheck(block);
     }
 
     protected void playSpoutSound() {
