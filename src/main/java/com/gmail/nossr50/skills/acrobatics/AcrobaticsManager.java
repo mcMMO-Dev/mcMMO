@@ -35,13 +35,13 @@ public class AcrobaticsManager extends SkillManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        float chance;
+        double chance;
 
         if (eventHandler.isGraceful) {
-            chance = ((float) Acrobatics.maxGracefulRollChance / Acrobatics.maxGracefulRollBonusLevel) * eventHandler.skillModifier;
+            chance = (Acrobatics.gracefulRollMaxChance / Acrobatics.gracefulRollMaxBonusLevel) * eventHandler.skillModifier;
         }
         else {
-            chance = ((float) Acrobatics.maxRollChance / Acrobatics.maxRollBonusLevel) * eventHandler.skillModifier;
+            chance = (Acrobatics.rollMaxChance / Acrobatics.rollMaxBonusLevel) * eventHandler.skillModifier;
         }
 
         if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
@@ -71,7 +71,7 @@ public class AcrobaticsManager extends SkillManager {
             randomChance = (int) (randomChance * 0.75);
         }
 
-        float chance = ((float) Acrobatics.maxDodgeChance / Acrobatics.maxDodgeBonusLevel) * eventHandler.skillModifier;
+        double chance = (Acrobatics.dodgeMaxChance / Acrobatics.dodgeMaxBonusLevel) * eventHandler.skillModifier;
 
         if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();

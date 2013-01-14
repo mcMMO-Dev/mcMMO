@@ -2,13 +2,13 @@ package com.gmail.nossr50.skills.archery;
 
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class ArcheryBonusDamageEventHandler {
+public class SkillShotEventHandler {
     private ArcheryManager manager;
     private EntityDamageEvent event;
 
     protected double damageBonusPercent;
 
-    protected ArcheryBonusDamageEventHandler(ArcheryManager manager, EntityDamageEvent event) {
+    protected SkillShotEventHandler(ArcheryManager manager, EntityDamageEvent event) {
         this.manager = manager;
         this.event = event;
     }

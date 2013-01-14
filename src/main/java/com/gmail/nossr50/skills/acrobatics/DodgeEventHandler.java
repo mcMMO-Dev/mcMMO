@@ -18,7 +18,7 @@ public class DodgeEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Acrobatics.maxDodgeBonusLevel);
+        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Acrobatics.dodgeMaxBonusLevel);
     }
 
     @Override

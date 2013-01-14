@@ -22,17 +22,17 @@ Skills:
     Acrobatics:
         # Dodge_ChanceMax: Maximum chance of dodging when on Dodge_MaxBonusLevel or higher
         # Dodge_MaxBonusLevel: On this level or higher, the dodge chance will not go higher than Dodge_ChanceMax
-        Dodge_ChanceMax: 20
+        Dodge_ChanceMax: 20.0
         Dodge_MaxBonusLevel: 800
 
         # Roll_ChanceMax: Maximum chance of rolling when on Roll_MaxBonusLevel or higher
         # Roll_MaxBonusLevel: On this level or higher, the roll chance will not go higher than Roll_ChanceMax
-        Roll_ChanceMax: 100
+        Roll_ChanceMax: 100.0
         Roll_MaxBonusLevel: 1000
 
         # GracefulRoll_ChanceMax: Maximum chance of graceful rolling when on GracefulRoll_MaxBonusLevel or higher
         # GracefulRoll_MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than GracefulRoll_ChanceMax
-        GracefulRoll_ChanceMax: 100
+        GracefulRoll_ChanceMax: 100.0
         GracefulRoll_MaxBonusLevel: 500
 
         # Amount of experience for performing a dodge, roll or fall
@@ -53,13 +53,13 @@ Skills:
         # Daze_MaxChance: Maximum chance of causing daze to opponents
         # Daze_MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be "Daze_MaxChance"
         # Daze_Modifier: Extra damage for arrows that cause a daze (2 damage = 1 heart)
-        Daze_MaxChance: 50
+        Daze_MaxChance: 50.0
         Daze_MaxBonusLevel: 1000
         Daze_Modifier: 4
 
-        # Retrieve_MaxBonus: Maximum chance or retrieving arrows
+        # Retrieve_MaxChance: Maximum chance or retrieving arrows
         # Retrieve_MaxBonusLevel: Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is Retrieve_MaxBonus
-        Retrieve_MaxBonus: 100
+        Retrieve_MaxChance: 100.0
         Retrieve_MaxBonusLevel: 1000
     #
     #  Settings for Axes
@@ -82,14 +82,14 @@ Skills:
         # GreaterImpact_Chance: Chance of hitting with GreaterImpact, knocksbacks mobs
         # GreaterImpact_KnockbackModifier: Velocity modifier of GreaterImpact hits, this determines how great the knockback is
         # GreaterImpact_BonusDamage: Extra damage for GreaterImpact hits
-        GreaterImpact_Chance: 25
+        GreaterImpact_Chance: 25.0
         GreaterImpact_KnockbackModifier: 1.5
         GreaterImpact_BonusDamage: 2
 
         # ArmorImpact_IncreaseLevel: Every "IncreaseLevel" the durability damage goes up with 1
         # ArmorImpact_MaxPercentageDurabilityDamage: Durability damage cap for ArmorImpact, 20% means that you can never destroy a piece of armor in less than 5 hits
         ArmorImpact_IncreaseLevel: 50
-        ArmorImpact_MaxPercentageDurabilityDamage: 20
+        ArmorImpact_MaxPercentageDurabilityDamage: 20.0
     #
     #  Settings for Fishing
     ###

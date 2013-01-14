@@ -6,6 +6,7 @@ import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.Permissions;
 
 public class ArcheryCommand extends SkillCommand {
@@ -16,16 +17,6 @@ public class ArcheryCommand extends SkillCommand {
     private String dazeChanceLucky;
     private String retrieveChance;
     private String retrieveChanceLucky;
-
-    private int skillShotIncreaseLevel = advancedConfig.getSkillShotIncreaseLevel();
-    private double skillShotIncreasePercentage = advancedConfig.getSkillShotIncreasePercentage();
-    private double skillShotBonusMax = advancedConfig.getSkillShotBonusMax();
-
-    private float dazeBonusMax = advancedConfig.getDazeBonusMax();
-    private float dazeMaxBonusLevel = advancedConfig.getDazeMaxBonusLevel();
-
-    private float retrieveBonusMax = advancedConfig.getRetrieveBonusMax();
-    private float retrieveMaxBonusLevel = advancedConfig.getRetrieveMaxBonusLevel();
 
     private boolean canSkillShot;
     private boolean canDaze;
@@ -42,20 +33,20 @@ public class ArcheryCommand extends SkillCommand {
         float retrieveChanceF;
 
         // SkillShot
-        double bonus = (int)((double) skillValue / (double) skillShotIncreaseLevel) * skillShotIncreasePercentage;
-        if (bonus > skillShotBonusMax) skillShotBonus = percent.format(skillShotBonusMax);
+        double bonus = (int)((double) skillValue / (double) Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage;
+        if (bonus > Archery.skillShotMaxBonusPercentage) skillShotBonus = percent.format(Archery.skillShotMaxBonusPercentage);
         else skillShotBonus = percent.format(bonus);
 
         // Daze
-        if (skillValue >= dazeMaxBonusLevel) dazeChanceF = dazeBonusMax;
-        else dazeChanceF = (float) (((double) dazeBonusMax / (double) dazeMaxBonusLevel) * skillValue);
+        if (skillValue >= Archery.dazeMaxBonusLevel) dazeChanceF = (float) Archery.dazeMaxBonus;
+        else dazeChanceF = (float) (( Archery.dazeMaxBonus / Archery.dazeMaxBonusLevel) * skillValue);
         dazeChance = percent.format(dazeChanceF / 100D);
         if (dazeChanceF * 1.3333D >= 100D) dazeChanceLucky = percent.format(1D);
         else dazeChanceLucky = percent.format(dazeChanceF * 1.3333D / 100D);
 
         // Retrieve
-        if (skillValue >= retrieveMaxBonusLevel) retrieveChanceF = retrieveBonusMax;
-        else retrieveChanceF = (float) (((double) retrieveBonusMax / (double) retrieveMaxBonusLevel) * skillValue);
+        if (skillValue >= Archery.retrieveMaxBonusLevel) retrieveChanceF = (float) Archery.retrieveMaxChance;
+        else retrieveChanceF = (float) ((Archery.retrieveMaxChance / Archery.retrieveMaxBonusLevel) * skillValue);
         retrieveChance = percent.format(retrieveChanceF / 100D);
         if (retrieveChanceF * 1.3333D >= 100D) retrieveChanceLucky = percent.format(1D);
         else retrieveChanceLucky = percent.format(retrieveChanceF * 1.3333D / 100D);

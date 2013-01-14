@@ -6,6 +6,7 @@ import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.util.Permissions;
 
 public class AcrobaticsCommand extends SkillCommand {
@@ -17,13 +18,6 @@ public class AcrobaticsCommand extends SkillCommand {
     private String rollChanceLucky;
     private String gracefulRollChance;
     private String gracefulRollChanceLucky;
-
-    private float dodgeChanceMax = advancedConfig.getDodgeChanceMax();
-    private float dodgeMaxBonusLevel = advancedConfig.getDodgeMaxBonusLevel();
-    private float rollChanceMax = advancedConfig.getRollChanceMax();
-    private float rollMaxBonusLevel = advancedConfig.getRollMaxBonusLevel();
-    private float gracefulRollChanceMax = advancedConfig.getGracefulRollChanceMax();
-    private float gracefulRollMaxBonusLevel = advancedConfig.getGracefulRollMaxBonusLevel();
 
     private boolean canDodge;
     private boolean canRoll;
@@ -41,22 +35,22 @@ public class AcrobaticsCommand extends SkillCommand {
         float gracefulRollChanceF;
 
         // DODGE
-        if (skillValue >= dodgeMaxBonusLevel) dodgeChanceF = dodgeChanceMax;
-        else dodgeChanceF = (float) (((double) dodgeChanceMax / (double) dodgeMaxBonusLevel) * skillValue);
+        if (skillValue >= Acrobatics.dodgeMaxBonusLevel) dodgeChanceF = (float) Acrobatics.dodgeMaxChance;
+        else dodgeChanceF = (float) ((Acrobatics.dodgeMaxChance / Acrobatics.dodgeMaxBonusLevel) * skillValue);
         dodgeChance = percent.format(dodgeChanceF / 100D);
         if (dodgeChanceF * 1.3333D >= 100D) dodgeChanceLucky = percent.format(1D);
         else dodgeChanceLucky = percent.format(dodgeChanceF * 1.3333D / 100D);
 
         // ROLL
-        if (skillValue >= rollMaxBonusLevel) rollChanceF = rollChanceMax;
-        else rollChanceF = (float) (((double) rollChanceMax / (double) rollMaxBonusLevel) * skillValue);
+        if (skillValue >= Acrobatics.rollMaxBonusLevel) rollChanceF = (float) Acrobatics.rollMaxChance;
+        else rollChanceF = (float) ((Acrobatics.rollMaxChance / Acrobatics.rollMaxBonusLevel) * skillValue);
         rollChance = percent.format(rollChanceF / 100D);
         if (rollChanceF * 1.3333D >= 100D) rollChanceLucky = percent.format(1D);
         else rollChanceLucky = percent.format(rollChanceF * 1.3333D / 100D);
 
         // GRACEFULROLL
-        if (skillValue >= gracefulRollMaxBonusLevel) gracefulRollChanceF = gracefulRollChanceMax;
-        else gracefulRollChanceF = (float) (((double) gracefulRollChanceMax / (double) gracefulRollMaxBonusLevel) * skillValue);
+        if (skillValue >= Acrobatics.gracefulRollMaxBonusLevel) gracefulRollChanceF = (float) Acrobatics.gracefulRollMaxChance;
+        else gracefulRollChanceF = (float) ((Acrobatics.gracefulRollMaxChance / Acrobatics.gracefulRollMaxBonusLevel) * skillValue);
         gracefulRollChance = percent.format(gracefulRollChanceF / 100D);
         if (gracefulRollChanceF * 1.3333D >= 100D) gracefulRollChanceLucky = percent.format(1D);
         else gracefulRollChanceLucky = percent.format(gracefulRollChanceF * 1.3333D / 100D);

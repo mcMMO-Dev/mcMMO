@@ -46,7 +46,7 @@ public class Axes {
 
             /* Every 50 Skill Levels you gain 1 durability damage (default values) */
             int impactIncreaseLevel = advancedConfig.getArmorImpactIncreaseLevel();
-            float impactMaxDamage = advancedConfig.getArmorImpactMaxDurabilityDamage() / 100F;
+            double impactMaxDamage = advancedConfig.getArmorImpactMaxDurabilityDamage() / 100F;
             short maxDurability;
             durabilityDamage += (int) ((double) Users.getProfile(attacker).getSkillLevel(SkillType.AXES) / (double) impactIncreaseLevel);
 
@@ -90,7 +90,7 @@ public class Axes {
         if (attacker == null)
             return;
 
-        final int GREATER_IMPACT_CHANCE = advancedConfig.getGreaterImpactChance();
+        final double GREATER_IMPACT_CHANCE = advancedConfig.getGreaterImpactChance();
         final double GREATER_IMPACT_MULTIPLIER = advancedConfig.getGreaterImpactModifier();
         final int GREATER_IMPACT_DAMAGE = advancedConfig.getGreaterImpactBonusDamage();
 

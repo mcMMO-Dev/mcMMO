@@ -22,13 +22,13 @@ public class AdvancedConfig extends ConfigLoader {
     public int getAbilityLength() { return config.getInt("Skills.General.Ability_IncreaseLevel", 50); }
 
     /* ACROBATICS */
-    public int getDodgeChanceMax() { return config.getInt("Skills.Acrobatics.Dodge_ChanceMax", 20); }
+    public double getDodgeChanceMax() { return config.getDouble("Skills.Acrobatics.Dodge_ChanceMax", 20.0D); }
     public int getDodgeMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Dodge_MaxBonusLevel", 800); }
 
-    public int getRollChanceMax() { return config.getInt("Skills.Acrobatics.Roll_ChanceMax", 100); }
+    public double getRollChanceMax() { return config.getDouble("Skills.Acrobatics.Roll_ChanceMax", 100.0D); }
     public int getRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Roll_MaxBonusLevel", 1000); }
 
-    public int getGracefulRollChanceMax() { return config.getInt("Skills.Acrobatics.GracefulRoll_ChanceMax", 100); }
+    public double getGracefulRollChanceMax() { return config.getDouble("Skills.Acrobatics.GracefulRoll_ChanceMax", 100.0D); }
     public int getGracefulRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.GracefulRoll_MaxBonusLevel", 500); }
 
     public int getDodgeXPModifier() { return config.getInt("Skills.Acrobatics.Dodge_XP_Modifier", 120); }
@@ -40,11 +40,11 @@ public class AdvancedConfig extends ConfigLoader {
     public double getSkillShotIncreasePercentage() { return config.getDouble("Skills.Archery.SkillShot_IncreasePercentage", 0.1D); }
     public double getSkillShotBonusMax() { return config.getDouble("Skills.Archery.SkillShot_MaxBonus", 2.0D); }
 
-    public int getDazeBonusMax() { return config.getInt("Skills.Archery.Daze_MaxChance", 50); }
+    public double getDazeBonusMax() { return config.getDouble("Skills.Archery.Daze_MaxChance", 50.0D); }
     public int getDazeMaxBonusLevel() { return config.getInt("Skills.Archery.Daze_MaxBonusLevel", 1000); }
     public int getDazeModifier() { return config.getInt("Skills.Archery.Daze_BonusDamage", 4); }
 
-    public int getRetrieveBonusMax() { return config.getInt("Skills.Archery.Retrieve_MaxBonus", 100); }
+    public double getRetrieveChanceMax() { return config.getDouble("Skills.Archery.Retrieve_MaxBonus", 100.0D); }
     public int getRetrieveMaxBonusLevel() { return config.getInt("Skills.Archery.Retrieve_MaxBonusLevel", 1000); }
 
     /* AXES */
@@ -56,12 +56,12 @@ public class AdvancedConfig extends ConfigLoader {
     public double getAxesCriticalPVPModifier() { return config.getDouble("Skills.Axes.AxesCritical_PVP_Modifier", 1.5D); }
     public double getAxesCriticalPVEModifier() { return config.getDouble("Skills.Axes.AxesCritical_PVE_Modifier", 2.0D); }
 
-    public int getGreaterImpactChance() { return config.getInt("Skills.Axes.GreaterImpact_Chance", 25); }
+    public double getGreaterImpactChance() { return config.getDouble("Skills.Axes.GreaterImpact_Chance", 25.0D); }
     public double getGreaterImpactModifier() { return config.getDouble("Skills.Axes.GreaterImpact_KnockbackModifier", 1.5); }
     public int getGreaterImpactBonusDamage() { return config.getInt("Skills.Axes.GreaterImpact_BonusDamage", 2); }
 
     public int getArmorImpactIncreaseLevel() { return config.getInt("Skills.Axes.ArmorImpact_IncreaseLevel", 50); }
-    public int getArmorImpactMaxDurabilityDamage() { return config.getInt("Skills.Axes.ArmorImpact_MaxPercentageDurabilityDamage", 20); }
+    public double getArmorImpactMaxDurabilityDamage() { return config.getDouble("Skills.Axes.ArmorImpact_MaxPercentageDurabilityDamage", 20.0D); }
 
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml

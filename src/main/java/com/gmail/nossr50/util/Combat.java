@@ -247,7 +247,7 @@ public class Combat {
 
         ArcheryManager archeryManager = new ArcheryManager(shooter);
 
-        archeryManager.bonusDamage(event);
+        archeryManager.skillShot(event);
 
         if (target instanceof Player) {
             archeryManager.dazeCheck((Player) target, event);
