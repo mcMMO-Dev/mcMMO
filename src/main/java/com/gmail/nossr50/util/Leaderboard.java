@@ -48,6 +48,7 @@ public class Leaderboard {
 
             while ((line = in.readLine()) != null) {
                 String[] character = line.split(":");
+
                 String p = character[0];
                 int powerLevel = 0;
 
@@ -125,6 +126,9 @@ public class Leaderboard {
         catch (Exception e) {
             plugin.getLogger().severe(("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString()));
         }
+
+        if(PowerLevel.isEmpty())
+            return;
 
         //Sort the leader boards
         SkillComparator c = new SkillComparator();
