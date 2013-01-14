@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -15,7 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.ChunkletUnloader;
 
 public class HashChunkletManager implements ChunkletManager {
