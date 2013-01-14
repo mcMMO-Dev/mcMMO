@@ -32,9 +32,9 @@ public class HashChunkManager implements ChunkManager {
     private List<Entity> spawnedMobs = new ArrayList<Entity>();
     private List<Entity> spawnedPets = new ArrayList<Entity>();
     private List<Entity> mobsToRemove = new ArrayList<Entity>();
-    private List<Entity> tempSpawnedMobs = new ArrayList<Entity>();
-    private List<Entity> tempSpawnedPets = new ArrayList<Entity>();
     private List<String> savedChunks = new ArrayList<String>();
+    private List<Entity> checkedMobs = new ArrayList<Entity>();
+    private List<Entity> removalCheckedMobs = new ArrayList<Entity>();
     private boolean safeToRemoveMobs = true;
     private boolean savingWorld = false;
     private boolean iteratingMobs = false;
@@ -204,24 +204,33 @@ public class HashChunkManager implements ChunkManager {
 
             iteratingMobs = true;
 
-            for (Entity entity : spawnedMobs) {
+            List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+            tempSpawnedMobs.remove(removalCheckedMobs);
+            tempSpawnedMobs.remove(checkedMobs);
+            for (Entity entity : tempSpawnedMobs) {
                 if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 mobsToRemove.add(entity);
+                removalCheckedMobs.add(entity);
             }
 
-            for (Entity entity : spawnedPets) {
+            List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+            tempSpawnedPets.remove(removalCheckedMobs);
+            tempSpawnedPets.remove(checkedMobs);
+            for (Entity entity : tempSpawnedPets) {
                 if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 mobsToRemove.add(entity);
+                removalCheckedMobs.add(entity);
             }
 
             if (safeToRemoveMobs) {
                 spawnedMobs.remove(mobsToRemove);
                 spawnedPets.remove(mobsToRemove);
                 mobsToRemove.clear();
+                removalCheckedMobs.clear();
                 iteratingMobs = false;
             }
         }
@@ -237,7 +246,8 @@ public class HashChunkManager implements ChunkManager {
 
         boolean unloaded = false;
         if (!store.containsKey(world.getName() + "," + cx + "," + cz)) {
-            tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+            List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+            tempSpawnedMobs.remove(checkedMobs);
             for (Entity entity : tempSpawnedMobs) {
                 if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
@@ -248,7 +258,8 @@ public class HashChunkManager implements ChunkManager {
             }
 
             if (!unloaded) {
-                tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+                List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+                tempSpawnedPets.remove(checkedMobs);
                 for (Entity entity : tempSpawnedPets) {
                     if (!isEntityInChunk(entity, cx, cz, world))
                         continue;
@@ -268,20 +279,24 @@ public class HashChunkManager implements ChunkManager {
         if (store.containsKey(world.getName() + "," + cx + "," + cz)) {
             ChunkStore out = store.get(world.getName() + "," + cx + "," + cz);
 
-            tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+            List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+            tempSpawnedMobs.remove(checkedMobs);
             for (Entity entity : tempSpawnedMobs) {
                 if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 out.addSpawnedMob(entity.getUniqueId());
+                checkedMobs.add(entity);
             }
 
-            tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+            List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+            tempSpawnedPets.remove(checkedMobs);
             for (Entity entity : tempSpawnedPets) {
                 if (!isEntityInChunk(entity, cx, cz, world))
                     continue;
 
                 out.addSpawnedPet(entity.getUniqueId());
+                checkedMobs.add(entity);
             }
 
             if (!out.isDirty())
@@ -292,6 +307,8 @@ public class HashChunkManager implements ChunkManager {
 
         if(savingWorld)
             savedChunks.add(world.getName() + "," + cx + "," + cz);
+        else
+            checkedMobs.clear();
     }
 
     private boolean isEntityInChunk(Entity entity, int cx, int cz, World world) {
@@ -356,7 +373,8 @@ public class HashChunkManager implements ChunkManager {
             }
         }
 
-        tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+        List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+        tempSpawnedMobs.remove(checkedMobs);
         for (Entity entity : tempSpawnedMobs) {
             World entityWorld = entity.getWorld();
 
@@ -369,7 +387,8 @@ public class HashChunkManager implements ChunkManager {
             saveChunk(cx, cz, world);
         }
 
-        tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+        List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+        tempSpawnedPets.remove(checkedMobs);
         for (Entity entity : tempSpawnedPets) {
             World entityWorld = entity.getWorld();
 
@@ -384,6 +403,7 @@ public class HashChunkManager implements ChunkManager {
 
         savingWorld = false;
         savedChunks.clear();
+        checkedMobs.clear();
     }
 
     @Override
@@ -415,7 +435,9 @@ public class HashChunkManager implements ChunkManager {
 
         safeToRemoveMobs = false;
 
-        tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+        List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+        tempSpawnedMobs.remove(checkedMobs);
+        tempSpawnedMobs.remove(removalCheckedMobs);
         for (Entity entity : tempSpawnedMobs) {
             World entityWorld = entity.getWorld();
 
@@ -428,7 +450,9 @@ public class HashChunkManager implements ChunkManager {
             unloadChunk(cx, cz, world);
         }
 
-        tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+        List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+	tempSpawnedPets.remove(checkedMobs);
+        tempSpawnedMobs.remove(removalCheckedMobs);
         for (Entity entity : tempSpawnedPets) {
             World entityWorld = entity.getWorld();
 
@@ -446,6 +470,8 @@ public class HashChunkManager implements ChunkManager {
         spawnedMobs.remove(mobsToRemove);
         spawnedPets.remove(mobsToRemove);
         mobsToRemove.clear();
+        checkedMobs.clear();
+        removalCheckedMobs.clear();
         savingWorld = false;
         savedChunks.clear();
     }
@@ -643,7 +669,7 @@ public class HashChunkManager implements ChunkManager {
 
         mobsToRemove.clear();
 
-        tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
+        List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
         for (Entity entity : tempSpawnedMobs) {
             if (entity.isDead())
                 mobsToRemove.add(entity);
@@ -652,7 +678,7 @@ public class HashChunkManager implements ChunkManager {
                 mobsToRemove.add(entity);
         }
 
-        tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
+        List<Entity> tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
         for (Entity entity : tempSpawnedPets) {
             if (entity.isDead())
                 mobsToRemove.add(entity);
