@@ -643,7 +643,7 @@ public class HashChunkManager implements ChunkManager {
 
         mobsToRemove.clear();
 
-        tempSpawnedMobs = new ArrayList(spawnedMobs);
+        tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
         for (Entity entity : tempSpawnedMobs) {
             if (entity.isDead())
                 mobsToRemove.add(entity);
@@ -652,7 +652,7 @@ public class HashChunkManager implements ChunkManager {
                 mobsToRemove.add(entity);
         }
 
-        tempSpawnedPets = new ArrayList(spawnedPets);
+        tempSpawnedPets = new ArrayList<Entity>(spawnedPets);
         for (Entity entity : tempSpawnedPets) {
             if (entity.isDead())
                 mobsToRemove.add(entity);
