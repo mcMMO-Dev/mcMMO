@@ -47,8 +47,8 @@ Skills:
         # SkillShot_IncreasePercentage: This is a percentage value, 0.1 = 10%
         # SkillShot_MaxBonus: When the SkillShot_MaxBonus has been reached, the bonus percentage will not go up anymore. 2.0 = 200%
         SkillShot_IncreaseLevel: 50
-        SkillShot_IncreasePercentage: 0.1D
-        SkillShot_MaxBonus: 2.0D
+        SkillShot_IncreasePercentage: 0.1
+        SkillShot_MaxBonus: 2.0
 
         # Daze_MaxChance: Maximum chance of causing daze to opponents
         # Daze_MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be "Daze_MaxChance"
@@ -77,7 +77,7 @@ Skills:
 
         # Damage modifier of critical hits for PVP / PVE, when causing a critical hit the damage gets multiplied by the modifier
         AxesCritical_PVP_Modifier: 1.5
-        AxesCritical_PVE_Modifier: 2
+        AxesCritical_PVE_Modifier: 2.0
 
         # GreaterImpact_Chance: Chance of hitting with GreaterImpact, knocksbacks mobs
         # GreaterImpact_KnockbackModifier: Velocity modifier of GreaterImpact hits, this determines how great the knockback is

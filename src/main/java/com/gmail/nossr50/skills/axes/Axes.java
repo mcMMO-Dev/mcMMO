@@ -1,87 +1,29 @@
 package com.gmail.nossr50.skills.axes;
 
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Axes {
-    public static int maxBonusDamage = AdvancedConfig.getInstance().getBonusDamageAxesBonusMax();
-    public static int maxBonusLevel = AdvancedConfig.getInstance().getBonusDamageAxesMaxBonusLevel();
+    public static int bonusDamageMaxBonus = AdvancedConfig.getInstance().getBonusDamageAxesBonusMax();
+    public static int bonusDamageMaxBonusLevel = AdvancedConfig.getInstance().getBonusDamageAxesMaxBonusLevel();
+
+    public static int criticalHitMaxBonusLevel = AdvancedConfig.getInstance().getAxesCriticalMaxBonusLevel();
+    public static double criticalHitMaxChance = AdvancedConfig.getInstance().getAxesCriticalChance();
+    public static double criticalHitPVPModifier = AdvancedConfig.getInstance().getAxesCriticalPVPModifier();
+    public static double criticalHitPVEModifier = AdvancedConfig.getInstance().getAxesCriticalPVEModifier();
+
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-
-    /**
-     * Check for critical chances on axe damage.
-     *
-     * @param attacker The attacking player
-     * @param event The event to modify
-     */
-    public static void axeCriticalCheck(Player attacker, EntityDamageByEntityEvent event) {
-        if (attacker == null)
-            return;
-
-        Entity entity = event.getEntity();
-
-        if (entity instanceof Tameable) {
-            Tameable pet = (Tameable) entity;
-
-            if (pet.isTamed()) {
-                AnimalTamer tamer = pet.getOwner();
-
-                if (tamer instanceof Player) {
-                    Player owner = (Player) tamer;
-
-                    if (owner == attacker || PartyManager.getInstance().inSameParty(attacker, owner)) {
-                        return;
-                    }
-                }
-            }
-        }
-
-        final int MAX_BONUS_LEVEL = advancedConfig.getAxesCriticalMaxBonusLevel();
-        final double MAX_CHANCE = advancedConfig.getAxesCriticalChance();
-        final double PVP_MODIFIER = advancedConfig.getAxesCriticalPVPModifier();
-        final int PVE_MODIFIER = advancedConfig.getAxesCriticalPVEModifier();
-
-        PlayerProfile attackerProfile = Users.getProfile(attacker);
-        int skillLevel = attackerProfile.getSkillLevel(SkillType.AXES);
-        int skillCheck = Misc.skillCheck(skillLevel, MAX_BONUS_LEVEL);
-
-        int randomChance = 100;
-        double chance = (MAX_CHANCE / MAX_BONUS_LEVEL) * skillCheck;
-        if (chance > MAX_CHANCE) chance = MAX_CHANCE;
-
-        if (Permissions.luckyAxes(attacker)) {
-            randomChance = (int) (randomChance * 0.75);
-        }
-
-        if (chance > Misc.getRandom().nextInt(randomChance) && !entity.isDead()) {
-            int damage = event.getDamage();
-
-            if (entity instanceof Player) {
-                event.setDamage((int) (damage * PVP_MODIFIER));
-                ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
-            }
-            else {
-                event.setDamage(damage * PVE_MODIFIER);
-            }
-            attacker.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
-        }
-    }
 
     /**
      * Check for Impact ability.

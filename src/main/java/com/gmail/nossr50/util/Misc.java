@@ -5,9 +5,11 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
@@ -18,6 +20,7 @@ import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
+import com.gmail.nossr50.party.PartyManager;
 
 public class Misc {
     private static Random random = new Random();
@@ -26,6 +29,22 @@ public class Misc {
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
+
+    public static boolean isFriendlyPet(Player attacker, Tameable pet) {
+        if (pet.isTamed()) {
+            AnimalTamer tamer = pet.getOwner();
+
+            if (tamer instanceof Player) {
+                Player owner = (Player) tamer;
+
+                if (owner == attacker || PartyManager.getInstance().inSameParty(attacker, owner)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     public static boolean isNPC(Player player) {
         if (player == null || Users.getProfile(player) == null || player.hasMetadata("NPC")) {

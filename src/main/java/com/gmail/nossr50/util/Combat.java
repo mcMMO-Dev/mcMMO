@@ -2,7 +2,6 @@ package com.gmail.nossr50.util;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -100,13 +99,8 @@ public class Combat {
                 Skills.abilityCheck(attacker, SkillType.AXES);
                 AxeManager axeManager = new AxeManager(attacker);
 
-                if (Permissions.axeBonus(attacker)) {
-                    axeManager.bonusDamage(event);
-                }
-
-                if (Permissions.criticalHit(attacker)) {
-                    Axes.axeCriticalCheck(attacker, event);
-                }
+                axeManager.bonusDamage(event);
+                axeManager.criticalHitCheck(event);
 
                 if (Permissions.impact(attacker)) {
                     Axes.impact(attacker, target, event);
@@ -550,16 +544,8 @@ public class Combat {
         else if (entity instanceof Tameable) {
             Tameable pet = (Tameable) entity;
 
-            if (pet.isTamed()) {
-                AnimalTamer tamer = pet.getOwner();
-
-                if (tamer instanceof Player) {
-                    Player owner = (Player) tamer;
-
-                    if (owner == player || PartyManager.getInstance().inSameParty(player, owner)) {
-                        return false;
-                    }
-                }
+            if (Misc.isFriendlyPet(player, pet)) {
+                return false;
             }
         }
 

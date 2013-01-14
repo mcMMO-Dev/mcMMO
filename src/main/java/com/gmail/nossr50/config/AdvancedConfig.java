@@ -51,10 +51,10 @@ public class AdvancedConfig extends ConfigLoader {
     public int getBonusDamageAxesBonusMax() { return config.getInt("Skills.Axes.DamageIncrease_MaxBonus", 4); }
     public int getBonusDamageAxesMaxBonusLevel() { return config.getInt("Skills.Axes.DamageIncrease_MaxBonusLevel", 200); }
 
-    public double getAxesCriticalChance() { return config.getDouble("Skills.Axes.AxesCritical_MaxChance", 37.50); }
+    public double getAxesCriticalChance() { return config.getDouble("Skills.Axes.AxesCritical_MaxChance", 37.50D); }
     public int getAxesCriticalMaxBonusLevel() { return config.getInt("Skills.Axes.AxesCritical_MaxBonusLevel", 750); }
-    public double getAxesCriticalPVPModifier() { return config.getDouble("Skills.Axes.AxesCritical_PVP_Modifier", 1.5); }
-    public int getAxesCriticalPVEModifier() { return config.getInt("Skills.Axes.AxesCritical_PVE_Modifier", 2); }
+    public double getAxesCriticalPVPModifier() { return config.getDouble("Skills.Axes.AxesCritical_PVP_Modifier", 1.5D); }
+    public double getAxesCriticalPVEModifier() { return config.getDouble("Skills.Axes.AxesCritical_PVE_Modifier", 2.0D); }
 
     public int getGreaterImpactChance() { return config.getInt("Skills.Axes.GreaterImpact_Chance", 25); }
     public double getGreaterImpactModifier() { return config.getDouble("Skills.Axes.GreaterImpact_KnockbackModifier", 1.5); }
