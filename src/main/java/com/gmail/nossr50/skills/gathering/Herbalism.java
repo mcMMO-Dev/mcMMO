@@ -266,7 +266,7 @@ public class Herbalism {
             else {
                 if (mat == Material.COCOA) {
                     try {
-                        is = new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getData());
+                        is = new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData());
                     }
                     catch (Exception e) {
                         is = new ItemStack(Material.INK_SACK, 1, (short) 3);
@@ -468,8 +468,8 @@ public class Herbalism {
                 break;
             case COCOA:
                 try {
-                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getData()), 3);
-                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getData()));
+                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 3);
+                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()));
                 }
                 catch(Exception e) {
                     Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, (short) 3), 3);
