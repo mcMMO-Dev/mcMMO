@@ -59,25 +59,20 @@ public class UserPurgeTask implements Runnable {
     private void purgeOldSQL() {
         plugin.getLogger().info("Purging old users...");
         long currentTime = System.currentTimeMillis();
-        String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
+        long purgeTime = 2630000000L;
+        HashMap<Integer, ArrayList<String>> usernames = database.read("SELECT user FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")");
+        database.write("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.id IN (SELECT * FROM (SELECT id FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")) AS p)");
 
         int purgedUsers = 0;
+        for (int i = 1; i <= usernames.size(); i++) {
+            String playerName = usernames.get(i).get(0);
 
-        for (int i = 1; i <= userslist.size(); i++) {
-            int userId = Integer.valueOf(userslist.get(i).get(1));
-            HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + userId + "'");
-            String playerName = username.get(1).get(0);
-
-            long lastLoginTime = database.getInt("SELECT lastlogin FROM " + tablePrefix + "users WHERE id = '" + userId + "'") * 1000L;
-            long loginDifference = currentTime - lastLoginTime;
-
-            if (loginDifference > 2630000000L) {
-                database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userId);
-                profileCleanup(playerName);
-
-                purgedUsers++;
+            if (playerName == null) {
+                continue;
             }
+
+            profileCleanup(playerName);
+            purgedUsers++;
         }
 
         plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");
