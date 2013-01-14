@@ -19,7 +19,6 @@ public class UserPurgeTask implements Runnable {
     private Plugin plugin;
     private Database database = mcMMO.getPlayerDatabase();
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-    private String databaseName = Config.getInstance().getMySQLDatabaseName();
 
     public UserPurgeTask(Plugin plugin) {
         this.plugin = plugin;
@@ -29,7 +28,10 @@ public class UserPurgeTask implements Runnable {
     public void run() {
         if (Config.getInstance().getUseMySQL()) {
             purgePowerlessSQL();
-            purgeOldSQL();
+
+            if (Config.getInstance().getOldUsersCutoff() != -1) {
+                purgeOldSQL();
+            }
         }
         else {
             //TODO: Make this work for Flatfile data.
@@ -59,7 +61,7 @@ public class UserPurgeTask implements Runnable {
     private void purgeOldSQL() {
         plugin.getLogger().info("Purging old users...");
         long currentTime = System.currentTimeMillis();
-        long purgeTime = 2630000000L;
+        long purgeTime = 2630000000L * Config.getInstance().getOldUsersCutoff();
         HashMap<Integer, ArrayList<String>> usernames = database.read("SELECT user FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")");
         database.write("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.id IN (SELECT * FROM (SELECT id FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")) AS p)");
 

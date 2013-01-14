@@ -24,7 +24,6 @@ public class McpurgeCommand implements CommandExecutor{
     private Plugin plugin;
     private Database database = mcMMO.getPlayerDatabase();
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-    private String databaseName = Config.getInstance().getMySQLDatabaseName();
 
     public McpurgeCommand(Plugin plugin) {
         this.plugin = plugin;
@@ -37,8 +36,11 @@ public class McpurgeCommand implements CommandExecutor{
         }
 
         if (Config.getInstance().getUseMySQL()) {
-            purgePowerlessSQLFaster();
-            purgeOldSQL();
+            purgePowerlessSQL();
+
+            if (Config.getInstance().getOldUsersCutoff() != -1) {
+                purgeOldSQL();
+            }
         }
         else {
             //TODO: Make this work for Flatfile data.
@@ -48,28 +50,12 @@ public class McpurgeCommand implements CommandExecutor{
         return true;
     }
 
-    private void purgePowerlessSQLFaster() {
+    private void purgePowerlessSQL() {
         plugin.getLogger().info("Purging powerless users...");
-        String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " = 0 ORDER BY " + query + " DESC ");
+        HashMap<Integer, ArrayList<String>> usernames = database.read("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
+        database.write("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.id IN (SELECT * FROM (SELECT u.id FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0) AS p)");
 
         int purgedUsers = 0;
-        String userIdString = "(";
-
-        for (int i = 1; i <= userslist.size(); i++) {
-            int userId = Integer.valueOf(userslist.get(i).get(1));
-
-            if (i == userslist.size()) {
-                userIdString = userIdString + userId + ")";
-            }
-            else {
-                userIdString = userIdString + userId + ",";
-            }
-        }
-
-        HashMap<Integer, ArrayList<String>> usernames = database.read("SELECT user FROM " + tablePrefix + "users WHERE id IN " + userIdString);
-        database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userIdString);
-
         for (int i = 1; i <= usernames.size(); i++) {
             String playerName = usernames.get(i).get(0);
 
@@ -87,25 +73,20 @@ public class McpurgeCommand implements CommandExecutor{
     private void purgeOldSQL() {
         plugin.getLogger().info("Purging old users...");
         long currentTime = System.currentTimeMillis();
-        String query = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user_id FROM " + tablePrefix + "skills WHERE " + query + " > 0 ORDER BY " + query + " DESC ");
+        long purgeTime = 2630000000L * Config.getInstance().getOldUsersCutoff();
+        HashMap<Integer, ArrayList<String>> usernames = database.read("SELECT user FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")");
+        database.write("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.id IN (SELECT * FROM (SELECT id FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")) AS p)");
 
         int purgedUsers = 0;
+        for (int i = 1; i <= usernames.size(); i++) {
+            String playerName = usernames.get(i).get(0);
 
-        for (int i = 1; i <= userslist.size(); i++) {
-            int userId = Integer.valueOf(userslist.get(i).get(1));
-            HashMap<Integer, ArrayList<String>> username = database.read("SELECT user FROM " + tablePrefix + "users WHERE id = '" + userId + "'");
-            String playerName = username.get(1).get(0);
-
-            long lastLoginTime = database.getInt("SELECT lastlogin FROM " + tablePrefix + "users WHERE id = '" + userId + "'") * 1000L;
-            long loginDifference = currentTime - lastLoginTime;
-
-            if (loginDifference > 2630000000L) {
-                database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userId);
-                profileCleanup(playerName);
-
-                purgedUsers++;
+            if (playerName == null) {
+                continue;
             }
+
+            profileCleanup(playerName);
+            purgedUsers++;
         }
 
         plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");

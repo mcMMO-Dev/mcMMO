@@ -17,11 +17,15 @@ General:
     #Allow mcMMO to inform other plugins of damage being dealt
     Event_Callback: true
     Power_Level_Cap: 0
+
+Database_Purging:
     #Amount of time (in hours) to wait between database purging
     #To only run at server start, set to 0
     #To never run, set to -1
     Purge_Interval: -1
-
+    #Any user who hasn't connected in this many months will be purged from the database
+    #To never purge old users, set to -1
+    Old_User_Cutoff: 6
 #
 #  Settings for using a mySQL database
 ###

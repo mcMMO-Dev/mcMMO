@@ -35,7 +35,10 @@ public class Config extends ConfigLoader {
     public int getSaveInterval() { return config.getInt("General.Save_Interval", 10); }
     public boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking", true); }
     public boolean getEventCallbackEnabled() { return config.getBoolean("General.Event_Callback", true); }
-    public int getPurgeInterval() { return config.getInt("General.Purge_Interval",-1); }
+
+    /* Database Purging */
+    public int getPurgeInterval() { return config.getInt("Database_Purging.Purge_Interval", -1); }
+    public int getOldUsersCutoff() { return config.getInt("Database_Purging.Old_User_Cutoff", 6); }
 
     /* mySQL */
     public boolean getUseMySQL() { return config.getBoolean("MySQL.Enabled", false); }
