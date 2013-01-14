@@ -266,9 +266,12 @@ public class Herbalism {
             else {
                 if (mat == Material.COCOA) {
                     try {
-                        is = new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData());
+                        is = new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getData());
                     }
                     catch (Exception e) {
+                        is = new ItemStack(Material.INK_SACK, 1, (short) 3);
+                    }
+                    catch (NoSuchMethodError e) {
                         is = new ItemStack(Material.INK_SACK, 1, (short) 3);
                     }
                 }
@@ -423,9 +426,12 @@ public class Herbalism {
             break;
         case COCOA:
             try {
-                hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 1);
+                hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getData()), 1);
             }
             catch(Exception e) {
+                hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, (short) 3), 1);
+            }
+            catch(NoSuchMethodError e) {
                 hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, (short) 3), 1);
             }
             break;
@@ -462,10 +468,14 @@ public class Herbalism {
                 break;
             case COCOA:
                 try {
-                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 3);
-                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()));
+                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getData()), 3);
+                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getData()));
                 }
                 catch(Exception e) {
+                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, (short) 3), 3);
+                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, (short) 3));
+                }
+                catch(NoSuchMethodError e) {
                     Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, (short) 3), 3);
                     inventory.removeItem(new ItemStack(Material.INK_SACK, 1, (short) 3));
                 }
