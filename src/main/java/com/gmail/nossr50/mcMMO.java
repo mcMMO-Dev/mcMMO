@@ -203,10 +203,10 @@ public class mcMMO extends JavaPlugin {
         //Old & Powerless User remover
         int purgeInterval = Config.getInstance().getPurgeInterval();
         if (purgeInterval == 0) {
-            scheduler.scheduleSyncDelayedTask(this, new UserPurgeTask(this), 40); //Start 2 seconds after startup.
+            scheduler.scheduleSyncDelayedTask(this, new UserPurgeTask(), 40); //Start 2 seconds after startup.
         }
         else if (purgeInterval > 0) {
-            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(this), 0, purgeInterval * 60L * 60L * 20L);
+            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), 0, purgeInterval * 60L * 60L * 20L);
         }
 
         registerCommands();
@@ -363,7 +363,7 @@ public class mcMMO extends JavaPlugin {
 
         //mc* commands
         if (configInstance.getCommandMCPurgeEnabled()) {
-            getCommand("mcpurge").setExecutor(new McpurgeCommand(this));
+            getCommand("mcpurge").setExecutor(new McpurgeCommand());
         }
         if (configInstance.getCommandMCRemoveEnabled()) {
             getCommand("mcremove").setExecutor(new McremoveCommand(this));

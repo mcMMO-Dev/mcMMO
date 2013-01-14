@@ -9,19 +9,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Database;
-import com.gmail.nossr50.util.Users;
 
 public class McremoveCommand implements CommandExecutor {
+    private Database database = mcMMO.getPlayerDatabase();
     private final String location;
     private final mcMMO plugin;
 
@@ -77,27 +73,7 @@ public class McremoveCommand implements CommandExecutor {
             }
         }
 
-        //Force PlayerProfile stuff to update
-        McMMOPlayer mcmmoPlayer = Users.getPlayer(playerName);
-
-        if (mcmmoPlayer != null) {
-            Player player = mcmmoPlayer.getPlayer();
-            SpoutHud spoutHud = mcmmoPlayer.getProfile().getSpoutHud();
-
-            if (spoutHud != null) {
-                spoutHud.removeWidgets();
-            }
-
-            Users.remove(playerName);
-
-            if (player.isOnline()) {
-                Users.addUser(player);
-
-                if (mcMMO.spoutEnabled) {
-                    SpoutStuff.reloadSpoutPlayer(player);
-                }
-            }
-        }
+        database.profileCleanup(playerName);
 
         return true;
     }
