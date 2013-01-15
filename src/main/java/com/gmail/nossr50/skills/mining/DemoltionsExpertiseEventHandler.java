@@ -25,10 +25,13 @@ public class DemoltionsExpertiseEventHandler {
             damageModifier = 0;
         }
         else if (skillLevel >= BlastMining.BLAST_MINING_RANK_6) {
-            damageModifier = 0.5;
+            damageModifier = 0.25;
         }
         else if (skillLevel >= BlastMining.BLAST_MINING_RANK_4) {
-            damageModifier = 0.25;
+            damageModifier = 0.5;
+        }
+        else {
+            damageModifier = 1;
         }
     }
 
