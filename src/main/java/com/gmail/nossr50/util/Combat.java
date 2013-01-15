@@ -102,7 +102,8 @@ public class Combat {
                 axeManager.criticalHitCheck(event);
                 axeManager.impact(event);
 
-                if (attackerProfile.getAbilityMode(AbilityType.SKULL_SPLIITER) && Permissions.skullSplitter(attacker)) {
+                if (attackerProfile.getAbilityMode(AbilityType.SKULL_SPLIITER)) {
+                    axeManager.skullSplitter(event);
                     applyAbilityAoE(attacker, target, event.getDamage() / 2, SkillType.AXES);
                 }
 

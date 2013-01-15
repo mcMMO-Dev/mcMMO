@@ -82,4 +82,18 @@ public class AxeManager extends SkillManager {
             eventHandler.applyGreaterImpact();
         }
     }
+
+    /**
+     * Check for Skull Splitter ability.
+     *
+     * @param event The event to process
+     */
+    public void skullSplitter(EntityDamageByEntityEvent event) {
+        if (Misc.isNPC(player) || !Permissions.skullSplitter(player)) {
+            return;
+        }
+
+        SkullSplitterEventHandler eventHandler = new SkullSplitterEventHandler(this, event);
+        eventHandler.applyAbilityEffects();
+    }
 }

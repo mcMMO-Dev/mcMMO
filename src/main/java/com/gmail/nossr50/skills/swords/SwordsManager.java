@@ -76,10 +76,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public void serratedStrikes(LivingEntity target, int damage) {
-        if (player == null)
-            return;
-
-        if (!Permissions.serratedStrikes(player)) {
+        if (Misc.isNPC(player) || !Permissions.serratedStrikes(player)) {
             return;
         }
 
