@@ -465,7 +465,7 @@ public class Database {
         System.out.println("VendorError: " + ex.getErrorCode());
     }
 
-    public void profileCleanup(String playerName) {
+    public static void profileCleanup(String playerName) {
         McMMOPlayer mcmmoPlayer = Users.getPlayer(playerName);
 
         if (mcmmoPlayer != null) {

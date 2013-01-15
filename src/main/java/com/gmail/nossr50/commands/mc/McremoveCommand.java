@@ -73,7 +73,7 @@ public class McremoveCommand implements CommandExecutor {
             }
         }
 
-        database.profileCleanup(playerName);
+        Database.profileCleanup(playerName);
 
         return true;
     }
