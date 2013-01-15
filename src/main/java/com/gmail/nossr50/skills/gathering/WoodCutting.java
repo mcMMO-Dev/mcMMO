@@ -240,11 +240,13 @@ public class WoodCutting {
             return;
         }
 
-        if (type.equals(Material.LOG) || type.equals(Material.LEAVES)) {
-            toBeFelled.add(currentBlock);
-        }
-        else if (Config.getInstance().getBlockModsEnabled() && (ModChecks.isCustomLogBlock(currentBlock) || ModChecks.isCustomLeafBlock(currentBlock))) {
-            toBeFelled.add(currentBlock);
+        if (!mcMMO.placeStore.isTrue(currentBlock)) {
+            if ((type.equals(Material.LOG) || type.equals(Material.LEAVES))) {
+                toBeFelled.add(currentBlock);
+            }
+            else if (Config.getInstance().getBlockModsEnabled() && (ModChecks.isCustomLogBlock(currentBlock) || ModChecks.isCustomLeafBlock(currentBlock))) {
+                toBeFelled.add(currentBlock);
+            }
         }
 
         Block xPositive = currentBlock.getRelative(1, 0, 0);
