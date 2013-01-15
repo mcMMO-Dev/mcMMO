@@ -90,6 +90,9 @@ Skills:
         # ArmorImpact_MaxPercentageDurabilityDamage: Durability damage cap for ArmorImpact, 20% means that you can never destroy a piece of armor in less than 5 hits
         ArmorImpact_IncreaseLevel: 50
         ArmorImpact_MaxPercentageDurabilityDamage: 20.0
+
+        # SkullSplitter_DamageModifier: Damage will get divided by this modifier
+        SkullSplitter_DamageModifier: 2
     #
     #  Settings for Fishing
     ###

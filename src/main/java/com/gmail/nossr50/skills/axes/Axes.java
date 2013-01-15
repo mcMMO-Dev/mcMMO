@@ -17,4 +17,6 @@ public class Axes {
     public static double greaterImpactChance = AdvancedConfig.getInstance().getGreaterImpactChance();
     public static double greaterImpactKnockbackMultiplier = AdvancedConfig.getInstance().getGreaterImpactModifier();
     public static int greaterImpactBonusDamage = AdvancedConfig.getInstance().getGreaterImpactBonusDamage();
+
+    public static int skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();
 }

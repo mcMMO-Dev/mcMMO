@@ -19,6 +19,6 @@ public class SkullSplitterEventHandler {
     }
 
     protected void applyAbilityEffects() {
-        Combat.applyAbilityAoE(player, target, damage / 2, SkillType.AXES);
+        Combat.applyAbilityAoE(player, target, damage / Axes.skullSplitterModifier, SkillType.AXES);
     }
 }
