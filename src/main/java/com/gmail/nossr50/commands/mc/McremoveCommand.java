@@ -17,7 +17,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Database;
 
 public class McremoveCommand implements CommandExecutor {
-    private Database database = mcMMO.getPlayerDatabase();
     private final String location;
     private final mcMMO plugin;
 
