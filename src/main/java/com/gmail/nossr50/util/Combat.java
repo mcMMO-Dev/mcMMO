@@ -33,7 +33,6 @@ import com.gmail.nossr50.runnables.GainXp;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxeManager;
-import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -101,10 +100,7 @@ public class Combat {
 
                 axeManager.bonusDamage(event);
                 axeManager.criticalHitCheck(event);
-
-                if (Permissions.impact(attacker)) {
-                    Axes.impact(attacker, target, event);
-                }
+                axeManager.impact(event);
 
                 if (attackerProfile.getAbilityMode(AbilityType.SKULL_SPLIITER) && Permissions.skullSplitter(attacker)) {
                     applyAbilityAoE(attacker, target, event.getDamage() / 2, SkillType.AXES);

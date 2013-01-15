@@ -59,4 +59,27 @@ public class AxeManager extends SkillManager {
         }
     }
 
+    /**
+     * Check for Impact ability.
+     *
+     * @param event The event to modify
+     */
+    public void impact(EntityDamageByEntityEvent event) {
+        if (Misc.isNPC(player) || !Permissions.impact(player)) {
+            return;
+        }
+
+        ImpactEventHandler eventHandler = new ImpactEventHandler(this, event);
+
+        if (eventHandler.livingDefender == null) {
+            return;
+        }
+
+        if (!Misc.hasArmor(eventHandler.livingDefender)) {
+            eventHandler.damageArmor();
+        }
+        else {
+            eventHandler.applyGreaterImpact();
+        }
+    }
 }
