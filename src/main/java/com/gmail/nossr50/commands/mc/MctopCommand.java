@@ -133,6 +133,8 @@ public class MctopCommand implements CommandExecutor {
                 n++;
             }
         }
+        
+        sender.sendMessage(ChatColor.GOLD+"Tip: Use "+ChatColor.RED+"/mcrank"+ChatColor.GOLD+" to view all of your personal rankings!");
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
@@ -155,5 +157,7 @@ public class MctopCommand implements CommandExecutor {
             sender.sendMessage(String.valueOf(place) + ". " + ChatColor.GREEN + userslist.get(i).get(1) + " - " + ChatColor.WHITE + userslist.get(i).get(0));
             place++;
         }
+        
+        sender.sendMessage(ChatColor.GOLD+"Tip: Use "+ChatColor.RED+"/mcrank"+ChatColor.GOLD+" to view all of your personal rankings!");
     }
 }
