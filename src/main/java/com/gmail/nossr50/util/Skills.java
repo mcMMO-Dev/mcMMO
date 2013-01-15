@@ -190,28 +190,6 @@ public class Skills {
     }
 
     /**
-     * Update the leaderboards.
-     *
-     * @param skillType The skill to update the leaderboards for
-     * @param player The player whose skill to update
-     */
-    public static void processLeaderboardUpdate(SkillType skillType, Player player) {
-        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
-        PlayerProfile profile = mcMMOPlayer.getProfile();
-        PlayerStat ps = new PlayerStat();
-
-        if (skillType != SkillType.ALL) {
-            ps.statVal = profile.getSkillLevel(skillType);
-        }
-        else {
-            ps.statVal = mcMMOPlayer.getPowerLevel();
-        }
-
-        ps.name = player.getName();
-        Leaderboard.updateLeaderboard(ps, skillType);
-    }
-
-    /**
      * Check the XP of a skill.
      *
      * @param skillType The skill to check
@@ -235,11 +213,6 @@ public class Skills {
                 else {
                     profile.addLevels(skillType, 0);
                 }
-            }
-
-            if (!Config.getInstance().getUseMySQL()) {
-                processLeaderboardUpdate(skillType, player);
-                processLeaderboardUpdate(SkillType.ALL, player);
             }
 
             String capitalized = Misc.getCapitalized(skillType.toString());

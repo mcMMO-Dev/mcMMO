@@ -301,6 +301,8 @@ Commands:
         Enabled: true
     mctop:
         Enabled: true
+    mcrank:
+        Enabled: true
     xplock:
         Enabled: true
     inspect:

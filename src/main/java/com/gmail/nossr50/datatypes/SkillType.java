@@ -117,6 +117,19 @@ public enum SkillType {
     public double getXpModifier() {
         return xpModifier;
     }
+    
+    public static SkillType getSkill(String skillName) {
+    	if(skillName.equalsIgnoreCase("powerlevel") || skillName.equalsIgnoreCase("all")) {
+    		return SkillType.ALL;
+    	} else {
+	    	for(SkillType st : SkillType.values()) {
+	    		if(st.name().equalsIgnoreCase(skillName))
+	    			return st;
+	    	}
+	    	System.out.println("[DEBUG] Invalid mcMMO skill ("+skillName+")");
+	    	return null;
+    	}
+    }
 
     /**
      * Get the skill level for this skill.

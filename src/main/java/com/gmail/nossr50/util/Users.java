@@ -20,7 +20,6 @@ public class Users {
      */
     public static void loadUsers() {
         new File(mcMMO.getFlatFileDirectory()).mkdir();
-        new File(mcMMO.getLeaderboardDirectory()).mkdir();
 
         try {
             new File(mcMMO.getUsersFile()).createNewFile();

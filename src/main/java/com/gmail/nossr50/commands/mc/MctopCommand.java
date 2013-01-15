@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Leaderboard;
@@ -105,7 +106,9 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void flatfileDisplay(int page, String skill, CommandSender sender) {
-        String[] info = Leaderboard.retrieveInfo(skill, page);
+    	Leaderboard.updateLeaderboards(); //Make sure we have the latest information
+    	SkillType skillType = SkillType.getSkill(skill);
+        String[] info = Leaderboard.retrieveInfo(skillType, page);
 
         if (skill.equals("ALL")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));

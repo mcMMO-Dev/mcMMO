@@ -38,6 +38,9 @@ commands:
     mctop:
         aliases: []
         description: Shows leader boards for mcMMO
+    mcrank:
+        aliases: []
+        description: Show your individual ranking in mcMMO
     addxp:
         aliases: []
         description: Add XP to a user

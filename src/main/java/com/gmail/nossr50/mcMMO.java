@@ -27,6 +27,7 @@ import com.gmail.nossr50.commands.mc.MccCommand;
 import com.gmail.nossr50.commands.mc.McgodCommand;
 import com.gmail.nossr50.commands.mc.McmmoCommand;
 import com.gmail.nossr50.commands.mc.McpurgeCommand;
+import com.gmail.nossr50.commands.mc.McrankCommand;
 import com.gmail.nossr50.commands.mc.McrefreshCommand;
 import com.gmail.nossr50.commands.mc.McremoveCommand;
 import com.gmail.nossr50.commands.mc.MctopCommand;
@@ -172,13 +173,13 @@ public class mcMMO extends JavaPlugin {
 
         PluginDescriptionFile pdfFile = getDescription();
 
-        //Setup the leaderboards
+        //Setup the leader boards
         if (configInstance.getUseMySQL()) {
             database = new Database(this);
             database.createStructure();
         }
         else {
-            Leaderboard.makeLeaderboards();
+            Leaderboard.updateLeaderboards();
         }
 
         for (Player player : getServer().getOnlinePlayers()) {
@@ -260,7 +261,6 @@ public class mcMMO extends JavaPlugin {
         mainDirectory = getDataFolder().getPath() + File.separator;
         flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
         usersFile = flatFileDirectory + "mcmmo.users";
-        leaderboardDirectory = flatFileDirectory + "Leaderboards" + File.separator;
         modDirectory = mainDirectory + "ModConfigs" + File.separator;
     }
 
@@ -391,6 +391,10 @@ public class mcMMO extends JavaPlugin {
 
         if (configInstance.getCommandMCTopEnabled()) {
             getCommand("mctop").setExecutor(new MctopCommand());
+        }
+        
+        if(configInstance.getCommandMCRankEnabled()) {
+        	getCommand("mcrank").setExecutor(new McrankCommand());
         }
 
         if (configInstance.getCommandMCStatsEnabled()) {
@@ -526,10 +530,6 @@ public class mcMMO extends JavaPlugin {
 
     public static String getUsersFile() {
         return usersFile;
-    }
-
-    public static String getLeaderboardDirectory() {
-        return leaderboardDirectory;
     }
 
     public static String getModDirectory() {

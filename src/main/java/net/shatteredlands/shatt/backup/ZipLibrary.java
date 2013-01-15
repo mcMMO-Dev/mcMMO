@@ -23,7 +23,6 @@ public class ZipLibrary {
     private static File UsersFile = new File(mcMMO.getUsersFile());
     private static File ConfigFile = new File(mcMMO.getMainDirectory() + "config.yml");
     private static File TreasuresFile = new File(mcMMO.getMainDirectory() + "treasures.yml");
-    private static File Leaderboards = new File(mcMMO.getLeaderboardDirectory());
 
     public static void mcMMObackup() throws IOException {
         if (Config.getInstance().getUseMySQL()) {
@@ -50,7 +49,6 @@ public class ZipLibrary {
         sources.add(UsersFile);
         sources.add(ConfigFile);
         sources.add(TreasuresFile);
-        sources.add(Leaderboards);
 
         if (ModFileDirectory.exists()) {
             sources.add(ModFileDirectory);
