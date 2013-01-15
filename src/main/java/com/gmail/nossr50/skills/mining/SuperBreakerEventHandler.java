@@ -115,7 +115,7 @@ public class SuperBreakerEventHandler {
     }
 
     private void calculateDurabilityLoss() {
-        this.durabilityLoss = Misc.TOOL_DURABILITY_LOSS;
+        this.durabilityLoss = Misc.toolDurabilityLoss;
 
         if (blockType.equals(Material.OBSIDIAN)) {
             durabilityLoss = durabilityLoss * 5;

@@ -59,4 +59,41 @@ public class AxeManager extends SkillManager {
         }
     }
 
+    /**
+     * Check for Impact ability.
+     *
+     * @param event The event to modify
+     */
+    public void impact(EntityDamageByEntityEvent event) {
+        if (Misc.isNPC(player) || !Permissions.impact(player)) {
+            return;
+        }
+
+        ImpactEventHandler eventHandler = new ImpactEventHandler(this, event);
+
+        if (eventHandler.livingDefender == null) {
+            return;
+        }
+
+        if (!Misc.hasArmor(eventHandler.livingDefender)) {
+            eventHandler.damageArmor();
+        }
+        else {
+            eventHandler.applyGreaterImpact();
+        }
+    }
+
+    /**
+     * Check for Skull Splitter ability.
+     *
+     * @param event The event to process
+     */
+    public void skullSplitter(EntityDamageByEntityEvent event) {
+        if (Misc.isNPC(player) || !Permissions.skullSplitter(player)) {
+            return;
+        }
+
+        SkullSplitterEventHandler eventHandler = new SkullSplitterEventHandler(this, event);
+        eventHandler.applyAbilityEffects();
+    }
 }

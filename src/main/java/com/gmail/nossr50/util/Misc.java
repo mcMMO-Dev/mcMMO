@@ -11,10 +11,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
@@ -25,10 +27,28 @@ import com.gmail.nossr50.party.PartyManager;
 public class Misc {
     private static Random random = new Random();
 
-    public static final int TOOL_DURABILITY_LOSS = Config.getInstance().getAbilityToolDamage();
+    public static int toolDurabilityLoss = Config.getInstance().getAbilityToolDamage();
+    public static int abilityLengthIncreaseLevel = AdvancedConfig.getInstance().getAbilityLength();
+
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
+
+    /**
+     * Check if a player has armor.
+     *
+     * @param player Player whose armor to check
+     * @return true if the player has armor, false otherwise
+     */
+    public static boolean hasArmor(LivingEntity entity) {
+        EntityEquipment equipment = entity.getEquipment();
+
+        if (equipment.getBoots() != null || equipment.getChestplate() != null || equipment.getHelmet() != null || equipment.getLeggings() != null) {
+            return true;
+        }
+
+        return false;
+    }
 
     public static boolean isFriendlyPet(Player attacker, Tameable pet) {
         if (pet.isTamed()) {
