@@ -34,9 +34,6 @@ public class McrankCommand implements CommandExecutor {
                 default:
                     return false;
             }
-            sender.sendMessage(ChatColor.GOLD + "-=PERSONAL RANKINGS=-");
-            sender.sendMessage(ChatColor.RED+"TARGET: "+ChatColor.WHITE+playerName);
-
             if(Config.getInstance().getUseMySQL()) {
                 sqlDisplay(sender, playerName);
             } else {
@@ -51,6 +48,8 @@ public class McrankCommand implements CommandExecutor {
     }
 
     public void flatfileDisplay(CommandSender sender, String playerName) {
+        sender.sendMessage(ChatColor.GOLD + "-=PERSONAL RANKINGS=-");
+        sender.sendMessage(ChatColor.RED+"TARGET: "+ChatColor.WHITE+playerName);
         for (SkillType skillType : SkillType.values()) {
         	
         	int[] rankInts = Leaderboard.getPlayerRank(playerName, skillType);

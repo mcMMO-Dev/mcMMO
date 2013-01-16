@@ -28,6 +28,8 @@ public class mcRankAsync implements Runnable {
 
             @Override
             public void run() {
+                sender.sendMessage(ChatColor.GOLD + "-=PERSONAL RANKINGS=-");
+                sender.sendMessage(ChatColor.RED+"TARGET: "+ChatColor.WHITE+playerName);
                 for (SkillType skillType : SkillType.values()) {
                     if (skillType.equals(SkillType.ALL))
                         continue; // We want the overall ranking to be at the bottom
