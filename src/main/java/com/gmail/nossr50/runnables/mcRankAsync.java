@@ -3,7 +3,6 @@ package com.gmail.nossr50.runnables;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
@@ -29,8 +28,8 @@ public class mcRankAsync implements Runnable {
 
             @Override
             public void run() {
-                sender.sendMessage(ChatColor.GOLD + "-=PERSONAL RANKINGS=-");
-                sender.sendMessage(ChatColor.RED+"TARGET: "+ChatColor.WHITE+playerName);
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", new Object[] {playerName}));
                 for (SkillType skillType : SkillType.values()) {
                     if (skillType.equals(SkillType.ALL))
                         continue; // We want the overall ranking to be at the bottom
