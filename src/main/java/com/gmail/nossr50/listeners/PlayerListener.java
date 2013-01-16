@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -185,19 +184,19 @@ public class PlayerListener implements Listener {
 
         //TODO: Locale ALL the things.
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
-            String prefix = ChatColor.GOLD + "[mcMMO] ";
-            String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
+            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
 
-            player.sendMessage(prefix + ChatColor.YELLOW + "Running version " + ChatColor.DARK_AQUA + plugin.getDescription().getVersion()); //TODO: Locale
+            player.sendMessage(LocaleLoader.getString("MOTD.Version", new Object[] {plugin.getDescription().getVersion()}));
 
             if (Config.getInstance().getHardcoreEnabled()) {
                 if (Config.getInstance().getHardcoreVampirismEnabled()) {
-                    player.sendMessage(prefix + ChatColor.DARK_RED + "Hardcore & Vampirism enabled.");
-                    player.sendMessage(prefix + ChatColor.DARK_AQUA + "Skill Death Penalty: " + ChatColor.DARK_RED + Config.getInstance().getHardcoreDeathStatPenaltyPercentage() + "% " + ChatColor.DARK_AQUA + "Vampirism Stat Leech: " + ChatColor.DARK_RED + Config.getInstance().getHardcoreVampirismStatLeechPercentage() + "%");
+                    player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOn"));
+                    player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", new Object[] {Config.getInstance().getHardcoreDeathStatPenaltyPercentage()}));
+                    player.sendMessage(LocaleLoader.getString("MOTD.Vampire.Stats", new Object[] {Config.getInstance().getHardcoreVampirismStatLeechPercentage()}));
                 }
                 else {
-                    player.sendMessage(prefix + ChatColor.DARK_RED + "Hardcore enabled.");
-                    player.sendMessage(prefix + ChatColor.DARK_AQUA + "Skill Death Penalty: " + ChatColor.DARK_RED + Config.getInstance().getHardcoreDeathStatPenaltyPercentage() + "%");
+                    player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOff"));
+                    player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", new Object[] {Config.getInstance().getHardcoreDeathStatPenaltyPercentage()}));
                 }
             }
 
@@ -237,46 +236,11 @@ public class PlayerListener implements Listener {
                 player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 4 }) }));
             }
 
-            if (Permissions.luckyAcrobatics(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyArchery(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyAxes(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyExcavation(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyFishing(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyHerbalism(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyMining(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyRepair(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckySwords(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyTaming(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyUnarmed(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-            else if (Permissions.luckyWoodcutting(player)) {
+            if (Permissions.luckyAcrobatics(player) || Permissions.luckyArchery(player) || Permissions.luckyAxes(player) || Permissions.luckyFishing(player) || Permissions.luckyHerbalism(player) || Permissions.luckyMining(player) || Permissions.luckyRepair(player) || Permissions.luckySwords(player) || Permissions.luckyTaming(player) || Permissions.luckyUnarmed(player) || Permissions.luckyWoodcutting(player)) {
                 player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
             }
 
-            player.sendMessage(ChatColor.GOLD+"[mcMMO] " + ChatColor.GREEN + "http://www.mcmmo.info" + ChatColor.YELLOW + " - mcMMO Website & Forums"); //TODO: Locale
-            //player.sendMessage(LocaleLoader.getString("mcMMO.MOTD", new Object[] {plugin.getDescription().getVersion()}));
-            //player.sendMessage(LocaleLoader.getString("mcMMO.Website"));
+            player.sendMessage(LocaleLoader.getString("MOTD.Website", new Object[] {plugin.getDescription().getWebsite()}));
         }
 
         //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
@@ -452,12 +416,10 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            String prefix = ChatColor.GREEN + "(" + ChatColor.WHITE + playerName + ChatColor.GREEN + ") ";
-
             plugin.getLogger().info("[P](" + partyName + ")" + "<" + playerName + "> " + chatEvent.getMessage());
 
             for (Player member : party.getOnlineMembers()) {
-                member.sendMessage(prefix + chatEvent.getMessage());
+                member.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {playerName}) + chatEvent.getMessage());
             }
 
             event.setCancelled(true);
@@ -471,13 +433,11 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            String prefix = ChatColor.AQUA + "{" + ChatColor.WHITE + playerName + ChatColor.AQUA + "} ";
-
             plugin.getLogger().info("[A]<" + playerName + "> " + chatEvent.getMessage());
 
             for (Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
                 if (Permissions.adminChat(otherPlayer) || otherPlayer.isOp()) {
-                    otherPlayer.sendMessage(prefix + chatEvent.getMessage());
+                    otherPlayer.sendMessage(LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {playerName}) + chatEvent.getMessage());
                 }
             }
 

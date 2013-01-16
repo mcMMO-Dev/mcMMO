@@ -12,9 +12,9 @@ description: >
   experience.
 
 author: nossr50
-authors: [NuclearW, gmcferrin, bm01, Glitchfinder, TfT_02]
+authors: [NuclearW, GJ, Glitchfinder, TfT_02, toothplck1]
 website: http://dev.bukkit.org/server-mods/mcmmo/
-    
+
 main: com.gmail.nossr50.mcMMO
 softdepend: [Spout]
 load: STARTUP

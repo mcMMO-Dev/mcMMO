@@ -1,18 +1,13 @@
 package com.gmail.nossr50.commands.skills;
 
-import org.bukkit.ChatColor;
-
 import com.gmail.nossr50.commands.SkillCommand;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Skills;
 
 public class AcrobaticsCommand extends SkillCommand {
-    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-
     private String dodgeChance;
     private String dodgeChanceLucky;
     private String rollChance;
@@ -73,8 +68,8 @@ public class AcrobaticsCommand extends SkillCommand {
     @Override
     protected void effectsDisplay() {
         if (lucky) {
-            String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Misc.getCapitalized(LocaleLoader.getString("Acrobatics.SkillName")) }) }));
+            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Skills.localizeSkillName(SkillType.ACROBATICS) }) }));
         }
 
         if (canRoll) {

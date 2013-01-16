@@ -58,7 +58,7 @@ public class Page {
     public static void grabGuidePageForSkill(SkillType skilltype, Player player, String[] args) {
         String skillName = skilltype.toString();
         String capitalized = Misc.getCapitalized(skillName);
-        String localized = Misc.getCapitalized(LocaleLoader.getString(capitalized + ".SkillName"));
+        String localized = Skills.localizeSkillName(skilltype);
         player.sendMessage(LocaleLoader.getString("Guides.Available", new Object[] {localized, localized.toLowerCase()} ));
 
         if (args.length >= 1) {

@@ -313,6 +313,10 @@ public class Skills {
         return null;
     }
 
+    public static String localizeSkillName(SkillType skill) {
+        return Misc.getCapitalized(LocaleLoader.getString(Misc.getCapitalized(skill.toString()) + ".SkillName"));
+    }
+
     /**
      * Check if the player has any combat skill permissions.
      *

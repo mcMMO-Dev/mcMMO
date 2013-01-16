@@ -26,6 +26,7 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.listeners.SpoutListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class SpoutStuff {
@@ -548,7 +549,7 @@ public class SpoutStuff {
             break;
         }
 
-        spoutPlayer.sendNotification(LocaleLoader.getString("Spout.LevelUp.1"), LocaleLoader.getString("Spout.LevelUp.2", new Object[] {Misc.getCapitalized(LocaleLoader.getString(Misc.getCapitalized(skillType.toString()) + ".SkillName")), profile.getSkillLevel(skillType)} ), mat);
+        spoutPlayer.sendNotification(LocaleLoader.getString("Spout.LevelUp.1"), LocaleLoader.getString("Spout.LevelUp.2", new Object[] {Skills.localizeSkillName(skillType), profile.getSkillLevel(skillType)} ), mat);
         SpoutSounds.playLevelUpNoise(spoutPlayer, plugin);
     }
 
