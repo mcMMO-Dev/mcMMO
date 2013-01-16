@@ -1,9 +1,9 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
@@ -24,7 +24,7 @@ public class IronGripEventHandler {
     }
 
     protected void sendAbilityMessages() {
-        defender.sendMessage(ChatColor.GREEN + "Your iron grip kept you from being disarmed!"); //TODO: Use locale
-        manager.getPlayer().sendMessage(ChatColor.RED + "Your opponent has an iron grip!"); //TODO: Use locale
+        defender.sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Defender"));
+        manager.getPlayer().sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Attacker"));
     }
 }

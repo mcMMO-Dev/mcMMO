@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -85,7 +84,7 @@ public class SimpleRepairManager implements RepairManager {
 
         // Check if they have the proper material to repair with
         if (!inventory.contains(repairable.getRepairMaterialId())) {
-            String message = LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.YELLOW + Misc.prettyItemString(repairable.getRepairMaterialId());
+            String message = LocaleLoader.getString("Skills.NeedMore", new Object[] { Misc.prettyItemString(repairable.getRepairMaterialId()) });
             if (repairable.getRepairMaterialMetadata() != (byte) -1) {
                 // TODO: Do something nicer than append the metadata as a :# ?
                 if (findInInventory(inventory, repairable.getRepairMaterialId(), repairable.getRepairMaterialMetadata()) == -1) {

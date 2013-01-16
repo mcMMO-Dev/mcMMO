@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.mining;
 
 import java.util.HashSet;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -45,7 +44,7 @@ public class RemoteDetonationEventHandler {
 
     protected boolean cooldownOver() {
         if (!Skills.cooldownOver(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player)) {
-            player.sendMessage(LocaleLoader.getString("Skills.TooTired") + ChatColor.YELLOW + " (" + Skills.calculateTimeLeft(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player) + "s)");
+            player.sendMessage(LocaleLoader.getString("Skills.TooTired", new Object[] { Skills.calculateTimeLeft(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player) }));
 
             return false;
         }

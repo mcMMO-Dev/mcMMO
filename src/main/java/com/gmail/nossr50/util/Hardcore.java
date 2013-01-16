@@ -1,11 +1,11 @@
 package com.gmail.nossr50.util;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
 
 public abstract class Hardcore {
 
@@ -37,7 +37,7 @@ public abstract class Hardcore {
             playerProfile.modifySkill(skillType, playerSkillLevel - levelsLost);
         }
 
-        player.sendMessage(ChatColor.GOLD + "[mcMMO] " + ChatColor.DARK_RED + "You've lost " + ChatColor.BLUE + totalLost + ChatColor.DARK_RED + " from death.");
+        player.sendMessage(LocaleLoader.getString("Hardcore.Player.Loss", new Object[] {totalLost}));
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
@@ -72,12 +72,12 @@ public abstract class Hardcore {
         }
 
         if (totalStolen > 0) {
-            killer.sendMessage(ChatColor.GOLD + "[mcMMO] " + ChatColor.DARK_AQUA + "You've stolen " + ChatColor.BLUE + totalStolen + ChatColor.DARK_AQUA + " levels from that player.");
-            victim.sendMessage(ChatColor.GOLD + "[mcMMO] " + ChatColor.YELLOW + killer.getName() + ChatColor.DARK_RED + " has stolen " + ChatColor.BLUE + totalStolen + ChatColor.DARK_RED + " levels from you!");
+            killer.sendMessage(LocaleLoader.getString("Vampirism.Killer.Success", new Object[] {totalStolen, victim.getName()} ));
+            victim.sendMessage(LocaleLoader.getString("Vampirism.Victim.Success", new Object[] {killer.getName(), totalStolen} ));
         }
         else {
-            killer.sendMessage(ChatColor.GOLD + "[mcMMO] " + ChatColor.GRAY + "That player was too unskilled to grant you any knowledge.");
-            victim.sendMessage(ChatColor.GOLD + "[mcMMO] " + ChatColor.YELLOW + killer.getName() + ChatColor.GRAY + " was unable to steal knowledge from you!");
+            killer.sendMessage(LocaleLoader.getString("Vampirism.Killer.Failure", new Object[] {victim.getName()} ));
+            victim.sendMessage(LocaleLoader.getString("Vampirism.Victim.Failure", new Object[] {killer.getName()} ));
         }
     }
 }

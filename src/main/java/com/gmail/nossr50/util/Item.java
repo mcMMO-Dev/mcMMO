@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -30,9 +29,10 @@ public class Item {
         ItemStack inHand = player.getItemInHand();
         Block block = player.getLocation().getBlock();
         int amount = inHand.getAmount();
+        long recentlyHurt = profile.getRecentlyHurt();
 
         if (Permissions.chimaeraWing(player) && inHand.getTypeId() == Config.getInstance().getChimaeraItemId()) {
-            if (Skills.cooldownOver(profile.getRecentlyHurt(), 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
+            if (Skills.cooldownOver(recentlyHurt, 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
                 player.setItemInHand(new ItemStack(Config.getInstance().getChimaeraItemId(), amount - Config.getInstance().getChimaeraCost()));
 
                 for (int y = 1; block.getY() + y < player.getWorld().getMaxHeight(); y++) {
@@ -52,11 +52,11 @@ public class Item {
 
                 player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
             }
-            else if (!Skills.cooldownOver(profile.getRecentlyHurt(), 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
-                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(profile.getRecentlyHurt(), 60, player)}));
+            else if (!Skills.cooldownOver(recentlyHurt, 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
+                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(recentlyHurt, 60, player)}));
             }
             else if (amount <= Config.getInstance().getChimaeraCost()) {
-                player.sendMessage(LocaleLoader.getString("Skills.NeedMore")+ " " + ChatColor.GRAY + Misc.prettyItemString(Config.getInstance().getChimaeraItemId()));
+                player.sendMessage(LocaleLoader.getString("Skills.NeedMore", new Object[] { Misc.prettyItemString(Config.getInstance().getChimaeraItemId()) }));
             }
         }
     }

@@ -265,7 +265,7 @@ public class Repair {
                 SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
                 if (spoutPlayer.isSpoutCraftEnabled()) {
-                    spoutPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to repair!", Material.getMaterial(anvilID)); //TODO: Use Locale
+                    spoutPlayer.sendNotification(LocaleLoader.getString("Repair.AnvilPlaced.Spout1"), LocaleLoader.getString("Repair.AnvilPlaced.Spout2"), Material.getMaterial(anvilID));
                 }
             }
             else {

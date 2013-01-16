@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.taming;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -31,7 +30,7 @@ public class CallOfTheWildEventHandler {
         if (player == null)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Skills.NeedMore") + " " + ChatColor.GRAY + Misc.prettyItemString(inHand.getTypeId()));
+        player.sendMessage(LocaleLoader.getString("Skills.NeedMore", new Object[] { Misc.prettyItemString(inHand.getTypeId()) }));
     }
 
     protected boolean nearbyEntityExists() {
