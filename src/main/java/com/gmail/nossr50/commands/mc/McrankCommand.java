@@ -20,7 +20,8 @@ public class McrankCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
         //I'm being lazy and making this only work on yourself, I or someone else will make this work on other players in the future :D
-        Leaderboard.updateLeaderboards(); //Make sure the information is up to date
+    	if(!Config.getInstance().getUseMySQL())
+    		Leaderboard.updateLeaderboards(); //Make sure the information is up to date
 
         if(arg0 instanceof Player) {
             Player player = (Player) arg0;
