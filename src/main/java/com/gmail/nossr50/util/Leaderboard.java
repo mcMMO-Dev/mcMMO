@@ -200,23 +200,23 @@ public class Leaderboard {
         return info;
     }
     
-    public static int getPlayerRank(String playerName, SkillType skillType) {
+    public static int[] getPlayerRank(String playerName, SkillType skillType) {
     	int currentPos = 1;
         List<PlayerStat> statsList = playerStatHash.get(skillType);
         
         if(statsList != null) {
         	for(PlayerStat ps : statsList) {
         		if(ps.name.equalsIgnoreCase(playerName)) {
-        			return currentPos;
+        			return new int[] {currentPos, ps.statVal};
         		} else {
         			currentPos++;
         			continue;
         		}
         	}
         	
-        	return 0;
+        	return new int[] {0};
         } else {
-        	return 0;
+        	return new int[] {0};
         }
     }
     
