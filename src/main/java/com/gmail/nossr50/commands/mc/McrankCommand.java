@@ -12,7 +12,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.mcRankAsync;
 import com.gmail.nossr50.util.Leaderboard;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Skills;
 
 public class McrankCommand implements CommandExecutor {

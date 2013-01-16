@@ -16,11 +16,18 @@ public class Leaderboard {
     private static mcMMO plugin = mcMMO.p;
     private final static String location = mcMMO.getUsersFile();
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
+    private static long lastUpdate = 0;
     
     /**
      * Update the leader boards.
      */
     public static void updateLeaderboards() {
+    	if(System.currentTimeMillis() < lastUpdate + 600000) {
+    		return; //Only update FFS leaderboards every 10 minutes.. this puts a lot of strain on the server (depending on the size of the database) and should not be done frequently
+    	}
+    	
+    	lastUpdate = System.currentTimeMillis(); //Log when the last update was run
+    	
         //Initialize lists
         List<PlayerStat> mining, woodcutting, herbalism, excavation, acrobatics, repair, swords, axes, archery, unarmed, taming, fishing, powerlevel;
 
