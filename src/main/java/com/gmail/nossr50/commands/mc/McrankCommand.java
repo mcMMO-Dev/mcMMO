@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.mcRankAsync;
+import com.gmail.nossr50.runnables.McRankAsync;
 import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Skills;
 
@@ -75,6 +75,6 @@ public class McrankCommand implements CommandExecutor {
 
 
     private void sqlDisplay(CommandSender sender, String playerName) {
-        Bukkit.getScheduler().runTaskAsynchronously(Bukkit.getPluginManager().getPlugin("mcMMO"), new mcRankAsync(playerName, sender));
+        Bukkit.getScheduler().runTaskAsynchronously(Bukkit.getPluginManager().getPlugin("mcMMO"), new McRankAsync(playerName, sender));
     }
 }

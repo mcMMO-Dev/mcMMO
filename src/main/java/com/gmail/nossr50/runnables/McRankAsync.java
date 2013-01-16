@@ -11,12 +11,12 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Skills;
 
-public class mcRankAsync implements Runnable {
+public class McRankAsync implements Runnable {
     private Database database = mcMMO.getPlayerDatabase();
     private final String playerName;
     private final CommandSender sender;
 
-    public mcRankAsync(String playerName, CommandSender sender) {
+    public McRankAsync(String playerName, CommandSender sender) {
         this.playerName = playerName;
         this.sender = sender;
     }
