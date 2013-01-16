@@ -60,6 +60,6 @@ public class McrankCommand implements CommandExecutor {
                 continue; // We want the overall ranking to be at the bottom
             sender.sendMessage(ChatColor.YELLOW + Misc.getCapitalized(skillType.name()) + ChatColor.GREEN + " - " + ChatColor.GOLD + "Rank " + ChatColor.WHITE + "#" + ChatColor.GREEN + skills.get(skillType.name()));
         }
-        sender.sendMessage(ChatColor.YELLOW + "Overall" + ChatColor.GREEN + " - " + ChatColor.GOLD + "Rank " + ChatColor.WHITE + "#" + ChatColor.GREEN + skills.get("all"));
+        sender.sendMessage(ChatColor.YELLOW + "Overall" + ChatColor.GREEN + " - " + ChatColor.GOLD + "Rank " + ChatColor.WHITE + "#" + ChatColor.GREEN + skills.get("ALL"));
     }
 }
