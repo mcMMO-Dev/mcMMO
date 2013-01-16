@@ -9,8 +9,6 @@ Key:
 
 Version 1.3.13-dev
  = Fix mcremove command for mySQL
- ! Change flat file leaderboard tracking
- + Added mcrank command
  ! Overall SQL query improvements
  ! Reduced number of SQL queries for mcTop command from 11 to 1, speeding it up immensely
  ! Changed FFS Leaderboards to hold information in memory rather than doing IO work (optimizations)
