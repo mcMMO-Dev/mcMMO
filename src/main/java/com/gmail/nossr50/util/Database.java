@@ -458,29 +458,23 @@ public class Database {
         Map<String, Integer> skills = new HashMap<String, Integer>();
         if (checkConnected()) {
             try {
-                String sql = "SELECT "
-                        + "(SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'ALL'" 
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.fishing desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'FISHING'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.taming desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'TAMING'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.woodcutting desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'WOODCUTTING'" 
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.repair desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'REPAIR'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.unarmed desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'UNARMED'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.herbalism desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'HERBALISM'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.excavation desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'EXCAVATION'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.archery desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'ARCHERY'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.swords desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'SWORDS'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.axes desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'AXES'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.acrobatics desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'ACROBATICS'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.mining desc) AS p)) AS d WHERE user = '" + playerName + "') AS 'MINING'";
-                PreparedStatement statement = connection.prepareStatement(sql);
-                resultSet = statement.executeQuery();
-                while (resultSet.next()) {
-                    for (SkillType skillType: SkillType.values()) {
+                for (SkillType skillType: SkillType.values()) {
+                    String sql;
+                    if(skillType != SkillType.ALL) {
+                        sql = "SELECT rank AS '" + skillType.name() + "' FROM (SELECT @rownum:=@rownum+1 rank, user, NOW() FROM (SELECT @rownum:=0) AS r, ((SELECT user FROM " + tablePrefix + "users, " + tablePrefix + "skills WHERE id = user_id ORDER BY " + skillType.name().toLowerCase() + " desc) AS p)) AS d WHERE user = '" + playerName + "'";
+                    } else {
+                        sql = "SELECT rank AS 'ALL' FROM (SELECT @rownum:=@rownum+1 rank, user, NOW() FROM (SELECT @rownum:=0) AS r, ((SELECT user FROM " + tablePrefix + "users, " + tablePrefix + "skills WHERE id = user_id ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing desc) AS p)) AS d WHERE user = '" + playerName + "'";
+                    }
+                   
+                    PreparedStatement statement = connection.prepareStatement(sql);
+                    resultSet = statement.executeQuery();
+                    while (resultSet.next()) {
                         skills.put(skillType.name(), resultSet.getInt(skillType.name()));
                     }
+                    statement.close();
                 }
 
-                statement.close();
+         
             }
             catch (SQLException ex) {
                 printErrors(ex);
