@@ -2,11 +2,16 @@ package com.gmail.nossr50.listeners;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.bukkit.TreeType;
+import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 
@@ -15,6 +20,21 @@ import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionMain
 
 public class WorldListener implements Listener {
     ArrayList<BlockStoreConversionMain> converters = new ArrayList<BlockStoreConversionMain>();
+
+    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onStructureGrow(StructureGrowEvent event) {
+        TreeType species = event.getSpecies();
+
+        if (species == TreeType.BROWN_MUSHROOM || species == TreeType.RED_MUSHROOM) {
+            return;
+        }
+
+        List<BlockState> blocks = event.getBlocks();
+
+        for (BlockState block : blocks) {
+            mcMMO.placeStore.setFalse(block.getBlock());
+        }
+    }
 
     @EventHandler
     public void onWorldInit(WorldInitEvent event) {
