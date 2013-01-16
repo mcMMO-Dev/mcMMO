@@ -243,6 +243,7 @@ public class Database {
             try {
                 statement = connection.prepareStatement(sql);
                 statement.executeUpdate();
+                statement.close();
                 return true;
             }
             catch (SQLException ex) {
@@ -261,6 +262,39 @@ public class Database {
         }
 
         return false;
+    }
+
+    /**
+     * Returns the number of rows affected by either a DELETE or UPDATE query
+     *
+     * @param sql SQL query to execute
+     * @return the number of rows affected
+     */
+    public int update(String sql) {
+        int ret = 0;
+        if (checkConnected()) {
+            PreparedStatement statement = null;
+            try {
+                statement = connection.prepareStatement(sql);
+                ret = statement.executeUpdate();
+                statement.close();
+                return ret;
+            } catch (SQLException ex) {
+                printErrors(ex);
+                return 0;
+            } finally {
+                if (statement != null) {
+                    try {
+                        statement.close();
+                    } catch (SQLException e) {
+                        printErrors(e);
+                        return 0;
+                    }
+                }
+            }
+        }
+
+        return ret;
     }
 
     /**
@@ -425,19 +459,19 @@ public class Database {
         if (checkConnected()) {
             try {
                 String sql = "SELECT "
-                        + "(SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'ALL'" 
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.fishing desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'FISHING'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.taming desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'TAMING'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.woodcutting desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'WOODCUTTING'" 
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.repair desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'REPAIR'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.unarmed desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'UNARMED'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.herbalism desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'HERBALISM'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.excavation desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'EXCAVATION'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.archery desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'ARCHERY'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.swords desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'SWORDS'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.axes desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'AXES'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.acrobatics desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'ACROBATICS'"
-                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.mining desc ) AS p) AS d) WHERE user = '" + playerName + "') AS 'MINING'";
+                        + "(SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'ALL'" 
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.fishing desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'FISHING'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.taming desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'TAMING'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.woodcutting desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'WOODCUTTING'" 
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.repair desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'REPAIR'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.unarmed desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'UNARMED'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.herbalism desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'HERBALISM'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.excavation desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'EXCAVATION'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.archery desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'ARCHERY'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.swords desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'SWORDS'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.axes desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'AXES'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.acrobatics desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'ACROBATICS'"
+                        + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.mining desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'MINING'";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
