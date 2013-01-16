@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.bukkit.Bukkit;
@@ -16,6 +17,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.DatabaseUpdate;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.runnables.SQLReconnect;
 import com.gmail.nossr50.spout.SpoutStuff;
@@ -56,27 +58,27 @@ public class Database {
      * Attempt to connect to the mySQL database.
      */
     public static void connect() {
-    	connectionString = "jdbc:mysql://" + configInstance.getMySQLServerName() + ":" + configInstance.getMySQLServerPort() + "/" + configInstance.getMySQLDatabaseName();
-    	try {
-    		mcMMO.p.getLogger().info("Attempting connection to MySQL...");
+        connectionString = "jdbc:mysql://" + configInstance.getMySQLServerName() + ":" + configInstance.getMySQLServerPort() + "/" + configInstance.getMySQLDatabaseName();
+        try {
+            mcMMO.p.getLogger().info("Attempting connection to MySQL...");
 
-    		// Force driver to load if not yet loaded
-    		Class.forName("com.mysql.jdbc.Driver");
-    		Properties connectionProperties = new Properties();
-    		connectionProperties.put("user", configInstance.getMySQLUserName());
-    		connectionProperties.put("password", configInstance.getMySQLUserPassword());
-    		connectionProperties.put("autoReconnect", "false");
-    		connectionProperties.put("maxReconnects", "0");
-    		connection = DriverManager.getConnection(connectionString, connectionProperties);
+            // Force driver to load if not yet loaded
+            Class.forName("com.mysql.jdbc.Driver");
+            Properties connectionProperties = new Properties();
+            connectionProperties.put("user", configInstance.getMySQLUserName());
+            connectionProperties.put("password", configInstance.getMySQLUserPassword());
+            connectionProperties.put("autoReconnect", "false");
+            connectionProperties.put("maxReconnects", "0");
+            connection = DriverManager.getConnection(connectionString, connectionProperties);
 
-    		mcMMO.p.getLogger().info("Connection to MySQL was a success!");
-    	} catch (SQLException ex) {
-    		connection = null;
-    		if (reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("Connection to MySQL failed!");
-    	} catch (ClassNotFoundException ex) {
-    		connection = null;
-    		if (reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("MySQL database driver not found!");
-    	}
+            mcMMO.p.getLogger().info("Connection to MySQL was a success!");
+        } catch (SQLException ex) {
+            connection = null;
+            if (reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("Connection to MySQL failed!");
+        } catch (ClassNotFoundException ex) {
+            connection = null;
+            if (reconnectAttempt == 0 || reconnectAttempt >= 11) mcMMO.p.getLogger().info("MySQL database driver not found!");
+        }
     }
 
     /**
@@ -198,12 +200,12 @@ public class Database {
         catch (SQLException ex) {
             switch (update) {
             case BLAST_MINING:
-            	mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
+                mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
                 write("ALTER TABLE `"+tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0' ;");
                 break;
 
             case FISHING:
-            	mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
+                mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
                 write("ALTER TABLE `"+tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
                 write("ALTER TABLE `"+tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
                 break;
@@ -415,6 +417,42 @@ public class Database {
         }
 
         return rows;
+    }
+    
+    public Map<String, Integer> readSQLRank(String playerName) {
+        ResultSet resultSet;
+        Map<String, Integer> skills = new HashMap<String, Integer>();
+        if (checkConnected()) {
+            try {
+                String sql = "SELECT "
+                        + "(SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing >= (SELECT s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'ALL'" 
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.fishing >= (SELECT s.fishing FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'FISHING'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.taming >= (SELECT s.taming FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'TAMING'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.woodcutting >= (SELECT s.woodcutting FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'WOODCUTTING'" 
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.repair >= (SELECT s.repair FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'REPAIR'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.unarmed >= (SELECT s.unarmed FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'UNARMED'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.herbalism >= (SELECT s.herbalism FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'HERBALISM'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.excavation >= (SELECT s.excavation FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'EXCAVATION'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.archery >= (SELECT s.archery FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'ARCHERY'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.swords >= (SELECT s.swords FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'SWORDS'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.axes >= (SELECT s.axes FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'AXES'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.acrobatics >= (SELECT s.acrobatics FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'ACROBATICS'"
+                        + ", (SELECT (COUNT(*)+1) AS rank FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE u.id = s.user_id AND s.mining >= (SELECT s.mining FROM " + tablePrefix + "skills as s, " + tablePrefix + "users as u WHERE u.id = s.user_id AND u.user = " + playerName + ")) AS 'MINING'";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    for (SkillType skillType: SkillType.values()) {
+                        skills.put(skillType.name(), resultSet.getInt(skillType.name()));
+                    }
+                }
+
+                statement.close();
+            }
+            catch (SQLException ex) {
+                printErrors(ex);
+            }
+        }
+        return skills;
     }
 
     public void purgePowerlessSQL() {
