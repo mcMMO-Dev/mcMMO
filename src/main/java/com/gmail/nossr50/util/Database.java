@@ -243,6 +243,7 @@ public class Database {
             try {
                 statement = connection.prepareStatement(sql);
                 statement.executeUpdate();
+                statement.close();
                 return true;
             }
             catch (SQLException ex) {
@@ -261,6 +262,39 @@ public class Database {
         }
 
         return false;
+    }
+
+    /**
+     * Returns the number of rows affected by either a DELETE or UPDATE query
+     *
+     * @param sql SQL query to execute
+     * @return the number of rows affected
+     */
+    public int update(String sql) {
+        int ret = 0;
+        if (checkConnected()) {
+            PreparedStatement statement = null;
+            try {
+                statement = connection.prepareStatement(sql);
+                ret = statement.executeUpdate();
+                statement.close();
+                return ret;
+            } catch (SQLException ex) {
+                printErrors(ex);
+                return 0;
+            } finally {
+                if (statement != null) {
+                    try {
+                        statement.close();
+                    } catch (SQLException e) {
+                        printErrors(e);
+                        return 0;
+                    }
+                }
+            }
+        }
+
+        return ret;
     }
 
     /**
