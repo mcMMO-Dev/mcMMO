@@ -32,7 +32,7 @@ public class McrankCommand implements CommandExecutor {
             if(Config.getInstance().getUseMySQL()) {
                 sqlDisplay(arg0, playerName);
             } else {
-                flatfileDisplayer(arg0, playerName);
+                flatfileDisplay(arg0, playerName);
             }
 
         } else {
@@ -42,7 +42,7 @@ public class McrankCommand implements CommandExecutor {
         return true;
     }
 
-    public void flatfileDisplayer(CommandSender sender, String playerName) {
+    public void flatfileDisplay(CommandSender sender, String playerName) {
         for (SkillType skillType : SkillType.values()) {
             if (skillType.equals(SkillType.ALL))
                 continue; // We want the overall ranking to be at the bottom
