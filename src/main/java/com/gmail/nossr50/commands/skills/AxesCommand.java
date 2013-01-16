@@ -92,7 +92,7 @@ public class AxesCommand extends SkillCommand {
     protected void effectsDisplay() {
         if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Axes" }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Misc.getCapitalized(LocaleLoader.getString("Axes.SkillName")) }) }));
         }
 
         if (canSkullSplitter) {

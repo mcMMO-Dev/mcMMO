@@ -7,6 +7,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class TamingCommand extends SkillCommand {
@@ -69,7 +70,7 @@ public class TamingCommand extends SkillCommand {
     protected void effectsDisplay() {
         if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Taming" }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Misc.getCapitalized(LocaleLoader.getString("Taming.SkillName")) }) }));
         }
 
         Config configInstance = Config.getInstance();

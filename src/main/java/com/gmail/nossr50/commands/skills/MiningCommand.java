@@ -145,7 +145,7 @@ public class MiningCommand extends SkillCommand {
     protected void effectsDisplay() {
         if (lucky) {
             String perkPrefix = ChatColor.RED + "[mcMMO Perks] ";
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { "Mining" }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Misc.getCapitalized(LocaleLoader.getString("Mining.SkillName")) }) }));
         }
 
         if (canSuperBreaker) {
