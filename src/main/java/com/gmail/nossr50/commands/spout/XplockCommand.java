@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.spout;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +21,7 @@ import com.gmail.nossr50.util.Users;
 public class XplockCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = ChatColor.RED + "Proper usage is /xplock [skill]";
+        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"xplock", "[skill]"});
 
         if (CommandHelper.noConsoleUsage(sender)) {
             return true;
