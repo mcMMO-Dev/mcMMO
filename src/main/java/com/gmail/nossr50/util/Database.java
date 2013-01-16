@@ -458,7 +458,7 @@ public class Database {
         Map<String, Integer> skills = new HashMap<String, Integer>();
         if (checkConnected()) {
             try {
-                String sql = "SELECT"
+                String sql = "SELECT "
                         + "(SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'ALL'" 
                         + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.fishing desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'FISHING'"
                         + ", (SELECT rank FROM (SELECT @rownum:=@rownum+1 rank, p.user AS user FROM (SELECT @rownum:=0) AS rank, ((SELECT u.user AS user FROM " + tablePrefix + "users u, " + tablePrefix + "skills s WHERE u.id = s.user_id ORDER BY s.taming desc) AS p)) AS d) WHERE user = '" + playerName + "') AS 'TAMING'"
