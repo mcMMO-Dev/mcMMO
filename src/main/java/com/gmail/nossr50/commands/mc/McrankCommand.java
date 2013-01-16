@@ -53,7 +53,6 @@ public class McrankCommand implements CommandExecutor {
 
 
     private void sqlDisplay(CommandSender sender, String playerName) {
-        String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         Database database = mcMMO.getPlayerDatabase();
         Map<String, Integer> skills = database.readSQLRank(playerName);
         for (SkillType skillType : SkillType.values()) {
