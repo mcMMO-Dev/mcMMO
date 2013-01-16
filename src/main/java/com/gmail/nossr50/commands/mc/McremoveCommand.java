@@ -29,7 +29,7 @@ public class McremoveCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String playerName;
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-        String databaseName = Config.getInstance().getMySQLDatabaseName();
+        //String databaseName = Config.getInstance().getMySQLDatabaseName();
         String usage = ChatColor.RED + "Proper usage is /mcremove <player>"; //TODO: Needs more locale.
         String success;
 

@@ -110,7 +110,6 @@ public class mcMMO extends JavaPlugin {
     private static String mainDirectory;
     private static String flatFileDirectory;
     private static String usersFile;
-    private static String leaderboardDirectory;
     private static String modDirectory;
 
     //Spout Check
@@ -246,7 +245,7 @@ public class mcMMO extends JavaPlugin {
         placeStore = ChunkManagerFactory.getChunkManager();
 
         // Automatically starts and stores itself
-        MobStoreCleaner cleaner = new MobStoreCleaner();
+        new MobStoreCleaner();
 
         // Create Anniversary files
         Anniversary anniversary = new Anniversary();

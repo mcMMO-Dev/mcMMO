@@ -25,8 +25,9 @@ public class PrimitiveChunkStore implements ChunkStore {
     private List<UUID> spawnedMobs = new ArrayList<UUID>();
     private List<UUID> spawnedPets = new ArrayList<UUID>();
     transient private int worldHeight;
+    
     transient private int xBitShifts;
-    transient private int zBitShifts;
+	transient private int zBitShifts;
     transient private boolean conversionNeeded;
 
     public PrimitiveChunkStore(World world, int cx, int cz) {
