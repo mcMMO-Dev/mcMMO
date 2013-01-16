@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.mc;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -48,32 +47,30 @@ public class McrankCommand implements CommandExecutor {
     }
 
     public void flatfileDisplay(CommandSender sender, String playerName) {
-        sender.sendMessage(ChatColor.GOLD + "-=PERSONAL RANKINGS=-");
-        sender.sendMessage(ChatColor.RED+"TARGET: "+ChatColor.WHITE+playerName);
+        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
+        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", new Object[] {playerName}));
         for (SkillType skillType : SkillType.values()) {
-        	
-        	int[] rankInts = Leaderboard.getPlayerRank(playerName, skillType);
-        	
+
+            int[] rankInts = Leaderboard.getPlayerRank(playerName, skillType);
+
             if (skillType.equals(SkillType.ALL))
                 continue; // We want the overall ranking to be at the bottom
-            
+
             if (rankInts[1] == 0) {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {Skills.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")} )); //Don't bother showing ranking for players without skills
             } else {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {Skills.localizeSkillName(skillType), String.valueOf(rankInts[0])} ));
             }
         }
-        
+
         //Show the powerlevel ranking
         int[] rankInts = Leaderboard.getPlayerRank(playerName, SkillType.ALL);
         
         if (rankInts[1] == 0) {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {Skills.localizeSkillName(SkillType.ALL), LocaleLoader.getString("Commands.mcrank.Unranked")} )); //Don't bother showing ranking for players without skills
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overalll", new Object[] {LocaleLoader.getString("Commands.mcrank.Unranked")} )); //Don't bother showing ranking for players without skills
         } else {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {Skills.localizeSkillName(SkillType.ALL), String.valueOf(rankInts[0])} ));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", new Object[] {String.valueOf(rankInts[0])} ));
         }
-        
-        sender.sendMessage(ChatColor.YELLOW + "Overall" + ChatColor.GREEN + " - " + ChatColor.GOLD + "Rank " + ChatColor.WHITE + "#" + ChatColor.GREEN + Leaderboard.getPlayerRank(playerName, SkillType.ALL));
     }
 
 
