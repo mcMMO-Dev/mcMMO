@@ -13,9 +13,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.AbilityType;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
@@ -294,6 +292,26 @@ public class Skills {
         }
 
         return false;
+    }
+
+    public static boolean isLocalizedSkill(String skillName) {
+        for (SkillType skill : SkillType.values()) {
+            if (skillName.equalsIgnoreCase(LocaleLoader.getString(Misc.getCapitalized(skill.toString() + ".SkillName")))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static String translateLocalizedSkill(String skillName) {
+        for (SkillType skill : SkillType.values()) {
+            if (skillName.equalsIgnoreCase(LocaleLoader.getString(Misc.getCapitalized(skill.toString() + ".SkillName")))) {
+                return skill.toString();
+            }
+        }
+
+        return null;
     }
 
     /**
