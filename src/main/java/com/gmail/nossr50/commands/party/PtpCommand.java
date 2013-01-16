@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +12,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
 public class PtpCommand implements CommandExecutor {
@@ -24,7 +24,7 @@ public class PtpCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = ChatColor.RED + "Proper usage is /ptp <player>"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"});
 
         if (CommandHelper.noConsoleUsage(sender)) {
             return true;
@@ -39,7 +39,7 @@ public class PtpCommand implements CommandExecutor {
             Player player = (Player) sender;
             PlayerProfile profile = Users.getProfile(player);
 
-            if (profile.getRecentlyHurt() + (Config.getInstance().getPTPCommandCooldown() * 1000) > System.currentTimeMillis()) {
+            if (profile.getRecentlyHurt() + (Config.getInstance().getPTPCommandCooldown() * Misc.TIME_CONVERSION_FACTOR) > System.currentTimeMillis()) {
                 player.sendMessage(LocaleLoader.getString("Party.Teleport.Hurt", new Object[] { Config.getInstance().getPTPCommandCooldown() }));
                 return true;
             }
