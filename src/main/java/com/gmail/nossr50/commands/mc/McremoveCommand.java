@@ -51,15 +51,12 @@ public class McremoveCommand implements CommandExecutor {
         /* MySQL */
         if (Config.getInstance().getUseMySQL()) {
             Database database = mcMMO.getPlayerDatabase();
-            int userId = 0;
-            userId = database.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
+            int success = 0;
+            success = database.update("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.user = '" + playerName + "'");
 
-            if (userId > 0) {
-                database.write("DELETE FROM " + databaseName + "." + tablePrefix + "users WHERE " + tablePrefix + "users.id IN " + userId);
+            if (success > 0) {
                 sender.sendMessage(success);
-
-            }
-            else {
+            } else {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
             }
         }
