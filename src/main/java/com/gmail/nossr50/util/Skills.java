@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -224,7 +223,7 @@ public class Skills {
 
                     /* Update custom titles */
                     if (SpoutConfig.getInstance().getShowPowerLevel()) {
-                        spoutPlayer.setTitle(spoutPlayer.getName()+ "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE + "." + ChatColor.GREEN + String.valueOf(Users.getPlayer(player).getPowerLevel()));
+                        spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", new Object[] {spoutPlayer.getName(), Users.getPlayer(player).getPowerLevel()} ));
                     }
                 }
                 else {

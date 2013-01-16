@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
@@ -17,6 +16,7 @@ import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.buttons.McmmoButton;
 import com.gmail.nossr50.datatypes.popups.Menu;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.util.Users;
 
@@ -34,7 +34,7 @@ public class SpoutListener implements Listener {
 
         //TODO: Add custom titles based on skills
         if (SpoutConfig.getInstance().getShowPowerLevel()) {
-            spoutPlayer.setTitle(spoutPlayer.getName() + "\n" + ChatColor.YELLOW + "P" + ChatColor.GOLD + "lvl" + ChatColor.WHITE+"." + ChatColor.GREEN + String.valueOf(mcMMOPlayer.getPowerLevel()));
+            spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", new Object[] {spoutPlayer.getName(), mcMMOPlayer.getPowerLevel()}));
         }
 
         profile.setSpoutHud(new SpoutHud(mcMMOPlayer)); //Setup Party HUD stuff

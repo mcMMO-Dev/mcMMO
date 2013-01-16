@@ -2,7 +2,6 @@ package com.gmail.nossr50.util;
 
 import java.util.ArrayList;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.SkillType;
@@ -32,7 +31,7 @@ public class Page {
         ArrayList<String> allStrings = new ArrayList<String>();
         String split[] = LocaleLoader.getString(address).split("\n");
 
-        allStrings.add(ChatColor.GOLD+"-="+ChatColor.GREEN+header+ChatColor.GOLD+"=-"); //So stylish
+        allStrings.add(LocaleLoader.getString("Guides.Header", new Object[] {header} ));
 
         //Add targeted strings
 
@@ -56,47 +55,36 @@ public class Page {
         }
     }
 
-    public static void grabGuidePageForSkill(SkillType skilltype, Player player, String[] args)
-    {
-        
+    public static void grabGuidePageForSkill(SkillType skilltype, Player player, String[] args) {
         String skillName = skilltype.toString();
         String capitalized = Misc.getCapitalized(skillName);
         String localized = Misc.getCapitalized(LocaleLoader.getString(capitalized + ".SkillName"));
-        player.sendMessage(ChatColor.DARK_AQUA+"Guide for "+localized+" available type /"+skilltype.toString().toLowerCase()+" ? [Page#]"); //TODO: Needs more locale.
-        if (args.length >= 1)
-        {
-            if (args[0].equals("?"))
-            {
+        player.sendMessage(LocaleLoader.getString("Guides.Available", new Object[] {localized, localized.toLowerCase()} ));
 
+        if (args.length >= 1) {
+            if (args[0].equals("?")) {
                 String address = "Guides."+capitalized;
 
-                if (args.length > 1 && Misc.isInt(args[1]) && Misc.getInt(args[1]) <= Page.getTotalPageNumber(address))
-                {
+                if (args.length > 1 && Misc.isInt(args[1]) && Misc.getInt(args[1]) <= Page.getTotalPageNumber(address)) {
                     Page.clearChat(player);
-                    for (String target : Page.grabPageContents(capitalized+" Guide", address, Misc.getInt(args[1])))
-                    {
-                        player.sendMessage(target);
-                    }
-                } else if (args.length == 1)
-                {
-                    Page.clearChat(player);
-                    for (String target : Page.grabPageContents(capitalized+" Guide", address, 1))
-                    {
+                    for (String target : Page.grabPageContents(localized+" Guide", address, Misc.getInt(args[1]))) {
                         player.sendMessage(target);
                     }
                 }
-                else if (args.length > 1 && Misc.getInt(args[1]) > Page.getTotalPageNumber(address))
-                {
-                    player.sendMessage("That page doesn't exist, there are only "+Page.getTotalPageNumber(address)+" total pages"); //TODO: Needs more locale.
+                else if (args.length == 1) {
+                    Page.clearChat(player);
+                    for (String target : Page.grabPageContents(localized+" Guide", address, 1)) {
+                        player.sendMessage(target);
+                    }
                 }
-                else if (args.length > 1 && !Misc.isInt(args[1]))
-                {
-                    player.sendMessage("Not a valid page number!"); //TODO: Needs more locale.
+                else if (args.length > 1 && Misc.getInt(args[1]) > Page.getTotalPageNumber(address)) {
+                    player.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", new Object[] {Page.getTotalPageNumber(address)} ));
                 }
+                else if (args.length > 1 && !Misc.isInt(args[1])) {
+                    player.sendMessage(LocaleLoader.getString("Guides.Page.Invalid"));                }
             }
-            else
-            {
-                player.sendMessage(ChatColor.RED + "Usage is /"+skilltype.toString().toLowerCase()+" ? [page]"); //TODO: Needs more locale.
+            else {
+                player.sendMessage(LocaleLoader.getString("Guides.Usage", new Object[] {localized.toLowerCase()} ));
             }
         }
     }

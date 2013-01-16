@@ -1,11 +1,11 @@
 package com.gmail.nossr50.api;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -30,14 +30,12 @@ public final class ChatAPI {
             return;
         }
 
-        String pPrefix = ChatColor.GREEN + "(" + ChatColor.WHITE + chatEvent.getSender() + ChatColor.GREEN + ") ";
-
         mcMMO.p.getLogger().info("[P](" + chatEvent.getParty() + ")" + "<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             if (Users.getProfile(player).inParty()) {
                 if (Users.getProfile(player).getParty().getName().equalsIgnoreCase(chatEvent.getParty())) {
-                    player.sendMessage(pPrefix + chatEvent.getMessage());
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {chatEvent.getSender()} ) + chatEvent.getMessage());
                 }
             }
         }
@@ -59,13 +57,11 @@ public final class ChatAPI {
             return;
         }
 
-        String aPrefix = ChatColor.AQUA + "{" + ChatColor.WHITE + chatEvent.getSender() + ChatColor.AQUA + "} ";
-
         mcMMO.p.getLogger().info("[A]<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             if (Permissions.adminChat(player) || player.isOp())
-                player.sendMessage(aPrefix + chatEvent.getMessage());
+                player.sendMessage(LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {chatEvent.getSender()} ) + chatEvent.getMessage());
         }
     }
 }

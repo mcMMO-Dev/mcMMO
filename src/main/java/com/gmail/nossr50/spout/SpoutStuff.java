@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
@@ -25,6 +24,7 @@ import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.listeners.SpoutListener;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
@@ -548,8 +548,7 @@ public class SpoutStuff {
             break;
         }
 
-        //TODO: Use Locale
-        spoutPlayer.sendNotification(ChatColor.GREEN + "Level Up!", ChatColor.YELLOW + Misc.getCapitalized(skillType.toString()) + ChatColor.DARK_AQUA + " (" + ChatColor.GREEN + profile.getSkillLevel(skillType) + ChatColor.DARK_AQUA + ")", mat);
+        spoutPlayer.sendNotification(LocaleLoader.getString("Spout.LevelUp.1"), LocaleLoader.getString("Spout.LevelUp.2", new Object[] {Misc.getCapitalized(LocaleLoader.getString(Misc.getCapitalized(skillType.toString()) + ".SkillName")), profile.getSkillLevel(skillType)} ), mat);
         SpoutSounds.playLevelUpNoise(spoutPlayer, plugin);
     }
 
