@@ -2,7 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.TreeType;
 import org.bukkit.block.BlockState;
@@ -29,10 +28,10 @@ public class WorldListener implements Listener {
             return;
         }
 
-        List<BlockState> blocks = event.getBlocks();
-
-        for (BlockState block : blocks) {
-            mcMMO.placeStore.setFalse(block.getBlock());
+        if (mcMMO.placeStore.isTrue(event.getLocation().getBlock())) {
+            for (BlockState block : event.getBlocks()) {
+                mcMMO.placeStore.setFalse(block.getBlock());
+            }   
         }
     }
 
