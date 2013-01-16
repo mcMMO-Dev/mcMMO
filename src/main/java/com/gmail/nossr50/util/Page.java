@@ -58,8 +58,11 @@ public class Page {
 
     public static void grabGuidePageForSkill(SkillType skilltype, Player player, String[] args)
     {
-        String capitalized = Misc.getCapitalized(skilltype.toString());
-        player.sendMessage(ChatColor.DARK_AQUA+"Guide for "+capitalized+" available type /"+skilltype.toString().toLowerCase()+" ? [Page#]"); //TODO: Needs more locale.
+        
+        String skillName = skilltype.toString();
+        String capitalized = Misc.getCapitalized(skillName);
+        String localized = Misc.getCapitalized(LocaleLoader.getString(capitalized + ".SkillName"));
+        player.sendMessage(ChatColor.DARK_AQUA+"Guide for "+localized+" available type /"+skilltype.toString().toLowerCase()+" ? [Page#]"); //TODO: Needs more locale.
         if (args.length >= 1)
         {
             if (args[0].equals("?"))
