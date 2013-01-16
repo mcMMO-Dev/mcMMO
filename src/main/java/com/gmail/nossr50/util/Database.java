@@ -461,15 +461,18 @@ public class Database {
                 for (SkillType skillType: SkillType.values()) {
                     String sql;
                     if(skillType != SkillType.ALL) {
-                        sql = "SELECT rank AS '" + skillType.name() + "' FROM (SELECT @rownum:=@rownum+1 rank, user, NOW() FROM (SELECT @rownum:=0) AS r, ((SELECT user FROM " + tablePrefix + "users, " + tablePrefix + "skills WHERE id = user_id ORDER BY " + skillType.name().toLowerCase() + " desc) AS p)) AS d WHERE user = '" + playerName + "'";
+                        sql = "SELECT user, " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users, " + tablePrefix + "skills WHERE id = user_id AND " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " >= (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "skills, " + tablePrefix + "users WHERE user = '" + playerName + "' AND id = user_id) ORDER BY " + skillType.name().toLowerCase() + " desc";
                     } else {
-                        sql = "SELECT rank AS 'ALL' FROM (SELECT @rownum:=@rownum+1 rank, user, NOW() FROM (SELECT @rownum:=0) AS r, ((SELECT user FROM " + tablePrefix + "users, " + tablePrefix + "skills WHERE id = user_id ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing desc) AS p)) AS d WHERE user = '" + playerName + "'";
+                        sql = "SELECT user, taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users, " + tablePrefix + "skills WHERE id = user_id AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing >= (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "skills, " + tablePrefix + "users WHERE user = '" + playerName + "' AND id = user_id) ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing desc";
                     }
                    
                     PreparedStatement statement = connection.prepareStatement(sql);
                     resultSet = statement.executeQuery();
                     while (resultSet.next()) {
-                        skills.put(skillType.name(), resultSet.getInt(skillType.name()));
+                        if(resultSet.getString("user").equalsIgnoreCase(playerName)) {
+                            skills.put(skillType.name(), resultSet.getRow());
+                            break;
+                        }
                     }
                     statement.close();
                 }

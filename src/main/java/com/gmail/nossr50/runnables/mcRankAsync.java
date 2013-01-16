@@ -31,9 +31,9 @@ public class mcRankAsync implements Runnable {
                 for (SkillType skillType : SkillType.values()) {
                     if (skillType.equals(SkillType.ALL))
                         continue; // We want the overall ranking to be at the bottom
-                    sender.sendMessage(ChatColor.YELLOW + Misc.getCapitalized(skillType.name()) + ChatColor.GREEN + " - " + ChatColor.GOLD + "Rank " + ChatColor.WHITE + "#" + ChatColor.GREEN + skills.get(skillType.name()));
+                    sender.sendMessage(ChatColor.YELLOW + Misc.getCapitalized(skillType.name()) + ChatColor.GREEN + " - " + (skills.get(skillType.name()) == null ? ChatColor.WHITE + "Unranked" : ChatColor.GOLD + "Rank " + ChatColor.WHITE + "#" + ChatColor.GREEN + skills.get(skillType.name())));
                 }
-                sender.sendMessage(ChatColor.YELLOW + "Overall" + ChatColor.GREEN + " - " + ChatColor.GOLD + "Rank " + ChatColor.WHITE + "#" + ChatColor.GREEN + skills.get("ALL"));
+                sender.sendMessage(ChatColor.YELLOW + "Overall" + ChatColor.GREEN + " - " + (skills.get("ALL") == null ? ChatColor.WHITE + "Unranked" : ChatColor.GOLD + "Rank " + ChatColor.WHITE + "#" + ChatColor.GREEN + skills.get("ALL")));
             }
             
             
