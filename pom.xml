@@ -6,8 +6,8 @@
     <name>mcMMO</name>
     <url>https://github.com/mcMMO-Dev/mcMMO</url>
     <issueManagement>
-        <url>http://issues.mcmmo.org</url>
-        <system>JIRA</system>
+        <url>https://github.com/mcMMO-Dev/mcMMO/issues</url>
+        <system>GitHub</system>
     </issueManagement>
     <build>
         <finalName>mcMMO</finalName>
