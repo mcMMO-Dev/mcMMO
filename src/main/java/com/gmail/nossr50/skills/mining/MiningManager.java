@@ -134,7 +134,7 @@ public class MiningManager extends SkillManager{
 
         int randomChance = 100;
         if (Permissions.luckyMining(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         float chance = ((float) Mining.DOUBLE_DROPS_MAX_CHANCE / Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
