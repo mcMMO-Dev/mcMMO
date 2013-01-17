@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.general;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +21,7 @@ public class MmoeditCommand implements CommandExecutor {
         int newValue;
         SkillType skill;
         String skillName;
-        String usage = ChatColor.RED + "Proper usage is /mmoedit [player] <skill> <level>"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" });
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
             return true;
@@ -50,7 +49,7 @@ public class MmoeditCommand implements CommandExecutor {
                     }
 
                     profile.modifySkill(skill, newValue);
-                    sender.sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
+                    sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", new Object[] {skillName, newValue}));
                 }
                 else {
                     sender.sendMessage(usage);
@@ -94,8 +93,8 @@ public class MmoeditCommand implements CommandExecutor {
                 }
 
                 profile.modifySkill(skill, newValue);
-                mcmmoPlayer.getPlayer().sendMessage(ChatColor.GREEN + "Your level in " + skillName + " was set to " + newValue + "!"); //TODO: Needs more locale.
-                sender.sendMessage(ChatColor.RED + skillName + " has been modified for " + args[0] + "."); //TODO: Use locale
+                mcmmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", new Object[] {skillName, newValue}));
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", new Object[] {skillName, args[0]}));
             }
             else {
                 profile = new PlayerProfile(args[0], false); //Temporary Profile
