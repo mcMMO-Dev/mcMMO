@@ -21,7 +21,7 @@ public class MctopCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = ChatColor.RED + "Proper usage is /mctop [skill] [page]"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.2", new Object[] {"mctop", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"});
 
         if (!Config.getInstance().getUseMySQL()) {
 
@@ -145,8 +145,8 @@ public class MctopCommand implements CommandExecutor {
                 n++;
             }
         }
-        
-        sender.sendMessage(ChatColor.GOLD+"Tip: Use "+ChatColor.RED+"/mcrank"+ChatColor.GOLD+" to view all of your personal rankings!");
+
+        sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
@@ -169,7 +169,7 @@ public class MctopCommand implements CommandExecutor {
             sender.sendMessage(String.valueOf(place) + ". " + ChatColor.GREEN + userslist.get(i).get(1) + " - " + ChatColor.WHITE + userslist.get(i).get(0));
             place++;
         }
-        
-        sender.sendMessage(ChatColor.GOLD+"Tip: Use "+ChatColor.RED+"/mcrank"+ChatColor.GOLD+" to view all of your personal rankings!");
+
+        sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
     }
 }

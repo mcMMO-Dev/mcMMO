@@ -23,13 +23,13 @@ public class McmmoCommand implements CommandExecutor {
             if (mcMMO.spoutEnabled && sender instanceof SpoutPlayer) {
                 SpoutPlayer spoutPlayer = (SpoutPlayer) sender;
 
-                spoutPlayer.sendNotification(ChatColor.YELLOW + "[mcMMO]" + ChatColor.GOLD + " Donate!", ChatColor.GREEN + "mcmmodev@gmail.com", Material.DIAMOND);
+                spoutPlayer.sendNotification(LocaleLoader.getString("Spout.Donate"), ChatColor.GREEN + "gjmcferrin@gmail.com", Material.DIAMOND);
             }
 
-            sender.sendMessage(ChatColor.DARK_AQUA + "Donation Info:");
-            sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "mcmmodev@gmail.com" + ChatColor.GOLD + " Paypal");
+            sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
+            sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "gjmcferrin@gmail.com" + ChatColor.GOLD + " Paypal");
         }
-        sender.sendMessage(ChatColor.YELLOW + "Running version: " + ChatColor.DARK_AQUA + mcMMO.p.getDescription().getVersion());
+        sender.sendMessage(LocaleLoader.getString("MOTD.Version", new Object[] {mcMMO.p.getDescription().getVersion()}));
 
         Anniversary anniversary = new Anniversary();
         anniversary.anniversaryCheck(sender);

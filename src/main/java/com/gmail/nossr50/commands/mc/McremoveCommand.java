@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +29,7 @@ public class McremoveCommand implements CommandExecutor {
         String playerName;
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         //String databaseName = Config.getInstance().getMySQLDatabaseName();
-        String usage = ChatColor.RED + "Proper usage is /mcremove <player>"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"mcremove", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"});
         String success;
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcremove")) {
@@ -40,7 +39,7 @@ public class McremoveCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             playerName = args[0];
-            success = ChatColor.GREEN + playerName + " was successfully removed from the database!"; //TODO: Locale
+            success = LocaleLoader.getString("Commands.mcremove.Success", new Object[] {playerName});
             break;
 
         default:

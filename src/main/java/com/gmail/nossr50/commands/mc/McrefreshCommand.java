@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.mc;
 
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,7 +23,7 @@ public class McrefreshCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer player;
         PlayerProfile profile;
-        String usage = ChatColor.RED + "Proper usage is /mcrefresh [player]"; //TODO: Needs more locale
+        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"mcrefresh", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"});
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcrefresh")) {
             return true;

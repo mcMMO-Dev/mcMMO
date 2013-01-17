@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.mc;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +21,7 @@ public class MccCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        player.sendMessage(ChatColor.RED + "---[]" + ChatColor.YELLOW + "mcMMO Commands" + ChatColor.RED + "[]---"); //TODO: Needs more locale.
+        player.sendMessage(LocaleLoader.getString("Commands.mcc.Header"));
 
         if (Permissions.party(player)) {
             player.sendMessage(LocaleLoader.getString("Commands.Party.Commands"));
