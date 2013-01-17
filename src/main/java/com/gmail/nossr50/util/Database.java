@@ -150,6 +150,7 @@ public class Database {
         checkDatabaseStructure(DatabaseUpdate.FISHING);
         checkDatabaseStructure(DatabaseUpdate.BLAST_MINING);
         checkDatabaseStructure(DatabaseUpdate.CASCADE_DELETE);
+        checkDatabaseStructure(DatabaseUpdate.INDEX);
     }
 
     /**
@@ -177,6 +178,24 @@ public class Database {
             sql = "SELECT * FROM  `" + tablePrefix + "experience` ORDER BY  `" + tablePrefix + "experience`.`fishing` ASC LIMIT 0 , 30";
             break;
 
+        case INDEX:
+            if(read("SHOW INDEX FROM " + tablePrefix + "skills").size() != 13) {
+                plugin.getLogger().info("Indexing tables, this may take a while on larger databases");
+                write("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_taming` (`taming`) USING BTREE, "
+                        + "ADD INDEX `idx_mining` (`mining`) USING BTREE, "
+                        + "ADD INDEX `idx_woodcutting` (`woodcutting`) USING BTREE, "
+                        + "ADD INDEX `idx_repair` (`repair`) USING BTREE, "
+                        + "ADD INDEX `idx_unarmed` (`unarmed`) USING BTREE, "
+                        + "ADD INDEX `idx_herbalism` (`herbalism`) USING BTREE, "
+                        + "ADD INDEX `idx_excavation` (`excavation`) USING BTREE, "
+                        + "ADD INDEX `idx_archery` (`archery`) USING BTREE, "
+                        + "ADD INDEX `idx_swords` (`swords`) USING BTREE, "
+                        + "ADD INDEX `idx_axes` (`axes`) USING BTREE, "
+                        + "ADD INDEX `idx_acrobatics` (`acrobatics`) USING BTREE, "
+                        + "ADD INDEX `idx_fishing` (`fishing`) USING BTREE;");
+            }
+            break;
+            
         default:
             break;
         }
@@ -461,16 +480,24 @@ public class Database {
                 for (SkillType skillType: SkillType.values()) {
                     String sql;
                     if(skillType != SkillType.ALL) {
-                        sql = "SELECT user, " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users, " + tablePrefix + "skills WHERE id = user_id AND " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " >= (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "skills, " + tablePrefix + "users WHERE user = '" + playerName + "' AND id = user_id) ORDER BY " + skillType.name().toLowerCase() + " desc";
+                        sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " > (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";
                     } else {
-                        sql = "SELECT user, taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users, " + tablePrefix + "skills WHERE id = user_id AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing >= (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "skills, " + tablePrefix + "users WHERE user = '" + playerName + "' AND id = user_id) ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing desc";
+                        sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";
                     }
-                   
                     PreparedStatement statement = connection.prepareStatement(sql);
+                    resultSet = statement.executeQuery();
+                    resultSet.next();
+                    int rank = resultSet.getInt("rank");
+                    if(skillType != SkillType.ALL) {
+                        sql = "SELECT user, " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " = (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "') ORDER BY " + skillType.name().toLowerCase() + " desc";
+                    } else {
+                        sql = "SELECT user, taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing = (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "') ORDER BY taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing desc";
+                    }
+                    statement = connection.prepareStatement(sql);
                     resultSet = statement.executeQuery();
                     while (resultSet.next()) {
                         if(resultSet.getString("user").equalsIgnoreCase(playerName)) {
-                            skills.put(skillType.name(), resultSet.getRow());
+                            skills.put(skillType.name(), rank + resultSet.getRow());
                             break;
                         }
                     }
