@@ -69,7 +69,16 @@ public final class PartyAPI {
      * @param partyName The party to add the player to
      */
     public static void addToParty(Player player, String partyName) {
-        PartyManager.getInstance().addToParty(player.getName(), Users.getProfile(player), PartyManager.getInstance().getParty(partyName)); //TODO this will throw a NPE if the party doesn't exist
+        Party party = PartyManager.getInstance().getParty(partyName);
+        String playerName = player.getName();
+
+        if (party == null) {
+            party = new Party();
+            party.setName(partyName);
+            party.setLeader(playerName);
+        }
+
+        PartyManager.getInstance().addToParty(playerName, Users.getProfile(player), party);
     }
 
     /**
