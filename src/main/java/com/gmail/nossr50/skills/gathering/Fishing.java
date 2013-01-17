@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.gathering;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -164,9 +165,10 @@ public class Fishing {
                 if (Misc.getRandom().nextInt(randomChance) <= (lootTier * magicHunterMultiplier) && Permissions.fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         if (newEnchant.canEnchantItem(fishingResults)) {
+                            Map<Enchantment, Integer> resultEnchantments = fishingResults.getEnchantments();
                             specificChance++;
 
-                            for (Enchantment oldEnchant : fishingResults.getEnchantments().keySet()) {
+                            for (Enchantment oldEnchant : resultEnchantments.keySet()) {
                                 if (oldEnchant.conflictsWith(newEnchant))
                                     specificChance--;
                                     continue;
