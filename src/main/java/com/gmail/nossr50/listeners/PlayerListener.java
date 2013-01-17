@@ -182,7 +182,6 @@ public class PlayerListener implements Listener {
 
         if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
-        //TODO: Locale ALL the things.
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
 
@@ -403,7 +402,7 @@ public class PlayerListener implements Listener {
             Party party = profile.getParty();
 
             if (party == null) {
-                player.sendMessage("You're not in a party, type /p to leave party chat mode."); //TODO: Use mcLocale
+                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 return;
             }
 
