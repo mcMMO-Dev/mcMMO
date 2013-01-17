@@ -74,7 +74,7 @@ public class XprateCommand implements CommandExecutor {
                     }
                 }
                 else {
-                    sender.sendMessage("The XP RATE was modified to " + Config.getInstance().xpGainMultiplier); //TODO: Locale
+                    sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", new Object[] {Config.getInstance().xpGainMultiplier}));
                 }
             }
             else {

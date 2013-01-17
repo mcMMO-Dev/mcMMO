@@ -17,7 +17,7 @@ import com.gmail.nossr50.util.Users;
 public class InspectCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = "Proper usage is /inspect <player>"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"inspect", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"});
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.inspect")) {
             return true;

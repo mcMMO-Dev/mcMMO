@@ -41,7 +41,7 @@ public class Herbalism {
         boolean hasSeeds = inventory.contains(Material.SEEDS);
 
         if (!hasSeeds) {
-            player.sendMessage("You need more seeds to spread Green Terra");  //TODO: Needs more locale.
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.NeedMore"));
         }
         else if (hasSeeds && !block.getType().equals(Material.WHEAT)) {
             inventory.removeItem(new ItemStack(Material.SEEDS));

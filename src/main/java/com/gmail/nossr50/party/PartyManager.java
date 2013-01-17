@@ -248,16 +248,16 @@ public class PartyManager {
 
             if (partyPassword != null) {
                 if (password == null) {
-                    player.sendMessage("This party requires a password. Use /party <party> <password> to join it."); //TODO: Needs more locale.
+                    player.sendMessage(LocaleLoader.getString("Party.Help.1"));
                     return false;
                 }
                 else if (!password.equals(partyPassword)) {
-                    player.sendMessage("Party password incorrect."); //TODO: Needs more locale.
+                    player.sendMessage(LocaleLoader.getString("Party.Password.Incorrect"));
                     return false;
                 }
             }
             else {
-                player.sendMessage("Party is locked."); //TODO: Needs more locale.
+                player.sendMessage(LocaleLoader.getString("Party.Locked"));
                 return false;
             }
         }
@@ -323,13 +323,13 @@ public class PartyManager {
 
         for (Player member : party.getOnlineMembers()) {
             if (member.getName().equals(playerName)) {
-                member.sendMessage("You are now the party owner."); //TODO: Needs more locale.
+                member.sendMessage(LocaleLoader.getString("Party.Owner.Player"));
             }
             else if (member.equals(leaderName)) {
-                member.sendMessage("You are no longer party owner."); //TODO: Needs more locale.
+                member.sendMessage(LocaleLoader.getString("Party.Owner.NotLeader"));
             }
             else {
-                member.sendMessage(playerName + " is the new party owner."); //TODO: Needs more Locale.
+                member.sendMessage(LocaleLoader.getString("Party.Owner.New", new Object[] {playerName}));
             }
         }
 

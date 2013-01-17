@@ -47,7 +47,7 @@ public class PtpCommand implements CommandExecutor {
             Player target = plugin.getServer().getPlayer(args[0]);
 
             if (player.equals(target)) {
-                player.sendMessage("You can't teleport to yourself!"); //TODO: Use locale
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
                 return true;
             }
 

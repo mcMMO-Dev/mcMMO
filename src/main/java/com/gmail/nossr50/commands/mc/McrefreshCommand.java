@@ -56,7 +56,7 @@ public class McrefreshCommand implements CommandExecutor {
                 return true;
             }
 
-            sender.sendMessage("You have refreshed " + playerName + "'s cooldowns!"); //TODO: Use locale
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", new Object[] {playerName}));
 
             break;
 
