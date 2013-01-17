@@ -49,7 +49,7 @@ public class AxeManager extends SkillManager {
 
         int randomChance = 100;
         if (Permissions.luckyAxes(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         double chance = (Axes.criticalHitMaxChance / Axes.criticalHitMaxBonusLevel) * eventHandler.skillModifier;

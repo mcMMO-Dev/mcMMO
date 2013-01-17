@@ -32,7 +32,7 @@ public class AcrobaticsManager extends SkillManager {
 
         int randomChance = 100;
         if (Permissions.luckyAcrobatics(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         double chance;
@@ -68,7 +68,7 @@ public class AcrobaticsManager extends SkillManager {
 
         int randomChance = 100;
         if (Permissions.luckyAcrobatics(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         double chance = (Acrobatics.dodgeMaxChance / Acrobatics.dodgeMaxBonusLevel) * eventHandler.skillModifier;

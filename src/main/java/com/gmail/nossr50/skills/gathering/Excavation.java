@@ -97,7 +97,7 @@ public class Excavation {
                     int randomChance = 100;
 
                     if (Permissions.luckyExcavation(player)) {
-                        randomChance = (int) (randomChance * 0.75);
+                        randomChance = 75;
                     }
 
                     if (Misc.getRandom().nextDouble() * randomChance <= treasure.getDropChance()) {

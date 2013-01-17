@@ -113,7 +113,7 @@ public class Repair {
             int randomChance = 100;
 
             if (Permissions.luckyRepair(player)) {
-                randomChance = (int) (randomChance * 0.75);
+                randomChance = 75;
             }
 
             if (Misc.getRandom().nextInt(randomChance) <= getEnchantChance(rank)) {
@@ -242,7 +242,7 @@ public class Repair {
         int chance = (int) (((double) SUPER_REPAIR_CHANCE_MAX / (double) SUPER_REPAIR_MAX_BONUS_LEVEL) * skillLevel);
         if (skillLevel >= SUPER_REPAIR_MAX_BONUS_LEVEL) chance = SUPER_REPAIR_CHANCE_MAX;
 
-        if (Permissions.luckyRepair(player)) randomChance = (int) (randomChance * 0.75);
+        if (Permissions.luckyRepair(player)) randomChance = 75;
 
         if (chance > Misc.getRandom().nextInt(randomChance) && Permissions.repairBonus(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));

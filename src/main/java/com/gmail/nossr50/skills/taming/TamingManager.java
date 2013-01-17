@@ -40,7 +40,7 @@ public class TamingManager extends SkillManager {
             int randomChance = 100;
 
             if (Permissions.luckyTaming(player)) {
-                randomChance = (int) (randomChance * 0.75);
+                randomChance = 75;
             }
 
             if (Misc.getRandom().nextInt(randomChance) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
@@ -89,7 +89,7 @@ public class TamingManager extends SkillManager {
         int randomChance = 100;
 
         if (Permissions.luckyTaming(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         float chance = (float) (((double) Taming.GORE_CHANCE_MAX / (double) Taming.GORE_MAX_BONUS_LEVEL) * skillLevel);

@@ -34,7 +34,7 @@ public class SwordsManager extends SkillManager {
             int randomChance = 100;
 
             if (Permissions.luckySwords(player)) {
-                randomChance = (int) (randomChance * 0.75);
+                randomChance = 75;
             }
 
             float chance = (float) (((double) Swords.BLEED_CHANCE_MAX / (double) Swords.BLEED_MAX_BONUS_LEVEL) * skillLevel);
@@ -63,7 +63,7 @@ public class SwordsManager extends SkillManager {
             int randomChance = 100;
 
             if (Permissions.luckySwords(player)) {
-                randomChance = (int) (randomChance * 0.75);
+                randomChance = 75;
             }
 
             float chance = (float) (((double) Swords.COUNTER_ATTACK_CHANCE_MAX / (double) Swords.COUNTER_ATTACK_MAX_BONUS_LEVEL) * skillLevel);

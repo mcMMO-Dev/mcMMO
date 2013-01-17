@@ -97,7 +97,7 @@ public class Fishing {
 
             int randomChance = 100;
             if (Permissions.luckyFishing(player)) {
-                randomChance = (int) (randomChance * 0.75);
+                randomChance = 75;
             }
 
             if (Misc.getRandom().nextDouble() * randomChance <= foundTreasure.getDropChance()) {
@@ -147,7 +147,7 @@ public class Fishing {
                 int randomChance = 100;
 
                 if (Permissions.luckyFishing(player)) {
-                    randomChance = (int) (randomChance * 0.75);
+                    randomChance = 75;
                 }
 
                 if (player.getWorld().hasStorm()) {
@@ -214,7 +214,7 @@ public class Fishing {
         int randomChance = 100;
 
         if (Permissions.luckyFishing(event.getPlayer())) {
-            randomChance = (int) (randomChance * 1.25);
+            randomChance = 125;
         }
 
         final Player player = event.getPlayer();

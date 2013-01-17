@@ -28,7 +28,7 @@ public class ArcheryManager extends SkillManager {
 
         int randomChance = 100;
         if (Permissions.luckyArchery(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         double chance = (Archery.retrieveMaxChance / Archery.retrieveMaxBonusLevel) * eventHandler.skillModifier;
@@ -53,7 +53,7 @@ public class ArcheryManager extends SkillManager {
 
         int randomChance = 100;
         if (Permissions.luckyArchery(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         double chance = (Archery.dazeMaxBonus / Archery.dazeMaxBonusLevel) * eventHandler.skillModifier;

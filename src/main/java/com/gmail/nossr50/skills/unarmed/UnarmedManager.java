@@ -34,7 +34,7 @@ public class UnarmedManager extends SkillManager {
             int randomChance = 100;
 
             if (Permissions.luckyUnarmed(player)) {
-                randomChance = (int) (randomChance * 0.75);
+                randomChance = 75;
             }
 
             float chance = (float) (((double) Unarmed.DISARM_MAX_CHANCE / (double) Unarmed.DISARM_MAX_BONUS_LEVEL) * skillLevel);
@@ -68,7 +68,7 @@ public class UnarmedManager extends SkillManager {
         int randomChance = 100;
 
         if (Permissions.luckyUnarmed(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         float chance = (float) (((double) Unarmed.DEFLECT_MAX_CHANCE / (double) Unarmed.DEFLECT_MAX_BONUS_LEVEL) * skillLevel);
@@ -118,7 +118,7 @@ public class UnarmedManager extends SkillManager {
         int randomChance = 100;
 
         if (Permissions.luckyUnarmed(defender)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         float chance = (float) (((double) Unarmed.IRON_GRIP_MAX_CHANCE / (double) Unarmed.IRON_GRIP_MAX_BONUS_LEVEL) * skillLevel);

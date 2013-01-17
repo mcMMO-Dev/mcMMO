@@ -104,7 +104,7 @@ public class Herbalism {
         int randomChance = 100;
 
         if (Permissions.luckyHerbalism(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * herbLevel);
@@ -451,7 +451,7 @@ public class Herbalism {
         int randomChance = 100;
 
         if (Permissions.luckyHerbalism(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * herbLevel);
@@ -525,7 +525,7 @@ public class Herbalism {
         int randomChance = 100;
 
         if (Permissions.luckyHerbalism(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);

@@ -64,7 +64,7 @@ public class ImpactEventHandler {
 
         int randomChance = 100;
         if (Permissions.luckyAxes(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         if (Misc.getRandom().nextInt(randomChance) <= Axes.greaterImpactChance) {

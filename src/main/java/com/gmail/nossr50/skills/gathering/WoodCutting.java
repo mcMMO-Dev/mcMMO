@@ -358,7 +358,7 @@ public class WoodCutting {
         if (chance > MAX_CHANCE) chance = MAX_CHANCE;
 
         if (Permissions.luckyWoodcutting(player)) {
-            randomChance = (int) (randomChance * 0.75);
+            randomChance = 75;
         }
 
         if (chance > Misc.getRandom().nextInt(randomChance) && Permissions.woodcuttingDoubleDrops(player)) {
