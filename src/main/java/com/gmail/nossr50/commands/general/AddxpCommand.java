@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.general;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,8 +28,7 @@ public class AddxpCommand implements CommandExecutor {
         Player modifiedPlayer;
         int xp;
         SkillType skill;
-        String skillName;
-        String usage = ChatColor.RED + "Proper usage is /addxp [playername] <skill> <xp>"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">" });
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
             return true;
@@ -54,13 +52,11 @@ public class AddxpCommand implements CommandExecutor {
                     mcMMOPlayer.addXPOverride(skill, xp);
 
                     if (skill.equals(SkillType.ALL)) {
-                        skillName = "all skills";
+                        modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] {xp}));
                     }
                     else {
-                        skillName = Misc.getCapitalized(skill.toString());
+                        modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", new Object[] {xp, Misc.getCapitalized(skill.toString())}));
                     }
-
-                    modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + xp + " experience in " + skillName + "!"); //TODO: Needs more locale.
 
                     if (skill.equals(SkillType.ALL)) {
                         Skills.xpCheckAll(modifiedPlayer, profile);
@@ -103,26 +99,22 @@ public class AddxpCommand implements CommandExecutor {
             if (Misc.isInt(args[2])) {
                 xp = Integer.valueOf(args[2]);
                 skill = Skills.getSkillType(args[1]);
-                String message;
 
                 mcMMOPlayer.addXPOverride(skill, xp);
 
                 if (skill.equals(SkillType.ALL)) {
-                    skillName = "all skills";
-                    message = ChatColor.RED + "All skills have been modified for " + playerName + "."; //TODO: Use locale
+                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] {playerName}));
                 }
                 else {
-                    skillName = Misc.getCapitalized(skill.toString());
-                    message = ChatColor.RED + skillName + " has been modified for " + playerName + "."; //TODO: Use locale
+                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] {Misc.getCapitalized(skill.toString()), playerName}));
                 }
 
-                sender.sendMessage(message);
-                modifiedPlayer.sendMessage(ChatColor.GREEN + "You were awarded " + xp + " experience in " + skillName + "!"); //TODO: Needs more locale.
-
                 if (skill.equals(SkillType.ALL)) {
+                    modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] {xp}));
                     Skills.xpCheckAll(modifiedPlayer, profile);
                 }
                 else {
+                    modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", new Object[] {xp, Misc.getCapitalized(skill.toString())}));
                     Skills.xpCheckSkill(skill, modifiedPlayer, profile);
                 }
             }

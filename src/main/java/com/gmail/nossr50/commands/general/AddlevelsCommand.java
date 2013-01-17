@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.general;
 
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,8 +28,7 @@ public class AddlevelsCommand implements CommandExecutor{
         PlayerProfile profile;
         int levels;
         SkillType skill;
-        String skillName;
-        String usage = ChatColor.RED + "Proper usage is /addlevels [player] <skill> <level>"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" });
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
             return true;
@@ -51,14 +49,13 @@ public class AddlevelsCommand implements CommandExecutor{
                     profile = Users.getProfile(modifiedPlayer);
 
                     if (skill.equals(SkillType.ALL)) {
-                        skillName = "all skills";
+                        sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
                     }
                     else {
-                        skillName = Misc.getCapitalized(skill.toString());
+                        sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
                     }
 
                     profile.addLevels(skill, levels);
-                    sender.sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
                 }
             }
             else {
@@ -90,23 +87,23 @@ public class AddlevelsCommand implements CommandExecutor{
             if (Misc.isInt(args[2])) {
                 levels = Integer.valueOf(args[2]);
                 skill = Skills.getSkillType(args[1]);
-                String message;
 
                 Users.getProfile(modifiedPlayer).addLevels(skill, levels);
 
                 if (skill.equals(SkillType.ALL)) {
-                    skillName = "all skills";
-                    message = ChatColor.RED + "All skills have been modified for " + playerName + "."; //TODO: Use locale
+                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] {playerName}));
                 }
                 else {
-                    skillName = Misc.getCapitalized(skill.toString());
-                    message = ChatColor.RED + skillName + " has been modified for " + playerName + "."; //TODO: Use locale
+                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] {Misc.getCapitalized(skill.toString()), playerName}));
                 }
 
-                sender.sendMessage(message);
-
                 if (modifiedPlayer.isOnline()) {
-                    ((Player) modifiedPlayer).sendMessage(ChatColor.GREEN + "You were awarded " + levels + " levels in " + skillName + "!"); //TODO: Needs more locale.
+                    if (skill.equals(SkillType.ALL)) {
+                        ((Player) modifiedPlayer).sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
+                    }
+                    else {
+                        ((Player) modifiedPlayer).sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
+                    }
                 }
             }
             else {
