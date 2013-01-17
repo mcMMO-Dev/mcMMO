@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +23,7 @@ public class ACommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PlayerProfile profile;
-        String usage = ChatColor.RED + "Proper usage is /a <message>"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"a", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"});
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.chat.adminchat")) {
             return true;
@@ -76,7 +75,7 @@ public class ACommand implements CommandExecutor {
                 }
 
                 message = chatEvent.getMessage();
-                String prefix = ChatColor.AQUA + "{" + ChatColor.WHITE + player.getName() + ChatColor.AQUA + "} ";
+                String prefix = LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {player.getName()} );
 
                 plugin.getLogger().info("[A]<" + player.getName() + "> " + message);
 
@@ -95,7 +94,7 @@ public class ACommand implements CommandExecutor {
                 }
 
                 message = chatEvent.getMessage();
-                String prefix = ChatColor.AQUA + "{" + ChatColor.WHITE + "*Console*" + ChatColor.AQUA + "} ";
+                String prefix = LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {LocaleLoader.getString("Commands.Chat.Console")} );
 
                 plugin.getLogger().info("[A]<*Console*> " + message);
 

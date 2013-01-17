@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,7 +24,7 @@ public class PCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PlayerProfile profile;
-        String usage = ChatColor.RED + "Proper usage is /p <party-name> <message>"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.2", new Object[] {"p", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"});
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party")) {
             return true;
@@ -83,7 +82,7 @@ public class PCommand implements CommandExecutor {
                 }
 
                 message = chatEvent.getMessage();
-                String prefix = ChatColor.GREEN + "(" + ChatColor.WHITE + player.getName() + ChatColor.GREEN + ") ";
+                String prefix = LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {player.getName()} );
 
                 plugin.getLogger().info("[P](" + party.getName() + ")" + "<" + player.getName() + "> " + message);
 
@@ -120,7 +119,7 @@ public class PCommand implements CommandExecutor {
                 }
 
                 message = chatEvent.getMessage();
-                String prefix = ChatColor.GREEN + "(" + ChatColor.WHITE + "*Console*" + ChatColor.GREEN + ") ";
+                String prefix = LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {LocaleLoader.getString("Commands.Chat.Console")} );
 
                 plugin.getLogger().info("[P](" + args[0] + ")" + "<*Console*> " + message);
 

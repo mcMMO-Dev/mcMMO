@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +23,7 @@ public class InviteCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = ChatColor.RED + "Proper usage is /invite <player>"; //TODO: Needs more locale.
+        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"});
 
         if (CommandHelper.noConsoleUsage(sender)) {
             return true;
