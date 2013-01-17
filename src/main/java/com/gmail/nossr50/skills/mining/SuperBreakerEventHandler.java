@@ -53,7 +53,6 @@ public class SuperBreakerEventHandler {
 
     protected void processDropsAndXP() {
         manager.miningBlockCheck(block);
-        manager.miningBlockCheck(block); //Triple drops
     }
 
     protected void playSpoutSound() {
@@ -75,7 +74,7 @@ public class SuperBreakerEventHandler {
 
             return true;
         }
-
+        
         switch (blockType) {
         case OBSIDIAN:
             if (tier < Mining.DIAMOND_TOOL_TIER) {
@@ -100,7 +99,7 @@ public class SuperBreakerEventHandler {
             }
             /* FALL THROUGH */
 
-        case COAL_ORE:
+        case COAL_ORE: 
         case ENDER_STONE:
         case GLOWSTONE:
         case MOSSY_COBBLESTONE:

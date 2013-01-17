@@ -157,7 +157,7 @@ public class MiningManager extends SkillManager{
 
         SuperBreakerEventHandler eventHandler = new SuperBreakerEventHandler(this, block);
 
-        if (eventHandler.tierCheck()) {
+        if (!eventHandler.tierCheck()) {
             return;
         }
 
