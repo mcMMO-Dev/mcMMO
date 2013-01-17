@@ -61,7 +61,6 @@ public class Combat {
         case PLAYER:
             Player attacker = (Player) event.getDamager();
             ItemStack itemInHand = attacker.getItemInHand();
-            PlayerProfile attackerProfile = Users.getProfile(attacker);
 
             if (ItemChecks.isSword(itemInHand)) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -76,14 +75,10 @@ public class Combat {
                 Skills.abilityCheck(attacker, SkillType.SWORDS);
 
                 SwordsManager swordsManager = new SwordsManager(attacker);
-
                 swordsManager.bleedCheck(target);
+                swordsManager.serratedStrikes(target, event.getDamage());
 
-                if (attackerProfile.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
-                    swordsManager.serratedStrikes(target, event.getDamage());
-                }
-
-                startGainXp(attacker, attackerProfile, target, SkillType.SWORDS);
+                startGainXp(attacker, swordsManager.getProfile(), target, SkillType.SWORDS);
             }
             else if (ItemChecks.isAxe(itemInHand) && Permissions.axes(attacker)) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -96,18 +91,14 @@ public class Combat {
                 }
 
                 Skills.abilityCheck(attacker, SkillType.AXES);
-                AxeManager axeManager = new AxeManager(attacker);
 
+                AxeManager axeManager = new AxeManager(attacker);
                 axeManager.bonusDamage(event);
                 axeManager.criticalHitCheck(event);
                 axeManager.impact(event);
+                axeManager.skullSplitter(event);
 
-                if (attackerProfile.getAbilityMode(AbilityType.SKULL_SPLIITER)) {
-                    axeManager.skullSplitter(event);
-                    applyAbilityAoE(attacker, target, event.getDamage() / 2, SkillType.AXES);
-                }
-
-                startGainXp(attacker, attackerProfile, target, SkillType.AXES);
+                startGainXp(attacker, axeManager.getProfile(), target, SkillType.AXES);
             }
             else if (itemInHand.getType() == Material.AIR && Permissions.unarmed(attacker)) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -125,7 +116,7 @@ public class Combat {
 
                 unarmedManager.bonusDamage(event);
 
-                if (attackerProfile.getAbilityMode(AbilityType.BERSERK) && Permissions.berserk(attacker)) {
+                if (unarmedManager.getProfile().getAbilityMode(AbilityType.BERSERK) && Permissions.berserk(attacker)) {
                     event.setDamage((int) (event.getDamage() * 1.5));
                 }
 
@@ -133,7 +124,7 @@ public class Combat {
                     unarmedManager.disarmCheck((Player) target);
                 }
 
-                startGainXp(attacker, attackerProfile, target, SkillType.UNARMED);
+                startGainXp(attacker, unarmedManager.getProfile(), target, SkillType.UNARMED);
             }
             else if (itemInHand.getType() == Material.BONE && target instanceof Tameable) {
                 TamingManager tamingManager = new TamingManager(attacker);

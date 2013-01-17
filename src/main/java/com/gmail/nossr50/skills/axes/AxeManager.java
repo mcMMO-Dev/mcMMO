@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
@@ -89,7 +90,7 @@ public class AxeManager extends SkillManager {
      * @param event The event to process
      */
     public void skullSplitter(EntityDamageByEntityEvent event) {
-        if (Misc.isNPC(player) || !Permissions.skullSplitter(player)) {
+        if (Misc.isNPC(player) || !Permissions.skullSplitter(player) || !profile.getAbilityMode(AbilityType.SKULL_SPLIITER)) {
             return;
         }
 

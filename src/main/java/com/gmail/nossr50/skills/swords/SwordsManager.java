@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.swords;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Combat;
@@ -76,7 +77,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public void serratedStrikes(LivingEntity target, int damage) {
-        if (Misc.isNPC(player) || !Permissions.serratedStrikes(player)) {
+        if (Misc.isNPC(player) || !Permissions.serratedStrikes(player) || !profile.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
             return;
         }
 
