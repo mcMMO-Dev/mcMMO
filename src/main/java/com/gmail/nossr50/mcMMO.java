@@ -69,7 +69,6 @@ import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
-import com.gmail.nossr50.runnables.ChunkletUnloader;
 import com.gmail.nossr50.runnables.MobStoreCleaner;
 import com.gmail.nossr50.runnables.SaveTimer;
 import com.gmail.nossr50.runnables.SkillMonitor;
@@ -198,8 +197,6 @@ public class mcMMO extends JavaPlugin {
         scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(this), 0, 20);
         //Bleed timer (Runs every two seconds)
         scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 0, 40);
-        //Chunklet unloader (Runs every 20 seconds by default)
-        scheduler.scheduleSyncRepeatingTask(this, new ChunkletUnloader(), 0, ChunkletUnloader.RUN_INTERVAL * 20);
 
         //Old & Powerless User remover
         int purgeInterval = Config.getInstance().getPurgeInterval();
