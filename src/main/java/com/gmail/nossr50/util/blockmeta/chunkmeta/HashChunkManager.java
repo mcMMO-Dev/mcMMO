@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.LivingEntity;
 
 import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionZDirectory;
@@ -179,7 +180,12 @@ public class HashChunkManager implements ChunkManager {
 
             iteratingMobs = true;
 
-            for (Entity entity : world.getEntities()) {
+            for (LivingEntity entity : world.getLivingEntities()) {
+                if (mobs.contains(entity.getUniqueId()))
+                    addSpawnedMob(entity);
+            }
+
+            for(FallingBlock entity: world.getEntitiesByClass(FallingBlock.class)) {
                 if (mobs.contains(entity.getUniqueId()))
                     addSpawnedMob(entity);
             }
