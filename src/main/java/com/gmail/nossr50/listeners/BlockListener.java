@@ -78,29 +78,6 @@ public class BlockListener implements Listener {
         }
     }
 
-
-    /**
-     * Monitor BlockPhysics events.
-     *
-     * @param event The event to monitor
-     */
-    // Disabled until a better patch can be applied. This does nothing but flag the wrong block.
-    /*
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onBlockPhysics(BlockPhysicsEvent event) {
-        //TODO: Figure out how to REMOVE metadata from the location the sand/gravel fell from.
-        Material type = event.getChangedType();
-
-        if (type == Material.GRAVEL || type == Material.SAND) {
-            Block fallenBlock = event.getBlock().getRelative(BlockFace.UP);
-
-            if (fallenBlock.getType() == type) {
-                mcMMO.placeStore.setTrue(fallenBlock);
-            }
-        }
-    }
-     */
-
     /**
      * Monitor BlockPistonRetract events.
      *
@@ -126,28 +103,12 @@ public class BlockListener implements Listener {
         Block block = event.getBlock();
         Player player = event.getPlayer();
         int id = block.getTypeId();
-        Material type = block.getType();
 
         if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
-        /* Code to prevent issues with placed falling Sand/Gravel not being tracked */
-        if (type.equals(Material.SAND) || type.equals(Material.GRAVEL)) {
-            for (int y = -1;  y + block.getY() >= 0; y--) {
-                if (block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
-                    continue;
-                }
-
-                Block newLocation = block.getRelative(0, y + 1, 0);
-                mcMMO.placeStore.setTrue(newLocation);
-                break;
-            }
-        }
-
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(block)) {
-            if (!((type == Material.SAND || type == Material.GRAVEL) && block.getRelative(BlockFace.DOWN).getType() == Material.AIR)) { //Don't wanna track sand that's gonna fall.
-                mcMMO.placeStore.setTrue(block);
-            }
+            mcMMO.placeStore.setTrue(block);
         }
 
         if (id == configInstance.getRepairAnvilId() && configInstance.getRepairAnvilMessagesEnabled()) {
@@ -245,26 +206,6 @@ public class BlockListener implements Listener {
         //Remove metadata when broken
         if (BlockChecks.shouldBeWatched(block)) {
             mcMMO.placeStore.setFalse(block);
-        }
-
-        //Remove metadata from fallen sand/gravel
-        Material aboveType = block.getRelative(BlockFace.UP).getType();
-
-        if (aboveType == Material.SAND || aboveType == Material.GRAVEL) {
-            for (int y = 1; block.getY() + y <= block.getWorld().getMaxHeight(); y++) {
-                Block relative = block.getRelative(0, y, 0);
-                Material relativeType = relative.getType();
-
-                if ((relativeType == Material.SAND || relativeType == Material.GRAVEL) && mcMMO.placeStore.isTrue(relative)) {
-                    mcMMO.placeStore.setFalse(relative);
-                }
-                else if (!BlockChecks.shouldBeWatched(relative) && mcMMO.placeStore.isTrue(relative)) {
-                    mcMMO.placeStore.setFalse(relative);
-                }
-                else {
-                    break;
-                }
-            }
         }
     }
 

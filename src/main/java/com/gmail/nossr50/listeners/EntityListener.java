@@ -1,9 +1,11 @@
 package com.gmail.nossr50.listeners;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -15,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -48,6 +51,26 @@ public class EntityListener implements Listener {
 
     public EntityListener(final mcMMO plugin) {
         this.plugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
+        Entity entity = event.getEntity();
+        
+        if (entity instanceof FallingBlock) {
+            int entityID = entity.getEntityId();
+            Block block = event.getBlock();
+
+            if (mcMMO.placeStore.isTrue(block)) {
+                plugin.addToFallingBlockTracker(entityID, block);
+            }
+
+            if (plugin.fallingBlockIsTracked(entityID) && block.getType() == Material.AIR) {
+                mcMMO.placeStore.setFalse(plugin.getSourceBlock(entityID));
+                mcMMO.placeStore.setTrue(block);
+                plugin.removeFromFallingBlockTracker(entityID);
+            }
+        }
     }
 
     /**
