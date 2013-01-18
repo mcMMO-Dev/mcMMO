@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
@@ -54,6 +55,14 @@ public class EntityListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityEvent(EntityEvent event) {
+        if (plugin.fallingBlockIsTracked(event.getEntity().getEntityId())) {
+            System.out.println(event.getEntity().toString());
+            System.out.println(event.getEventName());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
         Entity entity = event.getEntity();
 
@@ -64,11 +73,11 @@ public class EntityListener implements Listener {
 
             if (type == Material.SAND || type == Material.GRAVEL) {
                 if (mcMMO.placeStore.isTrue(block)) {
+                    mcMMO.placeStore.setFalse(block);
                     plugin.addToFallingBlockTracker(entityID, block);
                 }
 
                 if (plugin.fallingBlockIsTracked(entityID)) {
-                    mcMMO.placeStore.setFalse(plugin.getSourceBlock(entityID));
                     mcMMO.placeStore.setTrue(block);
                     plugin.removeFromFallingBlockTracker(entityID);
                 }
