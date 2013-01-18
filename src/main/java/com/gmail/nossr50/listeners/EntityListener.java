@@ -67,7 +67,7 @@ public class EntityListener implements Listener {
                     plugin.addToFallingBlockTracker(entityID, block);
                 }
 
-                if (plugin.fallingBlockIsTracked(entityID) && block.getType() == Material.AIR) {
+                if (plugin.fallingBlockIsTracked(entityID)) {
                     mcMMO.placeStore.setFalse(plugin.getSourceBlock(entityID));
                     mcMMO.placeStore.setTrue(block);
                     plugin.removeFromFallingBlockTracker(entityID);
