@@ -262,7 +262,6 @@ public class Database {
             try {
                 statement = connection.prepareStatement(sql);
                 statement.executeUpdate();
-                statement.close();
                 return true;
             }
             catch (SQLException ex) {
@@ -296,7 +295,6 @@ public class Database {
             try {
                 statement = connection.prepareStatement(sql);
                 ret = statement.executeUpdate();
-                statement.close();
                 return ret;
             } catch (SQLException ex) {
                 printErrors(ex);
