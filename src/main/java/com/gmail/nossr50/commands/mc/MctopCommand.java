@@ -153,7 +153,7 @@ public class MctopCommand implements CommandExecutor {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         Database database = mcMMO.getPlayerDatabase();
 
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC LIMIT "+((page * 10) - 10)+",10");
+        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT "+((page * 10) - 10)+",10");
 
         if (query.equals("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
