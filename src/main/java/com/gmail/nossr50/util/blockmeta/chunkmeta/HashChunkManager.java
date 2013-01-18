@@ -19,7 +19,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
-import com.gmail.nossr50.runnables.ChunkletUnloader;
 import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionZDirectory;
 
 import org.getspout.spoutapi.chunkstore.mcMMOSimpleRegionFile;
@@ -346,7 +345,7 @@ public class HashChunkManager implements ChunkManager {
         if (world == null)
             return;
 
-        ChunkletUnloader.addToList(cx, cz, world);
+        unloadChunk(cx, cz, world);
     }
 
     @Override
