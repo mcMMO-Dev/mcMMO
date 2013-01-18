@@ -15,8 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import com.gmail.nossr50.runnables.ChunkletUnloader;
-
 public class HashChunkletManager implements ChunkletManager {
     public HashMap<String, ChunkletStore> store = new HashMap<String, ChunkletStore>();
 
@@ -99,7 +97,7 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public void chunkUnloaded(int cx, int cz, World world) {
-        ChunkletUnloader.addToList(cx, cx, world);
+        unloadChunk(cx, cx, world);
     }
 
     @Override
