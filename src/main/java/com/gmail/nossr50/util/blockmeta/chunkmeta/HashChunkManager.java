@@ -79,6 +79,9 @@ public class HashChunkManager implements ChunkManager {
             return null;
             //throw new RuntimeException("Unable to find serialized class for " + x + ", " + z, e);
         }
+        finally {
+            objectStream.close();
+        }
     }
 
     @Override
