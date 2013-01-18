@@ -22,7 +22,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
@@ -52,14 +51,6 @@ public class EntityListener implements Listener {
 
     public EntityListener(final mcMMO plugin) {
         this.plugin = plugin;
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityEvent(EntityEvent event) {
-        if (plugin.fallingBlockIsTracked(event.getEntity().getEntityId())) {
-            System.out.println(event.getEntity().toString());
-            System.out.println(event.getEventName());
-        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
