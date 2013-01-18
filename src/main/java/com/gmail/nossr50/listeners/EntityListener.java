@@ -58,20 +58,15 @@ public class EntityListener implements Listener {
         Entity entity = event.getEntity();
 
         if (entity instanceof FallingBlock) {
-            int entityID = entity.getEntityId();
             Block block = event.getBlock();
-            Material type = block.getType();
 
-            if (type == Material.SAND || type == Material.GRAVEL) {
-                if (mcMMO.placeStore.isTrue(block)) {
-                    mcMMO.placeStore.setFalse(block);
-                    plugin.addToFallingBlockTracker(entityID, block);
-                }
-
-                if (plugin.fallingBlockIsTracked(entityID)) {
-                    mcMMO.placeStore.setTrue(block);
-                    plugin.removeFromFallingBlockTracker(entityID);
-                }
+            if (mcMMO.placeStore.isTrue(block) && !mcMMO.placeStore.isSpawnedMob(entity)) {
+                mcMMO.placeStore.setFalse(block);
+                mcMMO.placeStore.addSpawnedMob(entity);
+            }
+	    else if (mcMMO.placeStore.isSpawnedMob(entity)) {
+                mcMMO.placeStore.setTrue(block);
+                mcMMO.placeStore.removeSpawnedMob(entity);
             }
         }
     }

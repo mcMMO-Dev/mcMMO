@@ -97,7 +97,6 @@ public class mcMMO extends JavaPlugin {
 
     private HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
     private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
-    private HashMap<Integer, Block> fallingBlockTracker = new HashMap<Integer, Block>();
 
     private static Database database;
     public static mcMMO p;
@@ -519,44 +518,6 @@ public class mcMMO extends JavaPlugin {
      */
     public void removeFromTNTTracker(int tntID) {
         tntTracker.remove(tntID);
-    }
-
-    /**
-     * Add an ID value to the FallingBlock tracker.
-     *
-     * @param fallingBlockID The EntityID of the FallingBlock
-     */
-    public void addToFallingBlockTracker(int fallingBlockID, Block sourceBlock) {
-        fallingBlockTracker.put(fallingBlockID, sourceBlock);
-    }
-
-    /**
-     * Check to see if a given FallingBlock Entity is tracked.
-     *
-     * @param tntID The EntityID of the FallingBlock
-     * @return true if the FallingBlock is being tracked, false otherwise
-     */
-    public boolean fallingBlockIsTracked(int fallingBlockID) {
-        return fallingBlockTracker.containsKey(fallingBlockID);
-    }
-
-    /**
-     * Get the initial location of the FallingBlock.
-     *
-     * @param fallingBlockID The EntityID of the FallingBlock
-     * @return the Player who detonated it
-     */
-    public Block getSourceBlock(int fallingBlockID) {
-        return fallingBlockTracker.get(fallingBlockID);
-    }
-
-    /**
-     * Remove FallingBlock from the tracker after it lands.
-     *
-     * @param fallingBlockID The EntityID of the FallingBlock
-     */
-    public void removeFromFallingBlockTracker(int fallingBlockID) {
-        fallingBlockTracker.remove(fallingBlockID);
     }
 
     public static String getMainDirectory() {
