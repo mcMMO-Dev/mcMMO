@@ -70,7 +70,7 @@ public class MctopCommand implements CommandExecutor {
             }
         }
 
-        String powerlevel = "taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing";
+        String powerlevel = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
 
         switch (args.length) {
         case 0:
@@ -153,9 +153,9 @@ public class MctopCommand implements CommandExecutor {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         Database database = mcMMO.getPlayerDatabase();
 
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT s." + query + ", u.user, NOW() FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE (s.user_id = u.id) AND s." + query + " > 0 ORDER BY s." + query + " DESC LIMIT "+((page * 10) - 10)+",10");
+        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC LIMIT "+((page * 10) - 10)+",10");
 
-        if (query.equals("taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing")) {
+        if (query.equals("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
