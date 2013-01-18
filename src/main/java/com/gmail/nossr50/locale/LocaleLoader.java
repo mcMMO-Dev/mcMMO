@@ -75,6 +75,12 @@ public class LocaleLoader {
         input = input.replaceAll("\\Q[[LIGHT_PURPLE]]\\E", ChatColor.LIGHT_PURPLE.toString());
         input = input.replaceAll("\\Q[[YELLOW]]\\E", ChatColor.YELLOW.toString());
         input = input.replaceAll("\\Q[[WHITE]]\\E", ChatColor.WHITE.toString());
+        input = input.replaceAll("\\Q[[BOLD]]\\E", ChatColor.BOLD.toString());
+        input = input.replaceAll("\\Q[[UNDERLINE]]\\E", ChatColor.UNDERLINE.toString());
+        input = input.replaceAll("\\Q[[ITALIC]]\\E", ChatColor.ITALIC.toString());
+        input = input.replaceAll("\\Q[[STRIKE]]\\E", ChatColor.STRIKETHROUGH.toString());
+        input = input.replaceAll("\\Q[[MAGIC]]\\E", ChatColor.MAGIC.toString());
+        input = input.replaceAll("\\Q[[RESET]]\\E", ChatColor.RESET.toString());
 
         return input;
     }
