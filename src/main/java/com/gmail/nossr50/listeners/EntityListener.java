@@ -64,7 +64,7 @@ public class EntityListener implements Listener {
                 mcMMO.placeStore.setFalse(block);
                 mcMMO.placeStore.addSpawnedMob(entity);
             }
-	    else if (mcMMO.placeStore.isSpawnedMob(entity)) {
+            else if (mcMMO.placeStore.isSpawnedMob(entity)) {
                 mcMMO.placeStore.setTrue(block);
                 mcMMO.placeStore.removeSpawnedMob(entity);
             }
