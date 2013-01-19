@@ -491,10 +491,6 @@ public class WoodCutting {
         FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
         mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
-        if (Config.getInstance().getWoodcuttingRequiresTool()) {
-            Skills.abilityDurabilityLoss(player.getItemInHand(), Misc.toolDurabilityLoss);
-        }
-
         if (mcMMO.spoutEnabled) {
             SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
         }
