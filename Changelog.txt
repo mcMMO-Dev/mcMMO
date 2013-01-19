@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.4.00-dev
+
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.
  = Fixed a memory leak involving mob tracking
