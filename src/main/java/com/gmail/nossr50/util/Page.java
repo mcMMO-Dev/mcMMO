@@ -64,8 +64,9 @@ public class Page {
         if (args.length >= 1) {
             if (args[0].equals("?")) {
                 String address = "Guides."+capitalized;
+                int totalPages = Page.getTotalPageNumber(address);
 
-                if (args.length > 1 && Misc.isInt(args[1]) && Misc.getInt(args[1]) <= Page.getTotalPageNumber(address)) {
+                if (args.length > 1 && Misc.isInt(args[1]) && Misc.getInt(args[1]) <= totalPages) {
                     Page.clearChat(player);
                     for (String target : Page.grabPageContents(localized+" Guide", address, Misc.getInt(args[1]))) {
                         player.sendMessage(target);
@@ -77,11 +78,12 @@ public class Page {
                         player.sendMessage(target);
                     }
                 }
-                else if (args.length > 1 && Misc.getInt(args[1]) > Page.getTotalPageNumber(address)) {
-                    player.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", new Object[] {Page.getTotalPageNumber(address)} ));
+                else if (args.length > 1 && Misc.getInt(args[1]) > totalPages) {
+                    player.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", new Object[] {totalPages} ));
                 }
                 else if (args.length > 1 && !Misc.isInt(args[1])) {
-                    player.sendMessage(LocaleLoader.getString("Guides.Page.Invalid"));                }
+                    player.sendMessage(LocaleLoader.getString("Guides.Page.Invalid"));
+                }
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Guides.Usage", new Object[] {localized.toLowerCase()} ));
