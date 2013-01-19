@@ -9,6 +9,7 @@ Key:
 
 Version 1.3.14-dev
  + Added new Hylian Luck skill to Herbalism.
+ = Fixed a memory leak involving mob tracking
  - Removed extra durability loss from Leaf Blower
 
 Version 1.3.13
