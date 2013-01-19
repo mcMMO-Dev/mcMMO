@@ -492,7 +492,7 @@ public class WoodCutting {
         mcMMO.p.getServer().getPluginManager().callEvent(armswing);
 
         if (Config.getInstance().getWoodcuttingRequiresTool()) {
-            Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());
+            Skills.abilityDurabilityLoss(player.getItemInHand(), Misc.toolDurabilityLoss);
         }
 
         if (mcMMO.spoutEnabled) {
@@ -503,9 +503,9 @@ public class WoodCutting {
     private static int durabilityLossCalulate(ArrayList<Block> toBeFelled, int level) {
         int durabilityLoss = 0;
         for (Block x : toBeFelled) {
-        	if (Misc.getRandom().nextInt(level + 1) > 0) {}//Don't add durabilityLoss, because Unbreaking enchantment does it's work.
-        	else if (x.getType().equals(Material.LOG) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(x))) {
-                durabilityLoss = durabilityLoss + Config.getInstance().getAbilityToolDamage();
+            if (Misc.getRandom().nextInt(level + 1) > 0) {}//Don't add durabilityLoss, because Unbreaking enchantment does it's work.
+            else if (x.getType().equals(Material.LOG) || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(x))) {
+                durabilityLoss += Misc.toolDurabilityLoss;
             }
         }
 

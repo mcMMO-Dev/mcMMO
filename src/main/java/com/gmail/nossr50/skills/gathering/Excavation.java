@@ -128,7 +128,7 @@ public class Excavation {
         if (player == null)
             return;
 
-        Skills.abilityDurabilityLoss(player.getItemInHand(), Config.getInstance().getAbilityToolDamage());
+        Skills.abilityDurabilityLoss(player.getItemInHand(), Misc.toolDurabilityLoss);
 
         if (!mcMMO.placeStore.isTrue(block) && Misc.blockBreakSimulate(block, player, true)) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
