@@ -553,6 +553,7 @@ permissions:
             mcmmo.ability.herbalism.greenthumbpotatoes: true
             mcmmo.ability.herbalism.greenthumbnetherwart: true
             mcmmo.ability.herbalism.farmersdiet: true
+            mcmmo.ability.herbalism.hylianluck: true
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
     mcmmo.ability.herbalism.greenterra:
@@ -571,6 +572,8 @@ permissions:
         description: Allows access to the Green Thumb ability for netherwart
     mcmmo.ability.herbalism.farmersdiet:
         description: Allows access to the Farmer's Diet ability
+    mcmmo.ability.herbalism.hylianluck:
+        description: Allows access to the Hylian Luck ability
     mcmmo.ability.excavation.*:
         description: Allows access to all Excavation abilities
         children:

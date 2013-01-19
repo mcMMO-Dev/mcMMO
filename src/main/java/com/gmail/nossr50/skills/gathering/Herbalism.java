@@ -538,4 +538,80 @@ public class Herbalism {
             player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Fail"));
         }
     }
+
+    public static void hylianLuck(Block block, Player player, BlockBreakEvent event) {
+        int chance = Users.getProfile(player).getSkillLevel(SkillType.HERBALISM) / 100;
+
+        int randomChance = 100;
+        if (Permissions.luckyHerbalism(player)) {
+            randomChance = 75;
+        }
+
+        if (chance > Misc.getRandom().nextInt(randomChance)) {
+            Location location = block.getLocation();
+            int dropNumber = Misc.getRandom().nextInt(3);
+            ItemStack item = null;
+
+            switch (block.getType()) {
+            case DEAD_BUSH:
+            case LONG_GRASS:
+            case SAPLING:
+                if (dropNumber == 0) {
+                    item = new ItemStack(Material.MELON_SEEDS);
+                }
+                else if (dropNumber == 1) {
+                    item = new ItemStack(Material.PUMPKIN_SEEDS);
+                }
+                else {
+                    try {
+                        item = (new MaterialData(Material.INK_SACK, DyeColor.BROWN.getDyeData())).toItemStack(1);
+                    }
+                    catch (Exception e) {
+                        item = (new MaterialData(Material.INK_SACK, (byte) 0x3)).toItemStack(1);
+                    }
+                    catch (NoSuchMethodError e) {
+                        item = (new MaterialData(Material.INK_SACK, (byte) 0x3)).toItemStack(1);
+                    }
+                }
+                break;
+
+            case RED_ROSE:
+            case YELLOW_FLOWER:
+                if (dropNumber == 0) {
+                    item = new ItemStack(Material.POTATO);
+                }
+                else if (dropNumber == 1) {
+                    item = new ItemStack(Material.CARROT);
+                }
+                else {
+                    item = new ItemStack(Material.APPLE);
+                }
+                break;
+
+            case FLOWER_POT:
+                if (dropNumber == 0) {
+                    item = new ItemStack(Material.EMERALD);
+                }
+                else if (dropNumber == 1) {
+                    item = new ItemStack(Material.DIAMOND);
+                }
+                else {
+                    item = new ItemStack(Material.GOLD_NUGGET);
+                }
+                break;
+
+            default:
+                break;
+            }
+
+            if (item == null) {
+                return;
+            }
+
+            event.setCancelled(true);
+            event.getBlock().setType(Material.AIR);
+            Misc.dropItem(location, item);
+            player.sendMessage(LocaleLoader.getString("Herbalism.HylianLuck"));
+        }
+    }
 }

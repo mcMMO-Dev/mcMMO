@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.3.14-dev
+ + Added new Hylian Luck skill to Herbalism.
 
 Version 1.3.13
  + Added task & command to prune old and powerless users from the SQL database.

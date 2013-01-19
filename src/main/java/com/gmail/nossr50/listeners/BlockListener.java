@@ -203,6 +203,10 @@ public class BlockListener implements Listener {
             }
         }
 
+        if (Permissions.hylianLuck(player) && ItemChecks.isSword(player.getItemInHand())) {
+            Herbalism.hylianLuck(block, player, event);
+        }
+
         //Remove metadata when broken
         if (BlockChecks.shouldBeWatched(block)) {
             mcMMO.placeStore.setFalse(block);

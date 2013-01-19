@@ -19,6 +19,8 @@ public class HerbalismCommand extends SkillCommand {
     private String farmersDietRank;
     private String doubleDropChance;
     private String doubleDropChanceLucky;
+    private String hylianLuckChance;
+    private String hylianLuckChanceLucky;
 
     private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
     private int farmersDietRankChange = advancedConfig.getFarmerDietRankChange();
@@ -30,6 +32,7 @@ public class HerbalismCommand extends SkillCommand {
     private double doubleDropsMaxBonus = advancedConfig.getHerbalismDoubleDropsChanceMax();
     private int doubleDropsMaxLevel = advancedConfig.getHerbalismDoubleDropsMaxLevel();
 
+    private boolean hasHylianLuck;
     private boolean canGreenTerra;
     private boolean canGreenThumbWheat;
     private boolean canGreenThumbBlocks;
@@ -47,6 +50,7 @@ public class HerbalismCommand extends SkillCommand {
     protected void dataCalculations() {
         float greenThumbChanceF;
         float doubleDropChanceF;
+        float hylianLuckChanceF;
 
         int length = 2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel);
         greenTerraLength = String.valueOf(length);
@@ -83,12 +87,18 @@ public class HerbalismCommand extends SkillCommand {
         doubleDropChance = percent.format(doubleDropChanceF / 100D);
         if (doubleDropChanceF * 1.3333D >= 100D) doubleDropChanceLucky = percent.format(1D);
         else doubleDropChanceLucky = percent.format(doubleDropChanceF * 1.3333D / 100D);
+        //HYLIAN LUCK
+        hylianLuckChanceF = (skillValue / 100);
+        hylianLuckChance = percent.format(hylianLuckChanceF / 100D);
+        if (hylianLuckChanceF * 1.3333D >= 100D) hylianLuckChanceLucky = percent.format(1D);
+        else hylianLuckChanceLucky = percent.format(hylianLuckChanceF * 1.3333D / 100D);
     }
 
     @Override
     protected void permissionsCheck() {
         Config configInstance = Config.getInstance();
 
+        hasHylianLuck = Permissions.hylianLuck(player);
         canGreenTerra = Permissions.greenTerra(player);
         canGreenThumbWheat = Permissions.greenThumbWheat(player);
         canGreenThumbBlocks = Permissions.greenThumbBlocks(player);
@@ -127,6 +137,10 @@ public class HerbalismCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.6"), LocaleLoader.getString("Herbalism.Effect.7") }));
         }
 
+        if (hasHylianLuck) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.10"), LocaleLoader.getString("Herbalism.Effect.11") }));
+        }
+
         if (canDoubleDrop && !doubleDropsDisabled) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.8"), LocaleLoader.getString("Herbalism.Effect.9") }));
         }
@@ -161,6 +175,12 @@ public class HerbalismCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Herbalism.Ability.FD", new Object[] { farmersDietRank } ));
         }
 
+        if (hasHylianLuck) {
+            if (lucky)
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", new Object[] { hylianLuckChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { hylianLuckChanceLucky }));
+            else
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", new Object[] { hylianLuckChance }));
+        }
         if (canDoubleDrop && !doubleDropsDisabled) {
             if (lucky)
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));

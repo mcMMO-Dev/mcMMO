@@ -9,7 +9,6 @@ import java.util.List;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;

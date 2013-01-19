@@ -408,6 +408,10 @@ public class Permissions {
         return hasPermission(player, "mcmmo.ability.herbalism.farmersdiet");
     }
 
+    public static boolean hylianLuck(Player player) {
+        return hasPermission(player, "mcmmo.ability.herbalism.hylianluck");
+    }
+
     /*
      * MCMMO.ABILITY.EXCAVATION.*
      */
