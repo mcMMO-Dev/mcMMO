@@ -160,11 +160,14 @@ public class HashChunkManager implements ChunkManager {
         ChunkStore in = null;
 
         UUID key = world.getUID();
-        if (!this.oldData.containsKey(key))
-            this.oldData.put(key, (new File(world.getWorldFolder(), "mcmmo_data")).exists());
+        boolean oldDataHasKey = oldData.containsKey(key);
 
-        if (this.oldData.containsKey(key) && oldData.get(key))
+        if (!oldDataHasKey) {
+            oldData.put(key, (new File(world.getWorldFolder(), "mcmmo_data")).exists());
+        }
+        else if (oldData.get(key)) {
             convertChunk(new File(world.getWorldFolder(), "mcmmo_data"), cx, cz, world, true);
+        }
 
         try {
             in = readChunkStore(world, cx, cz);
