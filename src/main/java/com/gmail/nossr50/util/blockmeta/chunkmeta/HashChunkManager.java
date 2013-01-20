@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -289,10 +290,12 @@ public class HashChunkManager implements ChunkManager {
         if (entity == null || world == null)
             return false;
 
-        if (entity.getLocation().getChunk().getX() != cx)
+        Chunk chunk = entity.getLocation().getChunk();
+
+        if (chunk.getX() != cx)
             return false;
 
-        if (entity.getLocation().getChunk().getZ() != cz)
+        if (chunk.getZ() != cz)
             return false;
 
         if (entity.getWorld() != world)
