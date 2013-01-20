@@ -2,11 +2,16 @@ package com.gmail.nossr50.listeners;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.Chunk;
 import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -76,8 +81,17 @@ public class WorldListener implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         Chunk chunk = event.getChunk();
-        if (chunk.getEntities().length > 0) {
+        List<Entity> chunkMobs = new ArrayList(Arrays.asList(chunk.getEntities()));
+
+        if (chunkMobs.isEmpty())
+            return;
+
+        for(Entity entity : chunkMobs) {
+            if(!(entity instanceof LivingEntity) && !(entity instanceof FallingBlock))
+                continue;
+
             mcMMO.placeStore.loadChunk(chunk.getX(), chunk.getZ(), event.getWorld());
+            return;
         }
     }
 }
