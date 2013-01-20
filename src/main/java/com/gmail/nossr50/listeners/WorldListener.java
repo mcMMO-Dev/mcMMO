@@ -2,8 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.bukkit.Chunk;
 import org.bukkit.TreeType;
@@ -81,9 +79,9 @@ public class WorldListener implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         Chunk chunk = event.getChunk();
-        List<Entity> chunkMobs = new ArrayList(Arrays.asList(chunk.getEntities()));
+        Entity[] chunkMobs = chunk.getEntities();
 
-        if (chunkMobs.isEmpty())
+        if (chunkMobs.length <= 0)
             return;
 
         for(Entity entity : chunkMobs) {

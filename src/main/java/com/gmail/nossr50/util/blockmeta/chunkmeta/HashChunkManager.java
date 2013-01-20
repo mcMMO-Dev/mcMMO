@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -189,7 +188,7 @@ public class HashChunkManager implements ChunkManager {
 
         iteratingMobs = true;
 
-        List<Entity> chunkMobs = new ArrayList(Arrays.asList(world.getChunkAt(cx, cz).getEntities()));
+        Entity[] chunkMobs = world.getChunkAt(cx, cz).getEntities();
 
         for (Entity entity : chunkMobs) {
             if(!(entity instanceof LivingEntity) && !(entity instanceof FallingBlock))
