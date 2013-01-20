@@ -3,7 +3,9 @@ package com.gmail.nossr50.listeners;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.bukkit.Chunk;
 import org.bukkit.TreeType;
+import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,7 +39,9 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onWorldInit(WorldInitEvent event) {
-        File dataDir = new File(event.getWorld().getWorldFolder(), "mcmmo_data");
+        World world = event.getWorld();
+
+        File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
         if (!dataDir.exists()) {
             return;
         }
@@ -45,8 +49,8 @@ public class WorldListener implements Listener {
         if (mcMMO.p == null)
             return;
 
-        mcMMO.p.getLogger().info("Converting block storage for " + event.getWorld().getName() + " to a new format.");
-        BlockStoreConversionMain converter = new BlockStoreConversionMain(event.getWorld());
+        mcMMO.p.getLogger().info("Converting block storage for " + world.getName() + " to a new format.");
+        BlockStoreConversionMain converter = new BlockStoreConversionMain(world);
         converter.run();
         converters.add(converter);
     }
@@ -65,12 +69,15 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
-        mcMMO.placeStore.chunkUnloaded(event.getChunk().getX(), event.getChunk().getZ(), event.getWorld());
+        Chunk chunk = event.getChunk();
+        mcMMO.placeStore.chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        if (event.getChunk().getEntities().length > 0)
-            mcMMO.placeStore.loadChunk(event.getChunk().getX(), event.getChunk().getZ(), event.getWorld());
+        Chunk chunk = event.getChunk();
+        if (chunk.getEntities().length > 0) {
+            mcMMO.placeStore.loadChunk(chunk.getX(), chunk.getZ(), event.getWorld());
+        }
     }
 }
