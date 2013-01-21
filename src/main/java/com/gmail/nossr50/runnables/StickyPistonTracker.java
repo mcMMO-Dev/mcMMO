@@ -15,13 +15,16 @@ public class StickyPistonTracker implements Runnable {
 
     @Override
     public void run() {
-        Block originalBlock = event.getRetractLocation().getBlock();
+        Block newBlock = event.getBlock().getRelative(event.getDirection());
+        Block originalBlock = newBlock.getRelative(event.getDirection());
 
-        if (originalBlock.getType() == Material.AIR && mcMMO.placeStore.isTrue(originalBlock)) {
-            Block newBlock = originalBlock.getRelative(event.getDirection().getOppositeFace());
+        if (originalBlock.getType() != Material.AIR)
+            return;
 
-            mcMMO.placeStore.setFalse(originalBlock);
-            mcMMO.placeStore.setTrue(newBlock);
-        }
+        if (!mcMMO.placeStore.isTrue(originalBlock))
+            return;
+
+        mcMMO.placeStore.setFalse(originalBlock);
+        mcMMO.placeStore.setTrue(newBlock);
     }
 }
