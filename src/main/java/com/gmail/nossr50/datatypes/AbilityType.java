@@ -19,77 +19,77 @@ public enum AbilityType {
             "Unarmed.Skills.Berserk.Refresh",
             "Unarmed.Skills.Berserk.Other.Off"),
 
-            SUPER_BREAKER(
-                    Config.getInstance().getAbilityCooldownSuperBreaker(),
-                    Config.getInstance().getAbilityMaxTicksSuperBreaker(),
-                    "Mining.Skills.SuperBreaker.On",
-                    "Mining.Skills.SuperBreaker.Off",
-                    "Mining.Skills.SuperBreaker.Other.On",
-                    "Mining.Skills.SuperBreaker.Refresh",
-                    "Mining.Skills.SuperBreaker.Other.Off"),
+    SUPER_BREAKER(
+            Config.getInstance().getAbilityCooldownSuperBreaker(),
+            Config.getInstance().getAbilityMaxTicksSuperBreaker(),
+            "Mining.Skills.SuperBreaker.On",
+            "Mining.Skills.SuperBreaker.Off",
+            "Mining.Skills.SuperBreaker.Other.On",
+            "Mining.Skills.SuperBreaker.Refresh",
+            "Mining.Skills.SuperBreaker.Other.Off"),
 
-                    GIGA_DRILL_BREAKER(
-                            Config.getInstance().getAbilityCooldownGigaDrillBreaker(),
-                            Config.getInstance().getAbilityMaxTicksGigaDrillBreaker(),
-                            "Excavation.Skills.GigaDrillBreaker.On",
-                            "Excavation.Skills.GigaDrillBreaker.Off",
-                            "Excavation.Skills.GigaDrillBreaker.Other.On",
-                            "Excavation.Skills.GigaDrillBreaker.Refresh",
-                            "Excavation.Skills.GigaDrillBreaker.Other.Off"),
+    GIGA_DRILL_BREAKER(
+            Config.getInstance().getAbilityCooldownGigaDrillBreaker(),
+            Config.getInstance().getAbilityMaxTicksGigaDrillBreaker(),
+            "Excavation.Skills.GigaDrillBreaker.On",
+            "Excavation.Skills.GigaDrillBreaker.Off",
+            "Excavation.Skills.GigaDrillBreaker.Other.On",
+            "Excavation.Skills.GigaDrillBreaker.Refresh",
+            "Excavation.Skills.GigaDrillBreaker.Other.Off"),
 
-                            GREEN_TERRA(
-                                    Config.getInstance().getAbilityCooldownGreenTerra(),
-                                    Config.getInstance().getAbilityMaxTicksGreenTerra(),
-                                    "Herbalism.Skills.GTe.On",
-                                    "Herbalism.Skills.GTe.Off",
-                                    "Herbalism.Skills.GTe.Other.On",
-                                    "Herbalism.Skills.GTe.Refresh",
-                                    "Herbalism.Skills.GTe.Other.Off"),
+    GREEN_TERRA(
+            Config.getInstance().getAbilityCooldownGreenTerra(),
+            Config.getInstance().getAbilityMaxTicksGreenTerra(),
+            "Herbalism.Skills.GTe.On",
+            "Herbalism.Skills.GTe.Off",
+            "Herbalism.Skills.GTe.Other.On",
+            "Herbalism.Skills.GTe.Refresh",
+            "Herbalism.Skills.GTe.Other.Off"),
 
-                                    SKULL_SPLIITER(
-                                            Config.getInstance().getAbilityCooldownSkullSplitter(),
-                                            Config.getInstance().getAbilityMaxTicksSkullSplitter(),
-                                            "Axes.Skills.SS.On",
-                                            "Axes.Skills.SS.Off",
-                                            "Axes.Skills.SS.Other.On",
-                                            "Axes.Skills.SS.Refresh",
-                                            "Axes.Skills.SS.Other.Off"),
+    SKULL_SPLIITER(
+            Config.getInstance().getAbilityCooldownSkullSplitter(),
+            Config.getInstance().getAbilityMaxTicksSkullSplitter(),
+            "Axes.Skills.SS.On",
+            "Axes.Skills.SS.Off",
+            "Axes.Skills.SS.Other.On",
+            "Axes.Skills.SS.Refresh",
+            "Axes.Skills.SS.Other.Off"),
 
-                                            TREE_FELLER(
-                                                    Config.getInstance().getAbilityCooldownTreeFeller(),
-                                                    Config.getInstance().getAbilityMaxTicksTreeFeller(),
-                                                    "Woodcutting.Skills.TreeFeller.On",
-                                                    "Woodcutting.Skills.TreeFeller.Off",
-                                                    "Woodcutting.Skills.TreeFeller.Other.On",
-                                                    "Woodcutting.Skills.TreeFeller.Refresh",
-                                                    "Woodcutting.Skills.TreeFeller.Other.Off"),
+    TREE_FELLER(
+            Config.getInstance().getAbilityCooldownTreeFeller(),
+            Config.getInstance().getAbilityMaxTicksTreeFeller(),
+            "Woodcutting.Skills.TreeFeller.On",
+            "Woodcutting.Skills.TreeFeller.Off",
+            "Woodcutting.Skills.TreeFeller.Other.On",
+            "Woodcutting.Skills.TreeFeller.Refresh",
+            "Woodcutting.Skills.TreeFeller.Other.Off"),
 
-                                                    SERRATED_STRIKES(
-                                                            Config.getInstance().getAbilityCooldownSerratedStrikes(),
-                                                            Config.getInstance().getAbilityMaxTicksSerratedStrikes(),
-                                                            "Swords.Skills.SS.On",
-                                                            "Swords.Skills.SS.Off",
-                                                            "Swords.Skills.SS.Other.On",
-                                                            "Swords.Skills.SS.Refresh",
-                                                            "Swords.Skills.SS.Other.Off"),
+    SERRATED_STRIKES(
+            Config.getInstance().getAbilityCooldownSerratedStrikes(),
+            Config.getInstance().getAbilityMaxTicksSerratedStrikes(),
+            "Swords.Skills.SS.On",
+            "Swords.Skills.SS.Off",
+            "Swords.Skills.SS.Other.On",
+            "Swords.Skills.SS.Refresh",
+            "Swords.Skills.SS.Other.Off"),
 
-                                                            BLAST_MINING(
-                                                                    Config.getInstance().getAbilityCooldownBlastMining(),
-                                                                    Config.getInstance().getAbilityMaxTicksBlastMining(),
-                                                                    null,
-                                                                    null,
-                                                                    "Mining.Blast.Other.On",
-                                                                    "Mining.Blast.Refresh",
-                                                                    null),
+    BLAST_MINING(
+            Config.getInstance().getAbilityCooldownBlastMining(),
+            Config.getInstance().getAbilityMaxTicksBlastMining(),
+            null,
+            null,
+            "Mining.Blast.Other.On",
+            "Mining.Blast.Refresh",
+            null),
 
-                                                                    LEAF_BLOWER(
-                                                                            0,
-                                                                            0,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null);
+    LEAF_BLOWER(
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            null);
 
     private int cooldown;
     private int maxTicks;
