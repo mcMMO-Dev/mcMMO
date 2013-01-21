@@ -5,11 +5,11 @@ import org.bukkit.event.Cancellable;
 
 import com.gmail.nossr50.datatypes.SkillType;
 
-public class McMMOPlayerUnarmEvent extends McMMOPlayerSkillEvent implements Cancellable {
+public class McMMOPlayerDisarmEvent extends McMMOPlayerSkillEvent implements Cancellable {
     private boolean cancelled;
     private Player defender;
 
-    public McMMOPlayerUnarmEvent(Player defender) {
+    public McMMOPlayerDisarmEvent(Player defender) {
         super(defender, SkillType.UNARMED);
         this.defender = defender;
     }

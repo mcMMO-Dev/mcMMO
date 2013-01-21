@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.events.skills.McMMOPlayerUnarmEvent;
+import com.gmail.nossr50.events.skills.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 
@@ -36,7 +36,7 @@ public class DisarmEventHandler {
     }
 
     protected void handleDisarm() {
-        McMMOPlayerUnarmEvent event = new McMMOPlayerUnarmEvent(defender);
+        McMMOPlayerDisarmEvent event = new McMMOPlayerDisarmEvent(defender);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if(!event.isCancelled()) {
