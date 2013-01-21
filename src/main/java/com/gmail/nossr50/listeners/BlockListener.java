@@ -87,7 +87,7 @@ public class BlockListener implements Listener {
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         if (event.isSticky()) {
             //Needed only because under some circumstances Minecraft doesn't move the block
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new StickyPistonTracker(event), 0);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new StickyPistonTracker(event), 2);
         }
     }
 
