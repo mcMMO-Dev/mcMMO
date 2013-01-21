@@ -22,12 +22,12 @@ public class Leaderboard {
      * Update the leader boards.
      */
     public static void updateLeaderboards() {
-    	if(System.currentTimeMillis() < lastUpdate + 600000) {
-    		return; //Only update FFS leaderboards every 10 minutes.. this puts a lot of strain on the server (depending on the size of the database) and should not be done frequently
-    	}
-    	
-    	lastUpdate = System.currentTimeMillis(); //Log when the last update was run
-    	
+        if(System.currentTimeMillis() < lastUpdate + 600000) {
+            return; //Only update FFS leaderboards every 10 minutes.. this puts a lot of strain on the server (depending on the size of the database) and should not be done frequently
+        }
+        
+        lastUpdate = System.currentTimeMillis(); //Log when the last update was run
+        
         //Initialize lists
         List<PlayerStat> mining, woodcutting, herbalism, excavation, acrobatics, repair, swords, axes, archery, unarmed, taming, fishing, powerlevel;
 
@@ -171,14 +171,14 @@ public class Leaderboard {
      * @return the requested leaderboard information
      */
     public static String[] retrieveInfo(SkillType skillType, int pagenumber) {
-    	String[] info = new String[10];
+        String[] info = new String[10];
 
         List<PlayerStat> statsList = playerStatHash.get(skillType);
         
         if(statsList != null) {
-        	int destination;
-        	
-        	//How many lines to skip through
+            int destination;
+            
+            //How many lines to skip through
             if (pagenumber == 1) {
                 destination = 0;
             }
@@ -186,45 +186,44 @@ public class Leaderboard {
                 destination = (pagenumber * 10) - 9;
             }
             
-        	int currentPos = 0;
+            int currentPos = 0;
         
-	    	for(PlayerStat ps : statsList) {
-	    		if(currentPos == 10)
-	    			break;
-	    		if(destination > 1) {
-	    			destination--;
-	    			continue;
-	    		}
-	    		
-	    		info[currentPos] = ps.name+":"+ps.statVal;
-	    		currentPos++;
-	    	}
-    	
+            for(PlayerStat ps : statsList) {
+                if(currentPos == 10)
+                    break;
+                if(destination > 1) {
+                    destination--;
+                    continue;
+                }
+                
+                info[currentPos] = ps.name+":"+ps.statVal;
+                currentPos++;
+            }
+        
         } else {
-        	info[0] = "DummyPlayer:0"; //Coming up with a better solution soon...
+            info[0] = "DummyPlayer:0"; //Coming up with a better solution soon...
         }
         
         return info;
     }
     
     public static int[] getPlayerRank(String playerName, SkillType skillType) {
-    	int currentPos = 1;
+        int currentPos = 1;
         List<PlayerStat> statsList = playerStatHash.get(skillType);
         
-        if(statsList != null) {
-        	for(PlayerStat ps : statsList) {
-        		if(ps.name.equalsIgnoreCase(playerName)) {
-        			return new int[] {currentPos, ps.statVal};
-        		} else {
-        			currentPos++;
-        			continue;
-        		}
-        	}
-        	
-        	return new int[] {0};
-        } else {
-        	return new int[] {0};
+        if (statsList != null) {
+            for (PlayerStat stat : statsList) {
+                if (stat.name.equalsIgnoreCase(playerName)) {
+                    return new int[] {currentPos, stat.statVal};
+                }
+                
+                currentPos++;
+                continue;
+            }
+            return new int[] {0};
         }
+
+        return new int[] {0};
     }
     
     private static class SkillComparator implements Comparator<PlayerStat> {

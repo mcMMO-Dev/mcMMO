@@ -119,16 +119,18 @@ public enum SkillType {
     }
     
     public static SkillType getSkill(String skillName) {
-    	if(skillName.equalsIgnoreCase("powerlevel") || skillName.equalsIgnoreCase("all")) {
-    		return SkillType.ALL;
-    	} else {
-	    	for(SkillType st : SkillType.values()) {
-	    		if(st.name().equalsIgnoreCase(skillName))
-	    			return st;
-	    	}
-	    	System.out.println("[DEBUG] Invalid mcMMO skill ("+skillName+")");
-	    	return null;
-    	}
+        if (skillName.equalsIgnoreCase("powerlevel") || skillName.equalsIgnoreCase("all")) {
+            return SkillType.ALL;
+        }
+        
+        for (SkillType type : SkillType.values()) {
+            if (type.name().equalsIgnoreCase(skillName)) {
+                return type;
+            }
+        }
+
+        System.out.println("[DEBUG] Invalid mcMMO skill (" + skillName + ")");
+        return null;
     }
 
     /**
