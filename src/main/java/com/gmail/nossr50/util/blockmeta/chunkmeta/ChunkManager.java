@@ -39,7 +39,7 @@ public interface ChunkManager {
      * @param cz Chunk Z coordinate that is to be loaded
      * @param world World that the Chunk is in
      */
-    public void loadChunk(int cx, int cz, World world);
+    public void loadChunk(int cx, int cz, World world, Entity[] entities);
 
     /**
      * Unload a given Chunk's Chunklet data

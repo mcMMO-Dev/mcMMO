@@ -79,16 +79,13 @@ public class WorldListener implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         Chunk chunk = event.getChunk();
-        Entity[] chunkMobs = chunk.getEntities();
+        Entity[] entities = chunk.getEntities();
 
-        if (chunkMobs.length <= 0)
-            return;
-
-        for(Entity entity : chunkMobs) {
+        for(Entity entity : entities) {
             if(!(entity instanceof LivingEntity) && !(entity instanceof FallingBlock))
                 continue;
 
-            mcMMO.placeStore.loadChunk(chunk.getX(), chunk.getZ(), event.getWorld());
+            mcMMO.placeStore.loadChunk(chunk.getX(), chunk.getZ(), event.getWorld(), entities);
             return;
         }
     }

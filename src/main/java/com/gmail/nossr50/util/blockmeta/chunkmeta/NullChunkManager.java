@@ -29,7 +29,7 @@ public class NullChunkManager implements ChunkManager {
     public void unloadChunklet(int cx, int cy, int cz, World world) {}
 
     @Override
-    public void loadChunk(int cx, int cz, World world) {}
+    public void loadChunk(int cx, int cz, World world, Entity[] entities) {}
 
     @Override
     public void unloadChunk(int cx, int cz, World world) {}
