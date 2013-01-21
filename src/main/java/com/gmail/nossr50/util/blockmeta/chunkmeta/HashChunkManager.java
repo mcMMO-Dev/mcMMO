@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -161,12 +162,13 @@ public class HashChunkManager implements ChunkManager {
 
         UUID key = world.getUID();
         boolean oldDataHasKey = oldData.containsKey(key);
+	boolean converted = false;
 
         if (!oldDataHasKey) {
             oldData.put(key, (new File(world.getWorldFolder(), "mcmmo_data")).exists());
         }
         else if (oldData.get(key)) {
-            convertChunk(new File(world.getWorldFolder(), "mcmmo_data"), cx, cz, world, true);
+            converted = convertChunk(new File(world.getWorldFolder(), "mcmmo_data"), cx, cz, world, true);
         }
 
         try {
@@ -174,31 +176,32 @@ public class HashChunkManager implements ChunkManager {
         }
         catch(Exception e) {}
 
-        if (in != null) {
-            store.put(world.getName() + "," + cx + "," + cz, in);
+        if (in == null || converted)
+            return;
 
-            List<UUID> mobs = in.getSpawnedMobs();
+        store.put(world.getName() + "," + cx + "," + cz, in);
 
-            if (mobs.isEmpty())
-                return;
+        List<UUID> mobs = in.getSpawnedMobs();
 
-            iteratingMobs = true;
+        if (mobs.isEmpty())
+            return;
 
-            for (LivingEntity entity : world.getLivingEntities()) {
-                if (mobs.contains(entity.getUniqueId()))
-                    addSpawnedMob(entity);
-            }
+        iteratingMobs = true;
 
-            for(FallingBlock entity: world.getEntitiesByClass(FallingBlock.class)) {
-                if (mobs.contains(entity.getUniqueId()))
-                    addSpawnedMob(entity);
-            }
+        Entity[] chunkMobs = world.getChunkAt(cx, cz).getEntities();
 
-            if(safeToRemoveMobs)
-                iteratingMobs = false;
+        for (Entity entity : chunkMobs) {
+            if(!(entity instanceof LivingEntity) && !(entity instanceof FallingBlock))
+                continue;
 
-            in.clearSpawnedMobs();
+            if (mobs.contains(entity.getUniqueId()))
+                addSpawnedMob(entity);
         }
+
+        if(safeToRemoveMobs)
+            iteratingMobs = false;
+
+        in.clearSpawnedMobs();
     }
 
     @Override
@@ -286,10 +289,12 @@ public class HashChunkManager implements ChunkManager {
         if (entity == null || world == null)
             return false;
 
-        if (entity.getLocation().getChunk().getX() != cx)
+        Chunk chunk = entity.getLocation().getChunk();
+
+        if (chunk.getX() != cx)
             return false;
 
-        if (entity.getLocation().getChunk().getZ() != cz)
+        if (chunk.getZ() != cz)
             return false;
 
         if (entity.getWorld() != world)
@@ -546,14 +551,14 @@ public class HashChunkManager implements ChunkManager {
         convertChunk(dataDir, cx, cz, world, false);
     }
 
-    public synchronized void convertChunk(File dataDir, int cx, int cz, World world, boolean actually) {
+    public synchronized boolean convertChunk(File dataDir, int cx, int cz, World world, boolean actually) {
         if (!actually)
-            return;
-        if (!dataDir.exists()) return;
+            return false;
+        if (!dataDir.exists()) return false;
         File cxDir = new File(dataDir, "" + cx);
-        if (!cxDir.exists()) return;
+        if (!cxDir.exists()) return false;
         File czDir = new File(cxDir, "" + cz);
-        if (!czDir.exists()) return;
+        if (!czDir.exists()) return false;
 
         boolean conversionSet = false;
 
@@ -574,6 +579,8 @@ public class HashChunkManager implements ChunkManager {
             converter.start(world, cxDir, czDir);
             converters.add(converter);
         }
+
+	return true;
     }
 
     public boolean isSpawnedMob(Entity entity) {
