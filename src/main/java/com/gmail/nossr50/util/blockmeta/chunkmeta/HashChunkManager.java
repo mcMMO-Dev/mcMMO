@@ -18,8 +18,6 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.LivingEntity;
 
 import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionZDirectory;
 
