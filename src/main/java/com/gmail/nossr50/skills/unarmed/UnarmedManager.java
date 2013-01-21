@@ -42,7 +42,6 @@ public class UnarmedManager extends SkillManager {
 
             if (chance > Misc.getRandom().nextInt(randomChance)) {
                 if (!hasIronGrip(defender)) {
-                    eventHandler.sendAbilityMessage();
                     eventHandler.handleDisarm();
                 }
             }
