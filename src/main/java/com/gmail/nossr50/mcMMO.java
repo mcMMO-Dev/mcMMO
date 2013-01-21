@@ -14,6 +14,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+
 import com.gmail.nossr50.commands.general.AddlevelsCommand;
 import com.gmail.nossr50.commands.general.AddxpCommand;
 import com.gmail.nossr50.commands.general.InspectCommand;
@@ -388,9 +389,9 @@ public class mcMMO extends JavaPlugin {
         if (configInstance.getCommandMCTopEnabled()) {
             getCommand("mctop").setExecutor(new MctopCommand());
         }
-        
+
         if(configInstance.getCommandMCRankEnabled()) {
-        	getCommand("mcrank").setExecutor(new McrankCommand());
+            getCommand("mcrank").setExecutor(new McrankCommand());
         }
 
         if (configInstance.getCommandMCStatsEnabled()) {

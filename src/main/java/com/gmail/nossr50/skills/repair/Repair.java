@@ -205,8 +205,8 @@ public class Repair {
      */
     protected static short repairCalculate(Player player, int skillLevel, short durability, int repairAmount) {
         float  bonus;
-        if (skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = ((float) REPAIR_MASTERY_CHANCE_MAX / 100F);
-        else bonus = (((float) skillLevel) / ((float) REPAIR_MASTERY_MAX_BONUS_LEVEL)) * (((float) REPAIR_MASTERY_CHANCE_MAX) / 100F);
+        if (skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = (REPAIR_MASTERY_CHANCE_MAX / 100F);
+        else bonus = (((float) skillLevel) / ((float) REPAIR_MASTERY_MAX_BONUS_LEVEL)) * ((REPAIR_MASTERY_CHANCE_MAX) / 100F);
 
         if (Permissions.repairMastery(player)) {
             bonus = repairAmount * bonus;

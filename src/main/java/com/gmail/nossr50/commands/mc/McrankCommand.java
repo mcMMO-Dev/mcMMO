@@ -31,16 +31,16 @@ public class McrankCommand implements CommandExecutor {
         Player player = (Player) sender;
         String playerName;
         switch (args.length) {
-            case 0:
-                playerName = player.getName();
-                break;
+        case 0:
+            playerName = player.getName();
+            break;
 
-            case 1:
-                playerName = args[0];
-                break;
+        case 1:
+            playerName = args[0];
+            break;
 
-            default:
-                return false;
+        default:
+            return false;
         }
 
         if (Config.getInstance().getUseMySQL()) {
@@ -73,7 +73,7 @@ public class McrankCommand implements CommandExecutor {
 
         //Show the powerlevel ranking
         int[] rankInts = Leaderboard.getPlayerRank(playerName, SkillType.ALL);
-        
+
         if (rankInts[1] == 0) {
             sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overalll", new Object[] {LocaleLoader.getString("Commands.mcrank.Unranked")} )); //Don't bother showing ranking for players without skills
         }

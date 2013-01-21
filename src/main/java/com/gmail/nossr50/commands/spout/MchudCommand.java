@@ -9,8 +9,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.HudType;
-import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
 

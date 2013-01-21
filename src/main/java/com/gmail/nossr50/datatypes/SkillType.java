@@ -117,12 +117,12 @@ public enum SkillType {
     public double getXpModifier() {
         return xpModifier;
     }
-    
+
     public static SkillType getSkill(String skillName) {
         if (skillName.equalsIgnoreCase("powerlevel") || skillName.equalsIgnoreCase("all")) {
             return SkillType.ALL;
         }
-        
+
         for (SkillType type : SkillType.values()) {
             if (type.name().equalsIgnoreCase(skillName)) {
                 return type;

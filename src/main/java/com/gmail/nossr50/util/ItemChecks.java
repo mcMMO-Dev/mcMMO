@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util;
 
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.api.SpoutToolsAPI;
@@ -470,7 +470,7 @@ public class ItemChecks {
     public static boolean isEnchantable(ItemStack is) {
         Material type = is.getType();
         return isArmor(is) || isSword(is) || isAxe(is) || isShovel(is) || isPickaxe(is) ||
-               type == Material.SHEARS || type == Material.FISHING_ROD || type == Material.CARROT_STICK ||
-               type == Material.FLINT_AND_STEEL || type == Material.BOW;
+                type == Material.SHEARS || type == Material.FISHING_ROD || type == Material.CARROT_STICK ||
+                type == Material.FLINT_AND_STEEL || type == Material.BOW;
     }
 }

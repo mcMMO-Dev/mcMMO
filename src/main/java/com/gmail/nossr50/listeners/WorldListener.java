@@ -36,7 +36,7 @@ public class WorldListener implements Listener {
         if (mcMMO.placeStore.isTrue(event.getLocation().getBlock())) {
             for (BlockState block : event.getBlocks()) {
                 mcMMO.placeStore.setFalse(block.getBlock());
-            }   
+            }
         }
     }
 

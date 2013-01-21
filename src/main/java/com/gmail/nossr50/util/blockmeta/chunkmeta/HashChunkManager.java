@@ -1,12 +1,10 @@
 package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.Boolean;
-import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,10 +16,9 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.getspout.spoutapi.chunkstore.mcMMOSimpleRegionFile;
 
 import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionZDirectory;
-
-import org.getspout.spoutapi.chunkstore.mcMMOSimpleRegionFile;
 
 public class HashChunkManager implements ChunkManager {
     private HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>>();
@@ -577,34 +574,41 @@ public class HashChunkManager implements ChunkManager {
         return true;
     }
 
+    @Override
     public boolean isSpawnedMob(Entity entity) {
         return spawnedMobs.contains(entity);
     }
 
+    @Override
     public boolean isSpawnedPet(Entity entity) {
         return spawnedMobs.contains(entity);
     }
 
+    @Override
     public void addSpawnedMob(Entity entity) {
         if (!isSpawnedMob(entity))
             spawnedMobs.add(entity);
     }
 
+    @Override
     public void addSpawnedPet(Entity entity) {
         if (!isSpawnedMob(entity))
             spawnedMobs.add(entity);
     }
 
+    @Override
     public void removeSpawnedMob(Entity entity) {
         if (isSpawnedMob(entity))
             spawnedMobs.remove(entity);
     }
 
+    @Override
     public void removeSpawnedPet(Entity entity) {
         if (isSpawnedMob(entity))
             spawnedMobs.remove(entity);
     }
 
+    @Override
     public synchronized void cleanMobLists() {
         if (!safeToRemoveMobs || iteratingMobs)
             return;

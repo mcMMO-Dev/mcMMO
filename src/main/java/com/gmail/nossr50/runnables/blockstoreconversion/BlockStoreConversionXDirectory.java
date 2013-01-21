@@ -1,12 +1,11 @@
 package com.gmail.nossr50.runnables.blockstoreconversion;
 
 import java.io.File;
-import java.lang.Runnable;
 
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.HiddenConfig;
 
 public class BlockStoreConversionXDirectory implements Runnable {
     private int taskID, i;

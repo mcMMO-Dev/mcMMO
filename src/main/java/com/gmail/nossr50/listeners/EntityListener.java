@@ -172,7 +172,7 @@ public class EntityListener implements Listener {
                     acroManager.rollCheck(event);
                 }
                 else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.demolitionsExpertise(player)) {
-                    MiningManager miningManager = new MiningManager(player); 
+                    MiningManager miningManager = new MiningManager(player);
                     miningManager.demolitionsExpertise(event);
                 }
 

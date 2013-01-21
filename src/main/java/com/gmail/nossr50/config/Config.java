@@ -57,13 +57,13 @@ public class Config extends ConfigLoader {
     }
 
     private static String getStringIncludingInts(ConfigurationSection cfg, String key) {
-		String str = cfg.getString(key);
-		if (str == null)
-			str = String.valueOf(cfg.getInt(key));
-		if (str == null)
-			str = "No value set for '" + key + "'";
-		return str;
-	}
+        String str = cfg.getString(key);
+        if (str == null)
+            str = String.valueOf(cfg.getInt(key));
+        if (str == null)
+            str = "No value set for '" + key + "'";
+        return str;
+    }
 
     /* Hardcore Mode */
     public boolean getHardcoreEnabled() { return config.getBoolean("Hardcore.Enabled", false); }

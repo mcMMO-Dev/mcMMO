@@ -156,7 +156,7 @@ public class Database {
     /**
      * Check database structure for missing values.
      *
-     * @param update Type of data to check updates for  
+     * @param update Type of data to check updates for
      */
     public void checkDatabaseStructure(DatabaseUpdate update) {
         String sql = null;
@@ -195,7 +195,7 @@ public class Database {
                         + "ADD INDEX `idx_fishing` (`fishing`) USING BTREE;");
             }
             break;
-            
+
         default:
             break;
         }
@@ -469,7 +469,7 @@ public class Database {
 
         return rows;
     }
-    
+
     public Map<String, Integer> readSQLRank(String playerName) {
         ResultSet resultSet;
         Map<String, Integer> skills = new HashMap<String, Integer>();
@@ -502,7 +502,7 @@ public class Database {
                     statement.close();
                 }
 
-         
+
             }
             catch (SQLException ex) {
                 printErrors(ex);

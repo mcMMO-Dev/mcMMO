@@ -12,8 +12,8 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.config.SpoutConfig;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.datatypes.buttons.McmmoButton;
 import com.gmail.nossr50.datatypes.popups.Menu;
 import com.gmail.nossr50.locale.LocaleLoader;

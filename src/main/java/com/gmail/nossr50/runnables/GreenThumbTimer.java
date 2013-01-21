@@ -28,7 +28,7 @@ public class GreenThumbTimer implements Runnable {
 
         int skillLevel = this.profile.getSkillLevel(SkillType.HERBALISM);
 
-    	final int STAGE_CHANGE = advancedConfig.getGreenThumbStageChange();
+        final int STAGE_CHANGE = advancedConfig.getGreenThumbStageChange();
 
         int greenThumbStage = (int) ((double) skillLevel / (double) STAGE_CHANGE);
         if (greenThumbStage > 4) greenThumbStage = 4;

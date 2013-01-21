@@ -35,7 +35,7 @@ public class Mining {
      * @param player The player to award XP to
      * @param block The block to award XP for
      */
-     protected static void miningXP(Player player, PlayerProfile profile, Block block, Material type) {
+    protected static void miningXP(Player player, PlayerProfile profile, Block block, Material type) {
         int xp = 0;
 
         switch (type) {

@@ -95,21 +95,21 @@ public class AcrobaticsCommand extends SkillCommand {
         if (canRoll) {
             if (lucky)
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { rollChanceLucky }));
-        	else
+            else
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }));
         }
 
         if (canGracefulRoll) {
             if (lucky)
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { gracefulRollChanceLucky }));
-        	else
+            else
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }));
         }
 
         if (canDodge) {
             if (lucky)
                 player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { dodgeChanceLucky }));
-        	else
+            else
                 player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }));
         }
     }

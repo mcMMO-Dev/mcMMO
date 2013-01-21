@@ -84,7 +84,7 @@ public class Anniversary {
             GregorianCalendar day = new GregorianCalendar();
 
             if (hasCelebrated.contains(sender.getName())) {
-                return; 
+                return;
             }
 
             if (getDateRange(day.getTime(), anniversaryStart.getTime(), anniversaryEnd.getTime())) {

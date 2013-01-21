@@ -7,7 +7,7 @@ public class BiggerBombsEventHandler {
 
     private ExplosionPrimeEvent event;
     private float radius;
-    private float radiusModifier; 
+    private float radiusModifier;
 
     protected BiggerBombsEventHandler(MiningManager manager, ExplosionPrimeEvent event) {
         this.skillLevel = manager.getSkillLevel();

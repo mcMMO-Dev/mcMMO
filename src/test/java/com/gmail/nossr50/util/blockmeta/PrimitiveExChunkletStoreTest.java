@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PrimitiveExChunkletStoreTest {
-	byte addresses[][] = new byte[16][16];
+    byte addresses[][] = new byte[16][16];
 
     @Before
     public void populateAddresses() {

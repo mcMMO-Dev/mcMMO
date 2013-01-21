@@ -118,8 +118,8 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void flatfileDisplay(int page, String skill, CommandSender sender) {
-    	Leaderboard.updateLeaderboards(); //Make sure we have the latest information
-    	SkillType skillType = SkillType.getSkill(skill);
+        Leaderboard.updateLeaderboards(); //Make sure we have the latest information
+        SkillType skillType = SkillType.getSkill(skill);
         String[] info = Leaderboard.retrieveInfo(skillType, page);
 
         if (skill.equalsIgnoreCase("ALL")) {

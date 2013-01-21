@@ -1,7 +1,5 @@
 package com.gmail.nossr50.runnables;
 
-import java.lang.Runnable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -35,6 +33,7 @@ public class MobStoreCleaner implements Runnable
         taskID = -1;
     }
 
+    @Override
     public void run()
     {
         mcMMO.placeStore.cleanMobLists();

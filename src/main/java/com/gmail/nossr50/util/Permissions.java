@@ -13,7 +13,7 @@ public class Permissions {
     }
 
     public static boolean hasPermission(Player sender, String perm)
-    {        
+    {
         if (sender.hasPermission(perm))
             return true;
 

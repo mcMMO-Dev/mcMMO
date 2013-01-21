@@ -17,7 +17,7 @@ public class Leaderboard {
     private final static String location = mcMMO.getUsersFile();
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
     private static long lastUpdate = 0;
-    
+
     /**
      * Update the leader boards.
      */
@@ -25,9 +25,9 @@ public class Leaderboard {
         if(System.currentTimeMillis() < lastUpdate + 600000) {
             return; //Only update FFS leaderboards every 10 minutes.. this puts a lot of strain on the server (depending on the size of the database) and should not be done frequently
         }
-        
+
         lastUpdate = System.currentTimeMillis(); //Log when the last update was run
-        
+
         //Initialize lists
         List<PlayerStat> mining, woodcutting, herbalism, excavation, acrobatics, repair, swords, axes, archery, unarmed, taming, fishing, powerlevel;
 
@@ -147,7 +147,7 @@ public class Leaderboard {
         Collections.sort(taming, c);
         Collections.sort(fishing, c);
         Collections.sort(powerlevel, c);
-        
+
         playerStatHash.put(SkillType.MINING, mining);
         playerStatHash.put(SkillType.WOODCUTTING, woodcutting);
         playerStatHash.put(SkillType.REPAIR, repair);
@@ -174,10 +174,10 @@ public class Leaderboard {
         String[] info = new String[10];
 
         List<PlayerStat> statsList = playerStatHash.get(skillType);
-        
+
         if(statsList != null) {
             int destination;
-            
+
             //How many lines to skip through
             if (pagenumber == 1) {
                 destination = 0;
@@ -185,9 +185,9 @@ public class Leaderboard {
             else {
                 destination = (pagenumber * 10) - 9;
             }
-            
+
             int currentPos = 0;
-        
+
             for(PlayerStat ps : statsList) {
                 if(currentPos == 10)
                     break;
@@ -195,28 +195,28 @@ public class Leaderboard {
                     destination--;
                     continue;
                 }
-                
+
                 info[currentPos] = ps.name+":"+ps.statVal;
                 currentPos++;
             }
-        
+
         } else {
             info[0] = "DummyPlayer:0"; //Coming up with a better solution soon...
         }
-        
+
         return info;
     }
-    
+
     public static int[] getPlayerRank(String playerName, SkillType skillType) {
         int currentPos = 1;
         List<PlayerStat> statsList = playerStatHash.get(skillType);
-        
+
         if (statsList != null) {
             for (PlayerStat stat : statsList) {
                 if (stat.name.equalsIgnoreCase(playerName)) {
                     return new int[] {currentPos, stat.statVal};
                 }
-                
+
                 currentPos++;
                 continue;
             }
@@ -225,7 +225,7 @@ public class Leaderboard {
 
         return new int[] {0};
     }
-    
+
     private static class SkillComparator implements Comparator<PlayerStat> {
         @Override
         public int compare(PlayerStat o1, PlayerStat o2) {

@@ -8,7 +8,7 @@ public class UserPurgeTask implements Runnable {
     private Database database = mcMMO.getPlayerDatabase();
 
     public UserPurgeTask() {
-        
+
     }
 
     @Override

@@ -24,9 +24,9 @@ public class PrimitiveChunkStore implements ChunkStore {
     private UUID worldUid;
     private List<UUID> spawnedMobs = new ArrayList<UUID>();
     transient private int worldHeight;
-    
+
     transient private int xBitShifts;
-	transient private int zBitShifts;
+    transient private int zBitShifts;
     transient private boolean conversionNeeded;
 
     public PrimitiveChunkStore(World world, int cx, int cz) {
@@ -104,14 +104,17 @@ public class PrimitiveChunkStore implements ChunkStore {
         dirty = true;
     }
 
+    @Override
     public boolean isSpawnedMob(UUID id) {
         return spawnedMobs.contains(id);
     }
 
+    @Override
     public boolean isSpawnedPet(UUID id) {
         return spawnedMobs.contains(id);
     }
 
+    @Override
     public void addSpawnedMob(UUID id) {
         if (!isSpawnedMob(id)) {
             spawnedMobs.add(id);
@@ -119,6 +122,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         }
     }
 
+    @Override
     public void addSpawnedPet(UUID id) {
         if (!isSpawnedPet(id)) {
             spawnedMobs.add(id);
@@ -126,6 +130,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         }
     }
 
+    @Override
     public void removeSpawnedMob(UUID id) {
         if (isSpawnedMob(id)) {
             spawnedMobs.remove(id);
@@ -133,6 +138,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         }
     }
 
+    @Override
     public void removeSpawnedPet(UUID id) {
         if (isSpawnedPet(id)) {
             spawnedMobs.remove(id);
@@ -140,6 +146,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         }
     }
 
+    @Override
     public void clearSpawnedMobs() {
         if (!spawnedMobs.isEmpty()) {
             spawnedMobs.clear();
@@ -147,6 +154,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         }
     }
 
+    @Override
     public void clearSpawnedPets() {
         if (!spawnedMobs.isEmpty()) {
             spawnedMobs.clear();
@@ -154,10 +162,12 @@ public class PrimitiveChunkStore implements ChunkStore {
         }
     }
 
+    @Override
     public List<UUID> getSpawnedMobs() {
         return spawnedMobs;
     }
 
+    @Override
     public List<UUID> getSpawnedPets() {
         return spawnedMobs;
     }

@@ -15,5 +15,5 @@ public class Unarmed {
     public static final int DISARM_MAX_BONUS_LEVEL = advancedConfig.getDeflectMaxBonusLevel();
 
     public static final int IRON_GRIP_MAX_CHANCE = advancedConfig.getIronGripChanceMax();
-    public static final int IRON_GRIP_MAX_BONUS_LEVEL = advancedConfig.getIronGripMaxBonusLevel(); 
+    public static final int IRON_GRIP_MAX_BONUS_LEVEL = advancedConfig.getIronGripMaxBonusLevel();
 }
