@@ -19,10 +19,7 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(Player defender) {
-        if (player == null)
-            return;
-
-        if (!Permissions.disarm(player)) {
+        if (Misc.isNPC(player) || !Permissions.disarm(player)) {
             return;
         }
 

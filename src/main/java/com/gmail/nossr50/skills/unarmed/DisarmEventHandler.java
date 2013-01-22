@@ -19,8 +19,6 @@ public class DisarmEventHandler {
         this.manager = manager;
         this.defender = defender;
         this.inHand = defender.getItemInHand();
-
-        calculateSkillModifier();
     }
 
     protected boolean isHoldingItem() {
@@ -31,7 +29,7 @@ public class DisarmEventHandler {
         this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Unarmed.DISARM_MAX_BONUS_LEVEL);
     }
 
-    protected void sendAbilityMessage() {
+    private void sendAbilityMessage() {
         defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
     }
 
