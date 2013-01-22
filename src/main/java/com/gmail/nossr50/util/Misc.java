@@ -11,7 +11,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
@@ -57,10 +56,10 @@ public class Misc {
      * @return true if the player has armor, false otherwise
      */
     public static boolean hasArmor(LivingEntity entity) {
-        EntityEquipment equipment = entity.getEquipment();
-
-        if (equipment.getBoots() != null || equipment.getChestplate() != null || equipment.getHelmet() != null || equipment.getLeggings() != null) {
-            return true;
+        for (ItemStack armor : entity.getEquipment().getArmorContents()) {
+            if (armor.getType() != Material.AIR) {
+                return true;
+            }
         }
 
         return false;
