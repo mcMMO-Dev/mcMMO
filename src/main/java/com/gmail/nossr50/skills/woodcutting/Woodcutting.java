@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -85,9 +84,6 @@ public abstract class Woodcutting {
      * @throws IllegalArgumentException if 'log' is invalid
      */
     protected static int getExperienceFromLog(Block log) {
-        byte data = log.getData();
-        Bukkit.getLogger().info(Integer.toHexString(data));
-        
         TreeSpecies logType = TreeSpecies.getByData((byte) (log.getData() & 0x3));
 
         // Apparently species can be null in certain cases (custom server mods?)
