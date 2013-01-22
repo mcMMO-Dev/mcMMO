@@ -24,10 +24,14 @@ import com.gmail.nossr50.util.Users;
 public class Repair {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
-    public static final int REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryMaxBonus();
+    public static final double REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryMaxBonus();
     public static final int REPAIR_MASTERY_MAX_BONUS_LEVEL = advancedConfig.getRepairMasteryMaxLevel();
-    public static final int SUPER_REPAIR_CHANCE_MAX = advancedConfig.getSuperRepairChanceMax();
+
+    public static final double SUPER_REPAIR_CHANCE_MAX = advancedConfig.getSuperRepairChanceMax();
     public static final int SUPER_REPAIR_MAX_BONUS_LEVEL = advancedConfig.getSuperRepairMaxLevel();
+
+    public static boolean arcaneForgingDowngrades = advancedConfig.getArcaneForgingDowngradeEnabled();
+    public static boolean arcaneForgingEnchantLoss = advancedConfig.getArcaneForgingEnchantLossEnabled();
 
     /**
      * Handle the XP gain for repair events.
@@ -201,8 +205,8 @@ public class Repair {
      */
     protected static short repairCalculate(Player player, int skillLevel, short durability, int repairAmount) {
         float  bonus;
-        if (skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = (REPAIR_MASTERY_CHANCE_MAX / 100F);
-        else bonus = (((float) skillLevel) / ((float) REPAIR_MASTERY_MAX_BONUS_LEVEL)) * ((REPAIR_MASTERY_CHANCE_MAX) / 100F);
+        if (skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = (float) (REPAIR_MASTERY_CHANCE_MAX / 100F);
+        else bonus = (((float) skillLevel) / ((float) REPAIR_MASTERY_MAX_BONUS_LEVEL)) * (float) ((REPAIR_MASTERY_CHANCE_MAX) / 100F);
 
         if (Permissions.repairMastery(player)) {
             bonus = repairAmount * bonus;
@@ -234,8 +238,8 @@ public class Repair {
     public static boolean checkPlayerProcRepair(Player player) {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
-        int chance = (int) (((double) SUPER_REPAIR_CHANCE_MAX / (double) SUPER_REPAIR_MAX_BONUS_LEVEL) * skillLevel);
-        if (skillLevel >= SUPER_REPAIR_MAX_BONUS_LEVEL) chance = SUPER_REPAIR_CHANCE_MAX;
+        int chance = (int) ((SUPER_REPAIR_CHANCE_MAX / SUPER_REPAIR_MAX_BONUS_LEVEL) * skillLevel);
+        if (skillLevel >= SUPER_REPAIR_MAX_BONUS_LEVEL) chance = (int) SUPER_REPAIR_CHANCE_MAX;
 
         int activationChance = Misc.calculateActivationChance(Permissions.luckyRepair(player));
 

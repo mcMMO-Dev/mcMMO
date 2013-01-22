@@ -19,8 +19,8 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Salvage {
-
     private static Config configInstance = Config.getInstance();
+    public static int salvageUnlockLevel = Config.getInstance().getSalvageUnlockLevel();
 
     public static void handleSalvage(final Player player, final Location location, final ItemStack inHand) {
         if (!Permissions.salvage(player) || !configInstance.getSalvageEnabled()) {

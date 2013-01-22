@@ -166,12 +166,12 @@ Skills:
     Repair:
         # RepairMastery_ChanceMax: Maximum bonus percentage for Repair Mastery
         # RepairMastery_MaxBonusLevel: On this level, the maximum bonus is reached
-        RepairMastery_MaxBonusPercentage: 200
+        RepairMastery_MaxBonusPercentage: 200.0
         RepairMastery_MaxBonusLevel: 1000
 
         # SuperRepair_ChanceMax: Maximum chance of Super Repair
         # SuperRepair_MaxBonusLevel: On this level, Super Repair chance will be SuperRepair_ChanceMax
-        SuperRepair_ChanceMax: 100
+        SuperRepair_ChanceMax: 100.0
         SuperRepair_MaxBonusLevel: 1000
         
         Arcane_Forging:

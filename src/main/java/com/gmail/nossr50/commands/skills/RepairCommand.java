@@ -1,27 +1,21 @@
 package com.gmail.nossr50.commands.skills;
 
+import org.bukkit.Material;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.SkillCommand;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Repairable;
+import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Skills;
 
 public class RepairCommand extends SkillCommand {
-    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private int arcaneForgingRank;
     private String repairMasteryBonus;
     private String superRepairChance;
     private String superRepairChanceLucky;
-
-    private float repairMasteryMaxBonus = advancedConfig.getRepairMasteryMaxBonus();
-    private float repairMasteryMaxBonusLevel = advancedConfig.getRepairMasteryMaxLevel();
-    private float superRepairChanceMax = advancedConfig.getSuperRepairChanceMax();
-    private float superRepairMaxBonusLevel = advancedConfig.getSuperRepairMaxLevel();
 
     private boolean canSuperRepair;
     private boolean canMasterRepair;
@@ -35,9 +29,7 @@ public class RepairCommand extends SkillCommand {
     private boolean canRepairLeather;
     private boolean canRepairWood;
     private boolean arcaneBypass;
-    private boolean lucky;
 
-    private int salvageLevel;
     private int diamondLevel;
     private int goldLevel;
     private int ironLevel;
@@ -49,29 +41,32 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        float superRepairChanceF;
         // We're using pickaxes here, not the best but it works
-        Repairable diamondRepairable = mcMMO.repairManager.getRepairable(278);
-        Repairable goldRepairable = mcMMO.repairManager.getRepairable(285);
-        Repairable ironRepairable = mcMMO.repairManager.getRepairable(257);
-        Repairable stoneRepairable = mcMMO.repairManager.getRepairable(274);
+        Repairable diamondRepairable = mcMMO.repairManager.getRepairable(Material.DIAMOND_PICKAXE.getId());
+        Repairable goldRepairable = mcMMO.repairManager.getRepairable(Material.GOLD_PICKAXE.getId());
+        Repairable ironRepairable = mcMMO.repairManager.getRepairable(Material.IRON_PICKAXE.getId());
+        Repairable stoneRepairable = mcMMO.repairManager.getRepairable(Material.STONE_PICKAXE.getId());
 
+        //TODO: This isn't really accurate - if they don't have pickaxes loaded it doesn't always mean the repair level is 0
         diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
         goldLevel = (goldRepairable == null) ? 0 : goldRepairable.getMinimumLevel();
         ironLevel = (ironRepairable == null) ? 0 : ironRepairable.getMinimumLevel();
         stoneLevel = (stoneRepairable == null) ? 0 : stoneRepairable.getMinimumLevel();
 
-        salvageLevel = Config.getInstance().getSalvageUnlockLevel();
+        //REPAIR MASTERY
+        if (skillValue >= Repair.REPAIR_MASTERY_MAX_BONUS_LEVEL) {
+            repairMasteryBonus = percent.format(Repair.REPAIR_MASTERY_CHANCE_MAX / 100D);
+        }
+        else {
+            repairMasteryBonus = percent.format((( Repair.REPAIR_MASTERY_CHANCE_MAX / Repair.REPAIR_MASTERY_MAX_BONUS_LEVEL) * skillValue) / 100D);
+        }
 
-        if (skillValue >= repairMasteryMaxBonusLevel) repairMasteryBonus = percent.format(repairMasteryMaxBonus / 100D);
-        else repairMasteryBonus = percent.format((((double) repairMasteryMaxBonus / (double) repairMasteryMaxBonusLevel) * skillValue) / 100D);
+        //SUPER REPAIR
+        String[] superRepairStrings = calculateAbilityDisplayValues(Repair.SUPER_REPAIR_MAX_BONUS_LEVEL, Repair.SUPER_REPAIR_CHANCE_MAX);
+        superRepairChance = superRepairStrings[0];
+        superRepairChanceLucky = superRepairStrings[1];
 
-        if (skillValue >= superRepairMaxBonusLevel) superRepairChanceF = superRepairChanceMax;
-        else superRepairChanceF = (float) (((double) superRepairChanceMax / (double) superRepairMaxBonusLevel) * skillValue);
-        superRepairChance = percent.format(superRepairChanceF / 100D);
-        if (superRepairChanceF * 1.3333D >= 100D) superRepairChanceLucky = percent.format(1D);
-        else superRepairChanceLucky = percent.format((superRepairChanceF * 1.3333D) / 100D);
-
+        //ARCANE FORGING
         arcaneForgingRank = Repair.getArcaneForgingRank(profile);
     }
 
@@ -89,7 +84,6 @@ public class RepairCommand extends SkillCommand {
         canRepairLeather = Permissions.leatherRepair(player);
         canRepairWood = Permissions.woodRepair(player);
         arcaneBypass = Permissions.arcaneBypass(player);
-        lucky = Permissions.luckyRepair(player);
     }
 
     @Override
@@ -99,10 +93,7 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (lucky) {
-            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Skills.localizeSkillName(SkillType.REPAIR) }) }));
-        }
+        luckyEffectsDisplay();
 
         player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.0"), LocaleLoader.getString("Repair.Effect.1") }));
 
@@ -132,8 +123,8 @@ public class RepairCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.6", new Object[] { diamondLevel }), LocaleLoader.getString("Repair.Effect.7") }));
         }
 
-        if (canSalvage && salvageLevel > 0) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.16", new Object[] { salvageLevel }), LocaleLoader.getString("Repair.Effect.17") }));
+        if (canSalvage && Salvage.salvageUnlockLevel > 0) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.16", new Object[] { Salvage.salvageUnlockLevel }), LocaleLoader.getString("Repair.Effect.17") }));
         }
 
         if (canArcaneForge) {
@@ -153,20 +144,22 @@ public class RepairCommand extends SkillCommand {
         }
 
         if (canSuperRepair) {
-            if (lucky)
+            if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { superRepairChanceLucky }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }));
+            }
         }
 
         if (canArcaneForge) {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", new Object[] { arcaneForgingRank }));
 
-            if (advancedConfig.getArcaneForgingEnchantLossEnabled()) {
+            if (Repair.arcaneForgingEnchantLoss) {
                 player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", new Object[] { (arcaneBypass ? 100 : Repair.getEnchantChance(arcaneForgingRank)) }));
             }
 
-            if (advancedConfig.getArcaneForgingDowngradeEnabled()) {
+            if (Repair.arcaneForgingDowngrades) {
                 player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", new Object[] { (arcaneBypass ? 0 : Repair.getDowngradeChance(arcaneForgingRank)) }));
             }
         }
