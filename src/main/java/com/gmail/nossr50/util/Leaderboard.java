@@ -220,10 +220,10 @@ public class Leaderboard {
                 currentPos++;
                 continue;
             }
-            return new int[] {0};
+            return new int[] {0, 0};
         }
 
-        return new int[] {0};
+        return new int[] {0, 0};
     }
 
     private static class SkillComparator implements Comparator<PlayerStat> {
