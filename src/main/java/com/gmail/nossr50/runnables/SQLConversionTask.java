@@ -219,7 +219,7 @@ public class SQLConversionTask implements Runnable {
                             + tablePrefix
                             + "users (user, lastlogin) VALUES ('"
                             + playerName + "',"
-                            + System.currentTimeMillis() / 1000 + ")");
+                            + System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR + ")");
                     id = database.getInt("SELECT id FROM "
                             + tablePrefix
                             + "users WHERE user = '"

@@ -184,7 +184,7 @@ public class PlayerProfile {
         Database database = mcMMO.getPlayerDatabase();
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
-        database.write("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / 1000 + ")");
+        database.write("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR + ")");
         userId = database.getInt("SELECT id FROM "+tablePrefix + "users WHERE user = '" + playerName + "'");
         database.write("INSERT INTO " + tablePrefix + "cooldowns (user_id) VALUES (" + userId + ")");
         database.write("INSERT INTO " + tablePrefix + "skills (user_id) VALUES (" + userId + ")");
@@ -306,7 +306,7 @@ public class PlayerProfile {
             String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
             database.write("UPDATE " + tablePrefix + "huds SET hudtype = '" + hudType.toString() + "' WHERE user_id = " + userId);
-            database.write("UPDATE " + tablePrefix + "users SET lastlogin = " + ((int) (timestamp / 1000L)) + " WHERE id = " + userId);
+            database.write("UPDATE " + tablePrefix + "users SET lastlogin = " + ((int) (timestamp / Misc.TIME_CONVERSION_FACTOR)) + " WHERE id = " + userId);
             database.write("UPDATE " + tablePrefix + "cooldowns SET "
                     + " mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
                     + ", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
@@ -658,7 +658,7 @@ public class PlayerProfile {
      * @param ATS the ATS of the tool
      */
     public void setToolPreparationATS(ToolType tool, long ATS) {
-        int startTime = (int) (ATS / 1000);
+        int startTime = (int) (ATS / Misc.TIME_CONVERSION_FACTOR);
         toolATS.put(tool, startTime);
     }
 
@@ -853,7 +853,7 @@ public class PlayerProfile {
     }
 
     public void actualizeRecentlyHurt() {
-        respawnATS = (int) (System.currentTimeMillis() / 1000);
+        respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /*
@@ -899,7 +899,7 @@ public class PlayerProfile {
     }
 
     public void actualizeRespawnATS() {
-        respawnATS = (int) (System.currentTimeMillis() / 1000);
+        respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /*
