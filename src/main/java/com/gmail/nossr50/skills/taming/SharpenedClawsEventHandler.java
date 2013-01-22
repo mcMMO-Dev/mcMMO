@@ -10,6 +10,6 @@ public class SharpenedClawsEventHandler {
     }
 
     protected void modifyEventDamage() {
-        event.setDamage(event.getDamage() + Taming.SHARPENED_CLAWS_BONUS);
+        event.setDamage(event.getDamage() + Taming.sharpenedClawsBonusDamage);
     }
 }

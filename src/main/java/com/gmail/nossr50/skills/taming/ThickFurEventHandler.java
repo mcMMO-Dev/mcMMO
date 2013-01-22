@@ -23,7 +23,7 @@ public class ThickFurEventHandler {
 
         case ENTITY_ATTACK:
         case PROJECTILE:
-            event.setDamage(event.getDamage() / Taming.THICK_FUR_MODIFIER);
+            event.setDamage(event.getDamage() / Taming.thickFurModifier);
             break;
 
         default:

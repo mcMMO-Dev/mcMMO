@@ -23,17 +23,17 @@ public class BleedEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(skillLevel, Swords.BLEED_MAX_BONUS_LEVEL);
+        this.skillModifier = Misc.skillCheck(skillLevel, Swords.bleedMaxBonusLevel);
     }
 
     protected void addBleedTicks() {
         int bleedTicks;
 
-        if (skillLevel >= Swords.BLEED_MAX_BONUS_LEVEL) {
-            bleedTicks = Swords.MAX_BLEED_TICKS;
+        if (skillLevel >= Swords.bleedMaxBonusLevel) {
+            bleedTicks = Swords.bleedMaxTicks;
         }
         else {
-            bleedTicks = Swords.BASE_BLEED_TICKS;
+            bleedTicks = Swords.bleedBaseTicks;
         }
 
         BleedTimer.add(defender, bleedTicks);

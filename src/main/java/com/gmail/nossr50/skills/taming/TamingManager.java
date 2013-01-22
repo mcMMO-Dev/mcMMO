@@ -36,8 +36,8 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        if (skillLevel >= Taming.FAST_FOOD_SERVICE_ACTIVATION_LEVEL) {
-            if (Misc.getRandom().nextInt(activationChance) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
+        if (skillLevel >= Taming.fastFoodServiceUnlockLevel) {
+            if (Misc.getRandom().nextInt(activationChance) < Taming.fastFoodServiceActivationChance) {
                 FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
 
                 eventHandler.modifyHealth(damage);
@@ -58,7 +58,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        if (skillLevel >= Taming.SHARPENED_CLAWS_ACTIVATION_LEVEL) {
+        if (skillLevel >= Taming.sharpenedClawsUnlockLevel) {
             SharpenedClawsEventHandler eventHandler = new SharpenedClawsEventHandler(event);
 
             eventHandler.modifyEventDamage();
@@ -80,8 +80,8 @@ public class TamingManager extends SkillManager {
 
         GoreEventHandler eventHandler = new GoreEventHandler(this, event);
 
-        float chance = (float) (((double) Taming.GORE_CHANCE_MAX / (double) Taming.GORE_MAX_BONUS_LEVEL) * skillLevel);
-        if (chance > Taming.GORE_CHANCE_MAX) chance = Taming.GORE_CHANCE_MAX;
+        float chance = (float) ((Taming.goreMaxChance / Taming.goreMaxBonusLevel) * skillLevel);
+        if (chance > Taming.goreMaxChance) chance = (float) Taming.goreMaxChance;
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.modifyEventDamage();
@@ -203,7 +203,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        if (skillLevel >= Taming.ENVIRONMENTALLY_AWARE_ACTIVATION_LEVEL) {
+        if (skillLevel >= Taming.environmentallyAwareUnlockLevel) {
             EnvironmentallyAwareEventHandler eventHandler = new EnvironmentallyAwareEventHandler(this, event);
 
             switch (cause) {
@@ -238,7 +238,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        if (skillLevel >= Taming.THICK_FUR_ACTIVATION_LEVEL) {
+        if (skillLevel >= Taming.thickFurUnlockLevel) {
             ThickFurEventHandler eventHandler = new ThickFurEventHandler(event, cause);
 
             eventHandler.modifyEventDamage();
@@ -258,7 +258,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        if (skillLevel >= Taming.SHOCK_PROOF_ACTIVATION_LEVEL) {
+        if (skillLevel >= Taming.shockProofUnlockLevel) {
             ShockProofEventHandler eventHandler = new ShockProofEventHandler(event);
 
             eventHandler.modifyEventDamage();

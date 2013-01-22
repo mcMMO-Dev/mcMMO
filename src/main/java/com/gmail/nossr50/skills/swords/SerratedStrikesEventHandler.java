@@ -19,7 +19,7 @@ public class SerratedStrikesEventHandler {
     }
 
     protected void applyAbilityEffects() {
-        Combat.applyAbilityAoE(player, target, damage / Swords.SERRATED_STRIKES_MODIFIER, SkillType.SWORDS);
-        BleedTimer.add(target, Swords.SERRATED_STRIKES_BLEED_TICKS);
+        Combat.applyAbilityAoE(player, target, damage / Swords.serratedStrikesModifier, SkillType.SWORDS);
+        BleedTimer.add(target, Swords.serratedStrikesBleedTicks);
     }
 }

@@ -23,11 +23,11 @@ public class GoreEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Taming.GORE_MAX_BONUS_LEVEL);
+        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Taming.goreMaxBonusLevel);
     }
 
     protected void modifyEventDamage() {
-        event.setDamage(event.getDamage() * Taming.GORE_MULTIPLIER);
+        event.setDamage(event.getDamage() * Taming.goreModifier);
     }
 
     protected void sendAbilityMessage() {
@@ -39,6 +39,6 @@ public class GoreEventHandler {
     }
 
     protected void applyBleed() {
-        BleedTimer.add((LivingEntity) entity, Taming.GORE_BLEED_TICKS);
+        BleedTimer.add((LivingEntity) entity, Taming.goreBleedTicks);
     }
 }

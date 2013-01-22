@@ -351,7 +351,7 @@ public class Combat {
                     ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
                 }
 
-                BleedTimer.add((LivingEntity) entity, Swords.SERRATED_STRIKES_BLEED_TICKS);
+                BleedTimer.add((LivingEntity) entity, Swords.serratedStrikesBleedTicks);
 
                 break;
 

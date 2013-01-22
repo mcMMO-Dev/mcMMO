@@ -3,17 +3,15 @@ package com.gmail.nossr50.skills.swords;
 import com.gmail.nossr50.config.AdvancedConfig;
 
 public class Swords {
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    public static double bleedMaxChance = AdvancedConfig.getInstance().getBleedChanceMax();
+    public static int bleedMaxBonusLevel = AdvancedConfig.getInstance().getBleedMaxBonusLevel();
+    public static int bleedMaxTicks = AdvancedConfig.getInstance().getBleedMaxTicks();
+    public static int bleedBaseTicks = AdvancedConfig.getInstance().getBleedBaseTicks();
 
-    public static final int BLEED_CHANCE_MAX = AdvancedConfig.getInstance().getBleedChanceMax();
-    public static final int BLEED_MAX_BONUS_LEVEL = advancedConfig.getBleedMaxBonusLevel();
-    public static final int MAX_BLEED_TICKS = advancedConfig.getBleedMaxTicks();
-    public static final int BASE_BLEED_TICKS = advancedConfig.getBleedBaseTicks();
+    public static double counterAttackMaxChance = AdvancedConfig.getInstance().getCounterChanceMax();
+    public static int counterAttackMaxBonusLevel = AdvancedConfig.getInstance().getCounterMaxBonusLevel();
+    public static int counterAttackModifier = AdvancedConfig.getInstance().getCounterModifier();
 
-    public static final int COUNTER_ATTACK_CHANCE_MAX = advancedConfig.getCounterChanceMax();
-    public static final int COUNTER_ATTACK_MAX_BONUS_LEVEL = advancedConfig.getCounterMaxBonusLevel();
-    public static final int COUNTER_ATTACK_MODIFIER = advancedConfig.getCounterModifier();
-
-    public static final int SERRATED_STRIKES_MODIFIER = advancedConfig.getSerratedStrikesModifier();
-    public static final int SERRATED_STRIKES_BLEED_TICKS = advancedConfig.getSerratedStrikesTicks();
+    public static int serratedStrikesModifier = AdvancedConfig.getInstance().getSerratedStrikesModifier();
+    public static int serratedStrikesBleedTicks = AdvancedConfig.getInstance().getSerratedStrikesTicks();
 }

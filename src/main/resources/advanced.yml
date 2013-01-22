@@ -200,7 +200,7 @@ Skills:
     Swords:
         # Bleed_ChanceMax: Maximum chance of triggering bleeding
         # Bleed_MaxBonusLevel: On this level, the chance to cause Bleeding will be Bleed_ChanceMax
-        Bleed_ChanceMax: 75
+        Bleed_ChanceMax: 75.0
         Bleed_MaxBonusLevel: 750
         # These settings determine how long the Bleeding effect lasts
         Bleed_MaxTicks: 3
@@ -208,7 +208,7 @@ Skills:
 
         # Counter_ChanceMax: Maximum chance of triggering a counter attack
         # Counter_MaxBonusLevel: On this level, the chance to Counter will be Counter_ChanceMax
-        Counter_ChanceMax: 30
+        Counter_ChanceMax: 30.0
         Counter_MaxBonusLevel: 600
 
         # Counter_DamageModifier: Damaged caused by the damager will get divided by this modifier and dealt back to the damager

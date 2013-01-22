@@ -31,11 +31,11 @@ public class CounterAttackEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Swords.COUNTER_ATTACK_MAX_BONUS_LEVEL);
+        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Swords.counterAttackMaxBonusLevel);
     }
 
     protected void dealDamage() {
-        Combat.dealDamage(attacker, damage / Swords.COUNTER_ATTACK_MODIFIER);
+        Combat.dealDamage(attacker, damage / Swords.counterAttackModifier);
     }
 
     protected void sendAbilityMessages() {

@@ -10,6 +10,6 @@ public class ShockProofEventHandler {
     }
 
     protected void modifyEventDamage() {
-        event.setDamage(event.getDamage() / Taming.SHOCK_PROOF_MODIFIER);
+        event.setDamage(event.getDamage() / Taming.shockProofModifier);
     }
 }
