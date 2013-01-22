@@ -242,8 +242,8 @@ public class WoodCutting {
      * @param block Block being broken
      */
     private static void woodCuttingProcCheck(Player player, Block block) {
-        final int MAX_CHANCE = ADVANCED_CONFIG.getMiningDoubleDropChance();
-        final int MAX_BONUS_LEVEL = ADVANCED_CONFIG.getMiningDoubleDropMaxLevel();
+        final int MAX_CHANCE = ADVANCED_CONFIG.getWoodcuttingDoubleDropChance();
+        final int MAX_BONUS_LEVEL = ADVANCED_CONFIG.getWoodcuttingDoubleDropMaxLevel();
         byte type = block.getData();
 
         if ((type & 0x4) == 0x4)

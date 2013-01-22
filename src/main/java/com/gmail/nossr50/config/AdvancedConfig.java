@@ -101,7 +101,7 @@ public class AdvancedConfig extends ConfigLoader {
     public int getHylianLucksMaxLevel() { return config.getInt("Skills.Herbalism.HylianLuck_MaxBonusLevel", 1000); }
 
     /* MINING */
-    public int getMiningDoubleDropChance() { return config.getInt("Skills.Mining.DoubleDrops_ChanceMax", 100); }
+    public double getMiningDoubleDropChance() { return config.getDouble("Skills.Mining.DoubleDrops_ChanceMax", 100.0D); }
     public int getMiningDoubleDropMaxLevel() { return config.getInt("Skills.Mining.DoubleDrops_MaxBonusLevel", 1000); }
 
     public int getBlastMiningRank1() { return config.getInt("Skills.Mining.BlastMining_Rank1", 125); }
