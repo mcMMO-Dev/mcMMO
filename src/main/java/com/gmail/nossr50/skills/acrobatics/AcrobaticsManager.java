@@ -30,11 +30,6 @@ public class AcrobaticsManager extends SkillManager {
 
         RollEventHandler eventHandler = new RollEventHandler(this, event);
 
-        int randomChance = 100;
-        if (Permissions.luckyAcrobatics(player)) {
-            randomChance = 75;
-        }
-
         double chance;
 
         if (eventHandler.isGraceful) {
@@ -44,7 +39,7 @@ public class AcrobaticsManager extends SkillManager {
             chance = (Acrobatics.rollMaxChance / Acrobatics.rollMaxBonusLevel) * eventHandler.skillModifier;
         }
 
-        if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        if (chance > Misc.getRandom().nextInt(activationChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.rollXpModifier);
@@ -66,14 +61,9 @@ public class AcrobaticsManager extends SkillManager {
 
         DodgeEventHandler eventHandler = new DodgeEventHandler(this, event);
 
-        int randomChance = 100;
-        if (Permissions.luckyAcrobatics(player)) {
-            randomChance = 75;
-        }
-
         double chance = (Acrobatics.dodgeMaxChance / Acrobatics.dodgeMaxBonusLevel) * eventHandler.skillModifier;
 
-        if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
+        if (chance > Misc.getRandom().nextInt(activationChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
             eventHandler.processXPGain(eventHandler.damage * Acrobatics.dodgeXpModifier);

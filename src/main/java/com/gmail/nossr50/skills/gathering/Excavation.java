@@ -94,13 +94,9 @@ public class Excavation {
 
             for (ExcavationTreasure treasure : treasures) {
                 if (skillLevel >= treasure.getDropLevel()) {
-                    int randomChance = 100;
+                    int activationChance = Misc.calculateActivationChance(Permissions.luckyExcavation(player));
 
-                    if (Permissions.luckyExcavation(player)) {
-                        randomChance = 75;
-                    }
-
-                    if (Misc.getRandom().nextDouble() * randomChance <= treasure.getDropChance()) {
+                    if (Misc.getRandom().nextDouble() * activationChance <= treasure.getDropChance()) {
                         xp += treasure.getXp();
                         is.add(treasure.getDrop());
                     }

@@ -3,6 +3,8 @@ package com.gmail.nossr50.util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.SkillType;
+
 public class Permissions {
     public static boolean hasPermission(CommandSender sender, String perm)
     {
@@ -74,6 +76,10 @@ public class Permissions {
     /*
      * MCMMO.PERKS.LUCKY*
      */
+
+    public static boolean lucky(Player player, SkillType skill) {
+        return hasPermission(player, "mcmmo.perks.lucky." + skill.toString().toLowerCase());
+    }
 
     public static boolean luckyAcrobatics(Player player) {
         return hasPermission(player, "mcmmo.perks.lucky.acrobatics");

@@ -353,15 +353,12 @@ public class WoodCutting {
 
         Material mat = Material.getMaterial(block.getTypeId());
 
-        int randomChance = 100;
         int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
         if (chance > MAX_CHANCE) chance = MAX_CHANCE;
 
-        if (Permissions.luckyWoodcutting(player)) {
-            randomChance = 75;
-        }
+        int activationChance = Misc.calculateActivationChance(Permissions.luckyWoodcutting(player));
 
-        if (chance > Misc.getRandom().nextInt(randomChance) && Permissions.woodcuttingDoubleDrops(player)) {
+        if (chance > Misc.getRandom().nextInt(activationChance) && Permissions.woodcuttingDoubleDrops(player)) {
             Config configInstance = Config.getInstance();
             ItemStack item;
             Location location;

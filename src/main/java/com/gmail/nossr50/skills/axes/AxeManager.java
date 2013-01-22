@@ -47,14 +47,9 @@ public class AxeManager extends SkillManager {
             return;
         }
 
-        int randomChance = 100;
-        if (Permissions.luckyAxes(player)) {
-            randomChance = 75;
-        }
-
         double chance = (Axes.criticalHitMaxChance / Axes.criticalHitMaxBonusLevel) * eventHandler.skillModifier;
 
-        if (chance > Misc.getRandom().nextInt(randomChance) && !eventHandler.defender.isDead()) {
+        if (chance > Misc.getRandom().nextInt(activationChance) && !eventHandler.defender.isDead()) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessages();
         }

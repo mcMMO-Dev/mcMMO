@@ -33,6 +33,22 @@ public class Misc {
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
+    public static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
+    public static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
+
+    /**
+     * Calculate activation chance for a skill.
+     *
+     * @param isLucky true if the player has the appropriate "lucky" perk, false otherwise
+     * @return the activation chance
+     */
+    public static int calculateActivationChance(boolean isLucky) {
+        if (isLucky) {
+            return LUCKY_SKILL_ACTIVATION_CHANCE;
+        }
+
+        return NORMAL_SKILL_ACTIVATION_CHANCE;
+    }
 
     /**
      * Check if a player has armor.

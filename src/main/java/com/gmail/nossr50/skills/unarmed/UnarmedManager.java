@@ -28,16 +28,10 @@ public class UnarmedManager extends SkillManager {
         if (eventHandler.isHoldingItem()) {
             eventHandler.calculateSkillModifier();
 
-            int randomChance = 100;
-
-            if (Permissions.luckyUnarmed(player)) {
-                randomChance = 75;
-            }
-
             float chance = (float) (((double) Unarmed.DISARM_MAX_CHANCE / (double) Unarmed.DISARM_MAX_BONUS_LEVEL) * skillLevel);
             if (chance > Unarmed.DISARM_MAX_CHANCE) chance = Unarmed.DISARM_MAX_CHANCE;
 
-            if (chance > Misc.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(activationChance)) {
                 if (!hasIronGrip(defender)) {
                     eventHandler.handleDisarm();
                 }
@@ -61,16 +55,10 @@ public class UnarmedManager extends SkillManager {
 
         DeflectEventHandler eventHandler = new DeflectEventHandler(this, event);
 
-        int randomChance = 100;
-
-        if (Permissions.luckyUnarmed(player)) {
-            randomChance = 75;
-        }
-
         float chance = (float) (((double) Unarmed.DEFLECT_MAX_CHANCE / (double) Unarmed.DEFLECT_MAX_BONUS_LEVEL) * skillLevel);
         if (chance > Unarmed.DEFLECT_MAX_CHANCE) chance = Unarmed.DEFLECT_MAX_CHANCE;
 
-        if (chance > Misc.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.cancelEvent();
             eventHandler.sendAbilityMessage();
         }
@@ -111,16 +99,10 @@ public class UnarmedManager extends SkillManager {
 
         IronGripEventHandler eventHandler = new IronGripEventHandler(this, defender);
 
-        int randomChance = 100;
-
-        if (Permissions.luckyUnarmed(defender)) {
-            randomChance = 75;
-        }
-
         float chance = (float) (((double) Unarmed.IRON_GRIP_MAX_CHANCE / (double) Unarmed.IRON_GRIP_MAX_BONUS_LEVEL) * skillLevel);
         if (chance > Unarmed.IRON_GRIP_MAX_CHANCE) chance = Unarmed.IRON_GRIP_MAX_CHANCE;
 
-        if (chance > Misc.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.sendAbilityMessages();
             return true;
         }

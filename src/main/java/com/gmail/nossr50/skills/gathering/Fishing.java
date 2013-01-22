@@ -95,12 +95,9 @@ public class Fishing {
 
             FishingTreasure foundTreasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
 
-            int randomChance = 100;
-            if (Permissions.luckyFishing(player)) {
-                randomChance = 75;
-            }
+            int activationChance = Misc.calculateActivationChance(Permissions.luckyFishing(player));
 
-            if (Misc.getRandom().nextDouble() * randomChance <= foundTreasure.getDropChance()) {
+            if (Misc.getRandom().nextDouble() * activationChance <= foundTreasure.getDropChance()) {
                 Users.getPlayer(player).addXP(SkillType.FISHING, foundTreasure.getXp());
                 theCatch.setItemStack(foundTreasure.getDrop());
             }
@@ -144,14 +141,10 @@ public class Fishing {
             player.sendMessage(LocaleLoader.getString("Fishing.ItemFound"));
 
             if (ItemChecks.isEnchantable(fishingResults)) {
-                int randomChance = 100;
-
-                if (Permissions.luckyFishing(player)) {
-                    randomChance = 75;
-                }
+                int activationChance = Misc.calculateActivationChance(Permissions.luckyFishing(player));
 
                 if (player.getWorld().hasStorm()) {
-                    randomChance = (int) (randomChance * 0.909);
+                    activationChance = (int) (activationChance * 0.909);
                 }
 
                 /* CHANCE OF ITEM BEING ENCHANTED
@@ -161,7 +154,7 @@ public class Fishing {
                  * 20% - Tier 4
                  * 25% - Tier 5
                  */
-                if (Misc.getRandom().nextInt(randomChance) <= (lootTier * magicHunterMultiplier) && Permissions.fishingMagic(player)) {
+                if (Misc.getRandom().nextInt(activationChance) <= (lootTier * magicHunterMultiplier) && Permissions.fishingMagic(player)) {
                     for (Enchantment newEnchant : Enchantment.values()) {
                         boolean conflicts = false;
 
@@ -218,6 +211,7 @@ public class Fishing {
     public static void shakeMob(PlayerFishEvent event) {
         int randomChance = 100;
 
+        //TODO: Invert this so it matches the rest of our lucky checks...
         if (Permissions.luckyFishing(event.getPlayer())) {
             randomChance = 125;
         }

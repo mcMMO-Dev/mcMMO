@@ -37,13 +37,7 @@ public class TamingManager extends SkillManager {
         }
 
         if (skillLevel >= Taming.FAST_FOOD_SERVICE_ACTIVATION_LEVEL) {
-            int randomChance = 100;
-
-            if (Permissions.luckyTaming(player)) {
-                randomChance = 75;
-            }
-
-            if (Misc.getRandom().nextInt(randomChance) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
+            if (Misc.getRandom().nextInt(activationChance) < Taming.FAST_FOOD_SERVICE_ACTIVATION_CHANCE) {
                 FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
 
                 eventHandler.modifyHealth(damage);
@@ -86,16 +80,10 @@ public class TamingManager extends SkillManager {
 
         GoreEventHandler eventHandler = new GoreEventHandler(this, event);
 
-        int randomChance = 100;
-
-        if (Permissions.luckyTaming(player)) {
-            randomChance = 75;
-        }
-
         float chance = (float) (((double) Taming.GORE_CHANCE_MAX / (double) Taming.GORE_MAX_BONUS_LEVEL) * skillLevel);
         if (chance > Taming.GORE_CHANCE_MAX) chance = Taming.GORE_CHANCE_MAX;
 
-        if (chance > Misc.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.modifyEventDamage();
             eventHandler.applyBleed();
             eventHandler.sendAbilityMessage();

@@ -132,14 +132,9 @@ public class MiningManager extends SkillManager{
             return;
         }
 
-        int randomChance = 100;
-        if (Permissions.luckyMining(player)) {
-            randomChance = 75;
-        }
-
         float chance = ((float) Mining.DOUBLE_DROPS_MAX_CHANCE / Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
 
-        if (chance > Misc.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.processDrops();
         }
     }

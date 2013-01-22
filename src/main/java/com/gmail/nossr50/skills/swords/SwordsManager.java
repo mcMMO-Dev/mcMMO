@@ -31,16 +31,10 @@ public class SwordsManager extends SkillManager {
         if (Combat.shouldBeAffected(player, defender)) {
             BleedEventHandler eventHandler = new BleedEventHandler(this, defender);
 
-            int randomChance = 100;
-
-            if (Permissions.luckySwords(player)) {
-                randomChance = 75;
-            }
-
             float chance = (float) (((double) Swords.BLEED_CHANCE_MAX / (double) Swords.BLEED_MAX_BONUS_LEVEL) * skillLevel);
             if (chance > Swords.BLEED_CHANCE_MAX) chance = Swords.BLEED_CHANCE_MAX;
 
-            if (chance > Misc.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(activationChance)) {
                 eventHandler.addBleedTicks();
                 eventHandler.sendAbilityMessages();
             }
@@ -60,16 +54,10 @@ public class SwordsManager extends SkillManager {
         if (eventHandler.isHoldingSword()) {
             eventHandler.calculateSkillModifier();
 
-            int randomChance = 100;
-
-            if (Permissions.luckySwords(player)) {
-                randomChance = 75;
-            }
-
             float chance = (float) (((double) Swords.COUNTER_ATTACK_CHANCE_MAX / (double) Swords.COUNTER_ATTACK_MAX_BONUS_LEVEL) * skillLevel);
             if (chance > Swords.COUNTER_ATTACK_CHANCE_MAX) chance = Swords.COUNTER_ATTACK_CHANCE_MAX;
 
-            if (chance > Misc.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(activationChance)) {
                 eventHandler.dealDamage();
                 eventHandler.sendAbilityMessages();
             }

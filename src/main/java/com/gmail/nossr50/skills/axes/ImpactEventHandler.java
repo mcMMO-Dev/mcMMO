@@ -62,12 +62,7 @@ public class ImpactEventHandler {
             return;
         }
 
-        int randomChance = 100;
-        if (Permissions.luckyAxes(player)) {
-            randomChance = 75;
-        }
-
-        if (Misc.getRandom().nextInt(randomChance) <= Axes.greaterImpactChance) {
+        if (Misc.getRandom().nextInt(manager.getActivationChance()) <= Axes.greaterImpactChance) {
             handleGreaterImpactEffect();
             sendAbilityMessge();
         }

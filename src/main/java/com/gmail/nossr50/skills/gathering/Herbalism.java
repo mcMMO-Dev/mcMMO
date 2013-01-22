@@ -101,11 +101,7 @@ public class Herbalism {
 
         boolean customPlant = false;
 
-        int randomChance = 100;
-
-        if (Permissions.luckyHerbalism(player)) {
-            randomChance = 75;
-        }
+        int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 
         float chance = (float) ((MAX_CHANCE / MAX_BONUS_LEVEL) * herbLevel);
         if (chance > MAX_CHANCE) chance = (float) MAX_CHANCE;
@@ -125,7 +121,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.CACTUS)) {
                     mat = Material.CACTUS;
                     if (!mcMMO.placeStore.isTrue(b)) {
-                        if (chance > Misc.getRandom().nextInt(randomChance)) {
+                        if (chance > Misc.getRandom().nextInt(activationChance)) {
                             catciDrops++;
                         }
                         xp += Config.getInstance().getHerbalismXPCactus();
@@ -185,7 +181,7 @@ public class Herbalism {
                 if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
                     mat = Material.SUGAR_CANE;
                     if (!mcMMO.placeStore.isTrue(b)) {
-                        if (chance > Misc.getRandom().nextInt(randomChance)) {
+                        if (chance > Misc.getRandom().nextInt(activationChance)) {
                             caneDrops++;
                         }
                         xp += Config.getInstance().getHerbalismXPSugarCane();
@@ -286,7 +282,7 @@ public class Herbalism {
                 }
             }
 
-            if (chance > Misc.getRandom().nextInt(randomChance)) {
+            if (chance > Misc.getRandom().nextInt(activationChance)) {
                 Config configInstance = Config.getInstance();
 
                 switch (type) {
@@ -448,16 +444,12 @@ public class Herbalism {
             break;
         }
 
-        int randomChance = 100;
-
-        if (Permissions.luckyHerbalism(player)) {
-            randomChance = 75;
-        }
+        int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 
         float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * herbLevel);
         if (chance > MAX_CHANCE) chance = MAX_CHANCE;
 
-        if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (chance > Misc.getRandom().nextInt(randomChance))) {
+        if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (chance > Misc.getRandom().nextInt(activationChance))) {
             event.setCancelled(true);
 
             switch(type) {
@@ -522,16 +514,12 @@ public class Herbalism {
 
         player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
 
-        int randomChance = 100;
-
-        if (Permissions.luckyHerbalism(player)) {
-            randomChance = 75;
-        }
+        int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 
         float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
         if (chance > MAX_CHANCE) chance = MAX_CHANCE;
 
-        if (chance > Misc.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
             greenTerraConvert(player, block);
         }
         else {
@@ -542,12 +530,9 @@ public class Herbalism {
     public static void hylianLuck(Block block, Player player, BlockBreakEvent event) {
         int chance = Users.getProfile(player).getSkillLevel(SkillType.HERBALISM) / 100;
 
-        int randomChance = 100;
-        if (Permissions.luckyHerbalism(player)) {
-            randomChance = 75;
-        }
+        int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 
-        if (chance > Misc.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
             Location location = block.getLocation();
             int dropNumber = Misc.getRandom().nextInt(3);
             ItemStack item = null;

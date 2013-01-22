@@ -26,14 +26,9 @@ public class ArcheryManager extends SkillManager {
 
         ArrowTrackingEventHandler eventHandler = new ArrowTrackingEventHandler(this, livingEntity);
 
-        int randomChance = 100;
-        if (Permissions.luckyArchery(player)) {
-            randomChance = 75;
-        }
-
         double chance = (Archery.retrieveMaxChance / Archery.retrieveMaxBonusLevel) * eventHandler.skillModifier;
 
-        if (chance > Misc.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.addToTracker();
         }
     }
@@ -51,14 +46,9 @@ public class ArcheryManager extends SkillManager {
 
         DazeEventHandler eventHandler = new DazeEventHandler(this, event, defender);
 
-        int randomChance = 100;
-        if (Permissions.luckyArchery(player)) {
-            randomChance = 75;
-        }
-
         double chance = (Archery.dazeMaxBonus / Archery.dazeMaxBonusLevel) * eventHandler.skillModifier;
 
-        if (chance > Misc.getRandom().nextInt(randomChance)) {
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.handleDazeEffect();
             eventHandler.sendAbilityMessages();
         }

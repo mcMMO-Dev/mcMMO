@@ -110,17 +110,13 @@ public class Repair {
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             Enchantment enchantment = enchant.getKey();
 
-            int randomChance = 100;
+            int activationChance = Misc.calculateActivationChance(Permissions.luckyRepair(player));
 
-            if (Permissions.luckyRepair(player)) {
-                randomChance = 75;
-            }
-
-            if (Misc.getRandom().nextInt(randomChance) <= getEnchantChance(rank)) {
+            if (Misc.getRandom().nextInt(activationChance) <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
 
                 if (advancedConfig.getArcaneForgingDowngradeEnabled() && enchantLevel > 1) {
-                    if (Misc.getRandom().nextInt(randomChance) < getDowngradeChance(rank)) {
+                    if (Misc.getRandom().nextInt(activationChance) < getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, --enchantLevel);
                         downgraded = true;
                     }
@@ -238,13 +234,12 @@ public class Repair {
     public static boolean checkPlayerProcRepair(Player player) {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
 
-        int randomChance = 100;
         int chance = (int) (((double) SUPER_REPAIR_CHANCE_MAX / (double) SUPER_REPAIR_MAX_BONUS_LEVEL) * skillLevel);
         if (skillLevel >= SUPER_REPAIR_MAX_BONUS_LEVEL) chance = SUPER_REPAIR_CHANCE_MAX;
 
-        if (Permissions.luckyRepair(player)) randomChance = 75;
+        int activationChance = Misc.calculateActivationChance(Permissions.luckyRepair(player));
 
-        if (chance > Misc.getRandom().nextInt(randomChance) && Permissions.repairBonus(player)) {
+        if (chance > Misc.getRandom().nextInt(activationChance) && Permissions.repairBonus(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }
