@@ -22,7 +22,7 @@ import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-public class Woodcutting {
+public abstract class Woodcutting {
     public static final int DOUBLE_DROP_MAX_LEVEL = AdvancedConfig.getInstance().getMiningDoubleDropMaxLevel();
     public static final double DOUBLE_DROP_CHANCE = AdvancedConfig.getInstance().getMiningDoubleDropChance();
     public static final int LEAF_BLOWER_UNLOCK_LEVEL = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
