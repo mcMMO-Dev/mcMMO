@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -84,7 +85,10 @@ public abstract class Woodcutting {
      * @throws IllegalArgumentException if 'log' is invalid
      */
     protected static int getExperienceFromLog(Block log) {
-        TreeSpecies logType = TreeSpecies.getByData(log.getData());
+        byte data = log.getData();
+        Bukkit.getLogger().info(Integer.toHexString(data));
+        
+        TreeSpecies logType = TreeSpecies.getByData((byte) (log.getData() & 0x3));
 
         // Apparently species can be null in certain cases (custom server mods?)
         // https://github.com/mcMMO-Dev/mcMMO/issues/229
@@ -142,11 +146,11 @@ public abstract class Woodcutting {
             }
         }
         else {
-            byte extraData = block.getData();
+            byte blockData = block.getData();
             Location location = block.getLocation();
-            ItemStack item = new ItemStack(Material.LOG, 1, extraData);
+            ItemStack item = new ItemStack(Material.LOG, 1, blockData);
 
-            switch (TreeSpecies.getByData(extraData)) {
+            switch (TreeSpecies.getByData((byte) (blockData & 0x3))) {
             case GENERIC:
                 if (Config.getInstance().getOakDoubleDropsEnabled()) {
                     Misc.dropItem(location, item);
