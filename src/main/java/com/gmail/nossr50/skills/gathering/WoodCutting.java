@@ -252,20 +252,12 @@ public class WoodCutting {
         if ((type & 0x8) == 0x8)
             type ^= 0x8;
 
-<<<<<<< Upstream, based on origin/master
-        Material mat = Material.getMaterial(block.getTypeId());
-
-        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
-        if (chance > MAX_CHANCE) chance = MAX_CHANCE;
-=======
         Material blockMaterial = block.getType();
-        int randomChance = 100;
         int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING));
         
         if (chance > MAX_CHANCE) {
             chance = MAX_CHANCE;
         }
->>>>>>> f510cb2 Optimized Tree Feller And cleaned up WoodCutting a little
 
         int activationChance = Misc.calculateActivationChance(Permissions.luckyWoodcutting(player));
 
