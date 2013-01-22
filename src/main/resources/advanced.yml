@@ -286,7 +286,7 @@ Skills:
 
         # DoubleDrops_ChanceMax: Maximum chance of receiving double drops
         # DoubleDrops_MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
-        DoubleDrops_ChanceMax: 100
+        DoubleDrops_ChanceMax: 100.0
         DoubleDrops_MaxBonusLevel: 1000
 Spout:
     #

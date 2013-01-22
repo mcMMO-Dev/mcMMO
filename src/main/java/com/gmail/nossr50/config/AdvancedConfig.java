@@ -183,7 +183,8 @@ public class AdvancedConfig extends ConfigLoader {
 
     /* WOODCUTTING */
     public int getLeafBlowUnlockLevel() { return config.getInt("Skills.Woodcutting.LeafBlower_UnlockLevel", 100); }
-    public int getWoodcuttingDoubleDropChance() { return config.getInt("Skills.Woodcutting.DoubleDrops_ChanceMax", 100); }
+
+    public double getWoodcuttingDoubleDropChance() { return config.getDouble("Skills.Woodcutting.DoubleDrops_ChanceMax", 100.0D); }
     public int getWoodcuttingDoubleDropMaxLevel() { return config.getInt("Skills.Woodcutting.DoubleDrops_MaxBonusLevel", 1000); }
 
     /* SPOUT STUFF*/

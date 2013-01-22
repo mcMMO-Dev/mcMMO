@@ -36,6 +36,12 @@ public class WoodCutting {
     private static final AdvancedConfig ADVANCED_CONFIG = AdvancedConfig.getInstance();
     private static boolean treeFellerReachedThreshold = false;
 
+    public static int doubleDropsMaxLevel = ADVANCED_CONFIG.getMiningDoubleDropMaxLevel();
+    public static double doubleDropsMaxChance = ADVANCED_CONFIG.getMiningDoubleDropChance();
+    public static boolean doubleDropsDisabled = Config.getInstance().woodcuttingDoubleDropsDisabled();
+
+    public static int leafBlowerUnlockLevel = ADVANCED_CONFIG.getLeafBlowUnlockLevel();
+
     /**
      * Handle the Tree Feller ability.
      *
@@ -242,7 +248,7 @@ public class WoodCutting {
      * @param block Block being broken
      */
     private static void woodCuttingProcCheck(Player player, Block block) {
-        final int MAX_CHANCE = ADVANCED_CONFIG.getWoodcuttingDoubleDropChance();
+        final double MAX_CHANCE = ADVANCED_CONFIG.getWoodcuttingDoubleDropChance();
         final int MAX_BONUS_LEVEL = ADVANCED_CONFIG.getWoodcuttingDoubleDropMaxLevel();
         byte type = block.getData();
 
@@ -253,10 +259,10 @@ public class WoodCutting {
             type ^= 0x8;
 
         Material blockMaterial = block.getType();
-        int chance = (int) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING));
+        int chance = (int) ((MAX_CHANCE / MAX_BONUS_LEVEL) * Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING));
         
         if (chance > MAX_CHANCE) {
-            chance = MAX_CHANCE;
+            chance = (int) MAX_CHANCE;
         }
 
         int activationChance = Misc.calculateActivationChance(Permissions.luckyWoodcutting(player));
