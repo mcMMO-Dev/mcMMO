@@ -116,12 +116,15 @@ Skills:
             
         # MagicHunter_Multiplier: Determines the chance of fishing enchanted items. The chance is calculated by getting the fishing TreasureHunt tier and multiplying it with MagicHunter_Multiplier
         MagicHunter_Multiplier: 5
+
+        # This determines when Fisherman's Diet adds extra hunger recovery to food
+        Fisherman_Diet_RankChange: 200
     #
     #  Settings for Herbalism
     ###
     Herbalism:
         # This determines when Farmersdiet and Fishermans diet add extra hunger recovery to food
-        Food_RankChange: 200
+        Farmer_Diet_RankChange: 200
 
         # GreenThumb_StageChange: Level value when the GreenThumb stage level goes up
         # GreenThumb_ChanceMax: Maximum chance of GreenThumb

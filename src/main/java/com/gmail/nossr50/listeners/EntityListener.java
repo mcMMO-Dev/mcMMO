@@ -305,97 +305,110 @@ public class EntityListener implements Listener {
                 int rankChange = 0;
                 boolean fish = false;
                 boolean herb = false;
-                int FoodRank1 = advancedConfig.getFarmerDietRankChange();
-                int FoodRank2 = advancedConfig.getFarmerDietRankChange() * 2;
-                int FoodRankMax = advancedConfig.getFarmerDietRankChange() * 5;
+                int herbFoodRank1 = advancedConfig.getFarmerDietRankChange();
+                int herbFoodRank2 = advancedConfig.getFarmerDietRankChange() * 2;
+                int herbFoodRankMax = advancedConfig.getFarmerDietRankChange() * 5;
+                int fishFoodRank1 = advancedConfig.getFishermanDietRankChange();
+                int fishFoodRank2 = advancedConfig.getFishermanDietRankChange() * 2;
+                int fishFoodRankMax = advancedConfig.getFishermanDietRankChange() * 5;
 
                 switch (food) {
                 case BREAD:
                     /* BREAD RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank1;
+                    rankChange = herbFoodRank1;
                     break;
 
                 case COOKIE:
                     /* COOKIE RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank2;
+                    rankChange = herbFoodRank2;
                     break;
 
                 case MELON:
                     /* MELON RESTORES  1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank2;
+                    rankChange = herbFoodRank2;
                     break;
 
                 case MUSHROOM_SOUP:
                     /* MUSHROOM SOUP RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank1;
+                    rankChange = herbFoodRank1;
                     break;
 
                 case CARROT_ITEM:
                     /* CARROT RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank1;
+                    rankChange = herbFoodRank1;
                     break;
 
                 case POTATO_ITEM:
                     /* POTATO RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank2;
+                    rankChange = herbFoodRank2;
                     break;
 
                 case BAKED_POTATO:
                     /* BAKED POTATO RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank1;
+                    rankChange = herbFoodRank1;
                     break;
 
                 case POISONOUS_POTATO:
                     /* POISONOUS POTATO RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank2;
+                    rankChange = herbFoodRank2;
                     break;
 
                 case GOLDEN_CARROT:
                     /* GOLDEN CARROT RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank1;
+                    rankChange = herbFoodRank1;
                     break;
 
                 case PUMPKIN_PIE:
                     /* PUMPKIN PIE RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = FoodRank1;
+                    rankChange = herbFoodRank1;
                     break;
 
                 case RAW_FISH:
                     /* RAW FISH RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    rankChange = FoodRank2;
+                    rankChange = fishFoodRank2;
                     fish = true;
                     break;
 
                 case COOKED_FISH:
                     /* COOKED FISH RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                    rankChange = FoodRank1;
+                    rankChange = fishFoodRank1;
                     fish = true;
-
                     break;
+
                 default:
                     return;
                 }
 
-                if (herb && !Permissions.farmersDiet(player)) {
-                    return;
-                }
-                else if (fish && !Permissions.fishermansDiet(player)) {
-                    return;
-                }
+                if (herb) {
+                    if (!Permissions.farmersDiet(player)) {
+                        return;
+                    }
 
-                for (int i = FoodRank1; i <= FoodRankMax; i += rankChange) {
-                    if ((herb && herbLevel >= i) || (fish && fishLevel >= i)) {
-                        foodChange++;
+                    for (int i = herbFoodRank1; i <= herbFoodRankMax; i += rankChange) {
+                        if (herbLevel >= i) {
+                            foodChange++;
+                        }
+                    }
+                }
+                else if (fish) {
+                    if (!Permissions.fishermansDiet(player)) {
+                        return;
+                    }
+
+                    for (int i = fishFoodRank1; i <= fishFoodRankMax; i += rankChange) {
+                        if (fish && fishLevel >= i) {
+                            foodChange++;
+                        }
                     }
                 }
 

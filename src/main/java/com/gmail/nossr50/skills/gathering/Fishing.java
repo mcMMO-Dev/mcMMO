@@ -36,7 +36,20 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Fishing {
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    public static int fishingTierLevel1 = AdvancedConfig.getInstance().getFishingTierLevelsTier1();
+    public static int fishingTierLevel2 = AdvancedConfig.getInstance().getFishingTierLevelsTier2();
+    public static int fishingTierLevel3 = AdvancedConfig.getInstance().getFishingTierLevelsTier3();
+    public static int fishingTierLevel4 = AdvancedConfig.getInstance().getFishingTierLevelsTier4();
+    public static int fishingTierLevel5 = AdvancedConfig.getInstance().getFishingTierLevelsTier5();
+
+    public static int shakeChanceLevel1 = AdvancedConfig.getInstance().getShakeChanceRank1();
+    public static int shakeChanceLevel2 = AdvancedConfig.getInstance().getShakeChanceRank2();
+    public static int shakeChanceLevel3 = AdvancedConfig.getInstance().getShakeChanceRank3();
+    public static int shakeChanceLevel4 = AdvancedConfig.getInstance().getShakeChanceRank4();
+    public static int shakeChanceLevel5 = AdvancedConfig.getInstance().getShakeChanceRank5();
+    public static int shakeUnlockLevel = AdvancedConfig.getInstance().getShakeUnlockLevel();
+
+    public static int magicHunterMultiplier = AdvancedConfig.getInstance().getFishingMagicMultiplier();
 
     /**
      * Get the player's current fishing loot tier.
@@ -49,13 +62,13 @@ public class Fishing {
         int level = profile.getSkillLevel(SkillType.FISHING);
         int fishingTier;
 
-        if (level >= advancedConfig.getFishingTierLevelsTier5()) {
+        if (level >= fishingTierLevel5) {
             fishingTier = 5;
-        } else if (level >= advancedConfig.getFishingTierLevelsTier4()) {
+        } else if (level >= fishingTierLevel4) {
             fishingTier = 4;
-        } else if (level >= advancedConfig.getFishingTierLevelsTier3()) {
+        } else if (level >= fishingTierLevel3) {
             fishingTier = 3;
-        } else if (level >= advancedConfig.getFishingTierLevelsTier2()) {
+        } else if (level >= fishingTierLevel2) {
             fishingTier = 2;
         } else {
             fishingTier = 1;
@@ -133,7 +146,6 @@ public class Fishing {
 
         if (theCatch.getItemStack().getType() != Material.RAW_FISH) {
             int lootTier = Fishing.getFishingLootTier(profile);
-            int magicHunterMultiplier = advancedConfig.getFishingMagicMultiplier();
             int specificChance = 1;
             boolean enchanted = false;
             ItemStack fishingResults = theCatch.getItemStack();
@@ -460,19 +472,19 @@ public class Fishing {
     public static int getShakeChance(int lootTier) {
         switch (lootTier) {
         case 1:
-            return advancedConfig.getShakeChanceRank1();
+            return shakeChanceLevel1;
 
         case 2:
-            return advancedConfig.getShakeChanceRank2();
+            return shakeChanceLevel2;
 
         case 3:
-            return advancedConfig.getShakeChanceRank3();
+            return shakeChanceLevel3;
 
         case 4:
-            return advancedConfig.getShakeChanceRank4();
+            return shakeChanceLevel4;
 
         case 5:
-            return advancedConfig.getShakeChanceRank5();
+            return shakeChanceLevel5;
 
         default:
             return 10;

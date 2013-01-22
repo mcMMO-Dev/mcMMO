@@ -77,6 +77,8 @@ public class AdvancedConfig extends ConfigLoader {
 
     public int getFishingMagicMultiplier() { return config.getInt("Skills.Fishing.MagicHunter_Multiplier", 5); }
 
+    public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.Fisherman_Diet_RankChange", 200); }
+
     /* Shake */
     public int getShakeUnlockLevel() { return config.getInt("Skills.Fishing.Shake_UnlockLevel", 150); }
     public int getShakeChanceRank1() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_1", 25); }
@@ -86,7 +88,7 @@ public class AdvancedConfig extends ConfigLoader {
     public int getShakeChanceRank5() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_5", 75); }
 
     /* HERBALISM */
-    public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.Food_RankChange", 200); }
+    public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.Farmer_Diet_RankChange", 200); }
 
     public int getGreenThumbStageChange() { return config.getInt("Skills.Herbalism.GreenThumb_StageChange", 200); }
     public int getGreenThumbChanceMax() { return config.getInt("Skills.Herbalism.GreenThumb_ChanceMax", 100); }

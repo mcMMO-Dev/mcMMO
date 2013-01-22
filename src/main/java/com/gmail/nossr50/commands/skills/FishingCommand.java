@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.gathering.Fishing;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Skills;
 
 public class FishingCommand extends SkillCommand {
 
@@ -15,22 +14,18 @@ public class FishingCommand extends SkillCommand {
     private int lootTier;
     private String magicChance;
     private String magicChanceLucky;
-    private String chanceRaining;
-    private int shakeUnlockLevel;
+    private String chanceRaining = "";
     private String shakeChance;
     private String shakeChanceLucky;
     private String fishermansDietRank;
 
-    private int magicHunterMultiplier = advancedConfig.getFishingMagicMultiplier();
-    private int fishermansDietRankChange = advancedConfig.getFarmerDietRankChange();
+    private int fishermansDietRankChange = AdvancedConfig.getInstance().getFarmerDietRankChange();
     private int fishermansDietRankMaxLevel = fishermansDietRankChange * 5;
 
     private boolean canTreasureHunt;
     private boolean canMagicHunt;
     private boolean canShake;
     private boolean canFishermansDiet;
-    private boolean lucky;
-    private boolean raining;
 
     public FishingCommand() {
         super(SkillType.FISHING);
@@ -38,30 +33,32 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        //TREASURE HUNTER
-        raining = player.getWorld().hasStorm();
-        chanceRaining = "";
-
         lootTier = Fishing.getFishingLootTier(profile);
-        double magicChanceD = lootTier * magicHunterMultiplier;
-        if (raining) {
+
+        //TREASURE HUNTER
+        double enchantChance = lootTier * Fishing.magicHunterMultiplier;
+
+        if (player.getWorld().hasStorm()) {
             chanceRaining = LocaleLoader.getString("Fishing.Chance.Raining");
-            magicChanceD = magicChanceD * 1.1D;
+            enchantChance = enchantChance * 1.1D;
         }
-        magicChance = percent.format(magicChanceD / 100D);
-        if (magicChanceD * 1.3333D >= 100D) magicChanceLucky = percent.format(1D);
-        else magicChanceLucky = percent.format(magicChanceD * 1.3333D / 100D);
 
-        //Shake
-        int dropChance = Fishing.getShakeChance(lootTier);
-        shakeChance = percent.format(dropChance / 100D);
-        if (dropChance * 1.3333D >= 100D) shakeChanceLucky = percent.format(1D);
-        else shakeChanceLucky = percent.format(dropChance * 1.3333D / 100D);
-        shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
+        String[] treasureHunterStrings = calculateAbilityDisplayValues(enchantChance);
+        magicChance = treasureHunterStrings[0];
+        magicChanceLucky = treasureHunterStrings[1];
 
-        //Fishermans Diet
-        if (skillValue >= fishermansDietRankMaxLevel) fishermansDietRank = "5";
-        else fishermansDietRank = String.valueOf((int) ((double) skillValue / (double) fishermansDietRankChange));
+        //SHAKE
+        String[] shakeStrings = calculateAbilityDisplayValues(Fishing.getShakeChance(lootTier));
+        shakeChance = shakeStrings[0];
+        shakeChanceLucky = shakeStrings[1];
+
+        //FISHERMAN'S DIET
+        if (skillValue >= fishermansDietRankMaxLevel) {
+            fishermansDietRank = "5";
+        }
+        else {
+            fishermansDietRank = String.valueOf((int) (skillValue / fishermansDietRankChange));
+        }
     }
 
     @Override
@@ -70,7 +67,6 @@ public class FishingCommand extends SkillCommand {
         canMagicHunt = Permissions.fishingMagic(player);
         canShake = Permissions.shakeMob(player);
         canFishermansDiet = Permissions.fishermansDiet(player);
-        lucky = Permissions.luckyFishing(player);
     }
 
     @Override
@@ -80,10 +76,7 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (lucky) {
-            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Skills.localizeSkillName(SkillType.FISHING) }) }));
-        }
+        luckyEffectsDisplay();
 
         if (canTreasureHunt) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Fishing.Effect.0"), LocaleLoader.getString("Fishing.Effect.1") }));
@@ -114,21 +107,25 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canMagicHunt) {
-            if (lucky)
+            if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance}) + chanceRaining +  LocaleLoader.getString("Perks.lucky.bonus", new Object[] { magicChanceLucky }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance}) + chanceRaining);
+            }
         }
 
         if (canShake) {
-            if (skillValue < advancedConfig.getShakeUnlockLevel()) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0", new Object[] { shakeUnlockLevel }) }));
+            if (skillValue < Fishing.shakeUnlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0", new Object[] { Fishing.shakeUnlockLevel }) }));
             }
             else {
-                if (lucky)
+                if (isLucky) {
                     player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { shakeChanceLucky }));
-                else
+                }
+                else {
                     player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }));
+                }
             }
         }
 

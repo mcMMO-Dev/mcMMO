@@ -81,9 +81,22 @@ public abstract class SkillCommand implements CommandExecutor {
         return true;
     }
 
+    protected String[] calculateAbilityDisplayValues(double chance) {
+        if (isLucky) {
+            double luckyChance = chance * 1.3333D;
+
+            if (luckyChance >= 100D) {
+                return new String[] { percent.format(chance / 100.0D), percent.format(1.0D) };
+            }
+
+            return new String[] { percent.format(chance / 100.0D), percent.format(luckyChance / 100.0D) };
+        }
+
+        return new String[] { percent.format(chance / 100.0D), null };
+    }
+
     protected String[] calculateAbilityDisplayValues(int maxBonusLevel, double maxChance) {
         double abilityChance;
-        double luckyChance;
 
         if (skillValue >= maxBonusLevel) {
             abilityChance = maxChance;
@@ -93,7 +106,7 @@ public abstract class SkillCommand implements CommandExecutor {
         }
 
         if (isLucky) {
-            luckyChance = abilityChance * 1.3333D;
+            double luckyChance = abilityChance * 1.3333D;
 
             if (luckyChance >= 100D) {
                 return new String[] { percent.format(abilityChance / 100.0D), percent.format(1.0D) };
