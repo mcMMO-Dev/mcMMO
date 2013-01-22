@@ -31,7 +31,7 @@ public class MiningManager extends SkillManager{
             return;
         }
 
-        if (skillLevel < BlastMining.BLAST_MINING_RANK_1) {
+        if (skillLevel < BlastMining.rank1) {
             return;
         }
 
@@ -66,7 +66,7 @@ public class MiningManager extends SkillManager{
             return;
         }
 
-        if (skillLevel < BlastMining.BLAST_MINING_RANK_1) {
+        if (skillLevel < BlastMining.rank1) {
             return;
         }
 
@@ -132,7 +132,7 @@ public class MiningManager extends SkillManager{
             return;
         }
 
-        float chance = ((float) Mining.DOUBLE_DROPS_MAX_CHANCE / Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL) * eventHandler.skillModifier;
+        float chance = ((float) Mining.doubleDropsMaxChance / Mining.doubleDropsMaxLevel) * eventHandler.skillModifier;
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.processDrops();

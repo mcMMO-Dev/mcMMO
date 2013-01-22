@@ -30,7 +30,7 @@ public class MiningBlockEventHandler {
     }
 
     private void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Mining.DOUBLE_DROPS_MAX_BONUS_LEVEL);
+        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Mining.doubleDropsMaxLevel);
     }
 
     /**

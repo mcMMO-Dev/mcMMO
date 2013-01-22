@@ -64,15 +64,13 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        Config configInstance = Config.getInstance();
-
         hasHylianLuck = Permissions.hylianLuck(player);
         canGreenTerra = Permissions.greenTerra(player);
         canGreenThumbWheat = Permissions.greenThumbWheat(player);
         canGreenThumbBlocks = Permissions.greenThumbBlocks(player);
         canFarmersDiet = Permissions.farmersDiet(player);
         canDoubleDrop = Permissions.herbalismDoubleDrops(player);
-        doubleDropsDisabled = configInstance.herbalismDoubleDropsDisabled();
+        doubleDropsDisabled = Herbalism.doubleDropsDisabled;
     }
 
     @Override

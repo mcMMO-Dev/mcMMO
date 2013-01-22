@@ -17,20 +17,20 @@ public class BiggerBombsEventHandler {
     }
 
     protected void calculateRadiusIncrease() {
-        if (skillLevel < BlastMining.BLAST_MINING_RANK_2) {
+        if (skillLevel < BlastMining.rank2) {
             return;
         }
 
-        if (skillLevel >= BlastMining.BLAST_MINING_RANK_8) {
+        if (skillLevel >= BlastMining.rank8) {
             radiusModifier = 4.0f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_6) {
+        else if (skillLevel >= BlastMining.rank6) {
             radiusModifier = 3.0f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_4) {
+        else if (skillLevel >= BlastMining.rank4) {
             radiusModifier = 2.0f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_2) {
+        else if (skillLevel >= BlastMining.rank2) {
             radiusModifier = 1.0f;
         }
     }

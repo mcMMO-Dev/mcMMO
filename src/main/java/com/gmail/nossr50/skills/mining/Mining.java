@@ -22,8 +22,9 @@ public class Mining {
     private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private static Config config  = Config.getInstance();
 
-    public static final int DOUBLE_DROPS_MAX_BONUS_LEVEL = advancedConfig.getMiningDoubleDropMaxLevel();
-    public static final double DOUBLE_DROPS_MAX_CHANCE = advancedConfig.getMiningDoubleDropChance();
+    public static int doubleDropsMaxLevel = advancedConfig.getMiningDoubleDropMaxLevel();
+    public static double doubleDropsMaxChance = advancedConfig.getMiningDoubleDropChance();
+    public static boolean doubleDropsDisabled = config.miningDoubleDropsDisabled();
 
     public static final int DIAMOND_TOOL_TIER = 4;
     public static final int IRON_TOOL_TIER = 3;

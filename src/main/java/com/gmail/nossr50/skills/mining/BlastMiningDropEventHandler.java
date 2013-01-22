@@ -101,25 +101,25 @@ public class BlastMiningDropEventHandler {
     }
 
     private void calculateOreBonus() {
-        if (skillLevel >= BlastMining.BLAST_MINING_RANK_8) {
+        if (skillLevel >= BlastMining.rank8) {
             oreBonus = .70f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_7) {
+        else if (skillLevel >= BlastMining.rank7) {
             oreBonus = .65f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_6) {
+        else if (skillLevel >= BlastMining.rank6) {
             oreBonus = .60f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_5) {
+        else if (skillLevel >= BlastMining.rank5) {
             oreBonus = .55f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_4) {
+        else if (skillLevel >= BlastMining.rank4) {
             oreBonus = .50f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_3) {
+        else if (skillLevel >= BlastMining.rank3) {
             oreBonus = .45f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_2) {
+        else if (skillLevel >= BlastMining.rank2) {
             oreBonus = .40f;
         }
         else {
@@ -128,10 +128,10 @@ public class BlastMiningDropEventHandler {
     }
 
     private void calculateDebrisReduction() {
-        if (skillLevel >= BlastMining.BLAST_MINING_RANK_3) {
+        if (skillLevel >= BlastMining.rank3) {
             debrisReduction = .30f;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_2) {
+        else if (skillLevel >= BlastMining.rank2) {
             debrisReduction = .20f;
         }
         else {
@@ -140,10 +140,10 @@ public class BlastMiningDropEventHandler {
     }
 
     private void calculateDropMultiplier() {
-        if (skillLevel >= BlastMining.BLAST_MINING_RANK_7) {
+        if (skillLevel >= BlastMining.rank7) {
             dropMultiplier = 3;
         }
-        else if (skillLevel >= BlastMining.BLAST_MINING_RANK_5) {
+        else if (skillLevel >= BlastMining.rank5) {
             dropMultiplier = 2;
         }
         else {
