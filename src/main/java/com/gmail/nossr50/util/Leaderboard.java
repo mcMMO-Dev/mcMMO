@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerStat;
-import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillType;
 
 public class Leaderboard {
     private static mcMMO plugin = mcMMO.p;

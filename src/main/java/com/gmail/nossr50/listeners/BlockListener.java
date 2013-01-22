@@ -20,26 +20,26 @@ import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.datatypes.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.runnables.StickyPistonTracker;
-import com.gmail.nossr50.skills.gathering.Excavation;
-import com.gmail.nossr50.skills.gathering.Herbalism;
-import com.gmail.nossr50.skills.gathering.WoodCutting;
+import com.gmail.nossr50.skills.AbilityType;
+import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.ToolType;
+import com.gmail.nossr50.skills.excavation.Excavation;
+import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
+import com.gmail.nossr50.skills.woodcutting.Woodcutting;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class BlockListener implements Listener {
@@ -179,15 +179,15 @@ public class BlockListener implements Listener {
         else if (BlockChecks.isLog(block) && Permissions.woodcutting(player)) {
             if (configInstance.getWoodcuttingRequiresTool()) {
                 if (ItemChecks.isAxe(inHand)) {
-                    WoodCutting.woodcuttingBlockCheck(player, block);
+                    Woodcutting.woodcuttingBlockCheck(player, block);
                 }
             }
             else {
-                WoodCutting.woodcuttingBlockCheck(player, block);
+                Woodcutting.woodcuttingBlockCheck(player, block);
             }
 
             if (!mcMMO.placeStore.isTrue(block) && profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(inHand)) {
-                WoodCutting.treeFeller(event);
+                Woodcutting.treeFeller(event);
             }
         }
 
@@ -318,12 +318,12 @@ public class BlockListener implements Listener {
                 if (configInstance.getWoodcuttingRequiresTool()) {
                     if (ItemChecks.isAxe(inHand)) {
                         event.setInstaBreak(true);
-                        WoodCutting.leafBlower(player, block);
+                        Woodcutting.leafBlower(player, block);
                     }
                 }
                 else if (!inHand.getType().equals(Material.SHEARS)) {
                     event.setInstaBreak(true);
-                    WoodCutting.leafBlower(player, block);
+                    Woodcutting.leafBlower(player, block);
                 }
             }
         }

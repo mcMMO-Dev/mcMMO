@@ -4,7 +4,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 

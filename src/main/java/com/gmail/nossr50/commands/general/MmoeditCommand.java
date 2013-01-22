@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class MmoeditCommand implements CommandExecutor {

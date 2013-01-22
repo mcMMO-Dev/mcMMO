@@ -5,9 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.AbilityType;
+import com.gmail.nossr50.skills.SkillType;
 
 public class GreenThumbTimer implements Runnable {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();

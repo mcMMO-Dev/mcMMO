@@ -3,8 +3,8 @@ package com.gmail.nossr50.skills.unarmed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 

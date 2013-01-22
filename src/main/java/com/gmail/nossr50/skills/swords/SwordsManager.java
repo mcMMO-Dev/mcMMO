@@ -3,10 +3,10 @@ package com.gmail.nossr50.skills.swords;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.AbilityType;
-import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.AbilityType;
+import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 

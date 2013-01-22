@@ -17,10 +17,10 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.DatabaseUpdate;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.runnables.SQLReconnect;
+import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.huds.SpoutHud;
 
 public class Database {
 

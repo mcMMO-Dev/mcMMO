@@ -2,8 +2,8 @@ package com.gmail.nossr50.api;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.util.Skills;
+import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.util.Users;
 
 public final class ExperienceAPI {

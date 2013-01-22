@@ -17,6 +17,7 @@ Version 1.4.00-dev
  = Fixed Woodcutting accidentally using Mining double drop values.
  ! Changed how Tree Feller is handled, it should now put less stress on the CPU
  ! Changed Fisherman's Diet and Farmer's Diet to use two seperate config values
+ ! Major refactoring - please take note, this WILL break any mcMMO-related plugin not properly hooking into the API.
 
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.

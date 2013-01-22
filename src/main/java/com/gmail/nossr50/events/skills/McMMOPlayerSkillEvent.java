@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillType;
 
 /**
  * Generic event for mcMMO skill handling.

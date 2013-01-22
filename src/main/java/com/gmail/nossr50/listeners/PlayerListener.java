@@ -26,23 +26,23 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.BleedTimer;
-import com.gmail.nossr50.skills.gathering.Fishing;
-import com.gmail.nossr50.skills.gathering.Herbalism;
+import com.gmail.nossr50.skills.AbilityType;
+import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.fishing.Fishing;
+import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Item;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class PlayerListener implements Listener {

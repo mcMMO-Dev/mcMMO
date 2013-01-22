@@ -9,10 +9,10 @@ import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.SpoutConfig;
-import com.gmail.nossr50.datatypes.HudType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.spout.SpoutConfig;
+import com.gmail.nossr50.spout.huds.HudType;
 import com.gmail.nossr50.util.Misc;
 
 public class XpBar {

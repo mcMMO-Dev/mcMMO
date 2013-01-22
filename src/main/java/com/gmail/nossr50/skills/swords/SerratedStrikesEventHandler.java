@@ -3,9 +3,9 @@ package com.gmail.nossr50.skills.swords;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.runnables.BleedTimer;
-import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.skills.Combat;
+import com.gmail.nossr50.skills.SkillType;
 
 public class SerratedStrikesEventHandler {
     private Player player;

@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;

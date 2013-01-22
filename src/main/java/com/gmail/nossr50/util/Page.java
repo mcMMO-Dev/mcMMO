@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.Skills;
 
 public class Page {
 

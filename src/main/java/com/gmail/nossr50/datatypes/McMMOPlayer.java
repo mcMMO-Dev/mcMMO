@@ -10,6 +10,8 @@ import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;

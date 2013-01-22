@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.datatypes.ToolType;
+import com.gmail.nossr50.skills.ToolType;
 
 public final class SpoutToolsAPI {
 

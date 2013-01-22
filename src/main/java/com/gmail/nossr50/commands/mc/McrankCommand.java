@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.McRankAsync;
+import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.util.Leaderboard;
-import com.gmail.nossr50.util.Skills;
 
 public class McrankCommand implements CommandExecutor {
 

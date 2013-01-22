@@ -6,12 +6,12 @@ import org.getspout.spoutapi.gui.InGameHUD;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.HudType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SpoutHud;
 import com.gmail.nossr50.datatypes.buttons.McmmoButton;
 import com.gmail.nossr50.datatypes.buttons.McmmoButton.Slot;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.spout.huds.HudType;
+import com.gmail.nossr50.spout.huds.SpoutHud;
 
 public class Menu extends GenericPopup {
     private McmmoButton hudButton;

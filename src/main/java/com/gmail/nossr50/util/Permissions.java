@@ -3,7 +3,7 @@ package com.gmail.nossr50.util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillType;
 
 public class Permissions {
     public static boolean hasPermission(CommandSender sender, String perm)

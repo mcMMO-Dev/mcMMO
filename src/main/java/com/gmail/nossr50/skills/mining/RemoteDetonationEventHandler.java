@@ -9,11 +9,11 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.AbilityType;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.AbilityType;
+import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Skills;
 
 public class RemoteDetonationEventHandler {
     private Player player;

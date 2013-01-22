@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Combat;
+import com.gmail.nossr50.skills.Combat;
 
 public class BleedTimer implements Runnable {
     private final static int MAX_BLEED_TICKS = 10;

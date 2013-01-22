@@ -3,7 +3,7 @@ package com.gmail.nossr50.events.skills;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-import com.gmail.nossr50.datatypes.SkillType;
+import com.gmail.nossr50.skills.SkillType;
 
 public class McMMOPlayerDisarmEvent extends McMMOPlayerSkillEvent implements Cancellable {
     private boolean cancelled;
