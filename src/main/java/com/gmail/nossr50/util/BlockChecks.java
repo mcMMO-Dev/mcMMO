@@ -283,7 +283,6 @@ public class BlockChecks {
         switch (block.getType()) {
         case LOG:
         case LEAVES:
-        case AIR:
             return true;
 
         default:
