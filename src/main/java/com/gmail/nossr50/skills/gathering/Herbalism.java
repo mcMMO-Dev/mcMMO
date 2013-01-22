@@ -28,7 +28,20 @@ import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public class Herbalism {
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    public static int farmersDietRankChangeLevel = AdvancedConfig.getInstance().getFarmerDietRankChange();
+    public static int farmersDietMaxLevel = farmersDietRankChangeLevel * 5;
+
+    public static int greenThumbStageChangeLevel = AdvancedConfig.getInstance().getGreenThumbStageChange();
+    public static int greenThumbStageMaxLevel = greenThumbStageChangeLevel * 4;
+
+    public static double greenThumbMaxChance = AdvancedConfig.getInstance().getGreenThumbChanceMax();
+    public static int greenThumbMaxLevel = AdvancedConfig.getInstance().getGreenThumbMaxLevel();
+
+    public static double doubleDropsMaxChance = AdvancedConfig.getInstance().getHerbalismDoubleDropsChanceMax();
+    public static int doubleDropsMaxLevel = AdvancedConfig.getInstance().getHerbalismDoubleDropsMaxLevel();
+
+    public static double hylianLuckMaxChance = AdvancedConfig.getInstance().getHylianLuckChanceMax();
+    public static int hylianLuckMaxLevel = AdvancedConfig.getInstance().getHylianLucksMaxLevel();
 
     /**
      * Activate the Green Terra ability.
@@ -84,8 +97,6 @@ public class Herbalism {
             return;
 
         final PlayerProfile profile = Users.getProfile(player);
-        final double MAX_CHANCE = advancedConfig.getHerbalismDoubleDropsChanceMax();
-        final int MAX_BONUS_LEVEL = advancedConfig.getHerbalismDoubleDropsMaxLevel();
 
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         int id = block.getTypeId();
@@ -103,8 +114,8 @@ public class Herbalism {
 
         int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 
-        float chance = (float) ((MAX_CHANCE / MAX_BONUS_LEVEL) * herbLevel);
-        if (chance > MAX_CHANCE) chance = (float) MAX_CHANCE;
+        float chance = (float) ((doubleDropsMaxChance / doubleDropsMaxLevel) * herbLevel);
+        if (chance > doubleDropsMaxChance) chance = (float) doubleDropsMaxChance;
 
         switch (type) {
         case BROWN_MUSHROOM:
@@ -406,9 +417,6 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        final int MAX_CHANCE = advancedConfig.getGreenThumbChanceMax();
-        final int MAX_BONUS_LEVEL = advancedConfig.getGreenThumbMaxLevel();
-
         PlayerProfile profile = Users.getProfile(player);
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         PlayerInventory inventory = player.getInventory();
@@ -446,8 +454,8 @@ public class Herbalism {
 
         int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 
-        float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * herbLevel);
-        if (chance > MAX_CHANCE) chance = MAX_CHANCE;
+        float chance = (float) ((greenThumbMaxChance / greenThumbMaxLevel) * herbLevel);
+        if (chance > greenThumbMaxChance) chance = (float) greenThumbMaxChance;
 
         if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (chance > Misc.getRandom().nextInt(activationChance))) {
             event.setCancelled(true);
@@ -505,9 +513,6 @@ public class Herbalism {
      * @param block The block being used in the ability
      */
     public static void greenThumbBlocks(ItemStack is, Player player, Block block) {
-        final int MAX_CHANCE = advancedConfig.getGreenThumbChanceMax();
-        final int MAX_BONUS_LEVEL = advancedConfig.getGreenThumbMaxLevel();
-
         PlayerProfile profile = Users.getProfile(player);
         int skillLevel = profile.getSkillLevel(SkillType.HERBALISM);
         int seeds = is.getAmount();
@@ -516,8 +521,8 @@ public class Herbalism {
 
         int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 
-        float chance = (float) (((double) MAX_CHANCE / (double) MAX_BONUS_LEVEL) * skillLevel);
-        if (chance > MAX_CHANCE) chance = MAX_CHANCE;
+        float chance = (float) ((greenThumbMaxChance / greenThumbMaxLevel) * skillLevel);
+        if (chance > greenThumbMaxChance) chance = (float) greenThumbMaxChance;
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             greenTerraConvert(player, block);
@@ -528,7 +533,10 @@ public class Herbalism {
     }
 
     public static void hylianLuck(Block block, Player player, BlockBreakEvent event) {
-        int chance = Users.getProfile(player).getSkillLevel(SkillType.HERBALISM) / 100;
+        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.HERBALISM);
+
+        float chance = (float) ((hylianLuckMaxChance / hylianLuckMaxLevel) * skillLevel);
+        if (chance > hylianLuckMaxChance) chance = (float) hylianLuckMaxChance;
 
         int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 

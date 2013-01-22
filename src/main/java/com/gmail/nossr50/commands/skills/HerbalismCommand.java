@@ -5,8 +5,8 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.gathering.Herbalism;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Skills;
 
 public class HerbalismCommand extends SkillCommand {
     AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -22,16 +22,6 @@ public class HerbalismCommand extends SkillCommand {
     private String hylianLuckChance;
     private String hylianLuckChanceLucky;
 
-    private int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
-    private int farmersDietRankChange = advancedConfig.getFarmerDietRankChange();
-    private int farmersDietMaxLevel = farmersDietRankChange * 5;
-    private int greenThumbStageChange = advancedConfig.getGreenThumbStageChange();
-    private int greenThumbStageMaxLevel = greenThumbStageChange * 4;
-    private double greenThumbMaxBonus = advancedConfig.getGreenThumbChanceMax();
-    private int greenThumbMaxLevel = advancedConfig.getGreenThumbMaxLevel();
-    private double doubleDropsMaxBonus = advancedConfig.getHerbalismDoubleDropsChanceMax();
-    private int doubleDropsMaxLevel = advancedConfig.getHerbalismDoubleDropsMaxLevel();
-
     private boolean hasHylianLuck;
     private boolean canGreenTerra;
     private boolean canGreenThumbWheat;
@@ -39,8 +29,6 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canFarmersDiet;
     private boolean canDoubleDrop;
     private boolean doubleDropsDisabled;
-    private boolean lucky;
-    private boolean endurance;
 
     public HerbalismCommand() {
         super(SkillType.HERBALISM);
@@ -48,50 +36,30 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        float greenThumbChanceF;
-        float doubleDropChanceF;
-        float hylianLuckChanceF;
+        //GREEN TERRA
+        String[] greenTerraStrings = calculateLengthDisplayValues();
+        greenTerraLength = greenTerraStrings[0];
+        greenTerraLengthEndurance = greenTerraStrings[1];
 
-        int length = 2 + (int) ((double) skillValue / (double) abilityLengthIncreaseLevel);
-        greenTerraLength = String.valueOf(length);
-
-        if (Permissions.activationTwelve(player)) {
-            length = length + 12;
-        }
-        else if (Permissions.activationEight(player)) {
-            length = length + 8;
-        }
-        else if (Permissions.activationFour(player)) {
-            length = length + 4;
-        }
-        int maxLength = SkillType.HERBALISM.getAbility().getMaxTicks();
-        if (maxLength != 0 && length > maxLength) {
-            length = maxLength;
-        }
-        greenTerraLengthEndurance = String.valueOf(length);
         //FARMERS DIET
-        if (skillValue >= farmersDietMaxLevel) farmersDietRank = "5";
-        else farmersDietRank = String.valueOf((int) ((double) skillValue / (double) farmersDietRankChange));
-        //GREEN THUMB
-        if (skillValue >= greenThumbStageMaxLevel) greenThumbStage = "4";
-        else greenThumbStage = String.valueOf((int) ((double) skillValue / (double) greenThumbStageChange));
+        farmersDietRank = calculateRank(Herbalism.farmersDietMaxLevel, Herbalism.farmersDietRankChangeLevel);
 
-        if (skillValue >= greenThumbMaxLevel) greenThumbChanceF = (float) (greenThumbMaxBonus);
-        else greenThumbChanceF = (float) ((greenThumbMaxBonus / greenThumbMaxLevel) * skillValue);
-        greenThumbChance = percent.format(greenThumbChanceF / 100D);
-        if (greenThumbChanceF * 1.3333D >= 100D) greenThumbChanceLucky = percent.format(1D);
-        else greenThumbChanceLucky = percent.format(greenThumbChanceF * 1.3333D / 100D);
+        //GREEN THUMB
+        greenThumbStage = calculateRank(Herbalism.greenThumbStageMaxLevel, Herbalism.greenThumbStageMaxLevel);
+
+        String[] greenThumbStrings = calculateAbilityDisplayValues(Herbalism.greenThumbMaxLevel, Herbalism.greenThumbMaxChance);
+        greenThumbChance = greenThumbStrings[0];
+        greenThumbChanceLucky = greenThumbStrings[1];
+
         //DOUBLE DROPS
-        if (skillValue >= doubleDropsMaxLevel) doubleDropChanceF = (float) (doubleDropsMaxBonus);
-        else doubleDropChanceF = (float) ((doubleDropsMaxBonus / doubleDropsMaxLevel) * skillValue);
-        doubleDropChance = percent.format(doubleDropChanceF / 100D);
-        if (doubleDropChanceF * 1.3333D >= 100D) doubleDropChanceLucky = percent.format(1D);
-        else doubleDropChanceLucky = percent.format(doubleDropChanceF * 1.3333D / 100D);
+        String[] doubleDropStrings = calculateAbilityDisplayValues(Herbalism.doubleDropsMaxLevel, Herbalism.doubleDropsMaxChance);
+        doubleDropChance = doubleDropStrings[0];
+        doubleDropChanceLucky = doubleDropStrings[1];
+
         //HYLIAN LUCK
-        hylianLuckChanceF = (skillValue / 100);
-        hylianLuckChance = percent.format(hylianLuckChanceF / 100D);
-        if (hylianLuckChanceF * 1.3333D >= 100D) hylianLuckChanceLucky = percent.format(1D);
-        else hylianLuckChanceLucky = percent.format(hylianLuckChanceF * 1.3333D / 100D);
+        String[] hylianLuckStrings = calculateAbilityDisplayValues(Herbalism.hylianLuckMaxLevel, Herbalism.hylianLuckMaxChance);
+        hylianLuckChance = hylianLuckStrings[0];
+        hylianLuckChanceLucky = hylianLuckStrings[1];
     }
 
     @Override
@@ -105,8 +73,6 @@ public class HerbalismCommand extends SkillCommand {
         canFarmersDiet = Permissions.farmersDiet(player);
         canDoubleDrop = Permissions.herbalismDoubleDrops(player);
         doubleDropsDisabled = configInstance.herbalismDoubleDropsDisabled();
-        lucky = Permissions.luckyHerbalism(player);
-        endurance = Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player);
     }
 
     @Override
@@ -116,10 +82,7 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (lucky) {
-            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Skills.localizeSkillName(SkillType.HERBALISM) }) }));
-        }
+        luckyEffectsDisplay();
 
         if (canGreenTerra) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.0"), LocaleLoader.getString("Herbalism.Effect.1") }));
@@ -154,17 +117,21 @@ public class HerbalismCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canGreenTerra) {
-            if (endurance)
+            if (hasEndurance) {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", new Object[] { greenTerraLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { greenTerraLengthEndurance }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", new Object[] { greenTerraLength }));
+            }
         }
 
         if (canGreenThumbBlocks || canGreenThumbWheat) {
-            if (lucky)
+            if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { greenThumbChanceLucky }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }));
+            }
         }
 
         if (canGreenThumbWheat) {
@@ -176,16 +143,20 @@ public class HerbalismCommand extends SkillCommand {
         }
 
         if (hasHylianLuck) {
-            if (lucky)
+            if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", new Object[] { hylianLuckChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { hylianLuckChanceLucky }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", new Object[] { hylianLuckChance }));
+            }
         }
         if (canDoubleDrop && !doubleDropsDisabled) {
-            if (lucky)
+            if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }));
+            }
         }
     }
 }

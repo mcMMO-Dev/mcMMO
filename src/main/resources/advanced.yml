@@ -128,15 +128,20 @@ Skills:
 
         # GreenThumb_StageChange: Level value when the GreenThumb stage level goes up
         # GreenThumb_ChanceMax: Maximum chance of GreenThumb
-        # GreenThumb_MaxBonusLevel: On this level, greenthumb chance will be GreenThumb_ChanceMax
+        # GreenThumb_MaxBonusLevel: On this level, GreenThumb chance will be GreenThumb_ChanceMax
         GreenThumb_StageChange: 200
-        GreenThumb_ChanceMax: 100
+        GreenThumb_ChanceMax: 100.0
         GreenThumb_MaxBonusLevel: 1500
 
         # DoubleDrops_ChanceMax: Maximum chance of receiving double drops
         # DoubleDrops_MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
-        DoubleDrops_ChanceMax: 100
+        DoubleDrops_ChanceMax: 100.0
         DoubleDrops_MaxBonusLevel: 1000
+
+        # HylianLuck_ChanceMax: Maximum chance of Hylian Luck
+        # HylianLuck_MaxBonusLevel: On this level, Hylian Luck chance will be HylianLuck_ChanceMax
+        HylianLuck_ChanceMax: 10.0
+        HylianLuck_MaxBonusLevel: 1000
     #
     #  Settings for Mining
     ###

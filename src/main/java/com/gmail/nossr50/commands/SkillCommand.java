@@ -81,6 +81,14 @@ public abstract class SkillCommand implements CommandExecutor {
         return true;
     }
 
+    protected String calculateRank(int maxLevel, int rankChangeLevel) {
+        if (skillValue >= maxLevel) {
+            return String.valueOf(maxLevel / rankChangeLevel);
+        }
+
+        return String.valueOf((int) (skillValue / rankChangeLevel));
+    }
+
     protected String[] calculateAbilityDisplayValues(double chance) {
         if (isLucky) {
             double luckyChance = chance * 1.3333D;

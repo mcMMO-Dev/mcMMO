@@ -49,6 +49,9 @@ public class Fishing {
     public static int shakeChanceLevel5 = AdvancedConfig.getInstance().getShakeChanceRank5();
     public static int shakeUnlockLevel = AdvancedConfig.getInstance().getShakeUnlockLevel();
 
+    public static int fishermanDietRankChangeLevel = AdvancedConfig.getInstance().getFishermanDietRankChange();
+    public static int fishermanDietMaxLevel = fishermanDietRankChangeLevel * 5;
+
     public static int magicHunterMultiplier = AdvancedConfig.getInstance().getFishingMagicMultiplier();
 
     /**

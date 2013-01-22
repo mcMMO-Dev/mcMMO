@@ -91,11 +91,14 @@ public class AdvancedConfig extends ConfigLoader {
     public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.Farmer_Diet_RankChange", 200); }
 
     public int getGreenThumbStageChange() { return config.getInt("Skills.Herbalism.GreenThumb_StageChange", 200); }
-    public int getGreenThumbChanceMax() { return config.getInt("Skills.Herbalism.GreenThumb_ChanceMax", 100); }
+    public double getGreenThumbChanceMax() { return config.getDouble("Skills.Herbalism.GreenThumb_ChanceMax", 100.0D); }
     public int getGreenThumbMaxLevel() { return config.getInt("Skills.Herbalism.GreenThumb_MaxBonusLevel", 1500); }
 
-    public int getHerbalismDoubleDropsChanceMax() { return config.getInt("Skills.Herbalism.DoubleDrops_ChanceMax", 100); }
+    public double getHerbalismDoubleDropsChanceMax() { return config.getDouble("Skills.Herbalism.DoubleDrops_ChanceMax", 100.0D); }
     public int getHerbalismDoubleDropsMaxLevel() { return config.getInt("Skills.Herbalism.DoubleDrops_MaxBonusLevel", 1000); }
+
+    public double getHylianLuckChanceMax() { return config.getDouble("Skills.Herbalism.HylianLuck_ChanceMax", 10.0D); }
+    public int getHylianLucksMaxLevel() { return config.getInt("Skills.Herbalism.HylianLuck_MaxBonusLevel", 1000); }
 
     /* MINING */
     public int getMiningDoubleDropChance() { return config.getInt("Skills.Mining.DoubleDrops_ChanceMax", 100); }
