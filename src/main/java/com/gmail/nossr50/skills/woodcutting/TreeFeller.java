@@ -189,7 +189,14 @@ public abstract class TreeFeller {
                 Woodcutting.checkDoubleDrop(player, block);
 
                 byte extraData = block.getData();
-                xp += Woodcutting.getExperienceFromLog(block);
+
+                try {
+                    xp += Woodcutting.getExperienceFromLog(block);
+                }
+                catch (IllegalArgumentException exception) {
+                    break;
+                }
+
                 // TODO: Nerf XP from jungle trees, as it was done previously
 
                 Misc.dropItem(block.getLocation(), new ItemStack(Material.LOG, 1, extraData));
