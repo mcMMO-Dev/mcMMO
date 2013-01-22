@@ -177,17 +177,18 @@ public class BlockListener implements Listener {
 
         /* WOOD CUTTING */
         else if (BlockChecks.isLog(block) && Permissions.woodcutting(player)) {
-            if (configInstance.getWoodcuttingRequiresTool()) {
-                if (ItemChecks.isAxe(inHand)) {
-                    Woodcutting.woodcuttingBlockCheck(player, block);
-                }
+            if (!mcMMO.placeStore.isTrue(block) && profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(inHand)) {
+                Woodcutting.beginTreeFeller(event);
             }
             else {
-                Woodcutting.woodcuttingBlockCheck(player, block);
-            }
-
-            if (!mcMMO.placeStore.isTrue(block) && profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(inHand)) {
-                Woodcutting.treeFeller(event);
+                if (configInstance.getWoodcuttingRequiresTool()) {
+                    if (ItemChecks.isAxe(inHand)) {
+                        Woodcutting.beginWoodcutting(player, block);
+                    }
+                }
+                else {
+                    Woodcutting.beginWoodcutting(player, block);
+                }
             }
         }
 
@@ -318,12 +319,12 @@ public class BlockListener implements Listener {
                 if (configInstance.getWoodcuttingRequiresTool()) {
                     if (ItemChecks.isAxe(inHand)) {
                         event.setInstaBreak(true);
-                        Woodcutting.leafBlower(player, block);
+                        Woodcutting.beginLeafBlower(player, block);
                     }
                 }
                 else if (!inHand.getType().equals(Material.SHEARS)) {
                     event.setInstaBreak(true);
-                    Woodcutting.leafBlower(player, block);
+                    Woodcutting.beginLeafBlower(player, block);
                 }
             }
         }

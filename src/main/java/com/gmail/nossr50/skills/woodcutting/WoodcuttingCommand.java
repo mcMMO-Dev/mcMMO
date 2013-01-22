@@ -1,13 +1,11 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillCommand;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Permissions;
 
 public class WoodcuttingCommand extends SkillCommand {
-    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private String treeFellerLength;
     private String treeFellerLengthEndurance;
     private String doubleDropChance;
@@ -16,7 +14,6 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canTreeFell;
     private boolean canLeafBlow;
     private boolean canDoubleDrop;
-    private boolean doubleDropsDisabled;
 
     public WoodcuttingCommand() {
         super(SkillType.WOODCUTTING);
@@ -30,7 +27,7 @@ public class WoodcuttingCommand extends SkillCommand {
         treeFellerLengthEndurance = treeFellerStrings[1];
 
         //DOUBLE DROPS
-        String[] doubleDropStrings = calculateAbilityDisplayValues(Woodcutting.doubleDropsMaxLevel, Woodcutting.doubleDropsMaxChance);
+        String[] doubleDropStrings = calculateAbilityDisplayValues(Woodcutting.DOUBLE_DROP_MAX_LEVEL, Woodcutting.DOUBLE_DROP_CHANCE);
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }
@@ -40,12 +37,11 @@ public class WoodcuttingCommand extends SkillCommand {
         canTreeFell = Permissions.treeFeller(player);
         canDoubleDrop = Permissions.woodcuttingDoubleDrops(player);
         canLeafBlow = Permissions.leafBlower(player);
-        doubleDropsDisabled = Woodcutting.doubleDropsDisabled;
     }
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return (canDoubleDrop && !doubleDropsDisabled) || canLeafBlow || canTreeFell;
+        return (canDoubleDrop && !Woodcutting.DOUBLE_DROP_DISABLED) || canLeafBlow || canTreeFell;
     }
 
     @Override
@@ -60,28 +56,28 @@ public class WoodcuttingCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.2"), LocaleLoader.getString("Woodcutting.Effect.3") }));
         }
 
-        if (canDoubleDrop && !doubleDropsDisabled) {
+        if (canDoubleDrop && !Woodcutting.DOUBLE_DROP_DISABLED) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5") }));
         }
     }
 
     @Override
     protected boolean statsHeaderPermissions() {
-        return (canDoubleDrop && !doubleDropsDisabled) || canLeafBlow || canTreeFell;
+        return (canDoubleDrop && !Woodcutting.DOUBLE_DROP_DISABLED) || canLeafBlow || canTreeFell;
     }
 
     @Override
     protected void statsDisplay() {
         if (canLeafBlow) {
-            if (skillValue < Woodcutting.leafBlowerUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Woodcutting.Ability.Locked.0", new Object[] { Woodcutting.leafBlowerUnlockLevel }) }));
+            if (skillValue < Woodcutting.LEAF_BLOWER_UNLOCK_LEVEL) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Woodcutting.Ability.Locked.0", new Object[] { Woodcutting.LEAF_BLOWER_UNLOCK_LEVEL }) }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1") }));
             }
         }
 
-        if (canDoubleDrop && !doubleDropsDisabled) {
+        if (canDoubleDrop && !Woodcutting.DOUBLE_DROP_DISABLED) {
             if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
             }
