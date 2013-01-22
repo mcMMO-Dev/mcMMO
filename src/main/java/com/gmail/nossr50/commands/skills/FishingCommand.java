@@ -38,9 +38,10 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
+        //TREASURE HUNTER
         raining = player.getWorld().hasStorm();
         chanceRaining = "";
-        //Treasure Hunter
+
         lootTier = Fishing.getFishingLootTier(profile);
         double magicChanceD = lootTier * magicHunterMultiplier;
         if (raining) {

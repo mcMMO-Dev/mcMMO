@@ -71,7 +71,7 @@ public class AxeManager extends SkillManager {
             return;
         }
 
-        if (!Misc.hasArmor(eventHandler.livingDefender)) {
+        if (Misc.hasArmor(eventHandler.livingDefender)) {
             eventHandler.damageArmor();
         }
         else {

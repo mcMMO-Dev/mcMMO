@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Skills;
 
 public class AcrobaticsCommand extends SkillCommand {
     private String dodgeChance;
@@ -18,7 +17,6 @@ public class AcrobaticsCommand extends SkillCommand {
     private boolean canDodge;
     private boolean canRoll;
     private boolean canGracefulRoll;
-    private boolean lucky;
 
     public AcrobaticsCommand() {
         super(SkillType.ACROBATICS);
@@ -26,30 +24,20 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        float dodgeChanceF;
-        float rollChanceF;
-        float gracefulRollChanceF;
+        //DODGE
+        String[] dodgeStrings = calculateAbilityDisplayValues(Acrobatics.dodgeMaxBonusLevel, Acrobatics.dodgeMaxChance);
+        dodgeChance = dodgeStrings[0];
+        dodgeChanceLucky = dodgeStrings[1];
 
-        // DODGE
-        if (skillValue >= Acrobatics.dodgeMaxBonusLevel) dodgeChanceF = (float) Acrobatics.dodgeMaxChance;
-        else dodgeChanceF = (float) ((Acrobatics.dodgeMaxChance / Acrobatics.dodgeMaxBonusLevel) * skillValue);
-        dodgeChance = percent.format(dodgeChanceF / 100D);
-        if (dodgeChanceF * 1.3333D >= 100D) dodgeChanceLucky = percent.format(1D);
-        else dodgeChanceLucky = percent.format(dodgeChanceF * 1.3333D / 100D);
+        //ROLL
+        String[] rollStrings = calculateAbilityDisplayValues(Acrobatics.rollMaxBonusLevel, Acrobatics.rollMaxChance);
+        rollChance = rollStrings[0];
+        rollChanceLucky = rollStrings[1];
 
-        // ROLL
-        if (skillValue >= Acrobatics.rollMaxBonusLevel) rollChanceF = (float) Acrobatics.rollMaxChance;
-        else rollChanceF = (float) ((Acrobatics.rollMaxChance / Acrobatics.rollMaxBonusLevel) * skillValue);
-        rollChance = percent.format(rollChanceF / 100D);
-        if (rollChanceF * 1.3333D >= 100D) rollChanceLucky = percent.format(1D);
-        else rollChanceLucky = percent.format(rollChanceF * 1.3333D / 100D);
-
-        // GRACEFULROLL
-        if (skillValue >= Acrobatics.gracefulRollMaxBonusLevel) gracefulRollChanceF = (float) Acrobatics.gracefulRollMaxChance;
-        else gracefulRollChanceF = (float) ((Acrobatics.gracefulRollMaxChance / Acrobatics.gracefulRollMaxBonusLevel) * skillValue);
-        gracefulRollChance = percent.format(gracefulRollChanceF / 100D);
-        if (gracefulRollChanceF * 1.3333D >= 100D) gracefulRollChanceLucky = percent.format(1D);
-        else gracefulRollChanceLucky = percent.format(gracefulRollChanceF * 1.3333D / 100D);
+        //GRACEFUL ROLL
+        String[] gracefulRollStrings = calculateAbilityDisplayValues(Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollMaxChance);
+        rollChance = gracefulRollStrings[0];
+        rollChanceLucky = gracefulRollStrings[1];
     }
 
     @Override
@@ -57,7 +45,6 @@ public class AcrobaticsCommand extends SkillCommand {
         canDodge = Permissions.dodge(player);
         canRoll = Permissions.roll(player);
         canGracefulRoll = Permissions.gracefulRoll(player);
-        lucky = Permissions.luckyAcrobatics(player);
     }
 
     @Override
@@ -67,10 +54,7 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (lucky) {
-            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Skills.localizeSkillName(SkillType.ACROBATICS) }) }));
-        }
+        luckyEffectsDisplay();
 
         if (canRoll) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Acrobatics.Effect.0"), LocaleLoader.getString("Acrobatics.Effect.1") }));
@@ -93,24 +77,30 @@ public class AcrobaticsCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canRoll) {
-            if (lucky)
+            if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { rollChanceLucky }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }));
+            }
         }
 
         if (canGracefulRoll) {
-            if (lucky)
+            if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { gracefulRollChanceLucky }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }));
+            }
         }
 
         if (canDodge) {
-            if (lucky)
+            if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { dodgeChanceLucky }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }));
+            }
         }
     }
 }

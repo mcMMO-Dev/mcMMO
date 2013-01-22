@@ -4,9 +4,7 @@ import com.gmail.nossr50.commands.SkillCommand;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Skills;
 
 public class AxesCommand extends SkillCommand {
     private String critChance;
@@ -22,8 +20,6 @@ public class AxesCommand extends SkillCommand {
     private boolean canBonusDamage;
     private boolean canImpact;
     private boolean canGreaterImpact;
-    private boolean lucky;
-    private boolean endurance;
 
     public AxesCommand() {
         super(SkillType.AXES);
@@ -31,41 +27,27 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        float critChanceF;
-        int skillCheck = Misc.skillCheck((int) skillValue, Axes.criticalHitMaxBonusLevel);
-
-        //Armor Impact
-        impactDamage = String.valueOf(1 + ((double) skillValue / (double) Axes.impactIncreaseLevel));
-        //Skull Splitter
-        int length = 2 + (int) ((double) skillValue / (double) Misc.abilityLengthIncreaseLevel);
-        skullSplitterLength = String.valueOf(length);
-
-        if (Permissions.activationTwelve(player)) {
-            length = length + 12;
-        }
-        else if (Permissions.activationEight(player)) {
-            length = length + 8;
-        }
-        else if (Permissions.activationFour(player)) {
-            length = length + 4;
-        }
-        int maxLength = SkillType.AXES.getAbility().getMaxTicks();
-        if (maxLength != 0 && length > maxLength) {
-            length = maxLength;
-        }
-        skullSplitterLengthEndurance = String.valueOf(length);
-
-        //Greater Impact
+        //IMPACT
+        impactDamage = String.valueOf(1 + (skillValue / Axes.impactIncreaseLevel));
         greaterImpactDamage = String.valueOf(Axes.greaterImpactBonusDamage);
-        //Critical Strikes
-        if (skillValue >= Axes.criticalHitMaxBonusLevel) critChanceF = (float) Axes.criticalHitMaxChance;
-        else critChanceF = (float) ((Axes.criticalHitMaxChance / Axes.criticalHitMaxBonusLevel) * skillCheck);
-        critChance = percent.format(critChanceF / 100D);
-        if (critChanceF * 1.3333D >= 100D) critChanceLucky = percent.format(1D);
-        else critChanceLucky = percent.format(critChanceF * 1.3333D / 100D);
-        //Axe Mastery
-        if (skillValue >= Axes.bonusDamageMaxBonusLevel) bonusDamage = String.valueOf(Axes.bonusDamageMaxBonus);
-        else bonusDamage = String.valueOf(skillValue / ((double) Axes.bonusDamageMaxBonusLevel / (double) Axes.bonusDamageMaxBonus));
+
+        //SKULL SPLITTER
+        String[] skullSplitterStrings = calculateLengthDisplayValues();
+        skullSplitterLength = skullSplitterStrings[0];
+        skullSplitterLengthEndurance = skullSplitterStrings[1];
+
+        //CRITICAL STRIKES
+        String[] criticalStrikeStrings = calculateAbilityDisplayValues(Axes.criticalHitMaxBonusLevel, Axes.criticalHitMaxChance);
+        critChance = criticalStrikeStrings[0];
+        critChanceLucky = criticalStrikeStrings[1];
+
+        //AXE MASTERY
+        if (skillValue >= Axes.bonusDamageMaxBonusLevel) {
+            bonusDamage = String.valueOf(Axes.bonusDamageMaxBonus);
+        }
+        else {
+            bonusDamage = String.valueOf(skillValue / Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus);
+        }
     }
 
     @Override
@@ -75,8 +57,6 @@ public class AxesCommand extends SkillCommand {
         canBonusDamage = Permissions.axeBonus(player);
         canImpact = Permissions.impact(player);
         canGreaterImpact = Permissions.greaterImpact(player);
-        lucky = Permissions.luckyAxes(player);
-        endurance = Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player);
     }
 
     @Override
@@ -86,10 +66,7 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void effectsDisplay() {
-        if (lucky) {
-            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Skills.localizeSkillName(SkillType.AXES) }) }));
-        }
+        luckyEffectsDisplay();
 
         if (canSkullSplitter) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Axes.Effect.0"), LocaleLoader.getString("Axes.Effect.1") }));
@@ -132,17 +109,21 @@ public class AxesCommand extends SkillCommand {
         }
 
         if (canCritical) {
-            if (lucky)
+            if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", new Object[] { critChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { critChanceLucky }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", new Object[] { critChance }));
+            }
         }
 
         if (canSkullSplitter) {
-            if (endurance)
+            if (hasEndurance) {
                 player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", new Object[] { skullSplitterLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { skullSplitterLengthEndurance }));
-            else
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", new Object[] { skullSplitterLength }));
+            }
         }
     }
 }

@@ -12,6 +12,8 @@ import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Page;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Skills;
 import com.gmail.nossr50.util.Users;
 
 public abstract class SkillCommand implements CommandExecutor {
@@ -22,6 +24,8 @@ public abstract class SkillCommand implements CommandExecutor {
     protected Player player;
     protected PlayerProfile profile;
     protected float skillValue;
+    protected boolean isLucky;
+    protected boolean hasEndurance;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
 
@@ -50,6 +54,9 @@ public abstract class SkillCommand implements CommandExecutor {
         }
 
         skillValue = profile.getSkillLevel(skill);
+        isLucky = Permissions.lucky(player, skill);
+        hasEndurance = (Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player));
+
         dataCalculations();
         permissionsCheck();
 
@@ -72,6 +79,65 @@ public abstract class SkillCommand implements CommandExecutor {
         Page.grabGuidePageForSkill(skill, player, args);
 
         return true;
+    }
+
+    protected String[] calculateAbilityDisplayValues(int maxBonusLevel, double maxChance) {
+        double abilityChance;
+        double luckyChance;
+
+        if (skillValue >= maxBonusLevel) {
+            abilityChance = maxChance;
+        }
+        else {
+            abilityChance = (maxChance / maxBonusLevel) * skillValue;
+        }
+
+        if (isLucky) {
+            luckyChance = abilityChance * 1.3333D;
+
+            if (luckyChance >= 100D) {
+                return new String[] { percent.format(abilityChance / 100.0D), percent.format(1.0D) };
+            }
+
+            return new String[] { percent.format(abilityChance / 100.0D), percent.format(luckyChance / 100.0D) };
+        }
+
+        return new String[] { percent.format(abilityChance / 100.0D), null };
+    }
+
+    protected String[] calculateLengthDisplayValues() {
+        int maxLength = skill.getAbility().getMaxTicks();
+        int length = 2 + (int) (skillValue / Misc.abilityLengthIncreaseLevel);
+        int enduranceLength = 0;
+
+        if (Permissions.activationTwelve(player)) {
+            enduranceLength = length + 12;
+        }
+        else if (Permissions.activationEight(player)) {
+            enduranceLength = length + 8;
+        }
+        else if (Permissions.activationFour(player)) {
+            enduranceLength = length + 4;
+        }
+
+        if (maxLength != 0) {
+            if (length > maxLength) {
+                length = maxLength;
+            }
+
+            if (enduranceLength > maxLength) {
+                enduranceLength = maxLength;
+            }
+        }
+
+        return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
+    }
+
+    protected void luckyEffectsDisplay() {
+        if (isLucky) {
+            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Skills.localizeSkillName(skill) }) }));
+        }
     }
 
     protected abstract void dataCalculations();
