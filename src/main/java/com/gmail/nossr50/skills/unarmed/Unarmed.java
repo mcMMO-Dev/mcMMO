@@ -3,17 +3,15 @@ package com.gmail.nossr50.skills.unarmed;
 import com.gmail.nossr50.config.AdvancedConfig;
 
 public class Unarmed {
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    public static int ironArmMaxBonusDamage = AdvancedConfig.getInstance().getIronArmMaxBonus();
+    public static int ironArmIncreaseLevel = AdvancedConfig.getInstance().getIronArmIncreaseLevel();
 
-    public static final int BONUS_DAMAGE_MAX_BONUS_MODIFIER = advancedConfig.getIronArmBonus();
-    public static final int BONUS_DAMAGE_INCREASE_LEVEL = advancedConfig.getIronArmIncreaseLevel();
+    public static double deflectMaxChance = AdvancedConfig.getInstance().getDisarmChanceMax() ;
+    public static int deflectMaxBonusLevel = AdvancedConfig.getInstance().getDisarmMaxBonusLevel();
 
-    public static final int DEFLECT_MAX_CHANCE = advancedConfig.getDisarmChanceMax() ;
-    public static final int DEFLECT_MAX_BONUS_LEVEL = advancedConfig.getDisarmMaxBonusLevel();
+    public static double disarmMaxChance = AdvancedConfig.getInstance().getDeflectChanceMax();
+    public static int disarmMaxBonusLevel = AdvancedConfig.getInstance().getDeflectMaxBonusLevel();
 
-    public static final int DISARM_MAX_CHANCE = advancedConfig.getDeflectChanceMax();
-    public static final int DISARM_MAX_BONUS_LEVEL = advancedConfig.getDeflectMaxBonusLevel();
-
-    public static final int IRON_GRIP_MAX_CHANCE = advancedConfig.getIronGripChanceMax();
-    public static final int IRON_GRIP_MAX_BONUS_LEVEL = advancedConfig.getIronGripMaxBonusLevel();
+    public static double ironGripMaxChance = AdvancedConfig.getInstance().getIronGripChanceMax();
+    public static int ironGripMaxBonusLevel = AdvancedConfig.getInstance().getIronGripMaxBonusLevel();
 }

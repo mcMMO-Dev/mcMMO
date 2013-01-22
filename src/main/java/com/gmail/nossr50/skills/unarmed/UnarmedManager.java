@@ -28,8 +28,8 @@ public class UnarmedManager extends SkillManager {
         if (eventHandler.isHoldingItem()) {
             eventHandler.calculateSkillModifier();
 
-            float chance = (float) (((double) Unarmed.DISARM_MAX_CHANCE / (double) Unarmed.DISARM_MAX_BONUS_LEVEL) * skillLevel);
-            if (chance > Unarmed.DISARM_MAX_CHANCE) chance = Unarmed.DISARM_MAX_CHANCE;
+            float chance = (float) ((Unarmed.disarmMaxChance / Unarmed.disarmMaxBonusLevel) * skillLevel);
+            if (chance > Unarmed.disarmMaxChance) chance = (float) Unarmed.disarmMaxChance;
 
             if (chance > Misc.getRandom().nextInt(activationChance)) {
                 if (!hasIronGrip(defender)) {
@@ -55,8 +55,8 @@ public class UnarmedManager extends SkillManager {
 
         DeflectEventHandler eventHandler = new DeflectEventHandler(this, event);
 
-        float chance = (float) (((double) Unarmed.DEFLECT_MAX_CHANCE / (double) Unarmed.DEFLECT_MAX_BONUS_LEVEL) * skillLevel);
-        if (chance > Unarmed.DEFLECT_MAX_CHANCE) chance = Unarmed.DEFLECT_MAX_CHANCE;
+        float chance = (float) ((Unarmed.deflectMaxChance / Unarmed.deflectMaxBonusLevel) * skillLevel);
+        if (chance > Unarmed.deflectMaxChance) chance = (float) Unarmed.deflectMaxChance;
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.cancelEvent();
@@ -99,8 +99,8 @@ public class UnarmedManager extends SkillManager {
 
         IronGripEventHandler eventHandler = new IronGripEventHandler(this, defender);
 
-        float chance = (float) (((double) Unarmed.IRON_GRIP_MAX_CHANCE / (double) Unarmed.IRON_GRIP_MAX_BONUS_LEVEL) * skillLevel);
-        if (chance > Unarmed.IRON_GRIP_MAX_CHANCE) chance = Unarmed.IRON_GRIP_MAX_CHANCE;
+        float chance = (float) ((Unarmed.ironGripMaxChance / Unarmed.ironGripMaxBonusLevel) * skillLevel);
+        if (chance > Unarmed.ironGripMaxChance) chance = (float) Unarmed.ironGripMaxChance;
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.sendAbilityMessages();

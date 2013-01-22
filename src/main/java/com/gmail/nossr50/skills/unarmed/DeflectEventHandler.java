@@ -18,7 +18,7 @@ public class DeflectEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Unarmed.DEFLECT_MAX_BONUS_LEVEL);
+        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Unarmed.deflectMaxBonusLevel);
     }
 
     protected void sendAbilityMessage() {

@@ -169,13 +169,16 @@ public class AdvancedConfig extends ConfigLoader {
     public int getSharpenedClawsBonus() { return config.getInt("Skills.Taming.SharpenedClaws_Bonus", 2); }
 
     /* UNARMED */
-    public int getDisarmChanceMax() { return config.getInt("Skills.Unarmed.Disarm_ChanceMax", 33); }
+    public double getDisarmChanceMax() { return config.getDouble("Skills.Unarmed.Disarm_ChanceMax", 33.0D); }
     public int getDisarmMaxBonusLevel() { return config.getInt("Skills.Unarmed.Disarm_MaxBonusLevel", 1000); }
-    public int getDeflectChanceMax() { return config.getInt("Skills.Unarmed.Deflect_ChanceMax", 50); }
+
+    public double getDeflectChanceMax() { return config.getDouble("Skills.Unarmed.Deflect_ChanceMax", 50.0D); }
     public int getDeflectMaxBonusLevel() { return config.getInt("Skills.Unarmed.Deflect_MaxBonusLevel", 1000); }
-    public int getIronGripChanceMax() { return config.getInt("Skills.Unarmed.IronGrip_ChanceMax", 100); }
+
+    public double getIronGripChanceMax() { return config.getDouble("Skills.Unarmed.IronGrip_ChanceMax", 100.0D); }
     public int getIronGripMaxBonusLevel() { return config.getInt("Skills.Unarmed.IronGrip_MaxBonusLevel", 1000); }
-    public int getIronArmBonus() { return config.getInt("Skills.Unarmed.IronArm_BonusMax", 8); }
+
+    public int getIronArmMaxBonus() { return config.getInt("Skills.Unarmed.IronArm_BonusMax", 8); }
     public int getIronArmIncreaseLevel() { return config.getInt("Skills.Unarmed.IronArm_IncreaseLevel", 50); }
 
     /* WOODCUTTING */

@@ -14,10 +14,10 @@ public class UnarmedBonusDamageEventHandler {
     }
 
     protected void calculateDamageBonus() {
-        int damageBonus = 3 + (manager.getSkillLevel() / Unarmed.BONUS_DAMAGE_INCREASE_LEVEL);
+        int damageBonus = 3 + (manager.getSkillLevel() / Unarmed.ironArmIncreaseLevel);
 
-        if (damageBonus > Unarmed.BONUS_DAMAGE_MAX_BONUS_MODIFIER) {
-            damageBonus = Unarmed.BONUS_DAMAGE_MAX_BONUS_MODIFIER;
+        if (damageBonus > Unarmed.ironArmBonusDamage) {
+            damageBonus = Unarmed.ironArmBonusDamage;
         }
 
         this.damageBonus = damageBonus;

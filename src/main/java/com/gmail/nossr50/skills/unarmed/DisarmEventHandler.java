@@ -26,7 +26,7 @@ public class DisarmEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Unarmed.DISARM_MAX_BONUS_LEVEL);
+        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Unarmed.disarmMaxBonusLevel);
     }
 
     private void sendAbilityMessage() {

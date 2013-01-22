@@ -224,7 +224,7 @@ Skills:
     Taming:
         # Gore_ChanceMax: Maximum chance of triggering gore
         # Gore_MaxBonusLevel: On this level, the chance to cause Gore will be Gore_ChanceMax
-        Gore_ChanceMax: 100
+        Gore_ChanceMax: 100.0
         Gore_MaxBonusLevel: 1000
 
         # Gore_BleedTicks: Determines the length of the bleeding effect
@@ -235,7 +235,7 @@ Skills:
         # FastFood_UnlockLevel: Level when FastFood unlocks
         # FastFood_Chance: The chance for wolves to heal hp when inflicting damage
         FastFood_UnlockLevel: 50
-        FastFood_Chance: 50
+        FastFood_Chance: 50.0
 
         # EnvironmentallyAware_UnlockLevel: Level when EnvironmentallyAware unlocks
         EnvironmentallyAware_UnlockLevel: 100
@@ -260,17 +260,17 @@ Skills:
     Unarmed:
         # Disarm_ChanceMax: Maximum chance of disarming other players
         # Disarm_MaxBonusLevel: Level when the maximum chance to disarm is reached
-        Disarm_ChanceMax: 33
+        Disarm_ChanceMax: 33.0
         Disarm_MaxBonusLevel: 1000
 
         # Deflect_ChanceMax: Maximum chance of deflecting arrows
         # Deflect_MaxBonusLevel: Level when the maximum chance to deflect is reached
-        Deflect_ChanceMax: 50
+        Deflect_ChanceMax: 50.0
         Deflect_MaxBonusLevel: 1000
 
         # IronGrip_ChanceMax: Maximum chance of preventing being disarmed
         # IronGrip_MaxBonusLevel: Level when the maximum chance to prevent being disarmed is reached
-        IronGrip_ChanceMax: 100
+        IronGrip_ChanceMax: 100.0
         IronGrip_MaxBonusLevel: 1000
 
         # IronArmBonusMax: Maximum bonus damage for unarmed
