@@ -13,6 +13,7 @@ Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.
  + Added new cancellable McMMOPlayerDisarmEvent for Citizens compatibility - fires whenever a player is disarmed.
  = Fixed a memory leak involving mob tracking
+ = Fixed ArrayIndexOutOfBoundsException resulting from being unranked in a skill when using FlatFile.
  - Removed extra durability loss from Leaf Blower
 
 Version 1.3.13
