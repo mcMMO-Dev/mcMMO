@@ -84,7 +84,7 @@ public abstract class Woodcutting {
      * @throws IllegalArgumentException if 'log' is invalid
      */
     protected static int getExperienceFromLog(Block log) {
-        TreeSpecies logType = TreeSpecies.getByData((byte) (log.getData() & 0x3));
+        TreeSpecies logType = TreeSpecies.getByData(extractLogItemData(log.getData()));
 
         // Apparently species can be null in certain cases (custom server mods?)
         // https://github.com/mcMMO-Dev/mcMMO/issues/229
@@ -146,7 +146,7 @@ public abstract class Woodcutting {
             Location location = block.getLocation();
             ItemStack item = new ItemStack(Material.LOG, 1, blockData);
 
-            switch (TreeSpecies.getByData((byte) (blockData & 0x3))) {
+            switch (TreeSpecies.getByData(extractLogItemData(blockData))) {
             case GENERIC:
                 if (Config.getInstance().getOakDoubleDropsEnabled()) {
                     Misc.dropItem(location, item);
@@ -171,5 +171,15 @@ public abstract class Woodcutting {
                 break;
             }
         }
+    }
+
+    /**
+     * Extract the log type from the block data (remove rotation)
+     *
+     * @param data Original block data
+     * @return Extracted log type
+     */
+    protected static byte extractLogItemData(byte data) {
+        return (byte) (data & 0x3);
     }
 }
