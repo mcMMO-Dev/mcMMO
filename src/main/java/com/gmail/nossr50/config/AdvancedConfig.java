@@ -135,6 +135,28 @@ public class AdvancedConfig extends ConfigLoader {
     public int getArcaneForgingRankLevels3() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_3", 500); }
     public int getArcaneForgingRankLevels4() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_4", 750); }
 
+    /* SMELTING */
+    public int getBurnModifierMaxLevel() { return config.getInt("Skills.Smelting.FuelEfficiency_MaxBonusLevel", 1000); }
+    public double getBurnTimeMultiplier() { return config.getDouble("Skills.Smelting.FuelEfficiency_Multiplier", 3.0D); }
+
+    public int getSecondSmeltMaxLevel() { return config.getInt("Skills.Smelting.SecondSmelt_MaxBonusLevel", 1000); }
+    public double getSecondSmeltMaxChance() { return config.getDouble("Skills.Smelting.SecondSmelt_MaxBonusChance", 100.0D); }
+
+    public int getFluxMiningUnlockLevel() { return config.getInt("Skills.Smelting.FluxMining_UnlockLevel", 250); }
+    public double getFluxMiningChance() { return config.getDouble("Skills.Smelting.FluxMining_Chance", 33.0D); }
+
+    public int getSmeltingVanillaXPBoostRank1Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank1Level", 100); }
+    public int getSmeltingVanillaXPBoostRank2Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank2Level", 300); }
+    public int getSmeltingVanillaXPBoostRank3Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank3Level", 500); }
+    public int getSmeltingVanillaXPBoostRank4Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank4Level", 700); }
+    public int getSmeltingVanillaXPBoostRank5Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank5Level", 900); }
+
+    public int getSmeltingVanillaXPBoostRank1Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank1Multiplier", 2); }
+    public int getSmeltingVanillaXPBoostRank2Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank2Multiplier", 3); }
+    public int getSmeltingVanillaXPBoostRank3Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank3Multiplier", 4); }
+    public int getSmeltingVanillaXPBoostRank4Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank4Multiplier", 5); }
+    public int getSmeltingVanillaXPBoostRank5Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank5Multiplier", 6); }
+
     /* SWORDS */
     public double getBleedChanceMax() { return config.getDouble("Skills.Swords.Bleed_ChanceMax", 75.0D); }
     public int getBleedMaxBonusLevel() { return config.getInt("Skills.Swords.Bleed_MaxBonusLevel", 750); }

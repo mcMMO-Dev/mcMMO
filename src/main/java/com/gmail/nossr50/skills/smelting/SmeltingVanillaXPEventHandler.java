@@ -16,19 +16,19 @@ public class SmeltingVanillaXPEventHandler {
         int skillLevel =  manager.getSkillLevel();
 
         if (skillLevel >= Smelting.vanillaXPBoostRank5Level) {
-            xpBoostModifier = 6;
+            xpBoostModifier = Smelting.vanillaXPBoostRank5Multiplier;
         }
         else if (skillLevel >= Smelting.vanillaXPBoostRank4Level) {
-            xpBoostModifier = 5;
+            xpBoostModifier = Smelting.vanillaXPBoostRank4Multiplier;
         }
         else if (skillLevel >= Smelting.vanillaXPBoostRank3Level) {
-            xpBoostModifier = 4;
+            xpBoostModifier = Smelting.vanillaXPBoostRank3Multiplier;
         }
         else if (skillLevel >= Smelting.vanillaXPBoostRank2Level) {
-            xpBoostModifier = 3;
+            xpBoostModifier = Smelting.vanillaXPBoostRank2Multiplier;
         }
         else {
-            xpBoostModifier = 2;
+            xpBoostModifier = Smelting.vanillaXPBoostRank1Multiplier;
         }
     }
 

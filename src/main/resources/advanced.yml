@@ -195,6 +195,37 @@ Skills:
                     Rank_2: 50
                     Rank_1: 75
     #
+    #  Settings for Smelting
+    ###
+    Smelting:
+        # FuelEfficiency_Multiplier: The furnace burn time will be multiplied by this value.
+        # FuelEfficiency_MaxBonusLevel: On this level, the efficiency multiplier will stop increasing
+        FuelEfficiency_Multiplier: 3.0
+        FuelEfficiency_MaxBonusLevel: 1000
+
+        # SecondSmelt_MaxBonusChance: Maximum chance of triggering Second Smelt
+        # SecondSmelt_MaxBonusLevel: On this level, the chance to cause Second Smelt will be SecondSmelt_MaxBonusChance
+        SecondSmelt_MaxBonusChance: 100
+        SecondSmelt_MaxBonusLevel: 1000
+
+        # FluxMining_UnlockLevel: Level when Flux Mining becomes available
+        # FluxMining_Chance: Chance for Flux Mining to activate
+        FluxMining_UnlockLevel: 250
+        FluxMining_Chance: 33.0
+
+        # These are the levels at which each progressive level of Vanilla XP Boost unlocks.
+        VanillaXPBoost_Rank1Level: 100
+        VanillaXPBoost_Rank2Level: 300
+        VanillaXPBoost_Rank3Level: 500
+        VanillaXPBoost_Rank4Level: 700
+        VanillaXPBoost_Rank5Level: 900
+        # These are the multipliers for each rank.
+        VanillaXPBoost_Rank1Multiplier: 2
+        VanillaXPBoost_Rank2Multiplier: 3
+        VanillaXPBoost_Rank3Multiplier: 4
+        VanillaXPBoost_Rank4Multiplier: 5
+        VanillaXPBoost_Rank5Multiplier: 6
+    #
     #  Settings for Swords
     ###
     Swords:

@@ -40,19 +40,19 @@ public class SmeltingCommand extends SkillCommand {
 
         //VANILLA XP BOOST
         if (skillValue >= Smelting.vanillaXPBoostRank5Level) {
-            vanillaXPModifier = "6";
+            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank5Multiplier);
         }
         else if (skillValue >= Smelting.vanillaXPBoostRank4Level) {
-            vanillaXPModifier = "5";
+            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank4Multiplier);
         }
         else if (skillValue >= Smelting.vanillaXPBoostRank3Level) {
-            vanillaXPModifier = "4";
+            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank3Multiplier);
         }
         else if (skillValue >= Smelting.vanillaXPBoostRank2Level) {
-            vanillaXPModifier = "3";
+            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank2Multiplier);
         }
         else {
-            vanillaXPModifier = "2";
+            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank1Multiplier);
         }
     }
 
