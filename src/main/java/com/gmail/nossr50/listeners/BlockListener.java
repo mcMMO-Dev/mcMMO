@@ -179,8 +179,8 @@ public class BlockListener implements Listener {
         }
 
         /* WOOD CUTTING */
-        else if (BlockChecks.isLog(block) && Permissions.woodcutting(player)) {
-            if (!mcMMO.placeStore.isTrue(block) && profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(inHand)) {
+        else if (BlockChecks.isLog(block) && Permissions.woodcutting(player) && !mcMMO.placeStore.isTrue(block)) {
+            if (profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(inHand)) {
                 Woodcutting.beginTreeFeller(event);
             }
             else {
