@@ -15,6 +15,8 @@ Version 1.4.00-dev
  = Fixed bug where Impact improperly determined the defender's armor
  = Fixed ArrayIndexOutOfBoundsException resulting from being unranked in a skill when using FlatFile
  = Fixed Woodcutting accidentally using Mining double drop values.
+ = Fixed Hylian Luck not removing the block-placed flag from flowers.
+ = Fixed Hylian Luck not checking the block-placed flag on flowers.
  ! Moved Hylian Luck into a separate listener since it actually cancels the event and shouldn't just be on MONITOR.
  ! Changed how Tree Feller is handled, it should now put less stress on the CPU
  ! Changed Fisherman's Diet and Farmer's Diet to use two seperate config values

@@ -214,13 +214,14 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreakHigher(BlockBreakEvent event) {
         Player player = event.getPlayer();
+        Block block = event.getBlock();
 
         if (Misc.isNPC(player)) {
             return;
         }
 
-        if (Permissions.hylianLuck(player) && ItemChecks.isSword(player.getItemInHand())) {
-            Herbalism.hylianLuck(event.getBlock(), player, event);
+        if (Permissions.hylianLuck(player) && ItemChecks.isSword(player.getItemInHand()) && !mcMMO.placeStore.isTrue(block)) {
+            Herbalism.hylianLuck(block, player, event);
         }
     }
 
