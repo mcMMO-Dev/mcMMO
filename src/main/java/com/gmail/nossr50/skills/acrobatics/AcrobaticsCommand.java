@@ -35,8 +35,8 @@ public class AcrobaticsCommand extends SkillCommand {
 
         //GRACEFUL ROLL
         String[] gracefulRollStrings = calculateAbilityDisplayValues(Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollMaxChance);
-        rollChance = gracefulRollStrings[0];
-        rollChanceLucky = gracefulRollStrings[1];
+        gracefulRollChance = gracefulRollStrings[0];
+        gracefulRollChanceLucky = gracefulRollStrings[1];
     }
 
     @Override
