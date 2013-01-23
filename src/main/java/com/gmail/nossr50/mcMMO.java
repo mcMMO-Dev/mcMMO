@@ -93,9 +93,9 @@ public class mcMMO extends JavaPlugin {
     private final PlayerListener playerListener = new PlayerListener(this);
     private final BlockListener blockListener = new BlockListener(this);
     private final EntityListener entityListener = new EntityListener(this);
+    private final InventoryListener inventoryListener = new InventoryListener(this);
     private final WorldListener worldListener = new WorldListener();
     private final HardcoreListener hardcoreListener = new HardcoreListener();
-    private final InventoryListener inventoryListener = new InventoryListener(this);
 
     private HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
     private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
@@ -168,8 +168,9 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(playerListener, this);
         pluginManager.registerEvents(blockListener, this);
         pluginManager.registerEvents(entityListener, this);
-        pluginManager.registerEvents(worldListener, this);
         pluginManager.registerEvents(inventoryListener, this);
+        pluginManager.registerEvents(worldListener, this);
+
 
         if (configInstance.getHardcoreEnabled()) {
             pluginManager.registerEvents(hardcoreListener, this);
