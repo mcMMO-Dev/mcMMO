@@ -96,7 +96,7 @@ public class Mining {
         case EMERALD_ORE:
             xp += config.getMiningXPEmeraldOre();
             break;
-
+            
         default:
             if (ModChecks.isCustomMiningBlock(block)) {
                 xp += ModChecks.getCustomBlock(block).getXpGain();

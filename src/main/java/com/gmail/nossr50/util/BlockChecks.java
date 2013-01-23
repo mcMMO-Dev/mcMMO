@@ -303,4 +303,15 @@ public class BlockChecks {
 
         return false;
     }
+
+    public static boolean canBeFluxMined(Block block) {
+        switch (block.getType()) {
+        case IRON_ORE:
+        case GOLD_ORE:
+            return true;
+
+        default:
+            return false;
+        }
+    }
 }

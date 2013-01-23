@@ -9,6 +9,7 @@ import java.util.List;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -43,6 +44,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.HardcoreListener;
+import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -70,6 +72,7 @@ import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
+import com.gmail.nossr50.skills.smelting.SmeltingCommand;
 import com.gmail.nossr50.skills.swords.SwordsCommand;
 import com.gmail.nossr50.skills.taming.TamingCommand;
 import com.gmail.nossr50.skills.unarmed.UnarmedCommand;
@@ -86,16 +89,17 @@ import com.gmail.nossr50.util.Users;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 
-
 public class mcMMO extends JavaPlugin {
     private final PlayerListener playerListener = new PlayerListener(this);
     private final BlockListener blockListener = new BlockListener(this);
     private final EntityListener entityListener = new EntityListener(this);
     private final WorldListener worldListener = new WorldListener();
     private final HardcoreListener hardcoreListener = new HardcoreListener();
+    private final InventoryListener inventoryListener = new InventoryListener(this);
 
     private HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
     private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
+    private HashMap<Block, String> furnaceTracker = new HashMap<Block, String>();
 
     private static Database database;
     public static mcMMO p;
@@ -165,6 +169,7 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(blockListener, this);
         pluginManager.registerEvents(entityListener, this);
         pluginManager.registerEvents(worldListener, this);
+        pluginManager.registerEvents(inventoryListener, this);
 
         if (configInstance.getHardcoreEnabled()) {
             pluginManager.registerEvents(hardcoreListener, this);
@@ -336,6 +341,7 @@ public class mcMMO extends JavaPlugin {
         aliasMap.put(LocaleLoader.getString("Herbalism.SkillName").toLowerCase(), "herbalism");
         aliasMap.put(LocaleLoader.getString("Mining.SkillName").toLowerCase(), "mining");
         aliasMap.put(LocaleLoader.getString("Repair.SkillName").toLowerCase(), "repair");
+        aliasMap.put(LocaleLoader.getString("Acrobatics.SkillName").toLowerCase(), "smelting");
         aliasMap.put(LocaleLoader.getString("Swords.SkillName").toLowerCase(), "swords");
         aliasMap.put(LocaleLoader.getString("Taming.SkillName").toLowerCase(), "taming");
         aliasMap.put(LocaleLoader.getString("Unarmed.SkillName").toLowerCase(), "unarmed");
@@ -351,6 +357,7 @@ public class mcMMO extends JavaPlugin {
         getCommand("herbalism").setExecutor(new HerbalismCommand());
         getCommand("mining").setExecutor(new MiningCommand());
         getCommand("repair").setExecutor(new RepairCommand());
+        getCommand("smelting").setExecutor(new SmeltingCommand());
         getCommand("swords").setExecutor(new SwordsCommand());
         getCommand("taming").setExecutor(new TamingCommand());
         getCommand("unarmed").setExecutor(new UnarmedCommand());
@@ -515,6 +522,22 @@ public class mcMMO extends JavaPlugin {
      */
     public void removeFromTNTTracker(int tntID) {
         tntTracker.remove(tntID);
+    }
+
+    public void addToOpenFurnaceTracker(Block furnace, String playerName) {
+        furnaceTracker.put(furnace, playerName);
+    }
+
+    public boolean furnaceIsTracked(Block furnace) {
+        return furnaceTracker.containsKey(furnace);
+    }
+
+    public void removeFromFurnaceTracker(Block furnace) {
+        furnaceTracker.remove(furnace);
+    }
+
+    public Player getFurnacePlayer(Block furnace) {
+        return getServer().getPlayer(furnaceTracker.get(furnace));
     }
 
     public static String getMainDirectory() {

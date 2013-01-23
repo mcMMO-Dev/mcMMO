@@ -113,6 +113,10 @@ public class Permissions {
         return hasPermission(player, "mcmmo.perks.lucky.repair");
     }
 
+    public static boolean luckySmelting(Player player) {
+        return hasPermission(player, "mcmmo.perks.lucky.smelting");
+    }
+
     public static boolean luckySwords(Player player) {
         return hasPermission(player, "mcmmo.perks.lucky.swords");
     }
@@ -503,6 +507,26 @@ public class Permissions {
     }
 
     /*
+     * MCMMO.ABILITY.SMELTING.* 
+     */
+
+    public static boolean fuelEfficiency(Player player) {
+        return hasPermission(player, "mcmmo.ability.smelting.fuelefficiency");
+    }
+
+    public static boolean secondSmelt(Player player) {
+        return hasPermission(player, "mcmmo.ability.smelting.secondsmelt");
+    }
+
+    public static boolean fluxMining(Player player) {
+        return hasPermission(player, "mcmmo.ability.smelting.fluxmining");
+    }
+
+    public static boolean smeltingVanillaXPBoost(Player player) {
+        return hasPermission(player, "mcmmo.ability.smelting.vanillaxpboost");
+    }
+
+    /*
      * MCMMO.ITEM.*
      */
 
@@ -601,5 +625,9 @@ public class Permissions {
 
     public static boolean acrobatics(Player player) {
         return hasPermission(player, "mcmmo.skills.acrobatics");
+    }
+
+    public static boolean smelting(Player player) {
+        return hasPermission(player, "mcmmo.skills.smelting");
     }
 }

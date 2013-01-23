@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,6 +35,7 @@ import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
+import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
@@ -213,15 +215,29 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreakHigher(BlockBreakEvent event) {
+        if (event instanceof FakeBlockBreakEvent) {
+            return;
+        }
+
         Player player = event.getPlayer();
         Block block = event.getBlock();
+        ItemStack inHand = player.getItemInHand();
 
         if (Misc.isNPC(player)) {
             return;
         }
 
-        if (Permissions.hylianLuck(player) && ItemChecks.isSword(player.getItemInHand()) && !mcMMO.placeStore.isTrue(block)) {
+        if (mcMMO.placeStore.isTrue(block)) {
+            mcMMO.placeStore.setFalse(block);
+            return;
+        }
+
+        if (Permissions.hylianLuck(player) && ItemChecks.isSword(inHand)) {
             Herbalism.hylianLuck(block, player, event);
+        }
+        else if (BlockChecks.canBeFluxMined(block) && ItemChecks.isPickaxe(inHand) && !inHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+            SmeltingManager smeltingManager = new SmeltingManager(player);
+            smeltingManager.fluxMining(event);
         }
     }
 

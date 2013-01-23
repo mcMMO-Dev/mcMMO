@@ -16,6 +16,7 @@ public enum SkillType {
     HERBALISM(AbilityType.GREEN_TERRA, Config.getInstance().getLevelCapHerbalism(), ToolType.HOE, Config.getInstance().getFormulaMultiplierHerbalism()),
     MINING(AbilityType.SUPER_BREAKER, Config.getInstance().getLevelCapMining(), ToolType.PICKAXE, Config.getInstance().getFormulaMultiplierMining()),
     REPAIR(Config.getInstance().getLevelCapRepair(), Config.getInstance().getFormulaMultiplierRepair()),
+    SMELTING(Config.getInstance().getLevelCapSmelting(), 0),
     SWORDS(AbilityType.SERRATED_STRIKES, Config.getInstance().getLevelCapSwords(), ToolType.SWORD, Config.getInstance().getFormulaMultiplierSwords()),
     TAMING(Config.getInstance().getLevelCapTaming(), Config.getInstance().getFormulaMultiplierTaming()),
     UNARMED(AbilityType.BERSERK, Config.getInstance().getLevelCapUnarmed(), ToolType.FISTS, Config.getInstance().getFormulaMultiplierUnarmed()),
@@ -141,5 +142,15 @@ public enum SkillType {
      */
     public int getSkillLevel(Player player) {
         return Users.getProfile(player).getSkillLevel(this);
+    }
+
+    public boolean isChildSkill() {
+        switch (this) {
+        case SMELTING:
+            return true;
+
+        default:
+            return false;
+        }
     }
 }

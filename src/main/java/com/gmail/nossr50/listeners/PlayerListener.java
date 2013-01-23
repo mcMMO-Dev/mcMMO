@@ -235,7 +235,7 @@ public class PlayerListener implements Listener {
                 player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 4 }) }));
             }
 
-            if (Permissions.luckyAcrobatics(player) || Permissions.luckyArchery(player) || Permissions.luckyAxes(player) || Permissions.luckyFishing(player) || Permissions.luckyHerbalism(player) || Permissions.luckyMining(player) || Permissions.luckyRepair(player) || Permissions.luckySwords(player) || Permissions.luckyTaming(player) || Permissions.luckyUnarmed(player) || Permissions.luckyWoodcutting(player)) {
+            if (Permissions.luckyAcrobatics(player) || Permissions.luckyArchery(player) || Permissions.luckyAxes(player) || Permissions.luckyFishing(player) || Permissions.luckyHerbalism(player) || Permissions.luckyMining(player) || Permissions.luckyRepair(player) || Permissions.luckySwords(player) || Permissions.luckyTaming(player) || Permissions.luckyUnarmed(player) || Permissions.luckyWoodcutting(player) || Permissions.luckySmelting(player)) {
                 player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
             }
 

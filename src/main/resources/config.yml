@@ -143,6 +143,8 @@ Skills:
         Salvage_UnlockLevel: 600
         Salvage_tools: true
         Salvage_armor: true
+    Smelting:
+        Level_Cap: 0
     Swords:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
@@ -268,6 +270,14 @@ Experience:
         End_Stone: 150
         Moss_Stone: 30
         Emerald: 1000
+    Smelting:
+        Coal: 10
+        Redstone: 15
+        Iron: 25
+        Gold: 35
+        Lapis: 40
+        Diamond: 75
+        Emerald: 100
     Taming:
         Animal_Taming:
             Wolf: 250

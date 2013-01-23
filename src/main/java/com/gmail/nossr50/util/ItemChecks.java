@@ -473,4 +473,21 @@ public class ItemChecks {
                 type == Material.SHEARS || type == Material.FISHING_ROD || type == Material.CARROT_STICK ||
                 type == Material.FLINT_AND_STEEL || type == Material.BOW;
     }
+
+    public static boolean isSmeltable(ItemStack itemStack) {
+        switch (itemStack.getType()) {
+        case COAL_ORE:
+        case DIAMOND_ORE:
+        case GLOWING_REDSTONE_ORE:
+        case GOLD_ORE:
+        case IRON_ORE:
+        case LAPIS_ORE:
+        case REDSTONE_ORE:
+        case EMERALD_ORE:
+            return true;
+
+        default:
+            return false;
+        }
+    }
 }

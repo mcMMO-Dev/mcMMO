@@ -580,6 +580,8 @@ public class Herbalism {
                 else {
                     item = new ItemStack(Material.APPLE);
                 }
+
+                mcMMO.placeStore.setFalse(block);
                 break;
 
             case FLOWER_POT:

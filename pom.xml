@@ -54,12 +54,12 @@
                 </includes>
             </resource>
             <resource>
-            	<targetPath>com/gmail/nossr50/locale</targetPath>
-            	<filtering>true</filtering>
-            	<directory>${basedir}/src/main/resources/locale/</directory>
-            	<includes>
-            		<include>locale*.properties</include>
-            	</includes>
+                <targetPath>com/gmail/nossr50/locale</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/locale/</directory>
+                <includes>
+                    <include>locale*.properties</include>
+                </includes>
             </resource>
         </resources>
         <plugins>
@@ -116,8 +116,8 @@
                 <updatePolicy>always</updatePolicy>
                 <checksumPolicy>fail</checksumPolicy>
             </snapshots> 
-        	<id>spout-repo</id>
-        	<url>http://nexus.spout.org/content/groups/public/</url>
+            <id>spout-repo</id>
+            <url>http://nexus.spout.org/content/groups/public/</url>
         </repository>
     </repositories>
     <dependencies>
@@ -135,12 +135,12 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit-dep</artifactId>
-			<version>4.10</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <distributionManagement>
         <repository>

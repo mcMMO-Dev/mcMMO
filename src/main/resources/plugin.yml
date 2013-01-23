@@ -124,6 +124,9 @@ commands:
     fishing:
         aliases: []
         description: Detailed skill info
+    smelting:
+        aliases: []
+        description: Detailed skill info
     a:
         aliases: [ac]
         description: Toggle Admin chat or send admin chat messages
@@ -264,6 +267,7 @@ permissions:
             mcmmo.perks.lucky.herbalism: true
             mcmmo.perks.lucky.mining: true
             mcmmo.perks.lucky.repair: true
+            mcmmo.perks.lucky.smelting: true
             mcmmo.perks.lucky.swords: true
             mcmmo.perks.lucky.taming: true
             mcmmo.perks.lucky.unarmed: true
@@ -292,6 +296,9 @@ permissions:
     mcmmo.perks.lucky.repair:
         default: false
         description: Gives Repair abilities & skills a 33.3% better chance to activate.
+    mcmmo.perks.lucky.smelting:
+        default: false
+        description: Gives Smelting abilities & skills a 33.3% better chance to activate.
     mcmmo.perks.lucky.swords:
         default: false
         description: Gives Swords abilities & skills a 33.3% better chance to activate.
@@ -368,6 +375,7 @@ permissions:
             mcmmo.ability.axes.all: true
             mcmmo.ability.acrobatics.all: true
             mcmmo.ability.blastmining.all: true
+            mcmmo.ability.smelting.all: true
     mcmmo.ability.taming.*:
         description: Allows access to all Taming abilities
         children:
@@ -657,6 +665,25 @@ permissions:
         description: Allows access to the Demolitions Expertise ability
     mcmmo.ability.blastmining.detonate:
         description: Allows for remote TNT detonation
+    mcmmo.ability.smelting.*:
+        description: Allows access to all Smelting abilities
+        children:
+            mcmmo.ability.smelting.all: true
+    mcmmo.ability.smelting.all:
+        description: Allows access to all Smelting abilities
+        children:
+            mcmmo.ability.smelting.fluxmining: true
+            mcmmo.ability.smelting.fuelefficiency: true
+            mcmmo.ability.smelting.secondsmelt: true
+            mcmmo.ability.smelting.vanillaxpboost: true
+    mcmmo.ability.smelting.fluxmining:
+        description: Allows access to the Flux Mining ability
+    mcmmo.ability.smelting.fuelefficiency:
+        description: Allows access to the Fuel Efficiency ability
+    mcmmo.ability.smelting.secondsmelt:
+        description: Allows access to the Second Smelt ability
+    mcmmo.ability.smelting.vanillaxpboost:
+        description: Allows vanilla XP boost from Smelting
     mcmmo.item.*:
         description: Implies all mcmmo.item permissions
         children:
@@ -720,6 +747,7 @@ permissions:
             mcmmo.skills.swords: true 
             mcmmo.skills.axes: true 
             mcmmo.skills.acrobatics: true
+            mcmmo.skills.smelting: true
     mcmmo.skills.fishing:
         description: Allows access to the Fishing skill
     mcmmo.skills.taming:
@@ -744,5 +772,7 @@ permissions:
         description: Allows access to the Axes skill
     mcmmo.skills.acrobatics:
         description: Allows access to the Acrobatics skill
+    mcmmo.skills.smelting:
+        description: Allows access to the Smelting skill
     mcmmo.skillreset:
         description: Allow reset of skill levels

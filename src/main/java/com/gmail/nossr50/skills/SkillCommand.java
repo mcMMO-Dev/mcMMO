@@ -60,8 +60,11 @@ public abstract class SkillCommand implements CommandExecutor {
         permissionsCheck();
 
         player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString(skillString + ".SkillName") }));
-        player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain." + skillString) }));
-        player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill) }));
+
+        if (!skill.isChildSkill()) {
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain." + skillString) }));
+            player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill) }));
+        }
 
         if (effectsHeaderPermissions()) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));

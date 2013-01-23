@@ -247,6 +247,15 @@ public class Config extends ConfigLoader {
     public boolean getSalvageTools() { return config.getBoolean("Skills.Repair.Salvage_tools", true); }
     public boolean getSalvageArmor() { return config.getBoolean("Skills.Repair.Salvage_armor", true); }
 
+    /* Smelting */
+    public int getSmeltingXPCoal() { return config.getInt("Experience.Smelting.Coal", 10); }
+    public int getSmeltingXPRedstone() { return config.getInt("Experience.Smelting.Redstone", 15); }
+    public int getSmeltingXPIron() { return config.getInt("Experience.Smelting.Iron", 25); }
+    public int getSmeltingXPGold() { return config.getInt("Experience.Smelting.Gold", 35); }
+    public int getSmeltingXPDiamond() { return config.getInt("Experience.Smelting.Diamond", 75); }
+    public int getSmeltingXPLapis() { return config.getInt("Experience.Smelting.Lapis", 40); }
+    public int getSmeltingXPEmerald() { return config.getInt("Experience.Smelting.Emerald", 100); }
+
     /* Taming */
     public int getTamingXPWolf() { return config.getInt("Experience.Taming.Animal_Taming.Wolf", 250); }
     public int getTamingXPOcelot() { return config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500); }
@@ -306,6 +315,10 @@ public class Config extends ConfigLoader {
 
     public int getLevelCapRepair() {
         return getLevelCap("Skills.Repair.Level_Cap");
+    }
+
+    public int getLevelCapSmelting() {
+        return getLevelCap("Skills.Smelting.Level_Cap");
     }
 
     public int getLevelCapSwords() {
