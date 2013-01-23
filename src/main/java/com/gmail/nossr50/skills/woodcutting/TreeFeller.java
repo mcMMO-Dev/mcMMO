@@ -71,8 +71,8 @@ public abstract class TreeFeller {
      */
     private static void processRecursively(Block block, List<Block> treeFellerBlocks) {
         List<Block> futureCenterBlocks = new ArrayList<Block>();
-        boolean centerIsLog = (block.getType() == Material.LOG || (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(block)));
-        Block nextBlock = block.getRelative(BlockFace.UP);;
+        boolean centerIsLog = BlockChecks.isLog(block);
+        Block nextBlock = block.getRelative(BlockFace.UP);
 
         // Handle the block above 'block'
         if (addBlock(nextBlock, treeFellerBlocks)) {
@@ -147,11 +147,10 @@ public abstract class TreeFeller {
         Material inHandMaterial = inHand.getType();
 
         if (inHandMaterial != Material.AIR) {
-            boolean blockModsEnabled = Config.getInstance().getBlockModsEnabled();
             short durabilityLoss = 0;
 
             for (Block block : treeFellerBlocks) {
-                if (block.getType() == Material.LOG || (blockModsEnabled && ModChecks.isCustomLogBlock(block))) {
+                if (BlockChecks.isLog(block)) {
                     durabilityLoss += Misc.toolDurabilityLoss;
                 }
             }
@@ -200,7 +199,7 @@ public abstract class TreeFeller {
                 Misc.dropItem(block.getLocation(), new ItemStack(Material.LOG, 1, block.getData()));
                 break;
             case LEAVES:
-                Misc.randomDropItem(block.getLocation(), new ItemStack(Material.LOG, 1, (short) (block.getData() & 3)), 10);
+                Misc.randomDropItem(block.getLocation(), new ItemStack(Material.SAPLING, 1, (short) (block.getData() & 3)), 10);
                 break;
             default:
                 if (ModChecks.isCustomLogBlock(block)) {
