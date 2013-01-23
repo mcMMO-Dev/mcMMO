@@ -38,6 +38,7 @@ import com.gmail.nossr50.skills.woodcutting.Woodcutting;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -204,13 +205,22 @@ public class BlockListener implements Listener {
             }
         }
 
-        if (Permissions.hylianLuck(player) && ItemChecks.isSword(player.getItemInHand())) {
-            Herbalism.hylianLuck(block, player, event);
-        }
-
         //Remove metadata when broken
         if (BlockChecks.shouldBeWatched(block)) {
             mcMMO.placeStore.setFalse(block);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockBreakHigher(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+
+        if (Misc.isNPC(player)) {
+            return;
+        }
+
+        if (Permissions.hylianLuck(player) && ItemChecks.isSword(player.getItemInHand())) {
+            Herbalism.hylianLuck(event.getBlock(), player, event);
         }
     }
 
