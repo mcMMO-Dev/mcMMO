@@ -29,7 +29,7 @@ public abstract class Woodcutting {
     public static final boolean DOUBLE_DROP_DISABLED = Config.getInstance().woodcuttingDoubleDropsDisabled();
 
     /**
-     * Begin Tree Feller ability
+     * Begins the Tree Feller ability
      *
      * @param event Event to process
      */
@@ -38,7 +38,7 @@ public abstract class Woodcutting {
     }
 
     /**
-     * Begin Leaf Blower ability.
+     * Begins the Leaf Blower ability
      *
      * @param player Player using the ability
      * @param block Block being broken
@@ -52,7 +52,7 @@ public abstract class Woodcutting {
     }
 
     /**
-     * Begin Woodcutting process
+     * Begins Woodcutting
      *
      * @param player Player breaking the block
      * @param block Block being broken
@@ -77,7 +77,7 @@ public abstract class Woodcutting {
     }
 
     /**
-     * Retrieve the experience from a log
+     * Retrieves the experience reward from a log
      *
      * @param log Log being broken
      * @return Amount of experience
@@ -107,7 +107,7 @@ public abstract class Woodcutting {
     }
 
     /**
-     * Check for double drops
+     * Checks for double drops
      *
      * @param player Player breaking the block
      * @param block Block being broken
@@ -174,7 +174,7 @@ public abstract class Woodcutting {
     }
 
     /**
-     * Extract the log type from the block data (remove rotation)
+     * Extracts the log type from the block data (i.e. removes rotation)
      *
      * @param data Original block data
      * @return Extracted log type

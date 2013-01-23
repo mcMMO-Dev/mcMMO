@@ -29,7 +29,7 @@ public abstract class TreeFeller {
     private static boolean treeFellerReachedThreshold = false;
 
     /**
-     * Handle the Tree Feller ability.
+     * Begins Tree Feller
      *
      * @param event Event to process
      */
@@ -60,11 +60,11 @@ public abstract class TreeFeller {
             return;
         }
 
-        removeBlocks(treeFellerBlocks, player);
+        dropBlocks(treeFellerBlocks, player);
     }
 
     /**
-     * Process Tree Feller
+     * Processes Tree Feller
      *
      * @param block Point of origin of the layer
      * @param treeFellerBlocks List of blocks to be removed
@@ -115,11 +115,11 @@ public abstract class TreeFeller {
     }
 
     /**
-     * Add a block to the block list
+     * Adds a block to the list of blocks to be removed
      *
      * @param block Block to be added
      * @param treeFellerBlocks List of blocks to be removed
-     * @return True if block was added
+     * @return True if 'block' was added
      */
     private static boolean addBlock(Block block, List<Block> treeFellerBlocks) {
         if (BlockChecks.treeFellerCompatible(block) && !treeFellerBlocks.contains(block) && !mcMMO.placeStore.isTrue(block)) {
@@ -136,7 +136,7 @@ public abstract class TreeFeller {
     }
 
     /**
-     * Handle the durability loss
+     * Handles the durability loss
      *
      * @param treeFellerBlocks List of blocks to be removed
      * @param Player Player using the ability
@@ -170,12 +170,12 @@ public abstract class TreeFeller {
     }
 
     /**
-     * Handles removing & dropping the blocks
+     * Handles the dropping of blocks
      *
-     * @param treeFellerBlocks List of blocks to be removed
+     * @param treeFellerBlocks List of blocks to be dropped
      * @param player Player using the ability
      */
-    private static void removeBlocks(List<Block> treeFellerBlocks, Player player) {
+    private static void dropBlocks(List<Block> treeFellerBlocks, Player player) {
         int xp = 0;
 
         for (Block block : treeFellerBlocks) {
