@@ -7,13 +7,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Combat;
@@ -70,35 +68,23 @@ public abstract class TreeFeller {
      * @param treeFellerBlocks List of blocks to be removed
      */
     private static void processRecursively(Block block, List<Block> treeFellerBlocks) {
-        List<Block> futureCenterBlocks = new ArrayList<Block>();
-        boolean centerIsLog = BlockChecks.isLog(block);
-        Block nextBlock = block.getRelative(BlockFace.UP);
-
-        // Handle the block above 'block'
-        if (addBlock(nextBlock, treeFellerBlocks)) {
-            if (treeFellerReachedThreshold) {
-                return;
-            }
-
-            if (centerIsLog) {
-                futureCenterBlocks.add(nextBlock);
-            }
+        if (!BlockChecks.isLog(block)) {
+            return;
         }
 
+        List<Block> futureCenterBlocks = new ArrayList<Block>();
         World world = block.getWorld();
 
         // Handle the blocks around 'block'
-        for (int x = -1 ; x <= 1 ; x++) {
-            for (int z = -1 ; z <= 1 ; z++) {
-                nextBlock = world.getBlockAt(block.getLocation().add(x, 0, z));
+        for (int y = 0 ; y <= 1 ; y++) {
+            for (int x = -1 ; x <= 1 ; x++) {
+                for (int z = -1 ; z <= 1 ; z++) {
+                    Block nextBlock = world.getBlockAt(block.getLocation().add(x, y, z));
 
-                if (addBlock(nextBlock, treeFellerBlocks)) {
+                    handleBlock(nextBlock, futureCenterBlocks, treeFellerBlocks);
+
                     if (treeFellerReachedThreshold) {
                         return;
-                    }
-
-                    if (centerIsLog) {
-                        futureCenterBlocks.add(nextBlock);
                     }
                 }
             }
@@ -115,24 +101,26 @@ public abstract class TreeFeller {
     }
 
     /**
-     * Adds a block to the list of blocks to be removed
+     * Handle a block addition to the list of blocks to be removed
+     * and to the list of blocks used for future recursive calls of 'processRecursively()'
      *
      * @param block Block to be added
+     * @param futureCenterBlocks List of blocks that will be used to call 'processRecursively()'
      * @param treeFellerBlocks List of blocks to be removed
-     * @return True if 'block' was added
      */
-    private static boolean addBlock(Block block, List<Block> treeFellerBlocks) {
-        if (BlockChecks.treeFellerCompatible(block) && !treeFellerBlocks.contains(block) && !mcMMO.placeStore.isTrue(block)) {
-            treeFellerBlocks.add(block);
-
-            if (treeFellerBlocks.size() >= Config.getInstance().getTreeFellerThreshold()) {
-                treeFellerReachedThreshold = true;
-            }
-
-            return true;
+    private static void handleBlock(Block block, List<Block> futureCenterBlocks, List<Block> treeFellerBlocks) {
+        if (!BlockChecks.treeFellerCompatible(block) || mcMMO.placeStore.isTrue(block) || treeFellerBlocks.contains(block)) {
+            return;
         }
 
-        return false;
+        treeFellerBlocks.add(block);
+
+        if (treeFellerBlocks.size() > Woodcutting.TREE_FELLER_THRESHOLD) {
+            treeFellerReachedThreshold = true;
+            return;
+        }
+
+        futureCenterBlocks.add(block);
     }
 
     /**

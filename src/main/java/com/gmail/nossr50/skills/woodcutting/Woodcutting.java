@@ -27,6 +27,7 @@ public abstract class Woodcutting {
     public static final double DOUBLE_DROP_CHANCE = AdvancedConfig.getInstance().getMiningDoubleDropChance();
     public static final int LEAF_BLOWER_UNLOCK_LEVEL = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
     public static final boolean DOUBLE_DROP_DISABLED = Config.getInstance().woodcuttingDoubleDropsDisabled();
+    public static final int TREE_FELLER_THRESHOLD = Config.getInstance().getTreeFellerThreshold();
 
     /**
      * Begins the Tree Feller ability
