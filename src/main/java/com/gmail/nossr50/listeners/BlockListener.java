@@ -101,25 +101,31 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        Config configInstance = Config.getInstance();
+        Player player = event.getPlayer();
+
+        if (Misc.isNPC(player)) {
+            return;
+        }
 
         Block block = event.getBlock();
-        Player player = event.getPlayer();
-        int id = block.getTypeId();
-
-        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(block)) {
             mcMMO.placeStore.setTrue(block);
         }
 
-        if (id == configInstance.getRepairAnvilId() && configInstance.getRepairAnvilMessagesEnabled()) {
-            Repair.placedAnvilCheck(player, id);
+        if (Config.getInstance().getRepairAnvilMessagesEnabled()) {
+            int id = block.getTypeId();
+
+            if (id == Config.getInstance().getRepairAnvilId()) {
+                Repair.placedAnvilCheck(player, id);
+            }
+            else if (id == Config.getInstance().getSalvageAnvilId()) {
+                Salvage.placedAnvilCheck(player, id);
+            }
         }
-        if (id == configInstance.getSalvageAnvilId() && configInstance.getRepairAnvilMessagesEnabled()) {
-            Salvage.placedAnvilCheck(player, id);
-        }
+
+
     }
 
     /**
