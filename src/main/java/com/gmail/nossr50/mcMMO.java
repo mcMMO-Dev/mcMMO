@@ -119,6 +119,9 @@ public class mcMMO extends JavaPlugin {
     //Spout Check
     public static boolean spoutEnabled;
 
+    //XP Event Check
+    private boolean xpEventEnabled = false;
+
     /**
      * Things to be run when the plugin is enabled.
      */
@@ -559,6 +562,14 @@ public class mcMMO extends JavaPlugin {
 
     public static Database getPlayerDatabase() {
         return database;
+    }
+
+    public boolean isXPEventEnabled() {
+        return xpEventEnabled;
+    }
+
+    public void setXPEventEnabled(boolean enabled) {
+        this.xpEventEnabled = enabled;
     }
 }
 

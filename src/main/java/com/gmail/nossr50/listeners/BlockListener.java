@@ -280,8 +280,8 @@ public class BlockListener implements Listener {
         /*
          * ABILITY PREPARATION CHECKS
          */
-        if (BlockChecks.abilityBlockCheck(block)) {
-            if (profile.getToolPreparationMode(ToolType.HOE) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.makeMossy(block))) {
+        if (BlockChecks.canActivateAbilities(block)) {
+            if (profile.getToolPreparationMode(ToolType.HOE) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.canMakeMossy(block))) {
                 Skills.abilityCheck(player, SkillType.HERBALISM);
             }
             else if (profile.getToolPreparationMode(ToolType.AXE) && BlockChecks.isLog(block) && Permissions.treeFeller(player)) {  //TODO: Why are we checking the permissions here?
@@ -306,7 +306,7 @@ public class BlockListener implements Listener {
         /*
          * ABILITY TRIGGER CHECKS
          */
-        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && Permissions.greenTerra(player) && BlockChecks.makeMossy(block)) {
+        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && Permissions.greenTerra(player) && BlockChecks.canMakeMossy(block)) {
             Herbalism.greenTerra(player, block);
         }
         else if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && Skills.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {

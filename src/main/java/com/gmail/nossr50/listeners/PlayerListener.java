@@ -1,13 +1,11 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -22,22 +20,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.general.XprateCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
-import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
+import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockChecks;
+import com.gmail.nossr50.util.ChatManager;
 import com.gmail.nossr50.util.Item;
 import com.gmail.nossr50.util.MOTD;
 import com.gmail.nossr50.util.Misc;
@@ -168,8 +165,7 @@ public class PlayerListener implements Listener {
             motd.displayWebsite(pluginDescription.getWebsite());
         }
 
-        //TODO: MAKE THIS SUCK LESS. THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
-        if (XprateCommand.isXpEventRunning()) {
+        if (plugin.isXPEventEnabled()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", new Object[] {Config.getInstance().xpGainMultiplier}));
         }
     }
@@ -191,74 +187,41 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Monitor PlayerInteract events.
+     * Handle PlayerInteract events that involve modifying the event.
      *
      * @param event The event to watch
      */
-    @EventHandler(priority = EventPriority.LOW)
-    public void onPlayerInteract(PlayerInteractEvent event) {
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        Action action = event.getAction();
+
+        if (Misc.isNPC(player)) {
+            return;
+        }
+
         Block block = event.getClickedBlock();
-        ItemStack inHand = player.getItemInHand();
-        Material material;
+        ItemStack heldItem = event.getItem();
 
-        /* Fix for NPE on interacting with air */
-        if (block == null) {
-            material = Material.AIR;
-        }
-        else {
-            material = block.getType();
-        }
-
-        switch (action) {
+        switch (event.getAction()) {
         case RIGHT_CLICK_BLOCK:
+            int blockID = block.getTypeId();
 
             /* REPAIR CHECKS */
-            if (Permissions.repair(player) && block.getTypeId() == Config.getInstance().getRepairAnvilId()) {
-                if (mcMMO.repairManager.isRepairable(inHand)) {
-                    mcMMO.repairManager.handleRepair(player, inHand);
-                    event.setCancelled(true);
-                    player.updateInventory();
-                }
+            if (blockID == Repair.anvilID && Permissions.repair(player) && mcMMO.repairManager.isRepairable(heldItem)) {
+                mcMMO.repairManager.handleRepair(player, heldItem);
+                event.setCancelled(true);
+                player.updateInventory();
             }
+
             /* SALVAGE CHECKS */
-            if (Permissions.salvage(player) && block.getTypeId() == Config.getInstance().getSalvageAnvilId()) {
-                if (Salvage.isSalvageable(inHand)) {
-                    final Location location = block.getLocation();
-                    Salvage.handleSalvage(player, location, inHand);
-                    event.setCancelled(true);
-                    player.updateInventory();
-                }
-            }
-
-            /* ACTIVATION CHECKS */
-            if (Config.getInstance().getAbilitiesEnabled() && BlockChecks.abilityBlockCheck(block)) {
-                if (!material.equals(Material.DIRT) && !material.equals(Material.GRASS) && !material.equals(Material.SOIL)) {
-                    Skills.activationCheck(player, SkillType.HERBALISM);
-                }
-
-                Skills.activationCheck(player, SkillType.AXES);
-                Skills.activationCheck(player, SkillType.EXCAVATION);
-                Skills.activationCheck(player, SkillType.MINING);
-                Skills.activationCheck(player, SkillType.SWORDS);
-                Skills.activationCheck(player, SkillType.UNARMED);
-                Skills.activationCheck(player, SkillType.WOODCUTTING);
-            }
-
-            /* GREEN THUMB CHECK */
-            if (inHand.getType().equals(Material.SEEDS) && BlockChecks.makeMossy(block) && Permissions.greenThumbBlocks(player)) {
-                Herbalism.greenThumbBlocks(inHand, player, block);
-            }
-
-            /* ITEM CHECKS */
-            if (BlockChecks.abilityBlockCheck(block)) {
-                Item.itemChecks(player);
+            else if (blockID == Salvage.anvilID && Permissions.salvage(player) && Salvage.isSalvageable(heldItem)) {
+                Salvage.handleSalvage(player, block.getLocation(), heldItem);
+                event.setCancelled(true);
+                player.updateInventory();
             }
 
             /* BLAST MINING CHECK */
-            if (player.isSneaking() && inHand.getTypeId() == Config.getInstance().getDetonatorItemID() && Permissions.blastMining(player)) {
+            else if (player.isSneaking() && Permissions.blastMining(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
                 MiningManager miningManager = new MiningManager(player);
                 miningManager.detonate(event);
             }
@@ -267,8 +230,67 @@ public class PlayerListener implements Listener {
 
         case RIGHT_CLICK_AIR:
 
+            /* BLAST MINING CHECK */
+            if (player.isSneaking() && Permissions.blastMining(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
+                MiningManager miningManager = new MiningManager(player);
+                miningManager.detonate(event);
+            }
+
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    /**
+     * Monitor PlayerInteract events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+
+        if (Misc.isNPC(player)) {
+            return;
+        }
+
+        Block block = event.getClickedBlock();
+        ItemStack heldItem = event.getItem();
+
+        switch (event.getAction()) {
+        case RIGHT_CLICK_BLOCK:
+
+            /* ACTIVATION & ITEM CHECKS */
+            if (BlockChecks.canActivateAbilities(block)) {
+                if (Skills.abilitiesEnabled) {
+                    if (BlockChecks.canActivateHerbalism(block)) {
+                        Skills.activationCheck(player, SkillType.HERBALISM);
+                    }
+
+                    Skills.activationCheck(player, SkillType.AXES);
+                    Skills.activationCheck(player, SkillType.EXCAVATION);
+                    Skills.activationCheck(player, SkillType.MINING);
+                    Skills.activationCheck(player, SkillType.SWORDS);
+                    Skills.activationCheck(player, SkillType.UNARMED);
+                    Skills.activationCheck(player, SkillType.WOODCUTTING);
+                }
+
+                Item.itemChecks(player);
+            }
+
+            /* GREEN THUMB CHECK */
+            if (heldItem.getType() == Material.SEEDS && BlockChecks.canMakeMossy(block) && Permissions.greenThumbBlocks(player)) {
+                Herbalism.greenThumbBlocks(heldItem, player, block);
+            }
+
+            break;
+
+        case RIGHT_CLICK_AIR:
+
             /* ACTIVATION CHECKS */
-            if (Config.getInstance().getAbilitiesEnabled()) {
+            if (Skills.abilitiesEnabled) {
                 Skills.activationCheck(player, SkillType.AXES);
                 Skills.activationCheck(player, SkillType.EXCAVATION);
                 Skills.activationCheck(player, SkillType.HERBALISM);
@@ -281,12 +303,6 @@ public class PlayerListener implements Listener {
             /* ITEM CHECKS */
             Item.itemChecks(player);
 
-            /* BLAST MINING CHECK */
-            if (player.isSneaking() && inHand.getTypeId() == Config.getInstance().getDetonatorItemID() && Permissions.blastMining(player)) {
-                MiningManager miningManager = new MiningManager(player);
-                miningManager.detonate(event);
-            }
-
             break;
 
         case LEFT_CLICK_AIR:
@@ -294,7 +310,7 @@ public class PlayerListener implements Listener {
 
             /* CALL OF THE WILD CHECKS */
             if (player.isSneaking()) {
-                Material type = inHand.getType();
+                Material type = heldItem.getType();
 
                 if (type == Material.RAW_FISH) {
                     TamingManager tamingManager = new TamingManager(player);
@@ -328,48 +344,12 @@ public class PlayerListener implements Listener {
         }
 
         if (profile.getPartyChatMode()) {
-            Party party = profile.getParty();
-
-            if (party == null) {
-                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return;
-            }
-
-            String partyName = party.getName();
-            String playerName = player.getName();
-            McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(playerName, partyName, event.getMessage());
-            plugin.getServer().getPluginManager().callEvent(chatEvent);
-
-            if (chatEvent.isCancelled()) {
-                return;
-            }
-
-            plugin.getLogger().info("[P](" + partyName + ")" + "<" + playerName + "> " + chatEvent.getMessage());
-
-            for (Player member : party.getOnlineMembers()) {
-                member.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {playerName}) + chatEvent.getMessage());
-            }
-
-            event.setCancelled(true);
+            ChatManager chatManager = new ChatManager(plugin, player, event);
+            chatManager.handlePartyChat();
         }
         else if (profile.getAdminChatMode()) {
-            String playerName = player.getName();
-            McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(playerName, event.getMessage());
-            plugin.getServer().getPluginManager().callEvent(chatEvent);
-
-            if (chatEvent.isCancelled()) {
-                return;
-            }
-
-            plugin.getLogger().info("[A]<" + playerName + "> " + chatEvent.getMessage());
-
-            for (Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
-                if (Permissions.adminChat(otherPlayer) || otherPlayer.isOp()) {
-                    otherPlayer.sendMessage(LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {playerName}) + chatEvent.getMessage());
-                }
-            }
-
-            event.setCancelled(true);
+            ChatManager chatManager = new ChatManager(plugin, player, event);
+            chatManager.handleAdminChat();
         }
     }
 
@@ -385,8 +365,10 @@ public class PlayerListener implements Listener {
         String lowerCaseCommand = command.toLowerCase();
 
         if (plugin.commandIsAliased(lowerCaseCommand)) {
-            //We should find a better way to avoid string replacement where the alias is equals to the command
-            if (command.equals(plugin.getCommandAlias(lowerCaseCommand))) {
+            String commandAlias = plugin.getCommandAlias(lowerCaseCommand);
+
+            //TODO: We should find a better way to avoid string replacement where the alias is equals to the command
+            if (command.equals(commandAlias)) {
                 return;
             }
 

@@ -12,6 +12,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
@@ -32,6 +33,8 @@ public class Repair {
 
     public static boolean arcaneForgingDowngrades = advancedConfig.getArcaneForgingDowngradeEnabled();
     public static boolean arcaneForgingEnchantLoss = advancedConfig.getArcaneForgingEnchantLossEnabled();
+
+    public static int anvilID = Config.getInstance().getRepairAnvilId();
 
     /**
      * Handle the XP gain for repair events.

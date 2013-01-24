@@ -193,7 +193,7 @@ public enum AbilityType {
             return BlockChecks.canBeGigaDrillBroken(block);
 
         case GREEN_TERRA:
-            return BlockChecks.makeMossy(block);
+            return BlockChecks.canMakeMossy(block);
 
         case LEAF_BLOWER:
             return block.getType() == Material.LEAVES;

@@ -14,10 +14,11 @@ import com.gmail.nossr50.util.Misc;
 public class XprateCommand implements CommandExecutor {
     private final mcMMO plugin;
     private static double oldRate = Config.getInstance().xpGainMultiplier;
-    private static boolean xpEvent = false;
+    private boolean xpEvent;
 
     public XprateCommand (mcMMO plugin) {
         this.plugin = plugin;
+        this.xpEvent = plugin.isXPEventEnabled();
     }
 
     @Override
@@ -39,6 +40,7 @@ public class XprateCommand implements CommandExecutor {
                     }
 
                     xpEvent = !xpEvent;
+                    plugin.setXPEventEnabled(xpEvent);
                     Config.getInstance().xpGainMultiplier = oldRate;
                 }
                 else {
@@ -60,6 +62,7 @@ public class XprateCommand implements CommandExecutor {
 
                 if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {
                     xpEvent = Boolean.valueOf(args[1]);
+                    plugin.setXPEventEnabled(xpEvent);
                 }
                 else {
                     sender.sendMessage(usage3);
@@ -89,9 +92,5 @@ public class XprateCommand implements CommandExecutor {
             sender.sendMessage(usage2);
             return true;
         }
-    }
-
-    public static boolean isXpEventRunning() {
-        return xpEvent;
     }
 }

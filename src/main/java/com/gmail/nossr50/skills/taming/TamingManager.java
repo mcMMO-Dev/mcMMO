@@ -162,9 +162,6 @@ public class TamingManager extends SkillManager {
      * @param summonAmount The amount of material needed to summon the entity
      */
     private void callOfTheWild(EntityType type, int summonAmount) {
-        if (player == null)
-            return;
-
         if (!Permissions.callOfTheWild(player)) {
             return;
         }

@@ -23,6 +23,7 @@ import com.gmail.nossr50.util.Users;
 public class Skills {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
+    public static boolean abilitiesEnabled = Config.getInstance().getAbilitiesEnabled();
 
     /**
      * Checks to see if the cooldown for an item or ability is expired.

@@ -76,7 +76,7 @@ public class BlockChecks {
      * @param block Block to check
      * @return true if the block should allow ability activation, false otherwise
      */
-    public static boolean abilityBlockCheck(Block block) {
+    public static boolean canActivateAbilities(Block block) {
         ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
         if (customBlocksEnabled && CustomBlocksConfig.getInstance().customAbilityBlocks.contains(item)) {
@@ -151,7 +151,7 @@ public class BlockChecks {
      * @param block The block to check
      * @return true if the block can be made mossy, false otherwise
      */
-    public static boolean makeMossy(Block block) {
+    public static boolean canMakeMossy(Block block) {
         switch (block.getType()) {
         case COBBLESTONE:
         case DIRT:
@@ -312,6 +312,18 @@ public class BlockChecks {
 
         default:
             return false;
+        }
+    }
+
+    public static boolean canActivateHerbalism(Block block) {
+        switch (block.getType()) {
+        case DIRT:
+        case GRASS:
+        case SOIL:
+            return false;
+
+        default:
+            return true;
         }
     }
 }

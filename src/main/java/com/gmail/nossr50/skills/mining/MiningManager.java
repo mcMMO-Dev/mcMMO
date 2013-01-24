@@ -27,10 +27,6 @@ public class MiningManager extends SkillManager{
      * @param plugin mcMMO plugin instance
      */
     public void detonate(PlayerInteractEvent event) {
-        if (Misc.isNPC(player)) {
-            return;
-        }
-
         if (skillLevel < BlastMining.rank1) {
             return;
         }
