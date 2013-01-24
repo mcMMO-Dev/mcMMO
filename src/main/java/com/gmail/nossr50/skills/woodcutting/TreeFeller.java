@@ -184,7 +184,7 @@ public abstract class TreeFeller {
 
                 // TODO: Nerf XP from jungle trees, as it was done previously
 
-                Misc.dropItem(block.getLocation(), new ItemStack(Material.LOG, 1, block.getData()));
+                Misc.dropItem(block.getLocation(), new ItemStack(Material.LOG, 1, Woodcutting.extractLogItemData(block.getData())));
                 break;
             case LEAVES:
                 Misc.randomDropItem(block.getLocation(), new ItemStack(Material.SAPLING, 1, Woodcutting.extractLogItemData(block.getData())), 10);
