@@ -3,7 +3,6 @@ package com.gmail.nossr50.listeners;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,14 +16,13 @@ import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.general.XprateCommand;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
@@ -32,7 +30,6 @@ import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.BleedTimer;
-import com.gmail.nossr50.skills.AbilityType;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.fishing.Fishing;
@@ -42,6 +39,7 @@ import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Item;
+import com.gmail.nossr50.util.MOTD;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -62,12 +60,11 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
+        PlayerProfile profile = Users.getProfile(player);
 
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPC(player, profile)) {
             return;
         }
-
-        PlayerProfile profile = Users.getProfile(player);
 
         if (profile.getGodMode() && !Permissions.mcgod(player)) {
             profile.toggleGodMode();
@@ -87,11 +84,11 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
-        AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-        int shakeUnlockLevel = advancedConfig.getShakeUnlockLevel();
         Player player = event.getPlayer();
 
-        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (Misc.isNPC(player)) {
+            return;
+        }
 
         if (Permissions.fishing(player)) {
             State state = event.getState();
@@ -102,13 +99,7 @@ public class PlayerListener implements Listener {
                 break;
 
             case CAUGHT_ENTITY:
-                if (!(event.getCaught() instanceof LivingEntity)) {
-                    return;
-                }
-
-                if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) >= shakeUnlockLevel && Permissions.shakeMob(player)) {
-                    Fishing.shakeMob(event);
-                }
+                Fishing.shakeMob(event);
                 break;
 
             default:
@@ -124,8 +115,14 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent event) {
-        if (event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        Users.addUser(event.getPlayer()).getProfile().actualizeRespawnATS();
+        Player player = event.getPlayer();
+
+        /* We can't use the other check here because a profile hasn't been created yet.*/
+        if (player == null || player.hasMetadata("NPC")) {
+            return;
+        }
+
+        Users.addUser(player).getProfile().actualizeRespawnATS();
     }
 
     /**
@@ -137,12 +134,12 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (Misc.isNPC(player)) {
+            return;
+        }
 
         /* GARBAGE COLLECTION */
-
-        //Bleed it out
-        BleedTimer.bleedOut(player);
+        BleedTimer.bleedOut(player); //Bleed it out
     }
 
     /**
@@ -154,82 +151,43 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-
-        if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
-            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-
-            player.sendMessage(LocaleLoader.getString("MOTD.Version", new Object[] {plugin.getDescription().getVersion()}));
-
-            if (Config.getInstance().getHardcoreEnabled()) {
-                if (Config.getInstance().getHardcoreVampirismEnabled()) {
-                    player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOn"));
-                    player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", new Object[] {Config.getInstance().getHardcoreDeathStatPenaltyPercentage()}));
-                    player.sendMessage(LocaleLoader.getString("MOTD.Vampire.Stats", new Object[] {Config.getInstance().getHardcoreVampirismStatLeechPercentage()}));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOff"));
-                    player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", new Object[] {Config.getInstance().getHardcoreDeathStatPenaltyPercentage()}));
-                }
-            }
-
-            if (Permissions.xpQuadruple(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 4 }) }));
-            }
-            else if (Permissions.xpTriple(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 3 }) }));
-            }
-            else if (Permissions.xpDoubleAndOneHalf(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 2.5 }) }));
-            }
-            else if (Permissions.xpDouble(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 2 }) }));
-            }
-            else if (Permissions.xpOneAndOneHalf(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 1.5 }) }));
-            }
-
-            if (Permissions.cooldownsHalved(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/2" }) }));
-            }
-            else if (Permissions.cooldownsThirded(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/3" }) }));
-            }
-            else if (Permissions.cooldownsQuartered(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/4" }) }));
-            }
-
-            if (Permissions.activationTwelve(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 12 }) }));
-            }
-            else if (Permissions.activationEight(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 8 }) }));
-            }
-            else if (Permissions.activationFour(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 4 }) }));
-            }
-
-            if (Permissions.luckyAcrobatics(player) || Permissions.luckyArchery(player) || Permissions.luckyAxes(player) || Permissions.luckyFishing(player) || Permissions.luckyHerbalism(player) || Permissions.luckyMining(player) || Permissions.luckyRepair(player) || Permissions.luckySwords(player) || Permissions.luckyTaming(player) || Permissions.luckyUnarmed(player) || Permissions.luckyWoodcutting(player) || Permissions.luckySmelting(player)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
-            }
-
-            player.sendMessage(LocaleLoader.getString("MOTD.Website", new Object[] {plugin.getDescription().getWebsite()}));
+        if (Misc.isNPC(player)) {
+            return;
         }
 
-        //THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
+        if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
+            PluginDescriptionFile pluginDescription = plugin.getDescription();
+            MOTD motd = new MOTD(player);
+
+            motd.displayVersion(pluginDescription.getVersion());
+            motd.displayHardcoreSettings();
+            motd.displayXpPerks();
+            motd.displayCooldownPerks();
+            motd.displayActivationPerks();
+            motd.displayLuckyPerks();
+            motd.displayWebsite(pluginDescription.getWebsite());
+        }
+
+        //TODO: MAKE THIS SUCK LESS. THIS IS VERY BAD WAY TO DO THINGS, NEED BETTER WAY
         if (XprateCommand.isXpEventRunning()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", new Object[] {Config.getInstance().xpGainMultiplier}));
         }
     }
 
+    /**
+     * Monitor PlayerRespawn events.
+     * @param event The event to watch
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-        PlayerProfile profile = Users.getProfile(event.getPlayer());
+        Player player = event.getPlayer();
+        PlayerProfile profile = Users.getProfile(player);
 
-        if (profile != null) {
-            profile.actualizeRespawnATS();
+        if (Misc.isNPC(player, profile)) {
+            return;
         }
+
+        profile.actualizeRespawnATS();
     }
 
     /**
@@ -363,12 +321,9 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-
-        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-
         PlayerProfile profile = Users.getProfile(player);
 
-        if (profile == null) {
+        if (Misc.isNPC(player, profile)) {
             return;
         }
 

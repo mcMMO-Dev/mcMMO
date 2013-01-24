@@ -7,6 +7,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -139,16 +140,12 @@ public class Fishing {
      */
     public static void processResults(PlayerFishEvent event) {
         Player player = event.getPlayer();
-        if (player == null)
-            return;
-
-        PlayerProfile profile = Users.getProfile(player);
 
         getFishingResults(player, event);
         Item theCatch = (Item) event.getCaught();
 
         if (theCatch.getItemStack().getType() != Material.RAW_FISH) {
-            int lootTier = Fishing.getFishingLootTier(profile);
+            int lootTier = Fishing.getFishingLootTier(Users.getProfile(player));
             int specificChance = 1;
             boolean enchanted = false;
             ItemStack fishingResults = theCatch.getItemStack();
@@ -224,6 +221,18 @@ public class Fishing {
      *            The event to modify
      */
     public static void shakeMob(PlayerFishEvent event) {
+        Entity caughtEntity = event.getCaught();
+
+        if (!(caughtEntity instanceof LivingEntity)) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        if (Users.getProfile(player).getSkillLevel(SkillType.FISHING) < Fishing.shakeUnlockLevel || !Permissions.shakeMob(player)) {
+            return;
+        }
+
         int randomChance = 100;
 
         //TODO: Invert this so it matches the rest of our lucky checks...
@@ -231,7 +240,7 @@ public class Fishing {
             randomChance = 125;
         }
 
-        final Player player = event.getPlayer();
+        
         final PlayerProfile profile = Users.getProfile(player);
         int lootTier = getFishingLootTier(profile);
 
