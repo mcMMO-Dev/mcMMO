@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
@@ -145,7 +146,7 @@ public abstract class Woodcutting {
         else {
             byte blockData = block.getData();
             Location location = block.getLocation();
-            ItemStack item = new ItemStack(Material.LOG, 1, blockData);
+            ItemStack item = new MaterialData(Material.LOG, Woodcutting.extractLogItemData(block.getData())).toItemStack(1);
 
             switch (TreeSpecies.getByData(extractLogItemData(blockData))) {
             case GENERIC:

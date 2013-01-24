@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
@@ -184,7 +185,7 @@ public abstract class TreeFeller {
 
                 // TODO: Nerf XP from jungle trees, as it was done previously
 
-                Misc.dropItem(block.getLocation(), new ItemStack(Material.LOG, 1, Woodcutting.extractLogItemData(block.getData())));
+                Misc.dropItem(block.getLocation(), new MaterialData(Material.LOG, Woodcutting.extractLogItemData(block.getData())).toItemStack(1));
                 break;
             case LEAVES:
                 Misc.randomDropItem(block.getLocation(), new ItemStack(Material.SAPLING, 1, Woodcutting.extractLogItemData(block.getData())), 10);
