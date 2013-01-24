@@ -19,13 +19,6 @@ public abstract class SkillManager {
         this.skillLevel = profile.getSkillLevel(skill);
         this.activationChance = Misc.calculateActivationChance(Permissions.lucky(player, skill));
     }
-    
-    public SkillManager(Player player, SkillType child, SkillType parent1, SkillType parent2) {
-        this.player = player;
-        this.profile = Users.getProfile(player);
-        this.skillLevel = (profile.getSkillLevel(parent1) / 4) + (profile.getSkillLevel(parent2) / 4); //TODO: Make this cleaner somehow
-        this.activationChance = Misc.calculateActivationChance(Permissions.lucky(player, child));
-    }
 
     public Player getPlayer() {
         return player;

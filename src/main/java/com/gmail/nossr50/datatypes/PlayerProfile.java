@@ -912,7 +912,21 @@ public class PlayerProfile {
      */
 
     public int getSkillLevel(SkillType skillType) {
+        if (skillType.isChildSkill()) {
+            return getChildSkillLevel(skillType);
+        }
+
         return skills.get(skillType);
+    }
+
+    public int getChildSkillLevel(SkillType skillType) {
+        switch (skillType) {
+        case SMELTING:
+            return ((getSkillLevel(SkillType.MINING) / 4) + (getSkillLevel(SkillType.REPAIR) / 4)); //TODO: Make this cleaner somehow
+
+        default:
+            return 0;
+        }
     }
 
     public int getSkillXpLevel(SkillType skillType) {

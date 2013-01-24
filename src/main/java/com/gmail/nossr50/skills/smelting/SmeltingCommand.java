@@ -20,7 +20,6 @@ public class SmeltingCommand extends SkillCommand {
 
     public SmeltingCommand() {
         super(SkillType.SMELTING);
-        this.skillValue = (profile.getSkillLevel(SkillType.MINING) / 4) + (profile.getSkillLevel(SkillType.REPAIR) / 4); //TODO: Make this cleaner somehow
     }
 
     @Override
