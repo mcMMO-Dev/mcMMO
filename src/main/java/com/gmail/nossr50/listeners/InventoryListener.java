@@ -57,7 +57,7 @@ public class InventoryListener implements Listener{
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceBurnEvent(FurnaceBurnEvent event) {
         Block furnaceBlock = event.getBlock();
-        FurnaceInventory inventory = ((Furnace)furnaceBlock).getInventory();
+        FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
 
         if (plugin.furnaceIsTracked(furnaceBlock) && ItemChecks.isSmeltable(inventory.getSmelting())) {
             SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
@@ -68,7 +68,7 @@ public class InventoryListener implements Listener{
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
         Block furnaceBlock = event.getBlock();
-        FurnaceInventory inventory = ((Furnace)furnaceBlock).getInventory();
+        FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
 
         if (plugin.furnaceIsTracked(furnaceBlock) && ItemChecks.isSmeltable(inventory.getSmelting())) {
             SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
@@ -79,7 +79,7 @@ public class InventoryListener implements Listener{
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
         Block furnaceBlock = event.getBlock();
-        FurnaceInventory inventory = ((Furnace)furnaceBlock).getInventory();
+        FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
 
         if (plugin.furnaceIsTracked(furnaceBlock) && ItemChecks.isSmeltable(inventory.getSmelting())) {
             SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
